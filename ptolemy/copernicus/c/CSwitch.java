@@ -62,6 +62,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public byte indentLevel;
 
+    /** Set to true if this statement is in the body of a method that
+     * requires exception-handling.
+     */
+    public boolean exceptionsExist;
+
     /** Construct a new CSwitch with an empty context. */
     public CSwitch() {
         super();
@@ -576,7 +581,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseNewMultiArrayExpr(NewMultiArrayExpr v) {
         if (_debug) {
             System.out.println("NewMultiArrayExpr: " + v.getSizeCount() +
-                    "/" + v.getSizes().size() + v.getBaseType().getClass().getName());
+                    "/"
+                    + v.getSizes().size()
+                    + v.getBaseType().getClass().getName());
         }
         String sizeCode = new String();
         Iterator sizes = v.getSizes().iterator();
@@ -656,7 +663,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         // Do not do exception-management in single-class mode.
-        if (!_context.getSingleClassMode()) {
+        if ((!_context.getSingleClassMode()) && exceptionsExist) {
             _push("\n"
                     + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
                     + indent + "epc = caller_epc;\n"
@@ -683,7 +690,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         // Do not do exception-management in single-class mode.
-        if (!_context.getSingleClassMode()) {
+        if ((!_context.getSingleClassMode()) && exceptionsExist) {
             _push("\n"
                     + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
                     + indent + "epc = caller_epc;\n"
@@ -1268,14 +1275,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             // The number of dimensions is always 1, unless the element is
             // an array.
             dimensions = 1;
-
+            if (elementType instanceof ArrayType) {
+                dimensions = ((ArrayType)elementType).numDimensions;
+                elementType = ((ArrayType)elementType).baseType;
+                            }
             if (elementType instanceof RefType) {
                 elementClass = CNames.typeNameOf(elementType);
-            }
-            else if (elementType instanceof ArrayType) {
-                BaseType baseType = ((ArrayType)elementType).baseType;
-                elementClass = CNames.typeNameOf(baseType);
-                dimensions = ((ArrayType)elementType).numDimensions;
             }
             else {
                 // If its a primitive type.
@@ -1437,6 +1442,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     protected void _unexpectedCase(Object object, String message) {
         _push("epc++ /* UNEXPECTED CASE "
                 + object.getClass().getName()
+                + " :" + message + " "
                 + "*/; epc--");
 
         /*

@@ -104,12 +104,6 @@ public class OverriddenMethodGenerator {
         // Methods ovverriden for speed
         _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
                 + "valueOf(java.lang.Object)>");
-        _forceOverriddenMethods.add( "<java.util.Hashtable: java.lang.Object "
-                + "put(java.lang.Object,java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.util.HashMap: boolean "
-                + "eq(java.lang.Object,java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.util.HashMap: int "
-                + "hash(java.lang.Object)>");
         _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
                 + "eq(java.lang.Object,java.lang.Object)>");
         _forceOverriddenMethods.add("<java.util.TreeMap: int "
@@ -275,12 +269,14 @@ public class OverriddenMethodGenerator {
                 "<java.text.AttributedCharacterIterator$Attribute: "
                 + "void <clinit>()>");
         _forceOverriddenMethods.add(
-                "<java.text.MessageFormat$Field: void <clinit>()>");
+            "<java.text.MessageFormat$Field: void <clinit>()>");
+        _forceOverriddenMethods.add(
+            "<java.text.DateFormat$Field: void <clinit>()>");
+        _forceOverriddenMethods.add(
+            "<java.io.FilePermission: void <clinit>()>");
+        _forceOverriddenMethods.add(
+            "<java.util.Random: void <clinit>()>");
         // Causes segfault.
-
-
-
-        // Overridden because it asks for a nonexistent field.
 
         ///////// Methods replaced with actual code ////////
 
@@ -303,15 +299,22 @@ public class OverriddenMethodGenerator {
         _forceOverriddenMethods.add(
                 "<java.io.PrintStream: void write(java.lang.String)>");
 
-
+        /* FIXME: Remove this.
         _forceOverriddenMethods.add(
                 "<java.lang.String: void <init>(char[])>");
         // Overridden because java.lang.Object.clone() is not implemented yet.
+        */
 
         _forceOverriddenMethods.add(
                 "<java.lang.System: void initializeSystemClass()>");
         // Contains initializations needed to get System.out.println() and
         // other needed functionality to be supported.
+
+        // C randomization replaces java for now, but its not as good.
+        _forceOverriddenMethods.add(
+                "<java.util.Random: void setSeed(long)>");
+        _forceOverriddenMethods.add(
+                "<java.util.Random: double nextDouble()>");
 
 
     }
@@ -349,9 +352,10 @@ public class OverriddenMethodGenerator {
                 ||(className.indexOf("java.util.prefs.") == 0)
                 ||(className.indexOf("java.util.logging.") == 0)
                 ||(className.indexOf("java.util.zip.") == 0)
+                ||(className.indexOf("java.util.jar.") == 0)
                 ||(className.indexOf("java.security.") == 0)
                 ||(className.indexOf("java.lang.Object") == 0)
-                ||(className.indexOf("java.util.Random") == 0)
+                ||(className.indexOf("java.text.") == 0)
             ) {
             return true;
         }

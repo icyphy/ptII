@@ -250,8 +250,7 @@ public class CNames {
                 ||(className.startsWith("org."))
                 ||(className.startsWith("com."))
                 ||(className.startsWith("javax."))
-            )
-            {
+            ){
                 return (true);
             }
         else {
@@ -353,7 +352,7 @@ public class CNames {
 
         if (type instanceof BooleanType) name = "short";
         else if (type instanceof ByteType) name = "char";
-        else if (type instanceof CharType) name = "int";
+        else if (type instanceof CharType) name = "char";
         else if (type instanceof DoubleType) name = "double";
         else if (type instanceof FloatType) name = "float";
         else if (type instanceof IntType) name = "long";

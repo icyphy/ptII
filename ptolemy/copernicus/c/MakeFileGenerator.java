@@ -77,6 +77,8 @@ public class MakeFileGenerator {
         StringBuffer code = new StringBuffer();
 
         code.append("#Standard variables\n");
+        code.append("PTII = ../../../..\n");
+        code.append("THIS = " + className + ".make\n");
         code.append("RUNTIME = ../runtime\n");
         code.append("NATIVE_BODIES ="
                 + NativeMethodGenerator.nativeBodyLib + "\n");
@@ -84,17 +86,22 @@ public class MakeFileGenerator {
         code.append("OVER_BODIES = "
                 + OverriddenMethodGenerator.overriddenBodyLib
                 + "\n");
+        // Java-to-C library.
         code.append("LIB = " + Options.v().get("lib")
                 + "\n");
         code.append("LIB_FILE = $(LIB)/j2c_lib.a\n");
+        // Garbage collector
+        if (gc) {
+            code.append("\n# Garbage Collector.\n");
+            code.append("GC_DIR = $(PTII)/vendors/gc/gc6.1\n");
+            code.append("GC_LIB = $(PTII)/lib/libgc.a\n\n");
+        }
 
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -g -Wall -pedantic\n");
         code.append("CFLAGS = -g -Wall -pedantic -Wno-trigraphs\n");
         code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)\n\n");
-
-        code.append("THIS = " + className + ".make\n");
+                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) -I $(GC_DIR) \n\n");
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
@@ -117,9 +124,6 @@ public class MakeFileGenerator {
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
         code.append( "IHEADERS = $(SOURCES:.c="
                 + StubFileGenerator.stubFileNameSuffix() + ")\n");
-        if (gc) {
-            code.append( "GC_OBJECT = $(RUNTIME)/GC.o\n");
-        }
 
         code.append("\nLIB_OBJECTS = $(LIB_SOURCES:.c=.o)\n");
         code.append(  "LIB_HEADERS = $(LIB_SOURCES:.c=.h)\n");
@@ -127,29 +131,18 @@ public class MakeFileGenerator {
                 + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
-        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)");
+        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)\n");
 
-        if (gc) {
-            code.append(" $(GC_OBJECT)");
-        }
-
-        code.append("\n");
         code.append("\tgcc -g $(OBJECTS) $(LIB_FILE) ");
         if (gc) {
-            code.append("$(GC_OBJECT) ");
+            code.append("$(GC_LIB) ");
         }
         code.append("-o "+ className +".exe\n");
-
-        // The garbage collector cannot be compiled with -pedantic.
-        if (gc) {
-            code.append("\n$(GC_OBJECT) : $(RUNTIME)/GC.c $(RUNTIME)/GC.h\n");
-            code.append("\tgcc -g -c $(RUNTIME)/GC.c -o $(RUNTIME)/GC.o\n");
-        }
 
         // Conversion from .c to .o
         code.append(".c.o:\n");
         code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) $< -o $@ "
+                + "-I $(NATIVE_BODIES) -I $(GC_DIR) $< -o $@ "
                 + "\n\n");
 
         // Library generation.
@@ -168,9 +161,6 @@ public class MakeFileGenerator {
 
         code.append("clean:\n");
         code.append("\trm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE)");
-        if (gc) {
-            code.append(" $(GC_OBJECT)");
-        }
         code.append(";\n");
 
         code.append("# DO NOT DELETE THIS LINE "

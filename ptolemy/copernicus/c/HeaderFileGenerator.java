@@ -121,8 +121,6 @@ public class HeaderFileGenerator extends CodeGenerator {
         ClassStructureGenerator CSG = new ClassStructureGenerator(_context);
         bodyCode.append(CSG.generate(source));
         _requiredTypeMap.putAll(CSG.getRequiredTypeMap());
-        //FIXME: Remove this.
-        //_context.addArrayInstances(CSG.getArrayInstances());
 
         // Generate the structure for instances of this class.
         InstanceStructureGenerator ISG =

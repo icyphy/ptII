@@ -82,6 +82,8 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
         _context.addIncludeFile("<stdio.h>");
+        _context.addIncludeFile("<sys/time.h>");
+        _context.addIncludeFile("<math.h>");
 
         // This file cannot be auto-detected because its called from a
         // runtime method.
@@ -99,7 +101,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
         // Include file for garbage collection.
         if (Options.v().getBoolean("gc")) {
-            _context.addIncludeFile("\"GC.h\"");
+            _context.addIncludeFile("\"include/gc.h\"");
         }
 
 
@@ -161,7 +163,7 @@ public class CodeFileGenerator extends CodeGenerator {
         headerCode.append(_generateIncludeDirectives() + "\n");
         // Define memory allocation routine for garbage collection.
         if (Options.v().getBoolean("gc")) {
-            headerCode.append("#define malloc(x) GC_malloc(x)\n");
+            headerCode.append("#define malloc(x) GC_MALLOC(x)\n");
         }
 
         headerCode.append(_declareConstants() + "\n");
@@ -274,6 +276,21 @@ public class CodeFileGenerator extends CodeGenerator {
             }
         }
 
+        // Initialize the name of the class.
+        code.append("\n");
+        code.append(_indent(1) + _comment("The name of the class."));
+        code.append(_indent(1)
+                + "class->name = \"" + source.getName() + "\";\n\n");
+
+        // Initialize the field representing memory needed by instances of
+        // this class.
+        code.append(_indent(1)
+                + _comment("The memory needed by instances of this class"));
+        code.append(_indent(1)
+                + "class->instance_size = sizeof"
+                + "(struct " + CNames.instanceNameOf(source) + ")"
+                + ";\n\n");
+
         // Set up the superclass pointer.
         code.append("\n" + _indent(1) + "/* Superclass pointer */\n");
         code.append(_indent(1) + argumentReference +
@@ -284,7 +301,8 @@ public class CodeFileGenerator extends CodeGenerator {
             if (!RequiredFileGenerator.isRequired(source
                     .getSuperclass())) {
                 code.append("/* "
-                        +   "&" + CNames.classStructureNameOf(source.getSuperclass())
+                        +   "&"
+                        + CNames.classStructureNameOf(source.getSuperclass())
                         + " */ NULL");
             }
             else {

@@ -78,53 +78,9 @@ public class  ClassStructureGenerator extends CodeGenerator {
         code.append("struct " + CNames.classNameOf(source) +
                 "{\n\n");
 
-        // Pointer to superclass structure.
-        code.append(_indent(1));
-        if (source.hasSuperclass()
-                && !_context.getSingleClassMode()
-                && RequiredFileGenerator.isRequired(source.getSuperclass())) {
-            code.append(_comment("Pointer to superclass structure"));
-            code.append(_indent(1));
-            code.append(CNames.classNameOf(source.getSuperclass()));
-            code.append(" ");
-        } else {
-            code.append(_comment("Placeholder for pointer to superclass"
-                    + " structure"));
-            code.append(_indent(1));
-            code.append("void *");
-        }
-        code.append(CNames.superclassPointerName() + ";\n\n");
-
-        // Pointer to array class. This is initialized to null here,
-        // and set appropriately when the array class is created at
-        // run-time (array classes are created on demand).
-        // This is declared as a pointer to the struct that implements
-        // java.lang.Object so that access to common members of the
-        // structure (across all classes) is facilitated.
-        // The pointer declaration is commented out if we are in single
-        // class mode.
-        code.append(_indent(1) + _comment("Pointer to array class"));
-        if (_context.getSingleClassMode()) {
-            code.append(_indent(1) + _openComment);
-        }
-        code.append(_indent(1) + CNames.classNameOf(
-                Scene.v().getSootClass("java.lang.Object")) +
-                " array_class;\n");
-        if (_context.getSingleClassMode()) {
-            code.append(_indent(1) + _closeComment);
-        }
-        code.append("\n");
-
-        // Generate lookup method for diambiguation of interface calls.
-        code.append(_indent(1) + _comment("Interface lookup function."));
-        code.append(_indent(1) + "void* (*lookup)(long int);\n\n");
-
-        // Generate function that resolves the "instanceof" operator.
-        code.append(_indent(1) + _comment("Function for handling the "
-                + "\"instanceof\" operator."));
-        code.append(_indent(1) + "short (*instanceOf)"
-                + "(PCCG_CLASS_PTR, long int);\n\n");
-
+        // These are fields that are declared first because they must be
+        // present in every class.
+        code.append(_generateCommonFields(source));
 
         // Generate the method table. Constructors are included since they
         // operate on class instances.
@@ -197,6 +153,75 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected fields                    ////
+    /** Generate the data is is needed by all classes.
+     * @param source The class for which these fields are to be generated.
+     * @return The code corresponding to fields in the class structure that
+     * correspond to all classes.
+     */
+    private String _generateCommonFields(SootClass source) {
+        StringBuffer code = new StringBuffer();
+
+        // Pointer to a C string containing the name of the class.
+        code.append(_indent(1) + _comment("The name of this class."));
+        code.append(_indent(1) + "char* name;\n\n");
+
+        // The size of a instances of this class. This needed for cloning
+        // objects of this class.
+        code.append(_indent(1)
+            +_comment("The memory needed by instances of this class."));
+        code.append(_indent(1) + "long instance_size;\n\n");
+
+        // Pointer to superclass structure.
+        code.append(_indent(1));
+        if (source.hasSuperclass()
+            && !_context.getSingleClassMode()
+            && RequiredFileGenerator.isRequired(source.getSuperclass())) {
+            code.append(_comment("Pointer to superclass structure"));
+            code.append(_indent(1));
+            code.append(CNames.classNameOf(source.getSuperclass()));
+            code.append(" ");
+        } else {
+            code.append(_comment("Placeholder for pointer to superclass"
+                    + " structure"));
+            code.append(_indent(1));
+            code.append("void *");
+        }
+        code.append(CNames.superclassPointerName() + ";\n\n");
+
+        // Pointer to array class. This is initialized to null here,
+        // and set appropriately when the array class is created at
+        // run-time (array classes are created on demand).
+        // This is declared as a pointer to the struct that implements
+        // java.lang.Object so that access to common members of the
+        // structure (across all classes) is facilitated.
+        // The pointer declaration is commented out if we are in single
+        // class mode.
+        code.append(_indent(1) + _comment("Pointer to array class"));
+        if (_context.getSingleClassMode()) {
+            code.append(_indent(1) + _openComment);
+        }
+        code.append(_indent(1) + CNames.classNameOf(
+                Scene.v().getSootClass("java.lang.Object")) +
+                " array_class;\n");
+        if (_context.getSingleClassMode()) {
+            code.append(_indent(1) + _closeComment);
+        }
+        code.append("\n");
+
+        // Generate lookup method for diambiguation of interface calls.
+        code.append(_indent(1) + _comment("Interface lookup function."));
+        code.append(_indent(1) + "void* (*lookup)(long int);\n\n");
+
+        // Generate function that resolves the "instanceof" operator.
+        code.append(_indent(1) + _comment("Function for handling the "
+                + "\"instanceof\" operator."));
+        code.append(_indent(1) + "short (*instanceOf)"
+                + "(PCCG_CLASS_PTR, long int);\n\n");
+
+        return code.toString();
+    }
+
+
 
 
     ///////////////////////////////////////////////////////////////////

@@ -33,10 +33,14 @@ package ptolemy.copernicus.c;
 
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /** A class that takes care of common File I/O functions.
 
@@ -55,6 +59,33 @@ public class FileHandler {
         File f = new File(fileName);
         return(f.exists());
     }
+
+
+    /** Reads an object from a specified file.
+     * @param fileName The file to read.
+     * @return The object in this file.
+     */
+    public static Object readObject(String fileName) {
+         try {
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            Object object = in.readObject();
+            in.close();
+            return object;
+        }
+        catch (IOException e) {
+            throw new RuntimeException(
+                    "IOException while reading object from "
+                    + fileName + ": " + e.toString());
+        }
+        catch (ClassNotFoundException e) {
+            throw new RuntimeException(
+                    "ClassNotFoundException while reading object from "
+                    + fileName + ": " + e.toString());
+        }
+    }
+
 
     /** Reads the contents of a text file and returns them as a String.
      *  Prints an error statement and returns an empty string if an IO
@@ -100,6 +131,27 @@ public class FileHandler {
                     + "ERROR: Could not create file: " + fileName + "\n");
         }
     }
+
+    /** Write out the given Object to a file.
+     * @param fileName The file to write to.
+     * @param object The object to write.
+     */
+    public static void write(String fileName, Object object) {
+        try {
+            FileOutputStream file = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            out.writeObject((Serializable)object);
+            out.close();
+        }
+        catch (IOException e) {
+            throw new RuntimeException("IOException while writing object to "
+                    + fileName + ": " + e.toString()
+                    + "\nOBJECT: " + object.toString());
+
+        }
+    }
+
 
 }
 

@@ -44,6 +44,17 @@ public class Utilities{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Enclose a given string of text within appropriate delimiters to
+     *  form a comment in the generated code.
+     *  Also, append a new line after the comment.
+     *  @param text The text to place in the generated comment.
+     *  @return The generated comment.
+     *  Standard ANSI C comments are used here.
+     */
+    public static String comment(String text) {
+        return("/* " + text + " */\n");
+    }
+
     /** Return a string that generates an indentation string (a sequence
      *  of spaces) for the given indentation level. Each indentation
      *  level unit is four characters wide.
@@ -58,17 +69,6 @@ public class Utilities{
             indent.append("    ");
         }
         return indent.toString();
-    }
-
-    /** Enclose a given string of text within appropriate delimiters to
-     *  form a comment in the generated code.
-     *  Also, append a new line after the comment.
-     *  @param text The text to place in the generated comment.
-     *  @return The generated comment.
-     *  Standard ANSI C comments are used here.
-     */
-    public static String comment(String text) {
-        return("/* " + text + " */\n");
     }
 
 

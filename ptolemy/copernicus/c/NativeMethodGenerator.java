@@ -77,6 +77,19 @@ public class NativeMethodGenerator {
     public static final String nativeBodyLib = "../runtime/native_bodies/";
 
 
+    /** Return the name of the file where the C code for a native method
+     *  should be.
+     *  @param method The method.
+     *  @return The name of the file.
+     */
+    public static String fileContainingCodeFor(SootMethod method) {
+        String fileName = CNames.functionNameOf(method)
+            + ".c";
+
+        return fileName;
+    }
+
+
     /** Generates a stub file for the given native method.
      *  @param method The method for which a stub is needed.
      */
@@ -177,17 +190,6 @@ public class NativeMethodGenerator {
         return code;
     }
 
-    /** Return the name of the file where the C code for a native method
-     *  should be.
-     *  @param method The method.
-     *  @return The name of the file.
-     */
-    public static String fileContainingCodeFor(SootMethod method) {
-        String fileName = CNames.functionNameOf(method)
-            + ".c";
-
-        return fileName;
-    }
 
 
     /** Returns the first line of the stub for the given method.

@@ -94,6 +94,9 @@ public class MethodCodeGenerator {
             // variables.
             HashSet parameterAndThisLocals = new HashSet();
 
+            // Tell the visitor whether traps exist.
+            visitor.exceptionsExist = tracker.trapsExist();
+
             // Generate the method head.
             code.append(_generateMethodDeclaration(method
                     , parameterAndThisLocals, thisLocalName));
@@ -155,17 +158,19 @@ public class MethodCodeGenerator {
     protected String _declareExceptionVariables(ExceptionTracker tracker) {
         StringBuffer code = new StringBuffer();
 
-        code.append(_indent(1)
-                + _comment("Variables used for catching exceptions.")
-                + "\n");
-        code.append(_indent(1) + "extern jmp_buf env;\n");
-        code.append(_indent(1) + "extern int epc;\n");
-        code.append(_indent(1) + "jmp_buf caller_env;\n");
-        code.append(_indent(1) + "int caller_epc;\n");
         if (tracker.trapsExist()) {
-
             code.append(_indent(1)
-                    + "extern _EXCEPTION_INSTANCE exception_id;\n");
+                    + _comment("Variables used for catching exceptions.")
+                    + "\n");
+            code.append(_indent(1) + "extern jmp_buf env;\n");
+            code.append(_indent(1) + "extern int epc;\n");
+            code.append(_indent(1) + "jmp_buf caller_env;\n");
+            code.append(_indent(1) + "int caller_epc;\n");
+            if (tracker.trapsExist()) {
+
+                code.append(_indent(1)
+                        + "extern _EXCEPTION_INSTANCE exception_id;\n");
+            }
         }
 
         return code.toString();
@@ -176,7 +181,7 @@ public class MethodCodeGenerator {
      *  The method below generates epilogue for the code in a method.
      *  @param tracker
      *  @param visitor
-     *  @return the code.
+     *  @return The code.
      */
     protected String _generateEpilogue(ExceptionTracker tracker, CSwitch
             visitor) {
@@ -201,7 +206,7 @@ public class MethodCodeGenerator {
      *  The method below generates exception map for the code.
      *  @param tracker
      *  @param visitor
-     *  @return the code.
+     *  @return The code.
      */
     protected String _generateExceptionMap(ExceptionTracker tracker
             , CSwitch visitor) {
@@ -269,7 +274,7 @@ public class MethodCodeGenerator {
      *  variables that are local to the instance of the class to which this
      *  method belongs. These variables do <B>NOT</B> need to be declared
      *  or initialized by this method.
-     *  @return the code.
+     *  @return The code.
      */
     protected String _generateLocal(SootMethod method
             , HashSet parameterAndThisLocals) {
@@ -327,8 +332,8 @@ public class MethodCodeGenerator {
      *  @param method The method for which code is needed.
      *  @param visitor The visitor.
      *  @param tracker The ExceptionTracker.
-     *  @param thisLocalName the local name.
-     *  @return the code.
+     *  @param thisLocalName The local name.
+     *  @return The code.
      */
     protected String _generateMethodBody(SootMethod method, CSwitch visitor
             , ExceptionTracker tracker, String thisLocalName) {
@@ -414,24 +419,21 @@ public class MethodCodeGenerator {
             , CSwitch visitor) {
 
         StringBuffer code = new StringBuffer();
-        byte indentLevel;
-
-        code.append("\n");
-        code.append(_indent(1) + "caller_epc = epc;\n");
-        code.append(_indent(1) + "memcpy(caller_env, env, sizeof(jmp_buf));\n");
+        byte indentLevel = 1;
 
         code.append("\n");
         if (tracker.trapsExist()) {
+            code.append(_indent(1) + "caller_epc = epc;\n");
+            code.append(_indent(1)
+                    + "memcpy(caller_env, env, sizeof(jmp_buf));\n");
+
+            code.append("\n");
+
             code.append(_indent(1) + "epc = setjmp(env);\n");
             code.append(_indent(1) + "if (epc == 0)\n");
             code.append(_indent(1) + "{\n");
 
             indentLevel = 2;
-        }
-        else {
-            // To suppress warnings.
-            code.append(_indent(1) + "epc = caller_epc;\n");
-            indentLevel = 1;
         }
 
         visitor.indentLevel = indentLevel;

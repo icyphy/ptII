@@ -137,7 +137,7 @@ public class Options {
     }
 
     /** Return a static version of this class.
-     *  @return a static Options object.
+     *  @return A static Options object.
      */
     public static Options v() {
         return _v;

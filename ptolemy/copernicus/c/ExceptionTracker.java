@@ -119,8 +119,8 @@ public class ExceptionTracker {
         return _epc;
     }
 
-    /** Returns a list of all handler units associated with the given exceptional
-     *  pc.
+    /** Returns a list of all handler units associated with the given
+     *  exceptional pc.
      *  @param epc The exceptional pc.
      *  @return A list of all handlerUnits associated with
      *  the given epc.

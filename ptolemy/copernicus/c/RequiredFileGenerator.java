@@ -87,9 +87,6 @@ public class RequiredFileGenerator {
         boolean verbose = Options.v().getBoolean("verbose");
 
         if (!compileMode.equals("singleClass")) {
-            Scene.v().setSootClassPath(classPath);
-            Scene.v().loadClassAndSupport(className);
-
             // Generate headers for only required classes.
             Iterator j = getRequiredClasses().iterator();
             //Iterator j = Scene.v().getClasses().iterator();
@@ -255,8 +252,6 @@ public class RequiredFileGenerator {
         @param className The name of the class.
     */
     private static void _pruneLevel1(String classPath, String className) {
-        // FIXME: Remove this code.
-        // Scene.v().loadClassAndSupport(className);
         SootClass source = Scene.v().getSootClass(className);
 
 
@@ -281,7 +276,6 @@ public class RequiredFileGenerator {
         String code;
         boolean verbose = Options.v().getBoolean("verbose");
 
-        Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
@@ -291,19 +285,17 @@ public class RequiredFileGenerator {
 
         // Generate the .c file.
         if (Options.v().get("compileMode").equals("full")) {
-            if (FileHandler.exists(fileName+".c")) {
-                if (verbose) {
+            if (verbose) {
+                if (FileHandler.exists(fileName+".c")) {
                     System.out.println( "\texists:"+fileName+".c");
                 }
-            }
-            else
-                {
-                    code = cGenerator.generate(sootClass);
-                    FileHandler.write(fileName+".c", code);
-                    if (verbose) {
-                        System.out.println( "\tcreated: " +fileName+".c");
-                    }
+                else {
+                    System.out.println( "\tcreating: " +fileName+".c");
+
                 }
+            }
+            code = cGenerator.generate(sootClass);
+            FileHandler.write(fileName+".c", code);
         }
     }
 
@@ -349,28 +341,37 @@ public class RequiredFileGenerator {
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
-                + StubFileGenerator.stubFileNameSuffix())) {
-            if (verbose) System.out.println( "\texists: " + fileName
-                    + StubFileGenerator.stubFileNameSuffix());
+                    + StubFileGenerator.stubFileNameSuffix())) {
+            code = sGenerator.generate(sootClass);
+            String name = fileName
+                    + StubFileGenerator.stubFileNameSuffix();
+
+            FileHandler.write(name, code);
+
+            if(verbose) System.out.println( "\texists: " + fileName
+                + StubFileGenerator.stubFileNameSuffix());
         }
         else {
             code = sGenerator.generate(sootClass);
             String name = fileName
                 + StubFileGenerator.stubFileNameSuffix();
 
-            if (! FileHandler.exists(name)) {
-                FileHandler.write(name, code);
-            }
+            FileHandler.write(name, code);
 
-            if (verbose) {
+            if(verbose) {
                 System.out.println( "\tcreated: " + name);
             }
         }
 
 
         // Generate the .h file.
-        if (FileHandler.exists(fileName+".h")) {
-            if (verbose) {
+        if(FileHandler.exists(fileName+".h")) {
+            hGenerator = new HeaderFileGenerator();
+            code = hGenerator.generate(sootClass);
+            FileHandler.write(fileName+".h", code);
+
+
+            if(verbose) {
                 System.out.println( "\texists: " + fileName + ".h");
             }
         }

@@ -101,15 +101,6 @@ public class  InstanceStructureGenerator extends CodeGenerator {
 
     }
 
-    /** Get the set of Array instances required by the generated class.
-     * @return The set of array instances in the local context.
-     */
-    /* FIXME: Remove This.
-       public HashSet getArrayInstances() {
-       return _context.getArrayInstances();
-       }
-    */
-
     /** Get the map of types required by the generated class.
      * @return The _requiredTypeMap structure created while generating this
      * class.
@@ -194,8 +185,7 @@ public class  InstanceStructureGenerator extends CodeGenerator {
             SootField field = (SootField)(fields.next());
             if (field.isPrivate()
                     && !(Modifier.isStatic(field.getModifiers()))
-                    && (!_doneFields.contains(field.getName())))
-                {
+                    && (!_doneFields.contains(field.getName()))) {
                     if (insertedFields == 0) {
                         fieldCode.append(header);
                     }

@@ -67,7 +67,7 @@ public class InterfaceLookupGenerator {
         StringBuffer code = new StringBuffer();
         StringBuffer header = new StringBuffer();
         // Nothing needs to be done if the class implements no interfaces.
-        if (source.getInterfaceCount() <= 0) {
+        if (AnalysisUtilities.getAllInterfacesOf(source).size() <= 0) {
             return code.toString();
         }
         // Nothing needs to be done if no methods may need to be looked up.
@@ -124,7 +124,8 @@ public class InterfaceLookupGenerator {
     public static HashMap getLookupMethods(SootClass source) {
         HashMap interfaceMethodMap = new HashMap();
         Iterator interfaces = AnalysisUtilities.getAllInterfacesOf(source)
-            .iterator();
+                .iterator();
+
 
         while (interfaces.hasNext()){
             SootClass thisInterface = (SootClass)interfaces.next();
@@ -150,7 +151,6 @@ public class InterfaceLookupGenerator {
                         if (inheritedMethod.getSubSignature().equals(
                                 method.getSubSignature())) {
                             interfaceMethodMap.put(method,inheritedMethod);
-                            break;
                         }
                     }
                 }
@@ -167,14 +167,16 @@ public class InterfaceLookupGenerator {
      * interface implemented by the class.
      */
     public static boolean needsLookupFunction(SootClass source) {
-        if (source.getInterfaceCount() <= 0) {
+        if (AnalysisUtilities.getAllInterfacesOf(source).size() <= 0) {
             return false;
         }
         // If no methods neeed to be looked up.
         if (getLookupMethods(source).size() == 0) {
             return false;
         }
-        else return true;
+        else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

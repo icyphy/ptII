@@ -22,7 +22,7 @@
  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (<your email address>)
+@ProposedRating Red (ankush@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
@@ -40,6 +40,7 @@ import soot.RefType;
 import soot.Type;
 
 import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
 import soot.jimple.toolkits.invoke.InvokeGraph;
 
 import soot.jimple.Stmt;
@@ -67,18 +68,32 @@ are really needed for code generation.
 
 public class InvokeGraphPruner {
 
+    /** Dummy constructor to allow inheritance.*/
+    public InvokeGraphPruner() {
+    }
+
     /** Constructor. Creates an InvokeGraph and applies a specialized
      * pruning strategy to it, tailored for C code generation.
      * @param source The class to use as the root for the pruned tree.
      */
-    public InvokeGraphPruner(SootClass source) {
-        InvokeGraph invokeGraph;
-        Scene.v().setMainClass(source);
-        source.setApplicationClass();
+   public InvokeGraphPruner(SootClass source) {
+      _verbose = Options.v().getBoolean("verbose");
+        _cache = new InvokeGraphCache();
+        if (!_cache.isPrecomputed()) {
+            _setAllClassesAsLibrary();
+            InvokeGraph invokeGraph = _generateNewInvokeGraph();
+            Scene.v().setActiveInvokeGraph(invokeGraph);
+            VariableTypeAnalysis vta = new VariableTypeAnalysis(invokeGraph);
+            vta.trimActiveInvokeGraph();
+            _cache.store(invokeGraph);
+        }
+        _cache.load();
 
+        _generatePluginInvokeGraph();
         // All methods in the source, and no other methods, are required in
         // singleclass mode.
         if (!Options.v().get("compileMode").equals("singleClass")) {
+            _setAllClassesAsLibrary();// To see inside method bodies.
             _growTree(source);
         }
         else {
@@ -93,6 +108,28 @@ public class InvokeGraphPruner {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Get the set of all reachable classes.
+     *  @return The set of all reachable classes.
+     */
+    public HashSet getReachableClasses() {
+        return _reachableClasses;
+    }
+
+    /** Get the set of all reachable fields.
+     *  @return The set of all reachable fields.
+     */
+    public HashSet getReachableFields() {
+        return _reachableFields;
+    }
+
+    /** Get the set of all reachable methods.
+     *  @return The set of all reachable methods.
+     */
+    public HashSet getReachableMethods() {
+        return _reachableMethods;
+    }
+
     /** Print how many classes and methods are there in the given
      * InvokeGraph, and how many reachable from the given SootMethod.
      *
@@ -123,46 +160,16 @@ public class InvokeGraphPruner {
                 + " classes.");
     }
 
-    /** Get the set of all reachable classes.
-     *  @return The set of all reachable classes.
-     */
-    public HashSet getReachableClasses() {
-        return _reachableClasses;
-    }
-
-    /** Get the set of all reachable fields.
-     *  @return The set of all reachable fields.
-     */
-    public HashSet getReachableFields() {
-        return _reachableFields;
-    }
-
-    /** Get the set of all reachable methods.
-     *  @return The set of all reachable methods.
-     */
-    public HashSet getReachableMethods() {
-        return _reachableMethods;
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected fields                    ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Adds a whole collection of classes/methods/fields to _gray.
+     * @param nodes The collection of nodes to add.
      */
-    private void _add(Collection nodes) {
+    protected void _add(Collection nodes) {
         Iterator i = nodes.iterator();
         while (i.hasNext()){
             _add(i.next());
@@ -171,10 +178,12 @@ public class InvokeGraphPruner {
 
     /** Adds an object to the _gray list if the object is not in the gray
      * or a _reachable list. The object is assumed to be a class, method or
-     * field. FIXME: Can be made more efficient by checking
-     * the type of node and comparing only against the list of that type.
+     * field.
+     * @param node The object to add.
      */
-    private void _add(Object node) {
+    //FIXME: Can be made more efficient by checking the type of node and
+    //comparing only against the list of that type.
+    protected void _add(Object node) {
         if ((!_gray.contains(node))
                 && (!_reachableClasses.contains(node))
                 && (!_reachableMethods.contains(node))
@@ -184,8 +193,9 @@ public class InvokeGraphPruner {
     }
 
     /** Adds a class, method or field  to the appropriate reachable list.
+     * @param node The class/field/method to process.
      */
-    private void _done(Object node) {
+    protected void _done(Object node) {
         if (_gray.contains(node)) {
             _gray.remove(node);
         }
@@ -205,7 +215,7 @@ public class InvokeGraphPruner {
      * explicitly.
      * @return The list of compulsory methods.
      */
-    private LinkedList _getCompulsoryNodes() {
+    protected LinkedList _getCompulsoryNodes() {
         LinkedList compulsoryNodes = new LinkedList();
 
         // Add java.lang.String.String(char[]). Initializer
@@ -260,12 +270,13 @@ public class InvokeGraphPruner {
      * </UL>
      * These are computed here in the same method so that only one pass
      * through the statements in the body is required.
-     * @param The method.
+     * @param method The method.
      * @return The set of nodes unambiguously referenced in the statements
      * comprising its body.
      */
-    private HashSet _getNodesAccessedInBodyOf(SootMethod method) {
+     protected HashSet _getNodesAccessedInBodyOf(SootMethod method) {
         HashSet nodes = new HashSet();
+        Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
 
         if (method.isConcrete() && !OverriddenMethodGenerator
                 .isOverridden(method)) {
@@ -312,9 +323,10 @@ public class InvokeGraphPruner {
         return nodes;
     }
 
-    /** Sets the set of fields, methods and classes to be started off with.
+    /** Gets the set of fields, methods and classes to be started off with.
+     * @return The set of nodes that are needed to start off with.
      */
-    private HashSet _getRoots(SootClass source) {
+    protected HashSet _getRoots(SootClass source) {
         // Using a HashSet prevents duplication.
         HashSet roots = new HashSet();
 
@@ -329,11 +341,10 @@ public class InvokeGraphPruner {
 
     /** Computes the set of classes, methods and fields reachable from a
      * given class.
+     * @param source The class.
      */
-    private void _growTree(SootClass source) {
+    protected void _growTree(SootClass source) {
         _gray.addAll(_getRoots(source));
-        Scene.v().setActiveInvokeGraph(ClassHierarchyAnalysis
-                .newInvokeGraph(true));
 
         while (!_gray.isEmpty()) {
             //System.out.println(_gray.size());
@@ -359,13 +370,16 @@ public class InvokeGraphPruner {
      * @param method The method.
      * @return True if the method is a leaf.
      */
-    private boolean _isLeaf(SootMethod method) {
+    protected boolean _isLeaf(SootMethod method) {
         return (method.isNative()
                 || OverriddenMethodGenerator.isOverridden(method));
     }
 
-
-    private void _processClass(SootClass node) {
+    /** Performs the appropriate operations for the discovery of a new
+     * class.
+     * @param source The class.
+     */
+    protected void _processClass(SootClass node) {
         if (_reachableClasses.contains(node)) {
             return;
         }
@@ -382,18 +396,16 @@ public class InvokeGraphPruner {
                 _add(superclass);
             }
 
-            // Refresh the invokeGraph();
-            node.setApplicationClass();
-            Scene.v().setActiveInvokeGraph(ClassHierarchyAnalysis
-                    .newInvokeGraph(true));
-
         }
 
         _done(node);
     }
 
-
-    private void _processField(SootField field) {
+    /** Performs the apropriate operations for the discovery of a new
+     * field.
+     * @param field The field.
+     */
+    protected void _processField(SootField field) {
         if (_reachableFields.contains(field)) {
             return;
         }
@@ -401,27 +413,34 @@ public class InvokeGraphPruner {
         _done(field);
     }
 
-    private void _processMethod(SootMethod method) {
+    /** Performs the appropriate operations for the discovery of a new
+     * method.
+     * @param method The method.
+     */
+    protected void _processMethod(SootMethod method) {
         // If the method is in an undiscovered class, refresh the
         // invokeGraph.
         SootClass source = method.getDeclaringClass();
         int oldSize = _gray.size();
-        if (!source.isApplicationClass()) {
-            source.setApplicationClass();
-            _add(source);
-            InvokeGraph invokeGraph = ClassHierarchyAnalysis
-                .newInvokeGraph(true);
 
-            Scene.v().setActiveInvokeGraph(invokeGraph);
-        }
+        _add(source);
 
-        // Add all methods shown by the invokeGraph to be called by this
-        // method.
+
         if (!_isLeaf(method)) {
+            // Add all methods shown by the local invokeGraph to be called
+            // by this method.
             InvokeGraph invokeGraph = Scene.v().getActiveInvokeGraph();
             Collection targets = invokeGraph.getTargetsOf(method);
             _add(targets);
-        }
+
+            // Add all methods shown by the cached invokeGraph to be
+            // targets of this method.
+            if (_cache.isCached(method)) {
+                targets = _cache.getTargetsOf(method);
+                _add(targets);
+            }
+         }
+
 
         // Add the nodes called in the body of the method.
         _add(_getNodesAccessedInBodyOf(method));
@@ -455,22 +474,90 @@ public class InvokeGraphPruner {
     }
 
 
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
+    ////                       protected fields                    ////
     /** The list of all classes, methods, and fields discovered but not yet
      * processed.
      */
-    LinkedList _gray = new LinkedList();
+    protected LinkedList _gray = new LinkedList();
 
     /** The list of all reachable classes.
      */
-    private HashSet _reachableClasses = new HashSet();
+    protected HashSet _reachableClasses = new HashSet();
 
     /** The list of all reachable fields.
      */
-    private HashSet _reachableFields = new HashSet();
+    protected HashSet _reachableFields = new HashSet();
 
     /** The list of all reachable methods.
      */
-    private HashSet _reachableMethods = new HashSet();
+    protected HashSet _reachableMethods = new HashSet();
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Generate a new InvokeGraph.
+     * @return The new InvokeGraph.
+     */
+    private InvokeGraph _generateNewInvokeGraph() {
+        if (_verbose) {
+            System.out.println("Computing new Invoke Graph ...");
+        }
+        InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();
+        return invokeGraph;
+    }
+
+    /** Set The InvokeGraph of the Scene to the invokeGraph made of
+     * non-precomputed classes only.
+     */
+    private void _generatePluginInvokeGraph() {
+        _setUncachedClassesAsLibrary();
+        InvokeGraph invokeGraph = _generateNewInvokeGraph();
+        Scene.v().setActiveInvokeGraph(invokeGraph);
+    }
+
+
+    /** Set all classes in the Scene as library classes. */
+    private void _setAllClassesAsLibrary() {
+
+        if (_verbose) {
+            System.out.println(
+                "Setting all classes to library classes ...");
+        }
+
+        Iterator classes = Scene.v().getClasses().iterator();
+        while (classes.hasNext()) {
+            SootClass source = (SootClass)classes.next();
+            source.setLibraryClass();
+        }
+    }
+
+    /** Set classes not in the cache as library classes */
+    private void _setUncachedClassesAsLibrary() {
+        if (_verbose) {
+            System.out.println("Setting uncached classes to library classes ...");
+        }
+
+        Iterator classes = Scene.v().getClasses().iterator();
+        while (classes.hasNext()) {
+            SootClass source = (SootClass)classes.next();
+            if (!_cache.isCached(source)) {
+                source.setLibraryClass();
+            }
+        }
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+    /** The cache where previuosly-computed invokeGraphs are stored. */
+    private InvokeGraphCache _cache;
+
+    /** True if the "verbose" option is on. */
+    private boolean _verbose;
+
 }
