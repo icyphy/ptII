@@ -55,26 +55,22 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = kernel.jar
 
 JSRCS = \
-	FSMActor.java \
-	State.java \
- 	Action.java \
-	Transition.java \
-	FSMState.java \
-        FSMTransition.java \
-        FSMController.java \
-        FSMDirector.java \
-	TransitionAction.java \
-	HDFFSMDirector.java \
-	HDFFSMController.java \
-	HDFFSMTransition.java \
-	HDFFSMState.java \
 	Action.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	FSMActor.java \
+	FSMController.java \
+	FSMDirector.java \
+	FSMState.java \
+	FSMTransition.java \
+	HDFFSMController.java \
+	HDFFSMDirector.java \
+	HDFFSMState.java \
+	HDFFSMTransition.java \
+	NewFSMDirector.java \
 	State.java \
 	Transition.java \
-	NewFSMDirector.java
+	TransitionAction.java
 
 EXTRA_SRCS =	$(JSRCS)
 
