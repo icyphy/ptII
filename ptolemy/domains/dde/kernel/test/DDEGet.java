@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@ public class DDEGet extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

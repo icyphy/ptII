@@ -35,6 +35,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,7 +60,7 @@ public class DDEPut extends TypedAtomicActor {
 
         outputPort = new TypedIOPort(this, "output", false, true);
         outputPort.setMultiport(true);
-        outputPort.setTypeEquals(Token.class);
+        outputPort.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

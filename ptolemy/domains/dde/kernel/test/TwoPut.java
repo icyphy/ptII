@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,13 +65,13 @@ public class TwoPut extends TypedAtomicActor {
 
         output1 = new TypedIOPort(this, "output1", false, true);
         output1.setMultiport(true);
-        output1.setTypeEquals(Token.class);
+        output1.setTypeEquals(BaseType.GENERAL);
         output2 = new TypedIOPort(this, "output2", false, true);
         output2.setMultiport(true);
-        output2.setTypeEquals(Token.class);
+        output2.setTypeEquals(BaseType.GENERAL);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -36,6 +36,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,10 +63,10 @@ public class FlowThrough extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        output.setTypeEquals(Token.class);
+        output.setTypeEquals(BaseType.GENERAL);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
