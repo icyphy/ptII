@@ -155,9 +155,11 @@ public class JAIEdgeDetection extends Transformer {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
         } else if (attribute == specifiedFirstMask) {
-            _firstMaskData = ((DoubleMatrixToken)specifiedFirstMask.getToken());
+            _firstMaskData
+                = ((DoubleMatrixToken)specifiedFirstMask.getToken());
         } else if (attribute == specifiedSecondMask) {
-            _secondMaskData = ((DoubleMatrixToken)specifiedSecondMask.getToken());
+            _secondMaskData
+                = ((DoubleMatrixToken)specifiedSecondMask.getToken());
         } else {
             super.attributeChanged(attribute);
         }
@@ -191,6 +193,44 @@ public class JAIEdgeDetection extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** If the user chooses to use a prespecified mask, then this
+     *  method will assign the mask values to a KernelJAI used in edge
+     *  detection.
+     *  @exception IllegalActionException If the choice value is out of
+     *  range.
+     */
+    private KernelJAI _filterAssigner(int choice)
+            throws IllegalActionException {
+        switch (choice) {
+        case _BACKDIAGONAL:
+            return new KernelJAI(3, 3, _backDiagonalFilter);
+        case _DIAGONAL:
+            return new KernelJAI(3, 3, _diagonalFilter);
+        case _FREICHEN_HORIZONTAL:
+            return new KernelJAI(3, 3, _freiAndChenHorizontalFilter);
+        case _FREICHEN_VERTICAL:
+            return new KernelJAI(3, 3, _freiAndChenVerticalFilter);
+        case _PREWITT_HORIZONTAL:
+            return new KernelJAI(3, 3, _prewittHorizontalFilter);
+        case _PREWITT_VERTICAL:
+            return new KernelJAI(3, 3, _prewittVerticalFilter);
+        case _ROBERTS_HORIZONTAL:
+            return new KernelJAI(3, 3, _robertsHorizontalFilter);
+        case _ROBERTS_VERTICAL:
+            return new KernelJAI(3, 3, _robertsVerticalFilter);
+        case _SOBEL_HORIZONTAL:
+            return new KernelJAI(3, 3, _sobelHorizontalFilter);
+        case _SOBEL_VERTICAL:
+            return new KernelJAI(3, 3, _sobelVerticalFilter);
+        case _TRANSPARENT:
+            return new KernelJAI(3, 3, _transparentFilter);
+        case _ZERO_FILTER:
+            return new KernelJAI(3, 3, _zeroFilter);
+        default:
+            throw new IllegalActionException("Could not assign filter");
+        }
+    }
 
     /** A convenience method to help in assingning masks.  */
     private int _maskNumberer(String maskName)
@@ -226,45 +266,6 @@ public class JAIEdgeDetection extends Transformer {
                     "Unrecognized Mask type: " + maskName);
         }
     }
-
-    /** If the user chooses to use a prespecified mask, then this
-     *  method will assign the mask values to a KernelJAI used in edge
-     *  detection.
-     *  @exception IllegalActionException If the choice value is out of
-     *  range.
-     */
-    private KernelJAI _filterAssigner(int choice)
-            throws IllegalActionException {
-        switch (choice) {
-        case _BACKDIAGONAL:
-            return new KernelJAI(3,3,_backDiagonalFilter);
-        case _DIAGONAL:
-            return new KernelJAI(3,3,_diagonalFilter);
-        case _FREICHEN_HORIZONTAL:
-            return new KernelJAI(3,3,_freiAndChenHorizontalFilter);
-        case _FREICHEN_VERTICAL:
-            return new KernelJAI(3,3,_freiAndChenVerticalFilter);
-        case _PREWITT_HORIZONTAL:
-            return new KernelJAI(3,3,_prewittHorizontalFilter);
-        case _PREWITT_VERTICAL:
-            return new KernelJAI(3,3,_prewittVerticalFilter);
-        case _ROBERTS_HORIZONTAL:
-            return new KernelJAI(3,3,_robertsHorizontalFilter);
-        case _ROBERTS_VERTICAL:
-            return new KernelJAI(3,3,_robertsVerticalFilter);
-        case _SOBEL_HORIZONTAL:
-            return new KernelJAI(3,3,_sobelHorizontalFilter);
-        case _SOBEL_VERTICAL:
-            return new KernelJAI(3,3,_sobelVerticalFilter);
-        case _TRANSPARENT:
-            return new KernelJAI(3,3,_transparentFilter);
-        case _ZERO_FILTER:
-            return new KernelJAI(3,3,_zeroFilter);
-        default:
-            throw new IllegalActionException("Could not assign filter");
-        }
-    }
-
 
     /** If a user decides not to use a prespecified mask, this method
      *  will return a KernalJAI filled with user specified values.
