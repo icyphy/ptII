@@ -30,18 +30,18 @@
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
+//import ptolemy.actor.*;
+//import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+//import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
-import ptolemy.actor.lib.*;
+//import ptolemy.actor.lib.*;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+//import java.io.*;
+//import java.net.*;
+//import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramSender
@@ -100,27 +100,33 @@ public class DatagramSender extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** This port inputs the data to be sent.
+     *  FIXME: what is the type?
      */
     public TypedIOPort data;
 
     /** The default remote address to send datagrams.
+     *  FIXME: what is the type and initial default value?
      */
     public StringAttribute defaultRemoteAddress;
 
     /** The default remote (UDP) port to send datagrams.
+     *  FIXME: what is the type and initial default value?
      */
     public Parameter defaultRemotePort;
 
     /** The local port number for this actor's socket.
+     *  FIXME: what is the type and initial default value?
      */
     public Parameter localPort;
 
     /** This port inputs the remote address towards which to launch
      *  the packet.
+     *  FIXME: what is the type?
      */
     public TypedIOPort remoteAddress;
 
     /** This port inputs the remote (UDP) port number.
+     *  FIXME: what is the type?
      */
     public TypedIOPort remotePort;
 
@@ -131,6 +137,7 @@ public class DatagramSender extends TypedAtomicActor {
      * is running (as evedenced by socket != null) then close socket
      * and reopen with new port number (even if same as old port
      * number).
+     * FIXME: @exception tag
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -165,6 +172,7 @@ public class DatagramSender extends TypedAtomicActor {
     }
 
     /** Transmits the packed over the ethernet.
+     * FIXME: @exception tag
      */
     public void fire() throws IllegalActionException {
 
@@ -210,6 +218,8 @@ public class DatagramSender extends TypedAtomicActor {
     }
 
     /** Preinitialize
+     * FIXME: what does this do?
+     * FIXME: @exception tag
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -249,6 +259,9 @@ public class DatagramSender extends TypedAtomicActor {
     }
 
     /** Wrap up
+     * FIXME: what does this do?
+     * FIXME: @exception tag
+
      */
     public void wrapup() throws IllegalActionException {
 	synchronized(this) {
@@ -268,6 +281,7 @@ public class DatagramSender extends TypedAtomicActor {
     // Intermediate variables used to [re]construct the packet for
     // transmission.
 
+    // FIXME: need description
     private InetAddress _address;
     private int _remotePortNum;
     private DatagramSocket _socket;

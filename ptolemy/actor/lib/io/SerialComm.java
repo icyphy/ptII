@@ -1,6 +1,5 @@
 /* An actor that operates a serial port.
-123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_1
-123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
+
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -47,7 +46,7 @@ import java.net.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// TxDatagram
+//// SerialComm
 /**
 This actor sends and receives integer arrays via the serial port.
 Each integer represents a byte, and is truncated to 8 bits prior 
@@ -59,7 +58,7 @@ the director's fireAt method to broadcast the bytes received as
 an array of integers.
 
 This actor has a parameter 'serialPortName' for the serial port.
-@author Winthrop Williams, Jorn, Xiojun, Edward Lee
+@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
 @version $Id$
 */
@@ -156,7 +155,8 @@ public class SerialComm extends TypedAtomicActor
                 ArrayToken dataIntArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = serialPort.getOutputStream();
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
-                    IntToken dataIntOneToken = (IntToken) dataIntArrayToken.getElement(j);
+                    IntToken dataIntOneToken =
+                        (IntToken) dataIntArrayToken.getElement(j);
                     out.write((byte)dataIntOneToken.intValue());
                 }
                 out.flush();
@@ -164,7 +164,8 @@ public class SerialComm extends TypedAtomicActor
 
         } catch (Exception ex) {
             System.err.println("Win0" + ex.getMessage());
-            throw new IllegalActionException(this, "I/O error " + ex.getMessage());
+            throw new IllegalActionException(this,
+                    "I/O error " + ex.getMessage());
         }
 
     }
@@ -175,18 +176,24 @@ public class SerialComm extends TypedAtomicActor
         super.preinitialize();
 
         try {
-            String _serialPortName = ((StringToken)(serialPortName.getToken())).stringValue();
-            CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(_serialPortName);
+            String _serialPortName =
+                ((StringToken)(serialPortName.getToken())).stringValue();
+            CommPortIdentifier portID =
+                CommPortIdentifier.getPortIdentifier(_serialPortName);
             serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
-            serialPort.setSerialPortParams(bits_per_second, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort.setSerialPortParams(bits_per_second,
+                    SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
 
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
             // Directs serial events on this port to my serialEvent method.
         } catch (Exception ex) {
-            System.err.println("Win1 " + ex.getClass().getName() + " " + ex.getMessage());
+            System.err.println("Win1 " + ex.getClass().getName()
+                    + " " + ex.getMessage());
         }
     }
 
@@ -224,3 +231,4 @@ public class SerialComm extends TypedAtomicActor
         driver.initialize();
     }
 }
+
