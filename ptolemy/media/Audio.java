@@ -241,7 +241,7 @@ public class Audio {
      *     17 February 1987
      *  </ol>
      *
-     *  @param lin A linear representation of the sample.
+     *  @param sample A linear representation of the sample.
      *  @return A mu-255 representation of the sample.
      */
     public static byte lin2mu(int sample) {

@@ -78,7 +78,6 @@ public class StreamErrorHandler implements ErrorHandler {
     /** Handle an error by printing a description of the error to
      *  the stream specified in the constructor.
      *  @param element The XML element that triggered the error.
-     *  @param attributes The attributes of the element as a Map.
      *  @param context The container object for the element.
      *  @param exception The exception that was thrown.
      *  @return CONTINUE to request skipping this element.

@@ -79,7 +79,7 @@ public class Documentation extends SingletonAttribute {
      *  that the object contains contributes to the documentation.
      *  The text contributed by each such attribute starts on a new line.
      *  If there are no such attributes, then null is returned.
-     *  @param The object to document.
+     *  @param object The object to document.
      *  @return The documentation for the object.
      */
     public static String consolidate(NamedObj object) {

@@ -105,7 +105,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     /** React to an event by highlighting the actor being iterated.
      *  This effectively animates the execution.
-     *  @param state The debug event.
+     *  @param event The debug event.
      */
     public void event(DebugEvent event) {
         if (event instanceof FiringEvent) {
