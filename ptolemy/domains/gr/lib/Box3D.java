@@ -34,7 +34,6 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -123,9 +122,10 @@ public class Box3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
     		throws IllegalActionException {
     	// Check that a box has been previously created.
-    	if (attribute == xLength
+    	if (_changesAllowedNow
+                && (attribute == xLength
                 || attribute == yHeight
-                || attribute == zWidth) {
+                || attribute == zWidth)) {
             if (_scaleTransform != null) {
                 float height = (float)(((DoubleToken)
                         yHeight.getToken()).doubleValue()/2.0);
@@ -174,13 +174,11 @@ public class Box3D extends GRShadedShape {
 	 */
 	private void _createBox() throws IllegalActionException {
 		int primitiveFlags = Primitive.GENERATE_NORMALS;
-		boolean allowChanges = ((BooleanToken)
-				allowRuntimeChanges.getToken()).booleanValue();
         URL textureURL = texture.asURL();
-        if (textureURL != null || allowChanges) {
+        if (textureURL != null || _changesAllowedNow) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
-        if (allowChanges) {
+        if (_changesAllowedNow) {
         	// Sharing the geometry leads to artifacts when changes
         	// are made at run time.
         	primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
@@ -198,7 +196,7 @@ public class Box3D extends GRShadedShape {
         float width = (float)(((DoubleToken)
                 zWidth.getToken()).doubleValue()/2.0);
 
-        if (allowChanges) {
+        if (_changesAllowedNow) {
             Box box = new Box(1.0f, 1.0f, 1.0f,
                     primitiveFlags, _appearance);
 
@@ -218,7 +216,7 @@ public class Box3D extends GRShadedShape {
 	}
 
     ///////////////////////////////////////////////////////////////////
-    ////                         zprivate variables               ////
+    ////                         private variables                 ////
 
     /** If changes to the dimensions are allowed, this is the transform 
      *  that applies them.

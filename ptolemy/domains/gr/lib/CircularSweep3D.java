@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a circularly-swept surface
+/* A GR Shape consisting of a circularly-swept surface.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -45,8 +45,7 @@ import com.sun.j3d.utils.geometry.Triangulator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircularSweep3D
-/** This actor contains the geometry and appearance specifications for a GR
-
+/** This actor contains the geometry and appearance specifications for a
 circularly swept object.  The output port is used to connect this
 actor to the Java3D scene graph. This actor will only have meaning
 in the GR domain.

@@ -30,12 +30,16 @@ package ptolemy.domains.gr.lib;
 import java.net.URL;
 
 import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Vector3d;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -48,6 +52,8 @@ import com.sun.j3d.utils.geometry.Primitive;
 /** This actor contains the geometry and appearance specifications for a
     cone.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
+    The <i>radius</i> parameter specifies the radius of the circular
+    base. The <i>height</i> parameter specifies the height of the cone.
 
     @author Chamberlain Fong, Edward A. Lee
     @version $Id$
@@ -78,9 +84,6 @@ public class Cone3D extends GRShadedShape {
         height.setExpression("0.7");
         height.setTypeEquals(BaseType.DOUBLE);
 
-        height.moveToFirst();
-        radius.moveToFirst();
-
         circleDivisions = new Parameter(this, "circleDivisions");
         circleDivisions.setExpression("max(6, roundToInt(radius * 100))");
         circleDivisions.setTypeEquals(BaseType.INT);
@@ -88,7 +91,12 @@ public class Cone3D extends GRShadedShape {
         sideDivisions = new Parameter(this, "sideDivisions");
         sideDivisions.setExpression("1");
         sideDivisions.setTypeEquals(BaseType.INT);
-    }
+
+        sideDivisions.moveToFirst();
+        circleDivisions.moveToFirst();
+        height.moveToFirst();
+        radius.moveToFirst();
+}
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -114,10 +122,39 @@ public class Cone3D extends GRShadedShape {
      */
     public Parameter sideDivisions;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** The radius of the base of the cone. This is a double that
      *  defaults to 0.7.
      */
     public Parameter radius;
+
+    /** If the dimensions change, then update the cone.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        // Check that a box has been previously created.
+        if (_changesAllowedNow
+                && (attribute == radius
+                || attribute == height)) {
+            if (_scaleTransform != null) {
+                float radiusValue = (float)(((DoubleToken)
+                        radius.getToken()).doubleValue());
+
+                float heightValue = (float)(((DoubleToken)
+                        height.getToken()).doubleValue());
+
+                _scaleTransform.setScale(new Vector3d(
+                        radiusValue, heightValue, radiusValue));
+                // The following seems to be needed so the new scale
+                // takes effect.
+                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -134,6 +171,11 @@ public class Cone3D extends GRShadedShape {
         if (textureURL != null) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
+        if (_changesAllowedNow) {
+            // Sharing the geometry leads to artifacts when changes
+            // are made at run time.
+            primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
+        }
 
         int circleDivisionsValue
                 = ((IntToken)circleDivisions.getToken()).intValue();
@@ -144,10 +186,27 @@ public class Cone3D extends GRShadedShape {
                 = (float)((DoubleToken) height.getToken()).doubleValue();
         float radiusValue
                 = (float)((DoubleToken) radius.getToken()).doubleValue();
-        
-        _containedNode = new Cone(radiusValue, heightValue,
-                primitiveFlags, circleDivisionsValue,
-                sideDivisionsValue, _appearance);
+                
+        if (_changesAllowedNow) {
+            Cone cone = new Cone(1.0f, 1.0f,
+                    primitiveFlags, circleDivisionsValue,
+                    sideDivisionsValue, _appearance);
+
+            TransformGroup scaler = new TransformGroup();
+            scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            _scaleTransform = new Transform3D();
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, heightValue, radiusValue));
+            scaler.setTransform(_scaleTransform);
+            scaler.addChild(cone);
+            _containedNode = scaler;            
+        } else {
+            _containedNode = new Cone(radiusValue, heightValue,
+                    primitiveFlags, circleDivisionsValue,
+                    sideDivisionsValue, _appearance);
+            _scaleTransform = null;
+        }
+
     }
 
     /** Return the cone.
@@ -160,6 +219,11 @@ public class Cone3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** If changes to the dimensions are allowed, this is the transform 
+     *  that applies them.
+     */
+    private Transform3D _scaleTransform;
+
     /** The cone. */
-    private Cone _containedNode;
+    private Node _containedNode;
 }

@@ -35,7 +35,6 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -114,7 +113,7 @@ public class Sphere3D extends GRShadedShape {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == radius) {
+        if (attribute == radius && _changesAllowedNow) {
             if (_scaleTransform != null) {
                 double scale = ((DoubleToken) radius.getToken()).doubleValue();
                 _scaleTransform.setScale(new Vector3d(scale, scale, scale));
@@ -137,17 +136,14 @@ public class Sphere3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        boolean allowChanges = ((BooleanToken)
-                allowRuntimeChanges.getToken()).booleanValue();
-
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null || allowChanges) {
+        if (textureURL != null || _changesAllowedNow) {
             primitiveFlags = primitiveFlags 
                     | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
-        if (allowChanges) {
+        if (_changesAllowedNow) {
             // Sharing the geometry leads to artifacts when changes
             // are made at run time.
             primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
@@ -159,7 +155,7 @@ public class Sphere3D extends GRShadedShape {
         // If changes are not allowed, set the radius of the sphere once
         // and for all. Otherwise, use a transform.
         double scale = radiusValue;
-        if (allowChanges) {
+        if (_changesAllowedNow) {
             scale = 1.0;
         }
         _containedNode = new Sphere((float)scale,
@@ -167,7 +163,7 @@ public class Sphere3D extends GRShadedShape {
                 divisionsValue,
                 _appearance);
         
-        if (allowChanges) {
+        if (_changesAllowedNow) {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();

@@ -96,7 +96,8 @@ import com.sun.j3d.utils.image.TextureLoader;
     take effect immediately. By default, this parameter is false,
     which means that changes to parameter values take effect only
     on the next run of the model. A value of false yields better
-    performance, but less interactivity.
+    performance, but less interactivity.  Changing this to true will
+    only have an effect on the next run of the model.
 
     @author C. Fong, Steve Neuendorffer, Edward A. Lee
     @version $Id$
@@ -234,10 +235,7 @@ abstract public class GRShadedShape extends GRActor3D {
     	// If allowRuntimeChanges is null, then we are in the
     	// constructor, and don't need to do any of this.
     	if (allowRuntimeChanges != null) {
-        	boolean allowChanges
-					= ((BooleanToken)allowRuntimeChanges.getToken())
-					.booleanValue();
-			if (allowChanges) {
+			if (_changesAllowedNow) {
 		    	if (attribute == transparency && _transparencyAttributes != null) {
 		            float transparent = (float)
 							((DoubleToken)transparency.getToken()).doubleValue();
@@ -366,6 +364,8 @@ abstract public class GRShadedShape extends GRActor3D {
     ////                         protected methods                 ////
 
     /** Create the material appearance of the shaded 3D actor.
+     *  This has the side effect of setting the protected variable
+     *  _changesAllowedNow so that derived classes can check it.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createAppearance() throws IllegalActionException {
@@ -454,9 +454,12 @@ abstract public class GRShadedShape extends GRActor3D {
 	        _polygonAttributes.setCapability(
 	        		PolygonAttributes.ALLOW_MODE_WRITE);
         }
+        _changesAllowedNow = allowChanges;
     }
 
     /** Set the color and appearance of this 3D object.
+     *  This has the side effect of setting the protected variable
+     *  _changesAllowedNow so that derived classes can check it.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createModel() throws IllegalActionException {
@@ -506,6 +509,9 @@ abstract public class GRShadedShape extends GRActor3D {
 
     /** The appearance of this 3D object. */
     protected Appearance _appearance;
+    
+    /** Indicator that changes are currently allowed. */
+    protected boolean _changesAllowedNow = false;
     
     /** The coloring attributes, or null if not created. */
     protected ColoringAttributes _coloringAttributes;

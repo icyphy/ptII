@@ -42,7 +42,6 @@ import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -164,17 +163,13 @@ public class TextString3D extends GRShadedShape {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        boolean allowChanges = false;
-        if (allowRuntimeChanges != null) {
-        	allowChanges = ((BooleanToken)allowRuntimeChanges.getToken()).booleanValue();
-        }
     	if (attribute == text && _textGeometry != null) {
             String textValue = ((StringToken) text.getToken()).stringValue();
             _textGeometry.setString(textValue);
         } else if ((attribute == fontFamily 
                 || attribute == extrusionDepth)
                 && _textGeometry != null 
-                && allowChanges) {
+                && _changesAllowedNow) {
             String fontFamilyValue = fontFamily.stringValue();
             
             // NOTE: The extrusion can, in principle, follow a more complicated
@@ -184,7 +179,7 @@ public class TextString3D extends GRShadedShape {
             
             Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
             _textGeometry.setFont3D(font3D);
-        } else if (attribute == alignment && _textGeometry != null && allowChanges) {
+        } else if (attribute == alignment && _textGeometry != null && _changesAllowedNow) {
             String alignmentValue = alignment.stringValue();
             int align = Text3D.ALIGN_CENTER;
             if (alignmentValue.equals("first")) {
@@ -249,8 +244,6 @@ public class TextString3D extends GRShadedShape {
         }
         _textGeometry.setAlignment(align);
 
-        boolean allowChanges = ((BooleanToken)
-                allowRuntimeChanges.getToken()).booleanValue();
         Shape3D shape = new Shape3D();
         shape.setGeometry(_textGeometry);
         shape.setAppearance(_appearance);
@@ -266,7 +259,7 @@ public class TextString3D extends GRShadedShape {
         scaler.addChild(shape);
         _containedNode = scaler;            
 
-        if (allowChanges) {
+        if (_changesAllowedNow) {
             _textGeometry.setCapability(Text3D.ALLOW_FONT3D_WRITE);
             _textGeometry.setCapability(Text3D.ALLOW_ALIGNMENT_WRITE);
         }
