@@ -1011,7 +1011,7 @@ COMMAPI_PRESENT=no
 PTLEGO_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
     echo "$ac_t""$COMMAPI_USER_DIR is not present,
-	so we need not find commapi" 1>&6
+	so we need not find commapi." 1>&6
     # Use curly brackets around PTII so that if commapi is not present
     # then ${PTII} will appear in ptinvoke.
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
@@ -1063,7 +1063,7 @@ JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 # We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
 if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
     echo "$ac_t""$PTII/ptolemy/copernicus/jhdl is not present,
-	so we need not find the Jhdl - a Java Optimization Framework" 1>&6
+	so we need not find the Jhdl - a Java Optimization Framework." 1>&6
     JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 else
     echo $ac_n "checking for jhdl jar file""... $ac_c" 1>&6
@@ -1119,7 +1119,7 @@ LEJOS_PRESENT=no
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
     echo "$ac_t""$COMMAPI_USER_DIR is not present,
-	so we need not find lejos" 1>&6
+	so we need not find lejos." 1>&6
     # Use curly brackets around PTII so that if lejos is not present
     # then ${PTII} will appear in ptinvoke.
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
@@ -1167,7 +1167,7 @@ fi
 # We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
 if test ! -d "$PTII/ptolemy/data/expr"; then
     echo "$ac_t""$PTII/ptolemy/data/expr is not present,
-	so we need not find JavaCC" 1>&6
+	so we need not find JavaCC." 1>&6
     JAVACC_DIR=$PTII/vendors/sun/JavaCC
     JAVACC=javacc
     JJTREE=jjtree
@@ -1279,8 +1279,8 @@ PTJACL_JAR=$PTII/lib/ptjacl.jar
 JTCLSH='"$(JAVA)" $(PTJACL_JFLAG) tcl.lang.Shell'
 
 if test ! -d "$PTII/util/testsuite"; then
-    echo "$ac_t""$PTII/util/testsuite is not a directory, so we need not
-find Jacl" 1>&6
+    echo "$ac_t""$PTII/util/testsuite is not present,
+	so we need not find Jacl." 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
 echo "configure:1287: checking for ptjacl.jar" >&5
@@ -1334,7 +1334,7 @@ JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
     echo "$ac_t""$JAVA3D_USER_DIR is not present,
-	so we need not find Java 3D" 1>&6
+	so we need not find Java 3D." 1>&6
 else
     echo $ac_n "checking for Java 3D""... $ac_c" 1>&6
 echo "configure:1341: checking for Java 3D" >&5
@@ -1367,7 +1367,7 @@ PTJAVASOUND_DIR=
 
 if test ! -d "$PTJAVASOUND_USER_DIR"; then
     echo "$ac_t""$PTJAVASOUND_USER_DIR is not present,
-	so we need not find javax.sound" 1>&6
+	so we need not find javax.sound." 1>&6
 else
     echo $ac_n "checking for javax.sound""... $ac_c" 1>&6
 echo "configure:1374: checking for javax.sound" >&5
@@ -1398,7 +1398,7 @@ PTRTOS_DIR=
 
 if test ! -d "$PTRTOS_USER_DIR"; then
     echo "$ac_t""$PTRTOS_USER_DIR is not present,
-	so we need not find java.util.Timer" 1>&6
+	so we need not find java.util.Timer." 1>&6
 else
     echo $ac_n "checking for java.util.Timer""... $ac_c" 1>&6
 echo "configure:1405: checking for java.util.Timer" >&5
@@ -1435,7 +1435,7 @@ JINI_PRESENT=no
 PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
     echo "$ac_t""$JINI_USER_DIR is not present,
-	so we need not find Jini" 1>&6
+	so we need not find Jini." 1>&6
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile
     JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
@@ -1482,16 +1482,21 @@ fi
 # PTJODE_DIR is set to jode and used in
 # $PTII/ptolemy/apps/makefile if jode was found
 #PTJODE_DIR=
-#
+
+# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
+# Defaults for ptII.mk and bin/ptinvoke.in
+# Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+JODE_DIR='${PTII}/vendors/jode/1.0.93'
+JODE_CLASSES='$(JODE_DIR)/jode.jar'
+
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
-    echo "$ac_t""'$PTII/vendors/jode is not present,
-	so we need not find Jode, which is a java disassembler'" 1>&6
-    JODE_DIR='${PTII}/vendors/jode/1.0.93'
-    JODE_CLASSES='$(JODE_DIR)/jode.jar'
+    echo "$ac_t""$PTII/vendors/jode is not present,
+	so we need not find Jode, which is a java disassembler." 1>&6
 else
     echo $ac_n "checking for jode directory""... $ac_c" 1>&6
-echo "configure:1495: checking for jode directory" >&5
+echo "configure:1500: checking for jode directory" >&5
     # Check whether --with-jode or --without-jode was given.
 if test "${with_jode+set}" = set; then
   withval="$with_jode"
@@ -1504,7 +1509,7 @@ fi
     if test -d "$JODE_DIR"; then
 	echo "$ac_t""$JODE_DIR" 1>&6
         echo $ac_n "checking for \$JODE_DIR/jode.jar""... $ac_c" 1>&6
-echo "configure:1508: checking for \$JODE_DIR/jode.jar" >&5
+echo "configure:1513: checking for \$JODE_DIR/jode.jar" >&5
 	if test -f "$JODE_DIR/jode.jar"; then
 	    echo "$ac_t""$JODE_DIR/jode.jar" 1>&6
 	    JODE_CLASSES=$JODE_DIR/jode.jar
@@ -1545,14 +1550,14 @@ PTKVM_DIR=
 # We only need to look for kvm if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     echo "$ac_t""$PTII/ptolemy/apps/kvm is not present,
-	so we need not find the PalmOS kvm" 1>&6
+	so we need not find the PalmOS kvm." 1>&6
     KVM_DIR='${PTII}/vendors/sun/j2me_cldc'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1556: checking for kvm directory" >&5
+echo "configure:1561: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1565,7 +1570,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1569: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1574: checking for \$KVM_DIR/bin/api/classes" >&5
 	if test -d "$KVM_DIR/bin/api/classes"; then
 	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1575,13 +1580,13 @@ echo "configure:1569: checking for \$KVM_DIR/bin/api/classes" >&5
     else
 	echo "$ac_t""Not found in $KVM_DIR" 1>&6
 	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
-echo "configure:1579: checking for kvm directory in /j2me_cldc" >&5
+echo "configure:1584: checking for kvm directory in /j2me_cldc" >&5
 	# Likely place for kvm under windows
 	KVM_DIR=/j2me_cldc
         if test -d "$KVM_DIR"; then
 	    echo "$ac_t""$KVM_DIR" 1>&6
             echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1585: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1590: checking for \$KVM_DIR/bin/api/classes" >&5
 	    if test -d "$KVM_DIR/bin/api/classes"; then
 	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	        echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1624,23 +1629,24 @@ PTCOPERNICUS_DIR=
 SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 
 # Soot needs to find java.lang.Object	
-JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar'
+# Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+JAVA_SYSTEM_JAR='${PTJAVA_DIR)}jre/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-# and under /bin/sh $(FOO) does not work, but ${FOO} does
 SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
     echo "$ac_t""$PTII/ptolemy/copernicus is not present,
-	so we need not find the Soot - a Java Optimization Framework" 1>&6
+	so we need not find the Soot - a Java Optimization Framework." 1>&6
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:1644: checking for soot directory" >&5
+echo "configure:1650: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -1653,11 +1659,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:1657: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:1663: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:1661: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:1667: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -1683,7 +1689,7 @@ echo "configure:1661: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:1687: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:1693: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -1698,7 +1704,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
-echo "configure:1702: checking the value of the java.home property " >&5
+echo "configure:1708: checking the value of the java.home property " >&5
 	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
@@ -1730,12 +1736,12 @@ PTTINI_DIR=
 # We only need to look for tini if $PTII/ptolemy/apps/tini exists
 if test ! -d "$PTII/ptolemy/apps/tini"; then
     echo "$ac_t""$PTII/ptolemy/apps/tini is not present,
-	so we need not find the Dallas Semiconductor tini" 1>&6
+	so we need not find the Dallas Semiconductor tini." 1>&6
     TINI_DIR='${PTII}/vendors/dalsemi/tini'
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:1739: checking for tini directory" >&5
+echo "configure:1745: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -1748,11 +1754,11 @@ fi
     if test -d "$TINI_DIR"; then
 	echo "$ac_t""$TINI_DIR" 1>&6
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1752: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1758: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1756: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1762: checking for \$TINI_DIR/bin/tini.jar" >&5
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
                 echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1766,17 +1772,17 @@ echo "configure:1756: checking for \$TINI_DIR/bin/tini.jar" >&5
     else
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:1770: checking for tini directory in /tini" >&5
+echo "configure:1776: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1776: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1782: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1780: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1786: checking for \$TINI_DIR/bin/tini.jar" >&5
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
 	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1821,14 +1827,14 @@ PTWABA_DIR=
 # We only need to look for waba if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     echo "$ac_t""$PTII/ptolemy/apps/kvm is not present,
-	so we need not find the PalmOS waba" 1>&6
+	so we need not find the PalmOS waba." 1>&6
     WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:1832: checking for waba directory" >&5
+echo "configure:1838: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -1841,7 +1847,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1845: checking for \$WABA_DIR/classes" >&5
+echo "configure:1851: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1851,13 +1857,13 @@ echo "configure:1845: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:1855: checking for waba directory in /waba" >&5
+echo "configure:1861: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1861: checking for \$WABA_DIR/classes" >&5
+echo "configure:1867: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
