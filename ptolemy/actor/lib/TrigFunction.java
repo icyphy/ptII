@@ -207,8 +207,8 @@ public class TrigFunction extends Transformer {
 	    // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
 	    for (int i = 0; i < count; i++) {
-		double input = ((DoubleToken)(inArray[i])).doubleValue();
-		_resultArray[i] = new DoubleToken(_doFunction(input));
+		double inputValue = ((DoubleToken)(inArray[i])).doubleValue();
+		_resultArray[i] = new DoubleToken(_doFunction(inputValue));
 	    }
             output.send(0, _resultArray, count);
             return COMPLETED;
