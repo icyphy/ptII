@@ -82,7 +82,7 @@ public class AudioSink extends SDFAtomicActor {
         input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(DoubleToken.class);
 	// FIXME: Allow this to be set as parameter.
-	consumptionRate = 128;
+	consumptionRate = 512;
 	input.setTokenConsumptionRate(consumptionRate);
 
         fileName = new Parameter(this, "fileName", new StringToken("audioFile.au"));

@@ -90,7 +90,7 @@ public class AudioSource extends SDFAtomicActor {
 	output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(DoubleToken.class);
 	// FIXME: Allow this to be set as parameter.
-	productionRate = 128;
+	productionRate = 512;
 	output.setTokenProductionRate(productionRate);
 	pathName = new Parameter(this, "pathName",
 		     new StringToken("http://localhost/soundFile.au"));
