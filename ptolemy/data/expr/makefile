@@ -192,7 +192,7 @@ PtParser.jj: PtParser.jjt
 
 MatrixParser.java: MatrixParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://www.experimentalstuff.com/Technologies/JavaCC/"
+	@echo "http://javacc.dev.java.net"
 	@echo "See \$$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
@@ -204,7 +204,7 @@ MatrixParser.java: MatrixParser.jj
 MatrixParser.jj: MatrixParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from"
-	@echo "http://www.experimentalstuff.com/Technologies/JavaCC/"
+	@echo "http://javacc.dev.java.net"
 	@echo "See \$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"

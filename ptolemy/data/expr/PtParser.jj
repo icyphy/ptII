@@ -510,7 +510,7 @@ TOKEN : /* Function names */
 TOKEN : /* literal strings are given using single or double quotes. */
 {
         < STRING: (
-            ("\"" (~["\""])* ("\"")?) |
+            ("\"" ("\\\"" | ~["\""])* ("\"")?) |
             ("'" (~["'"])* ("'")?)
         )>
 }

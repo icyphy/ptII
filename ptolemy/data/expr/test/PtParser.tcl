@@ -972,4 +972,10 @@ test PtParser-18.4 {Test expressions with backslashes.} {
 } {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\dsdfsdf"":
 Unknown backslash sequence: \dsdfsdf}}
 
+test PtParser-18.5 {Test expressions with backslashes.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "\" \\\" \""]
+    set res  [ $root evaluateParseTree ]
+    list [$res toString]
+} {{" \" "}}
 
