@@ -55,6 +55,7 @@ SHELL_FILES = \
 	obfuscate \
 	ptexecute \
 	ptinvoke \
+	ptjini \
 	ptjacl \
 	ptjaclapp \
 	ptplot \
