@@ -80,8 +80,7 @@ public class TerminalStyle extends PTMLObject {
         }
 
     /**
-     * Test if this TerminalStyle contains a Terminal in the
-     * given format.
+     * Test if this TerminalStyle contains the given Terminal.
      */
     public boolean containsTerminal (Terminal t) {
         return _terminals.includes(t);
@@ -124,7 +123,7 @@ public class TerminalStyle extends PTMLObject {
         return str + ")";
     }
 
-    CircularList _terminals;
+    private CircularList _terminals;
 
 }
 

@@ -1,4 +1,4 @@
-/* An IconLibrary stores icons in PTML files.
+/* An EntityLibrary stores Entity templates.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -36,79 +36,79 @@ import collections.*;
 import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// IconLibrary
+//// EntityLibrary
 /**
-An IconLibrary is the hierarchical object for organizing Icons.   An
-IconLibrary contains a set of Icons, and a set of other IconLibraries
-called suiblibraries.  
+An EntityLibrary is the hierarchical object for organizing Entity templates. 
+An EntityLibrary contains a set of entity templates, and a set of other
+EntityLibraries called sublibraries.  
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class IconLibrary extends PTMLObject {
+public class EntityLibrary extends PTMLObject {
 
     /** 
-     * Create an IconLibrary object with the name "iconlibrary".
+     * Create an EntityLibrary object with the name "Entitylibrary".
      * The library will have an empty string for the description and version.
      */
-    public IconLibrary() {
-        this("IconLibrary");
+    public EntityLibrary() {
+        this("EntityLibrary");
     }
 
     /** 
-     * Create an IconLibrary object with the given name.
+     * Create an EntityLibrary object with the given name.
      * The library will have an empty string for the description and version.
      */
-    public IconLibrary(String name) {
+    public EntityLibrary(String name) {
         super(name);
         _sublibraries = (CircularList) new CircularList();
-        _icons = (CircularList) new CircularList();
+        _entities = (CircularList) new CircularList();
    }
 
     /**
-     * Add an Icon to this library
+     * Add an Entity to this library
      */
-    public void addIcon(Icon i) {
-        _icons.insertFirst(i);
+    public void addEntity(EntityTemplate e) {
+        _entities.insertFirst(e);
     }
 
     /**
      * Add a sublibrary to this library.
      */
-    public void addSubLibrary(IconLibrary library) {
+    public void addSubLibrary(EntityLibrary library) {
         _sublibraries.insertFirst(library);
     }
 
     /**
-     * Test if the library contains an Icon with the given name
+     * Test if the library contains an Entity with the given name
      */
-    public boolean containsIcon(Icon icon) {
-        return _icons.includes(icon);
+    public boolean containsEntity(EntityTemplate entity) {
+        return _entities.includes(entity);
     }
 
     /**
      * Test if the library contains the sublibrary
      */
-    public boolean containsSubLibrary(IconLibrary lib) {
+    public boolean containsSubLibrary(EntityLibrary lib) {
         return _sublibraries.includes(lib);
     }
 
     /**
-     * Get the Icon that is stored in this IconLibrary with the specified
+     * Get the Entity that is stored in this EntityLibrary with the specified
      * type signature
      */
-    // public Icon getIcon(EntityType e) {
-    //    return (Icon) _icons.at(e);
+    // public Entity getEntity(EntityType e) {
+    //    return (Entity) _Entities.at(e);
     //}
-    //    public Icon getIcon(String s) {
-    //    return (Icon) _icons.at(s);
+    //    public Entity getEntity(String s) {
+    //    return (Entity) _Entities.at(s);
     // }
 
     /** 
      * return the URL of the given sublibrary.
      */
-    //public IconLibrary getSubLibrary(String name) {
-    //    return (IconLibrary) _sublibraries.at(name);
+    //public EntityLibrary getSubLibrary(String name) {
+    //    return (EntityLibrary) _sublibraries.at(name);
     //}
 
     /** Return the version of this library.
@@ -118,25 +118,25 @@ public class IconLibrary extends PTMLObject {
     //}
 
     /**
-     * Return the icons that are contained in this icon library.
+     * Return the Entitys that are contained in this Entity library.
      *
-     * @return an enumeration of Icon
+     * @return an enumeration of Entity
      */
-    public Enumeration icons() {
-        return _icons.elements();
+    public Enumeration entities() {
+        return _entities.elements();
     }
 
    /**
-     * Remove an icon from this IconLibrary
+     * Remove an Entity from this EntityLibrary
      */
-    public void removeIcon(Icon icon) {
-        _sublibraries.removeOneOf(icon);
+    public void removeEntity(EntityTemplate entity) {
+        _sublibraries.removeOneOf(entity);
     }
 
     /**
-     * Remove a sublibrary from this IconLibrary
+     * Remove a sublibrary from this EntityLibrary
      */
-    public void removeSubLibrary(IconLibrary lib) {
+    public void removeSubLibrary(EntityLibrary lib) {
         _sublibraries.removeOneOf(lib);
     }
 
@@ -147,8 +147,8 @@ public class IconLibrary extends PTMLObject {
     //}
 
     /**
-     * Return the names of subLibraries of this IconLibrary.   These names
-     * are URL Strings which can be passed to other IconLibrary objects
+     * Return the names of subLibraries of this EntityLibrary.   These names
+     * are URL Strings which can be passed to other EntityLibrary objects
      * for parsing.
      * @return an Enumeration of Strings
      */
@@ -157,25 +157,25 @@ public class IconLibrary extends PTMLObject {
     }
 
     /**
-     * Return a string this representing Icon.
+     * Return a string this representing Entity.
      */
     public String toString() {
         Enumeration els = subLibraries();
         String str = getName() + "({";
         while(els.hasMoreElements()) {
-            IconLibrary il = (IconLibrary) els.nextElement();
+            EntityLibrary il = (EntityLibrary) els.nextElement();
 	    str += il.toString();
         }
         str += "}{";
-        els = icons();
+        els = entities();
          while(els.hasMoreElements()) {
-            Icon icon = (Icon) els.nextElement();
-	    str += "\n" + icon.toString();
+            EntityTemplate entity = (EntityTemplate) els.nextElement();
+	    str += "\n" + entity.toString();
         }        
         return str + "})";
     }
 
     private CircularList _sublibraries;
-    private CircularList _icons;
+    private CircularList _entities;
 }
 

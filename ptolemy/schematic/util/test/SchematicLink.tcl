@@ -1,4 +1,4 @@
-# Tests for the IconLibrary class
+# Tests for the SchematicLink class
 #
 # @Author: Stephen Neuendorffer
 #
@@ -39,7 +39,6 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
-
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
 #
@@ -50,13 +49,13 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test IconLibrary-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.util.IconLibrary]
-    set e1 [java::new ptolemy.schematic.util.IconLibrary "TestIconLibrary"]
+test SchematicLink-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.util.SchematicLink]
+    set e1 [java::new ptolemy.schematic.util.SchematicLink "TestSchematicLink"]
     list [$e0 toString] [$e1 toString]
-} {IconLibrary({}{}) TestIconLibrary({}{})}
+} {{SchematicLink((0.0, 0.0))} {TestSchematicLink((0.0, 0.0))}}
 
-test IconLibrary-2.2 {setDescription, getDescription tests} {
+test SchematicLink-2.2 {setDescription, isDescription tests} {
     # NOTE: Uses the setup above
     set r0 [$e0 getDescription]
     $e0 setDescription {Oh what a tangled web we weave,}
@@ -69,31 +68,34 @@ test IconLibrary-2.2 {setDescription, getDescription tests} {
 ######################################################################
 ####
 #
-test IconLibrary-3.1 {addSubLibrary} {
-    set t1 [java::new ptolemy.schematic.util.IconLibrary SubLibrary1]
-    set t2 [java::new ptolemy.schematic.util.IconLibrary SubLibrary2]
-    $e0 addSubLibrary $t1
-    $e0 toString
-} {IconLibrary({SubLibrary1({}{})}{})}
+set t1 [java::new ptolemy.schematic.util.Terminal terminal1]
+set t2 [java::new ptolemy.schematic.util.Terminal terminal2]
 
-test IconLibrary-3.2 {containsSubLibrary} {
-    list [$e0 containsSubLibrary $t1] \
-	    [$e0 containsSubLibrary $t2]
-} {1 0}
+test SchematicLink-3.1 {setTo, getTo tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 getTo]
+    $e0 setTo $t1
+    set r1 [$e0 getTo]
+    $e0 setTo $t2
+    set r2 [$e0 getTo]
+    list [$r0 toString] [$r1 toString] [$r2 toString]
+} {}
 
-test IconLibrary-3.3 {SubLibrarys} {
-    $e0 addSubLibrary $t2
-    set enum [$e0 subLibraries]
-    set r1 [$enum hasMoreElements]
-    set r2 [$enum nextElement]
-    set r3 [$enum hasMoreElements]
-    set r4 [$enum nextElement] 
-    set r5 [$enum hasMoreElements]
-    list $r1 [$r2 toString] $r3 [$r4 toString] $r5
-} {1 SubLibrary2({}{}) 1 SubLibrary1({}{}) 0}
+test SchematicLink-3.2 {setFrom, getFrom tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 getFrom]
+    $e0 setFrom $t1
+    set r1 [$e0 getFrom]
+    $e0 setFrom $t2
+    set r2 [$e0 getFrom]
+    list [$r0 toString] [$r1 toString] [$r2 toString]
+} {}
 
-test IconLibrary-3.4 {removeSubLibrary} {
-    $e0 removeSubLibrary $t1
-    $e0 toString
-} {IconLibrary({SubLibrary2({}{})}{})}
-
+######################################################################
+####
+#
+test SchematicLink-4.1 {toString} {
+    $e1 setTo $t1
+    $e1 setFrom $t2
+    $e1 toString
+} {}

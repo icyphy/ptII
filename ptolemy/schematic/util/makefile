@@ -48,11 +48,18 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	EntityLibrary.java \
+	EntityTemplate.java \
 	GraphicElement.java \
 	Icon.java \
 	IconLibrary.java \
 	PTMLObject.java \
 	PTMLObjectFactory.java \
+	Schematic.java \
+	SchematicEntity.java \
+	SchematicLink.java \
+	SchematicPort.java \
+	SchematicRelation.java \
 	Terminal.java \
 	TerminalStyle.java	
 
