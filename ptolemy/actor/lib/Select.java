@@ -33,6 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -93,6 +94,11 @@ public class Select extends Transformer {
 
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.INT);
+
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal
+                = new StringAttribute(control, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
