@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	LevelCrossingDetectorDetectsGlitches
+PTPACKAGE = 	LevelCrossingDetectorDetectsGlitchesDetectsGlitches
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -79,10 +79,10 @@ demo: demo_ptolemy demo_vergil #demo_applet demo_vergil_applet
 #	CLASSPATH="$(CLASSPATH)" appletviewer LevelCrossingDetectorVergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" LevelCrossingDetector.xml
+	"$(PTII)/bin/ptolemy" LevelCrossingDetectorDetectsGlitches.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" LevelCrossingDetector.xml
+	"$(PTII)/bin/vergil" LevelCrossingDetectorDetectsGlitches.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
