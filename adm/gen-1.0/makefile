@@ -865,14 +865,18 @@ indent_all:
 
 
 ###########################################################################
-# Rules to help with cvs conversion
-PTTMP_DIR = /users/cxh/tmp/ptII
-$(PTTMP_DIR):
-	mkdir $@
-	(cd $(PTIIHOME); \
-		$(TAR) -c -X $(GENDIR)/srcwSCCS.ex  -X $(GENDIR)/src1.ex \
-		$ -f - $(PTII_TOPDIR) SCCS )| \
-		(cd $@; $(TAR) -xpf -)
+# Rules to build and install shield version
+INSTALLSHIELD_SRC=installshield
+INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
+INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 
-sccs2rcsall:
-	cd $(PTTMP_DIR); /users/ptII/adm/bin/sccs2rcsall -q
+installshield_app: $(INSTALLSHIELD_APP)
+$(INSTALLSHIELD_APP): #$(PTII_SRC)
+	(cd $(INSTALLSHIELD_SRC); \
+	 tar -zxf ../ptII$(VERSION).src.tar.$(SUFFIX); \
+	 mv ptII$(VERSION) `basename $@`; \
+	 mkdir -p `basename $(INSTALLSHIELD_DOC)`/doc; \
+	 mkdir -p `basename $(INSTALLSHIELD_DOC)`/doc/design; \
+	 mv `basename $@`/doc/codeDoc `basename $(INSTALLSHIELD_DOC)`/doc; \
+	 mv `basename $@`/doc/design/design.pdf `basename $(INSTALLSHIELD_DOC)`/doc/design; \
+	)
