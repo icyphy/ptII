@@ -266,8 +266,8 @@ public class NCCodeGenerator extends Director {
             List sourcePortList = inPort.connectedPortList();
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(inPort,
-                        "Input port (provides) cannot connect to " +
-                "multiple output ports (requires) in NC.");
+                        "Input port (provides) cannot connect to "
+                        + "multiple output ports (requires) in NC.");
             }
             if (sourcePortList.size()== 1) {
                 IOPort sourcePort = (IOPort) sourcePortList.get(0);
