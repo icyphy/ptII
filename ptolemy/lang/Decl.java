@@ -97,7 +97,7 @@ public abstract class Decl extends TrackedPropertyMap {
         // If we override equals, we should override hashCode.
         // http://java.sun.com/docs/books/tutorial/java/javaOO/objectclass.html
         // FIXME: should we divide by 2 here or not to avoid overflow?
-        return _name.hashCode/2 + category/2;
+        return _name.hashCode()/2 + category/2;
     }
 
     /** Return true if at least some of the bits in the mask are set
