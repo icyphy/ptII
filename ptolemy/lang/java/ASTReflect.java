@@ -1,6 +1,6 @@
 /* Use Reflection to get the AST
 
-Copyright (c) 2000  The Regents of the University of California.
+Copyright (c) 2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -42,117 +42,19 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTReflect.
-/*
+/** Create an AST for a class by using reflection.
+@Version: $Id$
+@Author: Christopher Hylands
  */
 public class ASTReflect {
 
-    /** Return the AST of a class */
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return an AST that contains the class, methods, fields
+     *	and constructors.
+     */  
     public static CompileUnitNode ASTClass(Class myClass) {
-	ASTPackage(myClass);
-	ASTConstructors(myClass);
-	ASTFields(myClass);
-	//ASTMethods(myClass);
-	ASTInnerClasses(myClass);
-
-	if (_debug) {
-	    System.out.println("}");
-	}
-	return (CompileUnitNode) null;
-    }
-
-    public static void ASTConstructors(Class myClass) {
-	if (_debug) {
-	    System.out.println(_indent + "// Constructors");
-	    Constructor constructors[] = myClass.getConstructors();
-	    for(int i=0; i<constructors.length; i++) {
-		System.out.println(_indent +
-				   constructors[i].toString() + "{}");
-	    }
-	}
-    }
-
-    public static void ASTFields(Class myClass) {
-	if (_debug) {
-	    System.out.println(_indent + "// Fields");
-	    Field fields[] = myClass.getFields();
-	    for(int i=0; i<fields.length; i++) {
-		System.out.println(_indent + fields[i].toString() + ";");
-	    }
-	}
-    }
-
-    public static void ASTInnerClasses(Class myClass) {
-	if (_debug) {
-	    // Handle inner classes
-	    Class classes[] = myClass.getClasses();
-	    if (classes.length > 0 ) {
-		System.out.println(_indent + "// Inner classes");
-	    }
-	    for(int i=0; i<classes.length; i++) {
-		// Dealing with the _indent would be cool
-		ASTClass(classes[i]);
-	    }
-	}
-    }
-
-    public static void ASTMethods(Class myClass, List memberList) {
-	if (_debug)
-	    System.out.println(_indent + "// Methods");
-	Method methods[] = myClass.getMethods();
-	Method method = null;
-	for(int i=0; i<methods.length; i++) {
-	    method = methods[i];
-	    if (_debug)
-		System.out.println(_indent + method + "{}");
-
-	    // FIXME, we need to map java.lang.reflect.Modifier to 
-	    // ptolemy.java.lang.Modifier.
-	    int modifiers =
-		Modifier.convertModifiers(method.getModifiers());
-
-	    NameNode methodName =
-		new NameNode(AbsentTreeNode.instance, method.getName());
-
-	    List params = new LinkedList();
-	    // Unfortunately, we can't use Arrays.asList() here since
-	    // what getParameterTypes returns of type Class[], and
-	    // what we want is a list of ParameterNodes.
-	    final Class parameterClasses[] = method.getParameterTypes();
-	    for(int j = 0; j < parameterClasses.length; j++) {
-		params.add(new ParameterNode(
-					     Modifier.convertModifiers(parameterClasses[j].getModifiers()),
-					     new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-									   parameterClasses[j].getName())),
-					     (new NameNode(AbsentTreeNode.instance,
-					      ""))));
-
-
-								       
-					     
-	    }
-
-	    // FIXME: call method.getExceptionTypes and convert it to a list.
-	    List throwsList = new LinkedList();
-	    //Arrays.asList((Object [])method.getExceptionTypes());
-
-	    TypeNameNode returnType =
-		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-					      method.getReturnType().getName()));
-
-	    MethodDeclNode methodDeclNode =
-		new MethodDeclNode(modifiers,
-				   methodName,
-				   params,
-				   throwsList,
-				   AbsentTreeNode.instance /*body*/,
-				   returnType);
-
-	    memberList.add(methodDeclNode);
-	}
-    }
-
-    /** Return an AST of the package and class information */
-    public static void ASTPackage(Class myClass) {
 	if (_debug) {
 	    System.out.println("// " + myClass.toString());
 	    System.out.println("package " +
@@ -166,20 +68,15 @@ public class ASTReflect {
 	    }
 
 	    Class interfaces[] = myClass.getInterfaces();
-	    for(int i=0; i<interfaces.length; i++) {
+	    for(int i = 0; i < interfaces.length; i++) {
 		System.out.println("implements " + interfaces[i].toString());
 	    }
 	    System.out.println("{");
 	}
 
 
-	// FIXME, we need to map java.lang.reflect.Modifier to 
-	// ptolemy.java.lang.Modifier.
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
-
-	//NameNode className = 
-	//    (NameNode) makeNameNode(myClass.getName());
 
 	// Get the classname, and strip off the package. 
 	String fullClassName = myClass.getName();
@@ -192,13 +89,21 @@ public class ASTReflect {
 
 	LinkedList memberList = new LinkedList();
 
-	ASTMethods(myClass, memberList);
+	// Get the AST for all the methods.
+	memberList.addAll(methodsASTList(myClass));
 
+	// Get the AST for all the fields.
+	memberList.addAll(fieldsASTList(myClass));
+
+	// Get the AST for all the constructor.
+	memberList.addAll(constructorsASTList(myClass));
+
+	// Get the AST for all the inner classes.
+	memberList.addAll(innerClassesASTList(myClass));
+
+	// FIXME: If this is java.lang.Object, should we use AbsentTreeNode?
 	TreeNode superClass =
-	    (TreeNode) makeNameNode(myClass.getSuperclass().getName());
-
-        //TreeNode superClass = new NameNode(AbsentTreeNode.instance,
-	//				   myClass.getSuperclass().getName());
+	    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
 
 	ClassDeclNode classDeclNode =
 	    new ClassDeclNode(modifiers,
@@ -207,37 +112,246 @@ public class ASTReflect {
 			      memberList,
 			      superClass);
 
-
-	//NameNode packageName = new NameNode(AbsentTreeNode.instance,
-	//				    myClass.getPackage().getName());
-
 	NameNode packageName = 
-	    (NameNode) makeNameNode(myClass.getPackage().getName());
+	    (NameNode) _makeNameNode(myClass.getPackage().getName());
 
 	CompileUnitNode compileUnitNode =
 			      new CompileUnitNode(packageName,
 						  /*imports*/ new LinkedList(),
 						  TNLManip.cons(classDeclNode));
-	System.out.println("ast: " + compileUnitNode);
-			      
+	if (_debug) {
+	    System.out.println("}");
+	}
+	return compileUnitNode;
     }
 
+
+    /** Return a list that contains an AST for the constructors. */
+    public static List constructorsASTList(Class myClass){
+	List constructorList = new LinkedList(); 
+        if (_debug) {
+	    System.out.println(_indent + "// Constructors");
+	}
+	Constructor constructors[] = myClass.getConstructors();
+	Constructor constructor = null;
+	for(int i = 0; i < constructors.length; i++) {
+	    constructor = constructors[i];
+	    if (_debug) {
+		System.out.println(_indent +
+				   constructor.toString() + "{}");
+	    }
+	    int modifiers =
+		    Modifier.convertModifiers(constructor.getModifiers());
+
+	    String fullConstructorName = constructor.toString();
+	    NameNode constructorName =
+		new NameNode(AbsentTreeNode.instance,
+			     fullConstructorName.substring(1 + 
+						     fullConstructorName.lastIndexOf('.')));
+
+	    List paramList = _paramList(constructor.getParameterTypes());
+
+	    // FIXME: call method.getExceptionTypes and convert it to a list.
+	    List throwsList = new LinkedList();
+
+	    ConstructorDeclNode constructorDeclNode = 
+		new ConstructorDeclNode(modifiers,
+					constructorName,
+					paramList,
+					throwsList,
+					/* body */
+					new BlockNode(new LinkedList()),
+					/* constructor call*/
+					new SuperConstructorCallNode(new LinkedList())
+					);
+	    constructorList.add(constructorDeclNode);
+	}
+	return constructorList;
+    }
+
+    /** Return a List containing an AST that describes the fields
+     *	for myclass.
+     */
+    public static List fieldsASTList(Class myClass) {
+	List fieldList = new LinkedList(); 
+	if (_debug) {
+	    System.out.println(_indent + "// Fields");
+	}
+	Field fields[] = myClass.getDeclaredFields();
+	for(int i = 0; i < fields.length; i++) {
+	    if (_debug) {
+		System.out.println(_indent + fields[i].toString() + ";");
+	    }
+	    int modifiers =
+		    Modifier.convertModifiers(fields[i].getModifiers());
+	    TypeNode defType = _definedType(fields[i].getType());
+	    String fullFieldName = fields[i].toString();
+	    NameNode fieldName =
+		new NameNode(AbsentTreeNode.instance,
+			     fullFieldName.substring(1 + 
+						     fullFieldName.lastIndexOf('.')));
+
+	    FieldDeclNode  fieldDeclNode =
+		new FieldDeclNode(modifiers,
+				  defType,
+				  fieldName,
+				  AbsentTreeNode.instance/* initExpr */);
+
+    	    fieldList.add(fieldDeclNode);
+	}
+	return fieldList;
+    }
+
+    /** Return a List containing an AST that describes the inner classes
+     *	for myclass.
+     */
+    public static List innerClassesASTList(Class myClass) {
+	List innerClassList = new LinkedList(); 
+	if (_debug) {
+	    // Handle inner classes
+	    Class classes[] = myClass.getClasses();
+	    if (classes.length > 0 ) {
+		System.out.println(_indent + "// Inner classes");
+	    }
+	    for(int i = 0; i < classes.length; i++) {
+		// Dealing with the _indent would be cool
+		// FIXME: where do we put these???
+		ASTClass(classes[i]);
+		throw new RuntimeException("ASTReflect: found an inner class" +
+					   " don't know what to do");
+	    }
+	}
+	return innerClassList;
+    }
+
+    /** Return a List containing an AST that describes the methods
+     *	for myclass.
+     */
+    public static List methodsASTList(Class myClass) {
+	List methodList = new LinkedList(); 
+	if (_debug)
+	    System.out.println(_indent + "// Methods");
+	Method methods[] = myClass.getDeclaredMethods();
+	Method method = null;
+	for(int i = 0; i < methods.length; i++) {
+	    method = methods[i];
+	    if (! myClass.equals(method.getDeclaringClass())) {
+		// This method was declared in a parent class,
+		// so we skip it
+		continue;
+	    } 
+	    if (_debug)
+		System.out.println(_indent + method + "{}");
+
+	    // FIXME, we need to map java.lang.reflect.Modifier to 
+	    // ptolemy.java.lang.Modifier.
+	    int modifiers =
+		Modifier.convertModifiers(method.getModifiers());
+
+	    NameNode methodName =
+		new NameNode(AbsentTreeNode.instance, method.getName());
+
+	    List paramList = _paramList(method.getParameterTypes());
+
+	    // FIXME: call method.getExceptionTypes and convert it to a list.
+	    List throwsList = new LinkedList();
+
+	    TypeNode returnType = _definedType(method.getReturnType());
+
+	    MethodDeclNode methodDeclNode =
+		new MethodDeclNode(modifiers,
+				   methodName,
+				   paramList,
+				   throwsList,
+				   AbsentTreeNode.instance /*body*/,
+				   returnType);
+
+	    methodList.add(methodDeclNode);
+	}
+	return methodList;
+    }
+
+
+    /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
     public static void main(String[] args) {
 	try {
-	    ASTClass(Class.forName("ptolemy.lang.java.Skeleton"));
+	    System.out.println(ASTClass(Class.forName("ptolemy.lang.java.test.ReflectTest")));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
 	    e.printStackTrace();
 	}
     }
 
-    // String to indent printed output with.
-    private final static String _indent = new String("    ");
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    private final static boolean _debug = false;
+    // Return a TypeNode containing the type of a class.
+    // _definedType is used for method return types, method parameters
+    // and fields.
+    private final static TypeNode _definedType(Class myClass) {
+	TypeNode defType = null;
+	String fullClassName = null;
+	if (myClass.isArray()) {
+	    // Handle arrays.  
+	    Class componentClass =
+		myClass.getComponentType();
+	    fullClassName = componentClass.getName();
+	    TypeNode baseType = null;
+	    if (componentClass.isArray()) {
+		// Arrays of Arrays
+		baseType = _definedType(componentClass);
+	    } else {
+		NameNode className =
+		    new NameNode(AbsentTreeNode.instance,
+				 fullClassName.substring(1 + 
+							 fullClassName.lastIndexOf('.')));
+		baseType = new TypeNameNode(className);
+	    }
+	    defType =
+		new ArrayTypeNode(baseType);
+	} else {
+	    if (!myClass.isPrimitive()) { 
+		fullClassName = myClass.getName();
+		defType =
+		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+				 fullClassName.substring(1 + 
+							 fullClassName.lastIndexOf('.')
+							 )));
+	    } else {
 
-    // FIXME: This is copied from StaticResolution.java
-    public static final TreeNode makeNameNode(String qualifiedName) {
+		// FIXME: I'll bet we could reorder these for better
+		// performance
+		if (myClass.equals(Boolean.TYPE)) {
+		    defType = BoolTypeNode.instance;
+		} else if (myClass.equals(Character.TYPE)) {
+		    defType = CharTypeNode.instance;
+		} else if (myClass.equals(Byte.TYPE)) {
+		    defType = ByteTypeNode.instance;
+		} else if (myClass.equals(Short.TYPE)) {
+		    defType = ShortTypeNode.instance;
+		} else if (myClass.equals(Integer.TYPE)) {
+		    defType = IntTypeNode.instance;
+		} else if (myClass.equals(Long.TYPE)) {
+		    defType = LongTypeNode.instance;
+		} else if (myClass.equals(Float.TYPE)) {
+		    defType = FloatTypeNode.instance;
+		} else if (myClass.equals(Double.TYPE)) {
+		    defType = DoubleTypeNode.instance;
+		} else if (myClass.equals(Void.TYPE)) {
+		    defType = VoidTypeNode.instance;
+		}
+	    }
+
+	}
+	return defType;
+    }
+
+    // FIXME: This is copied from StaticResolution.java because
+    // we don't want to cause StaticResolution to start reading in
+    // all the java.lang packages.
+    // Create a TreeNode that contains the qualifiedName split
+    // into separate nodes.
+    private static final TreeNode _makeNameNode(String qualifiedName) {
         TreeNode retval = AbsentTreeNode.instance;
 
         int firstDotPosition;
@@ -263,6 +377,37 @@ public class ASTReflect {
 
         return retval;
     }
+
+    // Return a List of parameters
+    private static List _paramList(Class [] parameterClasses) {
+	// Unfortunately, we can't use Arrays.asList() here since
+	// what getParameterTypes returns of type Class[], and
+	// what we want is a list of ParameterNodes.
+
+	List paramList = new LinkedList();
+
+	for(int i = 0; i < parameterClasses.length; i++) {
+	    // We could put all of this in the body of the paramList.add
+	    // call, but we don't for readability reasons.
+	    int modifier =
+		Modifier.convertModifiers(parameterClasses[i].getModifiers());
+	    TypeNode defType = _definedType(parameterClasses[i]);
+
+	    // The name of the parameter is not available via reflection.
+	    NameNode name = new NameNode(AbsentTreeNode.instance,"");
+	    paramList.add(new ParameterNode(modifier, defType, name));
+	}
+	return paramList;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // String to indent printed output with.
+    private final static String _indent = new String("    ");
+
+    // Set to true to turn on debugging messages
+    private final static boolean _debug = true;
 }
 
 
