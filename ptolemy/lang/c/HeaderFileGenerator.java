@@ -46,14 +46,13 @@ import java.util.Iterator;
 
 
 /** A JavaVisitor that generates a C header (.h) file from a Java abstract 
- *  syntax tree.
- *  This code generator requires that static resolution has been
- *  performed beforehand, and it also requires that indentation
- *  levels (i.e., INDENTATION_KEY property settings) have been set.
- *
- *  Other tasks performed in this code generation pass:
- *  -- Define unique names for methods (set the C_NAME_KEY properties)
- *
+ *  syntax tree. This code generator requires that static resolution has been
+ *  performed beforehand, that indentation
+ *  levels (i.e., INDENTATION_KEY property settings) have been set, and that
+ *  unique names for methods (i.e., C_NAME KEY property settings
+ *  of MethodDeclNodes) have been set. The IndentationVisitor and
+ *  and MethodNameGenerator class should be used to handle the latter
+ *  two tasks.
  *
  *  @author Shuvra S. Bhattacharyya
  *  @version $Id$
@@ -190,6 +189,17 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
     }
 
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+       
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)node);
+        if (declaration == null) 
+            _nodeVisitationError(node, "Unresolved type declaration."); 
+        else {
+            TreeNode source = declaration.getSource();
+            if (source instanceof ClassDeclNode) {
+            }
+        }
+         
+
         return node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
@@ -218,11 +228,8 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
-        if (node.getPkg() != AbsentTreeNode.instance) {
-            retList.addLast("package ");
-            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_PKG));
-            retList.addLast(";\n");
-        }
+        // FIXME: Do we need to do anything with the package name or
+        // the import list?
 
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_IMPORTS));
 
@@ -268,12 +275,15 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
         // (declarations for fields, methods, constructors, etc.) of the
         // given Java class declaration.
         Iterator membersIter; 
-       
-        // Just suppressing modifiers for now. 
-        // FIXME: figure out exactly what, if any, processing  
-        // needs to be done for each possible modifer.
-        // JCG: retList.addLast(Modifier.toString(node.getModifiers()));
 
+        // Avoid multiple inclusions of the generated header file
+        retList.addLast("\n#ifndef _");
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
+        retList.addLast("_h\n#define _");
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
+        retList.addLast("_h\n\n");
+
+        // Generate the structure declaration header
         retList.addLast("/* Structure that implements Class ");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
         retList.addLast(" */\n");
@@ -281,17 +291,8 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
         retList.addLast(" {\n");
 
-        TreeNode superClass = node.getSuperClass();
-
-        // FIXME: Figure out what needs to be done for super classes.
-
-        List implList = (List) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
-
-        if (!implList.isEmpty()) {
-            retList.addLast("implements ");
-            retList.addLast(_commaList(implList));
-            retList.addLast(" ");
-        }
+        // FIXME: Figure out what needs to be done for super classes,
+        // modifiers, and interfaces.
 
         // Extract the declarations of member methods, fields, constructors,
         // etc.  
@@ -343,6 +344,9 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
             }
         }
 
+        // Insert the conditional compilation terminator.
+        retList.addLast("\n#endif\n\n");
+
         return retList;
     }
 
@@ -361,34 +365,36 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
-        retList.addLast("extern ");
-        retList.addLast(Modifier.toString(node.getModifiers()));
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE));
-        retList.addLast(" ");
-        
-        String methodName = _uniqueIdentifier(
-                _stringListToString((List)(node.childReturnValueAt(
-                node.CHILD_INDEX_NAME))));
-        node.setProperty(C_NAME_KEY, methodName);
-        retList.addLast(methodName);
-        retList.addLast("(");
+        Object nameProperty = node.getProperty(C_NAME_KEY) ;
+        if ((nameProperty == null) || !(nameProperty instanceof String))
+            _nodeVisitationError(node, "Unique method name not set.");
+        else {
+            retList.addLast("extern ");
+            retList.addLast(Modifier.toString(node.getModifiers()));
+            retList.addLast(" ");
+            retList.addLast((String)nameProperty);
+            retList.addLast("(");
 
-        // Insert a reference to the containing class instance. This
-        // reference is used to implement accesses through "this." 
-        ClassDeclNode classDeclNode = (ClassDeclNode)
-                JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        retList.addLast("struct ");
-        retList.addLast(_declaredClassNameOf(classDeclNode));
-        retList.addLast(" *this");
-        if (!(node.getParams().isEmpty())) retList.addLast(", ");
-       
-        retList.addLast(
-                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
-        retList.addLast(");\n");
-
-        // FIXME: Does any code have to be generated based on the throws
-        // list for exceptions?
+            // Insert a reference to the containing class instance. This
+            // reference is used to implement accesses through "this." 
+            // Since "this" is a reserved word in Java, naming conflicts
+            // in the generated code involving the identifier "this"
+            // should not occur.
+            ClassDeclNode classDeclNode = (ClassDeclNode)
+                    JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
+            retList.addLast("struct ");
+            retList.addLast(_declaredClassNameOf(classDeclNode));
+            retList.addLast(" *this");
+            if (!(node.getParams().isEmpty())) retList.addLast(", ");
  
+            retList.addLast(
+                    _commaList((List) 
+                    node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
+            retList.addLast(");\n");
+
+            // FIXME: Does any code have to be generated based on the throws
+            // list for exceptions?
+        }
         return retList;
     }
 
@@ -400,28 +406,31 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
         retList.addLast(Modifier.toString(node.getModifiers()));
-        
-        retList.addLast("extern ");
+       
+        Object nameProperty = node.getProperty(C_NAME_KEY) ;
+        if ((nameProperty == null) || !(nameProperty instanceof String))
+            _nodeVisitationError(node, "Unique method name not set."); 
+        else {
+            retList.addLast("extern ");
 
-        // Set the return type of the constructor to be a pointer to 
-        // a structure that implements the corresponding class.
-        ClassDeclNode classDeclNode = (ClassDeclNode)
-                JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        retList.addLast("struct ");
-        retList.addLast(_declaredClassNameOf(classDeclNode));
-        retList.addLast(" *");
+            // Set the return type of the constructor to be a pointer to 
+            // a structure that implements the corresponding class.
+            ClassDeclNode classDeclNode = (ClassDeclNode)
+                    JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
+            retList.addLast("struct ");
+            retList.addLast(_declaredClassNameOf(classDeclNode));
+            retList.addLast(" *");
 
-        String functionName = _uniqueIdentifier(node.getName().getIdent());
-        node.setProperty(C_NAME_KEY, functionName);
-        retList.addLast(functionName);
-        retList.addLast("(");
-        retList.addLast(
-                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
-        retList.addLast(");\n");
+            retList.addLast((String)nameProperty);
+            retList.addLast("(");
+            retList.addLast(
+                    _commaList((List) node.childReturnValueAt(
+                    node.CHILD_INDEX_PARAMS)));
+            retList.addLast(");\n");
 
-        // FIXME: Does any code have to be generated based on the throws
-        // list for exceptions?
-
+            // FIXME: Does any code have to be generated based on the throws
+            // list for exceptions?
+        }
         return retList;
     }
 
@@ -1007,6 +1016,7 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
 
     protected LinkedList _visitVarInitDeclNode(VarInitDeclNode node) {
         LinkedList retList = new LinkedList();
+        
 
         retList.addLast(_indent(node));
         retList.addLast(Modifier.toString(node.getModifiers()));
@@ -1304,25 +1314,26 @@ public class HeaderFileGenerator extends JavaVisitor implements CCodeGeneratorCo
         return _indent(level);
     }
 
-    /** Return a unique name that extends a given prefix, and is a 
-     *  valid C identifier. It is assumed that the prefix is a
-     *  valid Java identifier.
-     *  @param prefix The prefix to extend
-     *  @return The unique identifier
+    /** Format a diagnostic message for node visitations in which serious
+     *  errors are detected, and throw a RuntimeException that 
+     *  contains the message.
+     *  @param node The node whose visitation triggered the error.
+     *  @param message A description of the error that occured.
      */
-    private String _uniqueIdentifier(String prefix) {
-        // FIXME: Make sure the result string fits within the number
-        // distinguishable characters in C identifier.
-        String temp = prefix + "_" + _uniqueNameIndex++;
-        temp.replace('.', '_');
-        return temp;
+    private void _nodeVisitationError(TreeNode node, String message)
+            throws RuntimeException {
+        String exceptionMessage = new String(message + "\n");
+        if (node instanceof TreeNode) {
+            exceptionMessage += "A dump of the offending node follows.\n\n"
+                    + node.toString() + "\nEnd of offending node dump.\n\n";
+        }
+        else if (node == null) 
+            exceptionMessage += "The 'offending node' is NULL.\n";
+        else 
+            exceptionMessage += "The offending node is an instance of '" +
+                    node.getClass().getName() + "'\n";
+        throw new RuntimeException(exceptionMessage);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
-    /** An index that is incremented to expedite the search for a unique
-     *  name by the uniqueIdentifier() method.
-     */
-    protected int _uniqueNameIndex = 0;
 }
