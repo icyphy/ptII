@@ -124,8 +124,8 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     while {![eof $infd]} {
 	set linein [gets $infd]
 	regsub -all {.*matlab.*} $linein {} lineout
-	// Filter out the serial actor because it does not work under Unix,
-	// which is where the nightly build is run
+	# Filter out the serial actor because it does not work under Unix,
+	# which is where the nightly build is run
 	regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
 	puts $outfd $lineout2
     }
