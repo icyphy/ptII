@@ -55,6 +55,7 @@ JSRCS = \
 	FieldDecl.java \
 	FindExtraImportsVisitor.java \
 	FormalParameterDecl.java \
+	GenerateZeroLengthStubs.java \
 	JavaCodeGenerator.java \
 	JavaDecl.java \
 	JavaParser.java \
