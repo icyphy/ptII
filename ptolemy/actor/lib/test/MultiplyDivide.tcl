@@ -101,4 +101,4 @@ test MultiplyDivide-3.1 {test with run-time type error} {
     $multiply link $r2
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Multiplication not supported on ptolemy.data.StringToken by ptolemy.data.StringToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"-2.0"'}}
