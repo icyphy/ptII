@@ -106,7 +106,6 @@ change context of those rate variables and may refuse to schedule the
 composite actor if those rates imply that this model is not locally
 synchronous.
 
-<p> FIXME: this class is not yet implemented.
 @see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.lib.SampleDelay
 @see ptolemy.domains.sdf.kernel.SDFScheduler
