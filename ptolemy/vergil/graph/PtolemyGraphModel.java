@@ -40,7 +40,6 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
 import ptolemy.vergil.toolbox.EditorIcon;
-import ptolemy.vergil.toolbox.VisibleAttributeIcon;
 
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
