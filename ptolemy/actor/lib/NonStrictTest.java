@@ -86,7 +86,7 @@ The value of the reference token is set in the wrapup() method.
 @since Ptolemy II 2.0
 */
 
-public class NonStrictTest extends Transformer {
+public class NonStrictTest extends Sink {
 
     // The Test actor could be extended so that Strictness was a parameter,
     // but that would require some slightly tricky code to handle
@@ -121,6 +121,8 @@ public class NonStrictTest extends Transformer {
         trainingMode = new Parameter(this, "trainingMode");
         trainingMode.setExpression("false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
+        
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -267,9 +269,24 @@ public class NonStrictTest extends Transformer {
         if (training && _trainingTokens != null &&
                 _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
+            
+            // NOTE: Support input multiport for the benefit of derived classes.
+            int width = input.getWidth();
             Token[] newTokens = new Token[newValues.length];
-            for (int i = 0; i < newValues.length; i++) {
-                newTokens[i] = (Token)newValues[i];
+            if (width == 1) {
+                for (int i = 0; i < newValues.length; i++) {
+                    newTokens[i] = (Token)newValues[i];
+                }
+            } else {
+                for (int i = 0; i < newValues.length; i++) {
+                    ArrayList entry = (ArrayList)newValues[i];
+                    Object[] entries = entry.toArray();
+                    Token[] newEntry = new Token[entries.length];
+                    for (int j = 0; j < entries.length; j++) {
+                        newEntry[j] = (Token)entries[j];
+                    }
+                    newTokens[i] = new ArrayToken(newEntry);
+                }
             }
             correctValues.setToken(new ArrayToken(newTokens));
         }
@@ -289,7 +306,7 @@ public class NonStrictTest extends Transformer {
     + "  that are checked into the nightly build!"
     + "  To run the tests in nightly build mode, use"
     + "     make nightly";
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -306,9 +323,6 @@ public class NonStrictTest extends Transformer {
     /** Count of iterations. */
     protected int _iteration;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // List to store tokens for training mode.
-    private List _trainingTokens;
+    /** List to store tokens for training mode. */
+    protected List _trainingTokens;
 }
