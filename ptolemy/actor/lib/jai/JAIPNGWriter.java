@@ -118,13 +118,29 @@ public class JAIPNGWriter extends Sink {
     ////                     ports and parameters                  ////
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
     public FileParameter fileName;
 
+    /** If the Adam7 Interlacing option is false, pixels are stored
+     *  left to right and from top to bottom. If it is true (the 
+     *  default), seven distinct passes are made over the image, each 
+     *  transmitting a subset of the pixels.
+     */
     public Parameter adam7Interlacing;
 
+    /** If the setBackground parameter is false, then this parameter
+     *  is ignored.  If it is true, this parameter sets the 
+     *  background color of the image.  Note that this will only show
+     *  up in images with transparency.  If the image is a grayscale
+     *  image, only the first value of the array is used.  The value
+     *  is an integer that should range from 0 to (2^bitdepth - 1).
+     *  The bitdepth is defined by the bitDepth parameter in this
+     *  actor.  If the image is an RGB image, then the first 3 values
+     *  of the array are read.  Each of these also range from
+     *  0 to (2^bitdepth - 1).
+     */
     public Parameter background;
     
     public Parameter bitDepth;
@@ -140,10 +156,6 @@ public class JAIPNGWriter extends Sink {
     public Parameter setBackground;
 
     public Parameter setGamma;
-
-    //public Parameter setTransparency;
-
-    //public Parameter transparency;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -278,28 +290,6 @@ public class JAIPNGWriter extends Sink {
             throw new IllegalActionException("can't create encoding "
                     + "parameters");
         }
-        //parameters.setBitDepth(_bitDepth);
-        //parameters.setInterlacing(_adam7Interlacing);
-        //if(_setGamma) {
-        //    parameters.setGamma((float)_gamma);
-        //}
-        //if(_setTransparency) {
-        //    if(parameters instanceof PNGEncodeParam.Gray) {
-        //        parameters = (PNGEncodeParam.Gray)parameters;
-        //        parameters.setTransparentGray(_valueArray[0]);
-        //    }
-        //    if(parameters instanceof PNGEncodeParam.RGB) {
-        //    
-        //    }
-        //}
-        //ImageEncoder encoder = ImageCodec.createImageEncoder(
-        //    "PNG", _stream, parameters);
-        //try {
-        //    encoder.encode(image);
-        //    _stream.close();
-        //} catch (IOException error) {
-        //    throw new IllegalActionException("Couldn't encode image");
-        //}
         return super.postfire();
     }
 
