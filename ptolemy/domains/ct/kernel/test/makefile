@@ -58,6 +58,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	CTBaseIntegrator.tcl \
 	CTDirector.tcl \
 	CTReceiver.tcl \
 	CTScheduler.tcl 
