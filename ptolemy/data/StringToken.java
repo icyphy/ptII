@@ -32,6 +32,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
 
@@ -66,7 +67,11 @@ public class StringToken extends AbstractConvertibleToken {
         } else {
             _value = new String("");
         }
-        _toString = "\"" + _value + "\"";
+        // If a String token is "has an embedded " quote", then
+        // toString() should return "has an embedded \" quote" 
+        // FIXME: what if the string already has a \" in it?
+        _toString = "\""
+            + StringUtilities.substitute(_value, "\"", "\\\"") + "\"";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,8 +157,10 @@ public class StringToken extends AbstractConvertibleToken {
         return _value;
     }
 
-    /** Return the value of this Token as a string.  The string will begin
-     *  and end with double quotes, indicating a string constant in the
+    /** Return the value of this Token as a string.  If the value of
+     *  the Token contains double quotes, then a backslash is inserted
+     *  before each double quote and then double quotes are added to
+     *  the beginning and the end, indicating a string constant in the
      *  expression language.
      *  @return A String.
      */
