@@ -49,9 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = DatagramSender.java \
-        DatagramReceiver.java \
-        RxDatagram.java \
-        TxDatagram.java
+        DatagramReceiver.java
 
 EXTRA_SRCS =    $(JSRCS)
 
