@@ -35,6 +35,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
+import ptolemy.domains.de.lib.Merge;
 
 //////////////////////////////////////////////////////////////////////////
 //// Time
@@ -51,27 +53,33 @@ public class Time {
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
         DEDirector director = new DEDirector(toplevel, "director");
+        // director.addDebugListener(new StreamListener());
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
 
-        // The first clock controls the period of the second one.
-        Clock clock = new Clock(toplevel, "clock");
-        clock.values.setExpression("[1.0, 10.0, 100.0, 10.0, 1.0]");
-        clock.offsets.setExpression("[0.0, 1000.0, 2000.0, 3000.0, 4000.0]");
-        clock.period.setExpression("5000.0");
+        Merge merge = new Merge(toplevel, "merge");
 
-        VariableClock varclock = new VariableClock(toplevel, "varclock");
+        // Create 20 clocks.
+        for (int i = 1; i < 20; i++) {
+            Clock clock = new Clock(toplevel, "clock" + i);
+            clock.period.setExpression("" + (i*2));
+            clock.values.setExpression("[" + i + ", " + i + "]");
+            toplevel.connect(clock.output, merge.input);
+        }
 
         Recorder recorder = new Recorder(toplevel, "recorder");
         recorder.capacity.setExpression("0");
+        // TimedPlotter recorder = new TimedPlotter(toplevel, "recorder");
+        // recorder.setPanel(null);
+        // recorder.plot.setMarksStyle("dots");
+        // recorder.plot.setConnected(false);
 
-        toplevel.connect(clock.output, varclock.periodControl);
-        toplevel.connect(varclock.output, recorder.input);
+        toplevel.connect(merge.output, recorder.input);
 
-        director.setStopTime(10000.0);
+        director.setStopTime(1000.0);
         manager.run();
         manager.run();
         System.out.println("Total number of events seen by Recorder: "
-                + recorder.getCount());
+             + recorder.getCount());
     }
 }
