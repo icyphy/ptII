@@ -78,6 +78,7 @@ public class XSLTransformer extends Transformer{
         // Set the type of the input port.
         //input.setMultiport(true);
         input.setTypeEquals(BaseType.XMLTOKEN);
+
         // Set the type of the output port.
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.STRING);
@@ -87,12 +88,6 @@ public class XSLTransformer extends Transformer{
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The URL of the file to read from. This parameter contains
-     *  a StringToken.
-     */
-    //Note: it is used to be this parameter for specifying the xslt file.
-    //public Parameter xsltURL;
 
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by FileAttribute.
@@ -118,11 +113,20 @@ public class XSLTransformer extends Transformer{
         return newObject;
     }
 
-
+    /** Consume an XMLToken from the input and apply the XSL transform
+     *  specified by the fileOrURL parameter.  If the fileOrURL parameter
+     *  does not name a file, then the input is copied to the output
+     *  without modification.
+     *  @exception IllegalActionException If the parent class throws it
+     */
     public void fire() throws IllegalActionException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(out);
-        System.out.println("--- open an output stream for the result. \n");
+        javax.xml.transform.Result result =
+            new javax.xml.transform.stream.StreamResult(out);
+        if (_debugging) {
+            _debug("--- open an output stream for the result. \n");
+        }
+
         if (_transformer != null ) {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
@@ -132,12 +136,22 @@ public class XSLTransformer extends Transformer{
                         javax.xml.transform.Source xmlSource
                             = new javax.xml.transform.dom.DOMSource(doc);
                         _transformer.transform(xmlSource, result);
-                        //System.out.println("--- transform the xmlSource: " + in.toString() + "\n");
+                        if (_debugging) {
+                            _debug("--- transform the xmlSource: "
+                                    + in.toString() + "\n");
+                        }
                         if (out != null) {
-                            //System.out.println("--- moml change request string: " + out.toString() + "\n");
-                            StringToken t = new StringToken(out.toString());
-                            output.broadcast(t);
-                            //System.out.println("--- change request string token send out. \n");
+                            if (_debugging) {
+                                _debug("--- moml change request string: "
+                                        + out.toString() + "\n");
+                            }
+                            StringToken outputToken =
+                                new StringToken(out.toString());
+                            output.broadcast(outputToken);
+                            if (_debugging) {
+                                _debug("--- change request string token "
+                                       + "send out. \n");
+                            }
                         }
                     } catch (TransformerException ex) {
                         throw new IllegalActionException(this, ex,
@@ -152,9 +166,8 @@ public class XSLTransformer extends Transformer{
                     }
                 }
             }
-        }
-        //if there is no transformer, than output the xml string.
-        else {
+        } else {
+            // If there is no transformer, then output the xml string.
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     XMLToken in = (XMLToken)input.get(i);
@@ -164,39 +177,43 @@ public class XSLTransformer extends Transformer{
         }
     }
 
-    /** Open the file at the URL.
-     *  @exception IllegalActionException Not thrown in this base class
+    /** Open the XSL file named by the fileOrURL parameter and
+     *  set up the transformer.   
+     *  @exception IllegalActionException If the TransformFactory
+     *  class name does not start with net.sf.saxon. 
      */
     public void initialize() throws IllegalActionException {
         _xsltSource = null;
         _transformer = null;
         try {
             BufferedReader reader;
-            // Ignore if the fileOrUL is blank.
+            // Ignore if the fileOrURL is blank.
             if (fileOrURL.getExpression().trim().equals("")) {
                 reader = null;
             } else {
                 reader = fileOrURL.openForReading();
             }
             if (reader != null) {
-                _xsltSource = new javax.xml.transform.stream.StreamSource(reader);
-            }
-            else {
+                _xsltSource =
+                    new javax.xml.transform.stream.StreamSource(reader);
+            } else {
                 _xsltSource = null;
             }
-            //System.out.println("processing xsltSource change in " + getFullName());
+            if (_debugging) {
+                _debug("processing xsltSource change in " + getFullName());
+            }
             if (_xsltSource != null) {
-                _transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+                _transformerFactory =
+                    javax.xml.transform.TransformerFactory.newInstance();
                 if (!_transformerFactory.getClass()
                         .getName().startsWith("net.sf.saxon")) {
-
 
                     throw new IllegalActionException(this,
                             "The XSLTransformer actor works best\nwith "
                             + "saxon7.jar.\n"
-                            + "The transformerFactory was \""
+                            + "The transformerFactory was '"
                             + _transformerFactory.getClass().getName()
-                            + "\".\nIf saxon7.jar was in the classpath, then "
+                            + "'.\nIf saxon7.jar was in the classpath, then "
                             + "it should have\nstarted with "
                             + "\"net.sf.saxon\".\n"
                             + "If this actor does not use "
@@ -220,13 +237,14 @@ public class XSLTransformer extends Transformer{
                                                      );
                 }
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
-                                //System.out.println("1 processing xsltSource change in " + getFullName());
-            }
-            else {
+                if (_debugging) {
+                    _debug("1 processing xsltSource change in "
+                            + getFullName());
+                }
+            } else {
                 _transformer = null;
             }
         } catch (java.lang.Exception ex) {
-            //System.out.println("exception class is " + ex.getClass());
             throw new IllegalActionException(this, ex.getMessage());
         }
     }
@@ -239,8 +257,4 @@ public class XSLTransformer extends Transformer{
     private javax.xml.transform.TransformerFactory _transformerFactory;
 
     private javax.xml.transform.Transformer _transformer;
-
-    // String for the URL.
-    //private String _source;
-
 }
