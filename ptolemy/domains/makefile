@@ -31,14 +31,19 @@
 
 ME =		ptolemy/domains
 
+# Domains we do not ship
+EXPERIMENTAL_DOMAINS = \
+		hdf pbo rtp 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
-DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo petrinet rtp \
+DOMAINS =	csp ct dde de fsm pn sdf dt hdf giotto pbo petrinet rtp \
 		sr tm $(PTJAVA3D_DIR) 
+
+DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -90,11 +95,12 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DOMAINS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	$(EXPERIMENTAL_DOMAINS) \
 	dfm \
 	generic
 
