@@ -163,17 +163,21 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        CorbaActorClient newobj = (CorbaActorClient)super.clone(ws);
-        newobj.ORBInitProperties =
-            (Parameter)newobj.getAttribute("ORBInitProperties");
-        newobj.remoteActorName =
-            (Parameter)newobj.getAttribute("remoteActorName");
-        return newobj;
+    public java.lang.Object clone(Workspace ws) {
+        // FIXME: This should throw CloneNotSupportedException
+        try {
+            CorbaActorClient newobj = (CorbaActorClient)super.clone(ws);
+            newobj.ORBInitProperties =
+                (Parameter)newobj.getAttribute("ORBInitProperties");
+            newobj.remoteActorName = (Parameter)newobj.getAttribute(
+                    "remoteActorName");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Setup the link to the remote actor. This includes creating
