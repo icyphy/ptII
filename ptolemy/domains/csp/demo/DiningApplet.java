@@ -1,6 +1,5 @@
 /* An applet containing CSP Dining Philosophers demo.
 
-
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -44,24 +43,24 @@ import ptolemy.kernel.util.*;
 import ptolemy.plot.*;
 import java.text.NumberFormat;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 //// DiningApplet
 /**
-Applet containing Dining Philosophers demo. This demo uses the
-both the time and conditional communiaction constructs of the CSP
-domain in Ptolemy II. It represents the classic concurrency problem,
-first described by Dijkstra in 1965, which has 5 philosophers sitting
-around a table with one chopstick between each pair of philosophers. To
-eat a philosopher must have both chopsticks beside it. Each philosopher
-thinks for a while, then grabs one chopstick, then the other, eats for
-a while and puts the chopsticks down. This cycle continues.
-<p>
-@author Neil Smyth
-@version $Id$
+   Applet containing Dining Philosophers demo. This demo uses the
+   both the time and conditional communiaction constructs of the CSP
+   domain in Ptolemy II. It represents the classic concurrency problem,
+   first described by Dijkstra in 1965, which has 5 philosophers sitting
+   around a table with one chopstick between each pair of philosophers. To
+   eat a philosopher must have both chopsticks beside it. Each philosopher
+   thinks for a while, then grabs one chopstick, then the other, eats for
+   a while and puts the chopsticks down. This cycle continues.
+   <p>
+   @author Neil Smyth
+   @version $Id$
 */
 
-public class DiningApplet extends Applet implements
-                                                                                  Runnable, PhilosopherListener {
+public class DiningApplet extends Applet 
+    implements Runnable, PhilosopherListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
