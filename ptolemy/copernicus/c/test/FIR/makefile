@@ -1,7 +1,7 @@
 # Makefile for testing Ptolemy II C code generation
 #
-# @Authors:  (makefile) Shuvra S. Bhattacharyya --- based on a file by 
-# Christopher Hylands and Tom Parks
+# @Authors:  (makefile) Ankush Varma, Shuvra S. Bhattacharyya --- 
+# based on a file by Christopher Hylands and Tom Parks
 #
 # @Version: $Id$
 #
@@ -82,10 +82,10 @@ fir:
 		echo "Compiling the required runtime file(s) ..."; \
 		cd ../../runtime; \
 		rm -f runtime.o; \
-		gcc -c runtime.c; \
+		gcc -c pccg_runtime.c; \
 		cd ../test/FIR; \
 		echo "Linking the .o files ..."; \
-		gcc -o firtest FIRMain.o FIR.o ../../runtime/runtime.o; \
+		gcc -o firtest FIRMain.o FIR.o ../../runtime/pccg_runtime.o; \
 		echo "Executing the generated executable (firtest.exe) ..."; \
 		cmd /c firtest
 
