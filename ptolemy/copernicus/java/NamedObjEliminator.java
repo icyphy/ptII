@@ -120,7 +120,14 @@ public class NamedObjEliminator extends SceneTransformer {
                 // constructor.. This will throw an exception if there
                 // is more than one, in which case we need to improve
                 // this code.
-                SootMethod method = theClass.getMethodByName("<init>");
+                SootMethod method = null;
+                try {
+                    method = theClass.getMethodByName("<init>");
+                } catch (RuntimeException ex) {
+                    System.out.println("Could not get method <init> by name "
+                            + "from class " + theClass );
+                    throw ex;
+                }
                 method.setParameterTypes(new LinkedList());
                 modifiedConstructorClassList.add(theClass);
 
