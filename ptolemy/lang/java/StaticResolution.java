@@ -51,7 +51,6 @@ import ptolemy.lang.java.nodetypes.*;
  *
  *  @author Jeff Tsay
  */
-
 public class StaticResolution implements JavaStaticSemanticConstants {
 
     /** Returns a String representation of node, with qualifiers separated by periods,
@@ -85,8 +84,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
            if ((categories &
-               (JavaDecl.CG_FIELD | JavaDecl.CG_METHOD | JavaDecl.CG_LOCALVAR |
-                JavaDecl.CG_FORMAL | JavaDecl.CG_USERTYPE)) != 0) {
+               (CG_FIELD | CG_METHOD | CG_LOCALVAR | CG_FORMAL | CG_USERTYPE)) != 0) {
               possibles = env.lookupFirst(name.getIdent(), categories);
            } else {
               //ApplicationUtility.trace("looking up package");
@@ -96,18 +94,18 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         } else {
            int newCategories = 0;
            if ((categories &
-               (JavaDecl.CG_USERTYPE | JavaDecl.CG_PACKAGE)) != 0) {
-              newCategories |= JavaDecl.CG_PACKAGE;
+               (CG_USERTYPE | CG_PACKAGE)) != 0) {
+              newCategories |= CG_PACKAGE;
            }
 
            // for inner classes
-           if ((categories & JavaDecl.CG_USERTYPE) != 0) {
-               newCategories |= JavaDecl.CG_USERTYPE;
+           if ((categories & CG_USERTYPE) != 0) {
+               newCategories |= CG_USERTYPE;
            }
 
-           if ((categories & (JavaDecl.CG_FIELD | JavaDecl.CG_METHOD)) != 0) {
-               newCategories |= (JavaDecl.CG_USERTYPE | JavaDecl.CG_FIELD |
-                                 JavaDecl.CG_LOCALVAR | JavaDecl.CG_FORMAL);
+           if ((categories & (CG_FIELD | CG_METHOD)) != 0) {
+               newCategories |= (CG_USERTYPE | CG_FIELD |
+                                 CG_LOCALVAR | CG_FORMAL);
            }
 
            name.setQualifier(
@@ -117,24 +115,26 @@ public class StaticResolution implements JavaStaticSemanticConstants {
            JavaDecl container = JavaDecl.getDecl(name.getQualifier());
 
            if (container.hasEnviron()) {
+              // qualifier is a package
               possibles = container.getEnviron().lookupFirstProper(
                name.getIdent(), categories);
+                             
            } else if (container instanceof TypedDecl) {
               TypedDecl typedContainer = (TypedDecl) container;
               TypeNode type = typedContainer.getType();
               if (type instanceof PrimitiveTypeNode) {
 	             ApplicationUtility.error("cannot select " + name.getIdent() +
-                  " from non-reference type represented by " +
-                 type.getClass().getName());
+                  " from non-reference type represented by " + type);
               } else if (type instanceof ArrayTypeNode) {
                  possibles = ARRAY_ENVIRON.lookupFirstProper(name.getIdent(),
-                  categories);                  
+                  categories & (CG_FIELD | CG_METHOD));                  
               } else {
+                 // 
                  Environ e = JavaDecl.getDecl(type).getEnviron();
                  possibles = e.lookupFirstProper(name.getIdent(),
-                  categories & (JavaDecl.CG_FIELD | JavaDecl.CG_METHOD));
+                  categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
               } 
-            }
+           }
         }
 
         if (!possibles.hasNext()) {
@@ -156,88 +156,95 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         ApplicationUtility.trace("resolveAName : " + nameString(name));
 
-      if (name.hasProperty(DECL_KEY)) {
-         ApplicationUtility.trace("decl already defined");
-         return name;
-      }
+        // check to whether or not we have already resolved the name
+        if (name.hasProperty(DECL_KEY)) {
+           ApplicationUtility.trace("decl already defined");
+           return name;
+        }
 
-      EnvironIter possibles = findPossibles(name, env, currentClass, 
-       currentPackage, categories);
+        EnvironIter possibles = findPossibles(name, env, currentClass, 
+         currentPackage, categories);
 
-      if (((categories & JavaDecl.CG_METHOD) == 0) && possibles.moreThanOne()) {
-         ApplicationUtility.error("ambiguous reference to " + name.getIdent());
-      }
-
-      JavaDecl d = (JavaDecl) name.getDefinedProperty(DECL_KEY);
-
-      switch (d.category) {
-
-      case JavaDecl.CG_CLASS:
-      case JavaDecl.CG_INTERFACE:
-      {
-        ClassDecl cd = (ClassDecl) d;
-        cd.loadSource();
-        int modifiers = cd.getModifiers();
-        boolean isPublic = ((modifiers & Modifier.PUBLIC_MOD) != 0);
-        boolean isStatic = ((modifiers & Modifier.STATIC_MOD) != 0);
-
-        // check access : public?
-        if (!isPublic) {
-           JavaDecl container = cd.getContainer();
-
-           // a top-level class in the same package?
-           if (container != currentPackage) {
-
-              // inner class, in the same package?
-              // FIXME : this check is too simple
-              if (!cd.deepContainedBy(currentPackage)) {
-                 ApplicationUtility.error(cd.getName() + " not accessible");
-              }
+        if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
+           if ((categories & CG_USERTYPE) != 0) {
+             ApplicationUtility.warn("ambiguous reference to " + name.getIdent() + 
+              ", using most specific one.");
+           
+           } else { 
+             ApplicationUtility.error("ambiguous reference to " + name.getIdent() +
+              " in environment " + env);
            }
         }
 
-        ApplicationUtility.trace("resolveAName " + nameString(name) +
-         " (user type) ok");
+        JavaDecl d = (JavaDecl) name.getDefinedProperty(DECL_KEY);
+
+        switch (d.category) {
+
+        case CG_CLASS:
+        case CG_INTERFACE:
+        {
+          ClassDecl cd = (ClassDecl) d;
+          cd.loadSource();
+          int modifiers = cd.getModifiers();
+          boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
+          boolean isStatic = ((modifiers & STATIC_MOD) != 0);
+
+          // check access : public?
+          if (!isPublic) {
+             JavaDecl container = cd.getContainer();
+
+             // a top-level class in the same package?
+             if (container != currentPackage) {
+
+                // inner class, in the same package?
+                // FIXME : this check is too simple
+                if (!cd.deepContainedBy(currentPackage)) {
+                   ApplicationUtility.error(cd.getName() + " not accessible");
+                }
+             }
+          }
+
+          ApplicationUtility.trace("resolveAName " + nameString(name) +
+           " (user type) ok");
+          return name;
+        }
+
+        case CG_FIELD:
+        case CG_METHOD:
+        {
+          TreeNode res;
+          TreeNode qualifier = name.getQualifier();
+          MemberDecl md = (MemberDecl) d;
+          if (qualifier == AbsentTreeNode.instance) {
+             if ((md.getModifiers() & STATIC_MOD) != 0) {
+                res = new TypeFieldAccessNode(currentClass, name);
+             } else {
+                res = new ThisFieldAccessNode(name);
+                res.setProperty(THIS_CLASS_KEY, currentClass);
+                // FIXME what's wrong with a normal constructor
+             }
+          } else if ((JavaDecl.getDecl(qualifier).category & CG_USERTYPE) != 0) {      
+             res = new TypeFieldAccessNode(
+                    new TypeNameNode((NameNode) qualifier), name);
+          } else {
+             res = new ObjectFieldAccessNode(qualifier, name);
+          }
+
+          name.setQualifier(AbsentTreeNode.instance);
+          ApplicationUtility.trace("resolveAName " + nameString(name) +
+           " (field or method) ok");
+          return res;
+        }
+
+        case CG_LOCALVAR:
+        case CG_FORMAL:
+        //ApplicationUtility.trace("resolveAName " + nameString(name) +
+        // " (local var or formal param) ok");
+        return new ObjectNode(name);
+
+        default:
         return name;
-      }
-
-      case JavaDecl.CG_FIELD:
-      case JavaDecl.CG_METHOD:
-      {
-        TreeNode res;
-        TreeNode qualifier = name.getQualifier();
-        MemberDecl md = (MemberDecl) d;
-        if (qualifier == AbsentTreeNode.instance) {
-           if ((md.getModifiers() & Modifier.STATIC_MOD) != 0) {
-              res = new TypeFieldAccessNode(currentClass, name);
-              // FIXME should currentClass be a property?
-           } else {
-              res = new ThisFieldAccessNode(name);
-              res.setProperty(THIS_CLASS_KEY, currentClass);
-              // FIXME what's wrong with a normal constructor
-           }
-        } else if ((JavaDecl.getDecl(qualifier).category & JavaDecl.CG_USERTYPE) != 0) {      
-           res = new TypeFieldAccessNode(
-                  new TypeNameNode((NameNode) qualifier), name);
-        } else {
-           res = new ObjectFieldAccessNode(qualifier, name);
         }
-
-        name.setQualifier(AbsentTreeNode.instance);
-        ApplicationUtility.trace("resolveAName " + nameString(name) +
-         " (field or method) ok");
-        return res;
-      }
-
-      case JavaDecl.CG_LOCALVAR:
-      case JavaDecl.CG_FORMAL:
-      //ApplicationUtility.trace("resolveAName " + nameString(name) +
-      // " (local var or formal param) ok");
-      return new ObjectNode(name);
-
-      default:
-      return name;
-      }
     }
 
     public static MethodDecl resolveCall(EnvironIter methods, List args) {
@@ -296,20 +303,79 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
         return null;
     }
-   
-    public static final TreeNode makeNameNode(String[] qualName) {
+       
+    /** Return a NameNode corresponding to the name, which is qualified
+     *  by '.'. If the name is the empty string, return an AbsentTreeNode.
+     */
+    public static final TreeNode makeNameNode(String qualifiedName) {
         TreeNode retval = AbsentTreeNode.instance;
-
-        for (int i = 0; i < qualName.length; i++) {
-            retval = new NameNode(retval, qualName[i]);
-        }
-
-        return retval;
+        
+        int firstDotPosition;
+        
+        do {
+           firstDotPosition = qualifiedName.indexOf('.');
+           
+           if (firstDotPosition > 0) {
+              String ident = qualifiedName.substring(0, firstDotPosition);
+              
+              
+              retval = new NameNode(retval, ident);           
+              
+              qualifiedName = qualifiedName.substring(firstDotPosition + 1,               
+               qualifiedName.length());              
+                              
+           } else {
+              if (qualifiedName.length() > 0) {                            
+                 return new NameNode(retval, qualifiedName);
+              }
+           }                     
+        } while (firstDotPosition > 0);
+           
+        return retval;       
     }
 
+    /** Return the declaration with the given qualified name, category,
+     *  and method arguments, which must be defined in the given 
+     *  CompileUnitNode, which must have gone through pass 1 static
+     *  resolution. If the category is a method, the methodArgs
+     *  parameter should be a List of TypeNode's. Otherwise, methodArgs
+     *  will be ignored. Throw a NoSuchElementException if the 
+     *  declaration cannot be found.
+     */
+    public static JavaDecl findDecl(CompileUnitNode compileUnit,
+     String qualifiedName, int category, List methodArgs) {
+        Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
+        
+        // is this really necessary?
+        PackageDecl pkgDecl = 
+         (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
+        
+        EnvironIter environIter = findPossibles(nameNode, env, null, 
+         pkgDecl, category);
+         
+        if (category == CG_METHOD) {
+           return resolveCall(environIter, methodArgs);       
+        }          
+     
+        // no check for multiple matches (this should be handled by
+        // the static resolution passes)
+        return (JavaDecl) environIter.nextDecl();                  
+    }
+    
+    /*
+    public static TypeNameNode getUserTypeInCompileUnit(
+     CompileUnitNode compileUnit, String qualifiedName, int category) {
+        ClassDecl classDecl = 
+         (ClassDecl) getDeclInCompileUnit(compileUnit, qualifiedName,
+                      category, null);
+          
+                             
+    }
+    */
+    
     /** Parse the file, doing no static resolution whatsoever. */
     public static CompileUnitNode parse(String filename) {
-
         JavaParser p = new JavaParser();
 
         try {
@@ -323,9 +389,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return p.getAST();
     }
 
+    /** Load the source file with the given filename. The filename may be
+     *  relative or absolute. If primary is true, do full resolution of the 
+     *  source. Otherwise do partial resolution only.
+     */ 
+    public static CompileUnitNode load(String filename, boolean primary) {
+        return load(new File(filename), primary);
+    }
+
     public static CompileUnitNode load(File file, boolean primary) {        
         try {
-          return load(file.getCanonicalPath(), primary);
+          return loadCanonical(file.getCanonicalPath(), primary);
         } catch (IOException ioe) {
           ApplicationUtility.error(ioe.toString());
         } 
@@ -336,14 +410,15 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  primary is true, do full resolution of the source. Otherwise
      *  do partial resolution only.
      */ 
-    public static CompileUnitNode load(String filename, boolean primary) {        
+    public static CompileUnitNode loadCanonical(String filename, 
+     boolean primary) {        
         System.out.println(">loading " + filename);
   
         CompileUnitNode loadedAST = null;
     
         loadedAST = 
          (CompileUnitNode) partiallyResolvedMap.get(filename);           
-                
+                                  
         if (loadedAST == null) {
            loadedAST = parse(filename);
            
@@ -359,49 +434,84 @@ public class StaticResolution implements JavaStaticSemanticConstants {
               return loadedAST;
            }
            
-           return load(loadedAST, true);        
+           return resolvePass2(loadedAST);
         }
     }
-  
+        
     /** Load a CompileUnitNode that has just been parsed. Fully resolve the
      *  node if primary is true, otherwise just partially resolve it.
      */
     public static CompileUnitNode load(CompileUnitNode node, boolean primary) {
         node.setProperty(FULL_RESOLVE_KEY, new Boolean(primary));
-                      
-        node.accept(new PackageResolutionVisitor(), null);    
-        node.accept(new ResolveClassVisitor(), null);
-        node.accept(new ResolveInheritanceVisitor(), null);
-
-        allFiles.addLast(node);
-
-        recentFiles.addLast(node);
+                                                                 
+        node = resolvePass1(node);            
+                                            
+        if (primary) {
+           node = resolvePass2(node);        
+        }            
         
-        String filename = (String) node.getProperty(IDENT_KEY);                 
+        return node;
+    }
+    
+    /** Do pass 1 resolution on a CompileUnitNode that just been built by
+     *  the parser. Return the resolved node. If a source file with the same 
+     *  canonical filename has already been pass 1 resolved, return the previous 
+     *  node. 
+     */
+    public static CompileUnitNode resolvePass1(CompileUnitNode node) {    
+        String filename = (String) node.getProperty(IDENT_KEY);    
+                   
+        if (filename != null) {
+           CompileUnitNode partiallyResolvedNode = 
+            (CompileUnitNode) partiallyResolvedMap.get(filename);           
+            
+           if (partiallyResolvedNode != null) {
+              return partiallyResolvedNode;
+           }         
+        }
+
         if (filename != null) {
            partiallyResolvedMap.put(filename, node);
         }            
-                                            
-        if (primary) {
+         
+        node.accept(new PackageResolutionVisitor(), null);    
+        node.accept(new ResolveClassVisitor(), null);
+        node.accept(new ResolveInheritanceVisitor(), null);
         
-           // check to see if the node has already been fully resolved
-           boolean fullyResolved = false;
-           
+        //if (filename != null) {
+        //   partiallyResolvedMap.put(filename, node);
+        //}            
+        
+        return node;
+    }
+        
+    /** Do pass 2 resolution on a CompileUnitNode that has already been pass 1 
+     *  resolved. Return the resolved node. If a source file with the same 
+     *  canonical filename has already been pass 2 resolved, return the previous 
+     *  node. 
+     */
+    public static CompileUnitNode resolvePass2(CompileUnitNode node) {
+        String filename = (String) node.getProperty(IDENT_KEY);    
+
+        if (filename != null) {
            CompileUnitNode fullyResolvedNode = 
-            (CompileUnitNode) fullyResolvedMap.get(filename);
-                      
+            (CompileUnitNode) fullyResolvedMap.get(filename);           
+            
            if (fullyResolvedNode != null) {
               return fullyResolvedNode;
-           }
-        
-           // unresolvedFiles.addLast(node);
-           node.accept(new ResolveNameVisitor(), null);     
-           node.accept(new ResolveFieldVisitor(), null);                               
-           
-           if (filename != null) {
-              fullyResolvedMap.put(filename, node);              
-           }           
-        }            
+           }         
+        }
+
+        if (filename != null) {
+           fullyResolvedMap.put(filename, node);              
+        }                   
+                
+        node.accept(new ResolveNameVisitor(), null);     
+        node.accept(new ResolveFieldVisitor(), null);                               
+          
+        //if (filename != null) {
+        //   fullyResolvedMap.put(filename, node);              
+        //}                   
         
         return node;
     }
@@ -409,7 +519,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final void importPackage(Environ env, NameNode name) {
 
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
-         JavaDecl.CG_PACKAGE);
+         CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
@@ -419,7 +529,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         while (declItr.hasNext()) {
            JavaDecl type = (JavaDecl) declItr.next();
-           if (type.category != JavaDecl.CG_PACKAGE) {
+           if (type.category != CG_PACKAGE) {
               env.add(type); // conflicts appear on use only
            }
         }
@@ -433,7 +543,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             name + "\" in bootstrap environment: " + env);
         }
 
-        if ((decl.category & (JavaDecl.CG_CLASS | JavaDecl.CG_INTERFACE)) == 0) {
+        if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
            ApplicationUtility.error("fatal error: " + decl.getName() +
 	        " should be a class or interface");
         }
@@ -462,15 +572,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final ClassDecl  ARRAY_CLASS_DECL;
     public static final FieldDecl  ARRAY_LENGTH_DECL;
     public static final MethodDecl ARRAY_CLONE_DECL;
-      
-    public static final LinkedList allFiles = new LinkedList();
-    public static final LinkedList recentFiles = new LinkedList();
-    public static final LinkedList unresolvedFiles = new LinkedList();
-
-    public static final LinkedList lazilyResolvedFiles = new LinkedList();
-    public static final LinkedList fullyResolvedFiles = new LinkedList();    
-    
-    
+                
     /** A Map containing values of CompileUnitNodes that have been partially 
      *  resolved (including those that are also fully resolved), indexed by the 
      *  absolute pathname of the source file.
@@ -484,14 +586,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     
     static {
         SYSTEM_PACKAGE  = new PackageDecl("", null);
-        UNNAMED_PACKAGE = new PackageDecl("", null);
+        UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
         //UNNAMED_PACKAGE.setEnviron(new Environ());
 
-        Environ env = new Environ();
+        // dummy environment
+        Environ env = new Environ();        
 
-        NameNode javaLangName =  new NameNode(
-         new NameNode(AbsentTreeNode.instance, "java"), "lang");
-
+        NameNode javaLangName = (NameNode) makeNameNode("java.lang");
         importPackage(env, javaLangName);
 
         OBJECT_DECL = _requireClass(env, "Object");
@@ -508,6 +609,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
          IntTypeNode.instance, new NameNode(AbsentTreeNode.instance, "length"),
          AbsentTreeNode.instance);
          
+        // clone() method has an empty body for now
         MethodDeclNode arrayCloneNode = new MethodDeclNode(PUBLIC_MOD | FINAL_MOD,
          new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(), 
          new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
@@ -535,7 +637,5 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
-                       
-        //buildEnvironments();
     }
 }

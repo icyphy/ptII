@@ -40,6 +40,10 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemanticConstants {
+    public JavaCodeGenerator() {
+        super(TM_CHILDREN_FIRST);
+    }
+
     public Object visitNameNode(NameNode node, LinkedList args) {
         String ident = node.getIdent();
         TreeNode qualifier = node.getQualifier();
@@ -232,7 +236,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         StringBuffer sb = new StringBuffer();
 
         sb.append(Modifier.toString(node.getModifiers()) + 
-                  (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) + ' ' + 
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE) + ' ' + 
                   node.getName().getIdent());
 
         String initStr = (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR);
@@ -247,9 +251,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         return sb.toString();
     }
 
-    public Object visitVarDeclNode(VarDeclNode node, LinkedList args) {
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
         return Modifier.toString(node.getModifiers()) + 
-               (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE) +
                ' ' + node.getName().getIdent() + " = " +
                (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR)  + ";\n";
     }
@@ -379,7 +383,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         sb.append(Modifier.toString(node.getModifiers()));
 
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE));
         sb.append(" " + node.getName().getIdent());
 
         return sb.toString();

@@ -1,4 +1,4 @@
- /*
+/*
 Resolve names of local variables, formal parameters, field accesses,
 method calls, and statement labels. Code adopted from st-name.cc from
 the Titanium project.
@@ -84,7 +84,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         return _visitUserTypeDeclNode(node, args);
     }
 
-    public Object visitVarDeclNode(VarDeclNode node, LinkedList args) {
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
         node.setInitExpr((TreeNode) node.getInitExpr().accept(this, args));
 
         NameContext ctx = (NameContext) args.get(0);
@@ -105,7 +105,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
            }
         }
 
-        LocalVarDecl d = new LocalVarDecl(varName, node.getDtype(),
+        LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
          node.getModifiers(), node);
 
         env.add(d);
@@ -182,7 +182,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         }
 
         FormalParameterDecl d = new FormalParameterDecl(varName,
-         node.getDtype(), node.getModifiers(), node);
+         node.getDefType(), node.getModifiers(), node);
 
         env.add(d);
         name.setProperty(DECL_KEY, d);

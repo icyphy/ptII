@@ -61,106 +61,113 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
     }
 
     public final Environ getEnviron() {
-      if (_environ != null) {
-         return _environ;
-      }
-
-      _initEnviron();
-      return _environ;
+        if (_environ == null) {
+           _initEnviron();
+        }
+        return _environ;
     }
 
     public final void setEnviron(Environ environ) {
-      _environ = environ;
+        _environ = environ;
     }
 
     public final boolean hasEnviron() { return true; }
 
     protected void _initEnviron() {
 
-      ApplicationUtility.trace("_initEnviron");
+        ApplicationUtility.trace("_initEnviron");
 
-      boolean empty = true;
+        boolean empty = true;
 
-      if (_container == null) {
-          ApplicationUtility.trace("_initEnviron : no container");
-         _environ = new Environ(null);
-      } else {
-          ApplicationUtility.trace("_initEnviron : has container");
-         _environ = new Environ(_container.getEnviron());
-      }
+        if (_container == null) {
+            ApplicationUtility.trace("_initEnviron : no container");
+           _environ = new Environ(null);
+        } else {
+            ApplicationUtility.trace("_initEnviron : has container");
+           _environ = new Environ(_container.getEnviron());
+        }
 
-      SearchPath paths = _pickLibrary(this);
+        SearchPath paths = _pickLibrary(this);
 
-      String subdir = fullName(File.separatorChar);
+        String subdir = fullName(File.separatorChar);
 
-      if (subdir.length() > 0) {
-         subdir = subdir + File.separatorChar;
-      }
+        if (subdir.length() > 0) {
+           subdir = subdir + File.separatorChar;
+        }
 
-      ApplicationUtility.trace("subdir = " + subdir);
-      ApplicationUtility.trace("found " + paths.size() + " class paths");
+        ApplicationUtility.trace("subdir = " + subdir);
+        ApplicationUtility.trace("found " + paths.size() + " class paths");
 
-      for (int i = 0; i < paths.size(); i++) {
-          String path = (String) paths.get(i);
+        for (int i = 0; i < paths.size(); i++) {
+            String path = (String) paths.get(i);
 
-          ApplicationUtility.trace("path = " + path);
+            ApplicationUtility.trace("path = " + path);
 
-          String dirName = path + subdir;
+            String dirName = path + subdir;
 
-          ApplicationUtility.trace("dirName = " + dirName);
+            ApplicationUtility.trace("dirName = " + dirName);
 
-          File dir = new File(dirName);
+            File dir = new File(dirName);
 
-          if (dir.isDirectory()) {
+            if (dir.isDirectory()) {
+  
+               String[] nameList = dir.list();
 
-             ApplicationUtility.trace("isDirectory = true");
+               ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
 
-             String[] nameList = dir.list();
+               for (int j = 0; j < nameList.length; j++) {
+                   ApplicationUtility.trace("iterating over names, j = " + j);
+                              
+                   String name = nameList[j];
+	               int length = name.length();
+      	           String className = null;
 
-             for (int j = 0; j < nameList.length; j++) {
-                 String name = nameList[j];
-	              int length = name.length();
-      	          String className = null;
+              	   if ((length > 5) && name.substring(length - 5).equals(".java")) {
+                      className = name.substring(0, length - 5);
+                   } else if ((length > 6) && name.substring(length - 6).equals(".jskel")) {
+                      className = name.substring(0, length - 6);
+                   }
 
-            	  if ((length > 5) && name.substring(length - 5).equals(".java")) {
-                    className = name.substring(0, length - 5);
-                 } else if ((length > 6) && name.substring(length - 6).equals(".jskel")) {
-                    className = name.substring(0, length - 6);
-                 }
+      	           if (className != null) {
 
-      	          if (className != null) {
+                      // make sure we don't create 2 class decls if there are two files
+                      // with the same base name, but with different extensions.
+                      if (_environ.lookupProper(className, CG_USERTYPE) == null) {
+                      
+                         ApplicationUtility.trace("adding class/interface " +
+                          className + " from " + dirName);
 
-                    ApplicationUtility.trace("adding class/interface " +
-                     className + " from " + dirName);
+                         //System.out.println("creating new class decl for " + className + " in pd");
 
-                    _environ.add(new ClassDecl(className, this));
+                         _environ.add(new ClassDecl(className, this));
 
-	                 empty = false;
+ 	                     empty = false;
+ 
+                        //ApplicationUtility.trace(
+                        // getName() + " : found source in " + dirName + name);
+                      }
 
-                    //ApplicationUtility.trace(
-                    // getName() + " : found source in " + dirName + name);
+  	               } else {
+	                  String fullname = dirName + name;
 
-  	              } else {
-	                 String fullname = dirName + name;
+                      File fs = new File(fullname);
 
-                    File fs = new File(fullname);
-
-                    if (fs.isDirectory()) {
-            	        _environ.add(new PackageDecl(name, this));
+                      if (fs.isDirectory()) {
+             	        _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                       ApplicationUtility.trace(
-                        getName() + " : found subpackage in " + fullname);
-                    }
+                        ApplicationUtility.trace(
+                         getName() + " : found subpackage in " + fullname);
+                      }
 
-	              } // className != null
-             } // for (int j = 0; j < nameList.length; j++)
-          } // if (dir.isDirectory())
-      } // for (int i = 0; i < paths.size(); i++)
+	               } // className != null
+               } // for (int j = 0; j < nameList.length; j++)
+            } // if (dir.isDirectory())
+        } // for (int i = 0; i < paths.size(); i++)
 
-      if (empty && (this != StaticResolution.UNNAMED_PACKAGE)) {
-         ApplicationUtility.warn(
-          "unable to find any sources or subpackages for " + getName());
-      }
+        if (empty && (this != StaticResolution.UNNAMED_PACKAGE)) {
+           ApplicationUtility.warn(
+            "unable to find any sources or subpackages for " + getName());
+        }
     }
 
     protected JavaDecl  _container;

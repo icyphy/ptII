@@ -71,9 +71,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         return null;
     }
 
-    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        //System.out.println("resolve package visitor (ClassDeclNode)");
-                
+    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {               
         return _visitUserTypeDeclNode(node, args, true);
     }
 
@@ -85,8 +83,6 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        //System.out.println("resolve package visitor (ConstructorDeclNode)");
-    
         Environ env = _makeEnviron(node, args);
 
         _visitNode(node.getBody(), env);
@@ -183,7 +179,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         if ((ocl != null) &&
             ((ocl.getSource() == null) ||
              (ocl.getSource() == AbsentTreeNode.instance))) {
-           // Assume this is the definition of 'other'
+           // Assume this is the definition of 'ocl'
            ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
 
@@ -215,6 +211,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
               }
            }
 
+           //System.out.println("creating new class decl for " + className + " in rpv");
            ClassDecl cl = new ClassDecl(className,
             isClass ? CG_CLASS : CG_INTERFACE,
             new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);

@@ -46,13 +46,6 @@ import ptolemy.lang.java.nodetypes.*;
  *  children typically just pass on the same arguments to their children.
  *  However, nodes that only have NameNode's as their children do nothing.
  *
- *  The _lazy flag can be retrieved from the compile unit node, and used to
- *  determine if only lazy resolution is required.
- *  _isSkippable() can then be called with a modified node to determine
- *  if it can be skipped, in the case of fields, methods, constructors,
- *  and inner classes of a class or interface. Also, by default static
- *  and instance initializers are skipped during lazy resolution.
- *
  *  @author ctsay@eecs.berkeley.edu
  */
 public abstract class ResolveVisitorBase extends JavaVisitor 
@@ -142,7 +135,6 @@ public abstract class ResolveVisitorBase extends JavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        _initLazyFlag(node);
         return _defaultVisit(node, args);
     }
 
@@ -157,55 +149,6 @@ public abstract class ResolveVisitorBase extends JavaVisitor
     // In general, classes cannot be resolved lazily because public classes
     // may inherit from them.
     
-    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
-
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitVarDeclNode(VarDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;        
-
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;        
-
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
-        if (_lazy) return null;
-
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitInstanceInitNode(InstanceInitNode node, LinkedList args) {
-        if (_lazy) return null;
-
-        return _defaultVisit(node, args);
-    }
-
-    // In general, interfaces may not be resolved lazily because public
-    // classes or interfaces might implement them.
-   
-    public Object visitParameterNode(ParameterNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
         return null;
     }
@@ -237,31 +180,4 @@ public abstract class ResolveVisitorBase extends JavaVisitor
         TNLManip.traverseList(this, node, args, node.children());
         return null;
     }
-
-    /** Initialize the lazy flag. */
-    protected boolean _initLazyFlag(CompileUnitNode node) {
-        if (node.hasProperty(FULL_RESOLVE_KEY)) {
-           _lazy = !(((Boolean) node.getDefinedProperty(FULL_RESOLVE_KEY)).
-                     booleanValue());
-        } else {
-           _lazy = false;
-        }
-        return _lazy;
-    }
-
-    /** Return true iff the modified node can be skipped during resolution,
-     *  meaning that lazy resolution is enabled and the node is private.
-     */
-    protected boolean _isSkippable(ModifiedNode node) {
-        if (!_lazy) {
-           return false;
-        }
-
-        int modifiers = node.getModifiers();
-
-        return ((modifiers & Modifier.PRIVATE_MOD) != 0);
-    }
-
-    /** A flag indicating whether or not the types should be lazily resolved. */
-    protected boolean _lazy = false;
 }

@@ -143,8 +143,10 @@ ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
 ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members TypeNameNode superClass k
 
-FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
-VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
+VarDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode defType NameNode name k
+VarInitDeclNode A VarDeclNode k 3 int modifiers TypeNode defType NameNode name TreeNode initExpr k
+FieldDeclNode C VarInitDeclNode c 4 int modifiers TypeNode defType NameNode name TreeNode initExpr c
+LocalVarDeclNode C VarInitDeclNode c 4 int modifiers TypeNode defType NameNode name TreeNode initExpr c
 
 InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List params List throwsList k
 // body may be absent
@@ -156,7 +158,7 @@ SuperConstructorCallNode C ConstructorCallNode c 1 List args c
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
 InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members k
-ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
+ParameterNode C VarDeclNode c 3 int modifiers TypeNode defType NameNode name c
 BlockNode C StatementNode k 0 List stmts k
 EmptyStmtNode C StatementNode c 0 c
 LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name StatementNode stmt k

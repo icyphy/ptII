@@ -64,8 +64,6 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
-        _initLazyFlag(node);
-
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         LinkedList childArgs = new LinkedList();
@@ -79,10 +77,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         _visitUserTypeNode(node, args);
 
-        if (!_isSkippable(node)) {
-           // resolve the super class with the same input environment
-           node.getSuperClass().accept(this, args);
-        }
+        // resolve the super class with the same input environment
+        node.getSuperClass().accept(this, args);
+           
         return null;
     }
 
@@ -91,41 +88,10 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-
-        if (_lazy) {
-           if ((node.getModifiers() & PRIVATE_MOD) != 0) {
-              // don't resolve anything if it's a private method
-              return null;
-           }
-
-           // get the environment of this node
-           LinkedList childArgs = new LinkedList();
-           childArgs.addLast(node.getDefinedProperty(ENVIRON_KEY));
-
-           // resolve only the return type, parameters and exceptions thrown
-           node.getReturnType().accept(this, childArgs);
-           TNLManip.traverseList(this, node, childArgs, node.getParams());
-           TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
-           return null;
-        }
         return _visitNodeWithEnviron(node);
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        if (_lazy) {
-           if ((node.getModifiers() & PRIVATE_MOD) != 0) {
-              // don't resolve anything if it's a private constructor
-              return null;
-           }
-
-           // the environment of this node is the argument for the children
-           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
-           
-           // resolve only the parameters and exceptions thrown
-           TNLManip.traverseList(this, node, childArgs, node.getParams());
-           TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
-           return null;
-        }
         return _visitNodeWithEnviron(node);
     }
 
@@ -165,11 +131,6 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Handle ClassDeclNodes and InterfaceDeclNodes. */
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) {
-           // don't resolve anything if it's a private class and we're doing lazy resolution
-           return null;
-        }
-
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
         

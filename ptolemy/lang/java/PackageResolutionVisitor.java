@@ -37,10 +37,7 @@ public class PackageResolutionVisitor extends JavaVisitor
         pkgEnv.copyDeclList(thePkgDecl.getEnviron());
 
         Environ environ = new Environ(pkgEnv); // the file level environment
-
         node.setProperty(ENVIRON_KEY, environ);
-
-        // StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
 
         node.accept(new ResolvePackageVisitor(), null);
 

@@ -41,6 +41,11 @@ import java.util.Set;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+/** Fills in class and interface environments with inherited members.
+ *  Code and comments adopted from st-inherit.cc from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class ResolveInheritanceVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {
     public ResolveInheritanceVisitor() {
@@ -70,7 +75,10 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
            }
 
            _fillInInheritedMembers(me, superClass);
+        } else {
+           System.out.println("super class null, type = " + node.getName());
         }
+        
 
         Iterator iFaceItr = me.getInterfaces().iterator();
 
@@ -132,14 +140,14 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         return null;                   
     }
  
-    /** Returns true if newThrows is a "subset" of oldThrows (j8.4.4) */
+    /** Return true iff newThrows is a "subset" of oldThrows (j8.4.4) */
     protected static boolean _throwsSubset(Set newThrows,
      Set oldThrows) {
         // FIXME : even Titanium appears to be having trouble
         return true;
     }
 
-    /** True iff MEMBER would be hidden or overridden by a declaration in TO.
+    /** Return true iff MEMBER would be hidden or overridden by a declaration in TO.
      */
     protected static boolean _overriddenIn(JavaDecl member, ClassDecl to) {
         Environ env = to.getEnviron();
@@ -220,7 +228,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
      	         if (!inheritAllAbstract &&
     		         !_throwsSubset(d.getThrows(), methodMember.getThrows())) {
 	  	            ApplicationUtility.error(d.getName() +
-                    " throws more exceptions than overridden " + memberName);
+                     " throws more exceptions than overridden " + memberName);
                  }
 
    	             // update overriding/hiding information for declarations of 'to'
@@ -292,6 +300,9 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
           if ((member.category == CG_METHOD) &&
               ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
+              
+             // FIXME 
+             System.out.println("found abstract method: " +  member);
              return true;
           }
        }

@@ -911,7 +911,7 @@ LocalVariableDeclarationStatement :
 
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
-        result = cons(new VarDeclNode($1,
+        result = cons(new LocalVarDeclNode($1,
                      makeArrayType((TypeNode) $2, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
@@ -927,7 +927,7 @@ LocalVariableDeclarationStatement :
 
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
-        result = cons(new VarDeclNode(Modifier.NO_MOD,
+        result = cons(new LocalVarDeclNode(Modifier.NO_MOD,
                      makeArrayType((TypeNode) $1, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }

@@ -77,7 +77,7 @@ public class Skeleton {
 
         ast.accept(new SkeletonVisitor());
 
-        String outCode = (String) ast.accept(new JavaCodeGenerator());
+        String outCode = (String) ast.accept(new JavaCodeGenerator(), null);
 
         try {
           String outFileName = args[f + fileStart];

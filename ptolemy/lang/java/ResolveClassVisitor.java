@@ -65,8 +65,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        _initLazyFlag(node);
-
         LinkedList childArgs = new LinkedList();
         childArgs.add(NullValue.instance); // enclosing class decl
         childArgs.add(NullValue.instance); // enclosing class environ
@@ -128,8 +126,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
-
         int modifiers = node.getModifiers();
 
         String nameString = node.getName().getIdent();
@@ -145,7 +141,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            ApplicationUtility.error("redeclaration of " + d.getName());
         }
 
-        d = new FieldDecl(nameString, node.getDtype(), modifiers,
+        d = new FieldDecl(nameString, node.getDefType(), modifiers,
             node, (ClassDecl) args.get(0));
 
         encEnviron.add(d);
@@ -163,8 +159,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        if (_isSkippable(node)) return null;
-
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         // initialize the implements list.
@@ -288,19 +282,22 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         int modifiers = node.getModifiers();
 
-        // private methods or methods in private or final classes are final
-        if ((modifiers & PRIVATE_MOD) != 0) {
-           modifiers |= FINAL_MOD;
+        if (classDecl.category == CG_CLASS) {
+        
+           // private methods or methods in private or final classes are final
+           if ((modifiers & PRIVATE_MOD) != 0) {              
+              modifiers |= FINAL_MOD;
+           }
+
+           int classMod = classDecl.getModifiers();
+
+           if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
+              modifiers |= FINAL_MOD;
+           }
+           
+           node.setModifiers(modifiers);
         }
-
-        int classMod = classDecl.getModifiers();
-
-        if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
-           modifiers |= FINAL_MOD;
-        }
-
-        node.setModifiers(modifiers);
-
+        
         if (node.getBody() == AbsentTreeNode.instance) {
            if ((modifiers & ABSTRACT_MOD) != 0) {
               if ((modifiers & 
@@ -429,7 +426,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         while (paramItr.hasNext()) {
            ParameterNode param = (ParameterNode) paramItr.next();
 
-           TypeNode type = param.getDtype();
+           TypeNode type = param.getDefType();
 
            retval.addLast(type);
         }

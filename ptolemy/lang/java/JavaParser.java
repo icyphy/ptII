@@ -1203,7 +1203,7 @@ case 127:
 
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
-        result = cons(new VarDeclNode(val_peek(3).ival,
+        result = cons(new LocalVarDeclNode(val_peek(3).ival,
                      makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
@@ -1220,7 +1220,7 @@ case 128:
 
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
-        result = cons(new VarDeclNode(Modifier.NO_MOD,
+        result = cons(new LocalVarDeclNode(Modifier.NO_MOD,
                      makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }

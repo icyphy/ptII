@@ -122,8 +122,9 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
            ApplicationUtility.trace(">Reading in user type : " + fullName() +
             " from " + fileName);
 
+           // should set the source
            StaticResolution.load(file, false);
-
+         
            if (_source == AbsentTreeNode.instance) {
 	           ApplicationUtility.error("file " + fileName +
                " doesn't contain class or interface " + fullName());

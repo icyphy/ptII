@@ -63,13 +63,13 @@ public class ApplicationUtility {
 
   public static final void trace(String msg, String separator) {
     if (enableTrace) {
-       System.err.print(msg + separator);
+       System.out.print(msg + separator);
     }
   }
 
   public static final void trace(String msg) {
     if (enableTrace) {
-       System.err.println("Trace: " + msg);
+       System.out.println("Trace: " + msg);
     }
   }
 

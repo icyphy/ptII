@@ -67,7 +67,7 @@ import ptolemy.lang.java.nodetypes.*;
  *     inner classes have no container.
  *
  *     Outer-level packages have as their container the special Decl
- *     PackageDecl.SYSTEM_PACKAGE
+ *     StaticResolution.SYSTEM_PACKAGE
  *
  *   ATTRIBUTE modifiers
  *     Classes, interfaces, and their members have modifiers, as defined
@@ -81,9 +81,9 @@ import ptolemy.lang.java.nodetypes.*;
  *   ATTRIBUTE source
  *     Decls that come from the current compilation have some piece of the
  *     AST associated with them.  For example, a JavaDecl for a local variable
- *     is created in response to a VarDeclNode.  That VarDeclNode becomes the
- *     source attribute of LocalVarDecl created to stand
- *     for that declaration.  ClassDecls have a a ClassDeclNode as their source,
+ *     is created in response to a LocalVarDeclNode.  That LocalVarDeclNode 
+ *     becomes thesource attribute of LocalVarDecl created to stand for that 
+ *     declaration.  ClassDecls have a a ClassDeclNode as their source,
  *     and so on.  Decls that arise as the result of importing a class
  *     have special dummy source nodes created for them.
  *

@@ -52,6 +52,9 @@ public class NumberNodeVisitor extends JavaVisitor {
         this(new HashMap());
     }
 
+    /** Construct a new NumberNodeVisitor that will add to the nodes in the
+     *  argument Map.
+     */
     public NumberNodeVisitor(Map nodeMap) {
         super(TM_SELF_FIRST);
         
@@ -69,9 +72,10 @@ public class NumberNodeVisitor extends JavaVisitor {
         return null;
     }
     
-    /** Given a list of TreeNode's, number all TreeNode's in the list uniquely,
-     *  including descendents of individual TreeNode's. 
-     *  Return the Set of all nodes.
+    /** Given a collection of TreeNode's, number all TreeNode's in the collection 
+     *  uniquely, including descendents of individual TreeNode's. 
+     *  Return a Map of all nodes, indexed by the corresponding numbers,
+     *  wrapped in an instance of Integer.
      */
     public static Map numberNodes(Collection nodes) {
         HashMap map = new HashMap();
@@ -86,6 +90,18 @@ public class NumberNodeVisitor extends JavaVisitor {
         
         return map;                
     }
-             
+     
+    /** Retrieve the number of the node, which was previously numbered by a
+     *  NumberNodeVisitor. Throw a RuntimeErrorException if the node
+     *  was not previously numbered.
+     */
+    public static int getNumber(TreeNode node) {
+        Integer keyValue = (Integer) node.getProperty(PropertyMap.NUMBER_KEY);   
+        return keyValue.intValue();
+    }         
+       
+    /** The Map of all nodes, indexed by the corresponding numbers,
+     *  wrapped in an instance of Integer.
+     */ 
     protected final Map _nodeMap;
 }

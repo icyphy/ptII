@@ -62,14 +62,6 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         return node;
     }
 
-    public Object visitImportNode(ImportNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
 
         int modifiers = node.getModifiers();
@@ -104,12 +96,12 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
         int modifiers = node.getModifiers();
-
+        
         if ((modifiers & PRIVATE_MOD) != 0) {
            return null;
         }
 
-        node.setInitExpr(_initExpr(node.getDtype()));
+        node.setInitExpr(_initExpr(node.getDefType()));
 
         return node;
     }
@@ -123,9 +115,9 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
         if (node.getBody() != AbsentTreeNode.instance) {
            node.setModifiers(modifiers | NATIVE_MOD);
+           node.setBody(AbsentTreeNode.instance);
         }
-        node.setBody(AbsentTreeNode.instance);
-
+        
         return node;
     }
 
