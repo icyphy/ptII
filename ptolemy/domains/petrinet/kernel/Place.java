@@ -43,11 +43,12 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// Place
 /**
-A Petri net place. It contains an integer as the marking of the
-place.
-
-<p>FIXME: What is a place?
-<p>FIXME: What is a marking?<p>
+A Petri net place. A Petri net place is a basic component of the Petri Net
+model. Another basic component is the Transition. A place is connected to
+transitions. It contains an integer as the marking of the
+place, which represents the number of tokens in the place.
+The operation of the Petri net is controlled by the marking
+and the weights of arcs connecting places and transitions.
 
 The methods here are used to manipulate the integer marking.
 The TemporaryMarking is used for checking whether a transition

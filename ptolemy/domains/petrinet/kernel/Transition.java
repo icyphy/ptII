@@ -61,8 +61,16 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
-A Petri net transition
-<p>FIXME: What is a transition?  What does this class do?
+A Petri net transition. A transition is a basic component of a Petri
+net. Another basic component is the place. A transtion is connected
+to places or ports. A transition is enabled if the places connected
+to the input of the transition all have more tokens than the
+weights of the edges from the places to the transition. The number of
+tokens is represented by an integer. An enabled transition can fire.
+When an enabled transition fires, the firing process updates the
+marking in the places connected to the input and output of the
+transition.
+
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$

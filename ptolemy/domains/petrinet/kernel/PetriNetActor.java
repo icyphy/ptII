@@ -118,26 +118,43 @@ as default weight 1, unless otherwise specified.
 @version $Id$ */
 public class PetriNetActor extends TypedCompositeActor  {
 
-    /** FIXME: what does this method do? */
+   /** Construct a PetriNetActor in the default workspace with an empty string
+     *  as its name. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     */
+
     public PetriNetActor() {
         super();
         getMoMLInfo().className =
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-    /** FIXME: what does this method do?
-     *  @param workspace  the workspace for the new actor.
+    /** Construct a PetriNetActor in the specified workspace with an empty
+     *  string as its name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
      */
+
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().className =
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-   /** FIXME: what does this method do?
-    *  @param workspace  the workspace for the new actor.
-    *  @param name  the name of the actor.
-    */
+   /** Create a PetriNetActor in the specified container with the specified
+     *  name. The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -148,7 +165,7 @@ public class PetriNetActor extends TypedCompositeActor  {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME: what does this method do?
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new actor.
      *  @return A new PetriNetActor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -161,8 +178,8 @@ public class PetriNetActor extends TypedCompositeActor  {
         return newObject;
     }
 
-    /** FIXME: what does this method do?  The first sentence should
-     *  be a summary of what this method does.
+    /** This method calls the firing method of the director, which
+     *  fires one enabled transition of this PetriNetActor.
      *  It is assumed that the top level of the hierarchy is a
      *  PetiNetDirector.
      *  @exception IllegalActionException If
@@ -180,10 +197,8 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     }
 
-    /** FIXME: needs a one sentence description of what this method
-     *  does.  Something like:
-     *    "If any of the components are Transitions and are testReady,
-     *    return true, otherwise return false."
+    /** If any of the components are Transitions and are testReady,
+     *  return true, otherwise return false.
      *
      *  Find all the transitions contained in the PetriNetActor.
      *  the transitions can be deeply contained....

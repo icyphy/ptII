@@ -115,7 +115,9 @@ public class PetriNetDirector extends Director {
         return new PetriNetReceiver();
     }
 
-    /** FIXME: needs a single sentence summary.
+    /** Thid method fires the enabled transitions in the container
+     *  with the firing sequence defined by the method
+     *  fireHierarchicalPetriNet.
      *  For hierarchical structure, the chosen Transition
      *  can be a composite PetriNetActor or  a Transition.
      *
@@ -160,17 +162,17 @@ public class PetriNetDirector extends Director {
         LinkedList components = _readyComponents(container);
         LinkedList nextComponents = components;
         int i = components.size();
-	// FIXME: what is k counting?
-        int k = 0;
-        while (i > 0 & k < 5) {
+        int iteration = 0;
+        while (i > 0 & iteration < 5) {
             System.out.print(i + "  transitions ready in choosing");
             System.out.println(" transitions--");
 
             java.util.Random generator = new
                 java.util.Random(System.currentTimeMillis());
-	    // FIXME: What is j counting?  Perhaps a better name would help?
-            int j = generator.nextInt(i);
-            Nameable chosenTransition = (Nameable) nextComponents.get(j);
+
+            int randomIndex = generator.nextInt(i);
+            Nameable chosenTransition = (Nameable)
+                                    nextComponents.get(randomIndex);
 
             System.out.println();
             System.out.println("start firing "
@@ -182,7 +184,6 @@ public class PetriNetDirector extends Director {
             else if(chosenTransition instanceof PetriNetActor) {
                 PetriNetActor realPetriNetActor =
                     (PetriNetActor) chosenTransition;
-                k++;
                 _fireHierarchicalPetriNetOnce(realPetriNetActor);
 
             }
@@ -202,15 +203,14 @@ public class PetriNetDirector extends Director {
                 System.out.println(i +" ready item is "
                                           + item.getFullName());
             }
-            k++;
+            iteration++;
         }
     }
 
-   /** FIXME: needs a one line summary?  What does this method do?
-    *  FIXME:  Why not just make _testReadyTransition() public?
-    *  FIXME: testReadyTransition() is not a good name, it does
-    *  not really describe what this method does.
-    
+   /** This method calls the private method _testReadyTransition
+    *  to see whether the given transition is ready to fire or not.
+    *  FIXME: testReadyTransition is not a good name.
+    *
     *  @param transition Transition to be tested to be ready or not.
     *  @return true or false The testing transition is ready to fire or not.
     *  @exception IllegalActionException If
@@ -224,7 +224,9 @@ public class PetriNetDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** This is one of the key methods for hierarchical Petri Nets.
+    /** This method really tests whether a given transition is enabled
+     *  or not.
+     *  This is one of the key methods for hierarchical Petri Nets.
      *  It is equivalent to the prefire() method for a transition.
      *    FIXME: If this is a key method, it should probably be public,
      *    or at least the comment should be public.
@@ -249,13 +251,9 @@ public class PetriNetDirector extends Director {
 
         boolean readyToFire = true;
         LinkedList placeList =  _findBackwardConnectedPlaces(transition);
-	// FIXME: rename pointer1 to placeLists 
-        Iterator pointer1 = placeList.iterator();
-	// FIXME: i1 does not follow the naming standard.  What is it?
-        int i1 = 0;
-        while (pointer1.hasNext()) {
-            Place item = (Place) pointer1.next();
-            i1++;
+        Iterator placeLists = placeList.iterator();
+        while (placeLists.hasNext()) {
+            Place item = (Place) placeLists.next();
             item.setTemporaryMarking(item.getMarking());
         }
         LinkedList newRelationList = new LinkedList();
@@ -273,23 +271,19 @@ public class PetriNetDirector extends Director {
                         Nameable weightPlace =
                                   (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
-			    // FIXME: if statements should have curly brackets
-			    // like:
-			    // if (foo()) {
-			    // } else if (bar()) {
-			    // }
-			    if(weightPort.isOutput()) 
+			    if(weightPort.isOutput()) {
                                   newRelationList.addAll
                                      (weightPort.insideRelationList());
-                              else if( weightPort.isInput())
+                             } else if( weightPort.isInput()) {
                                   newRelationList.addAll
                                      (weightPort.linkedRelationList());
-                            if(weightPort.isOutput())
+                            } if(weightPort.isOutput()) {
                                 newRelationList.addAll
                                     (weightPort.insideRelationList());
-                            else if( weightPort.isInput())
+                            } else if( weightPort.isInput()) {
                                 newRelationList.addAll
                                     (weightPort.linkedRelationList());
+                            }
                         }
                     }
                     else
@@ -377,10 +371,10 @@ public class PetriNetDirector extends Director {
                         Nameable weightPlace =
                             (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
-			    // FIXME: if's need curly brackets 
-                            if(weightPort.isOutput())
+                            if(weightPort.isOutput()) {
                                 newRelationList.addAll
                                     (weightPort.linkedRelationList());
+                            }
                             else if( weightPort.isInput())
                                 newRelationList.addAll
                                     (weightPort.insideRelationList());
@@ -401,14 +395,14 @@ public class PetriNetDirector extends Director {
                 LinkedList  updatePlaceForward =
                     _findForwardConnectedPlaces(weights);
                 Iterator pointerForward = updatePlaceForward.iterator();
-		// FIXME: what does i count?  Why not use a for loop?
-                int i = 0;
+                int itemCount = 0;
                 while (pointerForward.hasNext()) {
                     Place itemForward = (Place) pointerForward.next();
-                    i++;
+                    itemCount++;
                     int j = itemForward.getMarking();
                     itemForward.increaseMarking(weightNumber);
-                    System.out.println("  the " + i + " item is "
+                    System.out.println("  the " + itemCount
+                            + " item is "
                             + itemForward.getFullName()
                             +"  "+ j
                             + "  "+ itemForward.getMarking());
@@ -624,7 +618,8 @@ public class PetriNetDirector extends Director {
         return temporaryPlaceList;
     }
 
-    /** The current hierarchical Petri Net allows multiple arcs connecting
+    /** This method gets the weight assigned to the given relation.
+     *  The current hierarchical Petri Net allows multiple arcs connecting
      *  places, transitions, and ports. Each arc can have an attribute
      *  "weight", or without such attribute. THe default is assumed to
      *  be weight 1. This default weight can be changed into other weight

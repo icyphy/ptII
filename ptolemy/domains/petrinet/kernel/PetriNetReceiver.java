@@ -38,8 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 Petri net receiver.
 
-<p>FIXME: What _is_ a PetrinetReceiver?  
-Perhaps the comment should state something about 
+<p>FIXME: What _is_ a PetrinetReceiver?
+Perhaps the comment should state something about
 Why don't we just use Mailbox?
 
 @author Yuke Wang and Edward A. Lee
