@@ -44,7 +44,7 @@ The self loop edges are returned in the form of a
 {@link Edge}. The collection returned is safe in that modifications
 to the returned collection do not affect the value cached
 in this analysis.
-
+<p>
 This analysis requires <em>O</em>(<em>E</em>) time, where <em>E</em> is the
 number of edges in the graph.
 
