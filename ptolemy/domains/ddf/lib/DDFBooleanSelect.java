@@ -42,15 +42,15 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
    A type polymorphic select with boolean valued control for use in
-   DDF domain. In the first iteration, an input token at the 
-   <i>control</i> port is read and its value is noted. In the second 
-   iteration, if the <i>control</i> input read from previous iteration 
-   is true, then an input token at the <i>trueInput</i> port is read 
-   and sent to the output. Likewise with a false input and the 
-   <i>falseInput</i> port. It alternates between these two kinds of 
-   iterations until stopped. The <i>control</i> port must receive 
-   Boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> port 
-   may receive Tokens of any type. Because tokens are immutable, the 
+   DDF domain. In the first iteration, an input token at the
+   <i>control</i> port is read and its value is noted. In the second
+   iteration, if the <i>control</i> input read from previous iteration
+   is true, then an input token at the <i>trueInput</i> port is read
+   and sent to the output. Likewise with a false input and the
+   <i>falseInput</i> port. It alternates between these two kinds of
+   iterations until stopped. The <i>control</i> port must receive
+   Boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> port
+   may receive Tokens of any type. Because tokens are immutable, the
    same Token is sent to the output, rather than a copy.
    <p>
    Note this actor sends an output token every two iterations. Contrast

@@ -43,14 +43,14 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 /**
-   A type polymorphic select, which routes specified input channels to 
-   the output, used in DDF domain. In the first iteration, an input 
-   token at the <i>control</i> port is read and its value is noted. 
-   In the second iteration, an input token is read from the input port 
+   A type polymorphic select, which routes specified input channels to
+   the output, used in DDF domain. In the first iteration, an input
+   token at the <i>control</i> port is read and its value is noted.
+   In the second iteration, an input token is read from the input port
    channel specified by the most recently seen token on the <i>control</i>
-   port and sent to the output. It alternates between these two kinds of 
-   iterations until stopped. The <i>control</i> port must receive Int 
-   Tokens. The input port may receive Tokens of any type. Because tokens 
+   port and sent to the output. It alternates between these two kinds of
+   iterations until stopped. The <i>control</i> port must receive Int
+   Tokens. The input port may receive Tokens of any type. Because tokens
    are immutable, the same Token is sent to the output, rather than a copy.
    <p>
    Note this actor sends an output token every two iterations. Contrast
@@ -104,7 +104,7 @@ public class DDFSelect extends TypedAtomicActor {
      */
     public TypedIOPort input;
     /** Input port for control tokens, which specify the input channel
-     *  to read token from.  The type is int. 
+     *  to read token from.  The type is int.
      */
     public TypedIOPort control;
     /** The output port.  The type is at least the type of input.
@@ -122,13 +122,13 @@ public class DDFSelect extends TypedAtomicActor {
 
     /** Read a new token from the <i>control</i> port and note its value
      *  if it hasn't done so. This concludes the current firing. Otherwise
-     *  an input token is read from the input port channel specified by the 
+     *  an input token is read from the input port channel specified by the
      *  most recently seen token on the <i>control</i> port and sent
-     *  to the output. Then reset an internal variable so that it will 
+     *  to the output. Then reset an internal variable so that it will
      *  read from <i>control</i> port in the next iteration.
      *  This method will throw a NoTokenException if any input channel
      *  does not have a token.
-     *  @exception IllegalActionException If there is no director, and 
+     *  @exception IllegalActionException If there is no director, and
      *   hence no receivers have been created.
      */
     public void fire() throws IllegalActionException {
@@ -172,7 +172,7 @@ public class DDFSelect extends TypedAtomicActor {
             for (int i=0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
-            rates[_control] = new IntToken(1); 
+            rates[_control] = new IntToken(1);
             inputTokenConsumptionRate.setToken(new ArrayToken(rates));
             controlTokenConsumptionRate.setToken(new IntToken(0));
         } else {
@@ -186,7 +186,7 @@ public class DDFSelect extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /** Return false if the port or channel it needs to read from in the 
+    /** Return false if the port or channel it needs to read from in the
      *  following firing does not have a token.
      *  Otherwise, return whatever the superclass returns.
      *  @return False if there are not enough tokens to fire.
@@ -212,7 +212,7 @@ public class DDFSelect extends TypedAtomicActor {
     // The most recently read control token.
     private int _control;
 
-    // The boolean to determine whether to read from control port 
+    // The boolean to determine whether to read from control port
     // or from input port.
     private boolean _isControlRead;
 }

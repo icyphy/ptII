@@ -83,9 +83,9 @@ import ptolemy.kernel.util.Workspace;
    fires, then one deferrable actor which has the smallest maximum number of
    tokens on its output arcs is fired. A user can treat several such basic
    iterations as a single iteration by specifying the number of times a
-   particular actor must be fired in a single iteration. If the value of 
-   the parameter runUntilDeadlock is a BooleanToken with value true, the 
-   scheduler will repeat the basic iteration until deadlock in <i>one 
+   particular actor must be fired in a single iteration. If the value of
+   the parameter runUntilDeadlock is a BooleanToken with value true, the
+   scheduler will repeat the basic iteration until deadlock in <i>one
    iteration</i>.
    <p>
    The algorithm implementing one basic iteration goes like this:
@@ -164,9 +164,9 @@ public class DDFDirector extends Director {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
-    
-    /** A parameter representing whether one iteration consists of 
-     *  repeated basic iteration until deadlock. If this parameter is 
+
+    /** A parameter representing whether one iteration consists of
+     *  repeated basic iteration until deadlock. If this parameter is
      *  true, the model will be executed until deadlock in one iteration.
      *  The default value is a BooleanToken with the value false.
      */
@@ -276,8 +276,8 @@ public class DDFDirector extends Director {
                     break;
                 }
             }
-            
-            // Repeat 
+
+            // Repeat
             if (_runUntilDeadlock) {
                 repeatBasicIteration = _firedOne;
             }
@@ -340,13 +340,13 @@ public class DDFDirector extends Director {
             }
         }
     }
-    
+
     /** Call base class method to invalidate resolved types if the flag to
-     *  disable type resolution is set to false. If the flag is true, 
+     *  disable type resolution is set to false. If the flag is true,
      *  override the base class method to skip invalidating resolved types.
      */
     public void invalidateResolvedTypes() {
-        if(!_isTypeResolutionDisabled) { 
+        if(!_isTypeResolutionDisabled) {
             super.invalidateResolvedTypes();
         }
     }
@@ -453,7 +453,7 @@ public class DDFDirector extends Director {
     public void setTypeResolutionFlag(boolean flag) {
         _isTypeResolutionDisabled = flag;
     }
-    
+
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.  If there are not enough tokens,
      *  then throw an exception. It then updates enabling status for all
@@ -865,14 +865,14 @@ public class DDFDirector extends Director {
     }
 
     /** Initialize the object. In this case, we give the DDFDirector
-     *  an iterations parameter with default value zero and a 
+     *  an iterations parameter with default value zero and a
      *  runUntilDeadlock parameter with default value false.
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
-        
+
         runUntilDeadlock = new Parameter(this, "runUntilDeadlock");
         runUntilDeadlock.setTypeEquals(BaseType.BOOLEAN);
         runUntilDeadlock.setToken(new BooleanToken(false));
@@ -880,7 +880,7 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // A flag indicating whether type resolution is disabled.
     private boolean _isTypeResolutionDisabled = false;
 
@@ -892,7 +892,7 @@ public class DDFDirector extends Director {
 
     // The value that the postfire method will return.
     private boolean _postfireReturns;
-    
+
     //  A boolean initialized with value in the parameter runUntilDeadlock.
     private boolean _runUntilDeadlock;
 
@@ -907,10 +907,10 @@ public class DDFDirector extends Director {
     // requiredFiringsPerIterationa and numberOfFirings in this
     // variable instead of in _actorsFlags.
     private LinkedList _actorsToCheckNumberOfFirings = new LinkedList();
-    
+
     // The list of active actors.
     private LinkedList _activeActors;
-    
+
     // An indicator that the actor is enabled and deferrable.
     private static final int _ENABLED_DEFERRABLE = 2;
 

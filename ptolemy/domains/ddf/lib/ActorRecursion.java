@@ -133,7 +133,7 @@ public class ActorRecursion extends TypedCompositeActor {
             // has been guaranteed during initialization.
             ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(true);
             ((DDFDirector)getDirector()).setTypeResolutionFlag(true);
-            
+
             _cloneRecursionActor();
             getDirector().preinitialize();
             _transferInputs();
