@@ -45,9 +45,12 @@ CLASSPATH = ../..
 
 JSRCS = \
 	Entity.java \
+	IntParam.java \
 	NamedObj.java \
 	Node.java \
+	ObservableParameter.java \
 	Param.java \
+	Parameter.java \
 	StatusArray.java
 
 EXTRA_SRCS =	$(JSRCS)
