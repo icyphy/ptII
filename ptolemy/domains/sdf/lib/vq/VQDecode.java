@@ -35,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.math.IntegerMatrixMath;
 import java.io.*;
 import java.net.*;
 
@@ -130,8 +131,8 @@ public class VQDecode extends SDFTransformer {
 
         for(j = 0; j < _blockCount; j++) {
             _blocks[j] =
-                new IntMatrixToken(_codebook[stage][((IntToken)_codewords[j]).intValue()],
-                        _blockHeight, _blockWidth);
+                new IntMatrixToken(
+                      _codebook[stage][((IntToken)_codewords[j]).intValue()]);
         }
 
         output.send(0, _blocks, _blocks.length);
@@ -179,16 +180,25 @@ public class VQDecode extends SDFTransformer {
 
             int i, j, y, x, size = 1;
             byte temp[];
+            int intTemp[];
+            int rows = 1, columns = 1;
             for(i = 0; i < 5; i++) {
                 size = size * 2;
+                if(i % 2 == 0) {
+                    columns = columns * 2;
+                } else {
+                    rows = rows * 2;
+                }
                 temp = new byte[size];
+                intTemp = new int[size];
                 for(j = 0; j < 256; j++) {
-                    _codebook[i][j] = new int[size];
                     if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
-                        _codebook[i][j][x] = temp[x] & 255;
+                        intTemp[x] = temp[x] & 255;
+                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(
+                            intTemp, rows, columns);
                 }
 
 		// skip over the lookup tables.
@@ -244,7 +254,7 @@ public class VQDecode extends SDFTransformer {
         return x;
     }
 
-    private int _codebook[][][] = new int[6][256][];
+    private int _codebook[][][][] = new int[6][256][][];
     private ptolemy.data.Token _codewords[];
     private IntMatrixToken _blocks[];
 

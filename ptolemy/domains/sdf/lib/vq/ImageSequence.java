@@ -147,7 +147,7 @@ public class ImageSequence extends Source {
 
         _frameCount = _endFrame - _startFrame + 1;
         _images = new IntMatrixToken[_frameCount];
-        _frameInts = new int[_imageRows * _imageColumns];
+        _frameInts = new int[_imageRows][_imageColumns];
         _frameBytes = new byte[_imageRows * _imageColumns];
         for(_frameNumber = 0;
             _frameNumber < _frameCount;
@@ -182,11 +182,11 @@ public class ImageSequence extends Source {
                 // This is necessary to convert from bytes to ints
                 for(i = 0, n = 0; i < _imageRows; i++) {
                     for(j = 0; j < _imageColumns; j++, n++)
-                        _frameInts[n] = ((int) _frameBytes[n]) & 255;
+                        _frameInts[i][j] = ((int) _frameBytes[n]) & 255;
                 }
 
                 _images[_frameNumber] =
-                    new IntMatrixToken(_frameInts, _imageRows, _imageColumns);
+                    new IntMatrixToken(_frameInts);
             }
             catch (IllegalActionException ex) {
                 _images = null;
@@ -250,7 +250,7 @@ public class ImageSequence extends Source {
     private int _frameCount;
     private IntMatrixToken _images[];
     private byte _frameBytes[];
-    private int _frameInts[];
+    private int _frameInts[][];
     private int _imageURLTemplate;
     private int _imageColumns;
     private int _imageRows;

@@ -123,7 +123,7 @@ public class ImagePartition extends SDFTransformer {
                     "Partition size must evenly divide image size");
         }
 
-        part = new int[_partitionColumns * _partitionRows];
+        part = new int[_partitionRows][_partitionColumns];
         int partitionCount = _imageColumns * _imageRows
             / _partitionColumns / _partitionRows;
         partitions = new IntMatrixToken[partitionCount];
@@ -150,17 +150,16 @@ public class ImagePartition extends SDFTransformer {
             throw new IllegalActionException("Input data must be imageRows " +
                     "by imageColumns");
         }
-        image = message.intArray();
+        image = message.intMatrix();
 
         for(j = 0, partitionNumber = 0 ; j < _imageRows; j += _partitionRows)
             for(i = 0; i < _imageColumns; i += _partitionColumns,
                     partitionNumber++) {
                 for(y = 0; y < _partitionRows; y++)
-                    System.arraycopy(image, (j + y) * _imageColumns + i,
-                            part, y * _partitionColumns, _partitionColumns);
+                    System.arraycopy(image[j + y], i,
+                            part[y], 0, _partitionColumns);
                 partitions[partitionNumber] =
-                    new IntMatrixToken(part, _partitionRows,
-                            _partitionColumns);
+                    new IntMatrixToken(part);
             }
         output.send(0, partitions, partitions.length);
     }
@@ -170,8 +169,8 @@ public class ImagePartition extends SDFTransformer {
 
     private IntMatrixToken partitions[];
 
-    private int part[];
-    private int image[];
+    private int part[][];
+    private int image[][];
     private int _imageColumns;
     private int _imageRows;
     private int _partitionColumns;

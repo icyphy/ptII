@@ -35,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.math.IntegerMatrixMath;
 import java.io.*;
 import java.net.*;
 
@@ -179,7 +180,8 @@ public class HTVQEncode extends SDFTransformer {
 
         for(j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
-                    _encode(((IntMatrixToken)_blocks[j]).intArray(),
+                    _encode(IntegerMatrixMath.fromMatrixToArray(
+                            ((IntMatrixToken)_blocks[j]).intMatrix()),
                             _blockWidth * _blockHeight));
 	}
 

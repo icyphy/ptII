@@ -36,6 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.math.IntegerMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
@@ -94,11 +95,11 @@ public class ImageContrast extends Transformer {
     public void fire() throws IllegalActionException {
 
         int i, j;
-        int frame[];
+        int frame[][];
         int frameElement;
 
         IntMatrixToken message = (IntMatrixToken) input.get(0);
-        frame = message.intArray();
+        frame = message.intMatrix();
 
         // Construct a color distribution histogram for the input image:
         // Assuming the color bound for the input 0 and 255. If color detected
@@ -108,18 +109,21 @@ public class ImageContrast extends Transformer {
         for(i = 0; i < 256; i ++)
             colorHistogram[i] = 0;
 
+        int pixels = frame.length * frame[0].length;
+
         for(i = 0; i < frame.length; i++) {
-            frameElement = frame[i];
-            if ((frameElement < 0) || (frameElement > 255 )) {
-                int row = (int) (i / message.getColumnCount());
-                int column = i % message.getColumnCount();
-                throw new IllegalActionException("ImageContrast:"+
-                        "input image pixel contains at" + row + "," + column +
-                        "with value" + frameElement +
-                        "that is out of bounds." +
-                        "Not between 0 and 255.");
+            for(j = 0; j < frame[i].length; j++) {
+                frameElement = frame[i][j];
+                if ((frameElement < 0) || (frameElement > 255 )) {
+                    throw new IllegalActionException("ImageContrast:"
+                            + "input image pixel contains at" 
+                            + j + "," + i
+                            + "with value" + frameElement
+                            + "that is out of bounds."
+                            + " Not between 0 and 255.");
+                }
+                colorHistogram[frameElement]++;
             }
-            colorHistogram[frame[i]]++;
         }
 
         //Construct the cdf of the color distribution histogram
@@ -132,17 +136,17 @@ public class ImageContrast extends Transformer {
         // color number to make a new relatively even color distribution
         // image.
 
-        int distributionConstant = frame.length / 255;
+        int distributionConstant = pixels / 255;
 
         for(i = 0; i < frame.length; i ++) {
-            frameElement = frame[i];
-            frame[i] = colorHistogram[frameElement] /
-                distributionConstant;
+            for(j = 0; j < frame[i].length; j++) {
+                frameElement = frame[i][j];
+                frame[i][j] = colorHistogram[frameElement] /
+                    distributionConstant;
+            }
         }
 
-        message = new IntMatrixToken(frame,
-                message.getRowCount(),
-                message.getColumnCount());
+        message = new IntMatrixToken(frame);
         output.send(0, message);
     }
 

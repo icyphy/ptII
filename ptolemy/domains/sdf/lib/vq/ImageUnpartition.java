@@ -120,7 +120,7 @@ public class ImageUnpartition extends SDFTransformer {
                     "Partition size must evenly divide image size");
         }
 
-        image = new int[_imageRows * _imageColumns];
+        image = new int[_imageRows][_imageColumns];
         _partitionCount = _imageColumns * _imageRows
             / _partitionColumns / _partitionRows;
         partitions = new IntMatrixToken[_partitionCount];
@@ -152,15 +152,14 @@ public class ImageUnpartition extends SDFTransformer {
                             "input data must be partitionRows " +
                             "by partitionColumns");
                 }
-                part = partition.intArray();
+                part = partition.intMatrix();
                 for(y = 0; y < _partitionRows; y++)
-                    System.arraycopy(part, y * _partitionColumns,
-                            image, (j + y) * _imageColumns + i,
-                            _partitionColumns);
+                    System.arraycopy(part[y], 0,
+                            image[j + y], i, _partitionColumns);
             }
 
         output.send(0,
-                new IntMatrixToken(image, _imageRows, _imageColumns));
+                new IntMatrixToken(image));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -168,8 +167,8 @@ public class ImageUnpartition extends SDFTransformer {
 
     private ptolemy.data.Token partitions[];
 
-    private int part[];
-    private int image[];
+    private int part[][];
+    private int image[][];
     private int _imageColumns;
     private int _imageRows;
     private int _partitionColumns;
