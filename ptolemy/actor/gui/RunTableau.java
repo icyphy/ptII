@@ -246,6 +246,8 @@ public class RunTableau extends Tableau {
                     tableau = new RunTableau(
                             (PtolemyEffigy)effigy, "runTableau");
                 }
+                // FIXME: This should not be necessary
+                tableau.show();
                 return tableau;
 	    } else {
 		return null;
