@@ -28,7 +28,8 @@
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
-Win added methods fireAtCurrentTime(Actor) and fireAtReletiveTime(Actor,double)
+Win added methods fireAtCurrentTime(Actor) and
+fireAtReletiveTime(Actor,double)
 */
 
 package ptolemy.actor;
@@ -178,7 +179,7 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Schedule a firing of the given actor at the given (ABSOLUTE) time. 
+    /** Schedule a firing of the given actor at the given absolute time.
      *  It does nothing in this base class. Derived classes
      *  should override this method.
      *  <p>
@@ -219,7 +220,7 @@ public class Director extends Attribute implements Executable {
 
     }
 
-    /** Schedule a firing of the given actor at the given RELETIVE time. 
+    /** Schedule a firing of the given actor at the given relative time.
      *  It does nothing in this base class. Derived classes
      *  should override this method.
      *  <p>
@@ -473,7 +474,7 @@ public class Director extends Attribute implements Executable {
      *  <p>
      *  In this base class, assume that the director is always ready to
      *  be fired, and so return true. Domain directors should probably
-     *  override this method to provide domain-specific behavior.  
+     *  override this method to provide domain-specific behavior.
      *  However, they should call super.prefire() if they
      *  wish to propagate time as done here.
      *
