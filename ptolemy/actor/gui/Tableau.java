@@ -74,11 +74,10 @@ public class Tableau extends CompositeEntity {
      *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
-        size = new SizeAttribute(
-                this, "size");
+        size = new SizeAttribute(this, "size");
     }
 
     /** Construct a tableau with the given name and container.
@@ -90,11 +89,10 @@ public class Tableau extends CompositeEntity {
      *   an entity already in the container.
      */
     public Tableau(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        size = new SizeAttribute(
-                this, "size");
+        size = new SizeAttribute(this, "size");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,7 +114,7 @@ public class Tableau extends CompositeEntity {
      *   class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == size && _frame != null) {
             size.setSize(_frame);
         } else {
@@ -133,8 +131,8 @@ public class Tableau extends CompositeEntity {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Tableau newObject = (Tableau)super.clone(workspace);
+        throws CloneNotSupportedException {
+        Tableau newObject = (Tableau) super.clone(workspace);
         newObject._frame = null;
         return newObject;
     }
@@ -149,7 +147,14 @@ public class Tableau extends CompositeEntity {
         if (frame instanceof TableauFrame) {
             // NOTE: Calling a protected method, but this class is in the
             // same package.
-            if (!((TableauFrame)frame)._close()) return false;
+            if (!((TableauFrame) frame)._close())
+                return false;
+        } else if (
+            (this instanceof DialogTableau)
+                && (frame instanceof PortConfigurerDialog)) {
+            if (!((PortConfigurerDialog) frame).close()) {
+                return false;
+            }
         } else if (frame != null) {
             frame.dispose();
         }
@@ -176,10 +181,10 @@ public class Tableau extends CompositeEntity {
      */
     public String getTitle() {
         if (_title == null) {
-            Effigy effigy = (Effigy)getContainer();
+            Effigy effigy = (Effigy) getContainer();
             // Abbreviate the title to 80 chars for use on the Mac.
             return StringUtilities.abbreviate(
-                    effigy.identifier.getExpression());
+                effigy.identifier.getExpression());
         } else {
             return _title;
         }
@@ -220,9 +225,9 @@ public class Tableau extends CompositeEntity {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (container == null) {
-            Effigy oldContainer = (Effigy)getContainer();
+            Effigy oldContainer = (Effigy) getContainer();
             super.setContainer(container);
             // Blow away the frame.
             if (_frame != null) {
@@ -240,9 +245,10 @@ public class Tableau extends CompositeEntity {
         } else if (container instanceof Effigy) {
             super.setContainer(container);
         } else {
-            throw new IllegalActionException(this, container,
-                    "The container can only be set to an " +
-                    "instance of Effigy");
+            throw new IllegalActionException(
+                this,
+                container,
+                "The container can only be set to an " + "instance of Effigy");
         }
     }
 
@@ -278,22 +284,22 @@ public class Tableau extends CompositeEntity {
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
-                // This is invoked if the window
-                // is disposed by the _close() method of Top.
-                public void windowClosed(WindowEvent e) {
+            // This is invoked if the window
+            // is disposed by the _close() method of Top.
+            public void windowClosed(WindowEvent e) {
+                try {
+                    (Tableau.this).setContainer(null);
+                } catch (KernelException ex) {
                     try {
-                        (Tableau.this).setContainer(null);
-                    } catch (KernelException ex) {
-                        try {
-                            MessageHandler.warning("Cannot remove tableau: "
-                                    + ex);
-                        } catch (CancelException exception) {}
+                        MessageHandler.warning("Cannot remove tableau: " + ex);
+                    } catch (CancelException exception) {
                     }
                 }
-                // NOTE: We do not want to do the same in windowClosing()
-                // because this will override saving if modified as implemented
-                // in Top.
-            });
+            }
+            // NOTE: We do not want to do the same in windowClosing()
+            // because this will override saving if modified as implemented
+            // in Top.
+        });
     }
 
     /** Specify whether the window associated with this tableau

@@ -33,9 +33,11 @@ package ptolemy.vergil.kernel;
 import diva.gui.toolbox.JContextMenu;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import java.awt.Component;
@@ -74,30 +76,35 @@ public class PortDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity)) return null;
+        if (!(target instanceof Entity))
+            return null;
+        // Create a dialog for configuring the object.
+        // First, identify the top parent frame.
+        // Normally, this is a Frame, but just in case, we check.
+        // If it isn't a Frame, then the edit parameters dialog
+        // will not have the appropriate parent, and will disappear
+        // when put in the background.
+        // Note, this uses the "new" way of doing dialogs.
         Action action = new AbstractAction(name) {
-                public void actionPerformed(ActionEvent e) {
-                    // Create a dialog for configuring the object.
-                    // First, identify the top parent frame.
-                    // Normally, this is a Frame, but just in case, we check.
-                    // If it isn't a Frame, then the edit parameters dialog
-                    // will not have the appropriate parent, and will disappear
-                    // when put in the background.
-                    Component parent = menu.getInvoker();
-                    while (parent.getParent() != null) {
-                        parent = parent.getParent();
-                    }
-                    if (parent instanceof Frame) {
-                        new PortConfigurerDialog((Frame)parent,
-                                (Entity)target,
-                                _configuration);
-                    } else {
-                        new PortConfigurerDialog(null,
-                                (Entity)target,
-                                _configuration);
+            public void actionPerformed(ActionEvent e) {
+                Component parent = menu.getInvoker();
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
+                if (parent instanceof Frame) {
+                    DialogTableau dialogTableau =
+                        DialogTableau.createDialog(
+                            (Frame) parent,
+                            _configuration,
+                            ((ActorGraphFrame) parent).getEffigy(),
+                            PortConfigurerDialog.class,
+                            (Entity) target);
+                    if (dialogTableau != null) {
+                        dialogTableau.show();
                     }
                 }
-            };
+            }
+        };
         return menu.add(action, name);
     }
 

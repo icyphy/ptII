@@ -117,13 +117,13 @@ public class DialogTableau extends Tableau {
             while (dialogs.hasNext()) {
                 DialogTableau existingDialog = (DialogTableau) dialogs.next();
                 JFrame dialogJFrame = existingDialog.getFrame();
-//                if (dialogJFrame instanceof PortConfigurerDialog) {
-//                    PortConfigurerDialog pcd =
-//                        (PortConfigurerDialog) dialogJFrame;
-//                    if (pcd.getTarget() == target) {
-//                        return existingDialog;
-//                    }
-//                }
+                if (dialogJFrame instanceof PortConfigurerDialog) {
+                    PortConfigurerDialog pcd =
+                        (PortConfigurerDialog) dialogJFrame;
+                    if (pcd.getTarget() == target) {
+                        return existingDialog;
+                    }
+                }
             }
             // A DialogTableau doesn't exist, so create one.
             DialogTableau newDialog;
@@ -134,13 +134,13 @@ public class DialogTableau extends Tableau {
                         effigy.uniqueName("dialog"),
                         "Configure ports for " + target.getFullName());
 
-//                PortConfigurerDialog pcd =
-//                    new PortConfigurerDialog(
-//                        newDialog,
-//                        parent,
-//                        target,
-//                        configuration);
-//                newDialog.setFrame(pcd);
+                PortConfigurerDialog pcd =
+                    new PortConfigurerDialog(
+                        newDialog,
+                        parent,
+                        target,
+                        configuration);
+                newDialog.setFrame(pcd);
                 return newDialog;
             } catch (Exception ex) {
                 MessageHandler.error(

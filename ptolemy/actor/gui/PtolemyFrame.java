@@ -44,7 +44,9 @@ import ptolemy.kernel.util.NamedObj;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -148,6 +150,29 @@ public abstract class PtolemyFrame extends TableauFrame {
         } else {
             return false;
         }
+    }
+
+
+    /** Close the window.  Look for any Dialogs that are open and close thos
+     *  first. If a DialogTableau returns false then it means that the user
+     *  has cacelled the close operation.
+     *  @return False if the user cancels on a save query.
+     */
+    protected boolean _close() {
+
+        PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) getEffigy();
+
+        List tableaux = ptolemyEffigy.entityList(Tableau.class);
+        Iterator tableauxIterator = tableaux.iterator();
+        while (tableauxIterator.hasNext()) {
+            Tableau tableau = (Tableau) tableauxIterator.next();
+            if (tableau instanceof DialogTableau) {
+                DialogTableau dialogTableau = (DialogTableau) tableau;
+                if (!(dialogTableau.close()))
+                    return false;
+            }
+        }
+        return super._close();
     }
 
     /** Display more detailed information than given by _about().
