@@ -112,7 +112,7 @@ public final class CrossRefList implements Serializable  {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the first container referenced by this list, or
+    /** Return the first container linked to this list, or
      *  null if the list is empty.  
      *  Time complexity: O(1).  
      *  @return The first entry, or null if there is none.  
@@ -125,7 +125,7 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
-    /** Enumerate the containers referenced by this list.  The
+    /** Enumerate the containers linked to this list.  The
      *  enumeration returns the container object itself and not the
      *  CrossRefList instance in this list that the object owns or
      *  contains.  Note that an object may be enumerated more than
@@ -137,8 +137,9 @@ public final class CrossRefList implements Serializable  {
         return new CrossRefEnumeration();
     }
 
-    /** Return true if the specified container is referenced on this
-     *  list.
+    /** Return true if the specified container is linked to this
+     *  list.  If no container is passed or if this CrossRefList has
+     *  no links then just return.
      *  Time complexity: O(n).
      *  @param obj An object that might be referenced.
      *  @return A boolean indicating whether the object is referenced.
@@ -161,8 +162,8 @@ public final class CrossRefList implements Serializable  {
      *  the common workspace.
      *  Time complexity: O(1).
      *  @param farList The cross reference list contained by the remote object.
-     *  @exception IllegalActionException If the remote object is the container
-     *   of this cross reference list.
+     *  @exception IllegalActionException If this list tries linking to
+     *  itself.
      */
     public synchronized void link(CrossRefList farList)
             throws IllegalActionException {
@@ -189,16 +190,16 @@ public final class CrossRefList implements Serializable  {
     }
 
     /** Delete a link to the specified container.  If there is no such
-     *  link, ignore.  That is, delete the entry in this list that
-     *  points to a different CrossRefList contained by the
-     *  specified object.  That object's CrossRefList list is
-     *  similarly updated to remove this from its members.
+     *  link, ignore.  Back references are likewise updated.If no
+     *  container or if this CrossRefList has no links then just
+     *  return.
+     *  In the case of redundant links this deletes the first link
+     *  to that container.
      *  Time complexity: O(n).  
      *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
         if (obj == null || _size == 0) return;
-        ++_listVersion;
         Object v;
         CrossRef p = _headNode;
         while(p != null) {
@@ -218,17 +219,13 @@ public final class CrossRefList implements Serializable  {
      */
     public synchronized void unlinkAll() {
         if(_size == 0) return;
-        ++_listVersion;
 
-        CrossRef deadHead = _headNode; // _deadHead is marked for deletion.
-
-        // As long as there's a next element.
-        while( (_headNode = deadHead._next) != null) {
-            deadHead._dissociate();     // Delete old head and its partner.
-            deadHead = _headNode;
+        CrossRef p = _headNode;
+        while(p != null) {
+            CrossRef n = p._next;
+            p._dissociate();
+            p = n;
         }
-        // Delete the last CrossRef.
-        deadHead._dissociate();
 
         // Mark the list empty.
         _headNode = null;
@@ -243,7 +240,7 @@ public final class CrossRefList implements Serializable  {
     // This is used to make sure that elements accessed via an enumeration
     // are valid.  This is inspired by a similar mechanism in Doug Lea's
     // Java Collections.
-    private int _listVersion = 0;
+    private long _listVersion = 0;
 
     // The code ensures that if this is non-zero, then _headNode is non-null.
     private int _size = 0;
@@ -264,6 +261,9 @@ public final class CrossRefList implements Serializable  {
     // Objects of this type form the elements of the list.
     // They occur in pairs, one in each list at each end of a link.
     // A CrossRef is similar to a "link" in a doubly-linked list.
+    // (Note that the usage of "link" here is different from "link"
+    // in the comments for the above public methods.  "Link" here
+    // refers to an element of a doubly-linked list.)
     protected class CrossRef implements Serializable{
 
         protected CrossRef _far;
@@ -272,9 +272,9 @@ public final class CrossRefList implements Serializable  {
 
         private CrossRef _previous;
 
-        public CrossRef() { this(null); }
+        private CrossRef() { this(null); }
 
-        public  CrossRef(CrossRef spouse) {
+        private CrossRef(CrossRef spouse) {
             _far = spouse;
             if(_size > 0) {
                 _previous = _lastNode;
@@ -293,8 +293,7 @@ public final class CrossRefList implements Serializable  {
         }
 
         private synchronized Object _farContainer() {
-            // Returning null shouldn't happen.
-            return _far != null ? _far._nearContainer() : null;
+            return _far._nearContainer();
         }
 
         private synchronized CrossRefList _nearList() {
@@ -303,16 +302,20 @@ public final class CrossRefList implements Serializable  {
 
         private synchronized void _dissociate() {
             _unlink(); // Remove this.
-            if(_far != null) _far._unlink(); // Remove far
+            _far._unlink(); // Remove far
         }
 
         private synchronized void _unlink() {
             ++_listVersion;
             // Removes this from enclosing CrossRefList.
-            if(_next != null) _next._previous = _previous; // Modify next.
-            else _lastNode = _previous;
-            if(_previous != null) _previous._next = _next; // Modify previous.
-            else _headNode = _next;
+            if(_next != null) 
+                _next._previous = _previous; // Modify next.
+            else 
+                _lastNode = _previous;
+            if(_previous != null) 
+                _previous._next = _next; // Modify previous.
+            else 
+                _headNode = _next;
             _size--; // Modify list.
         }
     }
@@ -387,7 +390,7 @@ public final class CrossRefList implements Serializable  {
             }
         }
 
-        private int _enumeratorVersion;
+        private long _enumeratorVersion;
 
         private CrossRef _ref;
 
