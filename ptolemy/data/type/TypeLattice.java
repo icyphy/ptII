@@ -70,7 +70,7 @@ public class TypeLattice {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
      *  is lower than, equal to, higher than, or incomparable with the
      *  second argument in the type hierarchy, respectively.
-     *  @param t1 an instance of Type. 
+     *  @param t1 an instance of Type.
      *  @param t2 an instance of Type.
      *  @return An integer.
      */
@@ -79,7 +79,7 @@ public class TypeLattice {
     }
 
     /** Return the an instance of CPO representing the infinite type
-     *  lattice. 
+     *  lattice.
      *  @return an instance of CPO.
      */
     public static CPO lattice() {
@@ -107,7 +107,7 @@ public class TypeLattice {
          *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
          *  is lower than, equal to, higher than, or incomparable with the
          *  second argument in the type hierarchy, respectively.
-         *  @param t1 an instance of Type. 
+         *  @param t1 an instance of Type.
          *  @param t2 an instance of Type.
          *  @return An integer.
 	 *  @exception IllegalArgumentException If one or both arguments

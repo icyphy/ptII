@@ -117,7 +117,7 @@ public abstract class StructuredType implements Type, Cloneable {
      *  component type that is BaseType.NAT, and leave the constant
      *  part of this type intact.
      *  @param st A StructuredType.
-     *  @exception IllegalActionException If this Structured type 
+     *  @exception IllegalActionException If this Structured type
      *   is a constant, or the specified type has a different structure.
      */
     public abstract void updateType(StructuredType st)

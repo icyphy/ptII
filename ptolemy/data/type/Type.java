@@ -45,7 +45,7 @@ in structured types.
 @version $Id$
 */
 
-public interface Type 
+public interface Type
 {
     /** Convert the specified token into a token having the type
      *  represented by this object.
@@ -55,7 +55,7 @@ public interface Type
      *   cannot be done.
      */
     public Token convert(Token t) throws IllegalActionException;
- 
+
     /** Test if the argument token is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
      *  argument is compatible if it can be converted losslessly to a token

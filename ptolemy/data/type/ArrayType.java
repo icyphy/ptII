@@ -122,7 +122,7 @@ public class ArrayType extends StructuredType {
 		Token[] result = new Token[argArray.length];
 		for (int i = 0; i < argArray.length; i++) {
 	    	    result[i] = _elementType.convert(argArray[i]);
-		} 
+		}
 		return new ArrayToken(result);
 	    }
 	}

@@ -76,7 +76,7 @@ public interface Typeable
 
     /** Constrain the type of this object to be equal to or greater
      *  than the type represented by the specified InequalityTerm. Notice
-     *  that this constraint is not enforced until type resolution is done, 
+     *  that this constraint is not enforced until type resolution is done,
      *  and is not enforced if type resolution is not done.
      *  @typeTerm An InequalityTerm object.
      */

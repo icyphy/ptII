@@ -50,7 +50,7 @@ type resolution.
 public class TypeConstant implements InequalityTerm {
 
     /** Construct a TypeConstant.
-     *  @param type An instance of Type. 
+     *  @param type An instance of Type.
      */
     public TypeConstant(Type type) {
 	_type = type;
@@ -93,7 +93,7 @@ public class TypeConstant implements InequalityTerm {
 	throw new IllegalActionException("TypeConstant.initialize: " +
 	    "Type constant cannot be initialized.");
     }
- 
+
     /** Return false since this term represent a constant.
      *  @return false.
      */
