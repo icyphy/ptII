@@ -140,7 +140,7 @@ public class Vertex extends Attribute implements Locatable {
     public String toString() {
         String className = getClass().getName();
         if (_location == null) {
-            return "(" + className + ", null)";
+            return "(" + className + ", Location = null)";
         }
         StringBuffer location = new StringBuffer();
         for (int i = 0; i < _location.length; i++) {
