@@ -188,10 +188,10 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
                                 NamedObj rightObject =
                                     getNamedObjValue(method, (Local)right,
                                             stmt, localDefs, localUses);
-                                System.out.println("leftObject = "
-                                        + leftObject);
-                                System.out.println("rightObject = "
-                                        + rightObject);
+                                //   System.out.println("leftObject = "
+                                //          + leftObject);
+                                //  System.out.println("rightObject = "
+                                //        + rightObject);
 
                                 if (leftObject == rightObject) {
                                     binop.getOp1Box().setValue(

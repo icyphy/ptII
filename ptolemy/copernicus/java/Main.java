@@ -38,7 +38,7 @@ import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.LibraryUsageReporter;
 import ptolemy.copernicus.kernel.MakefileWriter;
-// import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
+import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
@@ -340,53 +340,64 @@ public class Main extends KernelMain {
                                 DeadObjectEliminator.v()));
         _addStandardOptimizations(pack, 7);
         
-       addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
+        addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
                "outDir:" + _outputDirectory + "/jimple4");
        addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
                "outDir:" + _outputDirectory + "/jimple4");
-       
+            
        addTransform(pack, "wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel));
         
        addTransform(pack, "wjtp.ufr",
-                        UnusedFieldRemover.v());
-
-// FIXME!         pack.add(
-//                 new Transform("wjtp.smr",
-//                         SideEffectFreeInvocationRemover.v());
-
-
-        // Remove references to named objects.
+               UnusedFieldRemover.v());
+       
+       addTransform(pack, "wjtp.smr",
+               SideEffectFreeInvocationRemover.v());
+       
+       // Remove references to named objects.
        addTransform(pack, "wjtp.ee2",
                         ExceptionEliminator.v(toplevel));
 
        addTransform(pack, "wjtp.doe4",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
-        _addStandardOptimizations(pack, 8);
-//FIXME!         pack.add(
-//                 new Transform("wjtp.smr",
-//                         SideEffectFreeInvocationRemover.v());
- 
+       _addStandardOptimizations(pack, 8);
+
+       addTransform(pack, "wjtp.smr2",
+               SideEffectFreeInvocationRemover.v());
+
        addTransform(pack, "wjtp.ffu",
-                        FinalFieldUnfinalizer.v());
+               FinalFieldUnfinalizer.v());
        addTransform(pack, "wjtp.umr3", 
-                        UnreachableMethodRemover.v());
-        addTransform(pack, "wjtp.cp2",
-                new TransformerAdapter(CopyPropagator.v()));
-
-        /**/
-
-        // This snapshot should be last...
-       addTransform(pack, "wjtp.finalSnapshotJimple",
-               JimpleWriter.v(),
-               "outDir:" + _outputDirectory);
+               UnreachableMethodRemover.v());
+       addTransform(pack, "wjtp.cp2",
+               new TransformerAdapter(CopyPropagator.v()));
+       
+       // The library usage reporter also pulls in all depended
+       // classes for analysis.       
        addTransform(pack, "wjtp.lur",
                LibraryUsageReporter.v(),
                "outDir:" + _outputDirectory);
-
-//        addTransform(pack, "wjtp.gt",
-//                         GrimpTransformer.v());
+       
+       addTransform(pack, "wjtp.umr4", 
+               UnreachableMethodRemover.v());
+       addTransform(pack, "wjtp.ufr2",
+               UnusedFieldRemover.v());
+       _addStandardOptimizations(pack, 9);
+       addTransform(pack, "wjtp.umr5", 
+               UnreachableMethodRemover.v());
+       /* */   
+       
+       // Convert to grimp.
+       addTransform(pack, "wjtp.gt",
+               GrimpTransformer.v());
+       // This snapshot should be last...
+       addTransform(pack, "wjtp.finalSnapshotJimple",
+               JimpleWriter.v(),
+               "outDir:" + _outputDirectory);
+       addTransform(pack, "wjtp.finalSnapshot", 
+               ClassWriter.v(),
+               "outDir:" + _outputDirectory);
     }
 
 
@@ -403,10 +414,6 @@ public class Main extends KernelMain {
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
 
         // Generate the makefile files in outDir
-        System.out.println("_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage + 
-                " outDir:" + _outputDirectory + 
-                " templateDirectory:" + _templateDirectory);
         addTransform(pack, "wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName +
@@ -435,16 +442,8 @@ public class Main extends KernelMain {
             main.initialize(toplevel);
 
             // Parse any copernicus args.
-            System.out.println("args = ");
-            for(int i = 0; i < args.length; i++) {
-                System.out.println(args[i]);
-            }
             String[] sootArgs = _parseArgs(args);
-            System.out.println("sootArgs = ");
-            for(int i = 0; i < sootArgs.length; i++) {
-                System.out.println(sootArgs[i]);
-            }
-              
+                         
             // Add Transforms to the Scene.
             main.addTransforms();
 
@@ -495,7 +494,6 @@ public class Main extends KernelMain {
     private static String[] _parseArgs(String args[]) {
         // Ignore the first argument.
         for(int i = 1; i < args.length; i++) {
-            System.out.println("arg = " + args[i]);
             if(args[i].equals("-targetPackage")) {
                 i++;
                 if(i < args.length) {

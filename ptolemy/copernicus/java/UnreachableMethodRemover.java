@@ -111,27 +111,20 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
-            for (Iterator interfaces = theClass.getInterfaces().iterator();
-                 interfaces.hasNext();) {
-                SootClass theInterface = (SootClass)interfaces.next();
-                // Except for InequalityTerm...
-                if (theInterface.getName().equals(
-                        "ptolemy.graph.InequalityTerm")) {
-                    continue;
+            //  System.out.println("forcing interfaces of " + theClass);
+            if(!theClass.isInterface()) {
+                for (Iterator interfaces = theClass.getInterfaces().iterator();
+                     interfaces.hasNext();) {
+                    SootClass theInterface = (SootClass)interfaces.next();
+              
+                    _addMethodsFrom(forcedReachableMethodSet,
+                            theInterface, theClass);
+              
                 }
-                Set methodSet = _getMethodSet(theInterface);
-                for (Iterator methods = methodSet.iterator();
-                     methods.hasNext();) {
-                    SootMethod method = (SootMethod)
-                        methods.next();
-                    SootMethod classMethod = theClass.getMethod(
-                            (String)method.getSubSignature());
-                    forcedReachableMethodSet.add(classMethod);
-                }
-            }
-        }       
+            }       
+        }
 
-        System.out.println("forcedMethods = " + forcedReachableMethodSet);
+        //  System.out.println("forcedMethods = " + forcedReachableMethodSet);
 
         // Construct the graph of methods that are directly reachable
         // from any method.
@@ -163,21 +156,45 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             }
         }
     }
+    private void _addMethodsFrom(Set forcedReachableMethodSet, 
+            SootClass theInterface, SootClass theClass) {
+        // Except for InequalityTerm...
+        if (theInterface.getName().equals(
+                    "ptolemy.graph.InequalityTerm")) {
+            return;
+        }
+        Set methodSet = _getMethodSet(theInterface);
+        for (Iterator methods = methodSet.iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)
+                methods.next();
+            try {
+                SootMethod classMethod = theClass.getMethod(
+                        (String)method.getSubSignature());
+                forcedReachableMethodSet.add(classMethod);
+            } catch (Exception ex) {
+                // Ignore..
+            }
+        }
+        
+        for(Iterator superInterfaces = theInterface.getInterfaces().iterator();
+            superInterfaces.hasNext();) {
+            _addMethodsFrom(forcedReachableMethodSet,
+                    (SootClass)superInterfaces.next(), theClass); 
+        }
+    }
 
-    // Return a set of strings containing all the signatures of
-    // methods in the cgiven class.
+    // Return a set of the methods in the given class.
     private Set _getMethodSet(SootClass theClass) {
         Set methodSet = new HashSet();
         List methodList = new ArrayList(theClass.getMethods());
         for (Iterator methods = methodList.iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            SootMethod aMethod = theClass.getMethod(
-                    method.getSubSignature());
-            if (aMethod != null) {
+            if (method != null) {
                 System.out.println("Assuming method " +
-                        aMethod + " is reachable");
-                methodSet.add(aMethod);
+                        method + " is reachable");
+                methodSet.add(method);
             }
         }
         return methodSet;

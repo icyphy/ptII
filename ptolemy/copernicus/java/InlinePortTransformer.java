@@ -229,14 +229,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                 ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
-            // Loop through all the methods and inline calls on ports.
+            // Loop through all the methods and replace calls on ports.
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                System.out.println("inline port body of " +
-                        method + " = " + body);
+                //System.out.println("Replacing port invocations in" + method);
                 // System.out.println("method = " + method);
 
                 boolean moreToDo = true;

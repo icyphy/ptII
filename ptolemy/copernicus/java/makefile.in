@@ -108,54 +108,78 @@ WATCHDOGTIMEOUT =     600000
 ITERATIONS =		1000
 ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
+# Directories that contain snapshots.
+SNAPSHOTS=jimple1 jimple2 jimple3 jimple4
 
-demo: runJava
+# The statistics file for running comparisons.
+STATSFILE=runSnapShot.stats
+
+# The prefix for treeshaken jar files.
+TREESHAKE_PREFIX = $(TARGETPATH)/treeshake
+
+# The place where treeshake scripts are.
+TREESHAKE=$(ROOT)/util/testsuite/treeshake
+
+# The rule run by the long nightly build test: $PTII/util/testsuite/codegen.tcl
+demo: compareAll
+
+# The rule run by the regular nightly build quick smoke test: 
+# copernicus/java/test
+smokeTest: treeShake runTreeShake
+
+# Run the final generated code.
 runJava:
 	@echo "Run the deep model"
 	"$(JAVA)" $(MEMORYJFLAGS) \
-	-Xfuture -classpath "$(CLASSPATH)" \
+	-Xfuture -classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main 
 
-compareAll: treeShakeAll runAll compareTreeShakeJars
+# Run a complete profiling and compare the outputs.
+compareAll: treeShakeAll profileAll compareTreeShakeJars
 
+# TreeShake all versions of the generated code.
 treeShakeAll: treeShakeWithoutCodegen  \
 		treeShakeSnapshots \
 		treeShake \
 	 	obfuscate
 
-runAll: runTreeShakeWithoutCodegen \
-	runSnapshots \
-	runTreeShake \
-        runObfuscate \
+# Profile all versions of the generated code.
+profileAll: profileTreeShakeWithoutCodegen \
+	profileTreeShakeSnapshots \
+	profileTreeShake \
+        profileObfuscate \
 
-TREESHAKE_PREFIX = $(TARGETPATH)/treeshake
-TREESHAKE=$(ROOT)/util/testsuite/treeshake
-treeshake_codegen.jar: treeShake
-
-# Rules for dealing with final codegen version and jarClassList.txt
+######################################################
+# Rules for dealing with final codegen version
 treeShake:
 	@echo "Create the minimal jar file from the final codegen version"
 	@echo "  using the jarClassList.txt file"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
 		-c $(TARGETPATH)jarClassList.txt \
 		"$(JAVA)" \
-			-classpath "$(CLASSPATH)" \
+			-classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
 	@echo "Run 'make runTreeShake' to run the tree shaken version"
 
-# Rules for dealing with final codegen version
 treeShakeByRunning:
 	@echo "Create the minimal jar file from the final codegen version"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
 		"$(JAVA)" \
-			-classpath "$(CLASSPATH)" \
+			-classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
 	@echo "Run 'make runTreeShake' to run the tree shaken version"
 
 runTreeShake:
 	@echo "Run the final codegen version"
+	@echo "Note that you can run the codegen version by hand with"
+	@echo "  java -jar $(TREESHAKE_PREFIX)_codegen.jar"
+	"$(JAVA)" -classpath $(TREESHAKE_PREFIX)_codegen.jar \
+			$(TARGETPACKAGE).Main
+
+profileTreeShake:
+	@echo "Profile the final codegen version"
 	@echo "Note that you can run the codegen version by hand with"
 	@echo "  java -jar $(TREESHAKE_PREFIX)_codegen.jar"
 	@rm -f  $(STATSFILE)
@@ -170,14 +194,7 @@ runTreeShake:
 	@"$(ROOT)/util/testsuite/memorystats" "$(MODEL) codegen" < $(STATSFILE);
 	@rm -f $(STATSFILE)
 
-# Directories that contain snapshots
-SNAPSHOTS=jimple1 jimple2 jimple3 jimple4
-
-STATSFILE=runSnapShot.stats
-
-# $PTII/util/testsuite/codegen.tcl calls runDemo by default.
-runDemo: compareAll
-
+######################################################
 # Rules for dealing with original model
 treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
@@ -190,7 +207,14 @@ treeShakeWithoutCodegen:
 	ls -l $(TREESHAKE_PREFIX).jar
 
 runTreeShakeWithoutCodegen:
-	@echo "Run without codegen with treeshake.jar"
+	@echo "Run the final codegen version"
+	@echo "Note that you can run the original version by hand with"
+	@echo "  java -jar $(TREESHAKE_PREFIX).jar"
+	"$(JAVA)" -classpath $(TREESHAKE_PREFIX).jar \
+			$(TARGETPACKAGE).Main
+
+profileTreeShakeWithoutCodegen:
+	@echo "Prorile without codegen with treeshake.jar"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
@@ -204,8 +228,9 @@ runTreeShakeWithoutCodegen:
 	done
 	"$(ROOT)/util/testsuite/memorystats" "$(MODEL) interpreted" < $(STATSFILE)
 
+######################################################
 # Rules for dealing with snapshots
-treeShakeAndRunSnapshots: treeShakeSnapshots runSnapshots
+treeShakeAndProfileSnapshots: treeShakeSnapshots runTreeShakeSnapshots
 
 treeShakeSnapshots:
 	@echo "Treeshake $(MODEL) snapshots"
@@ -219,11 +244,20 @@ treeShakeSnapshots:
 		ls -l $(TREESHAKE_PREFIX)_$${snapshot}.jar; \
 	done
 
-runSnapshots:
+runTreeShakeSnapshots:
 	@echo "Treeshake $(MODEL) snapshots"
 	for snapshot in $(SNAPSHOTS); \
 	do \
-		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
+		@echo "Run the code from $(TARGETPATH)/$${snapshot}"; \
+		"$(JAVA)" -classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+			$(TARGETPACKAGE).Main \
+	done
+
+profileTreeShakeSnapshots:
+	@echo "Treeshake $(MODEL) snapshots"
+	for snapshot in $(SNAPSHOTS); \
+	do \
+		echo "Profile the code from $(TARGETPATH)/$${snapshot}"; \
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
@@ -237,32 +271,7 @@ runSnapshots:
 		"$(ROOT)/util/testsuite/memorystats" "$(MODEL) $$snapshot" < $(STATSFILE); \
 	done
 
-smokeTest: treeShake
-	"$(JAVA)" $(MEMORYJFLAGS) \
-		-classpath $(TREESHAKE_PREFIX)_codegen.jar \
-		$(TARGETPACKAGE).Main
-
-# treeShakeCodegen:
-# 	@echo "Treeshake the final codegen version"
-# 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
-# 		"$(JAVA)" \
-# 			-classpath "$(CLASSPATH)" \
-# 			$(TARGETPACKAGE).Main | tail -1
-# 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
-
-# runTreeShakeCodegen:
-# 	@echo "Run the final codegen version"
-# 	@rm -f  $(STATSFILE)
-# 	@for repeat in 1 2 3 4; \
-# 	do \
-# 		"$(JAVA)" \
-# 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
-# 			$(TARGETPACKAGE).Main | tail -1 | \
-# 			tee -a $(STATSFILE); \
-# 	done
-# 	@"$(ROOT)/util/testsuite/memorystats" "$(MODEL) codegen" < $(STATSFILE);
-# 	@rm -f $(STATSFILE)
-
+# Compare codegen to original jar file.
 compareTreeShakeJars:
 	@echo "See ${TREESHAKE_PREFIX}_jardiff.txt"
 	@echo "  for the .class files are present in the regular jar,"
@@ -287,45 +296,23 @@ compareTreeShakeJars:
 # Jode can be downloaded from
 # http://jode.sourceforge.net/download.php
 
-obfuscate: treeshake_codegen.jar
+obfuscate:
 	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)/obfuscateScript.jos\""
 	@ls -l treeshake_codegen_obfuscated.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
 
-runObfuscate:
+runObfuscate: 
 	@echo "Run the final obfuscated version"
+	"$(JAVA)" -classpath treeshake_codegen_obfuscated.jar \
+		$(TARGETPACKAGE).Main
+
+profileObfuscate:
+	@echo "Profile the final obfuscated version"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
 		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath treeshake_codegen_obfuscated.jar \
-			$(TARGETPACKAGE).Main | tail -1 | \
-			tee -a $(STATSFILE); \
-                "$(ROOT)/util/testsuite/gcstats" < "$(GCLOGFILE)" | tee -a $(STATSFILE); \
-	done
-	@"$(ROOT)/util/testsuite/memorystats" "$(MODEL) codegen" < $(STATSFILE);
-	@rm -f $(STATSFILE)
-	@echo "run 'make treeShakeObfuscate' to treeShake the obfuscated code"
-
-
-treeShakeObfuscate:
-	@echo "Create the minimal jar file from the obfuscated codegen version"
-	"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_obfuscated.jar \
-		"$(JAVA)" \
-			-classpath "obfuscated.jar$(CLASSPATHSEPARATOR)" \
-			$(TARGETPACKAGE).Main | tail -1
-	@ls -l $(TREESHAKE_PREFIX)_obfuscated.jar;
-	@ls -l treeshake_codegen_obfuscated.jar
-
-	@echo "Run 'make runTreeShakeObfuscate' to run the tree shaken version"
-
-runTreeShakeObfuscate:
-	@echo "Run the final treeshaken, obfuscated, codegen version"
-	@rm -f  $(STATSFILE)
-	@for repeat in 1 2 3 4; \
-	do \
-		"$(JAVA)" $(MEMORYJFLAGS) \
-			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
                 "$(ROOT)/util/testsuite/gcstats" < "$(GCLOGFILE)" | tee -a $(STATSFILE); \
@@ -349,7 +336,6 @@ GCJ_LIBDIR =	$(GCJ_DIR)/lib
 #GCJ_FLAGS =	-static
 GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check
 
-
 # GCJ flags used at link time
 #GCJ_LINK_FLAGS = -v -Wl,-R,$(GCJ_LIBDIR)
 GCJ_LINK_FLAGS = -v
@@ -357,7 +343,8 @@ GCJ_LINK_FLAGS = -v
 #GCJ_LINK_LIBS =  -L$(GCJ_LIBDIR)
 
 #  GCJ only needs one rule now!
-gcj:    treeShake
+gcj:    
+	@echo "Running GCJ on treeshake_codegen.jar"
 	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TARGETPATH)/treeshake_codegen.jar
 
 
@@ -560,22 +547,6 @@ gcj3_2:
 			-L$(LIBDIR) \
 			-ldata -lexpr -ltype -lunit -lexpr -ldata -lmath -lgraph -lutil;
 	ls -l $(TARGETPATH)/gcj/$(MODEL)_lib_gcj
-
-#############################################################################
-
-
-timeOrthoCommDemo:
-	@echo "Time the model for $(ITERATIONS) iterations"
-	"$(JAVA)" $(MEMORYJFLAGS) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).Main  | tail
-
-runStaticDemo:
-	@echo "Run the deep model static"
-	"$(JAVA)" $(MEMORYJFLAGS) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).StaticMain 
-# -iterations 50
 
 ############################################################################
 # Rules to run the jode as a decompiler

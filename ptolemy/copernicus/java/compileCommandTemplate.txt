@@ -15,12 +15,5 @@
  -templateDirectory "ptolemy/copernicus/java"
  -generatorAttributeFileName "@_generatorAttributeFileName@"
  -sootArgs
- -d "@ptIIUserDirectory@"
- -via-grimp
- -w
- -p wjop.smb off
- -p wjop.si off
- -p wjap.ra off
- -p cg off
  @compileOptions@
 
