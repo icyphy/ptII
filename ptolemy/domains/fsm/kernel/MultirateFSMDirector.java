@@ -31,6 +31,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -76,6 +77,14 @@ public class MultirateFSMDirector extends FSMDirector {
     /////////////////////////////////////////////////////////////////////
     ////                    public methods                           ////
     
+    /** Return a new receiver of a type compatible with this director.
+     *  This returns an instance of SDFReceiver.
+     *  @return A new SDFReceiver.
+     */
+    public Receiver newReceiver() {
+        return new SDFReceiver();
+    }
+    
     /** Return true if data are transferred from the input port of
      *  the container to the connected ports of the controller and
      *  of the current refinement actor.
@@ -109,13 +118,19 @@ public class MultirateFSMDirector extends FSMDirector {
                 if (insideReceivers != null
                         && insideReceivers[i] != null) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
+                        // Since we only transfer number of tokens declared by
+                        // the port rate, we should be safe to clear the receivers.
+                        // Maybe we should move this step to prefire() or postfire(),
+                        // as in FSMDirector.
+                        insideReceivers[i][j].clear();
+                        /*
                         while (insideReceivers[i][j].hasToken()) {
                             // clear tokens.
                             // FIXME: This could be a problem for Giotto, etc.
                             // as get() method in Giotto does not remove the
                             // token from the receiver.
                             insideReceivers[i][j].get();
-                        }
+                        }*/
                     }
                     // Transfer number of tokens at most the declared port rate.
                     // Note: we don't throw exception if there are fewer tokens
