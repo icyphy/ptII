@@ -136,6 +136,7 @@
 	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
             <input source="ptolemy/actor/lib/logic/logic.xml"/>
             <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/array.xml"/>
             <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           </group>
         ?>
