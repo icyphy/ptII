@@ -69,6 +69,10 @@ public class Scale3D extends GRTransform {
     public Scale3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        scaleInput = new TypedIOPort(this, "scale input");
+        scaleInput.setInput(true);
+        
         scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));
 	    scaleFactor.setTypeEquals(BaseType.DOUBLE);
 	    xScale = new Parameter(this, "xScale", new DoubleToken(1.0));
@@ -79,6 +83,11 @@ public class Scale3D extends GRTransform {
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    
+    /** The amount of rescaling during firing. If this transform is in
+     *  accumulate mode, the scaling value is accumulated
+     */
+    public TypedIOPort scaleInput;
 
     /** The scale factor.
      *  This parameter should contain a DoubleToken.
