@@ -234,15 +234,15 @@ public class TimeKeeper {
 	for( int i = 0; i < listSize; i++ ) {
 	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
 	    rcvr = triple.getReceiver();
-	    // updateRcvrList(rcvr, rcvr.getRcvrTime(), rcvr.getPriority() );
 	    updateRcvrList(rcvr);
 	}
     }
 
     /** Cause the actor managed by this time keeper to send a NullToken
-     *  to all output channels that have a receiver time less than the
-     *  current time of this time keeper. Associate a time stamp with each
-     *  NullToken that is equal to the current time of this thread.
+     *  to all output channels that have a receiver time less than or
+     *  equal to the current time of this time keeper. Associate a time i
+     *  stamp with each NullToken that is equal to the current time of 
+     *  this thread.
      */
     public synchronized void sendOutNullTokens() {
 	Enumeration ports = _actor.outputPorts();
@@ -252,7 +252,7 @@ public class TimeKeeper {
 	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
-                    if( time >
+                    if( time >=
 			    ((DDEReceiver)rcvrs[i][j]).getRcvrTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
                                 new NullToken(), time );
@@ -271,7 +271,7 @@ public class TimeKeeper {
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
      */
-    public synchronized void setCurrentTime(double time) {
+    synchronized void setCurrentTime(double time) {
 	if( time < _currentTime && 
 		time != TimedQueueReceiver.INACTIVE ) {
 	    throw new IllegalArgumentException(
@@ -323,10 +323,6 @@ public class TimeKeeper {
 		    //
 		    // Is the following necessary?? 
 		    //
-		    /*
-		    updateRcvrList( (DDEReceiver)rcvrs[i][j], 
-			    _currentTime, currentPriority );
-		    */
 		    updateRcvrList( (DDEReceiver)rcvrs[i][j] );
 
                     currentPriority++;
@@ -363,10 +359,6 @@ public class TimeKeeper {
      * @param priority The priority of the repositioned 
      *  TimedQueueReceiver.
      */
-    /*
-    public synchronized void updateRcvrList(TimedQueueReceiver tqr,
-	    double time, int priority ) {
-    */
     public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
 	double time = tqr.getRcvrTime(); 
 	int priority = tqr.getPriority(); 
