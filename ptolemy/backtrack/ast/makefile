@@ -65,7 +65,7 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
-	jrefactory-copyright.txt
+	jrefactory-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
