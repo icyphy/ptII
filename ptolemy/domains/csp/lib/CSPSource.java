@@ -66,14 +66,14 @@ public class CSPSource extends CSPActor {
             while (count < 10 ) {
                 Token t = new IntToken(count);
                 //System.out.println(getName() + ": created token about to send it");
-		//output.send(0,t);
-		receiver.put(t);
+		output.send(0,t);
+		//receiver.put(t);
                 System.out.println("Source sent Token: " +t.toString() + " to " + getName());
                 count++;
             }
             // terminate 
-            //output.send(0, new NullToken());
-	    receiver.put( new NullToken());
+            output.send(0, new NullToken());
+	    //receiver.put( new NullToken());
         } catch (Exception ex) {
             System.out.println(getName() + ": " + ex.getMessage() + ":" +ex.getClass().getName());
             //throw new IllegalActionException(this, "error in source");

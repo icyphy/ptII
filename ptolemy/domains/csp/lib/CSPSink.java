@@ -64,8 +64,8 @@ public class CSPSink extends CSPActor {
         try {
             int count = 0;
             while (count < 1000 ) {
-	        // Token t = input.get(0);
-                Token t = receiver.get();
+	         Token t = input.get(0);
+                 //Token t = receiver.get();
                 if (t instanceof NullToken ) {
                     System.out.println("\n" + getName() + ": fired " + times + " times.");
                     return;

@@ -78,7 +78,7 @@ public class BasicDemo {
             IOPort out = source.output;
             IOPort in = sink.input;
 
-            //IORelation rel = (IORelation)univ.connect(out, in, "R1");
+            IORelation rel = (IORelation)univ.connect(out, in, "R1");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
             univ.getExecutiveDirector().run();

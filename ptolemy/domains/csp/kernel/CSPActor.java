@@ -283,7 +283,7 @@ public class CSPActor extends AtomicActor implements Runnable {
   public void initialize() 
        throws CloneNotSupportedException, IllegalActionException {
            CSPDirector director = (CSPDirector)getDirector();
-	 _myThread = new Thread( director.getProcessGroup(), this);
+	 _myThread = new Thread( director.getProcessGroup(), this, getName());
          System.out.println("Created thread for " + getName() + "not started");
 	 director.actorStarted();
   }
