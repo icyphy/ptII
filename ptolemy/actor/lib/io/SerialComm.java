@@ -81,6 +81,11 @@ public class SerialComm extends TypedAtomicActor
         serialPortName = new Parameter(this, "serialPortName");
         serialPortName.setTypeEquals(BaseType.STRING);
 
+        baudRate = new Parameter(this, "baudRate");
+        baudRate.setTypeEquals(BaseType.INT);
+        baudRate.setToken(new IntToken(19200));
+
+
 	  Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
 	  while (allPorts.hasMoreElements()) {
             CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
@@ -109,15 +114,19 @@ public class SerialComm extends TypedAtomicActor
      */
     public Parameter serialPortName;
 
+    /** The baud rate for the serial port.
+     */
+    public Parameter baudRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>serialPortName</i>, then hope 
-     * the model is not running and do nothing.
+     * the model is not running and do nothing.  Likewise if baudRate.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == serialPortName) {
+        if (attribute == serialPortName || attribute == baudRate) {
             /* Do nothing */
         } else {
             super.attributeChanged(attribute);
@@ -169,6 +178,9 @@ public class SerialComm extends TypedAtomicActor
             String _serialPortName = ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(_serialPortName);
             serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
+
+            int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
+            serialPort.setSerialPortParams(bits_per_second, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
