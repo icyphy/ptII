@@ -211,7 +211,7 @@ public class SDFScheduler extends Scheduler {
 	Schedule schedule = new Schedule();
 	Enumeration enumSched = _schedule();
 	while (enumSched.hasMoreElements()) {
-	    Executable actor = (Executable)enumSched.nextElement();
+	    Actor actor = (Actor)enumSched.nextElement();
 	    Firing firing = new Firing();
 	    firing.setActor(actor);
 	    schedule.add(firing);
