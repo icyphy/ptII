@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -147,6 +148,8 @@ public class Documentation extends StringAttribute {
     
     /** Override the base class to remove this instance from
      *  its container if the argument is an empty string.
+     *  The removal is done in a change request, so it may
+     *  not take effect immediately.
      *  @param expression The value of the string attribute.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
@@ -154,11 +157,13 @@ public class Documentation extends StringAttribute {
     public void setExpression(String expression)
             throws IllegalActionException {
         if (expression.equals("")) {
-            try {
-                setContainer(null);
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
-            }
+            ChangeRequest request = new ChangeRequest(
+                    this, "Delete empty doc tag.") {
+                protected void _execute() throws Exception {
+                    setContainer(null);
+                }
+            };
+            requestChange(request);
         } else {
             super.setExpression(expression);
         }

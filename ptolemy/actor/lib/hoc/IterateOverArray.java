@@ -238,7 +238,7 @@ public class IterateOverArray extends TypedCompositeActor
         try {
             IteratePort result = new IteratePort(this, name);
             // Prevent deletion via MoML (or name changes, for that matter).
-            result.setDerived(true);
+            result.setDerivedLevel(1);
             // Force the port to be persistent despite being derived.
             result.setPersistent(true);
             return result;
@@ -322,7 +322,7 @@ public class IterateOverArray extends TypedCompositeActor
                         ComponentEntity prior = (ComponentEntity)priors.next();
                         // If there is at least one more contained object,
                         // then delete this one.
-                        if (priors.hasNext() && !isDerived()) {
+                        if (priors.hasNext() && getDerivedLevel() > 0) {
                             prior.setContainer(null);
                         } else {
                             // The last entity in the entityList is
