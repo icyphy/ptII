@@ -44,39 +44,42 @@ import ptolemy.plot.*;
 import java.awt.Container;
 import javax.swing.SwingUtilities;
 
-/** This actor produces as its output a signal that has been sketched by the
- *  user on the screen.  The <i>length</i> parameter specifies the
- *  number of samples in the sketched signal.  The <i>period</i>
- *  parameter, if greater than zero, specifies the period with which
- *  the signal should be repeated (in samples).  If the period is longer
- *  than the length, then zeros will be inserted. If the period is less
- *  than the length, then the last few values will not be used.
- *  If this parameter is zero or
- *  negative, then the sketched signal is produced exactly once,
- *  at the beginning of the execution of the model.  If the period
- *  is greater than zero, and the sketch is modified during execution
- *  of the model, then the modification appears in the next cycle of
- *  the period after the modification has been completed.  In other
- *  words, the change does not appear mid-cycle.
- *  <p>
- *  This actor can be used with its own plot widget, which is the
- *  default behavior, or more interestingly, it can share a plot
- *  widget with another plot object.  This way, the sketch can be
- *  be made right on a plot that also displays the results of
- *  processing the sketched signal.
- *  <p>
- *  When this actor has its own plot widget, you can specify where that
- *  widget appears by calling place().  If you do not, then the
- *  plot widget will be created in its own window.  You can also
- *  call place() with an argument that is an instance of EditablePlot.
- *  This is how you create a shared plot.  That same instance of
- *  EditablePlot can be used by another actor, such as SequencePlotter,
- *  to display data.  Be sure to set the <i>dataset</i> parameter
- *  of this actor or the <i>startingDataset</i> parameter of the
- *  other actor so that they do not use the same dataset numbers.
- *
- *  @author  Edward A. Lee
- *  @version $Id$
+//////////////////////////////////////////////////////////////////////////
+//// SketchedSource
+/**
+This actor produces as its output a signal that has been sketched by
+the user on the screen.  The <i>length</i> parameter specifies the
+number of samples in the sketched signal.  The <i>period</i>
+parameter, if greater than zero, specifies the period with which the
+signal should be repeated (in samples).  If the period is longer than
+the length, then zeros will be inserted. If the period is less than
+the length, then the last few values will not be used.  If this
+parameter is zero or negative, then the sketched signal is produced
+exactly once, at the beginning of the execution of the model.  If the
+period is greater than zero, and the sketch is modified during
+execution of the model, then the modification appears in the next
+cycle of the period after the modification has been completed.  In
+other words, the change does not appear mid-cycle.
+
+<p>
+This actor can be used with its own plot widget, which is the default
+behavior, or more interestingly, it can share a plot widget with
+another plot object.  This way, the sketch can be be made right on a
+plot that also displays the results of processing the sketched signal.
+
+<p>
+When this actor has its own plot widget, you can specify where that
+widget appears by calling place().  If you do not, then the plot
+widget will be created in its own window.  You can also call place()
+with an argument that is an instance of EditablePlot.  This is how you
+create a shared plot.  That same instance of EditablePlot can be used
+by another actor, such as SequencePlotter, to display data.  Be sure
+to set the <i>dataset</i> parameter of this actor or the
+<i>startingDataset</i> parameter of the other actor so that they do
+not use the same dataset numbers.
+
+@author  Edward A. Lee
+@version $Id$
  */
 public class SketchedSource extends Source
     implements Placeable, SequenceActor {
