@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Green (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -34,6 +34,7 @@ package ptolemy.actor.lib.gui;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.data.expr.Parameter;
 
 import java.awt.Container;
 import java.awt.BorderLayout;
@@ -54,7 +55,7 @@ import ptolemy.actor.lib.*;
 A graphical component that displays the contents of a Matrix. This
 actor has a single input port, which only accepts MatrixTokens. One
 token is consumed per firing.  The data in the MatrixToken is
-displayed in a table format with scrollbars, using the swing table
+displayed in a table format with scrollbars, using the swing JTable
 class.
 
 @author Bart Kienhuis
@@ -72,16 +73,51 @@ public class MatrixViewer extends Sink implements Placeable {
      *   actor with this name.
      */
     public MatrixViewer(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
-        input.setTypeEquals(BaseType.MATRIX);
-    }
+            throws NameDuplicationException, IllegalActionException  
+        {
+            super(container, name);
+            input.setMultiport(false);
+            input.setTypeEquals(BaseType.MATRIX);
+
+            // set the parameters
+            width = new Parameter(this, "width", new IntToken(500));
+            width.setTypeEquals(BaseType.INT);
+            height = new Parameter(this, "height", new IntToken(300));
+            height.setTypeEquals(BaseType.INT);
+
+        }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The width of the table (an integer). */
+    public Parameter width;
+
+    /** The height of the table (an integer). */
+    public Parameter height;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Notification that an attribute has changed.
+     *  @exception IllegalActionException If the expression of the
+     *   attribute cannot be parsed or cannot be evaluated.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException 
+        {
+            System.out.println(" attribute change " + attribute.toString());
+            if (attribute == width) {                
+                _width = ((IntToken)width.getToken()).intValue();
+            } else if (attribute == height) {
+                _height = ((IntToken)height.getToken()).intValue();
+            } else {
+                super.attributeChanged(attribute);
+            }
+        }
+
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then creates new parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
@@ -89,52 +125,55 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         MatrixViewer newobj = (MatrixViewer)super.clone(ws);
-        newobj.input
-            = (TypedIOPort)newobj.getPort("input");
+        newobj.width = (Parameter)newobj.getAttribute("width");
+        newobj.height = (Parameter)newobj.getAttribute("height");
         return newobj;
     }
 
-    /** If a token exists on the <i>input</i> port, first determine
-     *  the type of MatrixToken that it is, then pass it to the proper
-     *  function to convert its data into an Object[][].  The
-     *  Object[][] is then used to create a new instance of a JTable.
+    /** Consume a token from the <i>input</i> port when present and
+     *  converted the content of the token into a table when it is of
+     *  type Matrix. If not token is available, do nothing. The table
+     *  that is generated is an instance of a swing class JTable.
+     *
+     *  @exception IllegalActionException If there is no director, or
+     *  if the base class throws it.
      */
     public void fire() throws IllegalActionException {
-
         Token in = null;
-        Object[][][] returnValue;
-
-        int width = input.getWidth();
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                in = input.get(i);
-                _matrixTable = new MatrixAsTable((MatrixToken) in);
-                table.setModel(_matrixTable);
-
-                // Avoid reordering of the tables
-                table.getTableHeader().setReorderingAllowed(false);
-            }
+        if (input.hasToken(0)) {
+            in = input.get(0);
+            _matrixTable = new MatrixAsTable((MatrixToken) in);
+            _table.setModel(_matrixTable);
         }
     }
 
-    /** Get the preferred size of this component.
-     *  This is simply the dimensions specified by setSize(),
-     *  if this has been called, or the default width and height
-     *  otherwise (500 by 300).
+    /** Get the preferred size of this component.  This is simply the
+     *  dimensions specified by the parameters <i>height</i> and
+     *  <i>width</i> that represent respectively the height and width
+     *  of the table representing the Matrix. The default value for
+     *  preferred size is a height of 300 pixels and a width of 500
+     *  pixels.
+     *
      *  @return The preferred size.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(_preferredWidth, _preferredHeight);
+        return new Dimension( _width, _height );
     }
 
-    /** Create a new JTable on the screen.  If a panel has not been
-     *  specified, place the JTable into its own frame.  Otherwise,
-     *  place it in the specified panel.
-     *  @exception IllegalActionException If the parent class throws it.
+    /** Initialize this matrix viewer. If a table hasn't been created
+     *  yet, create one by calling the method <i>place</i> on the
+     *  container. If no container yet exists (i.e., the container is
+     *  null), the place method will create a table in its own window,
+     *  otherwise the table is place in the given
+     *  container. Furthermore, if a frame has been created in the
+     *  place method, it is explicitly made visible.
+     * 
+     *  @exception IllegalActionException If the parent class
+     *  throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (table == null) {
+        if (_table == null) {
             place(_container);
         }
         if (_frame != null) {
@@ -143,74 +182,59 @@ public class MatrixViewer extends Sink implements Placeable {
     }
 
     /** Specify the container in which the data should be displayed.
-     *  An instance of JTextArea will be added to that container.
-     *  This method needs to be called before the first call to initialize().
-     *  Otherwise, an instance of TextArea will be placed in its own frame.
-     *  The text area is also placed in its own frame if this method
-     *  is called with a null argument.
-     *  The background of the text area is set equal to that of the container
-     *  (unless it is null).
+     *  An instance of JTable will be added to that container. The
+     *  table is configured such that a user cannot reorder the
+     *  columns of the table. Also, the table maintains a fixed
+     *  preferred size, and will emply scrollbars if the table is
+     *  larger than the preferred size. This method needs to be called
+     *  before the first call to initialize(). Otherwise, an instance
+     *  of JTable will be placed in its own frame. The table is also
+     *  placed in its own frame if this method is called with a null
+     *  argument. The background of the table is set equal to that of
+     *  the container (unless it is null).
      *
-     *  @param container The container into which to place the text area.
+     *  @param container The container into which to place the table.
      */
     public void place(Container container) {
         _container = container;
+
+        try {
+            _width = ((IntToken)width.getToken()).intValue();
+            _height = ((IntToken)height.getToken()).intValue();
+            //attributeChanged( height );
+            //attributeChanged( width );
+        } catch ( Exception e ){
+        }
+    
+        // create a table
+        _table = new JTable();
+        // Avoid reordering of the tables by the user
+        _table.getTableHeader().setReorderingAllowed(false);            
+        // Do not adjust column widths automatically, use a scrollbar
+        _table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        // add scroll pane to the table
+        _scrollPane = new JScrollPane(_table);
+        _scrollPane.setPreferredSize( getPreferredSize() );
+       
         if (_container == null) {
-            // place the text area in its own frame.
+            System.out.println("Container is null");
+            // place the table in its own frame.
             _frame = new JFrame(getFullName());
-            table = new JTable();
-            _scrollPane = new JScrollPane(table);
-            _scrollPane.setPreferredSize( getPreferredSize() );
             _frame.getContentPane().add(_scrollPane, BorderLayout.CENTER);
         } else {
-            table = new JTable();
-            table.setBackground(_container.getBackground());
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            _scrollPane = new JScrollPane(table);
-            _scrollPane.setPreferredSize( getPreferredSize() );
+            System.out.println("Container is exists");
+            // place the table in supplied container.
+            _table.setBackground(_container.getBackground());
             _container.add(_scrollPane, BorderLayout.CENTER);
         }
     }
-
-    /** Set the size of the MartixViewer. This methods records the
-     *  specified size so that getPreferredSize() returns the
-     *  specified value.  This only works, however, if the plot is
-     *  placed in its own JPanel.  This is because the JPanel asks the
-     *  contained component for its preferred size before determining
-     *  the size of the panel.  If the plot is placed directly in the
-     *  content pane of a JApplet, then, mysteriously, this method has
-     *  no effect.
-     *
-     *  @param width The width, in pixels.
-     *  @param height The height, in pixels.
-     */
-    public void setSize(int width, int height) {
-
-        _width = width;
-        _height = height;
-
-        _preferredWidth = width;
-        _preferredHeight = height;
-        _sizeHasBeenSet = true;
-
-        // Transfer the new values to the MatrixTable
-        _scrollPane.setPreferredSize( getPreferredSize() );
-        _scrollPane.revalidate();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    public  JTable table;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Container into which this plot should be placed */
-    private Container _container;
-
-    /** The scroll pane of the panel. */
-    private JScrollPane _scrollPane;
+    private Container _container = null; 
 
     /** Frame into which plot is placed, if any. */
     private JFrame _frame = null;
@@ -218,21 +242,27 @@ public class MatrixViewer extends Sink implements Placeable {
     /** The Abstract Table Model of a Matrix. */
     private MatrixAsTable _matrixTable = null;
 
-    /** Width and height of component in pixels. */
-    private int _width = 500, _height = 300,
-            _preferredWidth = 500, _preferredHeight = 300;
+    /** The scroll pane of the panel. */
+    private JScrollPane _scrollPane;
 
-    /** Indicator that size has been set. */
-    private boolean _sizeHasBeenSet = false;
+    /** The table representing the matrix. */
+    private  JTable _table;
+
+    /** Width of the matrix viewer in pixels. */
+    private int _width;
+
+    /** Height of the matrix viewer in pixels. */
+    private int _height;
 
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////
 
     /** This class provides the implementations of the methods in the
-        TableModel interface. To create a concrete TableModel of a
-        Matrix as a subclass of AbstractTableModel, the class provides
-        implementations for the most important methods. */
-    public class MatrixAsTable extends AbstractTableModel {
+     *  TableModel interface. To create a concrete TableModel of a
+     *  Matrix as a subclass of AbstractTableModel, the class provides
+     *  implementations for most of the methods.
+     */
+    private class MatrixAsTable extends AbstractTableModel {
 
         /** Construct for a specific matrix.
             @param matrix The matrix.
@@ -259,7 +289,7 @@ public class MatrixViewer extends Sink implements Placeable {
             column number.
             @param row The row number.
             @param column The column number.
-            @return The object store in the matrix at the specified location.
+            @return The object stored in the matrix at the specified location.
         */
         public Object getValueAt(int row, int column) {
             return (Object) (_matrix.getElementAsToken(row, column)).
