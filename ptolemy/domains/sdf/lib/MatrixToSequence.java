@@ -170,7 +170,9 @@ public class MatrixToSequence extends SDFTransformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         MatrixToSequence newObject = (MatrixToSequence)super.clone(workspace);
-        newObject.input.setTypeAtLeast(new FunctionTerm(newObject.output));
+
+        newObject.input.setTypeAtMost(BaseType.MATRIX);
+        newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
     }
 
