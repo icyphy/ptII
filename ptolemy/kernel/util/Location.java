@@ -162,7 +162,9 @@ public class Location extends SingletonAttribute
      *  @return The expression.
      */
     public String getExpression() {
-        if (_expressionSet) return _expression;
+        if (_expressionSet) {
+            return _expression;
+        }
         if (_location == null || _location.length == 0) {
             return "";
         }
@@ -231,8 +233,11 @@ public class Location extends SingletonAttribute
                     break;
                 }
             }
-            if (match) return;
+            if (match) {
+                return;
+            }
         }
+
         _location = location;
 
         NamedObj container = (NamedObj)getContainer();
@@ -277,7 +282,9 @@ public class Location extends SingletonAttribute
     public void validate() throws IllegalActionException {
         // If the value has not been set via setExpression(), there is
         // nothing to do.
-        if (!_expressionSet) return;
+        if (!_expressionSet) {
+            return;
+        }
         double[] location;
         if (_expression == null) {
             location = new double[2];
