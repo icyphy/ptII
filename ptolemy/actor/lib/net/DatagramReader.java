@@ -409,18 +409,24 @@ public class DatagramReader extends TypedAtomicActor {
      *  receiving a datagram.  This length does not include the bytes
      *  needed for storing the datagram's return address and other
      *  housekeeping information.  This buffer need only be big enough
-     *  to hold the payload or net contents of the datagram.
+     *  to hold the payload (a.k.a. data portion) of the datagram.
      */
     public Parameter actorBufferLength;
 
-    /** Length (in bytes) ... There is
-     *  also a buffer somewhere in the Java Virtual Machine or in the
-     *  underlying firmware or platform.  The size of this buffer is
-     *  not controlled by this actor, but it could be.  Its length is
-     *  accessible via the getReceiveBufferSize() and
-     *  setReceiveBufferSize() methods of @see java.net.DatagramSocket.
-     *  Caution - The set*() is only a suggestion.  Must call get*()
-     *  to see what you actually got.
+    /** Length (in bytes) of the buffer within java and/or the platform 
+     *  layers below java.  Java documents refers to all this 
+     *  collectively as the platform.  The size of this buffer is
+     *  controlled via the getReceiveBufferSize() and
+     *  setReceiveBufferSize() methods.  @see java.net.DatagramSocket.
+     *  Caution #1 - The platform treats setReceiveBufferSize() as a
+     *  suggestion only.  It supposedly reports the actual buffer size
+     *  granted in subsequent calls to getReceiveBufferSize().  However,
+     *  myy experiments with this showed it granting buffers as large as
+     *  2 gigabytes, with no apparent limit except the maximum representable
+     *  integer value.  Thus, I suggest taking this with a grain of salt.
+     *  Caution #2 - the get/setReceiveBufferSize() calls block when
+     *  called as long as another thread is in a receive() call on that
+     *  same socket.  This is undocumented in Java's documentation. 
      */
     public Parameter platformBufferLength;
 
@@ -642,29 +648,14 @@ public class DatagramReader extends TypedAtomicActor {
             }
 
 
+	// Just set a flag here, so that before the next receive() call
+	// the new buffer size will be set.  Setting it here did not
+	// work because the calls to set the size and get the existing
+	// size both block if the socket is being received on.
         } else if (attribute == platformBufferLength && _socket != null) {
-	    if (platformBufferLength.getToken() != null) {
-		int requestedValue = ((IntToken)
-		        platformBufferLength.getToken()).intValue();
-		int existingValue = 0; // Initialization required by compiler.
-		try {
-		    System.out.println("About to get...");
-		    existingValue = _socket.getReceiveBufferSize();
-		    System.out.println("Completed get...");
-		} catch (SocketException sex) {
-		    System.out.println("sex1" + sex.toString());
-		}
-		if (requestedValue != existingValue) {
-		    try {
-			System.out.println("About to set...");
-			_socket.setReceiveBufferSize(requestedValue);
-			System.out.println("Completed set...");
-		    } catch (SocketException sex) {
-			System.out.println("sex2" + sex.toString());
-		    }
-		}
+	    synchronized(_syncBufferLength) {
+		_ChangeRequestedToPlatformBufferLength = true;
 	    }
-
 
         } else {
             super.attributeChanged(attribute);
@@ -938,7 +929,7 @@ public class DatagramReader extends TypedAtomicActor {
                     " Failed to create a new socket: " + ex);
         }
 
-
+	// [Set and] get platform's buffer length.
 	try {
 	    int socketSize = _socket.getReceiveBufferSize();
 	    System.out.println("Pre-existing setting(platform)=" + socketSize);
@@ -1124,6 +1115,7 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Misc.
     private int _packetsAlreadyAwaitingFire = 0;
+    private boolean _ChangeRequestedToPlatformBufferLength = false;
 
     // System resources allocated: DatagramSocket and Thread to read it.
     private DatagramSocket _socket;
@@ -1168,6 +1160,38 @@ public class DatagramReader extends TypedAtomicActor {
          */
         public void run() {
             while (true) {
+
+		// [Set and] get platform's buffer length.
+		synchronized(_syncBufferLength) {
+		    if (_ChangeRequestedToPlatformBufferLength) {
+			_ChangeRequestedToPlatformBufferLength = false;
+			try {
+			    // [Set].
+			    // Unless the platformBufferLength parameter
+			    // has been left blank, suggest the platform
+			    // set its buffer size to this value (bytes).
+			    if (platformBufferLength.getToken() != null) {
+				_socket.setReceiveBufferSize(((IntToken)
+                                        platformBufferLength.getToken())
+                                        .intValue());
+			    }
+			    // Get.
+			    // See what actual buffer size was allocated.
+			    // Copy this into the platformBufferSize
+			    // parameter.  This allows a user to see
+			    // what buffer size settings are in place
+			    // in the underlying platform.
+			    platformBufferLength.setToken(new IntToken(
+                                    _socket.getReceiveBufferSize()));
+			} catch (SocketException sex) {
+			    System.out.println("sex4" + sex.toString());
+			    //throw new IllegalActionException(this,sex.toString());
+			} catch (IllegalActionException ex) {
+			    System.out.println("getToken or setToken failed" 
+                                    + "on platformBufferSize" + ex.toString());
+			}
+		    }
+		}
 
                 // Allocate or resize the packet buffers.
                 synchronized(_syncBufferLength) {
