@@ -32,7 +32,7 @@ ME =		ptolemy/domains/sdf/demo
 
 # Keep these alphabetical please.
 DIRS = 		Butterfly Expression Eye FixFIR FixPoint \
-		HTVQ OrthogonalCom Sketch Type
+		HTVQ OrthogonalCom Sketch Spectrum Type
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
