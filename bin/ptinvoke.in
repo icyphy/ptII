@@ -107,6 +107,8 @@ DIVA_JFLAG=
 
 #### Jode..  Java decompiler
 # The jode jar file.
+# JODE_JAR might contain ${JODE_DIR)
+JODE_DIR="@JODE_DIR@"
 JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
