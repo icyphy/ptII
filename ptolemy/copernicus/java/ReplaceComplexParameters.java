@@ -1,6 +1,6 @@
 /* A transformer that replaces port communication in an SDF model
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,7 @@ fields for ports and attributes.
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 */
 public class ReplaceComplexParameters extends SceneTransformer
     implements HasPhaseOptions {

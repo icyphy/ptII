@@ -1,6 +1,6 @@
 /* Analysis to check if a cyclic directed graph has a negative-length cycle.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -43,7 +43,7 @@ two nodes the one with the smallest associated value is being used to check for
 the existence of negative cycles.
 <p>
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

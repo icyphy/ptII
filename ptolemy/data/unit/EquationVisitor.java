@@ -1,6 +1,6 @@
 /* The pattern for visitors to a UnitEquation.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ possible for the overridden methods in a subclass to throw
 IllegalActionException.
 @author Rowland R Johnson
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public abstract class EquationVisitor {
 

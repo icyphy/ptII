@@ -1,6 +1,6 @@
 /* A Scheduler infrastructure for the SDF domain
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -78,7 +78,7 @@ that can be imported.
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 4.0
 */
 public class SDFUtilities {
 

@@ -55,7 +55,7 @@ of the function needs to be less than the output type of this actor.
 
 @author Yang Zhao
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class MobileFunction extends TypedAtomicActor{
 

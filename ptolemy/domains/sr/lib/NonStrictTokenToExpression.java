@@ -1,6 +1,6 @@
 /* A non-strict actor that converts tokens into expressions.
 
-@Copyright (c) 1998-2004 The Regents of the University of California.
+@Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -47,7 +47,7 @@ does the same thing as TokenToExpression actor does.
 
 @author Haiyang Zheng
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 @see ptolemy.actor.lib.conversions.TokenToExpression
 */
 public class NonStrictTokenToExpression extends TokenToExpression {

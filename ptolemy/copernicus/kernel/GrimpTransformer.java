@@ -1,6 +1,6 @@
 /* A transformer that creates a grimp body.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ constructor bytecode that look like avac's constructors
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 
 */
 public class GrimpTransformer extends SceneTransformer {

@@ -55,7 +55,7 @@ of the figure with a reference to itself as the parameter.
 
 @author Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class FigureInteractor extends AbstractInteractor implements KeyListener{
 

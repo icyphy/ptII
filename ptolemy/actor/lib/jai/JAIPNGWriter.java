@@ -73,7 +73,7 @@ this actor will ask for confirmation before overwriting.
 @see ptolemy.kernel.attributes.FileAttribute
 @author James Yeh, Christopher Hylands Brooks
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class JAIPNGWriter extends JAIWriter {

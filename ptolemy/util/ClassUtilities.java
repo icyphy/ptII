@@ -45,7 +45,7 @@ These utilities do not depend on any other ptolemy.* packages.
 
 @author Christopher Hylands
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class ClassUtilities {
 

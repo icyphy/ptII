@@ -52,7 +52,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class Line2D extends GRActor2D {
 

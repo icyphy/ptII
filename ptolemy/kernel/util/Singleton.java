@@ -39,7 +39,7 @@ instance of the attribute, then that previous instance is removed.
 
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public interface Singleton {}

@@ -43,7 +43,7 @@ import java.awt.geom.Rectangle2D;
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class Box2D extends GRShape2D {
 

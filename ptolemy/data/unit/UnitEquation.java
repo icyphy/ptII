@@ -1,6 +1,6 @@
 /* A Unit equation which is a prticular type of Unit Constraint.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ type being a Unit inequality.
 
 @author Rowland R Johnson
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class UnitEquation extends UnitConstraint implements UnitPresentation {

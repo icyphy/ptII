@@ -51,7 +51,7 @@ Read the given number of input booleans and output the number that are true.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class CountTrues extends SDFTransformer {

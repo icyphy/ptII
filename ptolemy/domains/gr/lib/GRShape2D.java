@@ -54,7 +54,7 @@ or can be entered manually as an array of double values of the form
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 abstract public class GRShape2D extends GRActor2D {
 

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
 
    @author  Rowland R Johnson
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
    @see Effigy
 */
 public class DialogTableau extends Tableau {

@@ -51,7 +51,7 @@ corners, and should be zero for a boring old rectangle.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class Rectangle2D extends RectangularFigure2D {
 

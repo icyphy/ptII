@@ -1,6 +1,6 @@
 /* Utilities for building 2D actors.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ Utilities that are useful for building 2D GR actors.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 4.0
 */
 public class GRUtilities2D {
     public static Color makeColor(DoubleMatrixToken colorVector) {

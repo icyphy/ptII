@@ -1,6 +1,6 @@
 /* A composite actor that executes a submodel in fire().
 
-Copyright (c) 1997-2004 The Regents of the University of California.
+Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Edward A. Lee, (Contributor: Yang Zhao)
    @version $Id$
+@since Ptolemy II 4.0
 */
 public class RunCompositeActor extends TypedCompositeActor {
 

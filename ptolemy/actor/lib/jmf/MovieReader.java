@@ -1,6 +1,6 @@
 /* An actor that outputs frames from a video file.
 
-@Copyright (c) 2002-2004 The Regents of the University of California.
+@Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author James Yeh
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 
 public class MovieReader extends Source implements ControllerListener {

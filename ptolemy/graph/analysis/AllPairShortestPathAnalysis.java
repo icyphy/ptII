@@ -1,6 +1,6 @@
 /* An analysis to compute the all pair shortest path of a directed graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -55,7 +55,7 @@ length of the shortest cycle that includes the node with label "i".
 
 The default analyzer runs in O(N^3) in which N is the number of nodes.
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @version $Id$
 @author Shahrooz Shahparnia
 @see ptolemy.graph.Graph#nodeLabel

@@ -1,7 +1,7 @@
 /* An analysis to calculate the maximum/minimum cycle mean of a directed
 cyclic graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -65,7 +65,7 @@ Proceedings of the 36th ACM/IEEE conference on Design automation conference,
 p.37-42, June 21-25, 1999, New Orleans, Louisiana, United States
 <p>
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @version $Id$
 @author Shahrooz Shahparnia
 @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis

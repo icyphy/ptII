@@ -56,7 +56,7 @@ displayed.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public abstract class RectangularFigure2D extends GRShape2D {
 

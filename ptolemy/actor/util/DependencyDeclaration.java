@@ -56,7 +56,7 @@ into a MoML representation of the model.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public class DependencyDeclaration extends Attribute {

@@ -60,7 +60,7 @@ import java.util.Iterator;
     @author Haiyang Zheng
     @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
     07:57:24 hyzheng Exp $
-    @since Ptolemy II 3.1
+    @since Ptolemy II 4.0
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 

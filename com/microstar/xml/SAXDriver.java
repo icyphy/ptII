@@ -45,7 +45,7 @@ import org.xml.sax.SAXParseException;
   * @author Copyright (c) 1998 by Microstar Software Ltd.
   * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
   * @version 1.1
-  * @since Ptolemy II 0.2
+  * @since Ptolemy II 4.0
   * @see XmlParser
   */
 public class SAXDriver

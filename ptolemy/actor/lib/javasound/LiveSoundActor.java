@@ -1,6 +1,6 @@
 /* An actor that reads in audio samples and plays the audio data.
 
-@Copyright (c) 2000-2004 The Regents of the University of California.
+@Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -56,7 +56,7 @@ parameters for live sound.
 Note: Requires Java 2 v1.3.0 or later.
 @author Steve Neuendorffer
 @version  $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 4.0
 @see ptolemy.media.javasound.LiveSound
 @see AudioPlayer
 @see AudioCapture

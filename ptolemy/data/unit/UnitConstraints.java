@@ -1,6 +1,6 @@
 /* A collection that contains Unit constraints.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,7 +50,7 @@ TypedCompositeActor, and have the UnitConstraintCollection constructor
 determine which UnitConstraints belong to the collection.
 @author Rowland R Johnson
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class UnitConstraints implements UnitPresentation {
 

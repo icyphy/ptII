@@ -61,7 +61,7 @@ type and send out tokens corresponding to that type.
 
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class ArrayToElements extends Transformer {

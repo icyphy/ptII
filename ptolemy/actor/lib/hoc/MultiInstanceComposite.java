@@ -1,7 +1,7 @@
 /* A TypedCompositeActor that creates multiple instances of itself
  during the preinitialize phase of model execution.
 
- Copyright (c) 1998-2004 The Regents of the University of California and
+ Copyright (c) 2003-2004 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -109,7 +109,7 @@ import java.util.List;
 
  @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 4.0
  */
 public class MultiInstanceComposite extends TypedCompositeActor {
 

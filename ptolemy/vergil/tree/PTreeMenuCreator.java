@@ -1,6 +1,6 @@
 /* An abstract menu factory that creates context menus using item factories
 
- Copyright (c) 2000-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -59,7 +59,7 @@ up the resulting menu.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 4.0
 */
 public class PTreeMenuCreator extends MouseAdapter {
 

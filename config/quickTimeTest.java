@@ -36,7 +36,7 @@ import quicktime.std.movies.media.*;
     http://developer.apple.com/quicktime/qtjava/
     @author Christopher Hylands
     @version $Id$
-    @since Ptolemy II 3.0
+    @since Ptolemy II 4.0
 */
 public class quickTimeTest {
     public static void main(String args[]) {

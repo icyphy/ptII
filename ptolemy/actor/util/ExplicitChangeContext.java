@@ -55,7 +55,7 @@ import java.util.*;
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public interface ExplicitChangeContext extends Nameable {

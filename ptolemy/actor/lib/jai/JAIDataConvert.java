@@ -1,6 +1,6 @@
 /* An actor that changes the data format in a JAIImageToken.
 
- Copyright (c) 2002-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,7 +61,7 @@ import javax.media.jai.RenderedOp;
 
    @author James Yeh
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 4.0
 */
 
 public class JAIDataConvert extends Transformer {

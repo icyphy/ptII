@@ -51,6 +51,7 @@ about this weighted graph.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class TestGraphReader {

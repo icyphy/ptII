@@ -64,7 +64,7 @@ Swing objects.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class IconViewScreen3D extends ViewScreen {
 

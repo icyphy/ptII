@@ -62,7 +62,7 @@ playing, rate of playback, and volume control.
 
 @author James Yeh
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class VideoPlayer extends Sink implements ControllerListener {

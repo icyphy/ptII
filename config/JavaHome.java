@@ -33,7 +33,7 @@ import java.io.IOException;
 /** Print the value of the java.home property
     @author Christopher Hylands Brooks
     @@version $Id$
-    @@since Ptolemy II 3.1
+    @@since Ptolemy II 4.0
 */
 public class JavaHome {
     public static void main(String args[]) {

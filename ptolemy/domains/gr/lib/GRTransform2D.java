@@ -55,7 +55,7 @@ accumulated or reset during firing.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 abstract public class GRTransform2D extends GRActor2D {
 

@@ -40,7 +40,7 @@ This actor is used to test the _writeAccessRequired method of
 SDFDirector
 
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 @author Christopher Hylands Brooks
  */
 public class SDFTestDirector extends SDFDirector {

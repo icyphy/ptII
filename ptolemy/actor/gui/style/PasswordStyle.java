@@ -48,7 +48,7 @@ This style can be used with any Settable attribute.
 @see ParameterEditorStyle
 @author Christopher Hylands Brooks, based on PasswordStyle by Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 
 public class PasswordStyle extends ParameterEditorStyle {

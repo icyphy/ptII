@@ -49,7 +49,7 @@ loading a MoML file will throw an exception.
 
 @author Christopher Hylands Brooks
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class RemoveEmptyProperties implements MoMLFilter {
 

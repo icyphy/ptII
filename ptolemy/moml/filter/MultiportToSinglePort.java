@@ -70,7 +70,7 @@ code, we look for the named port and remove the multiport declaration
 
 @author Christopher Hylands Brooks, Contributor: Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 */
 public class MultiportToSinglePort implements MoMLFilter {
 

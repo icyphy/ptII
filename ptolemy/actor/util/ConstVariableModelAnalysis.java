@@ -1,6 +1,6 @@
 /* An analysis that finds the constant variables in a ptolemy model
 
- Copyright (c) 2001-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -91,7 +91,7 @@ no expression are assumed to be the toplevel of the model.
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class ConstVariableModelAnalysis {
 

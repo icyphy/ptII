@@ -1,6 +1,6 @@
 /* Computation of clusters in a graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -45,7 +45,7 @@ an edge (with the same edge weight, if there is one) that connects
 Z to N. Return the subgraph that is replaced;
 that is, return the subgraph induced by the given collection of nodes.
 
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @version $Id$
 @author Shahrooz Shahparnia based on a file by Shuvra S. Bhattacharyya and
 Ming-Yung Ko

@@ -78,7 +78,7 @@ handled by a ViewScreen2DListener.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class ViewScreen2D extends GRActor2D
     implements Placeable, ViewScreenInterface{

@@ -64,7 +64,7 @@ will be relative to the positive X-axis.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class Rotate2D extends GRTransform2D {
 

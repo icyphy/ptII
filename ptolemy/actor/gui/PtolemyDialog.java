@@ -54,7 +54,7 @@ import ptolemy.kernel.Entity;
 
 @author Rowland R Johnson
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 */
 
 public abstract class PtolemyDialog extends JFrame implements ActionListener {

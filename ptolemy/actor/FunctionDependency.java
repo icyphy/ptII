@@ -63,7 +63,7 @@ import java.util.Set;
     @see ptolemy.domains.de.kernel.DEEDirector
     @author Haiyang Zheng
     @version $Id$
-    @since Ptolemy II 3.1
+    @since Ptolemy II 4.0
 */
 public abstract class FunctionDependency {
 

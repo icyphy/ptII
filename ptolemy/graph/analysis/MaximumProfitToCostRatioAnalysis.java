@@ -1,6 +1,6 @@
 /* Maximum profit to cost ratio analysis.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above
@@ -52,7 +52,7 @@ p.37-42, June 21-25, 1999, New Orleans, Louisiana, United States
 for a detailed mathematical description of the problem.
 <p>
 @see ptolemy.graph.analysis.CycleMeanAnalysis
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 @author Shahrooz Shahparnia
 @version $Id$
 */

@@ -47,7 +47,7 @@ import java.util.List;
     @see FunctionDependency
     @author Haiyang Zheng
     @version $Id $
-    @since Ptolemy II 3.1
+    @since Ptolemy II 4.0
 */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 

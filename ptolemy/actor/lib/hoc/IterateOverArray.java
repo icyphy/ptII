@@ -119,7 +119,7 @@ firings of the inside actor.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class IterateOverArray extends TypedCompositeActor {
 

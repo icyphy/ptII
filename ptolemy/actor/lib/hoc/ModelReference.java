@@ -1,6 +1,6 @@
 /* An atomic actor that executes a model specified by a file or URL.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -158,7 +158,7 @@ FIXME: Need options for error handling.
 
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class ModelReference
         extends TypedAtomicActor

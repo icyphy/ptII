@@ -51,7 +51,7 @@ the image would appear to have Salt and Pepper scattered on it.
 
 @author James Yeh, Contributor: Christopher Hylands Brooks
 @version $Id$
-@since Ptolemy II 3.2
+@since Ptolemy II 4.0
 */
 public class SaltAndPepper extends Transformer {
 

@@ -65,7 +65,7 @@ requires the model name its input port as "input", output port as "output".
 
 @author Yang Zhao
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class MobileModel extends TypedCompositeActor {
 

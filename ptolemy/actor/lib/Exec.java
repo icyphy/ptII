@@ -97,7 +97,7 @@ and
 
 @author Christopher Hylands Brooks, Contributor: Edward A. Lee
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class Exec extends TypedAtomicActor {
 

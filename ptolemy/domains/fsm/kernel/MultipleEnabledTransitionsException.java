@@ -1,7 +1,7 @@
 /* Exception Thrown when multiple outgoing transitions from one state
 are enabled at the same time.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ same time.
 
 @author Haiyang Zheng
 @version $Id$
-@since Ptolemy II 3.0
+@since Ptolemy II 4.0
 */
 public class MultipleEnabledTransitionsException extends IllegalActionException {
     /** Construct an exception with a detail message.

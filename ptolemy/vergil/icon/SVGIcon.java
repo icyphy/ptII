@@ -1,6 +1,6 @@
 /* An icon whose description is represented in SVG
 
- Copyright (c) 1999-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -66,6 +66,7 @@ the current version doesn't work very well, so it isn't used.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 */
 public class SVGIcon extends EditorIcon implements ValueListener {
 

@@ -1,6 +1,6 @@
 /* A DE-extended domain director.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -81,7 +81,7 @@ actor with a Delay actor embedded inside.
 
 @author Haiyang Zheng
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 4.0
 @see DEReceiver
 @see ptolemy.actor.util.CalendarQueue
  */

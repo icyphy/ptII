@@ -43,7 +43,7 @@ Record MoML Errors and retrieve them later
 @see ptolemy.kernel.util.RecorderListener
 @author Christopher Hylands Brooks
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
 */
 public class RecorderErrorHandler implements ErrorHandler {
 

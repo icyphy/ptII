@@ -1,6 +1,6 @@
 /* An atomic actor that executes a model specified by a file or URL.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -108,6 +108,7 @@ out how to remove this dependence.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 4.0
 @see ptolemy.data.expr.Variable
 @see ptolemy.data.expr.Parameter
 @see ptolemy.kernel.util.Settable
