@@ -146,7 +146,7 @@ public class DEStats extends DEActor {
         return _sum2 / _num - (_sum / _num)*(_sum / _num);
     }
 
-    /** Intialize the object fields.
+    /** Initialize the object fields.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {

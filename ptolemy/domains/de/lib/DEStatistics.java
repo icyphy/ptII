@@ -146,7 +146,7 @@ public class DEStatistics extends DEActor {
         return _sum2 / _num - (_sum / _num)*(_sum / _num);
     }
 
-    /** Intialize the object fields.
+    /** Initialize the object fields.
      *
      *  @exception IllegalActionException Thrown if could not create the
      *   receivers.
