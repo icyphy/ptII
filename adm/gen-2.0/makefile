@@ -578,7 +578,6 @@ remote1distnonjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo `date`
-
 	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
