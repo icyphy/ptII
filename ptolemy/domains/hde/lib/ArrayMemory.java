@@ -57,7 +57,7 @@ Write parallel: write the parallel  data input to the internal array.
 It is required that the value of the input index be less than or equal to the
 length parameter.
 @see ptolemy.actor.lib.LookupTable
-@see RecordDisassembler
+@see ptolemy.actor.lib.RecordDisassembler
 @author  Jim Armstrong
 @version $Id$
 */
