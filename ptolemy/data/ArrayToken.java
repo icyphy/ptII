@@ -176,7 +176,7 @@ public class ArrayToken extends Token {
 	    throws IllegalActionException {
 	Token oneVal = _value[0].one();
 	Token[] oneValArray = new Token[_value.length];
-	for (int i=0; i<_value.length; i++) {
+	for (int i = 0; i < _value.length; i++) {
 	    oneValArray[i] = oneVal;
 	}
 	return new ArrayToken(oneValArray);
@@ -195,7 +195,7 @@ public class ArrayToken extends Token {
      */
     public String toString() {
 	String s = "array[";
-	for (int i=0; i<length(); i++) {
+	for (int i = 0; i < length(); i++) {
 	    s += _value[i].toString();
 	    if (i < (length()-1)) {
 		s += ", ";
@@ -217,7 +217,7 @@ public class ArrayToken extends Token {
 	    throws IllegalActionException {
 	Token zeroVal = _value[0].zero();
 	Token[] zeroValArray = new Token[_value.length];
-	for (int i=0; i<_value.length; i++) {
+	for (int i = 0; i < _value.length; i++) {
 	    zeroValArray[i] = zeroVal;
 	}
 	return new ArrayToken(zeroValArray);
