@@ -390,9 +390,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     // Check to see if the head and tail are both being
                     // copied.  Only if so, do we actually take the edge.
                     Object head = graphModel.getHead(userObject);
-                    System.out.println("Head: " + ((NamedObj)head).getName());
+                    //System.out.println("Head: " + ((NamedObj)head).getName());
                     Object tail = graphModel.getTail(userObject);
-                    System.out.println("Tail: " + ((NamedObj)tail).getName());
+                    //System.out.println("Tail: " + ((NamedObj)tail).getName());
                     boolean headOK = nodeSet.contains(head);
                     boolean tailOK = nodeSet.contains(tail);
                     Iterator objects = nodeSet.iterator();
@@ -420,7 +420,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    Iterator elements = namedObjSet.iterator();
 	    while(elements.hasNext()) {
                 NamedObj element = (NamedObj)elements.next();
-                System.out.println("Selected: " + element.getName());
                 // first level to avoid obnoxiousness with
 		// toplevel translations.
 		element.exportMoML(buffer, 1);
@@ -481,7 +480,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         NamedObj actual =
                             (NamedObj)graphModel.getSemanticObject(userObject);
                         namedObjSet.add(actual);
-                        System.out.println("Selected: " + actual.getName());
                     }
                 }
             }
@@ -493,8 +491,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         // Check to see if the head and tail are both being
                         // selected.
                         Object head = graphModel.getHead(userObject);
+                        //System.out.println("head:" +((NamedObj)head).getName()); 
                         Object tail = graphModel.getTail(userObject);
-                        
+                        //System.out.println("tail:" +((NamedObj)tail).getName()); 
+
                         boolean headOK = nodeSet.contains(head);
                         boolean tailOK = nodeSet.contains(tail);
                         Iterator objects = nodeSet.iterator();
@@ -510,7 +510,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                             }
                         }
                         // For the edges at the boundary.
-                        if((!headOK && tailOK)|| (headOK && !tailOK)) {
+                        if((!headOK && tailOK) || (headOK && !tailOK)) {
                             IOPort port = null;
                             IORelation relation = null;
                             boolean duplicateRelation = false;
@@ -529,8 +529,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                 relation = (IORelation)graphModel.
                                     getSemanticObject(head);
                             }
-                            System.out.println("port = " + port.getName() +
-                                    "\nrelation = " + relation.getName());
                             if(port != null) {
                                 ComponentEntity entity = (ComponentEntity)
                                     ((IOPort)port).getContainer();
@@ -554,20 +552,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                     }
                                     newPorts.append("\n</port>\n");
                                     // Create internal relation and links. 
-                                    // Note we can reuse
-                                    // the relation name, it is guranteed not
-                                    // duplicated.
+                                    // Note we can only partially reuse
+                                    // the relation name, one original relation
+                                    // can be two internal relations.
+                                    String relationName = relation.getName() + "_" + i;
                                     intRelations.append("<relation name=\"" +
-                                            relation.getName() + "\" class=\"" +
+                                            relationName + "\" class=\"" +
                                             "ptolemy.actor.TypedIORelation\"/>\n");
                                     intConnections.append("<link port=\"" +
                                             entity.getName() + "." + port.getName()
                                             + "\" relation=\"" + 
-                                            relation.getName() + "\"/>\n");
+                                            relationName + "\"/>\n");
                                     intConnections.append("<link port=\"" +
                                             portName + "\" relation=\"" + 
-                                            relation.getName() + "\"/>\n");
+                                            relationName + "\"/>\n");
                                     // Create external links.
+                                    
                                     if(duplicateRelation) {
                                         extRelations.append("<relation name=\"" +
                                             relation.getName() + "\" class=\"" +
@@ -576,12 +576,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                         ComponentEntity otherEntity = 
                                             (ComponentEntity)otherPort.
                                             getContainer();
-                                        extConnections.append("<link port=\"" +
-                                                otherEntity.getName() + "." +
-                                                otherPort.getName() + 
-                                                "\" relation=\"" +
-                                                relation.getName() + "\"/>\n");
+                                        if(otherEntity == container) {
+                                            // This is a boundy port at a higher level.
+                                            extConnections.append("<link port=\"" +
+                                                    otherPort.getName() + 
+                                                    "\" relation=\"" +
+                                                    relation.getName() + "\"/>\n");
+                                        } else {
+                                            extConnections.append("<link port=\"" +
+                                                    otherEntity.getName() + "." +
+                                                    otherPort.getName() + 
+                                                    "\" relation=\"" +
+                                                    relation.getName() + "\"/>\n");
+                                        }
                                     }
+                                    
                                     extConnections.append("<link port=\"" +
                                             compositeActor.getName() + "." 
                                             + portName + "\" relation=\"" + 
@@ -598,22 +607,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                                 "<property name=\"input\"/>");
                                     }
                                     newPorts.append("\n</port>\n");
-                                    // Create external relation and links. 
-                                    // NOTE: we can reuse
-                                    // the relation name, it is guranteed not
-                                    // duplicated.
+                                    
+                                    String relationName = relation.getName() + "_" + i;
                                     extRelations.append("<relation name=\"" +
-                                            relation.getName() + "\" class=\"" +
+                                            relationName + "\" class=\"" +
                                             "ptolemy.actor.TypedIORelation\"/>\n");
                                     extConnections.append("<link port=\"" +
                                             entity.getName() + "." + port.getName()
                                             + "\" relation=\"" + 
-                                            relation.getName() + "\"/>\n");
+                                            relationName + "\"/>\n");
                                     extConnections.append("<link port=\"" +
                                             compositeActor.getName() + "." 
                                             + portName + "\" relation=\"" + 
-                                            relation.getName() + "\"/>\n");
+                                            relationName + "\"/>\n");
                                     // Create external links.
+                                    
                                     if(duplicateRelation) {
                                         intRelations.append("<relation name=\"" +
                                             relation.getName() + "\" class=\"" +
@@ -628,6 +636,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                                 "\" relation=\"" +
                                                 relation.getName() + "\"/>\n");
                                     }
+                                    
                                     intConnections.append("<link port=\"" +
                                             portName + "\" relation=\"" + 
                                             relation.getName() + "\"/>\n");
@@ -642,7 +651,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 }
             }
 
-            System.out.println(" new port:" + newPorts);
+            //System.out.println(" new port:" + newPorts);
 
             final Point2D point = new Point2D.Double();
             
@@ -673,10 +682,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             moml.append(extConnections);
             // external connections.
             moml.append("</group>\n");
-            System.out.println("************************");
-            System.out.println(moml.toString());
+            //System.out.println(moml.toString());
             
-           
             ChangeRequest request = null;
             
             request = new MoMLChangeRequest(
@@ -833,34 +840,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  the current model by issuing a change request.
      */
     public void paste() {
-        /*
-	Clipboard clipboard =
-	        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-	Transferable transferable = clipboard.getContents(this);
-	GraphPane graphPane = _jgraph.getGraphPane();
-	GraphController controller =
-	        (GraphController)graphPane.getGraphController();
-	GraphModel model = controller.getGraphModel();
-	if(transferable == null) return;
-	try {
-	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-            System.out.println("Paste root: " + toplevel.getName());
-            StringBuffer moml = new StringBuffer();
-            // The pasted version will have the name prepended with
-            // a unique number.  This isn't really what we want, but
-            // it will have to do for now.  FIXME.
-	    moml.append("<group name=\"" + _copyNumber + "\">\n");
-            _copyNumber++;
-	    moml.append((String)
-                    transferable.getTransferData(DataFlavor.stringFlavor));
-	    moml.append("</group>\n");
-            System.out.println(moml.toString());
-	    toplevel.requestChange(
-                    new MoMLChangeRequest(this, toplevel, moml.toString()));
-	} catch (Exception ex) {
-	    MessageHandler.error("Paste failed", ex);
-	}
-        */
         GraphPane graphPane = _jgraph.getGraphPane();
 	GraphController controller =
 	        (GraphController)graphPane.getGraphController();
