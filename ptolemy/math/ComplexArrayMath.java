@@ -252,7 +252,7 @@ public class ComplexArrayMath {
     /** Return a new array containing the angles of the elements of the
      *  specified complex array.
      *  @param array A array of Complex's.
-     *  @return An array of angles in the range of <em>-pi</em> to <em>pi</em>.
+     *  @return An array of angles in the range of <em>-pi < /em> to <em>pi</em>.
      */
     public static final double[] phase(Complex[] array) {
         double[] angles = new double[array.length];

@@ -132,7 +132,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return the angle or argument of this complex number.
-     *  @return A number in the range -<em>pi</em> to <em>pi</em>.
+     *  @return A number in the range -<em>pi < /em> to <em>pi</em>.
      */
     public final double angle() {
         return  Math.atan2(imag, real);

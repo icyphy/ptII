@@ -778,7 +778,7 @@ public class IOPort extends ComponentPort {
                     int size = java.lang.Math.min
                         (width, outsideReceivers.length-index);
                     //NOTE: if size = 0, the for loop is skipped.
-                    for(int i = 0; i<size; i++) {
+                    for(int i = 0; i < size; i++) {
                         result[i] = outsideReceivers[i+index];
                     }
                     break;
@@ -1247,7 +1247,7 @@ public class IOPort extends ComponentPort {
                 Receiver[][] receivers = null;
                 receivers = getRemoteReceivers();;
                 if (receivers != null) {
-                    for (int i = 0; i<receivers.length; i++) {
+                    for (int i = 0; i < receivers.length; i++) {
                         // One list item per group
                         result += _getIndentPrefix(indent+1) + "{\n";
                         if (receivers[i] != null) {

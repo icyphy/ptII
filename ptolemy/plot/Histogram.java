@@ -66,7 +66,7 @@ import java.util.*;
  * as a fraction of the bin width.  It usually has a value less than
  * or equal to one,
  * and defaults to 0.5.  The <i>offset</i> is a real number
- * specifying how much the bar of the <i>i</i><sup>th</sup> data set
+ * specifying how much the bar of the <i>i < /i><sup>th</sup> data set
  * is offset from the previous one.  This allows bars to "peek out"
  * from behind the ones in front.  It defaults to 0.15.
  * Note that the frontmost data set will be the first one.
@@ -220,7 +220,7 @@ public class Histogram extends PlotBox {
 
     /** Set the width and offset of the bars.  Both are specified
      *  as a fraction of a bin width.  The offset is the amount by which the
-     *  i<sup>th</sup> data set is shifted to the right, so that it
+     *  i < sup>th</sup> data set is shifted to the right, so that it
      *  peeks out from behind the earlier data sets.
      *  @param width The width of the bars.
      *  @param offset The offset per data set.

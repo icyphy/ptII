@@ -160,7 +160,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object[] argValues = new Object[args];
         // Note: Java makes a distinction between the class objects
         // for double & Double...
-        for (int i = 0; i<args; i++) {
+        for (int i = 0; i < args; i++) {
             ptolemy.data.Token child = childTokens[i];
             if (child instanceof DoubleToken) {
                 argValues[i] = new Double(((DoubleToken)child).doubleValue());
@@ -234,7 +234,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         // If reach here it means the function was not found on the
         // search path.
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i<args; i++) {
+        for (int i = 0; i < args; i++) {
             if (i == 0) {
                 sb.append(argValues[i].toString());
             } else {

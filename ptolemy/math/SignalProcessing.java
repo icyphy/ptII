@@ -386,8 +386,8 @@ public class SignalProcessing {
         result = new double[resultsize];
 
         // The result is assumed initialized to zero.
-        for (int i = 0; i<array1.length; i++) {
-            for (int j = 0; j<array2.length; j++) {
+        for (int i = 0; i < array1.length; i++) {
+            for (int j = 0; j < array2.length; j++) {
                 result[i+j] += array1[i] * array2[j];
             }
         }
@@ -420,8 +420,8 @@ public class SignalProcessing {
 
         double[] reals = new double[resultsize];
         double[] imags = new double[resultsize];
-        for (int i = 0; i<array1.length; i++) {
-            for (int j = 0; j<array2.length; j++) {
+        for (int i = 0; i < array1.length; i++) {
+            for (int j = 0; j < array2.length; j++) {
                 reals[i+j] += array1[i].real * array2[j].real
                     - array1[i].imag * array2[j].imag;
                     imags[i+j] += array1[i].imag * array2[j].real

@@ -210,7 +210,7 @@ public class DTDirector extends SDFDirector {
 		IOPort p = outports.nextElement();
 		// container is opaque, so each element of r[] is of length 1
 		Receivers r[][] = p.getInsideReceivers();
-		for(int i = 0; i<r.length(); i++) {
+		for(int i = 0; i < r.length(); i++) {
                     while(r[i][0].hasToken()) {
                         _waitingtokens[portcount][i].insertLast(r[i][0].get());
                         count++;

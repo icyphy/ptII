@@ -115,7 +115,7 @@ public class DELogicAnalyzer extends DEActor {
         int numEmptyChannel = 0;
 
         int width = input.getWidth();
-        for (int i = 0; i<width; i++) {
+        for (int i = 0; i < width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
                 double curTime = ((DEDirector)getDirector()).getCurrentTime();

@@ -68,7 +68,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         String op = "";
         int i = 1;
         try {
-            for ( i = 1; i<num; i++ ) {
+            for ( i = 1; i < num; i++ ) {
                 // need to take the top object, AND put it back at the
                 // end so that the tree can be reparsed
                 Object x = _lexicalTokens.take();

@@ -673,7 +673,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
              *  [-R, R], where R is the allowed error. The specified absolute
              *  difference must be non-negative.
              *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [R, R]
-             *  for 0<=i<m and 0<=j<n where M1 and M2 are both m x n matrices.
+             *  for 0<=i < m and 0<=j<n where M1 and M2 are both m x n matrices.
              *  @param matrix1 A matrix of doubles.
              *  @param matrix2 A matrix of doubles.
              *  @param absoluteError A double indicating the absolute value of the
@@ -709,7 +709,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
              *  error matrix may contain negative entries; the absolute value
              *  is used.
              *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [-E[i,j], E[i,j]],
-             *  for 0<=i<m and 0<=j<n where M1, M2, and E are all m x n matrices.
+             *  for 0<=i < m and 0<=j<n where M1, M2, and E are all m x n matrices.
              *  @param matrix1 A matrix of doubles.
              *  @param matrix2 A matrix of doubles.
              *  @param errorMatrix A matrix of doubles.

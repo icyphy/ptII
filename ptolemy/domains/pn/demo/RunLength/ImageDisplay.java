@@ -127,7 +127,7 @@ public final class ImageDisplay extends AtomicActor {
 
 	// convert the B/W image to a packed RGB image
 	int i, j, index = 0;
-	for(j = 0; j<ysize; j++) {
+	for(j = 0; j < ysize; j++) {
 	    for(i = 0; i < xsize; i++, index++) {
 		int tem = 0;
 		if (frame[j][i] == 0) tem = 255;

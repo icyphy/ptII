@@ -180,10 +180,10 @@ public final class HTVQEncode extends SDFAtomicActor {
 
             int i, j, y, x, size = 1;
             byte temp[];
-            for(i = 0; i<5; i++) {
+            for(i = 0; i < 5; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j = 0; j<256; j++) {
+                for(j = 0; j < 256; j++) {
                     _codebook[i][j] = new int[size];
                     if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
@@ -382,7 +382,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     long _distortion(int a[], int b[], int len) {
         long c, d = 0;
         int i;
-        for(i = 0;i<len;i++)
+        for(i = 0;i < len;i++)
             {
                 c = ((a[i] & 255) - (b[i] & 255));
                 d += c * c;

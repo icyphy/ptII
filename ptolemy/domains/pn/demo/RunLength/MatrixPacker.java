@@ -71,8 +71,8 @@ public class MatrixPacker extends AtomicActor {
         int columns = ((IntToken)_dimen.get(0)).intValue();
 
         int[][] image = new int[rows][columns];
-        for (int i = 0; i<rows; i++) {
-            for (int j = 0; j<columns; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 image[i][j] = ((IntToken)_input.get(0)).intValue();
             }
         }

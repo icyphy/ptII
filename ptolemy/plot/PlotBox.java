@@ -857,7 +857,7 @@ public class PlotBox extends Panel {
             int fheight = _labelFontMetrics.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for(int i = 0; i<_errorMsg.length;i++) {
+            for(int i = 0; i < _errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);

@@ -231,7 +231,7 @@ public class CompositeEntity extends ComponentEntity {
      *  The order of the ports determines the order in which the
      *  links to the relation are established, but otherwise has no
      *  importance.
-     *  The name is of the form "_R<i>i</i>" where <i>i</i> is an integer.
+     *  The name is of the form "_R<i>i < /i>" where <i>i</i> is an integer.
      *  Level-crossing connections are not permitted unless
      *  allowLevelCrossingConnect() has been called with a <i>true</i>
      *  argument.  Note that is rarely a good idea to permit level crossing

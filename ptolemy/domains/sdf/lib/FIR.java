@@ -59,8 +59,8 @@ parameter and the output sample rate.
 In particular, considerable care must be taken to avoid aliasing.
 Specifically, if the input sample rate is <i>f</i>,
 then the filter stopband should begin before <i>f</i>/2.
-If the interpolation ratio is <i>i</i>, then <i>f</i>/2 is a fraction
-1/2<i>i</i> of the sample rate at which you must design your filter.
+If the interpolation ratio is <i>i < /i>, then <i>f</i>/2 is a fraction
+1/2<i>i < /i> of the sample rate at which you must design your filter.
 <p>
 The <i>decimationPhase</i> parameter is somewhat subtle.
 It is exactly equivalent the phase parameter of the DownSample star.

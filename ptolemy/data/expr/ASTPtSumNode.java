@@ -63,7 +63,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         String op = "";
         int i = 1;
         try {
-            for (i = 1; i<num; i++) {
+            for (i = 1; i < num; i++) {
                 // When start using 1.2 will change this
                 // take from the front, put back at the end
                 Token x = (Token)_lexicalTokens.take();

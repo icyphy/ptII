@@ -100,7 +100,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             Class[] argTypes = new Class[num - 1];
             Object[] argValues = new Object[num - 1];
             try {
-                for (int i = 1; i<num; i++) {
+                for (int i = 1; i < num; i++) {
                     argValues[i-1] = (ptolemy.data.Token)childTokens[i];
                     if ( !(argValues[i-1] instanceof ptolemy.data.Token) ) {
                         throw new Exception();

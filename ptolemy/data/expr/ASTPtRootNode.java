@@ -93,7 +93,7 @@ public class ASTPtRootNode implements Node {
                     "not a leaf node");
         } else {
             childTokens = new ptolemy.data.Token[numChildren];
-            for (int i = 0; i<numChildren; i++) {
+            for (int i = 0; i < numChildren; i++) {
                 ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
                 childTokens[i] = child.evaluateParseTree();
             }

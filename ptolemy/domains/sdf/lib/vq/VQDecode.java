@@ -157,10 +157,10 @@ public final class VQDecode extends SDFAtomicActor {
 
             int i, j, y, x, size = 1;
             byte temp[];
-            for(i = 0; i<5; i++) {
+            for(i = 0; i < 5; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j = 0; j<256; j++) {
+                for(j = 0; j < 256; j++) {
                     _codebook[i][j] = new int[size];
                     if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +

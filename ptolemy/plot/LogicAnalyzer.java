@@ -235,7 +235,7 @@ public class LogicAnalyzer extends PlotBox {
         _points.removeAllElements();
         _prevx.removeAllElements();
         _prevy.removeAllElements();
-        for (int i = 0; i<numsets; i++) {
+        for (int i = 0; i < numsets; i++) {
             _points.addElement(new Vector());
             _prevx.addElement(new Long(0));
             _prevy.addElement(new Long(0));

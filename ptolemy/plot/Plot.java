@@ -130,7 +130,7 @@ import java.net.*;
  * </pre>
  * The <i>width</i> is a real number specifying the width of the bars
  * in the units of the x axis.  The <i>offset</i> is a real number
- * specifying how much the bar of the <i>i</i><sup>th</sup> data set
+ * specifying how much the bar of the <i>i < /i><sup>th</sup> data set
  * is offset from the previous one.  This allows bars to "peek out"
  * from behind the ones in front.  Note that the frontmost data set
  * will be the first one.  To turn off bars, use
@@ -811,7 +811,7 @@ public class Plot extends PlotBox {
 
         // Create a array
         String args[] = new String[argvector.size()];
-        for(int i = 0; i<argvector.size(); i++) {
+        for(int i = 0; i < argvector.size(); i++) {
             args[i] = (String)argvector.elementAt(i);
         }
         return parseArgs(args);
@@ -1039,7 +1039,7 @@ public class Plot extends PlotBox {
 
     /** Turn bars on and set the width and offset.  Both are specified
      *  in units of the x axis.  The offset is the amount by which the
-     *  i<sup>th</sup> data set is shifted to the right, so that it
+     *  i < sup>th</sup> data set is shifted to the right, so that it
      *  peeks out from behind the earlier data sets.
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
@@ -1143,7 +1143,7 @@ public class Plot extends PlotBox {
         _formats.removeAllElements();
         _prevx.removeAllElements();
         _prevy.removeAllElements();
-        for (int i = 0; i<numsets; i++) {
+        for (int i = 0; i < numsets; i++) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
             _prevx.addElement(new Long(0));

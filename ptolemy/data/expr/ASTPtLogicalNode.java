@@ -61,7 +61,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         boolean values[] = new boolean[num];
         int i = 0;
         try {
-            for ( i = 0; i<num; i++ ) {
+            for ( i = 0; i < num; i++ ) {
                 values[i] =
                     ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
             }
@@ -70,7 +70,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
                     childTokens[i].toString() + "to a Boolean");
         }
         boolean result = values[0];
-        for (i = 0; i<_lexicalTokens.size(); i++) {
+        for (i = 0; i < _lexicalTokens.size(); i++) {
             Token x = (Token)_lexicalTokens.take();
             // need to reinsert at end if want to reParse tree
             _lexicalTokens.insertLast(x);
