@@ -72,7 +72,7 @@ public class IllegalActionException extends KernelException {
 
     /** Constructs an Exception with a detail message that consists of
      *  only the names of the object1 and object2 arguments.
-     *  @param object1 The first objectect.
+     *  @param object1 The first object.
      *  @param object2 The second object.
      */
     public IllegalActionException(Nameable object1, Nameable object2)  {
