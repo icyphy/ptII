@@ -50,8 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ExecEvent.java \
-	ExecEventListener.java \
 	NotifyThread.java \
 	ProcessDirector.java \
 	ProcessReceiver.java \
