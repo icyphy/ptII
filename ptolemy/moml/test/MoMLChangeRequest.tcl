@@ -1,6 +1,6 @@
 # Tests for the MoMLChangeRequest class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Contributor: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -467,9 +467,18 @@ test MoMLChangeRequest-3.2 {Test propagation} {
 set baseModel4 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" value="2"/>
+<entity name="top4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir4" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="4"/>
+    </property>
+</entity>}
+
+set baseModel5 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top5" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir5" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="5"/>
     </property>
 </entity>}
 
@@ -483,25 +492,52 @@ test MoMLChangeRequest-4.1 {Call two arg constructor (Originator, request)} {
     $toplevel4 setManager $manager
 
     set change [java::new ptolemy.moml.MoMLChangeRequest \
-	    $toplevel4 $baseModel4]
+	    $toplevel4 $baseModel5]
     
     # NOTE: Request is filled immediately because the model is not running.
     # Note that this call also ends up calling MoMLParser.getToplevel()
     $manager requestChange $change
+
     $toplevel4 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="dir5" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </property>
 </entity>
-}
+} {I'm not sure why the baseModel5 is not showing up?}
+
+
+######################################################################
+####
+#
+test MoMLChangeRequest-5.1 {getDeferredToParent} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel4]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top">
+	     <entity name="const" class="ptolemy.actor.lib.Const"/>
+        </entity>
+    }]
+    set r1 [expr {[java::call \
+	    ptolemy.moml.MoMLChangeRequest getDeferredToParent [java::null]] \
+	    == [java::null]}] 
+    set r2 [expr {[java::call \
+	    ptolemy.moml.MoMLChangeRequest getDeferredToParent $toplevel] \
+	    == [java::null]}] 
+    list $r1 $r2
+} {1 1} {FIXME: This is not a real test for getDeferredToParent}
