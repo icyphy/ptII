@@ -700,7 +700,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  in the director, since CT sometimes needs roll-back.
      *  This is a critical parameter in an execution, and the
      *  actors are not supposed to call it.
-     *  @exception IllegalActionException Not thrown in this class.
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
