@@ -106,6 +106,23 @@ public class UtilityFunctions {
      */
     public static String findFile(String name) {
         File file = new File(name);
+
+        // File has problems if we change user.dir, which we do in
+        // ptolemy/actor/gui/jnlp/MenuApplication.java if we are running
+        // under Web Start or InstallAnywhere.  What happens is that
+        // File ignores changes to user.dir, so findFile("ptmatlab.dll")
+        // will look in the old value of user.dir instead of the new
+        // value of user.dir.  The hack is to get the canonical path
+        // and use that instead.
+
+        if (file.exists()) {
+            try {
+                file = new File(file.getCanonicalPath());
+            } catch (IOException ex) {
+                file = file.getAbsoluteFile();
+            }
+        }
+
         if (!file.exists()) {
             String curDir = StringUtilities.getProperty("user.dir");
             file = new File(curDir, name);
@@ -431,7 +448,21 @@ public class UtilityFunctions {
 
             String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
 
-            if (libraryPath.equals(libraryWithSuffix)) {
+	    boolean libraryPathExists = false;
+	    try {
+		// It turns out that when looking for libraries under
+		// InstallAnywhere, findFile() can somehow end up returning
+		// a bogus value in C:/Documents and Settings
+		File libraryPathFile = new File(libraryPath);
+		if (libraryPathFile.exists()) {
+		    libraryPathExists = true;
+		}
+	    } catch( Throwable throwable) {
+		// Ignore, the file can't be found
+	    }
+
+            if (libraryPath.equals(libraryWithSuffix)
+		|| !libraryPathExists) {
 
                 try {
                     // findFile did not find the library, so we try using
@@ -479,7 +510,7 @@ public class UtilityFunctions {
                                 + "classpath was: "
                                 + classpath
                                 + " Also tried loadLibrary(\""
-                                + shortLibraryName + "\"");
+                                + shortLibraryName + "\", exception for loadLibrary was: " + ex2 );
 
                     error.initCause(ex);
                     throw error;
