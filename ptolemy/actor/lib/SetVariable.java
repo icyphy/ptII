@@ -1,6 +1,6 @@
 /* Set the value of a variable contained by the container.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,10 +36,10 @@ import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -75,8 +75,8 @@ on the variable is used to set the value.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 3.1
 */
-
 public class SetVariable extends TypedAtomicActor implements ChangeListener, ExplicitChangeContext {
 
     /** Construct an actor with the given container and name.
