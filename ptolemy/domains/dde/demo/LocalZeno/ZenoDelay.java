@@ -38,10 +38,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.dde.kernel.NullToken; // For Javadoc
 
-import java.util.Enumeration;
-
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// ZenoDelay
 /**

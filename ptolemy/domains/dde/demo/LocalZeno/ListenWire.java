@@ -36,8 +36,9 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import java.util.Enumeration;
-import collections.LinkedList;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,10 +84,10 @@ public class ListenWire extends Wire {
      *  actor's list.
      */
     public void addListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            _listeners = new LinkedList();
+        if( _listenerList == null ) {
+            _listenerList = new LinkedList();
         }
-        _listeners.insertLast(listener);
+        _listenerList.addLast(listener);
     }
 
     /** Inform all listeners that the specified ExecEvent 
@@ -94,14 +95,14 @@ public class ListenWire extends Wire {
      * @params event The specified ExecEvent.
      */
     public void generateEvents(ExecEvent event) {
-        if( _listeners == null ) {
+        if( _listenerList == null ) {
             return;
         }
-        Enumeration enum = _listeners.elements();
-        while( enum.hasMoreElements() ) {
-            ExecEventListener newListener =
-                (ExecEventListener)enum.nextElement();
-            newListener.stateChanged(event);
+        Iterator listeners = _listenerList.iterator();
+        while( listeners.hasNext() ) {
+            ExecEventListener listener =
+                (ExecEventListener)listeners.next();
+            listener.stateChanged(event);
         }
     }
 
@@ -150,10 +151,10 @@ public class ListenWire extends Wire {
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
+        if( _listenerList == null ) {
             return;
         }
-        _listeners.removeOneOf(listener);
+        _listenerList.remove(listener);
     }
 
     /** Generate an ExecEvent with a state value of 3. Invoke the
@@ -169,6 +170,6 @@ public class ListenWire extends Wire {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _listeners;
+    private LinkedList _listenerList;
 
 }

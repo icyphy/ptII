@@ -35,8 +35,9 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ListenClock
@@ -81,10 +82,10 @@ public class ListenClock extends Clock {
      * @param listener The specified ExecEventListener.
      */
     public void addListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            _listeners = new LinkedList();
+        if( _listenerList == null ) {
+            _listenerList = new LinkedList();
         }
-        _listeners.insertLast(listener);
+        _listenerList.addLast(listener);
     }
 
     /** Notify all ExecEventListeners on this actor's 
@@ -93,14 +94,14 @@ public class ListenClock extends Clock {
      * @param event The specified ExecEvent.
      */
     public void generateEvents(ExecEvent event) {
-        if( _listeners == null ) {
+        if( _listenerList == null ) {
             return;
         }
-        Enumeration enum = _listeners.elements();
-        while( enum.hasMoreElements() ) {
-            ExecEventListener newListener =
-                (ExecEventListener)enum.nextElement();
-            newListener.stateChanged(event);
+        Iterator listeners = _listenerList.iterator();
+        while( listeners.hasNext() ) {
+            ExecEventListener listener =
+                (ExecEventListener)listeners.next();
+            listener.stateChanged(event);
         }
     }
 
@@ -158,15 +159,15 @@ public class ListenClock extends Clock {
      * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
+        if( _listenerList == null ) {
             return;
         }
-        _listeners.removeOneOf(listener);
+        _listenerList.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _listeners;
+    private LinkedList _listenerList;
 
 }
