@@ -4,7 +4,7 @@
 <entity name="SerialPort" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -12,10 +12,13 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">This serial communication demo is a continuity tester!
-While runnig, bridge pins 2 and 3 on your serial 
-port (such as with a pencil tip or paper clip) and 
-watch the display change!</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the SerialPort actor.
+It writes a sequence of characters "a", "b", "c",
+to the serial port, and listens for any input
+characters.  If you bridge pins 2 and 3 (using
+a paper clip or other metal object, for instance)
+you should see the same characters reported as
+serial port inputs.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -28,7 +31,7 @@ watch the display change!</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 0.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -49,14 +52,14 @@ configure the serialPortName to your serial port.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 270.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Also note that the Sony docks have a switch
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Also note that Sony Vio docks have a switch
 on the back next to the serial port.  Switch
 this towards the serial port to activate it.</text></svg></configure>
         </property>
@@ -71,7 +74,7 @@ this towards the serial port to activate it.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 325.0">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -97,18 +100,6 @@ male serial port:
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 5.0">
-        </property>
-    </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 295.0">
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
@@ -213,21 +204,64 @@ male serial port:
             <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 6, 971, 516}}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 325.0">
+        </property>
+    </property>
+    <property name="annotation5" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Caveats:
+This model only works on Windows,
+and only if the Java Comm API is
+installed.  See the documentation
+for the SerialPort actor for more
+information.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 0.0">
+        </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.25, 0.5, 0.75}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;U&quot;}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;}">
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -237,16 +271,16 @@ male serial port:
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+    <entity name="Output on the serial port" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Output to the serial port">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 522, 292, 229}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -256,7 +290,7 @@ male serial port:
     <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
         <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
-        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="9600">
+        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="19200">
         </property>
         <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -266,7 +300,7 @@ male serial port:
         </property>
         <property name="discardOldData" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 250.0">
         </property>
         <port name="dataToSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -276,7 +310,7 @@ male serial port:
         </port>
     </entity>
     <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -285,19 +319,63 @@ male serial port:
             <property name="output"/>
         </port>
     </entity>
+    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 250.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="UnsignedByteArrayToString2" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 185.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Input from the serial port" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Input from the serial port">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={417, 524, 292, 229}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 250.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="285.0, 185.0">
+        <vertex name="vertex1" value="185.0, 185.0">
         </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Clock.output" relation="relation"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="Display.input" relation="relation2"/>
+    <link port="Output on the serial port.input" relation="relation2"/>
     <link port="SerialComm.dataToSend" relation="relation5"/>
-    <link port="SerialComm.dataReceived" relation="relation2"/>
+    <link port="SerialComm.dataReceived" relation="relation3"/>
     <link port="StringToUnsignedByteArray.input" relation="relation"/>
     <link port="StringToUnsignedByteArray.output" relation="relation5"/>
+    <link port="UnsignedByteArrayToString.input" relation="relation3"/>
+    <link port="UnsignedByteArrayToString.output" relation="relation6"/>
+    <link port="UnsignedByteArrayToString2.input" relation="relation5"/>
+    <link port="UnsignedByteArrayToString2.output" relation="relation2"/>
+    <link port="Input from the serial port.input" relation="relation6"/>
 </entity>

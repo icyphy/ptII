@@ -1,4 +1,5 @@
-/* Ptolemy Actors that operate on the Serial port
+/* Send and receive bytes via the serial port.
+
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -86,8 +87,11 @@ director false).
 call.  Such domains, will typically fire this actor when its outputs
 are needed. Consequently, for use in such domains, you will likely
 want to set the <i>blocking</i> parameter of this actor to true.
-When this parameter is true, the fire() method blocks until there
-is serial port data available.
+When this parameter is true, the fire() method first reads data on
+its input port (if any) and writes it to the serial port, and then
+blocks until sufficient input data are available at the serial port.
+It then reads that data from the serial port and packages it as
+a byte array to produce on the output of this actor.
 
 <p>The inputs and outputs of this actor are unsigned byte arrays.
 The <i>minimumOutputSize</i> parameter specifies the minimum number of
@@ -167,7 +171,7 @@ public class SerialComm extends TypedAtomicActor
 
         baudRate = new Parameter(this, "baudRate");
         baudRate.setTypeEquals(BaseType.INT);
-        baudRate.setToken(new IntToken(9600));
+        baudRate.setToken(new IntToken(19200));
         // FIXME: Should find the available values. How?
 
         blocking = new Parameter(this, "blocking");
@@ -190,9 +194,9 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The baud rate of the serial port, such as 9600 (the default),
+    /** The baud rate of the serial port, such as 19200 (the default),
      *  19200, or 115200, for the serial port.  This has
-     *  type integer and defaults to 9600.
+     *  type integer and defaults to 19200.
      */
     public Parameter baudRate;
 
@@ -287,6 +291,9 @@ public class SerialComm extends TypedAtomicActor
         } else if (attribute == discardOldData) {
             _discardOldData
                 = ((BooleanToken)discardOldData.getToken()).booleanValue();
+        } else if (attribute == blocking) {
+            _blocking
+                = ((BooleanToken)blocking.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -296,10 +303,11 @@ public class SerialComm extends TypedAtomicActor
      *  produce it as a byte array at the output port of this actor;
      *  if a token is available at the input port of this actor,
      *  consume it and send the bytes contained by this token to the
-     *  serial port.  If <i>blocking</i> is true, then before doing
-     *  either of these, stall the calling thread until there is
-     *  data available at the serial port.  The <i>minimumOutputSize</i>
-     *  specifies the minimum number of bytes that must be available.
+     *  serial port.  If <i>blocking</i> is true, then after writing
+     *  the input data to the serial port, stall the calling thread
+     *  until there are input data available at the serial port.
+     *  The <i>minimumOutputSize</i> specifies the minimum number
+     *  of bytes that must be available.
      *  <p>
      *  Before returning, if data is sent to the serial port, this
      *  method calls flush(). However, the flush() method does not
@@ -314,14 +322,47 @@ public class SerialComm extends TypedAtomicActor
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public synchronized void fire() throws IllegalActionException {
+        super.fire();
         try {
+            // Produce output first.
+            if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
+                ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
+                OutputStream out = _serialPort.getOutputStream();
+                int inputLength = dataArrayToken.length();
+                if (_debugging) {
+                    _debug("Writing bytes from the input port to the serial port: "
+                    + inputLength);
+                }
+                for (int j = 0; j < inputLength; j++) {
+                    UnsignedByteToken dataToken =
+                        (UnsignedByteToken)dataArrayToken.getElement(j);
+                    out.write(dataToken.byteValue());
+                }
+                out.flush();
+            }
+
             InputStream in = _serialPort.getInputStream();
-            int bytesAvailable = 0;
+            int bytesAvailable = in.available();
+            if (_debugging) {
+                _debug("Number of input bytes available on the serial port: "
+                + bytesAvailable);
+            }
             // NOTE: This needs _minimumOutputSize to be at least 1.
-            while ((bytesAvailable = in.available()) < _minimumOutputSize
-                    && _blocking && !_stopRequested && !_stopFireRequested) {
+            while (bytesAvailable < _minimumOutputSize
+                    && _blocking
+                    && !_stopRequested
+                    && !_stopFireRequested) {
                 try{
+                    if (_debugging) {
+                        _debug("Blocking waiting for minimum number of bytes: "
+                        + _minimumOutputSize);
+                    }                    
                     wait();
+                    bytesAvailable = in.available();
+                    if (_debugging) {
+                        _debug("Number of input bytes available on the serial port: "
+                        + bytesAvailable);
+                    }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this,
                             "Thread interrupted waiting for serial port data.");
@@ -332,37 +373,39 @@ public class SerialComm extends TypedAtomicActor
                 // Read only if at least desired amount of data is present.
                 if (_discardOldData && bytesAvailable > _maximumOutputSize) {
                     // Skip excess bytes.
-                    bytesAvailable -= (int)in.skip((long)
-                            (bytesAvailable - _maximumOutputSize));
+                    int excess = bytesAvailable - _maximumOutputSize;
+                    if (_debugging) {
+                        _debug("Discarding input bytes: " + excess);
+                    }
+                    bytesAvailable -= (int)in.skip((long)excess);
                 }
                 int outputSize = bytesAvailable;
                 if (outputSize > _maximumOutputSize) {
                     outputSize = _maximumOutputSize;
                 }
                 byte[] dataBytes = new byte[outputSize];
+                if (_debugging) {
+                    _debug("Reading bytes from the serial port: " + outputSize);
+                }
                 in.read(dataBytes, 0, outputSize);
                 Token[] dataTokens = new Token[outputSize];
                 for (int j = 0; j < outputSize; j++) {
                     dataTokens[j] = new UnsignedByteToken(dataBytes[j]);
                 }
+                if (_debugging) {
+                    _debug("Producing byte array on the output port.");
+                }
                 dataReceived.broadcast(new ArrayToken(dataTokens));
 
-                if (in.available() >= _minimumOutputSize) {
+                int available = in.available();
+                if (available >= _minimumOutputSize) {
+                    if (_debugging) {
+                        _debug("Calling fireAtCurrentTime() to deal with additional bytes: "
+                        + available);
+                    }
                     getDirector().fireAtCurrentTime(this);
                 }
             }
-
-            if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
-                ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
-                OutputStream out = _serialPort.getOutputStream();
-                for (int j = 0; j < dataArrayToken.length(); j++) {
-                    UnsignedByteToken dataToken =
-                        (UnsignedByteToken)dataArrayToken.getElement(j);
-                    out.write(dataToken.byteValue());
-                }
-                out.flush();
-            }
-
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "I/O error.");
         } finally {

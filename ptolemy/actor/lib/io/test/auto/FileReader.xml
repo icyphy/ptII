@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+    <entity name="FileReader Relative name" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/data.txt">
         </property>
         <doc>Read an entire file and output as a string</doc>
@@ -59,13 +59,20 @@
 &#10;text
 &#10;data
 &#10;file.
+&#10;&quot;, &quot;This
+&#10;is
+&#10;a
+&#10;test
+&#10;text
+&#10;data
+&#10;file.
 &#10;&quot;}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 160.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -75,7 +82,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="FileReader2" class="ptolemy.actor.lib.io.FileReader">
+    <entity name="FileReader Relative to CWD" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CWD/data/data.txt">
         </property>
         <doc>Read an entire file and output as a string</doc>
@@ -92,11 +99,28 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="FileReader3" class="ptolemy.actor.lib.io.FileReader">
+    <entity name="FileReader Relative to CLASSPATH" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/io/test/auto/data/data.txt">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 290.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="fileOrURL" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="FileReader Relative to PTII" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/io/test/auto/data/data.txt">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 355.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -115,10 +139,14 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="FileReader.output" relation="relation"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FileReader Relative name.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
-    <link port="FileReader2.output" relation="relation2"/>
-    <link port="FileReader3.output" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="FileReader Relative to CWD.output" relation="relation2"/>
+    <link port="FileReader Relative to CLASSPATH.output" relation="relation3"/>
+    <link port="FileReader Relative to PTII.output" relation="relation4"/>
 </entity>
