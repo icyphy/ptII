@@ -1,9 +1,29 @@
 /*
- * Created on 01 sept. 2003
- *
- * @ProposedRating Red (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
- */
+Copyright (c) 2003 THALES.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+@ProposedRating Red (jerome.blanc@thalesgroup.com)
+@AcceptedRating
+
+Created on 01 sept. 2003
+*/
 
 package thales.vergil.navigable;
 
@@ -28,33 +48,13 @@ import thales.vergil.SingleWindowApplication;
 //////////////////////////////////////////////////////////////////////////
 //// NavigableActorGraphTableau
 /**
- * <p>Titre : NavigableActorGraphFrame</p>
- * <p>Description : This is a simple copy of the actuel ActorGraphFrame
- * with additional functionalities for the navigation.</p>
-Copyright (c) 2003 THALES.
-All rights reserved.
+A simple copy of the ActorGraphFrame with additional functionalities for 
+navigation
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
-
-IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * <p>Société : Thales Research and technology</p>
- * @author Jérôme Blanc & Benoit Masson
- * 01 sept. 2003
+@author Jérôme Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003
+@version $Id$
+@since Ptolemy II 3.1
  */
-
 public class NavigableActorGraphTableau extends Tableau {
 
     /** Create a tableau in the specified workspace.
@@ -165,7 +165,7 @@ public class NavigableActorGraphTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof NavigableEffigy) {
-                                // First see whether the effigy already contains a RunTableau.
+                // First see whether the effigy already contains a RunTableau.
                 NavigableActorGraphTableau tableau =
                     (NavigableActorGraphTableau) effigy.getEntity(
                             "navigableGraphTableau");
@@ -181,8 +181,8 @@ public class NavigableActorGraphTableau extends Tableau {
                                 "navigableGraphTableau",
                                 library);
                 }
-                                // Don't call show() here, it is called for us in
-                                // TableauFrame.ViewMenuListener.actionPerformed()
+                // Don't call show() here, it is called for us in
+                // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
             } else {
                 return null;
