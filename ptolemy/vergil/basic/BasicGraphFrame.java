@@ -376,7 +376,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _splitPane.setRightComponent(_jgraph);
         getContentPane().add(_splitPane, BorderLayout.CENTER);
 
-        // FIXME: hotkeys, shortcuts and move to a base class.
         _toolbar = new JToolBar();
         getContentPane().add(_toolbar, BorderLayout.NORTH);
 
@@ -496,7 +495,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 NamedObj element = (NamedObj)elements.next();
                 // first level to avoid obnoxiousness with
                 // toplevel translations.
-                // FIXME: Does it work to use 0 here?
                 element.exportMoML(buffer, 0);
             }
             NamedObj container = (NamedObj)graphModel.getRoot();
@@ -939,7 +937,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
     }
 
-    /** Return the jgraph instance that this view uses to represent the
+    /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      */
     public JGraph getJGraph() {
@@ -1164,7 +1162,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 name = filename;
             }
             try {
-                // FIXME: XML header
                 fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
                         + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
                         + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
@@ -1528,33 +1525,53 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Default background color is a light grey. */
+    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    /** The cut action. */
+    protected Action _cutAction;
+    
+    /** The copy action. */
+    protected Action _copyAction;
+
     /** The instance of EditorDropTarget associated with this object. */
     protected EditorDropTarget _dropTarget;
 
-    /** The library. */
-    protected CompositeEntity _topLibrary;
+    /** The edit menu. */
+    protected JMenu _editMenu;
 
-    // FIXME: Comments are needed on all these.
-    // FIXME: Need to be in alphabetical order.
-
-    // NOTE: should be somewhere else?
-    // Default background color is a light grey.
-    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-    protected JGraph _jgraph;
+    /** The panner. */
     protected JCanvasPanner _graphPanner;
+
+    /** The instance of JGraph for this editor. */
+    protected JGraph _jgraph;
+
+    /** The library display widget. */
     protected JTree _library;
+
+    /** The library context menu creator. */
     protected PTreeMenuCreator _libraryContextMenuCreator;
+
+    /** The library model. */
     protected EntityTreeModel _libraryModel;
+
+    /** The library scroll pane. */
     protected JScrollPane _libraryScrollPane;
+
+    /** The library display panel. */
     protected JPanel _palettePane;
+    
+    /** The paste action. */
+    protected Action _pasteAction;
+
+    /** The split pane for library and editor. */
     protected JSplitPane _splitPane;
 
+    /** The toolbar. */
     protected JToolBar _toolbar;
-    protected JMenu _editMenu;
-    protected Action _cutAction;
-    protected Action _copyAction;
-    protected Action _pasteAction;
+
+    /** The library. */
+    protected CompositeEntity _topLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1562,8 +1579,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Delete the currently selected objects from this document without
      *  undo
      */
-    public void _deleteWithoutUndo() {
-        //FIXME: This is the old delete() method, before undo was added
+    private void _deleteWithoutUndo() {
+        // FIXME: This is the old delete() method, before undo was added.
         // createHierarch() calls this method.
         GraphPane graphPane = _jgraph.getGraphPane();
         GraphController controller =
@@ -1679,44 +1696,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             cut();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    //// EditIconAction
-
-    // 'Edit Icon' pop up menu not shipped with PtII1.0.
-    // See also ptolemy.vergil.basic/kernel/ActorGraphFrame.java
-    //     public class EditIconAction extends FigureAction {
-    //         public EditIconAction() {
-    //             super("Edit Icon");
-    //         }
-
-    //         public void actionPerformed(ActionEvent e) {
-    //             // Figure out what entity.
-    //             super.actionPerformed(e);
-    //             NamedObj object = getTarget();
-    //             if (!(object instanceof Entity)) return;
-    //             Entity entity = (Entity) object;
-    //             XMLIcon icon = null;
-    //             List iconList = entity.attributeList(XMLIcon.class);
-    //             if (iconList.size() == 0) {
-    //                 try {
-    //                     icon = new XMLIcon(entity, entity.uniqueName("icon"));
-    //                 } catch (Exception ex) {
-    //                     throw new InternalErrorException(
-    //                             "duplicated name, but there were no other icons.");
-    //                 }
-    //             } else if (iconList.size() == 1) {
-    //                 icon = (XMLIcon)iconList.get(0);
-    //             } else {
-    //                 throw new InternalErrorException("entity " + entity +
-    //                         " contains more than one icon");
-    //             }
-    //             // FIXME make a tableau.
-    //             ApplicationContext appContext = new ApplicationContext();
-    //             appContext.setTitle("Icon editor");
-    //             new IconEditor(appContext, icon);
-    //         }
-    //     }
 
     ///////////////////////////////////////////////////////////////////
     //// ExecuteSystemAction
@@ -1981,7 +1960,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         try {
                             getConfiguration().openModel(object);
                         } catch(KernelException ex) {
-                            // FIXME
+                            MessageHandler.error("Open failed.", ex);
                         }
                     }
                 };
@@ -2012,7 +1991,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Y,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            // FIXME: Why is this R?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_R));
         }
@@ -2046,7 +2024,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Z,
                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            // FIXME: Why is this U?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
         }
