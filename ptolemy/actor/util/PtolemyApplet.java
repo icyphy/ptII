@@ -128,16 +128,16 @@ public class PtolemyApplet extends Applet {
      *  created.  If its value is greater than zero, then a "Go" button
      *  created.  If its value is greater than one, then a "Stop" button
      *  is also created.
-     *  @param numbuttons How many buttons to create.
+     *  @param numberOfButtons How many buttons to create.
      */
-    protected Panel _createRunControls(int numbuttons) {
+    protected Panel _createRunControls(int numberOfButtons) {
         Panel panel = new Panel();
-        if (numbuttons > 0) {
+        if (numberOfButtons > 0) {
             _goButton = new Button("Go");
             panel.add(_goButton);
             _goButton.addActionListener(new GoButtonListener());
         }
-        if (numbuttons > 1) {
+        if (numberOfButtons > 1) {
             _stopButton = new Button("Stop");
             panel.add(_stopButton);
             _stopButton.addActionListener(new StopButtonListener());
