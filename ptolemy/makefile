@@ -35,7 +35,8 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
-DIRS = kernel plot graph moml data actor gui math media	domains vergil apps
+DIRS = kernel plot graph moml data actor gui math media	\
+	lang codegen domains vergil apps
 
 # Root of Ptolemy II directory
 ROOT =		..
