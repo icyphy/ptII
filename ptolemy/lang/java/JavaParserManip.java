@@ -66,7 +66,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
      */
     public static CompileUnitNode parse(File file, boolean debug) {
         try {
-            return parseCanonical(file.getCanonicalPath(), debug);
+            return parseCanonicalFileName(file.getCanonicalPath(), debug);
         } catch (IOException ioe) {
             ApplicationUtility.error(ioe.toString());
         }
@@ -77,7 +77,8 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
      *  resolution whatsoever. If a source file with the same canonical
      *  filename has already been parsed, return the previous node.
      */
-    public static CompileUnitNode parseCanonical(String filename, boolean debug) {
+    public static CompileUnitNode parseCanonicalFileName(String filename,
+            boolean debug) {
         CompileUnitNode loadedAST = null;
 
         loadedAST = (CompileUnitNode) allParsedMap.get(filename);
@@ -123,6 +124,37 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         loadedAST.setProperty(IDENT_KEY, filename);
 
         allParsedMap.put(filename, loadedAST);
+
+        return loadedAST;
+    }
+
+    /** Parse the file with the given canonical classname, doing no static
+     *  resolution whatsoever. If a source file with the same canonical
+     *  classname has already been parsed, return the previous node.
+     */
+    public static CompileUnitNode parseCanonicalClassName(String className,
+            boolean debug) {
+        CompileUnitNode loadedAST = null;
+
+        loadedAST = (CompileUnitNode) allParsedMap.get(className);
+
+        if (loadedAST != null) {
+            return loadedAST;
+        }
+
+        Class myClass = ASTReflect.pathnameToClass(className);
+        if (myClass != null) {
+            System.out.println("JavaParserManip: Calling " +
+                    "ASTCompileUnitNode on " + 
+                    myClass.getName() + " " +
+                    className);
+            loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
+        }
+
+
+        loadedAST.setProperty(IDENT_KEY, className);
+
+        allParsedMap.put(className, loadedAST);
 
         return loadedAST;
     }
