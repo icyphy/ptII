@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import collections.LinkedList;
+import java.util.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ public class DEChannel extends TypedAtomicActor {
                 input.get(0);
             } else {
                 // put input message into queue
-                _msgs.insertLast(input.get(0));
+                _msgs.add(input.get(0));
                 if (_msgs.size() == 1) {
                     // schedule output time
                     double minDelay = ((DoubleToken)_minDelay.getToken()).doubleValue();
@@ -108,7 +108,7 @@ public class DEChannel extends TypedAtomicActor {
 
         if(Math.abs(now - _nextOutTime) < 1e-14) {
             // send out a message
-            IntToken msg = (IntToken)_msgs.take();
+            IntToken msg = (IntToken)_msgs.removeFirst();
             output.broadcast(msg);
 
             //System.out.println("DEChannel " + this.getFullName() +
