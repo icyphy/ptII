@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Scrambler" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -109,7 +111,7 @@ Dot-product should be -1.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="585.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,48 +121,12 @@ Dot-product should be -1.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2*bit-1">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 200.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="bit" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2*bit-1">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 450.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="bit" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
         <property name="polynomial" class="ptolemy.data.expr.Parameter" value="045">
         </property>
         <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -174,7 +140,35 @@ Dot-product should be -1.</text></svg></configure>
         </property>
         <property name="initial" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 455.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 450.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 200.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 450.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -184,24 +178,52 @@ Dot-product should be -1.</text></svg></configure>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="500.0, 325.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="240.0, 200.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="31">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="235.0, 450.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="31">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="31">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="31">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="DotProduct.input1" relation="relation4"/>
     <link port="DotProduct.input2" relation="relation3"/>
@@ -211,10 +233,10 @@ Dot-product should be -1.</text></svg></configure>
     <link port="SequenceToArray2.input" relation="relation5"/>
     <link port="SequenceToArray2.output" relation="relation3"/>
     <link port="Test.input" relation="relation8"/>
-    <link port="Expression.output" relation="relation2"/>
-    <link port="Expression.bit" relation="relation"/>
-    <link port="Expression2.output" relation="relation5"/>
-    <link port="Expression2.bit" relation="relation6"/>
     <link port="Scrambler.output" relation="relation"/>
     <link port="Scrambler2.output" relation="relation6"/>
+    <link port="BooleanToAnything.input" relation="relation"/>
+    <link port="BooleanToAnything.output" relation="relation2"/>
+    <link port="BooleanToAnything2.input" relation="relation6"/>
+    <link port="BooleanToAnything2.output" relation="relation5"/>
 </entity>

@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConvolutionalCoder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 4, 869, 611}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 500]">
@@ -51,11 +53,13 @@
         </port>
     </entity>
     <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-        <property name="inputNumber" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07}">
         </property>
         <property name="initial" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="inputNumber" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 155.0">
         </property>
@@ -70,14 +74,13 @@
             </property>
         </port>
     </entity>
-    <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
-        <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
+        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 155.0">
+        <doc>Create a sequence of bernoulli random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 155.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -90,12 +93,20 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="165.0, 155.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="Input.input" relation="relation2"/>
     <link port="ConvolutionalCode.input" relation="relation"/>
     <link port="ConvolutionalCoder.input" relation="relation2"/>
     <link port="ConvolutionalCoder.output" relation="relation"/>
-    <link port="DiscreteRandomSource.output" relation="relation2"/>
+    <link port="Bernoulli.output" relation="relation2"/>
 </entity>

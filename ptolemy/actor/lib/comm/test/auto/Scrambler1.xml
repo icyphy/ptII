@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Scrambler1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -23,7 +25,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The resulting output appears highly random even if the input is highly non-random.
-In this case, input is always the integer 1.
+In this case, input is always boolean "true".
 </text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -41,7 +43,7 @@ In this case, input is always the integer 1.
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -75,7 +77,7 @@ In this case, input is always the integer 1.
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true, true, true, false, false, false, true, true, true, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, true, true, false, false, false, true, true, true, true, true, true, true, true, true, false, false, true, false, false, false, false, false, true, true, true, true, true, true, false, false, true, true, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -91,8 +93,16 @@ In this case, input is always the integer 1.
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Scrambler2.input" relation="relation"/>
