@@ -36,21 +36,23 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+
 import java.util.Enumeration;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
 /**
 A TimeKeeper manages an actor's local value of time in the DDE domain.
-A TimeKeeper is instantiated by an DDEThread and is used by the thread
+A TimeKeeper is instantiated by a DDEThread and is used by the thread
 to manage time for the thread's actor. A TimeKeeper has a list of
 DDEReceivers that are contained by the actor that the thread controls.
 As tokens flow through the DDEReceivers, the TimeKeeper keeps track
 of the advancement of time.
 <P>
 DDEReceivers each have three important variables: <I>receiver time</I>,
-<I>last time</I> and <I>priority</I>. The receiver time of an DDEReceiver
+<I>last time</I> and <I>priority</I>. The receiver time of a DDEReceiver
 is equal to the time of the oldest event that resides on the receiver.
 The last time is equal to the time of the newest event residing on the
 receiver.
@@ -86,8 +88,8 @@ TimeKeeper to determine what the current time is.
 */
 public class TimeKeeper {
 
-    /** Construct a time keeper to manage local time of an actor in
-     *  the DDE domain. Set the receiver priorities of all receivers
+    /** Construct a time keeper to manage the local time of an actor 
+     *  in the DDE domain. Set the receiver priorities of all receivers
      *  contained by the actor of this time keeper.
      * @param actor The DDEActor for which time will be managed.
      * @exception IllegalActionException if there is an error
@@ -501,7 +503,11 @@ public class TimeKeeper {
 	return _searchingForIgnoredTokens;
     }
 
-    /** FIXME
+    /** Specify according to the parameter whether or not this 
+     *  TimeKeeper currently has receivers that contain IGNORE 
+     *  tokens at the head of their queues.
+     * @param ignore Set to true if IGNORE tokens exist at the
+     *  head of a receiver queue; set to false othewise.
      */
     void setIgnoredTokens(boolean ignore) {
 	_ignoredReceivers = ignore;
@@ -563,12 +569,12 @@ public class TimeKeeper {
      */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n***Print "+name+"'s RcvrList.");
+        System.out.println("\n###Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
         if( _rcvrTimeList.size() == 0 ) {
             System.out.println("\tList is empty");
-            System.out.println("***End of printRcvrList()\n");
+            System.out.println("###End of printRcvrList()\n");
 	    return;
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -587,7 +593,7 @@ public class TimeKeeper {
 	    }
 	    System.out.println(msg);
         }
-        System.out.println("***End of printRcvrList()\n");
+        System.out.println("###End of printRcvrList()\n");
     }
 
     /** Set a flag indicating whether a search for ignored
@@ -729,7 +735,7 @@ public class TimeKeeper {
     // used by DDEActors to order incoming events according to time
     // stamps. Each DDEActor has a RcvrTimeTriple associated with
     // each receiver it owns. In situations where multiple receivers
-    // of an DDEActor have simultaneous events, the priority of the
+    // of a DDEActor have simultaneous events, the priority of the
     // RcvrTimeTriples are used to determine order.
 
     public class RcvrTimeTriple {
