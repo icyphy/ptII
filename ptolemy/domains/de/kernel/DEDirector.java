@@ -687,7 +687,7 @@ public class DEDirector extends Director {
      *  sort to be redone next time prefire() is called.
      */
     public void invalidateSchedule() {
-        _sortValid = false;
+        _sortValid = -1;
     }
 
     /** Return a new receiver of a type DEReceiver.
@@ -1236,7 +1236,7 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the actor is not accessible.
      */
     protected int _getDepth(Actor actor) throws IllegalActionException {
-        if (!_sortValid) {
+        if (_sortValid != workspace().getVersion()) {
             _computeDepth();
         }
         Integer depth = (Integer)_actorToDepth.get(actor);
@@ -1403,7 +1403,7 @@ public class DEDirector extends Director {
         }
         if (_debugging) _debug("## End of topological sort.");
         // the sort is now valid.
-        _sortValid = true;
+        _sortValid = workspace().getVersion();
     }
 
     // initialize parameters. Set all parameters to their default
@@ -1497,7 +1497,7 @@ public class DEDirector extends Director {
 
     // Indicator of whether the topological sort giving ports their
     // priorities is valid.
-    private boolean _sortValid = false;
+    private long _sortValid = -1;
 
     // A Hashtable stores the mapping of each actor to its depth.
     private Hashtable _actorToDepth = null;
