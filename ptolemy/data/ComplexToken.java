@@ -351,8 +351,8 @@ public class ComplexToken extends ScalarToken {
         return multiply(token);
     }
 
-    /** Returns a new Token representing the multiplicative identity.
-     *  @return A new Token containing the multiplicative identity.
+    /** Returns a new ComplexToken with value 1.0.
+     *  @return A new ComplexToken with value 1.0.
      */
     public Token one() {
         return new ComplexToken(new Complex(1.0));
@@ -421,8 +421,8 @@ public class ComplexToken extends ScalarToken {
         return _value.toString();
     }
 
-    /** Returns a new token representing the additive identity.
-     *  @return A new Token containing the additive identity.
+    /** Returns a new ComplexToken with value Complex.ZERO.
+     *  @return A new ComplexToken with value Complex.ZERO.
      */
     public Token zero() {
         return new ComplexToken(Complex.ZERO);

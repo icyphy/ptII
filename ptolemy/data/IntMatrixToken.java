@@ -299,13 +299,12 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
+     *  row and column in a IntToken.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
      *  @return A IntToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public final Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
@@ -318,22 +317,21 @@ public class IntMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The int at the specified array entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public final int getElementAt(final int row, final int column) {
         return _value[row][column];
     }
 
     /** Return the number of columns in the matrix.
-     *  @return An integer.
+     *  @return The number of columns in the matrix.
      */
     public final int getColumnCount() {
         return _columnCount;
     }
 
     /** Return the number of rows in the matrix.
-     *  @return An integer.
+     *  @return The number of rows in the matrix.
      */
     public final int getRowCount() {
         return _rowCount;
@@ -435,9 +433,10 @@ public class IntMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of rows of
+     *  whose dimensions are the same as the number of rows of
      *  the matrix contained in this token.
-     *  @return A new Token containing the left multiplicative identity.
+     *  @return A new IntMatrixToken containing the left multiplicative
+     *   identity.
      */
     public final Token one() {
         return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
@@ -446,9 +445,10 @@ public class IntMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of columns of
+     *  whose dimensions are the same as the number of columns of
      *  the matrix contained in this token.
-     *  @return A new Token containing the right multiplicative identity.
+     *  @return A new IntMatrixToken containing the right multiplicative
+     *   identity.
      */
     public final Token oneRight() {
         return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
@@ -531,10 +531,11 @@ public class IntMatrixToken extends MatrixToken {
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
      *  matrix contained in this token.
-     *  @return A new Token containing the additive identity.
+     *  @return A new IntMatrixToken containing the additive identity.
      */
     public final Token zero() {
-        return new IntMatrixToken(new int[_rowCount][_columnCount], DO_NOT_COPY);
+        return new IntMatrixToken(new int[_rowCount][_columnCount],
+			          DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -176,12 +176,12 @@ public class BooleanMatrixToken extends MatrixToken {
     }
 
     /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
+     *  row and column in a BooleanToken.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
      *  @return A BooleanToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of this matrix.
+     *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
@@ -194,7 +194,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The boolean at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of this matrix.
+     *   row or column number is outside the range of the matrix.
      */
     public boolean getElementAt(int row, int column) {
         return _value[row][column];

@@ -222,7 +222,7 @@ public class RecordToken extends Token {
      *  The returned token has the same set of labels as this one, and
      *  each field contains the multiplicative identity of the corresponding
      *  field of this one.
-     *  @return An RecordToken.
+     *  @return A RecordToken.
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by the element token.
      */
@@ -320,7 +320,7 @@ public class RecordToken extends Token {
      *  The returned token has the same set of labels as this one, and
      *  each field contains the additive identity of the corresponding
      *  field of this one.
-     *  @return An RecordToken.
+     *  @return A RecordToken.
      *  @exception IllegalActionException If additive identity is not
      *   supported by the element token.
      */

@@ -272,12 +272,12 @@ public class ComplexMatrixToken extends MatrixToken {
     }
 
     /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
+     *  row and column in a ComplexToken.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
      *  @return A ComplexToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of this matrix.
+     *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
@@ -290,7 +290,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The Complex at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of this matrix.
+     *   row or column number is outside the range of the matrix.
      */
     public Complex getElementAt(final int row, final int column) {
         return _value[row][column];
@@ -478,9 +478,10 @@ public class ComplexMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of rows of
+     *  whose dimensions are the same as the number of rows of
      *  the matrix contained in this token.
-     *  @return A new Token containing the left multiplicative identity.
+     *  @return A new ComplexMatrixToken containing the left multiplicative
+     *   identity.
      */
     public Token one() {
         return new ComplexMatrixToken(
@@ -489,9 +490,10 @@ public class ComplexMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of columns of
+     *  whose dimensions are the same as the number of columns of
      *  the matrix contained in this token.
-     *  @return A new Token containing the right multiplicative identity.
+     *  @return A new ComplexMatrixToken containing the right
+     *   multiplicative identity.
      */
     public Token oneRight() {
         return new ComplexMatrixToken(
@@ -502,7 +504,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
      *  matrix contained in this token.
-     *  @return A new Token containing the additive identity.
+     *  @return A new ComplexMatrixToken containing the additive identity.
      */
     public Token zero() {
         return new ComplexMatrixToken(

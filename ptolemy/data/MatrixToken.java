@@ -120,8 +120,8 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to a long matrix.");
     }
 
-    /** Return the number of columns of the contained matrix.
-     *  @return An integer representing the number of columns.
+    /** Return the number of columns of the matrix.
+     *  @return The number of columns of the matrix.
      */
     public abstract int getColumnCount();
 
@@ -137,19 +137,20 @@ public abstract class MatrixToken extends Token {
     public abstract Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException;
 
-    /** Return the number of rows of the contained matrix.
-     *  @return An integer representing the number of rows.
+    /** Return the number of rows of the matrix.
+     *  @return The number of rows of the matrix.
      */
     public abstract int getRowCount();
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of columns of
+     *  whose dimensions are the same as the number of columns of
      *  the matrix contained in this token.
      *  The implementation in this base class just throws an
      *  exception. This method should be overridden in the subclass
      *  when the right multiplicative identity exists.
-     *  @return A new Token containing the right multiplicative identity.
+     *  @return A new MatrixToken containing the right multiplicative
+     *   identity.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */

@@ -104,8 +104,8 @@ public abstract class ScalarToken extends Token {
 
     /** Return the value of this token as an int.
      *  In this base class, we just throw an exception.
-     *  @return An integer
-     *  @exception IllegalActionException Always thrown
+     *  @return The value of this token.
+     *  @exception IllegalActionException Always thrown.
      */
     public int intValue()
 	    throws IllegalActionException {

@@ -414,8 +414,8 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(result);
     }
 
-    /** Returns a new Token representing the multiplicative identity.
-     *  @return A new Token containing the multiplicative identity.
+    /** Returns a new DoubleToken with value 1.0.
+     *  @return A new DoubleToken with value 1.0.
      */
     public Token one() {
         return new DoubleToken(1.0);
@@ -488,8 +488,8 @@ public class DoubleToken extends ScalarToken {
 	}
     }
 
-    /** Returns a new token representing the additive identity.
-     *  @return A Token.
+    /** Returns a new DoubleToken with value 0.0.
+     *  @return A DoubleToken with value 0.0.
      */
     public Token zero() {
         return new DoubleToken(0);

@@ -284,13 +284,12 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
+     *  row and column in a FixToken.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
      *  @return A FixToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
@@ -303,22 +302,21 @@ public class FixMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The FixPoint at the specified array entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public FixPoint getElementAt(int row, int column) {
         return _value[row][column];
     }
 
     /** Return the number of columns in the matrix.
-     *  @return An integer.
+     *  @return The number of columns in the matrix.
      */
     public int getColumnCount() {
 	return _columnCount;
     }
 
     /** Return the number of rows in the matrix.
-     *  @return An integer.
+     *  @return The number of rows in the matrix.
      */
     public int getRowCount() {
 	return _rowCount;
@@ -327,9 +325,10 @@ public class FixMatrixToken extends MatrixToken {
     /** Return a new Token representing the left multiplicative
      *  identity with the same precision as the current
      *  FixMatrixToken. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of rows of the
+     *  whose dimensions are the same as the number of rows of the
      *  matrix contained in this token.
-     *  @return A new Token containing the left multiplicative identity.
+     *  @return A new FixMatrixToken containing the left multiplicative
+     *   identity.
      */
     public Token one() {
 	FixPoint[][] result = new FixPoint[_rowCount][_rowCount];
@@ -350,9 +349,10 @@ public class FixMatrixToken extends MatrixToken {
     /** Return a new Token representing the right multiplicative
      *  identity with the same precision as the current
      *  FixMatrixToken.. The returned token contains an identity
-     *  matrix whose dimension is the same as the number of columns of
+     *  matrix whose dimensions are the same as the number of columns of
      *  the matrix contained in this token.
-     *  @return A new Token containing the right multiplicative identity.
+     *  @return A new FixMatrixToken containing the right multiplicative
+     *   identity.
      */
     public Token oneRight() {
 	FixPoint[][] result = new FixPoint[_columnCount][_columnCount];
@@ -375,7 +375,7 @@ public class FixMatrixToken extends MatrixToken {
      *  token contains a matrix whose elements are all zero, and the
      *  size of the matrix is the same as the matrix contained in this
      *  token.
-     *  @return A new Token containing the additive identity.
+     *  @return A new FixMatrixToken containing the additive identity.
      */
     public Token zero() {
 	FixPoint[][] result = new FixPoint[_rowCount][_columnCount];

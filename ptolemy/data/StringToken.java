@@ -206,7 +206,7 @@ public class StringToken extends Token {
 
     /** Return a StringToken containing an empty string, which is considered
      *  as the additive identity of string.
-     *  @return A new StringToken.
+     *  @return A new StringToken containing an empty string.
      */
     public Token zero() {
 	return new StringToken("");

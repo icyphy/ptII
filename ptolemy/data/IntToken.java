@@ -412,8 +412,8 @@ public class IntToken extends ScalarToken {
         return new IntToken(result);
     }
 
-    /** Returns a new Token representing the multiplicative identity.
-     *  @return A new Token containing the multiplicative identity.
+    /** Returns a new IntToken with value 1.
+     *  @return A new IntToken with value 1.
      */
     public Token one() {
         return new IntToken(1);
@@ -473,8 +473,8 @@ public class IntToken extends ScalarToken {
         return Integer.toString(_value);
     }
 
-    /** Returns a new token representing the additive identity.
-     *  @return A new Token containing the additive identity.
+    /** Returns a new IntToken with value 0.
+     *  @return A new IntToken with value 0.
      */
     public Token zero() {
         return new IntToken(0);

@@ -265,13 +265,12 @@ public class LongMatrixToken extends MatrixToken {
     }
 
     /** Return the element of the matrix at the specified
-     *  row and column wrapped in a token.
+     *  row and column in a LongToken.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
      *  @return A LongToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
@@ -284,22 +283,21 @@ public class LongMatrixToken extends MatrixToken {
      *  @param column The column index of the desired element.
      *  @return The long at the specified array entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   row or column number is outside the range of the matrix.
      */
     public long getElementAt(int row, int column) {
         return _value[row][column];
     }
 
     /** Return the number of columns in the matrix.
-     *  @return An integer.
+     *  @return The number of columns in the matrix.
      */
     public int getColumnCount() {
 	return _columnCount;
     }
 
     /** Return the number of rows in the matrix.
-     *  @return An integer.
+     *  @return The number of rows in the matrix.
      */
     public int getRowCount() {
 	return _rowCount;
@@ -322,9 +320,10 @@ public class LongMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of rows of
+     *  whose dimensions are the same as the number of rows of
      *  the matrix contained in this token.
-     *  @return A new Token containing the left multiplicative identity.
+     *  @return A new LongMatrixToken containing the left multiplicative
+     *   identity.
      */
     public Token one() {
 	long[][] result = new long[_rowCount][_rowCount];
@@ -339,9 +338,10 @@ public class LongMatrixToken extends MatrixToken {
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of columns of
+     *  whose dimensions are the same as the number of columns of
      *  the matrix contained in this token.
-     *  @return A new Token containing the right multiplicative identity.
+     *  @return A new LongMatrixToken containing the right multiplicative
+     *   identity.
      */
     public Token oneRight() {
 	long[][] result = new long[_columnCount][_columnCount];
@@ -358,7 +358,7 @@ public class LongMatrixToken extends MatrixToken {
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
      *  matrix contained in this token.
-     *  @return A new Token containing the additive identity.
+     *  @return A new LongMatrixToken containing the additive identity.
      */
     public Token zero() {
 	long[][] result = new long[_rowCount][_columnCount];

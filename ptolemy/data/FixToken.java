@@ -391,7 +391,7 @@ public class FixToken extends ScalarToken {
 
     /** Returns a new Token representing the multiplicative identity
      *  with the same precision as this FixToken.
-     *  @return A new Token containing the multiplicative identity.
+     *  @return A new FixToken with value 1.0.
      */
     public Token one() {
         return new FixToken( 1.0, _value.getPrecision() );
@@ -472,8 +472,7 @@ public class FixToken extends ScalarToken {
 
     /** Return a new token representing the additive identity with
      *  the same precision as this FixToken.
-     *
-     *  @return A new Token containing the additive identity.
+     *  @return A new FixToken with value 0.0.
      */
     public Token zero() {
         return new FixToken( 0.0, _value.getPrecision() );
