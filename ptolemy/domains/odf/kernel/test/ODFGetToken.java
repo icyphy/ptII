@@ -103,8 +103,8 @@ public class ODFGetToken extends ODFGet {
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
 	                _tokens[cnt] = rcvr.get();
-	                ODFThread thread = rcvr.getThread();
-			_threadTimes[cnt] = thread.getCurrentTime();
+	                TimeKeeper timeKeeper = rcvr.getReceivingTimeKeeper();
+			_threadTimes[cnt] = timeKeeper.getCurrentTime();
 		    } else {
 			System.out.println("No token for cnt "+cnt);
 		    }

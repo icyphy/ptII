@@ -80,10 +80,7 @@ public class ODFPrintString extends ODFActor {
             // token = (StringToken)_input.get(0);
             token = (StringToken)getNextToken();
             // System.out.println("Finished ODFPrintString.getNextToken()");
-	    Thread thread = Thread.currentThread();
-	    if( thread instanceof ODFThread ) {
-                time = ((ODFThread)thread).getCurrentTime();
-	    }
+            time = getTimeKeeper().getCurrentTime();
 	    if( token == null ) {
 		System.out.println("Null token in ODFPrintString");
 	    }
