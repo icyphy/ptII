@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/demo
 
-DIRS = heli lorenz sigmadelta thermo
+DIRS = Helicopter Lorenz SigmaDelta Thermostat
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -78,26 +78,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass demo.jar
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-PTAUXJAR = demo.jar
-
 demo: subdemo
-
-
-
-# 'make clean' removes everything in KRUFT
-KRUFT = demo.jar
-
-# Jar file for the Sigma Delta Applet
-demo.jar: $(JSRCS) $(JCLASS) makefile
-	(cd $(ROOT); \
-		$(JAR) cf \
-		$(ME)/$@ \
-		$(ME)/*.class)
 
 depend:
 	@echo "no dependencies in this directory"
