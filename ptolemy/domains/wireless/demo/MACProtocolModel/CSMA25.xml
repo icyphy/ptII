@@ -429,13 +429,13 @@ sensor nets. Please look inside "node" to see the protocol. Note that the DataCo
         <link port="collisionRecord.detectTime" relation="relation5"/>
         <link port="TimedPlotter.input" relation="relation5"/>
     </entity>
-    <entity name="DataCollectChannel" class="ptolemy.domains.wireless.lib.WirelessChannel">
+    <entity name="DataCollectChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 45.0">
         </property>
     </entity>
-    <entity name="CollisionReportChannel" class="ptolemy.domains.wireless.lib.WirelessChannel">
+    <entity name="CollisionReportChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 45.0">

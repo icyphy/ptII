@@ -1,0 +1,691 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CollisionsWithSNR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 243, 945, 516}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[730, 400]">
+    </property>
+    <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, power=Infinity, duration=1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 70.0">
+        </property>
+    </entity>
+    <entity name="Transmitter" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 70.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 170.0">
+        </property>
+        <property name="power" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="duration" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="averagePeriod" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{power=power, duration=duration}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 205.0">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 210.0">
+            </property>
+        </entity>
+        <entity name="Clock" class="ptolemy.actor.lib.Clock">
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+            </property>
+            <doc>Create a set of pulses</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 200.0">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="relation2"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="Clock.output" relation="relation"/>
+    </entity>
+    <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 230.0">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 3, 1010, 596}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 480]">
+        </property>
+        <property name="powerDensityThreshold" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 30.0">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 200.0">
+            </property>
+        </port>
+        <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 275.0">
+            </property>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 275.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+            <port name="duration" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="power" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+        </entity>
+        <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="585.0, 140.0">
+            </property>
+            <port name="payload" class="ptolemy.domains.fsm.modal.ModalPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="timeout" class="ptolemy.domains.fsm.modal.ModalPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="received" class="ptolemy.domains.fsm.modal.ModalPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="discarded" class="ptolemy.domains.fsm.modal.ModalPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <port name="powerDensity" class="ptolemy.domains.fsm.modal.ModalPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+                <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="idle">
+                </property>
+                <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                    <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 136, 998, 516}}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 400]">
+                </property>
+                <property name="collisions" class="ptolemy.data.expr.Parameter" value="0">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 20.0">
+                    </property>
+                </property>
+                <property name="receivedData" class="ptolemy.data.expr.Parameter" value="10">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 35.0">
+                    </property>
+                </property>
+                <property name="currentPowerDensity" class="ptolemy.data.expr.Parameter">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 50.0">
+                    </property>
+                </property>
+                <property name="signalToInterferenceThreshold" class="ptolemy.data.expr.Parameter" value="100.0">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 65.0">
+                    </property>
+                </property>
+                <property name="interferencePower" class="ptolemy.data.expr.Parameter">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 80.0">
+                    </property>
+                </property>
+                <port name="payload" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 155.0">
+                    </property>
+                </port>
+                <port name="timeout" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 220.0">
+                    </property>
+                </port>
+                <port name="received" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="645.0, 130.0">
+                    </property>
+                </port>
+                <port name="discarded" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="645.0, 185.0">
+                    </property>
+                </port>
+                <port name="powerDensity" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 285.0">
+                    </property>
+                </port>
+                <entity name="idle" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 105.0">
+                    </property>
+                </entity>
+                <entity name="receiving" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 105.0">
+                    </property>
+                </entity>
+                <entity name="discarding" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 280.0">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="payload_isPresent">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="receivedData = payload; collisions = 0; currentPowerDensity = powerDensity; interferencePower = 0.0">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5005011624568114">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.029754626846249604">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="timeout_isPresent &amp;&amp; collisions == 0">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="received = receivedData">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0376544937946353">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="payload_isPresent &amp;&amp; (currentPowerDensity/(interferencePower + powerDensity)) &lt; signalToInterferenceRatio">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="discarded = receivedData">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="collisions = collisions + 1; receivedData = payload; currentPowerDensity = powerDensity">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7837676647455405">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.467874802233841">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="timeout_isPresent &amp;&amp; collisions &gt; 0">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="collisions = collisions - 1; interferencePower = interferencePower - timeout">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2519414876144266">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07853257096228565">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="timeout_isPresent &amp;&amp; collisions == 0">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="discarded = receivedData">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7149344505771605">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9354490250620027">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="payload_isPresent &amp;&amp; (currentPowerDensity/(interferencePower + powerDensity)) &lt; signalToInterferenceRatio">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="discarded = receivedData">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="collisions = collisions + 1; receivedData = payload">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.361886486857119">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2186318669708331">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="payload_isPresent &amp;&amp; (currentPowerDensity/(interferencePower + powerDensity)) &gt;= signalToInterferenceRatio">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="interferencePower = interferencePower + powerDensity">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2477947529916755">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.4679614623290678">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </relation>
+                <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="payload_isPresent &amp;&amp; (currentPowerDensity/(interferencePower + powerDensity)) &gt; signalToInterferenceRatio">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="receivedData = payload; currentPowerDensity = powerDensity">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.24043552958970446">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6224899139684759">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </relation>
+                <link port="idle.incomingPort" relation="relation2"/>
+                <link port="idle.incomingPort" relation="relation6"/>
+                <link port="idle.outgoingPort" relation="relation"/>
+                <link port="receiving.incomingPort" relation="relation"/>
+                <link port="receiving.incomingPort" relation="relation4"/>
+                <link port="receiving.incomingPort" relation="relation8"/>
+                <link port="receiving.outgoingPort" relation="relation2"/>
+                <link port="receiving.outgoingPort" relation="relation3"/>
+                <link port="receiving.outgoingPort" relation="relation4"/>
+                <link port="discarding.incomingPort" relation="relation3"/>
+                <link port="discarding.incomingPort" relation="relation5"/>
+                <link port="discarding.incomingPort" relation="relation7"/>
+                <link port="discarding.outgoingPort" relation="relation5"/>
+                <link port="discarding.outgoingPort" relation="relation6"/>
+                <link port="discarding.outgoingPort" relation="relation7"/>
+                <link port="discarding.outgoingPort" relation="relation8"/>
+            </entity>
+            <relation name="payloadRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="timeoutRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="receivedRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="discardedRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="powerDensityRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="payload" relation="payloadRelation"/>
+            <link port="timeout" relation="timeoutRelation"/>
+            <link port="received" relation="receivedRelation"/>
+            <link port="discarded" relation="discardedRelation"/>
+            <link port="powerDensity" relation="powerDensityRelation"/>
+            <link port="_Controller.payload" relation="payloadRelation"/>
+            <link port="_Controller.timeout" relation="timeoutRelation"/>
+            <link port="_Controller.received" relation="receivedRelation"/>
+            <link port="_Controller.discarded" relation="discardedRelation"/>
+            <link port="_Controller.powerDensity" relation="powerDensityRelation"/>
+        </entity>
+        <entity name="Received" class="ptolemy.actor.lib.gui.Display">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="705.0, 100.0">
+            </property>
+        </entity>
+        <entity name="Discarded" class="ptolemy.actor.lib.gui.Display">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="705.0, 190.0">
+            </property>
+        </entity>
+        <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="329.0, 260.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+        </entity>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 80.0">
+            </property>
+        </entity>
+        <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 260.0">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="powerDensity &gt; powerDensityThreshold">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 365.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="powerDensity" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="80.0, 200.0">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="265.0, 250.0">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="415.0, 330.0">
+            </vertex>
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="125.0, 305.0">
+            </vertex>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="GetProperties.output" relation="relation2"/>
+        <link port="GetProperties.trigger" relation="relation"/>
+        <link port="RecordDisassembler.input" relation="relation2"/>
+        <link port="RecordDisassembler.duration" relation="relation8"/>
+        <link port="RecordDisassembler.power" relation="relation11"/>
+        <link port="modal model.payload" relation="relation7"/>
+        <link port="modal model.timeout" relation="relation6"/>
+        <link port="modal model.received" relation="relation4"/>
+        <link port="modal model.discarded" relation="relation5"/>
+        <link port="modal model.powerDensity" relation="relation11"/>
+        <link port="Received.input" relation="relation4"/>
+        <link port="Discarded.input" relation="relation5"/>
+        <link port="VariableDelay.input" relation="relation3"/>
+        <link port="VariableDelay.output" relation="relation6"/>
+        <link port="VariableDelay.delay" relation="relation3"/>
+        <link port="BooleanSwitch.input" relation="relation"/>
+        <link port="BooleanSwitch.control" relation="relation10"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation7"/>
+        <link port="BooleanSwitch2.input" relation="relation8"/>
+        <link port="BooleanSwitch2.control" relation="relation10"/>
+        <link port="BooleanSwitch2.trueOutput" relation="relation3"/>
+        <link port="Expression.output" relation="relation10"/>
+        <link port="Expression.powerDensity" relation="relation11"/>
+    </entity>
+    <entity name="Transmitter2" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 70.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 275.0">
+        </property>
+        <property name="power" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="duration" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="averagePeriod" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{power=power, duration=duration}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 200.0">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 210.0">
+            </property>
+        </entity>
+        <entity name="Clock" class="ptolemy.actor.lib.Clock">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+            </property>
+            <doc>Create a set of pulses</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 190.0">
+            </property>
+        </entity>
+        <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="2.5">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 210.0">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="relation3"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="Clock.output" relation="relation"/>
+        <link port="TimedDelay.input" relation="relation2"/>
+        <link port="TimedDelay.output" relation="relation3"/>
+    </entity>
+</entity>
