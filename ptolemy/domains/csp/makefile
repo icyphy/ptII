@@ -1,7 +1,7 @@
-# Makefile for Java Ptolemy Continuous Time Domain
+# Makefile for PtolemyII Communicating Sequential Proocesses Domain
 #
-# @Version: @(#)makefile	1.5 08/20/98
-# @Author: Christopher Hylands
+# @Version: $Id$
+# @Author: Christopher Hylands, Neil Smyth
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel lib demo
+DIRS = kernel actors test
 
 # Root of Tycho directory
 ROOT =		../../..
 
-ME = 		ptolemy/domains/ct
+ME = 		ptolemy/domains/csp
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
