@@ -322,8 +322,8 @@ public class Main extends KernelMain {
             Main main = new Main(args);
 
             // Parse the model.
-            CompositeActor toplevel = main.readInModel(args[0]);
-        
+	    CompositeActor toplevel = main.readInModel(args[0]);
+
             // Create instance classes for the actors.
             main.initialize(toplevel);
 
@@ -336,20 +336,10 @@ public class Main extends KernelMain {
             System.out.println(args[0] + " "
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
         } catch (Exception ex) {
-            ex.printStackTrace();
+	    System.err.println("Code generation of '" + args[0] 
+			       + "' failed:");
+            ex.printStackTrace(System.err);
+	    System.exit(2);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
