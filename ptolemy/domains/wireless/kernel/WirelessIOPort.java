@@ -41,12 +41,12 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -98,8 +98,7 @@ that send on the channel and the channel port.
 @Pt.AcceptedRating Yellow (cxh)
 */
 
-public class WirelessIOPort
-    extends TypedIOPort implements ChangeListener {
+public class WirelessIOPort extends TypedIOPort {
 
     /** Construct a port in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -127,13 +126,6 @@ public class WirelessIOPort
 
         insideTransmitProperties =
             new Parameter(this, "insideTransmitProperties");
-
-        // Since the channel parameters affect connectivity, we should
-        // treat changes to their values as changes to the topology.
-        // To do that, we listen for changes and increment the version
-        // number of the workspace.
-        // FIXME: use ValueListener...
-        outsideChannel.addChangeListener(this);
     }
 
     /** Construct a port with the specified container and name
@@ -182,12 +174,6 @@ public class WirelessIOPort
 
         insideTransmitProperties =
             new Parameter(this, "insideTransmitProperties");
-
-        // Since the channel parameters affect connectivity, we should
-        // treat changes to their values as changes to the topology.
-        // To do that, we listen for changes and increment the version
-        // number of the workspace.
-        outsideChannel.addChangeListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -248,6 +234,12 @@ public class WirelessIOPort
                         + "but got: "
                         + value);
             }
+        } else if (attribute == insideChannel || attribute == outsideChannel) {
+            // Since the channel parameters affect connectivity, we should
+            // treat changes to their values as changes to the topology.
+            // To do that, we listen for changes and increment the version
+            // number of the workspace.
+            workspace().incrVersion();
         } else {
             super.attributeChanged(attribute);
         }
@@ -322,24 +314,6 @@ public class WirelessIOPort
         } else {
             super.broadcastClear();
         }
-    }
-
-    /** Increment the workspace version. This is because we are listening
-     *  for changes in channel identifiers, and these need to be treated
-     *  as if they were topology changes. Normally, changing a parameter
-     *  value does not increment the workspace version.
-     *  @param change The change that executed.
-     */
-    public void changeExecuted(ChangeRequest change) {
-        workspace().incrVersion();
-    }
-
-    /** Do nothing.  No need to increment the workspace version since the
-     *  change failed.
-     *  @param change The change that failed.
-     *  @param exception The exception that was thrown.
-     */
-    public void changeFailed(ChangeRequest change, Exception exception) {
     }
 
     /** Override the base class to create receivers for WirelessIOPort.
