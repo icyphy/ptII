@@ -112,12 +112,12 @@ public class SimpleHS {
             FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
             ctrl.setInitialState(ctrlInc);
             FSMTransition ctrlTr1 = 
-                    ctrl.createTransition(ctrlInc, ctrlDec);
+                ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("output");
             // ctrlTr1.setInitEntry(true);
             HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
             FSMTransition ctrlTr2 = 
-                    ctrl.createTransition(ctrlDec, ctrlInc);            
+                ctrl.createTransition(ctrlDec, ctrlInc);            
             ctrlTr2.setTriggerEvent("output");
             //ctrlTr2.setInitEntry(true);
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
@@ -249,8 +249,8 @@ public class SimpleHS {
             sys.connect(hsst, plot.input);
             sys.connect(hstr, plot.input);
 
-//System.out.println("HSOUT: " + hsout.numLinks() + " " + hsout.numInsideLinks());
-//System.out.println("HSTR: " + hstr.numLinks() + " " + hstr.numInsideLinks());
+            //System.out.println("HSOUT: " + hsout.numLinks() + " " + hsout.numInsideLinks());
+            //System.out.println("HSTR: " + hstr.numLinks() + " " + hstr.numInsideLinks());
 
             // try to run the system
             dedir.setStopTime(5.0);
