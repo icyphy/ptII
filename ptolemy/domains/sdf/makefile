@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sdf
 
-DIRS =		kernel lib gui demo test
+DIRS =		kernel lib gui codegen demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
