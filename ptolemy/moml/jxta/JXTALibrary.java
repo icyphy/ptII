@@ -55,7 +55,7 @@ import java.io.PrintStream;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.util.Properties;
-import java.util.Timer;
+
 
 import net.jxta.credential.AuthenticationCredential;
 import net.jxta.credential.Credential;
@@ -78,7 +78,7 @@ import net.jxta.membership.Authenticator;
 import net.jxta.membership.MembershipService;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupFactory;
-import net.jxta.pipe.InputPipe;
+
 import net.jxta.pipe.OutputPipe;
 import net.jxta.pipe.PipeMsgEvent;
 import net.jxta.pipe.PipeMsgListener;
