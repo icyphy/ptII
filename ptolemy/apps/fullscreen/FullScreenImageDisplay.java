@@ -215,7 +215,9 @@ public class FullScreenImageDisplay extends Sink {
 	    // window, any display changes made by calling"
 	    // <code>setDisplayMode</code> are automatically restored to their
 	    // original state."
-	    _graphicsDeviceValue.setFullScreenWindow(null);
+	    if (_graphicsDeviceValue != null) {
+		_graphicsDeviceValue.setFullScreenWindow(null);
+	    }
 	    _inFullScreenMode = false;
 	}
     }
