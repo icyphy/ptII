@@ -99,7 +99,10 @@ public class ArrayAppend extends Transformer {
         return newObject;
     }
 
-    /** Consume the input ArrayToken and produce the outputs.
+    /** Consume the one ArrayToken from each channel of the input port 
+     *  (if one is available) and produce a single ArrayToken on the output 
+     *  port that contains all of the tokens contained in all of the 
+     *  arrays read from the input.
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
