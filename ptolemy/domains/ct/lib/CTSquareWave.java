@@ -169,7 +169,7 @@ public class CTSquareWave extends CTActor {
         double f  = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
         if(f < 0) {
             throw new IllegalActionException (this,
-                    "Fequency: "+ f + " is illegal.");
+                    "Frequency: "+ f + " is illegal.");
         }
         _frequency = f;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
