@@ -57,8 +57,22 @@ public class CWriter extends SceneTransformer {
      *  @return The options. 
      */
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug outDir";
+        // FIXME: conditionally allow the debug option.
+        // return super.getDeclaredOptions() + " debug outDir";
+        // The debug option suppresses exceptions, which in turn forces
+        // repeated attempts to generate class files.
+        System.out.println("Options: " + super.getDeclaredOptions()); 
+        return super.getDeclaredOptions() + " outDir";
     }
+
+    /** Test if the internal transform associated with this writer has 
+     *  completed.
+     *  @return True if the transform has completed.
+     */
+    public boolean completedTransform() {
+        return _completedTransform;
+    }
+
 
     /** Write out the C (.i, .h, _i.h) files.
      *  Sample option arguments:
@@ -76,6 +90,7 @@ public class CWriter extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         String outDir = Options.getString(options, "outDir");
+        _completedTransform = true;
 
         // We need to cache the classes up front to avoid a concurrent
         // modification exception.
@@ -118,7 +133,12 @@ public class CWriter extends SceneTransformer {
             FileHandler.write(fileName + ".c", code);
             System.out.println("Done generating C code files for " + fileName);
         }
+
+        _completedTransform = true;
     }
+
+    // Flag that indicates whether transform has been completed.
+    private boolean _completedTransform = false;
 
     private static CWriter instance = new CWriter();
     private CWriter() {}

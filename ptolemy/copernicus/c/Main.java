@@ -56,6 +56,8 @@ import soot.toolkits.graph.*;
 import soot.dava.*;
 import soot.util.*;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -126,8 +128,9 @@ public class Main extends KernelMain {
                         CommandLineTransformer.v(_toplevel)));
 
         // Generate C code
+        _writer = CWriter.v();
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot1", CWriter.v()));
+                new Transform("wjtp.snapshot1", _writer));
 
         // FIXME: add optimizations
     }
@@ -152,6 +155,7 @@ public class Main extends KernelMain {
         // Rather than calling soot.Main.main() here directly, which
         // spawns a separate thread, we run this in the same thread
         //soot.Main.main(args);
+        System.out.println("debug args = " + Arrays.asList(args)); 
         soot.Main.setReservedNames();
         soot.Main.setCmdLineArgs(args);
         soot.Main main = new soot.Main();
@@ -171,6 +175,7 @@ public class Main extends KernelMain {
     public static void main(String[] args)
             throws IllegalActionException, NameDuplicationException {
 
+        _writer = null;
 	    Main main = new Main(args);
 
 	    // Parse the model.
@@ -182,9 +187,34 @@ public class Main extends KernelMain {
 	    // Add Transforms to the Scene.
 	    main.addTransforms();
 
-	    main.generateCode(args);
+        // Ignore exceptions that pertain to writing unnecessary class files
+        // after code generation is complete.
+	    try {
+            main.generateCode(args);
+        } catch (RuntimeException exception) {
+            // Under debug mode, soot throws a RuntimeException if it
+            // can't generate a class file. We wan't to generate (and
+            // ignore) this exception here so that class files are not
+            // generated. More specifically, we ignore any exceptions that
+            // occur after code generation is completed.
+            if ((_writer == null) || (!_writer.completedTransform())) {
+                throw new RuntimeException(exception.getMessage()
+                        + exception.getClass().getName());
+            } else if (_debug) {
+                System.err.println("Warning: caught an after code generation"
+                        + " completed.\n" + exception + "\n");
+                exception.printStackTrace(); 
+            }
+        }
     }
 
+    // Local debugging flag.
+    private static boolean _debug = true;
+
+    // Flags to control what gets generated.
     private boolean _generateJimple = false;
     private boolean _generateLoopedSchedule = false;
+
+    // The CWriter instance used to generate code.
+    private static CWriter _writer = null;
 }
