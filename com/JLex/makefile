@@ -45,6 +45,7 @@ JSRCS = Main.java
 
 EXTRA_SRCS = \
 	$(JSRCS) \
+	README \
 	manual.html \
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -54,6 +55,25 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	CAccept.class \
+	CAcceptAnchor.class \
+	CAlloc.class \
+	CBunch.class \
+	CDTrans.class \
+	CDfa.class \
+	CEmit.class \
+	CError.class \
+	CInput.class \
+	CLexGen.class \
+	CMakeNfa.class \
+	CMinimize.class \
+	CNfa.class \
+	CNfa2Dfa.class \
+	CNfaPair.class \
+	CSet.class \
+	CSpec.class \
+	CUtility.class \
+	JavaLexBitSet.class \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
