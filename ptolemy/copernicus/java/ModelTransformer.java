@@ -420,6 +420,11 @@ public class ModelTransformer extends SceneTransformer {
                     throw new RuntimeException(ex.getMessage());
                 }
 
+                if (token == null) {
+                    throw new RuntimeException("Calling getToken() on '"
+                            + attribute "' returned null.  This may occur "
+                            + "if an attribute has no value in the moml file");
+                }
                 Local tokenLocal = 
                     PtolemyUtilities.buildConstantTokenLocal(body,
                         assignStmt, token, "token");
