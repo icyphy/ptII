@@ -543,10 +543,12 @@ public class DEDirector extends Director {
                 ((BooleanToken)isCQAdaptive.getToken()).booleanValue());
 
         // Add debug listeners.
-        Iterator listeners = _debugListeners.iterator();
-        while (listeners.hasNext()) {
-            DebugListener listener = (DebugListener)listeners.next();
-            _eventQueue.addDebugListener(listener);
+        if (_debugListeners != null) {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                DebugListener listener = (DebugListener)listeners.next();
+                _eventQueue.addDebugListener(listener);
+            }
         }
         _deadActors = null;
         _currentTime = 0.0;
