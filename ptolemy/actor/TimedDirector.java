@@ -46,21 +46,13 @@ import ptolemy.actor.util.Time;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public interface TimedDirector {
+    
     /** Return a time object that contains the value of the current time.
      *  @return A time object that contains the value of the current time.
      */
     public Time getModelTime();
 
-    /** Get the number of digits of the fractional part of the
-     *  time value used in this model.
-     *  @return The number of digits.
-     */
-    public int getTimePrecisionInDigits();
-
-    /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(-1*timePrecisionInDigits), where the
-     *  timePrecisionInDigits is the number of the digits for the fractional
-     *  part. See {@link #getTimePrecisionInDigits()}.
+    /** Get the time resolution of the model.
      *  @return The time resolution of the model.
      */
     public double getTimeResolution();

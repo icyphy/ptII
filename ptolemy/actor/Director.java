@@ -35,9 +35,8 @@ package ptolemy.actor;
 import java.util.Iterator;
 
 import ptolemy.actor.util.Time;
-import ptolemy.data.IntToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,6 +47,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.SharedParameter;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,14 +95,20 @@ import ptolemy.kernel.util.Workspace;
    require write access, then it is safe to set the workspace to be read-only,
    which will result in faster execution.
    <p>
-   This class also specifies a parameter <code>timePrecisionInDigits</code>: The
-   number of the digits to the right of the decimal point (the fractional part)
-   of values of the model time. Its default value is 10. The corresponding time
-   resolution is 10^(-10). If two time values differ less than this value, they
-   are considered equivalent. This parameter can only be changed when a model is
-   not running in order to keep consitency of the time objects. A model only has
-   one time resolution, which is decided by the timePrecisionInDigits parameter
-   of the top-level director.
+   This class also specifies a parameter <i>timeResolution</i>. This is a double
+   with default 1E-10, which is 10<sup>-10</sup>.
+   All time values are rounded to the nearest multiple of this
+   value. If the value is changed during a run, an exception is thrown.
+   This is a shared parameter, which means
+   that all instances of Director in the model will have the same value for
+   this parameter. Changing one of them changes all of them.
+   <p>
+   The <i>timeResolution</i> parameter is not visible to the user
+   by default. Subclasses can make it visible by calling
+   <pre>
+      timeResolution.setVisibility(Settable.FULL);
+   </pre>
+   in their constructors.
 
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
    @version $Id$
@@ -137,12 +143,13 @@ public class Director extends Attribute implements Executable {
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  Create the timePrecisionInDigits parameter.
+     *  Create the timeResolution parameter.
      *
      *  @param container The container.
      *  @param name The name of this director.
      *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
+     *   the director is not compatible with the specified container, or if
+     *   the time resolution parameter is malformed.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
@@ -156,17 +163,47 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** The number of digits of the fractional part of the model time
-     *  (in decimal format). This parameter defines the time resolution
-     *  used by this director, which is 10<sup>-timePrecisionInDigits.
-     *  The default value of this parameter is 10, and the corresponding
-     *  time resolution is 10<sup>-10.
-     *  The data type for this parameter is int.
+    /** The time precision used by this director. All time values are
+     *  rounded to the nearest multiple of this number. This is a double
+     *  that defaults to "1E-10" which is 10<sup>-10</sup>.
+     *  This is a shared parameter, meaning that changing one instance
+     *  in a model results in all instances being changed.
      */
-    public Parameter timePrecisionInDigits;
+    public SharedParameter timeResolution;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Override the base class to update local variables.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == timeResolution) {
+        	// This is extremely frequently used, so cache the value.
+            // Prevent this from changing during a run!
+            double newResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();
+            if (newResolution != _timeResolution) {
+                NamedObj container = getContainer();
+                if (container instanceof Actor) {
+                    Manager manager = ((Actor)container).getManager();
+                    if (manager != null && manager.getState() != Manager.IDLE) {
+                        throw new IllegalActionException(this,
+                                "Cannot change timePrecision during a run.");
+                    }
+                }
+                if (newResolution <= 0.0) {
+                	throw new IllegalActionException(this,
+                            "Invalid timeResolution (which must be positive): "
+                            + newResolution);
+                }
+                _timeResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();                
+            }
+        }
+        super.attributeChanged(attribute);
+    }
 
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
@@ -404,7 +441,7 @@ public class Director extends Attribute implements Executable {
 
     /** Return the current time value of the model being executed by this
      *  director. This time can be set with the setCurrentTime method.
-     *  In this base class, time never passes, and there are no restrictions
+     *  In this base class, time never increases, and there are no restrictions
      *  on valid times.
      *
      *  @return The current time value.
@@ -418,7 +455,7 @@ public class Director extends Attribute implements Executable {
     /** Return the current time object of the model being executed by this
      *  director.
      *  This time can be set with the setModelTime method. In this base
-     *  class, time never passes, and there are no restrictions on valid
+     *  class, time never increases, and there are no restrictions on valid
      *  times.
      *
      *  @return The current time.
@@ -466,42 +503,12 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(-1*timePrecisionInDigits), which is the
+     *  the value of the <i>timeResolution</i> parameter. This is the
      *  smallest time unit for the model.
      *  @return The time resolution of the model.
      */
     public final double getTimeResolution() {
-        return Math.pow(10, -1 * getTimePrecisionInDigits());
-    }
-
-    /** Get the time precision in digits, the number of digits of the fractional
-     *  part of the time value used in this model.
-     *  @return The number of digits.
-     */
-    public final int getTimePrecisionInDigits() {
-        // NOTE: The current design enforces that there is only one time
-        // precision (that of the top level director) associated with a model.
-        if (_isEmbedded()) {
-            NamedObj container = getContainer();
-
-            if (container instanceof CompositeActor) {
-                return ((CompositeActor) container).getExecutiveDirector()
-                        .getTimePrecisionInDigits();
-            }
-        }
-
-        int numberOfDigits = 10;
-
-        try {
-            numberOfDigits = ((IntToken) timePrecisionInDigits.getToken())
-                .intValue();
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException("Can not evaluate the "
-                + "timePrecisionInDigits parameter into a valid integer: "
-                + e.toString());
-        }
-
-        return numberOfDigits;
+        return _timeResolution;
     }
 
     /** Get the start time of the model. This base class returns
@@ -513,8 +520,10 @@ public class Director extends Attribute implements Executable {
      *  @return The start time of the model.
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStartTime}
+     *  @exception IllegalActionException If the specified start time
+     *   is invalid.
      */
-    public double getStartTime() {
+    public double getStartTime() throws IllegalActionException {
         return 0.0;
     }
 
@@ -523,10 +532,12 @@ public class Director extends Attribute implements Executable {
      *  Subclasses need to override this method to get a different
      *  start time.
      *  For example, CT director and DE director use the value of
-     *  the startTime parameter to specify the real start time.
+     *  the <i>startTime</i> parameter to specify the real start time.
      *  @return The start time of the model.
+     *  @exception IllegalActionException If the specified start time
+     *   is invalid.
      */
-    public Time getModelStartTime() {
+    public Time getModelStartTime() throws IllegalActionException {
         return new Time(this);
     }
 
@@ -540,8 +551,10 @@ public class Director extends Attribute implements Executable {
      *  @return The stop time of the model.
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStopTime}
+     *  @exception IllegalActionException If the specified stop time
+     *   is invalid.
      */
-    public double getStopTime() {
+    public double getStopTime() throws IllegalActionException {
         return getModelStopTime().getDoubleValue();
     }
 
@@ -553,8 +566,10 @@ public class Director extends Attribute implements Executable {
      *  For example, CT director and DE director use the value of
      *  the stopTime parameter to specify the real stop time.
      *  @return The stop time of the model.
+     *  @exception IllegalActionException If the specified stop time
+     *   is invalid.
      */
-    public Time getModelStopTime() {
+    public Time getModelStopTime() throws IllegalActionException {
         return new Time(this, Double.POSITIVE_INFINITY);
     }
 
@@ -583,7 +598,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Called initialize().");
         }
-
+        
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -1312,6 +1327,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
         _attachText("_iconDescription",
@@ -1324,16 +1340,23 @@ public class Director extends Attribute implements Executable {
     private void _initializeParameters() {
         // This must happen first before any time objects get created.
         try {
-            // create parameters
-            timePrecisionInDigits = new Parameter(this,
-                    "timePrecisionInDigits", new IntToken(10));
-            timePrecisionInDigits.setVisibility(Settable.NONE);
+            timeResolution = new SharedParameter(this,
+                    "timeResolution", Director.class, "1E-10");
+            // Since by default directors have no time, this is
+            // invisible.
+            timeResolution.setVisibility(Settable.NONE);
         } catch (Exception e) {
             // This is the only place to create
-            // the timePrecisionInDigits parameter, no exception should ever
+            // the timeResolution parameter, no exception should ever
             // be thrown.
             throw new InternalErrorException("Cannot set parameter:\n"
-                + e.getMessage());
+                + e);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    
+    /** Time resolution cache, with a reasonable default value. */
+    private double _timeResolution = 1E-10;
 }
