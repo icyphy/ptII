@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.Top;
 
 // Java imports.
 import java.awt.Container;
@@ -48,6 +49,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.lang.reflect.Constructor;
@@ -1826,11 +1829,12 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    // Attempt to find a MoML class.
+   // Attempt to find a MoML class.
     // If there is no source defined, then use the classpath.
     private ComponentEntity _attemptToFindMoMLClass(
             String className, String source) throws Exception {
         String classAsFile = null;
+        String altClassAsFile = null;
         ComponentEntity reference = null;
         if (source == null) {
             // No source defined.  Use the classpath.
@@ -1840,20 +1844,45 @@ public class MoMLParser extends HandlerBase {
             // NOTE: This should perhaps be handled by the
             // class loader, but it seems rather complicated to
             // do that.
+            // Search for the .xml file before searching for the .moml
+            // file.  .moml files are obsolete, and we should probably
+            // not bother searching for them at all.
             classAsFile = className.replace('.','/') + ".xml";
+	    // RIM uses .moml files, so leave them in.
+            altClassAsFile = className.replace('.','/') + ".moml";
         } else {
             // Source is given.
             classAsFile = source;
         }
-
-        // Read external model definition in a new parser,
+       // Read external model definition in a new parser,
         // rather than in the current context.
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
         NamedObj candidateReference = null;
-        candidateReference = _parse(newParser, _base, classAsFile);
-
-        if (candidateReference instanceof ComponentEntity) {
+        try {
+            candidateReference =
+                _parse(newParser, _base, classAsFile);
+        } catch (Exception ex2) {
+            // Try the alternate file, if it's not null.
+            if (altClassAsFile != null) {
+                try {
+                    candidateReference =
+                        _parse(newParser, _base, altClassAsFile);
+                    classAsFile = altClassAsFile;
+                } catch (Exception ex3) {
+                    // Cannot find class definition.
+                    throw new XmlException(
+                            ex3.getMessage(),
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
+            } else {
+                // No alternative. Rethrow exception.
+                throw ex2;
+            }
+        }
+       if (candidateReference instanceof ComponentEntity) {
             reference = (ComponentEntity)candidateReference;
         } else {
             throw new XmlException(
@@ -1878,7 +1907,6 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-
         // Set the classname and source of the import.
         // NOTE: We have gone back and forth on whether this
         // is right, because previously, the className field
@@ -2147,12 +2175,37 @@ public class MoMLParser extends HandlerBase {
                         withinApplet = true;
                     }
                 }
-                if (security == null || withinApplet == false) {
-                    MessageHandler.warning("Security concern:\n"
+                if ((security == null || withinApplet == false)
+		    && !_approvedRemoteXmlFiles.contains(xmlFile)) {
+		    // If the user invoked file -> Open URL
+		    // then do not warn for any URLS below the URL
+		    // they entered.
+		    
+		    // This code is not foolproof, but will work
+		    // for most simple situations.
+		    String lastOverallURLBase = null;
+		    String xmlFileBase = null;
+		    if (Top.getLastOverallURL() != null) {
+			lastOverallURLBase =
+			Top.getLastOverallURL()
+			.substring(0,
+				   Top.getLastOverallURL().lastIndexOf("/"));
+			xmlFileBase =
+			xmlFile.toString()
+			.substring(0,
+				   xmlFile.toString().lastIndexOf("/"));
+		    }
+		    if (Top.getLastOverallURL() == null
+			|| !xmlFileBase.startsWith(lastOverallURLBase)) {
+			MessageHandler.warning("Security concern:\n"
                             + "About to look for MoML from the "
                             + "net at address:\n"
                             + xmlFile.toExternalForm()
                             + "\nOK to proceed?");
+		    }
+		    // If we get to here, the the user did not hit cancel,
+		    // so we cache the file
+		    _approvedRemoteXmlFiles.add(xmlFile); 
                 }
             }
             input = xmlFile.openStream();
@@ -2560,6 +2613,10 @@ public class MoMLParser extends HandlerBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    // Remote xmlFiles that the user approved of when the security concern
+    // dialog popped up.
+    private static Set _approvedRemoteXmlFiles = new HashSet();
 
     // Attributes associated with an entity.
     private Map _attributes = new HashMap();
