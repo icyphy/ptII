@@ -686,19 +686,28 @@ public class Plot extends PlotBox {
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
             int barlx = (int)(xpos - _barwidth * _xscale/2 +
-                     (_currentdataset - dataset - 1) * _baroffset * _xscale);
+                    (_currentdataset - dataset - 1) *
+                    _baroffset * _xscale);
             // right x position of bar
             int barrx = (int)(barlx + _barwidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
+            // The y position of the zero line.
+            long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
             if (_debug > 20) {
-            System.out.println("Plot:_drawPoint bar ("+barlx+" "+ypos+" "+
-                    (barrx - barlx) + " " + (_lry - ypos) +") "+
-                    barrx + " " + barlx + " " + _lry + " xpos="+ xpos +
-                    " " + _barwidth+" "+_xscale+" "+_currentdataset );
+                System.out.println("Plot:_drawBar ("+barlx+" "+ypos+" "+
+                        (barrx - barlx) + " "+(zeroypos-ypos)+") "+barrx+" "+
+                        barlx+" "+_lry+" xpos="+xpos+" zeroypos="+zeroypos+ 
+                        " "+_barwidth+" "+_xscale+" "+_currentdataset+
+                        " "+_yMin);
             }
-            graphics.fillRect(barlx, (int)ypos,
-                    barrx - barlx, _lry - (int)ypos);
+            if (_yMin >= 0 || ypos <= zeroypos) {
+                graphics.fillRect(barlx, (int)ypos,
+                        barrx - barlx, (int)(zeroypos - ypos));
+            } else {
+                graphics.fillRect(barlx, (int)zeroypos,
+                        barrx - barlx, (int)(ypos - zeroypos));
+            }
         }
     }
 
@@ -712,7 +721,14 @@ public class Plot extends PlotBox {
             long xpos, long ypos, boolean clip) {
         if (clip && ypos < _uly) ypos = _uly;
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-            graphics.drawLine((int)xpos, (int)ypos, (int)xpos, _lry);
+            // The y position of the zero line.
+            double zeroypos = _lry - (long) ((0-_yMin) * _yscale);
+            if (_debug > 20) {
+                System.out.println("Plot: _drawImpulse("+xpos+" "+ypos+" "+
+                        clip+") "+zeroypos);
+            }
+            graphics.drawLine((int)xpos, (int)ypos, (int)xpos,
+                    (int)zeroypos);
         }
     }
 
@@ -1076,23 +1092,26 @@ public class Plot extends PlotBox {
                     setBars(false);
                 } else {
                     setBars(true);
-                        int comma = line.indexOf(",", 5);
-                        String barwidth;
-                        String baroffset = null;
-                        if (comma > 0) {
+                    if (! _yRangeGiven) {
+                        _yBottom = 0;
+                    }
+                    int comma = line.indexOf(",", 5);
+                    String barwidth;
+                    String baroffset = null;
+                    if (comma > 0) {
                         barwidth = (line.substring(5, comma)).trim();
                         baroffset = (line.substring(comma+1)).trim();
                     } else {
                         barwidth = (line.substring(5)).trim();
                     }
-                        try {
-                            Double bwidth = new Double(barwidth);
-                            double boffset = _baroffset;
-                            if (baroffset != null) {
-                                boffset = (new Double(baroffset)).
-                                    doubleValue();
-                            }
-                            setBars(bwidth.doubleValue(), boffset);
+                    try {
+                        Double bwidth = new Double(barwidth);
+                        double boffset = _baroffset;
+                        if (baroffset != null) {
+                            boffset = (new Double(baroffset)).
+                                doubleValue();
+                        }
+                        setBars(bwidth.doubleValue(), boffset);
                         } catch (NumberFormatException e) {
                             // ignore if format is bogus.
                         }
