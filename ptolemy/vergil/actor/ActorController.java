@@ -62,7 +62,6 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
-import ptolemy.vergil.kernel.PortLocationDialogFactory;
 import ptolemy.vergil.kernel.SetIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -125,9 +124,7 @@ public class ActorController extends AttributeController {
         if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
-            _portLocationDialogFactory = new PortLocationDialogFactory();
             _menuFactory.addMenuItemFactory(_portDialogFactory);
-            _menuFactory.addMenuItemFactory(_portLocationDialogFactory);
             _menuFactory.addMenuItemFactory(
                      new MenuActionFactory(new SetIconAction()));
         }
@@ -200,9 +197,6 @@ public class ActorController extends AttributeController {
         if (_portDialogFactory != null) {
 	    _portDialogFactory.setConfiguration(configuration);
         }
-        if (_portLocationDialogFactory != null) {
-            _portLocationDialogFactory.setConfiguration(configuration);
-        }
 	if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -225,7 +219,6 @@ public class ActorController extends AttributeController {
     private BreakpointDialogFactory _breakpointDialogFactory;
 
     private PortDialogFactory _portDialogFactory;
-    private PortLocationDialogFactory _portLocationDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
