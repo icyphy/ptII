@@ -773,7 +773,7 @@ public final class Workspace implements Nameable, Serializable {
     private Hashtable _readers = new Hashtable();
 
     // The number of PtolemyThread readers.
-    // The use of this field is to increment it everytime we have a new
+    // The use of this field is to increment it every time we have a new
     // Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
     // whenever a Ptolemy reader relinquishes ALL its read access (readDepth
     // field goes from 1 to 0).
