@@ -202,7 +202,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  where the class can be found
      *  @param necessaryClass  The dot separated class name, for example
      *  "ptolemy.kernel.util.NamedObj"
-     *  @returns If the class can be found as a resource, return the
+     *  @return If the class can be found as a resource, return the
      *  directory or jar file where the necessary class can be found.
      *  otherwise, return null.
      */
