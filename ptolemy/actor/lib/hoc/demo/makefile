@@ -50,7 +50,9 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	DFTSubSet/DFTSubSet.jar \
-	HocDE/HocDE.jar
+	HocDE/HocDE.jar \
+	IterateOverArray/IterateOverArray.jar \
+	ModelReference/ModelReference.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
