@@ -474,7 +474,7 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
-ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
+#ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 
 #####################################################################
 #####################################################################
