@@ -47,7 +47,7 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util test lib # doc
+DIRS = 		util sched process lib test # doc
 
 CLASSPATH = ../..
 
@@ -76,17 +76,10 @@ JSRCS = \
 	Mailbox.java \
 	Manager.java \
 	NoRoomException.java \
-	NotSchedulableException.java \
 	NoTokenException.java \
 	NotifyThread.java \
-	ProcessDirector.java \
-	ProcessReceiver.java \
-	ProcessThread.java \
 	QueueReceiver.java \
 	Receiver.java \
-	Scheduler.java \
-	StaticSchedulingDirector.java \
-	TerminateProcessException.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
@@ -116,6 +109,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
