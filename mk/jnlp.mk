@@ -161,6 +161,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
 	lib/jython.jar \
+	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
