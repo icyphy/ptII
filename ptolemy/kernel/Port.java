@@ -88,8 +88,8 @@ public class Port extends GenericPort {
     public void aliasSet() {
 	 String name = this.getName();
 	 AliasPair aliasPair = (AliasPair)aliasPairList_.get( name ); 
-	 Port innerPort = (Port)aliasPair.getInnerAlias();
-	 Port outerPort = (Port)aliasPair.getOuterAlias();
+	 innerAlias_ = (Port)aliasPair.getInnerAlias();
+	 outerAlias_ = (Port)aliasPair.getOuterAlias();
     }
 
     /** Connect this Port to a Relation.
