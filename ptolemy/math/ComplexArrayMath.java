@@ -490,6 +490,20 @@ public final class ComplexArrayMath {
         return retval;
     }
 
+    /** Return a new array that is constructed from the argument by
+     *  subtracting the second argument from every element.
+     *  @param array An array of Complex's.
+     *  @param z The complex number to subtract.
+     *  @return A new array of Complex's.
+     */
+    public static final Complex[] subtract(Complex[] array, Complex z) {
+        Complex[] result = new Complex[array.length];
+        for (int i = array.length-1; i >= 0; i--) {
+            result[i] = array[i].subtract(z);
+        }
+        return result;
+    }
+
     /** Return a new array that is the element-by-element
      *  subtraction of the second array from the first array.
      *  If the sizes of both arrays are 0, return a new array of size 0.
