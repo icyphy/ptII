@@ -69,6 +69,12 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'BusContentionApplet$$1.class' \
+	'BusContentionApplet$$2.class' \
+	'BusContentionApplet$$3.class' \
+	'BusContentionApplet$$LocalEdgeRenderer.class' \
+	'BusContentionApplet$$StateListener.class' \
+	'BusContentionApplet$$ThreadRenderer.class \
 	'BusContentionApplication$$1.class' \
 	'BusContentionApplication$$2.class' \
 	'BusContentionApplication$$LocalEdgeRenderer.class' \
