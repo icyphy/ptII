@@ -172,8 +172,10 @@ public class GenerateCopyrights {
             String foundCopyright = _findURL(copyrightURL);
 
             htmlBuffer.append("<tr><td>" + entityBuffer
-                    + "</td>\n    <td> <a href=\"" + foundCopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(foundCopyright) + "</code></a></td>\n</tr>\n");
+                    + "</td>\n    <td> <a href=\""
+                    + foundCopyright + "\"><code>"
+                    + _canonicalizeURLToPTII(foundCopyright)
+                    + "</code></a></td>\n</tr>\n");
         }
         htmlBuffer.append("</dl>\n</body>\n</html>");
         return htmlBuffer.toString();
