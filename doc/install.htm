@@ -348,53 +348,44 @@ then click <code>Next</code>
  <li> Select a nearby mirror, then click <code>Next</code>
 
  <li> You will be presented with a list of packages to install.
-  <br>A complete installation takes at least 75Mb.
+  <br>The initial default installs packages from <CODE>Base</CODE>,
+	which is roughly a 6Mb download that expands into about 26Mb
+	of files.
 
-  <p>At the minimum, select the packages below, which is roughly a
-  3Mb download
-        that expands into an 8.7Mb installation.
-   <ul>
-        <li> Base Category
-        <ul>
-         <li> ash -  For <CODE>/bin/sh</CODE>
-         <li> bash
-         <li> cygwin
-         <li> diff - Configure uses <CODE>cmp</CODE>
-         <li> fileutils - For <CODE>ls</CODE>
-         <li> grep - Used by configure
-         <li> sed - Needed by config.status, which is created by configure
-         <li> sh-utils - For <CODE>basename</CODE>
-         <li> textutils - For <CODE>cat</CODE> and <CODE>tr</CODE>
-        </ul>
-        <li> Devel Category
-        <ul>
-         <li> make
-        </ul>
-
-        
-        </ul>
-
-         <p> If you are serious about development you may also want:
+         <p> If you are serious about development you may also want
+         to install the packages below.  To install an individual package,
+	 click on the <CODE>+</CODE> to the left of the group name, then 
+	 click on the arrows to the right of the group name
+         until <CODE>Default</CODE>  changes to <CODE>Install</CODE>
         <ul>
 
         <li> Devel Category
 	<ul>
 	 <li> autoconf - requires gawk and m4 from the Interepreters Category
-	 <li> cvs
+	 <li> binutils, gcc, gettext, libintl libintl1, libtool, libtool-devel
+	  - The matlab interface requires gcc and Matlab.  You may find
+	  it easier to install all of the Devel category
+	 <li> cvs 
 	</ul>
         <li> Net Category
         <ul>
          <li> openssh - cvs may need this
-        </ul>
-        <li> Base Category
-        <ul>
-         <li> findutils
-         <li> gzip
-         <li> tar
+         <li> openssl - required by openssh
         </ul>
         <li> Text Category: less
         </ul>
       </ol>
+
+ <li> Hit <CODE>Next</CODE>, which should download the packages and
+install them
+ 
+ <li> Click on <CODE>Add icon to Start Menu</CODE>, and then
+      <CODE>Finish</CODE>.
+ 
+ <li>  Start up bash with
+	<CODE>Start</CODE> -&gt; <CODE>Cygnus Solutions</CODE> -&gt;
+	<CODE>Cygwin Bash Shell</CODE>
+ 
   </menu>
 
 
