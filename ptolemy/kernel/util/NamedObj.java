@@ -380,12 +380,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  java.lang.Object, which makes a field-by-field copy.
      *  It then adjusts the workspace reference and clones the
      *  attributes on the attribute list, if there is one.  The attributes
-     *  are set to the attributes of the new object.  In addition,
-     *  if this object has the MoML element name "class", as determined
-     *  by elementName field of the associated MoMLInfo object,
-     *  then the new object will not export
-     *  its contents when exportMoML() is called, but rather will
-     *  declare that it extends this one, and will export only its attributes.
+     *  are set to the attributes of the new object.
      *  This method read-synchronizes on the workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
