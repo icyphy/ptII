@@ -40,8 +40,19 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
-/**
-Read a DoubleToken and converts it to a FixToken with a given precision.
+/** 
+
+Read a DoubleToken and converts it to a FixToken with a given
+precision.  In fitting the double into a fix point, the following
+quantization modes are supported.
+
+<ul> 
+<li> mode = 0, <b>Rounding</b>:.
+<li> mode = 1, <b>Truncate</b>:.
+</ul>
+
+The default quantizer is rounding and the default value for precision
+is "(16/2)".
 
 @author Bart Kienhuis 
 @version $Id$
@@ -64,11 +75,11 @@ public class DoubleToFix extends Transformer {
 	output.setTypeEquals(BaseType.FIX);
         
 	precision = 
-            new Parameter(this, "precision", new StringToken("(2.14)"));
+            new Parameter(this, "precision", new StringToken("(16/2)"));
         precision.setTypeEquals(BaseType.STRING);
    
-	mode = new Parameter(this, "mode", new StringToken("Round"));
-        mode.setTypeEquals(BaseType.STRING);
+	quantizer = new Parameter(this, "quantizer", new IntToken(0));
+        quantizer.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,11 +88,32 @@ public class DoubleToFix extends Transformer {
     /** The precision of the Fix point */
     public Parameter precision;
 
-    /** The mode used to convert a double into a fix point. */
-    public Parameter mode;
+    /** The quantizer used to convert a double into a fix point. */
+    public Parameter quantizer;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and sets the public variables to point to the new ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        try {
+            DoubleToFix newobj = (DoubleToFix)super.clone(ws);
+            newobj.precision = (Parameter)newobj.getAttribute("precision");
+            newobj.quantizer = (Parameter)newobj.getAttribute("quantizer");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
     /** Read at most one token from each input and convert the Token
      *  value in a FixToken with a given precision.  
@@ -92,10 +124,15 @@ public class DoubleToFix extends Transformer {
         FixToken result = null;
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
-            if ( _mode.equals("Round") ) { 
+            switch( _quantizer ) { 
+            case 0:
                 result = new FixToken( Quantizer.round(in.doubleValue(), _precision) );
-            } else {
+                break;
+            case 1:
                 result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );
+                break;
+            default:
+                throw new IllegalActionException("Selected a unknonw quantizer mode for DoubleToFix");
             }
             output.send(0, result);
         }
@@ -107,7 +144,7 @@ public class DoubleToFix extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _precision = new Precision(precision.getToken().toString());        
-        _mode = ((StringToken)mode.getToken()).toString();
+        _quantizer = ((IntToken)quantizer.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,5 +154,5 @@ public class DoubleToFix extends Transformer {
     private Precision _precision = null;
 
     // The mode of Quantization.
-    private String _mode = null;
+    private int _quantizer = 0;
 }

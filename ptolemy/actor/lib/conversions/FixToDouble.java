@@ -51,10 +51,10 @@ depending on its sign, equal to the Max or Min value possible
 with the new given precision.
 <li> mode = 1, <b>Zero Saturate</b>: The FixToken is
 set equal to zero.
-<li> mode = 2, <b>Truncate</b>: bits are simply removed from
-the integer and fractional part of the FixToken in order to fit 
-into the new precision.     
 </ul>
+
+The default quantizer is Saturate and the default value for precision
+is "(16/2)".
 
 @author Bart Kienhuis 
 @version $Id$
@@ -81,8 +81,8 @@ public class FixToDouble extends Transformer {
         precision.setTypeEquals(BaseType.STRING);              
 
         // Set the Parameter
-	rounding = new Parameter(this, "rounding", new IntToken(0));
-        rounding.setTypeEquals(BaseType.INT);              
+	quantizer = new Parameter(this, "quantizer", new IntToken(0));
+        quantizer.setTypeEquals(BaseType.INT);              
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,24 +96,42 @@ public class FixToDouble extends Transformer {
 
     /** Select the mode when rouding the FixPoint to the given Precision.
      */
-    public Parameter rounding;
+    public Parameter quantizer;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and sets the public variables to point to the new ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        try {
+            FixToDouble newobj = (FixToDouble)super.clone(ws);
+            newobj.precision = (Parameter)newobj.getAttribute("precision");
+            newobj.quantizer = (Parameter)newobj.getAttribute("quantizer");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
     /** Read at most one token from each input and convert the FixToken
      *  into a DoubleToken. 
      * @exception IllegalActionException If there is no director.  
      */
-    // FIXME: Need to add functionality that a user has the option to
-    // change the precision of the FixToken before it is converted
-    // into the double token.
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
             // Scale the FixToken to specific precision.
-            // If rounding occurs, select which mode.
-            FixToken scaled = in.scaleToPrecision( _precision, _rounding );
+            // If rounding occurs, select which quantizer to use.
+            FixToken scaled = in.scaleToPrecision( _precision, _quantizer );
 	    DoubleToken result = new DoubleToken( scaled.convertToDouble() ); 
             output.send(0, result);
         }
@@ -126,7 +144,7 @@ public class FixToDouble extends Transformer {
         super.initialize();
         _precision = new Precision(((StringToken)precision.getToken()).
                 toString());        
-        _rounding = ((IntToken)rounding.getToken()).intValue();
+        _quantizer = ((IntToken)quantizer.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,6 +153,6 @@ public class FixToDouble extends Transformer {
     // The Precision of the Actor.
     private Precision _precision = null;
 
-    // The rounding mode when fitting to the desired precision.
-    private int _rounding = 0;
+    // The quantizer when fitting to the desired precision.
+    private int _quantizer = 0;
 }

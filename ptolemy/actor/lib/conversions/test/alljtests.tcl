@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"ComplexToReal.tcl PolarToRectangular.tcl RealToComplex.tcl RectangularToPolar.tcl" != ""} {foreach i [list ComplexToReal.tcl PolarToRectangular.tcl RealToComplex.tcl RectangularToPolar.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"FixToDouble.tcl DoubleToFix.tcl ComplexToReal.tcl PolarToRectangular.tcl RealToComplex.tcl RectangularToPolar.tcl" != ""} {foreach i [list FixToDouble.tcl DoubleToFix.tcl ComplexToReal.tcl PolarToRectangular.tcl RealToComplex.tcl RectangularToPolar.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}
