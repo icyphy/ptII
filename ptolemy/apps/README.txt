@@ -12,3 +12,6 @@ ant            kvm            rijndael       superb
 crazyboard     lego           robot          video
 etherealSting  lejos          saveasjava     waba
 jmf            midp           security       webstart
+
+To checkout ptIIapps, use:
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co ptIIapps
