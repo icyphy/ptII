@@ -35,7 +35,7 @@ package ptolemy.math;
 import java.lang.*;
 import java.util.*;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 /**
  * This class provides a library for statistical operations on arrays of
@@ -50,15 +50,15 @@ import java.util.*;
 
 public class DoubleArrayStat extends DoubleArrayMath {
 
-  // Protected constructor prevents construction of this class.
-  protected DoubleArrayStat() {}
+    // Protected constructor prevents construction of this class.
+    protected DoubleArrayStat() {}
 
-  /////////////////////////////////////////////////////////////////////////
-  ////                         Public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-  /** Return the sum of all of the elements in the array.
-   *  Return 0.0 of the length of the array is 0.
-   */
+    /** Return the sum of all of the elements in the array.
+     *  Return 0.0 of the length of the array is 0.
+     */
   public static final double sumOfElements(double[] array) {
     double sum = 0.0;
     for (int i = 0; i < array.length; i++) {
