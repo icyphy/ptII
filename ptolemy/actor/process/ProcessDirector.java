@@ -189,7 +189,8 @@ public class ProcessDirector extends Director {
             //Creating receivers and threads for all actors;
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
-                ProcessThread pnt = new ProcessThread(actor, this);
+                ProcessThread pnt = _getProcessThread(actor, this);
+                // ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
                 actor.createReceivers();
@@ -422,6 +423,13 @@ public class ProcessDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** FIXME (davisj)
+     */
+    protected ProcessThread _getProcessThread(Actor actor, 
+	    ProcessDirector director) {
+	return new ProcessThread(actor, director);
+    }
 
     /** Add a thread to the list of threads in the model.
      *  This list is used in case of abrupt termination of the model
