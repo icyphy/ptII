@@ -1089,7 +1089,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }
 
         // remove from the implements list all interfaces that (directly
-        // or indirectly) implement Actor                                 
+        // or indirectly) implement Actor or SequenceActor
         Iterator interfaceItr = node.getInterfaces().iterator();
         List modifiedInterfaceList = new LinkedList();
         
@@ -1100,8 +1100,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             ClassDecl interfaceDecl = 
              (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode); 
              
-            if (!_typePolicy.isSuperInterface(PtolemyTypeIdentifier.ACTOR_DECL,
-                interfaceDecl)) {
+            if (!_typePolicy.isSuperInterface(
+                    PtolemyTypeIdentifier.ACTOR_DECL,
+                    interfaceDecl) &&
+                    !_typePolicy.isSuperInterface(
+                            PtolemyTypeIdentifier.SEQUENCE_ACTOR_DECL,
+                            interfaceDecl)
+                ) {
                modifiedInterfaceList.add(interfaceTypeNode);   
             } else {
                System.err.println("Warning: Interface \"" + 
