@@ -52,7 +52,7 @@ JSRCS = \
 	SampleTarget.java \
 	SampleSDFExecutive.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) ptjdriver
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -64,8 +64,12 @@ OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass javadocs
+all: $(EXTRA_SRCS) jclass
+	chmod a+x ptjdriver
+
+install: $(EXTRA_SRCS) jclass javadocs
+	chmod a+x ptjdriver
+
 docs: javadocs
 
 depend:
