@@ -85,7 +85,7 @@ public class BasicContextMenu extends JPopupMenu {
 	_target = target;
 
 	Action action;
-	action = new AbstractAction ("Edit Parameters") {
+	action = new AbstractAction("Edit Parameters") {
 	    public void actionPerformed(ActionEvent e) {
 
 		// Create a dialog for configuring the object.
@@ -109,7 +109,7 @@ public class BasicContextMenu extends JPopupMenu {
 	};
 	add(action, "Edit Parameters");
 
-	action = new AbstractAction ("Configure Parameter") {
+	action = new AbstractAction("Configure Parameter") {
 	    public void actionPerformed(ActionEvent e) {
 
 		// Create a dialog for configuring a parameter.
@@ -179,7 +179,7 @@ public class BasicContextMenu extends JPopupMenu {
      * "menuItem" property.  The menu item's text is set using the
      * action's name and is enabled by default.
      */
-    public JMenuItem add (Action action, String tooltip) {
+    public JMenuItem add(Action action, String tooltip) {
         String label = (String)action.getValue(action.NAME);
         return add(action, tooltip, label, true);
     }
@@ -191,7 +191,7 @@ public class BasicContextMenu extends JPopupMenu {
      * "menuItem" property.  The menu item's text is set to be "label",
      * and is disabled or enabled according to "isEnabled."
      */
-    public JMenuItem add (Action action,
+    public JMenuItem add(Action action,
             String tooltip, String label, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
