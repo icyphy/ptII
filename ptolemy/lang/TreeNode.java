@@ -299,7 +299,8 @@ public abstract class TreeNode extends TrackedPropertyMap
           ApplicationUtility.error("Illegal access exception invoking method "
            + _visitMethodName);
         } catch (InvocationTargetException ite) {
-          ApplicationUtility.error("Invocation target exception invoking method "
+          ApplicationUtility.error(
+           "Invocation target exception invoking method "
            + _visitMethodName + " : target = " +
            ite.getTargetException().toString());
         }

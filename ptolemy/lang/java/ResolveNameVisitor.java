@@ -380,7 +380,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         
         LinkedList childArgs = TNLManip.cons(subCtx);
         
-        // FIX ME
+        // CHECK ME : is this all that needs to be done?
         
         return node;    
     }

@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+//////////////////////////////////////////////////////////////////////////
+//// TNLManip
 /** Static functions for manipulating lists of children of a TreeNode.
  *  In general, a list may contain TreeNodes or other lists.
  *
@@ -65,9 +67,11 @@ public class TNLManip {
         return retval;
     }
 
-    /** Have each member of the list accept the argument visitor. Return a list
-     *  of the return values from each visitation. Each member of the list
-     *  should be a child list.
+    /** Have each member of the list accept the argument visitor. Each member 
+     *  of the argument list should be a child list. Return a list
+     *  of the return values from each visitation. If a node in the list  
+     *  returns null, set the corresponding value in the return list to
+     *  NullValue.instance.     
      */
     public static final ArrayList traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
@@ -136,11 +140,17 @@ public class TNLManip {
        }
        return retval;
     } 
- 
+
+    /** Return a string representation of the list. This method simply calls
+     *  toString(list, "")
+     */ 
     public static final String toString(List list) {
        return toString(list, "");
     }
 
+    /** Return a string representation of the list. The string representation
+     *  is indented by the argument string.
+     */ 
     public static final String toString(List list, String indent) {
        if (list.isEmpty()) {
           return "<empty list>\n";

@@ -49,6 +49,8 @@ import ptolemy.lang.java.*;
 import ptolemy.lang.java.extended.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// ActorCodeGenerator
 /** A code generator for each actor in a generic system.
  *
  *  @author Jeff Tsay
@@ -83,6 +85,12 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
          File.separatorChar;        
     }
 
+    /** Perform pass 1 on the actor with the information given by the
+     *  argument instance of ActorCodeGeneratorInfo. Pass 1 is the
+     *  specialization of token types.
+     *
+     *  Return the fully qualified name of the renamed actor class.
+     */
     public String pass1(ActorCodeGeneratorInfo actorInfo) {
 
         // finish filling in fields of actorInfo
@@ -105,7 +113,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        ApplicationUtility.trace("pass1() : filename = " + filename);
+        ApplicationUtility.status("pass1() : filename = " + filename);
 
         // make a list of the compile unit node and compile unit nodes that
         // contain superclasses
@@ -151,6 +159,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
          (String) renamedClassNameList.getLast();
     }
 
+    /** Perform pass 2 on the actor with the information given by the
+     *  argument instance of ActorCodeGeneratorInfo. Pass 2 is the
+     *  conversion of Ptolemy semantics to Extended Java.
+     */
     public void pass2(String sourceName, ActorCodeGeneratorInfo actorInfo) {
 
         File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
@@ -162,7 +174,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        System.out.println("pass2() : sourceName = " + sourceName +
+        ApplicationUtility.status("pass2() : sourceName = " + sourceName +
          ", filename = " + filename);
 
         LinkedList[] listArray =
@@ -202,8 +214,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _invalidateSources(classNameList);
     }
 
-    /** Do pass 3 transformation of actor with the given filename (renamed after
-     *  pass 1. Pass 3 involves the conversion of Extended Java to regular Java.
+    /** Do pass 3 transformation of actor with the given filename (renamed 
+     *  after pass 1. Pass 3 is the conversion of Extended Java to ordinary
+     *  Java.
      */
     public void pass3(String sourceName) {
 
@@ -216,7 +229,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
 
-        System.out.println("pass3() : sourceName = " + sourceName +
+        ApplicationUtility.status("pass3() : sourceName = " + sourceName +
          ", filename = " + filename);
 
         // save the old type personality
@@ -281,6 +294,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         System.gc();
     }
 
+    /** Fill in the map from port names to ports. */
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
 
         Iterator portItr = actorInfo.actor.portList().iterator();
@@ -294,6 +308,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
     }
 
+    /** Fill in the map from parameter names to token values. */
     protected static void _makeParameterNameToTokenMap(
      ActorCodeGeneratorInfo actorInfo) {
         Iterator attributeItr = actorInfo.actor.attributeList().iterator();
@@ -316,13 +331,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
     /** Make a list of CompileUnitNodes that contain the superclasses of
      *  the given className, while is found in the given fileName.
-     *  The list should start from the argument class and go to
-     *  superclasses, until the super class is TypedAtomicActor or
-     *  SDFAtomicActor. The CompileUnitNodes are cloned from those
-
-     // fix this comment, list is reversed
-
-     *  returned by StaticResolution so that they may be modified.
+     *  The list should start from the class that immediately extends a known
+     *  actor class (such as TypedAtomicActor), and goes to the class given
+     *  by the argument className. The CompileUnitNodes are cloned from the
+     *  ones returned by StaticResolution so that they may be modified.
      */
     protected LinkedList[] _makeUnitList(String fileName, String className) {
         LinkedList nodeList = new LinkedList();
@@ -406,6 +418,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
     }
 
+    /** Given the former names of the classes and the name of the instance 
+     *  of the actor, modify the list of CompileUnitNodes by changing
+     *  references to the class name (in TypeNameNodes) to 
+     *
+     *  "CG_" + className + "_" + actorName
+     *
+     */
     protected LinkedList _renameUnitList(List unitList, List classNameList,
      String actorName) {
 
@@ -429,12 +448,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         TNLManip.traverseList(new RenameJavaVisitor(), null,
          TNLManip.cons(renameMap), unitList);
 
-        // invalidate DECL and ENVIRON properties, and load the nodes so
-        // that the compiler does not attempt to
-
         return renamedClassNameList;
     }
 
+    /** Rewrite source files for the CompileUnitNodes in the argument 
+     *  unit list, which are to be given the pathless names in the
+     *  argument class name list.
+     */     
     protected void _rewriteSources(List unitList, List classNameList) {
         ApplicationUtility.trace("classNameList = " + classNameList);
 

@@ -44,6 +44,8 @@ import ptolemy.lang.java.nodetypes.*;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
+//////////////////////////////////////////////////////////////////////////
+//// ActorTransformerVisitor
 /** A Java AST visitor that transforms Actor code into code suitable
  *  for standalone execution (without dependancies on the ptolemy.actor
  *  and ptolemy.data packages)
@@ -1066,6 +1068,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return null;
     }
 
+    /** Transform the class declaration of an actor port. When this method is 
+     *  called, no visitation of the child list of the node has been done 
+     *  yet. This method should be overloaded in subclasses.
+     */
     protected Object _actorClassDeclNode(ClassDeclNode node, LinkedList args) {
         // if the class derives from TypedAtomicActor or SDFAtomicActor,
         // replace the superclass with Object
@@ -1112,6 +1118,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return node;
     }
 
+    /** Transform a method call to an actor. When this method is called, no
+     *  visitation of the child list of the node has been done yet. This 
+     *  method should be overloaded in subclasses.
+     */
     public Object _actorMethodCallNode(MethodCallNode node, LinkedList args) {
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
 
@@ -1148,7 +1158,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         return null;
     }
-
 
     /** Given a list of members of the most basic actor class, add
      *  preinitialize(), initialize(), prefire(), fire(), postfire(), and
@@ -1383,6 +1392,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return newStmtList;
     }
 
+    /** Return an expression node representing the "one" value of the 
+     *  argument expression, whose type has kind accessedObjKind.
+     */
     protected ExprNode _oneValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
           case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
@@ -1432,11 +1444,19 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }
     }
 
+    /** Transform a field declaration of a port. When this method is called, no
+     *  visitation of the child list of the node has been done yet. This 
+     *  method should be overloaded in subclasses.
+     */
     protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
         // by default, get rid of the port field declaration
         return NullValue.instance;
     }
 
+    /** Transform a method call to a port. When this method is called, no
+     *  visitation of the child list of the node has been done yet. This 
+     *  method should be overloaded in subclasses.
+     */
     protected Object _portMethodCallNode(MethodCallNode node, LinkedList args) {
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
 
@@ -1555,6 +1575,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return _defaultVisit(node, args);
     }
 
+    /** Return an expression node representing the "zero" value of the 
+     *  argument expression, whose type has kind accessedObjKind.
+     */
     protected ExprNode _zeroValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
           case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:

@@ -1079,6 +1079,10 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
          new NameNode(AbsentTreeNode.instance, className));
     }
 
+    /** Convert an expression node (which has already undergone visitation), with
+     *  the former type kind (before visitation) to the type given by the
+     *  target kind.
+     */
     public ExprNode convertExprToKind(ExprNode expr, int exprKind, int targetKind) {                
         // if the target is Token, return a null pointer
         if (targetKind == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) {
