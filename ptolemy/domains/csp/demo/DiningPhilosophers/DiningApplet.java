@@ -35,6 +35,7 @@ import java.awt.*;
 import java.awt.event.*;
 import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.domains.csp.lib.*;
+import ptolemy.domains.csp.gui.*;
 import ptolemy.actor.*;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -228,6 +229,10 @@ public class DiningApplet extends Applet
 
         // Now create the panel that controls the applet
         Panel controlPanel = new Panel();
+	/*
+	add( _createRunControls(3), "West" );
+	*/
+
         add(controlPanel, "West");
 
         // Add a time display and go/stop buttons to control panel
@@ -269,6 +274,7 @@ public class DiningApplet extends Applet
         try {
             // Start the CurrentTimeThread.
             ctt = new CurrentTimeThread();
+            //ctt = new CurrentTimeThread(this);
             ctt.start();
 
             // Start the simulation.
@@ -277,6 +283,14 @@ public class DiningApplet extends Applet
             System.err.println("Run failed: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    /** Override the baseclass start method so that the model
+     *  does not immediately begin executing as soon as the
+     *  the applet page is displayed. Execution begins once
+     *  the "Go" button is depressed.
+     */
+    public void start() {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -347,7 +361,7 @@ public class DiningApplet extends Applet
     public class StopButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
-                _manager.terminate();
+                _manager.finish();
                 simulationThread = null;
                 init();
                 repaint();
