@@ -30,16 +30,21 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.Director;
+import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,11 +52,16 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToSequence
 /**
-This actor reads ArrayTokens at the input and writes the array elements
-to the output. The parameter <i>tokenProductionRate</i> at the output
-port must agree with the number of elements in each input ArrayToken.
-If this is not true, an exception will be thrown.  By default, this actor
-sets the value of this parameter to be one.
+This actor reads an array at the input and writes the array elements
+as a sequence to the output. The parameter <i>arrayLength</i> can be
+used to specify the length of arrays that the actor will accept.
+If the <i>enforceArrayLength</i> parameter true, then if an input
+array does not match <i>arrayLength</i>, the fire() method will throw
+an exception.  This feature is important in domains, such as SDF,
+that do static scheduling based on production and consumption
+rates.  For other domains, such as DE and PN, the <i>enforceArrayLength</i>
+parameter can be set to false, in which case the <i>arrayLength</i>
+parameter will be ignored.
 <p>
 This actor is polymorphic. It can accept ArrayTokens with any element
 type and send out tokens corresponding to that type.
@@ -75,21 +85,59 @@ public class ArrayToSequence extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-     	// tokenConsumptionRate is 1.
-	input.setTokenConsumptionRate(1);
-
-	// tokenProductionRate to default 1.
-	output.setTokenProductionRate(1);
-
-	// set type constraints.
+	// Set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType inputType = (ArrayType)input.getType();
 	InequalityTerm elemTerm = inputType.getElementTypeTerm();
 	output.setTypeAtLeast(elemTerm);
+
+        // Set parameters.
+        arrayLength = new Parameter(this, "arrayLength");
+        arrayLength.setExpression("1");
+        enforceArrayLength = new Parameter(this, "enforceArrayLength");
+        enforceArrayLength.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The size of the input array.  This is an integer that defaults
+     *  to 1.
+     */
+    public Parameter arrayLength;
+
+    /** If true, then enforce the <i>arrayLength</i> parameter by
+     *  throwing an exception if it is violated. This is a boolean
+     *  that defaults to true.
+     */
+    public Parameter enforceArrayLength;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>arrayLength</i> parameter, then
+     *  set the production rate of the output port, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if(attribute == arrayLength) {
+            int rate = ((IntToken)arrayLength.getToken()).intValue();
+            if (rate < 0) {
+                throw new IllegalActionException(this,
+                "Invalid arrayLength: " + rate);
+            }
+            output.setTokenProductionRate(rate);
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -114,12 +162,14 @@ public class ArrayToSequence extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
 	ArrayToken token = (ArrayToken)input.get(0);
-	int rate = output.getTokenProductionRate();
-	if (token.length() != rate) {
-	    throw new IllegalActionException("ArrayToSequence.fire: The " +
+	int rate = ((IntToken)arrayLength.getToken()).intValue();
+	boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
+                .booleanValue();
+	if (enforce && token.length() != rate) {
+	    throw new IllegalActionException("ArrayToSequence.fire(): The " +
                     "number of elements in the input ArrayToken (" +
-                    token.length() + ") is not the same as the token " +
-                    "production rate (" + rate + ").");
+                    token.length() + ") is not the same as the arrayLength " +
+                    "parameter (" + rate + ").");
 	}
 
 	Token[] elements = token.arrayValue();
