@@ -30,6 +30,7 @@
 
 package ptolemy.domains.csp.lib;
 
+import ptolemy.domains.csp.demo.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.kernel.*;
@@ -67,8 +68,6 @@ public class CSPProcessor extends CSPActor {
          
          _code = code;
          
-         // _topFrame = FIXME
-         
     }
          
     ////////////////////////////////////////////////////////////////////////
@@ -88,8 +87,14 @@ public class CSPProcessor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
         
         // State 1 
-        generateEvents( new ExecEvent( this, 1 ) );
-        // _topFrame.notifyEvent(this);
+        {
+            generateEvents( new ExecEvent( this, 1 ) ); 
+            
+            if( _topGraphic != null ) {
+                System.out.println("YO MOMMA");
+                _topGraphic.receiveEvent(this, 1);
+            }
+        }
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 1: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -107,7 +112,7 @@ public class CSPProcessor extends CSPActor {
         } else {
             delayTime = 10.0;
         }
-        System.out.println(getName()+" delaying for "+delayTime+" seconds.");
+        // System.out.println(getName()+" delaying for "+delayTime+" seconds.");
         delay( delayTime ); 
         IntToken iToken = new IntToken( _code ); 
         _requestOut.broadcast(iToken); 
@@ -161,7 +166,7 @@ public class CSPProcessor extends CSPActor {
     public boolean endYet() {
         double time = _dir.getCurrentTime();
         if( time > 500.0 ) {
-            System.out.println(getName() + " is ending because of time.");
+            // System.out.println(getName() + " is ending because of time.");
             return true;
         }
         return false;
@@ -222,6 +227,16 @@ public class CSPProcessor extends CSPActor {
         _listeners.removeOneOf(listener);
     }
     
+    /**
+     */
+    public void setGraphicFrame(BusContentionGraphic bcg) 
+            throws IllegalActionException {
+        if( bcg == null ) {
+            throw new IllegalActionException( this, "BusContentionGraphic is null");
+        }
+        _topGraphic = bcg;
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     ////                        private methods                         ////
 
@@ -235,4 +250,5 @@ public class CSPProcessor extends CSPActor {
     private CSPDirector _dir;
     
     private LinkedList _listeners;
+    private BusContentionGraphic _topGraphic;
 }
