@@ -281,6 +281,7 @@ public class TimedQueueReceiver implements Receiver {
 
     private int _priority = 0;
     
-    private FIFOQueue _queue = new FIFOQueue();
+    // FIXME
+    public FIFOQueue _queue = new FIFOQueue();
     private IOPort _container;
 }

@@ -67,7 +67,7 @@ public class ODPrintString extends ODActor {
         double time;
         
         while( true ) {
-            System.out.println("Rechecking ODPrintString.getNextToken()");
+            System.out.println("\nStarting ODPrintString.getNextToken()");
             token = (StringToken)getNextToken();
             System.out.println("Finished ODPrintString.getNextToken()");
             System.out.println("\tString is "+ token.stringValue() );

@@ -182,14 +182,6 @@ public class ODActor extends AtomicActor {
         // System.out.println("Priorities have been set");
     }
 
-    /** 
-     */
-    public synchronized void updateRcvrTable(RcvrTimeTriple triple) {
-        // System.out.println("Update ODActor RcvrTimeTable");
-	_removeRcvrTable( triple );
-	_addRcvrTriple( triple );
-    }
-    
     /** Return the receiver with the lowest time associated with it;
      *  return null if no receivers exist. The returned receiver may
      *  not necessarily have a unique time stamp associated with it.
@@ -271,9 +263,9 @@ public class ODActor extends AtomicActor {
             printRcvrTable();
         }
         Token token = lowestRcvr.get();
-        //if( name.equals("printer") ) {
-            //System.out.println("just finished calling get");
-            //}
+        if( name.equals("printer") ) {
+            System.out.println("just finished calling get");
+        }
         
         if( token != null ) {
             /*
@@ -358,6 +350,37 @@ public class ODActor extends AtomicActor {
         return false;
     }
     
+    /** FIXME: This is only for testing purposes.
+     *  Remove this eventually
+     */
+    public void printRcvrTable() {
+        System.out.println("Print "+getName()+"'s RcvrTable.");
+        System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
+        if( _rcvrTimeTable.size() == 0 ) {
+            System.out.println("\tTable is empty");
+        }
+        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
+	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
+	    Receiver testRcvr = testTriple.getReceiver(); 
+            double time = testTriple.getTime();
+            String testPort = testRcvr.getContainer().getName();
+            String testString = "null";
+            try {
+            if( testRcvr.hasToken() && getName().equals("printer") ) {
+                System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
+                Event testEvent = ((Event)((ODReceiver)testRcvr)._queue.get(0));
+                StringToken testToken = (StringToken)testEvent.getToken();
+                testString = testToken.stringValue();
+            }
+            } catch( IllegalActionException e ) {
+                System.out.println("*****ERROR*****");
+            }
+            System.out.println("\t"+getName()+"'s Receiver " 
+                    + i + " has a time of " +time+" and string: "+testString);
+            // System.out.println("\tReceiver " + testPort + " is in the rcvrTimeTable.");
+        }
+    }
+
     /** Set the priorities of the receivers contained in the input 
      *  ports of this actor. This method does not require the 
      *  priorities of the ports to be set. 
@@ -431,6 +454,14 @@ public class ODActor extends AtomicActor {
         }
     }
 
+    /** 
+     */
+    public synchronized void updateRcvrTable(RcvrTimeTriple triple) {
+        // System.out.println("Update ODActor RcvrTimeTable");
+	_removeRcvrTable( triple );
+	_addRcvrTriple( triple );
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
 
@@ -495,26 +526,6 @@ public class ODActor extends AtomicActor {
         // printRcvrTable();
     }
     
-    /** FIXME: This is only for testing purposes.
-     *  Remove this eventually
-     */
-    public void printRcvrTable() {
-        System.out.println("Print "+getName()+"'s RcvrTable.");
-        System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
-        if( _rcvrTimeTable.size() == 0 ) {
-            System.out.println("\tTable is empty");
-        }
-        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
-	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
-	    Receiver testRcvr = testTriple.getReceiver(); 
-            double time = testTriple.getTime();
-            String testPort = testRcvr.getContainer().getName();
-            System.out.println("\t"+getName()+"'s Receiver " 
-                    + i + " has a time of " + time);
-            // System.out.println("\tReceiver " + testPort + " is in the rcvrTimeTable.");
-        }
-    }
-
     /** Remove the specified RcvrTimeTriple based on the _Receiver_. 
      */
     private void _removeRcvrTable(RcvrTimeTriple triple) {
