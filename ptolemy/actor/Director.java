@@ -99,7 +99,7 @@ An initialize() method may queue further mutations with the director.
 Thus, the prefire() method repeatedly performs mutations and initializations
 until there are no more mutations to perform.
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version: $Id$
 */
 public class Director extends NamedObj implements Executable {
@@ -180,12 +180,17 @@ public class Director extends NamedObj implements Executable {
      *  caller should be.
      *
      *  @exception CloneNotSupportedException If the fire() method of the
-     *   container or one of the deeply contained actors throws it.
+     *   container or o the container.  In general, this may be called more
+     *  than once in the same iteration, where an iteration is defined as one
+     *  invocation of prefire(), any number of invocations of fire(),
+     *  and one invocation of postfire().
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
      *  @exception IllegalActionException If the fire() method of the
      *   container or one of the deeply contained actors throws it.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             if (!_executivedirector) {
@@ -221,13 +226,10 @@ public class Director extends NamedObj implements Executable {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception CloneNotSupportedException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the initialize() method of the
      *   container or one of the deeply contained actors throws it.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             if (!_executivedirector) {
@@ -261,17 +263,13 @@ public class Director extends NamedObj implements Executable {
      *  order. If prefire() return false, then fire() and postfire() are not
      *  invoked. In derived classes, there may be more than one invocation of
      *  fire(). This method is read-synchronized on the workspace.
-     *
      *  @return True if postfire() returns true.
-     *  @exception CloneNotSupportedException If any of the called methods
-     *   throws it.
      *  @exception IllegalActionException If any of the called methods
      *   throws it.
      *  @exception NameDuplicationException If the prefire() method throws
      *   it (while performing mutations).
      */
-    public boolean iterate()
-            throws CloneNotSupportedException, IllegalActionException,
+    public boolean iterate() throws IllegalActionException,
             NameDuplicationException {
         try {
             workspace().getReadAccess();
@@ -305,13 +303,10 @@ public class Director extends NamedObj implements Executable {
      *  caller should be.
      *
      *  @return True if the execution can continue into the next iteration.
-     *  @exception CloneNotSupportedException If the postfire() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the postfire() method of the
      *   container or one of the deeply contained actors throws it.
      */
-    public boolean postfire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             if (!_executivedirector) {
@@ -351,16 +346,13 @@ public class Director extends NamedObj implements Executable {
      *  caller should be.
      *
      *  @return True if the iteration can proceed.
-     *  @exception CloneNotSupportedException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the prefire() method of the
      *   container or one of the deeply contained actors throws it, or a
      *   pending mutation throws it, or if all receivers could not be created.
      *  @exception NameDuplicationException If a pending mutation throws it.
      */
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+    public boolean prefire() 
+        throws IllegalActionException, NameDuplicationException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             // Perform mutations and initializations until there are no
@@ -475,15 +467,13 @@ public class Director extends NamedObj implements Executable {
      *  on the workspace several times, releasing it between iterations
      *  and then re-acquiring it.
      *
-     *  @exception CloneNotSupportedException If thrown by any of the
-     *   called methods.
      *  @exception IllegalActionException If thrown by any of the
      *   called methods.
      *  @exception NameDuplicationException If the iterate() method throws
      *   it (while performing mutations).
      */
     public void go()
-            throws CloneNotSupportedException, IllegalActionException,
+            throws IllegalActionException,
             NameDuplicationException {
         go(-1);
     }
@@ -496,16 +486,13 @@ public class Director extends NamedObj implements Executable {
      *  iterations and then re-acquiring it.
      *
      *  @param iterations The number of iterations to run.
-     *  @exception CloneNotSupportedException If thrown by any of the
-     *   called methods.
      *  @exception IllegalActionException If thrown by any of the
      *   called methods.
      *  @exception NameDuplicationException If the iterate() method throws
      *   it (while performing mutations).
      */
     public void go(int iterations)
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getReadAccess();
             initialize();
@@ -533,13 +520,10 @@ public class Director extends NamedObj implements Executable {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
-     *  @exception CloneNotSupportedException If the token cannot be cloned
-     *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
-    public void transferInputs(IOPort port)
-            throws CloneNotSupportedException, IllegalActionException {
+    public void transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque input port.");
@@ -550,17 +534,12 @@ public class Director extends NamedObj implements Executable {
                 try {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        boolean first = true;
                         for (int j=0; j < insiderecs[i].length; j++) {
-                            if (first) {
-                                insiderecs[i][j].put(t);
-                                first = false;
-                            } else {
-                                insiderecs[i][j].put((Token)t.clone());
-                            }
+                            insiderecs[i][j].put(t);
                         }
                     }
-                } catch (NoSuchItemException ex) {
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
                     throw new InternalErrorException(
                             "Director.transferInputs: Internal error: " +
                             ex.getMessage());
@@ -574,13 +553,10 @@ public class Director extends NamedObj implements Executable {
      *  be an opaque output port.  If any channel of the output port
      *  has no data, then that channel is ignored.
      *
-     *  @exception CloneNotSupportedException If the token cannot be cloned
-     *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      */
-    public void transferOutputs(IOPort port)
-            throws CloneNotSupportedException, IllegalActionException {
+    public void transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not an opaque output port.");
@@ -594,7 +570,7 @@ public class Director extends NamedObj implements Executable {
                             try {
                                 Token t = insiderecs[i][j].get();
                                 port.send(i,t);
-                            } catch (NoSuchItemException ex) {
+                            } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
                                         "Internal error: " +

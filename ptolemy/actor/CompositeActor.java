@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -88,7 +88,7 @@ newRelation(), _addRelation(), and _addEntity().
 The container is constrained to be an instance of CompositeActor.
 Derived classes may impose further constraints by overriding setContainer().
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version $Id$
 @see ptolemy.actors.IOPort
 @see ptolemy.actors.IORelation
@@ -197,14 +197,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  fire() method of the director need not be (assuming it is only
      *  called from here).
      *
-     *  @exception CloneNotSupportedException If output is produced to
-     *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
@@ -263,14 +260,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  method of the director need not be, assuming it is only called from
      *  here.
      *
-     *  @exception CloneNotSupportedException If output is produced to
-     *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's initialize() method throws it, or if this actor
      *   is not opaque.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
@@ -434,14 +428,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace.
      *
      *  @return True if the execution can continue into the next iteration.
-     *  @exception CloneNotSupportedException If one of the outputs has
-     *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director,
      *   or if the director's postfire() method throws it, or if this
      *   actor is not opaque.
      */
-    public boolean postfire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
@@ -476,18 +467,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  ready to fire (determined by the prefire() method of the director).
      *  It is read-synchronized on the workspace.
      *
-     *  @return True if the actor is ready for firing, false otherwise.
-     *  @exception CloneNotSupportedException If in transferring inputs
-     *   a token has multiple destinations and cannot be cloned.
      *  @exception IllegalActionException If there is no director,
      *   or if the director's prefire() method throws it, or if this actor
      *   is not opaque.
      *  @exception NameDuplicationException If the prefire() method of the
      *   director throws it (while performing mutations, if any).
      */
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+    public boolean prefire() 
+            throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {

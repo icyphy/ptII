@@ -1,6 +1,6 @@
 /* An executable entity.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ protected method _addPort() to throw an exception if its argument is a
 port that is not of the appropriate subclass. In this base class, the
 actor does nothing in the action methods (prefire, fire, ...).
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version $Id$
 @see ptolemy.actors.CompositeActor
 @see ptolemy.actors.IOPort
@@ -149,11 +149,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.
      *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
     }
 
     /** Do nothing.  Derived classes override this method to define their
@@ -161,11 +159,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  any other action methods. This method typically initializes
      *  internal members of an actor and produces initial output data.
      *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
     }
 
     /** Return an enumeration of the input ports.
@@ -266,11 +262,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  involve updating local state.
      *
      *  @return True if execution can continue into the next iteration.
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean postfire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
         return true;
     }
 
@@ -281,11 +275,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  iteration, if there are any.
      *
      *  @return True if the actor is ready for firing, false otherwise.
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public boolean prefire() throws IllegalActionException {
         return true;
     }
 

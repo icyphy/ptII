@@ -87,7 +87,7 @@ derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
 setContainer().
 
-@authors Edward A. Lee, Jie Liu, Neil Smyth
+@authors Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
 @version $Id$
 */
 public class IOPort extends ComponentPort {
@@ -156,7 +156,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the port is not an output.
      */
     public void broadcast(Token token)
-	    throws CloneNotSupportedException, IllegalActionException {
+	    throws IllegalActionException {
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
@@ -168,15 +168,9 @@ public class IOPort extends ComponentPort {
             if(fr == null) {
                 return;
             }
-            boolean first = true;
-
+            
             for (int j = 0; j < fr.length; j++) {
-                if (first) {
-                    send(j, token);
-                    first = false;
-                } else {
-                    send(j, ((Token)(token.clone())));
-                }
+                send(j, token);
             }
         } finally {
             workspace().doneReading();
@@ -432,28 +426,29 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling get.
      *
      *
-     *  @exception NoSuchItemException If there is no token, or the
+     *  @exception NoTokenException If there is no token, or the
      *   port is not an input port, or the channel index is out of range.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created.
      */
     public Token get(int channelindex)
-            throws NoSuchItemException, IllegalActionException {
+            throws NoTokenException, IllegalActionException {
         Receiver[][] localRec;
         try {
             workspace().getReadAccess();
             if (!isInput()) {
-                throw new NoSuchItemException(this,
+                // FIXME: What should the message be ?
+                throw new NoTokenException(this, 
                         "get: Tokens can only be retreived from " +
                         "an input port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
-                throw new NoSuchItemException(this,
+                throw new NoTokenException(this,
                         "get: channel index is out of range.");
             }
             localRec = getReceivers();
             if (localRec[channelindex] == null) {
-                throw new NoSuchItemException(this,
+                throw new NoTokenException(this,
                         "get: no receiver at index: " + channelindex + ".");
             }
         } finally {
@@ -465,7 +460,8 @@ public class IOPort extends ComponentPort {
             if (tt == null) tt = ttt;
         }
         if (tt == null) {
-            throw new NoSuchItemException(this, "get: No token to return.");
+            throw new NoTokenException(this,
+                    "get: No token to return.");
         }
         return tt;
     }
@@ -1034,18 +1030,21 @@ public class IOPort extends ComponentPort {
      *   and there is more than one destination.
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range.
+     *  @exception NoRoomException If there is no room in the receiver, 
+     *   the port is not an output, or if the index is out of range.
      */
     public void send(int channelindex, Token token)
-            throws CloneNotSupportedException, IllegalActionException {
+            throws NoRoomException, IllegalActionException {
         Receiver[][] farRec;
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "send: Tokens can only be sent from an output port.");
+                throw new NoRoomException(this,
+                        "send: Tokens can only be sent from an "+
+                        "output port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
-                throw new IllegalActionException(this,
+                throw new NoRoomException(this,
                         "send: channel index is out of range.");
             }
             farRec = getRemoteReceivers();
@@ -1053,14 +1052,8 @@ public class IOPort extends ComponentPort {
         } finally {
             workspace().doneReading();
         }
-        boolean first = true;
         for (int j = 0; j < farRec[channelindex].length; j++) {
-            if (first) {
-                farRec[channelindex][j].put(token);
-                first = false;
-            } else {
-                farRec[channelindex][j].put((Token)(token.clone()));
-            }
+            farRec[channelindex][j].put(token);
         }
     }
 

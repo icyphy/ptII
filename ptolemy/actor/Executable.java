@@ -1,6 +1,6 @@
 /* Interface for defining how an object can be invoked.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,9 +44,11 @@ is defined to be one firing of the prefire() method, any number of
 firings of the fire() method, and one firing of the postfire() method.
 The prefire() method returns a boolean that indicates whether firing
 can occur.  The initialize(), fire() and postfire() methods may produce
-output data (which can result in a CloneNotSupported exception).
+output data (FIXME: which no longer result in a CloneNotSupported exception).
+Since the Token class is immutable, the output data is not cloned
+when there are multiple receivers.
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public interface Executable {
@@ -59,16 +61,14 @@ public interface Executable {
      *  data. Typically, the fire() method performs the computation associated
      *  with an actor.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException;
+    public void fire() throws IllegalActionException;
 
     /** This method should be invoked exactly once per execution
      *  of an application, before any of these other methods are invoked.
      *  It may produce output data.  This method typically initializes
      *  internal members of an actor and produces initial output data.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException;
+    public void initialize() throws IllegalActionException;
 
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
@@ -77,8 +77,7 @@ public interface Executable {
      *  wraps up an iteration, which may involve updating local state.
      *  In an opaque, non-atomic entity, it may also transfer output data.
      */
-    public boolean postfire()
-            throws CloneNotSupportedException, IllegalActionException;
+    public boolean postfire() throws IllegalActionException;
 
     /** This method should be invoked once per iteration, before the first
      *  invocation of fire() in that iteration.  It returns true if the
@@ -88,8 +87,7 @@ public interface Executable {
      *  it may move data into an inner subsystem.
      *  @return True if the iteration can proceed.
      */
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException,
+    public boolean prefire() throws IllegalActionException,
             NameDuplicationException;
 
     /** This method should be invoked exactly once per execution

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 /**
 A token holder with capacity one.
 
-@author Jie Liu, Edward A. Lee
+@author Jie Liu, Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public class Mailbox implements Receiver {
@@ -58,11 +58,11 @@ public class Mailbox implements Receiver {
 
     /** Get the contained Token.  If there is none, thrown an exception.
      *  @return A token.
-     *  @exception NoSuchItemException If the Mailbox is empty.
+     *  @exception NoTokenException If the Mailbox is empty.
      */
-    public Token get() throws NoSuchItemException {
+    public Token get() throws NoTokenException {
         if(_token == null) {
-            throw new NoSuchItemException(getContainer(),
+            throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty mailbox.");
         }
         Token t = _token;
@@ -94,12 +94,12 @@ public class Mailbox implements Receiver {
     /** Put a token into the mailbox.  If the argument is null, then the
      *  mailbox will not contain a token after this returns.
      *  @param token The token to be put into the mailbox.
-     *  @exception IllegalActionException If the Mailbox already contains
+     *  @exception NoRoomException If the Mailbox already contains
      *   a previously put token that has not been gotten.
      */
-    public void put(Token token) throws IllegalActionException{
+    public void put(Token token) throws NoRoomException{
         if(_token != null) {
-            throw new IllegalActionException(getContainer(),
+            throw new NoRoomException(getContainer(),
                     "Cannot put a token in a full mailbox.");
         }
         _token = token;

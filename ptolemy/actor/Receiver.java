@@ -29,8 +29,10 @@
 */
 
 package ptolemy.actor;
+
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
@@ -41,10 +43,18 @@ receiver. Get retrieves a token that has been put. The order of
 the retrieved tokens depends on specific implementations, and does not
 necessarily match the order in which tokens have been put.
 <p>
+All implementations of this interface must follow these rules:
+<ul>
+<li> If hasToken() returns true then calling get() shouldn't result in a
+NoTokenException being thrown.
+<li> If hasRoom() returns true then calling put() shouldn't result in a
+NoRoomException being thrown.
+</ul>
+<p>
 In addition, objects that implement this interface can only be contained
 by an instance of IOPort.
 
-@author Jie Liu, Edward A. Lee
+@author Jie Liu, Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public interface Receiver {
@@ -52,24 +62,34 @@ public interface Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get a token from this receiver.
-     *  @exception NoSuchItemException If there is no token.
+    /** Get a token from this receiver. Note that the thrown exception
+     *  is a runtime exception, therefore the caller is not required to
+     *  catch it.
+     *  @exception EmptyReceiverException If there is no token.
      */
-    public Token get() throws NoSuchItemException;
+    public Token get() throws NoTokenException;
 
     /** Return the container. */
     public Nameable getContainer();
 
-    /** Return true if put() will succeed in accepting a token. */
+    /** Return true if put() will succeed in accepting a token. 
+     *  Returning true in this method should also guarantee that calling
+     *  the get() method will not result in an exception.
+     */
     public boolean hasRoom() throws IllegalActionException;
 
-    /** Return true if get() will succeed in returning a token. */
+    /** Return true if get() will succeed in returning a token. 
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     */
     public boolean hasToken() throws IllegalActionException;
 
-    /** Put a token into this receiver.
-     *  @exception IllegalActionException If the token cannot be put.
+    /** Put a token into this receiver. Note that the thrown exception
+     *  is a runtime exception, therefore the caller is not required to
+     *  catch it.
+     *  @exception FullReceiverException If the token cannot be put.
      */
-    public void put(Token t) throws IllegalActionException;
+    public void put(Token t) throws NoRoomException;
 
     /** Set the container.
      *  @exception IllegalActionException If the container is not of
@@ -77,3 +97,6 @@ public interface Receiver {
      */
     public void setContainer(IOPort port) throws IllegalActionException;
 }
+
+
+

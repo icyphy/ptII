@@ -59,8 +59,8 @@ An IOPort can only be contained by a class derived from ComponentEntity
 and implementing the TypedActor interface.  Subclasses may further
 constrain the containers by overriding setContainer().
 
-@author Yuhong Xiong
-$Id$
+@author Yuhong Xiong, Lukito Muliadi
+@version: $Id$
 */
 
 public class TypedIOPort extends IOPort implements InequalityTerm {
@@ -217,17 +217,18 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range, or the specified token cannot be
      *   converted to the resolved type of this IOPort.
+     *  @exception NoRoomException FIXME
      */
     public void send(int channelindex, Token token)
-            throws CloneNotSupportedException, IllegalActionException {
+            throws IllegalActionException, NoRoomException {
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
-                throw new IllegalActionException(this,
+                throw new NoRoomException(this,
                         "send: Tokens can only be sent from an output port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
-                throw new IllegalActionException(this,
+                throw new NoRoomException(this,
                         "send: channel index is out of range.");
             }
 	    int compare = TypeCPO.compare(token, _resolvedType);
@@ -239,19 +240,13 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 
             Receiver[][] fr = getRemoteReceivers();
             if (fr == null || fr[channelindex] == null) return;
-            boolean first = true;
             for (int j = 0; j < fr[channelindex].length; j++) {
 		TypedIOPort port =
 			(TypedIOPort)fr[channelindex][j].getContainer();
 		Token desttype = port.resolvedType();
 		if (desttype.getClass().isInstance(token)) {
-                    if (first) {
-                    	fr[channelindex][j].put(token);
-                    	first = false;
-                    } else {
-                    	fr[channelindex][j].put((Token)(token.clone()));
-                    }
-		} else {
+                    fr[channelindex][j].put(token);
+                } else {
 		    Token newtoken = desttype.convert(token);
 		    // since token is not an instance of the destination
 		    // type, convert will always return a new instance.

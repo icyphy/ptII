@@ -1,4 +1,5 @@
-/* Thrown if a non-bloking get() is performed on an empty receiver.
+/* Exception thrown on an attempt to get Token when the hasToken() method
+   returns false.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -34,10 +35,11 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
 /**
-This exception should be thrown if a non-bloking get() is performed on
-an empty receiver.
+This exception should be thrown on an attempt to get Token when 
+the hasToken() method returns false.
 @author Lukito Muliadi
 @version $Id$
+@see Receiver
 */
 public class NoTokenException extends RuntimeException {
 
@@ -52,7 +54,17 @@ public class NoTokenException extends RuntimeException {
      *  that originated the exception.
      */
     public NoTokenException(Nameable obj, String detail) {
-        _setMessage(obj.description() + ":" + detail);
+        String name;
+        if (obj == null) {
+            name=new String("");;
+        } else {
+            try {
+                name = obj.getFullName();
+            } catch (InvalidStateException ex) {
+                name = obj.getName();
+            }
+        }
+        _setMessage(name + ": " + detail);
     }
 
     ///////////////////////////////////////////////////////////////////

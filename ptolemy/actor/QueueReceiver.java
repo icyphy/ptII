@@ -52,7 +52,7 @@ of -1), then objects removed from the queue are transferred to a
 second queue rather than simply deleted. By default, the history
 capacity is zero.
 
-@author Edward A. Lee
+@author Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public class QueueReceiver implements Receiver {
@@ -89,10 +89,10 @@ public class QueueReceiver implements Receiver {
     /** Take the first token (the oldest one) off the queue and return it.
      *  If the queue is empty, throw an exception.
      */
-    public Token get() throws NoSuchItemException {
+    public Token get() throws NoTokenException {
         Token t = (Token)_queue.take();
         if (t == null) {
-            throw new NoSuchItemException(getContainer(),
+            throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty FIFO queue.");
         }
         return t;
@@ -109,6 +109,10 @@ public class QueueReceiver implements Receiver {
      *  @exception NoSuchItemException The offset is out of range.
      */
     public Token get(int offset) throws NoSuchItemException {
+        // FIXME: should this throw NoTokenException ??
+	// Should the method get(int offset) throw NoTokenException or keep
+	// it unchanged (NoSuchItemException). If we want to change it to
+	// NoTokenException, what's it's precondition ?
         try {
             return (Token)_queue.get(offset);
         } catch (NoSuchElementException ex) {
@@ -185,9 +189,9 @@ public class QueueReceiver implements Receiver {
      *  @param token The token to put on the queue.
      *  @exception IllegalActionException If the queue is full.
      */
-    public void put(Token token) throws IllegalActionException {
+    public void put(Token token) throws NoRoomException {
         if (!_queue.put(token)) {
-            throw new IllegalActionException(getContainer(),
+            throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
         }
     }
