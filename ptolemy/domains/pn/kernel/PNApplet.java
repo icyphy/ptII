@@ -70,11 +70,11 @@ public class PNApplet extends PtolemyApplet {
 
             // Add a control panel in the main panel.
             // Initialization
-            _goButton = new Button("Go");
+            //_goButton = new Button("Go");
             //Panel controlPanel = new Panel();
-            add("North",_goButton);
+            //add("North",_goButton);
             //controlPanel.add(_goButton);
-            _goButton.addActionListener(new GoButtonListener());
+            //_goButton.addActionListener(new GoButtonListener());
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
