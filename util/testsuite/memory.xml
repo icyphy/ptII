@@ -87,7 +87,7 @@
         </port>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="interval">
+        <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="410.0, 169.0">
         </property>
@@ -101,7 +101,7 @@
         </port>
     </entity>
     <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="interval">
+        <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="interval">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="417.0, 274.0">
         </property>

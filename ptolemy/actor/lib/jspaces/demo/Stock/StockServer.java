@@ -147,7 +147,7 @@ public class StockServer extends TypedCompositeActor {
 	    // StockQuote actors so that the SDF graph is connected,
             // and a real time delay
 	    Sleep sink = new Sleep(this, "sink");
-            sink.delay.setToken(new LongToken(30000));
+            sink.sleepTime.setToken(new LongToken(30000));
 
 	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
 	    StringTokenizer st = new StringTokenizer(allTickers);
