@@ -83,8 +83,6 @@ public class GraphicsDevices extends Source {
         Token array[] = new Token[graphicsDevices.length];
 	for(int i = 0; i < graphicsDevices.length; i++) {
 	    array[i] = new ObjectToken(graphicsDevices[i]);
-	    System.out.println("GraphicsDevices.fire(): " + i
-			       + graphicsDevices[i]);
 	}
 	output.send(0, new ArrayToken(array));
     }
