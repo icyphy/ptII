@@ -56,8 +56,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	dstr.xml \
-	dstr2.xml \
 	source.xml
 
 # Sources that may or may not be present, but if they are present, we don't
