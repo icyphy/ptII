@@ -70,6 +70,25 @@ public class CSPMemory extends CSPActor {
     /**
      */
     public void fire() throws IllegalActionException {
+    
+        if( _numInChannels == -1 ) {
+            _numInChannels = 0; 
+            Receiver[][] rcvrs = _input.getReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    _numInChannels++; 
+                }
+            }
+        }
+        if( _numOutChannels == -1 ) {
+            _numOutChannels = 0; 
+            Receiver[][] rcvrs = _output.getRemoteReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    _numOutChannels++; 
+                }
+            }
+        }
         
         boolean beginning = true; 
         StringToken token;
@@ -77,22 +96,47 @@ public class CSPMemory extends CSPActor {
         while(true) {
             token = new StringToken( _strValue );
             
-            ConditionalBranch[] branches = new ConditionalBranch[2];
+            int numBrchs = _numInChannels + _numOutChannels; 
+            ConditionalBranch[] branches = new ConditionalBranch[numBrchs];
             
+            // Receive Branches
+            for( int i=0; i < _numInChannels; i++ ) {
+                branches[i] = new 
+                        ConditionalReceive(true, _input, i, i);
+            } 
+            
+            // Send Branches
+            for( int i=0; i < _numOutChannels; i++ ) {
+                branches[i+_numInChannels] = new 
+                        ConditionalSend(true, _output, i, i+_numInChannels, token);
+            } 
+            
+            int br = chooseBranch( branches );
+            
+            if( br >= 0 && br < _numInChannels ) {
+                token = (StringToken)branches[br].getToken();
+                _strValue = token.stringValue();
+            } else if ( br >= _numInChannels && br < numBrchs ) {
+                _strValue = "write";
+            } else if( br == -1 ) {
+                return;
+            }
+            
+            /*
             // Receive Branch
             branches[0] = new ConditionalReceive(true, _input, 0, 0);
             
             // Send Branch
             branches[1] = new ConditionalSend(true, _output, 0, 1, token);
             
-            int br = chooseBranch( branches );
-            
             if( br == 0 ) {
                 token = (StringToken)branches[0].getToken();
                 _strValue = token.stringValue();
             } else if( br == -1 ) {
+                _strValue = "write";
                 return;
-            } 
+            }
+            */
         }
     }
     
@@ -105,6 +149,9 @@ public class CSPMemory extends CSPActor {
 
     private IOPort _input;
     private IOPort _output;
+    
+    private int _numInChannels = -1;
+    private int _numOutChannels = -1;
     
     private String _strValue = null;
 }
