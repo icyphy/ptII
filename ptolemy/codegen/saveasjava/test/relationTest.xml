@@ -1,7 +1,8 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="test2" class="ptolemy.actor.TypedCompositeActor">
-	<doc>A simple demo to test connectivity handling in the save as Java 
+	<doc>A simple demo to test relation
+	connectivity handling in the save as Java 
          implementation</doc>
 	<director class="ptolemy.domains.sdf.kernel.SDFDirector"/>
 	<entity name="ramp1" class="ptolemy.actor.lib.Ramp"/>

@@ -59,6 +59,10 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	rampFileWriter.xml \
+	rampPlot.xml \
+	relationTest.xml
+
 	 #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -84,10 +88,6 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
-
-demo:
-	"$(JAVA)" -classpath $(ROOT) ptolemy.codegen.saveasjava.MoMLToJava test.xml
-
 
 depend:
 	@echo "no dependencies in this directory"

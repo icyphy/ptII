@@ -71,10 +71,9 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo: jclass
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.codegen.saveasjava.MoMLToJava test/test.xml 
-	CLASSPATH="$(CLASSPATH)" "$(JAVAC)" test.java
-run:
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication -class test 
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.codegen.saveasjava.MoMLToJava test/rampFileWriter.xml 
+	CLASSPATH="$(CLASSPATH)" "$(JAVAC)" rampFileWriter.java
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
