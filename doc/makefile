@@ -336,6 +336,13 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.vergil.tree \
 			util.testsuite
 
+# 'make clean' removes files listed in $(KRUFT)
+KRUFT = \
+	codeDoc.jar \
+	codeDocHyVisual.jar \
+	codeDocVisualSense.jar \
+	docConfig.jar
+
 all: suball whatsnew.htm whatsnewVergil.htm \
 	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html \
 	codeDocVisualSense/doc/codeDoc/tree.html
