@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@ProposedRating Red (mikele@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -38,7 +38,7 @@ import ptolemy.actor.*;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
-import java.lang.Math;
+import ptolemy.math.ExtendedMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// PSNR
@@ -50,7 +50,7 @@ output port as a DoubleToken.
 @author Michael Leung, Steve Neuendorffer
 @version $Id$
 */
-public final class PSNR extends SDFAtomicActor {
+public class PSNR extends SDFAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -89,34 +89,22 @@ public final class PSNR extends SDFAtomicActor {
     public SDFIOPort output;
 
     /** Fire the actor.
-     *  Consume one image on each of the input ports.
-     *
-     *  Summary:
-     *  Loop thru both of the signal image and the distortedSignal image
-     *  and find the Signal Power and Noise Power.
-     *         signalPower--- sum of the square of the all signal
-     *                        image pixel values.
-     *         noisePower --- sum of the square of all of the difference
-     *                        between the signal image pixels value
-     *                        and the distortedSignal image pixels value.
-     *
-     *  Assume that pixel values are bounded from 0 to 255 inclusively.
-     *
-     *  Algorithm:
-     *  Signal to Nosie Ratio (PSNR) can be found by the equation:
-     *
-     *  PSNR = 10 * log10(signalPower/noisePower)
-     *
-     *  @exception IllegalActionException if a pixel value is not between 
-     *  zero and 255, or the dimensions of the input tokens do not match.
+     *  Consume one image on each of the input ports.   Calculate the 
+     *  PSNR as follows:
+     *  noise = signal-distortedSignal;
+     *  signalPower = Power(signal);
+     *  noisePower = Power(noise);
+     *  PSNR = 10 * log10(signalPower/noisePower);
+     *  @exception IllegalActionException if 
+     *  the dimensions of the input tokens do not match.
      */
     public void fire() throws IllegalActionException {
 
         int i, j;
         int signalPower = 0;
         int noisePower = 0;
-        int pixel1;
-        int pixel2;
+        int element1;
+        int element2;
 
         double PSNRValue;
 
@@ -135,33 +123,18 @@ public final class PSNR extends SDFAtomicActor {
         for(j = 0; j < rows; j ++) {
             for(i = 0; i < columns; i ++) {
 
-                pixel1 = signalToken.getElementAt(j, i);
-                pixel2 = distortedSignalToken.getElementAt(j, i);
-
-                if ((pixel1 < 0) ||
-                        (pixel1 > 255 ))
-                    throw new IllegalActionException("PSNR:"+
-                            "The signal contains a pixel at " + i +
-                            ", " + j + " with value " + pixel1 +
-                            " that is not between 0 and 255.");
-
-                if ((pixel2 < 0) ||
-                        (pixel2 > 255 ))
-                    throw new IllegalActionException("PSNR:"+
-                            "The distortedSignal contains a pixel at " + i +
-                            ", " + j + " with value " + pixel2 +
-                            "that is not between 0 and 255.");
+                element1 = signalToken.getElementAt(j, i);
+                element2 = distortedSignalToken.getElementAt(j, i);
 
                 signalPower = signalPower +
-                    pixel1 * pixel1;
+                    element1 * element1;
                 noisePower = noisePower +
-                    (pixel1 - pixel2)*
-                    (pixel1 - pixel2);
+                    (element1 - element2)*
+                    (element1 - element2);
             }
         }
 
-        PSNRValue = 10 * Math.log ((double) signalPower / noisePower) /
-            Math.log (10.0) ;
+        PSNRValue = 10 * ExtendedMath.log10((double)signalPower / noisePower);
 
         DoubleToken message = new DoubleToken(PSNRValue);
         output.send(0, message);

@@ -1,4 +1,4 @@
-/*
+/* Partition an image into smaller subimages.
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@AcceptedRating Red
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -51,7 +51,7 @@ are row scanned from the top of input image.
 @version $Id$
 */
 
-public final class ImagePartition extends SDFAtomicActor {
+public class ImagePartition extends SDFAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -139,7 +139,8 @@ public final class ImagePartition extends SDFAtomicActor {
     /**
      * Initialize this actor
      * @exception IllegalActionException If a parameter does not contain a 
-     * legal value.
+     * legal value, or partitionColumns does not equally divide imageColumns,
+     * or partitionRows does not equally divide imageRows.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -149,6 +150,15 @@ public final class ImagePartition extends SDFAtomicActor {
         _partitionColumns = ((IntToken)partitionColumns.getToken()).intValue();
         _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
 
+        if(_imageColumns % _partitionColumns != 0) {
+            throw new IllegalActionException(imageColumns, partitionColumns, 
+                    "Partition size must evenly divide image size");
+        }
+        if(_imageRows % _partitionRows != 0) {
+            throw new IllegalActionException(imageRows, partitionRows, 
+                    "Partition size must evenly divide image size");
+        }
+            
         part = new int[_partitionColumns * _partitionRows];
         int partitionCount = _imageColumns * _imageRows
                 / _partitionColumns / _partitionRows;
@@ -161,23 +171,30 @@ public final class ImagePartition extends SDFAtomicActor {
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
      * on the output port by partitioning the input image.
      *
-     * @exception IllegalActionException If the ports are not connected.
+     * @exception IllegalActionException If the 
+     * input size is not imageRows by imageColumns.
      */
     public void fire() throws IllegalActionException {
         int i, j;
 	int x, y;
-        int a;
+        int partitionNumber;
         IntMatrixToken message;
 
         message = (IntMatrixToken) input.get(0);
+        if((message.getRowCount() != _imageRows) ||
+                (message.getColumnCount() != _imageColumns)) {
+            throw new IllegalActionException("Input data must be imageRows " + 
+                    "by imageColumns");
+        }
         image = message.intArray();
 
-        for(j = 0, a = 0 ; j < _imageRows; j += _partitionRows)
-            for(i = 0; i < _imageColumns; i += _partitionColumns, a++) {
+        for(j = 0, partitionNumber = 0 ; j < _imageRows; j += _partitionRows)
+            for(i = 0; i < _imageColumns; i += _partitionColumns, 
+                    partitionNumber++) {
                 for(y = 0; y < _partitionRows; y++)
                     System.arraycopy(image, (j + y) * _imageColumns + i,
                             part, y * _partitionColumns, _partitionColumns);
-                partitions[a] = 
+                partitions[partitionNumber] = 
                     new IntMatrixToken(part, _partitionRows,
                             _partitionColumns);
             }

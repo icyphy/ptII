@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
+import ptolemy.actor.lib.Source;
 import java.io.*;
 import java.net.*;
 import ptolemy.actor.*;
@@ -70,7 +71,7 @@ for loading images.
 @author Steve Neuendorffer
 @version $Id$
 */
-public final class ImageSequence extends SDFAtomicActor {
+public final class ImageSequence extends Source {
  
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -85,8 +86,6 @@ public final class ImageSequence extends SDFAtomicActor {
 
         super(container, name);
 
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
@@ -104,9 +103,6 @@ public final class ImageSequence extends SDFAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** The output port. */
-    public SDFIOPort output;
 
     /** The image filename templates. */
     public Parameter imageURLTemplate;
@@ -130,28 +126,22 @@ public final class ImageSequence extends SDFAtomicActor {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.     *  @return A new actor.
+     *  @param ws The workspace for the new object.     
+     *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            ImageSequence newobj = (ImageSequence)(super.clone(ws));
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.imageURLTemplate = 
-                (Parameter)newobj.getAttribute("imageURLTemplate");
-            newobj.imageColumns = 
-                (Parameter)newobj.getAttribute("imageColumns");
-            newobj.imageRows = 
-                (Parameter)newobj.getAttribute("imageRows");
-            newobj.startFrame = 
-                (Parameter)newobj.getAttribute("startFrame");
-            newobj.endFrame = 
-                (Parameter)newobj.getAttribute("endFrame");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        ImageSequence newobj = (ImageSequence)(super.clone(ws));
+        newobj.imageURLTemplate = 
+            (Parameter)newobj.getAttribute("imageURLTemplate");
+        newobj.imageColumns = 
+            (Parameter)newobj.getAttribute("imageColumns");
+        newobj.imageRows = 
+            (Parameter)newobj.getAttribute("imageRows");
+        newobj.startFrame = 
+            (Parameter)newobj.getAttribute("startFrame");
+        newobj.endFrame = 
+            (Parameter)newobj.getAttribute("endFrame");
+        return newobj;
     }
 
     /** Initialize this actor.

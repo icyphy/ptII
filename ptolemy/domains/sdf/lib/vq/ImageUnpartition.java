@@ -1,4 +1,4 @@
-/*
+/* Combine subimages into a larger image. 
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@AcceptedRating Red
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -42,16 +42,16 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImageUnpartition
 /**
-Combine subimages into a larger image. Each input image
-should have dimensions imageColumns by imageRows, and each output image
-will have dimensions partitionColumns by partitionRows.  The input images
+Combine subimages into a larger image. Each input subimage
+should have dimensions partitionColumns by partitionRows, and each output image
+will have dimensions imageColumns by imageRows.  The input images
 will be placed in row-scanned order from top to bottom into the output image.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 
-public final class ImageUnpartition extends SDFAtomicActor {
+public class ImageUnpartition extends SDFAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -147,6 +147,15 @@ public final class ImageUnpartition extends SDFAtomicActor {
         _partitionColumns = ((IntToken)partitionColumns.getToken()).intValue();
         _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
 
+        if(_imageColumns % _partitionColumns != 0) {
+            throw new IllegalActionException(imageColumns, partitionColumns, 
+                    "Partition size must evenly divide image size");
+        }
+        if(_imageRows % _partitionRows != 0) {
+            throw new IllegalActionException(imageRows, partitionRows, 
+                    "Partition size must evenly divide image size");
+        }
+
         image = new int[_imageRows * _imageColumns];
         int partitionCount = _imageColumns * _imageRows
                 / _partitionColumns / _partitionRows;
@@ -165,13 +174,21 @@ public final class ImageUnpartition extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int i, j;
 	int x, y;
-        int a;
+        int partitionNumber;
 
         input.getArray(0, partitions);
         
-        for(j = 0, a = 0; j < _imageRows; j += _partitionRows)
-            for(i = 0; i < _imageColumns; i += _partitionColumns, a++) {
-                part = partitions[a].intArray();
+        for(j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows)
+            for(i = 0; i < _imageColumns; i += _partitionColumns, 
+                    partitionNumber++) {
+                IntMatrixToken partition = partitions[partitionNumber];
+                if((partition.getRowCount() != _partitionRows) ||
+                        (partition.getColumnCount() != _partitionColumns)) {
+                    throw new IllegalActionException(
+                            "input data must be partitionRows " + 
+                            "by partitionColumns");
+                }
+                part = partition.intArray();
                 for(y = 0; y < _partitionRows; y++)
                     System.arraycopy(part, y * _partitionColumns,
                             image, (j + y) * _imageColumns + i,
