@@ -191,7 +191,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  that contains this applet has been replaced by another page,
      *  and also just before the applet is to be destroyed.
      *  In this base class, this method calls the finish() method
-     *  of the manager. If there is no maneger, do nothing.
+     *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
         if(_manager != null) {
