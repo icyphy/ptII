@@ -579,7 +579,7 @@ public class PlotBox extends Applet {
 	// This code can be called from an application, which means that
 	// getDocumentBase() might fail.
 	DataInputStream in;
-	if (dataurl.length() == 0) {
+	if (dataurl == null || dataurl.length() == 0) {
 	    // Open up stdin
 	    in = new DataInputStream(System.in);
 	} else {
