@@ -228,20 +228,27 @@ public class HDFFSMDirector extends FSMDirector {
         return _firingsSoFar;
     }
 
-    /** Initialize the mode controller and all the refinements. If
-     *  reinitialization is desired, this method should recompute the
-     *  schedule of the initial states of the sub-layer HDFFSMDirector.
+    /** If this method is called immediately after preinitialze(),
+     *  initialize the mode controller and all the refinements.
+     *  If reinitialization is desired and the current director is a
+     *  sub-layer HDFFSMDirector, this method reinitializes all the
+     *  refinements in the sub-layer and recompute the schedule of
+     *  the initial states of the sub-layer HDFFSMDirector.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
-        if (!_resetCurrentHDFFSM) {
-            // This is a sub-layer HDFFSMDirector. Recompute the schedule.
+        if (!_reinitialize){
+            super.initialize();
+            _reinitialize = true;
+        } else if (!_resetCurrentHDFFSM) {
+            // This is a sub-layer HDFFSMDirector.
+            // Reinitialize all the refinements in the sub-layer HDFFSMDirector
+            // and recompute the schedule.
+            super.initialize();
             _firingsSoFar = 0;
             FSMActor controller = getController();
             State initialState = controller.getInitialState();
-            // Get the current refinement.
             TypedCompositeActor curRefinement =
                 // FIXME
                 //(TypedCompositeActor)initialState.getRefinement();
@@ -332,11 +339,9 @@ public class HDFFSMDirector extends FSMDirector {
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
-        // Get the current refinement actor.
         // FIXME
         //TypedActor currentRefinement =
-        TypedActor[] currentRefinement =
-            curState.getRefinement();
+        TypedActor[] currentRefinement = curState.getRefinement();
         if (currentRefinement == null) {
             throw new IllegalActionException(this,
              "Can't postfire because current refinement is null.");
@@ -398,6 +403,10 @@ public class HDFFSMDirector extends FSMDirector {
                     (BooleanToken)lastChosenTr.reset.getToken();
                 if (resetToken.booleanValue()) {
                     setCurrentHDFFSMReset(true);
+                    Actor actor = newState.getRefinement()[0];
+                    if (actor != null) {
+                        actor.initialize();
+                    }
                     initialize();
                 }
                 setCurrentHDFFSMReset(false);
@@ -475,6 +484,7 @@ public class HDFFSMDirector extends FSMDirector {
         _firingsPerIteration = 1;
         _firingsSoFar = 0;
         _resetCurrentHDFFSM = true;
+        _reinitialize = false;
         super.preinitialize();
 
         FSMActor ctrl = getController();
@@ -1028,7 +1038,6 @@ public class HDFFSMDirector extends FSMDirector {
                         " : _updateOutputTokenConsumptionRates(): " +
                         "Updating controller's consumption rate of port: "
                         + outputPortOutside.getFullName());
-
                     // set the outside port = port rate of the refinement.
                     int portRateToSet = SDFScheduler
                         .getTokenProductionRate(refineOutPort);
@@ -1057,5 +1066,8 @@ public class HDFFSMDirector extends FSMDirector {
     // A flag indicating whether the current director
     // has made a transition with "reset" set to be true.
     private boolean _resetCurrentHDFFSM = false;
-
+    
+    // A flag indicating whether the initialize method is
+    // called due to reinitialization.
+    private boolean _reinitialize;
 }
