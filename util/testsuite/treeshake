@@ -1,8 +1,16 @@
 #!/bin/sh
 # Tree shake a demo: Build the minimal jar file and then run it
-# Usage treeshake pathToJarExecutable treeshakejarfile java_commands . . .
+# Usage:
+#       treeshake pathToJarExecutable treeshakejarfile java_commands . . .
+#  or
+#       treeshake pathToJarExecutable treeshakejarfile -c filelistingclasses \ 
+#                java_commands . . .
 #   The first java_command is expected to be the java interpreter
-
+# If -c is the 3rd argument, then 'filelistingclasses' is assumed to be
+# a file listing the classes to be read in where the format is 
+# fully qualified dot separated classnames:
+#   ptolemy.kernel.util.NamedObj
+#   ptolemy.util.StringUtilities
 #
 # @Authors: Christopher Hylands
 #
@@ -39,9 +47,16 @@
 # which is not exactly the same as the Sun jar command.
 JAR=$1
 treeshakejar=$2
-javaCommand=$3
+shift; shift
+fileListingClasses=""
+if [ "$1" = "-c" ]; then
+    shift
+    fileListingClasses=$1
+    shift
+fi
+javaCommand=$1
 
-shift; shift; shift
+
 
 # We can't use tmp here because under cygwin will remap /tmp
 # to c:/cygwin/tmp, and java will not be able to find it
@@ -64,13 +79,18 @@ done
 # Generate a list of ptolemy classes to include by running
 # the demo with under java -verbose
 
-#set -x
-ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
-    egrep '^\[Loaded ' | \
-    egrep 'Loaded (ptolemy|com.microstar|diva)' | \
-    awk '{print substr($2, 1, length($2)-1)}' | \
-    sed 's@\.@/@g' | awk '{print $1 ".class"}'`
-#set +x
+if [ "$fileListingClasses" = "" ]; then
+    #set -x
+    ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
+        egrep '^\[Loaded ' | \
+        egrep 'Loaded (ptolemy|com.microstar|diva)' | \
+        awk '{print substr($2, 1, length($2)-1)}' | \
+        sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+    #set +x
+else
+    ptolemyFiles=`cat "$fileListingClasses" |
+        sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+fi
 
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
