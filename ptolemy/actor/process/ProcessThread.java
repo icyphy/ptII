@@ -108,10 +108,11 @@ public class ProcessThread extends PtolemyThread {
     }
 
     /** Initialize the actor, iterate it through the execution cycle
-     *  till it terminates. At the end of the termination, calls wrapup
+     *  until it terminates. At the end of the termination, calls wrapup
      *  on the actor.
      */
     public void run() {
+	Workspace workspace = _director.workspace();
 	boolean iterate = true;
 	try {
 	    while (iterate) {
@@ -127,7 +128,7 @@ public class ProcessThread extends PtolemyThread {
  		        _director.registerStoppedThread();
 			while( _threadStopRequested ) {
 			    synchronized(this) {
-			        wait();
+                                workspace.wait(this);
 			    }
 			}
 		    }
@@ -135,8 +136,6 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
-	} catch (InterruptedException e) {
-            _manager.notifyListenersOfException(e);
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
@@ -154,6 +153,7 @@ public class ProcessThread extends PtolemyThread {
      */
     public synchronized void restartThread() {
  	_threadStopRequested = false;
+	notifyAll();
     }
 
     /** Request that execution of the actor controlled by this
