@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Sat Nov 22 08:08:48 2003 by cxh]-
+# -[Mon Nov 24 09:27:59 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -133,8 +133,8 @@ awk '{
 		complexityValue="<font color=#ff0000>" complexityValue"</font>"
 	    }
 
-		    # If the file is in the top 5%, we print it in red
-		    if (percentComplexityRank <= 5) {
+		    # If the file is in the top 95%, we print it in red
+		    if (percentComplexityRank <= 95) {
 			printf("<td><font color=#ff0000>%s %2d%%</font></td>", complexityValue, percentComplexityRank) 
 		    } else {
 			printf("<td>%s %2d%% </td>", complexityValue, percentComplexityRank) 
@@ -173,18 +173,26 @@ awk '{
      }
      END {
 	print "<a name=\"complexity\">Complexity:</a>" 
-	print "The complexity column measures the cyclometric complexity"
-	print "<br>The first number is the cyclometric complexity as reported"
+	print "The complexity column measures the cyclomatic complexity"
+	print "<br>The first number is the cyclomatic complexity as reported"
 	print "by the GNU jv-scan program.  In general, low numbers are"
 	print "good, high numbers are not so good"
+	print "<a href=\"http://www.sei.cmu.edu/str/descriptions/cyclomatic.html\">SEI</a>"
+	print "defines cyclomatic complexity:"
+	print "<BLOCKQUOTE>"
+	print "... it measures the number of linearly-independent paths"
+	print "through a program module. This measure provides a single"
+	print "ordinal number that can be compared to the complexity of
+	print "other programs."
+	print "</BLOCKQUOTE>"
 	print "<br>The second number is the rank of the file as a percentage"
 	print "of all the files."
-	print "Files that are in the top 5% are colored red.  These files"
+	print "Files that are in the top 95% are colored red.  These files"
 	print "are the most complex files in the tree, and therefore the most"
  	print "likely to have complex bugs.  These files should probably"
 	print "be refactored to aid in testability"
 	print "<br>If a file has only a percentage, then jv-scan failed"
-	print "to process it"
+	print "to process it."
      }' > /tmp/coveragerating.out
 
 # Create a TOC
