@@ -54,7 +54,6 @@ import java.net.MalformedURLException;
  *  @version $Id$
  *  @see PlotBox
  *  @see Plot
- *  @see Pxgraph
  */
 public class PlotApplet extends Applet {
 
@@ -62,7 +61,7 @@ public class PlotApplet extends Applet {
      *  @return A string describing the applet.
      */
     public String getAppletInfo() {
-        return "PlotApplet 3.0: A data plotter.\n" +
+        return "PlotApplet 3.1: A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
