@@ -52,7 +52,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
   ////                         Public methods                          ////
 
   /** Return the sum of all of the elements in the array.
-   *  Return 0.0 of the size of the array is 0.
+   *  Return 0.0 of the length of the array is 0.
    *  @param array An array of doubles.
    *  @return A double.
    */
@@ -65,7 +65,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
   }
 
     /** Return the product of all of the elements in the array.
-     *  Return 1.0 if the size of the array is 0.
+     *  Return 1.0 if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -78,7 +78,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the sum of the squares of all of the elements in the array.
-     *  Return 0.0 if the size of the array is 0.
+     *  Return 0.0 if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -106,7 +106,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  the product of the elements in the array is negative, throw an
      *  IllegalArgumentException. However, the individual elements of the array
      *  are not verified to be non-negative.
-     *  Return 1.0 if the size of the array is 0.
+     *  Return 1.0 if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double. 
      */
@@ -150,7 +150,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the variance of the elements in the array.
-     *  Return 0.0 if the size of the array is 0.
+     *  Return 0.0 if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -169,7 +169,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
 
     /** Return the standard deviation of the elements in the array.
-     *  Return 0.0 if the size of the array is 0.
+     *  Return 0.0 if the length of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -318,8 +318,18 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Given an array of probabilities, treated as a probability mass 
-     *  function (pmf), calculate the entropy (in bits).
-     *  Throw an IllegalArgumentException if the size of the array is 0.
+     *  function (pmf), calculate the entropy (in bits). The pmf is
+     *  a discrete function that gives the probability of each element.
+     *  The sum of the elements in the pmf should be 1, and each element
+     *  should be between 0 and 1.
+     *  This method does not check to see if the pmf is valid, except for
+     *  checking that each entry is non-negative.
+     *  The function computed is :
+     *  <p>
+     *   H(p) = - sum (p[x] * log<sup>2</sup>(p[x]))
+     *  </p> 
+     *  Throw an IllegalArgumentException if the length of the array is 0,
+     *  or a negative probability is encountered.
      *  @param p An array of doubles representing the pmf.
      *  @return A double.
      */
@@ -348,6 +358,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  two probability mass functions. The result will be POSITIVE_INFINITY if
      *  q has a zero probabability for a symbol for which p has a non-zero
      *  probability.
+     *  The function computed is :
+     *  <p>
+     *   H(p) = - sum (p[x] * log<sup>2</sup>(p[x]/q[x]))
+     *  </p> 
      *  Throw an IllegalArgumentException if either array has length 0. 
      *  If the two arrays do not have the same length, throw an 
      *  IllegalArgumentException.
@@ -355,6 +369,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param q An array of doubles representing the second pmf.
      *  @return A double representing the relative entropy of the
      *  random variable.
+     *  @see entropy
      */
     public static final double relativeEntropy(double[] p, double[] q) {
 

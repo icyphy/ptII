@@ -120,7 +120,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is the element-by-element sum of the two
    *  input arrays.
-   *  If the sizes of both arrays are 0, return a new array of size 0.
+   *  If the lengths of both arrays are 0, return a new array of length 0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
    *  @param array1 The first array of doubles.
@@ -137,7 +137,7 @@ public class DoubleArrayMath {
   }
 
   /** Return a new array that is the absolute value of the input array.
-   *  If the size of the array is 0, return a new array of size 0.
+   *  If the length of the array is 0, return a new array of length 0.
    *  @param array An array of doubles.
    *  @return A new array of doubles.
    */
@@ -182,7 +182,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is the element-by-element division of
    *  the first array by the second array.
-   *  If the sizes of both arrays are 0, return a new array of size 0.
+   *  If the lengths of both arrays are 0, return a new array of length 0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
    *  @param array1 The first array of doubles.
@@ -199,7 +199,7 @@ public class DoubleArrayMath {
   }
 
   /** Return the dot product of the two arrays.
-   *  If the sizes of the array are both 0, return 0.0.
+   *  If the lengths of the array are both 0, return 0.0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
    *  @param array1 The first array of doubles.
@@ -223,7 +223,7 @@ public class DoubleArrayMath {
    *  then it is replaced by either the top or the bottom, depending on
    *  its sign.  To leave either the bottom or the top unconstrained,
    *  specify Double.NEGATIVE_INFINITY or Double.POSITIVE_INFINITY.
-   *  If the size of the array is 0, return a new array of size 0.
+   *  If the length of the array is 0, return a new array of length 0.
    *  @param array An array of doubles.
    *  @param bottom The bottom limit.
    *  @param top The top limit.
@@ -250,7 +250,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is the element-by-element multiplication of
    *  the two input arrays.
-   *  If the sizes of both arrays are 0, return a new array of size 0.
+   *  If the lengths of both arrays are 0, return a new array of length 0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
    *  @param array1 The first array of doubles.
@@ -268,7 +268,7 @@ public class DoubleArrayMath {
 
   /** Return a new array of doubles that is formed by raising each
    *  element to the specified exponent.
-   *  If the size of the array is 0, return a new array of size 0.
+   *  If the length of the array is 0, return a new array of length 0.
    *  @param array An array of doubles.
    *  @return A new array of doubles.
    */
@@ -287,7 +287,7 @@ public class DoubleArrayMath {
    *  This method simply calls :
    *  resize(array, newLength, 0)
    *  @param array An array of doubles.
-   *  @param newLength The desired size of the output array.
+   *  @param newLength The desired length of the output array.
    */
   public final static double[] resize(double[] array, int newLength) {
      return resize(array,  newLength, 0);
@@ -305,7 +305,7 @@ public class DoubleArrayMath {
    *  If case 1) is met, the remainder of the output array is filled with
    *  zero's, implicitly by Java (padding).
    *  @param array An array of doubles.
-   *  @param newLength The desired size of the output array.
+   *  @param newLength The desired length of the output array.
    *  @param startIdx The starting index for the input array.
    */
   public final static double[] resize(double[] array, int newLength,
@@ -328,7 +328,7 @@ public class DoubleArrayMath {
 
   /** Return a new array of doubles produced by scaling the input
    *  array elements by a constant.
-   *  If the size of the array is 0, return a new array of size 0.
+   *  If the length of the array is 0, return a new array of length 0.
    *  @param array An array of doubles.
    *  @param scalefactor A double.
    *  @return A new array of doubles.
@@ -343,7 +343,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is the element-by-element difference of the
    *  two input arrays, i.e. the first array minus the second array.
-   *  If the sizes of both arrays are 0, return a new array of size 0.
+   *  If the lengths of both arrays are 0, return a new array of length 0.
    *  @param array1 The first array of doubles.
    *  @param array2 The second array of doubles.
    *  @return A new array of doubles.
@@ -360,7 +360,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is formed by converting the shorts in
    *  the argument to doubles.
-   *  If the size of the argument array is 0, return a new array of size 0.
+   *  If the length of the argument array is 0, return a new array of length 0.
    *  @param array An array of shorts.
    *  @return A new array of doubles.
    */
@@ -376,7 +376,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is formed by converting the integers in
    *  the argument to doubles.
-   *  If the size of the argument array is 0, return a new array of size 0.
+   *  If the length of the argument array is 0, return a new array of length 0.
    *  @param array An array of integers.
    *  @return A new array of doubles.
    */
@@ -392,7 +392,7 @@ public class DoubleArrayMath {
 
   /** Return a new array that is formed by converting the floats in
    *  the argument to doubles.
-   *  If the size of the argument array is 0, return a new array of size 0.
+   *  If the length of the argument array is 0, return a new array of length 0.
    *  @param array An array of shorts.
    *  @return A new array of doubles.
    */
@@ -487,6 +487,10 @@ public class DoubleArrayMath {
 
   /** Throw an exception if the array is null or length 0.
    *  Otherwise return the length of the array.
+   *  @param array An array of doubles.
+   *  @param methodName A String representing the method name of the caller, 
+   *  without parentheses.
+   *  @return The length of the array.
    */
   protected static final int _nonZeroLength(double[] array,
    String methodName) {
@@ -505,8 +509,13 @@ public class DoubleArrayMath {
 
   /** Throw an exception if the two arrays are not of the same length,
    *  or if either array is null. An exception is NOT thrown if both
-   *  arrays are of size 0. If no exception is thrown, return the common
+   *  arrays are of length 0. If no exception is thrown, return the common
    *  length of the arrays.
+   *  @param array The first array of doubles.
+   *  @param array The second array of doubles.
+   *  @param methodName A String representing the method name of the caller, 
+   *  without parentheses.
+   *  @return The common length of both arrays.
    */
   protected static final int _commonLength(double[] array1, double[] array2,
    String methodName) {
