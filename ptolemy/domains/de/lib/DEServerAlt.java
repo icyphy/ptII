@@ -48,8 +48,6 @@ become free from the previous tasks.
 */
 public class DEServerAlt extends DEActor {
 
-    private static final boolean DEBUG = true;
-
     /** Construct a DEServer star with the default service time equal to 1.0.
      *
      * @param serviceTime The service time
@@ -89,6 +87,11 @@ public class DEServerAlt extends DEActor {
         _serviceTime = serviceTime;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -138,14 +141,9 @@ public class DEServerAlt extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    private static final boolean DEBUG = true;
 
-    // the intial value and increment
+    // The intial value and increment.
     private double _serviceTime;
     private double _busyUntil = Double.NEGATIVE_INFINITY;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
 }
