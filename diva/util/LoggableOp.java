@@ -176,7 +176,7 @@ public class LoggableOp {
         _indent--;
     }
 
-   /** Print an warning message to the error stream. This message
+    /** Print an warning message to the error stream. This message
      * includes the line number, and info message.
      */
     public void logWarning (String msg) {

@@ -34,7 +34,7 @@ public class PolylineIterator implements PathIterator {
     public PolylineIterator (Polyline2D pl, AffineTransform at) {
         int count = pl.getVertexCount() * 2;
         _coords = new double[count];
-         if (pl instanceof Polyline2D.Float) {
+        if (pl instanceof Polyline2D.Float) {
             Polyline2D.Float f = (Polyline2D.Float) pl;
             if (at == null || at.isIdentity()) {
                 for (int i = 0; i < count; i++) {
@@ -71,7 +71,7 @@ public class PolylineIterator implements PathIterator {
         return ((_index == 0)
                 ? PathIterator.SEG_MOVETO
                 : PathIterator.SEG_LINETO);
-     }
+    }
 
     /** Return the winding rule. This is WIND_NON_ZERO.
      */

@@ -15,28 +15,28 @@ import java.util.List;
  * @version $Revision$
  */
 public class ReverseIterator extends  IteratorAdapter {
-  private List _list;
-  private int _cursor;
+    private List _list;
+    private int _cursor;
 
-  /** Construct a reverse iterator on the given list.
-   */
-  public ReverseIterator (List list) {
-    this._list = list;
-    _cursor = list.size();
-  }
+    /** Construct a reverse iterator on the given list.
+     */
+    public ReverseIterator (List list) {
+        this._list = list;
+        _cursor = list.size();
+    }
 
-  /** Test if there are more elements
-   */
-  public boolean hasNext() {
-    return _cursor > 0;
-  }
+    /** Test if there are more elements
+     */
+    public boolean hasNext() {
+        return _cursor > 0;
+    }
 
-  /** Return the next element.
-   */
-  public Object next() {
-    _cursor--;
-    return _list.get(_cursor);
-  }
+    /** Return the next element.
+     */
+    public Object next() {
+        _cursor--;
+        return _list.get(_cursor);
+    }
 }
 
 

@@ -29,7 +29,7 @@ import java.awt.geom.RectangularShape;
 public final class ShapeUtilities {
 
     private static boolean _jdk12beta4 =
-        System.getProperty("java.version").equals("1.2beta4");
+    System.getProperty("java.version").equals("1.2beta4");
 
     /** A static array of strokes indexed by width
      */

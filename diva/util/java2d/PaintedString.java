@@ -258,7 +258,7 @@ public class PaintedString implements PaintedObject {
         _transform.preConcatenate(at);
         // clear the bounds.
         _bounds = null;
-     }
+    }
 
     /**
      * Translate the label the given distance.
@@ -267,7 +267,7 @@ public class PaintedString implements PaintedObject {
         _transform.translate(x,y);
         // clear the bounds.
         _bounds = null;
-     }
+    }
 
     /** Update internal variables after changing the transform
      * or font or string. In the current implementation,

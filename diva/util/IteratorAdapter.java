@@ -17,15 +17,15 @@ import java.util.Iterator;
  * @version $Revision$
  */
 public class IteratorAdapter implements Iterator {
-  public boolean hasNext() {
-    throw new UnsupportedOperationException("This method must be overridden");
-  }
-  public Object next() {
-    throw new UnsupportedOperationException("This method must be overridden");
-  }
-  public void remove() {
-    throw new UnsupportedOperationException("Can't remove element");
-  }
+    public boolean hasNext() {
+        throw new UnsupportedOperationException("This method must be overridden");
+    }
+    public Object next() {
+        throw new UnsupportedOperationException("This method must be overridden");
+    }
+    public void remove() {
+        throw new UnsupportedOperationException("Can't remove element");
+    }
 }
 
 

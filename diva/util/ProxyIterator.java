@@ -20,7 +20,7 @@ public class ProxyIterator extends IteratorAdapter {
     private Iterator _iterator;
 
     public ProxyIterator(Iterator i) {
-       _iterator = i;
+        _iterator = i;
     }
 
     public boolean hasNext() {

@@ -37,7 +37,7 @@ public class PaintedImage implements PaintedObject, ImageObserver {
         _transform = CanvasUtilities.computeTransform(
                 new Rectangle2D.Double(0, 0,
                         image.getWidth(this), image.getHeight(this))
-                        , bounds);
+                    , bounds);
     }
 
     /** Get the bounding box of the object when painted.
@@ -63,7 +63,7 @@ public class PaintedImage implements PaintedObject, ImageObserver {
             _transform = CanvasUtilities.computeTransform(
                     new Rectangle2D.Double(0, 0,
                             image.getWidth(this), image.getHeight(this))
-                    , _bounds);
+                        , _bounds);
         }
         return true;
     }

@@ -16,10 +16,10 @@ import java.util.NoSuchElementException;
  * @version $Revision$
  */
 public class NullIterator extends IteratorAdapter {
-  public boolean hasNext() {
-    return false;
-  }
-  public Object next() {
-    throw new NoSuchElementException("No more elements");
-  }
+    public boolean hasNext() {
+        return false;
+    }
+    public Object next() {
+        throw new NoSuchElementException("No more elements");
+    }
 }

@@ -16,9 +16,9 @@ import java.util.Iterator;
  * @version $Revision$
  */
 public class IteratorUtilities {
-  /** You can't instantiate this class.
-   */
-  private IteratorUtilities() {}
+    /** You can't instantiate this class.
+     */
+    private IteratorUtilities() {}
 
     /** Return the first element in an iterator that
      * matches the given filter, or null if there isn't one.

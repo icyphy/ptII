@@ -62,7 +62,7 @@ public class BasicPropertyContainer implements PropertyContainer {
      */
     public void setProperty(String key, Object value) {
         if(_mapping == null) {
-           _mapping = new HashMap();
+            _mapping = new HashMap();
         }
         _mapping.put(key, value);
     }

@@ -38,7 +38,7 @@ public class PolygonIterator implements PathIterator {
     public PolygonIterator (Polygon2D pl, AffineTransform at) {
         int count = pl.getVertexCount() * 2;
         _coords = new double[count];
-         if (pl instanceof Polygon2D.Float) {
+        if (pl instanceof Polygon2D.Float) {
             Polygon2D.Float f = (Polygon2D.Float) pl;
             if (at == null || at.isIdentity()) {
                 for (int i = 0; i < count; i++) {
@@ -99,7 +99,7 @@ public class PolygonIterator implements PathIterator {
                 return PathIterator.SEG_LINETO;
             }
         }
-     }
+    }
 
     /** Return the winding rule. This is WIND_NON_ZERO.
      */

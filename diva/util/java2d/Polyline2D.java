@@ -54,7 +54,7 @@ public abstract class Polyline2D implements Shape {
         return false;
     }
 
-   /** Return false. A line never contains a rectangle.
+    /** Return false. A line never contains a rectangle.
      */
     public boolean contains (double x, double y, double w, double h) {
         return false;
@@ -291,7 +291,7 @@ public abstract class Polyline2D implements Shape {
             _coords[_coordCount++] = (float) y;
         }
 
-       /** Move the start point of the vertex to the given position.
+        /** Move the start point of the vertex to the given position.
          *
          * @throws UnsupportedOperationException The polyline already
          * has vertices
@@ -350,7 +350,7 @@ public abstract class Polyline2D implements Shape {
     ///////////////////////////////////////////////////////////////////
     //// Double
 
-     /** The concrete Polyline class that stores coordinates internally
+    /** The concrete Polyline class that stores coordinates internally
      * as doubles.
      */
     public static class Double extends Polyline2D {

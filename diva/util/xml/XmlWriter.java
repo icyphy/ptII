@@ -107,7 +107,7 @@ public class XmlWriter extends LoggableOp {
         e.writeXML(out, prefix);
     }
 
-   /** Write the DTD of the given XmlDocument to a given Writer. If an error
+    /** Write the DTD of the given XmlDocument to a given Writer. If an error
      * occurs while writing, then an IOException will be thrown.
      */
     public void writeDTD (XmlDocument document, Writer out) throws IOException {

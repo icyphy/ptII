@@ -245,7 +245,7 @@ public abstract class Polygon2D implements Shape {
                     vx1, vy1, vx2, vy2)) {
                 return true;
             }
-       }
+        }
         return false;
     }
 
@@ -399,7 +399,7 @@ public abstract class Polygon2D implements Shape {
             _coords[_coordCount++] = (float) y;
         }
 
-       /** Move the start point of the vertex to the given position.
+        /** Move the start point of the vertex to the given position.
          *
          * @throws UnsupportedOperationException The polygon already
          * has vertices
@@ -452,7 +452,7 @@ public abstract class Polygon2D implements Shape {
     ///////////////////////////////////////////////////////////////////
     //// Double
 
-     /** The concrete Polygon class that stores coordinates internally
+    /** The concrete Polygon class that stores coordinates internally
      * as doubles.
      */
     public static class Double extends Polygon2D {

@@ -106,9 +106,9 @@ public class PaintedPath extends AbstractPaintedGraphic {
         g.draw(shape);
     }
 
-   /** Set the dash array of the stroke. The existing stroke will
-    * be removed, but the line width will be preserved if possible.
-    */
+    /** Set the dash array of the stroke. The existing stroke will
+     * be removed, but the line width will be preserved if possible.
+     */
     public void setDashArray (float dashArray[]) {
         if (stroke instanceof BasicStroke) {
             stroke = new BasicStroke(
@@ -130,7 +130,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
     }
 
     /** Set the line width. The existing stroke will
-    * be removed, but the dash array will be preserved if possible.
+     * be removed, but the dash array will be preserved if possible.
      */
     public void setLineWidth (float lineWidth) {
         if (stroke instanceof BasicStroke) {
@@ -142,7 +142,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
                     ((BasicStroke) stroke).getDashArray(),
                     0.0f);
         } else {
-             new BasicStroke(
+            new BasicStroke(
                     lineWidth,
                     BasicStroke.CAP_SQUARE,
                     BasicStroke.JOIN_MITER,

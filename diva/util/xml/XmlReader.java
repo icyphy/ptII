@@ -307,7 +307,7 @@ public class XmlReader extends LoggableOp {
          */
         public void endExternalEntity(String URI) throws Exception {
             if(isVerbose()) {
-                 logInfo("end ext", URI);
+                logInfo("end ext", URI);
             }
             // The doesn't work because of a bug in Aelfred that
             // appears if you resolve the external entity to an input stream
@@ -446,7 +446,7 @@ public class XmlReader extends LoggableOp {
          */
         public void startExternalEntity(String URI) throws Exception {
             if(isVerbose()) {
-                 logInfo("start ext", URI);
+                logInfo("start ext", URI);
             }
             _externalEntities.add(0, URI);
         }

@@ -13,10 +13,10 @@ package diva.util;
  * @version $Revision$
  */
 public interface Filter {
-  /** Test if an object passes the filter, returning true
-   * if it does and false if it does not.
-   */
-  public boolean accept (Object o);
+    /** Test if an object passes the filter, returning true
+     * if it does and false if it does not.
+     */
+    public boolean accept (Object o);
 }
 
 
