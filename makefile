@@ -101,8 +101,7 @@ MISC_FILES = \
 	bin \
 	config \
 	lib \
-	mk \
-	tutorial
+	mk
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
