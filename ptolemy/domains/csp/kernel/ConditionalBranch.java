@@ -52,13 +52,13 @@ Each guarded communication statement is one branch of a CIF or CDO.
 <p>
 A CDO has the form
 <P>
-&nbsp;&nbsp;&nbsp                              CDO {
-<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       G1; C1 => S1;
-<br>&nbsp;&nbsp;&nbsp                          []
-<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       G2; C2 => S2;
-<br>&nbsp;&nbsp;&nbsp                          []
-<br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       ...
-<br>&nbsp;&nbsp;&nbsp                          }
+CDO {
+<br>G1; C1 => S1;
+<br>[]
+<br>G2; C2 => S2;
+<br>[]
+<br>...
+<br>}
 <P>
 The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
 communication associated with that branch, and may be either a send()
@@ -92,7 +92,6 @@ The port and the channel together define the CSPReceiver with which to
 rendezvous. The CSPActor, executing a CIF or CDO that contains this branch, is
 assumed to be the container of the port.
 <p>
-FIXME: perhaps make the access methods protected?
 @author  Neil Smyth
 @version $Id$
 */
@@ -180,10 +179,13 @@ public abstract class ConditionalBranch {
         return _alive;
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                      package friendly methods                  ////
+
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
-    public void setAlive(boolean value) {
+    void setAlive(boolean value) {
         _alive = value;
     }
 
@@ -191,7 +193,7 @@ public abstract class ConditionalBranch {
      *  This method should only be called from derived classes.
      *  @param rec The CSPReceiver this branch is trying to rendezvous with.
      */
-    public void setReceiver(CSPReceiver rec) {
+    void setReceiver(CSPReceiver rec) {
         _receiver = rec;
     }
 
@@ -201,21 +203,23 @@ public abstract class ConditionalBranch {
      *  occurred, and is null before that.
      *  @param token The token to be contained by this branch.
      */
-    public void setToken(Token token) {
+    void setToken(Token token) {
         _token = token;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Called by subclasses to wait. It wraps a wait() call, on the
-     *  receiver associated with this branch, between checks on the state
-     *  of the receiver. It also takes care of registering
-     *  branches as blocked which is needed for deadlock detection.
-     *  @exception InterruptedException If this method is interrupted
-     *   while waiting.
+    /** Called by subclasses to wait. Register with the containing actor
+     *  that a conditional branch has blocked and then wait to be notified.
+     *  Wrap the wait() call (on the receiver associated with this branch)
+     *  between checks on the state of the receiver. After awaking from
+     *  waiting, register with the containing actor that this conditional
+     *  branch is no longer blocked.
+     * @exception InterruptedException If this method is interrupted
+     *  while waiting.
      */
-    protected void _checkAndWait() throws InterruptedException {
+    protected void _registerBlockAndWait() throws InterruptedException {
         getParent()._branchBlocked();
         getReceiver()._checkAndWait();
         getParent()._branchUnblocked();
@@ -227,7 +231,10 @@ public abstract class ConditionalBranch {
     // The identification number of this branch (according to its parent)
     private int _branchID;
 
-    // Has another branch successfully rendezvoused?
+    // Has another branch successfully rendezvoused? If so, then _alive
+    // is set to false. Otherwise, this branch still can potentially
+    // rendezvous. _alive remains true until it is no longer possible
+    // for this branch to successfully rendezvous. 
     private boolean _alive = true;
 
     // The guard for this guarded communication statement.
