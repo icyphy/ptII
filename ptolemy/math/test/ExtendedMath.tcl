@@ -46,5 +46,30 @@ set PI [java::field java.lang.Math PI]
 # set VERBOSE 1
 
 ####################################################################
+test ExtendedMath-1.1 {acosh} {
+    epsilonDiff [java::call ptolemy.math.ExtendedMath acosh 1.2] 0.622362503715
+} {}
 
-# FIXME: No tests.
+####################################################################
+test ExtendedMath-1.2 {acosh} {
+    catch {java::call ptolemy.math.ExtendedMath acosh 0.99} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ExtendedMath.acosh: Argument is required to be greater than 1.  Got 0.99}}
+
+####################################################################
+test ExtendedMath-2.1 {asinh} {
+    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh 1.2] 1.01597313418
+} {}
+
+####################################################################
+test ExtendedMath-2.2 {asinh} {
+    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh .99] 0.874284812187
+} {}
+
+####################################################################
+test ExtendedMath-2.3 {asinh} {
+    epsilonDiff [java::call ptolemy.math.ExtendedMath asinh -0.5] -0.48121182506
+} {}
+
+
+
