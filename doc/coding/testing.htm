@@ -41,6 +41,31 @@ and any subdirectories.
 
 <H3>Writing your own tests</H3>
 
+There are two ways to write tests:
+<ol>
+<li> Use Vergil to create tests using the Test actor
+<li> Write tests using Tcl
+</ol>
+
+<h4>Using Vergil to write tests</h4>
+The testing infrastructure will automatically run an MoML models
+located in <CODE>test/auto</CODE> directories.
+ <p>The test passes if it does not throw an exception
+ <p>The Test actor can be used to compare the first few results
+of a simulation with a known good results.  If the comparison fails,
+then the test fails.
+ <p>If a test is in the optional <CODE>test/auto/failed</CODE> 
+directory, then it will be marked as a known failure if it fails.
+
+ <p>Using Vergil to write tests is quite a bit easier than writing Tcl
+ code, but it is much more difficult to handle corner cases and test
+for erroneous conditions by writing models.  Tcl tests are unit tests,
+whereas tests that use models are system tests and may mask unit
+test bugs.  
+
+
+<h4>Writing Tcl Tests</h4>
+
 The test suite infrastructure is based on the Tcl test suite code.  The
 
  <P>The file <A HREF="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></A> defines the Tcl proc <CODE>test</CODE>.
@@ -210,6 +235,7 @@ class being tested.  The Tcl test file should be located in the
 is defined.
  <P>For example, if we are testing <CODE>NamedObj.java</CODE>, then
 the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
+
 
 <H3><A NAME="JavaScope">JavaScope</A></H3>
 We use Sun's
