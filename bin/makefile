@@ -117,7 +117,7 @@ $(BAT_FILES): ptinvoke
 	ln -s ptinvoke makebat
 	for file in $(SHELL_FILES); do \
 		rm -f "$$file.bat"; \
-		makebat "$$file"; \
+		./makebat "$$file"; \
 	done
 
 
