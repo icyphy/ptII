@@ -48,7 +48,7 @@ A directed graph and some graph algorithms.
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
-@author Yuhong Xiong, Jie Liu, Paul Whitaker
+@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya 
 @version $Id$
 */
 
@@ -92,9 +92,7 @@ public class DirectedGraph extends Graph {
      */
     public void add(Object o) {
         super.add(o);
-
-        _inDegree.add(_getNodeId(o), new Integer(0));
-	_transitiveClosure = null;
+	    _transitiveClosure = null;
     }
 
     /** Add a directed edge to connect two nodes. The first argument
@@ -111,11 +109,7 @@ public class DirectedGraph extends Graph {
      */
     public void addEdge(Object o1, Object o2) {
         super.addEdge(o1, o2);
-
-        int id2 = _getNodeId(o2);
-        int indeg = ((Integer)(_inDegree.get(id2))).intValue();
-        _inDegree.set(id2, new Integer(indeg+1));
-	_transitiveClosure = null;
+	    _transitiveClosure = null;
     }
 
     /** Sort the given graph objects in their topological order as long as
@@ -255,18 +249,19 @@ public class DirectedGraph extends Graph {
     }
 
     /** Test if an edge exists from the first node to the second node.
+     *  @param node1 the weight of the first node.
+     *  @param node2 the weight of the second node.
      *  @return true if the graph includes an edge from the first node to
      *   the second node.
      */
     public boolean edgeExists(Object node1, Object node2) {
 
-        ArrayList edge = (ArrayList)(_graph.get(_getNodeId(node1)));
-        // for all edges from the object
-        for (int j = 0; j < edge.size(); j++) {
-            int k = ((Integer)edge.get(j)).intValue();
-            if (_getNodeObject(k) == node2) return true;
+        Iterator outputEdges = getNode(node1).outputEdges();
+        while (outputEdges.hasNext()) {
+             if (((Edge)(outputEdges.next())).sink().weight() == node2) {
+                 return true;
+             }
         }
-
         return false;
     }
 
@@ -428,32 +423,27 @@ public class DirectedGraph extends Graph {
     }
 
     /** Compute the subgraph of the graph containing only the specified nodes.
-     *  @return An array of instances of DirectedGraph which represent
-     *   the subgraph.
+     *  Edge weights are preserved.
+     *  @param weights the weights of the nodes in the subgraph.
+     *  @return A DirectedGraph that represents the subgraph.
      */
-    public DirectedGraph subgraph(Object[] objs) {
+    public DirectedGraph subgraph(Object[] weights) {
 
-	int N = objs.length;
-        int ids[] = new int[N];
+        // Create the nodes.
+	    int N = weights.length;
         DirectedGraph subgraph = new DirectedGraph(N);
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
-            subgraph.add(objs[i]);
+            subgraph.add(weights[i]);
         }
 
-        // now that all the nodes have been added, we check to see if any
-        // object in the subgraph has an edge that points to another object
-        // in the subgraph, and if so, we add it
-
-        // for all objects in the subgraph
+       // Create the edges.
         for (int i = 0; i < N; i++) {
-            ArrayList edge = (ArrayList)(_graph.get(ids[i]));
-            // for all edges from the object
-            for (int j = 0; j < edge.size(); j++) {
-                int k = ((Integer)edge.get(j)).intValue();
-                // check all objects in the subgraph
-                for (int m = 0; m < N; m++) {
-                    if (k == ids[m]) subgraph.addEdge(objs[i], objs[m]);
+            Iterator outputEdges = getNode(weights[i]).outputEdges();
+            while (outputEdges.hasNext()) {
+                Edge edge = (Edge)(outputEdges.next());
+                Object sinkWeight = edge.sink().weight();
+                if (subgraph.contains(sinkWeight)) {
+                    subgraph.addEdge(weights[i], sinkWeight, edge.weight());
                 }
             }
         }
@@ -472,20 +462,18 @@ public class DirectedGraph extends Graph {
     }
 
     /** Compute the successor set of a given set of nodes.
-     *  @return An array of the nodes of the successor set.
+     *  @param the weights of the nodes.
+     *  @return An array of the node weights of the successor set.
      */
-    public Object[] successorSet(Object[] objs) {
+    public Object[] successorSet(Object[] weights) {
 
-	int N = objs.length;
         HashSet successors = new HashSet();
 
         // for all objects in the set
-        for (int i = 0; i < N; i++) {
-            ArrayList edge = (ArrayList)(_graph.get(_getNodeId(objs[i])));
-            // for all edges from the object
-            for (int j = 0; j < edge.size(); j++) {
-                int k = ((Integer)edge.get(j)).intValue();
-                successors.add(_getNodeObject(k));
+        for (int i = 0; i < weights.length; i++) {
+            Iterator outputEdges = getNode(weights[i]).outputEdges();
+            while (outputEdges.hasNext()) {
+                successors.add(((Edge)(outputEdges.next())).sink().weight());
             }
         }
 
@@ -512,17 +500,16 @@ public class DirectedGraph extends Graph {
 
         int size = getNodeCount();
 
-	// Initialize _transitiveClosure to the adjacency matrix
+	    // Initialize _transitiveClosure to the adjacency matrix
         _transitiveClosure = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 _transitiveClosure[i][j] = false;
             }
-
-            ArrayList edge = (ArrayList)(_graph.get(i));
-            for (int j = 0; j < edge.size(); j++) {
-                int k = ((Integer)edge.get(j)).intValue();
-                _transitiveClosure[i][k] = true;
+            Iterator outputEdges = _getNode(i).outputEdges();
+            while (outputEdges.hasNext()) {
+                _transitiveClosure[i][_getNodeId(((Edge)outputEdges.next())
+                        .sink().weight())] = true;
             }
         }
 
@@ -548,13 +535,6 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** The in-degree of each node.
-     *  This ArrayList is indexed by node ID with each entry an
-     *  <code>Integer</code> containing the in-degree of the
-     *  corresponding node.
-     */
-    protected ArrayList _inDegree = new ArrayList();
 
     /** The adjacency matrix representation of the transitive closure.
      *  The entry (i, j) is <code>true</code> if and only if there

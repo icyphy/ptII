@@ -1,4 +1,4 @@
-/* A basic graph.
+/* A basic weighted graph.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,27 +24,53 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
-
 */
 
 package ptolemy.graph;
 import java.util.*;
 
+
 //////////////////////////////////////////////////////////////////////////
-//// Graph
+//// Graph 
 /**
-A basic graph.
-Each node in the graph is represented by an Object. To construct a graph,
+A basic weighted graph.
+Each node has a unique Object, called the <em>node weight</em>, associated
+with it.  To construct a graph,
 use <code>add</code> to add nodes and <code>addEdge</code> to add
 edges between nodes.
 <p>
+Distinct nodes must have distinct weights, as determined
+by the <code>equals</code> method. After a node has been inserted into a
+weighted graph, its weight may be modified as long as the
+modification does not affect comparison of the weight using the
+<code>equals</code> method of the weight's class. Violation of this convention
+may lead to unpredictable results. 
+<p>
+Edges also have arbitrary Objects associated
+with them, and these are referred to as <em>edge weights</em>. 
+At present, edge weights need not be unique.
+<p>
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
+<p> 
+Both directed and undirected graphs can be implemented using this class.
+In directed graphs, the order of nodes specified to <code>addEdge</code> is relevant,
+whereas in undirected graphs, the order is unimportant. Support for both
+undirected and directed graphs follows from the combined support for
+these in the underlying {@link Node} and {@link Edge} classes.
+<p>
+If a class <code>XXXGraph</code> extends {@link Graph}, and another class
+<code>YYYGraph</code> extends <code>XXXGraph</code>, then the node (edge)
+weight type used in <code>YYYGraph</code> must be the same as or must extend
+the node (edge) weight type used in <code>XXXGraph</code>. The node weight
+type used in {@link Graph} is Object, and the edge weight type used in
+{@link Graph} is also Object. These are the types of the objects that maintain
+the weights of the {@link Node}s and {@link Edge}s, respectively.  
 
-@author Yuhong Xiong, Jie Liu
+@author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu
 @version $Id$
+@see ptolemy.synthesis.Edge
+@see ptolemy.synthesis.Node
 */
 
 public class Graph {
@@ -52,87 +78,145 @@ public class Graph {
     /** Construct an empty graph.
      */
     public Graph() {
-        _graph = new ArrayList();
-        _nodeObjects = new ArrayList();
-        _nodeIdTable = new HashMap();
+        _nodes = new ArrayList();
+        _edges = new ArrayList();
+        _nodeIdTable= new HashMap();
+        _nodeTable= new HashMap();
+        _recomputeIdentifiers = true;
     }
 
     /** Construct an empty graph with enough storage allocated for the
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param nodeCount the integer specifying the number of nodes
+     *  @param nodeCount the number of nodes.
      */
     public Graph(int nodeCount) {
-        _graph = new ArrayList(nodeCount);
-        _nodeObjects = new ArrayList(nodeCount);
-        _nodeIdTable = new HashMap(nodeCount);
+        _nodes = new ArrayList(nodeCount);
+        _edges = new ArrayList();
+        _nodeIdTable= new HashMap(nodeCount);
+        _nodeTable= new HashMap(nodeCount);
+        _recomputeIdentifiers = true;
+    }
+
+    /** Construct an empty graph with enough storage allocated for the
+     *  specified number of edges, and number of nodes.  Memory management is more
+     *  efficient with this constructor if the number of nodes and edges is
+     *  known.
+     *  @param nodeCount the number of nodes.
+     *  @param edgeCount the number of edges.
+     */
+    public Graph(int nodeCount, int edgeCount) {
+        _nodes = new ArrayList(nodeCount);
+        _edges = new ArrayList(edgeCount);
+        _nodeIdTable= new HashMap(nodeCount);
+        _nodeTable= new HashMap(nodeCount);
+        _recomputeIdentifiers = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a node to this graph.  The node is represented by the
-     *  specified Object. The Object cannot be <code>null</code>.
+    /** Add a node to this graph.  The node is represented by (has as its weight) 
+     *  the specified Object. The Object cannot be <code>null</code>.
      *  In addition, two Objects equal to each other, as determined
      *  by the <code>equals</code> method, cannot both be added.<p>
      *
-     *  After nodes are added to a graph, The node Objects should not
-     *  be changed in such a way that the Objects representing
-     *  distinct nodes are equal, as determined by the
-     *  <code>equals</code> method. Doing so may generate unexpected
-     *  results.
+     *  After nodes are added to a graph, the node weights should not
+     *  be changed in a manner that affects comparison against other
+     *  possible node weights by the <code>equals</code>
+     *  method. Doing so may generate unexpected results.
      *
-     *  @param o the Object representing a graph node
-     *  @exception IllegalArgumentException If an Object equals to the
-     *   specified one is already in this graph.
-     *  @exception NullPointerException If the specified Object is
-     *   <code>null</code>.
+     *  @param o the Object ("node weight") representing a graph node
+     *  @exception IllegalArgumentException if a
+     *  node weight equal to the specified one is already associated with a
+     *  node in this graph.
+     *  @exception NullPointerException if the specified node weight is
+     *  <code>null</code>.
      */
     public void add(Object o) {
         if (contains(o)) {
             throw new IllegalArgumentException("Graph.add: Object is " +
                     "already in the graph.");
         }
-        _nodeObjects.add(o);
-        _graph.add(new ArrayList());
-        _nodeIdTable.put(o, new Integer(_graph.size() - 1));
+        Node node = new Node(o); 
+        _nodes.add(node);
+
+        // Add the node to the node table with key equal to the node weight.
+        _nodeTable.put(o, node);   
+
+        _recomputeIdentifiers = true;
     }
 
-    /** Add an edge between two nodes.  Multiple edges
+    /** Add a collection of nodes to the graph. Each object in the collection
+     *  is taken to be a weight of a new node that is added to the graph.
+     *  None of the objects in the collection can be null (however, it
+     *  is fine to pass an empty collection). Effectively,
+     *  each object in the collection is operated on by the
+     *  {@link #add(Object)} method.
+     *  @param weights the collection of Objects representing nodes
+     *  to be added to the graph.
+     */
+    public void addAll(Collection weightCollection) {
+        Iterator weights = weightCollection.iterator();
+        while (weights.hasNext()) add(weights.next());
+    }
+
+    /** Add an edge between two nodes.  If the edge is subsequently
+     *  operated on as a directed edge, its orientation will be
+     *  taken to be directed <em>from</em> the first (<em>o1</em>) node 
+     *  <em>to</em> the second
+     *  (<em>o2</em>) node. Multiple edges
      *  between the same nodes are allowed, and are considered different
-     *  edges.  Self loop is also allowed.
+     *  edges.  Self loops are also allowed.
      *
-     *  @param o1 the Object representing a graph node
-     *  @param o2 the Object representing a graph node
-     *  @exception IllegalArgumentException If at least one of the
-     *   arguments is not a graph node, i.e., the argument is not equal
+     *  @param o1 an Object (node weight) representing a graph node.
+     *  @param o2 an Object (node weight) representing a graph node.
+     *  @exception IllegalArgumentException if at least one of the
+     *   arguments is not a node weight, i.e., the argument is not equal
      *   to an Object specified in a successful <code>add</code> call.
      *   Equality is determined by the <code>equals</code> method.
      */
     public void addEdge(Object o1, Object o2) {
-        int id1 = _getNodeId(o1);
-        int id2 = _getNodeId(o2);
-
-        ArrayList sinkIds = (ArrayList)(_graph.get(id1));
-	sinkIds.add(new Integer(id2));
-	_edgeCount++;
+        Edge edge = new Edge(getNode(o1), getNode(o2), new Object());
+        _edges.add(edge);
+    }
+    
+    /** Add a weighted edge between two nodes.  An arbitrary Object can be
+     *  assigned as the edge weight. If the edge is subsequently
+     *  operated on as a directed edge, its orientation will be
+     *  taken to be directed <em>from</em> the first (<em>o1</em>) node 
+     *  <em>to</em> the second
+     *  (<em>o2</em>) node. Multiple edges
+     *  between the same nodes are allowed, and are considered different
+     *  edges.  Self loops are also allowed.
+     *
+     *  @param o1 an Object (node weight) representing a graph node
+     *  @param o2 an Object (node weight) representing a graph node
+     *  @param weight the Object (edge weight) representing the edge.
+     *  @exception IllegalArgumentException if at least one of the
+     *   arguments is not a node weight, i.e., the argument is not equal
+     *   to an Object specified in a successful <code>add</code> call.
+     *   Equality is determined by the <code>equals</code> method.
+     */
+    public void addEdge(Object o1, Object o2, Object weight) {
+        Edge edge = new Edge(getNode(o1), getNode(o2), weight);
+        _edges.add(edge);
     }
 
-    /** Test if the specified Object is a node in this graph. The
-     *  Object is a node if it is equal to an Object specified in
+    /** Test if the specified Object is a node weight in this graph. The
+     *  Object is a node weight if it is equal to an Object specified in
      *  a successful <code>add</code> call. Equality is determined
      *  by the <code>equals</code> method.
-     *  @param o the Object to be tested.
-     *  @return <code>true</code> if the specified Object is a node
+     *  @param o the Object (node weight) to be tested.
+     *  @return <code>true</code> if the specified Object is a node weight
      *   in this graph; <code>false</code> otherwise.
      */
     public boolean contains(Object o) {
-        return _nodeIdTable.containsKey(o);
+        return _nodeTable.containsKey(o);
     }
 
-    /** Return a description of this graph.
-     *  The form of the description is:<p>
+    /** Return a description of this graph. The form of the description is:<p>
      *  <pre>
      *  {class_name
      *    {node list_of_nodes_connected_to_that_node_by_addEdge()}
@@ -141,26 +225,25 @@ public class Graph {
      *  }
      *  </pre>
      *  where each node is described by the <code>toString()</code>
-     *  method of the Object representing the node.
+     *  method of the Object (node weight) representing the node.
      *  @return a String description of this graph.
      */
     public String description() {
-	String result = new String("{" + this.getClass().getName() + "\n");
-
-        for (int i = 0; i < getNodeCount(); i++) {
-            Object elem = _getNodeObject(i);
-            result = result.concat("  {" + elem.toString());
-
-            ArrayList sinkIds = (ArrayList)(_graph.get(i));
-	    for (int j = 0; j < sinkIds.size(); j++) {
-                int i2 = ((Integer)sinkIds.get(j)).intValue();
-                result = result.concat(" " +
-                        _getNodeObject(i2).toString());
+	    StringBuffer result = new StringBuffer("{" + this.getClass().getName() + "\n");
+        Iterator nodes = _nodes.iterator();
+        while (nodes.hasNext()) {
+            Node node = (Node)(nodes.next());
+            result.append("  {" + node.weight().toString());
+            int outputEdgeCount = 0;
+            Iterator outputEdges = node.outputEdges();
+            while (outputEdges.hasNext()) {
+                Edge edge = (Edge)(outputEdges.next());
+                result.append(" " + edge.sink().weight().toString());
             }
-            result = result.concat("}\n");
+            result.append("}\n");
         }
-	result = result.concat("}");
-	return result;
+	    result.append("}");
+	    return result.toString();
     }
 
     /** Return the total number of edges in this graph.  Multiple
@@ -168,118 +251,305 @@ public class Graph {
      *  @return the total number of edges in this graph.
      */
     public int getEdgeCount() {
-	return _edgeCount;
+	    return _edges.size();
     }
 
+    /** Return all the edges in this graph in the form of an Iterator.
+     *  Each element in the returned Iterator is an {@link Edge}.
+     *  @return an Iterator over the edges in the graph.
+     */
+    public Iterator getEdgeIterator() {
+        return _edges.iterator();
+    }
+     
     /** Return all the edges in this graph in the form of a 2-D Object
      *  array. Each row of the array represents an edge, corresponding
      *  to a successful <code>addEdge</code> call, but the order of the
      *  rows is not necessarily the same as the calls. The array always
      *  has two columns, corresponding to the two arguments of
      *  <code>addEdge</code>, in the order the arguments are
-     *  listed.
-     *  @return a 2-D Object array.
+     *  listed. These columns contain the node weights of the nodes that
+     *  are connected by the edges. Specifically, each [<em>i</em>][0] entry
+     *  of this array gives the source node weight of the <em>i</em>th 
+     *  edge, and each [<em>i</em>][1] entry gives the 
+     *  sink node weight of the <em>i</em>th edge.
+     *  @return the edges in the graph.
      */
     public Object[][] getEdges() {
-	Object[][] result = new Object[_edgeCount][2];
-
-	int count = 0;
-	for (int i = 0; i < getNodeCount(); i++) {
-	    Object source = _getNodeObject(i);
-	    ArrayList sinkIds = (ArrayList)_graph.get(i);
-	    for (int j = 0; j < sinkIds.size(); j++) {
-		int id = ((Integer)(sinkIds.get(j))).intValue();
-		Object sink = _getNodeObject(id);
-		result[count][0] = source;
-		result[count++][1] = sink;
+	    Object[][] result = new Object[_edges.size()][2];
+        int count = 0;
+        Iterator nodes = _nodes.iterator();
+        while (nodes.hasNext()) {
+            Node node = (Node)(nodes.next());
+	        Object sourceWeight = node.weight();
+            Iterator outputEdges = node.outputEdges();
+            while (outputEdges.hasNext()) {
+                Edge edge = (Edge)(outputEdges.next());
+		        Object sinkWeight = edge.sink().weight();
+		        result[count][0] = sourceWeight;
+		        result[count++][1] = sinkWeight;
+	        }
 	    }
-	}
+	    return result;
+    }
 
-	return result;
+    /** Return the node that has a specified weight.
+     *  @param o an Object representing the weight of a graph node.
+     *  @return the node.
+     *  @exception IllegalArgumentException if the specified Object is
+     *   not a node weight in this graph (that is, there is no node in the graph
+     *   whose weight is equal to the specified Object, as determined by
+     *   the <code>equals()</code> method).
+     */
+    public final Node getNode(Object o) {
+        Object associatedObject = _nodeTable.get(o);
+        if (associatedObject == null) 
+            throw new IllegalArgumentException("Graph.getNode(): " +
+                    "the weight \"" + o.toString() +
+                    "\" is not associated with a node in this graph.");
+        else if (!(associatedObject instanceof Node))
+            throw new IllegalArgumentException("Graph.getNode: " +
+                    "the weight \"" + o.toString() +
+                    "\" maps to an object of type " + 
+                    associatedObject.getClass().getName() + 
+                    "\n(it should map to a Node)");
+        else return (Node)associatedObject;
     }
 
     /** Return the total number of nodes in this graph.
      *  @return the total number of nodes in this graph.
      */
     public int getNodeCount() {
-        return _nodeObjects.size();
+        return _nodes.size();
     }
 
-    /** Return all the nodes in this graph in the form of an Objects array.
+    /** Return all the nodes in this graph in the form of an Iterator.
+     *  Each element in the returned Iterator is a {@link Node}.
+     *  @return an Iterator over the nodes in the graph.
+     */
+    public Iterator getNodeIterator() {
+        return _nodes.iterator();
+    }
+     
+    /** Return all the node weights in this graph in the form of an Objects array.
      *  The Objects are the ones passed in successful <code>add</code>
      *  calls.
-     *  @return an Object array
+     *  @return the node weights in the graph.
      */
     public Object[] getNodes() {
-        return _nodeObjects.toArray();
+        int count = 0;
+        Object[] nodeWeights = new Object[_nodes.size()];
+        Iterator nodes = _nodes.iterator();
+        while (nodes.hasNext()) {
+            nodeWeights[count++] = ((Node)(nodes.next())).weight(); 
+        }
+        return nodeWeights;
     }
 
+    /** Return the sink nodes of this graph. A node is a sink node if
+     *  it contains no output edges. Thus, this method makes sense only
+     *  for directed graphs. The sink nodes are returned as an array
+     *  whose size (number of elements) is equal to the number of sink nodes.
+     *  Each element of the array is a {@link Node}. A zero-element array is returned
+     *  if there are no sink nodes.
+     *  @return the sink nodes of the graph.
+     */
+    public Node[] getSinkNodes() {
+       // FIXME: move this to DirectedGraph
+       LinkedList sinkList = new LinkedList();
+       Iterator nodes = getNodeIterator();
+       while (nodes.hasNext()) {
+           Node node = (Node)(nodes.next());
+           if (node.outputEdgeCount() == 0) sinkList.add(node);
+       }
+       Node[] sinks = new Node[sinkList.size()];
+       return (Node[]) (sinkList.toArray(sinks)); 
+    }
+
+    /** Return the source nodes of this graph. A node is a source node if
+     *  it contains no input edges. Thus, this method makes sense only
+     *  for directed graphs. The source nodes are returned as an array
+     *  whose size (number of elements) is equal to the number of source nodes.
+     *  Each element of the array is a {@link Node}. A zero-element array is returned
+     *  if there are no source nodes.
+     *  @return the source nodes of the graph.
+     */
+    public Node[] getSourceNodes() {
+       // FIXME: move this to DirectedGraph
+       LinkedList sourceList = new LinkedList();
+       Iterator nodes = getNodeIterator();
+       while (nodes.hasNext()) {
+           Node node = (Node)(nodes.next());
+           if (node.inputEdgeCount() == 0) sourceList.add(node);
+       }
+       Node[] sources = new Node[sourceList.size()];
+       return (Node[]) (sourceList.toArray(sources)); 
+    }
+
+    /** Remove an edge from the graph.
+     * @param removeMe the edge to be removed.
+     */
+    public void removeEdge(Edge removeMe) {
+        if (_remove(_edges, removeMe) == null) {
+            throw new RuntimeException("Attempt to remove and edge that is not "
+                    + "contained in the graph.\n"
+                    + "A dump of the edge and graph follow.\n"
+                    + "The edge:\n" + removeMe + "\nThe graph:\n" + this.description()
+                    + "\n");
+        }
+        removeMe.source().removeEdge(removeMe);
+        removeMe.sink().removeEdge(removeMe);
+    }
+
+    /** Remove a node from the graph.
+     * All edges incident to the node are also removed.
+     * @param removeMe the node to be removed.
+     */
+    public void removeNode(Node removeMe) {
+        if (_remove(_nodes, removeMe) == null) {
+                throw new RuntimeException("Attempt to remove a node that is not "
+                        + "contained in the graph.\n"
+                        + "A dump of the node and graph follow.\n"
+                        + "The node:\n" + removeMe + "\nThe graph:\n" + this.description()
+                        + "\n");
+        }
+        _nodeTable.remove(removeMe.weight());
+        Iterator incidentEdges = removeMe.incidentEdges();
+        while (incidentEdges.hasNext()) {
+            Edge edge = (Edge)(incidentEdges.next());
+            if (edge.source() != removeMe) edge.source().removeEdge(edge);
+            if (edge.sink() != removeMe) edge.sink().removeEdge(edge);
+            if (_remove(_edges, edge) == null) {
+                throw new RuntimeException("We have encountered an edge that is "
+                        + "incident to a node, but is not contained in the graph's "
+                        + "edge list.\nA dump of the node and edge follow.\n"
+                        + "The node:\n" + removeMe + "\nThe edge:\n" + edge + "\n");
+            }
+        }
+        _recomputeIdentifiers = true;
+    } 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the node ID of the specified node.
-     *  @param o an Object representing a graph node.
-     *  @return the node id.
-     *  @exception IllegalArgumentException If the specified Object is
-     *   not a node in this graph.
+    /** Return a node in the graph given the node identifer.
+     *  The node set of the graph should not have changed since the
+     *  last invocation of {@link #_enumerateNodes()} (otherwise, the
+     *  node identifier might not be valid).
+     *  @param node the node identifier.
+     *  @return the node.
+     *  @exception IllegalArgumentException if the node is not contained
+     *  in this graph.
      */
-    protected final int _getNodeId(Object o) {
-        Integer v = (Integer)(_nodeIdTable.get(o));
-        if (v == null) {
-            throw new IllegalArgumentException("Graph._getNodeId: " +
-                    "the object \"" + o.toString() +
-                    "\" is not a node in this graph.");
-        }
-
-        return v.intValue();
+    protected final Node _getNode(int identifier) {
+       _enumerateNodes();
+        return (Node)(_nodes.get(identifier));
     }
 
-    /** Return the node in this graph with the specified node ID.
-     *  @param nodeId a node ID
-     *  @return an Object representing a node.
-     *  @exception IllegalArgumentException If the node ID is
-     *   negative or is not less than the total number of nodes in
-     *   this graph.
+    /** Return the node identifier of the specified node. See 
+     *  {@link #_enumerateNodes()}.
+     *  @param o an Object (node weight) representing a graph node.
+     *  @return the node identifier.
+     *  @exception IllegalArgumentException If the specified Object is
+     *   not a node weight in this graph.
      */
-    protected final Object _getNodeObject(int nodeId) {
-	try {
-	    return _nodeObjects.get(nodeId);
-	} catch (ArrayIndexOutOfBoundsException ex) {
-	    throw new IllegalArgumentException("Graph._getNodeObject: " +
-                    "node ID is negative or is not less than the total " +
-                    "number of nodes in this graph.");
-	}
+    protected final int _getNodeId(Object o) {
+       _enumerateNodes();
+       Integer v = (Integer)(_nodeIdTable.get(getNode(o)));
+       if (v == null) {
+           throw new IllegalArgumentException("Graph._getNodeId: " +
+                   "the object \"" + o.toString() +
+                   "\" is not a node weight in this graph, or a node " +
+                   "identifier has not yet been determined for it.\n");
+       }
+ 
+       return v.intValue();
+    } 
+
+    /** Return the weight of a given node in the graph.
+     *  @param node the graph node.
+     *  @return the weight of the node.
+     *  @exception IllegalArgumentException if the node is not contained
+     *  in this graph.
+     */
+    protected final Object _getNodeObject(Node node) {
+        if (!_nodes.contains(node)) 
+	        throw new IllegalArgumentException("Graph._getNodeObject: \"" +
+                    node + "\" is not a node in this graph");
+        else return node.weight();
+    }
+
+    /** Return the weight of a given node in the graph given the node identifer.
+     *  The node set of the graph should not have changed since the
+     *  last invocation of {@link #_enumerateNodes()} (otherwise, the
+     *  node identifier might not be valid).
+     *  @param node the node identifier.
+     *  @return the weight of the node.
+     */
+    protected final Object _getNodeObject(int identifier) {
+        _enumerateNodes();
+        return ((Node)(_nodes.get(identifier))).weight();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    //  Assign to each node a unique integer identifier between 
+    //  0 and <em>N</em>-1, where <em>N</em> is 
+    //  the number of nodes currently in the graph. The identifier
+    //  assigned to a node can be accessed by using the 
+    //  {@link #getNodeId(Object)} method. In general, if the set of
+    //  graph nodes is changed, then the {@link #enumerateNodes()}
+    //  method must be re-invoked before node identifiers are accessed. 
+    //  The identifiers are recomputed in this method only if the
+    //  node set has changed since the last invocation of the method.
+    //
+    private void _enumerateNodes() {
+        if (_recomputeIdentifiers) {
+            _nodeIdTable.clear();
+            int i;
+            for (i=0; i<_nodes.size(); i++) {
+                _nodeIdTable.put(_nodes.get(i), new Integer(i));
+            }
+           _recomputeIdentifiers = false;
+        }
+    }
 
-    /** The data structure storing the topology of this graph.
-     *  This ArrayList is indexed by the node IDs, each entry is as
-     *  ArrayList of <code>Integers</code> containing node IDs. Every
-     *  successful call of <code>addEdge</code> adds the node ID of
-     *  the second argument to the ArrayList at the entry of _graph
-     *  indexed by the node ID of the first argument.
-     */
-    protected ArrayList _graph;
+    // Remove an object from an ArrayList if it exists in the list.
+    // Return null if the object is not in the list to begin with, or
+    // return the object that was removed.
+    private Object _remove(ArrayList list, Object element) {
+        int index;
+        if ((index = list.indexOf(element)) == -1) return null;
+        else return list.remove(index);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // number of edges in this graph
-    private int _edgeCount = 0;
+    /** The data structure storing the edges of this graph.
+     *  Each entry in this ArrayList is an {@link Edge}.
+     */
+    private ArrayList _edges;
+
+    /** The data structure storing the nodes of this graph.
+     *  Each entry in this ArrayList is a {@link Node}.
+     */
+    private ArrayList _nodes;
 
     // Translation from node to node ID. The keys of this HashMap
     // are the Objects representing graph nodes, and the values are
     // the corresponding node IDs.  This translation can also be
-    // done with _nodeObjects.indexOf(), but HashMap is faster.
+    // done with _nodes.indexOf(), but HashMap is faster.
     private HashMap _nodeIdTable;
 
-    // Translation from node Id to node.
-    // This ArrayList is indexed by node ID. The entries are the Objects
-    // representing the graph nodes with the corresponding node IDs.
-    private ArrayList _nodeObjects;
+    // Translation from node weight to node. The keys of this HashMap
+    // are the unique weights (of type Object) associated with the graph nodes, 
+    // and the values are
+    // the corresponding node objects (of type {@link Node}).  
+    private HashMap _nodeTable;
+
+    // A flag that indicates whether or not node identifiers need to
+    // be recomputed before they are next used.
+    private boolean _recomputeIdentifiers;
 }

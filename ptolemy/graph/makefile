@@ -54,7 +54,9 @@ JSRCS = \
 	CPO.java \
 	DirectedAcyclicGraph.java \
 	DirectedGraph.java \
+    Edge.java \
 	Graph.java \
+    Node.java \
 	Inequality.java \
 	InequalitySolver.java \
 	InequalityTerm.java

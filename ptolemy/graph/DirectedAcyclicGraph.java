@@ -310,7 +310,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         int size = getNodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
-            indeg[i] = ((Integer)_inDegree.get(i)).intValue();
+            indeg[i] = _getNode(i).inputEdgeCount(); 
         }
         Object[] result = new Object[size];
         boolean finished = false;
@@ -327,10 +327,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     finished = false;
                     result[nextResultIndex++] = _getNodeObject(id);
                     indeg[id]--;
-                    ArrayList arcs = (ArrayList)(_graph.get(id));
-                    for(int i = 0; i < arcs.size(); i++) {
-                        int item = ((Integer)(arcs.get(i))).intValue();
-                        indeg[item]--;
+                    Iterator outputEdges = _getNode(id).outputEdges();
+                    while (outputEdges.hasNext()) {
+                        Node sink = ((Edge)(outputEdges.next())).sink();
+                        indeg[_getNodeId(sink.weight())]--;
                     }
                 }
             }
@@ -429,7 +429,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         // find bottom
         _bottom = null;
         for (int i = 0; i < getNodeCount(); i++) {
-            if (((Integer)(_inDegree.get(i))).intValue() == 0) {
+            if (_getNode(i).inputEdgeCount() == 0) {
                 if (_bottom == null) {
                     _bottom = _getNodeObject(i);
                 } else {
@@ -442,14 +442,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 	// find top
 	_top = null;
 	for (int i = 0; i < getNodeCount(); i++) {
-	    int outdegree = ((ArrayList)(_graph.get(i))).size();
-	    if (outdegree == 0) {
-		if (_top == null) {
-		    _top = _getNodeObject(i);
-		} else {
-		    _top = null;
-		    break;
-		}
+        if (_getNode(i).outputEdgeCount() == 0) {
+		    if (_top == null) {
+		        _top = _getNodeObject(i);
+		    } else {
+		        _top = null;
+		        break;
+		    }
 	    }
 	}
 
