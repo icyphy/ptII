@@ -29,6 +29,7 @@ package pt.data;
 
 import pt.kernel.util.IllegalActionException;
 import pt.graph.CPO;
+import java.text.NumberFormat;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
@@ -36,6 +37,8 @@ import pt.graph.CPO;
  * A token that contains a double precision number.
  * 
  * @author Yuhong Xiong, Neil Smyth
+ * @see pt.data.Token
+ * @see java.text.NumberFormat
  * $Id$
  */
 public class DoubleToken extends ScalarToken {
@@ -339,9 +342,11 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Get the value contained in this Token as a String.
+     *  It uses java.text.NumberFormat to format the number.
      */
     public String stringValue() {
-        return Double.toString(_value);
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        return nf.format(_value);
     }
 
     /** Subtract the value of the argument Token from this Token. Type 
