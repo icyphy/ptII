@@ -42,10 +42,12 @@ ME =		ptolemy
 # if $PTII/lib/chic.jar was found
 # PTCAL_DIR is set to cal by configure in $PTII/mk/ptII.mk
 # if $PTII/lib/ptCal.jar was found
+# PTCALTROP_DIR is set to caltrop by configure in $PTII/mk/ptII.mk
+# if $PTII/lib/ptCal.jar was found
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
 	vergil hsif $(PTCHIC_DIR) \
-	apps $(PTCAL_DIR) caltrop configs
+	apps $(PTCAL_DIR) $(PTCALTROP_DIR) configs
 
 # Root of Ptolemy II directory
 ROOT =		..
