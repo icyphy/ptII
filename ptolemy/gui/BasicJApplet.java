@@ -129,7 +129,15 @@ public class BasicJApplet extends JApplet {
      *  @param message The message to report.
      */
     public void report(String message) {
-        showStatus(message);
+        try {
+            showStatus(message);
+        } catch (Throwable throwable) {
+            // Under JDK 1.4.2_04, we get NullPointerExceptions
+            System.err.println("showStatus() threw a NullPointerException\n"
+                    + "This can happen if the Applet has already exited\n "
+                    + "because of an error or exception.\n");
+            throwable.printStackTrace();
+        }
     }
 
     /** Report an exception with an additional message.
@@ -146,9 +154,10 @@ public class BasicJApplet extends JApplet {
         MessageHandler.error(message, throwable);
         try {
             showStatus("exception occurred.");
-        } catch (Throwable throwable) {
+        } catch (Throwable throwable2) {
             // Under JDK 1.4.2_04, we get NullPointerExceptions
-            System.err.println("showStatus() threw a NullPointerException\n"
+            System.err.println("showStatus() threw an exception\n"
+                    + _stackTraceToString(throwable2)
                     + "This can happen if the Applet has already exited\n "
                     + "because of an error or exception.\n"
                     + "The original error or exception was:\n"
