@@ -37,6 +37,7 @@ package ptolemy.actor;
 //import ptolemy.kernel.*;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -196,44 +197,58 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return newObject;
     }
 
-    /** Validate attributes, and create new receivers if port is an opaque
-     *  output port.
+    /** Invalidate the schedule and type resolution and create
+     *  new receivers if the specified port is an opaque
+     *  output port.  Also, notify the containers of any ports
+     *  deeply connected on the inside by calling their connectionsChanged()
+     *  methods, since their width may have changed.
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
-        if (port instanceof IOPort) {
-            IOPort castedPort = (IOPort) port;
-            if (castedPort.isOpaque() && castedPort.isOutput()
-                    && getDirector() != null) {
-                // Note that even if castedPort is opaque, we still have to
-                // check for director above.
-                try {
-                    castedPort.createReceivers();
-                } catch(IllegalActionException ex) {
-                    // Should never happen.
-                    throw new InternalErrorException(this, ex,
-                            "Cannot create receivers");
-                }
-            }
-            if (castedPort.isOpaque() && castedPort.isInput()) {
-                if (getExecutiveDirector() != null) {
-                    try {
-                        castedPort.createReceivers();
-                    } catch(IllegalActionException ex) {
-                        // Should never happen.
-                        throw new InternalErrorException
-                            (this, ex, "Cannot create receivers");
+        super.connectionsChanged(port);
+        if (port instanceof ComponentPort) {
+            // NOTE: deepInsidePortList() is not the right thing here
+            // since it will return the same port if it is opaque.
+            Iterator insidePorts
+                    = ((ComponentPort)port).insidePortList().iterator();
+            try {
+                _inConnectionsChanged = true;
+                while (insidePorts.hasNext()) {
+                    ComponentPort insidePort
+                            = (ComponentPort)insidePorts.next();
+                    Entity portContainer = (Entity)insidePort.getContainer();
+                    // Avoid an infinite loop where notifications are traded.
+                    if (!(portContainer instanceof CompositeActor)
+                           || !((CompositeActor)portContainer)
+                           ._inConnectionsChanged) {
+                        portContainer.connectionsChanged(insidePort);
                     }
                 }
-                Iterator insidePorts =
-                    castedPort.deepInsidePortList().iterator();
-                while (insidePorts.hasNext()) {
-                    IOPort p = (IOPort) insidePorts.next();
-                    Nameable portContainer = p.getContainer();
-                    if (portContainer instanceof AtomicActor) {
-                        ((AtomicActor)portContainer).connectionsChanged(p);
-                    } else if (portContainer instanceof CompositeActor) {
-                        ((CompositeActor)portContainer).connectionsChanged(p);
+            } finally {
+                _inConnectionsChanged = false;
+            }
+        }
+        if (port instanceof IOPort) {
+            IOPort castPort = (IOPort) port;
+            if (castPort.isOpaque()) {
+                if (castPort.isOutput() && getDirector() != null) {
+                    // Note that even if castPort is opaque, we still have to
+                    // check for director above.
+                    try {
+                        castPort.createReceivers();
+                    } catch(IllegalActionException ex) {
+                        // Should never happen.
+                        throw new InternalErrorException(
+                                this, ex, "Cannot create receivers");
+                    }
+                }
+                if (castPort.isInput() && getExecutiveDirector() != null) {
+                    try {
+                        castPort.createReceivers();
+                    } catch(IllegalActionException ex) {
+                        // Should never happen.
+                        throw new InternalErrorException(
+                                this, ex, "Cannot create receivers");
                     }
                 }
                 // Invalidate the local director schedule and types
@@ -820,7 +835,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
-            getDirector().wrapup();
+            // However, there may not be a director (e.g. DifferentialSystem
+            // actor in CT).
+            Director director = getDirector();
+            if (director != null) {
+                director.wrapup();
+            }
         } finally {
             _workspace.doneReading();
         }
@@ -960,6 +980,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     // The director for this composite actor.
     private Director _director;
+
+    // Indicator that we are in the connectionsChanged method.
+    private boolean _inConnectionsChanged = false;
 
     // The manager for this composite actor.
     private Manager _manager;
