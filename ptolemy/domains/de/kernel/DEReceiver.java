@@ -224,23 +224,6 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the time delay associated with the token obtained using
-     *  the get() method. This method should only be called by the
-     *  transferOutputs() method of DEDirector.
-     *
-     *  @exception NoTokenException the token delay list is empty.
-     */
-    /*
-    protected double _getTokenDelay() {
-        if(_tokendelays.isEmpty()) {
-            throw new NoTokenException(getContainer(),
-                    "No more tokens in the DE receiver.");
-        }
-        return ((Double)_tokendelays.take()).doubleValue();
-    }
-    */
-
-
     /** Return true if this receiver is inside an output port of an opaque
      *  composite actor (a wormhole). Calling either put() methods on this
      *  kind of receiver will not result in an event being put into the
@@ -296,7 +279,7 @@ public class DEReceiver implements Receiver {
      *  @param token The token to make available.
      */
     protected void _triggerEvent(Token token) {
-        _tokens.insertFirst(token);
+        _tokens.insertLast(token);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -318,7 +301,8 @@ public class DEReceiver implements Receiver {
     DEDirector _director;
     long _directorVersion = -1;
 
-    // List for storing tokens.  Access with clear(), insertFirst(), take().
+    // List for storing tokens.  Access with clear(), insertLast(), 
+    // and take().
     private LinkedList _tokens = new LinkedList();
     //private LinkedList _tokendelays = new LinkedList();
 
