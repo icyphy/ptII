@@ -80,7 +80,7 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="ptII"
 	       >
-	       <doc>The top level directory to write the code in. This directory must be writable by the user.  The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
+	       <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
      </property>
 
      <property name="targetPackage" 
@@ -220,7 +220,14 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar"
 	       >
-	       <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).</doc>
+	       <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
+     </property>
+
+     <property name="ptIIUserDirectoryAsURL" 
+               class="ptolemy.data.expr.Parameter"
+	       value="ptIIUserDirectory"
+	       >
+	       <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
      </property>
 
      <property name="watchDogTimeout" 

@@ -109,9 +109,19 @@ public class KernelMain {
 	// Add any _icons.
 	//_parser.addMoMLFilter(new FilterAddIcons());
         
-	// Filter out any graphical classes
-	_parser.addMoMLFilter(new FilterOutGraphicalClasses());
-
+	// Filter out any graphical classes and the GeneratorAttribute
+	// itself.  If we don't filter out GeneratorAttribute, then
+	// we get quite a few attributes in the generated code, which
+	// causes problems at runtime because sometimes the parameters
+	// are out of order, so there are dependency issues, or,
+	// in the case of the applet generator, the parameters depend
+	// on the value of Java system properties like ptolemy.ptII.directory
+	// which is not accessible because of security concerns.
+	FilterOutGraphicalClasses filterOutGraphicalClasses =
+	    new FilterOutGraphicalClasses();
+	filterOutGraphicalClasses
+	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
+	_parser.addMoMLFilter(filterOutGraphicalClasses);
     }
 
     ///////////////////////////////////////////////////////////////////

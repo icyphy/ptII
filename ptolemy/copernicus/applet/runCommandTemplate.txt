@@ -6,4 +6,4 @@
 # @version $Id$
 #
 appletviewer
-	"@ptIIUserDirectory@/@targetPath@/@modelName@.htm"
+	"@ptIIUserDirectoryAsURL@/@targetPath@/@modelName@/@modelName@.htm"

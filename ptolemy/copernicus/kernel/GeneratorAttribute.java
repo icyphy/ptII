@@ -271,6 +271,17 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    }
 	}
 
+
+	String ptIIUserDirectoryAsURL;
+	try {
+	    ptIIUserDirectoryAsURL =
+		(new File(ptIIUserDirectory)).toURL().toString();
+	} catch (java.net.MalformedURLException ex) {
+	    ptIIUserDirectoryAsURL = ex.getMessage();
+	}
+	((Variable)getAttribute("ptIIUserDirectoryAsURL"))
+	    .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
+
 	// targetPath depends on the value of targetPackage
 	// FIXME: Variables should be visible in the UI, but not editable.
 	String targetPackage =
