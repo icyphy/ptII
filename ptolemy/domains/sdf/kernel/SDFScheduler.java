@@ -342,6 +342,7 @@ public class SDFScheduler extends Scheduler {
     protected void _localMemberInitialize() {
         _firingvector = new TreeMap(new NamedObjComparator());
         _firingvectorvalid = true;
+        addDebugListener(new StreamListener());
     }
 
     /** Return the scheduling sequence.  An exception will be thrown if the
@@ -448,7 +449,7 @@ public class SDFScheduler extends Scheduler {
 	    if (_debugging) _debug("checking input " +
                     ainputPort.getFullName());
 
-	    Iterator cports = ainputPort.deepConnectedOutPortList().iterator();
+            /*  Iterator cports = ainputPort.deepConnectedOutPortList().iterator();
 
 	    boolean isOnlyExternalPort = true;
 	    while(cports.hasNext()) {
@@ -456,6 +457,7 @@ public class SDFScheduler extends Scheduler {
 		if(actorList.contains(cport.getContainer()))
 		    isOnlyExternalPort = false;
 	    }
+            */
 
 	    int threshold =
 		getTokenConsumptionRate(ainputPort);
@@ -463,19 +465,20 @@ public class SDFScheduler extends Scheduler {
 	    int[] tokens =
 		(int []) waitingTokens.get(ainputPort);
 
-	    boolean isAlreadyFulfilled = true;
+	    boolean isFulfilled = true;
 	    int channel;
 	    for(channel = 0;
-		channel < ainputPort.getWidth();
+		channel < ainputPort.getWidth() && isFulfilled;
 		channel++) {
 		if (_debugging) {
                     _debug("Channel = " + channel);
                     _debug("Waiting Tokens = " + tokens[channel]);
                 }
+
 		if(tokens[channel] < threshold)
-		    isAlreadyFulfilled = false;
+		    isFulfilled = false;
 	    }
-	    if(!isOnlyExternalPort && !isAlreadyFulfilled)
+	    if(!isFulfilled)
 		inputCount++;
 	}
 	return inputCount;
@@ -823,6 +826,17 @@ public class SDFScheduler extends Scheduler {
                                 waitingTokens);
 		    }
 		}
+            }
+
+            // Simulate a large number of tokens created on each
+            // external input port.
+            StaticSchedulingDirector dir =
+                (StaticSchedulingDirector)getContainer();
+            CompositeActor ca = (CompositeActor)(dir.getContainer());
+            Iterator inputPorts = ca.inputPortList().iterator();
+            while(inputPorts.hasNext()) {
+                IOPort port = (IOPort)inputPorts.next();
+                _simulateExternalInputs(port, actorList, waitingTokens);
             }
 
 	    // Fill readyToScheduleActorList with all the actors that have
@@ -1211,6 +1225,62 @@ public class SDFScheduler extends Scheduler {
     private void _setFiringVector(Map newfiringvector) {
         _firingvector = newfiringvector;
         _firingvectorvalid = true;
+    }
+
+    /**
+     * Simulate the consumption of tokens from the given external input
+     * ports.  This sets the values in the waiting tokens map to be a 
+     * very large number, since we assume that each external input port
+     * is automatically fulfilled.
+     */
+    private void _simulateExternalInputs(IOPort port,
+            LinkedList actorList,
+            Map waitingTokens)
+            throws IllegalActionException {
+
+	Receiver[][] creceivers = port.deepGetReceivers();
+
+	if (_debugging) {
+            _debug("Simulating external input tokens from "
+                    + port.getFullName());
+            _debug("inside channels = " + creceivers.length);
+        }
+	int sourcechannel;
+	for(sourcechannel = 0;
+            sourcechannel < creceivers.length;
+            sourcechannel++) {
+	    if (_debugging) {
+                _debug("destination receivers for channel "
+                        + sourcechannel + ": " + creceivers[sourcechannel].length);
+            }
+	    int destinationreceiver;
+	    for(destinationreceiver = 0;
+		destinationreceiver < creceivers[sourcechannel].length;
+		destinationreceiver++) {
+		IOPort connectedPort =
+		    (IOPort) creceivers[sourcechannel][destinationreceiver].
+		    getContainer();
+		ComponentEntity connectedActor =
+		    (ComponentEntity) connectedPort.getContainer();
+		// Only proceed if the connected actor is something we are
+		// scheduling.  The most notable time when this will not be
+		// true is when a connections is made to the
+		// inside of an opaque port.
+		if(actorList.contains(connectedActor)) {
+		    int destinationchannel =
+			_getChannel(connectedPort,
+                                creceivers[sourcechannel]
+                                [destinationreceiver]
+				    );
+		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
+		    tokens[destinationchannel] = Integer.MAX_VALUE;
+		    if (_debugging) {
+                        _debug("Channel " + destinationchannel + " of " +
+                                connectedPort.getName());
+                    }
+		}
+	    }
+	}
     }
 
     /** Simulate the consumption of tokens by the actor during an execution.
