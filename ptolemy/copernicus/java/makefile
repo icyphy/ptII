@@ -96,13 +96,18 @@ demo: shallowDemo deepDemo
 shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
+SHALLOWTARGETPACKAGE = 	ptolemy.copernicus.java.cg.shallow
+SHALLOWTARGETPATH =	ptolemy/copernicus/java/cg/shallow
+
+JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
+JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
 
 # Orthocom
 DEEPSOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 DEEPMODEL = OrthogonalCom 
-DEEPSOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
 DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
+#make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
 # IIR
 MODEL = IIR
@@ -139,6 +144,24 @@ runShallowDemo:
 	$(JAVA) -Xfuture -classpath "$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(SHALLOWTARGETCLASS)
+
+# Jad is a Java disassembler
+JAD=jad
+
+# Generate a .java file from a class file and recompile it
+recompileShallowDemo:
+	@echo "Convert .class file back to .java file, compile it, run it"
+	$(JAD) -o -d $(JADTARGETPATH) $(ROOT)/$(SHALLOWTARGETPATH)/CG$(MODEL)
+	sed 's/$(SHALLOWTARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
+		$(JADTARGETPATH)/CG$(MODEL).jad > \
+		$(JADTARGETPATH)/CG$(MODEL).jad2
+	sh test/jad2java $(JADTARGETPATH)/CG$(MODEL).jad2 \
+		> $(JADTARGETPATH)/CG$(MODEL).java
+	$(JAVAC) -classpath $(ROOT) $(JADTARGETPATH)/CG$(MODEL).java
+	$(JAVA) -Xfuture -classpath "$(ROOT)" \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $(JADTARGETPACKAGE).CG$(MODEL)
+
 
 compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
