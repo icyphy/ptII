@@ -34,23 +34,24 @@ import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTEventInterpreter
+//// CTWaveformGenerator
 /**
 Interface for CT actors that generates continuous signals (waveforms) from
-discrete events. Typical implementations of event interpreters are
+discrete events. Typical implementations of waveform generators are
 zero-order holds and impulses.
 
 @author Jie Liu
 @version $Id$
 */
-public interface CTEventInterpreter extends Actor{
+public interface CTWaveformGenerator extends Actor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume the discrete event that happens at the current time. If there
-     *  are no such events, do nothing.
-     *  @exception IllegalActionException May be need by the derived classes.
+    /** Consume the discrete event that happens at the current time.
+     *  If there are no such events, do nothing.
+     *  @exception IllegalActionException 
+     *     May be need by the derived classes.
      */
     public void consumeCurrentEvents() throws IllegalActionException;
 

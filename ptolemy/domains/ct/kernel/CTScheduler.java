@@ -657,7 +657,7 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTEventGenerator) {
                 _evgen.addLast(a);
             }
-            if (a instanceof CTEventInterpreter) {
+            if (a instanceof CTWaveformGenerator) {
                 _wavegen.addLast(a);
             }
             if (_successorList(a).isEmpty()) {

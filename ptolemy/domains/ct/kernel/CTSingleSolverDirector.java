@@ -346,10 +346,10 @@ public abstract class CTSingleSolverDirector extends CTDirector {
             evg.emitCurrentEvents();
         }
         // fire all the discrete actors?
-        Iterator evints = sched.waveformGeneratorList().iterator();
-        while(evints.hasNext()) {
-            CTEventInterpreter evg = (CTEventInterpreter) evints.next();
-            evg.consumeCurrentEvents();
+        Iterator wfgens = sched.waveformGeneratorList().iterator();
+        while(wfgens.hasNext()) {
+            CTWaveformGenerator wfg = (CTWaveformGenerator) wfgens.next();
+            wfg.consumeCurrentEvents();
         }
     }
 
