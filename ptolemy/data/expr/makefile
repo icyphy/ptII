@@ -100,7 +100,7 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
-        SingletonAttribute.java \
+        SingletonParameter.java \
         StringParameter.java \
 	TokenMgrError.java \
 	UnknownResultException.java \
