@@ -108,18 +108,7 @@ public class Configuration extends CompositeEntity {
             effigy.setName(directory.uniqueName("effigy"));
 	    effigy.setContainer(directory);
 
-            // Create a tableau if there is a tableau factory.
-            TableauFactory factory = (TableauFactory)getEntity("factory");
-            if (factory != null) {
-                Tableau tableau = factory.createTableau(effigy);
-                if (tableau == null) {
-                    throw new Exception("Unable to create a Tableau.");
-                }
-                tableau.setName(effigy.uniqueName("tableau"));
-                tableau.setContainer(effigy);
-                // The first tableau is a master.
-                tableau.setMaster(true);
-            }
+	    _createPrimaryTableau(effigy);
         } else {
             // Model already exists.
             effigy.showTableaux();
@@ -142,6 +131,26 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create the first tableau for the given effigy, using the 
+     *  tableau factory.  This is called after an effigy is first opened,
+     *  or when a new effigy is created.
+     *  @exception Exception if an error occurs while creating the tableau.
+     */
+    protected void _createPrimaryTableau(Effigy effigy) throws Exception {
+	// Create a tableau if there is a tableau factory.
+	TableauFactory factory = (TableauFactory)getEntity("factory");
+	if (factory != null) {
+            Tableau tableau = factory.createTableau(effigy);
+	    if (tableau == null) {
+                    throw new Exception("Unable to create a Tableau.");
+                }
+            tableau.setName(effigy.uniqueName("tableau"));
+	    tableau.setContainer(effigy);
+	    // The first tableau is always master.
+	    tableau.setMaster(true);            
+	}
+    }
 
     /** Remove the specified entity; if that entity is the model directory,
      *  then exit the application.  This method should not be called
