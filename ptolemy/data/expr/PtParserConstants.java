@@ -80,19 +80,20 @@ public interface PtParserConstants {
   int SMDOLLARBRACE = 49;
   int SMDOLLARPAREN = 50;
   int SMID = 51;
-  int SMIDBRACE = 52;
-  int SMBRACE = 53;
-  int SMIDPAREN = 54;
-  int SMPAREN = 55;
+  int SMLETTER = 52;
+  int SMIDBRACE = 53;
+  int SMBRACE = 54;
+  int SMIDPAREN = 55;
+  int SMPAREN = 56;
 
   int DEFAULT = 0;
   int IN_SINGLE_LINE_COMMENT = 1;
   int IN_MULTI_LINE_COMMENT = 2;
   int IN_FORMAL_COMMENT = 3;
-  int StringModeIDNone = 4;
-  int StringModeIDBrace = 5;
-  int StringModeIDParen = 6;
-  int StringMode = 7;
+  int StringModeIDBrace = 4;
+  int StringModeIDParen = 5;
+  int StringMode = 6;
+  int StringModeIDNone = 7;
 
   String[] tokenImage = {
     "<EOF>",
@@ -147,10 +148,11 @@ public interface PtParserConstants {
     "\"${\"",
     "\"$(\"",
     "<SMID>",
+    "<SMLETTER>",
     "<SMIDBRACE>",
     "\"}\"",
     "<SMIDPAREN>",
-    "\"}\"",
+    "\")\"",
     "\"(\"",
     "\"?\"",
     "\":\"",

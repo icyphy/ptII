@@ -457,6 +457,7 @@ public class Variable extends Attribute
         // If the value has been set with an expression, then
         // reevaluate the token.
         if (_needsEvaluation) _evaluate();
+        // FIXME: find out if necessary to force to empty string.
         return _token;
     }
 
@@ -549,6 +550,18 @@ public class Variable extends Attribute
      */
     public boolean isLazy() {
         return _isLazy;
+    }
+   
+    /** Return true if this parameter is in string mode.
+     *  @return True if this parameter is in string mode.
+     *  @see #setStringMode(boolean)
+     */
+    public boolean isStringMode() {
+        if (_isStringMode) {
+            return true;
+        } else {
+            return (getAttribute("_stringMode") != null);
+        }
     }
 
     /** Check whether the current type of this variable is acceptable.
@@ -725,6 +738,26 @@ public class Variable extends Attribute
      */
     public void setParseTreeEvaluator(ParseTreeEvaluator parseTreeEvaluator) {
         _parseTreeEvaluator = parseTreeEvaluator;
+    }
+
+    
+    /** Specify whether this parameter should be in string mode.
+     *  If the argument is true, then specify that the type of this
+     *  parameter is string. Otherwise, specify that the type is
+     *  unknown.
+     *  @param stringMode True to put the parameter in string mode.
+     *  @exception IllegalActionException If the current value of this
+     *   parameter is incompatible with the resulting type.
+     *  @see #isStringMode()
+     */
+    public void setStringMode(boolean stringMode)
+            throws IllegalActionException {
+        _isStringMode = stringMode;
+        if (_isStringMode) {
+            setTypeEquals(BaseType.STRING);
+        } else {
+            setTypeEquals(BaseType.UNKNOWN);
+        }
     }
 
     /** Put a new token in this variable and notify the container and
@@ -1207,7 +1240,15 @@ public class Variable extends Attribute
             workspace().getReadAccess();
             if (!_parseTreeValid) {
                 PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(_currentExpression);
+                if(isStringMode()) {
+                    // Different parse rules for String mode parameters.
+                    _parseTree = parser.generateStringParseTree(
+                            _currentExpression);
+                } else {
+                    // Normal parse rules for expressions.
+                    _parseTree = parser.generateParseTree(
+                            _currentExpression);
+                } 
                 _parseTreeValid = (_parseTree != null);
             }
             if (_parseTreeEvaluator == null) {
@@ -1557,6 +1598,9 @@ public class Variable extends Attribute
 
     // Indicator that this variable is lazy.
     private boolean _isLazy;
+
+    // Indicates if string mode is on.
+    private boolean _isStringMode = false;
 
     // Indicates whether this variable has been flagged as unknown.
     private boolean _isTokenUnknown = false;

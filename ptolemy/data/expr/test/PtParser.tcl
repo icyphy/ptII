@@ -1029,17 +1029,24 @@ test PtParser-19.5 {Test String mode} {
     list [$res toString]
 } {{"$baz"}}
 
-test PtParser-19.5 {Test String mode} {
+test PtParser-19.6 {Test String mode} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p generateStringParseTree "\$\$bar\$\$" ]
     set res  [ $root evaluateParseTree]
     list [$res toString]
 } {{"$bar$"}}
 
-test PtParser-19.5 {Test String mode} {
+test PtParser-19.7 {Test String mode} {
     set p [java::new ptolemy.data.expr.PtParser]
-    set root [ $p generateStringParseTree "\${bar}\${bar}" ]
+    set root [ $p generateStringParseTree "\$bar \${bar}\$(bar)" ]
     set res  [ $evaluator evaluateParseTree $root $scope]
     list [$res toString]
-} {{"bazbaz"}}
+} {{"baz bazbaz"}}
+
+test PtParser-19.8 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "a \$bar \$(bar) a \${bar} a \$\$bar"]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"a baz baz a baz a $bar"}}
 
