@@ -43,9 +43,9 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
         </property>
@@ -160,12 +160,12 @@ by the output actions of the transient states.)
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="start">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -244,10 +244,6 @@ with their output actions.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 130.0]">
                 </property>
             </entity>
-            <entity name="start" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 60.0]">
-                </property>
-            </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
@@ -302,26 +298,6 @@ with their output actions.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.7405444050276837">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-            </relation>
             <link port="state1.incomingPort" relation="relation4"/>
             <link port="state1.outgoingPort" relation="relation"/>
             <link port="state2.incomingPort" relation="relation"/>
@@ -329,9 +305,7 @@ with their output actions.</text></svg></configure>
             <link port="state3.incomingPort" relation="relation2"/>
             <link port="state3.outgoingPort" relation="relation3"/>
             <link port="state4.incomingPort" relation="relation3"/>
-            <link port="init.incomingPort" relation="relation5"/>
             <link port="init.outgoingPort" relation="relation4"/>
-            <link port="start.outgoingPort" relation="relation5"/>
         </entity>
         <entity name="const" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">

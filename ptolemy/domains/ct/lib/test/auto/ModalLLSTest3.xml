@@ -43,14 +43,14 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={309, 278, 796, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 141, 796, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 400]">
     </property>
@@ -153,7 +153,7 @@ create refinements for the states. Then delete this annotation.</text>
                 </property>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="State transition depends on both continuous and discrete inputs.&#10;The very beginning step of discrete phase executoin will complain&#10;the undefined variable: output.&#10;&#10;This is an unknown failure.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="State transition depends on both continuous and discrete inputs.&#10;">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 250.0]">
                 </property>
@@ -287,48 +287,78 @@ create refinements for the states. Then delete this annotation.</text>
                     </port>
                 </entity>
                 <entity name="stateAdder_0" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="feedback_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="A(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="b_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="B(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="outputAdder0" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="outputScale_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="C(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="feedThrough_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="D(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <relation name="relation_state_0" class="ptolemy.actor.TypedIORelation">
                 </relation>

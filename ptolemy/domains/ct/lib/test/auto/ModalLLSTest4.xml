@@ -43,14 +43,14 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={309, 278, 796, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 67, 796, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 400]">
     </property>
@@ -86,7 +86,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A modal model contains an &quot;init&quot; state, which does not contain a refinement.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 305.0]">
         </property>
     </property>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
@@ -147,11 +147,14 @@
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Then delete this annotation.</text>
-</svg></configure>
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Notic that the transition from "init" to "state" 
+does not specify what value port3 has. Therefore,
+the output signal does not have a value at that tag. 
+
+Strictly speaking, the output signal is not a continuous
+signa. </text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 240.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -305,48 +308,78 @@ create refinements for the states. Then delete this annotation.</text>
                     </port>
                 </entity>
                 <entity name="stateAdder_0" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="feedback_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="A(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="b_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="B(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="outputAdder0" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="outputScale_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="C(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <entity name="feedThrough_0_0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="D(0, 0)">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                        </property>
-                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
                 </entity>
                 <relation name="relation_state_0" class="ptolemy.actor.TypedIORelation">
                 </relation>
@@ -437,7 +470,7 @@ create refinements for the states. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.060909, 1.1236729531405, 1.1883483510919, 1.2549934059502, 1.3236681026318, 1.3944342528634, 1.4673555508172, 1.5424976304395, 1.6199281245258, 1.6997167255941, 1.7819352486137, 1.8666576956427, 1.9539603224346, 2.0439217070742, 2.1366228207023, 2.2321471003954, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 2.0404026666667, 2.1025421096787, 2.1665739783579, 2.2325559055818, 2.3005472794083, 2.3706092965291, 2.4428050173502, 2.5171994227511, 2.5938594725713, 2.6728541658787, 2.7542546030734, 2.8381340498827, 2.9245680033049, 3.0136342595615, 3.1054129841194, 3.1999867838442, 3.2974407813528, -2.060909, -2.1236729531405, -2.1883483510919, -2.2549934059502, -2.3236681026318, -2.3944342528634, -2.4673555508172, -2.5424976304395, -2.6199281245258, -2.6997167255941, -2.7819352486137, -2.8666576956427, -2.9539603224346, -3.0439217070742, -3.1366228207023, -3.2321471003954}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{ 1.060909, 1.1236729531405, 1.1883483510919, 1.2549934059502, 1.3236681026318, 1.3944342528634, 1.4673555508172, 1.5424976304395, 1.6199281245258, 1.6997167255941, 1.7819352486137, 1.8666576956427, 1.9539603224346, 2.0439217070742, 2.1366228207023, 2.2321471003954, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 2.0404026666667, 2.1025421096787, 2.1665739783579, 2.2325559055818, 2.3005472794083, 2.3706092965291, 2.4428050173502, 2.5171994227511, 2.5938594725713, 2.6728541658787, 2.7542546030734, 2.8381340498827, 2.9245680033049, 3.0136342595615, 3.1054129841194, 3.1999867838442, 3.2974407813528, -2.060909, -2.1236729531405, -2.1883483510919, -2.2549934059502, -2.3236681026318, -2.3944342528634, -2.4673555508172, -2.5424976304395, -2.6199281245258, -2.6997167255941, -2.7819352486137, -2.8666576956427, -2.9539603224346, -3.0439217070742, -3.1366228207023, -3.2321471003954}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -453,17 +486,19 @@ create refinements for the states. Then delete this annotation.</text>
         <vertex name="vertex1" value="425.0, 160.0">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="PeriodicSampler.input" relation="relation3"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{280.0, 160.0}">
+        </vertex>
+    </relation>
+    <link port="PeriodicSampler.input" relation="relation"/>
     <link port="PeriodicSampler.output" relation="relation4"/>
     <link port="modal model.port" relation="relation5"/>
     <link port="modal model.port2" relation="relation2"/>
-    <link port="modal model.port3" relation="relation3"/>
+    <link port="modal model.port3" relation="relation"/>
     <link port="EventSource.output" relation="relation2"/>
     <link port="ContinuousClock.output" relation="relation5"/>
     <link port="NonStrictTest.input" relation="relation4"/>
