@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.basic;
 
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.data.ObjectToken;
@@ -283,16 +282,11 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 // to this one (e.g. subclasses) also have locations.
                 // This is necessary so that if the location later moves,
                 // then the move can be duplicated in the deferrers.
-                Locatable location = new Location(object, "_location");
+                Location location = new Location(object, "_location");
 
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
-                List heritageList = object.getDerivedList();
-                Iterator heritage = heritageList.iterator();
-                while (heritage.hasNext()) {
-                    NamedObj inherited = (NamedObj)heritage.next();
-                    new Location(inherited, "_location");
-                }
+                location.propagateExistence();
 
                 return location;
             }

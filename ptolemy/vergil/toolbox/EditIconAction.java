@@ -89,23 +89,25 @@ public class EditIconAction extends FigureAction {
                         
                         // Propagate this to derived objects, being
                         // careful to not trash their custom icons
-                        // if they have them.
+                        // if they have them.  However, there is a trickiness.
+                        // They may not have a custom icon, but rather have
+                        // an instance of XMLIcon.  We have to remove that
+                        // first.
                         Iterator derivedObjects
                                 = object.getDerivedList().iterator();
                         while (derivedObjects.hasNext()) {
                             NamedObj derived = (NamedObj)derivedObjects.next();
                             EditorIcon derivedIcon = (EditorIcon)derived
-                                .getAttribute("_icon", EditorIcon.class);
-                            if (derivedIcon == null) {
-                                new EditorIcon(derived, "_icon");
-                            } else if (derivedIcon instanceof XMLIcon) {
+                                    .getAttribute("_icon", EditorIcon.class);
+                            if (derivedIcon instanceof XMLIcon) {
                                 // There is an icon currently that is not custom.
                                 // Without trashing the _iconDescription, we can remove
                                 // this icon and replace it.
                                 derivedIcon.setContainer(null);
-                                new EditorIcon(derived, "_icon");
                             }
                         }
+                        // Now it is safe to propagate.
+                        icon.propagateExistence();
                     }
                     _configuration.openModel(icon);
                 }
