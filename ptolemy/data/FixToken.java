@@ -294,7 +294,11 @@ public class FixToken extends ScalarToken {
 	}
 
 	if (typeInfo == CPO.LOWER) {
-	    return arg.isLessThan(this);
+	    if (arg.isEqualTo(this).booleanValue()) {
+	        return new BooleanToken(false);
+	    } else {
+	        return arg.isLessThan(this).not();
+	    }
 	}
 
 	// Argument type is lower or equal to this token.
@@ -304,7 +308,7 @@ public class FixToken extends ScalarToken {
 	}
 
         // Use double value of the fix point.
-	if (_value.doubleValue() < fixArg.doubleValue()) {
+	if (_value.doubleValue() < fixArg.fixValue().doubleValue()) {
             return new BooleanToken(true);
         }
 	return new BooleanToken(false);
