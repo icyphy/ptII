@@ -40,6 +40,7 @@ import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// LimitedRangeChannel
@@ -98,6 +99,23 @@ public class LimitedRangeChannel extends DelayChannel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to the fact that the specified Settable has changed.
+     *  This class registers as a listener to attributes that
+     *  specify transmit properties.  If those change, then
+     *  it is necessary to invalidate the cache of receivers
+     *  in range.  This method simply invalidates the cache if
+     *  it is called, so subclasses should be careful to not
+     *  register as value listeners unnecessarily to objects that
+     *  do not affect the validity of this cache.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+        _receiversInRangeCacheValid = false;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Return true if the specified port is in range of the
      *  specified source port, assuming the source port transmits with
      *  the specified properties.  If the properties are an instance of
@@ -140,6 +158,20 @@ public class LimitedRangeChannel extends DelayChannel {
             range = field.doubleValue();
         }
         boolean result = (_distanceBetween(source, destination) <= range);
+        
+        // Whether a port is in range depends on the
+        // transmit properties of this sender, so we set up
+        // a listener to be notified of any changes in those
+        // properties.  Note that we need to do this even if the
+        // properties argument to this method is null because while
+        // a port may specify no properties now, it may later acquire
+        // properties.
+        if (source.getOutsideChannel() == this) {
+            source.outsideTransmitProperties.addValueListener(this);
+        } else {
+            source.insideTransmitProperties.addValueListener(this);
+        }
+
         return result;
     }
 }

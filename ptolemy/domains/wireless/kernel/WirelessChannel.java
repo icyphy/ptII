@@ -29,6 +29,7 @@
 */
 package ptolemy.domains.wireless.kernel;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// WirelessChannel
@@ -78,7 +81,7 @@ or the transmit() public method.
 @since Ptolemy II 2.1
 */
 public class WirelessChannel extends TypedAtomicActor 
-        implements WirelessMedia {
+        implements WirelessMedia, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -370,6 +373,23 @@ public class WirelessChannel extends TypedAtomicActor
         }
     }
 
+    /** React to the fact that the specified Settable has changed.
+     *  This base class registers as a listener to attributes that
+     *  specify the location of objects (and implement the Locatable
+     *  interface) so that it is notified by a call to this method
+     *  when the location changes.  In this base class, this method
+     *  only sets a flag to invalidate its cached list of receivers
+     *  in range.  Subclass may do more, for example to determine
+     *  whether a receiver that is in process of receiving a message
+     *  with a non-zero duration is still in range.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+        if (settable instanceof Locatable) {
+            _receiversInRangeCacheValid = false;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -417,11 +437,14 @@ public class WirelessChannel extends TypedAtomicActor
     }
 
     /** Return the location of the given port. If the container of the
-     *  port is the container of this channel, then use the
+     *  specified port is the container of this channel, then use the
      *  "_location" attribute of the port.  Otherwise, use the
-     *  "_location" attribute of its container.
+     *  "_location" attribute of its container. In either case,
+     *  register a listener to the location attribute so that valueChanged()
+     *  will be called if and when that location changes.
      *  The calling method is expected to have read access on the workspace.
-     *  This is a convenience method provided for subclasses.
+     *  Subclasses may override this method to provide some other way of
+     *  obtaining location information.
      *  @param port A port with a location.
      *  @return The location of the port.
      *  @throws IllegalActionException If a valid location attribute cannot
@@ -443,6 +466,10 @@ public class WirelessChannel extends TypedAtomicActor
                     + port.getName()
                     + ".");
         }
+        // NOTE: We assume here that the implementation
+        // of addValueListener() is smart enough to not add
+        // this if it is already a listener.
+        location.addValueListener(this);
         return location.getLocation();
     }
     
@@ -464,7 +491,7 @@ public class WirelessChannel extends TypedAtomicActor
             WirelessIOPort sourcePort,
             RecordToken properties)
             throws IllegalActionException {
-        // FIXME: This information should be carefully cached in
+        // This information is carefully cached in
         // a hashtable indexed by the source port.  The cache should
         // be invalidated if:
         //  1) The workspace version changes (which will happen if
@@ -472,12 +499,22 @@ public class WirelessChannel extends TypedAtomicActor
         //     appear or disappear).
         //  2) The sourcePort has changed its properties parameters
         //     (because this could affect whether other ports are in range).
+        //     This handled by a subclass that uses these properties, like
+        //     LimitedRangeChannel.
         //  3) Any listening port has changed its location.  Any
         //     subclass that is using location information needs to
         //     listen for changes in that location information and
         //     invalidate the cache if it changes.
         //  Use the performance.xml test to determine whether/how much
-        //  this helps. 
+        //  this helps.
+        if (_receiversInRangeCache != null
+                && _receiversInRangeCache.containsKey(sourcePort)
+                && ((Long)_receiversInRangeCacheVersion.get(sourcePort))
+                    .longValue() == workspace().getVersion()
+                && _receiversInRangeCacheValid) {
+            // Cached list is valid. Return that.
+            return (List)_receiversInRangeCache.get(sourcePort);
+        }
         List receiversInRangeList = new LinkedList();
         Iterator ports = listeningInputPorts().iterator();
         while (ports.hasNext()) {
@@ -508,6 +545,14 @@ public class WirelessChannel extends TypedAtomicActor
                 }
             }
         }
+        if (_receiversInRangeCache == null) {
+            _receiversInRangeCache = new HashMap();
+            _receiversInRangeCacheVersion = new HashMap();
+        }
+        _receiversInRangeCache.put(sourcePort, receiversInRangeList);
+        _receiversInRangeCacheVersion.put(
+                sourcePort, new Long(workspace().getVersion()));
+        _receiversInRangeCacheValid = true;
         return receiversInRangeList;
     }
     
@@ -582,6 +627,20 @@ public class WirelessChannel extends TypedAtomicActor
             receiver.clear();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Flag indicating that the cached list of receivers in range
+     *  is valid.  This gets set to false whenever
+     *  a location for some object whose location
+     *  has been obtained by _locationOf() has changed since
+     *  the last time this cached list was constructed. In addition,
+     *  subclasses may invalidate this if anything else that affects
+     *  whether a receiver is in range changes (such as the transmit
+     *  properties of a port).
+     */
+    protected boolean _receiversInRangeCacheValid = false;
         
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -591,6 +650,10 @@ public class WirelessChannel extends TypedAtomicActor
     private long _listeningInputPortsVersion = -1L;
     private List _listeningOutputPorts;
     private long _listeningOutputPortsVersion = -1L;
+    
+    private HashMap _receiversInRangeCache;
+    private HashMap _receiversInRangeCacheVersion;
+    
     private List _sendingInputPorts;
     private long _sendingInputPortsVersion = -1L;
     private List _sendingOutputPorts;
