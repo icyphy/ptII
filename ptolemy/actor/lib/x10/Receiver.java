@@ -81,7 +81,9 @@ public class Receiver extends X10Interface {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _interface.removeUnitListener(_listener);
+        if (_interface != null) {
+            _interface.removeUnitListener(_listener);
+        }
     }
     
 	///////////////////////////////////////////////////////////////////
