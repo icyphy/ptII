@@ -249,7 +249,7 @@ public class KernelMain {
         CompositeActor modelClass = null;
 	try {
 	    modelClass = (CompositeActor)
-                _parser._searchForClass(_momlClassName,
+                _parser.searchForClass(_momlClassName,
                         _toplevel.getMoMLInfo().source);
 	} catch (XmlException xml) {
             throw new
