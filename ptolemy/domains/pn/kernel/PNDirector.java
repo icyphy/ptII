@@ -116,11 +116,11 @@ public class PNDirector extends Director {
             //Creating receivers and threads for all actors;
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement(); 
+                increaseActiveCount();
                 actor.createReceivers();
                 actor.initialize();
                 PNThread pnt = new PNThread(actor, this);
                 _threadlist.insertFirst(pnt);
-                increaseActiveCount();
             }
         }
     }
