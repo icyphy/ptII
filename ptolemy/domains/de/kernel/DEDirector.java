@@ -1401,7 +1401,7 @@ public class DEDirector extends Director {
                         .getContainer().getFullName());
                 }
             }
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(this.getContainer(),
                     "Found zero delay loop including: " + names.toString());
         }
 
