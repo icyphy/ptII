@@ -435,14 +435,21 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile
-	egrep -v "lib/comm|lib.comm|python|security|ci/kernel|ci/lib|csp|dde|ddf|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
+	egrep -v "lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto| jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/hyvisual$(VERSION)/doc/makefile \
 		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/makefile
+	# Fix up actor/lib/test/makefile
+	egrep -v OrderedMerge.tcl \
+		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile \
+		> src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp \
+	mv src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile
 	# Fix up makefile
-	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar" \
-		src_jar/hyvisual$(VERSION)/makefile \
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
+		src_jar/hyvisual$(VERSION)/makefile | \
+		sed 's/\$(PTJNI_DIR)//' \
 		> src_jar/hyvisual$(VERSION)/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/makefile \
