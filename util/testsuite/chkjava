@@ -46,7 +46,7 @@
 # 14) Check for @throws
 # 15) Make sure that Parameters names do not start with capital letters
 # 16) Warn about catching CloneNotSupported
-# 17) Warn about import ... *;
+# 17) Warn about import ... *; for everything but ptolemy.kernel.util
 # 18) Warn if the clone method copies port or parameters
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
@@ -212,7 +212,7 @@ do
 	if [ "x$results" != "x" ]; then
 	    rating=`echo $results | awk '{print $2}' `
 	    if [ "$rating" != "Green" ]; then
-		echo "$file: does not have an AcceptedRating of green"
+		echo "$file: does not have an AcceptedRating of Green"
 		echo "$results"
 	    fi
 	else
@@ -279,7 +279,7 @@ do
 	fi
 
 	# 17) Warn about import ..*;
-	results=`egrep '^import .*\*;' $file`
+	results=`egrep '^import .*\*;' $file | grep -v "import ptolemy.kernel.util.*;"`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: import ...*; should import each class individually"
 	    echo "$results"
