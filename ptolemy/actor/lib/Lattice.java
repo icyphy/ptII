@@ -88,7 +88,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see LevinsonDurbin
 @see RecursiveLattice
 @see ptolemy.domains.sdf.lib.VariableLattice
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 
@@ -110,6 +110,7 @@ public class Lattice extends Transformer {
 	output.setTypeEquals(BaseType.DOUBLE);
 
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
+        // Note that setExpression() will call attributeChanged().
         reflectionCoefficients.setExpression(
                 "{0.804534, -0.820577, 0.521934, -0.205}");
     }
@@ -137,15 +138,17 @@ public class Lattice extends Transformer {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
             int valueLength = value.length();
-            if (valueLength != _backward.length) {
+            if (_backward == null || valueLength != _backward.length) {
                 // Need to reallocate the arrays.
                 _backward = new double[valueLength];
+                _backwardCache = new double[valueLength];
                 _forward = new double[valueLength + 1];
+                _forwardCache = new double[valueLength + 1];
                 _reflectionCoefs = new double[valueLength];
             }
             for (int i = 0; i < valueLength; i++) {
-                _reflectionCoefs[i] = ((DoubleToken)value.getElement(i))
-                    .doubleValue();
+                _reflectionCoefs[i] =
+                    ((DoubleToken)value.getElement(i)).doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -163,31 +166,59 @@ public class Lattice extends Transformer {
             double k;
             int M = _backward.length;
             // Forward prediction error
-            _forward[0] = in.doubleValue();   // _forward(0) = x(n)
+            _forwardCache[0] = in.doubleValue();   // _forwardCache(0) = x(n)
             for (int i = 1; i <= M; i++) {
                 k = - _reflectionCoefs[i-1];
-                _forward[i] = k * _backward[i-1] + _forward[i-1];
+                _forwardCache[i] = k * _backwardCache[i-1] + _forwardCache[i-1];
             }
-            output.broadcast(new DoubleToken(_forward[M]));
+            output.broadcast(new DoubleToken(_forwardCache[M]));
 
             // Backward:  Compute the weights for the next round
             for (int i = M-1; i >0 ; i--) {
                 k = - _reflectionCoefs[i-1];
-                _backward[i] = k * _forward[i-1] + _backward[i-1];
+                _backwardCache[i] = k * _forwardCache[i-1]
+                    + _backwardCache[i-1];
             }
-            _backward[0] = _forward[0];   // _backward[0] = x[n]
+            _backwardCache[0] = _forwardCache[0];   // _backwardCache[0] = x[n]
         }
+    }
+
+    /** Update the backward and forward prediction errors that
+     *  were generated in fire() method.
+     *  @return False if the number of iterations matches the number requested.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
+        System.arraycopy(_backwardCache, 0,
+                        _backward, 0,
+                        _backwardCache.length);
+        System.arraycopy(_forwardCache, 0,
+                        _forward, 0,
+                        _forwardCache.length);
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    /** Backward prediction errors. */
-    private double[] _backward = new double[4];
+    // Backward prediction errors.
+    private double[] _backward = null;
 
-    /** Forward prediction errors. */
-    private double[] _forward = new double[5];
+    // Cache of backward prediction errors.
+    // The fire() method updates _forwardCache and postfire()
+    // copies _forwardCache to _forward so this actor will work in domains
+    // like SR.
+    private double[] _backwardCache = null;
 
-    /** Cache of reflection coefficients. */
-    private double[] _reflectionCoefs = new double[4];
+    // Forward prediction errors.
+    private double[] _forward = null;
+
+    // Cache of forward prediction errors.
+    // The fire() method updates _forwardCache and postfire()
+    // copies _forwardCache to _forward so this actor will work in domains
+    // like SR.
+    private double[] _forwardCache = null;
+
+    // Cache of reflection coefficients.
+    private double[] _reflectionCoefs = null;
 }
