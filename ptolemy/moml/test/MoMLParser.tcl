@@ -2919,3 +2919,37 @@ test MoMLParser-1.14 {check that instance of a class defer to a common obj} {
     [java::field [$b getMoMLInfo] deferTo] equals \
             [java::field [$a getMoMLInfo] deferTo]
 } {1}
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <port name="p" class="ptolemy.actor.IOPort"/>
+    <relation name="r" class="ptolemy.actor.IORelation"/>
+    <link port="p" relation="r" insertAt="0"/>
+    <link port="p" insertInsideAt="0"/>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-15.1 {test link persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <port name="p" class="ptolemy.actor.IOPort">
+    </port>
+    <relation name="r" class="ptolemy.actor.IORelation">
+    </relation>
+    <link port="p" insertAt="1" relation="r"/>
+</entity>
+}
+
+
