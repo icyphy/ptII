@@ -597,7 +597,7 @@ public class TimeKeeper {
     }
 
     /** Set a flag indicating whether a search for ignored
-     *  tokens is taking place as per the specified paramter.
+     *  tokens is taking place as per the specified parameter.
      * @param search The search flag.
      */
     synchronized void setSearchForIgnoredTokens(boolean search) {
