@@ -221,7 +221,7 @@ public class SRReceiver extends Mailbox {
      *  only by the director.
      */
     protected void reset() {
-        if isKnown() {
+        if (isKnown()) {
             if (hasToken()) super.get();
             _known = false;
         }
