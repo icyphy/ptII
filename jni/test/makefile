@@ -39,7 +39,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR).
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -98,9 +98,6 @@ all:
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-AUXCLASSPATH = $(CLASSPATHSEPARATOR).
-
 
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
