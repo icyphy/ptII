@@ -104,7 +104,7 @@ configuration calls System.exit() to exit the application.
 @see EffigyFactory
 @see ModelDirectory
 @see Tableau
-@see TextEditorTableauFactory
+@see TextEditorTableau
 */
 public class Configuration extends CompositeEntity {
 
