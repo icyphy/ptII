@@ -42,10 +42,10 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode
 /**FIXME
-This actor produces a Hadamard codeword. The parameter <i>index</i> 
-specifies the code index, which is the row index in the Hadamard matrix. 
-The parameter <i>log2Length</i> is log base 2 of the codeword length, 
-which equals the dimension of the matrix.
+This actor produces a Hadamard codeword. The parameter <i>log2Length</i> 
+is log base 2 of the codeword length, which equals the dimension of the 
+Hadamard matrix. The input port <i>index</i> specifies the code index, 
+which is the row index in the matrix
 
 Note: it is required that <i>log2Length</i> is a strictly positive integer 
 smaller than 32. The <i>index</i> should be a non-negtive integer smaller 
@@ -72,16 +72,12 @@ public class Hadamard2 extends Source {
 
         index = new TypedIOPort(this, "index", true, false);
         index.setTypeEquals(BaseType.INT);
-        //index = new Parameter(this, "index");
-        //index.setTypeEquals(BaseType.INT);
-        //index.setExpression("0");
 
         log2Length = new Parameter(this, "log2Length");
         log2Length.setTypeEquals(BaseType.INT);
         log2Length.setExpression("5");
 
         // Declare output data type.
-        // output= new TypedIOPort(this, "outbut", false, true);
         output.setTypeEquals(BaseType.INT);
     }
 
@@ -92,7 +88,6 @@ public class Hadamard2 extends Source {
      *  are orthogonal.  This is an int with default 0. It should
      *  not exceed length-1, where length = 2^log2Length.
      */
-    //public Parameter index;
     public TypedIOPort index;
     /** Log base 2 of the length of the code.  This is an integer with
      *  default 5.  It is required to be greater than 0.
@@ -110,17 +105,7 @@ public class Hadamard2 extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        /* if (attribute == index) {
-          int indexValue = ((IntToken)index.getToken()).intValue();
-          if (indexValue < 0) {
-                throw new IllegalActionException(this,
-                "index parameter is not permitted to be negative.");
-            }
-            // Set a flag indicating that the private variable _row
-            // is invalid, but don't recompute the value until all
-            // parameters have been set.
-            _rowValueInvalid = true;
-            } else */if (attribute == log2Length) {
+        if (attribute == log2Length) {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
@@ -152,9 +137,7 @@ public class Hadamard2 extends Source {
         super.fire();
         if (_rowValueInvalid) {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
-            //int indexValue = ((IntToken)index.getToken()).intValue();
             int indexValue = ((IntToken)index.get(0)).intValue();
-            // Power of two calculated using a shift.
             int matrixDimension = 1 << log2LengthValue;
             if (indexValue >= matrixDimension) {
                 throw new IllegalActionException(this,
