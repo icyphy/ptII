@@ -81,13 +81,27 @@ public class TimedPlotter extends Plotter implements Placeable, TimedActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         TimedPlotter newobj = (TimedPlotter)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.input.setMultiport(true);
         newobj.input.setTypeEquals(DoubleToken.class);
         return newobj;
+    }
+
+    /** Clear the datasets that this actor will use.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        int width = input.getWidth();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        for (int i = width - 1; i >= 0; i--) {
+            plot.clear(i + offset);
+        }
     }
 
     /** Read at most one input from each channel and plot it as a
@@ -100,11 +114,12 @@ public class TimedPlotter extends Plotter implements Placeable, TimedActor {
     public boolean postfire() throws IllegalActionException {
         double currentTime = ((Director)getDirector()).getCurrentTime();
         int width = input.getWidth();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
-                plot.addPoint(i, currentTime, currentValue, true);
+                plot.addPoint(i + offset, currentTime, currentValue, true);
             }
         }
         return super.postfire();
