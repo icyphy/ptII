@@ -168,8 +168,8 @@ public class TrackingAlarm extends DEActor {
         return newobj;
     }
 
-    /** Read one token from the input and save it so that the
-     *  postfire method can produce it to the output.
+    /** Read one token from all input ports, if there is any.
+     *  Compare the positions, and possibly generate alarms.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

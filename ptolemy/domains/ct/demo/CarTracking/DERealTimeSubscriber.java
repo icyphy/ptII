@@ -186,7 +186,7 @@ public class DERealTimeSubscriber extends DEActor
     /** Return true, and produce the oldest token in the list.
      *  This is the token at the correct time, since both the director
      *  and the tokenList are totally ordered.
-     *
+     */
     public boolean postfire() throws IllegalActionException {
         synchronized(_tokenList) {
             if (!_tokenList.isEmpty()) {
@@ -195,7 +195,6 @@ public class DERealTimeSubscriber extends DEActor
         }
         return true;
     }  
-    */
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -264,7 +263,7 @@ public class DERealTimeSubscriber extends DEActor
                         //System.out.println(getName() + 
                         //        " take from space: " 
                         //        + entry.serialNumber + " " + entry.token);
-                        /**
+                       
                         _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
@@ -274,8 +273,8 @@ public class DERealTimeSubscriber extends DEActor
                                     "can't register fireAt with the director."
                                     + ex.getMessage());
                         }
-                        //_tokenList.notifyAll();
-                        */
+                        _tokenList.notifyAll();
+                        /**
                         double delay = 
                             (double)System.currentTimeMillis()/1000.0 - 
                             _container.getDirector().getCurrentTime();
@@ -286,6 +285,7 @@ public class DERealTimeSubscriber extends DEActor
                             throw new InvalidStateException(_container,
                                     "output failed." + ex.getMessage());
                         }
+                        */
                     }
                 }
                 _notificationSeq =  _event.getSequenceNumber();
