@@ -101,6 +101,13 @@ OPTIONAL_FILES = \
 	'Query$$QueryItemListener.class' \
 	'Query$$QueryScrollPane.class' \
 	'Query$$SliderListener.class' \
+	'ShellTextArea$$1.class' \
+	'ShellTextArea$$2.class' \
+	'ShellTextArea$$3.class' \
+	'ShellTextArea$$4.class' \
+	'ShellTextArea$$5.class' \
+	'ShellTextArea$$ShellKeyListener.class' \
+	'StreamExec$$_StreamReaderThread.class' \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
 	'SwingWorker$$ThreadVar.class' \
