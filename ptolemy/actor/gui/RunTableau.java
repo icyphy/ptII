@@ -90,7 +90,16 @@ public class RunTableau extends Tableau {
 	// Create a manager.
         Manager manager = actor.getManager();
         if (manager == null) {
-	    actor.setManager(new Manager(actor.workspace(), "manager"));
+	    try {
+		actor.setManager(new Manager(actor.workspace(), "manager"));
+	    } catch ( IllegalActionException ex) {
+		throw new IllegalActionException(this, ex,
+	                "Failed to set manager.  This can occur if "
+			+ "you try to run a non-toplevel model that "
+			+ "is a component of a toplevel model.  "
+			+ "The solution is invoke View -> Run while in a "
+			+ "toplevel window" );
+	    }
 	    manager = actor.getManager();
         }
 
