@@ -66,7 +66,7 @@ public class PNAdder extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         double[][] sum = ((DoubleMatrixToken)_input.get(0)).doubleMatrix();
-	for (int i=1; i<_input.getWidth(); i++) {
+	for (int i = 1; i<_input.getWidth(); i++) {
 	    //FIXME: This is a hack. Generalize it.
 	    double[][] data =((DoubleMatrixToken)_input.get(i)).doubleMatrix();
 	    //FIXME: Take care. Perhaps throw an exception.

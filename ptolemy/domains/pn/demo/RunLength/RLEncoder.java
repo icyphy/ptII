@@ -84,7 +84,7 @@ public class RLEncoder extends AtomicActor {
 	if (value == 1) outval = (byte)128;
 	//byte outval = (byte)((byte)value<<7);
         int count = 1;
-        for (int i=1; i<inlen; i++) {
+        for (int i = 1; i<inlen; i++) {
             int newval = ((IntToken)_input.get(0)).intValue();
             if (newval == value) {
                 count++;
