@@ -111,7 +111,7 @@ public class InspectionParadox extends DEApplet {
      */
     protected void _go() {
         _poisson.meantime.setToken
-                (new DoubleToken(_query.doubleValue("mean")));
+            (new DoubleToken(_query.doubleValue("mean")));
         _eventPlot.plot.setXRange(0.0, _getStopTime());
         super._go();
     }
