@@ -493,9 +493,16 @@ public class MoMLParser extends HandlerBase {
                                 = System.getProperty("path.separator");
                         StringTokenizer paths = new StringTokenizer(classpath,
                                 separator);
-                        while (paths.hasMoreTokens()) {
+                        while (paths.hasMoreTokens() && input == null) {
                             String path = paths.nextToken();
+
+                            // Check to see if the path ends with a "/"     
+                            if (!path.endsWith("/")) {		
+				// need to append a "/"		
+                                path = path.concat("/");	
+			    }					
                             base = new URL("file", null, path);
+                          
                             // FIXME: jdk 1.3beta, at least, has a bug in the
                             // URL constructor invoked below.  It ignores
                             // the base argument and uses the current working
