@@ -83,11 +83,10 @@ public class SignalProcessing {
      */
     public static final double[] convolve(double[] array1, double[] array2) {
         double[] result;
-        int resultsize = array1.length+array2.length-1;
+        int resultsize = array1.length + array2.length - 1;
 
         if (resultsize < 0) {
-            // If we attempt t
-   convolve two zero length arrays, return
+            // If we attempt to convolve two zero length arrays, return
             // a zero length array.
             result = new double[0];
             return result;
