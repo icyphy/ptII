@@ -90,7 +90,9 @@ set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 java::call $debug register $debugger
 
 # Run it
-$manager blockingGo 5
+set param [$dir getAttribute Iterations]
+$param setToken [java::new {ptolemy.data.IntToken int} 5]
+$manager blockingGo
 
 
 

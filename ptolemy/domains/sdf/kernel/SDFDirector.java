@@ -35,6 +35,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.mutation.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
@@ -46,7 +47,12 @@ import java.util.Enumeration;
      SDFScheduler to static schedule the execution of the Actors.   
      Furthermore, it creates Receivers of type QueueReceiver, which is
      consistant with a dataflow domain.
-     
+
+     The SDF director has a single parameter, "Iterations" corresponding to a 
+     limit on the number of times the director will fire its hierarchy 
+     before it returns false in postfire.   If this number is not greater
+     than zero, then no limit is set and postfire will always return false.
+     The default number of iterations is zero.
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -128,6 +134,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     public boolean postfire() throws IllegalActionException {
+        int iterations = ((IntToken) (_parameteriterations.getToken()))
+            .intValue();
+        if((iterations > 0) && (_iteration >= iterations)) {
+            _iteration = 0;
+            return false;
+        }
         return true;
     }
 
@@ -148,7 +160,11 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void fire()
             throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
-        if (container != null) {
+
+        if (container == null) {
+            throw new InvalidStateException("SDFDirector " + getName() + 
+                    " fired, but it has no container!");
+        } else {
             Scheduler s = getScheduler();
             if (s == null) 
                 throw new IllegalActionException("Attempted to fire " +
@@ -165,6 +181,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 actor.postfire();
             }
         }
+        _iteration++;
     }
 
 
@@ -211,18 +228,28 @@ public class SDFDirector extends StaticSchedulingDirector {
             Debug.println("Illegal schedule caught, " +
                 "which should never happen!");
         }
+
+        try {
+            _parameteriterations 
+                = new Parameter(this,"Iterations",new IntToken(0));
+        }
+        catch (Exception e) {
+            Debug.println("Cannot create default iterations parameter.");
+            Debug.println("This should never happen.");
+        }
+
+          
+
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The composite of which this is either a local or an executive director.
-    //    private CompositeActor _container = null;
-
-    // True if this is an executive director of the container.
-    private boolean _executivedirector;
+    
+    private int _iteration;
+    private Parameter _parameteriterations;
 
     // Support for mutations.
     // private LinkedList _pendingMutations = null;
     // private LinkedList _mutationListeners = null;
-    private ActorListener _actorListener = null;
+//    private ActorListener _actorListener = null;
 }

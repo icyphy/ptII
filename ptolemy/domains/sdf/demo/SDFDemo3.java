@@ -3,6 +3,7 @@ package ptolemy.domains.sdf.demo;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
@@ -62,7 +63,10 @@ public class SDFdemo3 {
                 r=(IORelation) c.connect(delay2.outputport,join.inputport1,"R5");
                 r=(IORelation) c.connect(ramp2.outputport,join.inputport2,"R6");
                 r=(IORelation) c.connect(join.outputport,print2.inputport,"R7");
-                m.go(1);
+
+                Parameter p = (Parameter) d.getAttribute("Iterations");
+                p.setToken(new IntToken(1));
+                m.blockingGo();
         }
 }    
  
