@@ -1,4 +1,4 @@
-/* A library supporting the capturing of audio.
+/* A buffer supporting the capturing of audio.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import javax.sound.sampled.*;
 //// SoundCapture
 /**
    <h2>Overview</h2>
-   A library supporting the capture of audio. This class supports the
+   A buffer supporting the capture of audio. This class supports the
    real-time capture of audio from the audio input port (mic or line-in)
    as well as the capture of audio from a sound file. Single channel
    (mono) and multichannel audio (stereo) are supported. This class,
@@ -58,24 +58,25 @@ import javax.sound.sampled.*;
    constructor is used, there will be a small
    delay between the time that the audio enters the microphone or
    line-in and the time that the corresponding audio samples are
-   available via <i>getSamples</i>.
+   available via getSamples().
    This latency can be adjusted by setting the <i>bufferSize</i>
    constructor parameter. Another constructor creates a sound capture
    object that captures audio from a sound file.
    <p>
-   After calling the appropriate constructor, <i>startCapture()</i>
+   After calling the appropriate constructor, startCapture()
    must be called to initialize the audio system for capture.
-   The <i>getSamples()</i> method should then be repeatedly
+   The getSamples() method should then be repeatedly
    invoked to obtain audio data in the form of a multidimensional
    array of audio sample values. For the case where
-   audio is captured from the mic or line-ine, it is important to
-   invoke <i>getSamples()</i> often enough to prevent overflow of
+   audio is captured from the mic or line-in, it is important to
+   invoke getSamples() often enough to prevent overflow of
    the internal audio buffer. The size of the internal buffer is
    set in the constructor.
-   Finally, after no more audio data is desired, <i>stopCapture()</i>
+   Finally, after no more audio data is desired, stopCapture()
    should be called to free up audio system resources.
    <p>
-   <i>Security issues</i>Applications have no restrictions on the
+   <h2>Security issues</h2>
+   Applications have no restrictions on the
    capturing or playback of audio. Applets, however, may only capture
    audio from a file specified as a URL on the same machine as the
    one the applet was loaded from. Applet code is not allowed to
@@ -91,9 +92,8 @@ import javax.sound.sampled.*;
 
 public class SoundCapture {
 
-    /** Construct a sound capture object. This constructor creates an
-     *  object that captures audio from the computer's audio input
-     *  port (mic or line-in). If this constructor is used, then it
+    /** Construct a sound capture object that captures audio from a computer's
+     *  audio input port.  If this constructor is used, then it
      *  is important that getSamples() be
      *  invoked often enough to prevent overflow of the internal audio
      *  input buffer.
@@ -108,11 +108,13 @@ public class SoundCapture {
      *   on the latency is given by (<i>bufferSize</i> / <i>sampleRate</i>)
      *   seconds. Ideally, the
      *   smallest value that gives acceptable performance (no overflow)
-     *   should be used.
+     *   should be used. Typical values are about 1/10 th the sample
+     *   rate. For example, at 44100 Hz sample rate, a typical buffer
+     *   size value might be 4410.
      *  @param getSamplesSize Size of the array returned by
      *   <i>getSamples()</i>. For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   might be 1/2 to 1/16th of <i>bufferSize</i>.
+     *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
     public SoundCapture(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
@@ -139,8 +141,10 @@ public class SoundCapture {
 
     }
 
-    /** Construct a sound capture object. This constructor creates an
+    /** Construct a sound capture object that caputures audio from a
+     *  sound file. This constructor creates an
      *  object that captures audio from a sound file.
+     *  
      *  @param isURL True means that a URL to a file is given. False means
      *   that the file name specifies the location of the file on
      *   the local file system.
@@ -149,8 +153,10 @@ public class SoundCapture {
      *   formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
      *   format is automatically determined from the file extension.
      *  @param getSamplesSize The number of samples per channel
-     *   returned by <i>getSamples()</i>.
+     *   returned by getSamples().
      */
+    // FIXME: Get rid of isURL!!!!! NOt needed!  Have it take a
+    //  URL, not a file name.
     public SoundCapture(boolean isURL, String fileName,
             int getSamplesSize) {
 	System.out.println("SoundCapture: constructor 2: invoked");
@@ -165,12 +171,25 @@ public class SoundCapture {
     ///  Public Methods                                         ///
 
     /** Begin capturing audio. This method must be invoked prior
-     *  to the first invocation of <i>getSamples</i>. This method
-     *  must not be called more than once between invocations of
-     *  <i>stopCapture()</i>.
+     *  to the first invocation of getSamples(). If this is not
+     *  done, then getSamples() will throw an exception when
+     *  it is invoked. It is safe
+     *  to call getSamples() immediately after this method returns.
+     *   This method must not be called more than 
+     *  once between invocations of stopCapture(). Calling
+     *  this method more than once between invocations of 
+     *  stopCapture() will cause this method to throw an exception.
+     *  
+     *  @exception IOException If there is a problem setting up
+     *  the system for audio capture. This will occur if the
+     *  a URL cannot be oppened or if the audio in port cannot
+     *  be accessed.
+     *  @exception IllegalStateException If this method is called
+     *  more than once between invocations of stopCapture().
      */
-    public void startCapture() {
-
+    public void startCapture() throws IOException, 
+                               IllegalStateException {
+	// FIXME: check and throw Exceptions
 	if (_isRealTime == true) {
 	    _startCaptureRealTime();
 	} else {
@@ -182,8 +201,11 @@ public class SoundCapture {
      *  no more calls to <i>getSamples()</i>. are required, so
      *  that the system resources involved in the audio capture
      *  may be freed.
+     *
+     *  @exception IOException If there is a problem closing the
+     *  audio resources.
      */
-    public void stopCapture() {
+    public void stopCapture() throws IOException {
 	try {
 	    // Free up audio system resources.
 	    // For capture from file:
@@ -204,7 +226,9 @@ public class SoundCapture {
 	}
     }
 
-    /** Return an array of captured audio samples. The array size
+    /** Return an array of captured audio samples. This method
+     *  should be repeatedly called to obtain audio data. The 
+     *  array size
      *  is set by the <i>getSamplesSize</i> parameter in the
      *  constructor. For the case where audio is captured from
      *  the computer's audio-in port (mic or line-in), this
@@ -222,6 +246,10 @@ public class SoundCapture {
      *  <i>returned array</i>[n][m] contains the (m+1)th sample
      *  of the (n+1)th channel. For each channel, n, the length of
      *  <i>returned array</i>[n] is equal to <i>getSamplesSize</i>.
+     *
+     *  @exception IOException If there is a problem capturing audio.
+     *  @exception IllegalStateException If startCapture() has not
+     *  yet been called.
      */
     public double[][] getSamples() {
 	//System.out.println("SoundCapture: getSamples(): invoked");
