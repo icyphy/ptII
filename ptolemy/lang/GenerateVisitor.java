@@ -470,6 +470,9 @@ class GenerateVisitor {
 
             _superArgs.addLast(sb.toString());
 
+            _paramTypes.addLast("omitted");
+            _paramNames.addLast("omitted");            
+
          } else {
 
             _paramTypes.addLast(s);
@@ -630,13 +633,21 @@ class GenerateVisitor {
       ListIterator typeItr = _paramTypes.listIterator();
       ListIterator nameItr = _paramNames.listIterator();
 
+      int paramCount = 0;
       while (typeItr.hasNext()) {
-        sb.append((String) typeItr.next());
-        sb.append(' ');
-        sb.append((String) nameItr.next());
 
-        if (typeItr.hasNext()) {
-           sb.append(", ");
+        String typeName = (String) typeItr.next();
+        String paramName = (String) nameItr.next();
+
+        if (!typeName.equals("omitted")) {
+           if (paramCount > 0) {
+              sb.append(", ");
+           }
+           paramCount++;
+
+           sb.append(typeName);
+           sb.append(' ');
+           sb.append(paramName);
         }
       }
 
