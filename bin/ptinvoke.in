@@ -402,9 +402,23 @@ ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
 
-if [ "$1" = "-sandbox" ]; then
+# Default policy file used by -sandbox
+POLICYFILE="$PTII/bin/sandbox"
+
+# Set POLICY_FILE_SET to yes if we see -policyfile policyfile
+POLICY_FILE_SET=no
+if [ "$1" = "-policyfile" ]; then
     shift
-    ALL_JFLAG="-Djava.security.manager \"-Djava.security.policy=${PTII}/bin/sandbox.policy\""
+    POLICY_FILE="$1"
+    shift
+    POLICY_FILE_SET=yes
+fi
+
+if [ "$1" = "-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
+    if [ "$1" = "-sandbox" ]; then
+	shift
+    fi
+    ALL_JFLAG="-Djava.security.manager \"-Djava.security.policy=${POLICY_FILE}\""
     ALL_JAR="${DIVA_JAR}"
     echo "Running in sandbox mode with minimal set of jars."
     if [ $# -eq 0 ]; then
@@ -794,6 +808,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " -profiler Run under cpu sample profiling"
         echo " -q       Do not echo the command being run"
 	echo " -sandbox Run model under tight security, see \$PTII/bin/sandbox.policy" 
+	echo " -policyfile policyfile  Run model with a policyfile" 
 	echo " Note that not all combinations above the above arguments make sense."
 	# Most commands have their own help built in, but some do not. 
 	if [ "$passHelpArgument" = "no" ]; then
