@@ -35,7 +35,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.graph.*;
 
+import collections.LinkedList;
 import java.lang.reflect.*;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
@@ -51,6 +53,13 @@ In addition to the declared type, a TypedIOPort also has a resolved type.
 If the declared type is not null, the resolved type will be the same as
 the declared type; otherwise, the type resolution algorithm will assign
 a resolved type according to the type constraints.<p>
+
+This class keeps a list of TypeListeners.  Whenever the resolved type
+changes, this class will generate an instance of TypeEvent and pass it
+to the listeners by calling their typeChanged() method. A TypeListener
+register its interest in the type change event of this port by calling
+addTypeListener(), and can be removed from the listener list by calling
+the removeTypeListener().
 
 A TypedIOPort can only link to instances of TypedIORelation. Derived
 classes may further constrain links to a subclass of TypedIORelation.
@@ -118,6 +127,14 @@ public class TypedIOPort extends IOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a type listener to this port. The listener will
+     *  be notified of all the type changes.
+     *  @param listener The TypeListener to add.
+     */
+    public void addTypeListener(TypeListener listener) {
+	_typeListeners.insertLast(listener);
+    }
+
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must
      *  do this yourself if you want it there).
@@ -180,6 +197,14 @@ public class TypedIOPort extends IOPort {
 	    _typeTerm = new TypeTerm(this);
 	}
 	return _typeTerm;
+    }
+
+    /** Remove a type listener from this port.  If the listener is
+     *  not attached to this port, do nothing.
+     *  @param listener The TypeListener to be removed.
+     */
+    public void removeTypeListener(TypeListener listener) {
+	_typeListeners.removeOneOf(listener);
     }
 
     /** Override the method in the super class to do type checking.
@@ -328,23 +353,33 @@ public class TypedIOPort extends IOPort {
 
     /** Set the resolved type of this port.  The type is represented
      *  by an instance of Class that is an element in the type lattice.
-     *  This method is write-synchronized on the workspace.
+     *  If the specified type is different from the old type, this
+     *  method notifies the typelisteners registered on this port
+     *  by calling their typeChanged() method.
      *  Note that this method should not be used directly. It should
      *  only be used by the type resolution algorithm.
+     *  This method is write-synchronized on the workspace.
      *  @param type an instance of Class that is an element in the type
      *   lattice.
      */
     protected void _setResolvedType(Class c) {
 	try {
 	    workspace().getWriteAccess();
-	    _resolvedType = c;
 
+	    if (_resolvedType != c && _typeListeners.size() > 0) {
+		TypeEvent event = new TypeEvent(this, _resolvedType, c);
+		Enumeration listeners = _typeListeners.elements();
+		while (listeners.hasMoreElements()) {
+		    ((TypeListener)listeners.nextElement()).typeChanged(event);
+		}
+	    }
+
+	    _resolvedType = c;
 	    _convertMethod = null;
 	} finally {
 	    workspace().doneWriting();
 	}
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -490,5 +525,8 @@ public class TypedIOPort extends IOPort {
 
     private TypeTerm _typeTerm = null;
     private Method _convertMethod = null;
+
+    // Listeners for type change.
+    private LinkedList _typeListeners = new LinkedList();
 }
 
