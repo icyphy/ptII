@@ -131,7 +131,7 @@ test Variable-0.1 {Basic smoke test} {
     set msg4 [[$out2 getToken] toString]
 
     list $msg1 $msg2 $msg3 $msg4
-} {ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.DoubleToken(2) ptolemy.data.DoubleToken(1)}
+} {ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.DoubleToken(2.0) ptolemy.data.DoubleToken(1.0)}
 
 
 
