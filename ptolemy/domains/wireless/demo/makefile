@@ -37,7 +37,6 @@ DIRS = \
 	Collisions \
 	EvaderAndPursuer \
 	MACProtocolModel \
-	Network \
 	PersonalAreaNetwork \
 	PowerVariability \
 	SmallWorld \
