@@ -28,7 +28,7 @@ data against unquantized data.</text>
         <property name="_location" class="ptolemy.moml.Location" value="62.0, 33.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 230]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[124, 152]">
     </property>
