@@ -181,6 +181,11 @@ public class ModelCompiler extends Attribute {
                 
                 compositeActor.setContainer(newLayer); 
                 
+                // Add a new director at the top level.
+                Director directorOfOrigin = compositeActor.getDirector();
+                Director directorOfClone = (Director) directorOfOrigin.clone();
+                directorOfClone.setContainer(newLayer);
+
                 Iterator portsOfOrigin = compositeActor.portList().iterator();
                 while (portsOfOrigin.hasNext()) {
                     TypedIOPort portOfOrigin =
@@ -197,7 +202,8 @@ public class ModelCompiler extends Attribute {
                         portOfClone.link(relation);
                         // Create a new inside relation between newLayer
                         // composite.
-                        TypedIORelation insideRelation = new TypedIORelation(newLayer,
+                        TypedIORelation insideRelation 
+                            = new TypedIORelation(newLayer,
                                 "insideRelation_" + relation.getName());
                         // link newLayer with this inside relation.
                         portOfClone.link(insideRelation);
@@ -206,12 +212,9 @@ public class ModelCompiler extends Attribute {
                         // link compositeActor with this inside relation.
                         portOfOrigin.link(insideRelation);
                     }
+                    portOfClone.createReceivers();
                 }
                 
-                // Add a new director at the top level.
-                Director directorOfOrigin = compositeActor.getDirector();
-                Director directorOfClone = (Director) directorOfOrigin.clone();
-                directorOfClone.setContainer(newLayer);
                 //subCluster.setContainer(compositeActor);
                 // create subCluster's function dependency graph here.
                 // then get its list of subgraphs.
