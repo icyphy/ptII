@@ -43,7 +43,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DEThreadActor
 /**
-A base class for threaded DE domain actor.
+A base class for threaded DE domain actors.
 <P>
 FIXME: EXPERIMENTAL.
 <P>
