@@ -35,7 +35,7 @@ package ptolemy.actor.util;
 /** An interface provides access to the FunctionDependency object
     ssociated with an entity. This interface is extended by Actor interface.
 
-    @see Actor
+    @see ptolemy.actor.Actor
     @see FunctionDependency
     @author Haiyang Zheng
     @version $Id$
