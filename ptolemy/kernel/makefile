@@ -47,7 +47,8 @@ JSRCS = \
 	Block.java \
 	Galaxy.java \
 	NamedObj.java \
-	PortHole.java \
+	NoMethodOverrideMethod.java \
+	Port.java \
 	Star.java \
 	StatusArray.java
 
