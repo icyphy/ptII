@@ -51,6 +51,11 @@
 
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
+  
+  <!-- Icon editor library. -->
+  <!-- NOTE: This is identical to the default, so it need not be specified. -->
+  <!-- We specify it here as a guide to those writing custom configurations. -->
+  <input source="ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml"/>
 
   <!-- Modifications to the library. -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">

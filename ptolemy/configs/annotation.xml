@@ -5,32 +5,5 @@
 <!-- parameters, and other items that might appear in any model. -->
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
-<property name="annotation" class="ptolemy.kernel.util.Attribute">
-  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_iconDescription"
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <text x="20"
-              style="font-size:14; font-family:SansSerif; fill:blue"
-              y="20">Double click to edit text.</text>
-      </svg>
-    </configure>
-  </property>
-  <property name="_smallIconDescription"
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <text x="20"
-              style="font-size:14; font-family:SansSerif; fill:blue"
-              y="20">-A-</text>
-      </svg>
-    </configure>
-  </property>
-  <!-- The following attribute specifies the context menu commands -->
-  <property name="_controllerFactory"
-            class="ptolemy.vergil.basic.NodeControllerFactory"/>
-  <!-- The following attribute makes the right editor open -->
-  <property name="_editorFactory"
-            class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+<property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
 </property>
