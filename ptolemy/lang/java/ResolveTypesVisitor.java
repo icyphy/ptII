@@ -59,13 +59,13 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         boolean debug = false;
 
         NameNode name = node.getName();
-
-	try {
+        
         if (StaticResolution.traceLoading) {
             System.out.println("Calling resolveAName from " + 
-                    "ResolveTypesVisitor.visitTypeNameNode#1(" + 
-                    name.getIdent() + ")");
+                    "ResolveTypesVisitor.visitTypeNameNode#1(" + name.getIdent() + ")");
         }
+
+	try {
 
 	    NameNode newName =
 		(NameNode) StaticResolution.resolveAName(name, scope, null,

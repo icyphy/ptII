@@ -63,7 +63,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         }
 
         _importOnDemand("java.lang");
-
+        
         TNLManip.traverseList(this, null, node.getImports());
 
         return null;
@@ -75,8 +75,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         if (StaticResolution.traceLoading) {
             System.out.println("Calling resolveAName from " + 
-                    "ResolveImportsVisitor.visitImportNode(" + 
-                    name.getIdent() + ")");
+                    "ResolveImportsVisitor.visitImportNode(" + name.getIdent() + ")");
         }
         
         StaticResolution.resolveAName(name,
@@ -158,12 +157,6 @@ public class ResolveImportsVisitor extends JavaVisitor
     // we can get rid of this by added java.lang to the import list
     protected final void _importOnDemand(String qualName) {
         NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
-
-        if (StaticResolution.traceLoading) {
-            System.out.println("Calling resolveAName from " + 
-                    "ResolveImportsVisitor._importOnDemand(" + 
-                    name.getIdent() + ")");
-        }
 
         StaticResolution.resolveAName(name,
                 StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
