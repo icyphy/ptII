@@ -699,7 +699,8 @@ public class DEDirector extends Director {
         return new DEReceiver();
     }
 
-    /** Return false if there are no more actors to fire. Otherwise, if
+    /** Return false if there are no more actors to fire or if stop()
+     *  has been called. Otherwise, if
      *  the director is an embedded director and the queue is not empty,
      *  then request that the executive director refire the container of
      *  this director at the time of the next event in the event queue
@@ -714,7 +715,7 @@ public class DEDirector extends Director {
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
-        return true;
+        return super.postfire();
     }
 
     /** Return true if there are input to this composite actor,

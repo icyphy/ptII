@@ -292,21 +292,6 @@ public class CompositeProcessDirector extends ProcessDirector {
         return new MailboxBoundaryReceiver();
     }
 
-    /** Return false if the model has reached deadlock and can
-     *  be terminated if desired. Return true otherwise.
-     *  This flag is set on detection of a deadlock in the fire() method.
-     *
-     *  @return false if the director has detected a deadlock and can be
-     *   terminated if desired.
-     *  @exception IllegalActionException If a derived class throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if ( _debugging ) {
-	    _debug(_name+": returning _notDone = " + _notDone);
-	}
-	return _notDone;
-    }
-
     /** Start threads for all actors that have not had threads started
      *  already (this might include actors initialized since the last
      *  invocation of prefire). This starts the threads, corresponding

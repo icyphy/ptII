@@ -31,6 +31,7 @@ Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
 fireAtRelativeTime(Actor, double)
 Semantics of initialize(Actor) have changed.
+Also, review stop() method.
 */
 
 package ptolemy.actor;
@@ -459,15 +460,17 @@ public class Director extends Attribute implements Executable {
      *  It should <i>not</i>, in general, call postfire() on the contained
      *  actors.
      *  <p>
-     *  In this base class, assume that the director only wants to get
-     *  fired once, and so return false. Domain directors will probably want
-     *  to override this method.
+     *  In this base class, return the false if stop() has been called
+     *  since preinitialize(), and true otherwise. Derived classes that
+     *  override this method need to respect this semantics. The
+     *  protected variable _stopRequested indicates whether stop()
+     *  has been called.
      *
-     *  @return False.
+     *  @return True to continue execution, and false otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        return false;
+        return !_stopRequested;
     }
 
     /** Return true if the director is ready to fire. This method is
@@ -510,7 +513,10 @@ public class Director extends Attribute implements Executable {
      *  Time is not set during this stage. So preinitialize() method
      *  of actors should not make use of time. They should wait
      *  until the initialize phase of the execution.
-     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  <p>This method also resets the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.
+     *  <p>This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
      *  @exception IllegalActionException If the preinitialize() method of
@@ -533,6 +539,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
+        _stopRequested = false;
         if (_debugging) _debug("Finished preinitialize().");
     }
 
@@ -627,6 +634,15 @@ public class Director extends Attribute implements Executable {
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    /** Request that the director cease execution altogether.
+     *  This causes a call to stopFire() and sets a flag
+     *  so that the next call to postfire() returns false.
+     */
+    public void stop() {
+        stopFire();
+        _stopRequested = true;
     }
 
     /** Request that execution of the current iteration stop.
@@ -830,6 +846,9 @@ public class Director extends Attribute implements Executable {
 
     /** The current time of the model. */
     protected double _currentTime = 0.0;
+
+    /** Indicator that a stop has been requested by a call to stop(). */
+    protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

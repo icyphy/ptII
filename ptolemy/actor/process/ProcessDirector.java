@@ -222,6 +222,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        _notDone = _notDone && !_stopRequested;
         if (_debugging) {
             _debug(_name+": returning _notDone = " + _notDone);
         }
@@ -259,7 +260,7 @@ public class ProcessDirector extends Director {
 
     /** Request that execution stop at the conclusion of the current
      *  iteration. Call stopThread on each of the process threads that
-     *  contain actors controlled by this director and call stopFire on
+     *  contain actors controlled by this director and call stopFire() on
      *  the actors that are contained by these threads. This method is
      *  non-blocking.
      */
