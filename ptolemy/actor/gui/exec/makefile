@@ -71,6 +71,7 @@ OPTIONAL_FILES = \
 	'ExecShellTableau$$1.class' \
 	'ExecShellTableau$$Factory.class' \
 	'ExecShellTableau$$ExecShellFrame.class' \
+	'ExecShellTableau$$_StreamReaderThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
