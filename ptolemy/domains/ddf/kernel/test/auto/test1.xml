@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {387, 4, 815, 535}, maximized = false}">
     </property>
@@ -30,7 +30,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 200.0]">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
