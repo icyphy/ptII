@@ -33,6 +33,7 @@
       </svg>
     </configure>
   </property>
+  <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
 </property>
 <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
