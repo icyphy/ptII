@@ -58,6 +58,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ArrayToSequence.java \
+	Autocorrelation.java \
 	BitsToInt.java \
 	Delay.java \
         DotProduct.java \
