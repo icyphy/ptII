@@ -283,7 +283,7 @@ public class SRDirector extends StaticSchedulingDirector {
         _resetAllReceivers();
 
         // Force the schedule to be computed.
-        _getSchedule();
+        _debug(_schedulerClassName + " returns: " + _getSchedule());
     }
 
     /** Return a new receiver consistent with the SR domain.
