@@ -1,4 +1,4 @@
-/* An actor that converts a string to an array integers, each getting one byte.
+/* An actor that converts a string to an array of integers.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -51,12 +51,14 @@ import ptolemy.math.Complex;
 /// StringToIntArray
 
 /**
-Convert a string to an integer array.  The output is an array of integers
-constructed by placing one byte of the string into the least significant
-byte of each integer.  For the time being, this actor assumes an 8-bit
-character set to be the Java default.  This actor is designed to facilitate
-use of the SerialComm serial communication actor which uses the same kind
-of integer array.
+Convert a string to an integer-array.  The output is an array of integers 
+constructed by placing one byte (i.e. one character) of the string into 
+the least significant byte of each integer.  Typically, this byte is the 
+ASCII code of the character.  NOTE: For the time being, this actor assumes 
+an 8-bit character has been set as the Java default on the platform in use.
+This actor is designed to facilitate use of the SerialComm serial 
+communication actor which uses the same kind of integer array.  Datagram 
+actors can take this format as well.
 <p>
 @author Winthrop Williams
 @version $Id$

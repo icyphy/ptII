@@ -1,4 +1,4 @@
-/* An actor that converts the low bytes of integers in an array into a string.
+/* An actor that converts an array of integers into a string.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -51,9 +51,11 @@ import ptolemy.math.Complex;
 /// IntArrayToString
 
 /**
-Convert an integer array into a string.  Use only the low byte from
-each integer.  Assumes an 8-bit character set.  The output is a string
-assembled from these bytes.
+Convert an integer-array into a string.  Uses only the low order byte from 
+each integer.  NOTE: Assumes an 8-bit character set.  The output is a string 
+assembled from these bytes.  This actor is designed to facilitate use of the 
+SerialComm serial communication actor which uses the same kind of integer 
+array format as this actor.  Datagram actors can use this format as well.
 <p>
 
 @author Michael Leung, Edward A. Lee, and Paul Whitaker
