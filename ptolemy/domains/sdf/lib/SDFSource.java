@@ -71,7 +71,7 @@ public abstract class SDFSource extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	output = new SDFIOPort(this, "output", false, true);
-
+	output.setMultiport(true);
 	// parameters
 	rate = new Parameter(this, "rate", new IntToken(256));
 	rate.setTypeEquals(BaseType.INT);
