@@ -272,3 +272,4 @@ public abstract class ResolveVisitorBase extends JavaVisitor {
 
     /** A flag indicating whether or not the types should be lazily resolved. */
     protected boolean _lazy = false;
+}

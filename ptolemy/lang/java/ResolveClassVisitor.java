@@ -1,3 +1,39 @@
+/* 
+Create declarations for fields, constructors, and methods, and add them to
+their enclosing class's environment.
+
+Code and comments adopted from st-class.cc from the Titanium project.
+
+Copyright (c) 1998-1999 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+
+*/
+
 package ptolemy.lang.java;
 
 import java.util.Collection;
@@ -32,7 +68,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         if (_isSkippable(node)) return null;
 
-        ClassDecl me = (ClassDecl) JavaDecl.getDecl(node);
+        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         TreeNode superClass = node.getSuperClass();
 
@@ -50,9 +86,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         me.setSuperClass(superDecl);
 
         // initialize the implements list.
-        // FIXME : what about the interfaces implemented by the base class, and
-        // the interfaces in the list?
-
         LinkedList declInterfaceList = new LinkedList();
 
         Iterator interfaceItr = node.getInterfaces().iterator();
@@ -136,7 +169,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
         if (_isSkippable(node)) return null;
 
-        ClassDecl me = (ClassDecl) JavaDecl.getDecl(node);
+        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         // initialize the implements list.
         // FIXME : what about the interfaces implemented by the interfaces in the list?
@@ -201,6 +234,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         return null;
     }
 
+    public Object visitParameterNode(ParameterNode node, LinkedList args) {
+        return null;
+    }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
 
@@ -328,33 +364,34 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    public Object visitParameterNode(ParameterNode node, LinkedList args) {
-        return null;
-    }
-
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
 
         node.getEnclosingInstance().accept(this, args);
          
         ClassDecl me = (ClassDecl) node.getDefinedProperty("decl");
                
-        TypeNameNode superType = (TypeNameNode) node.getSuperType();
+        TypeNameNode superType = node.getSuperType();
         
         ClassDecl sdecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superType);
         
         ClassDecl superClass = null;
-        LinkedList implList = new LinkedList();
+        ClassDecl implIFace = null;
+        
         if (sdecl.category == JavaDecl.CG_CLASS) {
            superClass = sdecl;
         } else if (sdecl.category == JavaDecl.CG_INTERFACE) {
            superClass = StaticResolution.OBJECT_DECL;
-           implList.addLast(sdecl);
+           implIFace = sdecl;
         }
 
         node.setProperty("superclass", superClass);     
-        node.setProperty("implements", implList);
+        node.setProperty("implements", implIFace);
                          
         me.setSuperClass(superClass);
+        
+        if (implIFace != null) {        
+           me.setInterfaces(TNLManip.cons(implIFace));
+        }
 
         Environ myEnviron = me.getEnviron();
 

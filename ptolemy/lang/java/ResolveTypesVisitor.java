@@ -50,7 +50,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-         name, env, null, false, _currentPackage, JavaDecl.CG_USERTYPE);
+         name, env, null, _currentPackage, JavaDecl.CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -115,10 +115,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
               return null;
            }
 
-           // get the environment of this node
-           LinkedList childArgs = new LinkedList();
-           childArgs.addLast(node.getDefinedProperty("environ"));
-
+           // the environment of this node is the argument for the children
+           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+           
            // resolve only the parameters and exceptions thrown
            TNLManip.traverseList(this, node, childArgs, node.getParams());
            TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
@@ -128,14 +127,14 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);    }
+        return _visitNodeWithEnviron(node);    
+    }
 
     public Object visitForNode(ForNode node, LinkedList args) {
         return _visitNodeWithEnviron(node);
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {        
         return _visitNodeWithEnviron(node);
     }
 
@@ -149,29 +148,28 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     /** Get environment from this node, and pass it to the children.
-     *  Only nodes that do have their own environment should call this method.
+     *  Only nodes that have their own environment should call this method.
      */
     protected Object _visitNodeWithEnviron(TreeNode node) {
-        Object envObj = node.getDefinedProperty("environ");
 
-        LinkedList childArgs = new LinkedList();
-        childArgs.addLast(envObj);
-
+        // environment for this class is argument for children
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+        
         TNLManip.traverseList(this, node, childArgs, node.children());
 
         return null;
     }
 
+    /** Handle ClassDeclNodes and InterfaceDeclNodes. */
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
         if (_isSkippable(node)) {
            // don't resolve anything if it's a private class and we're doing lazy resolution
            return null;
         }
 
-        LinkedList childArgs = new LinkedList();
-        // environment for this class
-        childArgs.addLast(node.getDefinedProperty("environ"));
-
+        // environment for this class is argument for children
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+        
         TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 

@@ -44,28 +44,38 @@ public abstract class TreeNode extends PropertyMap {
 
       StringBuffer sb = new StringBuffer();
 
-      sb.append(indent);
-
       Class c = getClass();
-      String className = c.getName();
+      String className = _unqualifiedNameString(c.getName());
 
       sb.append(className);
-      sb.append('\n');
-
-      String nextIndent = indent + "  ";
+           
       Method[] methodArr = c.getMethods();
+          
+      String nextIndent = indent + " ";        
+      
+      int matchingMethods = 0;
 
       for (int i = 0; i < methodArr.length; i++) {
           Method method = methodArr[i];
 
           String methodName = method.getName();
-
+          
           if (methodName.startsWith("get") &&
               (method.getParameterTypes().length == 0) &&
               !methodName.equals("getClass")) {
-             sb.append(nextIndent);
-             sb.append(methodName.substring(3));
-             sb.append(" : ");
+              
+             matchingMethods++; 
+             if (matchingMethods == 1) {
+                sb.append('\n'); 
+             } 
+              
+             String methodLabel = methodName.substring(3);
+          
+             String totalIndent = nextIndent + _makeSpaceString(methodLabel.length()) + "  ";
+                       
+             sb.append(nextIndent);             
+             sb.append(methodLabel);
+             sb.append(": ");
 
              Object retval = null;
              try {
@@ -76,21 +86,25 @@ public abstract class TreeNode extends PropertyMap {
 
              if (retval instanceof TreeNode) {
                 TreeNode node = (TreeNode) retval;
-                sb.append('\n');
-                sb.append(node.toString(nextIndent));
+                sb.append(node.toString(totalIndent));
              } else if (retval instanceof LinkedList) {
                 sb.append(TNLManip.toString((LinkedList) retval, nextIndent));
              } else {
                 sb.append(retval.toString());
                 sb.append('\n');
              }
-          }
-      }
-
-      sb.append(indent);
-
-      sb.append("END ");
-      sb.append(className);
+             
+          } // if (methodName.startsWith("get") ...
+      } // for 
+                      
+      if (matchingMethods < 1) {
+         sb.append(" (leaf)"); // Node has no children
+      } else {
+        sb.append(indent);
+        sb.append("END ");
+        sb.append(className);           
+      }      
+      
       sb.append('\n');
 
       return sb.toString();
@@ -219,6 +233,22 @@ public abstract class TreeNode extends PropertyMap {
     }
     ApplicationUtility.error("Child not found");
     return null;
+  }
+
+  protected static String _unqualifiedNameString(String s) {
+    return s.substring(s.lastIndexOf('.') + 1);
+  
+  }
+  
+  // fixme
+  public static String _makeSpaceString(int spaces) {
+    StringBuffer sb = new StringBuffer();
+    
+    for (int i = 0; i < spaces; i++) {
+        sb.append(' ');
+    }
+  
+    return sb.toString();
   }
 
   protected LinkedList _childList = new LinkedList();

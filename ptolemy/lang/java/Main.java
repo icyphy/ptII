@@ -1,7 +1,6 @@
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
 import ptolemy.lang.*;
 
 class Main {
@@ -63,7 +62,10 @@ class Main {
     }
 
     LinkedList unitList = StaticResolution.fullyResolvedFiles;
-    ListIterator unitItr = unitList.listIterator();
+    
+    NumberDeclVisitor.numberDecls(unitList);
+    
+    Iterator unitItr = unitList.iterator();
 
     while (unitItr.hasNext()) {
         CompileUnitNode ast = (CompileUnitNode) unitItr.next();

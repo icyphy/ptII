@@ -37,6 +37,7 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 
 public class PrintTree {
+
   public static void main(String[] args) {
     int files = args.length;
     int fileStart = 0;
@@ -77,3 +78,4 @@ public class PrintTree {
         System.out.println(ast.toString());
     }
   }
+}

@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Iterator;
 import ptolemy.lang.*;
 
 public class SkeletonVisitor extends JavaVisitor {
@@ -45,7 +45,7 @@ public class SkeletonVisitor extends JavaVisitor {
          node.getDefTypes());
 
         LinkedList newDefTypeList = new LinkedList();
-        ListIterator retItr = retList.listIterator();
+        Iterator retItr = retList.iterator();
 
         while (retItr.hasNext()) {
           Object o = retItr.next();
@@ -79,7 +79,7 @@ public class SkeletonVisitor extends JavaVisitor {
         LinkedList retList =
          TNLManip.traverseList(this, null, null, node.getMembers());
 
-        ListIterator retItr = retList.listIterator();
+        Iterator retItr = retList.iterator();
 
         LinkedList newMemberList = new LinkedList();
 
@@ -161,7 +161,7 @@ public class SkeletonVisitor extends JavaVisitor {
         LinkedList retList =
          TNLManip.traverseList(this, null, null, node.getMembers());
 
-        ListIterator retItr = retList.listIterator();
+        Iterator retItr = retList.iterator();
 
         LinkedList newMemberList = new LinkedList();
 

@@ -119,7 +119,12 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         ClassDecl decl = new ClassDecl("<anon>", null);        
         decl.setSource(node);
         decl.setEnviron(env);
-
+        
+        NameNode typeName = new NameNode(AbsentTreeNode.instance, "<anon>");
+        typeName.setProperty("decl", decl);
+        
+        node.setProperty("type", new TypeNameNode(typeName));
+        
         node.setProperty("decl", decl);
 
         LinkedList listArgs = new LinkedList();
@@ -191,7 +196,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
 
            //if (topLevel) {
            if (!isInner) {
-  	           _pkgEnv.add(cl);
+              _pkgEnv.add(cl);
            }
 
            ocl = cl;

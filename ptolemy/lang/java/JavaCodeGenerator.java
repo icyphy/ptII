@@ -33,6 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import ptolemy.lang.*;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
 
@@ -1128,7 +1129,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         return "";
     }
 
-    protected static String _commaList(LinkedList list) {
+    protected static String _commaList(List list) {
         StringBuffer sb = new StringBuffer();
 
         Iterator itr = list.iterator();

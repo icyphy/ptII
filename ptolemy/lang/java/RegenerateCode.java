@@ -79,3 +79,4 @@ public class RegenerateCode {
         System.out.println(codeString);
     }
   }
+}

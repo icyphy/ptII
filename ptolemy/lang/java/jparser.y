@@ -119,8 +119,8 @@
 %{
 package ptolemy.lang.java;
 
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.io.IOException;
 import java.io.FileInputStream;
 
@@ -422,7 +422,7 @@ FieldVariableDeclaration :
 	     LinkedList result = new LinkedList();
 
       LinkedList varDecls = (LinkedList) $3;
-      ListIterator itr = varDecls.listIterator(0);
+      Iterator itr = varDecls.iterator();
 
 	     while (itr.hasNext()) {
 		     DeclaratorNode decl = (DeclaratorNode) itr.next();
@@ -708,7 +708,7 @@ ConstantFieldDeclaration :
 
      Modifier.checkConstantFieldModifiers(modifiers);
      LinkedList varDecls = (LinkedList) $3;
-     ListIterator itr = varDecls.listIterator(0);
+     Iterator itr = varDecls.iterator();
 
 	    LinkedList result = new LinkedList();
 
@@ -813,7 +813,7 @@ LocalVariableDeclarationStatement :
      LinkedList varDecls = (LinkedList) $3;
      LinkedList result = new LinkedList();
 
-     ListIterator itr = varDecls.listIterator();
+     Iterator itr = varDecls.iterator();
 
 	    while (itr.hasNext()) {
 		    DeclaratorNode decl = (DeclaratorNode) itr.next();
@@ -829,7 +829,7 @@ LocalVariableDeclarationStatement :
      LinkedList varDecls = (LinkedList) $2;
      LinkedList result = new LinkedList();
 
-     ListIterator itr = varDecls.listIterator();
+     Iterator itr = varDecls.iterator();
 
 	    while (itr.hasNext()) {
 		    DeclaratorNode decl = (DeclaratorNode) itr.next();
@@ -1144,7 +1144,7 @@ ArgumentList :
 
 AllocationExpression :
    NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
-   { $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4, new ThisNode()); }
+   { $$ = new AllocateNode((TypeNameNode) $2, (LinkedList) $4, new ThisNode()); }
    /* NEW: Java 1.1 : D.2.1 Anonymous classes */
  | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
    {

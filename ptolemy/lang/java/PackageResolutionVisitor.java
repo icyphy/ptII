@@ -24,8 +24,7 @@ public class PackageResolutionVisitor extends JavaVisitor {
         } else {
            NameNode name = (NameNode) StaticResolution.resolveAName(
             (NameNode) pkgDeclNode,
-            StaticResolution.SYSTEM_PACKAGE.getEnviron(),
-		     null, false, null, JavaDecl.CG_PACKAGE);
+            StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, JavaDecl.CG_PACKAGE);
            thePkgDecl = (PackageDecl) name.getProperty("decl");
         }
 

@@ -87,7 +87,7 @@ import ptolemy.lang.*;
  *     and so on.  Decls that arise as the result of importing a class
  *     have special dummy source nodes created for them.
  *
- *   ATTRIBUTE asType()
+ *   ATTRIBUTE defType
  *     For Decls for which isType() is true, a resolved
  *     TypeNameNode that stands for the type this class represents.  That
  *     is, it is a TypeNameNode whose decl() is THIS.
@@ -122,6 +122,21 @@ public abstract class JavaDecl extends Decl {
   /** Return true iff this declaration has a container. */
   public boolean hasContainer() { return false; }
 
+
+  /** Return the resolved TypeNameNode that stands for the type this class 
+   *  represents.  That is, it is a TypeNameNode whose getDecl() is THIS.
+   */
+  public TypeNameNode getDefType() {
+    throw new RuntimeException(getClass().getName() + " defined no type.");
+  }
+
+  /** Set the environment associated with this declaration. */
+  public void setDefType(TypeNameNode node) {
+    throw new RuntimeException(getClass().getName() + " defines no type.");
+  }
+
+  /** Return true iff this declaration defines a type. */
+  public boolean hasDefType() { return false; }
 
   /** Return the environment associated with this declaration.
    *  Classes, interfaces, and packages define environments:  mappings of
@@ -232,7 +247,7 @@ public abstract class JavaDecl extends Decl {
        return getDecl((NamedNode) node);
     } 
     
-    return getDecl((NameNode) node);
+    return (JavaDecl) node.getProperty("decl");
   }
 
   /** Return the Decl associated with the named node. Return null if the
@@ -242,11 +257,22 @@ public abstract class JavaDecl extends Decl {
     return (JavaDecl) node.getName().getProperty("decl");
   }
 
-  /** Return the Decl associated with the name. Return null if the
-   *  Decl is not found.
+  /** Set the Decl associated with the node. 
+   *  This method figures out the type of node, and
+   *  passes to the appropriate more specific setDecl() method.
    */
-  public static final JavaDecl getDecl(NameNode node) {
-    return (JavaDecl) node.getProperty("decl");
+  public static final void setDecl(TreeNode node, JavaDecl decl) {
+    if (node instanceof NamedNode) {
+       setDecl((NamedNode) node, decl);
+       return;
+    } 
+    
+    node.setProperty("decl", decl);
+  }
+
+  /** Set the Decl associated with the named node. */
+  public static final void setDecl(NamedNode node, JavaDecl decl) {
+      node.getName().setProperty("decl", decl);
   }
 
   /** Type ClassDecl representing a class. */

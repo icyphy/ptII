@@ -45,6 +45,47 @@ public class TypeUtility {
      */
     public TypeUtility() {}
 
+    /** For nodes that represent field accesses (ObjectFieldAccessNode, 
+     *  ThisFieldAccessNode, SuperFieldAccessNode) the type of the 
+     *  object that is accessed (e.g., for a node representing FOO.BAR, 
+     *  the type of FOO. This method figures out the sub-type of NODE
+     *  and calls the appropriate more specific method. 
+     */
+    public static TypeNameNode accessedObjectType(FieldAccessNode node) {
+        if (node instanceof TypeFieldAccessNode) {
+           return accessedObjectType((TypeFieldAccessNode) node);
+        } else if (node instanceof ObjectFieldAccessNode) {
+           return accessedObjectType((ObjectFieldAccessNode) node);
+        } else if (node instanceof ThisFieldAccessNode) {
+           return accessedObjectType((ThisFieldAccessNode) node);
+        } else if (node instanceof SuperFieldAccessNode) {
+           return accessedObjectType((SuperFieldAccessNode) node);
+        } else {
+           ApplicationUtility.error("accessObjectType() not supported for node " + node);
+        }
+        return null;              
+    }
+
+    public static TypeNameNode accessedObjectType(TypeFieldAccessNode node) {
+        return JavaDecl.getDecl((NamedNode) node.getFType()).getDefType();
+    }
+
+    public static TypeNameNode accessedObjectType(ObjectFieldAccessNode node) {
+        return (TypeNameNode) type((ExprNode) node.getObject());        
+    }
+
+    public static TypeNameNode accessedObjectType(ThisFieldAccessNode node)  {
+        return (TypeNameNode) node.getDefinedProperty("theClass");
+    }
+
+    public static TypeNameNode accessedObjectType(SuperFieldAccessNode node) {    
+        ClassDecl myClass = (ClassDecl) JavaDecl.getDecl(
+         (NamedNode) node.getDefinedProperty("theClass"));
+        ClassDecl sclass = myClass.getSuperClass();
+        
+        return sclass.getDefType();
+    }
+
     /** Return true if TypeNodes t1 and t2 are identical. */
     public static boolean compareTypes(TypeNode t1, TypeNode t2) {
         if (t1 == t2) {  // primitive types, or reference to same type node
@@ -181,7 +222,25 @@ public class TypeUtility {
     public static boolean isStringType(TypeNode type) { 
        return compareTypes(type, StaticResolution.STRING_DECL.getDefType());
     }     
-
+   
+    public static boolean isAssignableFromConstant(TypeNode type, ExprNode expr) {    
+       switch (kind(type)) {
+         case TYPE_KIND_BYTE:
+         return ExprUtility.isIntConstant(expr, Byte.MIN_VALUE, Byte.MAX_VALUE);
+              
+         case TYPE_KIND_CHAR:
+         return ExprUtility.isIntConstant(expr, Character.MIN_VALUE, Character.MAX_VALUE);
+         
+         case TYPE_KIND_SHORT:
+         return ExprUtility.isIntConstant(expr, Short.MIN_VALUE, Short.MAX_VALUE);       
+         
+         // not in Titanium ...
+         case TYPE_KIND_INT:
+         return ExprUtility.isIntConstant(expr, Integer.MIN_VALUE, Integer.MAX_VALUE);                
+       }   
+       return false; 
+    }
+    
     public static boolean isAssignableFromType(final TypeNode type1, 
      final TypeNode type2)  {
 
@@ -296,7 +355,19 @@ public class TypeUtility {
        }    
        return TYPE_KIND_CLASS;
     }
-
+             
+    public static TypeNode primitiveKindToType(int kind) {
+       if (kind < 0) {
+          ApplicationUtility.error("unknown type is not primitive");
+       }
+       
+       if (kind > NUM_PRIMITIVE_TYPES) {
+          ApplicationUtility.error("type is not primitive");
+       }
+       
+       return _PRIMITIVE_KIND_TO_TYPE[kind];                    
+    }         
+             
     public static final TypeNode type(ExprNode expr) {
        return (TypeNode) expr.accept(new TypeVisitor(), null);       
     }         
@@ -404,23 +475,41 @@ public class TypeUtility {
        }
        return false;          
     }
-
-    public static final int TYPE_KIND_UNKNOWN = 0;        
-    public static final int TYPE_KIND_BOOL    = 1;        
-    public static final int TYPE_KIND_BYTE    = 2;        
-    public static final int TYPE_KIND_CHAR    = 3;        
-    public static final int TYPE_KIND_SHORT   = 4;        
-    public static final int TYPE_KIND_INT     = 5;        
-    public static final int TYPE_KIND_LONG    = 6;        
-    public static final int TYPE_KIND_FLOAT   = 7;        
-    public static final int TYPE_KIND_DOUBLE  = 8;        
-    public static final int TYPE_KIND_CLASS   = 9;        
-    public static final int TYPE_KIND_INTERFACE = 10;        
-    public static final int TYPE_KIND_ARRAYINIT = 11;
-    public static final int TYPE_KIND_NULL    = 12;            
-
+    
+    public static final int TYPE_KIND_UNKNOWN = -1;  
+    
+    // primitive types
+          
+    public static final int TYPE_KIND_BOOL    = 0; // first primitive type should start at 0       
+    public static final int TYPE_KIND_BYTE    = 1;        
+    public static final int TYPE_KIND_SHORT   = 2;        
+    public static final int TYPE_KIND_CHAR    = 3;            
+    public static final int TYPE_KIND_INT     = 4;        
+    public static final int TYPE_KIND_LONG    = 5;        
+    public static final int TYPE_KIND_FLOAT   = 6;        
+    public static final int TYPE_KIND_DOUBLE  = 7;        
+    
+    /** The number of primitive types in Java. */
+    public static final int NUM_PRIMITIVE_TYPES = TYPE_KIND_DOUBLE + 1;
+    
+    // user defined types
+    
+    public static final int TYPE_KIND_CLASS   = 8;        
+    public static final int TYPE_KIND_INTERFACE = 9;        
+    
+    /** The kind for an array initializer expression { 0, 1, .. }. */    
+    public static final int TYPE_KIND_ARRAYINIT = 10;
+    
+    /** The kind of NULL. */
+    public static final int TYPE_KIND_NULL    = 11;            
+                      
+    protected static final TypeNode[] _PRIMITIVE_KIND_TO_TYPE = new TypeNode[]
+     { BoolTypeNode.instance, ByteTypeNode.instance, ShortTypeNode.instance, 
+       CharTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance, 
+       FloatTypeNode.instance, DoubleTypeNode.instance };
+                                                      
     protected static final TypeNode[] _ARITH_TYPES = new TypeNode[] 
-     { ByteTypeNode.instance, CharTypeNode.instance, ShortTypeNode.instance,
+     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
        IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
        DoubleTypeNode.instance };
 
@@ -428,19 +517,19 @@ public class TypeUtility {
      { FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _INTEGRAL_TYPES = new TypeNode[]
-     { ByteTypeNode.instance, CharTypeNode.instance, ShortTypeNode.instance,
+     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
        IntTypeNode.instance, LongTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BOOL = new TypeNode[] 
      { BoolTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BYTE = new TypeNode[] 
-     { ByteTypeNode.instance, CharTypeNode.instance, ShortTypeNode.instance, 
+     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance, 
        IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance, 
        DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_CHAR = new TypeNode[] 
-     { CharTypeNode.instance, ShortTypeNode.instance, IntTypeNode.instance, 
+     { ShortTypeNode.instance, CharTypeNode.instance, IntTypeNode.instance, 
        LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_SHORT = new TypeNode[] 
@@ -461,12 +550,12 @@ public class TypeUtility {
      { DoubleTypeNode.instance };
 
     /** An uneven matrix of primitive types that may be assigned to a 
-     *  primitive type, the kind of which is the array index.
+     *  primitive type, the kind of which is the first array index.
      */
     protected static final TypeNode[][] _TYPES_ASSIGNABLE_TO = new TypeNode[][] 
      { 
-       _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_CHAR,
-       _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT, _TYPES_ASSIGNABLE_TO_INT,
-       _TYPES_ASSIGNABLE_TO_LONG, _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
+       _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT, 
+       _TYPES_ASSIGNABLE_TO_CHAR, _TYPES_ASSIGNABLE_TO_INT, _TYPES_ASSIGNABLE_TO_LONG, 
+       _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
      };     
 }

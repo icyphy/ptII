@@ -155,3 +155,4 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
 
         return node;
     }   
+}

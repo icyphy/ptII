@@ -90,3 +90,4 @@ public class ApplicationUtility {
 
   public static int errors   = 0;
   public static int warnings = 0;
+}

@@ -131,8 +131,8 @@ ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers Na
 FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 
-// body may be absent
 InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList params LinkedList throwsList k
+// body may be absent
 MethodDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList TreeNode body TypeNode returnType k
 ConstructorDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList BlockNode body ConstructorCallNode constructorCall k
 
@@ -182,13 +182,13 @@ ArrayAccessNode C ExprNode k 0 ExprNode array ExprNode index k
 ObjectNode C ExprNode i NamedNode i k 0 NameNode name k
 ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode object NameNode name k
 SuperFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
-TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNode fType NameNode name k
-ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode theClass NameNode name boolean local k
+TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNameNode fType NameNode name k
+ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 {p}TypeNameNode theClass NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 MethodCallNode C ExprNode k 0 TreeNode method LinkedList args k
-AllocateNode C ExprNode k 0 TypeNode dtype LinkedList args ExprNode enclosingInstance k
+AllocateNode C ExprNode k 0 TypeNameNode dtype LinkedList args ExprNode enclosingInstance k
 AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims TreeNode initExpr k
 AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType LinkedList superArgs LinkedList members ExprNode enclosingInstance k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
@@ -233,5 +233,3 @@ RightShiftArithAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitAndAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitXorAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitOrAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-
-

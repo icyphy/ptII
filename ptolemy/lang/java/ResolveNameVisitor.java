@@ -1,4 +1,4 @@
-/*
+ /*
 Resolve names of local variables, formal parameters, field accesses,
 method calls, and statement labels. Code adopted from st-name.cc from
 the Titanium project.
@@ -125,13 +125,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
          
         node.setParams(TNLManip.traverseList(this, node, childArgs, 
          node.getParams()));
-          
-        //node.setReturnType((TypeNode)
-         //node.getReturnType().accept(this, childArgs)); 
-          
-        //node.setThrowsList(TNLManip.traverseList(this, node, childArgs,
-         // node.getThrowsList()); 
-                  
+                           
         TreeNode body = node.getBody();
         
         if (body != AbsentTreeNode.instance) {                         
@@ -345,12 +339,11 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         TypeNode currentClass = ctx.currentClass;
 
         if (ctx.resolveAsObject) {
-           return StaticResolution.resolveAName(name, env, ctx.currentClass,
-            false, _currentPackage,
+           return StaticResolution.resolveAName(name, env, ctx.currentClass, _currentPackage,
             (JavaDecl.CG_FIELD | JavaDecl.CG_LOCALVAR | JavaDecl.CG_FORMAL));
         } else {
-           return StaticResolution.resolveAName(name, env, ctx.currentClass,
-            false, _currentPackage, JavaDecl.CG_METHOD);
+           return StaticResolution.resolveAName(name, env, ctx.currentClass, _currentPackage, 
+            JavaDecl.CG_METHOD);
         }
     }
 
@@ -379,7 +372,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         LinkedList childArgs = TNLManip.cons(subCtx);
         
         // not really necessary             
-        node.setFType((TypeNode) node.getFType().accept(this, childArgs));
+        node.setFType((TypeNameNode) node.getFType().accept(this, childArgs));
         
         return node;    
     }
@@ -474,3 +467,4 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
 
     /** The package this compile unit is in. */
     protected PackageDecl _currentPackage = null;
+}

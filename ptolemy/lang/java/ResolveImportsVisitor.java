@@ -56,8 +56,8 @@ public class ResolveImportsVisitor extends JavaVisitor {
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-         (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(),
-         null, false, null, JavaDecl.CG_USERTYPE);
+         (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, 
+         JavaDecl.CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty("decl");
@@ -78,8 +78,8 @@ public class ResolveImportsVisitor extends JavaVisitor {
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, false,
-         null, JavaDecl.CG_PACKAGE);
+         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, 
+         JavaDecl.CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty("decl");
 

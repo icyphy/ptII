@@ -33,7 +33,7 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        // fixme
+        // FIXME
         node.setProperty("type",
          new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String")));
         return null;
@@ -48,9 +48,9 @@ public class TypeVisitor extends JavaVisitor {
     }
     
     public Object visitThisNode(ThisNode node, LinkedList args) {
-        ClassDecl theClass = (ClassDecl) node.getDefinedProperty("theClass");
+        TypeNameNode type = (TypeNameNode) node.getDefinedProperty("theClass");
                 
-        return _setType(node, theClass.getDefType());
+        return _setType(node, type);
     }
 
     public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
@@ -80,15 +80,17 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {
+        // FIXME
         return _defaultVisit(node, args);
     }
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        return _setType(node, node.getType());
     }
 
     public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        ClassDecl thisDecl = (ClassDecl) node.getType().getName().getDefinedProperty("decl");           
+        return _setType(node, thisDecl.getSuperClass().getDefType());
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
@@ -105,9 +107,7 @@ public class TypeVisitor extends JavaVisitor {
         return _setType(node, node.getDtype());
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        return _setType(node, node.getSuperType());
-    }
+    // for AllocateAnonymousClassNode, type property is already defined by ResolvePackageVisitor
 
     public Object visitPostIncrNode(PostIncrNode node, LinkedList args) {
         return _visitIncrDecrNode(node);
@@ -159,9 +159,8 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitPlusNode(PlusNode node, LinkedList args) {
-        // support string concatenations
-           
-    
+        // FIXME : support string concatenations
+               
         return _visitBinaryArithNode(node);
     }
 
@@ -230,7 +229,43 @@ public class TypeVisitor extends JavaVisitor {
     }
 
     public Object visitIfExprNode(IfExprNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        TypeNode thenType = type(node.getExpr2());
+        TypeNode elseType = type(node.getExpr3());
+          
+        if (TypeUtility.compareTypes(thenType, elseType)) {
+           return _setType(node, thenType);
+        }
+
+        if (TypeUtility.isArithType(thenType)) {
+           if (((thenType == ByteTypeNode.instance) && 
+                (elseType == ShortTypeNode.instance)) ||
+               ((thenType == ShortTypeNode.instance) && 
+                (elseType == ByteTypeNode.instance))) {
+              return _setType(node, ShortTypeNode.instance);
+           }
+           
+           ExprNode thenExpr = node.getExpr2();
+           ExprNode elseExpr = node.getExpr3();
+           
+           // check _validIf() for byte, short, char 
+           for (int kind = TypeUtility.TYPE_KIND_BYTE; 
+                kind <= TypeUtility.TYPE_KIND_CHAR; kind++) {
+               if (_validIf(thenExpr, thenType, elseExpr, elseType, kind)) {
+                  return _setType(node, TypeUtility.primitiveKindToType(kind));
+               }
+           }
+           
+           return _setType(node, TypeUtility.arithPromoteType(thenType, elseType)); 
+                
+        } else if (TypeUtility.isReferenceType(thenType)) {
+           if (TypeUtility.isAssignableFromType(thenType, elseType)) {
+              return _setType(node, thenType);
+           } else {
+              return _setType(node, elseType);
+           }
+        }
+        
+        return _setType(node, TypeUtility.arithPromoteType(thenType, elseType));
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
@@ -307,6 +342,15 @@ public class TypeVisitor extends JavaVisitor {
          type(node.getExpr1()), type(node.getExpr2())));
     }
 
+    protected static boolean _validIf(ExprNode e1, TypeNode t1, ExprNode e2, 
+     TypeNode t2, int kind) {   
+        return (((TypeUtility.kind(t1) == kind) && 
+                 TypeUtility.isAssignableFromConstant(t1, e2)) ||
+                ((TypeUtility.kind(t2) == kind) && 
+                 TypeUtility.isAssignableFromConstant(t2, e1)));
+    }
+
+    /** Memoize the type, and return it. */
     protected TypeNode _setType(ExprNode expr, TypeNode type) {
         expr.setProperty("type", type);
         return type;            
