@@ -389,7 +389,12 @@ public class TypedIOPort extends IOPort implements Typeable {
 			// since the user was null, this should never happen.
 			throw new InternalErrorException(
                                 "TypedIOPort.setTypeEquals: " + ex.getMessage());
-		    }
+                    } catch (CloneNotSupportedException ex2) {
+                        throw new InternalErrorException(
+                                "TypedIOPort.setTypeEquals: " +
+                                "Cannot clone typeStruct" +
+                                ex2.getMessage());
+                    }
 		}
 	    }
 
