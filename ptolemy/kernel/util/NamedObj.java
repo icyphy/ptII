@@ -199,8 +199,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                     np.setContainer(result);         
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
-                    "Failed to clone an Attribute of " +
-                    getFullName() + ": " + ex.getMessage());
+                            "Failed to clone an Attribute of " +
+                            getFullName() + ": " + ex.getMessage());
                 }
             }
             return result;

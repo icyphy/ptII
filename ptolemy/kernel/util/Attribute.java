@@ -140,13 +140,13 @@ public class Attribute extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         if (container != null && workspace() != container.workspace()) {
             throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
         try {
             workspace().write();
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
-                "Attempt to construct recursive containment of attributes.");
+                        "Attempt to construct recursive containment of attributes.");
             }
 
             NamedObj prevcontainer = (NamedObj)getContainer();

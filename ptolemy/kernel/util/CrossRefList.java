@@ -152,7 +152,7 @@ public final class CrossRefList implements Serializable  {
             throws IllegalActionException {
         if(farList == this) {
             throw new IllegalActionException(
-                "CrossRefLink.link: Illegal self-link.");
+                    "CrossRefLink.link: Illegal self-link.");
         }
 
         ++_listVersion;

@@ -232,7 +232,7 @@ public class Relation extends NamedObj {
                 while (enum.hasMoreElements()) {
                     Port port = (Port)enum.nextElement();
                     result = result +
-                            port._description(detail, indent+1) + "\n";
+                        port._description(detail, indent+1) + "\n";
                 }
                 result = result + _indent(indent) + "}";
             }

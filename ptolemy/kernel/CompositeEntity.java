@@ -532,7 +532,7 @@ public class CompositeEntity extends ComponentEntity {
             throws IllegalActionException, NameDuplicationException {
         if (entity.deepContains(this)) {
             throw new IllegalActionException(entity, this,
-            "Attempt to construct recursive containment.");
+                    "Attempt to construct recursive containment.");
         }
         _containedEntities.append(entity);
     }
@@ -588,14 +588,14 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity =
                         (ComponentEntity)enume.nextElement();
                     result = result +
-                            entity._description(detail, indent+1) + "\n";
+                        entity._description(detail, indent+1) + "\n";
                 }
                 result = result + _indent(indent) + "} relations {\n";
                 Enumeration enum = getRelations();
                 while (enum.hasMoreElements()) {
                     Relation relation = (Relation)enum.nextElement();
                     result = result +
-                            relation._description(detail, indent+1) + "\n";
+                        relation._description(detail, indent+1) + "\n";
                 }
                 result = result + _indent(indent) + "}";
             }

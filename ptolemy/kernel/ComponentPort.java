@@ -525,7 +525,7 @@ public class ComponentPort extends Port {
                 while (enum.hasMoreElements()) {
                     Relation rel = (Relation)enum.nextElement();
                     result = result +
-                            rel._description(detail, indent+1) + "\n";
+                        rel._description(detail, indent+1) + "\n";
                 }
                 result = result + _indent(indent) + "}";
             }
@@ -572,11 +572,11 @@ public class ComponentPort extends Port {
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
-            "Attempt to link to an incompatible relation.");
+                    "Attempt to link to an incompatible relation.");
         }
         if (getContainer() == null) {
             throw new IllegalActionException(this, relation,
-            "Port must have a container to establish a link.");
+                    "Port must have a container to establish a link.");
         }
         // Throw an exception if this port is not of an acceptable
         // class for the relation.

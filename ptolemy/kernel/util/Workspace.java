@@ -130,16 +130,16 @@ public class Workspace implements Nameable, Serializable {
             throws IllegalActionException {
         if (item.workspace() != this) {
             throw new IllegalActionException(this, item,
-            "Cannot add an item to the directory of a workspace that it " +
-            "is not in.");
+                    "Cannot add an item to the directory of a workspace that it " +
+                    "is not in.");
         }
         if (item.getContainer() != null) {
             throw new IllegalActionException(this, item,
-            "Cannot add an object with a container to a workspace directory.");
+                    "Cannot add an object with a container to a workspace directory.");
         }
         if (_directory.firstIndexOf(item) >= 0) {
             throw new IllegalActionException(this, item,
-            "Object is already listed in the workspace directory.");
+                    "Object is already listed in the workspace directory.");
         }
         _directory.insertLast(item);
         incrVersion();
@@ -195,7 +195,7 @@ public class Workspace implements Nameable, Serializable {
         ReadCount depth = (ReadCount)_readers.get(current);
         if (depth == null) {
             throw new InvalidStateException(this,
-            "Workspace: doneReading() called before read()!");
+                    "Workspace: doneReading() called before read()!");
         }
         depth.decr();
         if (depth.zero()) {

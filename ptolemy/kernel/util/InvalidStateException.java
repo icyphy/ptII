@@ -133,23 +133,23 @@ public class InvalidStateException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////////
     ////                      protected methods                        ////
 
-            /** Get the name of a Nameable object.
-             *  If the argument is a null reference, return an empty string.
-             *  @param obj An object with a name.
-             *  @return The name of the argument.
-             */
-            protected String _getName(Nameable obj) {
-                String name;
-                if (obj == null) {
-                    return "";
-                } else {
-                    name = obj.getName();
-                    if (name.equals("")) {
-                        name = new String("<Unnamed Object>");
-                    }
-                }
-                return name;
+    /** Get the name of a Nameable object.
+     *  If the argument is a null reference, return an empty string.
+     *  @param obj An object with a name.
+     *  @return The name of the argument.
+     */
+    protected String _getName(Nameable obj) {
+        String name;
+        if (obj == null) {
+            return "";
+        } else {
+            name = obj.getName();
+            if (name.equals("")) {
+                name = new String("<Unnamed Object>");
             }
+        }
+        return name;
+    }
 
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
