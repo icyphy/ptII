@@ -27,7 +27,6 @@
 
 package pt.kernel;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.LinkedList;
 import pt.exceptions.NullReferenceException;
@@ -64,10 +63,11 @@ public class Port extends GenericPort {
      * @return Return true if the connection is successful. Return false
      * if the connection is unsuccessful because this Port already is
      * already connected to a non-null Relation.
-     * @exception NullReferenceException Attempt to pass null object 
-     * references as arguments.
-     * @exception NameDuplicationException Attempt to store two instances of
-     * the same class with identical names in the same container.
+     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * to pass null object references as arguments.
+     * @exception pt.exceptions.NameDuplicationException Attempt to store
+     * two instances of the same class with identical names in the same
+     * container.
      */	
     public boolean connectToRelation(Relation relation) 
 	throws NullReferenceException, NameDuplicationException {
@@ -96,11 +96,17 @@ public class Port extends GenericPort {
 	return _relation.getName();
     }
 
-    /** Return the Ports that are connected to this Port through its Relation.
-     *  Return null if no connections exist.
+    /** Return the Ports that are connected to this Port through its 
+     *  Relation; return null if no connections exist.
      */	
     public Enumeration getConnectedPorts() {
 	return _relation.getPorts();
+    }
+
+    /** Get the maximum particle count of this port.
+     */
+    public int getMaxParticleCount() {
+	return maxParticleCount_;
     }
 
     /** Return the MultiPort which contains this Port.
@@ -109,7 +115,7 @@ public class Port extends GenericPort {
         return multiPortContainer_;
     }
 
-    /** Return the name of this Port's Relation. Return null if
+    /** Return the name of this Port's Relation; return null if
      *  the Relation is null.
      */	
     public String getRelationName() {
@@ -119,26 +125,7 @@ public class Port extends GenericPort {
         return _relation.getName();
     }
 
-    /** Get the port count of this port.
-     */
-    public int getPortCount() {
-	return portCount_;
-    }
-
-    /** Return false since this is a Port.
-    /** Set the port count of this port to the value of the argument.
-     */
-    public void setPortCount(int count) {
-	portCount_ = count;
-    }
-
-    /** Return false since this is a Port.
-     */
-    public final boolean isMulti() {
-        return false;
-    }
-
-    /** Return true if this Port is connected to another Port. Return false
+    /** Return true if this Port is connected to another Port; return false
      *  otherwise.
      */	
     public boolean isConnected() {
@@ -150,23 +137,33 @@ public class Port extends GenericPort {
         return false;
     }
 
+    /** Return false since this is a Port.
+     */
+    public final boolean isMulti() {
+        return false;
+    }
 
     /** Prepare for a new connection by returning a port. 
      * @return Return the real port.
-     * @exception NullReferenceException Attempt to pass null object
-     * references as arguments.
+     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * to pass null object references as arguments.
      */	
     public Port prepareForConnection() throws NullReferenceException {
-	GenericPort genericPort = realPort();
 
-	return (Port)genericPort;
+	return (Port)realPort();
     }
 
 
+    /** Set the maximum number of particles that can reside in this port.
+     */
+    public void setMaxParticleCount(int count) {
+	maxParticleCount_ = count;
+    }
+
     /** Set the MuliPort which contains this Port.
      * @param multiPort The MultiPort which will be the container of this Port.
-     * @exception NullReferenceException Attempt to pass null object 
-     * references as arguments.
+     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * to pass null object references as arguments.
      */	
     public void setMultiPortContainer(MultiPort multiPort) 
 	throws NullReferenceException {
@@ -199,10 +196,9 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Port count is the maximum number of particles that can reside 
-     * in a port.
+    /* The maximum number of particles that can reside in this port.
      */
-    private int portCount_ = 1;
+    private int maxParticleCount_ = 1;
 
     /* The MultiPort which contains this Port.
      */
