@@ -93,16 +93,16 @@ public class FigureAction extends AbstractAction {
             // Action activated using an ActionInteractor.
             LayerEvent event = (LayerEvent) source;
             CanvasLayer layer = event.getLayerSource();
-            GraphPane pane = (GraphPane)layer.getCanvasPane();
+            GraphPane pane = (GraphPane) layer.getCanvasPane();
             GraphController controller = pane.getGraphController();
             GraphModel model = controller.getGraphModel();
 
-            Figure figure = (Figure) event.getFigureSource();
+            _figure = (Figure) event.getFigureSource();
             // Set the target.
-            if (figure == null) {
+            if (_figure == null) {
                 _target = (NamedObj) model.getRoot();
             } else {
-                Object object = figure.getUserObject();
+                Object object = _figure.getUserObject();
                 _target = (NamedObj) model.getSemanticObject(object);
             }
 
@@ -119,7 +119,7 @@ public class FigureAction extends AbstractAction {
             JMenuItem item = (JMenuItem) source;
             if (item.getParent() instanceof JContextMenu) {
                 _sourceType = CONTEXTMENU_TYPE;
-                JContextMenu menu = (JContextMenu)item.getParent();
+                JContextMenu menu = (JContextMenu) item.getParent();
                 parent = menu.getInvoker();
                 _target = (NamedObj) menu.getTarget();
                 _x = item.getX();
@@ -132,12 +132,12 @@ public class FigureAction extends AbstractAction {
             // presumably we are in a toolbar...
             _sourceType = TOOLBAR_TYPE;
             _target = null;
-            parent = ((Component)source).getParent();
+            parent = ((Component) source).getParent();
         } else if (source instanceof JGraph) {
             // This is an absurdly convoluted way to get the info we need.
             // But there seems to be no other way.
             // This is an architectural flaw in vergil.
-            GraphPane pane = (GraphPane)((JGraph)source).getGraphPane();
+            GraphPane pane = (GraphPane) ((JGraph) source).getGraphPane();
             FigureLayer layer = pane.getForegroundLayer();
             CanvasComponent currentFigure = layer.getCurrentFigure();
             GraphController controller = pane.getGraphController();
@@ -147,15 +147,14 @@ public class FigureAction extends AbstractAction {
                 while (_target == null && currentFigure != null) {
                     Object object = currentFigure;
                     if (object instanceof Figure) {
-                        object = ((Figure)currentFigure).getUserObject();
+                        object = ((Figure) currentFigure).getUserObject();
                     }
                     _target = (NamedObj) model.getSemanticObject(object);
                     currentFigure = currentFigure.getParent();
                 }
                 // NOTE: _target may end up null here!
                 if (_target == null) {
-                    throw new InternalErrorException(
-                    "Internal error: Figure has no associated Ptolemy II object!");
+                    throw new InternalErrorException("Internal error: Figure has no associated Ptolemy II object!");
                 }
             } else {
                 _target = (NamedObj) model.getRoot();
@@ -182,22 +181,20 @@ public class FigureAction extends AbstractAction {
             }
         }
         if (parent instanceof Frame) {
-            _frame = (Frame)parent;
+            _frame = (Frame) parent;
         } else {
             _frame = null;
         }
     }
 
-    // FIXME: The following methods should all be protected.
-
-    /** Return the source type of this action, which is one of
-     *  CANVAS_TYPE, CONTEXTMENU_TYPE, TOOLBAR_TYPE, MENUBAR_TYPE,
-     *  HOTKEY_TYPE, or null if none was recognized.
-     *  @return The source type of this action.
+    /** Return the figure of this action
+     *  @return The figure of this action.
      */
-    public SourceType getSourceType() {
-        return _sourceType;
+    public Figure getFigure() {
+        return _figure;
     }
+
+    // FIXME: The following methods should all be protected.
 
     /** Return the frame responsible for triggering this action,
      *  or null if none could be found.  This can be used to set the
@@ -208,6 +205,15 @@ public class FigureAction extends AbstractAction {
      */
     public Frame getFrame() {
         return _frame;
+    }
+
+    /** Return the source type of this action, which is one of
+     *  CANVAS_TYPE, CONTEXTMENU_TYPE, TOOLBAR_TYPE, MENUBAR_TYPE,
+     *  HOTKEY_TYPE, or null if none was recognized.
+     *  @return The source type of this action.
+     */
+    public SourceType getSourceType() {
+        return _sourceType;
     }
 
     /** Return the target Ptolemy II object for this action,
@@ -281,6 +287,7 @@ public class FigureAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private Figure _figure = null;
     private Frame _frame = null;
     private SourceType _sourceType = null;
     private NamedObj _target = null;
