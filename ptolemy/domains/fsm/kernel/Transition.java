@@ -56,7 +56,77 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
-
+A Transition has a source state and a destination state. A transition has
+a guard expression and a trigger expression. Both expressions should evaluate
+to a boolean value. The trigger of a transition must be true whenever the
+guard is true. A transition is enabled and can be taken when its guard is true.
+A transition is triggered and must be taken when its trigger is true.
+<p>
+A transition can contain actions. The way to specify actions is to give
+value to the <i>outputActions</i> parameter and the <i>setActions</i>
+parameter.
+The value of these parameters is a string of the form:
+<pre>
+     <i>command</i>; <i>command</i>; ...
+</pre>
+where each <i>command</i> has the form:
+<pre>
+     <i>destination</i> = <i>expression</i>
+</pre>
+For the <i>outputActions</i> parameter, <i>destination</i> is either
+<pre>
+     <i>portName</i>
+</pre>
+or
+<pre>
+     <i>portName</i>(<i>channelNumber</i>)
+</pre>
+Here, <i>portName</i> is the name of a port of the FSM actor,
+If no <i>channelNumber</i> is given, then the value
+is broadcast to all channels of the port.
+<p>
+For the <i>setActions</i> parameter, <i>destination</i> is
+<pre>
+     <i>variableName</i>
+</pre>
+<i>variableName</i> identifies either a variable or parameter of
+the FSM actor, or a variable or parameter of the refinement of the
+destination state of the transition. To give a variable of the
+refinement, use a dotted name, as follows:
+<pre>
+     <i>refinementName</i>.<i>variableName</i>
+</pre>
+The <i>expression</i> is a string giving an expression in the usual
+Ptolemy II expression language. The expression may include references
+to variables and parameters contained by the FSM actor.
+<p>
+The <i>outputActions</i> and <i>setActions</i> parameters are not the only
+ways to specify actions. In fact, you can add action attributes that are
+instances of any class that extends the abstract base class Action.
+(Use the Add button in the Edit Parameters dialog).
+<p>
+An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
+parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
+ChoiceAction. A commit action is executed when the transition is taken to
+change the state of the FSM, in the postfire() method of FSMActor.
+A choice action, by contrast, is executed in the fire() method
+of the FSMActor when the transition is chosen, but not yet taken.
+The difference is subtle, and for most domains, irrelevant.
+A few domains, however, such as CT, which have fixed point semantics,
+where the fire() method may be invoked several times before the
+transition is taken (committed). For such domains, it is useful
+to have actions that implement the ChoiceAction interface.
+Such actions participate in the search for a fixed point, but
+do not change the state of the FSM.
+<p>
+A transition can be preemptive or non-preemptive. When a preemptive transition
+is chosen, the refinement of its source state is not fired. A non-preemptive
+transition is only chosen after the refinement of its source state is fired.
+<p>
+The <i>reset</i> parameter specifies whether the refinement of the destination
+state is reset when the transition is taken. There is no reset() method in the
+Actor interface, so the initialize() method of the refinement is called. Please
+note that this feature is still under development.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
