@@ -47,6 +47,7 @@ SHELL_FILES = \
 	copernicus \
 	decompile \
 	histogram \
+	htmlconverter \
 	jode \
 	mescal \
 	moml \
@@ -98,6 +99,8 @@ all: ptinvoke
 	ln -s ptinvoke copernicus
 	rm -f histogram
 	ln -s ptinvoke histogram
+	rm -f htmlconverter
+	ln -s ptinvoke htmlconverter
 	rm -f decompile
 	ln -s ptinvoke decompile
 	rm -f jode

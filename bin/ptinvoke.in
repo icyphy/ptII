@@ -51,8 +51,11 @@ if [ -z "$PTII" ]; then
     fi
 fi
 
-# Default JDK Home
+# Default JDK Home, may have /cygdrive in it
 PTJAVA_DIR="@PTJAVA_DIR@"
+
+# PTJAVA_DIR without /cygdrive
+PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)@\1:@'`"
 
 # Java CLASSPATH separator
 # For Unix, this would be :
@@ -201,6 +204,17 @@ case `basename "$0"` in
 	# Histogram Plotter
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
+	;;
+    htmlconverter)
+	# Java Plug-in applet converter
+	javastartupclass=HTMLConverter
+	jarfile="$PTJAVA_DIR_CLEAN/lib/htmlconverter.jar"
+	if [ ! -f "$jarfile" ]; then
+	    echo "$0: '$jarfile' does not exist or is not a file"
+	    exit 2
+	fi    
+	PTII_CLEAN="`echo "$PTII" | sed 's@\\\@/@g'`"
+	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
 	;;
     jode)
 	# JAva decompiler
@@ -424,6 +438,9 @@ while [ "$1" != "" -a  "`echo $1 | egrep '^-'`" = "$1" ]; do
         shift
         continue
     fi
+    # If we get to here, we saw an argument with a leading -, but it
+    # was not one of the args we were looking for.
+    break;
 done
 
 # Unfortunately, there are issues around setting PTII if your
