@@ -64,6 +64,11 @@ public class Butterfly extends TypedCompositeActor {
 	super(workspace);
 	setName("Butterfly");
 
+        // When exporting MoML, we want to identify the class
+        // as the parent class rather than this class so that this class
+        // need not be present to instantiate the model.
+        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
+
         // Create the director, and set the number of iterations to execute.
 	SDFDirector director = new SDFDirector(this, "director");
         director.iterations.setExpression("2400");
