@@ -130,32 +130,32 @@ public class CircuitTransformer extends SceneTransformer {
 	//JHDLTestbench jtb = new JHDLTestbench(hw);
 
 	/*
-	//////////////////////////////////////////////
-	// Step 1. Create a DirectedGraph that matches
-	//         the topology of the model
-	//////////////////////////////////////////////
-	DirectedGraph combinedGraph = _createModelGraph(_model);
+          //////////////////////////////////////////////
+          // Step 1. Create a DirectedGraph that matches
+          //         the topology of the model
+          //////////////////////////////////////////////
+          DirectedGraph combinedGraph = _createModelGraph(_model);
 
-	//////////////////////////////////////////////
-	// Step 2. Create a DFG for each entity in the model.
-	//////////////////////////////////////////////
-	Map entityGraphMap = _createEntityGraphs(_model, options);
+          //////////////////////////////////////////////
+          // Step 2. Create a DFG for each entity in the model.
+          //////////////////////////////////////////////
+          Map entityGraphMap = _createEntityGraphs(_model, options);
 
-	//////////////////////////////////////////////
-	// Step 3. Create top-level testbench
-	//////////////////////////////////////////////
-	HWSystem hw = new HWSystem();
-	JHDLTestbench _jtb = new JHDLTestbench(hw);
+          //////////////////////////////////////////////
+          // Step 3. Create top-level testbench
+          //////////////////////////////////////////////
+          HWSystem hw = new HWSystem();
+          JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-	//	Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+          //	Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
 
-	//////////////////////////////////////////////
-	// Step 3. Insert each DFG into the top-level graph
-	//////////////////////////////////////////////
-	_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+          //////////////////////////////////////////////
+          // Step 3. Insert each DFG into the top-level graph
+          //////////////////////////////////////////////
+          _insertEntityGraphs(_model,combinedGraph,entityGraphMap);
 
-	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-	toDotty.writeDotFile(".", _model.getName(), combinedGraph);
+          PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+          toDotty.writeDotFile(".", _model.getName(), combinedGraph);
 	*/
 
  	System.out.println("**************************************************");
