@@ -250,6 +250,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -263,4 +265,5 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <link port="s1.incomingPort" relation="t0"/>
 </entity>
 }
+
 
