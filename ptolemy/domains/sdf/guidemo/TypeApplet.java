@@ -68,7 +68,7 @@ It displays a Diva animation of the type resolution process.
 @version $Id$
 */
 
-public class TypeApplet extends SDFApplet {
+public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
