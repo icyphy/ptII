@@ -404,7 +404,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  TYPE, then append to the description a field of the form
      *  "type {declared <i>declaredType</i> resolved <i>resolvedType</i>}".
      *  The declared type is the type set through setTypeEquals(). If this
-     *  method is not called, the declard type is null. The resolved type
+     *  method is not called, the declared type is null. The resolved type
      *  is the type of this port.  Both types are represented by the names
      *  of the corresponding tokens.
      *  <p>
