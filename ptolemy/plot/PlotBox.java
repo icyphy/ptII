@@ -1739,12 +1739,6 @@ public class PlotBox extends Panel {
         // binary, which is the basis of this code.  The problem is that
         // as ratio gets closer to 1.0, we need to add more and more
         // grid marks.
-        // * Sometimes it would be nice if the first grid mark was printed.
-        // If there are only a few grids, then the code often decides not
-        // to print the first grid mark.  The fix for this would be to
-        // have code that determines if there enough space for the first
-        // grid mark or not.  If we just blindly place the first grid
-        // mark, then we can end up with labels overlapping.
 
         _gridCurJuke = 0;
         grid.addElement(new Double(0.0));
