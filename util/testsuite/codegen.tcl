@@ -330,15 +330,12 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
     # the model for the iterations parameter and if the iterations
     # parameter was set to 0, we print a message and set it to 200
     #
-    # The deep codegen makefile exepcts ITERATIONS_PARAMETER to be set to
-    # somethink like ",iterations:400"
-    #
+    set iterationsParameter ""
     if { "$defaultIterations" != "" } {
 	puts "Using the defaultIterations parameter of '$defaultIterations'"
-	set iterationsParameter ,iterations:$defaultIterations
+	set iterationsParameter $defaultIterations
     } else {
 	# Take a stab at guessing the number of iterations
-	set iterationsParameter ""
 	set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
 	set director [$compositeActor getDirector]
 	set iterations [$director getAttribute iterations]
@@ -362,7 +359,6 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 		puts "WARNING: iterationsValue was 0, defaulting to 200"
 		set iterationsValue 200
 	    }
-	    set iterationsParameter ,iterations:$iterationsValue
 	}
     }
 
@@ -374,7 +370,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 
 	set results ""
 	# make -C is a GNU make extension that changes to a directory
-	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
+	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]
 
 	if { ${codeGenType} == "Deep" } {
 	    set codeGenerator "java"
@@ -382,9 +378,13 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	    set codeGenerator "shallow"
 	}
 	set args [list $modelPath \
-		      "-iterationsParameter" $iterationsParameter \
 		      "-codeGenerator" $codeGenerator \
 		      "-compile" "true"]
+	# If toplevel iterations set, then pass those arguments to copernicus.
+	if { ${iterationsParameter} != ""} {
+	    lappend args "-iterations" ${iterationsParameter}
+	}
+
 	set separator [java::field java.io.File pathSeparator]
 	set javaCommand [list sh $PTII/bin/copernicus]
 #	set javaCommand [list java -classpath "$PTII$separator$PTII/lib/soot.jar$separator$PTII/lib/jasmin.jar" -Dptolemy.ptII.dir=$PTII ptolemy.copernicus.kernel.Copernicus]
