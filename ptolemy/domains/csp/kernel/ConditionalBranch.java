@@ -32,6 +32,7 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.*;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
@@ -39,16 +40,21 @@ import ptolemy.data.Token;
 Base class of both conditional communication classes (send and receive). 
 For rendezvous, the receiver is the key synchronization point. 
 Conditional branches are designed to be used once. Upon instantiation, 
-they are given the receiver to try to rendezvous with, the parent 
-object they are performing the conditional rendezvous for, and the 
-identification number of the branch according to the parent.
+they are given the port and the channel they are trying to rendezvous with.
+The port and the channel together define the CSPReceiver with which to 
+rendezvous. The CSPActor, that contains this conditional branch, is 
+assumed to be the container of the port argument.
+It is also given the identification number of the branch according 
+to the parent.
 <p>
 A conditional branch is created to perfrom a single conditional communication.
 The information it contains in its private memebers is immutable and 
 fixed upon creation.
 <p>
 FIXME: does this class want/need to have a notion of workspace?
- 
+FIXME: a bit strange to only use the construtor arguments to set internal 
+fields! 
+
 @author  Neil Smyth
 @version $Id$
 
@@ -57,16 +63,23 @@ FIXME: does this class want/need to have a notion of workspace?
 public abstract class ConditionalBranch {
 
   /** Create a conditional branch. 
-   * @param rec The receiver the branch must try to rendezvous with.
-   * @param par The CSPActor that is executing a conditional 
-   *  communication construct(CIF or CDO).
+   * @param port The IOPort to try and rendezvous with.
+   *  that this branch will try to rendezvous with.
    * @param branch The identification number assigned to this branch
    *   upon creation by the CSPActor. 
+   *  @exception IllegalActionException thrown if the channel has more 
+   *   than one receiver or if the receiver is not of type CSPReceiver.
    */
-  public ConditionalBranch(CSPReceiver rec, CSPActor par, int branch){
-    _receiver = rec;
-    _parent = par;
-    _branchNumber = branch;
+  public ConditionalBranch(IOPort port, int branch)
+       throws IllegalActionException {
+	 // FIXME: should this allow CSPCompositeActor?
+	 Nameable tmp = port.getContainer();
+	 if (!(tmp instanceof CSPActor)) {
+	   String str = " A conditional branch can only be created with a po";
+	   throw new IllegalActionException(port, "rt contained by CSPActor");
+	 }
+	 _parent = (CSPActor)tmp;
+	 _branchNumber = branch;
   }
   
   ////////////////////////////////////////////////////////////////////////
@@ -115,13 +128,16 @@ public abstract class ConditionalBranch {
   }
 
   ////////////////////////////////////////////////////////////////////////
+  ////                         prrotected variables                   ////
+
+  // The receiver this thread is trying to rendezvous with. It is immutable.
+  protected CSPReceiver _receiver;
+
+  ////////////////////////////////////////////////////////////////////////
   ////                         private variables                      ////
 
   // Has another branch successfully rendezvoused? 
   private boolean _alive = true;
-
-  // The receiver this thread is trying to rendezvous with. It is immutable.
-  private CSPReceiver _receiver;
 
   // The parent this thread is trying to perform a conditional rendezous for.
   private CSPActor _parent;

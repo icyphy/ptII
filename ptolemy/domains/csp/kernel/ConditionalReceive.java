@@ -32,7 +32,7 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.*;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.*;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ import java.util.Random;
 Class for executing a conditional receive in a seperate thread. 
 For rendezvous, the receiver is the key synchronization point. 
 ConditionalReceive branches are designed to be used once. Upon instantiation, 
-they are given the receiver to try to receive from, the parent 
+private memebers are set to the receiver to try to receive from, the parent 
 object they are performing the conditional rendezvous for, and the 
 identification number of the branch according to the parent.
 <p>
@@ -98,15 +98,52 @@ FIXME: does this class want/need to have a notion of workspace?
 public class ConditionalReceive extends ConditionalBranch implements Runnable {
   
   /** Create a conditional receive branch. 
-   * @param rec The receiver the branch must try to rendezvous with.
-   * @param par The CSPActor that is executing a conditional 
-   *  communication construct(CIF or CDO).
+   *  FIXME: perhaps could do away with a lot of these tests if conditional
+   *   branches are only called by parser generated code?
+   * @param port The IOPort containing the channel (and thus receiver) 
+   *  that this branch will try to rendezvous with.
+   * @param channel The channel in the IOPort that this branch is 
+   *  trying to rendezvous with.
    * @param branch The identification number assigned to this branch
    *   upon creation by the CSPActor. 
+   *  @exception IllegalActionException thrown if the channel has more 
+   *   than one receiver or if the receiver is not of type CSPReceiver.
    */
-  public ConditionalReceive(CSPReceiver rec, CSPActor par, int branch) {
-    super(rec, par, branch);
-  }
+  public ConditionalReceive(IOPort port, int channel, int branch) 
+       throws IllegalActionException {
+	 super(port, branch);
+	 Receiver[][] receivers;
+	 try {
+	   port.workspace().getReadAccess();
+	   if (!port.isInput()) {
+	     String str = "ConditionalRec: tokens can only be sent from an ";
+	     throw new IllegalActionException(port, str + "input port.");
+	   }
+	   if (channel >= port.getWidth() || channel < 0) {
+	     String str = "ConditionalRec: channel index out of range.";
+	     throw new IllegalActionException(port, str);
+	   }
+	   receivers = port.getReceivers();
+	   if (receivers == null || receivers[channel] == null) {
+	     System.out.println("Warning: rendezvous with a null receiver");
+	     return;
+	   }
+	   if (receivers[channel].length != 1) {
+	     String str = "ConditionalRec: channel " + channel + " does not ";
+	     str += "have exactly one receiver";
+	     throw new IllegalActionException(port, str);
+	   }
+	   if (!(receivers[channel][0] instanceof CSPReceiver)) {
+	     String str = "ConditionalRec: channel " + channel + " does not";
+	     str += " have a receiver of type CSPReceiver.";
+	     throw new IllegalActionException(port, str);
+	   }
+	   _receiver = (CSPReceiver)receivers[channel][0];
+	   
+	 } finally {
+	   port.workspace().doneReading();
+	 }
+  } 
 
   ////////////////////////////////////////////////////////////////////////
   ////                         public methods                         ////
@@ -129,7 +166,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 	while (getReceiver().isConditionalReceiveWaiting()) {
 	  // last time condRec got there first, condSend hasn't cleared yet
 	  System.out.println("CondRec waiting for CondSend to clear state" + getBranchNumber());
-	  getReceiver().wait();
+	  getReceiver()._checkAndWait();
 	}
 
 	// MAIN LOOP
@@ -150,7 +187,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 		return;
 	      } else {
 		//System.out.println("not first, but still alive: " + getBranchNumber());
-		getReceiver().wait();
+		getReceiver()._checkAndWait();
 		//System.out.println("loop again");
 	      }
 	      if (!isAlive()) {
@@ -179,16 +216,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 	      }
 	    }
 	    //System.out.println("not first, but still alive: " + getBranchNumber());
-	    getReceiver().wait();
+	    getReceiver()._checkAndWait();
 	    //System.out.println("loop again, " + getBranchNumber());
 	  } else {
 	  // CASE 3: ConditionalReceive tried to rendezvous before a put or a 
 	  // ConditionalSend. 
 	    //System.out.println(getParent().getName() + ": setting conditionalReceiveWaiting flag: " + getBranchNumber());
 	    getReceiver().setConditionalReceive(true, getParent());  
-	    getReceiver().wait();
-	    //System.out.println("condReceive woke up: " + getBranchNumber());
-	    while (true) {
+	    getReceiver()._checkAndWait();
+            while (true) {
 	      if (!isAlive()) {
 		// reset state of receiver
 		getReceiver().setConditionalReceive(false, null);
@@ -204,13 +240,20 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 		} 
 		//System.out.println("not first branch: " + getBranchNumber());
 	      }
-	      getReceiver().wait();//can't rendrezvous this time, but still alive
+	      //can't rendrezvous this time, but still alive
+	      getReceiver()._checkAndWait();
 	    }
 	  } 
 	}
       }
     } catch (InterruptedException ex) {
       System.out.println("ConditionalReceive interrupted: " + ex.getMessage());
+    } catch (NoSuchItemException ex) {
+        System.out.println("get failed in CondRec., NoSuchItemException");
+        getParent().branchFailed(getBranchNumber());
+    } catch (TerminateProcessException ex) {
+        //System.out.println("Caught TermProc in CondRec");
+      getParent().branchFailed(getBranchNumber());
     }
   }
 }
