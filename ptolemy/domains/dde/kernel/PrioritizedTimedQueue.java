@@ -73,9 +73,9 @@ PrioritizedTimedQueues with identical receiver times are sorted according
 to their respective priorities. PrioritizedTimedQueues are assigned
 priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper
 is instantiated. Receivers with higher receiver priorities are ordered
-before receivers with lower priorities. A receiver's priority can be
+before receivers with lower priorities. The priority of a receiver can be
 explicitly specified or it can be implicitly determined based on the
-topology. In the latter case, a receiver's priority is set according
+topology. In the latter case, the priority of a receiver is set according
 to the inverse order in which it was connected to the model topology.
 I.e., if two input receivers (receiver A and receiver B) are added to
 an actor such that receiver A is connected in the model topology before
@@ -85,8 +85,8 @@ If the oldest token in the queue has a time stamp of IGNORE, then the
 next oldest token from the other receivers contained by the actor in
 question will be consumed and the token time stamped IGNORE will be
 dropped. The IGNORE time stamp is useful in feedback topologies in which
-an actor should ignore inputs from a feedback cycle when the model's
-execution is just beginning. FeedBackDelay actors output a single IGNORE
+an actor should ignore inputs from a feedback cycle when the execution of
+the model is just beginning. FeedBackDelay actors output a single IGNORE
 token during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.

@@ -118,7 +118,7 @@ this director.
 This director sorts all such events in a global event queue
 (a priority queue).
 <p>The HDEDirector employs a special HDE receiver which stores
-the most recent values of an actor's inputs and reapplies
+the most recent values of the inputs of an actor and reapplies
 them whenever an actor input changes.
 <p>
 An iteration, in the DE domain, is defined as processing all

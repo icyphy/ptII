@@ -69,19 +69,21 @@ method.
 
 <p> This class provides several services that distinguish it from
 Java's built-in reflection mechanism:
-1) Methods are found based on name and the types of ptolemy token
+<ol>
+<li> Methods are found based on name and the types of ptolemy token
    arguments, represented by instances of the ptolemy.data.type.Type
    base class.
-2) FUNCTIONS are searched for in a set of classes registered with the
+<li> FUNCTIONS are searched for in a set of classes registered with the
    parser.
-3) METHODS are searched for a base class, and in all superclasses of
+<li> METHODS are searched for a base class, and in all superclasses of
    the base class.
-4) Found methods, represented by instances of this class, are cached
+<li> Found methods, represented by instances of this class, are cached
    and indexed to improve the speed of method lookup.  The cache is
    synchronized so that it can be safely accessed from multiple
    threads.
-5) Allows for the possibility of several automatic conversions that
+<li> Allows for the possibility of several automatic conversions that
    increase the applicability of single methods
+</ol>
 
 <p> The automatic conversions that are allowed on the arguments of
 reflected Java methods can be particularly tricky to understand.  The
@@ -89,17 +91,19 @@ findMethod() method is fairly aggressive about finding valid methods
 to invoke.  In particular, given a set of arguments with token types,
 the findMethod() method might return a cached method that:
 
-1) Accepts token arguments of exactly the same type.
-2) Accepts token arguments that are of a type that the given types can
+<ol>
+<li> Accepts token arguments of exactly the same type.
+<li> Accepts token arguments that are of a type that the given types can
    be automatically converted to, as determined by the Ptolemy type
    lattice.
-3) Accepts the corresponding Java native type of either of the first
+<li> Accepts the corresponding Java native type of either of the first
    two cases, i.e. an IntToken argument may reflect a method that
    accepts a Java int.
-4) Accepts a corresponding Java array type, if the argument type is an
+<li> Accepts a corresponding Java array type, if the argument type is an
    ArrayType.
-5) Accepts a corresponding Java array of array type, if the argument
+<li> Accepts a corresponding Java array of array type, if the argument
    type is a MatrixType.
+</ol>
 
 The underlying conversions are implemented by the {@link
 ConversionUtilities} class, which has more specific documentation the
