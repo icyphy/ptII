@@ -61,9 +61,19 @@ public class TextStyle extends ParameterEditorStyle {
      *  as its name. This constructor is for testing only.
      *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
+     *  @exception IllegalActionException If the height or width
+     *  attribute is not of an acceptable attribute for the container,
+     *  or if the container is not an instance of Settable.
+     *  @exception NameDuplicationException If the height or width
+     *  Parameter name coincides with an attribute already in the
+     *  container.
      */
-    public TextStyle() {
+    public TextStyle() 
+            throws IllegalActionException, NameDuplicationException {
+        // Note: StyleConfigurer calls this constructor when 
+        // configure -> preferences -> text is selected.
         super();
+        _initialize();
     }
 
     /** Construct an attribute with the specified container and name.
@@ -78,14 +88,7 @@ public class TextStyle extends ParameterEditorStyle {
     public TextStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        height = new Parameter(this, "height");
-        height.setToken("10");
-        height.setTypeEquals(BaseType.INT);
-
-        width = new Parameter(this, "width");
-        width.setToken("30");
-        width.setTypeEquals(BaseType.INT);
+        _initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,5 +141,21 @@ public class TextStyle extends ParameterEditorStyle {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Initialize height and width.  This method is called by the
+    // constructors so as to avoid code duplication. 
+    private void _initialize()
+            throws IllegalActionException, NameDuplicationException {
+        height = new Parameter(this, "height");
+        height.setToken("10");
+        height.setTypeEquals(BaseType.INT);
+
+        width = new Parameter(this, "width");
+        width.setToken("30");
+        width.setTypeEquals(BaseType.INT);
     }
 }
