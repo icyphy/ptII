@@ -283,7 +283,7 @@ public class SearchPath extends Vector {
 
     /** Set of Strings that name the .java files in the Ptolemy II core
      */
-    public static Set ptolemyClassSet = ptolemyCoreClasses();
+    public static Set ptolemyCoreClassSet = ptolemyCoreClasses();
 
 
     ///////////////////////////////////////////////////////////////////
