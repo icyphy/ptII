@@ -39,7 +39,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.RethrowErrorHandler;
 
 import java.io.File;
 
@@ -93,9 +92,11 @@ public class MoMLSimpleApplication implements ChangeListener {
 	// Filter out any graphical classes.
 	parser.addMoMLFilter(new RemoveGraphicalClasses());
 
-        // If there is a MoML error, then rethrow the exception as opposed
-        // to skipping the error.
-        parser.setErrorHandler(new RethrowErrorHandler());
+        // If there is a MoML error, then throw the exception as opposed
+        // to skipping the error.  If we call StreamErrorHandler instead,
+        // then the nightly build may fail to report MoML parse errors
+        // as failed tests
+        //parser.setErrorHandler(new StreamErrorHandler());
 
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
