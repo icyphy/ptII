@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -410,6 +411,33 @@ public class Prototype extends NamedObj {
         }
     }
 
+    /** Return the depth of the deferral that defines the specified object.
+     *  This overrides the base class so that if this object defers to
+     *  another that defines the defined object, and the exported
+     *  MoML of the defined object is identical to the exported MoML
+     *  of the deferred to object, then it returns 0.  Otherwise,
+     *  it defers to the base class.
+     *  Otherwise, it defers to the base class.
+     *  @param definedObject The object whose definition we seek.
+     *  @return The depth of the deferral.
+     */
+    protected int _getDeferralDepth(NamedObj definedObject) {
+        if (_deferTo != null && deepContains(definedObject)) {
+            String relativeName = definedObject.getName(this);
+            // Regrettably, we have to look at the type
+            // of definedObject to figure out how to look it up.
+            if (definedObject instanceof Attribute) {
+                Attribute definition = _deferTo.getAttribute(relativeName);
+                if (definition != null
+                        && definedObject.exportMoML()
+                        .equals(definition.exportMoML())) {
+                    return 0;
+                }
+            }
+        }
+        return super._getDeferralDepth(definedObject);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -130,6 +130,7 @@ FIXME: Need review of:
      requestChange()
      executeChangeRequests()
      setDeferChangeRequests()
+     _getDeferralDepth
 @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
 
 
@@ -1729,6 +1730,38 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
+    /** Return the depth of the deferral that defines the specified object.
+     *  The specified object is assumed to be contained (deeply) by this
+     *  object (or to be equal to this object). If this object is not
+     *  a class element, then the depth is -1. If this object is a
+     *  class element defined by an object that a container defers to,
+     *  then the depth is the number of levels up the hierarchy to that
+     *  container.  If this object is a class element but is not defined
+     *  by an object that a container defers to (e.g., it is a class
+     *  element defined by the Java definition of some container), then
+     *  the depth is the number of class objects containing it up the
+     *  hierarchy, not including this one.  That is, it is 0 if the
+     *  container is not a class object, 1 if the container is a
+     *  class object but its container is not, etc.
+     *  @param definedObject The object whose definition we seek.
+     *  @return The depth of the deferral.
+     */
+    protected int _getDeferralDepth(NamedObj definedObject) {
+        if (isClassElement()) {
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                return 1 + container._getDeferralDepth(definedObject);
+            } else {
+                // It seems strange for the top of the hierarchy
+                // to be a class element, but I suppose it's possible.
+                // Return 0 because there is no more depth to reach.
+                return 0;
+            }
+        } else {
+            return -1;
+        }
+    }
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
@@ -1829,12 +1862,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @return Return true to suppress MoML export.
      */
     protected boolean _suppressMoML(int depth) {
-        if (depth == 0) {
-            return false;
-        }
         if (!isPersistent()) {
             return true;
         } else {
+            // Always export at the top level, even if it's
+            // a class element.
+            if (depth == 0) {
+                return false;
+            }
             // Object has not been explicitly declared not persistent.
             // Suppress MoML only if it is a class element that has
             // not been locally changed, and that its contained objects
@@ -1842,6 +1877,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             if (_isClassElement) {
                 if (_modifiedFromClass) {
                     return false;
+                } else {
+                    // The object defers its definition, but the
+                    // deferral depth might be above where the
+                    // export is occurring, in which case, the
+                    // export should occur regardless.
+                    if (depth < _getDeferralDepth(this)) {
+                        return false;
+                    }
                 }
                 Iterator objects = containedObjectsIterator();
                 while (objects.hasNext()) {

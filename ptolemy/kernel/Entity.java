@@ -484,6 +484,16 @@ public class Entity extends Prototype {
         _portList.append(port);
     }
 
+    /** Return an iterator over contained objects. In this base class,
+     *  this is an iterator over attributes and ports.  In derived classes,
+     *  the iterator will also traverse ports, entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    protected Iterator _containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  Lines are indented according to
@@ -527,16 +537,6 @@ public class Entity extends Prototype {
         }
     }
 
-    /** Return an iterator over contained objects. In this base class,
-     *  this is an iterator over attributes and ports.  In derived classes,
-     *  the iterator will also traverse ports, entities, and relations.
-     *  @return An iterator over instances of NamedObj contained by this
-     *   object.
-     */
-    protected Iterator _containedObjectsIterator() {
-        return new ContainedObjectsIterator();
-    }
-
     /** Write a MoML description of the contents of this object, which
      *  in this class are the attributes plus the ports.  This method is called
      *  by exportMoML().  Each description is indented according to the
@@ -553,6 +553,35 @@ public class Entity extends Prototype {
             Port port = (Port)ports.next();
             port.exportMoML(output, depth);
         }
+    }
+
+    /** Return the depth of the deferral that defines the specified object.
+     *  This overrides the base class so that if this object defers to
+     *  another that defines the defined object, and the exported
+     *  MoML of the defined object is identical to the exported MoML
+     *  of the deferred to object, then it returns 0.  Otherwise,
+     *  it defers to the base class. In particular, this class
+     *  handled definedObject of type Port.
+     *  Otherwise, it defers to the base class.
+     *  @param definedObject The object whose definition we seek.
+     *  @return The depth of the deferral.
+     */
+    protected int _getDeferralDepth(NamedObj definedObject) {
+        Prototype deferTo = getDeferTo();
+        if (deferTo != null && deepContains(definedObject)) {
+            String relativeName = definedObject.getName(this);
+            // Regrettably, we have to look at the type
+            // of definedObject to figure out how to look it up.
+            if (definedObject instanceof Port) {
+                Port definition = ((Entity)deferTo).getPort(relativeName);
+                if (definition != null
+                        && definedObject.exportMoML()
+                        .equals(definition.exportMoML())) {
+                    return 0;
+                }
+            }
+        }
+        return super._getDeferralDepth(definedObject);
     }
 
     /** Remove the specified port. This method should not be used

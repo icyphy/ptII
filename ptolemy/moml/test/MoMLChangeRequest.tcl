@@ -1118,3 +1118,175 @@ test MoMLChangeRequest-9.7 {test shadowing on deeper inner subclass} {
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
 } {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
+
+puts [$toplevel exportMoML]
+
+######################################################################
+####
+# Export MoML of inner components (builds on the above).
+
+test MoMLChangeRequest-10.1 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.cAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="4">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.2 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.cAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
+</entity>
+}
+
+test MoMLChangeRequest-10.3 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.iAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="6">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.4 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.iAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+</entity>
+}
+
+test MoMLChangeRequest-10.5 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cD.cAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="8">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.6 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cD.cAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+</entity>
+}
+
+test MoMLChangeRequest-10.7 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cD.iAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="7">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.8 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cD.iAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+</entity>
+}
+
+test MoMLChangeRequest-10.9 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iA.cAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="4">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.10 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iA.cAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+    </property>
+</entity>
+}
+
+test MoMLChangeRequest-10.11 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iA.iAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="6">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.12 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iA.iAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+</entity>
+}
+
+test MoMLChangeRequest-10.13 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iD.cAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="8">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.14 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iD.cAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+</entity>
+}
+
+test MoMLChangeRequest-10.15 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iD.iAB.cABC"]
+    $export exportMoML
+} {<class name="cABC" extends="ptolemy.actor.CompositeActor">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="8">
+    </property>
+</class>
+}
+
+test MoMLChangeRequest-10.16 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "iD.iAB.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+</entity>
+}
+
+######################################################################
+####
+# Export MoML one level up (builds on the above).
+
+test MoMLChangeRequest-11.1 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.cAB"]
+    $export exportMoML
+} {<class name="cAB" extends="ptolemy.actor.CompositeActor">
+    <class name="cABC" extends="ptolemy.actor.CompositeActor">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+    </class>
+    <entity name="iABC" class="cABC">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+    </entity>
+</class>
+}
+
+test MoMLChangeRequest-11.2 {test export MoML with parameter values} {
+    set export [$toplevel getEntity "cA.iAB"]
+    $export exportMoML
+} {<entity name="iAB" class="cAB">
+    <class name="cABC" extends="ptolemy.actor.CompositeActor">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+    </class>
+</entity>
+}
+
+

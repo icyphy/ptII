@@ -27,6 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (bart@eecs.berkeley.edu)
  FIXME: Need to review instantiate().
+ FIXME: Need to review _getDeferralDepth().
 */
 
 package ptolemy.kernel;
@@ -1352,6 +1353,44 @@ public class CompositeEntity extends ComponentEntity {
         // That mechanism was far too fragile.
         // EAL 3/10/04
         output.write(exportLinks(depth, null));
+    }
+
+    /** Return the depth of the deferral that defines the specified object.
+     *  This overrides the base class so that if this object defers to
+     *  another that defines the defined object, and the exported
+     *  MoML of the defined object is identical to the exported MoML
+     *  of the deferred to object, then it returns 0.  Otherwise,
+     *  it defers to the base class. In particular, this class
+     *  handled definedObject of type ComponentEntity and ComponentRelation.
+     *  Otherwise, it defers to the base class.
+     *  @param definedObject The object whose definition we seek.
+     *  @return The depth of the deferral.
+     */
+    protected int _getDeferralDepth(NamedObj definedObject) {
+        Prototype deferTo = getDeferTo();
+        if (deferTo != null && deepContains(definedObject)) {
+            String relativeName = definedObject.getName(this);
+            // Regrettably, we have to look at the type
+            // of definedObject to figure out how to look it up.
+            if (definedObject instanceof ComponentEntity) {
+                ComponentEntity definition
+                        = ((CompositeEntity)deferTo).getEntity(relativeName);
+                if (definition != null
+                        && definedObject.exportMoML()
+                        .equals(definition.exportMoML())) {
+                    return 0;
+                }
+            } else if (definedObject instanceof ComponentRelation) {
+                ComponentRelation definition
+                        = ((CompositeEntity)deferTo).getRelation(relativeName);
+                if (definition != null
+                        && definedObject.exportMoML()
+                        .equals(definition.exportMoML())) {
+                    return 0;
+                }
+            }
+        }
+        return super._getDeferralDepth(definedObject);
     }
 
     /** Remove the specified entity. This method should not be used

@@ -2585,9 +2585,8 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         
-        // Load an associated icon, if there is one
-        String iconFile = className.replace('.', '/') + "Icon.xml";
-        _loadFileInContext(iconFile, reference);
+        // Load an associated icon, if there is one.
+        _loadIconForClass(className, reference);
         
         return reference;
     }
@@ -3720,8 +3719,8 @@ public class MoMLParser extends HandlerBase {
     
     /** Return true if the link between the specified port and
      *  relation is part of the class definition. It is part of the
-     *  class definition if either the port and relation are at the
-     *  same level of hierarchy and are both class elements, or if
+     *  class definition if either the port and the relation are
+     *  at the same level of hierarchy and are both class elements, or if
      *  the relation and the container of the port are both class
      *  elements. If the relation is null, then this return true
      *  if the port and its container are class elements.
@@ -3773,7 +3772,9 @@ public class MoMLParser extends HandlerBase {
     
     /** If the file with the specified name exists, parse it in
      *  the context of the specified instance. If it does not
-     *  exist, do nothing.
+     *  exist, do nothing.  If the file creates an attribute
+     *  named "_icon", then that attribute is marked as a class
+     *  element with the same depth as the context.
      *  @param fileName The file name.
      *  @param context The context into which to load the file.
      *  @return True if a file was found.
@@ -3800,8 +3801,15 @@ public class MoMLParser extends HandlerBase {
         // the icon is not exported with the MoML export.
         // Unfortunately, we can't be sure what contents
         // were added to the context, so we just mark the
-        // whole context.
-        _markContentsClassElements(context);
+        // "_icon" attribute.
+        // FIXME: Instead of doing this, which only work for
+        // attributes named "_icon", we could set a private
+        // variable on the parser to indicate that any new
+        // objects it creates should be marked class elements.
+        Attribute icon = context.getAttribute("_icon");
+        if (icon != null) {
+            _markContentsClassElements(icon);
+        }
         
         return true;
     }
@@ -3840,9 +3848,9 @@ public class MoMLParser extends HandlerBase {
     private void _markContentsClassElements(NamedObj object)
             throws IllegalActionException {
         // NOTE: Added as part of big change in class handling. EAL 12/03.
-        // NOTE: It is not necessary to mark objects deeply contained
-        // because they will not be asked to export MoML.
-        // However, we do it anyway in order to add any
+        // NOTE: It is necessary to mark objects deeply contained
+        // so that we can disable deletion and name changes.
+        // While we are at it, we add any
         // deeply contained Settables to the _paramsToParse list.
         Iterator objects = object.containedObjectsIterator();
         while (objects.hasNext()) {
