@@ -239,6 +239,14 @@ public class Effigy extends CompositeEntity {
         else return _modifiableURI;
     }
 
+    /** Return whether this effigy is a system effigy.  System effigies
+     *  are not automatically removed when they have no tableaux.
+     *  @return True if the model is a system effigy.
+     */
+    public boolean isSystemEffigy() {
+        return _isSystemEffigy;
+    }
+
     /** Return the value set by setModified(), or false if setModified()
      *  has not been called on this effigy or any effigy contained by
      *  the same top effigy (returned by topEffigy()).
@@ -328,6 +336,14 @@ public class Effigy extends CompositeEntity {
         topEffigy()._modified = modified;
     }
 
+    /** Set the effigy to be a system effigy if the given flag is true.
+     *  System effigies are not removed automatically if they have no
+     *  tableaux.
+     */
+    public void setSystemEffigy(boolean flag) {
+        _isSystemEffigy = flag;
+    }
+
     /** Specify a tableau factory that offers multiple views of this effigy.
      *  This can be used by a contained tableau to set up a View menu.
      *  @param factory A tableau factory offering multiple views.
@@ -411,14 +427,15 @@ public class Effigy extends CompositeEntity {
 	}
     }
 
-    /** Remove the specified entity, and if there are no remaining tableaux
+    /** Remove the specified entity from this container. If this effigy
+     *  is a system effigy and there are no remaining tableaux
      *  contained by this effigy or any effigy it contains, then remove
      *  this object from its container.
      *  @param entity The tableau to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-       	if (numberOfOpenTableaux() == 0) {
+       	if(numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {
@@ -433,6 +450,9 @@ public class Effigy extends CompositeEntity {
 
     // A tableau factory offering multiple views.
     private TableauFactory _factory = null;
+
+    // Indicator that the effigy is a system effigy.
+    private boolean _isSystemEffigy = false;
 
     // Indicator that the URI must not be written to (if false).
     private boolean _modifiable = true;
