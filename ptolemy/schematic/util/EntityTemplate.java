@@ -62,6 +62,7 @@ public class EntityTemplate extends PTMLObject {
         super(name);
 	_icon = null;
 	_terminalstyle = null;
+        _terminalmap = null;
         _ports = (NamedList) new NamedList();
 	//setIcon(DEFAULTICONNAME);
     }
@@ -224,6 +225,13 @@ public class EntityTemplate extends PTMLObject {
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _terminalstyle._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} terminalmap {\n";
+	if(_terminalmap == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _getIndentPrefix(indent + 1) + 
+                _terminalmap.toString() + "\n";
 
 	result += _getIndentPrefix(indent) + "} ports {\n";
 	Enumeration ports = ports();

@@ -471,7 +471,8 @@ public class Schematic extends PTMLObject
         return new EnumerationIterator(entities());
     }
 
-    /**  Set the semantic object of this node. Generally this
+    /**  
+     * Set the semantic object of this node. Generally this
      * is used when this node is a "wrapper" for some other object
      * or model with deeper meaning.
      */

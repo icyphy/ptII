@@ -61,6 +61,8 @@ test SchematicEntity-2.1 {Constructor tests} {
         null
     } terminalstyle {
         null
+    } terminalmap {
+        null
     } ports {
     }
 } terminalstyle {

@@ -166,7 +166,7 @@ public class Icon extends PTMLObject {
 	Enumeration graphicElements = graphicElements();
         while (graphicElements.hasMoreElements()) { 
             GraphicElement p = (GraphicElement) graphicElements.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
+            result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
         }
 	
         result += _getIndentPrefix(indent) + "}";

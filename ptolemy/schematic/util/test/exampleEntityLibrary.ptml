@@ -6,13 +6,15 @@
 
 <entity name="LoadImage" icon=".SDF.LoadImage" terminalstyle=".SDF.1out">
 <description>Load an image from a file</description>
+<terminalmap ports="output"/>
 <parameter name="filename" value="test" type="string"/>
-<port name="image" output="true" type="doubleArray"/>
+<port name="output" output="true" type="doubleArray"/>
 </entity>
 
 <entity name="SaveImage" icon=".SDF.SaveImage" terminalstyle=".SDF.1in">
-<port name="filename" input="true" type="string"/>
-<port name="image" input="true" type="doubleArray"/>
+<terminalmap ports="input"/>
+<parameter name="filename" value="testout" type="string"/>
+<port name="input" input="true" type="doubleArray"/>
 </entity>
 </entitylibrary>
 

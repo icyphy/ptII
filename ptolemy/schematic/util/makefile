@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	EntityLibrary.java \
+	EntityPort.java \
 	EntityTemplate.java \
 	EnumerationIterator.java \
 	GraphicElement.java \

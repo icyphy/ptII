@@ -73,9 +73,11 @@ test Icon-3.1 {addGraphicElement} {
     set t1 [java::new ptolemy.schematic.util.GraphicElement GraphicElement1]
     set t2 [java::new ptolemy.schematic.util.GraphicElement GraphicElement2]
     $e0 addGraphicElement $t1
-    $e0 toString
-} {ptolemy.schematic.util.Icon {Icon}(
-....GraphicElement1())}
+    $e0 description
+} {ptolemy.schematic.util.Icon {Icon} parameters {
+} graphics {
+    {ptolemy.schematic.util.GraphicElement {GraphicElement1} attributes {}}
+}}
 
 test Icon-3.2 {containsGraphicElement} {
     list [$e0 containsGraphicElement $t1] [$e0 containsGraphicElement $t2]
@@ -90,11 +92,13 @@ test Icon-3.3 {GraphicElements} {
     set r4 [[$enum nextElement] toString]
     set r5 [$enum hasMoreElements]
     list $r1 $r2 $r3 $r4 $r5
-} {1 GraphicElement1() 1 GraphicElement2() 0}
+} {1 {{ptolemy.schematic.util.GraphicElement {GraphicElement1} attributes {}}} 1 {{ptolemy.schematic.util.GraphicElement {GraphicElement2} attributes {}}} 0}
 
 test Icon-3.4 {removeGraphicElement} {
     $e0 removeGraphicElement $t1
-    $e0 toString
-} {ptolemy.schematic.util.Icon {Icon}(
-....GraphicElement2())}
+    $e0 description
+} {ptolemy.schematic.util.Icon {Icon} parameters {
+} graphics {
+    {ptolemy.schematic.util.GraphicElement {GraphicElement2} attributes {}}
+}}
 

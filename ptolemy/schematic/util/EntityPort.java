@@ -35,17 +35,7 @@ import java.util.Enumeration;
 ////////////////////////////////////////////////////////////////////////////// EntityPort
 /**
 
-A schematic port represents a port of an entity in a PtolemyII
-schematic. Currently, it is not clear exactly how much
-information is in this object...
-<!-- port elements will be parsed into class EntityPort -->
-<!ELEMENT port EMPTY>
-<!ATTLIST port
-name ID #REQUIRED
-input (true|false) "false"
-output (true|false) "false"
-multiport (true|false) "false"
-type (string|double|doubleArray) #REQUIRED>
+An entity port represents a port of an entity in an entity template. 
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -131,6 +121,35 @@ public class EntityPort extends PTMLObject {
      */
     public void setType(String type) {
 	_type = type;
+    }
+
+    /** Return a description of the object.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+	result += " type {\n";
+        result += _getIndentPrefix(indent + 1) + _type + "\n";
+        result += _getIndentPrefix(indent) + "}";
+	result += " input {" + _input + "}";
+        result += " output {" + _output + "}";
+        result += " multi {" + _multi + "}";
+        if (bracket == 2) result += "}";
+
+        return result;
     }
 
     private boolean _input;

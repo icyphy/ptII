@@ -6,13 +6,11 @@
 
 <entity name="Load BMP File" template="SDF.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
-<parameter name="filename" type="string"/>
-<port name="image" output="true" type="doubleArray"/>
+<parameter name="filename" value="test" type="string"/>
 </entity>
 
 <entity name="Save BMP File" template="SDF.SaveImage">
-<parameter name="filename" type="string"/>
-<port name="image" input="true" type="doubleArray"/>
+<parameter name="filename" value="test" type="string"/>
 </entity>
 
 <relation name="R1">

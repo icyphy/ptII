@@ -46,9 +46,28 @@ schematic to be mapped into relations between ports.
 public class TerminalMap {
 
     /**
-     * Create a new TerminalMap object wtih no set attributes.
+     * Create a new TerminalMap object with no mapped terminals.
      */
     public TerminalMap () {
+    }
+
+    /**
+     * Create a new TerminalMap object which maps all the ports in the
+     * given terminal style to ports with names in the given string.
+     * The string should be a space separated list of port names.  If there
+     * are less terminals in the terminal style than port names, then the 
+     * portnames at the end of the string will not be mapped.  Likewise if
+     * there are more terminals than port names.
+     */
+    public TerminalMap(TerminalStyle terminalStyle, String portNames) {
+        StringTokenizer tokens = new StringTokenizer(portNames);
+        Enumeration terminals = terminalStyle.terminals();
+        while(tokens.hasMoreElements() && terminals.hasMoreElements()) {
+            String port = (String)tokens.nextElement();
+            String terminal = 
+                (String)((Terminal)terminals.nextElement()).getName();
+            addMap(terminal, port);
+        }            
     }
 
     /**
@@ -85,7 +104,14 @@ public class TerminalMap {
      * Return a string this representing Icon.
      */
     public String toString() {
-        return "TerminalMap";
+        String output = "TerminalMap{";
+        Iterator keys = _map.keySet().iterator();
+        while(keys.hasNext()) {
+            String terminal = (String) keys.next();
+            String port = (String)_map.get(terminal);
+            output += "{" + terminal + ", " + port + "}";
+        }
+        return output + "}";
     }
 
     private HashMap _map = new HashMap();

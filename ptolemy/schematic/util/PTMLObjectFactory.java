@@ -63,7 +63,7 @@ public class PTMLObjectFactory {
 
         _checkElement(e, "entitylibrary");
 
-        EntityLibrary entitylibrary = new EntityLibrary();
+        EntityLibrary ptmlobject = new EntityLibrary();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
@@ -71,7 +71,7 @@ public class PTMLObjectFactory {
             if(etype.equals("entity")) {
                 // if it's an Entity, then create it, 
                 // and add it to the list of entitys.
-                entitylibrary.addEntity(
+                ptmlobject.addEntity(
                         _createEntityTemplate(child, iconroot));
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
@@ -83,7 +83,7 @@ public class PTMLObjectFactory {
                     XMLElement sublibtree = _parseSubURL(e, offset);
                     EntityLibrary sublib = 
                         createEntityLibrary(sublibtree, iconroot); 
-                    entitylibrary.addSubLibrary(sublib);
+                    ptmlobject.addSubLibrary(sublib);
                 }
                 catch (Exception ex) {
                     System.out.println("Couldn't parse entitylibrary " +
@@ -92,9 +92,9 @@ public class PTMLObjectFactory {
                 }
 
             } else if(etype.equals("description")) {
-                entitylibrary.setDocumentation(child.getPCData());
+                ptmlobject.setDocumentation(child.getPCData());
             } else {
-                _unknownElementType(child, "entitylibrary");
+                _unknownElementType(ptmlobject, child);
             }
         }
         Enumeration attributes = e.attributeNames();
@@ -102,13 +102,13 @@ public class PTMLObjectFactory {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
                 try {
-                    entitylibrary.setName(_getString(e, n));
+                    ptmlobject.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return entitylibrary;
+        return ptmlobject;
             
     }
 
@@ -125,7 +125,7 @@ public class PTMLObjectFactory {
 
         _checkElement(e, "iconlibrary");
 
-        IconLibrary iconlibrary = new IconLibrary();
+        IconLibrary ptmlobject = new IconLibrary();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
@@ -133,7 +133,7 @@ public class PTMLObjectFactory {
             if(etype.equals("icon")) {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
-                iconlibrary.addIcon(_createIcon(child));
+                ptmlobject.addIcon(_createIcon(child));
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
                 // list of sublibraries.
@@ -143,7 +143,7 @@ public class PTMLObjectFactory {
                     String offset = child.getAttribute("url");
                     XMLElement sublibtree = _parseSubURL(e, offset);
                     IconLibrary sublib = createIconLibrary(sublibtree); 
-                    iconlibrary.addSubLibrary(sublib);
+                    ptmlobject.addSubLibrary(sublib);
                 }
                 catch (Exception ex) {
                     System.out.println("Couldn't parse iconlibrary from url "+
@@ -152,11 +152,11 @@ public class PTMLObjectFactory {
                 }
 
             } else if(etype.equals("description")) {
-                iconlibrary.setDocumentation(child.getPCData());
+                ptmlobject.setDocumentation(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
-                iconlibrary.addTerminalStyle(_createTerminalStyle(child));
+                ptmlobject.addTerminalStyle(_createTerminalStyle(child));
             } else {
-                _unknownElementType(child, "iconlibrary");
+                _unknownElementType(ptmlobject, child);
             }
         }
         Enumeration attributes = e.attributeNames();
@@ -164,14 +164,14 @@ public class PTMLObjectFactory {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
                 try {
-                    iconlibrary.setName(_getString(e, n));
+                    ptmlobject.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
 
-        return iconlibrary;
+        return ptmlobject;
             
     }
 
@@ -187,7 +187,7 @@ public class PTMLObjectFactory {
             throws IllegalActionException, NameDuplicationException {
 
         _checkElement(e, "schematic");
-        Schematic schematic = new Schematic();
+        Schematic ptmlobject = new Schematic();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
@@ -196,24 +196,24 @@ public class PTMLObjectFactory {
                 // if it's a port, then create it, 
                 // and add it to the list of ports.
                 // FIXME
-                //schematic.addPort(_createSchematicPort(child));
+                //ptmlobject.addPort(_createSchematicPort(child));
             } else if(etype.equals("terminal")) {
                 // if it's a terminal, then create it, 
                 // and add it to the list of terminals.
-                schematic.addTerminal(_createSchematicTerminal(child, null));
+                ptmlobject.addTerminal(_createSchematicTerminal(child, null));
             } else if(etype.equals("entity")) {
                 // if it's a entity, then create it, 
                 // and add it to the list of entities.
-                schematic.addEntity(_createSchematicEntity(child, lib));
+                ptmlobject.addEntity(_createSchematicEntity(child, lib));
             } else if(etype.equals("relation")) {
                 // if it's a relation, then create it, 
                 // and add it to the list of relations.
-                schematic.addRelation(
-                        _createSchematicRelation(child, schematic));
+                ptmlobject.addRelation(
+                        _createSchematicRelation(child, ptmlobject));
             } else if(etype.equals("description")) {
-                schematic.setDocumentation(child.getPCData());
+                ptmlobject.setDocumentation(child.getPCData());
             } else {
-                _unknownElementType(child, "iconlibrary");
+                _unknownElementType(ptmlobject, child);
             }
         }
         Enumeration attributes = e.attributeNames();
@@ -221,14 +221,14 @@ public class PTMLObjectFactory {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
                 try {
-                    schematic.setName(_getString(e, n));
+                    ptmlobject.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
 
-        return schematic;            
+        return ptmlobject;            
     }
 
     /** 
@@ -307,62 +307,100 @@ public class PTMLObjectFactory {
         }
     }
 
+    private static EntityPort _createEntityPort(XMLElement e)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "port");
+
+        EntityPort ptmlobject = new EntityPort();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(ptmlobject, child);
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                ptmlobject.setName(_getString(e, n));
+            } else if (n.equals("type")) {
+                ptmlobject.setType(_getString(e, n));
+            } else if (n.equals("input")) {
+                ptmlobject.setInput(_getBoolean(e, n));
+            } else if (n.equals("output")) {
+                ptmlobject.setOutput(_getBoolean(e, n));
+            } else if (n.equals("multiport")) {
+                ptmlobject.setMultiport(_getBoolean(e, n));
+            } else {
+                _unknownAttribute(ptmlobject, e, n);
+            }
+        }
+        return ptmlobject;
+    }
+
     private static EntityTemplate _createEntityTemplate(XMLElement e, 
             IconLibrary iconroot)
         throws IllegalActionException, NameDuplicationException {
 
         _verifyElement(e, "entity");
 
-        EntityTemplate entity = new EntityTemplate();
+        EntityTemplate ptmlobject = new EntityTemplate();
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                ptmlobject.setName(_getString(e, n));
+            } else if (n.equals("icon")) {
+                Icon icon = iconroot.findIcon(_getString(e, n));
+                ptmlobject.setIcon(icon);
+            } else if (n.equals("terminalstyle")) {
+                TerminalStyle terminalstyle =
+                    iconroot.findTerminalStyle(_getString(e, n));
+                ptmlobject.setTerminalStyle(terminalstyle);
+            } else {
+                _unknownAttribute(ptmlobject, e, n);
+            }
+        }
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("description")) {
-                entity.setDocumentation(child.getPCData());
+                ptmlobject.setDocumentation(child.getPCData());
+                //            } else if(etype.equals("parameter")) {
+                //entity.addParameter(_createSchematicParameter(child));
+            } else if(etype.equals("port")) {
+                ptmlobject.addPort(_createEntityPort(child));
+            } else if(etype.equals("terminalmap")) {
+                ptmlobject.setTerminalMap(_createTerminalMap(child, 
+                        ptmlobject.getTerminalStyle()));
             } else {
-                _unknownElementType(child, "entity");
+                _unknownElementType(ptmlobject, child);
             }    
         }
-        Enumeration attributes = e.attributeNames();
-        while(attributes.hasMoreElements()) {
-            String n = (String) attributes.nextElement();
-            if (n.equals("name")) {
-                entity.setName(_getString(e, n));
-            } else if (n.equals("icon")) {
-                Icon icon = iconroot.findIcon(_getString(e, n));
-                entity.setIcon(icon);
-            } else if (n.equals("terminalstyle")) {
-                TerminalStyle terminalstyle =
-                    iconroot.findTerminalStyle(_getString(e, n));
-                entity.setTerminalStyle(terminalstyle);
-            } else {
-                _unknownAttribute(e, n);
-            }
-        }
-        return entity;
+        return ptmlobject;
     }
 
     private static GraphicElement _createGraphicElement(XMLElement e)
         throws IllegalActionException {
 
         String name = e.getElementType();
-        GraphicElement graphic = new GraphicElement(name);
+        GraphicElement ptmlobject = new GraphicElement(name);
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "GraphicElement");
+            _unknownElementType(ptmlobject, child);
         }
         
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             String v = e.getAttribute(n);        
-            graphic.setAttribute(n, v);
+            ptmlobject.setAttribute(n, v);
         }
 
-        graphic.setAttribute("content", e.getPCData());
-        return graphic;
+        ptmlobject.setAttribute("content", e.getPCData());
+        return ptmlobject;
     }
 
     private static Icon _createIcon(XMLElement e)
@@ -370,7 +408,7 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "icon");
 
-        Icon icon = new Icon();
+        Icon ptmlobject = new Icon();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
@@ -379,7 +417,7 @@ public class PTMLObjectFactory {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
             } else if(etype.equals("description")) {
-                icon.setDocumentation(child.getPCData());
+                ptmlobject.setDocumentation(child.getPCData());
             } else if(etype.equals("terminal")) {
             } else if(etype.equals("xmlgraphic")) {
                 Enumeration graphics = child.childElements();
@@ -387,10 +425,10 @@ public class PTMLObjectFactory {
                     XMLElement graphic = (XMLElement)graphics.nextElement();
                     String gtype = graphic.getElementType();                
                     GraphicElement g = _createGraphicElement(graphic);
-                    icon.addGraphicElement(g);
+                    ptmlobject.addGraphicElement(g);
                 }
             } else {
-                _unknownElementType(child, "icon");
+                _unknownElementType(ptmlobject, child);
             }    
         }
         Enumeration attributes = e.attributeNames();
@@ -398,13 +436,13 @@ public class PTMLObjectFactory {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
                 try {
-                    icon.setName(_getString(e, n));
+                    ptmlobject.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return icon;
+        return ptmlobject;
     }
 
     private static SchematicEntity _createSchematicEntity(XMLElement e,
@@ -413,21 +451,21 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "entity");
 
-        EntityTemplate template = null;
+        EntityTemplate ptmlobject = null;
         if(e.hasAttribute("template")) {
             String templateString = _getString(e, "template");
-            template = entityLib.findEntityTemplate(templateString);
+            ptmlobject = entityLib.findEntityTemplate(templateString);
         } else {
             throw new IllegalActionException(
                     "SchematicEntity has no template.");
         }
 
         SchematicEntity entity = 
-            new SchematicEntity(template.getName(), template);
+            new SchematicEntity(ptmlobject.getName(), ptmlobject);
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "entity");
+            _unknownElementType(ptmlobject, child);
         }
 
         Enumeration attributes = e.attributeNames();
@@ -442,7 +480,7 @@ public class PTMLObjectFactory {
             } else if (n.equals("template")) {
                 //ignore
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
         return entity;
@@ -454,11 +492,11 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "link");
 
-        SchematicLink entity = new SchematicLink();
+        SchematicLink ptmlobject = new SchematicLink();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "entity");
+            _unknownElementType(ptmlobject, child);
         }
 
         // FIXME hmm... I bet it is possible for the terminal that 
@@ -468,16 +506,16 @@ public class PTMLObjectFactory {
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("to")) {
-                entity.setTo(
+                ptmlobject.setTo(
                         schematic.findSchematicTerminal(_getString(e, n)));
             } else if (n.equals("from")) {
-                entity.setFrom(
+                ptmlobject.setFrom(
                         schematic.findSchematicTerminal(_getString(e, n)));
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return entity;
+        return ptmlobject;
     }
 
     private static SchematicRelation _createSchematicRelation(XMLElement e, 
@@ -486,31 +524,31 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "relation");
 
-        SchematicRelation relation = new SchematicRelation();
+        SchematicRelation ptmlobject = new SchematicRelation();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("link")) {
-                relation.addLink(_createSchematicLink(child, schematic));
+                ptmlobject.addLink(_createSchematicLink(child, schematic));
             } else if(etype.equals("terminal")) {
-                relation.addTerminal(_createSchematicTerminal(child, null));
+                ptmlobject.addTerminal(_createSchematicTerminal(child, null));
             } else 
-                _unknownElementType(child, "relation");
+                _unknownElementType(ptmlobject, child);
         }
 
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                relation.setName(_getString(e, n));
+                ptmlobject.setName(_getString(e, n));
             } else if (n.equals("width")) {
-                relation.setWidth(_getInt(e, n));
+                ptmlobject.setWidth(_getInt(e, n));
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return relation;
+        return ptmlobject;
     }
 
     //FIXME do we need this terminalstyle?
@@ -520,27 +558,27 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "terminal");
 
-        SchematicTerminal terminal = new SchematicTerminal("terminal", null);
+        SchematicTerminal ptmlobject = new SchematicTerminal("terminal", null);
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "terminal");
+            _unknownElementType(ptmlobject, child);
         }
 
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                terminal.setName(_getString(e, n));
+                ptmlobject.setName(_getString(e, n));
             } else if (n.equals("x")) {
-                terminal.setX(_getDouble(e, n));
+                ptmlobject.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
-                terminal.setY(_getDouble(e, n));
+                ptmlobject.setY(_getDouble(e, n));
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return terminal;
+        return ptmlobject;
     }
 
     private static Terminal _createTerminal(XMLElement e)
@@ -548,27 +586,52 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "terminal");
 
-        Terminal terminal = new Terminal();
+        Terminal ptmlobject = new Terminal();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "terminal");
+            _unknownElementType(ptmlobject, child);
         }
 
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                terminal.setName(_getString(e, n));
+                ptmlobject.setName(_getString(e, n));
             } else if (n.equals("x")) {
-                terminal.setX(_getDouble(e, n));
+                ptmlobject.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
-                terminal.setY(_getDouble(e, n));
+                ptmlobject.setY(_getDouble(e, n));
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return terminal;
+        return ptmlobject;
+    }
+
+    private static TerminalMap _createTerminalMap(XMLElement e, 
+            TerminalStyle terminalStyle)
+        throws IllegalActionException, NameDuplicationException {
+ 
+        _verifyElement(e, "terminalmap");
+ 
+        TerminalMap ptmlobject = new TerminalMap();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(ptmlobject, child);
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("ports")) {
+                ptmlobject = new TerminalMap(terminalStyle, _getString(e, n));
+            } else {
+                _unknownAttribute(ptmlobject, e, n);
+            }
+        }
+        return ptmlobject;
     }
 
     private static TerminalStyle _createTerminalStyle(XMLElement e)
@@ -576,27 +639,27 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "terminalstyle");
 
-        TerminalStyle terminalStyle = new TerminalStyle();
+        TerminalStyle ptmlobject = new TerminalStyle();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("terminal")) {
-                terminalStyle.addTerminal(_createTerminal(child));
+                ptmlobject.addTerminal(_createTerminal(child));
             } else {
-                _unknownElementType(child, "terminalstyle");
+                _unknownElementType(ptmlobject, child);
             }    
         }
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                terminalStyle.setName(_getString(e, n));
+                ptmlobject.setName(_getString(e, n));
             } else {
-                _unknownAttribute(e, n);
+                _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return terminalStyle;
+        return ptmlobject;
     }
 
     /** Return a boolean corresponding to the value of the attribute with
@@ -607,9 +670,9 @@ public class PTMLObjectFactory {
     private static boolean _getBoolean(XMLElement e, String name) 
         throws IllegalActionException {
         String v = e.getAttribute(name);
-        if(v == "true") 
+        if(v.toLowerCase().equals("true")) 
             return true;
-        else if(v == "false")
+        else if(v.toLowerCase().equals("false"))
             return false;
         else throw new IllegalActionException(
                 "Attribute " + name + " with value " + v + 
@@ -676,18 +739,20 @@ public class PTMLObjectFactory {
     /** 
      * Print a message about the unknown element.
      */
-    private static void _unknownElementType(XMLElement el, String parent) {
+    private static void _unknownElementType(Object parent, XMLElement el) {
             String etype = el.getElementType();
                 System.out.println("Unrecognized element type = " +
-                    etype + " found in " + parent);
+                    etype + " found in " + parent.getClass().getName());
     }
         
     /** 
      * Print a message about the unknown element
      */
-    private static void _unknownAttribute(XMLElement el, String name) {
+    private static void _unknownAttribute(Object parent, XMLElement e, 
+            String name) {
         System.out.println("Unrecognized attribute (" + name + "=" +
-                _getString(el, name) + ") found in " + el.getElementType());
+                _getString(e, name) + ") found in " +
+                parent.getClass().getName());
     }
         
     /**
