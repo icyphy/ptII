@@ -671,34 +671,32 @@ public class IOPort extends ComponentPort {
             throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
         try {
-            try {
-                _workspace.getReadAccess();
-                // Note that the getReceivers() method might throw an
-                // IllegalActionException if there's no director.
-                localReceivers = getReceivers();
-                if (localReceivers[channelIndex] == null) {
-                    throw new NoTokenException(this,
-                            "get: no receiver at index: "
-                            + channelIndex + ".");
-                }
-            } finally {
-                _workspace.doneReading();
-            }
-
-	    Token[] retArray =
-                localReceivers[channelIndex][0].getArray(vectorLength);
-
-
-            if (retArray == null) {
-                throw new NoTokenException(this, "get: No token array " +
-                        "to return.");
-            }
-            return retArray;
-        } catch (ArrayIndexOutOfBoundsException ex) {
+            _workspace.getReadAccess();
+            // Note that the getReceivers() method might throw an
+            // IllegalActionException if there's no director.
+            localReceivers = getReceivers();
+            
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        if(channelIndex >= localReceivers.length) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
                     "get: channel index is out of range.");
+        } 
+        if (localReceivers[channelIndex] == null) {
+            throw new NoTokenException(this,
+                    "get: no receiver at index: "
+                    + channelIndex + ".");
         }
+        Token[] retArray =
+            localReceivers[channelIndex][0].getArray(vectorLength);
+        if (retArray == null) {
+            throw new NoTokenException(this, "get: No token array " +
+                    "to return.");
+        }
+        return retArray;
     }
     
     /** Return the current time associated with a certain channel.
