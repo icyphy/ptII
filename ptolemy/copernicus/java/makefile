@@ -62,14 +62,16 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
+	NamedObjEliminator.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
 	TypeSpecializer.java \
+	TypeSpecializerAnalysis.java \
 	TypeTag.java \
 	UnreachableMethodRemover.java \
-	ValueTag.java	
+	ValueTag.java
 
 #	NamedObjConstructorAnalysis.java
 
@@ -147,13 +149,16 @@ compileDemo: $(JCLASS)
 		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ttn debug,disabled,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ts debug,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.noe targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
 		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
 		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
 		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
 		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
 		-p wjtp.snapshot6 outDir:$(ROOT)/$(TARGETPATH)/jimple6 \
+		-p wjtp.finalSnapshot outDir:$(ROOT)/$(TARGETPATH) \
 		-p wjtp.iee enabled \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
@@ -176,7 +181,7 @@ treeShakeDemo:
 	ls -l $(TREESHAKE_PREFIX).jar
 
 # Directories that contain snapshots
-SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5
+SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5 jimple6
 
 STATSFILE=runSnapShot.stats
 # $PTII/util/testsuite/codegen.tcl calls runDemoTest

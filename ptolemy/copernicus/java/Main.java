@@ -238,8 +238,8 @@ public class Main extends KernelMain {
         //        ConstantLoopUnroller.v()));
 
         // Simplify to speed up instance equality elimination
-        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
-        //        UnreachableMethodRemover.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
+                UnreachableMethodRemover.v()));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         // Remove tests of object equality that can be statically
@@ -253,9 +253,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
                 new TransformerAdapter(CastAndInstanceofEliminator.v())));
        
-        // Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
-        //        TokenToNativeTransformer.v(_toplevel)));
-        
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
@@ -287,6 +284,26 @@ public class Main extends KernelMain {
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
+      
+        // Remove references to named objects.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.noe",
+                NamedObjEliminator.v(_toplevel)));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot6",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot6",
+                JimpleWriter.v()));
+
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+        //         TypeSpecializer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
+                TokenToNativeTransformer.v(_toplevel)));
+ 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.finalSnapshot",
+                JimpleWriter.v()));
+        
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+         
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true"));
     }

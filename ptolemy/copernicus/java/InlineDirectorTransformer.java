@@ -70,6 +70,9 @@ import soot.util.Chain;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeResolver;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -162,9 +165,6 @@ public class InlineDirectorTransformer extends SceneTransformer {
             SootMethod classMethod = new SootMethod("preinitialize",
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
-            SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(PtolemyUtilities.actorClass,
-                        classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             //DavaBody body = Dava.v().newBody(classMethod);
@@ -173,21 +173,27 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            Local actorLocal = Jimple.v().newLocal("actor",
-                    actorType);
-            body.getLocals().add(actorLocal);
             for(Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod preinitializeMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "preinitialize");
+                Local actorLocal = Jimple.v().newLocal("actor",
+                        RefType.v(theClass));
+                body.getLocals().add(actorLocal);
                 // Get the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
                 units.add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorMethod)));
+                                preinitializeMethod)));
             }
             units.add(Jimple.v().newReturnVoidStmt());
         }
@@ -197,10 +203,6 @@ public class InlineDirectorTransformer extends SceneTransformer {
             SootMethod classMethod = new SootMethod("initialize",
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
-            SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(
-                        PtolemyUtilities.actorClass,
-                        classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -216,12 +218,18 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod initializeMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "initialize");
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
                 units.add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorMethod)));
+                                initializeMethod)));
             }
             units.add(Jimple.v().newReturnVoidStmt());
         }
@@ -231,15 +239,6 @@ public class InlineDirectorTransformer extends SceneTransformer {
             SootMethod classMethod = new SootMethod("fire",
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
-            SootMethod actorPrefireMethod =
-                SootUtilities.searchForMethodByName(
-                        PtolemyUtilities.actorClass, "prefire");
-            SootMethod actorFireMethod =
-                SootUtilities.searchForMethodByName(
-                        PtolemyUtilities.actorClass, "fire");
-            SootMethod actorPostfireMethod =
-                SootUtilities.searchForMethodByName(
-                        PtolemyUtilities.actorClass, "postfire");
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -264,6 +263,18 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod actorPrefireMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "prefire");
+                SootMethod actorFireMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "fire");
+                SootMethod actorPostfireMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "postfire");
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
@@ -279,6 +290,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             }
             units.add(Jimple.v().newReturnVoidStmt());
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
         }
 
         {
@@ -286,10 +300,6 @@ public class InlineDirectorTransformer extends SceneTransformer {
             SootMethod classMethod = new SootMethod("wrapup",
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
-            SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(
-                        PtolemyUtilities.actorClass,
-                        classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -305,12 +315,18 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass theClass = Scene.v().loadClassAndSupport(className);
+                SootMethod wrapupMethod =
+                    SootUtilities.searchForMethodByName(
+                            theClass, "wrapup");
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
                         Jimple.v().newInstanceFieldRef(thisLocal, field)));
                 units.add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorMethod)));
+                                wrapupMethod)));
             }
             units.add(Jimple.v().newReturnVoidStmt());
         }  

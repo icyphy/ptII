@@ -597,7 +597,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                     try {
                         field.addTag(new ValueTag(variable.getToken()));
                     } catch (Exception ex) {
-                    }
+                    } 
+                    field.addTag(new TypeTag(type));
                 } else {
                     field = new SootField(
                             fieldName + "_CGExpression",

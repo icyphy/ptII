@@ -83,14 +83,15 @@ public class CommandLineTemplate {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-        CommandLineTemplate app = new CommandLineTemplate();
         try {
+            CommandLineTemplate app = new CommandLineTemplate();
             app.processArgs(args);
             app.waitForFinish();
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
-            System.exit(0);
+
+            //  System.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.

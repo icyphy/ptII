@@ -44,6 +44,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Settable;
 
 import soot.Hierarchy;
+import soot.IntType;
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
@@ -424,7 +425,7 @@ public class ActorTransformer extends SceneTransformer {
         // make sure that we never call the baseclass initialize method.
         // FIXME: When we get to the point where we no longer derive
         // from TypedAtomicActor, we need to implement all of these methods.
-        if(!theClass.declaresMethodByName("initialize")) {
+        /*  if(!theClass.declaresMethodByName("initialize")) {
             SootMethod method = new SootMethod("initialize",
                     new LinkedList(), VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
@@ -433,6 +434,63 @@ public class ActorTransformer extends SceneTransformer {
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnVoidStmt());            
         }
+         */
+                if(!theClass.declaresMethodByName("preinitialize")) {
+                    SootMethod method = new SootMethod("preinitialize",
+                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
+                }
+                if(!theClass.declaresMethodByName("initialize")) {
+                    SootMethod method = new SootMethod("initialize",
+                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
+                }
+                if(!theClass.declaresMethodByName("prefire")) {
+                    SootMethod method = new SootMethod("prefire",
+                            new LinkedList(), IntType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnStmt(
+                                                IntConstant.v(1)));
+                }
+                if(!theClass.declaresMethodByName("fire")) {
+                    SootMethod method = new SootMethod("fire",
+                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
+                }
+                if(!theClass.declaresMethodByName("postfire")) {
+                    SootMethod method = new SootMethod("postfire",
+                            new LinkedList(), IntType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnStmt(
+                                                IntConstant.v(1)));
+                }
+                if(!theClass.declaresMethodByName("wrapup")) {
+                    SootMethod method = new SootMethod("wrapup",
+                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    theClass.addMethod(method);
+                    JimpleBody body = Jimple.v().newBody(method);
+                    method.setActiveBody(body);
+                    body.insertIdentityStmts();
+                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
+                    }
     }
 
     // Inline invocation sites from methods in the given class to

@@ -75,6 +75,9 @@ import soot.util.Chain;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeResolver;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -158,7 +161,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // We know that we have exactly one model, so create it.
         // The final field for the model.
         SootField modelField = new SootField("_CGmodel", 
-                RefType.v(PtolemyUtilities.compositeActorClass),
+                RefType.v(modelClass),
                 Modifier.PRIVATE | Modifier.FINAL);
         mainClass.addField(modelField);
 
@@ -269,7 +272,15 @@ public class CommandLineTransformer extends SceneTransformer {
         SootUtilities.inlineCallsToMethod(
                 mainClass.getMethodByName("stopRun"), mainClass);
 
-        
+        for(Iterator methods = mainClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            LocalSplitter.v().transform(body, phaseName + ".lns");
+            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+            TypeResolver.resolve(body, Scene.v());
+        }
+                
         // unroll places where the model itself is looked at.
         // SootField modelsField = mainClass.getFieldByName("_models");
         // SootUtilities.unrollIteratorInstances(mainClass,

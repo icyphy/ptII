@@ -482,7 +482,7 @@ public class ModelTransformer extends SceneTransformer {
                     getFieldNameForEntity(entity, container);
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
-                        PtolemyUtilities.actorType, entityFieldName);
+                        RefType.v(className), entityFieldName);
                 
             }
 	}
@@ -497,7 +497,7 @@ public class ModelTransformer extends SceneTransformer {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
         Local tempPortLocal = Jimple.v().newLocal("tempPort",
-                RefType.v("ptolemy.kernel.Port"));
+                RefType.v(PtolemyUtilities.portClass));
         body.getLocals().add(tempPortLocal);
 
 	for(Iterator ports = entity.portList().iterator();
