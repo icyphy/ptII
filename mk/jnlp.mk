@@ -127,7 +127,7 @@ HYBRID_SYSTEMS_MAIN_JAR = \
 
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
-	$(HYBRID_SYSTEMS_ONLY_JARS) \
+	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	ptolemy/domains/ct/demo/demo.jar \
