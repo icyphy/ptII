@@ -109,12 +109,13 @@ public class FSMTransitionController extends EdgeController {
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
-	    if(f instanceof Terminal) {
-		Site site = ((Terminal)f).getConnectSite();
+	    Object object = f.getUserObject();
+            if(object instanceof Node) {
+		Site site = new PerimeterSite(f, 0);
 		return site;
             } else {
-                return super.getHeadSite(f, x, y);
-            }
+		throw new RuntimeException("unknown figure: " + f);
+	    }
         }
     }
 
