@@ -201,40 +201,20 @@ public class SDFDirector extends StaticSchedulingDirector {
         super.attributeChanged(attribute);
     }
 
-    /** Initialize the actors associated with this director and
-     *  then compute the schedule.  The schedule is computed
-     *  during initialization so that hierarchical opaque composite actors
-     *  can be scheduled properly, since the act of computing the
-     *  schedule sets the rate parameters of the external ports.
-     *  The order in which the actors are initialized is arbitrary.
+    /** Initialize the actors associated with this director and then
+     *  set the iteration count to zero.  The order in which the
+     *  actors are initialized is arbitrary.  In addition, if actors
+     *  connected directly to output ports have initial production,
+     *  then copy that initial production to the outside of the
+     *  composite actor.
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Scheduler scheduler = getScheduler();
-        if (scheduler == null)
-            throw new IllegalActionException("Attempted to initialize " +
-                    "SDF system with no scheduler");
-        // force the schedule to be computed.
-        if (_debugging) _debug("Computing schedule");
-        Schedule sched = scheduler.getSchedule();
+        _iterationCount = 0;
 
-        // FIXME: You probably only want this from the scheduler, but
-        // currently there is no easy way to listen to the scheduler
-        // from inside Vergil.  Hence we'll print the schedule here too...
-        if (_debugging) {
-            Iterator firings = sched.firingIterator();
-            while (firings.hasNext()) {
-		Firing firing = (Firing)firings.next();
-		Actor actor = (Actor)firing.getActor();
-		int iterationCount = firing.getIterationCount();
-                _debug("Actor " + actor + " will fire " +
-                        iterationCount + " time(s).");
-            }
-        }
-        
         CompositeActor container = (CompositeActor)getContainer();
         for(Iterator ports = container.outputPortList().iterator();
             ports.hasNext();) {
@@ -320,14 +300,40 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     /** Preinitialize the actors associated with this director and
-     *  initialize the number of iterations to zero.  The order in which
-     *  the actors are preinitialized is arbitrary.
+     *  compute the schedule.  The schedule is computed during
+     *  preinitialization so that hierarchical opaque composite actors
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.  In
+     *  addition, performing scheduling during preinitialization
+     *  enables it to be present during code generation.  The order in
+     *  which the actors are preinitialized is arbitrary.
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _iterationCount = 0;
+
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
+            throw new IllegalActionException("Attempted to initialize " +
+                    "SDF system with no scheduler");
+        // force the schedule to be computed.
+        if (_debugging) _debug("Computing schedule");
+        Schedule sched = scheduler.getSchedule();
+
+        // FIXME: You probably only want this from the scheduler, but
+        // currently there is no easy way to listen to the scheduler
+        // from inside Vergil.  Hence we'll print the schedule here too...
+        if (_debugging) {
+            Iterator firings = sched.firingIterator();
+            while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actor = (Actor)firing.getActor();
+		int iterationCount = firing.getIterationCount();
+                _debug("Actor " + actor + " will fire " +
+                        iterationCount + " time(s).");
+            }
+        }
     }
 
     /** Return false if the system has finished executing, either by
