@@ -2007,7 +2007,9 @@ public class Plot extends PlotBox {
         long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
 
         // Avoid drawing points and lines that are invisible.
-        if (xpos != prevx || ypos != prevy) {
+        // Note that if the size of the dataset is 1, then we have only
+        // one point, so we should be sure to draw it.
+        if (xpos != prevx || ypos != prevy || pts.size() == 1) {
             // MIN_VALUE is a flag that there has been no previous x or y.
             if (pt.connected) {
                 _drawLine(graphics, dataset, xpos, ypos,
