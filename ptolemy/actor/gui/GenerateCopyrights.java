@@ -201,13 +201,13 @@ public class GenerateCopyrights {
             htmlBuffer.append(
                     "<p>Below we list features and the "
                     + "corresponding copyright "
-                    + " of the package that is used.  If an actor is not "
+                    + " of the package that is used.  If a feature is not "
                     + "listed below, then the " + applicationName +
                     " copyright is the "
                     + "only copyright."
                     + "<table>\n"
-                    + "  <tr><th>Actor</th>\n"
-                    + "      <th>Copyright of package used by the Actor</th>\n"
+                    + "  <tr><th>Feature</th>\n"
+                    + "      <th>Copyright of package used by the eature</th>\n"
                     + "  </tr>\n");
 
             while (copyrights.hasNext()) {
