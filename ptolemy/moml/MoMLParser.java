@@ -496,6 +496,14 @@ public class MoMLParser extends HandlerBase {
                         while (paths.hasMoreTokens() && input == null) {
                             String path = paths.nextToken();
 
+                            // FIXME: If the class path contains a jar
+                            // file, we should probably look inside the
+                            // jar file.  In any case, we should not append
+                            // a trailing /
+                            if (path.endsWith(".jar")) {		
+                                continue;
+                            }
+
                             // Check to see if the path ends with a "/"     
                             if (!path.endsWith("/")) {		
 				// need to append a "/"		
