@@ -1170,7 +1170,7 @@ public class Plot extends PlotBox {
             _firstinset = true;
             _sawfirstdataset = true;
             addLegend(_currentdataset,
-                      new String("Dataset "+ _currentdataset));
+                      new String("Set "+ _currentdataset));
         }
         if (_firstinset) {
             connected = false;
