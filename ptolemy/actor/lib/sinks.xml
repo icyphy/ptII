@@ -5,6 +5,13 @@
   <configure>
     <?moml
       <group>
+
+<entity name="Discard" class="ptolemy.actor.lib.Discard">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
 <entity name="Display" class="ptolemy.actor.gui.Display">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
@@ -36,6 +43,12 @@
 </entity>
 
 <entity name="SequenceScope" class="ptolemy.actor.gui.SequenceScope">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
+<entity name="Test" class="ptolemy.actor.lib.Test">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>

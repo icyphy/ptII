@@ -69,6 +69,7 @@ JSRCS = \
 	Const.java \
 	CurrentTime.java \
 	dB.java \
+	Discard.java \
         DiscreteRandomSource.java \
 	Distributor.java \
 	Expression.java \
@@ -93,6 +94,7 @@ JSRCS = \
 	Sink.java \
 	Source.java \
 	SquareRoot.java \
+	Test.java \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
