@@ -57,6 +57,7 @@ include $(CONFIG)
 
 JSRCS = \
 	ZeroBias.java \
+	ThreeDFunction.java \
 	Bias.java
 
 EXTRA_SRCS =	$(JSRCS)
