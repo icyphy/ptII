@@ -233,8 +233,9 @@ public class Graph implements Cloneable {
      *
      *  @param edge The edge.
      *  @exception IllegalArgumentException If the source or sink node
-     *  of the edge is not already in the graph, or if the edge is
-     *  already in the graph.
+     *  of the edge is not already in the graph, if the edge is
+     *  already in the graph, or if the edge is hidden in the graph.
+     *  @see #hideEdge(Edge).
      */
     public Edge addEdge(Edge edge) {
         if (!containsNode(edge.source())) {
@@ -246,6 +247,9 @@ public class Graph implements Cloneable {
         } else if (containsEdge(edge)) {
             throw new IllegalArgumentException("Attempt to add an edge that "
                     + "is already in the graph." + _edgeDump(edge));
+        } else if (hidden(edge)) {
+            throw new IllegalArgumentException("Attempt to add an edge that "
+                    + "is already hidden in the graph." + _edgeDump(edge));
         } else {
             _registerEdge(edge);
             return edge;
@@ -435,12 +439,16 @@ public class Graph implements Cloneable {
         return result;
     }
 
-    /** Return true if the specified edge exists in the graph.
+    /** Return true if the specified edge exists in the graph, and the
+     *  edge is not hidden in the graph.
      *  @param edge The specified edge.
-     *  @return True if the specified edge exists in the graph.
+     *  @return True if the specified edge exists in the graph and is not
+     *  hidden.
+     *  @see #hidden(Edge).
+     *  @see #hideEdge(Edge).
      */
     public boolean containsEdge(Edge edge) {
-        return _edges.contains(edge);
+        return _edges.contains(edge) && (!hidden(edge));
     }
 
     /** Test if the specified object is an edge weight in this
@@ -726,6 +734,15 @@ public class Graph implements Cloneable {
      */
     public boolean hidden(Edge edge) {
         return _hiddenEdgeSet.contains(edge);
+    }
+
+    /** Return all the hidden edges in this graph in the form of a collection.
+     *  Each element in the returned collection is an instance of {@link Edge}.
+     *  This is an <em>O(1)</em> operation.
+     *  @return All the hidden edges in this graph.
+     */
+    public Collection hiddenEdges() {
+        return Collections.unmodifiableCollection(_hiddenEdgeSet);
     }
 
     /** Hide an edge if the edge exists in the graph and is not already hidden.
@@ -1562,16 +1579,15 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param edge The new edge.
-     *  @exception RuntimeException If the weight of the given edge is
+     *  @exception IllegalArgumentException If the weight of the given edge is
      *  not valid, as determined by {@link #validEdgeWeight(Object)}.
      *  @see #_registerNode(Node).
      */
     protected void _registerEdge(Edge edge) {
         Object weight = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(weight)) {
-            throw new RuntimeException("Invalid edge weight. The offending "
-                    + "weight: " + ((weight == null) ? "null\n" :
-                    ("\n" + weight.toString() + "\n")));
+            throw new IllegalArgumentException("Invalid edge weight.\n"
+                    + _edgeDump(edge));
         }
         _edges.add(edge);
         _connectEdge(edge);
@@ -1584,16 +1600,15 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param node The new node.
-     *  @exception RuntimeException If the weight of the given node is
+     *  @exception IllegalArgumentException If the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @see #_registerEdge(Edge).
      */
     protected void _registerNode(Node node) {
         Object weight = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weight)) {
-            throw new RuntimeException("Invalid node weight. The offending "
-                    + "weight: " + ((weight == null) ? "null\n" :
-                    ("\n" + weight.toString() + "\n")));
+            throw new IllegalArgumentException("Invalid node weight.\n"
+                    + _nodeDump(node));
         }
         _nodes.add(node);
         _incidentEdgeMap.put(node, new ArrayList());
