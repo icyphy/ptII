@@ -1493,8 +1493,12 @@ public class MoMLParser extends HandlerBase {
                                     _parse(newParser, _base, altClassAsFile);
                                 classAsFile = altClassAsFile;
                             } catch (Exception ex3) {
-                                // Rethrow the original exception.
-                                throw ex2;
+                                // Cannot find class definition.
+                                throw new XmlException(
+                                    "Cannot find class " + className + ".",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
                             }
                         }
                     }
