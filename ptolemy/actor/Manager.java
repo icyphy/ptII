@@ -162,11 +162,9 @@ public final class Manager extends NamedObj implements Runnable {
         // if any exceptions get up to this level, then we have to tell
         // the gui by encapsulating in an event.
         ExecutionEvent event = new ExecutionEvent(this, _iteration, e);
-        Enumeration listeners = _ExecutionListeners.elements();
-        // if nobody is listening, then just dump the stack trace.
-        if(!listeners.hasMoreElements()) {
-            e.printStackTrace();
-        }
+        // dump the stack trace to the console;
+        e.printStackTrace();
+        // and issue the event to all the listeners.
         _fireExecutionEvent(_ExecutionEventType.EXECUTIONERROR, event);
     }
 
