@@ -296,6 +296,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             throw new IllegalActionException("Integrators can only be " +
                 "used in CT models.");
         }
+        // FIXME: this check may be unnecessary because prefire also checks it.
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if (solver == null) {
             throw new IllegalActionException( this, " no ODE solver available");
