@@ -29,6 +29,7 @@
 */
 
 package ptolemy.actor.lib;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -41,20 +42,21 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
 /**
-A type polymorphic multiplexor.  This actor consumes exactly one token
-from each input channel of the <i>input</i> port, and sends one of
-these tokens to the output.  The token sent to the output is
-determined by the <i>select</i> input, which is required to be an
-integer between 0 and <i>n</i>-1, where <i>n</i> is the width of the
-<i>input</i> port. Because tokens are immutable, the same Token is
-sent to the output, rather than a copy.  The <i>input</i> port may
-receive Tokens of any type.
+This actor selects from the channels on the
+<i>input</i> port, copying the input from one channel to the output,
+based on the most recently received value on the <i>select</i> input.
+If the selected channel has no token, then no output is produced.
+The <i>select</i> input is required to be an integer between 0 and
+<i>n</i>-1, where <i>n</i> is the width of the <i>input</i> port.
+If no token has been received on the <i>select</i> port, then channel
+0 is sent to the output.  The <i>input</i> port may
+receive Tokens of any type, but all channels must have the same type.
+<p>
+One token is consumed from each input channel that has a token.
+Compare this with the Select actor, which only consumes a token on
+the selected channel.
 
-<p> This actor is similar to the Select actor, except that it always
-consumes its input tokens.  Input tokens that are not immediately
-selected are discarded.
-
-@author Jeff Tsay
+@author Jeff Tsay and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.actor.lib.Select
@@ -99,33 +101,33 @@ public class Multiplexor extends Transformer {
      *   the <i>select</i> input is out of range.
      */
     public void fire() throws IllegalActionException {
-        int index = ((IntToken) select.get(0)).intValue();
-
+        if (select.hasToken(0)) {
+            _channel = ((IntToken) select.get(0)).intValue();
+        }
         boolean inRange = false;
         for (int i = 0; i < input.getWidth(); i++) {
-            Token token = input.get(i);
-            if (i == index) {
-                output.send(0, token);
-                inRange = true;
+            inRange = inRange || (i == _channel);
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
+                if (i == _channel) {
+                    output.send(0, token);
+                }
             }
         }
         if (!inRange) {
             throw new IllegalActionException(this,
-                    "Select input is out of range: " + index + ".");
+                    "Select input is out of range: " + _channel + ".");
         }
     }
 
-    /** Return false if any input channel does not have a token.
-     *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough tokens to fire.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (!select.hasToken(0)) return false;
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (!input.hasToken(i)) return false;
-        }
-        return super.prefire();
+    /** Initialize to the default, which is to use channel zero. */
+    public void initialize() {
+        _channel = 0;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The most recently read select input. */
+    private int _channel = 0;
 }
-
