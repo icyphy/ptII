@@ -232,6 +232,7 @@ CLOCK_CLASSFILES = \
 	'ptolemy/plot/PlotBox$$ZoomListener.class' \
 	ptolemy/plot/PlotBox.class \
 	ptolemy/plot/PlotPoint.class \
+	ptolemy/plot/Message.class \
 
 # 'make clean' removes everything in KRUFT
 KRUFT = clockapplet.jar
