@@ -372,3 +372,55 @@ test ComponentPort-7.3 { deepInsidePorts in another loop} {
     # Use configuration in 7.2
     list [enumToNames [$p3 deepInsidePorts]]
 } {P3}
+
+
+######################################################################
+####
+# Example from figure of design document.
+test ComponentPort-8.1 {test _deepConnectedPorts - similar to 5.1 above} {
+    # _deepConnectedPorts is a deprecated protected method in ComponentPort
+    # that needs testing anyway
+    # Create objects
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
+    $e0 setName E0
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 "E1"]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e0 "E2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "E3"]
+    set e4 [java::new ptolemy.kernel.ComponentEntity $e0 "E4"]
+    set p1 [java::new ptolemy.kernel.test.TestComponentPort $e1 "P1"]
+    set p2 [java::new ptolemy.kernel.test.TestComponentPort $e2 "P2"]
+    set p3 [java::new ptolemy.kernel.test.TestComponentPort $e3 "P3"]
+    set p4 [java::new ptolemy.kernel.test.TestComponentPort $e2 "P4"]
+    set p5 [java::new ptolemy.kernel.test.TestComponentPort $e4 "P5"]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e0 "R1"]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $e2 "R2"]
+    set r3 [java::new ptolemy.kernel.ComponentRelation $e0 "R3"]
+
+    # Connect
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p3 link $r2
+    $p4 link $r2
+    $p4 link $r3
+    $p5 link $r3
+
+    list [enumToNames [$p1 testDeepConnectedPorts [java::null] ]] \
+            [enumToNames [$p2 testDeepConnectedPorts [java::null] ]] \
+            [enumToNames [$p3 testDeepConnectedPorts [java::null] ]] \
+            [enumToNames [$p4 testDeepConnectedPorts [java::null] ]] \
+            [enumToNames [$p5 testDeepConnectedPorts [java::null] ]]
+} {{P3 P5} P1 {P1 P5} P5 {P1 P3}}
+
+
+######################################################################
+####
+#
+test ComponentPort-9.1 {Check _deepInsidePorts on opaque ports} {
+    # _deepInsidePorts is a deprecated protected method in ComponentPort
+    # that needs testing anyway
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
+    $e1 setName E1
+    set p1 [java::new ptolemy.kernel.test.TestComponentPort $e1 P1]
+    enumToFullNames [$p1 testDeepInsidePorts [java::null] ]
+} {.E1.P1}
