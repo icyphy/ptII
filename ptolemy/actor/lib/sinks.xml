@@ -5,19 +5,7 @@
 <doc>Generic domain polymorphic sources</doc>
 
 <!-- Sources -->
-<entity name="FileWrite" class="ptolemy.actor.lib.FileWrite">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
-</entity>
-
 <entity name="HistogramPlotter" class="ptolemy.actor.gui.HistogramPlotter">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
-</entity>
-
-<entity name="Print" class="ptolemy.actor.gui.Print">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
