@@ -545,6 +545,10 @@ all.itcl: makefile
 	echo '    }' >> $@
 	echo '}' >> $@
 
+# Run all the xml files in the auto subdirectory.
+test_auto:
+	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
+
 # Generate html files from itcl files, requires itclsh and tycho
 # We use a GNU make extension here
 HTMLS=$(filter %.html,  $(EXTRA_SRCS))
