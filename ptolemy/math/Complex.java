@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(), epsilon
 */
 
 package ptolemy.math;
