@@ -87,7 +87,7 @@ test SequenceToArray-2.1 {test double array, test prefire} {
 test SequenceToArray-2.2 {test double array, use above model} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[-2.0, -1.0]} {[0.0, 1.0]} {[2.0, 3.0]}}
+} {{{-2.0, -1.0}} {{0.0, 1.0}} {{2.0, 3.0}}}
 
 ######################################################################
 #### Check types of above model
@@ -105,7 +105,7 @@ test SequenceToArray-2.4 {test string array} {
     $step setExpression {"B"}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{["A", "AB"]} {["ABB", "ABBB"]} {["ABBBB", "ABBBBB"]}}
+} {{{"A", "AB"}} {{"ABB", "ABBB"}} {{"ABBBB", "ABBBBB"}}}
 
 ######################################################################
 #### Check types of above model
@@ -137,7 +137,7 @@ test SequenceToArray-2.6 {test cascading SequenceToArray} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[[0, 1], [2, 3]]} {[[4, 5], [6, 7]]} {[[8, 9], [10, 11]]}}
+} {{{{0, 1}, {2, 3}}} {{{4, 5}, {6, 7}}} {{{8, 9}, {10, 11}}}}
 
 ######################################################################
 #### Check types of above model
@@ -157,7 +157,7 @@ test SequenceToArray-2.8 {test array of array of string} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[["C", "CD"], ["CDD", "CDDD"]]} {[["CDDDD", "CDDDDD"], ["CDDDDDD", "CDDDDDDD"]]} {[["CDDDDDDDD", "CDDDDDDDDD"], ["CDDDDDDDDDD", "CDDDDDDDDDDD"]]}}
+} {{{{"C", "CD"}, {"CDD", "CDDD"}}} {{{"CDDDD", "CDDDDD"}, {"CDDDDDD", "CDDDDDDD"}}} {{{"CDDDDDDDD", "CDDDDDDDDD"}, {"CDDDDDDDDDD", "CDDDDDDDDDDD"}}}}
 
 ######################################################################
 #### Check types of above model
