@@ -55,6 +55,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	Complex.java \
 	MathWizard.java
 
 EXTRA_SRCS =	$(JSRCS)
