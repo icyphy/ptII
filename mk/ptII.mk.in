@@ -124,6 +124,10 @@ JINI_LIB =	$(JINI_DIR)/lib
 
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
 
+# Set to javasound and used in 
+# $PTII/ptolemy/actor/lib/makefile if javasound was found
+PTJAVASOUND_DIR = @PTJAVASOUND_DIR@
+
 # Set to jspaces and used in $PTII/ptolemy/actor/lib/makefile if jini
 # was found
 PTJSPACES_DIR =	@PTJSPACES_DIR@

@@ -33,9 +33,11 @@
 
 ME =		ptolemy/actor/lib
 
+# $PTII/configure looks for javasound and sets PTJAVASOUND_DIR
+# in $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASOUND is empty
 # $PTII/configure looks for Jini and sets PTJSPACES_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
-DIRS = 		conversions gui logic test $(PTJSPACES_DIR) 
+DIRS = 		conversions gui logic test $(PTJAVASOUND_DIR) $(PTJSPACES_DIR) 
 
 # Root of the Java directory
 ROOT =		../../..
