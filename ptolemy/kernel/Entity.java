@@ -1,4 +1,4 @@
-/* An Entity is a vertex in a flat graph.
+/* An Entity is an aggregation of ports.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
-
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.kernel;
@@ -36,197 +35,305 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Entity
 /** 
-An Entity is a vertex in a flat graph. It incorporates the notion of graph 
-connections and disconnections. Relation is the equivalent of a graph edge.
-Entities and Relations are linked together via Ports. Entities own Ports
-via a NamedObjList of Ports. Relations can not own Ports.
-@author John S. Davis II
+An Entity is an aggregation of ports.
+It is meant to represent a vertex in a slight generalization of
+non-hierarchical graphs, where the arcs connecting vertices are
+grouped.  The role of Ports is to organize such aggregates.
+Derived classes support hierarchy by defining entities that
+aggregate other entities.
+
+@author John S. Davis II, Edward A. Lee
 @version $Id$
 @see Port
 @see Relation
-@see NamedObjList
 */
-public class Entity extends NamedObj { 
-    /** 
-     */	
+public class Entity extends NamedObj {
+
+    /** Create an entity with no ports and no name. */	
     public Entity() {
 	super();
+        _portList = new NamedList(this);
     }
 
-    /** 
-     * @param name The name of the Entity.
+    /** Create an entity with the specified name.
+     *  @param name
+     *  @exception IllegalActionException Argument is null.
      */	
-    public Entity(String name) {
+    public Entity(String name) 
+            throws IllegalActionException {
 	super(name);
+        _portList = new NamedList(this);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return an enumeration of the Entities that this
-     *  Entity is connected to. The enumeration does not
-     *  contain this Entity.
+    /** Append a port to the list of ports belonging to this entity.
+     *  If the port has a container (other than this), remove it from
+     *  the port list of that container.  Set the container of the port
+     *  to point to this entity.
+     *  @param port
+     *  @exception IllegalActionException Port is not of the expected class
+     *   (thrown in derived classes only).
+     *  @exception InvalidStateException Inconsistent port-container
+     *   relationship, or the port has no name.
+     *  @exception NameDuplicationException Name collides with a name already
+     *  on the port list.
      */	
-    public Enumeration enumEntities() {
-	 LinkedList storedEntities = new LinkedList();
-	 if( _portList == null ) { 
-	     return storedEntities.elements();
-	 }
-	 Enumeration thisEntitiesPorts = _portList.enumNamedObjs(); 
-
-	 while( thisEntitiesPorts.hasMoreElements() ) {
-	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
-	     Enumeration relations = thisPort.enumRelations();
-
-	     while( relations.hasMoreElements() ) {
-		 Relation relation = (Relation)relations.nextElement();
-		 Enumeration otherPorts = relation.enumPortsExcept( thisPort );
-
-		 while( otherPorts.hasMoreElements() ) {
-		     Port otherPort = (Port)otherPorts.nextElement();
-		     storedEntities.insertLast( otherPort.getEntity() );
-		 }
-	     }
-	 }
-	 return storedEntities.elements();
+    public void addPort(Port port) 
+            throws IllegalActionException, InvalidStateException,
+            NameDuplicationException {
+        // NOTE: This code is fairly tricky, and is designed to ensure
+        // consistency.  It works in concert with Port.setContainer()
+        // and with removePort(), so do not modify it without considering
+        // those.
+        Entity prevcontainer = (Entity) port.getContainer();
+        if (prevcontainer == this) {
+            // If the port is not on the port list, then this is a half
+            // constructed link, and we should complete it and return.
+            // Otherwise, we should throw a name duplication exception
+            // for an attempt to put the same port on the list twice.
+            try {
+                _portList.append(port);
+            } catch (IllegalActionException ex) {
+                throw new InvalidStateException(port, "Has no name!");
+            }
+            return;
+        }
+        port.setContainer(this);
     }
 
-
-    /** Return an enumeration of the Entities that are connected
-     *  to this Entity via the specified Port. The enumeration does 
-     *  not contain this particular Entity. 
-     * @param portName The name of the specified Port.
-     * @exception pt.kernel.GraphException Attempt to inappropriately
-     *  access a Jtolemy graph method or class.
+    /** Enumerate all connected entities.
+     *  This entity is not included unless there is a loopback, meaning
+     *  that two distinct ports are linked to the same relation.
+     *  @return An enumeration of Entity objects.
      */	
-    public Enumeration enumEntities(String portName) 
-	    throws GraphException {
-	 LinkedList storedEntities = new LinkedList();
-	 if( _portList == null ) { 
-	     return storedEntities.elements();
-	 }
-	 Enumeration thisEntitiesPorts = _portList.enumNamedObjs(); 
+    public Enumeration getConnectedEntities() {
+        // This works by constructing a linked list and then enumerating it.
+        LinkedList storedEntities = new LinkedList();
+        Enumeration ports = _portList.getElements(); 
 
-	 boolean foundPort = false;
-	 while( thisEntitiesPorts.hasMoreElements() ) {
-	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
-
-	     if( thisPort.getName().equals(portName) ) {
-		 foundPort = true;
-	         Enumeration relations = thisPort.enumRelations(); 
-		 
-		 while( relations.hasMoreElements() ) { 
-		     Relation relation = (Relation)relations.nextElement(); 
-		     Enumeration otherPorts 
-			     = relation.enumPortsExcept( thisPort );
-
-		     while( otherPorts.hasMoreElements() ) {
-		         Port otherPort = (Port)otherPorts.nextElement(); 
-			 storedEntities.insertLast( otherPort.getEntity() );
-	             }
-		 }
-	     }
-	 }
-	 if( foundPort ) {
-	     return storedEntities.elements();
-	 } 
-	 throw new GraphException(this,
-		 "Invalid Port Named Passed to EnumEntities()");
+        while( ports.hasMoreElements() ) {
+            Port port = (Port)ports.nextElement();
+            Enumeration entities = getConnectedEntities(port);
+            storedEntities.appendElements( entities );
+        }
+        return storedEntities.elements();
     }
 
-
-    /** Return an enumeration of Relations that this
-     *  Entity is connected through.
+    /** Enumerate entities connected to the specified Port.
+     *  The port is normally contained by this entity, but this is not
+     *  enforced.
+     *  This entity is not included unless there is a loopback, meaning
+     *  that it is linked through another port to a relation linked to
+     *  the specified port.
+     *  @param port
+     *  @return An enumeration of Entity objects.
      */	
-    public Enumeration enumRelations() {
+    public Enumeration getConnectedEntities(Port port) {
+        // This works by constructing a linked list and then enumerating it.
+        LinkedList storedEntities = new LinkedList();
+        Enumeration relations = port.getLinkedRelations(); 
+	 
+        while( relations.hasMoreElements() ) { 
+            Relation relation = (Relation)relations.nextElement(); 
+            Enumeration otherPorts = relation.getLinkedPortsExcept( port );
+
+            while( otherPorts.hasMoreElements() ) {
+                Port otherPort = (Port)otherPorts.nextElement(); 
+                storedEntities.insertLast( otherPort.getContainer() );
+            }
+        }
+        return storedEntities.elements();
+    }
+
+    /** Enumerate entities connected to the port with the given name.
+     *  This entity is not included unless there is a loopback, meaning
+     *  that it is linked through another port to a relation linked to
+     *  the specified port.
+     *  @param portname
+     *  @return An enumeration of Entity objects.
+     *  @exception NoSuchItemException No such port.
+     */	
+    public Enumeration getConnectedEntities(String portname)
+            throws NoSuchItemException {
+        Port port = (Port)_portList.get(portname);
+        if (port == null) {
+            throw new NoSuchItemException(this,
+            "Attempt to get the connected entities of a non-existent port: " 
+            + portname);
+        }
+        return getConnectedEntities(port);
+    }
+
+    /** Enumerate linked relations. 
+     *  @return An enumeration of Relation objects.
+     */	
+    public Enumeration getLinkedRelations() {
 	 LinkedList storedRelations = new LinkedList();
-	 if( _portList == null ) { 
-	     return storedRelations.elements();
-	 }
-	 Enumeration ports = _portList.enumNamedObjs(); 
+	 Enumeration ports = _portList.getElements(); 
 
 	 while( ports.hasMoreElements() ) {
 	     Port newPort = (Port)ports.nextElement(); 
-	     Enumeration relations = newPort.enumRelations(); 
-	     storedRelations.prependElements( relations );
+	     Enumeration relations = newPort.getLinkedRelations(); 
+	     storedRelations.appendElements( relations );
 	 }
 	 return storedRelations.elements();
     }
 
-
-    /** Return an enumeration of Relations that are connected to this 
-     *  Entity via the specified Port.
-     * @exception pt.kernel.GraphException Attempt to inappropriately
-     *  access a Jtolemy graph method or class.
+    /** Enumerate the relations that are linked to the specified port.
+     *  The port is normally contained by this entity, but this is not
+     *  enforced.
+     *  @param port
+     *  @return An enumeration of Relation objects
      */	
-    public Enumeration enumRelations(String portName) 
-	    throws GraphException {
-	 LinkedList storedRelations = new LinkedList();
-	 if( _portList == null ) { 
-	     return storedRelations.elements();
-	 }
-	 Enumeration ports = _portList.enumNamedObjs(); 
-
-	 boolean foundPort = false;
-	 while( ports.hasMoreElements() ) {
-	     Port newPort = (Port)ports.nextElement();
-	     if( (newPort.getName()).equals(portName) ) { 
-		 foundPort = true;
-		 Enumeration relations = newPort.enumRelations(); 
-	         storedRelations.prependElements( relations );
-	     }
-	 }
-	 if( foundPort ) {
-	     return storedRelations.elements();
-	 }
-	 throw new GraphException(this, 
-		 "Invalid Port Named Passed to EnumRelations()");
+    public Enumeration getLinkedRelations(Port port) {
+        return port.getLinkedRelations(); 
     }
 
-
-    /** Return this Entity's Ports. */	
-    public NamedObjList getPorts() {
-	 if( _portList == null ) {
-	     _portList = new NamedObjList();
-	 }
-	 return _portList;
-    }
-
-
-    /** Return the number of Entities connected to this. */	
-    public int numberOfConnectedEntities() {
-	 int count = 0;
-	 Enumeration enum = enumEntities();
-	 while( enum.hasMoreElements() ) {
-	     count++;
-	 }
-	 return count;
-    }
-
-
-    /** Return the number of Entities connected to this Entity
-     * through the specified Port.
-     * @param portName The name of the specified Port.
-     * @exception pt.kernel.GraphException Attempt to inappropriately
-     *  access a Jtolemy graph method or class.
+    /** Enumerate the relations that are linked to the port with the
+     *  specified name.
+     *  @param portname
+     *  @return An enumeration of Relation objects.
+     *  @exception NoSuchItemException No such port.
      */	
-    public int numberOfConnectedEntities(String portName) 
-	    throws GraphException {
-	 int count = 0;
-	 Enumeration enum = enumEntities(portName);
-	 while( enum.hasMoreElements() ) {
-	     count++;
-	 }
-	 return count;
+    public Enumeration getLinkedRelations(String portname)
+            throws NoSuchItemException {
+        Port port = (Port)_portList.get(portname);
+        if (port == null) {
+            throw new NoSuchItemException(this,
+            "Attempt to get the connected entities of a non-existent port: " 
+            + portname);
+        }
+        return getLinkedRelations(port);
+    }
+
+    /** Return the port belonging to this entity that has the specified name.
+     *  @return A port with the given name, or null if none exists.
+     */	
+    public Port getPort(String name) {
+	 return (Port)_portList.get(name);
+    }
+
+    /** Enumerate the ports belonging to this entity, in the order in which
+     *  they were created by newPort() or added by addPort().
+     *  @return An enumeration of Port objects.
+     */	
+    public Enumeration getPorts() {
+	 return _portList.getElements();
+    }
+
+    /** Create a new port with the specified name.
+     *  The container of the port is set to this entity.
+     *  @param name
+     *  @return The new port
+     *  @exception IllegalActionException Argument is null.
+     *  @exception NameDuplicationException Entity already has a port with
+     *  that name.
+     */	
+    public Port newPort(String name) 
+             throws IllegalActionException, NameDuplicationException {
+        Port port = new Port(this, name);
+        return port;
+    }
+
+    /** Remove all ports
+     *  @exception InvalidStateException Inconsistent port-container
+     *   relationship.
+     */	
+    public void removeAllPorts()
+            throws InvalidStateException {
+        // Have to copy _portList to avoid corrupting the enumeration.
+        NamedList portListCopy = new NamedList(_portList);
+        Enumeration ports = portListCopy.getElements();
+
+        while (ports.hasMoreElements()) {
+            Port port = (Port)ports.nextElement();
+            try {
+                removePort(port);
+            } catch (IllegalActionException ex) {
+                throw new InvalidStateException(this, port,
+                       "Inconsistent container relationship!");
+            }
+        }
+    }
+
+    /** Remove a port from the list of ports belonging to this entity.
+     *  If the port does not belong to this entity, trigger an exception.
+     *  As a side effect, the port will be unlinked from all relations.
+     *  @param port
+     *  @exception IllegalActionException Port does not belong to me.
+     *  @exception InvalidStateException Inconsistent port-container
+     *   relationship.
+     */	
+    public void removePort(Port port)
+            throws IllegalActionException, InvalidStateException {
+        // NOTE: This code is fairly tricky, and is designed to ensure
+        // consistency.  It works in concert with Port.setContainer()
+        // and with addPort(), so do not modify it without considering
+        // those.
+        // NOTE: The port is not unlinked from all relations if the
+        // port container is already null.  This condition is part of
+        // the specialized interaction with Port.setContainer().
+        Entity portcontainer = (Entity) port.getContainer();
+        if (portcontainer == null) {
+            // If we are half-way through a remove, then the port is still
+            // on the port list.  Otherwise, this is an error.
+            if (_portList.getIndexOf(port) >= 0) {
+                _portList.remove(port);
+                return;
+            } else {
+                throw new IllegalActionException(this, port,
+                        "Attempt to remove a port with no container.");
+            }
+        }
+        if (portcontainer != this) {
+            if (_portList.getIndexOf(port) >= 0) {
+                // Changing owners, initiated by Port.setContainer()
+                _portList.remove(port);
+               return;                
+            } else {
+                throw new IllegalActionException(this, port,
+                        "Attempt to remove a port from an entity that "
+                        + "does not contain it.");
+            }
+        }
+        // Ignore exception since it can't occur.
+        try {
+            port.setContainer(null);
+        } catch (NameDuplicationException ex) {};
+    }
+
+    /** Remove a port with the specified name from the list of ports
+     *  belonging to this entity. If there is no such port, trigger
+     *  an exception.
+     *  @param name
+     *  @exception InvalidStateException Thrown only if data is inconsistent
+     *  (e.g. port and container do not agree).  Should not be thrown.
+     *  @exception NoSuchItemException No such port.
+     */	
+    public void removePort(String name)
+            throws InvalidStateException, NoSuchItemException {
+        Port port = (Port)_portList.get(name);
+        if (port == null) {
+            throw new NoSuchItemException(this,
+                    "Attempt to remove a nonexistent port: " + name);
+        }
+        // In case there are outstanding references to the port.
+        // The following exception should never trigger, since the port
+        // belongs to me.
+        try {
+            removePort(port);
+        } catch (IllegalActionException ex) {
+            // Disaster has struck.  We have an inconsistent data structure.
+            throw new InvalidStateException(this, port,
+                    "Inconsistent containment relationship!");
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* A list of Ports owned by this Entity. */
-    private NamedObjList _portList;
+    // A list of Ports owned by this Entity.
+    private NamedList _portList;
 }
-
-
-
-

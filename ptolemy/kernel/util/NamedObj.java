@@ -1,4 +1,4 @@
-/* Literally, an object with a name.  Baseclass to most Ptolemy classes.
+/* Concrete base class for objects with a name and a container.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -23,67 +23,134 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.kernel;
 
+import collections.LinkedList;
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /** 
-NamedObj (named Object) is the baseclass for most of the common
-Ptolemy objects. 
+Base class for objects with a name and a container.
+A simple name is an arbitrary string. If no simple name is
+provided, the name is taken to be an empty string (not a null
+reference). The class also has a full name, which is a concatenation
+of the container's full name and the simple name, separating by a
+period. Obviously, if the simple name contains a period then there
+may be some confusion resolving the full name, so periods are discouraged.
+If there is no container, then the full name is the same as
+the simple name. The full name is used for error reporting
+throughout the package, which is why it is supported at this low
+level of the class hierarchy.
 
-@author Mudit Goel
+@author Mudit Goel, Edward A. Lee
 @version $Id$
 */
 
-public class NamedObj {
+public class NamedObj implements Nameable {
 
-    /** Construct an object with an empty string as its name. 
-     */	
+    /** Construct an object with an empty string as its name. */	
     public NamedObj() {
-        setName("");
+        // Ignore exception that can't occur because name is legit.
+        try {
+            setName("");
+        } catch (IllegalActionException ex) {};
     }
 
-    /** Construct an object with the given name. 
-     */	
-    public NamedObj(String name) {
+    /** Construct an object with the given name.
+     *  @exception IllegalActionException Argument is null.
+     */
+    public NamedObj(String name) 
+            throws IllegalActionException {
 	setName(name);
+    }
+
+    /** Construct an object with the given container and name.
+     *  @exception IllegalActionException Name argument is null.
+     */
+    public NamedObj(Nameable container, String name)
+            throws IllegalActionException {
+        _container = container;
+        setName(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** 
-     * @return the name of the object. 
+    /** Get the owner or container.
+     *  @return The owner object.
+     */
+    public Nameable getContainer() {
+	return _container;
+    }
+
+    /** The full name is a concatenation of the full name of the container
+     *  and the name of the this object, separated by a period ".".  If there
+     *  is no container, return getName().
+     *  A recursive structure, where this object is directly or indirectly
+     *  contained by itself, results in an exception.  Note that it is not
+     *  possible to construct a recursive structure using this class, since
+     *  the only way to set the container is using a constructor argument.
+     *  But derived classes might permit recursive structures.
+     *  @return The full name of the object.
+     *  @exception InvalidStateException Container contains itself.
+     */
+    public String getFullName() 
+            throws InvalidStateException {
+        String fullname = new String(getName());
+        // Use a linked list to keep track of what we've seen already.
+        LinkedList visited = new LinkedList();
+        visited.insertFirst(this);
+        Nameable parent = _container;
+
+        while (parent != null) {
+            if (visited.firstIndexOf(parent) >= 0) {
+                // Cannot use this pointer or we'll get stuck infinitely
+                // calling this method, since it's used to report exceptions.
+                throw new InvalidStateException(
+                        "Container contains itself.");
+            }
+            fullname = parent.getName() + "." + fullname;
+            visited.insertFirst(parent);
+            parent = parent.getContainer();
+        }
+        return fullname;
+    }
+
+    /** Get the name.
+     *  @return The name of the object. 
      */	
     public String getName() { 
         return _name; 
     }
 
-    /** 
-     * @param name of the object.  
+    /** Set or change the name.
+     *  @param name The new name.  
      */
-    public void setName(String name) {
+    public void setName(String name)
+            throws IllegalActionException {
+        if (name == null) {
+            throw new IllegalActionException(
+                    "Attempt to set name of a NamedObj to null.");
+        }
         _name = name;
     }
 
-    /** 
-     * @return a reference to the list of parameters.  
-     */
-    public NamedObjList getParams(){
-        if( _paramList == null){
-            _paramList = new NamedObjList();
-        }
-        return _paramList;
-    }
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                      ////
+
+    // The Entity that owns this object.
+    // Note that this should only be accessed by derived classes.
+    // Java does not provide any mechanism for enforcing that restriction,
+    // so we rely on convention.
+    protected Nameable _container = null;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     private String _name;
-    private NamedObjList _paramList = null;
 }
 

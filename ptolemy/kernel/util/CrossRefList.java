@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (galicia@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 
 */
 
@@ -36,49 +36,96 @@ import collections.CorruptedEnumerationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
-/** Lists for implementing links between Objects.  
-If you need an Object to keep a list of references to other Objects
-(i.e. neighbors), and those other Objects need to maintain
-back-references, then use CrossRefList.  This list requires an owning
-Object in the constructor argument and access methods return or refer
-to neighboring Objects directly.  Removing a reference automatically
-updates back-references in N neighboring Objects in O(N) time.
+/**
+Maintain a list of pairwise links between Objects (cross
+references). That is, each member of a set of objects has a list of
+references to other members of the set, and each reference has
+similar list that contains a corresponding back reference. Each
+reference list is an instance of this class. The class is used as if
+it were a simple list of references to objects, but it ensures the
+symmetry of the references, and supports efficient removal of links.
+Removing a reference in one list automatically updates N
+back-references in O(N) time, independent of the
+sizes of the cross-reference lists.
+
 @author Geroncio Galicia
-@version $Id$ */
+@contributor Edward A. Lee
+@version $Id$
+*/
 public final class CrossRefList {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
 
-    /** 
-     * CrossRefList requires owner to prevent null pointer accesses below.
-     */	
-    public CrossRefList(Object owner) {
-        _nearObj = owner; // This would've been initializing a blank final.
+    /** Constructor requires a non-null container.
+     *  @param container
+     *  @exception IllegalActionException Argument is null.
+     */
+    public CrossRefList(Object container) 
+            throws IllegalActionException {
+        if (container == null) {
+            throw new IllegalActionException(
+                    "Attempt to create CrossRefList with a null container.");
+        }
+        // This should be initializing a blank final.
+        _container = container; 
         _listVersion = 0;
-        _dimen = 0;
+        _size = 0;
         _headNode = null;
         _lastNode = null;
     }
-
+    
     /** Copy constructor. 
-     * Creates a copy of this list with a new owner.
+     *  Create a new list that duplicates an original list except that it
+     *  has a new container.
+     *  @exception IllegalActionException Second argument is null.
      */
-    public CrossRefList(Object owner, CrossRefList originalList) {
-        this(owner);
-        duplicate(originalList);
+    public CrossRefList(Object container, CrossRefList originalList)
+            throws IllegalActionException {
+        this(container);
+        _duplicate(originalList);
     }
-
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-    /** Link to an CrossRefList.
-     * Instantiate a new CrossRef in the specified (far) list and link
-     * that to the the new one here.  Redundant links are allowed.
-     * Time complexity: O(1).
+    
+    /** Return the first object referenced by this list, or null if the
+     *  list is emtpy.
+     *  Time complexity: O(1).
      */
-    public synchronized void associate(CrossRefList farList) {
+    public synchronized Object first() {
+        return _headNode._farContainer();
+    }
+    
+    /** Enumerate the objects referenced by this list.
+     *  Time complexity: O(1).
+     */
+    public synchronized Enumeration getLinks() { 
+        return new CrossRefEnumeration();
+    }
+    
+    /** Return true if the specified object is referenced on this list. 
+     *  Time complexity: O(n).
+     */
+    public synchronized boolean isLinked(Object obj) {
+        if (obj == null || _size == 0) return false;
+        for(CrossRef p = _headNode; p != null; p = p._next) {
+            if (p._farContainer().equals(obj)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Link to another CrossRefList.
+     *  Instantiate a new CrossRef in the specified (far) list and link
+     *  that to the the new one here.  Redundant links are allowed.
+     *  Time complexity: O(1).
+     */
+    public synchronized void link(CrossRefList farList) {
+        // FIXME: Technically, this will not always prevent deadlock, since
+        // grabbing the lock on "this" is not atomic with grabbing the lock
+        // on the modelToCopy.  This method should instead grab a lock on a
+        // common container.
         synchronized(farList) {
             ++_listVersion;
             CrossRef localCrossRef = new CrossRef();
@@ -87,162 +134,146 @@ public final class CrossRefList {
             localCrossRef._far = farList.new CrossRef(localCrossRef);
         }
     }
-
-    /** Delete all CrossRefs.
-     * Time complexity: O(n).
+    
+    /** Return size of this list. 
+     *  Time complexity: O(1).
      */
-    public synchronized void dissociate() {
-        ++_listVersion;
-        if(isEmpty()) return; // List is already empty.
-
-        CrossRef deadHead = _headNode; // _deadHead is marked for deletion.
-
-        // As long as there's a next element.
-        while( (_headNode = deadHead._next) != null) { // Increment _headNode.
-            deadHead._dissociate();     // Delete old head and its partner.
-            deadHead = _headNode;
-        }
-        // Delete the last CrossRef.
-        deadHead._dissociate(); 
-
-        // Mark the list empty.
-        _headNode = null;
-        _lastNode = null;
-        _dimen = 0;
+    public synchronized int size() {
+        return _size;
     }
 
-    /** Delete a CrossRef indexed by a neighboring Object. 
-     * Time complexity: O(n).
+    /** Delete a link to the specified object. 
+     *  Time complexity: O(n).
      */
-    public synchronized void dissociate(Object element) {
+    public synchronized void unlink(Object obj) {
+        if (obj == null || _size == 0) return;
         ++_listVersion;
-        if (element == null || _dimen == 0) return;
         Object v;
         CrossRef p = _headNode;
         while(p != null) {
             CrossRef n = p._next;
-            // If associations are always created using associate then
-            // p._farOwner() will never return null.
-            if (p._farOwner().equals(element)) {
+            // If associations are always created using link then
+            // p._farContainer() will never return null.
+            if (p._farContainer().equals(obj)) {
                 p._dissociate();
                 return;
             }
             p = n;
         }
     }
-
-    /** Check if a neighboring Object is referenced. 
-     * Time complexity: O(n).
+    
+    /** Delete all cross references.
+     *  Time complexity: O(n).
      */
-    public synchronized boolean isMember(Object element) {
-        if (element == null || _dimen == 0) return false;
-        for(CrossRef p = _headNode; p != null; p = p._next) {
-            if (p._farOwner().equals(element)) {
-                return true;
-            }
+    public synchronized void unlinkAll() {
+        if(_size == 0) return;
+        ++_listVersion;
+        
+        CrossRef deadHead = _headNode; // _deadHead is marked for deletion.
+        
+        // As long as there's a next element.
+        while( (_headNode = deadHead._next) != null) {
+            deadHead._dissociate();     // Delete old head and its partner.
+            deadHead = _headNode;
         }
-        return false;
+        // Delete the last CrossRef.
+        deadHead._dissociate(); 
+        
+        // Mark the list empty.
+        _headNode = null;
+        _lastNode = null;
+        _size = 0;
     }
 
-    /** Check if list is empty. 
-     * Time complexity: O(1).
-     */
-    public synchronized boolean isEmpty() {
-        return _headNode == null;
-    }
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private methods                          ////
 
-    /** Return enumeration for this list. 
-     * Enumeration returns neighboring Objects.
-     * Time complexity: O(1).
+    /** Duplicate the contents of another list, creating back references in
+     *  the remote lists to this one.
+     *  Time complexity: O(n).
      */
-    public synchronized Enumeration elements() { 
-        return new CrossRefEnumeration();
-    }
-
-    /** Return size of this list. 
-     * Time complexity: O(1).
-     */
-    public synchronized int size() { return _dimen; }
-
-    /** Make an independent copy.  Does not clone elements. 
-     * This methods assume that the new list already has an owning Object.
-     * Time complexity: O(n).
-     */
-    public synchronized void duplicate(CrossRefList originalList) {
-        synchronized(originalList) {
-            if(originalList.isEmpty()) return; // List to copy is empty.
-            for(CrossRef p = originalList._headNode; p != null; p = p._next) {
+    private synchronized void _duplicate(CrossRefList modelToCopy) {
+        // FIXME: Technically, this will not always prevent deadlock, since
+        // grabbing the lock on "this" is not atomic with grabbing the lock
+        // on the modelToCopy.  This method should instead grab a lock on a
+        // common container.
+        synchronized(modelToCopy) {
+            if(modelToCopy.size() == 0) return; // List to copy is empty.
+            for(CrossRef p = modelToCopy._headNode; p != null; p = p._next) {
                 if(p._far != null) {
                     if(p._far._nearList() != null) {
-                        associate(p._far._nearList());
+                        link(p._far._nearList());
                     }
                 }
             }
         }
     }
 
-
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-
+    
+    // Version number is incremented each time the list is modified.
+    // This is used to make sure that elements accessed via an enumeration
+    // are valid.
     private int _listVersion;
-
-    private int _dimen;
-
+    
+    private int _size;
+    
     private CrossRef _headNode;
-
+    
     private CrossRef _lastNode;
-
-    // FIXME: make final to prohibit reseating
-    private Object _nearObj;
-
-
-
+    
+    // FIXME: make final to prohibit resetting
+    private Object _container;
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
-
-    // Class CrossRef
-    private class CrossRef {
-
-        protected CrossRef _far;
-
-        private CrossRef _next;
     
+    // Class CrossRef.
+    // Objects of this type form the elements of the list.
+    // They occur in pairs, one in each list at each end of a link.
+    private class CrossRef {
+        
+        protected CrossRef _far;
+        
+        private CrossRef _next;
+        
         private CrossRef _previous;
-
+        
         private CrossRef() { this(null); }
-
+        
         private CrossRef(CrossRef spouse) {
             _far = spouse;
-            if(_dimen > 0) {  // List isn't empty.
-                _next = _headNode;
-                _headNode._previous = this;
+            if(_size > 0) {
+                _previous = _lastNode;
+                _lastNode._next = this;
+                _lastNode = this;
+            } else { 
+                // List is empty.
+                _lastNode = this;
                 _headNode = this;
-            } else {  // List is empty.
-                _lastNode = _headNode = this;
             }
-            ++_dimen;
+            ++_size;
         }
-
-        private synchronized Object _nearOwner() {
-            return _nearObj;
+        
+        private synchronized Object _nearContainer() {
+            return _container;
         }
-
-        private synchronized Object _farOwner() {
+        
+        private synchronized Object _farContainer() {
             // Returning null shouldn't happen.
-            return _far != null ? _far._nearOwner() : null; 
+            return _far != null ? _far._nearContainer() : null; 
         }
-
+        
         private synchronized CrossRefList _nearList() {
             return CrossRefList.this;
         }
-
+        
         private synchronized void _dissociate() {
             _unlink(); // Remove *this.
             if(_far != null) _far._unlink(); // Remove far 
         }
-
+        
         private synchronized void _unlink() {
             ++_listVersion;
             // Removes *this from enclosing CrossRefList.
@@ -250,26 +281,23 @@ public final class CrossRefList {
             else _lastNode = _previous;
             if(_previous != null) _previous._next = _next; // Modify previous.
             else _headNode = _next;
-            _dimen--; // Modify list.
+            _size--; // Modify list.
         }
     }
 
 
-
-    // Class CrossRefEnumeration
-    /** 
-        Enumerator for CrossRefList.
-        @see CrossRefList
-    */
+    /** Enumerate the objects pointed to by the list.
+     *  @see CrossRefList
+     */
     private class CrossRefEnumeration implements Enumeration {
-    
+        
         public CrossRefEnumeration() {
             _enumeratorVersion = _listVersion;
             _startAtHead = true;
             _ref = null;
         }
-
-        /** Check if there are remaining elements to enumerate. */
+        
+        /** Return true if there are more elements to enumerate. */
         public boolean hasMoreElements() {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
@@ -286,43 +314,51 @@ public final class CrossRefList {
             _startAtHead = tmp2; // Restore state.
             return tmpObj != null;
         }
-
-        /** Return the next element in the enumeration. */
-        public Object nextElement() throws NoSuchElementException {
+        
+        /** Return the next element in the enumeration. 
+         *  @exception java.util.NoSuchElementException Exhausted enumeration.  
+         */
+        public Object nextElement()
+                throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
             }
-            if(_startAtHead) { // If starting at beginning of list.
+            if(_startAtHead) {
+                // Starting at beginning of list.
                 _startAtHead = false;
-                if(_headNode != null) { // List not empty.
+                if(_headNode != null) {
+                    // List not empty.
                     _ref = _headNode;
-                    return _ref._farOwner();
-                } else { // List is empty, throw exception.
+                    return _ref._farContainer();
+                } else {
+                    // List is empty, throw exception.
                     throw new NoSuchElementException("exhausted enumeration");
                 }
-            } else { // If not at beginning of list.
-                if (_ref != _lastNode) { // If not at end of list.
+            } else {
+                // Not at beginning of list.
+                if (_ref != _lastNode) {
+                    // Not at end of list.
                     if (_ref != null) { 
                         // If pointer to element not NULL, return next.
                         _ref = _ref._next;
-                        return _ref._farOwner();
+                        return _ref._farContainer();
                     } else {
                         // If pointer is NULL, then end of list was
                         // already passed.  Throw exception.
-                        throw new NoSuchElementException("exhausted enumeration");
+                        throw new NoSuchElementException(
+                                "exhausted enumeration");
                     }
-                } else { // If at end of list.
+                } else {
+                    // At end of list.
                     throw new NoSuchElementException("exhausted enumeration");
                 }
             }
         }
-
+        
         private int _enumeratorVersion;
-    
+        
         private CrossRef _ref;
-    
+        
         private boolean _startAtHead;
-    
     }
-  
 }

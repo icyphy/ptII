@@ -54,23 +54,29 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../..
 
 JSRCS = \
+	AliasRelation.java \
+	ComponentEntity.java \
+	ComponentPort.java \
+	ComponentRelation.java \
 	CompositeEntity.java \
 	CrossRefList.java \
 	Entity.java \
-	GraphException.java \
-	HierEntity.java \
-	IntParam.java \
+	KernelException.java \
+	IllegalActionException.java \
+ 	IntParam.java \
+	InvalidStateException.java \
+	Nameable.java \
+	NamedList.java \
 	NamedObj.java \
-	NamedObjList.java \
 	NameDuplicationException.java \
+	NoSuchItemException.java \
 	ObservableParameter.java \
-	Param.java \
-	Parameter.java \
+ 	Param.java \
+ 	Parameter.java \
 	Port.java \
-	PortList.java \
-	PtolemyException.java \
 	Relation.java \
 
+# Not building until we work out parameters
 
 EXTRA_SRCS =	$(JSRCS)
 

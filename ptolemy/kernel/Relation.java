@@ -1,4 +1,4 @@
-/* A Relation is an arc in a flat graph.
+/* A Relation links ports, and therefore the entities that contain them.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -23,6 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.kernel;
@@ -32,161 +34,125 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
-/** A Relation is an arc in a flat graph. A Relation connects n links such
-that each link has access to the other n-1 links. Relations interface to 
-Entities, the vertices of a graph, via Ports.  Ports may attach themselves 
-to Relations, but the other direction does not hold.
-@author Neil Smyth
+/**
+A Relation links ports, and therefore the entities that contain them.
+It can be used to represent arcs in non-hierarchical graphs.
+Ports may attach themselves to Relations, but the other direction is
+not supported.
+
+@author Neil Smyth, Edward A. Lee
 @version $Id$
 @see Port
 @see Entity
 */
 public class Relation extends NamedObj {
-    /** 
+    /** Create a new relation with no links.
      */	
     public Relation() {
 	super();
-        _portList = new CrossRefList(this);
+        // Ignore exception because "this" cannot be null.
+        try {
+            _portList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
     }
 
-
-    /** 
-     * @param name The name of the Relation.
+    /** Create a new relation with no links.
+     *  @param name
+     *  @exception IllegalActionException Argument is null.
      */	
-    public Relation(String name) {
+    public Relation(String name)
+            throws IllegalActionException {
 	super(name);
-        _portList = new CrossRefList(this);
+        // Ignore exception because "this" cannot be null.
+        try {
+            _portList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the Ports which are connected to this Relation.
-     * @return Return an Enumeration of Ports; return null if the
-     * collection of Ports is null.
+    /** Enumerate the linked entities.  If any of the linked ports have no
+     *  container, then those ports are ignored.  Thus, the enumeration may
+     *  have fewer entries in it than what is reported by numLinks().
+     *  Note that a particular entity may be listed more than once if it is
+     *  linked more than once.
+     *  @return An Enumeration of Entity objects.
      */	
-    public Enumeration enumPorts() {
-        return new PortEnumeration();
-    }
+    public Enumeration getLinkedEntities() {
 
-
-    /** Return the Ports which are connected to this Relation, except for 
-     *  the specified Port
-     * @param exceptPort Do not return this Port in the Enumeration 
-     * @return Return an Enumeration of Ports; returns null if the
-     *  collection of Ports is null.
-     */	
-    public Enumeration enumPortsExcept(Port exceptPort) {
-        return new PortEnumeration(exceptPort);
-    }
-
-
-    /** Return the Entities which are connected to this Relation.
-     * @return Return an Enumeration of Entities; returns null if the
-     *  collection of Entities is null.
-     */	
-    public Enumeration enumEntities() {
-
-	Enumeration XRefs = _portList.elements();
+	Enumeration ports = _portList.getLinks();
         LinkedList storedEntities = new LinkedList();
 
-        while( XRefs.hasMoreElements() ) {
-            Port tmpPort = (Port)XRefs.nextElement();
-	    Entity tmpEntity = tmpPort.getEntity();
-	    storedEntities.insertLast( tmpEntity );
+        while( ports.hasMoreElements() ) {
+            Port port = (Port)ports.nextElement();
+            Entity parent = (Entity) port.getContainer();
+            // Ignore ports with no container.
+            if (parent != null) {
+                storedEntities.insertLast( parent );
+            }
         }
 
         return storedEntities.elements();
     }
 
-
-    /** Determine if a given Port is connected to this Relation.
-     * @param portName The name of the Port for which we check connectivity.
-     * @return Return true if the Port is connected to this Relation. Return 
-     *  false otherwise.
+    /** Enumerate the linked ports.
+     *  @return An Enumeration of Port objects.
      */	
-    public boolean isPortConnected(String portName) {
-	Enumeration XRefs = _portList.elements();
-        while (XRefs.hasMoreElements()) {
-            Port nextPort = (Port)XRefs.nextElement();
-            if (nextPort.getName() == portName) return true;
-	}
-	return false;
+    public Enumeration getLinkedPorts() {
+        return _portList.getLinks();
     }
 
-
-    /** Return the number of Ports connected to the relation.
+    /** Enumerate the linked ports except the specified port.
+     *  @param except Do not return this Port in the Enumeration 
+     *  @return An Enumeration of Port objects.
      */	
-    public int numberOfConnections() {
-	if( _portList == null ) {
-            return 0;
-	}
+    public Enumeration getLinkedPortsExcept(Port except) {
+        // This works by constructing a linked list and then enumerating it.
+        LinkedList storedPorts = new LinkedList();
+        Enumeration ports = _portList.getLinks();
+        
+        while(ports.hasMoreElements()) {
+            Port p = (Port)ports.nextElement();
+            if(p != except)
+            storedPorts.insertFirst(p); 
+        }
+        return storedPorts.elements();
+    }
+
+    /** Return the number of links to ports. */	
+    public int numLinks() {
         return _portList.size();
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-    /* A CrossRefList of Ports which are connected to this Relation.
-     * Note : This member has been made protected for the sole purpose of
-     * connecting Ports to Relations (see Port.connect(Port)). It should 
-     * NOT be modified by any other method.
+    ////                         protected methods                        ////
+
+    /** Return a reference to the local port list.
+     *  NOTE : This method has been made protected for the purpose
+     *  of connecting Ports to Relations (see Port.link(Relation)), and so
+     *  that it can be overridden in derived classes. If in a derived class
+     *  no more links
+     *  are supported for some reason, or the specified port is
+     *  incompatible with this relation, throw an exception.  This base
+     *  class does not throw this exception, but derived classes might
+     *  in order to restrict the number or type of links that a relation has.
+     *  @param port The port to link to.
+     *  @exception IllegalActionException Relation cannot support any
+     *   more links, or cannot support a link to the given port.
      */
-    protected CrossRefList _portList;
+    protected CrossRefList _getPortList (Port port) 
+            throws IllegalActionException {
+        return _portList;
+    }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                            ////
+    ////                         protected variables                      ////
 
-    // Class PortEnumeration
-    /** Wrapper class for returning an emumeration of Ports. It uses the 
-     *  elements() method provided by CrossRefList
-     *  @see CrossRefList
+    /** The CrossRefList of Ports which are connected to this Relation.
+     *  NOTE: This variable is protected _only_ to allow access in derived
+     *  classes.   Java does not provide this level of encapsulation, so
+     *  we rely on convention.
      */
-
-    private class PortEnumeration implements Enumeration {
-
-        public PortEnumeration() {
-            _XRefEnum = _portList.elements();
-        }
-
-        /** @param exceptPort Do not return this port in the enumeration. */
-        public PortEnumeration(Port exceptPort) {
-            // Create a list that does not include exceptPort.
-            if(exceptPort != null) {
-                // LinkedList is used instead of a CrossRefList
-                // so that the lifetime of the internal portlist
-                // copy that excludes "exceptPort" ends when
-                // _internalList goes out of scope.  This is not true
-                // with a CrossRefList _internalList since _portList
-                // would maintain references to _internalList after
-                // this PortEnumeration has been marked for garbage
-                // collection.  As usual, modifying the lists 
-                // during the lifetime of PortEnumeration is very 
-                // dangerous and must be avoided.
-                LinkedList _internalList = new LinkedList();
-                Enumeration ports = _portList.elements();
-                while(ports.hasMoreElements()) {
-                    Port p = (Port)ports.nextElement();
-                    if(p != exceptPort)
-                        // O(1) operation.
-                        _internalList.insertFirst(p); 
-                }
-                _XRefEnum = _internalList.elements();
-            } else {
-                _XRefEnum = _portList.elements();
-            }
-        }
-      
-        /** Check if there are remaining elements to enumerate. */
-        public boolean hasMoreElements() {
-            return _XRefEnum.hasMoreElements();
-        }
-      
-        /** Return the next element in the enumeration. */
-        public Object nextElement() {
-            return (Port)_XRefEnum.nextElement();
-        }
-      
-        private Enumeration _XRefEnum;
-        private LinkedList _internalList;
-    }
+    protected CrossRefList _portList;
 }
