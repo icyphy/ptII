@@ -294,7 +294,7 @@ CT-ModalModel-CTEmbedded.
      or
    use the Graph -> Automatic Layout menu choice.
 
-2. Connect a TimedPlotter from the actor library -> sinks
+2. Connect a TimedPlotter from the Actors -> Sinks
    palette in the upper left tree widget to one of the
    relations.
 
