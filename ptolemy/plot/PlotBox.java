@@ -526,34 +526,79 @@ public class PlotBox extends Applet {
 
         graphics = this.getGraphics();
 
+	if (graphics == null) {
+	    System.out.println("PlotBox::init(): Internal error: " +
+			       "Graphic was null");
+	    return;
+	}
+
         // Check to see whether a data URL has been given.
-        // Need the catch here because applets used as components have no parameters.
-        String dataurl = null;
+        // Need the catch here because applets used as components have
+        // no parameters. 
+	String dataurl = null;
         try {
             dataurl = getParameter("dataurl");
-        } catch (NullPointerException e) {}
-        if (dataurl != null) {
-           try {
-               URL url = new URL(getDocumentBase(), dataurl);
-               URLConnection connection = url.openConnection();
-               DataInputStream in = new DataInputStream(connection.getInputStream());
-               String line = in.readLine();
-               while (line != null) {
-                   parseLine(line);
-                   line = in.readLine();
-               }
-           }
-           catch (MalformedURLException e) {
-               _errorMsg = new String[2];
-               _errorMsg[0] = "malformed URL: " + dataurl;
-               _errorMsg[1] = e.getMessage();
-           }
-           catch (IOException e) {
-               _errorMsg = new String[2];
-               _errorMsg[0] = "Failure reading data: " + dataurl;
-               _errorMsg[1] = e.getMessage();
-           }
-        }
+        } catch (NullPointerException e) {
+	    dataurl = _dataurl;
+	}
+
+	// Open up the input file, which could be stdin, a URL or a file.
+	// This code can be called from an application, which means that
+	// getDocumentBase() might fail.
+	DataInputStream in;
+	if (dataurl.length() == 0) {
+	    // Open up stdin
+	    in = new DataInputStream(System.in);
+	} else {
+	   try {
+	       URL url;
+	       try {
+		   url = new URL(getDocumentBase(), dataurl);
+	       } catch (NullPointerException e) {
+		   // If we got a NullPointerException, then perhaps
+		   // we are calling this as an application, not as an applet.
+		   url = new URL(_dataurl);
+	       }
+	       in = new DataInputStream(url.openStream());
+	   } catch (MalformedURLException e) {
+	       try {
+		   // Just try to open it as a file.
+		   in = new DataInputStream(new FileInputStream(dataurl));
+	       } catch (FileNotFoundException me) {
+		   System.out.println("File not found: " + dataurl + " "+me);
+		   return;
+	       } catch (SecurityException me) {
+		   System.out.println("SecurityException: " + dataurl +" "+me);
+		   return;
+	       }
+	   } catch (IOException ioe) {
+	       System.out.println("Failure opening URL: " + dataurl + " "+ioe);
+	       return;
+	   }
+	}
+
+	// At this point, we've opened the data source, now read it in
+	try {
+	    if (_binary) {
+		convertBinaryStream(in);
+	    } else {
+		String line = in.readLine();
+		while (line != null) {
+		    parseLine(line);
+		    line = in.readLine();
+		}
+	    }
+	} catch (MalformedURLException e) {
+	    System.out.println("Malformed URL: " + dataurl + " "+ e);
+	} catch (IOException e) {
+	    System.out.println("Failure reading data: " + dataurl + " "+ e);
+	} catch (PlotDataException me) {
+	    System.out.println("Bad Plot Data: " + me);
+	} finally {
+	    try {
+		in.close();
+	    } catch (IOException me) {}
+	}
         
         // Make a button that auto-scales the plot.
         // NOTE: The button infringes on the title space.
@@ -647,6 +692,29 @@ public class PlotBox extends Applet {
 	    drawPlot(true);
     }
     
+    /** Set the binary flag to true if we are reading pxgraph format binar
+     * data.
+     */
+    public void setBinary (boolean binary) {
+	this._binary = binary;
+    }
+
+    /** Set the dataurl.  This method is used by Applications, applets
+     * should just set the dataurl parameter with:
+     * &lt;param name="dataurl" value="data.plt"&gt;
+     */
+    public void setDataurl (String dataurl) {
+	this._dataurl = dataurl;
+    }
+
+
+    /**
+     * Control whether the grid is drawn.
+     */
+    public void setGrid (boolean grid) {
+        this.grid = grid;
+    }
+    
     /**
      * Set the title of the graph.  The title will appear on the subsequent
      * call to <code>paint()</code> or <code>drawPlot()</code>.
@@ -655,6 +723,7 @@ public class PlotBox extends Applet {
         this._title = title;
     }
     
+
     /**
      * Set the label for the X (horizontal) axis.  The label will appear on the subsequent
      * call to <code>paint()</code> or <code>drawPlot()</code>.
@@ -697,6 +766,15 @@ public class PlotBox extends Applet {
     ////                         protected methods                        ////
 
     /**
+     * Abstract method - convert a Binary Stream
+     */
+    protected void convertBinaryStream(DataInputStream in) throws
+	PlotDataException, IOException {
+	    throw new PlotDataException("Binary data not supported in the" +
+					"baseclass");
+    }
+
+    /**
      * Put a mark corresponding to the specified dataset at the specified
      * x and y position.
      * In this base class, a point is a filled circle 6 pixels across.
@@ -726,7 +804,7 @@ public class PlotBox extends Applet {
      * class, only lines pertaining to the title and labels are processed.
      * Everything else is ignored. Return true if the line is recognized.
      */
-    protected boolean parseLine (String line) {
+    public boolean parseLine (String line) {
         // Parse commands in the input file, ignoring lines with syntax errors or
         // unrecognized commands.
         if (line.startsWith("#")) {
@@ -864,9 +942,9 @@ public class PlotBox extends Applet {
     ////                         private methods                          ////
 
     /**
-     * Draw the legend in the upper right corner and return the width (in pixels)
-     * used up.  The arguments give the upper right corner of the region where the
-     * legend should be placed.
+     * Draw the legend in the upper right corner and return the width
+     * (in pixels)  used up.  The arguments give the upper right corner
+     * of the region where the legend should be placed.
      */
     private int _drawLegend(int urx, int ury) {
         // FIXME: consolidate all these for efficiency
@@ -880,7 +958,7 @@ public class PlotBox extends Applet {
         int maxwidth = 0;
         while (v.hasMoreElements()) {
             String legend = (String) v.nextElement();
-            // NOTE: relies on _legendDatasets having the same number of entries.
+            // NOTE: relies on _legendDatasets having the same num. of entries.
             int dataset = ((Integer) i.nextElement()).intValue();
             // NOTE: 6 pixel width of point assumed.
             if (!drawPoint(dataset, urx-3, ypos-3, false, false)) {
@@ -900,7 +978,7 @@ public class PlotBox extends Applet {
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
     }
     
-    /**
+    /*
      * Parse a string of the form: "word num, word num, word num, ..."
      * where the word must be enclosed in quotes if it contains spaces,
      * and the number is interpreted as a floating point number.  Ignore
@@ -943,7 +1021,7 @@ public class PlotBox extends Applet {
        	}
     }
 
-    /**
+    /*
      * Given a number, round up to the nearest power of ten
      * times 1, 2, or 5.
      *
@@ -960,8 +1038,9 @@ public class PlotBox extends Applet {
          return val;
     }
 
-    /**
-     * Internal implementation of setXRange, so that it can be called when autoranging.
+    /*
+     * Internal implementation of setXRange, so that it can be called when
+     * autoranging. 
      */
     private void _setXRange (double min, double max) {
         // If values are invalid, try for something reasonable.
@@ -989,8 +1068,9 @@ public class PlotBox extends Applet {
         xMax = max;
     }
 
-    /**
-     * Internal implementation of setYRange, so that it can be called when autoranging.
+    /*
+     * Internal implementation of setYRange, so that it can be called when
+     * autoranging.
      */
     private void _setYRange (double min, double max) {
         // If values are invalid, try for something reasonable.
@@ -1021,7 +1101,14 @@ public class PlotBox extends Applet {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
     
-	// The range of the plot as labeled (multiply by 10^exp for actual range.
+    // The URL to be opened.  This variable is not used if we are running
+    // as an applet, but applications should call setDataurl().
+    private String _dataurl = null;
+
+    // Set to true if we are reading in pxgraph format binary data.
+    private boolean _binary = false;
+
+    // The range of the plot as labeled (multiply by 10^exp for actual range.
     private double _yMax, _yMin, _xMax, _xMin;
     // The power of ten by which the range numbers should be multiplied.
     private int _yExp, _xExp;
