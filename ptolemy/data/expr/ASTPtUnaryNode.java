@@ -10,7 +10,8 @@ public class ASTPtUnaryNode extends ASTPtSimpleNode {
              throw new Exception(); 
          }
          if (isMinus == false) {
-             _ptToken = childTokens[0];
+             _ptToken = ((ASTPtSimpleNode)jjtGetChild(0))._ptToken;
+             //_ptToken = childTokens[0];
          } else {
              // assume that _ptToken was created with zero as its value
              _ptToken = _ptToken.subtract(_ptToken, childTokens[0]);

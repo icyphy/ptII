@@ -9,6 +9,12 @@ public class ASTPtSumNode extends ASTPtSimpleNode {
     LinkedList _tokenList = new LinkedList();
 
     protected void _resolveValue() throws Exception {
+        int num =  jjtGetNumChildren();
+        if (num ==1) {
+            String str = childTokens[0].toString();
+            _ptToken.fromString(String.valueOf(str));
+            return;
+        }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
             throw new ParseException();
         }

@@ -8,7 +8,13 @@ public class ASTPtProductNode extends ASTPtSimpleNode {
     LinkedList _tokenList = new LinkedList();
 
     protected void _resolveValue() throws Exception {
-        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
+        int num =  jjtGetNumChildren();
+        if (num ==1) {
+            String str = childTokens[0].toString();
+            _ptToken.fromString(String.valueOf(str));
+            return;
+        }
+        if (num != ( _tokenList.size() +1) ) {
             throw new ParseException();
         }
         _ptToken = _ptToken.add(_ptToken, childTokens[0]);
