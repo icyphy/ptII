@@ -64,9 +64,8 @@ test ProcessThread-2.1 {Constructor tests} {
 
     set p1 [java::new ptolemy.actor.process.ProcessThread $a1 $d1]
     $p1 setName P1
-    set p2 [java::new ptolemy.actor.process.ProcessThread $a2 $d1 P2]
-    list [$p1 getName] [$p2 getName] 
-} {P1 P2}
+    list [$p1 getName] 
+} {P1}
 
 ######################################################################
 ####
