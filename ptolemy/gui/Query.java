@@ -291,6 +291,15 @@ public class Query extends JPanel {
         }
     }
 
+    /** Return the preferred size, since it usually does not make
+     *  sense to stretch a query box.  Currently (JDK 1.3), only BoxLayout
+     *  pays any attention to this.
+     *  @return The maximum desired size.
+     */
+    public Dimension getMaximumSize() {
+        return getPreferredSize();
+    }
+
     /** Get the current value in the entry with the given name
      *  and return as an integer.  If the entry is not a line,
      *  choice, or slider, then throw an exception.

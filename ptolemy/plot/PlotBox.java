@@ -416,12 +416,32 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
+    /** If the size of the plot has been set by setSize(),
+     *  then return that size.  Otherwise, return what the superclass
+     *  returns (which is undocumented, but apparently imposes no maximum size).
+     *  Currently (JDK 1.3), only BoxLayout pays any attention to this.
+     *  @return The maximum desired size.
+     */
+    public Dimension getMaximumSize() {
+        if (_sizeHasBeenSet) {
+            return new Dimension(_width, _height);
+        } else {
+            return super.getMaximumSize();
+        }
+    }
+
     /** Get the minimum size of this component.
-     *  This is simply the dimensions specified by setBounds() or setSize().
+     *  This is simply the dimensions specified by setBounds() or setSize(),
+     *  if these have been called.  Otherwise, return whatever the base
+     *  class returns, which is undocumented.
      *  @return The minimum size.
      */
     public Dimension getMinimumSize() {
-        return new Dimension(_width, _height);
+        if (_sizeHasBeenSet) {
+            return new Dimension(_width, _height);
+        } else {
+            return super.getMinimumSize();
+        }
     }
 
 
@@ -841,6 +861,7 @@ public class PlotBox extends JPanel implements Printable {
     public void setSize(int width, int height) {
         _width = width;
         _height = height;
+        _sizeHasBeenSet = true;
         super.setSize(width, height);
     }
 
@@ -1032,16 +1053,16 @@ public class PlotBox extends JPanel implements Printable {
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
+        /* FIXME: The following seems to be unncessary with Swing...
         if (clearfirst) {
             // NOTE: calling clearRect() here permits the background
             // color to show through, but it messes up printing.
             // Printing results in black-on-black title and axis labels.
-            // FIXME: The following, regrettably, ignores the background
-            // color for some reason.
             graphics.setColor(_background);
             graphics.drawRect(0, 0, drawRect.width, drawRect.height);
             graphics.setColor(Color.black);
         }
+        */
 
         // If an error message has been set, display it and return.
         if (_errorMsg != null) {
@@ -1917,6 +1938,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** @serial Width and height of component in pixels. */
     protected int _width = 400, _height = 400;
+
+    /** @serial Indicator that size has been set. */
+    protected boolean _sizeHasBeenSet = false;
 
     /** @serial The document base we use to find the _filespec.
      * NOTE: Use of this variable is deprecated.  But it is made available
