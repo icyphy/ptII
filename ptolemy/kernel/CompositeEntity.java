@@ -570,11 +570,17 @@ public class CompositeEntity extends ComponentEntity {
      *  class (such as HashSet) for which the contains() method is
      *  efficient.
      *  <p>
-     *  If the argument is null, then return all the links that this
+     *  If the filter argument is null, then return all the links that this
      *  composite is responsible for (i.e., apply no filtering).  If the
      *  argument is an empty collection, then return none of the links.  The
-     *  links that this entity is responsible for is the inside links of
+     *  links that this entity is responsible for are the inside links of
      *  its ports, and links on ports contained by contained entities.
+     *  <p>
+     *  If any link is found where both ends of the link are class elements,
+     *  then that link is not exported. It is assumed that the base class
+     *  will export that link.  For this purpose, a port of a contained
+     *  entity is deemed to be a class element if it is itself a class
+     *  element <i>and</i> its container is a class element.
      *  @param indentation The depth at which the output should be indented.
      *  @param filter A collection of ports, parameters, and entities, or
      *   null to apply no filtering.
@@ -605,6 +611,11 @@ public class CompositeEntity extends ComponentEntity {
                     // Gap in the links.  The next link has to use an
                     // explicit index.
                     useIndex = true;
+                    continue;
+                }
+                // If both ends of the link are class elements, then
+                // suppress the export.
+                if (relation.isClassElement() && port.isClassElement()) {
                     continue;
                 }
                 // Apply filter.
@@ -665,6 +676,14 @@ public class CompositeEntity extends ComponentEntity {
                         // Gap in the links.  The next link has to use an
                         // explicit index.
                         useIndex = true;
+                        continue;
+                    }
+                    // If both ends of the link are class elements, then
+                    // suppress the export.
+                    if (relation.isClassElement()
+                            && port.isClassElement()
+                            && ((NamedObj)port.getContainer())
+                            .isClassElement()) {
                         continue;
                     }
                     // Apply filter.
@@ -1271,13 +1290,13 @@ public class CompositeEntity extends ComponentEntity {
                 = (ComponentRelation)relations.next();
             relation.exportMoML(output, depth);
         }
-        // Next write the links, but only if this is not an
-        // instance of a class.  If it is an instance of a class,
-        // then we assume that any diffs in the links are represented
-        // in a contained MoMLAttribute.
-        if (getMoMLInfo().deferTo == null) {
-            output.write(exportLinks(depth, null));
-        }
+        // NOTE: We used to write the links only if
+        // this object did not defer to another
+        // (getMoMLInfo().deferTo was null), and
+        // would instead record links in a MoMLAttribute.
+        // That mechanism was far too fragile.
+        // EAL 3/10/04
+        output.write(exportLinks(depth, null));
     }
 
     /** Remove the specified entity. This method should not be used
