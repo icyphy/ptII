@@ -105,6 +105,11 @@ public abstract class IODependency {
      *  @see #getDetailedPortsGraph
      */
     public DirectedGraph getAbstractPortsGraph() {
+        // There is no difference between the getAbstractPortsGraph
+        // and getDetailedPortsGraph methods.
+        if (_container instanceof AtomicActor) {
+            return getDetailedPortsGraph();
+        }
         validate();
         // construct a new directed graph
         _abstractPortsGraph = new DirectedGraph();
@@ -130,6 +135,8 @@ public abstract class IODependency {
                 IOPort outputPort = (IOPort) outputs.next();
                 if (reachableOutputs.contains(_directedGraph.node(outputPort))) {
                     _abstractPortsGraph.addEdge(inputPort, outputPort);
+//                    _abstractPortsGraph.addEdge(inputPort, outputPort, 
+//                        new Integer(1));
                 }
             }
         }

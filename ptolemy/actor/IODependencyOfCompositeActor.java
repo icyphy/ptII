@@ -129,8 +129,11 @@ public class IODependencyOfCompositeActor extends IODependency {
                     // Port considering the lazy evaluation of variables.
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                                _directedGraph.addEdge(
-                                    outPort, receivers[i][j].getContainer());
+                            _directedGraph.addEdge(
+                                outPort, receivers[i][j].getContainer());
+//                                _directedGraph.addEdge(
+//                                    outPort, receivers[i][j].getContainer(), 
+//                                    new Integer(1));
                         }
                     }
                 }
@@ -158,7 +161,10 @@ public class IODependencyOfCompositeActor extends IODependency {
             Receiver[][] receivers = inputPort.deepGetReceivers();
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    _directedGraph.addEdge(inputPort, receivers[i][j].getContainer());
+                    _directedGraph.addEdge(inputPort, 
+                        receivers[i][j].getContainer());
+//                    _directedGraph.addEdge(inputPort, 
+//                        receivers[i][j].getContainer(), new Integer(1));
                 }
             }
         }
