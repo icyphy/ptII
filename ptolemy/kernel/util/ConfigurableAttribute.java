@@ -102,7 +102,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
-     *  @removeValueListener(ValueListener)
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
@@ -231,7 +231,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  notified when the value of this attribute changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
-     *  @addValueListener(ValueListener)
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
