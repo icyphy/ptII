@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -275,10 +276,10 @@ public class CTScheduler extends Scheduler {
             if(a instanceof CTStatefulActor) {
                 statefulActors.add(new Firing(a));
             }
-            if(a instanceof CTWaveformGenerator) {
+            if (a instanceof CTWaveformGenerator) {
                 waveformGenerators.add(a);
             }
-            if(a instanceof CTEventGenerator) {
+            if (a instanceof CTEventGenerator) {
                 eventGenerators.add(a);
                 // Event generators are also considered sinks.
                 // This is be dealt later.
@@ -288,12 +289,19 @@ public class CTScheduler extends Scheduler {
                 // dynamic actors here.
                 sinkActors.add(a);
             }
-            if(a instanceof CTDynamicActor) {
+            if (a instanceof CTDynamicActor) {
                 dynamicActors.addLast(a);
             }else if (!(a instanceof CTWaveformGenerator)) {
                 arithmeticActors.add(a);
             }
-        }
+	    // A typed composite actor (but not a CTCompositeActor)
+            // which has no predecessors is treated as a discrete actor.
+	    if ((a instanceof TypedCompositeActor) && 
+		!(a instanceof CTCompositeActor) &&
+		(predecessorList(a).isEmpty())) {
+		discreteActors.addLast(a);
+	    }
+	}
         // First make sure that there is no causality loop of arithmetic
         // actor. This makes other graph reachability algorithms terminate.
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
