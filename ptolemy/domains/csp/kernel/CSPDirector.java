@@ -182,7 +182,7 @@ public class CSPDirector extends ProcessDirector {
 	        // System.out.println("fire() waiting for deadlock.");
 	        workspace().wait(this);
 	    }
-	    System.out.println("fire() handling deadlock.");
+	    // System.out.println("fire() handling deadlock.");
 	    continueExec = !_handleDeadlock();
 	}
 	// something may go here e.g. notify GUI
@@ -436,8 +436,10 @@ public class CSPDirector extends ProcessDirector {
 		  if (Math.abs(val._resumeTime - nextTime) < tolerance) {
 		      _delayedActorList.removeFirst();
 		      val._actor._continue();
+                      /*
 		      System.out.println("\nresuming actor at time: " +
 					 val._resumeTime);
+                      */
 		      _actorsDelayed--;
 		  } else {
 		      done = true;
