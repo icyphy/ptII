@@ -177,10 +177,10 @@ public class BrowserLauncher {
                                 + url + "', but '" + entryURL
                                 + "' was found.");
                         url = entryURL.toString();
-                    } else {
-                        if (url.startsWith("jar:")) {
-                            // If the URL begins with jar: then we are
-                            // inside Web Start and we should get the
+                    }
+                    if (url.startsWith("jar:")) {
+                        // If the URL begins with jar: then we are
+                        // inside Web Start and we should get the
                             // resource, write it to a temporary file
                             // and pass that value to the browser
 
@@ -192,6 +192,10 @@ public class BrowserLauncher {
                             // FIXME: we should probably cache this
                             // copy somehow.
                             String old = url;
+                            System.out.println("BrowserLauncher: about to "
+                                    + "copy " + url);
+
+
                             String temporaryURL =
                                 JNLPUtilities.saveJarURLInClassPath(url);
                             if (temporaryURL != null) {
@@ -206,7 +210,6 @@ public class BrowserLauncher {
                                     + "find '"
                                     + old + "', but jar url'" + url
                                     + "' was found.");
-                        }
                     }
                 } catch (ClassNotFoundException ex) {
                     System.err.println("BrowserLauncher: Internal error, "
