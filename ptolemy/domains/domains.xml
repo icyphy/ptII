@@ -21,7 +21,7 @@
 
 	    <!-- GR depends on the 3D graphics package of Java being present-->             <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
-	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
+	    <!-- Don't include rtp, we are not shipping it -->
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
       </group>
