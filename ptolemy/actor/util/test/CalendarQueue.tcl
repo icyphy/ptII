@@ -308,3 +308,160 @@ test CalendarQueue-7.1 {Test the clear method} {
     lappend mylist $msg1
 
 } {0.0 1 0 0 0 0 0 0.0 0.0 0.0 0.0 {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
+
+######################################################################
+####
+#
+test CalendarQueue-8.0 {check out debugListener} {
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $queue addDebugListener $listener
+    $queue put $p4
+    # Call addDebugListener again with the same listener so as
+    # to increase basic block coverage
+    $queue addDebugListener $listener
+    $queue put $p2
+    # Remove and then readd the listener
+    $queue removeDebugListener $listener
+    # Call removeDebugListener twice so as to increase coverage
+    $queue removeDebugListener $listener
+    $queue put $p3
+    $queue addDebugListener $listener
+
+    $queue put $p1
+    # Listener output should not include the value of p3 (0.2) being added
+    list [arrayToStrings [$queue toArray]] \
+	 [$listener getMessages]
+
+} {{0.0 0.1 0.2 3.0} {+ putting in queue: 3.0
++ putting in queue: 0.1
++ putting in queue: 0.0
+}}
+
+
+######################################################################
+####
+#
+test CalendarQueue-8.1 {Test the resize method with debugging } {
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+
+    # Add a listener so that we can get some of the debug basic blocks.
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $queue addDebugListener $listener
+
+    for {set a 0} {$a < 2} {incr a} {
+	for {set b 0} {$b < 2} {incr b} {
+		$queue put $p9
+		$queue put $p5
+		$queue put $p7
+		$queue put $p2
+		$queue put $p1
+		# queue size should get doubled here, becomes 4
+		$queue put $p10
+		$queue put $p8
+		$queue put $p6
+		$queue put $p4
+		# queue size should get doubled here, becomes 8
+		$queue put $p1again
+		$queue put $p3
+	}
+    }
+
+    set size [$queue size]
+
+    set result {}
+    while {![$queue isEmpty]} {
+        lappend result [$queue take]
+    }
+    list $size $result \
+	    [$listener getMessages]
+} {44 {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.1 0.1 0.1 0.1 0.2 0.2 0.2 0.2 3.0 3.0 3.0 3.0 4.0 4.0 4.0 4.0 7.6 7.6 7.6 7.6 8.9 8.9 8.9 8.9 50.0 50.0 50.0 50.0 999.1 999.1 999.1 999.1 999.3 999.3 999.3 999.3} {+ putting in queue: 999.1
++ putting in queue: 4.0
++ putting in queue: 8.9
++ putting in queue: 0.1
++ putting in queue: 0.0
++ putting in queue: 999.3
++ putting in queue: 50.0
++ putting in queue: 7.6
++ putting in queue: 3.0
++ putting in queue: 0.0
++ putting in queue: 0.2
++ putting in queue: 999.1
++ putting in queue: 4.0
++ putting in queue: 8.9
++ putting in queue: 0.1
++ putting in queue: 0.0
++ putting in queue: 999.3
++ putting in queue: 50.0
++ putting in queue: 7.6
++ putting in queue: 3.0
++ putting in queue: 0.0
++ putting in queue: 0.2
++ putting in queue: 999.1
++ putting in queue: 4.0
++ putting in queue: 8.9
++ putting in queue: 0.1
++ putting in queue: 0.0
++ putting in queue: 999.3
++ putting in queue: 50.0
++ putting in queue: 7.6
++ putting in queue: 3.0
++ putting in queue: 0.0
++ putting in queue: 0.2
++ putting in queue: 999.1
++ putting in queue: 4.0
++ putting in queue: 8.9
++ putting in queue: 0.1
+>>>>>> increasing number of buckets to: 4
++ putting in queue: 0.0
++ putting in queue: 999.3
++ putting in queue: 50.0
++ putting in queue: 7.6
++ putting in queue: 3.0
++ putting in queue: 0.0
++ putting in queue: 0.2
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.0
+- taking from queue: 0.1
+- taking from queue: 0.1
+- taking from queue: 0.1
+- taking from queue: 0.1
+- taking from queue: 0.2
+- taking from queue: 0.2
+- taking from queue: 0.2
+- taking from queue: 0.2
+- taking from queue: 3.0
+- taking from queue: 3.0
+- taking from queue: 3.0
+- taking from queue: 3.0
+- taking from queue: 4.0
+- taking from queue: 4.0
+- taking from queue: 4.0
+- taking from queue: 4.0
+- taking from queue: 7.6
+- taking from queue: 7.6
+- taking from queue: 7.6
+- taking from queue: 7.6
+- taking from queue: 8.9
+- taking from queue: 8.9
+- taking from queue: 8.9
+- taking from queue: 8.9
+- taking from queue: 50.0
+- taking from queue: 50.0
+- taking from queue: 50.0
+- taking from queue: 50.0
+- taking from queue: 999.1
+- taking from queue: 999.1
+- taking from queue: 999.1
+- taking from queue: 999.1
+- taking from queue: 999.3
+- taking from queue: 999.3
+- taking from queue: 999.3
+- taking from queue: 999.3
+}}
