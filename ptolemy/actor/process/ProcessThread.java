@@ -198,6 +198,9 @@ public class ProcessThread extends PtolemyThread {
                 if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
                     _debug("-- Blocked Receiver call threw TerminateProcessException.");
+                } else if (thrownWhenIterate instanceof InterruptedException) {
+                    // Process was terminated by call to stop();
+                    _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (thrownWhenIterate instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenIterate);
                     _manager.notifyListenersOfException(
