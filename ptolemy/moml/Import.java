@@ -66,10 +66,13 @@ public class Import extends Attribute {
 
     /** Write a MoML description of this object, which in this case is
      *  an import element.
+     *  @param name The name to use instead of the name of this object.
+     *   This argument is ignored.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
         output.write(_getIndentPrefix(depth)
                + "<import base=\""
                + _base.toExternalForm()

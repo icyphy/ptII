@@ -328,8 +328,10 @@ public class Variable extends Attribute implements Typeable {
      *  MoML is an XML modeling markup language.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
+    public void exportMoML(Writer output, int depth, String name)
+             throws IOException {
     }
 
     /** Get the expression currently used by this variable. If the

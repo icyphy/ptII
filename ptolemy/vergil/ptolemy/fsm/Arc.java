@@ -173,9 +173,8 @@ public class Arc extends Attribute {
         }
     }
 
-    public void exportMoML(Writer output, int depth) 
+    public void exportMoML(Writer output, int depth, String name) 
 	throws IOException {
-	return;
     }
 
     private Object _head; 

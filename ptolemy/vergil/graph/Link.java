@@ -240,11 +240,15 @@ public class Link extends Attribute {
 	_checkSchedule(container);
     }
 
-    /** Don't write anything for links.
+    /** Write a MoML description of this object, which in this case is
+     *  empty.  Nothing is written.
+     *  MoML is an XML modeling markup language.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
      */
-    public void exportMoML(Writer output, int depth) 
-	throws IOException {
-	return;
+    public void exportMoML(Writer output, int depth, String name)
+             throws IOException {
     }
 
     /** Return a string representation of this link.

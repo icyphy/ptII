@@ -141,9 +141,11 @@ public class Parameter extends Variable {
      *  terminated with a newline.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
         String value = stringRepresentation();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
@@ -156,7 +158,7 @@ public class Parameter extends Variable {
                + "<"
                + getMoMLElementName()
                + " name=\""
-               + getName()
+               + name
                + "\" class=\""
                + getClass().getName()
                + "\""

@@ -98,11 +98,12 @@ public class Documentation extends Attribute {
      *  attribute.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
      *  @see NamedObj#_exportMoMLContents
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
-        String name = getName();
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
         if (name.equals("_doc_")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
