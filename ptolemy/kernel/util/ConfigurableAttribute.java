@@ -57,7 +57,7 @@ by the text "xxx".
 */
 
 public class ConfigurableAttribute
-        extends Attribute implements Configurable {
+    extends Attribute implements Configurable {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the

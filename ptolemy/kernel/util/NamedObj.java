@@ -616,16 +616,16 @@ public class NamedObj implements Nameable, Debuggable,
             // Generate header information.
             if (momlElement.equals("class")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE class PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
+                        + "<!DOCTYPE class PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
             } else if (momlElement.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE entity PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
+                        + "<!DOCTYPE entity PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
         output.write(_getIndentPrefix(depth)
@@ -1228,7 +1228,7 @@ public class NamedObj implements Nameable, Debuggable,
     protected void _setDefaultIcon(String description) {
 	try {
 	    TransientAttribute icon
-                    = new TransientAttribute(this, "iconDescription");
+                = new TransientAttribute(this, "iconDescription");
             icon.configure(null, null, description);
 	} catch (Exception ex) {
 	    throw new InternalErrorException(
