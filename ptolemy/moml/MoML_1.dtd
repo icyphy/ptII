@@ -49,7 +49,7 @@
                  base CDATA #IMPLIED>
 
 <!ELEMENT link EMPTY>
-<!ATTLIST link channel CDATA #IMPLIED
+<!ATTLIST link index CDATA #IMPLIED
                port CDATA #REQUIRED
                relation CDATA #REQUIRED
                vertex CDATA #IMPLIED>
@@ -74,7 +74,7 @@
 <!ATTLIST rendition class CDATA #REQUIRED>
 
 <!ELEMENT unlink EMPTY>
-<!ATTLIST unlink channel CDATA #IMPLIED
+<!ATTLIST unlink index CDATA #IMPLIED
                  port CDATA #REQUIRED
                  relation CDATA #REQUIRED>
 
