@@ -55,7 +55,7 @@ test VersionAttribute-1.0 {Constructor} {
     set result2 [$v toString]
     set result3 [$v getExpression]
     list $result1 $result2 $result3
-} {{ptolemy.kernel.util.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.util.VersionAttribute {.my NamedObj.my Version}} 2.0-beta}
+} {{ptolemy.kernel.util.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.util.VersionAttribute {.my NamedObj.my Version}} 2.0.1}
 
 
 test VersionAttribute-2.0 {compareTo} {
