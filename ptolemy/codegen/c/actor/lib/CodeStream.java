@@ -29,8 +29,6 @@
 /*
  * Created on Feb 22, 2005
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package ptolemy.codegen.c.actor.lib;
 
@@ -47,36 +45,35 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * @author Jackie
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CodeStream {
 
-    // FIXME: put Javadoc comments
 
     /**
-     * 
+     * CodeStream constructor associated with each actor helper.
+     * Therefore, each actor should have its own codestream during code generation.
+     * @param helper the actor helper associated with this code stream
      */
 	public CodeStream (CCodeGeneratorHelper helper) {
         _actorHelper = helper;
     }
 
 	/** To append the given string to this code stream
-	 * @param codeBlock
+	 * @param codeBlock the code block to be appended to this code stream
 	 */
     public void append(String codeBlock) {
         _stream.append(codeBlock);
     }
 
     /** To append the content of the StringBuffer to this code stream
-     * @param codeBlock
+     * @param codeBlock the code block to be appended to this code stream
      */
     public void append(StringBuffer codeBlock) {
         _stream.append(codeBlock);
     }
 
     /** To append the content of the CodeStream to this code stream
-     * @param codeBlock
+     * @param codeBlock the code block to be appended to this code stream
      */
     public void append(CodeStream codeBlock) {
         _stream.append(codeBlock.toString());
@@ -86,17 +83,18 @@ public class CodeStream {
      * First, it checks if the code file is parsed already.
      * If so, it gets the code block from the well-constructed code block table.
      * If not, it has to construct the table. 
-     * @param blockName
-     * @throws IllegalActionException
+     * @param blockName the name of the code block
+     * @throws IllegalActionException Thrown if an error occurs during parsing. 
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
         if (_codeBlockTable == null) {
         	_constructCodeBlockTable();
         }
         StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
-        if (codeBlock == null) 
+        if (codeBlock == null) {
             throw new IllegalActionException ("Cannot find code block: " + blockName);        
-       	
+        }
+        
         _stream.append(codeBlock);
     }
 
@@ -111,23 +109,23 @@ public class CodeStream {
     /**
      * This method reads the .c file associate with the particular actor 
      * identified by the className and constructs the code block table. 
-     * @param className
-     * @throws IllegalActionException
+     * 
+     * @throws IllegalActionException Thrown if an error occurs during parsing. 
      */
     private void _constructCodeBlockTable() throws IllegalActionException {
         String className; 
-        if (_actorHelper == null)
+        if (_actorHelper == null) {
         	className = _testingClassName;
-        else {
+        } else {
         	className = _actorHelper.getComponent().getClassName();
-            className = className.substring(className.lastIndexOf(".")+1);
+            className = className.substring(className.lastIndexOf(".") + 1);
         }
         
         _codeBlockTable = new Hashtable();
         BufferedReader reader = null;
         try {
             // open the .c file for reading
-            reader = FileUtilities.openForReading(_filePath + className+".c", null, null);
+            reader = FileUtilities.openForReading(_filePath + className + ".c", null, null);
             StringBuffer codeInFile = new StringBuffer();
 
             // create a string of all code in the file
@@ -139,11 +137,12 @@ public class CodeStream {
             while (_parseCodeBlock(codeInFile) != null); 
             
         } catch (IOException e) {
-            if (reader == null)
-                throw new IllegalActionException ("Cannot open file: " + className + ".c");
-            else 
-                throw new IllegalActionException ("Error reading file: " + className + ".c");
-        }         
+            if (reader == null) {
+                throw new IllegalActionException (null, e, "Cannot open file: " + className + ".c");
+            } else { 
+                throw new IllegalActionException (null, e, "Error reading file: " + className + ".c");
+            }
+        }
     }
  
     /** This method parse code from the given StringBuffer. It is
@@ -153,9 +152,9 @@ public class CodeStream {
      * It returns the name of the code block (key). If null is returned, it means
      * there is no more code block to be parsed in the .c file.
 	 * 
-     * @param codeInFile
-	 * @return
-     * @throws IllegalActionException
+     * @param codeInFile all the text within the .c file
+	 * @return the name of the code block as key to _CodeBlockTable
+     * @throws IllegalActionException Thrown if an error occurs during parsing. 
 	 */
 	private String _parseCodeBlock(StringBuffer codeInFile) throws IllegalActionException {
         String name = _parseHeader(codeInFile);
@@ -167,24 +166,29 @@ public class CodeStream {
 	}
 
 	/** 
-     * This is a sub-parsing method which is responsible for
-     * returning a well-formed string representing the code block name
-	 * @param codeInFile
-	 * @return
-	 * @throws IllegalActionException
+     * A sub-parsing method which return a well-formed string 
+     * representing the code block name.
+     * 
+	 * @param codeInFile all the text within the .c file
+	 * @return the name of the code block as key to _CodeBlockTable
+	 * @throws IllegalActionException Thrown if an error occurs when parsing
+     * the header. 
 	 */
 	private String _parseHeader(StringBuffer codeInFile) throws IllegalActionException {
         
         _parseIndex = codeInFile.indexOf(_BLOCKSTART, _parseIndex);
-        
-        if (_parseIndex == -1) // find no more code block start headers
+
+        // Check to see if there are no more code block start headers.
+        if (_parseIndex == -1) {
             return null;
+        }
         
         _parseIndex += _BLOCKSTART.length();        
         int endIndex = codeInFile.indexOf(_HEADEREND, _parseIndex);
         
-        if (endIndex == -1) 
+        if (endIndex == -1) {
             throw new IllegalActionException("Missing code block close header");
+        }
         
         String name = _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
         _parseIndex = _HEADEREND.length() + endIndex; 
@@ -192,25 +196,31 @@ public class CodeStream {
 	}
 
     /**
-     * This method type-checks the format of a proper code block name.
+     * Type-checks the format of a given code block name.
      * Assume the code block name is short (that is the reason why String
      * is used instead of StringBuffer).
      * This method returns a well-formed code block name,
-     * otherwise, it throws exception
-	 * @param string
+     * otherwise, it throws an exception.
+     * 
+	 * @param name the header string
+     * @return the well-formed header string after lexical checking
 	 */
-	private static String _checkCodeHeader(String name) throws IllegalActionException{
-        // FIXME: type checking
+	private static String _checkCodeHeader(String name) {
+        // FIXME: extra lexical checking 
+        // e.g. Do we allow nested code block within code block name??
+        // e.g. ...spaces??
+        // e.g. ...special symbols??
 		return name.trim();
 	}
 
 	/**
-     * This is a sub-parsing method which is responsible for
-     * returning a well-formed string representing the code block body.
+     * A Sub-parsing method which returns the code block body.
      * It recursively parses within the code body for nested code blocks.
-     * @param codeInFile
-     * @return
-	 * @throws IllegalActionException
+     * 
+     * @param codeInFile all the text within the .c file
+     * @return the code body within the current code block
+     * @throws IllegalActionException Thrown if an error occurs when parsing 
+     * the code body. 
      */
     private StringBuffer _parseBody(StringBuffer codeInFile) throws IllegalActionException {
         int openBlock = 1;
@@ -235,11 +245,12 @@ public class CodeStream {
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex, endIndex));
 
-        // recursively parse for nested code blocks
-        
+        // Recursively parsing for nested code blocks
         for (String subBlockKey = _parseCodeBlock(codeInFile); subBlockKey != null; ) {       
             // FIXME: do we include the nested code block into the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
+            
+            // FIXME: take away the nested code block from the current code block
             subBlockKey = _parseCodeBlock(codeInFile);
         }
         _parseIndex = _BLOCKEND.length() + endIndex; 
@@ -252,44 +263,45 @@ public class CodeStream {
 
     
     /**
-     * private index pointer that indicates the location
+     * Index pointer that indicates the current location
      * within the .c file to be parsed.
      */
     private int _parseIndex = 0;
     
 	/**
-     * stream buffer that stores the content of this CodeStream.
+     * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
    
     /**
-     * code block table, which stores the code blocks using the 
+     * The code block table that stores the code blocks with
      * code block names (String) as keys.
      */
     private Hashtable _codeBlockTable = null;
     
     /**
-     * private variable that keeps the pointer to the associated actor helper object
+     * The associated actor helper object.
      */
     private CCodeGeneratorHelper _actorHelper;
 
     /** 
-     * file path to the .c files
+     * File path to the .c files
      */
     private static String _filePath = "$CLASSPATH" + "/ptolemy/codegen/c/actor/lib/";
 
     /**
-     * string pattern which represents the start of a code block.
+     * String pattern which represents the start of a code block.
      */
     private static String _BLOCKSTART = "/***";
     
     /**
-     * string pattern which represents the end of a code block header.
+     * String pattern which represents the end of a code block header.
      */
     private static String _HEADEREND = "*/";
 
     /**
-     * string pattern which represents the end of a code block.
+     * String pattern which represents the end of a code block.
+     * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
      */
     private static String _BLOCKEND = "/**/";
     
@@ -299,11 +311,16 @@ public class CodeStream {
     
     //============================================================================
  
-    private static String _testingClassName;
     /**
-     * This is a private test method. Given the name of an actor class,
-     * It returns a StringBuffer that contains all the code block names and bodies
-     * @throws IllegalActionException
+     * The class name used during testing. 
+     */
+    private static String _testingClassName;
+    
+    /**
+     * Private test method which returns a StringBuffer that contains all 
+     * the code block names and bodies, given the name of an actor class.
+     * 
+     * @throws IllegalActionException Throw if an error occurs during parsing.
      */
     private static StringBuffer _testing() throws IllegalActionException {
         StringBuffer buffer = new StringBuffer();
@@ -321,6 +338,14 @@ public class CodeStream {
         
         return buffer;
     }
+    
+    /**
+     * Testing main
+     * 
+     * @param arg command-line arguments
+     * @throws IOException Thrown if an error occurs when reading user inputs. 
+     * @throws IllegalActionException Throw if an error occurs during parsing.
+     */
     public static void main(String[] arg) throws IOException, IllegalActionException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing--------------------------------");
