@@ -62,11 +62,22 @@ import java.util.List;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
-import javax.media.*;
-import javax.media.protocol.*;
-import javax.media.format.*;
-import javax.media.util.*;
-import javax.media.control.*;
+
+import quicktime.qd.*;
+import quicktime.*;
+import quicktime.std.*;
+import quicktime.io.*;
+import quicktime.sound.*;
+import quicktime.std.image.*;
+import quicktime.std.movies.*;
+import quicktime.std.movies.media.*;
+import quicktime.util.*;
+
+import quicktime.app.display.*;
+import quicktime.app.image.*;
+import quicktime.app.QTFactory;
+import java.awt.*;
+
 import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
@@ -79,7 +90,7 @@ saves it as a movie using JMF.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class MovieViewScreen2D extends ViewScreen2D implements ControllerListener {
+public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants, Errors {
 
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -142,379 +153,148 @@ public class MovieViewScreen2D extends ViewScreen2D implements ControllerListene
     ////                         protected methods                 ////
 
     protected void _doIt() {
-        // This method is largely copied from Sun's example
-        // JpegImageToMovie.java
-	GraphicsDataSource ids = new GraphicsDataSource();
-
-	Processor p;
-
-	try {
-	    System.err.println("- create processor for the image datasource ...");
-	    p = Manager.createProcessor(ids);
-	} catch (Exception e) {
-	    System.err.println("Yikes!  Cannot create a processor from the data source.");
-	    return;
-	}
-
-        p.addControllerListener(this);
-
+         
         try {
-            ids.connect();
-        } catch (Exception ex) {
-            System.out.println("foo");
-            return;
-        }
+            QTSession.open();
+   
+            Frame frame = new Frame("foo");
+            QTCanvas canv = new QTCanvas (QTCanvas.kInitialSize, 0.5F, 0.5F);
+            frame.add ("Center", canv);
+            painter = new Painter();
+            qid = new QTImageDrawer (painter, 
+                    new Dimension (kWidth, kHeight), Redrawable.kMultiFrame);
+            qid.setRedrawing(true);
 
-	// Put the Processor into configured state so we can set
-	// some processing options on the processor.
-	p.configure();
-	if (!waitForState(p, p.Configured)) {
-	    System.err.println("Failed to configure the processor.");
-	    return;
-	}
+            canv.setClient (qid, true);
+	
+            frame.pack();
+            QTFile f = new QTFile("c:/foo.mov");
+            Movie theMovie = Movie.createMovieFile (f,
+                    kMoviePlayer, 
+                    createMovieFileDeleteCurFile | createMovieFileDontCreateResFile);
 
-	// Set the output content descriptor to QuickTime. 
-	p.setContentDescriptor(new ContentDescriptor(FileTypeDescriptor.QUICKTIME));
-     
-	// Query for the processor for supported formats.
-	// Then set it on the processor.
-	TrackControl tcs[] = p.getTrackControls();
-	Format f[] = tcs[0].getSupportedFormats();
-	if (f == null || f.length <= 0) {
-	    System.err.println("The mux does not support the input format: " + tcs[0].getFormat());
-	    return;
-	}
-
-	tcs[0].setFormat(f[0]);
-        for(int i = 0; i < f.length; i++) {
-            System.out.println("format = " + f[i]);
-        }
-	System.err.println("Setting the track format to: " + f[0]);
-
-	// We are done with programming the processor.  Let's just
-	// realize it.
-	p.realize();
-	if (!waitForState(p, p.Realized)) {
-	    System.err.println("Failed to realize the processor.");
-	    return;
-	}
-
-	// Generate the output media locators.
-	MediaLocator oml;
-
-        //FIXME: parameter
-	if ((oml = new MediaLocator("file://c:/foo.mov")) == null) {
-	    System.err.println("Cannot build media locator");
-	    System.exit(0);
-	}
-
-	// Now, we'll need to create a DataSink.
-        DataSource output = p.getDataOutput();
-	DataSink dsink;
-	try {
-	    System.err.println("- create DataSink for: " + oml);
-	    dsink = Manager.createDataSink(output, oml);
-	    dsink.open();
-	} catch (Exception e) {
-	    System.err.println("Cannot create the DataSink: " + e);
-	    return;
-	}
-
-        //	dsink.addDataSinkListener(this);
-	fileDone = false;
-
-	System.err.println("start processing...");
-
-	// OK, we can now start the actual transcoding.
-	try {
-       	    p.start();
-	    dsink.start();
-	} catch (IOException e) {
-	    System.err.println("IO error during processing");
-	    return;
-	}
-
-       
-	// Wait for EndOfStream event.
-	waitForFileDone();
-
-	// Cleanup.
-	try {
-	    dsink.close();
-	} catch (Exception e) {}
-        p.removeControllerListener(this);
-
-	System.err.println("...done processing.");
-
-	return;
-    }
-
-    /**
-     * Block until file writing is done. 
-     */
-    boolean waitForFileDone() {
-	synchronized (waitFileSync) {
-	    try {
-		while (!fileDone)
-		    waitFileSync.wait();
-	    } catch (Exception e) {}
-	}
-	return fileSuccess;
-    }
-
-    /**
-     * Block until the processor has transitioned to the given state.
-     * Return false if the transition failed.
-     */
-    boolean waitForState(Processor p, int state) {
-	synchronized (waitSync) {
-	    try {
-		while (p.getState() < state && stateTransitionOK)
-		    waitSync.wait();
-	    } catch (Exception e) {}
-	}
-	return stateTransitionOK;
-    }
-
-    /**
-     * Controller Listener.
-     */
-    public void controllerUpdate(ControllerEvent evt) {
-
-	if (evt instanceof ConfigureCompleteEvent ||
-	    evt instanceof RealizeCompleteEvent ||
-	    evt instanceof PrefetchCompleteEvent) {
-	    synchronized (waitSync) {
-		stateTransitionOK = true;
-		waitSync.notifyAll();
-	    }
-	} else if (evt instanceof ResourceUnavailableEvent) {
-	    synchronized (waitSync) {
-		stateTransitionOK = false;
-		waitSync.notifyAll();
-	    }
-	} else if (evt instanceof EndOfMediaEvent) {
-	    evt.getSourceController().stop();
-	    evt.getSourceController().close();
-	}
-    }
-
-    /**
-     * A DataSource to read from a list of JPEG image files and
-     * turn that into a stream of JMF buffers.
-     * The DataSource is not seekable or positionable.
-     */
-    private class GraphicsDataSource extends PullBufferDataSource {
-
-	private GraphicsSourceStream streams[];
-        private boolean connected = false;
-        private boolean started = false;
-
-	GraphicsDataSource() {
-	    streams = new GraphicsSourceStream[1];
-	    streams[0] = new GraphicsSourceStream();
-	}
-
-	public void setLocator(MediaLocator source) {
-	}
-
-	public MediaLocator getLocator() {
-	    return null;
-	}
-
-	/**
-	 * Content type is of RAW since we are sending buffers of video
-	 * frames without a container format.
-	 */
-	public String getContentType() {
-	    return ContentDescriptor.RAW;
-	}
-        
-        public void connect() throws IOException {
-            if (connected)
-                return;
-            connected = true;
-        }
-        
-        public void disconnect() {
-            try {
-                if (started)
-                    stop();
-            } catch (IOException e) {}
-            connected = false;
-        }
-
-        public void start() throws IOException {
-            // we need to throw error if connect() has not been called
-            if (!connected)
-                throw new java.lang.Error("DataSource must be connected before it can be started");
-            if (started)
-                return;
-            started = true;
-        //     for(int i = 0; i < 10; i++) {
-//                 transferHandler.transferData(streams[0]);
-//                 try {
-//                     Thread.currentThread().sleep( 10 );
-//                 } catch (InterruptedException ise) {
-//                 }
-//             }
-            //     streams[0].start(true);
-        }
-        
-        public void stop() throws IOException {
-            if ((!connected) || (!started))
-                return;
-            started = false;
-            //      streams[0].start(false);
-        }
-        
-	/**
-	 * Return the ImageSourceStreams.
-	 */
-	public PullBufferStream[] getStreams() {
-	    return streams;
-	}
-
-	/**
-	 * We could have derived the duration from the number of
-	 * frames and frame rate.  But for the purpose of this program,
-	 * it's not necessary.
-	 */
-	public Time getDuration() {
-	    return DURATION_UNKNOWN;
-	}
-
-	public Object[] getControls() {
-	    return new Object[0];
-	}
-
-	public Object getControl(String type) {
-	    return null;
-	}
-    }
-
-
-    /**
-     * The source stream to go along with ImageDataSource.
-     */
-    private class GraphicsSourceStream implements PullBufferStream {
-
-        // FIXME: make parameters?
-	private int width = 400;
-        private int height = 400;
-        private int frameRate = 30;
-	private VideoFormat format;
-
-	private int imageCount = 0;	// index of the next image to be read.
-	private boolean ended = false;
-    
-
-	public GraphicsSourceStream() {
+            //
+            // add content
+            //
+            System.out.println ("Doing Video Track");
+            int kNoVolume	= 0;
+            int kVidTimeScale = 600;
             
-// 	    format = new VideoFormat(VideoFormat.JPEG,
-// 				new Dimension(width, height),
-// 				Format.NOT_SPECIFIED,
-// 				Format.byteArray,
-// 				(float)frameRate);
-	}
+            Track vidTrack = theMovie.addTrack (kWidth, kHeight, kNoVolume);
+            VideoMedia vidMedia = new VideoMedia (vidTrack, kVidTimeScale);  
+            
+            vidMedia.beginEdits();
+            addVideoSample (vidMedia);
+            vidMedia.endEdits();
+            
+            int kTrackStart	= 0;
+            int kMediaTime 	= 0;
+            int kMediaRate	= 1;
+            vidTrack.insertMedia (kTrackStart, kMediaTime,
+                    vidMedia.getDuration(), kMediaRate);
 
-	/**
-	 * We should never need to block assuming data are read from files.
-	 */
-	public boolean willReadBlock() {
-	    return false;
-	}
+ //            System.out.println ("Doing Audio Track");
+//             addAudioTrack( theMovie );
 
-	/**
-	 * This is called from the Processor to read a frame worth
-	 * of video data.
-	 */
- 	public void read(Buffer buf) throws IOException {
-
-	    // Check if we've finished all the frames.
-	    if (imageCount >= _images.size()) {
-		// We are done.  Set EndOfMedia.
-		System.err.println("Done reading all images.");
-		buf.setEOM(true);
-		buf.setOffset(0);
-		buf.setLength(0);
-		ended = true;
-		return;
-	    }
-
-	    Image image = (Image)_images.get(imageCount);
-	  
-	    System.err.println("  - reading image file: " + imageCount);
-
-            Buffer buffer = ImageToBuffer.createBuffer(image, frameRate);
-
-	    // Check the input buffer type & size.
-            buf.setFormat( buffer.getFormat());
-            buf.setTimeStamp((long)(imageCount * (1000 / frameRate) * 1000000));
-            buf.setSequenceNumber( imageCount );
-	    buf.setLength(buffer.getLength());
-	    buf.setFlags(0);
-            // buf.setHeader( null );
-
-            buf.setOffset(0);
-            //            buf.setFlags(buf.getFlags() | buf.FLAG_KEY_FRAME);
-
-            System.out.println("format = " + buffer.getFormat());
-            imageCount++;
-	}
-
-	/**
-	 * Return the format of each video frame.  That will be JPEG.
-	 */
-	public Format getFormat() {
-            Image image = (Image)_images.get(0);
-            Buffer buffer = ImageToBuffer.createBuffer(image, frameRate);
-            System.out.println("buffer = " + buffer.getFormat());
-            return buffer.getFormat();
-	}
-
-        public BufferTransferHandler getTransferHandler() {
-            return transferHandler;
+            //
+            // save movie to file
+            //
+            OpenMovieFile outStream = OpenMovieFile.asWrite (f); 
+            theMovie.addResource(outStream, movieInDataForkResID, f.getName());
+            outStream.close();
+            System.out.println ("Finished movie");
         }
-
-        public void setTransferHandler(BufferTransferHandler transferHandler) {
-            synchronized (this) {
-                transferHandler = transferHandler;
-                notifyAll();
-            }
+        catch (Exception qte) {
+            qte.printStackTrace(); 
         }
+        QTSession.close();
+    }
 
-	public ContentDescriptor getContentDescriptor() {
-	    return new ContentDescriptor(ContentDescriptor.RAW);
-	}
+    private void addVideoSample( VideoMedia vidMedia ) throws QTException {
+        QDRect rect = new QDRect (kWidth, kHeight);
+        QDGraphics gw = new QDGraphics (rect);
+        int size = QTImage.getMaxCompressionSize (gw, 
+                rect, 
+                gw.getPixMap().getPixelSize(),
+                codecNormalQuality, 
+                kAnimationCodecType, 
+                CodecComponent.anyCodec);
+        QTHandle imageHandle = new QTHandle (size, true);
+        imageHandle.lock();
+        RawEncodedImage compressedImage = RawEncodedImage.fromQTHandle(imageHandle);
+        CSequence seq = new CSequence (gw,
+                rect, 
+                gw.getPixMap().getPixelSize(),
+                kAnimationCodecType, 
+                CodecComponent.bestFidelityCodec,
+                codecNormalQuality, 
+                codecNormalQuality, 
+                numFrames,	//1 key frame
+                null, //cTab,
+                0);
+        ImageDescription desc = seq.getDescription();
 
-	public long getContentLength() {
-	    return 0;
-	}
+        qid.setRedrawing(true);
 
-	public boolean endOfStream() {
-	    return ended;
-	}
+        //redraw first...
+      	painter.setCurrentFrame (1);
+        qid.redraw(null);
 
-	public Object[] getControls() {
-	    return new Object[0];
-	}
+        qid.setGWorld (gw);
+        qid.setDisplayBounds (rect);
+			
+        for (int curSample = 0; curSample < numFrames; curSample++) {
+            painter.setCurrentFrame (curSample);
+        
+            qid.redraw(null);
+            CompressedFrameInfo info = seq.compressFrame (gw, 
+                    rect, 
+                    codecFlagUpdatePrevious, 
+                    compressedImage);
+            boolean isKeyFrame = info.getSimilarity() == 0;
+            System.out.println ("f#:" + curSample + ",kf=" + isKeyFrame + ",sim=" + info.getSimilarity());
+            vidMedia.addSample (imageHandle, 
+                    0, // dataOffset,
+                    info.getDataSize(),
+                    60, // frameDuration, 60/600 = 1/10 of a second, desired time per frame	
+                    desc,
+                    1, // one sample
+                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+        }
+		
+ 	//print out ImageDescription for the last video media data ->
+ 	//this has a sample count of 1 because we add each "frame" as an individual media sample
+        System.out.println (desc);
 
-	public Object getControl(String type) {
-	    return null;
-	}
-    } 
+ 	//redraw after finishing...
+    }
+
+    private class Painter implements Paintable {
+        private int _frame;
+	private Rectangle[] ret = new Rectangle[1];
+
+	public void setCurrentFrame (int frame) {
+            _frame = frame;
+        }
+	public void newSizeNotified (QTImageDrawer drawer, Dimension d) {
+            ret[0] = new Rectangle (kWidth, kHeight);
+        }
+	public Rectangle[] paint (Graphics g) {
+            g.drawImage((Image)_images.get(_frame),0,0,null);
+            ret[0] = new Rectangle (kWidth, kHeight);
+            return ret;
+   	}
+    }
 
     /** A list of BufferedImages.
      */
     private List _images = new LinkedList();
-
-    Object waitSync = new Object();
-    boolean stateTransitionOK = true;
-    Object waitFileSync = new Object();
-    boolean fileDone = false;
-    boolean fileSuccess = true;
-   private BufferTransferHandler transferHandler;
+    private Painter painter;
+    private QTImageDrawer qid;
+    private static final int numFrames = 10;
+    private int kWidth = 400;
+    private int kHeight = 400;
+    private File soundFile;
 
 }
 
