@@ -496,18 +496,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         // The node refers to a variable, or something else that is in
         // scope.
+        ptolemy.data.Token value = null;
         if (_scope != null) {
-            ptolemy.data.Token value = _scope.get(name);
-            if (value != null) {
-                _evaluatedChildToken = (value);
-                return;
-            }
+            value = _scope.get(name);           
         }
 
         // Look up for constants.
-        if (Constants.get(name) != null) {
+        if (value == null) {
             // A named constant that is recognized by the parser.
-            _evaluatedChildToken = (Constants.get(name));
+            value = Constants.get(name);
+        }
+
+        // Set the value, if we found one.
+        if (value != null) {
+            _evaluatedChildToken = value;
             return;
         }
         throw new IllegalActionException(

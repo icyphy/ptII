@@ -471,7 +471,7 @@ test ParseTreeEvaluator-17.3 {Test record in function.} {
 
 test ParseTreeEvaluator-17.4 {Test double in function.} {
     list [evaluate "function(x:double) double"]
-} {{(function(x:double) double)}}
+} {{(function(x:double) 0.0)}}
 
 ####################################################################
 

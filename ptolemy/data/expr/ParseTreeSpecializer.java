@@ -136,16 +136,22 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             return;
         }
         if (!_excludedNames.contains(node.getName())) {
+            ptolemy.data.Token token = null;
             if (_scope != null) {
-                ptolemy.data.Token token = _scope.get(node.getName());
-                if(token != null) {
-                    node.setToken(token);
-                    node.setConstant(true);
-                    // Reset the name, since it no longer makes sense.
-                    node._name = null;
-                    return;
-                }
+                token = _scope.get(node.getName());
             }
+            if(token == null) {
+                token = Constants.get(node.getName());
+            }
+            if(token != null) {
+                node.setToken(token);
+                node.setConstant(true);
+                // Reset the name, since it no longer makes sense.
+                node._name = null;
+                return;
+            }
+            throw new IllegalActionException(
+                    "The ID " + node.getName() + " is undefined.");
         }
     }
 
