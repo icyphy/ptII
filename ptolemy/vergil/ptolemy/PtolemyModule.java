@@ -157,16 +157,17 @@ public class PtolemyModule implements Module {
 	
 	String dflt = "";
 	// Creating the renderers this way is rather nasty..
+	// Standard toolbar icons are 25x25 pixels.
 	NodeRenderer renderer = new PortController.PortRenderer();
 	Figure figure = renderer.render(null);
 	Icon icon = 
-	    new FigureIcon(figure, 20, 20);
+	    new FigureIcon(figure, 25, 25);
 	GUIUtilities.addToolBarButton(tb, new newPortAction(), 
 				      "New External Port", icon);
 
 	renderer = new RelationController.RelationRenderer();
 	figure = renderer.render(null);
-	icon = new FigureIcon(figure, 20, 20);
+	icon = new FigureIcon(figure, 25, 25);
 	GUIUtilities.addToolBarButton(tb, new newRelationAction(), 
 				      "New Relation", icon);
    
