@@ -368,7 +368,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (result instanceof Complex) {
                 retval = new ComplexToken((Complex)result);
             } else if (result instanceof FixPoint) {
-                //retval = ((FixPoint)result).tokenValue();
+                retval = new FixToken((FixPoint)result);
 	    } else if (result instanceof int[][]) {
 		retval = new IntMatrixToken((int[][])result);
 	    } else if (result instanceof double[][]) {
@@ -408,8 +408,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		// Create back an ArrayToken containing FixTokens
 		FixToken[] temp = new FixToken[((FixPoint[])result).length];
 		for (int j = 0; j < temp.length; j++) {
-		    //temp[j] = ((FixPoint)((FixPoint[])result)[j]).tokenValue();
-                    temp[j] = null;
+		    temp[j] = new FixToken(((FixPoint[])result)[j]);
 		}
 		retval = new ArrayToken(temp);
             } else {
