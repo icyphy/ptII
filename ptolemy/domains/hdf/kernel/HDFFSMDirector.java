@@ -204,7 +204,7 @@ public class HDFFSMDirector extends FSMDirector {
         if(_debug_info) System.out.println(getName() + 
 					   " fire() invoked.");
         HDFFSMActor ctrl = (HDFFSMActor)getController();
-        ctrl.setInputVariables();
+	ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
         State st = ctrl.currentState();
 	Actor ref = ctrl.currentState().getRefinement();
         _fireRefinement = false;
@@ -228,7 +228,7 @@ public class HDFFSMDirector extends FSMDirector {
 					" firing refinement");
 	    // Fire the refinement.
             ref.fire();
-            ctrl.setInputsFromRefinement();
+            ctrl._setInputsFromRefinement();
         }
         ctrl.chooseTransition(st.nonpreemptiveTransitionList());
         return;

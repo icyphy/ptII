@@ -136,7 +136,7 @@ public class HDFDirector extends SDFDirector {
 	_init();
     }
 
-    /** A Parameter representing the size of the schedule cache to
+    /** A parameter representing the size of the schedule cache to
      *  use. If the value is less than
      *  or equal to zero, then schedules will never be discarded
      *  from the cache. The default value is 100.
