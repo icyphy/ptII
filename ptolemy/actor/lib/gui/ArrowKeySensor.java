@@ -75,7 +75,7 @@ the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
 
-This actor senses only the four non-memeric-pad arrow-key keystrokes.
+This actor senses only the four non-numeric-pad arrow-key keystrokes.
 This actor is almost identical to KeystrokeSensor.java.  One
 difference is the different set of keystrokes sensed.  The other
 difference, is that this actor responds to key releases as well as key
