@@ -134,7 +134,7 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public final State INITIALIZING = new State("Initializing");
 
-    /** Indicator that the execution is in an interation.
+    /** Indicator that the execution is in an iteration.
      */
     public final State ITERATING = new State("Executing iteration");
 
