@@ -210,7 +210,7 @@ public class LiveSound {
      *
      *  @param listener The LiveSoundListener to remove.
      */
-    public static void removeLibeSoundListener(LiveSoundListener listener) {
+    public static void removeLiveSoundListener(LiveSoundListener listener) {
         if (_liveSoundListeners.contains(listener)) {
             _liveSoundListeners.remove(listener);
         }
