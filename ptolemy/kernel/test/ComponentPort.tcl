@@ -56,8 +56,16 @@ test ComponentPort-2.1 {Construct Ports} {
     set e1 [java::new ptolemy.kernel.ComponentEntity]
     set p1 [java::new ptolemy.kernel.ComponentPort]
     set p2 [java::new ptolemy.kernel.ComponentPort $e1 P2]
-    list [$p1 getFullName] [$p2 getFullName]
-} {. ..P2}
+
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set p3 [java::new ptolemy.kernel.ComponentPort $w]
+    set w2 [java::new ptolemy.kernel.util.Workspace "workspace2"]
+    set p4 [java::new ptolemy.kernel.ComponentPort $w2]
+    set p5 [java::new ptolemy.kernel.ComponentPort [java::null]]
+
+    list [$p1 getFullName] [$p2 getFullName] \
+	    [$p3 getFullName] [$p4 getFullName] [$p5 getFullName]
+} {. ..P2 . workspace2. .}
 
 ######################################################################
 ####

@@ -58,8 +58,16 @@ test ComponentRelation-2.1 {Constructor} {
     set e [java::new ptolemy.kernel.CompositeEntity $w]
     $e setName E
     set r3 [java::new ptolemy.kernel.ComponentEntity $e R3]
-    list [$r1 getFullName] [$r2 getFullName] [$r3 getFullName]
-} {. .R2 .E.R3}
+
+    # Test out the constructor that takes a Workspace arg
+    set r4 [java::new ptolemy.kernel.ComponentRelation $w]
+    set w2 [java::new ptolemy.kernel.util.Workspace "workspace2"]
+    set r5 [java::new ptolemy.kernel.ComponentRelation $w2]
+    set r6 [java::new ptolemy.kernel.ComponentRelation [java::null]]
+
+    list [$r1 getFullName] [$r2 getFullName] [$r3 getFullName] \
+	    [$r4 getFullName] [$r5 getFullName] [$r6 getFullName]
+} {. .R2 .E.R3 . workspace2. .}
 
 ######################################################################
 ####
