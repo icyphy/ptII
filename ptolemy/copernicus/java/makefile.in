@@ -326,7 +326,7 @@ profileObfuscate:
 			tee -a $(STATSFILE); \
                 "$(ROOT)/util/testsuite/gcstats" < "$(GCLOGFILE)" | tee -a $(STATSFILE); \
 	done
-	@"$(ROOT)/util/testsuite/memorystats" "$(MODEL) codegen" < $(STATSFILE);
+	@"$(ROOT)/util/testsuite/memorystats" "$(MODEL) codegenObfuscate" < $(STATSFILE);
 	@rm -f $(STATSFILE)
 
 
