@@ -218,3 +218,23 @@ test DoubleMatrixToken-8.0 {Test subtract operator between doubles.} {
     list [$res1 toString] 
 } {{[3.0, 3.0; 0.0, 1.0]}}
 
+######################################################################
+####
+# 
+test DoubleMatrixToken-9.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.DoubleMatrixToken String} "\[1.0, 2.0; 3.0, 4.0\]"]
+    set p2 [java::new {ptolemy.data.DoubleMatrixToken String} "\[1.0, 2.0; 3.0, 4.0\]"]
+    set p3 [java::new {ptolemy.data.DoubleMatrixToken String} "\[9.0, 8.0; 7.0, 6.0\]"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test DoubleMatrixToken-10.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.DoubleMatrixToken String} "\[1.0, 2.0; 3.0, 4.0\]"]
+    set p2 [java::new {ptolemy.data.DoubleMatrixToken String} "\[1.0, 2.0; 3.0, 4.0\]"]
+    set p3 [java::new {ptolemy.data.DoubleMatrixToken String} "\[9.0, 8.0; 7.0, 6.0\]"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {10 10 30}
+

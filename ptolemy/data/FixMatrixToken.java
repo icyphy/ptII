@@ -214,6 +214,40 @@ public class FixMatrixToken extends MatrixToken {
 		"FixMatrixToken.");
     }
 
+    /** Return true if the argument is an instnace of FixMatrixToken
+     *  of the same dimensions and the corresponding elements of the matrices
+     *  are equal.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of FixMatrixToken
+     *   of the same dimensions and the corresponding elements of the
+     *   matrices are equal.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != FixMatrixToken.class) {
+	    return false;
+	}
+
+	FixMatrixToken matrixArgument = (FixMatrixToken)object;
+        if (_rowCount != matrixArgument.getRowCount()) {
+            return false;
+	}
+	if (_columnCount != matrixArgument.getColumnCount()) {
+	    return false;
+	}
+
+	FixPoint[][] matrix = matrixArgument.fixMatrix();
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		if ( !_value[i][j].equals(matrix[i][j])) {
+		    return false;
+		}
+	    }
+	}
+
+	return true;
+    }
+
     /** Return the content of this token as a new 2-D FixPoint matrix.
      *  @return A 2-D FixPoint matrix
      */
@@ -272,6 +306,21 @@ public class FixMatrixToken extends MatrixToken {
      */
     public Type getType() {
 	return BaseType.FIX_MATRIX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  integer portion of the sum of the elements.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	double code = 0.0;
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		code += _value[i][j].doubleValue();
+	    }
+	}
+
+	return (int)code;
     }
 
     /** Test if the content of this token is equal to that of the specified

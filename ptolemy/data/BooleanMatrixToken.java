@@ -166,6 +166,40 @@ public class BooleanMatrixToken extends MatrixToken {
 		"BooleanMatrixToken.");
     }
 
+    /** Return true if the argument is an instnace of BooleanMatrixToken
+     *  of the same dimensions and the corresponding elements of the matrices
+     *  are equal.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of BooleanMatrixToken
+     *   of the same dimensions and the corresponding elements of the
+     *   matrices are equal.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != BooleanMatrixToken.class) {
+	    return false;
+	}
+
+	BooleanMatrixToken matrixArgument = (BooleanMatrixToken)object;
+        if (_rowCount != matrixArgument.getRowCount()) {
+            return false;
+	}
+	if (_columnCount != matrixArgument.getColumnCount()) {
+	    return false;
+	}
+
+	boolean[][] matrix = matrixArgument.booleanMatrix();
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		if (_value[i][j] != matrix[i][j]) {
+		    return false;
+		}
+	    }
+	}
+
+	return true;
+    }
+
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
@@ -210,6 +244,23 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public Type getType() {
 	return BaseType.BOOLEAN_MATRIX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  number of elements with value true in the contained matrix.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	int code = 0;
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		if (_value[i][j]) {
+		    code++;
+		}
+	    }
+	}
+
+	return code;
     }
 
     /** Test whether the content of this token is equal to that of the

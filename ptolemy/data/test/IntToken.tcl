@@ -1,6 +1,6 @@
 # Tests for the IntToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Yuhong Xiong
 #
 # @Version $Id$
 #
@@ -272,4 +272,24 @@ test IntToken-10.1 {test isLessThan} {
 	 [[$l2 isLessThan $l3] booleanValue] \
 	 [[$l3 isLessThan $l2] booleanValue]
 } {1 0 1 0 0 0 0 0 1 0 1 0}
+
+######################################################################
+####
+# 
+test IntToken-11.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.IntToken int} 1]
+    set t2 [java::new {ptolemy.data.IntToken int} 1]
+    set t3 [java::new {ptolemy.data.IntToken int} 2]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test IntToken-12.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.IntToken int} 1]
+    set t2 [java::new {ptolemy.data.IntToken int} 1]
+    set t3 [java::new {ptolemy.data.IntToken int} 2]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {1 1 2}
 

@@ -654,7 +654,7 @@ test PtParser-14.0 {Test constant expressions.} {
     set vf [ [ $ta isEqualTo $tb ] toString ]
 
     list $va $vb $vc $vd $ve $vf
-} {1 true 0 true 0 true}
+} {1 true 1 true 1 true}
 
 ######################################################################
 ####

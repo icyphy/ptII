@@ -196,3 +196,23 @@ test LongMatrixToken-8.0 {Test subtract operator between longs.} {
     list [$res1 toString] 
 } {{[3, 3; 0, 1]}}
 
+######################################################################
+####
+# 
+test LongMatrixToken-9.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.LongMatrixToken String} "\[1L, 2L; 3L, 4L\]"]
+    set p2 [java::new {ptolemy.data.LongMatrixToken String} "\[1L, 2L; 3L, 4L\]"]
+    set p3 [java::new {ptolemy.data.LongMatrixToken String} "\[9L, 8L; 7L, 6L\]"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test LongMatrixToken-10.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.LongMatrixToken String} "\[1L, 2L; 3L, 4L\]"]
+    set p2 [java::new {ptolemy.data.LongMatrixToken String} "\[1L, 2L; 3L, 4L\]"]
+    set p3 [java::new {ptolemy.data.LongMatrixToken String} "\[9L, 8L; 7L, 6L\]"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {10 10 30}
+

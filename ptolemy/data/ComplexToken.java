@@ -241,11 +241,37 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
+    /** Return true if the argument is an instance of ComplexToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of ComplexToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != ComplexToken.class) {
+	    return false;
+	}
+
+	if (((ComplexToken)object).complexValue().equals(_value)) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.COMPLEX
      */
     public Type getType() {
 	return BaseType.COMPLEX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  integer portion of the magnitude of the contained complex number.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return (int)_value.magnitude();
     }
 
     /** Test that the magnitude of this Token is close to the

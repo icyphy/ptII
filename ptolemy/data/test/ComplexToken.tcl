@@ -465,3 +465,29 @@ test ComplexToken-9.0 {test isLessThan} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The isLessThan() method is not supported in ComplexToken since complex numbers cannot be compared.}}
 
+######################################################################
+####
+# 
+test ComplexToken-10.0 {Test equals} {
+    set c1 [java::new {ptolemy.math.Complex double double} 6.0 7.0]
+    set t1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
+    set c2 [java::new {ptolemy.math.Complex double double} 6.0 7.0]
+    set t2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
+    set c3 [java::new {ptolemy.math.Complex double double} 1.0 2.0]
+    set t3 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c3]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test ComplexToken-11.0 {Test hashCode} {
+    set c1 [java::new {ptolemy.math.Complex double double} 6.0 7.0]
+    set t1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
+    set c2 [java::new {ptolemy.math.Complex double double} 6.0 7.0]
+    set t2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
+    set c3 [java::new {ptolemy.math.Complex double double} 1.0 2.0]
+    set t3 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c3]
+    list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
+} {9 9 2}
+

@@ -242,6 +242,40 @@ public class ComplexMatrixToken extends MatrixToken {
                 "ComplexMatrixToken.");
     }
 
+    /** Return true if the argument is an instnace of ComplexMatrixToken
+     *  of the same dimensions and the corresponding elements of the matrices
+     *  are equal.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of ComplexMatrixToken
+     *   of the same dimensions and the corresponding elements of the
+     *   matrices are equal.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != ComplexMatrixToken.class) {
+	    return false;
+	}
+
+	ComplexMatrixToken matrixArgument = (ComplexMatrixToken)object;
+        if (_rowCount != matrixArgument.getRowCount()) {
+            return false;
+	}
+	if (_columnCount != matrixArgument.getColumnCount()) {
+	    return false;
+	}
+
+	Complex[][] matrix = matrixArgument.complexMatrix();
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		if ( !_value[i][j].equals(matrix[i][j])) {
+		    return false;
+		}
+	    }
+	}
+
+	return true;
+    }
+
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
@@ -286,6 +320,21 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Type getType() {
         return BaseType.COMPLEX_MATRIX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  integer portion of the magnitude of the sum of the elements.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	Complex sum = new Complex(0);
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		sum = sum.add(_value[i][j]);
+	    }
+	}
+
+	return (int)sum.magnitude();
     }
 
     /** Test that each element of this Token is close to the 

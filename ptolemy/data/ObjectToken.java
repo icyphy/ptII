@@ -102,6 +102,25 @@ public class ObjectToken extends Token {
 		"type: " + token.getClass().getName() + " to a ObjectToken");
     }
 
+    /** Return true if the argument is an instance of ObjectToken and its
+     *  contained object is equal to the object contained in this token,
+     *  as tested by the equals() method of the contained object.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of ObjectToken and its
+     *   contained object is equal to the object contained in this token.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != ObjectToken.class) {
+	    return false;
+	}
+
+	if (((ObjectToken)object).getValue().equals(_value)) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
@@ -114,6 +133,14 @@ public class ObjectToken extends Token {
      */
     public Object getValue() {
         return _value;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  hash code of the contained object.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return _value.hashCode();
     }
 
     /** Return the value of this token as a string that can be parsed

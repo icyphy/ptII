@@ -246,6 +246,25 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
+    /** Return true if the argument is an instance of FixToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of FixToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != FixToken.class) {
+	    return false;
+	}
+
+	if (((FixToken)object).fixValue().equals(_value)) {
+	    return true;
+	}
+
+	return false;
+    }
+
     /** Return the value of this token as a FixPoint.
      *  @return A FixPoint.
      */
@@ -258,6 +277,15 @@ public class FixToken extends ScalarToken {
      */
     public Type getType() {
 	return BaseType.FIX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  integer portion of the contained fixed point number.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	double code = _value.doubleValue();
+	return (int)code;
     }
 
     /** Test the values of this Token and the argument Token for equality.

@@ -99,7 +99,29 @@ test ArrayToken-2.1 {test subtract} {
 ######################################################################
 ####
 # 
-test ArrayToken-3.0 {test isEqualTo and isCloseTo on an array of Doubles} {
+test ArrayToken-3.0 {test equals on an array of Doubles} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
+
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test ArrayToken-3.1 {test hashCode on an array of Doubles} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
+
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {7 7 -5}
+
+######################################################################
+####
+# 
+test ArrayToken-3.2 {test isEqualTo and isCloseTo on an array of Doubles} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
@@ -115,7 +137,7 @@ test ArrayToken-3.0 {test isEqualTo and isCloseTo on an array of Doubles} {
 
 } {true true false true true false}
 
-test ArrayToken-3.1 {test isEqualTo on an array of Complexes} {
+test ArrayToken-3.3 {test isEqualTo on an array of Complexes} {
     set t1 [java::new {ptolemy.data.ArrayToken String} \
 	    "{0.5 - 10.0, 0.0 + 0.0, -10.0 + 10.0}"]
 

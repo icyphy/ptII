@@ -255,11 +255,37 @@ public class DoubleToken extends ScalarToken {
         return _value;
     }
 
+    /** Return true if the argument is an instance of DoubleToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of DoubleToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != DoubleToken.class) {
+	    return false;
+	}
+
+	if (((DoubleToken)object).doubleValue() == _value) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.DOUBLE
      */
     public Type getType() {
         return BaseType.DOUBLE;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  integer portion of the contained double.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return (int)_value;
     }
 
     /** Test that the value of this token is close to the argument

@@ -177,3 +177,24 @@ test StringToken-4.0 {Test isEqualTo} {
     catch {[$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken '"33"' and ptolemy.data.IntToken '33'}}
+
+######################################################################
+####
+# 
+test StringToken-5.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.StringToken} foo]
+    set t2 [java::new {ptolemy.data.StringToken} foo]
+    set t3 [java::new {ptolemy.data.StringToken} bar]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test StringToken-5.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.StringToken} 3]
+    set t2 [java::new {ptolemy.data.StringToken} 3]
+    set t3 [java::new {ptolemy.data.StringToken} 5]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {51 51 53}
+

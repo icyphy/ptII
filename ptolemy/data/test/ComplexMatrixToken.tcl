@@ -271,3 +271,23 @@ test ComplexMatrixToken-8.0 {Test subtract operator between Complexs.} {
     list [$res1 toString] 
 } {{[3.0 + 0.0i, 3.0 + 0.0i; 0.0 + 0.0i, 1.0 + 0.0i]}}
 
+######################################################################
+####
+# 
+test ComplexMatrixToken-3.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.ComplexMatrixToken String} "\[1+2i, 2+3i; 3+4i, 4+5i\]"]
+    set p2 [java::new {ptolemy.data.ComplexMatrixToken String} "\[1+2i, 2+3i; 3+4i, 4+5i\]"]
+    set p3 [java::new {ptolemy.data.ComplexMatrixToken String} "\[9+8i, 8+7i; 6+5i, 5+4i\]"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test ComplexMatrixToken-4.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.ComplexMatrixToken String} "\[1+2i, 2+3i; 3+4i, 4+5i\]"]
+    set p2 [java::new {ptolemy.data.ComplexMatrixToken String} "\[1+2i, 2+3i; 3+4i, 4+5i\]"]
+    set p3 [java::new {ptolemy.data.ComplexMatrixToken String} "\[9+8i, 8+7i; 6+5i, 5+4i\]"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {17 17 36}
+

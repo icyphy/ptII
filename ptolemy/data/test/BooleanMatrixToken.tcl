@@ -88,3 +88,23 @@ test BooleanMatrixToken-2.0 {Create a non-empty instance and query its value} {
     list [jdkPrintArray [$res1 get 0]] [jdkPrintArray [$res1 get 1]]
 } {{1 1} {0 0}}
 
+######################################################################
+####
+# 
+test BooleanMatrixToken-3.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, true; false, false\]"]
+    set p2 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, true; false, false\]"]
+    set p3 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, false; false, false\]"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test BooleanMatrixToken-4.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, true; false, false\]"]
+    set p2 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, true; false, false\]"]
+    set p3 [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, false; false, false\]"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {2 2 1}
+

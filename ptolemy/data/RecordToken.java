@@ -149,6 +149,39 @@ public class RecordToken extends Token {
                 "in RecordType.");
     }
 
+    /** Return true if the argument is an instnace of RecordToken with the
+     *  same set of labels and the corresponding fields are equal.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of RecordToken with the
+     *   same set of labels and the corresponding fields are equal.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != RecordToken.class) {
+	    return false;
+	}
+
+        RecordToken recordToken = (RecordToken)object;
+
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        if ( !myLabelSet.equals(argLabelSet)) {
+            return false;
+        }
+
+        Iterator iterator = myLabelSet.iterator();
+        while(iterator.hasNext()) {
+            String label = (String)iterator.next();
+            Token token1 = this.get(label);
+            Token token2 = recordToken.get(label);
+            if ( !token1.equals(token2)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /** Return the Token with the specified label. If this token does not
      *  contain the specified label, return null.
      *  @param label A String label.
@@ -157,7 +190,6 @@ public class RecordToken extends Token {
     public Token get(String label) {
         return (Token)_fields.get(label);
     }
-
 
     /** Return the type of this token.
      *  @return An instance of RecordType.
@@ -174,6 +206,23 @@ public class RecordToken extends Token {
         }
 
         return new RecordType(labels, types);
+    }
+
+    /** Return a hash code value for this token. This method returns the sum
+     *  of the hash codes of the element tokens.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	int code = 0;
+        Set labelSet = _fields.keySet();
+        Iterator iterator = labelSet.iterator();
+        while(iterator.hasNext()) {
+            String label = (String)iterator.next();
+            Token token = this.get(label);
+	    code += token.hashCode();
+        }
+
+	return code;
     }
 
     /** Test that the value of this Token is close to the argument

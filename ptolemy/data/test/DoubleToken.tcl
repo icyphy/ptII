@@ -217,6 +217,7 @@ test DoubleToken-5.0 {Test equality between doubles.} {
 
     list [$res1 toString] [$res2 toString]
 } {true false}
+
 ######################################################################
 ####
 # 
@@ -412,4 +413,24 @@ test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 } {9.2 -9.2 -9.2}
+
+######################################################################
+####
+# 
+test DoubleToken-9.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set t2 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set t3 [java::new {ptolemy.data.DoubleToken double} -8.0]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test DoubleToken-10.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set t2 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set t3 [java::new {ptolemy.data.DoubleToken double} -8.0]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {3 3 -8}
 

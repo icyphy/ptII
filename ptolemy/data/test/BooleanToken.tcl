@@ -1,6 +1,6 @@
 # Tests for the BooleanToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Yuhong Xiong
 #
 # @Version $Id$
 #
@@ -186,10 +186,31 @@ test BooleanToken-10.0 {Test subtraction of booleans} {
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}
 
-test BooleanToken-4.1 {Test reverse subtraction of booleans} {
+test BooleanToken-11.0 {Test reverse subtraction of booleans} {
     set r1 [$falseToken subtractReverse $falseToken]
     set r2 [$trueToken subtractReverse $falseToken]
     set r3 [$falseToken subtractReverse $trueToken]
     set r4 [$trueToken subtractReverse $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}
+
+######################################################################
+####
+# 
+test BooleanToken-12.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set t2 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set f [java::new {ptolemy.data.BooleanToken boolean} false]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $f]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test BooleanToken-13.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set t2 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set f [java::new {ptolemy.data.BooleanToken boolean} false]
+    list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
+} {1 1 0}
+

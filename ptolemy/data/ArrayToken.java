@@ -134,6 +134,35 @@ public class ArrayToken extends Token {
                 "in ArrayType.");
     }
 
+    /** Return true if the argument is an array token of the same length and
+     *  the elements are equal to that of this token. The equality of the
+     *  elements are tested by the equals() method of the element tokens.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an array token of the same length
+     *   and the elements are equal to that of this token.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != ArrayToken.class) {
+	    return false;
+	}
+
+	ArrayToken arrayArgument = (ArrayToken)object;
+	int length = arrayArgument.length();
+	if (_value.length != length) {
+	    return false;
+	}
+
+	Token[] array = arrayArgument.arrayValue();
+	for (int i = 0; i < length; i++) {
+	    if ( !_value[i].equals(array[i])) {
+		return false;
+	    }
+	}
+
+	return true;
+    }
+
     /** Return the element at the specified index.
      *  @param index The index of the desired element.
      *  @return A Token.
@@ -156,6 +185,23 @@ public class ArrayToken extends Token {
      */
     public Type getType() {
 	return new ArrayType(_elementType);
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  sum of the hash code of the element tokens. If this token has zero
+     *  length, return 0.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	if (length() == 0) {
+	    return 0;
+	}
+
+	int code = _value[0].hashCode();
+	for (int i = 1; i < length(); i++) {
+	    code += _value[i].hashCode();
+	}
+	return code;
     }
 
     /** Test that each element of this Token is close to the

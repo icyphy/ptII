@@ -144,8 +144,8 @@ public class BooleanToken extends Token {
 	if (token instanceof BooleanToken) {
 	    return token;
 	} else {
-            throw new IllegalActionException("cannot convert from token " +
-                    "type: " + token.getClass().getName() + " to a BooleanToken");
+            throw new IllegalActionException("cannot convert from token type: "
+		    + token.getClass().getName() + " to a BooleanToken");
         }
     }
 
@@ -205,11 +205,40 @@ public class BooleanToken extends Token {
         }
     }
 
+    /** Return true if the argument is an instance of BooleanToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of BooleanToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != BooleanToken.class) {
+	    return false;
+	}
+
+	if (((BooleanToken)object).booleanValue() == _value) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.BOOLEAN
      */
     public Type getType() {
 	return BaseType.BOOLEAN;
+    }
+
+    /** Return a hash code value for this token. This method returns 1 if this
+     *  token has value true, and 0 if this token has value false.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	if (_value) {
+	    return 1;
+	}
+	return 0;
     }
 
     /** Return TRUE if the argument has the same boolean value as this token.

@@ -1,6 +1,6 @@
 # Tests for the ObjectToken class
 #
-# @Author: Edward A. Lee, Neil Smyth
+# @Author: Edward A. Lee, Neil Smyth, Yuhong Xiong
 #
 # @Version: $Id$
 #
@@ -62,6 +62,33 @@ test ObjectToken-2.2 {Create an empty instance and query its value} {
     set p [java::new ptolemy.data.ObjectToken]
     expr { [$p getValue] == [java::null] }
 } {1}
+
+######################################################################
+####
+# 
+test ObjectToken-3.0 {Test equals} {
+    set i1 [java::new {java.lang.Integer int} 1]
+    set t1 [java::new {ptolemy.data.ObjectToken Object} $i1]
+    set i1a [java::new {java.lang.Integer int} 1]
+    set t2 [java::new {ptolemy.data.ObjectToken Object} $i1a]
+    set i3 [java::new {java.lang.Integer int} 3]
+    set t3 [java::new {ptolemy.data.ObjectToken Object} $i3]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test ObjectToken-4.0 {Test hashCode} {
+    set i1 [java::new {java.lang.Integer int} 1]
+    set t1 [java::new {ptolemy.data.ObjectToken Object} $i1]
+    set i1a [java::new {java.lang.Integer int} 1]
+    set t2 [java::new {ptolemy.data.ObjectToken Object} $i1a]
+    set i3 [java::new {java.lang.Integer int} 3]
+    set t3 [java::new {ptolemy.data.ObjectToken Object} $i3]
+
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {1 1 3}
 
 ######################################################################
 ####

@@ -98,7 +98,25 @@ test Token-2.3 {Test divideReverse} {
 ######################################################################
 ####
 # 
-test Token-2.4 {Test isEqualTo} {
+test Token-2.4 {Test equals} {
+    set p1 [java::new ptolemy.data.Token]
+    set p2 [java::new ptolemy.data.Token]
+    set p3 [java::new ptolemy.data.IntToken]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test Token-2.5 {Test hashCode} {
+    set p1 [java::new ptolemy.data.Token]
+    $p1 hashCode
+} {0}
+
+######################################################################
+####
+# 
+test Token-2.6 {Test isEqualTo} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 {isEqualTo ptolemy.data.Token} $p2} msg
@@ -108,7 +126,7 @@ test Token-2.4 {Test isEqualTo} {
 ######################################################################
 ####
 # 
-test Token-2.5 {Test modulo} {
+test Token-2.7 {Test modulo} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 modulo $p2} msg
@@ -118,7 +136,7 @@ test Token-2.5 {Test modulo} {
 ######################################################################
 ####
 # 
-test Token-2.6 {Test moduloReverse} {
+test Token-2.8 {Test moduloReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 moduloReverse $p2} msg
@@ -128,7 +146,7 @@ test Token-2.6 {Test moduloReverse} {
 ######################################################################
 ####
 # 
-test Token-2.7 {Test multiply} {
+test Token-2.9 {Test multiply} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 multiply $p2} msg
@@ -138,7 +156,7 @@ test Token-2.7 {Test multiply} {
 ######################################################################
 ####
 # 
-test Token-2.8 {Test multiplyReverse} {
+test Token-2.10 {Test multiplyReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 multiplyReverse $p2} msg
@@ -148,7 +166,7 @@ test Token-2.8 {Test multiplyReverse} {
 ######################################################################
 ####
 # 
-test Token-2.9 {Test subtract} {
+test Token-2.11 {Test subtract} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 subtract $p2} msg
@@ -158,7 +176,7 @@ test Token-2.9 {Test subtract} {
 ######################################################################
 ####
 # 
-test Token-2.10 {Test subtractReverse} {
+test Token-2.12 {Test subtractReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 subtractReverse $p2} msg

@@ -277,11 +277,37 @@ public class ByteToken extends ScalarToken {
         return (double)unsignedConvert(_value);
     }
 
+    /** Return true if the argument is an instance of ByteToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of ByteToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != ByteToken.class) {
+	    return false;
+	}
+
+	if (((ByteToken)object).byteValue() == _value) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.BYTE
      */
     public Type getType() {
         return BaseType.BYTE;
+    }
+
+    /** Return a hash code value for this token. This method just returns
+     *  the value of this token.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return _value;
     }
 
     /** Test the value and units of this token and the argument token
@@ -644,11 +670,4 @@ public class ByteToken extends ScalarToken {
     ////                         private variables                 ////
     private byte _value;
 }
-
-
-
-
-
-
-
 

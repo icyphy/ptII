@@ -451,3 +451,53 @@ test FixToken-7.0 {test isLessThan} {
 	 [[$f3 isLessThan $f2] booleanValue]
 } {0 1 0}
 
+######################################################################
+####
+# 
+test FixToken-8.0 {Test equals} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    1.0 $p0]
+    set p1 [java::new ptolemy.data.FixToken $c1 ]
+
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    1.0 $p0]
+    set p2 [java::new ptolemy.data.FixToken $c2 ]
+
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    4.0 $p0]
+    set p3 [java::new ptolemy.data.FixToken $c3 ]
+
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test ByteToken-5.0 {Test hashCode} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    1.0 $p0]
+    set p1 [java::new ptolemy.data.FixToken $c1 ]
+
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    1.0 $p0]
+    set p2 [java::new ptolemy.data.FixToken $c2 ]
+
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    4.0 $p0]
+    set p3 [java::new ptolemy.data.FixToken $c3 ]
+
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {1 1 4}
+

@@ -55,3 +55,23 @@ test FixMatrixToken-1.1 {Create a non-empty instance from a String} {
     $p toString
 } {[fix(1.0,8,4), fix(2.0,8,4); fix(3.5,8,4), fix(4.5,8,4)]}
 
+######################################################################
+####
+# 
+test FixMatrixToken-2.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.5\], 8, 4)"]
+    set p2 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.5\], 8, 4)"]
+    set p3 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.0, 4.0\], 8, 4)"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test FixMatrixToken-3.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.2\], 8, 4)"]
+    set p2 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.5, 4.2\], 8, 4)"]
+    set p3 [java::new {ptolemy.data.FixMatrixToken String} "fix(\[1.0, 2.0; 3.0, 6.0\], 8, 4)"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {10 10 12}
+

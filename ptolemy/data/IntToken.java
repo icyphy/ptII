@@ -255,11 +255,37 @@ public class IntToken extends ScalarToken {
         return (double)_value;
     }
 
+    /** Return true if the argument is an instance of IntToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of IntToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != IntToken.class) {
+	    return false;
+	}
+
+	if (((IntToken)object).intValue() == _value) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.INT
      */
     public Type getType() {
         return BaseType.INT;
+    }
+
+    /** Return a hash code value for this token. This method just returns the
+     *  contained integer.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return _value;
     }
 
     /** Test the value and units of this token and the argument token

@@ -1,6 +1,6 @@
 # Tests for the IntMatrixToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Yuhong Xiong
 #
 # @Version $Id$
 #
@@ -194,4 +194,24 @@ test IntMatrixToken-8.0 {Test subtract operator between ints.} {
 
     list [$res1 toString] 
 } {{[3, 3; 0, 1]}}
+
+######################################################################
+####
+# 
+test IntMatrixToken-9.0 {Test equals} {
+    set p1 [java::new {ptolemy.data.IntMatrixToken String} "\[1, 2; 3, 4\]"]
+    set p2 [java::new {ptolemy.data.IntMatrixToken String} "\[1, 2; 3, 4\]"]
+    set p3 [java::new {ptolemy.data.IntMatrixToken String} "\[9, 8; 7, 6\]"]
+    list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test IntMatrixToken-10.0 {Test hashCode} {
+    set p1 [java::new {ptolemy.data.IntMatrixToken String} "\[1, 2; 3, 4\]"]
+    set p2 [java::new {ptolemy.data.IntMatrixToken String} "\[1, 2; 3, 4\]"]
+    set p3 [java::new {ptolemy.data.IntMatrixToken String} "\[9, 8; 7, 6\]"]
+    list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
+} {10 10 30}
 

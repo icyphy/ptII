@@ -155,11 +155,37 @@ public class StringToken extends Token {
 		"StringToken.");
     }
 
+    /** Return true if the argument is an instance of StringToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of StringToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != StringToken.class) {
+	    return false;
+	}
+
+	if (((StringToken)object).stringValue().equals(_value)) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.STRING
      */
     public Type getType() {
 	return BaseType.STRING;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  hash code of the contained string.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return _value.hashCode();
     }
 
     /** Lexicographically test the values of this Token and the

@@ -256,6 +256,40 @@ public class IntMatrixToken extends MatrixToken {
         return IntegerMatrixMath.toDoubleMatrix(_value);
     }
 
+    /** Return true if the argument is an instnace of IntMatrixToken
+     *  of the same dimensions and the corresponding elements of the matrices
+     *  are equal.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of IntMatrixToken
+     *   of the same dimensions and the corresponding elements of the
+     *   matrices are equal.
+     */
+    public boolean equals(Object object) {
+	// This test rules out instances of a subclass.
+	if (object.getClass() != IntMatrixToken.class) {
+	    return false;
+	}
+
+	IntMatrixToken matrixArgument = (IntMatrixToken)object;
+        if (_rowCount != matrixArgument.getRowCount()) {
+            return false;
+	}
+	if (_columnCount != matrixArgument.getColumnCount()) {
+	    return false;
+	}
+
+	int[][] matrix = matrixArgument.intMatrix();
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		if (_value[i][j] != matrix[i][j]) {
+		    return false;
+		}
+	    }
+	}
+
+	return true;
+    }
+
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
@@ -300,6 +334,21 @@ public class IntMatrixToken extends MatrixToken {
      */
     public final Type getType() {
         return BaseType.INT_MATRIX;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  sum of the elements.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	int code = 0;
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		code += _value[i][j];
+	    }
+	}
+
+	return code;
     }
 
     /** Return the content in the token as a 2-D int matrix.

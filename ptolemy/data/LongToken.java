@@ -209,11 +209,37 @@ public class LongToken extends ScalarToken {
 	return new LongToken(tmp.longValue() / _value);
     }
 
+    /** Return true if the argument is an instance of LongToken with the
+     *  same value.
+     *  @param object An instance of Object.
+     *  @return True if the argument is an instance of LongToken with the
+     *  same value.
+     */
+    public boolean equals(Object object) {
+	// This test rules out subclasses.
+	if (object.getClass() != LongToken.class) {
+	    return false;
+	}
+
+	if (((LongToken)object).longValue() == _value) {
+	    return true;
+	}
+	return false;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.LONG_MATRIX
      */
     public Type getType() {
 	return BaseType.LONG;
+    }
+
+    /** Return a hash code value for this token. This method returns the
+     *  value of this token, casted to integer.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	return (int)_value;
     }
 
     /** Test the values of this Token and the argument Token for equality.

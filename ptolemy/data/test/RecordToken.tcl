@@ -439,3 +439,36 @@ test RecordToken-9.2 {Test zero} {
     [$r zero] toString
 } {{value1=0, value2=0.0}}
 
+######################################################################
+####
+# 
+test RecordToken-10.0 {test equals} {
+    set l [java::new {String[]} {2} {{value1} {value2}}]
+    set v1 [java::new {ptolemy.data.IntToken int} 5]
+    set v2 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $v1 $v2]]
+    set r1 [java::new {ptolemy.data.RecordToken} $l $v]
+
+    set la [java::new {String[]} {2} {{value1} {value2}}]
+    set v1a [java::new {ptolemy.data.IntToken int} 5]
+    set v2a [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set va [java::new {ptolemy.data.Token[]} 2 [list $v1 $v2]]
+    set r2 [java::new {ptolemy.data.RecordToken} $la $va]
+
+    set lb [java::new {String[]} {2} {{value1} {value2}}]
+    set v1b [java::new {ptolemy.data.IntToken int} 5]
+    set v2b [java::new {ptolemy.data.DoubleToken double} 9.5]
+    set vb [java::new {ptolemy.data.Token[]} 2 [list $v1b $v2b]]
+    set r3 [java::new {ptolemy.data.RecordToken} $lb $vb]
+
+    list [$r1 equals $r1] [$r1 equals $r2] [$r1 equals $r3]
+} {1 1 0}
+
+######################################################################
+####
+# 
+test RecordToken-11.0 {test hashCode} {
+    # use t1, t2, t3 above
+    list [$r1 hashCode] [$r2 hashCode] [$r3 hashCode]
+} {8 8 14}
+
