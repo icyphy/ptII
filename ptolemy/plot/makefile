@@ -161,7 +161,9 @@ OPTIONAL_FILES = \
 	'PlotFrame$$FormatListener.class' \
 	'PlotFrame$$SpecialMenuListener.class' \
 	'Render$$1.class' \
-	'RenderApplication$$1.class'
+	'RenderApplication$$1.class' \
+	Render.java \
+	Render.class 
 
 # Files to be removed by 'make clean'
 KRUFT = \
