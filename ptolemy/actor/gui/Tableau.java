@@ -82,7 +82,7 @@ public class Tableau extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Tableau(Effigy container, String name)
+    public Tableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
 
