@@ -97,7 +97,6 @@ public class RelationList extends Attribute {
      *  @param difference The difference of the relation.
      */
     public void addRelation(int type, double difference) {
-        //System.out.println("Adding " + type + " " + difference);
         _relationList.add(new RelationNode(type, difference));
     }
 
@@ -167,7 +166,7 @@ public class RelationList extends Attribute {
         ListIterator relations = _relationList.listIterator();
         while (relations.hasNext()) {
             RelationNode relation = ((RelationNode)relations.next());
-            difference = relation.getDifference();
+            difference = Math.abs(relation.getDifference());
             if (relation.typeChanged() && difference > maxDifference) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
@@ -239,11 +238,6 @@ public class RelationList extends Attribute {
          *  with the current information.
          */
         public void commit() {
-
-            //System.out.println("committing change ...");
-            //System.out.println(_formerType + " <== " + _currentType);
-            //System.out.println(_formerDifference + " <== " + _difference);
-
             _formerType = _currentType;
             _formerDifference = _difference;
         }
@@ -257,7 +251,7 @@ public class RelationList extends Attribute {
         }
 
         public double getFormerDifference() {
-            return _formerDifference;
+            return Math.abs(_formerDifference);
         }
 
         public int getFormerValue() {
@@ -265,7 +259,6 @@ public class RelationList extends Attribute {
         }
 
         /** Return true, if the relation node has its type changed, and if the
-         *  relation node is an equility or inequility relation, and if the
          *  current type is equal/inequal or the current type changes from
          *  less_than to bigger_than or bigger_than to less_than. This is used
          *  to detect whether a continuous variable cross a level.
@@ -273,7 +266,7 @@ public class RelationList extends Attribute {
          */
         public boolean hasEvent(){
             if (typeChanged()) {
-                return (_currentType == 3) || ( _formerType * _currentType == 20);
+                return  (_formerType * _currentType == 20);
             }
             return false;
         }
@@ -291,7 +284,6 @@ public class RelationList extends Attribute {
          *  valid.
          */
         public boolean typeChanged(){
-            //System.out.println("former type " + _formerType + " current type " + _currentType);
             return (_formerType != 0) && (_formerType != _currentType);
         }
 

@@ -108,8 +108,10 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  nodes with boolean tokens. If the relation list is empty, the evaluator
      *  is in construction mode, otherwise, it is in update mode.
      *  @param relationList The relation list.
+     *  @param errorTolerance The errorTolerance.
      */
-    public ParseTreeEvaluatorForGuardExpression(RelationList relationList) {
+    public ParseTreeEvaluatorForGuardExpression(
+        RelationList relationList, double errorTolerance) {
         if (relationList.isEmpty()) {
             _construction = true;
         } else {
@@ -119,6 +121,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _relationIndex = 0;
         _relationNumber = 0;
         _absentDiscreteVariables = new LinkedList();
+        _errorTolerance = errorTolerance;
         _variableCollector = new ParseTreeFreeVariableCollector();
     }
 
@@ -149,12 +152,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // FIXME: based on the *_isPresent variable, we figure out
         // the discrete variables and do not evaluate it when it is
         // not present.
-        // This is not the decent solution, we should use the signalType
-        // attribute to differentiate the signal type. Unfortunately, the
+        // This is not the best solution, we should use the signalType
+        // attribute to differentiate the signals. Unfortunately, the
         // signalType is not passed along as the type system does.
+        // That is future work.
         String nodeName = node.getName();
         String discreteVariableName = "";
         if (nodeName != null) {
+            //System.out.println("leaf node: " + nodeName);
             int variableNameEndIndex = nodeName.indexOf("_isPresent");
             if (variableNameEndIndex != -1) {
                 discreteVariableName = nodeName.substring(0,
@@ -296,7 +301,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             return;
         }
 
-        // Check whether the relation node has the absent discrete variable.
+        // Check whether the relation node has some absent discrete variables.
         // If yes, skip the node, otherwise, evaluate (visit) the node.
         Set variablesOfNode =
             _variableCollector.collectFreeVariables(node);
@@ -332,12 +337,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
+        // For equal or not equal comparison, the numerical error
+        // has to be considered.
         if(operator.kind == PtParserConstants.EQUALS ||
            operator.kind == PtParserConstants.NOTEQUALS) {
             if(operator.kind == PtParserConstants.EQUALS) {
-                result = leftToken.isEqualTo(rightToken);
+                result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
-                result = leftToken.isEqualTo(rightToken).not();
+                result = leftToken.isCloseTo(rightToken, _errorTolerance).not();
             }
             if((leftToken instanceof BooleanToken) &&
                     (rightToken instanceof BooleanToken)) {
@@ -363,7 +370,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                         _relationType = 5;
                     }
                 }
-                _difference = difference.absolute().doubleValue();
+                _difference = difference.doubleValue();
             }
         } else {
             if(!((leftToken instanceof ScalarToken) &&
@@ -393,7 +400,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             } else {
                 _relationType = 2;
             }
-            _difference = ((ScalarToken)leftScalar.subtract(rightScalar)).absolute().doubleValue();
+            _difference = ((ScalarToken)leftScalar.subtract(rightScalar)).doubleValue();
         }
         node.setToken(result);
 
@@ -419,6 +426,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     private boolean _construction;
     // the metric for relations
     private double _difference;
+    // the error tolerance
+    private double _errorTolerance;
     // the list to store the relation nodes and leaf nodes with boolean tokens
     // inside a guard expression
     private RelationList _relationList;

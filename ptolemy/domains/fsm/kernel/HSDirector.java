@@ -51,6 +51,7 @@ import ptolemy.actor.Receiver;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// HSDirector
@@ -257,12 +258,33 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // FIXME: only handle the non-preemptive transitions
         // Preemptive transitions need no step size refinement.
         try {
+            // Check if there is any transition enabled.
             Transition tr = _ctrl._checkTransition(_st.nonpreemptiveTransitionList());
+            if (tr != null) {
+                if (_debugging) {
+                    _debug("Find enabled transition:  " +
+                           tr.getGuardExpression());
+                }
+            }
+            // Check if there is any events dected.
+            Transition trWithEvent = _checkEvent(_st.nonpreemptiveTransitionList());
+            if (trWithEvent != null) {
+                if (_debugging) {
+                    _debug("Dected event for transition:  " +
+                           trWithEvent.getGuardExpression());
+                }
+            }
+
+            // If no transition is enabled, try to set "tr" as the transition
+            // with event dected.
+            if (tr == null && trWithEvent != null) {
+                tr = trWithEvent;
+            }
 
             // If there is no transition enabled, the last step size is accurate for
             // transitions. The status of the relations of the guard expressions are
             // committed into all the associated relation lists.
-            if (tr == null) {
+            if (tr == null && trWithEvent == null) {
                 _lastTransitionAccurate = true;
                 Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
                 while (iterator.hasNext()) {
@@ -278,8 +300,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 _transitionAccurate = (_distanceToBoundary < dir.getErrorTolerance());
 
-                //System.out.println("==> the guard " + tr.getGuardExpression() +
-                //                   " has difference " + _distanceToBoundary);
+                if (_debugging) {
+                    _debug("==> the guard " + tr.getGuardExpression() +
+                           " has difference " + _distanceToBoundary);
+                }
 
                 if (_transitionAccurate) {
                     _lastTransitionAccurate = true;
@@ -294,8 +318,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         } catch (Exception e) {
             //FIXME: handle the exception
             System.out.println(
-                "FIXME:: HSDirector.isThisStepAccurate() throws exception "
-                + e.getMessage());
+                "FIXME:: HSDirector.isThisStepAccurate() throws exception ");
+            e.printStackTrace();
             return result;
         }
     }
@@ -351,6 +375,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // at the same time to see whether the next state has some outgoing
         // transition enabled.
         if (tr != null) {
+            if (_debugging) {
+                _debug("Postfire deals with enabled transition " +
+                       tr.getGuardExpression());
+            }
             Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
             // It is important to clear the history information of the relation list
             // since after this breakpoint, no history information is valid.
@@ -362,6 +390,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // is null. We do not request to fire again since no one in upper
             // hierarchy will do that.
             if (dir != null) {
+                if (_debugging) {
+                    _debug("HSDirector requests refiring at " + getCurrentTime());
+                }
                 dir.fireAt(container, getCurrentTime());
             }
         }
@@ -520,6 +551,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 */
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    // FIXME: where is the right position to put this method?
+    // This method detects any events happened during one step size.
+    private Transition _checkEvent(List transitionList) {
+        Transition result = null;
+        Iterator transitionRelations = transitionList.iterator();
+        while (transitionRelations.hasNext() && !_stopRequested) {
+            Transition transition = (Transition) transitionRelations.next();
+            if (transition.getRelationList().hasEvent()) {
+                return transition;
+            }
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

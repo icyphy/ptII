@@ -198,7 +198,8 @@ public class Transition extends ComponentRelation {
         _relationList = new RelationList(this, "relationList");
         // Associate the relation list with the
         // ParseTreeEvaluatorForGuardExpression
-        _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
+        // FIXME: how to get the error tolerance
+        _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList, 1e-4);
         // Register the guard expression with the above parse tree evaluator
         _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
 
@@ -505,9 +506,9 @@ public class Transition extends ComponentRelation {
             if (token == null) {
                 return false;
             }
-            //FIXME: deal with continuous varialbes and discrete variables.
-            boolean result = ((BooleanToken)token).booleanValue()
-                || _relationList.hasEvent();
+            //FIXME: deal with continuous varialbes and discrete variables
+            // using signalType.
+            boolean result = ((BooleanToken)token).booleanValue();
             return result;
         } catch (UnknownResultException ex) {
             return false;
