@@ -113,6 +113,7 @@ public class GraphEditor extends AbstractApplication {
         initializeMenuBar(_applicationFrame.getJMenuBar());
         initializeToolBar(_applicationFrame.getJToolBar());
         initializePalette();
+
 	
         Icon icon = getApplicationResources().getImageIcon("GraphIcon");
         Image iconImage = getApplicationResources().getImage("GraphIcon");
@@ -284,19 +285,6 @@ public class GraphEditor extends AbstractApplication {
     
 	s.setVisible(true);
 	p3.setVisible(true);
-	p3.repaint();
-
-        // FIXME this layout code doesn't work because the palette hasn't 
-        // appeared yet.	
-	GraphController controller = p3.getGraphPane().getGraphController();
-        LayoutTarget target = new BasicLayoutTarget(controller);
-        Graph graph = controller.getGraph();
-        GlobalLayout layout = new GridAnnealingLayout();
-        try {
-            layout.layout(target, graph);
-        } catch (Exception e) {
-            showError("layout", e);
-        }
         p3.repaint();
  
     }

@@ -106,7 +106,7 @@ public class EditorGraphController extends GraphController {
         setNodeRenderer(nr);
 
         // Create and set up the target for connectors
-        PerimeterTarget ct = new PerimeterTarget() {
+        ConnectorTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
 		System.out.println(f.getUserObject().toString());
                 return (f.getUserObject() instanceof SchematicTerminal);
