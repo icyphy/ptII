@@ -123,8 +123,19 @@ public class ExtendedMath {
      *  @return The nearest integer.
      *  @throws IllegalArgumentException If the argument does not fit
      *   in an integer.
+     *  @deprecated Use round() instead.
      */
     public static final int roundToInt(final double x) {
+        return round(x);
+    }
+
+    /** Round to the nearest integer.
+     *  @param x The number to round.
+     *  @return The nearest integer.
+     *  @throws IllegalArgumentException If the argument does not fit
+     *   in an integer.
+     */
+    public static final int round(final double x) {
         long returnValue = Math.round(x);
         if (returnValue > Integer.MAX_VALUE 
                 || returnValue < Integer.MIN_VALUE) {
