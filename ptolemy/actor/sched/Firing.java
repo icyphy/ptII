@@ -62,9 +62,16 @@ public class Firing extends ScheduleElement {
      */
     public Firing() {
 	super();
-	_firing = new LinkedList();
-	_firing.add(this);
-	_actorInvocations = new LinkedList();
+	//_actorInvocations = new LinkedList();
+    }
+
+    /** Construct a firing with a actor, an iteration count equal to one
+     *  and no parent schedule.
+     *  @param actor The actor in the firing.
+     */
+    public Firing(Actor actor) {
+	super();
+        _actor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,6 +111,10 @@ public class Firing extends ScheduleElement {
      *   is active.
      */
     public Iterator firingIterator() {
+        if (_firing == null) {
+            _firing = new LinkedList();
+            _firing.add(this);
+        }
 	return _firing.iterator();
     }
 
@@ -127,7 +138,7 @@ public class Firing extends ScheduleElement {
     public void setActor(Actor actor) {
 	_incrementVersion();
 	_actor  = actor;
-	_actorInvocationsValid = false;
+	//_actorInvocationsValid = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -198,9 +209,9 @@ public class Firing extends ScheduleElement {
     // The actor associated with this firing.
     private Actor _actor;
     // The list containing this firing as the only element.
-    private List _firing;
+    private List _firing = null;
     // The list containing the actor invocation sequence corresponding
     // to this firing.
-    private List _actorInvocations;
-    private boolean _actorInvocationsValid = false;
+    //private List _actorInvocations;
+    //private boolean _actorInvocationsValid = false;
 }
