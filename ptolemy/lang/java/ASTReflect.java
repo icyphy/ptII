@@ -114,16 +114,15 @@ public class ASTReflect {
 	//memberList.addAll(innerClassesASTList(myClass));
 
 	TreeNode superClass = null;
-        if (myClass.getPackage() == null ) {
+        if (myClass.getSuperclass() == null ) {
             // JDK1.2.2 getSuperclass can return null
+            // FIXME: should this be java.lang.Object?
             superClass =
                 (TreeNode) _makeNameNode("Object");
 
         } else {
-    	    if (myClass.getSuperclass() != null) {
-		superClass =
+            superClass =
 		    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
-	    }
         }
 
 	ClassDeclNode classDeclNode =
