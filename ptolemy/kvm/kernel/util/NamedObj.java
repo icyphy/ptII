@@ -269,7 +269,7 @@ public class NamedObj implements Nameable, Serializable {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
-    public Object clone() throws CloneNotSupportedException {
+    public Object clone() /* KVM_FIXME throws CloneNotSupportedException*/ {
         return clone(_workspace);
     }
 
