@@ -227,29 +227,30 @@ public class SDFDirectorInliner implements DirectorInliner {
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),insertPoint);
         }
 
-        {
-            // populate the prefire method
-            SootMethod classMethod =
-                modelClass.getMethodByName("prefire");
-            JimpleBody body = (JimpleBody)classMethod.getActiveBody();
-            Stmt insertPoint = body.getFirstNonIdentityStmt();
+        // ModelTransformer does this.
+//         {
+//             // populate the prefire method
+//             SootMethod classMethod =
+//                 modelClass.getMethodByName("prefire");
+//             JimpleBody body = (JimpleBody)classMethod.getActiveBody();
+//             Stmt insertPoint = body.getFirstNonIdentityStmt();
 
-            Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
+//             Chain units = body.getUnits();
+//             Local thisLocal = body.getThisLocal();
 
-            Local prefireReturnsLocal =
-                Jimple.v().newLocal("preReturns", BooleanType.v());
-            body.getLocals().add(prefireReturnsLocal);
-            units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                    IntConstant.v(1)),
-                    insertPoint);
-            units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
-                    insertPoint);
+//             Local prefireReturnsLocal =
+//                 Jimple.v().newLocal("preReturns", BooleanType.v());
+//             body.getLocals().add(prefireReturnsLocal);
+//             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
+//                     IntConstant.v(1)),
+//                     insertPoint);
+//             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
+//                     insertPoint);
 
-            LocalSplitter.v().transform(body, phaseName + ".lns");
-            LocalNameStandardizer.v().transform(body, phaseName + ".lns");
-            TypeResolver.resolve(body, Scene.v());
-        }
+//             LocalSplitter.v().transform(body, phaseName + ".lns");
+//             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+//             TypeResolver.resolve(body, Scene.v());
+//         }
 
         {
             // populate the fire method
@@ -302,6 +303,10 @@ public class SDFDirectorInliner implements DirectorInliner {
                         insertPoint);
             }
 
+            // FIXME: This is the quiescent point where parameters
+            // reconfigured as a result of port parameters should be
+            // evaluated.
+            
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
                  ports.hasNext();) {

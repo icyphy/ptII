@@ -33,6 +33,7 @@ import java.util.*;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.actor.gui.SizeAttribute;
@@ -2068,12 +2069,13 @@ public class ModelTransformer extends SceneTransformer
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-//             System.out.println("locallyModifiedAttributeList of " + entity 
-//                     + " = " + locallyModifiedAttributeList);
+            System.out.println("locallyModifiedAttributeList of " + entity 
+                    + " = " + locallyModifiedAttributeList);
             // Add code to the beginning of the prefire method that
             // computes the attribute values of anything that is not a
             // constant.
             SootMethod method = entityInstanceClass.getMethodByName("prefire");
+            System.out.println("method = " + method);
             JimpleBody body = (JimpleBody)method.getActiveBody();
             Stmt insertPoint = body.getFirstNonIdentityStmt();
             Local containerLocal = Jimple.v().newLocal("entity",
@@ -2141,6 +2143,7 @@ public class ModelTransformer extends SceneTransformer
         // Ignore frame sizes and locations.  They aren't really
         // necessary in the generated code, I don't think.
         if (attribute instanceof SizeAttribute ||
+                attribute instanceof ColorAttribute ||
                 attribute instanceof LocationAttribute ||
                 attribute instanceof LibraryAttribute ||
                 attribute instanceof VersionAttribute ||

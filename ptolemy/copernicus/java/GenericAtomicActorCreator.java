@@ -197,29 +197,30 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             LocalSplitter.v().transform(body, "at.ls");
         }
 
-        {
-            LinkedList notConstantAttributeList = new LinkedList(
-                    entity.attributeList(Variable.class));
-            notConstantAttributeList.removeAll(
-                    constAnalysis.getConstVariables(entity));
-            // Sort according to dependencies.
-
-            System.out.println("notConstantAttributeList of " + entity 
-                    + " = " + notConstantAttributeList);
-            // Add code to the beginning of the prefire method that
-            // computes the attribute values of anything that is not a
-            // constant.
-            SootMethod method = theClass.getMethodByName("prefire");
-            JimpleBody body = (JimpleBody)method.getActiveBody();
-            Stmt insertPoint = body.getFirstNonIdentityStmt();
-            ModelTransformer.computeAttributesBefore(body, insertPoint,
-                    entity, body.getThisLocal(),
-                    entity, body.getThisLocal(),
-                    entityInstanceClass,
-                    notConstantAttributeList);
-            LocalNameStandardizer.v().transform(body, "at.lns");
-            LocalSplitter.v().transform(body, "at.ls");
-        }
+        // FIXME: This should do what
+        // ModelTransformed._createCompositeActor does.
+     //    {
+//             LinkedList notConstantAttributeList = new LinkedList(
+//                     entity.attributeList(Variable.class));
+//             notConstantAttributeList.removeAll(
+//                     constAnalysis.getConstVariables(entity));
+//             // Sort according to dependencies.
+//             System.out.println("notConstantAttributeList of " + entity 
+//                     + " = " + notConstantAttributeList);
+//             // Add code to the beginning of the prefire method that
+//             // computes the attribute values of anything that is not a
+//             // constant.
+//             SootMethod method = theClass.getMethodByName("prefire");
+//             JimpleBody body = (JimpleBody)method.getActiveBody();
+//             Stmt insertPoint = body.getFirstNonIdentityStmt();
+//             ModelTransformer.computeAttributesBefore(body, insertPoint,
+//                     entity, body.getThisLocal(),
+//                     entity, body.getThisLocal(),
+//                     entityInstanceClass,
+//                     notConstantAttributeList);
+//             LocalNameStandardizer.v().transform(body, "at.lns");
+//             LocalSplitter.v().transform(body, "at.ls");
+//         }
 
         // Reinitialize the hierarchy, since we've added classes.
         try {

@@ -96,7 +96,7 @@ JVMSIZE = -Xmx256m
 # the application finishing. Additionally, it will report every time
 # the GC is run.
 GCLOGFILE = gclog.txt
-MEMORYJFLAGS = -Xmx256m -Xms256m -Xint -Xloggc:$(GCLOGFILE)
+MEMORYJFLAGS = -Xmx256m -Xms256m -Xloggc:$(GCLOGFILE)
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make COMPILEOPTIONS=-h
@@ -130,7 +130,7 @@ smokeTest: treeShake runTreeShake
 # Run the final generated code.
 runJava:
 	@echo "Run the deep model"
-	"$(JAVA)" $(MEMORYJFLAGS) \
+	"$(JAVA)" \
 	-Xfuture -classpath "$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main 
 
