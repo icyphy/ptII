@@ -51,7 +51,8 @@ import net.jini.core.lease.Lease;
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
-An actor that sends entries to a Java Space.
+An actor that sends entries to a Java Space. New entries will override
+the old ones.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
@@ -79,13 +80,11 @@ public class Publisher extends Sink {
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
 
-        startingSerialNumber = new Parameter(this, "startingSerialNumber",
-                new LongToken(0));
-        startingSerialNumber.setTypeEquals(BaseType.LONG);
-
         leaseTime = new Parameter(this, "leaseTime",
                 new LongToken(Lease.FOREVER));
         leaseTime.setTypeEquals(BaseType.LONG);
+
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,12 +99,6 @@ public class Publisher extends Sink {
      *  an empty string of type StringToken.
      */
     public Parameter entryName;
-
-    /** The starting serial number of the entries to be published.
-     *  The entries will have increasing serial numbers.
-     *  The default value is 0 of type LongToken.
-     */
-    public Parameter startingSerialNumber;
 
     /** The lease time for entries written into the space. The default
      *  is Least.FOREVER. This parameter must contain a LongToken.
@@ -126,8 +119,6 @@ public class Publisher extends Sink {
         Publisher newobj = (Publisher)super.clone(ws);
         newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
         newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-        newobj.startingSerialNumber =
-            (Parameter)newobj.getAttribute("startingSerialNumber");
         newobj.leaseTime = (Parameter)newobj.getAttribute("leaseTime");
         return newobj;
     }
@@ -141,24 +132,28 @@ public class Publisher extends Sink {
 	super.preinitialize();
 	String name = ((StringToken)jspaceName.getToken()).stringValue();
 	_space = SpaceFinder.getSpace(name);
-	_currentSerialNumber =
-		((LongToken)startingSerialNumber.getToken()).longValue();
         String entryname = ((StringToken)entryName.getToken()).stringValue();
+        TokenEntry tokenTemplate = new TokenEntry(name, null, null);
         try {
-            IndexEntry minimum = new IndexEntry(
-                    entryname, "minimum", new Long(_currentSerialNumber));
-            _space.write(minimum, null, Lease.FOREVER);
-            IndexEntry maximum = new IndexEntry(
-                    entryname, "maximum", new Long(_currentSerialNumber-1));
-            _space.write(maximum, null, Lease.FOREVER);
+            TokenEntry oldEntry;
+            do {
+                oldEntry = (TokenEntry)_space.takeIfExists(
+                        tokenTemplate, null, 1000);
+            } while (oldEntry != null);
         } catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + re.getMessage());
 	} catch (TransactionException te) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + te.getMessage());
-	}
-        System.out.println("Finish intialization.");
+	} catch (InterruptedException ie) {
+            throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + ie.getMessage());
+        } catch (net.jini.core.entry.UnusableEntryException ue) {
+            throw new IllegalActionException(this, "Unusable Entry " +
+                    ue.getMessage());
+        }
+        //System.out.println("Finished preinitialization.");
     }
 
 
@@ -168,29 +163,19 @@ public class Publisher extends Sink {
      */
     public void fire() throws IllegalActionException {
 	try {
-	    String name = ((StringToken)entryName.getToken()).stringValue();
-	    long time = ((LongToken)leaseTime.getToken()).longValue();
-            IndexEntry maxtemp= new IndexEntry(
-                    name, "maximum", null);
-            // FIXME: This may introduce deadlock if maximum is lost
-            // in the space.
-            IndexEntry maximum =
-                (IndexEntry)_space.take(maxtemp, null, Long.MAX_VALUE);
-
-            long serialnumber = maximum.getPosition();
-            System.out.println("Publisher get Max: " + serialnumber);
-            for (int i = 0; i < input.getWidth(); i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-                    TokenEntry entry = new TokenEntry(name,
-                            new Long(++serialnumber), token);
-                    _space.write(entry, null, Lease.FOREVER);
-                    System.out.println("Publisher writes " + token);
-                    maximum.increment();
-                }
+            if (input.hasToken(0)) {
+                Token token = input.get(0);
+                String name = 
+                    ((StringToken)entryName.getToken()).stringValue();
+                long time = ((LongToken)leaseTime.getToken()).longValue();
+            
+                TokenEntry template = new TokenEntry(name, null, null);
+                _space.takeIfExists(template, null, 500);
+                TokenEntry entry = new TokenEntry(name,
+                        new Long(0), token);
+                _space.write(entry, null, Lease.FOREVER);
+                //System.out.println("Publisher writes " + token);
             }
-            _space.write(maximum, null, Lease.FOREVER);
-            _currentSerialNumber = serialnumber;
 	} catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + re.getMessage());
@@ -210,7 +195,5 @@ public class Publisher extends Sink {
     ////                         private methods                   ////
 
     private JavaSpace _space;
-    private long _currentSerialNumber;
-
 }
 
