@@ -137,7 +137,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
      * This is a useful version of equality testing. But is not named
      * `equals' in part because it may not be the version you need.
      * <P>
-     * The easiest way to decribe this operation is just to
+     * The easiest way to describe this operation is just to
      * explain how it is interpreted in standard sub-interfaces:
      * <UL>
      *  <LI> Seq and ElementSortedCollection: other.elements() has the
