@@ -52,10 +52,11 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DemoDatagramDE.xml \
+	DemoDatagramInjector.xml \
+	DemoDatagramNetworkedCopyPaste.xml \
 	DemoDatagramParsed.xml \
 	DemoDatagramSDF.xml \
-	DemoDatagramUnparsed.xml \
-	DemoDatagramWriter.xml
+	DemoDatagramUnparsed.xml
 
 
 EXTRA_SRCS = \
