@@ -46,7 +46,7 @@ public interface InequalityTerm {
      *  current value of that variable; if this term is a function,
      *  return the evaluation of that function based on the current
      *  value of variables in the function.
-     *  @return an Object representing an element in the underlining CPO.
+     *  @return an Object representing an element in the underline CPO.
      */
     public Object getValue();
 
@@ -60,7 +60,7 @@ public interface InequalityTerm {
     public InequalityTerm[] getVariables();
 
     /** Check if this term can be set to a specific element of the
-     *  underlining CPO. Only variable terms are settable, constant
+     *  underline CPO. Only variable terms are settable, constant
      *  and function terms are not.
      *  @return <code>true</code> if this term is a variable;
      *   <code>false</code> otherwise.
@@ -71,7 +71,7 @@ public interface InequalityTerm {
      *  Only terms consisting of a single variable can have their
      *  values set.
      *  @param e an Object representing an element in the
-     *   underlining CPO.
+     *   underline CPO.
      *  @exception IllegalActionException this term is not a variable.
      */
     public void setValue(Object e)

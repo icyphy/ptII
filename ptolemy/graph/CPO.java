@@ -72,7 +72,7 @@ public interface CPO
 
     /** Compute the down-set of an element in this CPO.
      *  The down-set of an element is the subset consisting of
-     *  all the elements lower than or the same as that element.
+     *  all the elements lower than or the same as the specified element.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   down-set of the specified element.
@@ -130,9 +130,8 @@ public interface CPO
     public Object leastElement(Object[] subset);
     
     /** Compute the least upper bound (LUB) of two elements.
-     *  The LUB of two elements is the greatest element in the CPO
+     *  The LUB of two elements is the least element in the CPO
      *  that is greater than or the same as both of the two elements.
-     *  subset.
      *  @param e1 an Object representing an element in this CPO.
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the LUB of the two specified
@@ -164,7 +163,7 @@ public interface CPO
 
     /** Compute the up-set of an element in this CPO.
      *  The up-set of an element is the subset consisting of
-     *  all the elements higher than or the same as that element.
+     *  all the elements higher than or the same as the specified element.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.
@@ -177,18 +176,6 @@ public interface CPO
     ////                         public variables                  ////
 
     /** One of the return values of <code>compare</code>, indicating
-     *  that the first element is lower than the second.
-     *  @see #compare
-     */
-    public static final int LOWER = -1;
-    
-    /** One of the return values of <code>compare</code>, indicating
-     *  that the two elements are the same.
-     *  @see #compare
-     */
-    public static final int SAME = 0;
- 
-    /** One of the return values of <code>compare</code>, indicating
      *  that the first element is higher than the second.
      *  @see #compare
      */
@@ -199,5 +186,17 @@ public interface CPO
      *  @see #compare
      */
     public static final int INCOMPARABLE = 2;
+
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the first element is lower than the second.
+     *  @see #compare
+     */
+    public static final int LOWER = -1;
+    
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the two elements are the same.
+     *  @see #compare
+     */
+    public static final int SAME = 0;
 }
 

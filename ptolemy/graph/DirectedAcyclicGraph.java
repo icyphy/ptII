@@ -41,20 +41,20 @@ The graphs constructed by this class cannot have cycles. For performance
 reasons, this requirement is not checked during the construction of the
 graph (calls to <code>add</code> and <code>addEdge</code>), but is checked
 when any of the other methods is called for the first time after the
-addition of nodes and edges. If the graph is cyclic, an
+addition of nodes or edges. If the graph is cyclic, an
 InvalidStateException is thrown. The check for cycles is done by computing
 the transitive closure, so the first operation after graph changes
 is slower.
 
 This class implements the CPO interface since the Hasse diagram of a CPO
 can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
-and a finite CPO. In the case of CPO, the <code>Object</code>s representing
+and a finite CPO. In the case of CPO, the Objects representing
 nodes of the graph are CPO elements. The CPO does not require the bottom
-element to exist. The call to <code>bottom()</code> returns
+element to exist. The call to <code>bottom</code> returns
 <code>null</code> if the bottom element does not exist.
 <p>
-NOTE: This class is a starting point for building graph related
-functionality. More methods will be added.
+NOTE: This class is a starting point for implementing graph algortihms,
+more methods will be added.
 
 @author Yuhong Xiong
 $Id$
@@ -80,10 +80,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  for the specified number of elements.  Memory management is more
      *  efficient with this constructor if the number of elements is
      *  known.
-     *  @param numElements the number of elements.
+     *  @param elementCount the number of elements.
      */  
-    public DirectedAcyclicGraph(int numElements) {
-        super(numElements);
+    public DirectedAcyclicGraph(int elementCount) {
+        super(elementCount);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  equal to each other, as determined by the <code>equals</code>
      *  method, cannot both be added.
      *
-     *  @param e the Object representing a graph node.
+     *  @param o the Object representing a graph node.
      *  @exception IllegalArgumentException an Object equals to the
      *   specified one is already in this DAG.
      *  @exception NullPointerException the specified Object is
@@ -114,10 +114,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  between two nodes are allowed, and are considered different
      *  edges. When this class is used to model a finite CPO, multiple
      *  connections between the same nodes are redundant and have no
-     *  effects on CPO related operations. Self loop is not also allowed.
+     *  effects on CPO operations. Self loop is not allowed.
      *
      *  @param o1 the Object representing the lower node.
-     *  @param e2 the Object representing the higher node.
+     *  @param o2 the Object representing the higher node.
      *  @exception IllegalArgumentException the two nodes are equal,
      *   as determined by the <code>equals</code> method.
      *  @exception NullPointerException at least one of the specified

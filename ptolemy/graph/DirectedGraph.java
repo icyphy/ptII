@@ -39,8 +39,8 @@ import java.util.*;
 A directed graph and some graph algorithms.
 This class is evolved from the StaticGraph class written by Jie Liu.
 <p>
-NOTE: This class is a starting point for building graph related
-functionality. More methods will be added.
+NOTE: This class is a starting point for implementing graph algorithms,
+more methods will be added.
 
 @author Yuhong Xiong, Jie Liu
 $Id$
@@ -87,12 +87,12 @@ public class DirectedGraph extends Graph {
     }
  
     /** Add a directed edge to connect two nodes. The first argument
-     *  is the source node and the second the sink.  Multiple connections
+     *  is the lower node and the second the higher.  Multiple connections
      *  between two nodes are allowed, and are considered different
      *  edges. Self loop is also allowed.
      *
-     *  @param o1 the Object representing the source node
-     *  @param o2 the Object representing the sink node
+     *  @param o1 the Object representing the lower node
+     *  @param o2 the Object representing the higher node
      *  @exception IllegalArgumentException at least one of the arguments
      *   is not a graph node, i.e., the argument is not equal to an Object
      *   specified in a successful <code>add</code> call. Equality
@@ -115,7 +115,6 @@ public class DirectedGraph extends Graph {
      *  time.
      *  @return <code>true</code> if the the graph is acyclic, or
      *   empty; <code>false</code> otherwise.
-     *  @exception InvalidStateException the graph is empty.
      */
     public boolean isAcyclic() {
         _computeTransitiveClosure();
@@ -129,7 +128,7 @@ public class DirectedGraph extends Graph {
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
      *  change.  So the first call to this method after graph
-     *  change may be slow, but all the subsequent calls returns
+     *  change may be slow, but all the subsequent calls return
      *  in constant time.
      *  @param o an Object representing a node in this graph.
      *  @return an array of Objects representing nodes reachable from

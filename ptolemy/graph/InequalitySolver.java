@@ -1,4 +1,4 @@
-/** An algorithm to solve a set of inequalities.
+/** An algorithm to solve a set of inequality constraints.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,8 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver
 /**
-An algorithm to solve a set of inequalities constraints.
+An algorithm to solve a set of inequality constraints.
+
 This algorithm is based on J. Rehof and T. Mogensen, "Tractable
 Constraints in Finite Semilattices," Third International Static Analysis
 Symposium, pp. 285-301, Vol 1145 of Lecture Notes in Computer Science,
@@ -50,7 +51,7 @@ details.<p>
 This solver supports finding both the least and greatest solutions (if
 they exist).  It assumes that the CPO passed to the constructor is a
 lattice, but it does not verify it.  If the algorithm finds that the
-LUB or GLB of some elements does not exist, an exception is thrown.
+LUB or GLB of some elements does not exist, an Exception is thrown.
 
 @author Yuhong Xiong
 $Id$
@@ -89,18 +90,18 @@ public class InequalitySolver {
     }
 
     /** Return an <code>Enumeration</code> of the variables whose current
-     *  values are the bottom of the underlining CPO. If none of the
+     *  values are the bottom of the underline CPO. If none of the
      *  variables have its current value set to the bottom, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException the underlining CPO does not have
+     *  @exception InvalidStateException the underline CPO does not have
      *   a bottom element.
      */
     public Enumeration bottomVariables() {
 	Object bottom = _cpo.bottom();
 	if (bottom == null) {
 	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
-                    + " The underlining CPO does not have a bottom"
+                    + " The underline CPO does not have a bottom"
                     + " element.");
 	}
 
@@ -140,8 +141,8 @@ public class InequalitySolver {
      *   <code>false</code> otherwise.
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
-     *  @exception InvalidStateException the CPO over which the
-     *   inequalities are defined is not a lattice.
+     *  @exception InvalidStateException the LUB of some elements does
+     *   not exist in the underline CPO.
      */
     public boolean solveLeast() {
 	return _solve(true);
@@ -173,26 +174,26 @@ public class InequalitySolver {
      *   <code>false</code> otherwise.
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
-     *  @exception InvalidStateException the CPO over which the
-     *   inequalities are defined is not a lattice.
+     *  @exception InvalidStateException the GLB of some elements does
+     *   not exist in the underline CPO.
      */
     public boolean solveGreatest() {
 	return _solve(false);
     }
 
     /** Return an <code>Enumeration</code> of the variables whose current
-     *  values are the top of the underlining CPO. If none of the
+     *  values are the top of the underline CPO. If none of the
      *  variables have the current value set to the top, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException the underlining CPO does not have
+     *  @exception InvalidStateException the underline CPO does not have
      *   a top element.
      */
     public Enumeration topVariables() {
 	Object top = _cpo.top();
 	if (top == null) {
 	    throw new InvalidStateException("InequalitySolver.topVariables:"
-                    + " The underlining CPO does not have a top element.");
+                    + " The underline CPO does not have a top element.");
 	}
 
 	LinkedList result = new LinkedList();
@@ -277,7 +278,7 @@ public class InequalitySolver {
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
 	    throw new InvalidStateException("InequalitySolver.solve: " +
-                    "The underlining CPO is not a lattice.");
+                    "The underline CPO is not a lattice.");
 	}
 
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {

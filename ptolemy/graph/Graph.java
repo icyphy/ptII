@@ -38,8 +38,8 @@ Each node in the graph is represented by an Object. To construct a graph,
 use <code>add</code> to add nodes and <code>addEdge</code> to add
 edges between nodes.
 <p>
-NOTE: This class is a starting point for building graph related
-functionality. More methods will be added.
+NOTE: This class is a starting point for implementing graph algorithms,
+more methods will be added.
 
 @author Yuhong Xiong, Jie Liu 
 $Id$
@@ -118,7 +118,7 @@ public class Graph {
 
     /** Test if the specified Object is a node in this graph. The
      *  Object is a node if it is equal to an Object specified in
-     *  a successful <code>add</code> call. The equality is determined
+     *  a successful <code>add</code> call. Equality is determined
      *  by the <code>equals</code> method.
      *  @param o the Object to be tested.
      *  @return <code>true</code> if the specified Object is a node
