@@ -55,12 +55,14 @@ import javax.swing.text.BadLocationException;
 
 
 /**
-
 Display the values of the tokens arriving on the input channels in a
-text area on the screen.  The input on each firing is written on a
-separate line.  If there is more than one input channel, then the
-displays are separated by tabs.  The input type is GENERAL, meaning
-that any token is acceptable.  Tokens are read from the input only in
+text area on the screen.  Each input token is written on a
+separate line.  The input type is GENERAL, meaning
+that any token is acceptable.  If the input happens to be a StringToken,
+then the surrounding quotation marks are stripped before printing
+the value of the token.  Thus, string-valued tokens can be used to
+generate arbitrary textual output, at one token per line.
+Tokens are read from the input only in
 the postfire() method, to allow them to settle in domains where they
 converge to a fixed point.
 
@@ -227,10 +229,6 @@ public class Display extends Sink implements Placeable, SequenceActor {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
             _frame.getContentPane().add(_scrollPane);
-            // FIXME: uncomment the two lines below to use the Display actor
-            // inside a non-toplevel composite actor in Vergil
-            // _frame.setSize(200,200);
-            // _frame.setVisible(true);
         } else {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
@@ -246,7 +244,12 @@ public class Display extends Sink implements Placeable, SequenceActor {
             } catch (IllegalActionException ex) {
                 // Ignore, and use default number of rows.
             }
-            _scrollPane.setBackground(_container.getBackground());
+            // java.awt.Component.setBackground(color) says that
+            // if the color "parameter is null then this component
+            // will inherit the  background color of its parent."
+            //plot.setBackground(_container.getBackground());
+            // _scrollPane.setBackground(_container.getBackground());
+            _scrollPane.setBackground(null);
             _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
             _scrollPane.setViewportBorder(new LineBorder(Color.black));
         }
@@ -265,10 +268,14 @@ public class Display extends Sink implements Placeable, SequenceActor {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
                 String value = token.toString();
+                // If the value is a pure string, strip the quotation marks.
+                if(value.startsWith("\"") && value.endsWith("\"")); {
+                    value = value.substring(1, value.length()-2);
+                }
                 textArea.append(value);
 
-                // Append a tab character.
-                if (width > i + 1) textArea.append("\t");
+                // Append a newline character.
+                if (width > i + 1) textArea.append("\n");
 
                 // Regrettably, the default in swing is that the top
                 // of the textarea is visible, not the most recent text.
@@ -278,7 +285,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 // is already where want it).
                 try {
                     int lineOffset = textArea
-                        .getLineStartOffset(textArea.getLineCount() - 1);
+                            .getLineStartOffset(textArea.getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar
@@ -293,17 +300,6 @@ public class Display extends Sink implements Placeable, SequenceActor {
     /** Set the background */
     public void setBackground(Color background) {
 	_scrollPane.setBackground(background);
-    }
-
-    /** Override the base class to make sure the end of the text is visible.
-     */
-    public void wrapup() {
-        if ( _scrollPane != null ) {
-            JScrollBar bar = _scrollPane.getVerticalScrollBar();
-            if (bar != null) {
-                bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
