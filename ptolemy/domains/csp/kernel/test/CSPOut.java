@@ -10,6 +10,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 
 /**
+ * An actor that performs a concurrent write on its two output ports, sending two 1's, then two 2's, etc.
+ *
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
  */
 public class CSPOut extends CSPActor {
