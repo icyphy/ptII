@@ -62,7 +62,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public static final void buildScopements() {
+    public static final void buildScopes() {
 
         Iterator nodeItr = pass0ResolvedList.iterator();
 
@@ -620,9 +620,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         CLASS_DECL  = _requireClass(scope, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
-        System.out.println("StaticResolution<static>: --- 1st buildScopements ---" + (System.currentTimeMillis() - startTime));
-        buildScopements();
-        System.out.println("StaticResolution<static>: --- after buildScopements ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<static>: --- 1st buildScopes ---" + (System.currentTimeMillis() - startTime));
+        buildScopes();
+        System.out.println("StaticResolution<static>: --- after buildScopes ---" + (System.currentTimeMillis() - startTime));
     }
 
     public static PackageDecl _importPackage(Scope scope, NameNode name) {
@@ -909,7 +909,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // resolved, return the previous node.
     private static CompileUnitNode _resolvePass1(CompileUnitNode node) {
 
-        buildScopements();
+        buildScopes();
 
         String filename = (String) node.getProperty(IDENT_KEY);
 
