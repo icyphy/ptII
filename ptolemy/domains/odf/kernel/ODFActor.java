@@ -183,9 +183,9 @@ public class ODFActor extends AtomicActor {
      *  FIXME: Add thorough comments.
      */
     public Token getNextToken() {
+        sendOutNullTokens();
         Token token = getNextInput(); 
         if( token instanceof NullToken ) {
-            sendOutNullTokens();
             return getNextInput();
         }
         return token;
@@ -232,12 +232,6 @@ public class ODFActor extends AtomicActor {
      * @see ODFConservativeRcvr
      */
     public Token getNextInput() {
-        /*
-        if( nullTokensShouldBeSent ) {
-            sendOutNullTokens();
-        }
-        */
-        
         if( _rcvrTimeList.size() == 0 ) {
             return null;
         }
