@@ -1,6 +1,7 @@
-# Makefile for testing graph analyses.
+# Makefile for the Java classes used to test the Ptolemy graph classes
 #
-# @Authors: Ming-Yung Ko based on a file by Christopher Hylands
+# @Authors: Shahrooz Shahparnia, Shuvra S. Bhattacharyya,
+# Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -30,10 +31,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =            ptolemy/graph/analysis/test
+ME =		ptolemy/graph/analysis/test
 
 # Root of the Ptolemy II directory
-ROOT =          ../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,10 +46,19 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
+JSRCS = \
+
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-        AcyclicAnalysis.tcl \
+        AllPairShortestPathAnalysis.tcl \
+        ClusterNodesAnalysis.tcl \
+        CycleExistenceAnalysis.tcl \
+        CycleMeanAnalysis.tcl \
+        MaximumProfitToCostRatioAnalysis.tcl \
+        MirrorTransformation.tcl \
+        NegativeLengthCycleAnalysis.tcl \
         SelfLoopAnalysis.tcl \
+        SingleSourceLongestPathAnalysis.tcl \
         SinkNodeAnalysis.tcl \
         SourceNodeAnalysis.tcl \
         TransitiveClosureAnalysis.tcl
@@ -90,3 +100,4 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

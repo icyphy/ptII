@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 1997-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,8 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 test SourceNodeAnalysis-2.1 {empty graph} {
     set dirg [java::new ptolemy.graph.DirectedGraph]
     set srcana [java::new ptolemy.graph.analysis.SourceNodeAnalysis $dirg]
-    set result  [$srcana result]
-    set srcnodes [java::cast java.util.List $result]
+    set srcnodes [$srcana nodes]
     set numnodes [$srcnodes size]
     list $numnodes
 } {0}
@@ -84,8 +83,7 @@ test SourceNodeAnalysis-2.2 {4-node graph with 2 source nodes} {
     $dirg addEdge $e2
     $dirg addEdge $e3
     $dirg addEdge $e4
-    set result  [$srcana result]
-    set srcnodes [java::cast java.util.List $result]
+    set srcnodes [$srcana nodes]
     set numnodes [$srcnodes size]
     set rslt0 [$srcnodes get 0]
     set rslt1 [$srcnodes get 1]
@@ -100,21 +98,8 @@ test SourceNodeAnalysis-2.3 {graph without source node} {
     set e6  [java::new ptolemy.graph.Edge $n4 $n1]
     $dirg addEdge $e5
     $dirg addEdge $e6
-    set result  [$srcana result]
-    set srcnodes [java::cast java.util.List $result]
+    set srcnodes [$srcana nodes]
     set numnodes [$srcnodes size]
     list $numnodes
 } {0}
-
-######################################################################
-####
-#
-test SourceNodeAnalysis-2.4 {compatible for different graph classes} {
-    set g [java::new ptolemy.graph.Graph]
-    set dag [java::new ptolemy.graph.DirectedAcyclicGraph]
-    set incmpt [$srcana compatible $g]
-    set cmpt [$srcana compatible $dag]
-    list $incmpt $cmpt
-} {0 1}
-
 

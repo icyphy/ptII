@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 1997-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,8 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 test SelfLoopAnalysis-2.1 {empty graph} {
     set g [java::new ptolemy.graph.Graph]
     set selfana [java::new ptolemy.graph.analysis.SelfLoopAnalysis $g]
-    set result  [$selfana result]
-    set selfloops [java::cast java.util.List $result]
+    set selfloops [$selfana edges]
     set numedges [$selfloops size]
     list $numedges
 } {0}
@@ -76,8 +75,7 @@ test SelfLoopAnalysis-2.2 {2-node graph with 3 self-loop edges} {
     $g addEdge $e2
     $g addEdge $e3
     $g addEdge $e4
-    set result  [$selfana result]
-    set selfloops [java::cast java.util.List $result]
+    set selfloops [$selfana edges]
     set numedges [$selfloops size]
     set rslt0 [$selfloops get 0]
     set rslt1 [$selfloops get 1]
@@ -95,8 +93,7 @@ test SelfLoopAnalysis-2.3 {graph without self loops} {
     $g removeEdge $e1
     $g removeEdge $e2
     $g removeEdge $e4
-    set result  [$selfana result]
-    set selfloops [java::cast java.util.List $result]
+    set selfloops [$selfana edges]
     set numedges [$selfloops size]
     list $numedges
 } {0}

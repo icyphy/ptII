@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 1997-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,8 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 test SinkNodeAnalysis-2.1 {empty graph} {
     set dirg [java::new ptolemy.graph.DirectedGraph]
     set sinkana [java::new ptolemy.graph.analysis.SinkNodeAnalysis $dirg]
-    set result  [$sinkana result]
-    set sinknodes [java::cast java.util.List $result]
+    set sinknodes [$sinkana nodes]
     set numnodes [$sinknodes size]
     list $numnodes
 } {0}
@@ -84,8 +83,8 @@ test SinkNodeAnalysis-2.2 {4-node graph with 2 sink nodes} {
     $dirg addEdge $e2
     $dirg addEdge $e3
     $dirg addEdge $e4
-    set result  [$sinkana result]
-    set sinknodes [java::cast java.util.List $result]
+    set sinkana [java::new ptolemy.graph.analysis.SinkNodeAnalysis $dirg]
+    set sinknodes [$sinkana nodes]
     set numnodes [$sinknodes size]
     set rslt0 [$sinknodes get 0]
     set rslt1 [$sinknodes get 1]
@@ -100,21 +99,10 @@ test SinkNodeAnalysis-2.3 {graph without sink node} {
     set e6  [java::new ptolemy.graph.Edge $n4 $n1]
     $dirg addEdge $e5
     $dirg addEdge $e6
-    set result  [$sinkana result]
-    set sinknodes [java::cast java.util.List $result]
+    set sinkana [java::new ptolemy.graph.analysis.SinkNodeAnalysis $dirg]
+    set sinknodes [$sinkana nodes]
     set numnodes [$sinknodes size]
     list $numnodes
 } {0}
-
-######################################################################
-####
-#
-test SinkNodeAnalysis-2.4 {compatible for different graph classes} {
-    set g [java::new ptolemy.graph.Graph]
-    set dag [java::new ptolemy.graph.DirectedAcyclicGraph]
-    set incmpt [$sinkana compatible $g]
-    set cmpt [$sinkana compatible $dag]
-    list $incmpt $cmpt
-} {0 1}
 
 

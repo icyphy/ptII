@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 1997-2001 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -26,31 +26,31 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+#						PT_COPYRIGHT_VERSION_2
+#						COPYRIGHTENDKEY
 #######################################################################
 
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 if [info exist env(PTOLEMY)] {
-    set PTII $env(PTOLEMY)/tycho/java
+	set PTII $env(PTOLEMY)/tycho/java
 }
 
 if [info exist env(TYCHO)] {
-    set PTII $env(TYCHO)/java
+	set PTII $env(TYCHO)/java
 }
 
 if [info exist env(PTII)] {
-    set PTII $env(PTII)
+	set PTII $env(PTII)
 }
 
 if {![info exist PTII]} {
-    # If we are here, then we are probably running jacl and we can't
-    # read environment variables
-    set PTII [file join [pwd] .. .. .. .. ]
+	# If we are here, then we are probably running jacl and we can't
+	# read environment variables
+        set PTII [file join [pwd] .. .. .. .. .. ptII]
 }
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source [file join $PTII util testsuite testDefs.tcl]
+	source [file join $PTII util testsuite testDefs.tcl]
 }

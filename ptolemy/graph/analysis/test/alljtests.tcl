@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"AcyclicAnalysis.tcl SelfLoopAnalysis.tcl SinkNodeAnalysis.tcl SourceNodeAnalysis.tcl TransitiveClosureAnalysis.tcl" != ""} {foreach i [list AcyclicAnalysis.tcl SelfLoopAnalysis.tcl SinkNodeAnalysis.tcl SourceNodeAnalysis.tcl TransitiveClosureAnalysis.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] { if [ catch {source $i} msg] {puts "Error: $msg"}}}}
+if {"AllPairShortestPathAnalysis.tcl ClusterNodesAnalysis.tcl CycleExistenceAnalysis.tcl CycleMeanAnalysis.tcl MaximumProfitToCostRatioAnalysis.tcl MirrorTransformation.tcl NegativeLengthCycleAnalysis.tcl SelfLoopAnalysis.tcl SingleSourceLongestPathAnalysis.tcl SinkNodeAnalysis.tcl SourceNodeAnalysis.tcl TransitiveClosureAnalysis.tcl" != ""} {foreach i [list AllPairShortestPathAnalysis.tcl ClusterNodesAnalysis.tcl CycleExistenceAnalysis.tcl CycleMeanAnalysis.tcl MaximumProfitToCostRatioAnalysis.tcl MirrorTransformation.tcl NegativeLengthCycleAnalysis.tcl SelfLoopAnalysis.tcl SingleSourceLongestPathAnalysis.tcl SinkNodeAnalysis.tcl SourceNodeAnalysis.tcl TransitiveClosureAnalysis.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] { if [ catch {source $i} msg] {puts "Error: $msg"}}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] { if [catch {source dummy.tcl} msg] {puts "Error: $msg"}}

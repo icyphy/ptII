@@ -1,280 +1,173 @@
 /* A base class for analyses on graphs.
 
-   Copyright (c) 2002-2003 The University of Maryland. All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2002 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
- */
+@ProposedRating Red (shahrooz@eng.umd.edu)
+@AcceptedRating Red (ssb@eng.umd.edu)
+
+*/
 
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
 
+import ptolemy.graph.analysis.analyzer.Analyzer;
+import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
+
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
-/** A base class for analyses on graphs. To facilitate demand-driven
-    and incremental recomputation (e.g., see [1]) of analyses, analysis results
-    are cached
-    internally (see {@link #_cachedResult()}), and are recomputed only
-    when the graph has changed since the last request (via {@link #result()})
-    for the analysis result. The internally-cached result (<em>cached result</em>)
-    of an analysis is directly accessible only by derived classes; however,
-    its status can be queried with the {@link #obsolete()} method to determine
-    if a subsequent invocation of {@link #result()} will trigger recomputation
-    of the analysis.
+/**
+A base class for analyses on graphs.
+<p>
+The organization of the package follows:
+<p>
+Classes in ptolemy.graph.analysis consists of different wrappers in
+which a client can plug a requested strategy/algorithm for an analysis.
+Strategies for a given analysis implement the same interface defined
+in ptolemy.graph.analysis.analyzer.
+Therefore from now on we will use the name analyzer for all the strategies
+that implement the same interface and therefore  solve the same problem.
+Analysis classes access the plugged-in strategy class through these interfaces.
+<p>
+In the base class methods are provided in order to dynamically change the
+analyzer of the current analysis and also to check if a given analyzer is
+applicable to the given analysis.
+<p>
+Analyzers that can be used in these analyses are a specialized version of
+analyzers called {@link ptolemy.graph.analysis.analyzer.GraphAnalyzer}.
+<p>
+Classes in ptolemy.graph.analysis.analyzer are the interfaces for
+different strategies(algorithms) used for the analysis. The strategies classes
+are defined in ptolemy.graph.analysis.strategy
+<p>
+In addition, the analysis classes provide default constructors which use
+predefined strategies for those clients who do not want to deal with different
+strategies.
+Although this introduces some limitations imposed by the used strategy. The
+documentation of such constructor will reflect the limitations, if any.
+<p>
+Finally, strategies can be instantiated and used independently. In this case
+the client will lose the possibility of dynamically changing the analyzer for
+the associated analysis, which would not exist at all, and there will be no
+default constructor therefore the client need to be familiar with the strategy
+that she/he is using.
 
-    <p> The graph changes tracked by an analysis are restricted to changes in the
-    graph topology (the set of nodes and edges). For example, changes to edge/node
-    weights that may affect the result of an analysis are not tracked, since
-    analyses have no specific knowledge of weights.  In such cases, it is the
-    responsibility of the client (or derived analysis class) to invalidate the
-    cached result (see {@link #reset()}) when changes to graph weights or other
-    non-topology information render the cached result obsolete.  For this reason,
-    some caution is generally required when using analyses whose results depend on
-    more than just the graph topology.
+@since Ptolemy II 2.0
+@author Shahrooz Shahparnia, Shuvra S. Bhattacharyya
+@version $Id$
+*/
 
-    <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
-    University of Wisconsin at Madison, August 1993.
+public class Analysis {
 
-    @author Shuvra S. Bhattacharyya and Mingyung Ko
-    @version $Id$
- */
-
-abstract public class Analysis {
-
-    /** Construct an analysis for a given graph.
-     *  @param graph The given graph.
+    /** Construct an analysis using a given analyzer.
+     *
+     *  @param analyzer The given analyzer.
      */
-    public Analysis(Graph graph) {
-        if (compatible(graph)) {
-            _graph = graph;
-            _graph.addAnalysis(this);
-            reset();
-        } else {
-            throw new IllegalArgumentException(
-                    incompatibilityDescription(graph));
-        }
+    public Analysis(GraphAnalyzer analyzer) {
+        _analyzer = analyzer;
+        // Maybe we may want to implement the Observer pattern instead of this.
+        graph().addAnalysis(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone an instance of this analysis (with the same analysis-specific
-     *  options) to operate on a given graph. This method first checks
-     *  for compatibility between this analysis and the given graph, and
-     *  throws an IllegalArgumentException on incompatibility. Otherwise,
-     *  the method returns
-     *  a new analysis with the same run-time type as this analysis,
-     *  and associates the given graph with the new analysis. The method
-     *  should be overridden in derived classes to copy options and
-     *  other configuration information associated
-     *  with the cloned analysis into the new one (the clone).
+    /** Return the analyzer associated with this analysis class.
      *
-     *  @param graph The given graph.
-     *  @return A clone of this Analysis.
-     *  FIXME: We need better exception handling.
+     *  @return Return the analyzer associated with this analysis class.
      */
-    public Analysis cloneFor(Graph graph) {
-        if (!compatible(graph)) {
-            throw new IllegalArgumentException("Incompatible graph. "
-                    + "A description of the incompatibility follows.\n"
-                    + incompatibilityDescription(graph));
+    public GraphAnalyzer analyzer() {
+        return _analyzer;
+    }
+
+    /** Change the analyzer associated with this analysis class to the given
+     *  analyzer.
+     *
+     *  @param analyzer The given analyzer.
+     *  @exception InvalidAnalyzerException If the analyzer is not a valid
+     *  analyzer for this analysis.
+     */
+    public void changeAnalyzer(GraphAnalyzer analyzer) {
+        if(validAnalyzerInterface(analyzer)) {
+            if(analyzer instanceof CachedStrategy) {
+                if (graph() == analyzer().graph()) {
+                    ((CachedStrategy)analyzer)
+                            .setCachedResult((CachedStrategy)_analyzer);
+                }
+            }
+            _analyzer = analyzer;
+        } else {
+            throw new InvalidAnalyzerException(
+                    "Invalid analyzer for the analysis:\n"
+                    + toString());
         }
-        Analysis clone;
-        try {
-            clone = (Analysis)(getClass().newInstance());
-        } catch (Exception exception) {
-            throw new RuntimeException("Could not clone this analysis on the"
-                    + "given graph. The offending analysis: " + toString());
-        }
-        clone._graph = graph;
-        graph.addAnalysis(clone);
-        clone.reset();
-        return clone;
     }
 
-    /** Check compatibility for between the analysis and the given
-     *  graph. Compatibility may depend on the a variety of graph- and
-     *  analysis-specific factors, such as the implementation of certain
-     *  interfaces, the satisfaction of certain graph properties, etc.
-     *  This method always returns true since there is no issue of
-     *  incompatibility with an abstract analysis. It should be overridden in
-     *  derived classes in which issues of incompatibility may arise.
+    /** The graph associated with the analysis. This association is made
+     *  through the associated analyzer interface.
      *
-     *  @param graph The given graph.
-     *  @return True if the analysis is compatible with the given graph.
-     */
-    public boolean compatible(Graph graph) {
-        return true;
-    }
-
-    /** Return a description of the configuration of the Analysis.
-     *  The configuration can include any analysis-specific options.
-     *  For example, a scheduler might have the unfolding factor as one option.
-     *  This method in this base class returns an empty string since there is
-     *  no configuration information
-     *  to report for an abstract analysis. It should be overridden in
-     *  derived classes that have configuration information to report.
-     *
-     *  @return A String describing the configuration of this analysis.
-     */
-    public String configuration() {
-        return "";
-    }
-
-    /** The graph associated with the Analysis. This association is made
-     *  when the Analysis is constructed.
-     *
-     *  @return The input graph.
+     *  @return Return the graph under analysis.
      */
     public Graph graph() {
-        return _graph;
+        return _analyzer.graph();
     }
 
-    /** Return a string that explains any incompatibilities that the graph
-     *  has with respect to the Analysis. Return an empty string if the
-     *  graph is compatible. This method in this base class returns an empty
-     *  string since there is no issue of incompatibility with an abstract
-     *  analysis. The
-     *  method should be overridden in derived classes that may have
-     *  issues of incompatibility to report.
-     *
-     *  @param graph The given graph.
-     *  @return A description of any incompatibilities.
-     */
-    public String incompatibilityDescription(Graph graph) {
-        return "";
-    }
-
-    /** Test whether or not the cached result of the analysis is
-     *  obsolete relative to the associated graph. In other words, test if the
-     *  graph has changed
-     *  since the last time the analysis was performed (i.e., since
-     *  the most recent invocation of {@link #result()}). If the cached
-     *  result is obsolete, then a subsequent invocation of {@link #result}
-     *  will trigger recomputation of the analysis.
-     *  @return True if the cached result is obsolete relative to the
-     *  associated graph.
-     */
-    public boolean obsolete() {
-        return _lastComputation < graph().changeCount();
-    }
-
-    /** Reset the analysis to invalidate any cached value (i.e., to force
-     *  recomputation the next time a result of the computation is needed).
-     */
-    public void reset() {
-        _lastComputation = -1;
-    }
-
-    /** Return the result (cached value) of the analysis on the associated
-     *  graph. The cached value is updated, through recomputation of
-     *  the analysis (using {@link #_compute()}), if the graph
-     *  has changed since the last time {@link #result()} was invoked.
-     *  Otherwise, the cache value is simply returned (in <em>O</em>(1) time).
-     *
-     *  @return The result of the analysis.
-     */
-    public final Object result() {
-        // Finality of this method is required to ensure analysis computation
-        // only happens when the graph changes, as specified in the
-        // contract of the method comment.
-        if (obsolete()) {
-            _cachedResult = _compute();
-            _registerComputation();
-        }
-        return _convertResult();
-    }
-
-    /** Return a description of the analysis. This method
-     *  simply returns a description of the associated graph.
+    /** Return a description of the analysis and the associated analyzer.
      *  It should be overridden in derived classes to
-     *  include details associated with the associated analyses.
+     *  include details associated with the associated analysis/analyzer.
      *
-     *  @return A description of the analysis.
+     *  @return A description of the analysis and the associated analyzer.
      */
     public String toString() {
-        return "Analysis for the following graph.\n"
-            + graph().toString();
+        return "Analysis using the following analyzer:\n"
+                + _analyzer.toString();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Perform the graph analysis and return the resulting value.
-     *  Upon entry, {@link #_cachedResult()} provides the result of the
-     *  previous invocation of the analysis; this value can be
-     *  used, for example, to facilitate incremental analyses.
-     *  This method just returns null, and will typically be overridden
-     *  in each derived class to perform the appropriate graph analysis.
+    /** Return the validity of the associated analyzer. An analyzer is valid
+     *  if the graph and the associated data is in a format suitable for the
+     *  analyzer.
+     *
+     *  @return Return the validity of the associated analyzer.
      */
-    abstract protected Object _compute();
-
-    /** The result of the most recent computation of the analysis,
-     *  as determined by {@link #_compute()}, and without
-     *  conversion by {@link #_convertResult()}.
-     */
-    protected final Object _cachedResult() {
-        return _cachedResult;
+    public boolean valid() {
+        return _analyzer.valid();
     }
 
-    /** Convert the cached result ({@link #_cachedResult()}) to a form that is
-     *  suitable for the client to access (via {@link #result()}).
-     *  This base class method just returns a reference to the cached result.
-     *  However, it may be appropriate for derived classes to override this
-     *  method. For example, if the object returned by the analysis is mutable,
-     *  one may wish to override this method to copy the cached
-     *  value (or convert it to some other form) before returning it.
-     *  Then changes made by the client to the returned value will
-     *  not affect the cached value in the analysis (as an example,
-     *  see {@link SelfLoopAnalysis#result()}). This consideration is
-     *  important for incremental analyses that use the cached value
-     *  across successive invocations of the analysis.
+    /** Check if a given analyzer is compatible with this analysis.
+     *  In other words if it is possible to use it to compute the computation
+     *  associated with this analysis.
+     *  Derived classes should override this method to provide the valid type
+     *  of analyzer that they need.
+     *
+     *  @param analyzer The given analyzer.
+     *  @return True if the given analyzer is valid for this analysis.
      */
-    protected Object _convertResult() {
-        return _cachedResult();
+    public boolean validAnalyzerInterface(Analyzer analyzer) {
+        return analyzer instanceof GraphAnalyzer;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Notify the analysis that the associated computation has been
-     *  performed. This method should be called immediately after
-     *  any invocation of the computation.
-     */
-    private void _registerComputation() {
-        _lastComputation = graph().changeCount();
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The result of the most recent computation of the analysis, as determined
-    // by _compute(), and without conversion by _convertResult().
-    private Object _cachedResult = null;
-
-    // The graph that this analysis is associated with.
-    private Graph _graph;
-
-    // The change count of the associated graph that was in effect when the
-    // the analysis was last performed.
-    private long _lastComputation;
-
+    // The analyzer that is used in the computation of this analysis.
+    private GraphAnalyzer _analyzer;
 }

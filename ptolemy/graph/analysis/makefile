@@ -1,10 +1,11 @@
-# Makefile for the Ptolemy II Analysis classes
+# Makefile for the Ptolemy Java graph classes.
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Shuvra S. Bhattacharyya, Christopher Hylands, 
+# based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002-2003 The Regents of the University of California.
+# @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,52 +27,65 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/graph/analysis
+ME =        ptolemy/graph/analysis
 
-DIRS =		test
+DIRS = analyzer strategy \
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =      ../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	analysis
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE =    graph
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AcyclicAnalysis.java \
-	Analysis.java \
-    Mapping.java \
-	SelfLoopAnalysis.java \
-	SinkNodeAnalysis.java \
-	SourceNodeAnalysis.java \
-	TransitiveClosureAnalysis.java
+        AllPairShortestPathAnalysis.java \
+        AnalysisException.java \
+        ClusterNodesAnalysis.java \
+        CycleExistenceAnalysis.java \
+        CycleMeanAnalysis.java \
+        MaximumProfitToCostRatioAnalysis.java \
+        MirrorTransformation.java \
+        NegativeLengthCycleAnalysis.java \
+        SingleSourceLongestPathAnalysis.java \
+        TransitiveClosureAnalysis.java \
+        SinkNodeAnalysis.java \
+        SelfLoopAnalysis.java \
+        SourceNodeAnalysis.java \
+        ZeroLengthCycleAnalysis.java \
+        InvalidAnalyzerException.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+# Don't list 'demo' here, or running 'make sources' will also run the demos
+MISC_FILES =    analyzer strategy test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

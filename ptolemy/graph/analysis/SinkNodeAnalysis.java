@@ -1,131 +1,107 @@
 /* Computation of sink nodes in a graph.
 
-   Copyright (c) 2002-2003 The University of Maryland. All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2002 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   @ProposedRating Red (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (shahrooz@eng.umd.edu)
+@AcceptedRating Red (ssb@eng.umd.edu)
 
- */
+*/
 
 package ptolemy.graph.analysis;
+
+import ptolemy.graph.analysis.analyzer.Analyzer;
+import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
+import ptolemy.graph.analysis.strategy.SinkNodeStrategy;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeAnalysis
-/** Computation of sink nodes in a graph.
-
-    A <em>sink node</em> in a graph is a node without output edges. The
-    <code>result</code> method (see {@link Analysis#result()})
-    of this analysis returns the sink nodes in the associated graph.
-    The sink nodes are returned in the form of a {@link java.util.Collection},
-    where each element in the collection is a {@link Node}. The collection
-    returned cannot be modified.
-    <p>
-    This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
-    number of nodes in the graph.
-
-    @author Mingyung Ko
-    @version $Id$
- */
+/**
+Computation of sink nodes in a graph.
+A sink node in a graph is a node without output edges.
+<p>
+The returned collection cannot be modified when the client uses the default
+strategy.
+<p>
+@since Ptolemy II 2.0
+@author Shahrooz Shahparnia
+@version $Id$
+*/
 
 public class SinkNodeAnalysis extends Analysis {
 
-    /** Construct a sink node analysis for a given graph.
+    /** Construct an instance of this class for a given graph.
+     *
      *  @param graph The given graph.
      */
     public SinkNodeAnalysis(Graph graph) {
-        super(graph);
+        super(new SinkNodeStrategy(graph));
+    }
+
+    /** Construct an instance of this class using a given analyzer.
+     *
+     *  @param analyzer The given analyzer.
+     */
+    public SinkNodeAnalysis(SinkNodeAnalyzer analyzer) {
+        super(analyzer);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Check compatibility of the class of graph. The given graph
-     *  must be an instance of <code>DirectedGraph</code>
+
+    /** Return the sink nodes in the graph under analysis.
+     *  Each element of the list is an {@link Node}.
      *
-     *  @param graph The given graph.
-     *  @return True if the given graph is of class DirectedGraph.
+     *  @return Return the sink nodes.
      */
-    public boolean compatible(Graph graph) {
-        if (graph instanceof DirectedGraph)
-            return true;
-        else
-            return false;
+    public List nodes() {
+        return ((SinkNodeAnalyzer)analyzer()).nodes();
     }
 
-    /** Return a description of incompatibility. The class of graph
-     *  is checked for compatibility.
+    /** Return a description of the analysis and the associated analyzer.
      *
-     *  @param graph The given graph.
-     *  @return A description of invalid graph class.
-     */
-    public String incompatibilityDescription(Graph graph) {
-        String result = "The given graph (of class " +
-            graph.getClass().getName() +
-            ") is not an instance of DirectedGraph.";
-        return result;
-    }
-
-    /** Return a description of sink nodes.
-     *
-     *  @return A description of the sink nodes.
+     *  @return A description of the analysis and the associated analyzer.
      */
     public String toString() {
-        return "Sink node analysis for the following graph.\n"
-            + graph().toString() + "The sink nodes are:\n" + _cachedResult();
+        return "Sink node analysis using the following analyzer:\n"
+                + analyzer().toString();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Compute the sink nodes in the graph in the form of
-     *  a collection. Each element of the collection is a {@link Node}.
-     *  @return The sink nodes.
+    /** Check if a given analyzer is compatible with this analysis.
+     *  In other words if it is possible to use it to compute the computation
+     *  associated with this analysis.
+     *
+     *  @param analyzer The given analyzer.
+     *  @return True if the given analyzer is valid for this analysis.
      */
-    protected Object _compute() {
-        ArrayList sinkNodes = new ArrayList();
-        Iterator nodes = graph().nodes().iterator();
-        while (nodes.hasNext()) {
-            Node node = (Node)nodes.next();
-            if (((DirectedGraph)graph()).outputEdgeCount(node) == 0) {
-                sinkNodes.add(node);
-            }
-        }
-        return sinkNodes;
+    public boolean validAnalyzerInterface(Analyzer analyzer) {
+        return analyzer instanceof SinkNodeAnalyzer;
     }
-
-    /** Return the result of this analysis (collection of sink nodes)
-     *  in a form that cannot be modified.
-     *  @return The analysis result in unmodifiable form.
-     */
-    protected Object _convertResult() {
-        return Collections.unmodifiableList((List)_cachedResult());
-    }
-
 }
