@@ -121,7 +121,7 @@ public abstract class RandomSource extends Source {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

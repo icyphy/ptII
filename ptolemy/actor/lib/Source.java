@@ -44,11 +44,10 @@ port and a trigger input port, both exposed as public variables.
 The trigger port is a multiport with undeclared type, meaning that
 you can supply it with any data type.  The trigger port can also be
 left unconnected.  The purpose of the trigger input is to
-(optionally) supply events that cause the actor to fire.  For some
-domains, such as SDF and CT, this is entirely unnecessary, as the
-actor will fire whether inputs are supplied or not.  In such
-domains, the trigger input will normally be left unconnected.  In
-this base class, the fire() method reads at most one token from
+(optionally) supply events that cause the actor to fire.  If the
+port is connected to something, then this actor will check it
+for a token and return false from prefire() if there is no token.
+In this base class, the fire() method reads at most one token from
 each channel of the trigger input, if any, and then discards the
 token.
 
@@ -132,5 +131,26 @@ property such as whether there is ultimately a source of data.
                     trigger.get(i);
                 }
             }
+        }
+        
+        /** If the trigger input is connected and it has no input,
+         *  then return false. Otherwise, return true.
+         *  @return True, unless the trigger input is connected
+         *   and has no input.
+         */
+        public boolean prefire() throws IllegalActionException {
+            if (trigger.numberOfSources() > 0) {
+                for (int i = 0; i < trigger.getWidth(); i++) {
+                	if (trigger.hasToken(i)) {
+                		return super.prefire();
+                    }
+                }
+                if (_debugging) {
+                    _debug("Called prefire(), which returns false because" +
+                            " the trigger port is connected and has no input.");
+                }
+                return false;
+            }
+            return super.prefire();
         }
     }
