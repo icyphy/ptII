@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.*;
 import ptolemy.actor.Director;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;

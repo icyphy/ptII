@@ -31,9 +31,9 @@ package ptolemy.domains.ct.kernel;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

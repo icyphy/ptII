@@ -28,8 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;

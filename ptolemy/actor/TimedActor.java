@@ -26,16 +26,17 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedActor
 /**
    This is a marker interface for actors that operate on time-based signals.
    That is, logically, all signals observed or produced are tokens placed
-   in time. Actors that implement this marker interface may be disallowed
-   in certain domains where time has no useful significance.
+   in time. Actors that implement this marker interface can only be executed 
+   by the directors that implement the TimedDirector marker interface. 
 
+   @see TimedDirector
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
