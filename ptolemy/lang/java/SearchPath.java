@@ -46,7 +46,7 @@ Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
-@author Jeff Tsay
+@author Jeff Tsay, Christopher Hylands
 @version $Id$
  */
 public class SearchPath extends Vector {
