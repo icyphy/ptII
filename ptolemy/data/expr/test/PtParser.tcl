@@ -1,6 +1,6 @@
 # Tests for the PtParser class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Christopher Hylands Brooks
 #
 # @Version: $Id$
 #
@@ -998,9 +998,12 @@ test PtParser-18.5 {Test expressions with backslashes.} {
 
 test PtParser-18.6 {Test bad expression.} {
     set p [java::new ptolemy.data.expr.PtParser]
-    catch {[set root [ $p {generateParseTree String} "\\0"]] toString} res
-    list $res
-} {ptolemy.kernel.util.IllegalActionException:\ Error\ parsing\ expression\ \"\\0\"\nBecause:\nEncountered\ \"\\\\\"\ at\ line\ 1,\ column\ 1.\r\nWas\ expecting\ one\ of:\r\n\ \ \ \ \"-\"\ ...\r\n\ \ \ \ \"(\"\ ...\r\n\ \ \ \ \"\{\"\ ...\r\n\ \ \ \ \"\[\"\ ...\r\n\ \ \ \ \"!\"\ ...\r\n\ \ \ \ \"~\"\ ...\r\n\ \ \ \ <INTEGER>\ ...\r\n\ \ \ \ <DOUBLE>\ ...\r\n\ \ \ \ <COMPLEX>\ ...\r\n\ \ \ \ <BOOLEAN>\ ...\r\n\ \ \ \ <ID>\ ...\r\n\ \ \ \ <STRING>\ ...\r\n\ \ \ \ <SMID>\ ...\r\n\ \ \ \ <SMIDBRACE>\ ...\r\n\ \ \ \ <SMIDPAREN>\ ...\r\n\ \ \ \ \"function\"\ ...\r\n\ \ \ \ }
+    catch {$p {generateParseTree String} "\\0"} errmsg
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $errmsg "\n" output
+    set lines [split $output "\n"]
+    list $lines
+} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.} {Was expecting one of:} {    "-" ...} {    "(" ...} \ \ \ \ \"\{\"\ ... {    "[" ...} {    "!" ...} {    "~" ...} {    <INTEGER> ...} {    <DOUBLE> ...} {    <COMPLEX> ...} {    <BOOLEAN> ...} {    <ID> ...} {    <STRING> ...} {    <SMID> ...} {    <SMIDBRACE> ...} {    <SMIDPAREN> ...} {    "function" ...} {    }}}
 
 test PtParser-18.7 {Test expression with comment.} {
     set p [java::new ptolemy.data.expr.PtParser]
