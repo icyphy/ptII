@@ -79,13 +79,6 @@ test SequenceToArray-2.1 {test double array, test prefire} {
     $e0 connect $rampOut $s2aIn
     $e0 connect $s2aOut $recIn
 
-    $s2a prefire
-} {0}
-
-######################################################################
-#### run above model
-#
-test SequenceToArray-2.2 {test double array, use above model} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {{{-2.0, -1.0}} {{0.0, 1.0}} {{2.0, 3.0}}}
