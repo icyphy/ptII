@@ -62,8 +62,8 @@ proc autoDeepCG {autoDirectory} {
 	     } {
 	    test "Auto" "Automatic test in file $file" {
 		error "$file is a known failure, skipping"
-	} {{}}
-
+	    } {{}}
+	    continue
 	}
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
