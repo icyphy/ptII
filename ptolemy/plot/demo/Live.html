@@ -25,10 +25,13 @@ On a reasonable computer, plotting is quite fast.
 Such a plot is created by defining a class derived from <code>PlotLive</code>
 (which is abstract).  The example shown here is the
 <a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
-It defines only two methods, <code>init()</code> and <code>run()</code>.
-The first of these sets static properties of the plot (title, labels, etc.)
-while the second defines the body of a thread that generates points forever (if it is
-allowed to).
+It defines two methods, <code>init()</code> and <code>addPoints()</code>.
+The <code>init()</code> method sets static properties of the plot
+(title, labels, etc.)
+while the <code>addPoints()</code> method is called from the body
+of the <code>run()</code> method in the parent class.
+The parental <code>run()</code> method is called by a
+thread that generates points forever (if it is allowed to).
 <p>
 
 There are still some problems with <code>PlotLive</code>.  The most
