@@ -298,6 +298,18 @@ public class Processor extends CSPActor {
         _listeners.remove(listener);
     }
 
+    /** Wrapup this actor by first calling the super class
+     *  wrapup method and then generating an event that 
+     *  will set the final state of this actor for the
+     *  graphical user interface.
+     * @exception IllegalActionException If the super class
+     *  throws it.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        generateEvents( new ExecEvent( this, 1 ) );
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
