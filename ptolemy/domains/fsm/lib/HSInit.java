@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.lib;
@@ -85,20 +85,23 @@ public class HSInit extends NamedObj implements TransitionAction {
             // Add the FSMController's input value variable list to ValueVar's
             // scope.
             FSMController ctrl = (FSMController)_container.getContainer();
-            vl = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
+            vl = (VariableList)ctrl.getAttribute(
+                    FSMController.INPUT_VALUE_VAR_LIST);
             if (vl != null) {
                 _valueVar.addToScope(vl.getVariables());
             }
             // Add the FSMController's local variable list to ValueVar's
             // scope.
-            vl = (VariableList)ctrl.getAttribute(FSMController.LOCAL_VARIABLE_LIST);
+            vl = (VariableList)ctrl.getAttribute(
+                    FSMController.LOCAL_VARIABLE_LIST);
             if (vl != null) {
                 _valueVar.addToScope(vl.getVariables());
             }
-            // Add the source state's local input value variable list to ValueVar's
-            // scope.
+            // Add the source state's local input value variable list
+            // to ValueVar's scope.
             FSMState st = _container.sourceState();
-            vl = (VariableList)st.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
+            vl = (VariableList)st.getAttribute(
+                    FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
             if (vl != null) {
                 _valueVar.addToScope(vl.getVariables());
             }
