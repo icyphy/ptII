@@ -116,9 +116,10 @@ public class HTMLAbout {
         List modelList = _getModelURLs(demosURL);
         Iterator models = modelList.iterator();
         while (models.hasNext()) {
-            URL model = (URL)models.next();
-            configuration.openModel(model, model,
-                    model.toExternalForm());
+            String model = (String)models.next();
+            URL modelURL = new URL(demosURL, model);
+            configuration.openModel(demosURL, modelURL,
+                    modelURL.toExternalForm());
         } 
         return demosURL;
     }
@@ -177,20 +178,20 @@ public class HTMLAbout {
      *  @param configuration  The configuration to run the files in.
      *  @return the URL of the HTML file that was searched. 
      */   
-    public static URL runAllDemos(String demosFileName,
-            Configuration configuration)
-            throws Exception {
+//     public static URL runAllDemos(String demosFileName,
+//             Configuration configuration)
+//             throws Exception {
 
-        URL demosURL = _getDemoURL(demosFileName);
-        List modelList = _getModelURLs(demosURL);
-        Iterator models = modelList.iterator();
-        while (models.hasNext()) {
-            URL model = (URL)models.next();
-            configuration.openModel(model, model,
-                    model.toExternalForm());
-        } 
-        return demosURL;
-    }
+//         URL demosURL = _getDemoURL(demosFileName);
+//         List modelList = _getModelURLs(demosURL);
+//         Iterator models = modelList.iterator();
+//         while (models.hasNext()) {
+//             URL model = (URL)models.next();
+//             configuration.openModel(demosURL, model,
+//                     model.toExternalForm());
+//         } 
+//         return demosURL;
+//     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -241,7 +242,7 @@ public class HTMLAbout {
                         && modelLink.endsWith(".xml")) {
                     // If the link does not start with http://, but ends
                     // with .xml, then we add it to the list
-                    modelList.add(MoMLApplication.specToURL(modelLink));
+                    modelList.add(modelLink);
                 }
             }
             modelStartIndex = demos.indexOf("href=\"", modelEndIndex);
@@ -258,7 +259,7 @@ public class HTMLAbout {
             throws IOException {
         // Generate a copyright page in a temporary file
         File temporaryFile = File.createTempFile(
-                prefix, "htm");
+                prefix, ".htm");
         temporaryFile.deleteOnExit();
 
         FileWriter fileWriter = new FileWriter(temporaryFile);
