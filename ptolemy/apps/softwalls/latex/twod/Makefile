@@ -7,6 +7,9 @@ LOG = $(NAME).log
 TOC = $(NAME).toc
 OUT = $(NAME).out
 
+all : $(DVI)
+	dvipdfm $(DVI)
+
 $(PDF) : $(DVI)
 	dvipdfm $(DVI)
 
@@ -38,10 +41,7 @@ edit :
 make : Makefile
 	emacs Makefile &
 
-view : $(PDF)
-	acrobat $(PDF) &
-
-quickview :
+view :
 	acrobat $(PDF) &
 
 viewdvi : $(DVI)
