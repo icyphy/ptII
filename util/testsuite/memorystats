@@ -54,8 +54,8 @@ awk 'BEGIN {min=99999999}
 		    memorySum += memory
 		    freeSum += free
 		    staticSum += static
-		    staticRTSum += staticRTSum
-		    dynamicRTSum += dynamicRTSum
+		    staticRTSum += staticRT
+		    dynamicRTSum += dynamicRT
 		}
 	    }
 	END {   
