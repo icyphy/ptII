@@ -53,11 +53,11 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = PNActor.java \
+	PNCompositeActor.java \
 	PNDirector.java \
 	PNInPort.java \
 	PNOutPort.java \
 	PNPort.java \
-	PNUniverse.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
