@@ -76,7 +76,7 @@ public class MoMLSimpleApplication implements ChangeListener {
      *  @param xmlFileName A string that refers to an MoML file that
      *  contains a Ptolemy II model.  The string should be
      *  a relative pathname.
-     *  @exception Exception Thrown if there was a problem parsing
+     *  @exception Exception If there was a problem parsing
      *  or running the model.
      */
     public MoMLSimpleApplication(String xmlFilename) throws Exception {
