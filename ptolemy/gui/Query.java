@@ -83,8 +83,7 @@ public class Query extends JPanel {
         checkbox.setBackground(_background);
         checkbox.setOpaque(false);
         checkbox.setSelected(defaultValue);
-        _addPair(lbl, checkbox);
-        _entries.put(name, checkbox);
+        _addPair(name, lbl, checkbox);
         // Add the listener last so that there is no notification
         // of the first value.
         checkbox.addItemListener(new QueryItemListener(name));
@@ -104,8 +103,7 @@ public class Query extends JPanel {
         combobox.setEditable(false);
         combobox.setBackground(Color.white);
         combobox.setSelectedItem(defaultChoice);
-        _addPair(lbl, combobox);
-        _entries.put(name, combobox);
+        _addPair(name, lbl, combobox);
         // Add the listener last so that there is no notification
         // of the first value.
         combobox.addItemListener(new QueryItemListener(name));
@@ -125,8 +123,7 @@ public class Query extends JPanel {
         // not work.
         JTextArea displayField = new JTextArea(theValue, 1, 10);
         displayField.setBackground(_background);
-        _addPair(lbl, displayField);
-        _entries.put(name, displayField);
+        _addPair(name, lbl, displayField);
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -142,8 +139,7 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         JTextField entryBox = new JTextField(defaultValue, _width);
         entryBox.setBackground(Color.white);
-        _addPair(lbl, entryBox);
-        _entries.put(name, entryBox);
+        _addPair(name, lbl, entryBox);
         // Add the listener last so that there is no notification
         // of the first value.
         entryBox.addActionListener(new QueryActionListener(name));
@@ -202,7 +198,8 @@ public class Query extends JPanel {
             // of the first value.
             checkbox.addActionListener(listener);
         }
-        _addPair(lbl, buttonPanel);
+        _addPair(name, lbl, buttonPanel);
+        // Override what is stored in _addPair().
         _entries.put(name, buttons);
     }
 
@@ -231,8 +228,7 @@ public class Query extends JPanel {
             "between the minimum and maximum.");
         }
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
-        _addPair(lbl, slider);
-        _entries.put(name, slider);
+        _addPair(name, lbl, slider);
         slider.addChangeListener(new SliderListener(name));
     }
 
@@ -520,6 +516,17 @@ public class Query extends JPanel {
         _width = characters;
     }
 
+    /** Specify a tool tip to appear when the mouse lingers over the label.
+     *  @param name The name of the entry.
+     *  @param tip The text of the tool tip.
+     */
+    public void setToolTip(String name, String tip) {
+        JLabel label = (JLabel)_labels.get(name);
+        if (label != null) {
+            label.setToolTipText(tip);
+        }
+    }
+
     /** Get the current value in the entry with the given name,
      *  and return as a String.  All entry types support this.
      *  @return The value currently in the entry as a String.
@@ -529,7 +536,6 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-
     public String stringValue(String name) 
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
@@ -585,10 +591,11 @@ public class Query extends JPanel {
     ////                         protected methods                 ////
 
     /** Add a label and a widget to the panel.
+     *  @param name The name of the entry.
      *  @param label The label.
      *  @param widget The interactive entry to the right of the label.
      */
-    protected void _addPair(JLabel label, Component widget) {
+    protected void _addPair(String name, JLabel label, Component widget) {
         // Surely there is a better layout manager in swing...
         // Note that Box and BoxLayout do not work because they do not
         // support gridded layout.
@@ -598,6 +605,8 @@ public class Query extends JPanel {
         _constraints.gridwidth = GridBagConstraints.REMAINDER;
         _grid.setConstraints(widget, _constraints);
         add(widget);
+        _entries.put(name, widget);
+        _labels.put(name, label);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -635,8 +644,11 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The hashtable of items in the query
+    // The hashtable of items in the query.
     private Map _entries = new HashMap();
+
+    // The hashtable of labels in the query.
+    private Map _labels = new HashMap();
 
     // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
