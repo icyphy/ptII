@@ -51,6 +51,8 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 /**
+Optimized _buildParsedTree()
+<p>
 A variable is an attribute that contains a token, and can be set by an
 expression that can refer to other variables.
 <p>
@@ -849,8 +851,8 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
-    /** Mark the contained token to be unknown if the specified value is
-     *  true, or mark the contained token to be known if the specified value
+    /** Mark the contained token to be unknown if the specified value is 
+     *  true, or mark the contained token to be known if the specified value 
      *  is false.
      *  @param value A boolean value.
      */
@@ -1098,7 +1100,14 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (_parser == null) {
             _parser = new PtParser(this);
         }
-        _parseTree = _parser.generateParseTree(_currentExpression, getScope());
+        if (_parser.getUndefinedList(_currentExpression).size() == 0) {
+           // System.out.println("Compiled with no scope.");
+            _parseTree = _parser.generateParseTree(_currentExpression);
+        } else {
+           // System.out.println("Compiled but needed scope.");
+            _parseTree = _parser.generateParseTree(_currentExpression,
+                                                   getScope());
+        }
         return;
     }
 
