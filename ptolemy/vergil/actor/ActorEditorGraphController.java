@@ -205,7 +205,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // control-click is used under the Mac for retrieving context
         // menus.
         _relationCreator = new RelationCreator();
-        _relationCreator.setMouseFilter(_controlFilter);
+        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+            // On the Mac, do not override Control-Click, which is
+            // used to bring up the context menu
+            _relationCreator.setMouseFilter(_metaFilter);
+        } else {
+            _relationCreator.setMouseFilter(_controlFilter);
+        }
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         _relationCreator2 = new RelationCreator();
         _relationCreator2.setMouseFilter(_shiftFilter);
@@ -213,7 +219,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
-        _linkCreator.setMouseFilter(_controlFilter);
+        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+            // On the Mac, do not override Control-Click, which is
+            // used to bring up the context menu
+            _linkCreator.setMouseFilter(_metaFilter);
+        } else {
+            _linkCreator.setMouseFilter(_controlFilter);
+        }
         _linkCreator2 = new LinkCreator();
         _linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
