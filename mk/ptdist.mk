@@ -139,7 +139,7 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "dummy" | \
-		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n*Build_Output\n*.buildinstaller*\n")}' \
+		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n*.~*\n*Build_Output\n*.buildinstaller*\n")}' \
 			> $@; \
 	fi
 
