@@ -24,6 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+
 */
 
 package ptolemy.math.filter;
@@ -750,20 +751,7 @@ public class RealDigitalFilter extends DigitalFilter{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
                                      
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-    
-    private LinkedList _factors;
-    private int _numberOfFactors;
-        
-    // Cached poles and zeroes to be returned to the display engine and its 
-    // validity indication flag
-    private Complex[] _poles;
-    private Complex[] _zeroes;
-    private boolean _polesZeroesValid = false;
-
     // cached transfer function with numerator and denominator with its 
     // validity indication flags
     private double[] _numerator;
@@ -772,12 +760,8 @@ public class RealDigitalFilter extends DigitalFilter{
     private boolean _transferFnValid;
 
     // cached frequency and impulse response with its validity indication flags
-    private boolean _freqImpulseValid;
-    private Complex[] _freqResponse;
     private double[] _impulseResponse;
     private int _taps = 50;
-    private int NUMSTEP = 150;
-    
     private final double DELTA = 0.01;
     
 }

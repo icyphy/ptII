@@ -23,6 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
 */
 
 package ptolemy.math.filter;
@@ -56,7 +57,13 @@ public abstract class DigitalFilter extends Filter{
      * zero.  This method should be overwritten in the derived classes.
      */
     public abstract void resetState();
-    
+   
+    public abstract Complex[] getFrequencyResponse();
+
+    public int getFreqStep(){
+        return NUMSTEP;
+    }
+ 
     /** Checks if the poles and zeros are still valid.  If not, calls
         _updatePolesZeroes(), then return zeroes.  If yes, just return
         zeroes. This method should be overwritten in the derived classes.
@@ -369,18 +376,20 @@ public abstract class DigitalFilter extends Filter{
     }  
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-    private LinkedList _factors;
-    private int _numberOfFactors;
-    private boolean _poleZeroesValid;
-    
-    private Complex[] _poles;
-    private Complex[] _zeroes;
-    
-    private final double DELTA = 0.01;
+    protected boolean _transferFnValid;
+    protected LinkedList _factors;
+    protected int _numberOfFactors;
+    protected boolean _polesZeroesValid;
+
+    protected Complex[] _freqResponse; 
+  
+    protected boolean _freqImpulseValid; 
+    protected Complex[] _poles;
+    protected Complex[] _zeroes;
+
+    protected int NUMSTEP = 150;
 }
 
 
