@@ -74,7 +74,7 @@ public class RenameConfigurer extends Query
         // be shown on the outside of the composite actor.
         boolean nameShowing = false;
         if (object instanceof Port) {
-            // FIXME: If the object is a Port, then Diva displays
+            // NOTE: If the object is a Port, then Diva used to display
             // the name twice, which looks really bad.
             // In Ptolemy II 2.0beta, we shipped a modified
             // version of this file that does not display the the
