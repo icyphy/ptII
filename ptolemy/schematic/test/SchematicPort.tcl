@@ -1,8 +1,8 @@
-# Tests for the AtomicActor class
+# Tests for the SchematicPort class
 #
-# @Author: Edward A. Lee
+# @Author: Stephen Neuendorffer
 #
-# @Version: @(#)AtomicActor.tcl	1.6   10/20/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
@@ -50,84 +50,73 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test XMLElement-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element]
+test SchematicPort-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element $attributes]
+    set e1 [java::new ptolemy.schematic.SchematicPort $attributes]
     list [$e0 toString] [$e1 toString]
-} {{<element>
-</element>
-} {<element name1="value1" name2="value2">
-</element>
+} {{<port multiport="false" name="" input="false" type="undeclared" output="false"></port>
+} {<port name1="value1" name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
 }}
 
 ######################################################################
 ####
 #
-test XMLElement-3.1 {addChildElement tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-3.1 {addChildElement tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
+    set e1 [java::new ptolemy.schematic.SchematicPort $attributes]
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<element0>
-<element1 name1="value1" name2="value2">
-</element1>
-</element0>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {{<port multiport="false" name="" input="false" type="undeclared" output="false">
+<port name1="value1" name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
+</port>
+} {<port name1="value1" name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
 }}
 
 
 ######################################################################
 ####
 #
-test XMLElement-3.2 {removeChildElement tests} {
+test SchematicPort-3.2 {removeChildElement tests} {
     # NOTE: Uses the setup above
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<element0>
-</element0>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {{<port multiport="false" name="" input="false" type="undeclared" output="false"></port>
+} {<port name1="value1" name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
 }}
 
 ######################################################################
 ####
 #
-test XMLElement-4.1 {childElements tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-4.1 {childElements tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
     set attributes [java::new collections.HashedMap]
     $attributes putAt name1 value1
     $attributes putAt name2 value2
-    set e1 [java::new ptolemy.schematic.XMLElement element1 $attributes]
-    set e2 [java::new ptolemy.schematic.XMLElement element2]
-    set e3 [java::new ptolemy.schematic.XMLElement element3]    
+    set e1 [java::new ptolemy.schematic.SchematicPort $attributes]
+    set e2 [java::new ptolemy.schematic.SchematicPort]
+    set e3 [java::new ptolemy.schematic.SchematicPort]    
     $e0 addChildElement $e1
     $e0 addChildElement $e2
     $e2 addChildElement $e3
     set e0children [$e0 childElements]
     set e0child1 [$e0children nextElement] 
+    set c1left [$e0children hasMoreElements]
     set e0child2 [$e0children nextElement] 
-    list [$e0child1 toString] [$e0child2 toString] \
-[$e0children hasMoreElements]
-} {{<element1 name1="value1" name2="value2">
-</element1>
-} {<element2>
-<element3>
-</element3>
-</element2>
-} 0}
+    set c2left [$e0children hasMoreElements]
+    list $c1left $c2left
+} {1 0}
 
 
 ######################################################################
 ####
 #
-test XMLElement-4.2 {hasChildElement tests} {
+test SchematicPort-4.2 {hasChildElement tests} {
     # NOTE: Uses the setup above
     list [$e0 hasChildElement $e0] [$e0 hasChildElement $e1] \
 [$e0 hasChildElement $e2] [$e0 hasChildElement $e3]
@@ -136,55 +125,58 @@ test XMLElement-4.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-4.3 {getParent tests} {
+test SchematicPort-4.3 {getParent tests} {
     # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
+    list [[$e1 getParent] equals $e0] \
 [[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 1 1}
+} {1 1 1}
 
 ######################################################################
 ####
 #
-test XMLElement-5.1 {setAttribute tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-5.1 {setAttribute tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
-} {<element0 name1="value1" name2="value2">
-</element0>
+} {<port name1="value1" name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
 }
 
 
 ######################################################################
 ####
 #
-test XMLElement-6.2 {removeAttribute tests} {
+test SchematicPort-6.2 {removeAttribute tests} {
     # NOTE: Uses the setup above
     $e0 removeAttribute name1
     $e0 toString
-} {<element0 name2="value2">
-</element0>
+} {<port name2="value2" multiport="false" name="" input="false" type="undeclared" output="false"></port>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-7.1 {attributes tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-7.1 {attributes tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
     set e0attributes [$e0 attributeNames]
     set e0attrib1 [$e0attributes nextElement] 
     set e0attrib2 [$e0attributes nextElement] 
-    list $e0attrib1 $e0attrib2 \
-[$e0attributes hasMoreElements]
-} {name1 name2 0}
+    set e0attrib3 [$e0attributes nextElement]     
+    set e0attrib4 [$e0attributes nextElement] 
+    set e0attrib5 [$e0attributes nextElement]     
+    set e0attrib6 [$e0attributes nextElement]     
+    set e0attrib7 [$e0attributes nextElement]     
+     list $e0attrib1 $e0attrib2 $e0attrib3 $e0attrib4 $e0attrib5 $e0attrib6\
+$e0attrib7 [$e0attributes hasMoreElements]
+} {name1 name2 multiport name input type output 0}
 
 ######################################################################
 ####
 #
-test XMLElement-7.2 {hasChildElement tests} {
+test SchematicPort-7.2 {hasChildElement tests} {
     # NOTE: Uses the setup above
     list [$e0 hasAttribute name1] [$e0 hasAttribute name2] \
 [$e0 hasAttribute name3]
@@ -193,49 +185,125 @@ test XMLElement-7.2 {hasChildElement tests} {
 ######################################################################
 ####
 #
-test XMLElement-7.3 {getParent tests} {
-    # NOTE: Uses the setup above
-    list [[$e0 getParent] equals java::null] [[$e1 getParent] equals $e0] \
-[[$e2 getParent] equals $e0] [[$e3 getParent] equals $e2] 
-} {1 1 0}
-
-######################################################################
-####
-#
-test XMLElement-8.1 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-8.1 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort ]
     $e0 setPCData "hello this is a test\n"
     $e0 toString
-} {<element0>
-hello this is a test
-</element0>
+} {<port multiport="false" name="" input="false" type="undeclared" output="false">hello this is a test
+</port>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-8.2 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-8.2 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort ]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 toString
-} {<element0>
-hello this is a test of appending
-</element0>
+} {<port multiport="false" name="" input="false" type="undeclared" output="false">hello this is a test of appending
+</port>
 }
 
 ######################################################################
 ####
 #
-test XMLElement-8.3 {setPCData tests} {
-    set e0 [java::new ptolemy.schematic.XMLElement element0]
+test SchematicPort-8.3 {setPCData tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort ]
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
-} {<element0>
-and resetting PCData
-</element0>
+} {<port multiport="false" name="" input="false" type="undeclared" output="false">and resetting PCData
+</port>
 }
 
- 
+######################################################################
+####
+#
+test SchematicPort-9.1 {set/getName tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
+    $e0 setName "SchematicPort Name"
+    list [$e0 toString] [$e0 getName]
+} {{<port multiport="false" name="SchematicPort Name" input="false" type="undeclared" output="false"></port>
+} {SchematicPort Name}}
+  
+######################################################################
+####
+#
+test SchematicPort-10.1 {Parameter tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
+    set p0 [java::new ptolemy.schematic.SchematicParameter testparameter testtype testvalue]
+    $e0 addParameter $p0
+    set p1 [$e0 getParameter testparameter]
+    list [$e0 toString] [$e0 containsParameter testparameter] [$p1 toString]
+} {{<port multiport="false" name="" input="false" type="undeclared" output="false">
+<parameter value="testvalue" name="testparameter" type="testtype"></parameter>
+</port>
+} 1 {<parameter value="testvalue" name="testparameter" type="testtype"></parameter>
+}}
+
+######################################################################
+####
+#
+test SchematicPort-10.2 {parameters tests} {
+    # uses configuration above
+    set enumlib [$e0 parameters]
+    set onelib [$enumlib hasMoreElements]
+    set param [$enumlib nextElement]
+    set zerolib [$enumlib hasMoreElements]
+    list $onelib $zerolib [$param getName] [$param getType]\
+[$param getValue]
+} {1 0 testparameter testtype testvalue}
+
+######################################################################
+####
+#
+test SchematicPort-10.3 {remove Parameter tests} {
+    # uses configuration above
+    $e0 removeParameter testparameter
+    set enumlib [$e0 parameters]
+    list [$e0 toString] [$e0 containsParameter testparameter]\
+[$enumlib hasMoreElements]
+} {{<port multiport="false" name="" input="false" type="undeclared" output="false"></port>
+} 0 0}
+
+######################################################################
+####
+#
+test SchematicPort-11.1 {set/isInput tests} {
+    set e0 [java::new ptolemy.schematic.SchematicPort]
+    $e0 setInput 1
+    list [$e0 toString] [$e0 isInput]
+} {{<port multiport="false" name="" input="true" type="undeclared" output="false"></port>
+} 1}
+
+######################################################################
+####
+#
+test SchematicPort-11.2 {set/isOutput tests} {
+    # uses setup above
+    $e0 setOutput 1
+    list [$e0 toString] [$e0 isOutput]
+} {{<port multiport="false" name="" input="true" type="undeclared" output="true"></port>
+} 1}
+
+######################################################################
+####
+#
+test SchematicPort-11.3 {set/isMultiport tests} {
+    # uses setup above
+    $e0 setMultiport 1
+    list [$e0 toString] [$e0 isMultiport]
+} {{<port multiport="true" name="" input="true" type="undeclared" output="true"></port>
+} 1}
+
+######################################################################
+####
+#
+test SchematicPort-11.4 {set/getType tests} {
+    # uses setup above
+    $e0 setType doubleArray
+    list [$e0 toString] [$e0 getType]
+} {{<port multiport="true" name="" input="true" type="doubleArray" output="true"></port>
+} doubleArray}
