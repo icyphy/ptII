@@ -434,7 +434,7 @@ public class SignalProcessing {
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
 
-        double[] imagx = ComplexArrayMath.imagParts(x);
+        double[] imag = ComplexArrayMath.imagParts(x);
         double[] imagimagX = FFTImagOut(imagx, order);
 
         realrealX = DoubleArrayMath.add(realrealX, imagimagX);
@@ -868,18 +868,18 @@ public class SignalProcessing {
 
         double angle = -Math.PI;
         for (int index = 0; index < freq.length; index++){
-            Complex polescontrib = Complex.ONE;
-            Complex zeroscontrib = Complex.ONE;
+            Complex polesContrib = Complex.ONE;
+            Complex zerosContrib = Complex.ONE;
             Complex ejw = new Complex(Math.cos(angle), Math.sin(angle));
             if (poles.length > 0) {
-                Complex[] diffpoles = ComplexArrayMath.subtract(poles, ejw);
-                polescontrib = ComplexArrayMath.product(diffpoles);
+                Complex[] diffPoles = ComplexArrayMath.subtract(poles, ejw);
+                polesContrib = ComplexArrayMath.product(diffPoles);
             }
             if (zeros.length > 0) {
-                Complex[] diffzeros = ComplexArrayMath.subtract(zeros, ejw);
-                zeroscontrib = ComplexArrayMath.product(diffzeros);
+                Complex[] diffZeros = ComplexArrayMath.subtract(zeros, ejw);
+                zerosContrib = ComplexArrayMath.product(diffZeros);
             }
-            freq[index] = zeroscontrib.divide(polescontrib);
+            freq[index] = zerosContrib.divide(polesContrib);
             freq[index] = freq[index].multiply(gain);
             angle += step;
         }
