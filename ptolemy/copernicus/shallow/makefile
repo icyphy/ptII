@@ -111,7 +111,7 @@ WATCHDOGTIMEOUT = 	100000
 compileDemo: $(JCLASS)
 	@echo "generate shallow code for '$(MODELPATH)'"
 	"$(JAVA)" \
-		-classpath "$(ROOT)" \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
 		-codeGenerator   '"shallow"' \
