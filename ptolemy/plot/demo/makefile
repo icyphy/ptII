@@ -66,9 +66,6 @@ EXTRA_SRCS = $(JSRCS) \
 	Live.htm \
 	LogAxes.htm \
 	Marks.htm \
-	Ptplot.htm \
-	Ptplot.js \
-	PtplotHelp.htm \
 	TwoPlotExample.java \
 	Sinusoids.htm \
 	bargraph.plt \
