@@ -61,7 +61,7 @@ corresponding input port.
 
 @author Yuhong Xiong
 @version $Id$
-@see RecordDisassember
+@see RecordDisassembler
 */
 
 public class RecordAssembler extends TypedAtomicActor {
