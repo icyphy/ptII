@@ -49,6 +49,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -68,7 +69,7 @@ import java.lang.reflect.InvocationTargetException;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-public abstract class ColtRandomSource extends RandomSource
+public /*abstract*/ class ColtRandomSource extends RandomSource
     implements ChangeListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -174,17 +175,34 @@ public abstract class ColtRandomSource extends RandomSource
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
+    /** Clone the actor into the specified workspace.
+     *  The <i>randomNumberGenerator</i> and <i>seed</i> parameters
+     *  in the parent class are shared between all instances of
+     *  classes derived from this class, so this clone() method
+     *  removes them so they can be added later.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+     *   an attribute that cannot be cloned or if removing an attribute
+     *   throws an exception.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ColtRandomSource newObject = (ColtRandomSource) super.clone(workspace);
-        newObject._randomNumberGenerator = new DRand((int) _seed);
-        return newObject;
+        try {
+            ColtRandomSource newObject =
+                (ColtRandomSource) super.clone(workspace);
+            newObject._randomNumberGenerator = new DRand((int) _seed);
+            // FIXME: seems unsafe to clone field and then remove it?
+            newObject.randomNumberGeneratorClass = 
+                randomNumberGeneratorClass;
+            _removeAttribute(newObject.randomNumberGeneratorClass);
+            _removeAttribute(super.seed);
+            return newObject;
+        } catch (Throwable throwable) {
+            CloneNotSupportedException cloneException =
+                new CloneNotSupportedException();
+            cloneException.initCause(throwable);
+            throw cloneException;
+        }
     }
 
     /** Send a random number to the output.
