@@ -69,10 +69,10 @@ public class PNInterleave extends PNStar{
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = readFrom(_input1);
                 writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output.getName()+"\n");
+                System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
                 data = readFrom(_input2);
                 writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data+" to "+_output.getName()+"\n");
+                System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
             }
             _myExecutive.processStopped();
         } catch(TerminationException e) {
