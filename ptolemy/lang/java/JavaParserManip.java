@@ -144,6 +144,12 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	String packageName = ASTReflect.getPackageName(loadedAST);
 	System.out.println("JavaParserManip.parseCanonicalFileName: "+
 			   " parsed " + filename + " found " + packageName);
+	// FIXME get rid of this debugging stuff
+	if (packageName.equals("cg.RampSystem.CG_Ramp_ramp")) {
+	    System.out.println("JavaParserManip.parseCanonicalFileName: " +
+			       loadedAST);
+	}
+
         loadedAST.setProperty(IDENT_KEY, packageName);
         allParsedMap.put(packageName, loadedAST);
 

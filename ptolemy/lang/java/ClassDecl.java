@@ -143,10 +143,13 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     /** Ensure that the source code for this ClassDecl is loaded. */
     public void loadSource() {
+	if (getName().equals("CG_Ramp_ramp")) {
+	    System.out.println("ClassDecl.loadSource: _source = " + _source);
+	}
         if (_source == null) {
             _source = AbsentTreeNode.instance;
 
-            String fileName = fullName(File.separatorChar);
+            String fileName = fullName('.');
 
             if (SearchPath.systemClassSet.contains(fileName)
                     || SearchPath.ptolemyCoreClassSet.contains(fileName)){

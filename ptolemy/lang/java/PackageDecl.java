@@ -83,7 +83,7 @@ public class PackageDecl extends JavaDecl
     }
 
     public final Environ getEnviron() {
-	ApplicationUtility.trace("PackageDecl.getEnviron()" + getName());
+	//ApplicationUtility.trace("PackageDecl.getEnviron()" + getName());
         if (_environ == null) {
             _initEnviron();
         }
@@ -138,32 +138,30 @@ public class PackageDecl extends JavaDecl
 
         // Use the contents of the system jar file to get java.* etc. files 
         if (fullName().equals("") ||
-                SearchPath.systemPackageSet.contains(fullName(File.separatorChar))) {
+                SearchPath.systemPackageSet.contains(fullName('.'))) {
             _initEnvironSystemPackages(SearchPath.systemClassSet,
                     SearchPath.systemPackageSet);
         }
 
-        if (SearchPath.systemPackageSet.contains(fullName(File.separatorChar))) {
+        if (SearchPath.systemPackageSet.contains(fullName('.'))) {
                 return;
         }
 
-       System.out.println("PackageDecl._initEnvironSystemPackages(): " +
-               "Now processing " + fullName(File.separatorChar));
+       System.out.println("PackageDecl._initEnviron(): " +
+               "Now processing " + fullName('.'));
         // Use reflection to get at the Ptolemy Core packages.
-        if (SearchPath.ptolemyCorePackageSet.contains(fullName(File.separatorChar))) {
+        if (SearchPath.ptolemyCorePackageSet.contains(fullName('.'))) {
             _initEnvironSystemPackages(SearchPath.ptolemyCoreClassSet,
                     SearchPath.ptolemyCorePackageSet);
 
-            if (fullName(File.separatorChar).equals("ptolemy" +
-						    File.separatorChar +
-						    "data")) {
+            if (fullName('.').equals("ptolemy.data")) {
                 // ptolemy.data and ptolemy.data.type are part of the 
                 // ptolemy II core, so we can use reflection, but
                 // ptolemy.data.expr is not part of the core, so
                 // we need to add it by hand so that we can parse
                 // the .java files and get the bodies in to the AST.
-                //System.out.println("PackageDecl._initEnvironSystem" +
-                // "Packages(): saw ptolemy/data ");
+                System.out.println("PackageDecl._initEnviron" +
+                 "Packages(): saw ptolemy/data ");
                 _environ.add(new PackageDecl("expr", this));
             }
             return;
@@ -184,7 +182,7 @@ public class PackageDecl extends JavaDecl
         for (int i = 0; i < paths.size(); i++) {
             String path = (String) paths.get(i);
 
-            //ApplicationUtility.trace("path = " + path);
+            ApplicationUtility.trace("path = " + path);
 
             String dirName = path + subdir;
 
@@ -196,10 +194,10 @@ public class PackageDecl extends JavaDecl
 
                 String[] nameList = dir.list();
 
-                //ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
+                ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
 
                 for (int j = 0; j < nameList.length; j++) {
-                    //ApplicationUtility.trace("iterating over names, j = " + j);
+                    ApplicationUtility.trace("iterating over names, j = " + j);
 
                     String name = nameList[j];
                     int length = name.length();
@@ -217,15 +215,15 @@ public class PackageDecl extends JavaDecl
                         // with the same base name, but with different extensions.
                         if (_environ.lookupProper(className, CG_USERTYPE) == null) {
 
-                            //ApplicationUtility.trace("adding class/interface " +
-                            //className + " from " + dirName);
+                            ApplicationUtility.trace("adding class/interface " +
+                            className + " from " + dirName);
 
                             _environ.add(new ClassDecl(className, this));
 
                             empty = false;
 
-                            //ApplicationUtility.trace(
-                            // getName() + " : found source in " + dirName + name);
+                            ApplicationUtility.trace(
+                             getName() + " : found source in " + dirName + name);
                         }
 
                     } else {
@@ -236,9 +234,10 @@ public class PackageDecl extends JavaDecl
                         if (fs.isDirectory()) {
                             _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                            //System.out.println(fullName() + " " +
-                            // getName() + " : found subpackage in " +
-                            // fullname);
+                            System.out.println(fullName() + " " +
+                             getName() + " : found subpackage in " +
+                             fullname +
+					       " Adding " + name);
                         }
 
                     } // className != null
@@ -255,26 +254,23 @@ public class PackageDecl extends JavaDecl
     // Initialize the Environ by loading declarations for the system packages
     // or ptolemy core packages.
     private void _initEnvironSystemPackages(Set classSet, Set packageSet) {
-        // FIXME: should this be File.separatorChar?  I think
-        // jar files always use /
-        String packageName = fullName(File.separatorChar);
-        //System.out.println(getClass().getName() + 
-	//		   "._initEnvironSystemPackages(): " +
-	//		   "loading " + packageName + " _container:" + _container);
+        String packageName = fullName('.');
+        System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+			   "loading " + packageName + " _container:" + _container);
 
         Iterator classes = classSet.iterator();
         while (classes.hasNext()) {
             String className = (String) classes.next();
             if (className.startsWith(packageName)) {
                 String systemPackageName =
-                    StringManip.partBeforeLast(className, File.separatorChar);
+                    StringManip.partBeforeLast(className, '.');
                 if (systemPackageName.equals(packageName)) {
                     if (_environ.lookupProper(className, CG_USERTYPE) == null) {
                 String shortClassName =
                     className.substring(packageName.length() + 1);
-                //System.out.println("PackageDecl._initEnviron" +
-                //                "SystemPackages():"+
-                //                shortClassName);
+                System.out.println("PackageDecl._initEnviron" +
+                                "SystemPackages():"+
+                                shortClassName);
 
                         _environ.add(new ClassDecl(shortClassName, this));
                     }
@@ -289,32 +285,32 @@ public class PackageDecl extends JavaDecl
             // Add the package 
             // if it is a subpackage of packageName, _or_ 
             // if the packageName is "" and the
-            // systemPackage does not contain a File.separatorChar
+            // systemPackage does not contain a .
             //
             // We need to check to see if the string contains
-	    // a File.separatorChar because 
+	    // a . because 
 	    // if packageName == java and systemPackageName == javax
             // then partBeforeLast will fail. 
             if (systemPackageName.startsWith(packageName) &&
-                    systemPackageName.indexOf(File.separatorChar) != -1 &&
+                    systemPackageName.indexOf('.') != -1 &&
                     StringManip.partBeforeLast(systemPackageName,
-                            File.separatorChar).equals(packageName)) {
+                            '.').equals(packageName)) {
                 // Remove the package name and add the subpackage.
                 // For example if we are in java, then add lang instead
                 // of java/lang
                 String shortSystemPackageName =
                     systemPackageName.substring(packageName.length() + 1);
-                // System.out.println("PackageDecl._initEnvironSystem" +
-                // "Packages(): adding package: " + shortSystemPackageName);
+                System.out.println("PackageDecl._initEnvironSystem" +
+				   "Packages(): adding package: " + shortSystemPackageName);
                 _environ.add(new PackageDecl(shortSystemPackageName, this));
             } else {
                 if (packageName.equals("") && 
-                        systemPackageName.indexOf(File.separatorChar) == -1 &&
+                        systemPackageName.indexOf('.') == -1 &&
                         !systemPackageName.equals("META-INF")
                     ) {
-                    // System.out.println("PackageDecl._initEnvironSystem" +
-                    // "Packages(): adding toplevel package: " +
-                    // systemPackageName);
+                    System.out.println("PackageDecl._initEnvironSystem" +
+                     "Packages(): adding toplevel package: " +
+                     systemPackageName);
                 _environ.add(new PackageDecl(systemPackageName, this));
                 }
             }

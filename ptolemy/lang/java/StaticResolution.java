@@ -131,37 +131,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 Set keySet = allPass2ResolvedMap.keySet();
                 ApplicationUtility.warn("pass 2 resolved files: " +
 					keySet.toString());
-		// restOfPath contains the directories that we add one by one.
-		String restOfPath = noExtensionFilename;
-
-		StringBuffer className =
-		    new StringBuffer(StringManip.
-				     baseFilename(noExtensionFilename));
-		while (!found) {
-		    if (restOfPath.lastIndexOf(File.separatorChar) == -1) { 
-			// We are out of directories to try.
-			break;
-		    }
-
-		    // First time through, we pull off the file name,
-		    // after that we pull off directories.
-		    restOfPath = StringManip.partBeforeLast(restOfPath,
-							File.separatorChar);
-		    // FIXME: use . here, not File.separatorChar
-		    className.insert(0,
-				     StringManip.baseFilename(restOfPath) + 
-				     File.separatorChar);
-		    System.out.println("StaticResolution.invalidateCompileUnit: " +
-				       "trying " + className.toString());
-		    found = (allPass2ResolvedMap.remove(className.toString()) != null);
-		    if (found) {
-			noExtensionFilename = className.toString();
-		    }
-		}
 	    }
         }
-	System.out.println("StaticResolution.invalidateCompileUnit: " +
-			   " found = " + found + " " + noExtensionFilename);
 
         if (found || (pass == 1)) {
             CompileUnitNode unitNode = (CompileUnitNode)
@@ -175,18 +146,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
                 Environ pkgEnv = pkgDecl.getEnviron();
 
-                String className = StringManip.baseFilename(noExtensionFilename);
-
+                //String className = StringManip.baseFilename(noExtensionFilename);
+		// FIXME: we should change the name of noExtensionFilename
+		// to className everywhere in this method.
+		String className = noExtensionFilename;
                 ClassDecl classDecl =
-		    (ClassDecl) pkgEnv.lookupProper(className,
+		    (ClassDecl) pkgEnv.lookupProper(StringManip.unqualifiedPart(className),
 						    CG_USERTYPE);
 
                 if (classDecl != null) {
                     classDecl.invalidate();
                 } else {
-                    ApplicationUtility.warn("invalidateCompileUnit(): could" +
+                    ApplicationUtility.warn("StaticResolution.invalidate" +
+					    "CompileUnit(): could" +
 					    " not find ClassDecl associated" +
-					    " with class " + className);
+					    " with class " + className +
+					    " pkgEnv: " + pkgEnv +
+					    " " + unitNode.toString());
                 }
             }
         }
@@ -443,26 +419,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         CompileUnitNode loadedAST =
             (CompileUnitNode) allPass0ResolvedMap.get(className);
 
-        // FIXME: we should not have to try with /
-        if (loadedAST == null) {
-	    System.out.println("StaticResolution.loadClassName(): " +
-			       " Warning, trying with .");
-            loadedAST =
-                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('.','/'));
-        }
-
-        if (loadedAST == null) {
-	    System.out.println("StaticResolution.loadClassName(): " +
-			       " Warning, trying replacing . with File.separatorChar");
-            loadedAST =
-                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('.',File.separatorChar));
-        }
-        if (loadedAST == null) {
-	    System.out.println("StaticResolution.loadClassName(): " +
-			       " Warning, trying replacing / with File.separatorChar");
-            loadedAST =
-                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('/',File.separatorChar));
-        }
         if (loadedAST == null) {
             System.out.print("+");
             loadedAST =
@@ -790,9 +746,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 message += "\n\nClasspath error?\n\n";
             }
 	    String envString = env.toString();
-	    if (envString.length() > 100 ) {
-		envString = new String(envString.substring(0,100) + "...");
-	    }
 
             message += "Symbol name: \"" +
                 name.getIdent() + "\" is undefined in the environment.\n" +

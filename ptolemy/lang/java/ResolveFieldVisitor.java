@@ -517,16 +517,29 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         LinkedList matches = new LinkedList();
 
+
+	// FIXME: remove debugMatches when we are done debugging
+        StringBuffer debugMatches = new StringBuffer();
+
         while (methods.hasNext()) {
             MethodDecl method = (MethodDecl) methods.next();
+
+	    
+	    debugMatches.append("-" + method.toString() + " " + method.getName());
+	    List formalTypes = method.getParams();
+	    Iterator formalItr2 = formalTypes.iterator();
+	    while (formalItr2.hasNext()) {
+		debugMatches.append(formalItr2.next().toString());
+	    }
+
             if (isCallableWith(method, argTypes)) {
                 matches.addLast(method);
             }
         }
 
         if (matches.size() == 0) {
-            ApplicationUtility.error("no matching " + aMethod.getName() +
-                    "(" + TNLManip.toString(argTypes) + ")");
+            ApplicationUtility.error("no matching method" + aMethod.getName() +
+                    "(" + TNLManip.toString(argTypes) + ")" + debugMatches);
         }
 
         Iterator matchesItr1 = matches.iterator();

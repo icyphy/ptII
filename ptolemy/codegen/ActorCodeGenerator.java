@@ -155,16 +155,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         _rewriteSources(unitList, renamedClassNameList);
 
-	// FIXME: another File.separatorChar -> . location
         ApplicationUtility.status("ActorCodeGenerator.pass1(): returning " +
 				 _outputPackageName + "." +
 	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
-				      File.separatorChar));
+				      '.'));
 
-	// FIXME: another File.separatorChar -> . location
         return _outputPackageName + "." +
 	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
-				      File.separatorChar);
+				      '.');
     }
 
     /** Perform pass 2 on the actor with the information given by the
@@ -290,10 +288,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //unitNode = StaticResolution.loadFileName(
             // _makeOutputFilename((String) classNameItr.next()), 2);
 
-	    // FIXME: we will need to handle className . to File.separatorChar
-	    String className = 
-		new String(((String)classNameItr.next()).
-			   replace('.',File.separatorChar));
+	    String className = (String)classNameItr.next();
+
 	    System.out.println("ActorCodeGenerator.pass3(): " + 
 			       "about to call loadFile on " +className);
 
@@ -335,7 +331,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    String className = (String) classNameItr.next();
             ApplicationUtility.status("ActorCodeGenerator._invalidate" +
 				      "CompileUnit: invalidating source " +
-				      "filename: " + className);
+				      "filename: " + className + " pass: " +
+				      passNumber);
 
             if (!StaticResolution.invalidateCompileUnit(className, passNumber)) {
                 ApplicationUtility.warn("failed to invalidate source filename: "                        + className);
@@ -441,6 +438,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 ApplicationUtility.trace("_makeUnitList() : super class = " +
                         superDecl + ", continuing. Kind = " + superKind);
 
+		// FIXME: should this be . or File.separatorChar
                 fileName = superDecl.fullName(File.separatorChar);
 
                 // assume we are using the named package
@@ -503,10 +501,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         while (classNameItr.hasNext()) {
             //String className = (String) classNameItr.next();
 	    // Get the classname without the package name
-	    // FIXME: another File.separatorChar -> . location
 	    String className =
 		StringManip.partAfterLast((String)classNameItr.next(), 
-					  File.separatorChar);
+					  '.');
 
             String newClassName = "CG_" +  className + "_" + actorName;
 
@@ -517,10 +514,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             renameMap.put(className, newClassName);
 
 	    //renamedClassNameList.addLast(newClassName);
-	    renamedClassNameList.addLast(_outputPackageName.
-					 replace('.', File.separatorChar) +
-					 File.separatorChar +
-					 newClassName);
+	    renamedClassNameList.addLast(_outputPackageName + 
+					 '.' + newClassName);
         }
 
         TNLManip.traverseList(new RenameJavaVisitor(),
@@ -544,12 +539,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //(String) classNameItr.next()));
 
 	    // Strip out the package name
-	    // FIXME: another location where File.separatorChar should be
-	    // replaced with .
 	    String filename =
 		_makeOutputFilename(StringManip.
 				    partAfterLast((String)classNameItr.next(),
-						  File.separatorChar));
+						  '.'));
             filenameList.add(filename);
 	    System.out.println("ActorCodeGenerator._rewriteSources(): " +
 			       filename);

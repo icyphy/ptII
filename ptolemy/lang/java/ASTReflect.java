@@ -321,12 +321,10 @@ public class ASTReflect {
 
 	NameNode packageNode = (NameNode) loadedAST.getPkg();
 	while (packageNode.getQualifier() != AbsentTreeNode.instance) {
-	    // FIXME: we should use ., not File.separatorChar
-	    packageBuffer.insert(0,packageNode.getIdent() +
-				 File.separatorChar);
+	    packageBuffer.insert(0,packageNode.getIdent() + '.');
 	    packageNode = (NameNode) packageNode.getQualifier();
 	}
-	packageBuffer.insert(0, packageNode.getIdent() + File.separatorChar);
+	packageBuffer.insert(0, packageNode.getIdent() + '.');
 	return packageBuffer.toString();
     }
 
