@@ -47,6 +47,13 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Return true if this Port is connected to another Port. Return false
+     *  otherwise.
+     */	
+    public boolean isConnected() {
+        return _connected;
+    }
+
     /** Description
      * @see full-classname/method-name
      * @param parameter-name description
@@ -97,8 +104,8 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
+    /* This variable is set to true if is is connected through a relation
+     * to another port.  
      */
-    private int aPrivateVariable;
+    private boolean _connected;
 }
