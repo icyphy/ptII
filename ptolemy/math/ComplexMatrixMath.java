@@ -226,6 +226,64 @@ public class ComplexMatrixMath {
     }
 
 
+    /** Return true if the first argument is greater than the second argument 
+     *  (both complex numbers):
+     *  (a+ib) > (c+id) provided either a > c or a=c and b > d. 
+     */
+    public static final boolean ifgreater(Complex num1,
+            Complex num2) {
+        
+	if (((num1.real > num2.real) || (num1.real == num2.real)) && (num1.imag > num2.imag)) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+    }
+
+    /** Return true if the first argument is less than the second argument 
+     *  (both complex numbers):
+     *  (a+ib) < (c+id) provided either a < c or a=c and b < d. 
+     */
+    public static final boolean ifless(Complex num1,
+            Complex num2) {
+        
+	if (((num1.real < num2.real) || (num1.real == num2.real)) && (num1.imag < num2.imag)) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+    }
+  
+    /** Return true if all the absolute differences between corresponding
+     *  elements of matrix1 and matrix2, for both the real and imaginary parts,
+     *  are all less than or equal to maxError. Otherwise, return false.
+     *  Throw an IllegalArgument exception if the matrices are not of the same
+     *  length. If both matrices are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, Complex maxError) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+	Complex temp = new Complex();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+		temp = matrix1[i][j].subtract(matrix2[i][j]);
+	    
+		// ifgreater returns true if temp > maxError.
+		if (ifgreater(temp,maxError)) {
+		    return false;
+		}
+	    }
+	}
+        
+        return true;
+    }
 
     /** Return a new matrix that is constructed by conjugating the elements
      *  in the input matrix.
