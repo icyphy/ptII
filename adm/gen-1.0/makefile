@@ -479,6 +479,7 @@ remote1distjsall:
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
 	-rm -rf $(JSDATABASE)
+	mkdir $(JSDATABASE)
 
 	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
 		set $(JSALLDIRS); \
