@@ -83,7 +83,6 @@ public class StringUtilities {
             + longName.substring(longName.length() - 38);
     }
 
-
     /** Return a string with a maximum line length of <i>length</i>
      *  characters, limited to the given number of characters. 
      *  If there are more than 10 newlines, then the string is truncated
@@ -108,7 +107,7 @@ public class StringUtilities {
                 results.append(tokenizer.nextToken());
             }
             results.append("..."); 
-            string = results.toString();
+            return results.toString();
         }
 
         if (string.length() > length) {
@@ -308,7 +307,11 @@ public class StringUtilities {
                         + "invoked with -Dptolemy.ptII.dir"
                         + "=\"$PTII\"");
             }
-            System.setProperty("ptolemy.ptII.dir", home);
+            try {
+                System.setProperty("ptolemy.ptII.dir", home);
+            } catch (SecurityException security) {
+                // Ignore, we are probably running as an applet or -sandbox
+            }
             return home;
         }
         if (property == null) {
@@ -356,7 +359,7 @@ public class StringUtilities {
 
     /**  If the string is longer than 79 characters, split it up by
      *  displaying adding newlines in all newline delimited substrings
-     *  that are longer than 79 characters.
+     *  that are longer than 79 characters. 
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
      *  @see #abbreviate(String longName)
@@ -567,17 +570,17 @@ public class StringUtilities {
 
     // If you change these, be sure to try running vergil on
     // a HSIF moml file
-    // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml
-    /** Maximum length in characters of a long string before
+    // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml 
+    /** Maximum length in characters of a long string before 
      *  {@link #ellipse(String, int)} truncates and add a
      *  trailing . . .
-     */
+     */ 
     public static final int ELLIPSIS_LENGTH_LONG = 2000;
 
-    /** Maximum length in characters of a short string before
+    /** Maximum length in characters of a short string before 
      *  {@link #ellipse(String, int)} truncates and add a
      *  trailing . . .
-     */
+     */ 
     public static final int ELLIPSIS_LENGTH_SHORT = 400;
 
     /** Location of Application preferences such as the user library.
