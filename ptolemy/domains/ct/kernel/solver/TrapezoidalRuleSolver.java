@@ -295,7 +295,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  at the beginning of an integration step.
      *  @param converge The flag setting.
      */
-    protected void _setConverge(boolean converge) {
+    protected void _setConvergence(boolean converge) {
         _converge = converge;
     }
 
