@@ -93,16 +93,7 @@ public final class ASTReflect {
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
-
-	// Get the classname, and strip off the package.
-	String fullClassName = myClass.getName();
-	// FIXME: should we use the full classname with package here?
-	NameNode className =
-	    new NameNode(AbsentTreeNode.instance,
-                    fullClassName.substring(1 +
-                            fullClassName.lastIndexOf('.')));
-
-
+	NameNode className = (NameNode) _makeNameNode(myClass.getName());
 	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
 	LinkedList memberList = new LinkedList();
@@ -163,7 +154,7 @@ public final class ASTReflect {
 
 	// FIXME: we are not trying to generate a list of imports here.
 	// We could look at the return values and args and import
-	// anything outside of the package.
+	// anything outside of the package and java.lang.
 
 	CompileUnitNode compileUnitNode = null;
 	if (myClass.isInterface()) {
@@ -194,19 +185,13 @@ public final class ASTReflect {
 	Constructor constructors[] = myClass.getDeclaredConstructors();
 	Constructor constructor = null;
 	for(int i = 0; i < constructors.length; i++) {
-	    constructor = constructors[i];
 	    int modifiers =
-                Modifier.convertModifiers(constructor.getModifiers());
-	    String fullConstructorName = constructor.getName();
-	    // FIXME: should we use the full name with package here?
+                Modifier.convertModifiers(constructors[i].getModifiers());
 	    NameNode constructorName =
-		new NameNode(AbsentTreeNode.instance,
-                        fullConstructorName.substring(1 +
-                                fullConstructorName.lastIndexOf('.')));
-
-	    List paramList = _paramList(constructor.getParameterTypes());
-
-	    List throwsList = _typeNodeList(constructor.getExceptionTypes());
+                (NameNode) _makeNameNode(constructors[i].getName());
+	    List paramList = _paramList(constructors[i].getParameterTypes());
+	    List throwsList =
+                _typeNodeList(constructors[i].getExceptionTypes());
 
 	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
@@ -234,14 +219,9 @@ public final class ASTReflect {
 	for(int i = 0; i < fields.length; i++) {
 	    int modifiers =
                 Modifier.convertModifiers(fields[i].getModifiers());
-	    TypeNode defType = _definedType(fields[i].getType());
-	    String fullFieldName = fields[i].toString();
-
-	    // FIXME: should we use the full name with package here?
 	    NameNode fieldName =
-		new NameNode(AbsentTreeNode.instance,
-                        fullFieldName.substring(1 +
-                                fullFieldName.lastIndexOf('.')));
+                (NameNode) _makeNameNode(fields[i].toString());
+	    TypeNode defType = _definedType(fields[i].getType());
 
 	    FieldDeclNode  fieldDeclNode =
 		new FieldDeclNode(modifiers,
@@ -276,18 +256,8 @@ public final class ASTReflect {
     public static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
-
-	// Get the classname, and strip off the package.
-	String fullClassName = myClass.getName();
-
-	// FIXME: should we use the full classname with package here?
-	NameNode className =
-	    new NameNode(AbsentTreeNode.instance,
-                    fullClassName.substring(1 +
-                            fullClassName.lastIndexOf('.')));
-
+	NameNode className = (NameNode) _makeNameNode(myClass.getName());
 	List interfaceList = _typeNodeList(myClass.getInterfaces());
-
 	LinkedList memberList = new LinkedList();
 
 	// Get the AST for all the constructor.
@@ -409,27 +379,19 @@ public final class ASTReflect {
     public static List methodsASTList(Class myClass) {
 	List methodList = new LinkedList();
 	Method methods[] = myClass.getDeclaredMethods();
-	Method method = null;
 	for(int i = 0; i < methods.length; i++) {
-	    method = methods[i];
-	    if (! myClass.equals(method.getDeclaringClass())) {
+	    if (! myClass.equals(methods[i].getDeclaringClass())) {
 		// This method was declared in a parent class,
 		// so we skip it
 		continue;
 	    }
-	    // FIXME, we need to map java.lang.reflect.Modifier to
-	    // ptolemy.java.lang.Modifier.
 	    int modifiers =
-		Modifier.convertModifiers(method.getModifiers());
-
+		Modifier.convertModifiers(methods[i].getModifiers());
 	    NameNode methodName =
-		new NameNode(AbsentTreeNode.instance, method.getName());
-
-	    List paramList = _paramList(method.getParameterTypes());
-
-	    List throwsList = _typeNodeList(method.getExceptionTypes());
-
-	    TypeNode returnType = _definedType(method.getReturnType());
+                (NameNode) _makeNameNode(methods[i].getName());
+	    List paramList = _paramList(methods[i].getParameterTypes());
+	    List throwsList = _typeNodeList(methods[i].getExceptionTypes());
+	    TypeNode returnType = _definedType(methods[i].getReturnType());
 
 	    MethodDeclNode methodDeclNode =
 		new MethodDeclNode(modifiers,
@@ -534,11 +496,9 @@ public final class ASTReflect {
 		if (componentClass.isPrimitive()) {
 		    baseType = _primitiveTypeNode(componentClass);
 		} else {
-		    fullClassName = componentClass.getName();
 		    NameNode className =
-			(NameNode) _makeNameNode(fullClassName);
+                        (NameNode) _makeNameNode(componentClass.getName());
 		    baseType = new TypeNameNode(className);
-
 		}
 	    }
 	    defType =
@@ -547,9 +507,8 @@ public final class ASTReflect {
 	    if (myClass.isPrimitive()) {
 		return _primitiveTypeNode(myClass);
 	    } else {
-		fullClassName = myClass.getName();
 		NameNode className =
-		    (NameNode) _makeNameNode(fullClassName);
+                    (NameNode) _makeNameNode(myClass.getName());
 		defType = new TypeNameNode(className);
 	    }
 
@@ -557,12 +516,14 @@ public final class ASTReflect {
 	return defType;
     }
 
-    // FIXME: This is copied from StaticResolution.java because
-    // we don't want to cause StaticResolution to start reading in
-    // all the java.lang packages.
     // Create a TreeNode that contains the qualifiedName split
     // into separate nodes.
     private static TreeNode _makeNameNode(String qualifiedName) {
+        // FIXME: This is copied from StaticResolution.java because
+        // we don't want to call StatiResolutoin._makeNameNode() and
+        // cause StaticResolution to start reading in
+        // all the java.lang packages.
+
         TreeNode retval = AbsentTreeNode.instance;
 
         int firstDotPosition;
@@ -601,20 +562,19 @@ public final class ASTReflect {
 	    // call, but we don't for readability reasons.
 	    int modifier =
 		Modifier.convertModifiers(parameterClasses[i].getModifiers());
-	    TypeNode defType = _definedType(parameterClasses[i]);
-
 	    // The name of the parameter is not available via reflection.
 	    NameNode name = new NameNode(AbsentTreeNode.instance,"");
+	    TypeNode defType = _definedType(parameterClasses[i]);
+
 	    paramList.add(new ParameterNode(modifier, defType, name));
 	}
 	return paramList;
     }
 
-    // Given a Class, return the primitive type.
+    // Given a primitive Class, return the primitive type.
     private static TypeNode _primitiveTypeNode(Class myClass) {
 	TypeNode defType = null;
-	// FIXME: I'll bet we could reorder these for better
-	// performance
+	// FIXME: I'll bet we could reorder these for better performance.
 	if (!myClass.isPrimitive()) {
 	    throw new RuntimeException("Error: " + myClass +
                     " is not a primitive type like int");
