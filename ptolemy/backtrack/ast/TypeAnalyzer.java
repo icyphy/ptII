@@ -551,9 +551,13 @@ public class TypeAnalyzer extends ASTVisitor {
         if (qualifier instanceof SimpleName) {
             TypeAndOwner ownerTypeAndOwner = 
                 _resolveName(((SimpleName)qualifier).getIdentifier(), null);
-            Type.setOwner(qualifier, ownerTypeAndOwner._getOwner());
-            owner = ownerTypeAndOwner._getType();
-            Type.setType(qualifier, owner);
+            if (ownerTypeAndOwner == null)
+                owner = null;
+            else {
+                Type.setOwner(qualifier, ownerTypeAndOwner._getOwner());
+                owner = ownerTypeAndOwner._getType();
+                Type.setType(qualifier, owner);
+            }
         } else
             owner = Type.getType(qualifier);
 
@@ -566,16 +570,18 @@ public class TypeAnalyzer extends ASTVisitor {
         TypeAndOwner nodeTypeAndOwner = _resolveName(resolveName, owner);
 
         // FIXME: Check for correctness.
-        if (nodeTypeAndOwner == null &&
-                !(node.getParent() instanceof QualifiedName))
-            throw new ASTResolutionException(
-                    owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(), 
-                    resolveName);
-        Type.setOwner(node, nodeTypeAndOwner._getOwner());
-        Type.setOwner(name, nodeTypeAndOwner._getOwner());
-        Type.setType(node, nodeTypeAndOwner._getType());
-        Type.setType(name, nodeTypeAndOwner._getType());
+        if (nodeTypeAndOwner == null) {
+            if (!(node.getParent() instanceof QualifiedName))
+                throw new ASTResolutionException(
+                        owner == null ? _state.getCurrentClass().getName() :
+                            owner.getName(), 
+                            resolveName);
+        } else {
+            Type.setOwner(node, nodeTypeAndOwner._getOwner());
+            Type.setOwner(name, nodeTypeAndOwner._getOwner());
+            Type.setType(node, nodeTypeAndOwner._getType());
+            Type.setType(name, nodeTypeAndOwner._getType());
+        }
     }
 
     /** Visit a simple name, and resolve it if possible. Some simple names
@@ -1215,9 +1221,9 @@ public class TypeAnalyzer extends ASTVisitor {
         if (table.containsKey(name)) {
             Type type = (Type)table.get(name);
             Integer hashCode = new Integer(i);
-            Type owner = 
-                Type.createType(
-                        ((Class)_classScopeRelation.get(hashCode)).getName());
+            Class ownerClass = (Class)_classScopeRelation.get(hashCode);
+            Type owner = ownerClass == null ? 
+                    null : Type.createType(ownerClass.getName());
             return new TypeAndOwner(type, owner);
         }
         else
