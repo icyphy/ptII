@@ -259,16 +259,20 @@ public class IOPort extends ComponentPort {
             while (outsideRelations.hasNext()) {
                 IORelation relation =
                     (IORelation) outsideRelations.next();
-                int width = relation.getWidth();
+                // A null link (supported since indexed links) might
+                // yield a null relation here. EAL 7/19/00.
+                if (relation != null) {
+                    int width = relation.getWidth();
 
-                Receiver[][] result = new Receiver[width][1];
+                    Receiver[][] result = new Receiver[width][1];
 
-                for (int i = 0; i< width; i++) {
-                    // This throws an exception if there is no director.
-                    result[i][0] = _newReceiver();
+                    for (int i = 0; i< width; i++) {
+                        // This throws an exception if there is no director.
+                        result[i][0] = _newReceiver();
+                    }
+                    // Save it, possibly replacing a previous version.
+                    _localReceiversTable.put(relation, result);
                 }
-                // Save it, possibly replacing a previous version.
-                _localReceiversTable.put(relation, result);
             }
         }
         if (output) {
@@ -646,10 +650,14 @@ public class IOPort extends ComponentPort {
                 Iterator relations = linkedRelationList().iterator();
                 while (relations.hasNext()) {
                     IORelation r = (IORelation) relations.next();
-                    Receiver[][] rr = getReceivers(r);
-                    if (rr != null) {
-                        for (int i = 0; i < rr.length; i++) {
-                            _localReceivers[index++] = rr[i];
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (r != null) {
+                        Receiver[][] rr = getReceivers(r);
+                        if (rr != null) {
+                            for (int i = 0; i < rr.length; i++) {
+                                _localReceivers[index++] = rr[i];
+                            }
                         }
 		    }
                 }
@@ -732,17 +740,21 @@ public class IOPort extends ComponentPort {
                 Iterator outsideRels = linkedRelationList().iterator();
                 while(outsideRels.hasNext()) {
                     IORelation outsideRel = (IORelation) outsideRels.next();
-                    if(outsideRel == relation) {
-                        result = new Receiver[width][];
-                        int rstSize =
-                            java.lang.Math.min(width, insideWidth-index);
-                        for (int i = 0; i< rstSize; i++) {
-                            result[i] = insideReceivers[index++];
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (outsideRel != null) {
+                        if(outsideRel == relation) {
+                            result = new Receiver[width][];
+                            int rstSize =
+                                java.lang.Math.min(width, insideWidth-index);
+                            for (int i = 0; i< rstSize; i++) {
+                                result[i] = insideReceivers[index++];
+                            }
+                            break;
+                        } else {
+                            index += outsideRel.getWidth();
+                            if(index > insideWidth) break;
                         }
-                        break;
-                    } else {
-                        index += outsideRel.getWidth();
-                        if(index > insideWidth) break;
                     }
                 }
                 return result;
@@ -790,18 +802,22 @@ public class IOPort extends ComponentPort {
             boolean foundremoteinput = false;
             while(relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
-                Receiver[][] rr;
-                rr = relation.deepReceivers(this);
-                if (rr != null) {
-                    for(int i = 0; i < rr.length; i++) {
-                        farReceivers[index] = rr[i];
-                        index++;
-                        foundremoteinput = true;
+                // A null link (supported since indexed links) might
+                // yield a null relation here. EAL 7/19/00.
+                if (relation != null) {
+                    Receiver[][] rr;
+                    rr = relation.deepReceivers(this);
+                    if (rr != null) {
+                        for(int i = 0; i < rr.length; i++) {
+                            farReceivers[index] = rr[i];
+                            index++;
+                            foundremoteinput = true;
+                        }
+                    } else {
+                        // create a number of null entries in farReceivers
+                        // corresponding to the width of relation r
+                        index += relation.getWidth();
                     }
-                } else {
-                    // create a number of null entries in farReceivers
-                    // corresponding to the width of relation r
-                    index += relation.getWidth();
                 }
             }
             if (!foundremoteinput) {
@@ -895,7 +911,11 @@ public class IOPort extends ComponentPort {
                 Iterator relations = linkedRelationList().iterator();
                 while(relations.hasNext()) {
                     IORelation relation = (IORelation) relations.next();
-                    sum += relation.getWidth();
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (relation != null) {
+                        sum += relation.getWidth();
+                    }
                 }
                 _width = sum;
             }
@@ -1669,7 +1689,10 @@ public class IOPort extends ComponentPort {
                     Iterator relations = linkedRelationList().iterator();
                     while (relations.hasNext()) {
                         IORelation theRelation = (IORelation)relations.next();
-                        if (!theRelation.isWidthFixed()) {
+                        // A null link (supported since indexed links) might
+                        // yield a null relation here. EAL 7/19/00.
+                        if (theRelation != null &&
+                                !theRelation.isWidthFixed()) {
                             throw new IllegalActionException(this, relation,
                                      "Attempt to link a second bus relation " +
                                      "with unspecified width to the outside " +

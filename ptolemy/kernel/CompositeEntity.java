@@ -233,21 +233,25 @@ public class CompositeEntity extends ComponentEntity {
                 while (lrels.hasMoreElements()) {
                     ComponentRelation rel =
                         (ComponentRelation)lrels.nextElement();
-                    if (rel.getContainer() != this) {
-                        throw new CloneNotSupportedException(
-                                "Cannot clone a CompositeEntity with level " +
-                                "crossing transitions.");
-                    }
-                    ComponentRelation newrel =
-                        newentity.getRelation(rel.getName());
-                    Port newport =
-                        newsubentity.getPort(port.getName());
-                    try {
-                        newport.link(newrel);
-                    } catch (IllegalActionException ex) {
-                        throw new CloneNotSupportedException(
-                                "Failed to clone a CompositeEntity: " +
-                                ex.getMessage());
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (rel != null) {
+                        if (rel.getContainer() != this) {
+                            throw new CloneNotSupportedException(
+                                    "Cannot clone a CompositeEntity with " +
+                                    "level crossing transitions.");
+                        }
+                        ComponentRelation newrel =
+                                newentity.getRelation(rel.getName());
+                        Port newport =
+                                newsubentity.getPort(port.getName());
+                        try {
+                            newport.link(newrel);
+                        } catch (IllegalActionException ex) {
+                            throw new CloneNotSupportedException(
+                                    "Failed to clone a CompositeEntity: " +
+                                    ex.getMessage());
+                        }
                     }
                 }
             }

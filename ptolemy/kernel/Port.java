@@ -179,7 +179,11 @@ public class Port extends NamedObj {
             Iterator relations = linkedRelationList().iterator();
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
-                result.addAll(relation.linkedPortList(this));
+                // A null link (supported since indexed links) might
+                // yield a null relation here. EAL 7/19/00.
+                if (relation != null) {
+                    result.addAll(relation.linkedPortList(this));
+                }
             }
             return Collections.unmodifiableList(result);
         } finally {
@@ -561,6 +565,8 @@ public class Port extends NamedObj {
                     if (rel != null) {
                         result += rel._description(detail, indent+1, 2) + "\n";
                     } else {
+                        // A null link (supported since indexed links) might
+                        // yield a null relation here. EAL 7/19/00.
                         result += _getIndentPrefix(indent+1) + "null\n";
                     }
                 }

@@ -691,28 +691,33 @@ public class ComponentPort extends Port {
             ComponentRelation relation =
                 (ComponentRelation)nearrelations.next();
 
-            Iterator connectedports = relation.linkedPortList(this).iterator();
-            while (connectedports.hasNext()) {
-                ComponentPort port =
-                    (ComponentPort)connectedports.next();
-                // NOTE: If level-crossing transitions are not allowed,
-                // then a simpler test than that of the following
-                // would work.
-                if (port._outside(relation.getContainer())) {
-                    // We are coming at the port from the inside.
-                    if (port.isOpaque()) {
-                        result.add(port);
+            // A null link (supported since indexed links) might
+            // yield a null relation here. EAL 7/19/00.
+            if (relation != null) {
+                Iterator connectedports
+                        = relation.linkedPortList(this).iterator();
+                while (connectedports.hasNext()) {
+                    ComponentPort port
+                            = (ComponentPort)connectedports.next();
+                    // NOTE: If level-crossing transitions are not allowed,
+                    // then a simpler test than that of the following
+                    // would work.
+                    if (port._outside(relation.getContainer())) {
+                        // We are coming at the port from the inside.
+                        if (port.isOpaque()) {
+                            result.add(port);
+                        } else {
+                            // Port is transparent
+                            result.addAll(port._deepConnectedPortList(path));
+                        }
                     } else {
-                        // Port is transparent
-                        result.addAll(port._deepConnectedPortList(path));
-                    }
-                } else {
-                    // We are coming at the port from the outside.
-                    if (port.isOpaque()) {
-                        result.add(port);
-                    } else {
-                        // It is transparent.
-                        result.addAll(port._deepInsidePortList(path));
+                        // We are coming at the port from the outside.
+                        if (port.isOpaque()) {
+                            result.add(port);
+                        } else {
+                            // It is transparent.
+                            result.addAll(port._deepInsidePortList(path));
+                        }
                     }
                 }
             }
