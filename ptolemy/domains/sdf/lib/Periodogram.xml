@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="Periodogram" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 454]">
@@ -39,6 +39,8 @@ frequency zero.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 155.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 102, 875, 563}}">
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -87,7 +89,7 @@ frequency zero.</text></svg></configure>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 75.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -138,6 +140,12 @@ frequency zero.</text></svg></configure>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 75.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
