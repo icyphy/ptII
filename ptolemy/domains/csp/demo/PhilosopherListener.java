@@ -30,6 +30,10 @@
 
 package ptolemy.domains.csp.demo;
 
+/** Listener for Philosopher events.
+ @author Neil Smyth
+ @version $Id$
+ */
 public interface PhilosopherListener {
 
     ///////////////////////////////////////////////////////////////////
