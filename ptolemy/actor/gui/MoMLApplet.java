@@ -58,7 +58,7 @@ import ptolemy.moml.MoMLParser;
 /**
 This is an applet that constructs a Ptolemy II model from a MoML file.
 "MoML" stands for "Modeling Markup Language." It is an XML language for
-contructing Ptolemy II models.
+constructing Ptolemy II models.
 The applet parameters are:
 <ul>
 <li><i>background</i>: The background color, typically given as a hex
