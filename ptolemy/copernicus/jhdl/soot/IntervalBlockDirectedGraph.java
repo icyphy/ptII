@@ -484,7 +484,6 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
           }
         */
 
-        //BlockDataFlowGraph.DEBUG=true;
         IntervalBlockDirectedGraph im = null;
         try {
             im = createIntervalBlockDirectedGraph(args,true);

@@ -152,13 +152,6 @@ public class DominatorCFG extends DirectedAcyclicCFG {
             BooleanNotCompactor.compact(testMethod);
             soot.Body body = testMethod.retrieveActiveBody();
             BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-            /*
-              if (writeGraphs) {
-              ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
-              BlockDataFlowGraph graphs[] =
-              BlockDataFlowGraph.getBlockDataFlowGraphs(args);
-              }
-            */
             _cfg = new DominatorCFG(bbgraph);
             if (writeGraphs) {
                 PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();

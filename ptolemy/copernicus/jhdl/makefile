@@ -46,10 +46,8 @@ DIRS =		util circuit soot test
 
 # Keep this list alphabetized.
 JSRCS = \
-	BlockDataFlowGraph.java \
 	CircuitTransformer.java \
 	Main.java \
-	RequiredBlockDataFlowGraph.java \
 
 
 OTHER_FILES_TO_BE_JARED = \

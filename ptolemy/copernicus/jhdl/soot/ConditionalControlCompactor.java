@@ -303,20 +303,6 @@ public class ConditionalControlCompactor {
         toDotty.writeDotFile(".", "aftergraph",bbgraph);
 
         // create dataflow for each block
-        List blockList=bbgraph.getBlocks();
-        for (int blockNum=0; blockNum < blockList.size(); blockNum++){
-            Block block=(Block)blockList.get(blockNum);
-            BlockDataFlowGraph dataFlowGraph=null;
-            try {
-                dataFlowGraph=new BlockDataFlowGraph(block);
-            } catch (JHDLUnsupportedException e) {
-                System.err.println(e);
-            }
-            PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
-            dgToDotty.writeDotFile(".", "bbgraph" + blockNum,
-                    dataFlowGraph);
-        }
-
     }
 
 }

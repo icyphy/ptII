@@ -58,7 +58,6 @@ JSRCS = \
 	DominatorHashMap.java \
 	IntervalBlockDirectedGraph.java \
 	IntervalChain.java \
-	IntervalDFG.java \
 	SootASTException.java \
 	SootASTVisitor.java \
 	SootBlockDirectedGraph.java \

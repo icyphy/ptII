@@ -60,7 +60,6 @@ JSRCS =	\
 	JHDLTestbench.java \
 	JHDLUnsupportedException.java \
 	Label.java \
-	MergedControlFlowGraph.java \
 	MuxNode.java \
 	PtDirectedGraphToDotty.java \
 	SuperBlock.java \
@@ -70,6 +69,7 @@ JSRCS =	\
 	CompositeModelGraph.java \
 	ActorModelGraph.java
 
+#	MergedControlFlowGraph.java \
 #	DirectedPortGraph.java
 #	PtolemyLogic.java
 #	PtolemyCellToJHDLCircuit.java \
