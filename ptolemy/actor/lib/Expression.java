@@ -288,10 +288,10 @@ public class Expression extends TypedAtomicActor {
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {
         // NOTE: uncomment this line to add better type constraints.
-        output.setTypeAtLeast(new VariableScope());//new OutputTypeFunction());
+        output.setTypeAtLeast(new OutputTypeFunction());
     }
 
-    private class VariableScope extends ModelScope implements InequalityTerm {
+    private class VariableScope extends ModelScope {
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
@@ -336,7 +336,7 @@ public class Expression extends TypedAtomicActor {
 
             Variable result = getScopedVariable(null, Expression.this, name);
             if (result != null) {
-                return result.getType();
+                return (Type)result.getTypeTerm().getValue();
             }
             return null;
         }
@@ -347,13 +347,13 @@ public class Expression extends TypedAtomicActor {
         public NamedList variableList() {
             return null;
         }
-//     }
+    }
 
-//     // This class implements a monotonic function of the type of
-//     // the output port.
-//     // The function value is determined by type inference on the
-//     // expression, in the scope of this Expression actor.
-//     private class OutputTypeFunction implements InequalityTerm {
+    // This class implements a monotonic function of the type of
+    // the output port.
+    // The function value is determined by type inference on the
+    // expression, in the scope of this Expression actor.
+    private class OutputTypeFunction implements InequalityTerm {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
@@ -414,7 +414,8 @@ public class Expression extends TypedAtomicActor {
                     _scope = new VariableScope();
                 }
                 Set set =
-                    _variableCollector.collectFreeVariables(_parseTree, _scope);
+                    _variableCollector.collectFreeVariables(
+                            _parseTree, _scope);
                 List termList = new LinkedList();
                 for(Iterator elements = set.iterator();
                     elements.hasNext();) {
@@ -424,14 +425,22 @@ public class Expression extends TypedAtomicActor {
                         continue;
                     }
                     TypedIOPort port = (TypedIOPort)getPort(name);
-                    if (port != null && port.getTypeTerm().isSettable()) {
-                        termList.add(port.getTypeTerm());
+                    if (port != null) {
+                        InequalityTerm[] terms =
+                            port.getTypeTerm().getVariables();
+                        for(int i = 0; i < terms.length; i++) {
+                            termList.add(terms[i]);
+                        }
                         continue;
-                    }
-                    Variable result = getScopedVariable(
+                     }
+                    Variable result = ModelScope.getScopedVariable(
                             null, Expression.this, name);
-                    if (result != null && result.getTypeTerm().isSettable()) {
-                        termList.add(result.getTypeTerm());
+                    if (result != null) {
+                        InequalityTerm[] terms =
+                            result.getTypeTerm().getVariables();
+                        for(int i = 0; i < terms.length; i++) {
+                            termList.add(terms[i]);
+                        }
                         continue;
                     }
                 }
@@ -478,7 +487,7 @@ public class Expression extends TypedAtomicActor {
          *  @return A description of this term.
          */
         public String toString() {
-            return "(" + getClass().getName() + ", " + getValue() + ")";
+            return "(" + expression.getExpression() + ", " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////
