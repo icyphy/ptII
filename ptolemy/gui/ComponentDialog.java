@@ -30,8 +30,8 @@
 package ptolemy.gui;
 
 import java.awt.Component;
+import java.awt.Frame;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -65,7 +65,7 @@ public class ComponentDialog extends JDialog {
      *  @param title The title to put on the window.
      *  @param component The component to insert in the dialog.
      */
-    public ComponentDialog(JFrame owner, String title, Component component) {
+    public ComponentDialog(Frame owner, String title, Component component) {
         this(owner, title, component, null);
     }
 
@@ -83,7 +83,7 @@ public class ComponentDialog extends JDialog {
      *   of the dialog.
      */
     public ComponentDialog(
-            JFrame owner, String title, Component component, String[] buttons) {
+            Frame owner, String title, Component component, String[] buttons) {
 
         super(owner, title, true);
 
