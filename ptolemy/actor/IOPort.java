@@ -154,9 +154,11 @@ public class IOPort extends ComponentPort {
      *  @exception CloneNotSupportedException If there is more than one
      *   destination and the token cannot be cloned.
      *  @exception IllegalActionException If the port is not an output.
+     *  @exception NoRoomException If a send to one of the channels throws
+     *     it.
      */
     public void broadcast(Token token)
-	    throws IllegalActionException {
+	    throws IllegalActionException, NoRoomException {
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
@@ -426,10 +428,10 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling get.
      *
      *
-     *  @exception NoTokenException If there is no token, or the
-     *   port is not an input port, or the channel index is out of range.
+     *  @exception NoTokenException If there is no token, or the 
+     *   channel index is out of range.
      *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created.
+     *   no receivers have been created, or if the port is not an input port.
      */
     public Token get(int channelindex)
             throws NoTokenException, IllegalActionException {
@@ -437,15 +439,16 @@ public class IOPort extends ComponentPort {
         try {
             workspace().getReadAccess();
             if (!isInput()) {
-                // FIXME: What should the message be ?
-                throw new NoTokenException(this, 
-                        "get: Tokens can only be retreived from " +
+                throw new IllegalActionException(this, 
+                        "get: Tokens can only be retrieved from " +
                         "an input port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
                 throw new NoTokenException(this,
                         "get: channel index is out of range.");
             }
+            // Note that the getReceivers() method might throw an
+            // IllegalActionException if there's no director.
             localRec = getReceivers();
             if (localRec[channelindex] == null) {
                 throw new NoTokenException(this,
@@ -845,10 +848,14 @@ public class IOPort extends ComponentPort {
      *
      *  @return True if there is room for a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
-     *   this query.
+     *   this query, or if this is not an output port.
      */
     public boolean hasRoom(int channelindex) throws IllegalActionException {
-        if (!isOutput()) return false;
+        if (!isOutput()) {
+            throw new IllegalActionException(this,
+                    "broadcast: Tokens can only be sent from an " +
+                    "output port.");
+        }
         if (channelindex >= getWidth() || channelindex < 0) return false;
         Receiver[][] fr = getRemoteReceivers();
         if (fr == null || fr[channelindex] == null) return false;
@@ -866,11 +873,18 @@ public class IOPort extends ComponentPort {
      *
      *  @return True if there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
-     *   this query, or if there is no director, and hence no receivers.
+     *   this query, if there is no director, and hence no receivers,
+     *   or if the port is not an input port.
      */
     public boolean hasToken(int channelindex) throws IllegalActionException {
-        if (!isInput()) return false;
+        if (!isInput()) {                
+            throw new IllegalActionException(this, 
+                    "get: Tokens can only be retrieved from " +
+                    "an input port.");
+        }
         if (channelindex >= getWidth() || channelindex < 0) return false;
+        // The getReceivers() method throws an IllegalActionException if
+        // there's no director.
         Receiver[][] fr = getReceivers();
         if (fr == null || fr[channelindex] == null) return false;
         for (int j = 0; j < fr[channelindex].length; j++) {
@@ -1026,17 +1040,17 @@ public class IOPort extends ComponentPort {
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
-     *  @exception CloneNotSupportedException If the token cannot be cloned
-     *   and there is more than one destination.
      *  @exception NoRoomException If there is no room in the receiver, 
-     *   the port is not an output, or if the index is out of range.
+     *   or if the index is out of range.
+     *  @exception IllegalActionException If the port is not an output.
      */
-    public void send(int channelindex, Token token) throws NoRoomException {
+    public void send(int channelindex, Token token) 
+            throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
-                throw new NoRoomException(this,
+                throw new IllegalActionException(this,
                         "send: Tokens can only be sent from an "+
                         "output port.");
             }
@@ -1044,6 +1058,8 @@ public class IOPort extends ComponentPort {
                 throw new NoRoomException(this,
                         "send: channel index is out of range.");
             }
+            // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
             farRec = getRemoteReceivers();
             if (farRec == null || farRec[channelindex] == null) return;
         } finally {
