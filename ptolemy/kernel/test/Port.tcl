@@ -66,7 +66,7 @@ test Port-1.1 {Get information about an instance of Port} {
     list [getJavaInfo $n]
 } {{
   class:         pt.kernel.Port
-  fields:
+  fields:        
   methods:       {equals java.lang.Object} getAssocEntity getClass getCo
     nnectedPorts getContainer getFullName getLinkedRelation
     s getName hashCode {link pt.kernel.Relation} notify not
@@ -74,15 +74,15 @@ test Port-1.1 {Get information about an instance of Port} {
     ame java.lang.String} toString {unlink pt.kernel.Relati
     on} unlinkAll wait {wait long} {wait long int} workspac
     e
-
+    
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}
-
+    
   properties:    assocEntity class connectedPorts container fullName lin
     kedRelations name
-
+    
   superclass:    pt.kernel.NamedObj
-
+    
 }}
 
 ######################################################################
