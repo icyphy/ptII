@@ -40,25 +40,37 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# NOTE:  All of the following tests use this director,
+# pretty much as a dummy.
+set director [java::new ptolemy.actor.Director]
+set manager [java::new ptolemy.actor.Manager]
+
 ######################################################################
 ####
 #
-test TypeConflictException-1.0 {Constructor that takes a String arg} {
-    set ex [java::new ptolemy.actor.TypeConflictException "Detail Message"]
-    $ex getMessage
-} {Detail Message}
+test TypeConflictException-1.0 {Constructor that takes a List} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
+    $p1 setTypeEquals $tDouble
 
-test TypeConflictException-2.1 {Constructor that takes a Nameable and a String} {
-    set ex [java::new ptolemy.actor.TypeConflictException \
-	    [java::null] "Detail Message"]
-    $ex getMessage
-} {: Detail Message}
+    set conflicts [java::new java.util.LinkedList]
+    $conflicts add $p1
+    $conflicts add $p2
 
-test TypeConflictException-2.2 {Constructor that takes a Nameable and a String} {
-    set n [java::new ptolemy.kernel.util.NamedObj "My NMamedObj"]
-    set ex [java::new ptolemy.actor.TypeConflictException \
-	    $n \
-	     "Detail Message"]
-    $ex getMessage
-} {.My NMamedObj: Detail Message}
-
+    set ex1 [java::new ptolemy.actor.TypeConflictException $conflicts]
+    set ex2 [java::new ptolemy.actor.TypeConflictException $conflicts \
+	    "Detail Message"]
+    list [$ex1 getMessage] [$ex2 getMessage] \
+	    [listToFullNames [$ex1 typeableList]]
+} {{Type conflicts occurred on the following Typeables:
+  ..E1.P1: double
+  ..E1.P2: NaT
+} {Detail Message
+  ..E1.P1: double
+  ..E1.P2: NaT
+} {..E1.P1 ..E1.P2}}
