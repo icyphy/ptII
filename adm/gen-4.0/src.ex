@@ -77,6 +77,7 @@ ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.java
 ptolemy/copernicus/java/test/runSnapShot.stats
 ptolemy/copernicus/jhdl
 ptolemy/copernicus/shallow/ptolemy.giotto
+ptolemy/data/expr/test/CParseTreeCodeGenerator.tcl
 ptolemy/data/test/EventToken.tcl
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
