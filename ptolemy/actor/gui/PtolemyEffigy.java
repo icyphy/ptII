@@ -290,7 +290,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		    try {
 			// If the following fails, we should remove the effigy.
 			try {
-			    toplevel = parser.parse(base, input.openStream());
+			    toplevel = parser.parse(base, input);
 			} catch (IOException io) {
 			    // If we are running under Web Start, we
 			    // might have a URL that refers to another
