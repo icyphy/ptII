@@ -226,9 +226,10 @@ public class ConnectorInteractor extends DragInteractor {
     /** Pick a site using the connector target and
      *  then snap to it.  Container is the container to
      *  pick in; x, y are the coordinates of the drag
-     *  point in the tansform context of that container.
+     *  point in the transform context of that container.
      */
-    public void snapToSite (final FigureContainer container, final Rectangle2D hitRect) {
+    public void snapToSite (final FigureContainer container,
+            final Rectangle2D hitRect) {
         //debug("SNAPPING TO SITE IN: " + container);
 
         Figure figure = container.pick(hitRect, new Filter() {
