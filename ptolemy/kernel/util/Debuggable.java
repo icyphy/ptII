@@ -1,4 +1,4 @@
-/* Interface for objects that can attach debug listener.
+/* Interface for objects that can attach debug listeners.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
