@@ -476,7 +476,7 @@ alljtests.tcl: makefile
 	rm -f $@
 	echo '# CAUTION: automatically generated file by a rule in ptcommon.mk' > $@
 	echo '# This file will source all the Tcl files that use Java. ' >> $@ 
-	echo '# This file will source the .itcl files list in the' >> $@
+	echo '# This file will source the tcl files list in the' >> $@
 	echo '# makefile SIMPLE_JTESTS and GRAPHICAL_JTESTS variables' >> $@ 
 	echo '# This file is different from all.itcl in that all.itcl' >> $@ 
 	echo '# will source all the .itcl files in the current directory' >> $@
@@ -500,6 +500,31 @@ alljtests.tcl: makefile
 			echo "if [ file exists $$x ] {source $$x}" >> $@; \
 		done; \
 	fi
+	echo "catch {doneTests}" >> $@
+	echo "exit" >> $@
+
+# alljsimpletests.tcl is used to source only the non-graphical tests
+alljsimpletests.tcl: makefile
+	rm -f $@
+	echo '# CAUTION: automatically generated file by a rule in ptcommon.mk' > $@
+	echo '# This file will source all the Tcl files that use Java. ' >> $@ 
+	echo '# This file will source the tcl files list in the' >> $@
+	echo '# makefile SIMPLE_JTESTS variable' >> $@ 
+	echo '# This file is different from all.itcl in that all.itcl' >> $@ 
+	echo '# will source all the .itcl files in the current directory' >> $@
+	echo '#' >> $@
+	echo '# Set the following to avoid endless calls to exit' >> $@
+	echo "if {![info exists reallyExit]} {set reallyExit 0}" >> $@
+	echo '# Exiting when there are no more windows is wrong' >> $@
+	echo "#::tycho::TopLevel::exitWhenNoMoreWindows 0" >> $@
+	echo '# If there is no update command, define a dummy proc.  Jacl needs this' >> $@
+	echo 'if {[info command update] == ""} then { ' >> $@
+	echo '    proc update {} {}' >> $@
+	echo '}' >> $@
+	echo "#Do an update so that we are sure tycho is done displaying" >> $@
+	echo "update" >> $@
+	echo "set savedir \"[pwd]\"" >> $@
+	echo "if {\"$(JSIMPLE_TESTS)\" != \"\"} {foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; cd \"\$$savedir\"; if [ file exists \$$i ] {source \$$i}}}" >> $@
 	echo "catch {doneTests}" >> $@
 	echo "exit" >> $@
 
