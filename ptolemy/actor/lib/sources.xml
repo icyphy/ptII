@@ -17,7 +17,7 @@
 
 <entity name="Const" class="ptolemy.actor.lib.Const">
 <doc>Create a constant sequence</doc>
-   <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+   <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
       <property name="attributeName" value="value"/>
       <property name="displayWidth" value="40"/>
    </property>
