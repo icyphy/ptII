@@ -16,5 +16,10 @@ cd $PTII/vendors/jhdl
 cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co ptjhdllib
 
 Note that this will download our copy of JHDL.jar, which is covered
-by the license in
+by the license in 
 http://www.jhdl.org/license.html
+
+To determine the current version of a JHDL.jar release, execute the
+following command with the JHDL.jar file in your classpath:
+
+java byucc.jhdl.Version
