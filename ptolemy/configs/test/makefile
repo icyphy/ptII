@@ -35,8 +35,8 @@ ME =		ptolemy/actor/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-#FIXME: we should not need to include DIVA here
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(COLT_DIR)/colt.jar$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JXTA_JARS)
+# PTJACL_JARS is defined in $PTII/mk/ptII.mk.in
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JARS)
 
 # AUXCLASSPATH is used by jtclsh
 AUXCLASSPATH =	$(CLASSPATH)
