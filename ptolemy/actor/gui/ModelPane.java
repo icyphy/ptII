@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.Actor;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.CloseListener;
@@ -49,6 +50,7 @@ import java.awt.Window;
 import java.awt.event.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -317,7 +319,9 @@ public class ModelPane extends JPanel implements CloseListener {
 	    _displays.setBackground(null);
 
 	    // Put placeable objects in a reasonable place
-	    for(Iterator i = _model.deepEntityList().iterator(); i.hasNext();) {
+            
+	    for(Iterator i = _allAtomicEntityList(_model).iterator(); 
+                i.hasNext();) {
 		Object o = i.next();
 		if(o instanceof Placeable) {
 		    ((Placeable) o).place(_displays);
@@ -401,6 +405,21 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Indicator to include director parameters in the controls. */
     public static int DIRECTOR_PARAMETERS = 4;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private List _allAtomicEntityList(CompositeActor model) {
+        LinkedList entities = (LinkedList)model.deepEntityList();
+        for(int i = 0; i < entities.size(); i++) {
+            Object actor = entities.get(i);
+            if (actor instanceof CompositeActor) {
+                entities.addAll(_allAtomicEntityList((CompositeActor)actor));
+            }
+        }
+        return (List)entities;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
