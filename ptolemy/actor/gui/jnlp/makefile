@@ -36,7 +36,9 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# Include diva.jar here in case we are building an VergilApplication
+# does not yet exist.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
