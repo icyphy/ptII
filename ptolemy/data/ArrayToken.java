@@ -398,18 +398,22 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return new ArrayToken(result);
     }
 
-    /** Test for closeness of the values of this token and the
-     *  argument token.  It is assumed that this class is the class of
-     *  the argument.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between them is less than
+	 *  or equal to the second argument.  This method only makes sense
+	 *  for tokens where the distance between them is reasonably
+	 *  represented as a double. It is assumed that the argument is
+	 * 	an ArrayToken, and the isCloseTo() method of the array elements
+	 * 	is used.
+     *  @param token The token to compare to this token.
+     *  @exception IllegalActionException If the elements do not support
+     *   this comparison.
+     *  @return A true-valued token if the first argument is close to this token.
      */
-    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+    protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
-        ArrayToken rightArray = (ArrayToken)rightArgument;
+        _checkArgumentLength(token);
+        ArrayToken rightArray = (ArrayToken)token;
 
         for (int i = 0; i < _value.length; i++) {
             // Here is where isCloseTo() differs from isEqualTo().
@@ -426,19 +430,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return BooleanToken.TRUE;
     }
 
-    /** Test for closeness of the values of this token and the argument
-     *  token.  It is assumed that this class is the class of
-     *  the argument.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
+    /** Return a true-valued token if the argument is equal to this one.
+     *  The isEqualTo() method of the element tokens is used to make the
+     * 	comparison.  It is assumed that the argument is an ArrayToken.
+     *  @param token The token to compare to this token.
+     *  @exception IllegalActionException If the element types do not
+     *   support this comparison.
+     *  @return A true-valued token if the argument is equal.
      */
-    protected BooleanToken _isEqualTo(Token rightArgument)
+    protected BooleanToken _isEqualTo(Token token)
             throws IllegalActionException {
-        _checkArgumentLength(rightArgument);
+        _checkArgumentLength(token);
 
-        ArrayToken rightArray = (ArrayToken)rightArgument;
+        ArrayToken rightArray = (ArrayToken)token;
         for (int i = 0; i < _value.length; i++) {
             BooleanToken result = _value[i].isEqualTo(
                     rightArray.getElement(i));
@@ -446,7 +450,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                 return BooleanToken.FALSE;
             }
         }
-
         return BooleanToken.TRUE;
     }
 

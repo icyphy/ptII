@@ -31,8 +31,6 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 
@@ -261,42 +259,39 @@ public abstract class AbstractConvertibleToken extends Token
         }
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  Type conversion also occurs here, so that the
-     *  operation is performed at the least type necessary to ensure
-     *  precision.  The returned type is the same as the type chosen
-     *  for the operation.  Generally, this is higher of the type of
-     *  this token and the argument type.  Subclasses should not
+	/** Test that the value of this token is close to the first argument,
+	 *  where "close" means that the distance between them is less than
+	 *  or equal to the second argument.  This method only makes sense
+	 *  for tokens where the distance between them is reasonably
+	 *  represented as a double. If the argument token is not of
+	 *  the same type as this token, then either this token or the
+	 *  argument will be converted, if possible, to the type of the other.
+	 *  <p>
+	 *  Subclasses should not
      *  generally override this method, but override the protected
      *  _isCloseTo() method to ensure that type conversion is performed
      *  consistently.
-     *
-     *  @param rightArgument The token to test closeness of this token with.
+     *  @param token The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.  In this base class, the epsilon argument is
-     *  ignored.
+     *   tokens are close.
      *  @return A boolean token that contains the value true if the
-     *  value and units of this token are close to those of the
-     *  argument token.
+     *   value and units of this token are close to those of the
+     *   argument token.
      *  @exception IllegalActionException If the argument token and
-     *  this token are of incomparable types, or the operation does
-     *  not make sense for the given types.
+     *   this token are of incomparable types, or the operation does
+     *   not make sense for the given types.
      */
-    public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
+    public final BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         // Note that if we had absolute(), subtraction() and islessThan()
-        // we could perhaps define this method for all tokens.  However,
-        // Precise classes like IntToken not bother doing the absolute(),
-        // subtraction(), and isLessThan() method calls and should go
-        // straight to isEqualTo().  Also, these methods might introduce
-        // exceptions because of type conversion issues.
-        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        // we could perhaps define this method for all tokens.
+        int typeInfo = TypeLattice.compare(getType(), token);
         if (typeInfo == CPO.SAME) {
-            return _isCloseTo(rightArgument, epsilon);
+            return _isCloseTo(token, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             AbstractConvertibleToken convertedArgument =
                 (AbstractConvertibleToken)
-                getType().convert(rightArgument);
+                getType().convert(token);
             try {
                 BooleanToken result = _isCloseTo(convertedArgument, epsilon);
                 return result;
@@ -305,14 +300,14 @@ public abstract class AbstractConvertibleToken extends Token
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("isCloseTo", this, rightArgument));
+                        notSupportedMessage("isCloseTo", this, token));
             }
         } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.isCloseTo(this, epsilon);
+            return token.isCloseTo(this, epsilon);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("isCloseTo",
-                            this, rightArgument));
+                            this, token));
         }
     }
 
@@ -674,34 +669,34 @@ public abstract class AbstractConvertibleToken extends Token
     protected abstract Token _divide(Token rightArgument)
             throws IllegalActionException;
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
-     *  same as the type of this class.  This method should be
-     *  overridden in derived classes to provide type specific actions
-     *  for divide.
-     *
-     *  @param rightArgument The token with which to test closeness.
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. It is assumed that the type of
+     *  the argument is the same as the type of this class.
+     *  This method should be overridden in derived classes to
+     *  provide type specific actions for the comparison.
+     *  @param token The token with which to test closeness.
      *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
+     *   supported by a derived class.
+     *  @return A token that contains the result of the test.
      */
     protected abstract BooleanToken _isCloseTo(
-            Token rightArgument, double epsilon)
+            Token token, double epsilon)
             throws IllegalActionException;
 
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
+    /** Test for equality of the values of this token and the argument.
+     *  It is assumed that the type of the argument is the
      *  same as the type of this class.  This method should be
      *  overridden in derived classes to provide type specific actions
-     *  for divide.
-     *
-     *  @see #isCloseTo
-     *  @param rightArgument The token with which to test equality.
+     *  for the comparison.
+     *  @param token The token with which to test equality.
      *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
+     *   supported by a derived class.
+     *  @return A token that contains the result of the test.
      */
-    protected abstract BooleanToken _isEqualTo(Token rightArgument)
+    protected abstract BooleanToken _isEqualTo(Token token)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token

@@ -339,30 +339,23 @@ public class BooleanToken extends AbstractConvertibleToken
         }
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  BooleanToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
+	/** Return a true-valued token if the first argument is close to this
+	 *  token, where in this class, "close" means "identical to."
+	 *  It is assumed that the type of the argument is BooleanToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing the result.
+	 */
+    protected BooleanToken _isCloseTo(Token token, double epsilon) {
+        return _isEqualTo(token);
     }
 
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  BooleanToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
+    /** Test for equality of the values of this token and the argument.
+     *  It is assumed that the type of the argument is BooleanToken.
+     *  @param token The token to compare to this token.
+     *  @return A token containing the result.
      */
-    protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        boolean argumentValue = ((BooleanToken)rightArgument).booleanValue();
+    protected BooleanToken _isEqualTo(Token token) {
+        boolean argumentValue = ((BooleanToken)token).booleanValue();
         if (_value == argumentValue) {
             return TRUE;
         } else {

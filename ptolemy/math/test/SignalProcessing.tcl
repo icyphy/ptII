@@ -137,7 +137,7 @@ proc javaPrintArray {javaArrayObj} {
 
 ####################################################################
 test SignalProcessing-1.1 {close} {
-    set epsilon [java::field ptolemy.math.SignalProcessing epsilon]
+    set epsilon [java::field ptolemy.math.SignalProcessing EPSILON]
     set testpairslist [list \
 	    [list 1 1] \
 	    [list -1 [expr {-1 + $epsilon/2}]] \

@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-set epsilon [java::field ptolemy.math.SignalProcessing epsilon]
+set epsilon [java::field ptolemy.math.SignalProcessing EPSILON]
 
 
 set a1 [java::new {double[]} 3 [list 3.7 -6.6 0.0003]]

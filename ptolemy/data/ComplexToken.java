@@ -36,6 +36,7 @@ import ptolemy.math.Complex;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 
@@ -72,7 +73,7 @@ public class ComplexToken extends ScalarToken {
     public ComplexToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof ComplexToken) {
             _value = ((ComplexToken)token).complexValue();
         } else {
@@ -281,34 +282,19 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  ComplexToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
+	/** Test that the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their values is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the argument is ComplexToken.
+     *  @param rightArgument The token to compare to this token.
+     *  @return A true-valued token if the first argument is close in value
+     * 	 to this token.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        ComplexToken difference = (ComplexToken)subtract(rightArgument);
-        return difference.absolute().isLessThan(new DoubleToken(epsilon));
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  ComplexToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        ComplexToken convertedArgument = (ComplexToken)rightArgument;
-        Complex complexValue = convertedArgument.complexValue();
-        return BooleanToken.getInstance(_value.equals(complexValue));
+            ScalarToken token, double epsilon) {
+        return BooleanToken.getInstance(
+		         complexValue().isCloseTo(((ComplexToken)token).complexValue(),
+		         epsilon));
     }
 
     /** Test for ordering of the values of this Token and the argument

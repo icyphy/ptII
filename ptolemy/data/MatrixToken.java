@@ -1187,39 +1187,37 @@ public abstract class MatrixToken extends Token {
                 notSupportedMessage("divide", this, rightArgument));
     }
 
-    /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is guaranteed by the caller that the type
-     *  and dimensions of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their elements is less than
+	 *  or equal to the second argument. This base class simply throws an
+	 *  exception.
+	 *  @param token The token to compare to this token.
+	 *  @return Nothing.
+	 * 	@exception IllegalActionException Always thrown.
+	 */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon)
+            MatrixToken token, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("isCloseTo", this, rightArgument));
+                notSupportedMessage("isCloseTo", this, token));
     }
 
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is guaranteed by the caller that the type and
      *  dimensions of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
+     *  class.  This method can be overridden in derived classes to
      *  provide type-specific operation and return a token of the
-     *  appropriate subclass.
-     *  @param rightArgument The token to add to this token.
+     *  appropriate subclass.  In this base class, this method
+     * 	delegates to equals().
+     *  @param rightArgument The token to compare to this token.
      *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
+     *   supported by a derived class.
+     *  @return A true-valued token if the argument is equal to this
+     * 	 matrix.
      */
     protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("isEqualTo", this, rightArgument));
+        return BooleanToken.getInstance(equals(rightArgument));
     }
 
     /** Return a new token whose elements are the modulo of

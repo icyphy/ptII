@@ -64,11 +64,11 @@ public class SignalProcessing {
     ////                         public methods                    ////
 
     /** Return true if the first argument is close to the second (within
-     *  epsilon, where epsilon is a static public variable of this class).
+     *  EPSILON, where EPSILON is a static public variable of this class).
      */
     public static final boolean close(double first, double second) {
         double diff = first - second;
-        return (Math.abs(diff) < epsilon);
+        return (Math.abs(diff) < EPSILON);
     }
 
     /** Return a new array that is the convolution of the two argument arrays.
@@ -1076,7 +1076,7 @@ public class SignalProcessing {
     /** A small number ( = 1.0e-9). This number is used by algorithms to
      *  detect whether a double is close to zero.
      */
-    public static final double epsilon = 1.0e-9;
+    public static final double EPSILON = 1.0e-9;
 
     // Scale factor types for the DCT/IDCT
     // In the following formulas,

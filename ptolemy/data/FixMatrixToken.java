@@ -37,6 +37,7 @@ import ptolemy.math.FixPoint;
 import ptolemy.math.Quantizer;
 import ptolemy.math.Precision;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 
@@ -91,7 +92,7 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof FixMatrixToken) {
             FixPoint[][] value = ((FixMatrixToken)token).fixMatrix();
             _initialize(value);
@@ -419,41 +420,39 @@ public class FixMatrixToken extends MatrixToken {
         return new FixMatrixToken(result);
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FixMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their elements is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the first argument is FixMatrixToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if every element of the first
+	 *   argument matrix is close to the corresponding element of this
+	 * 	 matrix.
+	 */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FixMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
-            throws IllegalActionException {
-        FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
+            MatrixToken token, double epsilon) {
+        FixMatrixToken convertedArgument = (FixMatrixToken)token;
         FixPoint[][] matrix = convertedArgument.fixMatrix();
-
         for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                if (!_value[i][j].equals(matrix[i][j])) {
-                    return BooleanToken.FALSE;
+        	for (int j = 0; j < _columnCount; j++) {
+        		if (((_value[i][j].subtract(matrix[i][j])).abs()).doubleValue()
+        		        > epsilon) {
+        			return BooleanToken.FALSE;      
                 }
-            }
+        	}
         }
         return BooleanToken.TRUE;
+    }
+
+    /** Test for equality of the values of this token and the argument.
+     *  It is assumed that the type of the argument is FixMatrixToken.
+     *  @param token The token to compare to this token.
+	 *  @return A token containing true if every element of the first
+	 *   argument matrix is equal to the corresponding element of this
+	 * 	 matrix.
+	 */
+    protected BooleanToken _isEqualTo(MatrixToken token) {
+        return BooleanToken.getInstance(equals(token));
     }
 
     /** Return a new token whose value is the value of this token

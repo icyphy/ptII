@@ -280,8 +280,8 @@ test ComplexMatrixToken-5.0 {Test equality between Complexs.} {
 
 test ComplexMatrixToken-5.5 {Test closeness between Complexes} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set c1Close [java::new {ptolemy.math.Complex double double} \
 	    [expr {2.0 + (0.5 * $epsilon)} ] 0.0]
@@ -315,7 +315,7 @@ test ComplexMatrixToken-5.5 {Test closeness between Complexes} {
     set res4 [$qNotClose isCloseTo $qClose]
     set res5 [$qClose isCloseTo $qNotClose]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] \

@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
-isCloseTo(t), isCloseTo(t, e), epsilon
+isCloseTo(t), isCloseTo(t, e), EPSILON
 
 */
 
@@ -535,36 +535,27 @@ public class Complex implements Cloneable, Serializable {
         return 0.0;
     }
 
-    /** Return true if both the real and imaginary parts of this
-     *  complex number are close to those of the argument.  The
-     *  epsilon field is used to determine closeness.
-     *  @see #epsilon
-     *
-     *  @param z The Complex number to compare closeness of this
-     *  Complex with.
-     *  @return True if the real and imaginary parts are equal or differ by
-     *  a value less than epsilon.
+    /** Return true if the distance between this complex number and
+     * 	the argument is less than or equal to EPSILON.
+     *  @param z The number to compare against.
+     *  @return True if the distance to the argument is less
+     *   than or equal to EPSILON.
+     *  @see #EPSILON
      */
     public final boolean isCloseTo(Complex z) {
-        return isCloseTo(z, epsilon);
+        return isCloseTo(z, EPSILON);
     }
 
-    /** Return true if both the real and imaginary parts of this
-     *  complex number are close to those of the argument.  The
-     *  localEpsilon argument is used to determine closeness.
-     *
-     *  @param z The Complex number to compare closeness of this
-     *  Complex with.
-     *  @param localEpsilon The epsilon value that we use to determine
-     *  whether two tokens are close to each other.
-     *  @return True if the real and imaginary parts differ by
-     *  a value less than epsilon.
+    /** Return true if the distance between this complex number and
+     * 	the first argument is less than or equal to the second argument.
+     *  @param z The number to compare against.
+     *  @param distance The distance criterion.
+     *  @return True if the distance to the first argument is less
+     *   than or equal to the second argument.
      */
-    public final boolean isCloseTo(Complex z, double localEpsilon) {
-        // The argument is called localEpsilon so as to differentiate
-        // it from the epsilon field
-        return (Math.abs(z.real - real) < localEpsilon
-                && Math.abs(z.imag - imag) < localEpsilon);
+    public final boolean isCloseTo(Complex z, double distance) {
+        double actualDistance = abs(subtract(z));
+        return (actualDistance <= distance);
     }
 
     /** Return true if either the real or imaginary part is infinite.
@@ -1138,7 +1129,7 @@ public class Complex implements Cloneable, Serializable {
      *  public so that it can be changed on platforms with different
      *  precisions.
      */
-    public static double epsilon = 1.0e-9;
+    public static double EPSILON = 1.0e-9;
 
     /** A Complex number representing negative infinity, by which we mean
      *  that both the real and imaginary parts are equal to

@@ -276,8 +276,8 @@ test DoubleToken-5.6 {Test closeness between doubles and ints. \
 # 
 test DoubleToken-5.7 {Test closeness between doubles} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set token1 [java::new {ptolemy.data.DoubleToken double} 12.0]
     set notCloseToken1 [java::new {ptolemy.data.DoubleToken double} \
@@ -292,15 +292,15 @@ test DoubleToken-5.7 {Test closeness between doubles} {
     set res3 [$notCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
     set res4 [$closeToken1 {isCloseTo ptolemy.data.Token} $token1]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {false true false true}
 
 test DoubleToken-5.8 {Test closeness between doubles around 0} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set token1 [java::new {ptolemy.data.DoubleToken double} 0.0]
     set notCloseToken1 [java::new {ptolemy.data.DoubleToken double} \
@@ -317,7 +317,7 @@ test DoubleToken-5.8 {Test closeness between doubles around 0} {
     set res5 [$anotherNotCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
     set res6 [$closeToken1 {isCloseTo ptolemy.data.Token} $token1]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] [$res6 toString]
@@ -333,8 +333,8 @@ test DoubleToken-5.9 {Test closeness between a double and a String} {
 
 test DoubleToken-5.10 {Test closeness between doubles and ints.} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set tok1 [java::new {ptolemy.data.DoubleToken double} \
 	      [expr {12.0 + 0.5 * $epsilon} ]]
@@ -343,7 +343,7 @@ test DoubleToken-5.10 {Test closeness between doubles and ints.} {
     set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
     set res2 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString]
 } {true true}

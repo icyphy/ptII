@@ -332,8 +332,8 @@ test ComplexToken-5.7 {Test closeness between Complex and int} {
 test ComplexToken-5.8 {Test closeness between two Complex} {
 
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set c1 [java::new {ptolemy.math.Complex double double} -10.0 0.0]
     set p1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
@@ -362,7 +362,7 @@ test ComplexToken-5.8 {Test closeness between two Complex} {
     set res8 [$p3 {isCloseTo ptolemy.data.Token} $p2]
     set res9 [$p3 {isCloseTo ptolemy.data.Token} $p3]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] [$res6 toString] \

@@ -191,8 +191,8 @@ test ArrayToken-3.3 {test isEqualTo on an array of Complexes} {
 test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
     # A is close to B if abs((a-b)/a)<epsilon  
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
 
@@ -213,7 +213,7 @@ test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
     set res5 [$t1 {isCloseTo} $t2]
     set res6 [$t1 {isCloseTo} $t3]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] [$res6 toString]
@@ -222,8 +222,8 @@ test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
 
 test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set t1 [java::new {ptolemy.data.ArrayToken String} \
 	    "{0.5 - 10.0, 0.0 + 0.0, -10.0 + 10.0}"]
@@ -240,7 +240,7 @@ test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
     set res5 [$t1 {isCloseTo} $t2]
     set res6 [$t1 {isCloseTo} $t3]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString] \
 	    [$res4 toString] [$res5 toString] [$res6 toString]

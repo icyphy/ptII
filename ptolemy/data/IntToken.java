@@ -34,8 +34,6 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -329,33 +327,23 @@ public class IntToken extends ScalarToken {
         return new IntToken(quotient);
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  IntToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their values is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the first argument is IntToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if the value of the first
+	 *   argument is close to the value of this token.
+	 */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  IntToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        IntToken convertedArgument = (IntToken)rightArgument;
-        return BooleanToken.getInstance(
-                _value == convertedArgument.intValue());
+            ScalarToken rightArgument, double epsilon) {
+        double difference
+        	    = (double)(intValue() - ((IntToken)rightArgument).intValue());
+        if (difference <= epsilon) {
+        	return BooleanToken.TRUE;
+        } else {
+        	return BooleanToken.FALSE;
+        }
     }
 
     /** Test for ordering of the values of this Token and the argument

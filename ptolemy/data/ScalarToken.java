@@ -35,9 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.unit.UnitSystem;
 import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
 
@@ -483,17 +481,16 @@ public abstract class ScalarToken extends Token
      *  higher of the type of this token and the argument type.
      *  Subclasses should implement the protected _isCloseTo() method
      *  to perform the correct type-specific operation.
-     *
      *  @see #isEqualTo
      *  @param rightArgument The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.
+     *   tokens are close.
      *  @return A boolean token that contains the value true if the
-     *  units of this token and the argument token are the same, and their
-     *  values are close.
+     *   units of this token and the argument token are the same, and their
+     *   values are close.
      *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be compared with this token, or the units
-     *  are not the same.
+     *   of a type that can be compared with this token, or the units
+     *   are not the same.
      */
     public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
@@ -1209,32 +1206,31 @@ public abstract class ScalarToken extends Token
     protected abstract ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException;
 
-    /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is guaranteed by the caller that the type
-     *  and units of the argument is the same as the type of this
-     *  class.  This method should be overridden in derived classes to
-     *  provide type-specific operation.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between them is less than
+	 *  or equal to the second argument.  This method only makes sense
+	 *  for tokens where the distance between them is reasonably
+	 *  represented as a double.
+	 *  @param token The token to compare to this token.
+	 *  @exception IllegalActionException If the token does not support
+	 *   this comparison.
+	 *  @return A true-valued token if the first argument is close to this token.
+	 */
     protected abstract BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon)
             throws IllegalActionException;
 
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is guaranteed by the caller that the type and
-     *  units of the argument is the same as the type of this class.
-     *  This method should be overridden in derived classes to provide
-     *  type-specific operation.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
-     */
-    protected abstract BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException;
+	/** Test for equality of the values of this token and the argument.
+	 *  This base class delegates to the equals() method.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if the value element of the first
+	 *   argument is equal to the value of this token.
+	 *  @exception IllegalActionException Not thrown in this base class.
+	 */
+	protected BooleanToken _isEqualTo(ScalarToken token)
+	        throws IllegalActionException {
+		return BooleanToken.getInstance(equals(token));
+	}
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is guaranteed by the caller that the type and

@@ -261,8 +261,8 @@ test DoubleMatrixToken-5.0 {Test equality between doubles.} {
 
 test DoubleMatrixToken-5.5 {Test isCloseTo between doubles.} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     set bClose [java::new {double[][]} {2 2} \
 	    [list [list [expr {2.0 + (0.5 * $epsilon) } ] 1] \
@@ -274,7 +274,7 @@ test DoubleMatrixToken-5.5 {Test isCloseTo between doubles.} {
     set res2 [$q2Close isCloseTo $q]
     set res3 [$q2Close isCloseTo $p]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
 } {true true false}

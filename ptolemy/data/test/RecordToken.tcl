@@ -276,8 +276,8 @@ test RecordToken-isEqualTo.0 {Test isEqualTo and isCloseTo} {
 # 
 test RecordToken-isEqualTo.1 {Test isCloseTo and isEqualTo} {
     set epsilon 0.001
-    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
-    java::field ptolemy.math.Complex epsilon $epsilon
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
 
     # Use r2 from above
 
@@ -299,7 +299,7 @@ test RecordToken-isEqualTo.1 {Test isCloseTo and isEqualTo} {
     set res3 [[$r3 isCloseTo $r4] toString]
     set res4 [[$r4 isCloseTo $r3] toString]
 
-    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
     list $res1 $res2 $res3 $res4
 } {false true true true}
 

@@ -168,25 +168,27 @@ public class Token implements Serializable {
      */
     public final BooleanToken isCloseTo(Token token)
             throws IllegalActionException{
-        return isCloseTo(token, ptolemy.math.Complex.epsilon);
+        return isCloseTo(token, ptolemy.math.Complex.EPSILON);
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.
-     *
-     *  @param rightArgument The token to test closeness of this token with.
+    /** Test that the value of this Token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double.
+     *  @param token The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.
+     *   tokens are close.
      *  @return A boolean token that contains the value true if the
-     *  value of this token are close to those of the
-     *  argument token.
+     *   value of this token are close to those of the
+     *   argument token.
      *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be compared with this token.
+     *   of a type that can be compared with this token.
      */
-    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
+    public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("isCloseTo", this, rightArgument));
+                notSupportedMessage("isCloseTo", this, token));
     }
 
     /** Test for equality of the values of this Token and the argument

@@ -360,41 +360,16 @@ public class BooleanMatrixToken extends MatrixToken {
         return a;
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
+    /** Return a true-valued token if the first argument is close to this
+     *  token, where in this class, "close" means "identical to."
+     *  It is assumed that the type of the argument is
      *  BooleanMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
+     *  @param token The token to compare to this token.
+     *  @return A token containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  BooleanMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
-            throws IllegalActionException {
-        BooleanMatrixToken convertedArgument =
-            (BooleanMatrixToken)rightArgument;
-        boolean[][] matrix = convertedArgument.booleanMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                if (_value[i][j] != matrix[i][j]) {
-                    return BooleanToken.FALSE;
-                }
-            }
-        }
-        return BooleanToken.TRUE;
+            MatrixToken token, double epsilon) {
+        return BooleanToken.getInstance(equals(token));
     }
 
     ///////////////////////////////////////////////////////////////////

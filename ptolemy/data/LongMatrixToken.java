@@ -451,34 +451,22 @@ public class LongMatrixToken extends MatrixToken {
         return _value;
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  LongMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their elements is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the first argument is LongMatrixToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if every element of the first
+	 *   argument matrix is close to the corresponding element of this
+	 * 	 matrix.
+	 */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  LongMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
-            throws IllegalActionException {
-        LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
-        return BooleanToken.getInstance(
-                LongMatrixMath.within(_value,
-                        convertedArgument._getInternalLongMatrix(), 0));
+            MatrixToken token, double epsilon) {
+       LongMatrixToken convertedArgument = (LongMatrixToken)token;
+       return BooleanToken.getInstance(LongMatrixMath.within(
+               _value,
+               convertedArgument._getInternalLongMatrix(),
+               (long)Math.floor(epsilon)));
     }
 
     /** Return a new token whose elements are the remainders of

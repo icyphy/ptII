@@ -1083,17 +1083,18 @@ public class ComplexMatrixMath {
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
      *  the magnitude of <i>maxError</i>. If both matrices are empty,
      *  return true.
-     *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError A complex number whose magnitude is taken to
      *   be the distance threshold.
      *  @exception IllegalArgumentException If the matrices do not have the same
-     *   dimensions.
+     *   dimensions. This is a run-time exception, so it need not be declared
+     *   explicitly.
      *  @return True or false.
      */
     public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex maxError) {
+            Complex[][] matrix2, Complex maxError)
+            throws IllegalArgumentException {
         return within(matrix1, matrix2, maxError.magnitude());
     }
 
@@ -1101,21 +1102,22 @@ public class ComplexMatrixMath {
      *  elements in <i>matrix1</i> and <i>matrix2</i> are all less
      *  than or equal to the magnitude of <i>maxError</i>. If both
      *  matrices are empty, return true.
-     *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError The threshold for the magnitude of the difference.
      *  @exception IllegalArgumentException If the matrices do not have the same
-     *   dimensions, or if <i>maxError</i> is negative.
+     *   dimensions, or if <i>maxError</i> is negative.  This is a run-time
+     *   exception, so it need not be declared explicitly.
      *  @return True or false.
      */
     public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, double maxError) {
+            Complex[][] matrix2, double maxError)
+            throws IllegalArgumentException {
         _checkSameDimension("within", matrix1, matrix2);
 
         if (maxError < 0) {
             throw new IllegalArgumentException(
-                    "ComplexMatrixMath.within requires that the third argument "
+                    "ComplexMatrixMath.within() requires that the third argument "
                     + "be non-negative.");
         }
 
@@ -1124,14 +1126,9 @@ public class ComplexMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-
-                double realDifference = matrix1[i][j].real - matrix2[i][j].real;
-                double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
-
-                if (realDifference*realDifference + imagDifference*imagDifference
-                        > maxError*maxError) {
-                    return false;
-                }
+            	if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError)) {
+            		return false;
+            	}
             }
         }
         return true;

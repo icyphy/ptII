@@ -40,6 +40,7 @@ import ptolemy.math.Quantization;
 import ptolemy.math.Rounding;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 
@@ -123,7 +124,7 @@ public class FixToken extends ScalarToken {
     public FixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof FixToken) {
             _value = ((FixToken)token).fixValue();
         } else {
@@ -369,33 +370,21 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their values is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the first argument is FixToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if the value of the first
+	 *   argument is close to the value of this token.
+	 */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        FixToken convertedArgument = (FixToken)rightArgument;
-        FixPoint fixValue = convertedArgument.fixValue();
-        return BooleanToken.getInstance(_value.equals(fixValue));
+            ScalarToken rightArgument, double epsilon) {
+        FixPoint argumentValue = ((FixToken)rightArgument).fixValue();
+        if (((_value.subtract(argumentValue)).abs()).doubleValue() > epsilon) {
+        	return BooleanToken.FALSE;
+        }
+        return BooleanToken.TRUE;
     }
 
     /** Test for ordering of the values of this Token and the argument

@@ -36,6 +36,7 @@ import ptolemy.math.Complex;
 import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 
@@ -119,7 +120,7 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof IntMatrixToken) {
             int[][] value = ((IntMatrixToken)token).intMatrix();
             _initialize(value, DO_COPY);
@@ -498,35 +499,23 @@ public class IntMatrixToken extends MatrixToken {
         return _value;
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  IntMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  IntMatrixToken.
-     *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
-            throws IllegalActionException {
-        IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
-        return BooleanToken.getInstance(
-                IntegerMatrixMath.within(_value,
-                        convertedArgument._getInternalIntMatrix(), 0));
-    }
+	/** Test whether the value of this token is close to the first argument,
+	 *  where "close" means that the distance between their elements is less than
+	 *  or equal to the second argument. It is assumed that the type of
+	 *  the first argument is IntMatrixToken.
+	 *  @param token The token to compare to this token.
+	 *  @return A token containing true if every element of the first
+	 *   argument matrix is close to the corresponding element of this
+	 * 	 matrix.
+	 */
+	protected BooleanToken _isCloseTo(
+			MatrixToken token, double epsilon) {
+		IntMatrixToken convertedArgument = (IntMatrixToken)token;
+		return BooleanToken.getInstance(
+				IntegerMatrixMath.within(_value,
+						convertedArgument._getInternalIntMatrix(),
+						(int)Math.floor(epsilon)));
+	}
 
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.

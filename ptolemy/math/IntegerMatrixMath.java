@@ -956,23 +956,23 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
-    /** Returns true iff the differences of all corresponding elements of
-     *  2 matrices, that are of the same size, are all within a constant range,
-     *  [-R, R], where R is the allowed error. The specified absolute
-     *  difference must be non-negative.
-     *  More concisely, abs(M1[i, j] - M2[i, j]) must be within [R, R]
-     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
-     *  @param matrix1 A matrix of ints.
-     *  @param matrix2 A matrix of ints.
-     *  @param absoluteError A int indicating the absolute value of the
-     *  allowed error.
-     *  @return A boolean condition.
-     */
+	/** Return true if the elements of the two matrices differ by no more
+	 *  than the specified distance. The specified distance must be non-negative.
+	 *  @param matrix1 The first matrix.
+	 *  @param matrix2 The second matrix.
+	 *  @param distance The distance to use for comparison.
+	 *  @return True if the elements of the two matrices are within the
+	 *   specified distance.
+	 *  @exception IllegalArgumentException If the third argument is negative,
+	 * 	 or if the matrices do not have the same dimension.
+	 * 	 This is a run-time exception, so it need not be declared explicitly.
+	 */
     public static final boolean within(final int[][] matrix1,
-            final int[][] matrix2, int absoluteError) {
-        if (absoluteError < 0) {
+            final int[][] matrix2, int distance)
+            throws IllegalArgumentException {
+        if (distance < 0) {
             throw new IllegalArgumentException(
-                    "within(): absoluteError (" + absoluteError +
+                    "within(): distance (" + distance +
                     " must be non-negative.");
         }
 
@@ -983,7 +983,7 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > absoluteError) {
+                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > distance) {
                     return false;
                 }
             }
@@ -991,21 +991,21 @@ public class IntegerMatrixMath {
         return true;
     }
 
-    /** Returns true iff the differences of all corresponding elements of
-     *  2 matrices, that are of the same size, are all within the range
-     *  specificed by the corresponding values of the error matrix. The
-     *  error matrix may contain negative entries; the absolute value
-     *  is used.
-     *  More concisely, abs(M1[i, j] - M2[i, j]) must be
-     *  within [-E[i, j], E[i, j]], for 0 <= i < m and 0 <= j < n
-     *  where M1, M2, and E are all m x n matrices.
-     *  @param matrix1 A matrix of ints.
-     *  @param matrix2 A matrix of ints.
-     *  @param errorMatrix A matrix of ints.
-     *  @return A boolean condition.
-     */
+	/** Return true if the elements of the two matrices differ by no more
+	 *  than the specified distances. The specified distances must all
+	 *  be non-negative.
+	 *  @param matrix1 The first matrix.
+	 *  @param matrix2 The second matrix.
+	 *  @param distance The distance to use for comparison.
+	 *  @return True if the elements of the two matrices are within the
+	 *   specified distance.
+	 *  @exception IllegalArgumentException If the third argument has negative
+	 *   elements, or if the matrices do not have the same dimension.
+	 * 	 This is a run-time exception, so it need not be declared explicitly.
+	 */
     public static final boolean within(final int[][] matrix1,
-            final int[][] matrix2, final int[][] errorMatrix) {
+            final int[][] matrix2, final int[][] errorMatrix)
+            throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 

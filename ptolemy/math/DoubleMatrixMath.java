@@ -57,6 +57,9 @@ public class DoubleMatrixMath {
 
     // private constructor prevents construction of this class.
     private DoubleMatrixMath() {}
+    
+    /////////////////////////////////////////////////////////////////////////
+    ////                      public methods                             ////
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
@@ -247,7 +250,7 @@ public class DoubleMatrixMath {
             // if almost singular matrix, give up now
 
             // If almost singular matrix, give up now.
-            if (Math.abs(det) <= Complex.epsilon) {
+            if (Math.abs(det) <= Complex.EPSILON) {
                 return det;
             }
 
@@ -488,7 +491,6 @@ public class DoubleMatrixMath {
 
         return Ai;
     }
-
 
     /** Replace the destinationMatrix argument elements with the values of
      *  the sourceMatrix argument. The destinationMatrix argument must be
@@ -1016,23 +1018,23 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-    /** Returns true iff the differences of all corresponding elements of
-     *  2 matrices, that are of the same size, are all within a constant range,
-     *  [-R, R], where R is the allowed error. The specified absolute
-     *  difference must be non-negative.
-     *  More concisely, abs(M1[i, j] - M2[i, j]) must be within [R, R]
-     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
-     *  @param matrix1 A matrix of doubles.
-     *  @param matrix2 A matrix of doubles.
-     *  @param absoluteError A double indicating the absolute value of the
-     *  allowed error.
-     *  @return A boolean condition.
+    /** Return true if the elements of the two matrices differ by no more
+     *  than the specified distance. The specified distance must be non-negative.
+     *  @param matrix1 The first matrix.
+     *  @param matrix2 The second matrix.
+     *  @param distance The distance to use for comparison.
+     *  @return True if the elements of the two matrices are within the
+     *   specified distance.
+     *  @exception IllegalArgumentException If the third argument is negative,
+     * 	 or if the matrices do not have the same dimension.
+     * 	 This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, double absoluteError) {
-        if (absoluteError < 0.0) {
+            final double[][] matrix2, double distance)
+            throws IllegalArgumentException {
+        if (distance < 0.0) {
             throw new IllegalArgumentException(
-                    "within(): absoluteError (" + absoluteError +
+                    "within(): distance (" + distance +
                     " must be non-negative.");
         }
 
@@ -1043,7 +1045,7 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > absoluteError) {
+                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > distance) {
                     return false;
                 }
             }
@@ -1051,21 +1053,21 @@ public class DoubleMatrixMath {
         return true;
     }
 
-    /** Returns true iff the differences of all corresponding elements of
-     *  2 matrices, that are of the same size, are all within the range
-     *  specificed by the corresponding values of the error matrix. The
-     *  error matrix may contain negative entries; the absolute value
-     *  is used.
-     *  More concisely, abs(M1[i, j] - M2[i, j]) must be
-     *  within [-E[i, j], E[i, j]], for 0 <= i < m and 0 <= j < n
-     *  where M1, M2, and E are all m x n matrices.
-     *  @param matrix1 A matrix of doubles.
-     *  @param matrix2 A matrix of doubles.
-     *  @param errorMatrix A matrix of doubles.
-     *  @return A boolean condition.
+	/** Return true if the elements of the two matrices differ by no more
+	 *  than the specified distances. The specified distances must all
+	 *  be non-negative.
+	 *  @param matrix1 The first matrix.
+	 *  @param matrix2 The second matrix.
+	 *  @param distance The distance to use for comparison.
+	 *  @return True if the elements of the two matrices are within the
+	 *   specified distance.
+	 *  @exception IllegalArgumentException If the third argument has negative
+	 *   elements, or if the matrices do not have the same dimension.
+	 * 	 This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, final double[][] errorMatrix) {
+            final double[][] matrix2, final double[][] errorMatrix)
+            throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1082,15 +1084,22 @@ public class DoubleMatrixMath {
         }
         return true;
     }
+    
+	/////////////////////////////////////////////////////////////////////////
+	////                      protected methods                          ////
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
      *  @param caller A string representing the caller method name.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
+     *  @exception IllegalArgumentException If the arguments do not
+     *   have the same dimension.  This is a run-time exception, so it
+     *   need not be declared explicitly.
      */
     protected static final void _checkSameDimension(final String caller,
-            final double[][] matrix1, final double[][] matrix2) {
+            final double[][] matrix1, final double[][] matrix2)
+            throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1108,9 +1117,12 @@ public class DoubleMatrixMath {
      *  @param caller A string representing the caller method name.
      *  @param matrix A matrix of doubles.
      *  @return The dimension of the square matrix.
+     *  @exception IllegalArgumentException If the argument is not square.
+     *   This is a run-time exception, so it need not be declared explicitly.
      */
     protected static final int _checkSquare(final String caller,
-            final double[][] matrix) {
+            final double[][] matrix)
+            throws IllegalArgumentException {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.DoubleMatrixMath." + caller +
@@ -1227,7 +1239,6 @@ public class DoubleMatrixMath {
                               oneOverNormSquaredArray,
                               new Integer(nullity) };
     }
-
 
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final double[][] matrix) {

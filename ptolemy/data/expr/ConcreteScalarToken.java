@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
@@ -124,14 +123,6 @@ public class ConcreteScalarToken extends ScalarToken {
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("isCloseTo", this, rightArgument));
-    }
-
-    /** Throw an exception.
-     */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
-            throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedMessage("isEqualTo", this, rightArgument));
     }
 
     /** Throw an exception.
