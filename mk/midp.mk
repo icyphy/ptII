@@ -143,10 +143,11 @@ output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class: $(JCLASS)
 	@echo "###################################"
 	(cd $(ROOT)/$(TARGETPACKAGE_DIR); \
 	for class in *.class; do \
+		echo "`pwd`"; \
 		echo $$class ; \
-		$(MIDP_DIR)/bin/preverify \
+		"../$(MIDP_DIR)/bin/preverify" \
 			-classpath \
-			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(TARGETPACKAGE_ROOT)" \
+			"../$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(TARGETPACKAGE_ROOT)" \
 			$(TARGETPACKAGE).`basename $$class .class`; \
 	done)
 
@@ -167,6 +168,35 @@ $(MODEL)/output/$(TARGETPACKAGE_DIR)/$(TARGETPACKAGE_MAIN_CLASS).class: $(JCLASS
 			$(TARGETPACKAGE).`basename $$class .class`; \
 	done)
 
+
+emulatorRun:
+	@echo ""
+	@echo "If you have missing classes, then run"
+	@echo "make preverifyPTII PREVERIFY_CLASS=classname"
+	@echo "For example:"
+	@echo "make preverifyPTII PREVERIFY_CLASS=ptolemy.data.unit.UnitUtilities"
+	@echo "and then rerun make $@"
+	@echo ""
+	@echo "When you have all the classes, run"
+	@echo "make demo3"
+	$(MIDP_DIR)/bin/emulator.exe \
+		-classpath "$(MODEL)/output$(CLASSPATHSEPARATOR)$(PTII)" \
+		-Xverbose:class \
+		$(TARGETPACKAGE).Main
+
+
+# Run preverify on a .class file in the PTII tree and copy it
+# to $(MODEL)/output.
+# Usually, this step is run by hand to preverify classes that the emulator
+# needs from $PTII to $(MODEL)/output
+# To run this rule, do:
+#   make preverifyPTII PREVERIFY_CLASS=ptolemy.data.unit.UnitUtilities"
+# We include apps/midp so that we can override classes.
+preverifyPTII:
+	$(MIDP_DIR)/bin/preverify \
+		-classpath \
+		"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(ROOT)/ptolemy/apps/midp$(CLASSPATHSEPARATOR)$(PTII)" \
+		-d $(MODEL)/output $(PREVERIFY_CLASS)
 
 
 
