@@ -51,10 +51,11 @@ public class ReaderProcessWriter {
     public static void main(String[] args) {
         // Set this to "true" to turn on debugging information.
         boolean _debug = true;
-        // URL path to the input sound file.
-        String sourceURL = "file:/tmp/voice.wav";
+        // URL path to the input sound file, which is stored in a relative
+        //directory in the ptolemy tree
+        String sourceURL = "file:../../../../actor/lib/javasound/voice.wav";
         // File name of the output file to create.
-        String writeFile = "output2.wav";
+        String writeFile = "demoOutput.wav";
         // Internal buffer size for live (real-time) playback.
         int outBufferSize = 4096;
         // Amount of data to read or write from/to the internal buffer
