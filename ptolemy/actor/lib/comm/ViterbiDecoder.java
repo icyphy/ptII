@@ -65,7 +65,7 @@ input sequence.
 There are 2 choices offered in this actor to compute such "distance".
 If the parameter <i>softDecoding</i> is set to be true, it will compute
 the Euclidean distance. If it is false, the decoder will first make a
-desicion between 0 and 1 of the corrupted signals with a threshold of 0.5.
+decision between 0 and 1 of the corrupted signals with a threshold of 0.5.
 Then it computes the Hamming distance. Soft decoding has lower probability
 of decoding error than hard decoding. But distance computation for hard
 decoding is easier, since it is based on bit-operations. Users can choose
