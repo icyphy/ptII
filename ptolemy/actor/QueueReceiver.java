@@ -187,6 +187,13 @@ public class QueueReceiver implements Receiver {
         return _queue.historySize();
     }
 
+    /** Reset the state of the receiver. Clear the FIFO queue. This is needed
+     *  to restart the simulation
+     */
+    public void initialize() {
+	_queue = new FIFOQueue();
+    }
+
     /** Put a token to the receiver. If the receiver is full, throw an
      *  exception.
      *  @param token The token to be put to the receiver.

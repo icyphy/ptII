@@ -194,6 +194,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
+    /** Reset the state variables in the receiver, so that the simulation 
+     *  can be started again.
+     */
+    public void initialize() {
+	super.initialize();
+	_readpending = false;
+	_writepending = false;
+	_pause = false;
+	_terminate = false;
+    }
+
     /** Return a true or false to indicate whether there is a read pending
      *  on this receiver or not, respectively.
      *  @return a boolean indicating whether a read is pending on this 
