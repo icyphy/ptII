@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel domains pitcl
+DIRS = corejava domains exceptions kernel pitcl 
 
 # Root of Tycho directory
 ROOT =		../..
