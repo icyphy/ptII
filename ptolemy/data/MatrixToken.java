@@ -47,9 +47,10 @@ public abstract class MatrixToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the content of this token as a 2-D Complex array.
+    /** Return a copy of the content of this token as a 2-D Complex
+     *  array.
      *  In this base class, we just throw an exception.
-     *  @return A 2-D Complex array
+     *  @return A 2-D Complex array.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */
@@ -60,9 +61,9 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException(str);
     }
 
-    /** Return the content of this token as a 2-D double array.
+    /** Return a copy of the content of this token as a 2-D double array.
      *  In this base class, we just throw an exception.
-     *  @return A 2-D double array
+     *  @return A 2-D double array.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */
@@ -77,9 +78,9 @@ public abstract class MatrixToken extends Token {
     // FIXME: uncomment this method after the Complex class is implemented.
     // public Fix[][] fixMatrix();
 
-    /** Return the content of this token as a 2-D integer array.
+    /** Return a copy of the content of this token as a 2-D integer array.
      *  In this base class, we just throw an exception.
-     *  @return A 2-D integer array
+     *  @return A 2-D integer array.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */
@@ -90,9 +91,9 @@ public abstract class MatrixToken extends Token {
 	throw new IllegalActionException(str);
     }
 
-    /** Return the content of this token as a 2-D long array.
+    /** Return a copy of the content of this token as a 2-D long array.
      *  In this base class, we just throw an exception.
-     *  @return A 2-D long array
+     *  @return A 2-D long array.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */
