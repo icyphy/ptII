@@ -234,7 +234,7 @@ if {[info command update] == ""} then {
 # in old results, then return a message about the difference.
 # If the two results lists are within epsilon, then return 1
 #
-proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
+proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
     if {[llength $newresults] != [llength $oldresults]} {
 	error "epsilonDiff {$newresults} {$oldresults}:\n\
 		The length of the two lists is not the same: \
@@ -256,7 +256,11 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
 
 	if {[llength $newelement] > 1} {
 	    # We have a sublist, so call epsilonDiff 
-	    lappend $returnresults epsilonDiff $newelement $oldelement $epsilon
+	    set tmpresults [epsilonDiff $newelement $oldelement $epsilon \
+		    [expr {$level + 1}]]
+	    if {$tmpresults != {} } {
+		lappend returnresults $tmpresults
+	    }
 	    continue
 	}
 	# The numbers might be complex numbers with trailing 'i'
@@ -264,7 +268,7 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
 	set oldelement [string trimright $oldelement "i"]
 
 	if [ catch {
-	    if {$newelement > $oldelement } {
+	    if [expr {$newelement > $oldelement}] {
 		if [expr { $newelement > ($oldelement + $epsilon)}] {
 		    lappend returnresults "$newelement > $oldelement + $epsilon"
 		}
@@ -280,6 +284,14 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
 		    $errorInfo"
 	}
     }
+
+    # If we are returning out of the top level epsilonDiff, then
+    # possibly print a message
+    if {$level == 1 && "$returnresults" != ""} {
+	return "$newresults\nis not equal to\n$oldresults\n\
+		The following elements were not equal:\n $returnresults"
+    }
+
     return $returnresults
 }
 
