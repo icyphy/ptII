@@ -590,7 +590,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = null;
         if (node.getForm() == 1) {
             //int numChildren = node.jjtGetNumChildren();
-            result = MatrixToken.create(tokens, node.getRowCount(),
+            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
                     node.getColumnCount());
         } else if (node.getForm() == 2) {
             try {
@@ -622,7 +622,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     System.arraycopy(newTokens, 0,
                             matrixTokens, columnCount * i, columnCount);
                 }
-                result = MatrixToken.create(matrixTokens,
+                result = MatrixToken.arrayToMatrix(matrixTokens,
                         node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
