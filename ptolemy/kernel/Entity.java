@@ -23,6 +23,9 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+
 */
 
 package pt.kernel;
@@ -89,24 +92,26 @@ public class Entity extends NamedObj {
 
 
     /** Return an enumeration of the Entities that are connected
-     * to this Entity via the specified Port. The enumeration does 
-     * not contain this particular Entity. 
+     *  to this Entity via the specified Port. The enumeration does 
+     *  not contain this particular Entity. 
      * @param portName The name of the specified Port.
-     * QFIXME: Should we verify that the specified port name is valid.
-     * Suppose no such Port is owned.
+     * @exception pt.kernel.GraphException Attempt to inappropriately
+     *  access a Jtolemy graph method or class.
      */	
-    public Enumeration enumEntities(String portName) {
+    public Enumeration enumEntities(String portName) 
+	    throws GraphException {
 	 LinkedList storedEntities = new LinkedList();
-
 	 if( _portList == null ) { 
 	     return storedEntities.elements();
 	 }
 	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
 
+	 boolean foundPort = false;
 	 while( thisEntitiesPorts.hasMoreElements() ) {
 	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
 
 	     if( thisPort.getName().equals(portName) ) {
+		 foundPort = true;
 	         Enumeration relations = thisPort.enumRelations(); 
 		 
 		 while( relations.hasMoreElements() ) { 
@@ -121,12 +126,16 @@ public class Entity extends NamedObj {
 		 }
 	     }
 	 }
-	 return storedEntities.elements();
+	 if( foundPort ) {
+	     return storedEntities.elements();
+	 } 
+	 throw new GraphException(
+		 "Invalid Port Named Passed to EnumEntities()");
     }
 
 
     /** Return an enumeration of Relations that this
-     * Entity is connected through.
+     *  Entity is connected through.
      */	
     public Enumeration enumRelations() {
 	 LinkedList storedRelations = new LinkedList();
@@ -146,26 +155,32 @@ public class Entity extends NamedObj {
 
 
     /** Return an enumeration of Relations that are connected to this 
-     * Entity via the specified Port.
-     * QFIXME: Should we verify that portName is valid?
-     * Suppose no such Port is owned.
+     *  Entity via the specified Port.
+     * @exception pt.kernel.GraphException Attempt to inappropriately
+     *  access a Jtolemy graph method or class.
      */	
-    public Enumeration enumRelations(String portName) {
+    public Enumeration enumRelations(String portName) 
+	    throws GraphException {
 	 LinkedList storedRelations = new LinkedList();
-
 	 if( _portList == null ) { 
 	     return storedRelations.elements();
 	 }
 	 Enumeration ports = _portList.enumPorts(); 
 
+	 boolean foundPort = false;
 	 while( ports.hasMoreElements() ) {
 	     Port newPort = (Port)ports.nextElement();
-	     if( newPort.getName().equals(portName) ) { 
+	     if( (newPort.getName()).equals(portName) ) { 
+		 foundPort = true;
 		 Enumeration relations = newPort.enumRelations(); 
 	         storedRelations.prependElements( relations );
 	     }
 	 }
-	 return storedRelations.elements();
+	 if( foundPort ) {
+	     return storedRelations.elements();
+	 }
+	 throw new GraphException(
+		 "Invalid Port Named Passed to EnumRelations()");
     }
 
 
@@ -192,9 +207,9 @@ public class Entity extends NamedObj {
     /** Return the number of Entities connected to this Entity
      * through the specified Port.
      * @param portName The name of the specified Port.
-     *  FIXME: Throw an exception if portName does not exist.
      */	
-    public int numberOfConnectedEntities(String portName) {
+    public int numberOfConnectedEntities(String portName) 
+	    throws GraphException {
 	 int count = 0;
 	 Enumeration enum = enumEntities(portName);
 	 while( enum.hasMoreElements() ) {
