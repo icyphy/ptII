@@ -89,6 +89,20 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
+# Generate code for a trivial ramp demo - much faster for testing
+rampFileWriter: generate_rampFileWriter compile_rampFileWriter run_rampFileWriter
+generate_rampFileWriter:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  rampFileWriter \
+	-iterations 5 \
+	-outdir $(ROOT) -outpkg cg.rampFileWriter
+
+compile_rampFileWriter:
+	(cd $(ROOT)/cg/rampFileWriter; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+run_rampFileWriter:
+	(cd $(ROOT)/cg/rampFileWriter; \
+		"$(JAVA)" -classpath ../.. cg.rampFileWriter.CG_Main)
 depend:
 	@echo "no dependencies in this directory"
 
