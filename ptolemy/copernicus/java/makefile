@@ -94,7 +94,7 @@ all: jclass
 
 install: all
 
-demo: compileDeepDemo runDeepDemo
+demo: compileDemo runDemo
 timeDemo: compileDemo timeOrthoCommDemo
 
 # OrthogonalCom - There is no .xml file for this model
