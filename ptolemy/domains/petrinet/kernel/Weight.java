@@ -74,28 +74,5 @@ public class Weight extends Transformer {
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                    //
-
-    public Parameter initialWeight;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    public void initialize() throws IllegalActionException {
-        _currentWeight = ((IntToken)initialWeight.getToken()).intValue();
-    }
-
-    public int getWeight() {
-        return _currentWeight;
-    }
-
-    public void printWeight() {
-        System.out.println("The weight here is " + _currentWeight);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private int _currentWeight = 1;
+  
 }

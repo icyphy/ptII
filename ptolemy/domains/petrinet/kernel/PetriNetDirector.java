@@ -37,6 +37,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
@@ -68,7 +69,24 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// PetriNetDirector
 /**
-Petri net director.
+ 
+ *   Petri net director. Basic Petri net model consists of places and
+ *   transitions. A transition is enabled if places connected to the
+ *   input of the transition all have more tokens than the corresponding 
+ *   edge weights. An enabled transition can fire. WHen a transition fires,
+ *   it reduces the tokens in the places connected to the input of the 
+ *   transition, and increase the tokens in places connected to the output
+ *   of the transition. 
+ *
+ *
+ *   The key methods are the testing whether a transition
+ *   is ready or not _testReadyTransition, and fire an enabled transition 
+ *   _fireTransition. The sequence of firing is determinted by the method
+ *   fireHierarchicalPetriNet.
+
+ *   It is assumed that the Peri net is a hierarchical petri net. This works
+ *   fine for flat Petri net. 
+
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
@@ -99,196 +117,517 @@ public class PetriNetDirector extends Director {
         return new PetriNetReceiver();
     }
 
-    /** Fire calls _chooseTransition to select one of the
-     *  ready Transitions to fire. The selection method
-     *  here is random. Therefore running the same
-     *  test will result in different firing sequence
-     *  at different times of the day since the
-     *  random seed is the time.
-     *  There is also a possibility for infinite loop.
+    /**  
+     *  For hierarchical structure, the chosen Transition 
+     *  can be a composite PetriNetActor or  a Transition. 
+     *  
+     *  We have to fire a hierarchical petri net even if the 
+     *  inside component can be flat, since it may connected to things
+     *  outside the component. 
      */
-
 
     public void fire() throws IllegalActionException {
         int i = 0;
         Nameable container = getContainer();
-        if (container instanceof NamedObj)
-            System.out.println("the top container is"
-                    + container.getFullName());
-
-        Transition nextTransition = _chooseTransition();
-        while (nextTransition != null) {
-            i++;
-            System.out.println("_"+i+
-                    "th firing __"+nextTransition.getFullName());
-            nextTransition.fire();
-            _setTokens(nextTransition); 
-            System.out.println("___________ start to choose next transition");
-            nextTransition = _chooseTransition();
-
-
-
-
-        }
-    }
-
-
-
+        if (container instanceof TypedCompositeActor) {
+            System.out.println("PetriNetDirector,the top container is"
+                    + container.getFullName());  
+            TypedCompositeActor pnContainer = 
+                                 (TypedCompositeActor) container;           
  
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
- /** The method first accumulates all the enabled transitions, and
-  *  then randomly choose one to fire. 
-  */
-
-
-    private Transition _chooseTransition()  throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            Iterator actors =
-                ((CompositeActor)container).deepEntityList().iterator();
-
-            LinkedList readyTransitionList = new LinkedList();
-            int i = 0;
-
-            while (actors.hasNext()) {
-                Transformer actor = (Transformer) actors.next();
-                if (actor instanceof Transition)  {
-                    Transition transition = (Transition) actor;
-                    if (transition.prefire()) {
-                        readyTransitionList.add(transition);
-                        i++;
-                    }
-                    else
-                        System.out.println("not ready to fire______");
-                }
-            }
-
-            if (i>0) {
-                System.out.print(i + "  transitions ready in choosing");
-                System.out.println(" transitions----------");
-                java.util.Random generator = new
-                    java.util.Random(System.currentTimeMillis());
-                int j = generator.nextInt(i);
-                Object chosenTransition = readyTransitionList.get(j);
-                if(chosenTransition instanceof Transition)
-                    return (Transition) chosenTransition;
-            }
-            else
-                return null;
+            fireHierarchicalPetriNet(pnContainer);
+  
         }
-        return null;
     }
 
-/**  _setTokens has two parts: to modify the marking in the output places and
- *   to modify the marking at the input places. For each output place,
- *   the fire increases the marking by the weight at the arcs.
- *   For each input place, the fire decreases the marking by the weight
- *   at the connected arcs.
- *   Multiple arcs can exist between a place and a transition.
- *   Furthermore, the arcs can be marked as a "Weight" parameter or
- *   not marked. Not-marked arcs are treated as default weight 1.
- *   Loops can exist as well. 
+/** This method fires enabled components step by step. 
+ *  Each PetriNetActor is fired once, and then it 
+ *  returns the control to this method and choose
+ *  next enabled component.
+ *  Since Petri net can go to infinite firing sequence, the count
+ *  is used to control the number of firing, for testing purpose.
+ * 
+ *  Other form of firing sequence can be defined and coded as well.
+ *  We could randomly fire all the deeply contained transitions.
+ *  We could randomly fire the components by hierarchy.
+ */
+
+    public void fireHierarchicalPetriNet(TypedCompositeActor container) 
+                      throws IllegalActionException {
+  
+        System.out.println(" _fireHierarchicalPetriNet ___________");
+
+        LinkedList components = _readyComponents(container);
+        LinkedList nextComponents = components;
+        int i = components.size();
+        int k = 0;
+
+        while (i > 0 & k < 5) {
+
+       
+
+            System.out.print(i + "  transitions ready in choosing");
+            System.out.println(" transitions--");
+
+            java.util.Random generator = new
+                    java.util.Random(System.currentTimeMillis());
+            int j = generator.nextInt(i);
+            Nameable chosenTransition = (Nameable) nextComponents.get(j);
+
+            System.out.println();
+            System.out.println("start firing " + chosenTransition.getFullName());
+            if(chosenTransition instanceof Transition) {
+                Transition realTransition = (Transition) chosenTransition;
+                _fireTransition(realTransition);
+            }
+            else if(chosenTransition instanceof PetriNetActor) {
+                PetriNetActor realPetriNetActor = 
+                                (PetriNetActor) chosenTransition;
+                k++; 
+                _fireHierarchicalPetriNetOnce(realPetriNetActor);
+
+            }
+
+            System.out.println(" _finished fireHierarchicalPetriNet ___________");
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+
+            nextComponents = _readyComponents(container);
+            i = nextComponents.size();
+
+            Iterator pointer = nextComponents.iterator();
+            while (pointer.hasNext()) {
+                Nameable item = (Nameable) pointer.next();
+                System.out.println(i +" ready item is " + item.getFullName());
+            }
+
+            k++;
+
+        }
+
+    }
+
+    public boolean  testReadyTransition(Transition transition)
+                                    throws IllegalActionException {
+        return (_testReadyTransition(transition));
+    }
+
+
+   
+///////////////////////////////////////////////////////////////////
+////                         private methods                   ////
+
+
+
+/** This is one of the key methods for hierarchical Petri Nets.
+ *  It is equivalent to the Prefire method for a transition. 
  *
- *  
+ *  This method works like the graph traverse algorithm, breadth first search
+ *  for places connected to the transition, due to the many possible 
+ *  ports involved and the connection between ports.
+ * 
+ *  multiple arcs are allowed between ports, port-places, and transition-place. 
+ *  the total weight of the edge from a transition to a place is the 
+ *  sum of all edges. 
  *
- **/
-  private void _setTokens(Transition transition) throws IllegalActionException {
+ *  It is assumed that the place is connected to transitions or ports 
+ *  and transitions are connected to places or ports. no action is 
+ *  performed to verify this.
+ */
 
-    System.out.print("start to increase the place marking for outputs");
-    System.out.println(" width is " + transition.output.getWidth()  );
-    Iterator outRelations = transition.output.linkedRelationList().iterator();
-    while(outRelations.hasNext())  {
-    
-        IORelation weights = (IORelation) outRelations.next();
-        if (weights != null) {
-           Iterator placePorts = weights.linkedDestinationPortList().iterator();
-           while(placePorts.hasNext()) {
-               IOPort placePort = (IOPort) placePorts.next();
-               Place place = (Place) placePort.getContainer();
-               int i = place.getMarking();
-               Attribute temporaryAttribute = (Attribute )
-                          weights.getAttribute("Weight");
-               if (temporaryAttribute == null) {
-                   place.increaseMarking(1);
-	             System.out.print("default value 1");
-                   System.out.print(" source place "+ place.getFullName() +  
-                           " original tokens " +i);
-                   System.out.println(" new token  " + place.getMarking());
-               }
-               else if (temporaryAttribute instanceof Variable) {
-                   Variable tAttribute = (Variable) temporaryAttribute;
-                   Token weightToken = (Token) tAttribute.getToken();
-                   if (weightToken instanceof ScalarToken) {
-                       ScalarToken wToken = (ScalarToken) weightToken;
-                       int j = wToken.intValue();
-                       place.increaseMarking(j);
-                       System.out.print("source place "+ place.getFullName() +
-                               " original tokens " +i);
-                       System.out.println("  new token  " + place.getMarking());
-                   }
-               }
-               place.setTemporaryMarking(place.getMarking());
+    private boolean  _testReadyTransition(Transition transition) 
+                                    throws IllegalActionException {
+
+        boolean readyToFire = true;  
+        LinkedList placeList =  _findBackwardConnectedPlaces(transition);
+        Iterator pointer1 = placeList.iterator();
+        int i1 = 0;
+        while (pointer1.hasNext()) {
+            Place item = (Place) pointer1.next();
+            i1++;
+            item.setTemporaryMarking(item.getMarking());
+        }     
+
+
+        LinkedList newRelationList = new LinkedList();
+        newRelationList.addAll(transition.input.linkedRelationList());
+        LinkedList temporarySourcePortList = new LinkedList();
+        while(newRelationList.size()>0 )  {
+            IORelation weights = (IORelation) newRelationList.getFirst();
+            if (weights != null) {                           
+                Iterator weightPorts =
+                        weights.linkedSourcePortList().iterator();
+                while(weightPorts.hasNext()) {
+                    IOPort weightPort = (IOPort) weightPorts.next();
+                    if (!temporarySourcePortList.contains(weightPort)) {
+                        temporarySourcePortList.add(weightPort); 
+                        Nameable weightPlace = (Nameable) weightPort.getContainer();
+                        if (weightPlace instanceof PetriNetActor) {
+                              if(weightPort.isOutput())
+                                  newRelationList.addAll
+                                                  (weightPort.insideRelationList());
+                              else if( weightPort.isInput())
+                                  newRelationList.addAll
+                                                  (weightPort.linkedRelationList());                                                                 
+                        }
+                    }
+                    else 
+                        System.out.println("*******found used source port  " 
+                                                      + weightPort.getFullName());
+                }
+
+                int weightNumber = _getWeightNumber(weights);
+                LinkedList  updatePlace = _findBackwardConnectedPlaces(weights);
+                Iterator pointer = updatePlace.iterator();
+                while (pointer.hasNext()) {
+                    Place item = (Place) pointer.next();
+                    item.decreaseTemporaryMarking(weightNumber);
+                    if(item.getTemporaryMarking()<0)
+                        return false;
+                }  
+            } else
+                System.out.println("the arc weight is null");
+            newRelationList.remove(weights);  
+        }
+        
+        return readyToFire;
+    }
+
+/** This method finds all the enabled components in a container
+ *  and return the list. The firing method will find one component
+ *  from this list randomly.
+ */
+
+    private LinkedList _readyComponents(TypedCompositeActor container)  
+                                      throws IllegalActionException { 
+        Iterator actors = container.entityList().iterator();
+        LinkedList readyComponentList = new LinkedList();    
+        while (actors.hasNext()) {
+            Nameable component = (Nameable) actors.next();
+            if (component instanceof PetriNetActor)  {
+                PetriNetActor pnActor = (PetriNetActor) component;
+                if( pnActor.prefire()) {
+                    readyComponentList.add(pnActor);
+                    System.out.println("found a readyPetriNetActor  "
+                                          + pnActor.getFullName());  
+                }
+            }      
+            else if (component instanceof Transition) {
+                Transition componentTransition = (Transition) component; 
+                if( _testReadyTransition(componentTransition))
+                readyComponentList.add(componentTransition);
+            }
+        }
+        return readyComponentList;
+    }
+
+/** This is another key method for the Petri Net Domain.
+ *  This method updates the tokens in the places connected to the 
+ *  firing transition. It has two parts: to increase tokens in the forward
+ *  connected places, and to decresae tokens in the backward connected
+ *  places. The weights to be increased/decreased are determined by
+ *  the edges connecting the places to the firing transition.
+ *
+ */
+
+    private void  _fireTransition(Transition transition) 
+                                    throws IllegalActionException {
+
+
+        LinkedList newRelationList = new LinkedList();
+        newRelationList.addAll(transition.output.linkedRelationList());
+        LinkedList temporaryDestinationPortList = new LinkedList();
+        while(newRelationList.size()>0 )  {
+            IORelation weights = (IORelation) newRelationList.getFirst();
+            if (weights != null) {  
+                System.out.println("start to increase the weight of relation "
+                        +"*********"           + weights.getFullName());                          
+                Iterator weightPorts =
+                        weights.linkedDestinationPortList().iterator();
+                while(weightPorts.hasNext()) {
+                    IOPort weightPort = (IOPort) weightPorts.next();
+                    if (!temporaryDestinationPortList.contains(weightPort)) {
+                        temporaryDestinationPortList.add(weightPort); 
+                        Nameable weightPlace = 
+                                          (Nameable) weightPort.getContainer();
+                        if (weightPlace instanceof PetriNetActor) {
+                            if(weightPort.isOutput())
+                                newRelationList.addAll 
+                                             (weightPort.linkedRelationList()); 
+                            else if( weightPort.isInput())
+                                newRelationList.addAll
+                                             (weightPort.insideRelationList());                                                                
+                        }
+                        else if( weightPlace instanceof Place) {
+                            Place realPlace = (Place) weightPlace;
+                            System.out.print("found a place " 
+                                + realPlace.getFullName() + "  "
+                                + realPlace.getMarking());
+                        }
+                        else
+                            System.out.println("something wrong " 
+                                          + weightPlace.getFullName());
+                    }
+                }
+
+                int weightNumber = _getWeightNumber(weights);
+                LinkedList  updatePlaceForward = 
+                                   _findForwardConnectedPlaces(weights);
+                Iterator pointerForward = updatePlaceForward.iterator();
+                int i = 0;
+                while (pointerForward.hasNext()) {
+                    Place itemForward = (Place) pointerForward.next();
+                    i++;
+                    int j = itemForward.getMarking();
+                    itemForward.increaseMarking(weightNumber);
+                    System.out.println("  the " + i + " item is " 
+                                + itemForward.getFullName() 
+                                +"  "+ j 
+                                + "  "+ itemForward.getMarking());
+                }
+            } else
+                System.out.println("the arc weight is null");
+            newRelationList.remove(weights);  
+
+        }
+
+        LinkedList backRelationList = new LinkedList();
+        backRelationList.addAll(transition.input.linkedRelationList());
+        LinkedList temporarySourcePortList = new LinkedList();
+        while(backRelationList.size()>0 )  {
+            IORelation weights = (IORelation) backRelationList.getFirst();
+            if (weights != null) {    
+                System.out.println("start to decrease the weight of relation "
+                        +"*********"           + weights.getFullName());                         
+                Iterator weightPorts =
+                        weights.linkedSourcePortList().iterator();
+                while(weightPorts.hasNext()) {
+                    IOPort weightPort = (IOPort) weightPorts.next();
+                    if (!temporarySourcePortList.contains(weightPort)) {
+                        temporarySourcePortList.add(weightPort); 
+                        Nameable weightPlace =
+                                            (Nameable) weightPort.getContainer();
+                        if (weightPlace instanceof PetriNetActor) {
+                            if(weightPort.isOutput())
+                                backRelationList.addAll
+                                                (weightPort.insideRelationList());
+                            else if( weightPort.isInput())
+                                backRelationList.addAll
+                                                 (weightPort.linkedRelationList());                                                                 
+                        }
+                    }
+                }
+                int weightNumber = _getWeightNumber(weights);
+                LinkedList  updatePlace = _findBackwardConnectedPlaces(weights);
+                Iterator pointer = updatePlace.iterator();
+                int i = 0;
+                while (pointer.hasNext()) {
+                    Place item = (Place) pointer.next();
+                    i++;
+                    int j = item.getMarking(); 
+                    item.decreaseMarking(weightNumber);
+                    System.out.println("  the " + i + " item is " + 
+                       item.getFullName() + " old " + j 
+                       + " new  " + item.getMarking());
+                }  
+            } else
+                System.out.println("the arc weight is null");
+            backRelationList.remove(weights);  
+        }   
+    }
+
+/** This method is for fire a composite Petri Net once. This is needed
+ *  for some firing sequence.
+ */
+
+    private void _fireHierarchicalPetriNetOnce(TypedCompositeActor container) 
+                      throws IllegalActionException {
+  
+        System.out.println(" _fireHierarchicalPetriNetOnce_");
+
+        LinkedList components = _readyComponents(container);
+        int i = components.size();
+        if (i > 0) {
+
+            System.out.print(i + "  transitions ready in choosing");
+            System.out.println(" transitions--");
+
+            java.util.Random generator = new
+                    java.util.Random(System.currentTimeMillis());
+            int j = generator.nextInt(i);
+            Nameable chosenTransition = (Nameable) components.get(j);
+
+            System.out.println();
+            System.out.println("start firing " + chosenTransition.getFullName());
+            if(chosenTransition instanceof Transition) {
+                Transition realTransition = (Transition) chosenTransition;
+                _fireTransition(realTransition);
+            }
+            else if(chosenTransition instanceof PetriNetActor) {
+                PetriNetActor realPetriNetActor = 
+                                (PetriNetActor) chosenTransition;
+                _fireHierarchicalPetriNetOnce(realPetriNetActor);
+            }
+            System.out.println(" _finished fireHierarchicalPetriNetOnce");
+        }
+
+    }
+
+
+/** This method finds the forward connected places for a given relation.
+ *  This is equivalent to find all places reachable for this relation.
+ *  This method is needed when we update the tokens in places connected
+ *  to a firing transition.
+ */
+
+    private LinkedList  _findForwardConnectedPlaces(IORelation weight) 
+                                   throws IllegalActionException {
+
+        LinkedList newRelationList = new LinkedList();
+        newRelationList.add(weight); 
+        LinkedList temporaryDestinationPortList = new LinkedList();
+        LinkedList temporaryPlaceList = new LinkedList();
+        while(newRelationList.size()>0 )  {
+            IORelation weights = (IORelation) newRelationList.getFirst();                       
+            Iterator weightPorts =
+                        weights.linkedDestinationPortList().iterator();
+            while(weightPorts.hasNext()) {
+                IOPort weightPort = (IOPort) weightPorts.next(); 
+                if (!temporaryDestinationPortList.contains(weightPort)) {
+                    temporaryDestinationPortList.add(weightPort); 
+                    Nameable weightPlace = (Nameable) weightPort.getContainer();
+                    if (weightPlace instanceof PetriNetActor) {
+                        if(weightPort.isOutput())
+                            newRelationList.addAll(weightPort.linkedRelationList()); 
+                        else if( weightPort.isInput())  
+                            newRelationList.addAll(weightPort.insideRelationList());                                                              
+                    }
+                    else if(weightPlace instanceof Place) 
+                        temporaryPlaceList.add(weightPlace);
+                    else {
+                        System.out.println("*******found no place/petrinetactor" 
+                              + weightPort.getFullName()); 
+                        return null;
+                    }  
+                }
+
+            }
+            newRelationList.remove(weights);  
+        }
+        return temporaryPlaceList;
+    }
+
+
+/** For each relation, this method finds all the affected 
+ *  places in the backward direction. Those places determine
+ *  whether a transition is ready to fire or not. If ready,
+ *  the firing transition has to update the tokens in all 
+ *  these places. The algorithm used in this method is the
+ *  breadth first search of the graph. 
+ */
+
+    private LinkedList  _findBackwardConnectedPlaces(IORelation weight) 
+                                   throws IllegalActionException {
+
+        LinkedList newRelationList = new LinkedList();
+        newRelationList.add(weight); 
+        LinkedList temporarySourcePortList = new LinkedList();
+        LinkedList temporaryPlaceList = new LinkedList();
+        while(newRelationList.size()>0 )  {
+            IORelation weights = (IORelation) newRelationList.getFirst();                       
+            Iterator weightPorts =
+                        weights.linkedSourcePortList().iterator();
+            while(weightPorts.hasNext()) {
+                IOPort weightPort = (IOPort) weightPorts.next(); 
+                if (!temporarySourcePortList.contains(weightPort)) {
+                    temporarySourcePortList.add(weightPort); 
+                    Nameable weightPlace = (Nameable) weightPort.getContainer();
+                    if (weightPlace instanceof PetriNetActor) {
+                        if(weightPort.isOutput())
+                            newRelationList.addAll(weightPort.insideRelationList());
+                        else if( weightPort.isInput())
+                            newRelationList.addAll(weightPort.linkedRelationList());                                                                 
+                    }
+                    else if(weightPlace instanceof Place) 
+                        temporaryPlaceList.add(weightPlace);
+                    else {
+                        System.out.println("*******found no place/petrinetactor  " 
+                                  + weightPort.getFullName()); 
+                        return null;
+                    }  
+                }
+
+            }
+            newRelationList.remove(weights);  
+        }
+        return temporaryPlaceList;
+    }
+
+
+
+
+/** This method finds all the places that determines whether a 
+ *  transition is enabled or not. It starts to trace each
+ *  input relation of the transition and find each of the place
+ *  connected to the relation.
+ *  This allows duplicated copies of the same place.It unites all
+ *  the connected places to each relation.
+ */
+
+
+    private LinkedList _findBackwardConnectedPlaces(Transition transition) 
+                                    throws IllegalActionException {
+ 
+        LinkedList newRelationList = new LinkedList();
+        newRelationList.addAll(transition.input.linkedRelationList());
+        LinkedList temporaryPlaceList = new LinkedList();
+        while(newRelationList.size()>0 )  {
+            IORelation weights = (IORelation) newRelationList.getFirst();
+            temporaryPlaceList.addAll( _findBackwardConnectedPlaces(weights));  
+            newRelationList.remove(weights);        
+        }    
+        return temporaryPlaceList;
+    }
+
+
+/** THe current hierarchical Petri Net allows mutliple arcs connecting
+ *  places, transitions, and ports. Each arc can have an attribute 
+ *  "weight", or without such attribute. THe default is assumed to
+ *  be weight 1. This default weight can be changed into other weight
+ *  if necessary.
+ */
+
+    private  int  _getWeightNumber(IORelation weights) 
+                                  throws IllegalActionException {
+
+        Attribute temporaryAttribute = (Attribute)
+            weights.getAttribute("Weight");
+        if (temporaryAttribute == null)  
+            return 1;
+        else if (temporaryAttribute instanceof Variable) {
+            Variable tAttribute = (Variable) temporaryAttribute;
+            Token weightToken = (Token) tAttribute.getToken();
+            if (weightToken instanceof ScalarToken) {
+                ScalarToken wToken = (ScalarToken) weightToken;
+                int j = wToken.intValue();
+                return j;
            }
-       }
-       else
-           System.out.println("the arc weight is null");
-   }
+           else
+               return 0;
+        }
+        else {
+            System.out.println(" something wrong with the edge" ); 
+            return 0;
+        }
+    }
+   
 
-   System.out.print("start to decrease the place marking for input places"  );
-   System.out.println("the input width is" + transition.input.getWidth());
-
-   Iterator inRelations = transition.input.linkedRelationList().iterator();
-   while(inRelations.hasNext())  {
-       IORelation weights = (IORelation) inRelations.next();
-       if (weights != null) {
-           Iterator placePorts = weights.linkedSourcePortList().iterator();
-           while(placePorts.hasNext()) {
-               IOPort placePort = (IOPort) placePorts.next();
-               Place place = (Place) placePort.getContainer();
-               int i = place.getMarking();
-
-               Attribute temporaryAttribute = (Attribute ) 
-                       weights.getAttribute("Weight");
-               if (temporaryAttribute == null) {
-                   place.decreaseMarking(1);
-	             System.out.print("default value 1");
-                   System.out.print(" source place "+ place.getFullName()+ 
-                           " original tokens " +i);
-                   System.out.println("  new token  " + place.getMarking());
-               }
-               else if (temporaryAttribute instanceof Variable) {
-                   Variable tAttribute = (Variable) temporaryAttribute;
-                   Token weightToken = (Token) tAttribute.getToken();
-                   if (weightToken instanceof ScalarToken) {
-                       ScalarToken wToken = (ScalarToken) weightToken;
-                       int j = wToken.intValue();
-                       place.decreaseMarking(j);
-                       System.out.print("source place "+ place.getFullName() +
-                               " original tokens " +i);
-                       System.out.println("  new token  " + place.getMarking());
-                   }
-               }
-               place.setTemporaryMarking(place.getMarking());
-           }
-       }
-       else
-           System.out.println("the arc weight is null");
-   }
-
-}
-
-
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-   // private we have to set the current state here
-   // we also need the initial state, which is the places with markings.
-
+  
 }
 

@@ -120,6 +120,10 @@ public class Place extends Transformer {
         _temporaryMarking = _temporaryMarking - i;
     }
 
+    public void increaseTemporaryMarking(int i) {
+        _temporaryMarking = _temporaryMarking + i;
+    }
+
     /** setTemporaryMarking() is to set the _temporaryMarking to i */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;

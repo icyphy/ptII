@@ -32,22 +32,7 @@ package ptolemy.domains.petrinet.kernel;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.TypedActor;
-
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
@@ -59,12 +44,34 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.Token;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType;
+
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+
+
 import ptolemy.graph.Inequality;
 
 import java.util.Collections;
@@ -75,15 +82,43 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Enumeration;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor
 /**
-A Petri net Actor
+A Petri net Actor  
+
+THis is the basic unit of the hierarchical PetriNet component. It contains 
+ports, places, transitions, and hierarchical petrinet components. 
+The current version restricts the ports to be uniformly connected to
+Places or transitions in one direction. It is not allowed to have the
+ports to connect to places and transitions in the same input or output
+direction.
+
+It is also assumed that a transition is connected to places and a place
+is connected to transitions eventually in the hierarchy. 
+
+However, the system does not check for such restrictions.
+
+The flat Peti Net model is defined as follows.
+            place ----> transition ----> place
+A hierarchical Petri Net model is defined as follows:
+            place ----> transition ----> place
+            place ----> (ports) ----> transition ---> (ports) ----> place
+where (ports) means it could be 0 or any finite number of different directional
+ports, ---> means one or more marked or unmarked arcs.
+
+In this current implementation, it is restricted that all the inputs/outputs 
+to a port are either all places or all transitions plus possible ports.
+
+Multiple arcs are allowed for each connection. Each arc is counted as default
+weight 1, unless otherwise specified.
+
 
 @author  Yuke Wang
 @version $Id$
 */
-public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
+public class PetriNetActor extends TypedCompositeActor  {
 
     public PetriNetActor() {
         super();
@@ -105,6 +140,8 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     }
 
 
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,260 +153,55 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     }
 
 
-    public ComponentRelation newRelation(String name)
-            throws NameDuplicationException {
-        try {
-            _workspace.getWriteAccess();
-
-            TypedIORelation rel = new TypedIORelation(this, name);
-            return rel;
-
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(
-                    "TypedCompositeActor.newRelation: Internal error: "
-                    + ex.getMessage());
-        }
-
-        finally {
-            _workspace.doneWriting();
-        }
-    }
-
+ /**   It is assumed that the top level of the hierarchy is a PetiNetDirector.
+  *
+  */
 
     public void fire() throws IllegalActionException {
+        Nameable container = getContainer();
+        System.out.println("inside the _PetriNetActor.fire, the actors is" 
+                    + container.getFullName() + "  " + getFullName());
+        TypedCompositeActor pn = (TypedCompositeActor) this;
+        PetriNetDirector director = (PetriNetDirector) getDirector();
 
+        director.fireHierarchicalPetriNet(pn);     
 
     }
 
-    public Director getDirector() {
-        CompositeEntity container = (CompositeEntity)getContainer();
-        if (container instanceof CompositeActor) {
-            return ((CompositeActor)container).getDirector();
-        }
-        return null;
-    }
-
-    /** Return the executive director (same as getDirector()).
-     *  @return The executive director.
-     */
-    public Director getExecutiveDirector() {
-        return getDirector();
-    }
-
-    public Manager getManager() {
-	try {
-	    _workspace.getReadAccess();
-	    CompositeEntity container = (CompositeEntity)getContainer();
-	    if (container instanceof CompositeActor) {
-		return ((CompositeActor)container).getManager();
-	    }
-	    return null;
-	} finally {
-	    _workspace.doneReading();
-	}
-    }
-
-
-    public void initialize() throws IllegalActionException {
-        getDirector().initialize(this);
-    }
-
-
-    public List inputPortList() {
-        if(_inputPortsVersion != _workspace.getVersion()) {
-            try {
-                _workspace.getReadAccess();
-                // Update the cache.
-                LinkedList inports = new LinkedList();
-                Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if (p.isInput()) {
-                        inports.add(p);
-                    }
-                }
-                _cachedInputPorts = inports;
-                _inputPortsVersion = _workspace.getVersion();
-            } finally {
-                _workspace.doneReading();
-            }
-        }
-        return _cachedInputPorts;
-    }
-
-
-
-
-
-    public int iterate(int count) throws IllegalActionException {
-	int n = 0;
-	while (n++ < count) {
-	    if (prefire()) {
-		fire();
-		if(!postfire()) return STOP_ITERATING;
-	    } else {
-                return NOT_READY;
-	    }
-	}
-	return COMPLETED;
-    }
-
-    public Receiver newReceiver() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
-            throw new IllegalActionException(this,
-                    "Cannot create a receiver without a director.");
-        }
-        return dir.newReceiver();
-    }
-
-    public List outputPortList() {
-        if(_outputPortsVersion != _workspace.getVersion()) {
-            try {
-                _workspace.getReadAccess();
-                _cachedOutputPorts = new LinkedList();
-                Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
-                    IOPort p = (IOPort)ports.next();
-                    if( p.isOutput()) {
-                        _cachedOutputPorts.add(p);
-                    }
-                }
-                _outputPortsVersion = _workspace.getVersion();
-            } finally {
-                _workspace.doneReading();
-            }
-        }
-        return _cachedOutputPorts;
-    }
-
-
-    public boolean postfire() throws IllegalActionException {
-
-        return true;
-    }
-
+/** find all the transitions contained in the PetriNetActor.
+ *  the transitions can be deeply contained....
+ *  we will check all the deeply contained transitions and
+ *  see which one is ready to fire.
+ *  If there is one transition ready to fire, then the container
+ *  PetriNetActor is ready to fire.
+ */
 
     public boolean prefire() throws IllegalActionException {
+        System.out.println("inside the PetriNetActor.prefire, the actors is" 
+                    +  getFullName() );
+        TypedCompositeActor pn = (TypedCompositeActor) this;
+        PetriNetDirector director = (PetriNetDirector) getDirector();
 
-        return true;
-    }
-
-
-    public void preinitialize() throws IllegalActionException {
-
-
-    }
-
-
-    public void stopFire() {
-    }
-
-    public void terminate() {
-        try {
-            wrapup();
-        }
-        catch (IllegalActionException e) {
-            // Just ignore everything and terminate.
-        }
-    }
-
-
-    public List typeConstraintList() {
-        try {
-            _workspace.getReadAccess();
-
-            List result = new LinkedList();
-            Iterator inPorts = inputPortList().iterator();
-            while (inPorts.hasNext()) {
-                TypedIOPort inport = (TypedIOPort)inPorts.next();
-                boolean isUndeclared = inport.getTypeTerm().isSettable();
-                if (isUndeclared) {
-                    // inport has undeclared type
-                    Iterator outPorts = outputPortList().iterator();
-                    while (outPorts.hasNext()) {
-                        TypedIOPort outport =
-                            (TypedIOPort)outPorts.next();
-
-                        isUndeclared = outport.getTypeTerm().isSettable();
-                        if (isUndeclared && inport != outport) {
-                            // outport also has undeclared type
-                            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(),
-                                    outport.getTypeTerm());
-                            result.add(ineq);
-                        }
-                    }
+            Iterator components = deepEntityList().iterator();
+            while (components.hasNext()) {
+                Nameable component = (Nameable) components.next();
+                if (component instanceof Transition) {
+                    Transition transitionComponent = (Transition) component;
+                    boolean t = director.testReadyTransition(transitionComponent);
+                    if(t)
+                        return true;
                 }
-            }
-
-            // Collect constraints from contained Typeables.
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                Typeable port = (Typeable)ports.next();
-                result.addAll(port.typeConstraintList());
-            }
-
-            Iterator attributes = attributeList(Typeable.class).iterator();
-            while (attributes.hasNext()) {
-                Typeable attribute = (Typeable)attributes.next();
-                result.addAll(attribute.typeConstraintList());
-            }
-
-            // Collect constraints from all transitions.
-            Iterator transitionRelations = relationList().iterator();
-            while (transitionRelations.hasNext()) {
-                Relation transitionRelation =
-                    (Relation)transitionRelations.next();
-                attributes =
-                    transitionRelation.attributeList(Typeable.class)
-                    .iterator();
-                while (attributes.hasNext()) {
-                    Typeable attribute = (Typeable)attributes.next();
-                    result.addAll(attribute.typeConstraintList());
-                }
-            }
-
-            return result;
-
-        } finally {
-            _workspace.doneReading();
-        }
+            }  
+            return false;  
+  
     }
 
+   ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-
-
-    public void wrapup() throws IllegalActionException {
-        //Iterator inputPorts = inputPortList().iterator();
-        //while (inputPorts.hasNext()) {
-        //    TypedIOPort inport = (TypedIOPort)inputPorts.next();
-        //    _removeInputVariables(inport);
-        //}
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Cached lists of input and output ports.
-    private transient long _inputPortsVersion = -1;
-    private transient LinkedList _cachedInputPorts;
-    private transient long _outputPortsVersion = -1;
-    private transient LinkedList _cachedOutputPorts;
-
-    // Stores for each state a map from input ports to boolean flags
-    // indicating whether a channel is connected to an output port
-    // of the refinement of the state.
-    private Map _connectionMaps = null;
-
-    // Version of the connection maps.
-    private long _connectionMapsVersion = -1;
-
-    // The map from input ports to boolean flags indicating whether a
-    // channel is connected to an output port of the refinement of the
-    // current state.
-    private Map _currentConnectionMap = null;
-
-    // Version of the reference to the initial state.
-    private long _initialStateVersion = -1;
+ 
 }
