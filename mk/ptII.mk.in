@@ -119,6 +119,10 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# Directory that contains the Cal jar file ptCal.jar
+# used by bin/ptinvoke.in
+CAL_DIR = @CAL_DIR@
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 CMKIT_DIR = @CMKIT_DIR@
@@ -210,6 +214,9 @@ MATLAB_DIR = 	@MATLAB_DIR@
 
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
+
+# Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
+PTCAL_DIR = @PTCAL_DIR@
 
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
