@@ -42,7 +42,7 @@ public class Message extends Frame {
         setForeground(foreground);
 
         // TextArea.SCROLLABARS_NONE is not in jdk1.0.2
-        _txtarea = new TextArea(msg, 12, 40,TextArea.SCROLLBARS_NONE);
+        _txtarea = new TextArea(msg, 12, 40, TextArea.SCROLLBARS_NONE);
         _txtarea.setEditable(false);
         add("Center", _txtarea);
 
@@ -54,7 +54,8 @@ public class Message extends Frame {
     }
 
     //     public static void main(String args[]){
-    //      Message message = new Message("A message", Color.white,Color.black);
+    //      Message message = new Message("A message",
+    //                             Color.white,Color.black);
     //      message.setTitle("A Message");
     //      message.pack();
     //      message.show();
