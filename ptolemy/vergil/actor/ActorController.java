@@ -40,6 +40,7 @@ import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.GlobalLayout;
 import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.IncrementalLayoutListener;
+import diva.gui.GUIUtilities;
 import diva.util.Filter;
 
 import ptolemy.actor.IOPort;
@@ -63,15 +64,19 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PortSite;
 
+import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,15 +123,10 @@ public class ActorController extends AttributeController {
         }
 
 	if (_configuration != null) {
-	  // NOTE: The following requires that the configuration be
-	  // non-null, or it will report an error.
-
-	  // "Look Inside"
-	  _menuFactory.addMenuItemFactory(
-		new MenuActionFactory(new LookInsideAction()));
-	  _addedLookInsideAction = true;
-	} else {
-	  _addedLookInsideAction = false;
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
 	}
 
         // "Listen to Actor"
@@ -174,29 +174,30 @@ public class ActorController extends AttributeController {
         if (_portDialogFactory != null) {
 	    _portDialogFactory.setConfiguration(configuration);
         }
-
-	if (_configuration != null && !_addedLookInsideAction ) {
-	    // NOTE: The following requires that the configuration be
-	    // non-null, or it will report an error.
-
-	    // "Look Inside"
-	    _menuFactory.addMenuItemFactory(
- 	      new MenuActionFactory(new LookInsideAction()));
-	    _addedLookInsideAction = true;
+	if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The action that handles look inside.  This is accessed by
+     *  by ActorViewerController to create a hot key for the editor.
+     */
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private BreakpointDialogFactory _breakpointDialogFactory;
 
     private PortDialogFactory _portDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
-
-    private BreakpointDialogFactory _breakpointDialogFactory;
-
-    // Set to true if we add the LookInsideAction
-    private boolean _addedLookInsideAction = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -388,7 +389,11 @@ public class ActorController extends AttributeController {
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
-            super("Look Inside");
+            super("Look Inside (Ctrl+L)");
+            // For some inexplicable reason, the I key doesn't work here.
+            // Use L, which used to be used for layout.
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
