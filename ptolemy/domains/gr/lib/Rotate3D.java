@@ -45,16 +45,18 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// Rotate3D
 
-/** Conceptually, this actor takes 3D geometry in its input and produces a rotated
-version in its output. In reality, this actor encapsulates a Java3D TransformGroup
-which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the GR domain.
+/** Conceptually, this actor takes 3D geometry in its input and produces 
+a rotated version in its output. In reality, this actor encapsulates a 
+Java3D TransformGroup which is converted into a node in the resulting 
+Java3D scene graph. This actor will only have meaning in the GR domain.
 
-The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and <i>axisDirectionZ</i>
-determine the direction of the axis of rotation.  The parameters <i>baseX</i>,
-<i>baseY</i>, and <i>baseZ</i> determine the pivot point for axis of the rotation.
-The parameter <i>initialAngle</i> determines the initial angle of rotation.
+The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and 
+<i>axisDirectionZ</i> determine the direction of the axis of rotation.
+The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine 
+the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
+determines the initial angle of rotation.
 @author C. Fong
+@version $Id$
 */
 public class Rotate3D extends GRTransform {
 
