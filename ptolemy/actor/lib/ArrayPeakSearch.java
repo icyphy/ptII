@@ -341,7 +341,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                                 riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
                                 break;
                             case _RELATIVE_LINEAR:
-                                riseThreshold = localMax + dipValue;
+                                riseThreshold = localMin + dipValue;
                                 break;
                         }
                         localMinIndex = i;
@@ -385,7 +385,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                     if (_debugging) {
                         _debug("-- Looking for a value below " + dipThreshold);
                     }
-                    if (indata < dipThreshold) {
+                    if (indata < dipThreshold && localMax > squelchValue) {
                         if (_debugging) {
                             _debug("** Found a peak with value "
                                     + localMax
