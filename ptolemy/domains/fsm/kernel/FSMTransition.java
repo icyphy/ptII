@@ -416,7 +416,7 @@ public class FSMTransition extends ComponentRelation {
 
             //System.out.println("Testing trigger event of " + this.getFullName());
 
-            _te.evaluate();
+            _te.getToken();
             if (((BooleanToken)_te.getToken()).booleanValue() == false) {
                 return false;
             }
@@ -425,7 +425,7 @@ public class FSMTransition extends ComponentRelation {
 
             //System.out.println("Testing condition of " + this.getFullName());
 
-            _tc.evaluate();
+            _tc.getToken();
             if (((BooleanToken)_tc.getToken()).booleanValue() == false) {
                 return false;
             }

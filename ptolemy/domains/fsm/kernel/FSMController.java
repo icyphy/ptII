@@ -671,7 +671,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
         IOPort port;
         while (vars.hasMoreElements()) {
             var = (Variable)vars.nextElement();
-            var.evaluate();
+            var.getToken();
             // If this controller is a refinement, set the corresponding
             // state's local input variable.
             // This cannot be done in the FSMDirector.transferOutput() because
@@ -787,7 +787,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
         Variable var;
         while (vars.hasMoreElements()) {
             var = (Variable)vars.nextElement();
-            var.evaluate();
+            var.getToken();
             _localVariables.setVarValue(var.getName(), var.getToken());
         }
     }
