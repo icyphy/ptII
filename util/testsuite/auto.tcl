@@ -37,10 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-proc createAndExecute {file} {
-    java::new ptolemy.actor.gui.MoMLSimpleApplication $file
-}
-
 if [ file isdirectory auto/knownFailedTests ] {
     foreach file [glob -nocomplain auto/knownFailedTests/*.xml] {
 	# Get the name of the current directory relative to $PTII

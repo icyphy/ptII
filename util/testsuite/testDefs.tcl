@@ -632,3 +632,6 @@ if {"$isRunningNightlyBuild" == "true" \
     java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
 }
 
+proc createAndExecute {file} {
+    java::new ptolemy.actor.gui.MoMLSimpleApplication $file
+}
