@@ -56,9 +56,7 @@ JSRCS = Documentation.java \
 	MoMLUtilities.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	moml.dtd \
-	ptolemy.bat \
-	ptolemy.in
+	moml.dtd
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,23 +72,14 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-all: jclass ptolemy
-	chmod a+x ptolemy
+all: jclass
 
 install: all $(PTCLASSJAR)
-	$(INSTALL_PROGRAM) ptolemy $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) ptolemy.bat $(BIN_INSTALL_DIR)
 
 depend:
 	@echo "no dependencies in this directory"
 
 demo: all
-
-ptolemy: ptolemy.in ../../config.status
-	(cd ../..; ./config.status)
-# zip might not get the permissions of configure right, so we run /bin/sh
-../../config.status: ../../configure
-	(cd ../..; /bin/sh ./configure)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
