@@ -265,13 +265,15 @@ runTreeShakeCodegen:
 	@rm -f $(STATSFILE)
 
 compareTreeShakeJars:
-	@echo "The following .class files are present in the regular jar,"
-	@echo "but not in the codegen jar"
+	@echo "See {TREESHAKE_PREFIX}_jardiff.txt
+	@echo "  for the .class files are present in the regular jar,"
+	@echo "  but not in the codegen jar"
 	@jar -tvf ${TREESHAKE_PREFIX}.jar | \
 		awk '{print $$NF}' | sort > /tmp/treeshake_toc
 	@jar -tvf ${TREESHAKE_PREFIX}_codegen.jar | \
 		awk '{print $$NF}' | sort > /tmp/treeshake_codegen_toc
-	@comm -23 /tmp/treeshake_toc /tmp/treeshake_codegen_toc
+	@comm -23 /tmp/treeshake_toc /tmp/treeshake_codegen_toc \
+		> ${TREESHAKE_PREFIX}_jardiff.txt
 	@rm -f /tmp/treeshake_toc /tmp/treeshake_codegen_toc	
 	ls -l ${TREESHAKE_PREFIX}*
 
@@ -312,7 +314,7 @@ gcj2_1:
 		for dir in $$dirs; \
 		do \
 			echo "---Running gcj in $$dir"; \
-			(cd $$dir; CLASSPATH="$(PTII)"; gcj -c --CLASSPATH=$(PTII) --encoding=UTF-8 *.class); \
+			(cd $$dir; CLASSPATH="."; gcj -c --CLASSPATH=$(PTII)/$(TARGETPATH)/gcj --encoding=UTF-8 *.class); \
 		done;
 gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
@@ -321,7 +323,12 @@ gcj2_2:
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
 		gcj --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
-			-o ortho $$objs;
+			-Wl,-R,/usr/local/lib \
+			-o $(MODEL)_gcj $$objs;
+
+gcjRun:
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		./$(MODEL)_gcj
 
 gcj3_1:
 	@echo "--- Determine what directories are in the jar file"
