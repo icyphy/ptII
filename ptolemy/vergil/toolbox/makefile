@@ -59,6 +59,7 @@ JSRCS = \
 	MenuActionFactory.java \
 	MenuItemFactory.java \
 	PatternIcon.java \
+	PlotIcon.java \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
