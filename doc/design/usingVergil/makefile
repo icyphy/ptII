@@ -54,6 +54,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
+	expressions.htm \
+	expression.pdf \
 	usingVergil.pdf
 
 EXTRA_SRCS = \
@@ -75,4 +77,23 @@ updateimages:
 	do \
 		cp $$file `echo $$file | sed 's@usingVergil/Output/images/usingVergil@index-@'g`; \
 	done
+
+WEBWORKSSRC=../src/webworks/usingVergil4/Output
+update:
+	cp $(WEBWORKSSRC)/*.html .
+	cp $(WEBWORKSSRC)/images/* images
+	mv usingVergil.html index.htm
+	mv expressions.html expressions.htm
+	files="index.htm expressions.htm"; \
+	for file in $$files; \
+	do \
+		echo "$$file"; \
+		sed -e 's@background="images/backgrnd.gif"@@g' \
+			-e 's@face="Verdana, Arial, Helvetica, sans-serif"@@g' \
+			-e 's@"Stop button@"Stop" button@g' \
+			-e 's@expressions.html@expressions.htm@g' \
+		< $$file > /tmp/usingVergil.tmp; \
+		mv /tmp/usingVergil.tmp $$file; \
+	done
+
 include $(ROOT)/mk/ptno-compile.mk
