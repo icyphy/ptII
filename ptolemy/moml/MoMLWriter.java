@@ -1,6 +1,6 @@
 /* A class that writes Ptolemy models as moml
 
- Copyright (c) 1997-2000 The Regents of the University of California.
+ Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,8 +43,9 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.actor.IOPort;
 
-import java.io.*;
-
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,7 @@ Ptolemy model to another writer.
 
 @author Steve Neuendorffer
 @version $Id$
- */
+*/
 public class MoMLWriter extends Writer {
     /** Create a new writer that wraps the given writer.
      */
@@ -97,7 +98,7 @@ public class MoMLWriter extends Writer {
      *  @param  off   Offset from which to start writing characters
      *  @param  len   Number of characters to write
      *
-     *  @exception  IOException  If an I/O error occurs
+     *  @exception IOException If an I/O error occurs
      */
     public void write(char cbuf[], int off, int len)
             throws IOException {
@@ -249,7 +250,7 @@ public class MoMLWriter extends Writer {
                             // It really would be nice if all of
                             // our actors had workspace constructors,
                             // but version 1.0 only specified the
-                            // (container,name) constructor, and
+                            // (container, name) constructor, and
                             // now we're stuck with it.
                             parser.reset();
                             String source = "<entity name=\"test\""
@@ -356,7 +357,8 @@ public class MoMLWriter extends Writer {
                             String portName = port.getName(container);
                             //   System.out.println("portName = " + portName);
                             Port deferPort =
-                                deferredContainer.getPort(port.getName(container));
+                                deferredContainer.getPort(
+                                        port.getName(container));
                             // System.out.println("deferPort = " +
                             //        deferPort);
                             wroteAnything &=
@@ -382,7 +384,8 @@ public class MoMLWriter extends Writer {
                             // Otherwise, check inside the referred object to
                             // see if we need to write the entity.
                             String entityName = entity.getName(container);
-                            //    System.out.println("entityName = " + entityName);
+                            //    System.out.println("entityName = "
+                            //         + entityName);
                             Entity deferredEntity =
                                 deferredContainer.getEntity(entityName);
                             // System.out.println("deferEntity= " +
