@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating RED (galicia@eecs.berkeley.edu)
+@ProposedRating Red (galicia@eecs.berkeley.edu)
 
 */
 
@@ -63,7 +63,7 @@ public final class CrossRefList {
      */
     public CrossRefList(Object owner, CrossRefList originalList) {
         this(owner);
-        copyList(originalList);
+        duplicate(originalList);
     }
 
 
@@ -108,7 +108,7 @@ public final class CrossRefList {
     }
 
     /** Delete a CrossRef indexed by a neighboring Object. 
-     * Time complexity: O(1).
+     * Time complexity: O(n).
      */
     public synchronized void dissociate(Object element) {
         if (element == null || _dimen == 0) return;
@@ -163,7 +163,7 @@ public final class CrossRefList {
      * This methods assume that the new list already has an owning Object.
      * Time complexity: O(n).
      */
-    public synchronized void copyList(CrossRefList originalList) {
+    public synchronized void duplicate(CrossRefList originalList) {
         synchronized(originalList) {
             if(originalList.isEmpty()) return; // List to copy is empty.
             for(CrossRef p = originalList._headNode; p != null; p = p._next) {
