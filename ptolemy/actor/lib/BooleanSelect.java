@@ -86,8 +86,6 @@ public class BooleanSelect extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        StringAttribute controlCardinal;
-
         trueInput = new TypedIOPort(this, "trueInput", true, false);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
         control = new TypedIOPort(this, "control", true, false);
@@ -97,7 +95,8 @@ public class BooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(falseInput);
 
         // Put the control input on the bottom of the actor.
-        controlCardinal = new StringAttribute(control, "_cardinal");
+        StringAttribute controlCardinal
+                = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         /** Make the icon show T, F, and C for trueInput, falseInput

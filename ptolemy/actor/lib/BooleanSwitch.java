@@ -37,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSwitch
@@ -83,6 +84,11 @@ public class BooleanSwitch extends TypedAtomicActor {
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
         trueOutput.setTypeAtLeast(input);
         falseOutput.setTypeAtLeast(input);
+        
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal
+                = new StringAttribute(control, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////

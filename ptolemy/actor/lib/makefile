@@ -200,6 +200,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	CommutatorIcon.xml \
 	DistributorIcon.xml \
+	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	PowerEstimate.xml \
 	Sinewave.xml \
