@@ -1,30 +1,30 @@
 /* Base class for code generator helper.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.codegen.kernel;
 
@@ -33,77 +33,84 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedActor;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorHelper
 /**
-   Base class for code generator helper.
-
-   @author Gang Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ * Base class for code generator helper.
+ * 
+ * @author Gang Zhou
+ * @version $Id$
+ * @since Ptolemy II 4.1
+ * @Pt.ProposedRating Red (eal)
+ * @Pt.AcceptedRating Red (eal)
+ */
 public class CodeGeneratorHelper implements ActorCodeGenerator {
-    
-    /** FIXME
+
+    /**
+     * FIXME
      */
     public CodeGeneratorHelper(NamedObj component) {
-    	_component = component;
+        _component = component;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    //// public methods ////
 
-    /** FIXME
+    /**
+     * FIXME
      */
-    public void generateFireCode(StringBuffer stream) throws IllegalActionException {
+    public void generateFireCode(StringBuffer stream)
+            throws IllegalActionException {
     }
 
-    /** FIXME
+    /**
+     * FIXME
      */
-    public void generateInitializeCode(StringBuffer code) throws IllegalActionException {
+    public void generateInitializeCode(StringBuffer code)
+            throws IllegalActionException {
     }
 
-    /** FIXME
+    /**
+     * FIXME
      */
-    public void generateWrapupCode(StringBuffer code) throws IllegalActionException {
+    public void generateWrapupCode(StringBuffer code)
+            throws IllegalActionException {
     }
 
-    /** FIXME
+    /**
+     * FIXME
      */
     public NamedObj getComponent() {
         return _component;
     }
-    
-    /** Return the value of the specified parameter of the
-     *  associated actor.
-     *  @param parameterName The name of the parameter.
-     *  @return The value as a string.
-     *  @exception IllegalActionException If the parameter
-     *   does not exist or does not have a value.
+
+    /**
+     * Return the value of the specified parameter of the associated actor.
+     * 
+     * @param parameterName
+     *            The name of the parameter.
+     * @return The value as a string.
+     * @exception IllegalActionException
+     *                If the parameter does not exist or does not have a value.
      */
-    public String getParameterValue(String name) 
-            throws IllegalActionException {
-    	Attribute attribute = _component.getAttribute(name);
+    public String getParameterValue(String name) throws IllegalActionException {
+        Attribute attribute = _component.getAttribute(name);
         if (attribute == null) {
-        	throw new IllegalActionException(_component,
-                    "No attribute named: " + name);
+            throw new IllegalActionException(_component, "No attribute named: "
+                    + name);
         }
         if (attribute instanceof Variable) {
             // FIXME: need to ensure that the returned string
             // is correct syntax for the target language.
-        	return ((Variable)attribute).getToken().toString();
+            return ((Variable) attribute).getToken().toString();
         } else if (attribute instanceof Settable) {
-        	return ((Settable)attribute).getExpression();
+            return ((Settable) attribute).getExpression();
         }
         // FIXME: Are there any other values that a
         // parameter might have?
@@ -111,17 +118,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 "Attribute does not have a value: " + name);
     }
 
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor.
-     *  @param parameterName The name of the parameter or port
-     *  @return The reference to that parameter or port (a variable
-     *   name, for example).
-     *  @exception IllegalActionException If the parameter or port
-     *   does not exist or does not have a value.
+    /**
+     * Return the reference to the specified parameter or port of the associated
+     * actor.
+     * 
+     * @param parameterName
+     *            The name of the parameter or port
+     * @return The reference to that parameter or port (a variable name, for
+     *         example).
+     * @exception IllegalActionException
+     *                If the parameter or port does not exist or does not have a
+     *                value.
      */
-    public String getReference(String name) 
-            throws IllegalActionException {
-    	// FIXME: Implement this. The returned name should be that
+    public String getReference(String name) throws IllegalActionException {
+        // FIXME: Implement this. The returned name should be that
         // of a unique variable that represents the parameter
         // or the port value. First deal with ports: a
         // declaration should be created for each connection
@@ -130,7 +140,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // could be used for a variable representing the connection.
         // This method needs to generate this name given
         // the input port name.
-        
+
         // FIXME: Shouldn't we replace input port name to its
         // source output port name?
         // Need to implement a method that return the connected
@@ -138,52 +148,74 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // and a channel number. Setting up a look-up table during
         // initialization when the variables are generated could
         // make it much easier. zhouye
-        
+
         StringBuffer result = new StringBuffer();
         result.append(_component.getFullName());
         result.append("_");
-        
-        if (name.charAt(0) == '#') {
-            throw new IllegalActionException(_component,
-                    "Reference not found: " + name); 
-        }
-        
+
         if (_component instanceof Actor) {
-            Actor actor = (Actor)_component;    
-            
-            StringTokenizer tokenizer = new StringTokenizer(name, "#");
-            if (!tokenizer.hasMoreTokens() || tokenizer.countTokens() > 2) {
+            Actor actor = (Actor) _component;
+
+            StringTokenizer tokenizer = new StringTokenizer(name, "#", true);
+            if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3) {
                 throw new IllegalActionException(_component,
-                        "Reference not found: " + name); 
+                        "Reference not found: " + name);
             }
+            
+            // Get the port name.
             String portName = tokenizer.nextToken().trim();
+            if (portName.equals("#")) {
+                throw new IllegalActionException(_component,
+                        "Reference not found: " + name);
+            }
             
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
-                IOPort port = (IOPort)inputPorts.next();
-                // The channel is specified as $ref(port#channelNumber).   
+                IOPort port = (IOPort) inputPorts.next();
+                // The channel is specified as $ref(port#channelNumber).
                 if (port.getName().equals(portName)) {
                     result.append(portName);
-                    if (tokenizer.hasMoreTokens()) {
-                        // append the channel number.
-                        // FIXME: Should check if the string after "#" is an integer.
-                        result.append("_");
-                        result.append(tokenizer.nextToken().trim());
+                    if (!tokenizer.hasMoreTokens()) {
+                        // No channel number specified.
+                        // FIXME: Should get the connected port here.
+                        return result.toString();
                     }
+                    // get the channel number.
+                    tokenizer.nextToken(); // This is "#"
+                    Integer channel = new Integer(tokenizer.nextToken().trim());
+                    int channelNumber = channel.intValue();
+                    if (channelNumber < 0) {
+                        throw new IllegalActionException(_component, 
+                                "Invalid channel number in " + name);
+                    }
+                    // FIXME: Should return the connected port and channel number.
+                    result.append("_");
+                    result.append(channel.toString());
                     return result.toString();
                 }
             }
+            
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                IOPort port = (IOPort)outputPorts.next();
+                IOPort port = (IOPort) outputPorts.next();
                 if (port.getName().equals(portName)) {
                     result.append(portName);
-                    if (tokenizer.hasMoreTokens()) {
-                        // append the channel number.
-                        // FIXME: Shoul check if the string after "#" is an integer.
-                        result.append("_");
-                        result.append(tokenizer.nextToken().trim());
+                    if (!tokenizer.hasMoreTokens()) {
+                        // No channel number specified.
+                        // FIXME: Should get the connected port here.
+                        return result.toString();
                     }
+                    // get the channel number.
+                    tokenizer.nextToken(); // This is "#".
+                    Integer channel = new Integer(tokenizer.nextToken().trim());
+                    int channelNumber = channel.intValue();
+                    if (channelNumber < 0) {
+                        throw new IllegalActionException(_component, 
+                                "Invalid channel number in " + name);
+                    }
+                    // FIXME: Should get the connected port and channel number.
+                    result.append("_");
+                    result.append(channel.toString());
                     return result.toString();
                 }
             }
@@ -194,24 +226,26 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             result.append(name);
             return result.toString();
         }
-        throw new IllegalActionException(_component,
-                "Reference not found: " + name);
+        throw new IllegalActionException(_component, "Reference not found: "
+                + name);
     }
 
-    /** Process the specified code, replacing macros with their
-     *  values.
-     *  @param code The code to process.
-     *  @return The processed code.
+    /**
+     * Process the specified code, replacing macros with their values.
+     * 
+     * @param code
+     *            The code to process.
+     * @return The processed code.
      */
     public String processCode(String code) throws IllegalActionException {
-        
+
         StringBuffer result = new StringBuffer();
         int currentPos = code.indexOf("$");
         if (currentPos < 0) {
             // No "$" in the string
-            return code.toString();
+            return code;
         }
-        
+
         result.append(code.substring(0, currentPos));
         while (currentPos < code.length()) {
             int nextPos = code.indexOf("$", currentPos + 1);
@@ -220,6 +254,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 nextPos = code.length();
             }
             String subcode = code.substring(currentPos + 1, nextPos);
+            if (currentPos > 0 && code.charAt(currentPos - 1) == '\\') {
+                // found "\$", do not make replacement.
+                result.append("$");
+                result.append(subcode);
+                currentPos = nextPos;
+                continue;
+            }
+
             boolean foundIt = false;
             StringTokenizer tokenizer = new StringTokenizer(subcode, "()", true);
             if (tokenizer.hasMoreTokens()) {
@@ -229,28 +271,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String name = tokenizer.nextToken();
-                        if (name.equals("(")) {
-                            // found "ref(("
-                            // This is to make sure "ref(()" will not be
-                            // recognized as a reference name.
-                            foundIt = false;
-                        } else if (name.equals(")")) {
-                            // found "ref()"
-                            // This is to make sure "ref()" and
-                            // "ref( )" will give the same result.
-                            foundIt = true;
-                            while (tokenizer.hasMoreTokens()) {
-                                result.append(tokenizer.nextToken());  
-                            }
-                        } else if (tokenizer.hasMoreTokens()) {
+                        if (name.equals("(") || name.equals(")")) {
+                            // found "$ref((" or "$ref()"
+                            throw new IllegalActionException(_component,
+                                    "Illegal expression: $" + subcode);
+                        }
+                        if (tokenizer.hasMoreTokens()) {
                             String closeParen = tokenizer.nextToken();
                             if (closeParen.equals(")")) {
+                                if (name.trim().equals("")) {
+                                    throw new IllegalActionException(
+                                            _component, "Illegal expression: $"
+                                                    + subcode);
+                                }
                                 foundIt = true;
                                 name = name.trim();
-                                if (!name.equals("")) {
-                                    result.append(getReference(name));
-                                }
-                                // attach the rest subcode.
+                                result.append(getReference(name));
                                 while (tokenizer.hasMoreTokens()) {
                                     result.append(tokenizer.nextToken());
                                 }
@@ -261,24 +297,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String macroName = tokenizer.nextToken();
-                        if (macroName.equals("(")) {
-                            // found "val(("
-                            foundIt = false;
-                        } else if (macroName.equals(")")) {
-                            // found "val()"
-                            foundIt = true;
-                            while (tokenizer.hasMoreTokens()) {
-                                result.append(tokenizer.nextToken());  
-                            }
-                        } else if (tokenizer.hasMoreTokens()) {
+                        if (macroName.equals("(") || macroName.equals(")")) {
+                            // found "val((" or "val()"
+                            throw new IllegalActionException(_component,
+                                    "Illegal expression: " + subcode);
+                        }
+                        if (tokenizer.hasMoreTokens()) {
                             String closeParen = tokenizer.nextToken();
                             if (closeParen.equals(")")) {
+                                if (macroName.trim().equals("")) {
+                                    throw new IllegalActionException(
+                                            _component, "Illegal expression: "
+                                                    + "val(" + macroName + ")");
+                                }
                                 foundIt = true;
                                 macroName = macroName.trim();
-                                if (!macroName.equals(""))  {
-                                    result.append(getParameterValue(macroName));
-                                }
-                                // attach the rest subcode.
+                                result.append(getParameterValue(macroName));
                                 while (tokenizer.hasMoreTokens()) {
                                     result.append(tokenizer.nextToken());
                                 }
@@ -293,13 +327,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
             currentPos = nextPos;
         }
-        
+
         return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
+    //// private variables ////
+
     /** The associated component. */
     private NamedObj _component;
 }
