@@ -50,7 +50,6 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	DECQDirector.tcl \
 	DEReceiver.tcl
 
 # Graphical Java tests that use Tcl.
