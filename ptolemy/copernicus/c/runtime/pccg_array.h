@@ -117,14 +117,11 @@ typedef PCCG_ARRAY_INSTANCE *PCCG_ARRAY_INSTANCE_PTR;
 
 extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 
-/* Allocate storage for an array. FIXME: complete this function.
-   and its code. It should use varargs. */
-extern PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
-        PCCG_CLASS_PTR element_class,
-        int element_size,
-        int dimensions_to_fill,
-        int empty_dimensions,
-        ...);
-
+/* Allocate storage for a Java array using a variable number of arguments.
+ * The size1, size2 etc. indicate sizes of the filled dimensions.
+ */   
+PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
+        PCCG_CLASS_PTR element_class, int element_size,
+        int dimensions, int dimensions_to_fill, /*int size1,*/ ...); 
        
 #endif 
