@@ -313,3 +313,18 @@ TR.doneReading()
 TR.doneReading()
 TR.doneReading()
 }}
+
+
+######################################################################
+#### 
+test Workspace-9.1 {Test handleModelError} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    $w setName [java::null]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    set exception [java::new ptolemy.kernel.util.IllegalActionException \
+	    $n1 $n2 "myException"]
+    catch {$w handleModelError $n1 $exception} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: myException
+  in .n1 and .n2}}
