@@ -75,7 +75,7 @@ public class Const extends TypedAtomicActor {
     public TypedIOPort output = null;
 
     /** The value produced by this constant source. This parameter
-     *  is initialized to a DoubleToken, with value 0.0.
+     *  is initialized to a IntToken, with value 1.
      */
     public Parameter value = null;
 
@@ -101,10 +101,11 @@ public class Const extends TypedAtomicActor {
     }
 
     /** Send out the constant value.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException If it is thrown by the method
+     *   sending out the token.
      */
     public void fire()
-	    throws IllegalActionException {
+	throws IllegalActionException {
         output.broadcast(value.getToken());
     }
 
@@ -112,10 +113,8 @@ public class Const extends TypedAtomicActor {
      *  greater than or equal to the type of the value parameter.
      *  If the the value parameter has not been set, then it is
      *  set to type IntToken with value 1.
+     *  @return An enumeration of inequality type constraints.
      */
-    // FIXME: it may be better to set the default value for
-    // parameters in the constructor. But this requires support
-    // for parameter type change.
     public Enumeration typeConstraints() {
 	if (value.getToken() == null) {
 	    value.setToken(new IntToken(1));
