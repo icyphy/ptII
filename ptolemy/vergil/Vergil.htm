@@ -6,9 +6,6 @@
 </HEAD>
 <BODY>
 
-<H1>Vergil</H1>
-
-
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -16,7 +13,7 @@ applet is displayed on a XGA screen-->
 <!--"CONVERTED_APPLET"-->
 <!-- CONVERTER VERSION 1.0 -->
 <OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
-WIDTH = 800 HEIGHT = 600  codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+WIDTH = 800 HEIGHT = 500  codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME = "code" VALUE =ptolemy.vergil.VergilApplet>
 <PARAM NAME = "codebase" VALUE =../..>
@@ -27,13 +24,18 @@ WIDTH = 800 HEIGHT = 600  codebase="http://java.sun.com/products/plugin/1.2/jins
 	vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar,
 	vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar">
 <COMMENT>
-<EMBED type="application/x-java-applet;version=1.2" java_CODE = ptolemy/vergil/VergilApplet.class WIDTH = 800 HEIGHT = 600  code = ptolemy.vergil.VergilApplet codebase = ../.. type = "application/x-java-applet;version=1.2.2" background = "#faf0e6" archive = "
+<EMBED type="application/x-java-applet;version=1.2" java_CODE = ptolemy/vergil/VergilApplet.class WIDTH = 800 HEIGHT = 500  code = ptolemy.vergil.VergilApplet codebase = ../.. type = "application/x-java-applet;version=1.2.2" background = "#faf0e6" archive = "
 	lib/diva.jar,
 	ptolemy/ptsupport.jar,
 	vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar,
 	vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar"  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html"><NOEMBED></COMMENT>
 </NOEMBED></EMBED>
 </OBJECT>
-
--->
 <!--"END_CONVERTED_APPLET"-->
+
+<p>
+This is a demo applet of Vergil.  Drag entities from the palette on the left to a document on the right.  Drag from one port to another to make connections.
+Ports that can accept multiple connections are hollow.  To broadcast tokens from one port to multiple ports, insert a diamond relation in between.  Select a domain from the pulldown list and execute your model.
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
