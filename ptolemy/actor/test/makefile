@@ -51,6 +51,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	CalendarQueue.tcl \
 	QueueReceiver.tcl \
 	IOPort.tcl \
 	IORelation.tcl
