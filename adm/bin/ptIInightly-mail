@@ -162,7 +162,7 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     echo "Code Coverage Summary" >> $mailmsg
     echo "" >> $mailmsg
     echo "To see code coverage, view:" >> $mailmsg
-    echo "http://www.gigascale.org/ptolemy/nightly/coverage.html" >> $mailmsg
+    echo "http://www.gigascale.org/ptexternal/nightly/coverage.html" >> $mailmsg
     echo "" >> $mailmsg
     sh $ADMDIR/bin/coveragesummary >> $mailmsg
 fi
