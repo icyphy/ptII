@@ -69,8 +69,7 @@ directory contains a file called "test.wav", then <i>sourceURL</i>
 should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
 should be set to "file:///tmp/test.wav" The default value is
-<code>"file:///"
- + property("ptolemy.ptII.dir")
+<code>property("ptolemy.ptII.dirAsURL")
  + "/ptolemy/actor/lib/javasound/test/voice.wav"
 </code>
 Under Windows, to reference a file ":\WINNT\Media\chord.wav, use
