@@ -135,8 +135,10 @@ public class DDEActor extends TypedAtomicActor {
     public Token getNextToken() throws IllegalActionException {
         Token token = _getNextInput();
         if( token instanceof NullToken ) {
+	    /*
 	    System.out.println(getName()+": got a NullToken "
                     + "from _getNextInput()");
+	    */
             return getNextToken();
 	}
         return token;
@@ -148,10 +150,10 @@ public class DDEActor extends TypedAtomicActor {
      * @return False to indicate that future execution can not occur.
      * @exception IllegalActionException Not thrown in this class. May be
      *  thrown in derived classes.
-     */
     public boolean postfire() throws IllegalActionException {
         return false;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
