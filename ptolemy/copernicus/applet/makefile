@@ -52,9 +52,11 @@ JSRCS = \
 	Main.java
 
 OTHER_FILES_TO_BE_JARED = \
+	compileCommandTemplate.txt \
 	makefile.in \
 	model.htm.in \
-	modelVergil.htm.in
+	modelVergil.htm.in \
+	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -56,9 +56,14 @@ JSRCS = \
 	Predefined.java \
 	RegisterDelay.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	JHDLClass.java \
-	'Main$$IgnoreAllApplicationClasses.class'
+OTHER_FILES_TO_BE_JARED = \
+	compileCommandTemplate.txt \
+	runCommandTemplate.txt
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
+	JHDLClass.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,7 +72,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-		doc
+	doc \
+	'Main$$IgnoreAllApplicationClasses.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -72,12 +72,17 @@ JSRCS = \
 	MethodListGenerator.java \
 	RequiredFileGenerator.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	README.txt
+OTHER_FILES_TO_BE_JARED = \
+	compileCommandTemplate.txt \
+	runCommandTemplate.txt
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	README.txt
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
