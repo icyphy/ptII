@@ -102,7 +102,6 @@ public class CSPSieve extends CSPActor {
         Token data;
         boolean isLargestPrime = true;
         int lastSeen = 0;
-        int limit = 100;
         while (true) {
             //System.out.println("Sieve getting data");
             data = input.get(0);
