@@ -153,7 +153,7 @@ public class ClimbLinearizer extends CTActor{
         _cVx = 4.7;
         _paramCVx = new CTParameter(this, "CVx", new DoubleToken(_cVx));
 
-        _cVz = 1.7;
+        _cVz = -1.7;
         _paramCVz = new CTParameter(this, "CVz", new DoubleToken(_cVz));
     }
 

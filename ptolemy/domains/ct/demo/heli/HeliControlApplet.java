@@ -349,7 +349,8 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
             CTIntegrator A = new CTIntegrator(sys, "IntegratorA");
 
-            CTPlot ctPlot = new CTPlot(sys, "CTXYPlot", ctPanel);
+            //CTPlot ctPlot = new CTPlot(sys, "CTPlot", ctPanel);
+            CTXYPlot ctPlot = new CTXYPlot(sys, "CTXYPlot", ctPanel);
             String[] ctLegends = {"(Px,Pz)"};
             
             ctPlot.setLegend(ctLegends);
@@ -470,9 +471,9 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             hover.inputD4Pz.link(rD4Pz);
             */
 
-            //ctPlot.inputX.link(rPx);
-            //ctPlot.inputY.link(rPz);
-            ctPlot.input.link(rPz);
+            ctPlot.inputX.link(rPx);
+            ctPlot.inputY.link(rPz);
+            //ctPlot.input.link(rPz);
 
             //System.out.println("Parameters");
             // CT Director parameters
@@ -486,6 +487,11 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             minstep.setExpression("1e-6");
             minstep.parameterChanged(null);
             
+            Parameter maxstep =
+                (Parameter)_dir.getAttribute("MaximumStepSize");
+            maxstep.setExpression("0.5");
+            maxstep.parameterChanged(null);
+
             Parameter solver1 =
                 (Parameter)_dir.getAttribute("BreakpointODESolver");
             StringToken token1 = new StringToken(
@@ -500,13 +506,41 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             solver2.setToken(token2);
             solver2.parameterChanged(null);
 
+            /*
+            // sub dir parameters
+             initstep = 
+                (Parameter)subdir.getAttribute("InitialStepSize");
+            initstep.setExpression("0.01");
+            initstep.parameterChanged(null);
+
+             minstep =
+                (Parameter)subdir.getAttribute("MinimumStepSize");
+            minstep.setExpression("0.01");
+            minstep.parameterChanged(null);
+            
+            solver1 =
+                (Parameter)subdir.getAttribute("BreakpointODESolver");
+            token1 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            solver1.setToken(token1);
+            solver1.parameterChanged(null);
+           
+            
+            solver2 =
+                (Parameter)subdir.getAttribute("ODESolver");
+            token2 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+            solver2.setToken(token2);
+            solver2.parameterChanged(null);
+
+            */
             // CTActorParameters
             Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
             Pxi.setExpression("0.0");
             Pxi.parameterChanged(null);
 
             Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
-            Pzi.setExpression("2.5");
+            Pzi.setExpression("-2.5");
             Pzi.parameterChanged(null);
 
             Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
@@ -532,15 +566,15 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             xmin.parameterChanged(null);
             
             Parameter xmax = (Parameter)ctPlot.getAttribute("X_Max");
-            xmax.setExpression("1.0");
+            xmax.setExpression("50.0");
             xmax.parameterChanged(null);
 
             Parameter ymin = (Parameter)ctPlot.getAttribute("Y_Min");
-            ymin.setExpression("0.0");
+            ymin.setExpression("-10.0");
             ymin.parameterChanged(null);
 
             Parameter ymax = (Parameter)ctPlot.getAttribute("Y_Max");
-            ymax.setExpression("10.0");
+            ymax.setExpression("0.0");
             ymax.parameterChanged(null);
 
             // Setting up parameters.
@@ -548,7 +582,10 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             //_paramAlphaV = (Parameter)hover.getAttribute("AlphaV");
             //_paramAlphaA = (Parameter)hover.getAttribute("AlphaA");
             _paramStopT = (Parameter)_dir.getAttribute("StopTime");
+            _paramButton = (Parameter)button.getAttribute("ButtonClicked");
             //System.out.println(sys.description());
+            //System.out.println(_dir.getScheduler().description());
+            //System.out.println(subdir.getScheduler().description());
             System.out.println(_dir.getScheduler().description());
             //System.out.println(((CTDirector)sub.getDirector()).getScheduler().description());
 
@@ -581,6 +618,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
     private Parameter _paramAlphaV;
     private Parameter _paramAlphaA;
     private Parameter _paramStopT;
+    private Parameter _paramButton;
 
     //private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
@@ -681,7 +719,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
                 param.setToken(new DoubleToken(-10.0));
                 param.parameterChanged(null);
                 param = (Parameter)lin.getAttribute("CVx");
-                param.setToken(new DoubleToken(0.005));
+                param.setToken(new DoubleToken(5.0));
                 param.parameterChanged(null);
                 break;
             default:
@@ -811,7 +849,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
     /* Show simulation progress.
      */
-    private class CurrentTimeThread extends Thread {
+    public class CurrentTimeThread extends Thread {
         public void run() {
             while (_isSimulationRunning) {
                 // get the current time from director.
@@ -824,7 +862,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         }
     }
 
-    private class MyExecutionListener extends DefaultExecutionListener {
+    public class MyExecutionListener extends DefaultExecutionListener {
         public void executionFinished(ExecutionEvent e) {
             super.executionFinished(e);
             _isSimulationRunning = false;
@@ -832,12 +870,14 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
     }
 
-    private class ActionButtonListener implements ActionListener {
+    public class ActionButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
+            _paramButton.setToken(new BooleanToken(true));
+            _paramButton.parameterChanged(null);
         }
     }
 
-    private class GoButtonListener implements ActionListener {
+    public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             if (_isSimulationRunning) {
                 //System.out.println("Simulation still running.. hold on..");
