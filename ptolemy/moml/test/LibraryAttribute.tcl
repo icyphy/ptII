@@ -45,7 +45,7 @@ if {[string compare test [info procs test]] == 1} then {
 set libraryMoML "<?xml version=\"1.0\" standalone=\"no\"?>
 <!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"
     \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">
-<entity name=\"N0\" class=\"ptolemy.kernel.util.NamedObj\">
+<entity name=\"N0\" class=\"ptolemy.kernel.CompositeEntity\">
 <property name=\"_library\" class=\"ptolemy.moml.LibraryAttribute\">
   <configure>
     <entity name=\"state library\" class=\"ptolemy.kernel.CompositeEntity\">
@@ -126,7 +126,7 @@ test LibraryAttribute-3.1 {Workspace constructor} {
 set badLibraryMoML "<?xml version=\"1.0\" standalone=\"no\"?>
 <!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"
     \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">
-<entity name=\"N0\" class=\"ptolemy.kernel.util.NamedObj\">
+<entity name=\"N0\" class=\"ptolemy.kernel.CompositeEntity\">
 <property name=\"_library\" class=\"ptolemy.moml.LibraryAttribute\">
   <configure>
     <entity name=\"should be CompositeEntity\" class=\"ptolemy.kernel.ComponentEntity\">

@@ -2558,7 +2558,7 @@ test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
 ####
 #
 set body {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
       <configure>xxx</configure>
    </property>
@@ -2574,7 +2574,7 @@ test MoMLParser-11.1 {test configuration} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>xxx</configure>
     </property>
@@ -2585,7 +2585,7 @@ test MoMLParser-11.1 {test configuration} {
 ####
 #
 set body {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2604,7 +2604,7 @@ test MoMLParser-11.2 {test configuration with embedded HTML} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2618,7 +2618,7 @@ test MoMLParser-11.2 {test configuration with embedded HTML} {
 ####
 #
 set body {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2638,7 +2638,7 @@ test MoMLParser-11.3 {test configuration with embedded configure tag} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2666,7 +2666,7 @@ test MoMLParser-11.4 {test configuration value() method} {
 ####
 #
 set body {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure source="test.xml">
 <h1>Header</h1>
@@ -2684,7 +2684,7 @@ test MoMLParser-11.5 {test configuration with external source} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure source="test.xml">
 <h1>Header</h1>
@@ -2753,7 +2753,7 @@ test MoMLParser-13.3 {test with weird configure text} {
     # Uses 13.1 setup
     $parser reset
     set toplevel [$parser parse {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
 <configure>
 <svg>
@@ -2772,7 +2772,7 @@ test MoMLParser-13.3 {test with weird configure text} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <svg>
