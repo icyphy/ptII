@@ -186,6 +186,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 _markStates();
             }
             _setFireBeginTime(getCurrentTime());
+            fireAt(null, getFireEndTime());
             //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
