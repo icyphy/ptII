@@ -48,6 +48,29 @@ import java.util.Set;
 //// RecordType
 /**
 A class representing the type of a RecordToken.
+To set the type of a typeable object (such as a port or parameter)
+to a record with particular fields, create an instance of this
+class and call setTypeEquals() with that instance as an argument.
+<p>
+Note that a record type with more fields is a subtype of a record
+type with a subset of the fields.  For example, {x=double, y=int}
+is a subtype of {x=double}. When a record of type
+{x=double, y=int} is converted to one of type {x=double},
+the extra field is discarded. The converted record, therefore,
+will have exactly the fields in the type.
+<p>
+A consequence of this is that all record types are subtypes
+of the empty record type. Hence, to require that a typeable
+object be a record type without specifying what the fields
+are, use
+<pre>
+    typeable.setTypeAtMost(new RecordType(new String[0], new Type[0]));
+</pre>
+Note, however, that by itself this type constraint will
+not be useful because it does not, by itself, prevent the
+type from resolving to unknown (the unknown type is at the
+bottom of the type lattice, and hence satisfies this type
+constraint).
 
 @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
 $Id$
