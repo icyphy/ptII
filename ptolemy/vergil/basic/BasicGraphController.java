@@ -262,47 +262,55 @@ public abstract class BasicGraphController extends AbstractGraphController
             double translationX = newLocation[0] - originalUpperLeftX;
             double translationY = newLocation[1] - originalUpperLeftY;
 
-            figure.translate(translationX, translationY);
+            if (translationX != 0.0 || translationY != 0.0) {
+                // Request repaint before translation to repaint the
+                // damaged area.
+                // NOTE: Doesn't work.
+                // figure.repaint();
+                figure.translate(translationX, translationY);
 
-            // Reroute edges linked to this figure.
-            GraphModel model = getGraphModel();
-            Object userObject = figure.getUserObject();
-            if (userObject != null) {
-                Iterator inEdges = model.inEdges(userObject);
-                while(inEdges.hasNext()) {
-                    Figure connector = getFigure(inEdges.next());
-                    if (connector instanceof Connector) {
-                        ((Connector)connector).reroute();
-                    }
-                }
-                Iterator outEdges = model.outEdges(userObject);
-                while(outEdges.hasNext()) {
-                    Figure connector = getFigure(outEdges.next());
-                    if (connector instanceof Connector) {
-                        ((Connector)connector).reroute();
-                    }
-                }
-                if(model.isComposite(userObject)) {
-                    Iterator edges = GraphUtilities.partiallyContainedEdges(
-                            userObject, model);
-                    while(edges.hasNext()) {
-                        Figure connector = getFigure(edges.next());
+                // Reroute edges linked to this figure.
+                GraphModel model = getGraphModel();
+                Object userObject = figure.getUserObject();
+                if (userObject != null) {
+                    Iterator inEdges = model.inEdges(userObject);
+                    while(inEdges.hasNext()) {
+                        Figure connector = getFigure(inEdges.next());
                         if (connector instanceof Connector) {
                             ((Connector)connector).reroute();
                         }
                     }
+                    Iterator outEdges = model.outEdges(userObject);
+                    while(outEdges.hasNext()) {
+                        Figure connector = getFigure(outEdges.next());
+                        if (connector instanceof Connector) {
+                            ((Connector)connector).reroute();
+                        }
+                    }
+                    if(model.isComposite(userObject)) {
+                        Iterator edges = GraphUtilities.partiallyContainedEdges(
+                                userObject, model);
+                        while(edges.hasNext()) {
+                            Figure connector = getFigure(edges.next());
+                            if (connector instanceof Connector) {
+                                ((Connector)connector).reroute();
+                            }
+                        }
+                    }
                 }
+                // NOTE: A very inelegant way to handle repainting is below.
+                // It's accessing a protected member of BasicGraphFrame.
+                // NOTE: This is very slow... It make preinitialize()
+                // take forever, presumably because all these variables
+                // are getting validated.  However, without it, then if
+                // a component moves during a run, e.g. by updating its
+                // _location variable, then it will leave a trail of
+                // cruft on the screen.
+                // FIXME: Better would be to figure out from the bounding
+                // box before translation and the translation what region
+                // needs to be repainted and just repaint that region.
+                getFrame()._jgraph.repaint();
             }
-            // NOTE: Apparently, we need to repaint.
-            // FIXME: This is not a very elegant way to do this.
-            // It's accessing a protected member of BasicGraphFrame.
-            // FIXME: This is way too slow... It make preinitialize()
-            // take forever, presumably because all these variables
-            // are getting validated.  However, without it, then if
-            // a component moves during a run, e.g. by updating its
-            // _location variable, then it will leave a trail of
-            // cruft on the screen.
-            // getFrame()._jgraph.repaint();
         }
     }
 
