@@ -414,7 +414,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 	    }
         }
 
-        //System.out.println("ModelError is discarded.");
+        if(_debugging) _debug("ModelError: " + exception.getMessage() + " is discarded.");
         return true;
     }
 
