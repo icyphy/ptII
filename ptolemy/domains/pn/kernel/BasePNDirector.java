@@ -228,17 +228,30 @@ public class BasePNDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
 	// Wait while no deadlock is detected.
-	while (_readBlockCount != _getActiveActorsCount()) {
+        System.out.println("DIRECTOR: START OF FIRE");
+        while( _readBlockCount != _getActiveActorsCount() ) {
+        	// && !_areActorsStopped() ) {
 	    //In this case, wait until a real deadlock occurs.
+            System.out.println("DIRECTOR: JUST INSIDE OF OUTER FIRE LOOP");
 	    synchronized (this) {
 		while (!_areActorsDeadlocked()) {
+                // while (!_areActorsDeadlocked() && !_areActorsStopped() ) {
 		    //Wait until a deadlock is detected.
 		    workspace.wait(this);
+                    System.out.println("PN Director Awakened"
+                    +"; Active Actors = " + _getActiveActorsCount() 
+                    +"; ReadBlocked Actors = " + _readBlockCount
+                    +"; WriteBlocked Actors = " + _writeBlockCount );
+                    // +"; Stopped Actors = " + _getStoppedProcessesCount() );
+                    Iterator threads = _actorThreadList.iterator();
 		}
 		//Set this flag as a derived class might use this variable.
+        	System.out.println("RESOLVE DEADLOCK CALLED");
 		_notDone = _resolveDeadlock();
+        	System.out.println("RESOLVE DEADLOCK ENDED");
 	    }
-	}
+        }
+        System.out.println("DIRECTOR: END OF FIRE");
         return;
     }
 
@@ -298,9 +311,15 @@ public class BasePNDirector extends ProcessDirector {
 	if (!((((CompositeActor)getContainer()).
 		inputPortList()).isEmpty())
 		&& _getActiveActorsCount() != 0 ){
+            /*
+            System.out.println("DIRECTOR.POSTFIRE() returning true");
 	    return true;
+            */
+            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+	    return _notDone;
 	} else {
-	    return false;
+            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone + " again.");
+	    return _notDone;
 	}
     }
 
@@ -365,6 +384,9 @@ public class BasePNDirector extends ProcessDirector {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
 	Iterator receivers = _writeblockedQueues.iterator();
+        if( !receivers.hasNext() ) {
+            return;
+        }
 	while (receivers.hasNext()) {
 	    PNQueueReceiver queue = (PNQueueReceiver)receivers.next();
 	    if (smallestCapacity == -1) {
@@ -407,10 +429,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
-	if (_areActorsDeadlocked()) {
-	    notifyAll();
-	}
-	return;
+	notifyAll();
     }
 
     /** Decrement the count of processes waiting for the topology change
@@ -419,7 +438,6 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfMutationUnblock() {
 	_mutationBlockCount--;
-	return;
     }
 
 
@@ -437,10 +455,12 @@ public class BasePNDirector extends ProcessDirector {
 	    _writeblockedQueues.add(rcvr);
 	    _writeBlockCount++;
         }
-	if (_areActorsDeadlocked()) {
+        /*
+	if (_areActorsDeadlocked() || _areActorsStopped() ) {
 	    notifyAll();
 	}
-	return;
+        */
+        notifyAll();
     }
 
 
@@ -520,6 +540,35 @@ public class BasePNDirector extends ProcessDirector {
 	}
     }
 
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or
+     *  because they are blocked or delayed.
+     * @return True if all active threads containing actors controlled
+     *  by this thread have stopped; otherwise return false.
+     *  FIXME
+    protected synchronized boolean _areActorsStopped() {
+	long threadsStopped = _getStoppedProcessesCount();
+	long actorsActive = _getActiveActorsCount();
+        
+	// All threads are stopped due to stopFire()
+	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
+	    return true;
+	}
+
+	// Some threads are stopped due to stopFire() while others
+	// are blocked waiting to read or write data.
+        // if( threadsStopped + _actorsBlocked + _actorsDelayed
+	if( threadsStopped + _readBlockCount + _writeBlockCount
+        	>= actorsActive ) {
+	    if( threadsStopped != 0 ) {
+	        return true;
+	    }
+	}
+
+	return false;
+    }
+     */
+    
     /** Resolve an artificial deadlock and return true. If the
      *  deadlock is not an artificial deadlock (it is a real deadlock),
      *  then return false.
@@ -541,13 +590,16 @@ public class BasePNDirector extends ProcessDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-        if (_writeBlockCount == 0) {
-	    //There is a real deadlock.
+        if (_writeBlockCount == 0 && _readBlockCount > 0 ) {
+	    // There is a real deadlock.
+	    return false;
+        } else if ( _getActiveActorsCount() == 0 ) {
 	    return false;
         } else {
             //This is an artificial deadlock. Hence find the input port with
 	    //lowest capacity queue that is blocked on a write and increment
 	    //its capacity;
+            System.out.println("_resolveDeadlock() calling increment capacity");
             _incrementLowestWriteCapacityPort();
 	    return true;
         }
