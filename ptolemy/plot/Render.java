@@ -67,10 +67,9 @@ public class Render extends PlotBox {
     ////                         public methods                    ////
 
     /** Add a vertical stripe.
-     *  @param x The x value for the vertical stripe.
      *  @param colors The colors of the pixels in the vertical stripe.
      */
-    public synchronized void addStripe(double x, int[] colors) {
+    public synchronized void addStripe(int[] colors) {
 
         // Make a copy of the array given to addStripe().
 
@@ -159,12 +158,12 @@ public class Render extends PlotBox {
                     
 
                     // Add the stripes to the data structure.
-                    for (int i = 1; i <= 5; i++) {
-                        addStripe((double)i - .33, stripe1);
-                        addStripe((double)i + .33, stripe2);
+                    for (int i = 1; i <= 50; i++) {
+                        addStripe(stripe1);
+                        addStripe(stripe2);
                     }
 
-		    setXIncrement(0.5);
+		    setXIncrement(0.05);
 		    setXOffset(0.0);
 		    setYIncrement(400.0);
 		    setYOffset(0.0);
@@ -241,18 +240,20 @@ public class Render extends PlotBox {
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
 
-	double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) +
-	    1.0;
+	double x1 = (double)(_ulx + ((double)(_originalXlow - _xMin) * _xscale)
+			     + 1.0);
 
         double width = _xIncrement * _xscale;
+
+	double x2 = x1 + width;
 
         ListIterator imageDataIterator = _imageData.listIterator(0);
 
         while (imageDataIterator.hasNext()) {
             int[] currentStripe = (int[])imageDataIterator.next();
-            _drawStripe(graphics, currentStripe, x, width);
-            // System.out.println("x = " + x);
-            x += width;
+            _drawStripe(graphics, currentStripe, x1, (int)x2 - (int)x1);
+	    x1 = x2;
+	    x2 = x1 + width;
         }
 
 	// Indicate that the plot is showing.
@@ -342,17 +343,20 @@ public class Render extends PlotBox {
          }
 
          // Draw the stripe one patch (data element) at a time.
-         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1.0;
+         double y1 = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1.0;
 
 	 double height = _yIncrement * _yscale;
 
+	 double y2 = y1 + height;
+
          for (int i = 0; i < stripe.length; i++) {
-             _drawPatch(graphics, (int)x, (int)y, (int)width, (int)height,
-                        stripe[i]);
+             _drawPatch(graphics, (int)x, (int)y1, (int)width,
+			(int)y2 - (int)y1, stripe[i]);
 
              // Increment the y value so the next patch is printed in the
              // right place.
-             y += height;
+             y1 = y2;
+	     y2 = y1 + height;
          }
      }
 
@@ -367,34 +371,43 @@ public class Render extends PlotBox {
      *  @param colorValue The index into the colormap of the color to be drawn.
      */
 
-     private void _drawPatch(Graphics graphics, int x, int y,
+    private void _drawPatch(Graphics graphics, int x, int y,
                              int width, int height, int colorValue) {
 
-        // Convert the colorValue into it's r, g, and b.
-        int r = _colormap[0][colorValue];
-        int g = _colormap[1][colorValue];
-        int b = _colormap[2][colorValue];
-
-        // Set the color.
-        graphics.setColor(new Color(r, g, b));
+	// The height of the patch must be at least one pixel.
+	if (height < 1){
+	    height = 1;
+	}
+	 
+	// Convert the colorValue into it's r, g, and b.
+	int r = _colormap[0][colorValue];
+	int g = _colormap[1][colorValue];
+	int b = _colormap[2][colorValue];
+ 
+	// Set the color.
+	graphics.setColor(new Color(r, g, b));
 
 	// Clip the patch to the visible range.
 	int[] xAndWidth = _clipXWidth(x, width);
 	x = xAndWidth[0];
 	width = xAndWidth[1];
 
+	// If the patch is not visible return without having drawn anything.
+	if (x == _NOTVISIBLE) {
+	    return;
+	}
+
 	int[] yAndHeight = _clipYHeight(y, height);
 	y = yAndHeight[0];
 	height = yAndHeight[1];
 
 	// If the patch is not visible return without having drawn anything.
-	if (x == _NOTVISIBLE || y == _NOTVISIBLE) {
+	if (y == _NOTVISIBLE) {
 	    return;
 	}
 
-        // Draw the patch.
-        graphics.fillRect(x, y, width, height);
-
+	// Draw the patch.
+	graphics.fillRect(x, y, width, height);
     }
 
 
