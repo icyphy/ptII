@@ -52,7 +52,6 @@ JZIP =		pt/kernel/pt.kernel.zip
 CLASSPATH = ../..
 
 JSRCS = \
-	CentralizedExecutive.java \
 	CrossRefList.java \
 	DataPort.java \
 	Entity.java \
@@ -96,6 +95,7 @@ JSRCS = \
 	#FIXME: Universe.java \
 	#Removed GraphElement.java on 11/11/97 by davisj
 	#Removed GenericPort.java on 11/11/97 by davisj 
+	#Moved CentralizedExecutive.java to kernel/copies
 	#Moved DistributedExecutive.java to kernel/copies 
 	#Moved Executive.java to kernel/copies 
 	#Moved Target.java to kernel/copies
