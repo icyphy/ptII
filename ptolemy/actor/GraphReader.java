@@ -72,7 +72,7 @@ public class GraphReader {
      *  with the connection that the edge represents. These conventions
      *  for assigning node and edge weights can be changed in
      *  specialized graph reader classes by overriding the
-     *  {@link ptolemy.actor.GraphReader#_computeNodeWeight(AtomicActor)} and
+     *  {@link ptolemy.actor.GraphReader#_computeNodeWeight(Actor)} and
      *  {@link ptolemy.actor.GraphReader#_computeEdgeWeight(IOPort sourcePort, 
      *  IOPort sinkPort)}
      *  methods.
