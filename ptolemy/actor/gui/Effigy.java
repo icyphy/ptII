@@ -381,7 +381,7 @@ public class Effigy extends CompositeEntity {
      *  @see #masterEffigy()
      *  @see #isModifiable()
      *  @see #isModified()
-     *  @see #setModifiable()
+     *  @see #setModifiable(boolean)
      *  @param modified True if the data has been modified.
      */
     public void setModified(boolean modified) {
