@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red(neuendor@eecs.berkeley.edu)
-@AcceptedRating Red(neuendor@eecs.berkeley.edu)
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
