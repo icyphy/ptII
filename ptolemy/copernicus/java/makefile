@@ -560,7 +560,7 @@ recompileSnapshots:
 			javafile=`dirname $$file`/`basename $$file .jad`.java;\
 			sh ../shallow/test/jad2java $$file \
 				> $$javafile; \
-			echo "Compilinmg $$javafile"; \
+			echo "Compiling $$javafile"; \
 			$(JAVAC) -classpath "$(ROOT)/$(TARGETPATH)/$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
 				$$javafile; \
 		done; \
