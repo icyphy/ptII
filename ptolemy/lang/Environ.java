@@ -82,26 +82,44 @@ public class Environ {
         _declList.add(decl);
     }
 
+    /** Return an EnvironIter that will iterate over all the Decls
+     *  in this Environ.
+     */
     public EnvironIter allDecls() {
         return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
     }
 
+    /** Return an EnvironIter that will iterate over all the Decls
+     *  that have any of the categories bits set in mask.
+     */
     public EnvironIter allDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, false);
     }
 
+    /** Return an EnvironIter that will iterate over all the Decls
+     *  that have the same name.
+     */
     public EnvironIter allDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
+    /** Return an ListIterator that will iterate over all the proper Decls
+     *  in this Environ and in any parent Environs.
+     */
     public ListIterator allProperDecls() {
         return _declList.listIterator();
     }
 
+    /** Return an ListIterator that will iterate over all the proper Decls
+     *  in this Environ and in any parent Environs that have a matching mask.
+     */
     public EnvironIter allProperDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, true);
     }
 
+    /** Return an EnvironIter that will iterate over all the proper Decls
+     *  in this Environ and in any parent Environs that have the same name.
+     */
     public EnvironIter allProperDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
@@ -200,22 +218,35 @@ public class Environ {
         return null;
     }
 
+    /** Lookup a decl by name in the current Environ. */
     public EnvironIter lookupFirst(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
+    /** Lookup a decl by name and mask in the current Environ. */
     public EnvironIter lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
 
+    /** Lookup a decl by name in the current Environ or the
+     *  parent Environs
+     */
     public EnvironIter lookupFirstProper(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
+    /** Lookup a decl by name and mask in the current Environ or the
+     *  parent Environs
+     */
     public EnvironIter lookupFirstProper(String name, int mask) {
         return lookupFirst(name, mask, true);
     }
 
+    /** Lookup a decl by name and mask in the current Environ or the
+     *  parent Environs.  If the proper argument is true, the look
+     *  in the parent Environs, if the proper argument is false, the
+     *  do not look in the parent Environs.
+     */
     public EnvironIter lookupFirst(String name, int mask, boolean proper) {
         Environ parent = proper ? null : _parent;
 
