@@ -270,7 +270,7 @@ public class Copernicus {
      */
     public static void main(String args[]) {
 	try {
-	    new GenerateCode(args);
+	    new Copernicus(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
