@@ -800,7 +800,7 @@ public class DEDirector extends Director implements TimedDirector {
         // the stop time.
         if (_noMoreActorsToFire
                 && 
-                (stop || (getModelTime().compareTo(getModelStopTime()) >= 0))) {
+                (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             _exceedStopTime = true;
             result = result && false;
         } else if (_exceedStopTime) {
