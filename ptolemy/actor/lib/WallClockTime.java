@@ -72,9 +72,7 @@ public class WallClockTime extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        long elapsedTime = System.currentTimeMillis() - _startTime;
-        double currentTime = ((double)elapsedTime)/1000.0;
-        output.broadcast(new DoubleToken(currentTime));
+        output.broadcast(new DoubleToken(_getCurrentTime()));
     }
 
     /** Record the start time.
@@ -85,6 +83,14 @@ public class WallClockTime extends Source {
        _startTime = System.currentTimeMillis();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    protected double _getCurrentTime() {
+        long elapsedTime = System.currentTimeMillis() - _startTime;
+        return (((double)elapsedTime)/1000.0);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
