@@ -57,7 +57,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES =	doc
 
 # Do make sources so that we ensure that the subdirectories are checked out
 all:  sources $(MISC_SRCS)
