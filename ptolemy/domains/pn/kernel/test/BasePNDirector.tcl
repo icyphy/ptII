@@ -95,10 +95,14 @@ test BasePNDirector-5.1 {Test action methods} {
     set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
     $a1 clear
     $manager run
+    # run the application again
+    $manager run
     lsort [$a1 getRecord]
-    
-} {W.E0.A1.fire W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.wrapup}
+} {W.E0.A1.fire W.E0.A1.fire W.E0.A1.initialize W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.fire W.E0.A2.initialize W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.prefire W.E0.A2.wrapup W.E0.A2.wrapup}
 
+######################################################################
+####
+#
 test BasePNDirector-5.2 {Test creation of a receiver} {
     set r1 [$d3 newReceiver]
     #FIXME: Check if this is correct!
@@ -120,24 +124,31 @@ test BasePNDirector-7.1 {Test finishing methods} {
     set d71 [java::new ptolemy.domains.pn.kernel.BasePNDirector]
     $d71 setName D71    
     $e71 setDirector $d71
-
-    set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $e71 s1]
+    set p1 [$d71 getAttribute "Initial_queue_capacity"]
+    $p1 setToken [java::new {ptolemy.data.IntToken int} 2]
     set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e71 t1]
-    set p1 [$s1 getPort input]
+    set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
     $e71 connect $p1 $p2
     set lis [java::new ptolemy.domains.pn.kernel.test.StringPNListener]
     $d71 addProcessListener $lis
     $manager run
-    $d71 removeProcessListener $lis
     set prof [$t1 getProfile]
+    #Remove listener and run it again to confirm the action of removelistener
+    #It also tests that the application can run twice without recreating the 
+    #model
+    $d71 removeProcessListener $lis
     $t1 clearProfile
     $manager run
     list $prof [$t1 getProfile] [$lis getProfile]
 } {{broadcast new token 0
 broadcast new token 1
+received new token 0
+received new token 1
 } {broadcast new token 0
 broadcast new token 1
+received new token 0
+received new token 1
 } {State of .E71.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
-State of .E71.s1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
 }}
+
