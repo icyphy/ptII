@@ -445,7 +445,14 @@ public class GenericJNIActor extends TypedAtomicActor {
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             //if the argument is return
-            if (port.getName().equals(this.getArgumentReturn().getName())) {
+            if (getArgumentReturn() == null) {
+                System.err.println("Warning: GenericJNIActor.java: "
+                        + "getArgumentReturn() returns null?");
+            }
+            if (port != null 
+                    && port.getName() != null
+                    && getArgumentReturn() != null
+                    && port.getName().equals(this.getArgumentReturn().getName())) {
                 String typ = "";
                 Field field = null;
 
@@ -479,8 +486,10 @@ public class GenericJNIActor extends TypedAtomicActor {
                 }
             }
             //if the argument is output
-            else if (
-                    port.isOutput()
+            else if ( port!= null
+                    && port.isOutput()
+                    && port.getName() != null
+                    && getArgumentReturn() != null
                     && !(port.getName()
                             .equals(this.getArgumentReturn().getName()))) {
 
