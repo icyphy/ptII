@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 //// Parameter
 /**
 Parameter is another name for Variable.  It is an identical class,
-derived from Variable, with no additional functionality.  It's reason
+derived from Variable, with no additional functionality.  Its reason
 for existence is to serve as a marker for variables that are to made
 visible at the user interface level.  By convention, an instance
 of NamedObj has a set of attributes, some of which are instances
@@ -115,23 +115,6 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return true if the argument is legal to be added to the scope
-     *  of this parameter. The argument is legal if it is an instance
-     *  of Parameter and is in the same workspace as this parameter.
-     *  @param var The variable to be checked.
-     *  @return True if the argument is legal.
-     */
-    protected boolean _isLegalInScope(Variable var) {
-        if (!(var instanceof Parameter)) {
-            return false;
-        }
-        return (var.workspace() == this.workspace());
-    }
-
 }
 
 
