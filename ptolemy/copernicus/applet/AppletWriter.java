@@ -93,6 +93,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      * the given model. The model is assumed to already have been
      * properly initialized so that resolved types and other static
      * properties of the model can be inspected.
+     * @param model The model that this class will operate on.
+     * @return An instance of the AppletWriter transformer.
      */
     public static AppletWriter v(CompositeActor model) {
         return new AppletWriter(model);
