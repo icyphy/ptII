@@ -550,18 +550,20 @@ public class IOPort extends ComponentPort {
         return Collections.enumeration( deepConnectedOutPortList() );
     }
 
-    /** If the port is an input, return the receivers deeply linked on the
-     *  inside.  This method is used to obtain
-     *  the receivers that are to receive data at this input port.
-     *  The returned value is an array of
-     *  arrays in the same format as that returned by getReceivers(). The
-     *  difference between this method and getReceivers() is that this method
-     *  treats the port as a transparent port regardless of whether it is
-     *  one.  If there are no relations linked on the inside, it returns null.
-     *  This method is used for opaque, non-atomic entities.  It "sees through"
-     *  the boundary of opaque ports and actors.
-     *  This method is <i>not</i> read-synchronized on the workspace, so the
-     *  caller should be.
+    /** If the port is an input, return the receivers deeply linked on
+     *  the inside.  This method is used to obtain the receivers that
+     *  are to receive data at this input port.  The returned value is
+     *  an array of arrays in the same format as that returned by
+     *  getReceivers(). The difference between this method and
+     *  getReceivers() is that this method treats the port as a
+     *  transparent port regardless of whether it is one.  That is,
+     *  the returned receivers are contained by ports connected on the
+     *  inside to this port.  The number of channels is the inside
+     *  width of this port.  If there are no relations linked on the
+     *  inside, it returns null.  This method is used for opaque,
+     *  non-atomic entities.  It "sees through" the boundary of opaque
+     *  ports and actors.  This method is <i>not</i> read-synchronized
+     *  on the workspace, so the caller should be.
      *  @return The inside receivers, or an empty receiver array if there
      *   are none.
      */
@@ -569,7 +571,9 @@ public class IOPort extends ComponentPort {
         if (!isInput()) {
             return _EMPTY_RECEIVER_ARRAY;
         }
-        int width = getWidth();
+        // Note that this is the inside width, which may not be equal to the
+        // outside width of the port.
+        int width = getWidthInside();
         if (width <= 0) {
             return _EMPTY_RECEIVER_ARRAY;
         }
