@@ -585,7 +585,9 @@ public class GRVolume extends GRActor3D {
         
         //Create texture space  ???
         _volume = volRend.getVolume();
+        System.out.println(_volume.hasData() + " first one"); //This was false
         _volume.update();
+        System.out.println(_volume.hasData() + " second one"); //This was true
         
         if (_debugging) {
             _debug("Got Volume");
