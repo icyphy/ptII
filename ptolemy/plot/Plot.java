@@ -569,6 +569,8 @@ public class Plot extends PlotBox {
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().  Also, a different default
      *  can be set for each dataset, overriding this global default.
+     *  @param on If true, draw lines between points.
+     *  @see #setConnected(boolean, int)
      */
     public void setConnected(boolean on) {
         _connected = on;
@@ -579,8 +581,12 @@ public class Plot extends PlotBox {
      *  points will not be connected. When points are by default
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().
+     *  Note that this method should be called before adding any points.
+     *  Note further that this method should probably be called from 
+     *  the event thread.
      *  @param on If true, draw lines between points.
      *  @param dataset The dataset to which this should apply.
+     *  @see #setConnected()
      */
     public synchronized void setConnected(boolean on, int dataset) {
         _checkDatasetIndex(dataset);
