@@ -290,14 +290,6 @@ public class Chop extends SDFTransformer {
         output.send(0, buffer, nwrite);
     }
 
-    /** Calculate the token production rate and the token consumption
-     *  rate based on the parameters <i>blockSize</i> and <i>numberOfTimes</i>.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-	super.initialize();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
