@@ -33,6 +33,7 @@ package ptolemy.actor.lib.logic;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
