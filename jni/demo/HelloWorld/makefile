@@ -92,7 +92,7 @@ demo: $(SHARED_LIBRARY)
 #	javac -classpath $(ROOT) HellowWorld.java
 
 HelloWorld.h: HelloWorld.class
-	javah -classpath $(ROOT) -o HelloWorld.h jni.demo.HelloWorld.HelloWorld
+	"$(PTJAVA_DIR)/bin/javah" -classpath $(ROOT) -o HelloWorld.h jni.demo.HelloWorld.HelloWorld
 
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile and jni/JNIUtilities.java
