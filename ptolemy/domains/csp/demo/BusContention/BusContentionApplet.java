@@ -226,13 +226,13 @@ public class BusContentionApplet extends CSPApplet {
 
 	    // Set up ports, relation
 	    TypedIOPort reqOut =
-                (TypedIOPort)_contentionActor.getPort("requestOut");
+                (TypedIOPort)_contentionActor.getPort("requestOutput");
 	    TypedIOPort reqIn =
-                (TypedIOPort)_contentionActor.getPort("requestIn");
-	    TypedIOPort contendOut =
-                (TypedIOPort)_contentionActor.getPort("contendOut");
-	    TypedIOPort contendIn =
-                (TypedIOPort)_contentionActor.getPort("contendIn");
+                (TypedIOPort)_contentionActor.getPort("requestInput");
+	    TypedIOPort contendOutput =
+                (TypedIOPort)_contentionActor.getPort("contendOutput");
+	    TypedIOPort contendInput =
+                (TypedIOPort)_contentionActor.getPort("contendInput");
 
 	    TypedIOPort _alarmOut =
                 (TypedIOPort)_alarmActor.getPort("output");
@@ -244,30 +244,30 @@ public class BusContentionApplet extends CSPApplet {
                 (TypedIOPort)_memoryActor.getPort("input");
 
 	    TypedIOPort p1_ReqOut =
-                (TypedIOPort)_processActor1.getPort("requestOut");
+                (TypedIOPort)_processActor1.getPort("requestOutput");
 	    TypedIOPort p2_ReqOut =
-                (TypedIOPort)_processActor2.getPort("requestOut");
+                (TypedIOPort)_processActor2.getPort("requestOutput");
 	    TypedIOPort p3_ReqOut =
-                (TypedIOPort)_processActor3.getPort("requestOut");
+                (TypedIOPort)_processActor3.getPort("requestOutput");
 	    TypedIOPort p1_ReqIn =
-                (TypedIOPort)_processActor1.getPort("requestIn");
+                (TypedIOPort)_processActor1.getPort("requestInput");
 	    TypedIOPort p2_ReqIn =
-                (TypedIOPort)_processActor2.getPort("requestIn");
+                (TypedIOPort)_processActor2.getPort("requestInput");
 	    TypedIOPort p3_ReqIn =
-                (TypedIOPort)_processActor3.getPort("requestIn");
+                (TypedIOPort)_processActor3.getPort("requestInput");
 
 	    TypedIOPort p1_MemOut =
-                (TypedIOPort)_processActor1.getPort("memoryOut");
+                (TypedIOPort)_processActor1.getPort("memoryOutput");
 	    TypedIOPort p2_MemOut =
-                (TypedIOPort)_processActor2.getPort("memoryOut");
+                (TypedIOPort)_processActor2.getPort("memoryOutput");
 	    TypedIOPort p3_MemOut =
-                (TypedIOPort)_processActor3.getPort("memoryOut");
+                (TypedIOPort)_processActor3.getPort("memoryOutput");
 	    TypedIOPort p1_MemIn =
-                (TypedIOPort)_processActor1.getPort("memoryIn");
+                (TypedIOPort)_processActor1.getPort("memoryInput");
 	    TypedIOPort p2_MemIn =
-                (TypedIOPort)_processActor2.getPort("memoryIn");
+                (TypedIOPort)_processActor2.getPort("memoryInput");
 	    TypedIOPort p3_MemIn =
-                (TypedIOPort)_processActor3.getPort("memoryIn");
+                (TypedIOPort)_processActor3.getPort("memoryInput");
 
 	    TypedIORelation inReqs, outReqs,
                 reads, writes, outContends, inContends;
@@ -277,9 +277,9 @@ public class BusContentionApplet extends CSPApplet {
 	    inReqs = (TypedIORelation)_toplevel.connect(reqIn, p2_ReqOut );
 	    inReqs = (TypedIORelation)_toplevel.connect(reqIn, p3_ReqOut );
 
-	    outContends = (TypedIORelation)_toplevel.connect(contendOut,
+	    outContends = (TypedIORelation)_toplevel.connect(contendOutput,
 	            _alarmIn );
-            inContends = (TypedIORelation)_toplevel.connect(contendIn,
+            inContends = (TypedIORelation)_toplevel.connect(contendInput,
 	            _alarmOut );
 
             outReqs = (TypedIORelation)_toplevel.connect( reqOut, p1_ReqIn );
