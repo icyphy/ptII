@@ -220,14 +220,14 @@ test SRReceiver-4.2 {clear after put} {
 } {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from a present state to an absent state.}}
 
 
-test SRReceiver-4.2 {clear, then get} {
+test SRReceiver-4.2.1 {clear, then get} {
 
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
     $receiver clear
     catch {$receiver get} result1
     list $result1
-} {{ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.}}
+} {{ptolemy.domains.sr.kernel.UnknownTokenException: get() called on SRReceiver with unknown state.}}
 
 ######################################################################
 ####
