@@ -72,10 +72,13 @@ JSRCS = \
 	ConcreteMatrixToken.java \
 	ConcreteScalarToken.java \
 	Constants.java \
+	FixPointFunctions.java \
 	Parameter.java \
+        ParserScope.java \
+        ScopeExtender.java \
+        ScopeExtendingAttribute.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
-	FixPointFunctions.java \
 	UnknownToken.java \
 	Variable.java
 

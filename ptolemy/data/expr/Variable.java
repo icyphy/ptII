@@ -41,6 +41,7 @@ import ptolemy.graph.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.lang.reflect.Method;
@@ -167,7 +168,8 @@ The derived class Parameter is fully visible by default.
 
 */
 
-public class Variable extends Attribute implements Typeable, Settable {
+public class Variable extends Attribute
+        implements Typeable, Settable, ValueListener {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
@@ -321,6 +323,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         newvar._scopeDependents = null;
         newvar._valueDependents = null;
         newvar._scope = null;
+        newvar._parserScope = null;
         newvar._scopeVersion = -1;
 
 	// set _declaredType and _varType
@@ -333,6 +336,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         // _typeAtMost is preserved
         newvar._parser = null;
         newvar._parseTree = null;
+        newvar._parseTreeVersion = -1;
 
 	newvar._constraints = new LinkedList();
         newvar._typeTerm = null;
@@ -412,7 +416,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                         }
                         try {
                             _scope.append(var);
-                            ((Variable)var)._addScopeDependent(this);
+                            //((Variable)var)._addScopeDependent(this);
                         } catch (NameDuplicationException ex) {
                             // This occurs when a variable is shadowed by one
                             // that has been previously entered in the scope.
@@ -422,6 +426,34 @@ public class Variable extends Attribute implements Typeable, Settable {
                         }
                     }
                 }
+                level1 =
+                    container.attributeList(ScopeExtender.class).iterator();
+                while (level1.hasNext()) {
+                    ScopeExtender extender = (ScopeExtender)level1.next();
+                    Iterator level2 = extender.attributeList().iterator();
+                    while (level2.hasNext()) {
+                        // add the variables in the scope extender to _scope,
+                        // excluding this
+                        var = (Attribute)level2.next();
+                        if ((var instanceof Variable) && (var != this)) {
+                            if (!_isLegalInScope((Variable)var)) {
+                                continue;
+                            }
+                            try {
+                                _scope.append(var);
+                                //((Variable)var)._addScopeDependent(this);
+                            } catch (NameDuplicationException ex) {
+                                // This occurs when a variable is shadowed by
+                                // one that has been previously entered in the
+                                // scope.
+                            } catch (IllegalActionException ex) {
+                                // This should not happen since we are dealing
+                                // with variables which are Nameable.
+                            }
+                        }
+                    }
+                }
+
                 container = (NamedObj)container.getContainer();
             }
             _scopeVersion = workspace().getVersion();
@@ -450,7 +482,9 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
         if (_isTokenUnknown) throw new UnknownResultException(this);
-        if (_needsEvaluation) _evaluate();
+        if (_needsEvaluation || _currentExpression != null &&
+                _parseTreeVersion != workspace().getVersion())
+            _evaluate();
         return _token;
     }
 
@@ -531,15 +565,17 @@ public class Variable extends Attribute implements Typeable, Settable {
         // Force evaluation.
         if (_needsEvaluation) _evaluate();
         // All the value dependents now need evaluation also.
-        if (_valueDependents != null) {
-            Iterator variables = _valueDependents.iterator();
-            while (variables.hasNext()) {
-                Variable var = (Variable)variables.next();
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
                 // Avoid doing this more than once if the the value
                 // dependent appears more than once.  This also has
                 // the advantage of stopping circular reference looping.
-                if (var._needsEvaluation) {
-                    var.propagate();
+                if (listener instanceof Variable) {
+                    if (((Variable)listener)._needsEvaluation) {
+                        ((Variable)listener).propagate();
+                    }
                 }
             }
         }
@@ -658,6 +694,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                 }
                 _scopeDependents.clear();
             }
+            _notifyScopeChange();
 
             _destroyParseTree();
             if (_scope != null) {
@@ -666,13 +703,6 @@ public class Variable extends Attribute implements Typeable, Settable {
                     Variable var = (Variable)vars.next();
                     var._removeScopeDependent(this);
                 }
-                /*
-                  Enumeration vars = _scope.elements();
-                  while (vars.hasMoreElements()) {
-                  Variable var = (Variable)vars.nextElement();
-                  var._removeScopeDependent(this);
-                  }
-                */
             }
             if (_scopeVariables != null) {
                 _scopeVariables.removeAll();
@@ -978,6 +1008,24 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
+    /** React to the change in the specified instance of Settable.
+     *  Mark this variable as needing reevaluation when next accessed.
+     *  Notify the value listeners of this variable.
+     *  @param settable The object that has changed value.
+     */
+    public void valueChanged(Settable settable) {
+        if (!_needsEvaluation) {
+            _needsEvaluation = true;
+            if (_valueListeners != null) {
+                Iterator listeners = _valueListeners.iterator();
+                while (listeners.hasNext()) {
+                    ValueListener listener = (ValueListener)listeners.next();
+                    listener.valueChanged(this);
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1064,6 +1112,35 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
+    /** Notify the value listeners of this variable that this variable
+     *  changed.
+     */
+    protected void _notifyValueListeners() {
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
+    }
+
+    /** Notify the value listeners of this variable that their scope
+     *  changed.
+     */
+    protected void _notifyScopeChange() {
+        if (_valueListeners != null) {
+            Iterator listeners =
+                    (new LinkedList(_valueListeners)).iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                if (listener instanceof Variable) {
+                    ((Variable)listener).removeFromScope(this);
+                }
+            }
+        }
+    }
+
     /** Remove the argument from the list of scope dependents of this
      *  variable.
      *  @param var The variable whose scope no longer includes this
@@ -1095,7 +1172,8 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  Do nothing if a parse tree already exists.
      */
     private void _buildParseTree() throws IllegalActionException {
-        if (_parseTree != null) {
+        if (_parseTreeVersion == workspace().getVersion() &&
+                _parseTree != null) {
             return;
         }
         if (_parser == null) {
@@ -1106,9 +1184,13 @@ public class Variable extends Attribute implements Typeable, Settable {
             _parseTree = _parser.generateParseTree(_currentExpression);
         } else {
             // System.out.println("Compiled but needed scope.");
+            if (_parserScope == null) {
+                _parserScope = new VariableScope();
+            }
             _parseTree = _parser.generateParseTree(_currentExpression,
-                    getScope());
+                    _parserScope);
         }
+        _parseTreeVersion = workspace().getVersion();
         return;
     }
 
@@ -1135,7 +1217,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (node instanceof ASTPtLeafNode) {
             ASTPtLeafNode leaf = (ASTPtLeafNode)node;
             if (leaf._var != null) {
-                leaf._var._removeValueDependent(this);
+                leaf._var.removeValueListener(this);
             }
         }
     }
@@ -1151,7 +1233,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
-        _notifyValueDependents();
+        _notifyValueListeners();
     }
 
     /** Evaluate the current expression to a token. If this variable
@@ -1349,7 +1431,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 
         try {
             _setToken(newToken);
-            _notifyValueDependents();
+            //_notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 if ( !oldVarType.equals(_varType) &&
@@ -1358,13 +1440,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                 }
                 container.attributeChanged(this);
             }
-            if (_valueListeners != null) {
-                Iterator listeners = _valueListeners.iterator();
-                while (listeners.hasNext()) {
-                    ValueListener listener = (ValueListener)listeners.next();
-                    listener.valueChanged(this);
-                }
-            }
+            _notifyValueListeners();
         } catch (IllegalActionException ex) {
             // reverse the changes
             _token = oldToken;
@@ -1431,9 +1507,15 @@ public class Variable extends Attribute implements Typeable, Settable {
     // The parser used by this variable to parse expressions.
     private PtParser _parser;
 
+    // The instance of VariableScope.
+    private ParserScope _parserScope = new VariableScope();
+
     // If the variable was last set from an expression, this stores
     // the parse tree for that expression.
     private ASTPtRootNode _parseTree;
+
+    // The version of the parse tree.
+    private long _parseTreeVersion = -1;
 
     // The token contained by this variable.
     private ptolemy.data.Token _token;
@@ -1575,5 +1657,81 @@ public class Variable extends Attribute implements Typeable, Settable {
             return "(" + Variable.this.toString() + ", " + getType() + ")";
         }
     }
+
+    private class VariableScope implements ParserScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Attribute get(String name) {
+            Attribute result = null;
+            if (_cacheVersion == workspace().getVersion()) {
+                // cache is valid
+                result = (Attribute)_cachedAttributes.get(name);
+                if (result != null) return result;
+            } else {
+                _cachedAttributes.clear();
+                _cacheVersion = workspace().getVersion();
+            }
+
+            if (_scopeVariables != null) {
+                result = (Attribute)_scopeVariables.get(name);
+                if (result != null) {
+                    // add to/remove from scope does not change workspace
+                    // version number, so cannot cache this result
+                    //_cachedAttributes.put(name, result);
+                    return result;
+                }
+            }
+
+            NamedObj container = (NamedObj)getContainer();
+            while (container != null) {
+                result = _searchIn(container, name);
+                if (result != null) {
+                    _cachedAttributes.put(name, result);
+                    return result;
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
+            }
+            return result;
+        }
+
+        /** Return the list of attributes within the scope.
+         *  @return The list of attributes within the scope.
+         */
+        public NamedList attributeList() {
+            return getScope();
+        }
+
+        // Search in the container for an attribute with the given name.
+        // Search recursively in any instance of ScopeExtender in the
+        // container.
+        private Attribute _searchIn(NamedObj container, String name) {
+            Attribute result = container.getAttribute(name);
+            if (result != null && result != Variable.this &&
+                    result instanceof Variable)
+                return result;
+            Iterator extenders =
+                    container.attributeList(ScopeExtender.class).iterator();
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender)extenders.next();
+                result = extender.getAttribute(name);
+                if (result != null && result != Variable.this &&
+                        result instanceof Variable)
+                    return result;
+            }
+            return null;
+        }
+
+        // Version number of the scope cache.
+        private long _cacheVersion = -1;
+
+        // Cache of attributes that are looked up.
+        private Hashtable _cachedAttributes = new Hashtable();
+
+    }
+
 }
 
