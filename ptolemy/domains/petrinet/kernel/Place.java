@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (yukewang)
-   @Pt.AcceptedRating Red (reviewmoderator)
+   @Pt.AcceptedRating Red (cxh@eecs)
 */
 public class Place extends Transformer {
     /** Create a new actor in the specified container with the specified
@@ -93,8 +93,9 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** getMarking() is to get the _currentMarking of the place
+    /** getMarking() is to get the _currentMarking of the place.
      *  @return the currentMarking of the place.
+     *  @see #setMarking(int)
      */
     public int getMarking() {
         return _currentMarking;
@@ -105,27 +106,27 @@ public class Place extends Transformer {
      *  of the place is bigger than the sum of all links between the place
      *  and a transition. TemporaryMarking is used in Transition.prefire.
      *  @return the _temporaryMarking of the place.
+     *  @see #setTemporaryMarking(int)
      */
     public int getTemporaryMarking() {
         return _temporaryMarking;
     }
 
-    /** increaseMarking() is to increase the _currentMarking by i
+    /** Increase the _currentMarking.
      *  @param i the number to be increased for the marking in the place.
      */
     public void increaseMarking(int i) {
         _currentMarking = _currentMarking + i;
     }
 
-    /** decreaseMarking() is to decrease the _currentMarking by i
+    /** Decrease the _currentMarking.
      *  @param i the number to be decreased for the marking in the place.
      */
     public void decreaseMarking(int i) {
         _currentMarking = _currentMarking - i;
     }
 
-    /** decreaseTemporaryMarking() is to decrease the
-     *  _temporaryMarking by i.
+    /** Decrease the _temporaryMarking by i.
      *  @param i the number to be decreased for the TemporaryMarking
      *   in the place.
      */
@@ -133,22 +134,25 @@ public class Place extends Transformer {
         _temporaryMarking = _temporaryMarking - i;
     }
 
-    /**  @param i the number to be increased for the TemporaryMarking
+    /**  Increase the temporary marking. 
+     *   @param i the number to be increased for the TemporaryMarking
      *   in the place.
      */
     public void increaseTemporaryMarking(int i) {
         _temporaryMarking = _temporaryMarking + i;
     }
 
-    /** setTemporaryMarking() is to set the _temporaryMarking to i
+    /** Set the _temporaryMarking.
      *  @param i set the TemporaryMarking of the place to i.
+     *  @see #getTemporaryMarking()
      */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;
     }
 
-    /** setMarking() is to set the _currentMarking to i
+    /** Set the _currentMarking.
      *  @param i set the marking of the place to i
+     *  @see #getMarking()
      */
     public void setMarking(int i) {
         _currentMarking = i;
@@ -165,7 +169,10 @@ public class Place extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Current marking.
+
+    /** Current marking. */
     private int _currentMarking = 0;
+
+    /** Temporary marking. */
     private int _temporaryMarking = 0;
 }
