@@ -71,7 +71,7 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     
     # Set the stop time of the top level director
     set topleveldirStopTime [java::cast ptolemy.data.expr.Parameter [$topleveldir getAttribute stopTime]]
-    $topleveldirStopTime setToken [java::new ptolemy.data.DoubleToken 20.0]
+    $topleveldirStopTime setToken [java::new ptolemy.data.DoubleToken 25.0]
     
     # Instantiate the Clock actor and sets its output values
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
@@ -83,6 +83,11 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    # set clock [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    # set tok1 [java::new ptolemy.data.Token]
+    # $clock setToken $tok1 5.0 0 
+    # $clock setToken $tok1 15.0 1
+    # $clock setToken $tok1 25.0 2
     
     # Instantiate the other atomic actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]

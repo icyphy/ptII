@@ -332,9 +332,14 @@ public class TimeKeeper {
         _outputTime = _currentTime;
         return time;
         */
+	Thread thread = Thread.currentThread();
         
         if( !((ComponentEntity)_actor).isAtomic() ) {
-            System.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime);
+	    if( thread instanceof DDEThread ) {
+		Actor actor = ((DDEThread)thread).getActor();
+		String name = ((Nameable)actor).getName();
+                // SFIXMEystem.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime + " by " + name);
+	    }
             return _outputTime;
         }
         
@@ -342,7 +347,7 @@ public class TimeKeeper {
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
-        // System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
+        // SFIXMEystem.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
         return _outputTime;
     }
 
@@ -415,7 +420,7 @@ public class TimeKeeper {
         String name = ((Nameable)rcvr.getContainer()).getName();
         if( name.equals("wormout") ) {
             double time = getOutputTime(); 
-            System.out.println(name+": sending out null tokens at "+time);
+            // SFIXMEystem.out.println(name+": sending out null tokens at "+time);
         }
             
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
@@ -624,15 +629,23 @@ public class TimeKeeper {
                 return;
             }
         }
+	/* We probably shouldn't have this...
 	if( outputTime < _currentTime ) {
 	    throw new IllegalActionException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set the output time to be less than the "
                     + "current time.");
 	}
-        String name = ((Nameable)_actor).getName();
-        if( name.equals("wormhole") ) {
-            System.out.println(name+": TimeKeeper.setOutputTime = " + outputTime); 
+	*/
+/*
+        String calleeName = ((Nameable)_actor).getName();
+        // if( calleeName.equals("wormhole") ) {
+	    Thread thread = Thread.currentThread();
+	    if( thread instanceof DDEThread ) {
+		String callerName = ((Nameable)((DDEThread)thread).getActor()).getName();
+		System.out.println(calleeName+"'s TimeKeeper.setOutputTime is called at time " 
+                + outputTime + " by " + callerName); 
+	    }
             try {
                 if( outputTime == 15.0 ) {
                     throw new IllegalActionException("Uggghhh");
@@ -640,9 +653,8 @@ public class TimeKeeper {
             } catch( IllegalActionException e ) {
                 e.printStackTrace();
             }
-            /*
-            */
-        }
+	// }
+*/
 	_outputTime = outputTime;
     }
 
@@ -727,15 +739,14 @@ public class TimeKeeper {
     /** Print the contents of the RcvrTimeTriple list contained by
      *  this actor. Use this method for testing purposes only.
      * @deprecated
-     */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n###Print "+name+"'s RcvrList.");
-        System.out.println("   Number of Receivers in RcvrList = "
+        SFIXMEystem.out.println("\n###Print "+name+"'s RcvrList.");
+        SFIXMEystem.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
         if( _rcvrTimeList.size() == 0 ) {
-            System.out.println("\tList is empty");
-            System.out.println("###End of printRcvrList()\n");
+            SFIXMEystem.out.println("\tList is empty");
+            SFIXMEystem.out.println("###End of printRcvrList()\n");
 	    return;
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -752,10 +763,11 @@ public class TimeKeeper {
 	    } else {
 		msg += "contains no token";
 	    }
-	    System.out.println(msg);
+	    SFIXMEystem.out.println(msg);
         }
-        System.out.println("###End of printRcvrList()\n");
+        SFIXMEystem.out.println("###End of printRcvrList()\n");
     }
+     */
 
     /** Set a flag indicating whether a search for ignored
      *  tokens is taking place as per the specified parameter.

@@ -99,7 +99,7 @@ public class TwoPut extends TypedAtomicActor {
                     if( thread instanceof DDEThread ) {
                         TimeKeeper tKeeper = ((DDEThread)thread).getTimeKeeper();
                         double time = tKeeper.getCurrentTime();
-                        System.out.println(_name+": calling broadcast at time = "+time);
+                        // System.out.println(_name+": calling broadcast at time = "+time);
                     }
 		    output1.broadcast(token);
 		}

@@ -235,7 +235,6 @@ public class DDEDirector extends ProcessDirector {
                 }
             } else {
                 // Processes Are Stopped; Continued Execution Is Allowed
-                System.out.println("Processes have stopped!");
 		_notDone = true;
 	    }
         }
@@ -378,7 +377,7 @@ public class DDEDirector extends ProcessDirector {
         Token token = null;
         Receiver[][] insiderecs = port.deepGetReceivers();
         if( port.getWidth() > 0 ) {
-            // System.out.println(name+":\t Beginning of transferInputs");
+            // SFIXMEystem.out.println(name+":\t Beginning of transferInputs");
         }
         for (int i = 0; i < port.getWidth(); i++) {
             if (insiderecs != null && insiderecs[i] != null) {
@@ -396,7 +395,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        // System.out.println(name+":\t End of transferInputs");
+        // SFIXMEystem.out.println(name+":\t End of transferInputs");
     }
 
     /** Transfer data from an output port of the container to the
@@ -418,7 +417,7 @@ public class DDEDirector extends ProcessDirector {
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
         if( insiderecs.length > 0 ) {
-            // System.out.println(name+":\t Beginning of transferOutputs");
+            // SFIXMEystem.out.println(name+":\t Beginning of transferOutputs");
         }
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
@@ -441,7 +440,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        // System.out.println(name+":\t End of transferOutputs");
+        // SFIXMEystem.out.println(name+":\t End of transferOutputs");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -571,8 +570,6 @@ public class DDEDirector extends ProcessDirector {
      */
     protected void _incrementLowestCapacityPort()
             throws IllegalActionException {
-	System.out.println("Call to "
-        	+ "_incrementLowestCapacityPort()");
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
@@ -683,38 +680,6 @@ public class DDEDirector extends ProcessDirector {
         ;
     }
 
-    /** Resolve any deadlocks of the actors governed by this
-     *  director. Return true if the deadlock has successfully
-     *  been resolved; return false otherwise.
-     * @return True if deadlocks no longer exist; return
-     *  false otherwise.
-    protected boolean _resolveDeadlock() throws
-    	    IllegalActionException {
-        System.out.println("#####Calling _resolveDeadlock");
-        if( _writeBlocks != 0 ) {
-            // Artificial Non-timed Deadlock
-            // System.out.println("Artificial deadlock!! Write blocks = " + _writeBlocks);
-            _incrementLowestCapacityPort();
-        } else {
-            // Real Non-timed Deadlock
-            // System.out.println("Real deadlock!! Read blocks = " + _readBlocks);
-            return false;
-        }
-
-        if( _pendingMutations ) {
-	    // FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    //
-        }
-        return true;
-    }
-     */
-
     /** Return true indicating that this actor is allowed to continue
      *  execution. Note that transferInputs() modifies its behavior 
      *  based on the existence of an external read deadlock. 
@@ -724,7 +689,7 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _resolveExternalReadDeadlock() throws
     	    IllegalActionException {
         String name = ((Nameable)getContainer()).getName();
-        System.out.println("Inside of "+name+" there is an External Read Deadlock!");
+        // SFIXMEystem.out.println("Inside of "+name+" there is an External Read Deadlock!");
         if( _pendingMutations ) {
 	    /* FIXME
                try {
@@ -747,7 +712,7 @@ public class DDEDirector extends ProcessDirector {
     	    IllegalActionException {
             
         String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an External Write Deadlock!");
+        // SFIXMEystem.out.println("Inside of "+name+" there is an External Write Deadlock!");
         _incrementLowestCapacityPort();
         
         if( _pendingMutations ) {
@@ -771,7 +736,7 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _resolveInternalReadDeadlock() throws
     	    IllegalActionException {
         String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
+        // SFIXMEystem.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
         if( _pendingMutations ) {
 	    /* FIXME
                try {
@@ -794,7 +759,7 @@ public class DDEDirector extends ProcessDirector {
     	    IllegalActionException {
             
         String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
+        // SFIXMEystem.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
         _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {

@@ -57,7 +57,7 @@ set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
 ######################################################################
 ####
 #
-test DDEDirector-2.1 {Test of simple composite actor with ports} {
+test DDEDirector-2.1 {Simple composite actor with ports contained in a composite actor} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
@@ -144,3 +144,87 @@ test DDEDirector-3.1 {Portless composite actor contained in a composite actor} {
     list $time0 $time1 $time2
 
 } {5.0 15.0 25.0}
+
+######################################################################
+####
+#
+test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
+    set topleveldir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topleveldir"]
+    set wormholedir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormholedir"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setManager $mgr
+    
+    # Set the stop time of the top level director
+    set topleveldirStopTime [java::cast ptolemy.data.expr.Parameter [$topleveldir getAttribute stopTime]]
+    $topleveldirStopTime setToken [java::new ptolemy.data.DoubleToken 25.0]
+    
+    # Instantiate the Clock actor and sets its output values
+    set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
+    set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
+    $values setExpression {[1, 1]}
+    set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
+    $period setToken [java::new ptolemy.data.DoubleToken 20.0]
+    set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
+    $offsets setExpression {[5.0, 15.0]}
+    set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
+    $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    # set clock [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    # set tok1 [java::new ptolemy.data.Token]
+    # $clock setToken $tok1 5.0 0 
+    # $clock setToken $tok1 15.0 1
+    # $clock setToken $tok1 25.0 2
+    
+    # Instantiate the other atomic actors
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "join"]
+    set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $wormhole "fork"]
+    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $wormhole "fBack"]
+    set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $wormhole "sink" 1]
+
+    # Set the feedback delay parameter
+    $fBack setDelay 4.0
+    set realDelay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute realDelay]]
+    $realDelay setToken [java::new ptolemy.data.BooleanToken true]
+
+    # Instantiate the ports of the atomic actors
+    set rcvrIn [$actorRcvr getPort "input"]
+    set clockOut [$clock getPort "output"]
+    set joinIn [$join getPort "input"]
+    set joinOut [$join getPort "output"]
+    set forkIn [$fork getPort "input"]
+    set forkOut1 [$fork getPort "output1"]
+    set forkOut2 [$fork getPort "output2"]
+    set fBackIn [$fBack getPort "input"]
+    set fBackOut [$fBack getPort "output"]
+    set sinkIn [$sink getPort "input"]
+    set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
+    $clockOut setMultiport true
+    
+    # Add ports to the wormhole
+    set wormin [java::new ptolemy.actor.TypedIOPort $wormhole "wormin" true false]
+    set wormout [java::new ptolemy.actor.TypedIOPort $wormhole "wormout" false true]
+
+    # Connect ports inside of the wormhole
+    $wormhole connect $wormin $joinIn
+    $wormhole connect $joinOut $forkIn
+    $wormhole connect $fBackOut $joinIn
+    $wormhole connect $fBackIn $forkOut1
+    $wormhole connect $forkOut2 $sinkIn 
+    $wormhole connect $forkOut1 $wormout
+    
+    # Connect ports outside of the wormhole
+    $toplevel connect $clockOut $wormin
+    $toplevel connect $wormout $rcvrIn
+
+    $mgr run
+
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
+    set time2 [$actorRcvr getAfterTime 2]
+
+    list $time0 $time1 $time2
+
+} {5.0 9.0 13.0}

@@ -79,9 +79,9 @@ public class DDEPutToken extends DDEPut {
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+		    /*
                       System.out.println("DDEPutToken receiver["+i+"]["+j+
                       "]; cnt = "+cnt);
-		    /*
 		    */
                     if( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
@@ -111,13 +111,6 @@ public class DDEPutToken extends DDEPut {
     public void setToken(Token token, double time, int cntr) {
 	_tokens[cntr] = token;
 	_times[cntr] = time;
-    }
-
-    /** FIXME
-     */
-    public void wrapup() {
-	String name = getName();
-        System.out.println(name+": wrapping up");
     }
 
     ///////////////////////////////////////////////////////////////////

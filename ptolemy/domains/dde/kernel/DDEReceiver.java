@@ -276,7 +276,7 @@ public class DDEReceiver extends TimedQueueReceiver
         IOPort port = (IOPort)getContainer();
         String portName = ((Nameable)port).getName();
         if( portName.equals("wormout") ) {
-            System.out.println(portName+": put() called at time = "+time);
+            // SFIXMEystem.out.println(portName+": put() called at time = "+time);
         }
         
         Workspace workspace = getContainer().workspace();
@@ -428,11 +428,11 @@ public class DDEReceiver extends TimedQueueReceiver
             // BEGIN JFIXME
             if( isConnectedToBoundary() ) {
          	// String name = ((Nameable)getContainer().getContainer()).getName();
-                // System.out.println(name+": blocked on external read.");
+                // SFIXMEystem.out.println(name+": blocked on external read.");
                 director.addExternalReadBlock();
             } else {
          	// String name = ((Nameable)getContainer().getContainer()).getName();
-                // System.out.println(name+": blocked on internal read.");
+                // SFIXMEystem.out.println(name+": blocked on internal read.");
                 director.addInternalReadBlock();
             }
                 
@@ -440,13 +440,13 @@ public class DDEReceiver extends TimedQueueReceiver
             // if( isBoundaryReceiver() ) {
                 // JFIXME
          	String name = ((Nameable)getContainer().getContainer()).getName();
-                System.out.println(name+": blocked on external read.");
+                SFIXMEystem.out.println(name+": blocked on external read.");
          	// END JFIXME
                 director.addExternalReadBlock();
             } else {
                 // JFIXME
          	String name = ((Nameable)getContainer().getContainer()).getName();
-                System.out.println(name+": blocked on internal read.");
+                SFIXMEystem.out.println(name+": blocked on internal read.");
          	// END JFIXME
          
                 director.addInternalReadBlock();
@@ -463,11 +463,11 @@ public class DDEReceiver extends TimedQueueReceiver
                 // BEGIN JFIXME
                 if( isConnectedToBoundary() ) {
          	    // String name = ((Nameable)getContainer().getContainer()).getName();
-                    // System.out.println(name+": removed an external read block.");
+                    // SFIXMEystem.out.println(name+": removed an external read block.");
 		    director.removeExternalReadBlock();
                 } else {
          	    // String name = ((Nameable)getContainer().getContainer()).getName();
-                    // System.out.println(name+": removed an internal read block.");
+                    // SFIXMEystem.out.println(name+": removed an internal read block.");
 		    director.removeInternalReadBlock();
                 }
                 
@@ -475,13 +475,13 @@ public class DDEReceiver extends TimedQueueReceiver
             	if( isBoundaryReceiver() ) {
                     // JFIXME
          	    String name = ((Nameable)getContainer().getContainer()).getName();
-                    System.out.println(name+": removed an external read block.");
+                    SFIXMEystem.out.println(name+": removed an external read block.");
          	    // END JFIXME
 		    director.removeExternalReadBlock();
                 } else {
                     // JFIXME
          	    String name = ((Nameable)getContainer().getContainer()).getName();
-                    System.out.println(name+": removed an internal read block.");
+                    SFIXMEystem.out.println(name+": removed an internal read block.");
          	    // END JFIXME
 		    director.removeInternalReadBlock();
                 }
@@ -505,13 +505,13 @@ public class DDEReceiver extends TimedQueueReceiver
             if( token instanceof NullToken ) {
                 /*
                 if( name.equals("actorRcvr") ) {
-                    System.out.println(name+": A Null Token was placed in this receiver at time "+time+".");
+                    SFIXMEystem.out.println(name+": A Null Token was placed in this receiver at time "+time+".");
                 }
                 */
             } else {
                 /*
                 if( name.equals("actorRcvr") ) {
-                    System.out.println(name+": A non-Null Token was placed in this receiver at time "+time+".");
+                    SFIXMEystem.out.println(name+": A non-Null Token was placed in this receiver at time "+time+".");
                 }
                 */
             }
@@ -526,13 +526,13 @@ public class DDEReceiver extends TimedQueueReceiver
                     // BEGIN JFIXME 
                     if( isConnectedToBoundary() ) {
                         if( token instanceof NullToken ) {
-                    	    // System.out.println(name+": removed an external read block at time "+time+" on a Null Token.");
+                    	    // SFIXMEystem.out.println(name+": removed an external read block at time "+time+" on a Null Token.");
                         } else {
-                    	    // System.out.println(name+": removed an external read block at time "+time+" on a non-Null Token.");
+                    	    // SFIXMEystem.out.println(name+": removed an external read block at time "+time+" on a non-Null Token.");
                         }
 		        director.removeExternalReadBlock();
                     } else {
-                    	// System.out.println(name+": removed an internal read block at time "+time+".");
+                    	// SFIXMEystem.out.println(name+": removed an internal read block at time "+time+".");
 		        director.removeInternalReadBlock();
                     }
                     
@@ -540,13 +540,13 @@ public class DDEReceiver extends TimedQueueReceiver
                     if( isBoundaryReceiver() ) {
                     	// JFIXME
          	    	String name = ((Nameable)getContainer().getContainer()).getName();
-                    	System.out.println(name+": removed an external read block.");
+                    	SFIXMEystem.out.println(name+": removed an external read block.");
          	    	// END JFIXME
 		        director.removeExternalReadBlock();
                     } else {
                     	// JFIXME
          	    	String name = ((Nameable)getContainer().getContainer()).getName();
-                    	System.out.println(name+": removed an internal read block.");
+                    	SFIXMEystem.out.println(name+": removed an internal read block.");
          	    	// END JFIXME
 		        director.removeInternalReadBlock();
                     }
