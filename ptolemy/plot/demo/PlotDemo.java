@@ -57,7 +57,7 @@ public class PlotDemo extends PlotApplet {
      * Initialize the applet.  Here we step through an example of what the
      * the applet can do.
      */
-    public void init () {
+    public void init() {
         super.newPlot();        // Create a new Plot object to operate on.
         super.init();
 
