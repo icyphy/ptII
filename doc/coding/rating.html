@@ -1,481 +1,430 @@
-<!-- $Id$-->
 <html>
 <head>
-<title>The Ptolemy II Code Rating System</title>
+<title>Change control</title>
 </head>
-<body bgcolor="#faf0e6">
-<h1><a name="code rating system">The Ptolemy II Code Rating System</a></h1>
-All code in Ptolemy II is rated using a simple four-level
-system. The goal of the code rating system is to provide a platform
-with which we can assess and improve code quality and stability.
-<p>
-<ul>
-<li><a href="#code rating overview">Overview and purpose</a>
-<li><a href="#code rating levels">Code rating levels</a>
-<li><a href="#code rating rules">Code rating rules</a>
-<li><a href="#code rating tools">Tool support</a>
-<li><a href="#retrospective">Retrospective application of code rating</a>
-<li><a href="#code rating FAQ">Infrequently-asked questions</a>
-</ul>
-<p>
 
-<h2><a name="code rating overview">Overview and purpose</a></h2>
-The code rating system is designed to improve:
+<body bgcolor="#ffffff">
+
+<BLOCKQUOTE>
+
+<h1>Change control</h1>
+
+<p><B>Contents</B>
 <ul>
-<li> code quality
-<li> code stability
+<li><a href="#overview">Overview</a>
+<li><a href="#rating">Rating levels</a>
+<li><a href="#process">A suggested process</a>
+<li><a href="#change">Managing change</a>
+<li><a href="#adapting">Adapting the method</a>
 </ul>
 
- <P>Each class is advanced through four levels of confidence by a
-light-weight review and testing process. There are two ratings for
-each class: that <I>proposed</I> by its author or maintainer, and that
-<I>accepted</I> by its tester and reviewers. This approach tries to
-maintain the accepted principles of code review and testing by people
-other than the author, while keeping overhead manageable for a
-research group.
+<p>
 
- <P>The basic idea is that the author proposes that a class advance a
-level. The tester/reviewer is then responsible for examining the class
-(with the help of other reviewers, if necessary), writing test code
-for it, and either accepting or rejecting the proposed advancement.
-The tester/reviewer needs to provide specific and concrete reasons for
-rejection; the author is obliged to make needed modifications and
-re-submit the code.
+<p><B>See also</B>:
 
-<P>The four levels of confidence are <I>red</I>, <I>yellow</I>,
-<I>green</I>, and <I>blue</I>. Each level has a well-defined meaning,
-which both the author and tester/reviewer are expected to satisfy
-before proposing or accepting advancement to that level.  The level of
-a class or file is indicated in the file header comment with the tags
-<code>@ProposedRating</code> and <code>@AcceptedRating</code>.  A file that has
-neither of these tags is <I>unrated</I>.
+<ul>
 
- <P> There is room within the process for design reviews and code
-reviews, although the degree to which these are applied is up to the
-author and maintainer, and may vary according to the project or
-sub-project in which the class lies.
+<li><a
+href="http://ptolemy.eecs.berkeley.edu/~johnr/info/reviews.html">Notes
+on software reviews</a>. My notes and some references.
 
+</ul>
 
-<h2><a name="code rating levels">Code rating levels</a></h2>
-The four ratings are as follows:
+<a name="overview">
+<h2>Overview</h2>
+</a>
+
+Consider the following scenario.
+
+<P> Frank, an enthusiastic software developer (aren't we all?), writes
+a fabulous piece of foobar code.  He tests it, installs it in the
+public repository, and then keeps working on other code that uses
+foobar. A few weeks later, Ernest starts using Frank's foobar code,
+and discovers that it has some design flaws that weren't apparent to
+Frank. Ernest, in the spirit of fixing problems when they're found,
+adds some code and moves some other code around to fix the flaws, and
+keeps on working.
+
+ <P> A few days later, Frank is suddenly very unhappy.  Firstly,
+his build broke because of a couple of small changes Ernest made to
+the types of a couple of methods. Easily fixed. Then he discovers that
+he is going to have to rework a lot of his code because Ernest
+redesigned part of the internal architecture of the foobar, which
+showed up in the order of method calling and the way event callbacks
+were handled. Eventually, the whole system is functioning again, but
+not without some acrimonious email debate, code rework, and perhaps
+some damage to the team dynamics.
+
+ <P> How could this have been done better?  Ernest could have tried to
+work around the flaw -- but ultimately that's a negative impact on
+quality, and Ernest clearly felt that it was unacceptable. Or a change
+control "committee" could be established to evaluate the impact and
+cost/benefit of changes such as Ernest's. OK, but that's only half the
+story -- the other half is that a peer review could have solved the
+problem before it occured. Firstly, Ernest (and others) could have
+voiced their concern about the design flaw at a time when fixing it
+would be relatively cheap. Either the flaw a) would have been fixed,
+or b) it wouldn't have been fixed, but the reasons for not fixing it
+would be documented and -- more importantly -- accepted by other
+developers as a necessary decision in light of other constraints.
+
+ <P> The rest of this page outlines a simple framework for combining
+these two aspects: quality improvement by peer review and change
+control by improved visibility. It was written to help manage change in
+small teams. Other than the (perceived) cost of performing design and
+code reviews, it is very cheap. (In fact, it's so simple, I am almost
+embarrassed to write about it.)
+
+<p> The purpose of the framework is to improve the way that you manage
+change. It is not to <i>prevent</i> change or creativity, since change
+is an essential part of the process of software development.
+Ultimately, the framework is about <i>confidence in quality</i>, and
+<i>commitment to stability</i>.
+
+<p> It is written with Java in mind, and so emphasizes packages, but
+it can probably be applied without much difficulty in other
+languages. For more substantial reading (and references) on the
+reasons for reviews and change control see Steve McConnell's books
+<i>Code Complete</i> or <i>Software Project Survival Guide</i>.
+
+<p>
+
+<a name="rating">
+<h2>Rating levels</h2>
+</a>
+
+ <P> The most visible part of the framework is a <I>rating</i> that is
+assigned to each package or class. The rating levels are <I>red</I>,
+<I>yellow</I>, <I>green</I>, or <I>blue</I>. The basic idea is that a
+package or class starts at red, and advances up to blue by a
+light-weight review process. At each step in the process, the package
+or class author proposes an increase in its rating; the chief reviewer
+for that package is then responsible for organizing a review, and
+advancing the ranking after the issues raised in the review have been
+resolved.
+
+<P> Generally, it's easier to rate whole packages. This makes
+management easier and provides a form of "micro-milestone" that aids
+completion. Sometimes, an individual class will need to have a
+different rating than the rest of the package it's in, and this is
+fine -- just annotate the source file appropriately.
+
+<p> The meanings of the four rating levels are:
 
 <dl>
 
-<dt><code>Red</code>
-
-<dd> This is the starting point for all code. Red code is in flux, and
-cn be expected to changed without warning. Code that calls red code
-does not need to be modified by the author if changes in the red code
-break the calling code.  Red code should never be released.
-
- <P><dl>
- <dt><I>Proposing advancement</I>
-
-<dd> Code is made red simply by adding the <code>@ProposedRating</code> tag
-followed by "red" to the file header comment. The author should do
-this, and should also add the <code>@AcceptedRating</code> tag (solely for
-the purpose of making it easier to search with grep). At the same time,
-the author should check the file into the shared development
-tree, add it to the appropriate makefile, and <I>check that the build
-does not fail</i>.
-
- <P><dt><I>Accepting advancement</I>
-
-<dd> 
-"Advancement" to red is automatic. If the author does not add the
-<code>@AcceptedRating</code> tag, the code rating tools will assume
-that it is red.
- 
- <P><dt><I>Acceptable changes</I>
-
-<dd> 
-Any changes at all can be made to red code, with one significant
-condition: red code that is checked into the shared development
-tree must not cause the build to fail.
-
-</dl>
-
-
- <P><dt><code>Yellow</code>
-
-<dd>The interface and overall design of yellow code is considered to
-be acceptable.  Clients can code to this interface with the
-expectation that further changes will be limited to revisions, not
-major changes.  Clients cannot expect that yellow code has any
-functionality behind the interface.  Yellow code should generally not
-be released.
-
- <P><dl>
- <dt><I>Proposing advancement</I>
-
-<dd> The author proposes advancement to yellow when he/she is
-satisfied with the design of the class, and how it collaborates with
-other classes. Before proposing advancement to yellow, the author is
-responsible for making sure that the class is adequately documented
-and that automatically generated documentation produced by tydoc or
-javadoc is correct and reasonably complete. The author is also
-responsible for ensuring that appropriate design documentation -- UML
-diagram, for example -- is complete and readable.
-
- <P><dt><I>Accepting advancement</I>
-
-<dd> The tester/reviewer accepts advancement to yellow when he/she is
-satisfied that the design of the class is satisfactory. What
-"satisfactory" means is a matter of judgment, based on the project the
-work is taking place in and the stated purpose of the class.  The
-tester/reviewer should evaluate the design and interface of the class
-solely on the basis of the design documentation and the documentation
-generated by tydoc or javadoc -- in other words, without reading the
-source code. Note that, in the case of classes which are designed to
-be subclassed, this includes the (protected) interface provided to
-subclasses.
-
- <P> If appropriate, the tester/reviewer is entitled to request UML
-diagrams as an aid to understanding the purpose and function of the
-class, and is entitled to organize a design review at this time. The
-tester/reviewer is also entitled to require changes to the interface
-in anticipation of testing needs.
-
- <P><dt><I>Acceptable changes</I>
-
-<dd> Yellow code can have minor interface changes before advancing to
-green.  If wholesale changes are required, the author should request
-that the class be taken back to red. If the author changes the
-interface to yellow code, then he is responsible for:
- <P>
-<OL>
-<LI> Making sure that the calling code compiles.
-<LI> Notifying the author of calling code about the change.
-<LI> Updating the design documents and tydoc or javadoc output.
-</OL>
-
- <P>
-The author is not responsible for making sure that the calling code
-works or passes its test suites, as yellow code does not provide any
-assurance of functionality. (But see <A
-HREF="#retrospective">Retrospective application of code rating</A>.)
-
-</dl>
-
- <P><dt><code>Green</code>
+<dt><b>Red</b>
 
 <dd>
-The interface to green code has been finalized, and the implementation
-is considered acceptable for development purposes.  Clients can code
-to green code in the expectation that the interface will not change in
-such a way as to break compilation, nor will the implementation change
-enough to break the caller's test suite.  Green code is releasable.
 
+The package is preliminary. 
 
- <P><dl>
-<dt><I>Proposing advancement</I>
+ <P>This means that we have no confidence in the design or
+implementation (if there is one) of this package, and that anyone that
+uses it can expect it to change substantially and without notice.
 
-<dd>The author proposes advancement to green when he/she is satisfied
-that the interface to the class is final, except for relatively minor
-enhancements and additions, and that the implementation of the class
-is satisfactory. This could be considered "beta" level code. Before
-proposing advancement to green, the author is responsible for
-providing a test suite that exercises and demonstrates the main
-functionality of the class.
+ <P>
+<dt><b>Yellow</b>
 
- <P><dt><I>Accepting advancement</I>
+<dd> The package has passed design review.
 
-<dd>The tester/reviewer accepts advancement to green if he/she is
-satisfied with the implementation of the class. The tester/reviewer
-shall determine this by a) writing a test suite, and b) reviewing the
-code. The test suite should have at least 50% code coverage.  If
-appropriate, the tester/reviewer is entitled to organize a code review
-at this time. The author is required to write example test code if
-requested by the tester/reviewer.
+ <P> This means that we have a reasonable degree of confidence in the
+architecture and design of the package, and that it will not change in
+any substantial way. We do expect the API to shift around a little
+during the coding process. You can code to this API with the
+understanding that updates will be needed as the API settles.
 
- <P><dt><I>Acceptable changes</I>
+ <P> <dt><b>Green</b>
 
-<dd>The interface to green code can only have incremental interface
-changes (that is, new methods). Small changes, such as an additional
-argument or a change in an argument type, are acceptable but should
-first be cleared with authors of client classes. In any case, the
-author is required to fix any test suites or clients that break as a
-result.
+<dd> The package has passed code review.
 
- <P>Implementation changes to green code are allowed, provided that
-they do not require clients to change the order of calls (which is, in
-effect, changing the interface.) The author must verify that changes
-do not break any test suites, and is required to fix the clients
-and/or test suites if they do. If a change will require substantial
-fixes, then the class should probably be taken back to yellow.
+ <P> This means that we have high confidence in the correctness and
+stability of the API to this package, and that we have reasonable
+confidence that there are no major bugs in the implementation.  The
+implementation may not yet by complete and there may be performance
+work needed but it's usable by "early-access" developers.
+
+ <P> <dt><b>Blue</b>
+
+<dd> The package has passed final review, and will remain
+backwards-compatible.
+
+ <P> This means that are confident that the code is of sufficient
+quality for public release, and that we have made a final committment
+to maintain backwards-compatibility. In order to make this commitment,
+we have what we consider to be a complete test suite, we have
+stress-tested the package by using the API in other code, and we have
+conducted a final review of all relevant materials (source,
+documentation, demos, etc).
 
 </dl>
 
- <P><dt><code>Blue</code>
+That's it. Following sections outline a process for using the
+rating, how to deal with change, and other things to consider.
 
-<dd>The implementation of the class has been fully and completely
-tested, and accepted as meeting all requirements.  All documentation,
-including external documentation if appropriate, is complete. Blue
-code is releasable.
+<a name="process">
+<h2>A suggested process</h2>
+</a>
 
- <P><dl>
+The process suggested here is simple and easy to remember.
+For each level except red:
 
-<dt><I>Proposing advancement</I>
-
-<dd> The author proposes advancement to blue when he/she is satisfied
-that the class is finished, polished, flexible, and robust. This
-applies to the documentation as well as the code.  This is, in other
-words, quality releasable code. In general, code should not be
-advanced to blue until it has been in use by other classes for some
-time.
-
- <P><dt><I>Accepting advancement</I>
-
-<dd>The tester/reviewer accepts advancement to blue when he/she is
-satisfied that the class is finished, polished, flexible, and robust.
-The tester/reviewer determines this by completing the test suite to
-get 100% coverage, or as close as is reasonable given the way that the
-class operates with other classes, and possibly also by writing a test
-suite that tests this class working in collaboration with other
-classes.
-
- <P><dt><I>Acceptable changes</I>
-
-<dd>Blue code can have bug fixes, but changes to the external
-interface, inherited interface, or observable behavior, make the class
-a candidate for reversion to green or yellow status.
-
-</dl>
-
-</dl>
-
-
-<h2><a name="code rating rules">Code rating rules</a></h2>
-<p>
-
- <P>The following rules apply to rating levels. These are not enforced
-in any way, but should be understood anyway:
-
-<ul> <li> The rating given by a tester is no greater than that
-given by the author. (This one is obvious.)
-
- <P>
-<li> The rating of a class is no greater than the corresponding rating
-of its superclass. In Java, the same applies to any implemented
-interfaces. For the purposes of rating, external libraries
-are assumed to be blue. (This says that a subclass is no better
-than the classes it inherits from.)
-
- <P>
-<li>The rating of a calling class can be red or yellow regardless of
-the corresponding rating of the callee. The rating of a calling class
-can be green or blue only if the corresponding rating of the
-callee is equal or greater. (This says that the implementation
-of a class can be no better than the interface and implementation
-of a class that it depends upon.)
-
-</ul>
-
-<h2><a name="code rating tools">Tool support</a></h2>
-Tycho's revision control mechanism and documentation generation
-system supports the code rating system. The following doctags
-can be added to the comment at the head of a file:
-
-<dl> <dt><code>@ProposedRating <I>rating</I> { <I>author</I>
-&lt;<I>emailaddress</I>&gt;) }</code>
-
-<dd>The rating proposed by the author, where rating is Red,
-Yellow, Green, or Blue. The author field is optional: if not
-supplied, Tycho will attempt to get it from the <code>@Author</code> doctag.
-
- <P>
-<dt><code>@AcceptedRating <I>rating</I> { <I>tester</I>
-&lt;<I>emailaddress</I>&gt;) }</code>
-
-
-<dd>The rating accepted by the tester/reviewer, where rating is Red,
-Yellow, Green, or Blue. The tester field is optional, but the
-rating system will not function properly without it. If it is missing,
-Tycho will probably just use the author.
-
-</dl>
-
- <P>Tycho takes the following actions:
-
-<ul>
-
-<li>When a file is checked-in, it compares the proposed rating with the
-proposed rating in the previous version of the file. (For this to work
-properly, Tycho will also need to annotate the file with the last
-version it checked -- not everyone uses Tycho all the time.)  If it is
-different, Tycho sends email to the tester notifying him of the
-change.
-
- <P><li>Tycho does the same for the accepted rating. If this is
-different from the previously checked version, Tycho sends email
-to the author notifying him of the acceptance.
-
- <P><li>Tycho does not automatically add rating doctags if there are none.
-The UI does, however, have a button that allows the user to have Tycho
-add them.
-
-</ul>
-
-Other tools may be built in future, such as graphical overviews
-of code ratings to indicate where work needs to be done prior
-to a release.
-
- <P>Tycho's revision control system needs some modifications which
-should be considered by whoever implements the above:
-
-<ul>
-
-<li>Currently, the revision control functions are implemented within
-the user interface widgets. This approach will prevent source code
-management tools that run off-line from ever working with Tycho's
-revision control and code rating support. These classes need to be
-modified to use the Strategy pattern: A single user-interface widget,
-and a small hierarchy of non-graphical objects that provide the
-revision-control and code rating functionality.
-
- <P><li>There is no way to check in multiple files. This discourages use
-of Tycho's revision control mechanism in situations in which a number
-of related files have been modified.
-
- <P><li>The check-in comment window is modal. It needs to be made
-non-modal, in order that the code can be viewed while writing the
-check-in comment (like emacs).
-
-</ul>
-
-
-<h2><a name="retrospective">Retrospective application of code rating</a></h2>
-
-The rating guidelines need to be modified somewhat if the
-ratings are added after the code is already being developed.
-Typical problems may include the following:
-
-<ul>
-
-<li>The code is only at red or yellow, yet there are already test
-suites. which have a tendency to break whenever the code is modified.
-
- <P>
-<li>The code starts at red, but nobody wants to take the trouble to go
-through yellow before getting to green, because the implementation
-is already considered sound -- so why go to the trouble of messing about
-with yellow?
-
-</ul>
-
-Basically, the right approach in situations like this is to use
-judgment. The author and tester/review should, when entering the
-rating system, recognize that the code is an exception to the usual
-application of the code rating system, and modify the guidelines
-appropriately. Here are some particular guidelines for
-code that has been recognized as exceptional:
-
-<ul>
-<li> If test suites exist already, then the author should
-either:
-
- <P>
 <ol>
-<li>Make sure that all tests still pass after each modification, or
-
- <P>
-<li>Remove the tests from the test suite (with the tester/reviewer's
-approval) and fix them when proposing advancement to green.
-
+<li>The author announces the package ready for review;
+<li>The review moderator organizes and moderates the review;
+<li>The author responds to the issues raised in the
+review, redesigning or reworking as necessary;
+<li>The review moderator signs off on the changes, and
+announces the new package rating.
 </ol>
 
- <P><li> If code is already considered robust and generally 
-"done," then it is up to the author and reviewer to decide
-if they want to skip yellow. Before doing this, they should first
-consider:
+Piece of cake! I believe that, as a general rule, the process works
+better if the author initiates reviews, as the commitment to
+passing the review will be higher. It is important that not too much
+time pass between the review and the rework, or the author will lose
+motivation and the (hastily taken) review notes will start to lose
+meaning.
 
- <P><ol>
+<p>Depending on the project, you may choose to implement specific
+requirements for passing a review. Here are some guidelines that
+apply to packages.
 
-<li>Whether it would be better to just leave the code unrated.
-Unrated code that is fully developed is better left unrated if it is
-not going to be used in conjunction with new code that is being
-developed under the rating system. If, however, it is being subclassed
-or heavily used by new, rated, code, then it should also be brought
-into the rating system.
+<dl>
+<p>
+<dt><b>Yellow</b>
 
- <P><li>Whether the code really is as good as expected for green level --
-having been in use for some time does not automatically make this
-so. It is important to remember that the purpose of code rating is to
-improve quality. If no-one has time or energy to advance this kind of
-code through each level, then it may be better to just leave it
-unrated, red, or yellow.
+<dd>
+If a subsystem or package is being reviewed, then the review requires
+detailed design and API documentation, including OMT or UML diagrams and
+explanatory text. If one or a few classes with well-defined or obvious
+roles are being reviewed, then an API specification or javadoc output
+is fine.
 
-</ol>
+<dt><b>Green</b>
 
-</ul>
+<dd>
+Green is a fairly large jump from yellow. Since a rating of green
+means that other developers are going to rely on your code, passing
+green requires a test suite that is substantial enough to give
+the reviewers confidence that the code really does what it says it
+does.
+
+<p> In general, code that relies on other code that is not itself reen
+should be taken green only with appropriate noting of the dependency
+and the need to fix it. For example, if package A uses package B and B
+is still Red, then make B at least Yellow before making A Green. The
+same priniciple applies to inheritance hierarchies: a class that
+inherits from a Red class cannot be reasonably made Green, since you
+can't have any confidence in its stability.
+
+<dt><b>Blue</b>
+
+<dd>
+Blue means that the code has been stress-tested in use by other
+packages. This requirement improves the chances that a package really
+does fulfil its requirements, at least as far as its clients are
+concerned. One way to encourage this (suggested by John Davis) is to
+require that at least one client package be Green before making a
+package Blue.
+
+</dl>
+
+Don't forget that the ratings apply only to individual packages.
+Complete system integration and testing is out of the scope of
+this guideline.
 
 
-<h2><a name="code rating FAQ">Infrequently-asked questions</a></h2>
+<a name="change">
+<h2>Managing change</h2>
+</a>
+
+Change is a fundamental aspect of software development.  Without going
+into details of why you might need to make changes, here are some
+guidelines as to how to approach making them. If the guidelines for
+change at each level cannot be met, then take the package back to a
+lower level. This is an action that is acceptable and in some cases
+probably inevitable -- but it is a very strong signal that the changes
+need to be evaluated very carefully, since the package has reached its
+current level by a careful (hopefully!) review process.
+
+<p>
+This section outlines the changes allowed by each rating level. If a
+change greater than that allowed is required, then the package must be
+dropped back a level.  The first step in doing so is to stop and
+consider if it really <i>is</i> required. This is not a simple yes-no
+question, as it depends on an analysis of the impact of the changes
+and probable benefits. In <i>Code Complete</i>, Steve McConnell
+suggest a "change committee" be established -- doing so may be a
+little heavy for a small team, but the spirit is the same: have
+someone else (other than the proposer) evaluate the change to see if
+it really is worth it. If it is, great -- do it.  At least you will
+know it's worth the pain!
+
+<p> There is one overriding rule for any changes at all: <i>code
+checked into the public repository must not break the
+build</i>. Source code changes that break the build check-point
+disrupt all work and are unacceptable.
 
 <dl>
 
- <P><dt><I>Isn't this too rigid and complicated for a research
-group?</I>
+<dt><b>Red</b>
 
-<dd>No: your code doesn't have to pass any reviews or tests for it to
-be in the tree, although it may not be considered eligible for
-release. The degree to which the review and testing process is carried
-out is determined by the perceived needs of users of your code. In any
-case, you should really view the process as an opportunity to improve
-the quality of both your own code and that of our research group as a
-whole
+<dd>
 
- <P><dt><I>Nobody really writes an interface without writing
-code at the same time. Doesn't this make yellow redundant?</I>
+Changes are expected. If you know that other code already uses red
+code (if you have any), then you should at least notify whoever is
+responsible for that other code. Demos and test suites might be
+examples of code that depends on red code. But other than that, any
+changes to red specifications or code are acceptable (with
+the exception noted above!).
 
-<dd>No. Firstly, the premise is debatable, especially given the
-maturity of modeling languages such as OMT and UML. Secondly, it
-doesn't matter: if an author chooses to completely write the
-implementation of a class before proposing that it be made yellow,
-that's fine. If this approach makes him or her more confident that the
-class will make it to green without any substantial changes, even
-better -- and the author will have less work to do to get the code to
-green. However, acceptance at level yellow only implies acceptance of
-the interface, and all the same guidelines about usage still apply.
+<p>
+<dt><b>Yellow</b>
 
- <P><dt><I>Haven't you neglected the incremental improvements that all
-code goes through?</I>
+<dd>
 
-<dd>No... and yes. There are simple guidelines for what kinds of
-changes can be made to code at each level -- in particular, red and
-yellow are flexible with regard to allowing changes. On the other
-hand, changes to code are often caused by a weakness in the original
-interface or implementation, which is why the process provides
-specific points at which design and code reviews can be done if
-considered appropriate. If needed improvements cannot be done without
-gross violation of the guidelines for that level, then the author or
-modifier can propose that the code be taken back one, two, or even
-three levels.
+Minor changes to the interface of a yellow package are expected and
+acceptable. Major changes -- for example, reworking the collaboration
+of some of the classes in the package -- are things that "should" have
+been detected in the design review before the package went yellow, and
+thus require a re-review.  (If this can't be done immediately, take
+the package back to red.)  In any case, major changes to a yellow
+package are to be considered with some care -- since the package has
+already been reviewed, then you need good reason to make very
+substantial changes.
 
- <P><dt><I>The requirements to get to blue are pretty severe. Why?</i>
+<p>
+Change in the implementation code of a yellow package is expected as
+part of the development process.
 
-<dd>Because blue is there as a rating for code that has been very
-thoroughly thought-through, documented, and tested. Many classes may
-never get to blue, and that's fine.
+<p>
+<dt><b>Green</b>
 
- <P><dt><I>What about the user-interface aspect of a class?</i>
+<dd>
 
-<dd>Good question! The code rating system does not explicitly deal
-with the user interface appearance or behavior of a class. We're
-going to just have to use our judgment to start with, and when we
-have more experience with the review process we can decide whether 
-and how to incorporate user interface aspects into the ratings.
+Changes to the interface of a green package are to be considered very
+carefully. A substantial amount of code may already depend on this
+interface, and adding new methods is better than changing old ones if
+it can be done without destroying the conceptual integrity of the
+package.
+
+<p>
+Changes to the implementation of green packages are normal and
+expected, provided that the semantics behind the interface do not
+change. If they do, then take care to ensure that code that depends on
+this package will not break, or are updated.
+
+<p>
+<dt><b>Blue</b>
+
+<dd>
+The interface to a blue package must not change in an incompatible
+way. Changes that extend the existing interface without changing its
+semantics are acceptable, but these changes should themselves be
+reviewed in a yellow-green-blue sequence. Implementation code can
+change, but this should be done only for bug fixes or for planned
+performance enhancements. Any but the simplest fixes should be
+reviewed again to maintain confidence in the package.
+
+<p>
+A blue package cannot be taken back to a lower level, as doing so
+would break the commitment to backward compatibility implied by blue.
+
 
 </dl>
 
 <p>
-<a href="../index.html">Ptolemy II Home Page</a><br>
+There are other ways with dealing with change at more fundamental
+levels. Firstly, designing a system with possible or probable change
+in mind will make it easier to accommodate large-scale changes with
+minimal disruption to existing packages. Consider implementing
+wrappers, facades, adapters, or (even) subclasses to deal with change
+instead of making major modifications to code that has been thoroughly
+reviewed and tested. Remember that a blue package represents a
+substantial investment in intellectual effort, not to mention sweat.
+
+
+<a name="adapting">
+<h2>Adapting the method</h2>
+</a>
+
+The rating levels and process outlined above are guidelines only.
+Modifications can and should be made to account for different
+development styles, the purpose and importance of a package, and
+other circumstances. Ultimately, the best guideline to give is
+that the reviewers use their judgment in applying these guidelines.
+These guidelines, I believe, will be most effective if you think
+"confidence and commitment," not "rules and regulations."
+
+<dl>
 <p>
-<HR>
-Copyright &#169 1997- The Regents of the University of California.
-All rights reserved.
+<dt><B>Documentation</B>
+
+<dd> A package that is undocumented is hard to use. My personal
+inclination is to encourage a reasonable level of documentation by i)
+expecting a reasonably complete design specification to go to yellow,
+ii) expecting substantial embedded documentation (for extraction by
+javadoc) to go to green, and iii) <I>requiring</I> complete embedded
+documentation and a programmer's guide derived from the specification
+to go to blue.
+
+<p>
+<dt><B>Specification</B>
+
+<dd> Any specification form that is understandable and maintainable
+should be accepted to go to yellow. I prefer not to use documentation
+generated from source code as the "specification" as that will change
+as the source changes and is hard to recover later.
+
+ <P>Object models, in OMT or UML, should be required for
+any design review.
+
+<p>
+<dt><B>More levels</B>
+
+<dd> The four levels described here may seem too "far apart" in some
+circumstances. In particular, the gap from yellow to green is quite
+large, and may take quite a while to cross whlie the code is in a
+state where others need to depend on it but don't have the
+"confidence" given by a green rating. Consider introducing sub-levels,
+such as "green-alpha" and "green-beta."
+
+<p>
+<dt><B>Retrospective application</B>
+
+<dd> Sometimes it may be necessary to consider rating code that is
+already considered "done." In this situation, there is little point in
+going back and starting from red -- instead, the reviewers must judge
+whether a single code review or final review is sufficient for a green
+or blue rating.  The key points to remember are <i>confidence</i> and
+<I>commitment</I>: whatever rating you are giving the package, you
+need to have the same confidence in and commitment to it as if it had
+gone through the entire process.
+
+<p>
+<dt><B>Individual files</B>
+
+<dd> It is often not possible to rate a whole package at once, either
+because of its size or because some parts of it are poorly-understood
+(simply because that's the nature of software development). In the
+first case, it is easy enough to break it into parts and have multiple
+review meetings. In the second, you should perhaps consider if the
+less-well-understood part of the package can be isolated into a
+cohesive sub-package -- this sub-package can then be reviewed and
+rated independently from the main package.
+
+ <P> In any case, it is perfectly acceptable to rate a package
+overall but note exceptions in the package status document.
+
+</dl>
+
+<p>
 <br>
-Last updated: $Date$,
-comments to: <author>johnr@eecs.berkeley.edu</author>
+<br>
+<i>Last updated: $Date$</i>
+
+
+</BLOCKQUOTE>
+
 </body>
 </html>
