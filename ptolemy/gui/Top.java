@@ -171,6 +171,15 @@ public abstract class Top extends JFrame {
         // Make this the default context for modal messages.
         GraphicalMessageHandler.setContext(this);
     }
+    
+    /** Close the window, prompting the user to save changes if there
+     *  have been any.  Derived classes should override the protected
+     *  method _close(), not this one.
+     *  @return False if the user cancels on a save query.
+     */
+    public final boolean close() {
+        return _close();
+    }
 
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
