@@ -119,11 +119,14 @@ JVM_SIZE = -Xmx256m
 # make SOOT_USER_ARGS=-h
 SOOT_USER_ARGS =
 
+# Time that we should let code generation run before exiting in ms.
+WATCH_DOG_TIMEOUT = 300000
 compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
 	ptolemy.copernicus.java.Main $(DEEPSOURCECLASS) -d "$(ROOT)"  \
+		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
