@@ -38,6 +38,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -52,12 +53,17 @@ import ptolemy.kernel.util.StringAttribute;
 //// Merge
 /**
    This actor takes any number of input streams and merges them
-   nondeterministically.  It creates a separate thread for each
-   input channel to manage data coming in on that channel.
-   These threads compete fairly to transmit the input data
-   to the output.
+   nondeterministically.  This actor is a composite actor that
+   creates its own contents.  It contains a PNDirector and one
+   actor for each input channel (it creates these actors automatically
+   when a connection is created to the input multiport).  The contained
+   actors are special actors (implemented as an instance of an inner class)
+   that read from the port of this actor and write to the port of
+   this actor. They have no ports of their own.  The lifecycle of the
+   contained actors (when they are started or stopped) is handled by
+   the PNDirector in the usual way.
 
-   @author Edward A. Lee
+   @author Edward A. Lee, Haibo Zeng
    @version $Id$
    @since Ptolemy II 0.4
    @Pt.ProposedRating Yellow (eal)
@@ -202,8 +208,17 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                                 + _channelIndex);
                     }
                     // NOTE: Writing to the port of the host actor.
-                    output.send(0, input.get(_channelIndex));
-                    channel.send(0, _channelValue);
+                    Token result = input.get(_channelIndex);
+                    // We require that the send to the two output ports be
+                    // atomic so that the channel port gets tokens
+                    // in the same order as the output port.
+                    // We synchronize on the director because the send()
+                    // may call wait() on the director, so synchronizing
+                    // on anything else could cause deadlock.
+                    synchronized (getDirector()) {
+                        output.send(0, result);
+                        channel.send(0, _channelValue);                        
+                    }
                     if (_debugging) {
                         NondeterministicMerge.this._debug(
                                 "Sent input from channel "
