@@ -292,5 +292,11 @@ test StringToken-13.7 {Test convert from StringToken} {
 test StringToken-14.1 {Test embedded double quotes} {
     set tok1 [java::new {ptolemy.data.StringToken} {has embedded "}]
     set tok2 [java::new {ptolemy.data.StringToken} "has embedded \""]
-    list [$tok1 toString] [$tok1 toString]  
+    set tok3 [java::new {ptolemy.data.StringToken} "has embedded \\\""]
+    list [$tok1 toString] [$tok1 toString] [$tok3 toString] [$tok3 stringValue]
 } {{"has embedded \""} {"has embedded \""}}
+
+test StringToken-14.2 {Test embedded double quotes preceded by backslash} {
+    set tok3 [java::new {ptolemy.data.StringToken} "has embedded \\\""]
+    list [$tok3 toString] [$tok3 stringValue]
+} {{"has embedded \""} {has embedded \"}} {KNOWN_FAILURE}
