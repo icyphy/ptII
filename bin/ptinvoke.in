@@ -110,6 +110,8 @@ JODE_JFLAG=
 
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
+SOOT_DIR="@SOOT_DIR@"
+JAVA_SYSTEM_JAR="@JAVA_SYSTEM_JAR@"
 SOOT_JAR="@SOOT_CLASSES@"
 
 SOOT_JFLAG=
