@@ -223,8 +223,13 @@ public class UtilityFunctions {
      *  <dt> "java.version"
      *  <dd> the version of the JDK.
      *  <dt> "ptolemy.ptII.dir"
-     *  <dd> vergil usually sets the ptolemy.ptII.dir property to the
-     *  value of $PTII.
+     *  <dd> The value of $PTII, which is the name of the directory in
+     *       which Ptolemy II is installed.
+     *  <dt> "ptolemy.ptII.dirAsURL"
+     *  <dd> The value of $PTII as a URL, which is the name of the directory in
+     *       which Ptolemy II is installed.
+     *  <dt> "user.dir"
+     *  <dd> The canonical path name to the current working directory.
      *  </dl>
      *
      *  @param propertyName The name of property.
