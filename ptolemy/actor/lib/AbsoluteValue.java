@@ -66,7 +66,7 @@ public class AbsoluteValue extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Compute the absoluate value of the input.  If there is no input, then
+    /** Compute the absolute value of the input.  If there is no input, then
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
      */
