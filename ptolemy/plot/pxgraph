@@ -47,7 +47,7 @@
 
 PTDEFAULT=/users/ptdesign
 TYDEFAULT=/users/ptdesign/tycho
-JAVADEFAULT=/opt/jdk1.1.1
+JAVADEFAULT=/opt/jdk1.1.4
 
 ################
 # You probably don't want to edit below here
@@ -113,9 +113,9 @@ if [ -z "$JAVAHOME" ]; then
 fi
 
 if [ "$windows" = "yes" ]; then 
-    java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
 else
-    java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
 fi
 
 
