@@ -751,6 +751,7 @@ public class Manager extends NamedObj implements Runnable {
         // Wrap up the topology
         _container.wrapup();
 
+        _workspace.incrVersion();
         // Wrapup completed successfully
         _setState(IDLE);
     }

@@ -125,6 +125,25 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newObject;
     }
 
+    /** Validate attributes, and create new receivers if port is 
+     *  an input port and there is a director.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        if (port instanceof IOPort) {
+            IOPort castedPort = (IOPort)port;
+            if(castedPort.isInput() && getDirector() != null) {
+                try {
+                    castedPort.createReceivers();
+                } catch(IllegalActionException ex) {
+                    // Should never happen.
+                    throw new InternalErrorException(
+                            "cannot create receivers.");
+                }
+            }
+        }
+    }           
+
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.
      *

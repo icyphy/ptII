@@ -190,6 +190,26 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return newObject;
     }
 
+    /** Validate attributes, and create new receivers if port is an opaque
+     *  output port.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        if (port instanceof IOPort) {
+            IOPort castedPort = (IOPort) port;
+            if(castedPort.isOpaque() && castedPort.isOutput()) {
+                // Note that if castedPort is opaque, there must be a director.
+                try {
+                    castedPort.createReceivers();
+                } catch(IllegalActionException ex) {
+                    // Should never happen.
+                    throw new InternalErrorException(
+                            "cannot create receivers:" + ex.getMessage());
+                }
+            }
+        }
+    }    
+
     /** If this actor is opaque, invoke the fire() method of its local
      *  director. Otherwise, throw an exception.
      *  This method is read-synchronized on the workspace, so the
