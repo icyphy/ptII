@@ -103,7 +103,7 @@ public class SCTransition extends ComponentRelation {
         _transActions.insertFirst(act);
     }
 
-    public void executeTransitionActions() {
+    public void executeTransitionActions() throws IllegalActionException {
         if (_transActions == null) {
             return;
         }
@@ -284,7 +284,7 @@ public class SCTransition extends ComponentRelation {
     /** Setup the scope of trigger event, trigger condition, and trigger
      *  actions.
      */
-    public void setupScope() throws NameDuplicationException {
+    public void setupScope() throws NameDuplicationException, IllegalActionException {
         SCState src = sourceState();
         VariableList localInputVarS =
                 (VariableList)src.getAttribute(SCState.LOCAL_INPUT_STATUS_VAR_LIST);

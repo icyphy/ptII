@@ -819,7 +819,7 @@ System.out.println("Port " + port.getFullName() + " has no token.");
     LinkedList _initTrans = null;
 
     // The current state.
-    SCState _currentState = null;
+    protected SCState _currentState = null;
 
     // The input status variable list.
     VariableList _inputStatusVars = null;
@@ -831,7 +831,7 @@ System.out.println("Port " + port.getFullName() + " has no token.");
     VariableList _localVariables = null;
 
     // The transition to be taken when change state.
-    SCTransition _takenTransition = null;
+    protected SCTransition _takenTransition = null;
 
     // From AtomicActor, should keep consistent.
     // Cached lists of input and output ports.

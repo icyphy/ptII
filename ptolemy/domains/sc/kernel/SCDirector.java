@@ -268,6 +268,11 @@ System.out.println("Initializing SCDirector " + this.getFullName());
         Actor refine = _controller.currentRefinement();
         if (refine != null) {
             refine.postfire();
+            Enumeration outports = refine.outputPorts();
+            while(outports.hasMoreElements()) {
+                IOPort p = (IOPort)outports.nextElement();
+                transferOutputs(p);
+            }
         }
         return _controller.postfire();
     }
@@ -403,6 +408,10 @@ System.out.println("SCDirector: get controller's current refinement.");
         if (insiderec.hasToken()) {
             try {
                 Token t = insiderec.get();
+
+System.out.println("Transfer output from " + port.getFullName() + " " +
+        ((DoubleToken)t).doubleValue());
+
                 _controller.currentState().setLocalInputVar(port.getName(), t);
                 if (p != null) {
                     Receiver rec = (p.getInsideReceivers())[0][0];

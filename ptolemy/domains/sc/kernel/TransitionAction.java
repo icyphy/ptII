@@ -31,6 +31,8 @@
 
 package ptolemy.domains.sc.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// TransitionAction
 /**
@@ -48,10 +50,10 @@ public interface TransitionAction {
     /** Initialize internal data structures etc. This is called when
      *  the SCController initializes.
      */
-    public void initialize();
+    public void initialize() throws IllegalActionException;
 
     /** Execute the action.
      */
-    public void execute();
+    public void execute() throws IllegalActionException;
 
 }
