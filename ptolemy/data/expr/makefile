@@ -76,8 +76,7 @@ JSRCS = \
 	ASCII_CharStream.java \
 	Token.java \
 	TokenMgrError.java \
-	ParseException.java \
-	Test.java 
+	ParseException.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
