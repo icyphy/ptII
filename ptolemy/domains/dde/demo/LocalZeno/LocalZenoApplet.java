@@ -85,8 +85,8 @@ public class LocalZenoApplet extends DDEApplet {
 	Panel topPanel = new Panel();
 	topPanel.setSize( new Dimension(600, 200) );
 
-	// The '2' argument specifies a 'go' and 'stop' button.
-	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
+	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
+	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
 
 	_plotPanel = new Panel();
 	_plotPanel.setSize( new Dimension(600, 200) );
@@ -106,7 +106,7 @@ public class LocalZenoApplet extends DDEApplet {
 
         try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(_jgraph, finalModel);
 		}
 	    });
@@ -130,10 +130,10 @@ public class LocalZenoApplet extends DDEApplet {
     }
 
     /** Construct the graph representing the topology.
-     *  This is sort of bogus because it's totally hird-wired,
+     *  This is sort of bogus because it's totally hard-wired,
      *  but it will do for now...
      */
-    public GraphModel constructDivaGraph () {
+    public GraphModel constructDivaGraph() {
         GraphModel model = new GraphModel();
 
         // Nodes, with user object set to the actor
@@ -172,17 +172,17 @@ public class LocalZenoApplet extends DDEApplet {
         _nodeMap.put(_rcvr2, n9);
 
         // Edges
-        model.createEdge(n1,n2);
-        model.createEdge(n2,n3);
-        model.createEdge(n3,n4);
-        model.createEdge(n3,n5);
-        model.createEdge(n4,n2);
+        model.createEdge(n1, n2);
+        model.createEdge(n2, n3);
+        model.createEdge(n3, n4);
+        model.createEdge(n3, n5);
+        model.createEdge(n4, n2);
 
-        model.createEdge(n1,n6);
-        model.createEdge(n6,n7);
-        model.createEdge(n7,n8);
-        model.createEdge(n7,n9);
-        model.createEdge(n8,n6);
+        model.createEdge(n1, n6);
+        model.createEdge(n6, n7);
+        model.createEdge(n7, n8);
+        model.createEdge(n7, n9);
+        model.createEdge(n8, n6);
 
         return model;
     }
@@ -190,7 +190,7 @@ public class LocalZenoApplet extends DDEApplet {
     /** Construct the Ptolemy model; instantiate all
      *  actors and make connections.
      */
-    public void constructPtolemyModel () {
+    public void constructPtolemyModel() {
         try {
             // Instantiate the Actors
 	    _clock = new ListenClock( _toplevel, "Clock" );
@@ -267,7 +267,7 @@ public class LocalZenoApplet extends DDEApplet {
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600,300) );
+	g.setPreferredSize( new Dimension(600, 300) );
 
         // Make sure we have the right renderers and then
 	// display the graph
@@ -301,6 +301,27 @@ public class LocalZenoApplet extends DDEApplet {
      *  the "Go" button is depressed.
      */
     public void start() {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numButtons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numButtons) {
+        Panel controlPanel = super._createRunControls(numButtons);
+
+        if (numButtons > 2) {
+            Button layout = new Button("Layout");
+            controlPanel.add(layout);
+            layout.addActionListener(new LayoutListener());
+        }
+
+        return controlPanel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -344,6 +365,54 @@ public class LocalZenoApplet extends DDEApplet {
 
 
     ///////////////////////////////////////////////////////////////////
+    //// LayoutListener
+
+    private class LayoutListener implements ActionListener {
+	public void actionPerformed(ActionEvent evt) {
+	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
+	    final GraphView gv = gp.getGraphView();
+	    final GraphModel m = _model;
+	    try {
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			LevelLayout staticLayout = new LevelLayout();
+			staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+			staticLayout.layout(gv, m.getGraph());
+			gp.repaint();
+		    }
+		});
+	    } catch (Exception e) {
+		System.out.println(e);
+	    }
+	}
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// LocalEdgeRenderer
+
+    /**
+     * LocalEdgeRenderer draws arrowheads on both ends of the connector
+     */
+    public class LocalEdgeRenderer implements EdgeRenderer {
+        /**
+         * Render the edge
+         */
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
+
+            // Create an arrow at the head
+            Arrowhead headArrow = new Arrowhead(
+                    headSite.getX(), headSite.getY(),
+                    headSite.getNormal());
+            c.setHeadEnd(headArrow);
+            c.setUserObject(edge);
+            return c;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     //// StateListener
     /**
      * StateListener is an inner class that listens to state
@@ -357,7 +426,7 @@ public class LocalZenoApplet extends DDEApplet {
 
         /** Create a listener on the given graph pane
          */
-        public StateListener (GraphPane pane) {
+        public StateListener(GraphPane pane) {
             _graphPane = pane;
         }
 
@@ -379,7 +448,7 @@ public class LocalZenoApplet extends DDEApplet {
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
-                    public void run () {
+                    public void run() {
                         switch (state) {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
@@ -420,7 +489,7 @@ public class LocalZenoApplet extends DDEApplet {
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
@@ -445,29 +514,6 @@ public class LocalZenoApplet extends DDEApplet {
             w.setAnchor(SwingConstants.SOUTH);
             w.getLabel().setAnchor(SwingConstants.NORTH);
             return w;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LocalEdgeRenderer
-
-    /**
-     * LocalEdgeRenderer draws arrowheads on both ends of the connector
-     */
-    public class LocalEdgeRenderer implements EdgeRenderer {
-        /**
-         * Render the edge
-         */
-        public Connector render (Edge edge, Site tailSite, Site headSite) {
-            StraightConnector c = new StraightConnector(tailSite, headSite);
-
-            // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(
-                    headSite.getX(), headSite.getY(),
-                    headSite.getNormal());
-            c.setHeadEnd(headArrow);
-            c.setUserObject(edge);
-            return c;
         }
     }
 }
