@@ -258,14 +258,18 @@ public class ODActor extends AtomicActor {
         _currentTime = triple.getTime();
         _lastPort = (ODIOPort)triple.getReceiver().getContainer();
         
+        /*
         if( name.equals("printer") ) {
             System.out.println("preparing to call get");
             printRcvrTable();
         }
+        */
         Token token = lowestRcvr.get();
+        /*
         if( name.equals("printer") ) {
             System.out.println("just finished calling get");
         }
+        */
         
         if( token != null ) {
             /*
@@ -277,11 +281,6 @@ public class ODActor extends AtomicActor {
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
-                if( name.equals("printer") ) {
-                    System.out.println(name+" has minimum receiver time.");
-                }
-                /*
-                */
                 // This means that there must be a different
                 // receiver which has the minimum arc time
                 // after the token was actually received -
@@ -289,17 +288,24 @@ public class ODActor extends AtomicActor {
                 // blocking and then received an arc time
                 // that was not the minimum.
                 
+                /*
+                if( name.equals("printer") ) {
+                    System.out.println(name+" has minimum receiver time.");
+                }
+                */
+                
                 return getNextToken();
                 
             } else {
-                if( name.equals("printer") ) {
-                    System.out.println(name+" has no minimum receiver time.");
-                }
-                /*
-                */
                 // This means that multiple arcs have the 
                 // the same minimum arc time. Find the arc
                 // with the lowest time and priority.
+                
+                /*
+                if( name.equals("printer") ) {
+                    System.out.println(name+" has no minimum receiver time.");
+                }
+                */
                 
                 RcvrTimeTriple priorityTriple = getHighestPriorityTriple();
                 lowestRcvr = (ODReceiver)priorityTriple.getReceiver();
@@ -310,25 +316,26 @@ public class ODActor extends AtomicActor {
                 
                 if( token != null ) {
                     // updateRcvrTable( priorityTriple );
+                    /*
                     if( name.equals("printer") ) {
                         System.out.println(name+
                                 " returned a token: 2nd non-null.");
                     }
-                    /*
                     */
                     return token;
                 } else {
-                    if( name.equals("printer") ) {
-                        System.out.println(name+ 
-                                " minimum rcvrTime must have changed.");
-                    }
-                    /*
-                    */
                     // This means that although originally there was 
                     // a receiver with highest priority, it must have
                     // blocked and upon receiving a token no longer
                     // had the minimum time. The result is that there 
                     // is another minimum.
+                    
+                    /*
+                    if( name.equals("printer") ) {
+                        System.out.println(name+ 
+                                " minimum rcvrTime must have changed.");
+                    }
+                    */
                         
                     return getNextToken();
                 }
@@ -346,7 +353,7 @@ public class ODActor extends AtomicActor {
     /** FIXME
      */
     public boolean postfire() {
-        System.out.println(getName()+" is calling postfire()");
+        // System.out.println(getName()+" is calling postfire()");
         return false;
     }
     

@@ -127,7 +127,7 @@ public class ODDirector extends ProcessDirector {
     public synchronized void addReadBlock() {
         _readBlocks++;
 	notifyAll();
-        System.out.println(_readBlocks + " actors are blocked on reads.");
+        // System.out.println(_readBlocks + " actors are blocked on reads.");
     }
     
     /** 
@@ -135,13 +135,13 @@ public class ODDirector extends ProcessDirector {
     public synchronized void addWriteBlock() {
         _writeBlocks++;
 	notifyAll();
-        System.out.println(_writeBlocks + " actors are blocked on writes.");
+        // System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
 
     /* FIXME
      */
     public boolean postfire() throws IllegalActionException {
-        System.out.println("ODDirector.postfire() = "+_notdone);
+        // System.out.println("ODDirector.postfire() = "+_notdone);
 	return _notdone;
     }
     
@@ -154,40 +154,19 @@ public class ODDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
         // System.out.println("ODDirector.fire()");
         
-        boolean continueIteration = true;
-        while( continueIteration ) {
-            System.out.println("Director will wait until deadlock");
+        while( true ) {
+            // System.out.println("Director will wait until deadlock");
             workspace().wait(this);
-            System.out.println("Awakened - now checking for deadlock");
+            // System.out.println("Awakened - now checking for deadlock");
             if( isDeadlocked() ) {
                 resolveDeadlock();
                 if( isDeadlocked() ) {
-		    System.out.println("End of ODDirector.fire()");
+		    // System.out.println("End of ODDirector.fire()");
                     _notdone = false;
                     return;
                 }
             }
         }
-        
-        
-        /*
-        while( !isDeadlocked() && !hasMutation() ) {
-            System.out.println("Entered fire loop.");
-            workspace().wait(this);
-            if( isDeadlocked() ) {
-                resolveDeadlock();
-                if( isDeadlocked() ) {
-                    return;
-                }
-            }
-            if( hasMutation() ) {
-                _performMutations();
-                if( hasMutation() ) {
-                    return;
-                }
-            }
-        }
-        */
     }
     
     /** FIXME
@@ -220,7 +199,7 @@ public class ODDirector extends ProcessDirector {
         if( _readBlocks > 0 ) {
             _readBlocks--;
         }
-        System.out.println(_readBlocks + " actors are blocked on reads.");
+        // System.out.println(_readBlocks + " actors are blocked on reads.");
     }
     
     /** 
@@ -229,13 +208,13 @@ public class ODDirector extends ProcessDirector {
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
-        System.out.println(_writeBlocks + " actors are blocked on writes.");
+        // System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
     
     /** FIXME
      */
     public void resolveDeadlock() {
-        System.out.println("*** Deadlock Needs To Be Resolved!!!");
+        // System.out.println("*** Deadlock Needs To Be Resolved!!!");
     }
     
     ///////////////////////////////////////////////////////////////////
