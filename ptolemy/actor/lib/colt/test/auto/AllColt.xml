@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AllColt" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
     </property>
@@ -17,13 +17,13 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 630.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run all the Colt Random Sources.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -34,340 +34,363 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 30.0]">
         </property>
     </property>
+    <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 80.0]">
+        </property>
+    </property>
     <entity name="ColtBeta" class="ptolemy.actor.lib.colt.ColtBeta">
+        <property name="seed" class="ptolemy.actor.lib.colt.ColtSeedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
+        </property>
         <doc>Create a sequence of Beta random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 105.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5797253576457, 0.4861785906833, 0.8034996807692, 0.6487023222144, 0.7243081892375, 0.3613815072458, 0.3203849194106, 0.3457507069688, 0.7167565042037, 0.3378075973596, 0.5544133197982, 0.4724311751779, 0.6447970897425, 0.8572664757376, 0.4981493929517, 0.3939395493944, 0.9740743737784, 0.5533456599806, 0.4885471808375, 0.2836018509697, 0.5123463405762, 0.4432393666939, 0.7508763638907, 0.6537820447702, 0.3484278114047}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.977173388761, 0.782290389121, 0.716376852477, 0.17035747919, 0.5732095029671, 0.2648833242711, 0.3080830171239, 0.8702724122559, 0.5145386646036, 0.1984330233536, 0.4483712154906, 0.4866159928497, 0.8457034198218, 0.0745290601044, 0.162882695382, 0.45868594083, 0.4458095130976, 0.6255568221677, 0.212561246648, 0.3983730392065, 0.3865481286775, 0.3172287920024, 0.8986850632937, 0.5793196179438, 0.3357649089303}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
         </property>
     </entity>
     <entity name="ColtBinomial" class="ptolemy.actor.lib.colt.ColtBinomial">
         <doc>Create a sequence of Binomial random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 125.0]">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
         </property>
     </entity>
     <entity name="ColtBreitWigner" class="ptolemy.actor.lib.colt.ColtBreitWigner">
         <doc>Create a sequence of BreitWigner random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
         </property>
     </entity>
     <entity name="ColtChiSquare" class="ptolemy.actor.lib.colt.ColtChiSquare">
         <doc>Create a sequence of ChiSquare random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 285.0]">
         </property>
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <doc>Create a sequence of Exponential random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 335.0]">
-        </property>
-    </entity>
-    <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0005751881122, 1.3736092381273, 1.0626535339317, 1.0987659931453, 0.3458218594884, 1.1000301756981, 0.932094631965, 0.664425279406, 0.3808596108187, 1.1497135045286, 0.9843805884957, 1.0620874606804, 0.5254422085356, 1.63683035492, 1.7137000224032, 0.9017176246303, 1.513756811114, 1.6850765835946, 0.9823370928323, 1.313376318742, 0.7202751266642, 1.4237050981497, 0.6537339026761, 1.3818695838415, 0.5138899811473}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 235.0]">
-        </property>
-    </entity>
-    <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.3163153755464, 0.3957973984616, 0.018659849359, 0.2749133610576, 1.8167812290592, 1.2952151935777, 0.1401676217345, 0.7172576657269, 0.0147548387693, 8.0374000777069E-4, 1.0966912976883, 0.8227924941171, 3.5626200007479, 0.1567934654198, 0.4021013262407, 0.3621927400605, 0.4854907027494, 1.8931297495478, 1.8504700482412, 0.0489102106178, 1.0501395002425, 0.1525909822193, 1.180798569972E-4, 0.3219599244236, 0.0239433021658}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="24.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 305.0}">
-        </property>
-    </entity>
-    <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.3580863475531, 1.1816507867125, 1.3195917714874, 0.4143428241802, 0.6170506263383, 2.0215214548698, 0.2152310623348, 1.5211611450826, 0.1474332667343, 0.1260387112562, 1.0251757821486, 1.2173702030878, 0.914792535631, 3.728812063556, 0.2507115698552, 0.2523207466982, 1.5084127816844, 2.8466062627622, 0.1626007469581, 1.8360216297678, 1.9466417658458, 0.8094206505599, 0.58024273812, 0.1786779466576, 0.3805271654785}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 375.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 345.0]">
         </property>
     </entity>
     <entity name="ColtExponentialPower" class="ptolemy.actor.lib.colt.ColtExponentialPower">
         <doc>Create a sequence of Exponential Power random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 405.0]">
         </property>
     </entity>
     <entity name="ColtGamma" class="ptolemy.actor.lib.colt.ColtGamma">
         <doc>Create a sequence of Gamma random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 465.0]">
         </property>
     </entity>
     <entity name="ColtHyperGeometric" class="ptolemy.actor.lib.colt.ColtHyperGeometric">
         <doc>Create a sequence of HyperGeometric random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 525.0]">
         </property>
     </entity>
     <entity name="ColtLogarithmic" class="ptolemy.actor.lib.colt.ColtLogarithmic">
         <doc>Create a sequence of Logarithmic random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 605.0]">
-        </property>
-    </entity>
-    <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1985197762576, -0.0843774156865, -0.1163514358316, 0.2445055925162, -0.9855892871796, -1.7276530021521, -0.6663813961403, -0.0946169947162, 1.3319150937193, 0.8445988106285, -0.2399000078104, -2.3468391859269, -2.033348224613, 1.3315678598657, 1.8530573181372, -1.3125709241581, 2.0029119666373, 1.4713698478654, -0.6855045385777, 1.6643683540044, 0.0512394519616, -0.0405796661404, -0.9531204354354, 0.6378338710238, 0.6172561743582}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 440.0]">
-        </property>
-    </entity>
-    <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.9321320741404, 0.1497545703408, 0.4815503487959, 0.7621422656535, 0.4531111625477, 0.4451649886792, 1.0011287382248, 0.3370052106237, 0.7856046272473, 1.2010688707565, 0.3439676529846, 0.5341406039089, 0.30075557048, 0.1871463829197, 0.7904104425756, 0.5099292739315, 0.6739492647166, 0.3331960568583, 5.0619708682415, 0.2797365382701, 0.3821364588542, 0.7806344821027, 1.9793201943328, 1.340665467309, 1.0715184306501}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 510.0]">
-        </property>
-    </entity>
-    <entity name="Test8" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 580.0]">
-        </property>
-    </entity>
-    <entity name="Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 3.0, 1.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 585.0]">
         </property>
     </entity>
     <entity name="ColtNegativeBinomial" class="ptolemy.actor.lib.colt.ColtNegativeBinomial">
         <doc>Create a sequence of Negative Binomial random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 225.0]">
         </property>
     </entity>
     <entity name="ColtNormal" class="ptolemy.actor.lib.colt.ColtNormal">
         <doc>Create a sequence of Normal random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 285.0]">
         </property>
     </entity>
     <entity name="ColtPoisson" class="ptolemy.actor.lib.colt.ColtPoisson">
         <doc>Create a sequence of Poisson random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 345.0]">
         </property>
     </entity>
     <entity name="ColtPoissonSlow" class="ptolemy.actor.lib.colt.ColtPoissonSlow">
         <doc>Create a sequence of PoissonSlow random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 405.0]">
         </property>
     </entity>
     <entity name="ColtStudentT" class="ptolemy.actor.lib.colt.ColtStudentT">
         <doc>Create a sequence of StudentT random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 465.0]">
         </property>
     </entity>
     <entity name="ColtVonMises" class="ptolemy.actor.lib.colt.ColtVonMises">
         <doc>Create a sequence of VonMises random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 525.0]">
         </property>
     </entity>
     <entity name="ColtZeta" class="ptolemy.actor.lib.colt.ColtZeta">
         <doc>Create a sequence of Zeta random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 585.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0459198331824, 1.3286441019975, 1.0739701355921, 1.2877272123809, 0.2726191312436, 1.2589413774866, 0.9199234668375, 0.36065215698, 1.4120952815849, 0.9988753071431, 1.9598425239219, 1.4915229096279, 0.4830983533911, 0.9275319791551, 1.2884299099248, 1.0379758303458, 0.6672206325223, 1.6389381897729, 0.6000647608847, 0.0603765022383, 0.1242531854999, 0.2048670057355, 1.2453559056801, 0.7728421697059, 1.2952559668025}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.8909120552158, 0.0011951637521, 0.3837295064106, 0.8719497776549, 0.0025576409824, 0.1975140680347, 1.7608698814986, 2.827051441793, 1.8518292728283, 0.2982403965394, 0.0070893646117, 1.6719336430701, 0.3457297846481, 0.0683957053527, 0.6463120664735, 1.0876923771757, 0.3964356769641, 1.4522728817546, 2.8432072702072, 2.2529200207139, 0.0211173526208, 0.0242534127512, 0.0270213004761, 0.3148301753306, 3.3258383343041}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.4078104439361, 0.4836759814398, 0.9771569119654, 1.0715462882549, 0.894571363281, 6.0114909720453, 0.6199072214625, 0.4984361702208, 0.9480651387475, 0.215607856022, 1.5202233861911, 1.5115105880756, 0.2730399384954, 0.5999430168903, 1.3230371317613, 4.0839451279115, 0.7847958458287, 4.8694241388069, 4.8513964799989, 0.3413411635881, 1.0558063076424, 0.3759193533696, 2.7556023300296, 0.5559641284676, 0.8495669946162}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.2925302608796, -0.8273844529105, -0.178849819976, -0.2054274527378, 1.0464940763444, -1.0891078506578, -0.1571061299126, 2.7697277649704, 2.0111096880608, -1.7610564259893, -0.0190172835, -0.6629908572972, 0.6126648113541, 0.0614605361016, 0.5583339231584, -0.0164034112765, 0.0163706314458, -1.7585882480381, -2.9450872924648, -1.0282029707672, 1.3436898515192, -1.8297379586262, 1.0678884598087, -0.9073578106136, 0.6521586362202}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.6381311292302, 3.0551106529605, 0.023054255133, 0.4955306293136, 1.746915555201, 1.7168654157839, 0.326351200311, 0.0365201563119, 0.0095414504246, 0.2511683920582, 0.1610727252889, 2.8988165331123, 0.3212765224625, 2.5228889722703, 0.185966053883, 0.5622222911836, 0.2395181741688, 1.0242002907564, 0.4069069787703, 2.6559763665663, 1.2245653433987, 0.7462011755206, 0.325671945631, 0.9155102707761, 0.0359296059033}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 465.0]">
+        </property>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 525.0]">
+        </property>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 6.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 2.0, 1.0, 4.0, 2.0, 1.0, 1.0, 1.0, 6.0, 4.0, 2.0, 1.0, 2.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 585.0]">
+        </property>
+    </entity>
+    <entity name="Test10" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 3, 0, 4, 5, 1, 1, 0, 2, 0, 1, 3, 1, 0, 0, 1, 3, 0, 0, 1, 0, 0, 1, 3}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 225.0]">
         </property>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 5, 0, 0, 0, 0, 1, 0, 7, 1, 3, 0, 0, 1, 0, 1, 2, 0, 0, 6, 2, 0, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5503979711198, 1.4082867020045, 2.1045743736133, 0.8396500894964, 1.3438373516998, 0.4190773601651, 0.6989505971328, 1.7024799243527, 1.8357918143427, 1.2801432608021, 0.8860103684518, 2.1495782906961, 0.6355049040032, 0.3007148376862, 2.3446588700788, 0.7619824676783, 1.9708557897353, -0.5552362510405, 0.6613918186936, 0.038975208904, 3.3070836671802, 0.7819887451713, -0.3385239671393, 2.2870440816541, 1.918252801031}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 285.0]">
         </property>
     </entity>
     <entity name="Test12" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.9381094859355, 1.47030636856, 0.4746338960259, 0.669012173289, 0.8978603659406, 0.9900181360073, 1.2414600715447, 0.9703990655508, 1.2209498580281, -0.3241953241807, 1.2756834741896, 0.5852705061653, 1.8366465285761, 1.6812854982171, 1.7896895090627, 1.6245232430798, 1.9556660879143, 1.8737730923243, -0.765332495992, 0.369094169972, 0.3042162635288, 1.8777497929766, 1.5728330831688, 2.0527069758794, 0.5834073676087}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 1, 1, 0, 3, 1, 2, 2, 1, 1, 1, 3, 1, 1, 1, 0, 0, 1, 1, 3, 2, 0, 0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 345.0]">
         </property>
     </entity>
     <entity name="Test13" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 2, 0, 2, 2, 2, 1, 2, 1, 0, 0, 0, 1, 0, 1, 1, 0, 2, 6, 3, 0, 0, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 3, 3, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 2, 1, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="8.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 405.0]">
         </property>
     </entity>
     <entity name="Test14" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 1, 2, 0, 3, 6, 2, 0, 0, 4, 0, 1, 0, 2, 1, 0, 3, 2, 3, 1, 0, 1, 0, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.1479107250932, 0.3729421428449, -0.4147985948803, 0.6690262900551, -1.4654724399796, 2.3000534786199, -0.9872330671958, -0.9884643637514, 0.2735035485457, -0.6429824367026, 3.19273246989, 0.2919647579134, 1.3132920540515, -5.1534245507641, -38.939835958985, -11.460220215418, -0.0653915721696, -0.9594486500155, -8.8798450934754, -0.3694750667706, -28.0787585936582, 1.6895914591173, 0.8643767691085, 1.2224557373736, -0.2801533181778}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="40.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{695.0, 385.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 465.0]">
         </property>
     </entity>
     <entity name="Test15" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.038987340778, 0.7065287852013, -2.0950811267933, 1.5621022241793, -1.9536723522016, 0.9652941370835, -1.7048878400736, 0.0560886361647, 0.0174355307452, -3.2511904725005, -1.4141563070517, 0.7037817090558, 0.6335819134385, -4.6265715664036, -1.7205967212672, -1.420771776231, 0.6611752750906, 2.9563467123563, 1.6315287047148, -0.2827590037247, 0.4228593144393, -0.291082289635, 12.5453706889042, 1.6572372964315, -0.1056477251245}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.7316194749286, -0.6293656278374, -0.1327424701506, -0.5622496041045, 2.3781147332696, -0.7421362493668, 0.107681613108, 2.1002534489738, -1.3063222967339, 3.0389361635527, -2.2559560466629, -0.4668036935173, -1.1918932906338, -1.1398194809961, 0.0542645800904, 0.9992701076467, -2.3937638539711, 0.1031107398415, 0.0625224034427, -0.4955781483483, 1.1362575246483, 0.9138691263355, 2.0537092808264, 0.6602435997845, -1.4165381240687}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4000.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 525.0]">
         </property>
     </entity>
     <entity name="Test16" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.6346578290922, -0.5893254728585, 0.5509964604949, 2.7166029255213, -0.9652889878465, -1.0660787628995, 2.4360627462169, 0.0966112551047, 0.437287306896, 2.8253016087308, -0.1447584354615, -0.2845554230057, -0.9840673149453, 1.7235426808141, -0.525636151694, -0.5500069625922, -1.9846048913217, -0.5183130014656, 1.1116047846351, -0.5159860246896, -0.3141640315003, 1.6000112519418, -3.1258575669608, -0.4180137507899, -0.9384117534406}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{23, 3, 7, 17, 1, 1, 5, 1, 8, 1, 1, 6, 1, 2, 7, 7, 9, 1, 4, 12, 11, 1, 1, 21, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="500000">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 515.0]">
-        </property>
-    </entity>
-    <entity name="Test17" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 1, 5, 1, 3, 7, 12, 2, 31, 1, 1, 32, 2, 1, 2, 15, 1, 2, 1, 20, 2, 11, 1, 1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="20000.0">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 585.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 55.0]">
-        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 125.0]">
-        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{145.0, 335.0}">
-        </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 265.0]">
-        </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 195.0]">
-        </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 605.0]">
-        </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{145.0, 540.0}">
-        </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 470.0]">
-        </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 400.0]">
-        </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[540.0, 575.0]">
-        </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[550.0, 515.0]">
-        </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[560.0, 450.0]">
-        </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[570.0, 385.0]">
-        </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[580.0, 320.0]">
-        </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[590.0, 255.0]">
-        </vertex>
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[600.0, 190.0]">
-        </vertex>
     </relation>
     <link port="ColtBeta.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
     <link port="ColtBinomial.output" relation="relation2"/>
-    <link port="Test2.input" relation="relation2"/>
-    <link port="ColtBreitWigner.output" relation="relation6"/>
-    <link port="ColtChiSquare.output" relation="relation5"/>
-    <link port="ColtExponential.output" relation="relation4"/>
-    <link port="Test3.input" relation="relation6"/>
-    <link port="Test4.input" relation="relation5"/>
-    <link port="Test5.input" relation="relation4"/>
-    <link port="ColtExponentialPower.output" relation="relation10"/>
-    <link port="ColtGamma.output" relation="relation9"/>
+    <link port="ColtBreitWigner.output" relation="relation3"/>
+    <link port="ColtChiSquare.output" relation="relation4"/>
+    <link port="ColtExponential.output" relation="relation5"/>
+    <link port="ColtExponentialPower.output" relation="relation6"/>
+    <link port="ColtGamma.output" relation="relation7"/>
     <link port="ColtHyperGeometric.output" relation="relation8"/>
-    <link port="ColtLogarithmic.output" relation="relation7"/>
-    <link port="Test6.input" relation="relation10"/>
-    <link port="Test7.input" relation="relation9"/>
+    <link port="ColtLogarithmic.output" relation="relation9"/>
+    <link port="ColtNegativeBinomial.output" relation="relation10"/>
+    <link port="ColtNormal.output" relation="relation11"/>
+    <link port="ColtPoisson.output" relation="relation12"/>
+    <link port="ColtPoissonSlow.output" relation="relation13"/>
+    <link port="ColtStudentT.output" relation="relation14"/>
+    <link port="ColtVonMises.output" relation="relation15"/>
+    <link port="ColtZeta.output" relation="relation16"/>
+    <link port="Test2.input" relation="relation2"/>
+    <link port="Test3.input" relation="relation3"/>
+    <link port="Test4.input" relation="relation4"/>
+    <link port="Test5.input" relation="relation5"/>
+    <link port="Test6.input" relation="relation6"/>
+    <link port="Test7.input" relation="relation7"/>
     <link port="Test8.input" relation="relation8"/>
-    <link port="Test9.input" relation="relation7"/>
-    <link port="ColtNegativeBinomial.output" relation="relation17"/>
-    <link port="ColtNormal.output" relation="relation16"/>
-    <link port="ColtPoisson.output" relation="relation15"/>
-    <link port="ColtPoissonSlow.output" relation="relation14"/>
-    <link port="ColtStudentT.output" relation="relation13"/>
-    <link port="ColtVonMises.output" relation="relation12"/>
-    <link port="ColtZeta.output" relation="relation11"/>
-    <link port="Test11.input" relation="relation17"/>
-    <link port="Test12.input" relation="relation16"/>
-    <link port="Test13.input" relation="relation15"/>
+    <link port="Test9.input" relation="relation9"/>
+    <link port="Test10.input" relation="relation10"/>
+    <link port="Test11.input" relation="relation11"/>
+    <link port="Test12.input" relation="relation12"/>
+    <link port="Test13.input" relation="relation13"/>
     <link port="Test14.input" relation="relation14"/>
-    <link port="Test15.input" relation="relation13"/>
-    <link port="Test16.input" relation="relation12"/>
-    <link port="Test17.input" relation="relation11"/>
+    <link port="Test15.input" relation="relation15"/>
+    <link port="Test16.input" relation="relation16"/>
 </entity>
