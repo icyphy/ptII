@@ -34,6 +34,9 @@ package ptolemy.graph;
 import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.SelfLoopAnalysis;
 
+import java.lang.reflect.Method;
+import java.text.CharacterIterator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -324,12 +327,12 @@ public class Graph implements Cloneable {
 
     /** Return a clone of this graph in the form of the argument graph type
      *  (i.e., the run-time type of the returned graph is that of the
-     *  argument graph). The clone has the 
-     *  same set of nodes and edges. Changes to the node or edge weights 
+     *  argument graph). The clone has the
+     *  same set of nodes and edges. Changes to the node or edge weights
      *  affect the
      *  clone simultaneously. If the run-time type of the argument graph is
      *  equal to that of this graph, then the clone is equal to this
-     *  graph, as determined by {@link #equals(Object)}. However, 
+     *  graph, as determined by {@link #equals(Object)}. However,
      *  modifications to the graph topology
      *  make the clone not equal to this graph.
      *
@@ -690,9 +693,128 @@ public class Graph implements Cloneable {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
+    /** Default {@link #mirror(boolean)} without weights cloning.
+     *  Set the argument <code>cloneWeights</code> to <code>false</code>.
+     *
+     *  @return The mirror graph.
+     */
+    public Graph mirror() {
+        return mirror(false);
+    }
+
+    /** Return a mirror of this graph. The mirror and original graphs
+     *  are isomorphic (of same topology). However, nodes and edges
+     *  of the mirror are newly created and therefore not equal to
+     *  those of the original graph (See {@link #equals(Object)}).
+     *  Users can specify whether to clone weights.
+     *
+     *  @param cloneWeights True if weight cloning is desired.
+     *  @return The mirror graph.
+     */
+    public Graph mirror(boolean cloneWeights) {
+        return mirrorAs(this, cloneWeights);
+    }
+
+    /** Default {@link #mirrorAs(Graph, boolean)} without weights cloning.
+     *  Set the argument <code>cloneWeights</code> to <code>false</code>.
+     *
+     *  @param graph The desired target graph type.
+     *  @return The mirror graph.
+     */
+    public Graph mirrorAs(Graph graph) {
+        return mirrorAs(graph, false);
+    }
+
+    /** Return a mirror of this graph in the form of the argument graph type
+     *  (i.e., the run-time type of the returned graph is that of the
+     *  argument graph).  The mirror and original graphs
+     *  are isomorphic (of same topology). However, nodes and edges
+     *  of the mirror are newly created and therefore not equal to
+     *  those of the original graph.
+     *  Users can specify whether to clone weights.
+     *
+     *  @param graph The desired target graph type.
+     *  @param cloneWeights True if weight cloning is desired.
+     *  @return The mirror graph.
+     */
+    public Graph mirrorAs(Graph graph, boolean cloneWeights) {
+        String nameClone = new String("clone");
+        Graph mirrorGraph = graph._emptyGraph();
+        // A map from original nodes to mirror nodes
+        HashMap nodeMap = new HashMap();
+
+        // create new nodes for the mirror
+        Iterator nodes = nodes().iterator();
+        while (nodes.hasNext()) {
+            Node node = (Node)nodes.next();
+            Node mirrorNode = null;
+            if (!node.hasWeight()) {
+                mirrorNode = new Node();
+            } else {
+                Object mirrorWeight = null;
+                try {
+                    // Clone weights of any type of object.
+                    if (cloneWeights) {
+                        Object oldWeight = node.weight();
+                        if (oldWeight instanceof Cloneable) {
+                            Class[] argumentTypes = {};
+                            Method method = oldWeight.getClass().
+                                    getMethod(nameClone, argumentTypes);
+                            mirrorWeight = method.invoke(oldWeight, null);
+                        } else
+                            throw new RuntimeException();
+                    } else
+                        mirrorWeight = node.weight();
+                } catch (Exception e) {
+                    throw new RuntimeException(
+                            "Can not clone the node weight.\n");
+                }
+                mirrorNode = new Node(mirrorWeight);
+            }
+            nodeMap.put(node, mirrorNode);
+            mirrorGraph.addNode(mirrorNode);
+        }
+
+        // create new edges for the mirror
+        Iterator edges = edges().iterator();
+        while (edges.hasNext()) {
+            Edge edge = (Edge)edges.next();
+            Edge mirrorEdge = null;
+            Node mirrorSource = (Node)nodeMap.get(edge.source());
+            Node mirrorSink   = (Node)nodeMap.get(edge.sink());
+            if (!edge.hasWeight()) {
+                mirrorEdge = new Edge(mirrorSource, mirrorSink);
+            } else {
+                Object mirrorWeight = null;
+                try {
+                    // Clone weights of any type of object.
+                    if (cloneWeights) {
+                        Object oldWeight = edge.weight();
+                        if (oldWeight instanceof Cloneable) {
+                            Class[] argumentTypes = {};
+                            Method method = oldWeight.getClass().
+                                    getMethod(nameClone, argumentTypes);
+                            mirrorWeight = method.invoke(oldWeight, null);
+                        } else
+                            throw new RuntimeException();
+                    } else
+                        mirrorWeight = edge.weight();
+                } catch (Exception e) {
+                    throw new RuntimeException(
+                            "Can not clone the edge weight.\n");
+                }
+                mirrorEdge =
+                        new Edge(mirrorSource, mirrorSink, mirrorWeight);
+            }
+            mirrorGraph.addEdge(mirrorEdge);
+        }
+
+        return mirrorGraph;
+    }
+
     /** Return the collection of edges that make a node node2 a neighbor of a
      *  node node1. In other words, return the set of edges that are incident to
-     *  both node1 and node2. Each element of the returned collection is an 
+     *  both node1 and node2. Each element of the returned collection is an
      *  instance of {@link Edge}.
      *  @param node1 The node node1.
      *  @param node2 The node node2.
@@ -1163,7 +1285,7 @@ public class Graph implements Cloneable {
     }
 
     /** Initialize the list of analyses that are associated with this graph,
-     *  and initialize the change counter of the graph. 
+     *  and initialize the change counter of the graph.
      *  @see ptolemy.graph.analysis.Analysis
      */
     protected void _initializeAnalyses() {

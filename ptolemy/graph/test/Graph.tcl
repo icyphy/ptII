@@ -1,7 +1,7 @@
 # Tests for the Graph class
 #
 # @Author: Shuvra S. Bhattacharyya, Yuhong Xiong, Ming-Yung Ko,
-# Shahrooz Shahparnia 
+# Shahrooz Shahparnia
 #
 # $Id$
 #
@@ -27,8 +27,8 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 #######################################################################
 
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
@@ -136,7 +136,7 @@ test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set edges [$p edges]
     set ew [java::call ptolemy.graph.Graph weightArray $edges]
     list [$nw get 0] [$nw get 1] [$nw get 2] [$nw get 3] \
-	 [$ew get 0] [$ew get 1] [$ew get 2] [$ew get 3]
+     [$ew get 0] [$ew get 1] [$ew get 2] [$ew get 3]
 } {node1 node2 node3 node4 edge1 edge2 edge3 edge4}
 
 ######################################################################
@@ -177,7 +177,7 @@ Edge Set:
 ######################################################################
 ####
 # 
-test Graph-4.2 {Test the construction and string representation of a larger 
+test Graph-4.2 {Test the construction and string representation of a larger
         graph} {
     # Build a new graph
     set p3 [java::new ptolemy.graph.Graph 9 13]
@@ -367,7 +367,7 @@ Edge Set:
 
 ######################################################################
 ####
-# 
+#
 test Graph-5.4 {Test self-loop edges} {
     set loops [java::cast java.lang.Object [$p4 selfLoopEdges]]
     list [$loops toString]  
@@ -466,94 +466,94 @@ test Graph-6.1 {Test neighbor edges} {
 ####
 #
 test Graph-7.1 {test clone()} {
-	set og [java::new ptolemy.graph.Graph]
-	set n1 [java::new ptolemy.graph.Node]
-	set n2 [java::new ptolemy.graph.Node]
-	set n3 [java::new ptolemy.graph.Node]
-	set e1 [java::new ptolemy.graph.Edge $n1 $n2]
-	set e2 [java::new ptolemy.graph.Edge $n1 $n3]
-	$og addNode $n1
-	$og addNode $n2
-	$og addNode $n3
-	$og addEdge $e1
-	$og addEdge $e2
-	set cl [$og clone]
-	set cg [java::cast ptolemy.graph.Graph $cl]
-	set nc [$cg nodeCount]
-	set ec [$cg edgeCount]
-	set tn1 [$cg containsNode $n1]
-	set tn2 [$cg containsNode $n2]
-	set tn3 [$cg containsNode $n3]
-	set te1 [$cg containsEdge $e1]
-	set te2 [$cg containsEdge $e2]
-	list $nc $ec $tn1 $tn2 $tn3 $te1 $te2
+    set og [java::new ptolemy.graph.Graph]
+    set n1 [java::new ptolemy.graph.Node]
+    set n2 [java::new ptolemy.graph.Node]
+    set n3 [java::new ptolemy.graph.Node]
+    set e1 [java::new ptolemy.graph.Edge $n1 $n2]
+    set e2 [java::new ptolemy.graph.Edge $n1 $n3]
+    $og addNode $n1
+    $og addNode $n2
+    $og addNode $n3
+    $og addEdge $e1
+    $og addEdge $e2
+    set cl [$og clone]
+    set cg [java::cast ptolemy.graph.Graph $cl]
+    set nc [$cg nodeCount]
+    set ec [$cg edgeCount]
+    set tn1 [$cg containsNode $n1]
+    set tn2 [$cg containsNode $n2]
+    set tn3 [$cg containsNode $n3]
+    set te1 [$cg containsEdge $e1]
+    set te2 [$cg containsEdge $e2]
+    list $nc $ec $tn1 $tn2 $tn3 $te1 $te2
 } {3 2 1 1 1 1 1}
 
 ######################################################################
 ####
 #
 test Graph-7.2 {standard clone() tests} {
-	set ocls  [$og getClass]
-	set ccls  [$cg getClass]
-	set oocls [java::cast java.lang.Object $ocls]
-	set occls [java::cast java.lang.Object $ccls]
-	set rule2 [$oocls equals $occls]
-	set rule3 [$cg equals $og]
-	list $rule2 $rule3
+    set ocls  [$og getClass]
+    set ccls  [$cg getClass]
+    set oocls [java::cast java.lang.Object $ocls]
+    set occls [java::cast java.lang.Object $ccls]
+    set rule2 [$oocls equals $occls]
+    set rule3 [$cg equals $og]
+    list $rule2 $rule3
 } {1 1}
 
 ######################################################################
 ####
 #
 test Graph-7.3 {test equals(): change topology and compare with the clone} {
-	set eq1 [$cg equals $og]
-	$og removeNode $n2
-	set eq2 [$cg equals $og]
-	$og addNode $n2
-	$og addEdge $e1
-	set eq3 [$cg equals $og]
-	set n4	[java::new ptolemy.graph.Node]
-	$og addNode $n4
-	set eq4 [$cg equals $og]
-	list $eq1 $eq2 $eq3 $eq4
+    set eq1 [$cg equals $og]
+    $og removeNode $n2
+    set eq2 [$cg equals $og]
+    $og addNode $n2
+    $og addEdge $e1
+    set eq3 [$cg equals $og]
+    set n4  [java::new ptolemy.graph.Node]
+    $og addNode $n4
+    set eq4 [$cg equals $og]
+    list $eq1 $eq2 $eq3 $eq4
 } {1 0 1 0}
 
 ######################################################################
 ####
 #
 test Graph-7.4 {test equals(): reflexive, symmetric, transitive, and consistent} {
-	set cl1 [$og clone]
-	set cl2 [$og clone]
-	set cg1 [java::cast ptolemy.graph.Graph $cl1]
-	set cg2 [java::cast ptolemy.graph.Graph $cl2]
-	set r  [$og equals $og]
-	set s1 [$og equals $cg1]
-	set s2 [$cg1 equals $og]
-	set t1 [$og equals $cg1]
-	set t2 [$cg1 equals $cg2]
-	set t3 [$og equals $cg2]
-	set c1 [$og equals $cg1]
-	set c2 [$og equals $cg1]
-	set c3 [$og equals $cg1]
-	set c4 [$og equals $cg1]
-	list $r $s1 $s2 $t1 $t2 $t3 $c1 $c2 $c3 $c4
+    set cl1 [$og clone]
+    set cl2 [$og clone]
+    set cg1 [java::cast ptolemy.graph.Graph $cl1]
+    set cg2 [java::cast ptolemy.graph.Graph $cl2]
+    set r  [$og equals $og]
+    set s1 [$og equals $cg1]
+    set s2 [$cg1 equals $og]
+    set t1 [$og equals $cg1]
+    set t2 [$cg1 equals $cg2]
+    set t3 [$og equals $cg2]
+    set c1 [$og equals $cg1]
+    set c2 [$og equals $cg1]
+    set c3 [$og equals $cg1]
+    set c4 [$og equals $cg1]
+    list $r $s1 $s2 $t1 $t2 $t3 $c1 $c2 $c3 $c4
 } {1 1 1 1 1 1 1 1 1 1}
 
 ######################################################################
 ####
 #
 test Graph-7.5 {test hashCode()} {
-	set hog   [$og hashCode]
-	set hcg1  [$cg1 hashCode]
-	set hiog  [java::new java.lang.Integer $hog]
-	set hicg1 [java::new java.lang.Integer $hcg1]
-	set equ   [$hiog equals $hicg1]
+    set hog   [$og hashCode]
+    set hcg1  [$cg1 hashCode]
+    set hiog  [java::new java.lang.Integer $hog]
+    set hicg1 [java::new java.lang.Integer $hcg1]
+    set equ   [$hiog equals $hicg1]
 
-	$cg1 removeNode $n3
-	set hcg1  [$cg1 hashCode]
-	set hicg1 [java::new java.lang.Integer $hcg1]
-	set nequ  [$hiog equals $hicg1]
-	list $equ $nequ
+    $cg1 removeNode $n3
+    set hcg1  [$cg1 hashCode]
+    set hicg1 [java::new java.lang.Integer $hcg1]
+    set nequ  [$hiog equals $hicg1]
+    list $equ $nequ
 } {1 0}
 
 ######################################################################
@@ -570,7 +570,7 @@ test Graph-7.6 {test cloneAs()} {
 ######################################################################
 ####
 #
-test Graph-7.7 {test hashCode() and equals(): graphs of different types with 
+test Graph-7.7 {test hashCode() and equals(): graphs of different types with
 the same nodes and edges} {
     set sameg    [$og equals $clng]
     set hashog   [$og hashCode]
@@ -580,3 +580,80 @@ the same nodes and edges} {
     set ehash    [$cgv equals $ogv]
     list $sameg $ehash
 } {0 0}
+
+######################################################################
+####
+#
+test Graph-8.1 {mirror() with same weights} {
+    set g   [java::new ptolemy.graph.Graph]
+    set nw1 [java::new ptolemy.actor.AtomicActor]
+    set nw2 [java::new ptolemy.actor.AtomicActor]
+    set nw3 [java::new ptolemy.actor.AtomicActor]
+    set n1  [java::new ptolemy.graph.Node $nw1]
+    set n2  [java::new ptolemy.graph.Node $nw2]
+    set n3  [java::new ptolemy.graph.Node $nw3]
+    set ew1 [java::new ptolemy.actor.IOPort]
+    set ew2 [java::new ptolemy.actor.IOPort]
+    set e1  [java::new ptolemy.graph.Edge $n1 $n2 $ew1]
+    set e2  [java::new ptolemy.graph.Edge $n1 $n3 $ew2]
+    $g addNode $n1
+    $g addNode $n2
+    $g addNode $n3
+    $g addEdge $e1
+    $g addEdge $e2
+    set mg   [$g mirror]
+    set tn1  [$mg containsNode $n1]
+    set tn2  [$mg containsNode $n2]
+    set tn3  [$mg containsNode $n3]
+    set tnw1 [$mg containsNodeWeight $nw1]
+    set tnw2 [$mg containsNodeWeight $nw2]
+    set tnw3 [$mg containsNodeWeight $nw3]
+    set te1  [$mg containsEdge $e1]
+    set te2  [$mg containsEdge $e2]
+    set tew1 [$mg containsEdgeWeight $ew1]
+    set tew2 [$mg containsEdgeWeight $ew2]
+    list $tn1 $tn2 $tn3 $tnw1 $tnw2 $tnw3 $te1 $te2 $tew1 $tew2
+} {0 0 0 1 1 1 0 0 1 1}
+
+######################################################################
+####
+#
+test Graph-8.2 {mirror() with cloned weights} {
+    set mg   [$g mirror 1]
+    set tn1  [$mg containsNode $n1]
+    set tn2  [$mg containsNode $n2]
+    set tn3  [$mg containsNode $n3]
+    set tnw1 [$mg containsNodeWeight $nw1]
+    set tnw2 [$mg containsNodeWeight $nw2]
+    set tnw3 [$mg containsNodeWeight $nw3]
+    set te1  [$mg containsEdge $e1]
+    set te2  [$mg containsEdge $e2]
+    set tew1 [$mg containsEdgeWeight $ew1]
+    set tew2 [$mg containsEdgeWeight $ew2]
+    list $tn1 $tn2 $tn3 $tnw1 $tnw2 $tnw3 $te1 $te2 $tew1 $tew2
+} {0 0 0 0 0 0 0 0 0 0}
+
+######################################################################
+####
+#
+test Graph-8.3 {verify the cloned weights} {
+    set vnw1      [$mg nodeWeight 0]
+    set vnw1cls   [$vnw1 getClass]
+    set vnw1clsnm [$vnw1cls toString]
+    set vew1      [$mg edgeWeight 0]
+    set vew1cls   [$vew1 getClass]
+    set vew1clsnm [$vew1cls toString]
+    list $vnw1clsnm $vew1clsnm
+} {{class ptolemy.actor.AtomicActor} {class ptolemy.actor.IOPort}}
+
+######################################################################
+####
+#
+test Graph-8.4 {mirrorAs() from Graph to DirectedGraph with same weights} {
+    set dg   [java::new ptolemy.graph.DirectedGraph]
+    set mg   [$g mirrorAs $dg]
+    set mgcls    [$mg getClass]
+    set mgclsstr [$mgcls toString]
+    list $mgclsstr
+} {{class ptolemy.graph.DirectedGraph}}
+
