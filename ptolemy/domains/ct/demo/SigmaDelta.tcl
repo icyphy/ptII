@@ -192,7 +192,7 @@ $g2 setExpression -2500.0
 $g2 parameterChanged [java::null]
 
 set g3 [$gain3 getAttribute Gain]
-$g3 setExpression -200.0
+$g3 setExpression -800.0
 $g3 parameterChanged [java::null]
 
 set con [$const getAttribute Value]
