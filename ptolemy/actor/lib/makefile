@@ -142,6 +142,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	PowerEstimate.xml \
 	Sinewave.xml \
+	TimedSine.xml \
 	array.xml \
 	communications.xml \
 	filtering.xml \
@@ -167,7 +168,12 @@ OPTIONAL_FILES = \
 	javasound \
 	jspaces \
 	'AbsoluteValue$$1.class' \
-	'AbsoluteValue$$FunctionTerm.class'
+	'AbsoluteValue$$FunctionTerm.class' \
+	'RecordUpdater$$1.class' \
+	'RecordUpdater$$FunctionTerm.class' \
+	'Scale$$1.class' \
+	'Scale$$PortParamFunction.class' \
+	io
 
 JCLASS = $(JSRCS:%.java=%.class)
 
