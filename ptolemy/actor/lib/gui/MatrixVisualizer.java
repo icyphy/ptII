@@ -1,4 +1,4 @@
-/* FIXME
+/* An actor for 2-D visualization of matrices.
 
 @Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -41,6 +41,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -52,11 +53,12 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.PlotFrame;
 import ptolemy.plot.Render;
 
-/** FIXME
-A MatrixVisualizer.  This plotter contains an instance of the Render
-class from the Ptolemy plot package as a public member.
+/**
+An actor that visualizes a matrix using a 2-D visualization.
+This actor uses an instance of the Render
+class from the Ptolemy plot package to do the rendering.
 
-@author  Neil Turner
+@author  Neil Turner and Steve Neuendorffer
 @version $Id$
  */
 public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
@@ -76,7 +78,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
         // Create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.INT_MATRIX);
 
         // set the parameters
         xMax = new Parameter(this, "xMax", new DoubleToken(0.0));
@@ -134,8 +136,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
             _yMax = ((DoubleToken)yMax.getToken()).doubleValue();
         } else if (attribute == yMin) {
             _yMin = ((DoubleToken)yMin.getToken()).doubleValue();
-        } else { // This part I'm not sure about.  I carried it over from
-            // SequencePlotter.
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -153,7 +154,10 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
 	    _frame.setVisible(true);
         }
         render.clearData();
-        render.samplePlot();
+        render.setXIncrement(1.0);
+        render.setYIncrement(1.0);
+        render.setXOffset(0.0);
+        render.setYOffset(0.0);
         render.repaint();
     }
 
@@ -190,13 +194,12 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
                 render.setButtons(true);
             }
             _container.add(render);
-            render.setBackground(_container.getBackground());
+            render.setBackground(null);
         }
     }
 
 
-    /** FIXME
-     *
+    /**
      *  Read at most one token from each input channel and plot it as
      *  a function of the iteration number, scaled by <i>xUnit</i>.
      *  The first point is plotted at the horizontal position given by
@@ -207,16 +210,19 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
      *   or if the base class throws it.
      *  @return True if it is OK to continue.
      */
-    public boolean postfire(int matrix[][]) throws IllegalActionException {
-        int stripeLength = matrix[0].length;
-        int stripe[] = new int[stripeLength];
+    public boolean postfire() throws IllegalActionException {
+        IntMatrixToken token = (IntMatrixToken)input.get(0);
+        int rows = token.getRowCount();
+        int colums = token.getColumnCount();
+      
+        int stripe[] = new int[rows];
 
         // Clear the render object's image data.
         render.clearData();
         // Add the matrix stripe by stripe to the render object.
-        for (int i = 0; i < matrix.length; i++) {
-            for(int j = 0; j < stripeLength; j++) {
-                stripe[j] = matrix[i][j];
+        for (int i = 0; i < colums; i++) {
+            for(int j = 0; j < rows; j++) {
+                stripe[j] = token.getElementAt(j, i);
             }
             render.addStripe(stripe);
         }
