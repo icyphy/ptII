@@ -133,7 +133,7 @@ public class Accumulator extends Transformer {
                 BooleanToken r = (BooleanToken)reset.get(i);
                 if (r.booleanValue()) {
                     // Being reset at this firing.
-                    _latestSum = init.getToken();
+                    _latestSum = output.getType().convert(init.getToken());
                 }
             }
         }
@@ -151,7 +151,7 @@ public class Accumulator extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestSum = _sum = init.getToken();
+        _latestSum = _sum = output.getType().convert(init.getToken());
     }
 
     /** Record the most recent input as part of the running average.
