@@ -96,9 +96,10 @@ public abstract class URLReader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Set the type of the input port.
+        // Set the type of the output port.
         output.setMultiport(true);
         output.setTypeEquals(BaseType.DOUBLE);
+
         sourceURL = new Parameter(this, "sourceURL", new StringToken(""));
         sourceURL.setTypeEquals(BaseType.STRING);
 
@@ -122,7 +123,8 @@ public abstract class URLReader extends Source {
      */
     public Parameter sourceURL;
 
-    /** Refresh between each readings. Default is false.
+    /** The flag that indicates whether to refresh between each reading.
+     *  This is a boolean, and defaults to false.
      */
     public Parameter refresh;
 
@@ -158,6 +160,8 @@ public abstract class URLReader extends Source {
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex.getMessage());
             }
+        } else if (attribute == refresh) {
+            _refreshFlag = ((BooleanToken)refresh.getToken()).booleanValue();
         }
         super.attributeChanged(attribute);
     }
@@ -188,7 +192,9 @@ public abstract class URLReader extends Source {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) _reader.close();
+            if (_reader != null && _reader != _stdIn) {
+		_reader.close();
+	    }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
@@ -205,7 +211,9 @@ public abstract class URLReader extends Source {
     protected void _setURLReader(java.io.BufferedReader reader)
             throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) _reader.close();
+            if (_reader != null && _reader != _stdIn) {
+		_reader.close();
+	    }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
@@ -216,16 +224,18 @@ public abstract class URLReader extends Source {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    // The writer to write to.
+    // The reader to read from.
     protected java.io.BufferedReader _reader = null;
 
-    // Standard out as a writer.
+    // Standard in as a reader.
     protected static java.io.BufferedReader _stdIn = null;
 
     // String for the URL.
     protected String _source;
+
+    // Flag to indicate whether or not to refresh the data between readings.
+    protected boolean _refreshFlag;
 }
