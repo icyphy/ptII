@@ -103,8 +103,13 @@ public class DDEThread extends ProcessThread {
                 for (int i = 0; i < rcvrs.length; i++) {
                     for (int j = 0; j < rcvrs[i].length; j++) {
 			try {
-                            ((DDEReceiver) rcvrs[i][j]).put(null, endTime);
+			    if( ((DDEReceiver)rcvrs[i][j]).getRcvrTime() 
+				    != endTime ) {
+				((DDEReceiver) rcvrs[i][j]).put(null, endTime);
+			    }
 			} catch( TerminateProcessException e ) {
+			    String name = ((Nameable)actor).getName();
+			    System.out.println(name+":  Shoulda done nothing");
 			    // Do nothing since we are ending
 			}
 		    }
@@ -121,7 +126,9 @@ public class DDEThread extends ProcessThread {
      *  thread.
      */
     public void wrapup() throws IllegalActionException {
+	System.out.println( ((Nameable)getActor()).getName()+": noticeOfTermination().");
 	noticeOfTermination();
+	System.out.println( ((Nameable)getActor()).getName()+": super.wrapup().");
 	super.wrapup();
     }
 
