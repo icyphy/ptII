@@ -40,11 +40,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 95.0]">
         </property>
     </property>
     <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
-        <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="Demos/">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Demos/">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 170.0]">
         </property>
