@@ -394,12 +394,13 @@ public class ModelTransformer extends SceneTransformer {
 		className = entity.getClass().getName();
             }
             
-            String entityName = getFieldNameForEntity(entity);
-
 	    // Create a new local variable.
+            // The name of the local is determined automatically.
+            // The name of the NamedObj is the same as in the model.  (Note that
+            // this might not be a valid Java identifier.)
 	    Local local = 
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, entityName);
+                        thisLocal, entity.getName());
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
@@ -412,9 +413,12 @@ public class ModelTransformer extends SceneTransformer {
             if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then we
 		// include a field for each actor.
-		SootUtilities.createAndSetFieldFromLocal(
+                // The name of the field is the sanitized version
+                // of the entity's name.
+		String entityFieldName = getFieldNameForEntity(entity);
+                SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
-                        PtolemyUtilities.actorType, entityName);
+                        PtolemyUtilities.actorType, entityFieldName);
             } else {
 		// If we are doing shallow code generation, then
 		// include code to initialize the parameters of this
