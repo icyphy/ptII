@@ -49,9 +49,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AnnotationEditorFactory.java \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
-	AnnotationEditorFactory.java \
 	EditParametersFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
@@ -61,8 +61,7 @@ JSRCS = \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
-	SnapConstraint.java \
-
+	SnapConstraint.java
 
 EXTRA_SRCS =	$(JSRCS)
 
