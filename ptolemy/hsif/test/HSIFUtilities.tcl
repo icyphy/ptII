@@ -42,9 +42,13 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
-test HSIFUtilities-1.1 {Convert the swimming pool example} {
-    set inputURL [java::new java.net.URL file:../data/SwimmingPool.xml]
+test HSIFUtilities-1.1 {Convert the SwimmingPool example} {
     java::call ptolemy.hsif.HSIFUtilities HSIFToMoML \
-	../data/SwimmingPool.xml SwimmingPool_MoML.xml
+	../demo/SwimmingPool/SwimmingPool.xml SwimmingPool_moml.xml
+} {}
+
+test HSIFUtilities-1.2 {Convert the Thermostat example} {
+    java::call ptolemy.hsif.HSIFUtilities HSIFToMoML \
+	../demo/Thermostat/Thermostat.xml Thermostat_moml.xml
 } {}
 
