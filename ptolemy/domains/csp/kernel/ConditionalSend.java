@@ -194,14 +194,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         parentActor._branchFailed(getID());
                         return;
                     } else if (rcvr._isGetWaiting()) {
-                        arriveAfterGet( rcvr, parentActor );
+                        _arriveAfterGet( rcvr, parentActor );
                         return;
                     } else if (rcvr._isConditionalReceiveWaiting()) {
-                        if( !arriveAfterCondRec(rcvr, parentActor) ) {
+                        if( !_arriveAfterCondRec(rcvr, parentActor) ) {
                             return;
                         }
                     } else {
-                        arriveFirst(rcvr, parentActor);
+                        _arriveFirst(rcvr, parentActor);
                         return;
                     }
                 }
@@ -231,7 +231,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent )
+    protected boolean _arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent )
                     throws InterruptedException {
         // CASE 2: a conditionalReceive is already waiting.
         // As this conditionalSend arrived second, it has
@@ -265,7 +265,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveAfterGet(CSPReceiver rcvr, CSPActor parent )
+    protected void _arriveAfterGet(CSPReceiver rcvr, CSPActor parent )
             throws InterruptedException {
         // CASE 1: a get is already waiting
         // A get cannot disappear, so once enter this
@@ -293,7 +293,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent )
+    protected void _arriveFirst(CSPReceiver rcvr, CSPActor parent )
             throws InterruptedException {
         // CASE 3: ConditionalSend got here before a get or a
         // ConditionalReceive. Once enter this part of main
