@@ -156,21 +156,20 @@ ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
 	@echo "generate deep code for $(MODELPATH)"
-	$(PTII)/bin/copernicus
-# 		-verbose \
-# 		-compile	 true \
-# 		-iterations      "$(ITERATIONS)" \
-# 		-iterationsParameter "$(ITERATIONSPARAMETER)" \
-# 		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-# 		-jvmSize         "$(JVMSIZE)" \
-# 		-modelPath       "$(MODELPATH)" \
-# 		-run		 false \
-# 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
-# 		-targetPackage   "$(TARGETPACKAGE)" \
-# 		-targetPath      "$(TARGETPATH)" \
-# 		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
-
-#		-compileOptions  "$(COMPILEOPTIONS)"
+	$(PTII)/bin/copernicus \
+		-verbose \
+		-compile	 true \
+		-iterations      "$(ITERATIONS)" \
+		-iterationsParameter "$(ITERATIONSPARAMETER)" \
+		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
+		-jvmSize         "$(JVMSIZE)" \
+		-modelPath       "$(MODELPATH)" \
+		-run		 false \
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		-targetPackage   "$(TARGETPACKAGE)" \
+		-targetPath      "$(TARGETPATH)" \
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
+		-compileOptions  "$(COMPILEOPTIONS)"
 
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
