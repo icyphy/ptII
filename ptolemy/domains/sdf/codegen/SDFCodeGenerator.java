@@ -167,18 +167,18 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator actorItr = _actorSet.iterator();
 
-        System.out.println("***SDFCodeGenerator: Starting to accumulate " +
+        System.out.println("SDFCodeGenerator: Starting to accumulate " +
                 "class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms");
 
         ActorCodeGenerator actorCodeGen =
             new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
                     _outputPackageName);
-        System.out.println("\n***SDFCodeGenerator: " +
+        System.out.println("\nSDFCodeGenerator: " +
                 "Done accumulating class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms");
 
-        System.out.println("***SDFCodeGenerator: pass1");
+        System.out.println("SDFCodeGenerator: pass1");
 
         LinkedList renamedSourceList = new LinkedList();
 
@@ -193,7 +193,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
             renamedSourceList.addLast(renamedSource);
         }
 
-        System.out.println("\n***SDFCodeGenerator: pass2 ---" +
+        System.out.println("\nSDFCodeGenerator: pass2 ---" +
                 (System.currentTimeMillis() - startTime) + " ms");
 
         actorItr = _actorSet.iterator();
@@ -211,7 +211,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         _generateMainClass();
 
-        System.out.println("\n***SDFCodeGenerator: pass3 ---" +
+        System.out.println("\nSDFCodeGenerator: pass3 ---" +
                 (System.currentTimeMillis() - startTime) + " ms");
         renamedSourceItr = renamedSourceList.iterator();
 
@@ -220,7 +220,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             actorCodeGen.pass3(renamedSource);
         }
-        System.out.println("\n***SDFCodeGenerator: done " +
+        System.out.println("\nSDFCodeGenerator: done " +
                 (System.currentTimeMillis() - startTime) + " ms");
 
     }
