@@ -56,12 +56,15 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
      *  a TypeNameNode, return kindOfTypeNameNode(type).
      */
     public int kind(TypeNode type) {
+	if (_debug) {
+	    System.err.println("ExtendedJavaTypeIdentifier.kind(" + type +") classID:"
+			       + type.classID());
+	}
         if (type.classID() == ARRAYTYPENODE_ID) {
             int arrayDim = TypeUtility.arrayDimension(type);
 
             if (arrayDim == 1) {
                 TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
-
                 switch (kind(baseTypeNode)) {
 		case TYPE_KIND_INT:       return TYPE_KIND_INT_ARRAY;
 		case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_ARRAY;
@@ -80,7 +83,6 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 	    } else {
 		if (arrayDim == 2) {
 		    TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
-
 		    switch (kind(baseTypeNode)) {
 		    case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_MATRIX;
 		    case TYPE_KIND_INT:       return TYPE_KIND_INT_MATRIX;
@@ -92,7 +94,7 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 			// no default here
 		    }
 		}
-            }
+	     }
         }
 
         return super.kind(type);
@@ -131,7 +133,7 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 
     // Array kinds
     public static final int TYPE_KIND_INT_ARRAY =
-	TYPE_KIND_STRING + 1;
+	TYPE_KIND_TOKEN + 1;
     public static final int TYPE_KIND_DOUBLE_ARRAY =
 	TYPE_KIND_INT_ARRAY + 1;
 
@@ -166,4 +168,6 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     PtolemyTypeIdentifier.FIX_POINT_DECL;
     public static final TypeNameNode FIX_POINT_TYPE =
     PtolemyTypeIdentifier.FIX_POINT_TYPE;
+
+    protected final static boolean _debug = true;
 }

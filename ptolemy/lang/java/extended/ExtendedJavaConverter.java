@@ -41,7 +41,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 /** A JavaVisitor that converts Extended Java to Java by adding conversions
  *  and calling special methods in ptolemy.math.
- *
+ *  FIXME: This should be renamed to ExtendedJavaVisitor.
  *  @author Jeff Tsay
  */
 public class ExtendedJavaConverter extends ReplacementJavaVisitor
@@ -68,6 +68,10 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
     }
 
     public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+                    + "visitLocalVarDeclNode(): " + node);
+        }
         return _visitVarInitDeclNode(node);
     }
 
@@ -635,6 +639,13 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
 
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+			       + "visitPlusNode: "
+			       + "kind1: " + kind1 + " kind2: " + kind2
+			       + "\n node: " + node);
+
+	}
         expr1 = (ExprNode) expr1.accept(this, args);
         expr2 = (ExprNode) expr2.accept(this, args);
 
@@ -830,11 +841,20 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                 methodArgs.addLast(convertExprToKind(expr1, kind1, returnKind));
                 methodArgs.addLast(convertExprToKind(expr2, kind2, returnKind));
 
-                return new MethodCallNode(
+                MethodCallNode retval = new MethodCallNode(
                         new TypeFieldAccessNode(
                                 new NameNode(AbsentTreeNode.instance, "add"),
                                 _arrayMathClassForKind(returnKind)),
                         methodArgs);
+
+		if (_debug) {
+		    System.out.println("ExtendedJavaConverter."
+				       + "visitPlusNode(): "
+				       + " Got array, returnkind: " + returnKind
+				       + " retval: " + retval);
+
+		}
+		return retval;
             }
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
@@ -1093,10 +1113,25 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         int returnKind = _typeID.kind(_typeVisitor.type(node));
         int exprKind = _typeID.kind(_typeVisitor.type(node.getExpr2()));
 
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+			       + "visitAssignlNode(): "
+			       + "\n returnKind: " + returnKind
+			       + "\n exprKind: " + exprKind
+			       + "\n node: " + node
+			       );
+        }
         node.setExpr2(convertExprToKind(
                 (ExprNode) node.getExpr2().accept(this, args),
                 exprKind, returnKind));
 
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+			       + "visitAssignlNode(): "
+			       + "returning"
+			       + "\n node: " + node
+			       );
+        }
         return node;
     }
 
@@ -1144,13 +1179,33 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
      *  target kind.
      */
     public ExprNode convertExprToKind(ExprNode expr, int exprKind, int targetKind) {
+
         // if the target is Token, return a null pointer
         if (targetKind == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) {
+	    if (_debug) {
+		System.out.println("ExtendedJavaConverter."
+				   + "convertExprToToken(): "
+				   + "targetKind == TYPE_KIND_TOKEN"
+				   + " exprKind: " + exprKind
+				   + " targetKind: " + targetKind
+				   + " expr: " + expr);
+	    }
             return new NullPntrNode();
         }
 
         // if they are the same kind, do no conversion
-        if (exprKind == targetKind) return expr;
+        if (exprKind == targetKind) {
+	    if (_debug) {
+		System.out.println("ExtendedJavaConverter."
+				   + "convertExprToToken(): "
+				   + "exprKind == targetKind "
+				   + " exprKind: " + exprKind
+				   + " targetKind: " + targetKind
+				   + " expr: " + expr);
+	    }
+	    return expr;
+	}
+
 
         switch (exprKind) {
 
@@ -1377,6 +1432,63 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             }
             break;
 
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
+            switch (targetKind) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+		System.out.println("ExtendedJavaConverter."
+				   + "convertExprToToken(): "
+				   + "exprKind == TYPE_KIND_INT_ARRAY "
+				   + "targetKind == TYPE_KIND_INT "
+				   + " exprKind: " + exprKind
+				   + " targetKind: " + targetKind
+				   + " expr: " + expr);
+		System.out.println("Warning: "
+				   + "ExtendedJavaConverter."
+				   + "convertExprToToken(): "
+				   + "Returning expr!"
+				   );
+		return expr;
+
+		/*
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toLongArray"),
+                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                "IntegerArrayMath"))),
+                        TNLManip.addFirst(expr));
+		*/
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toDoubleArray"),
+                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                "IntegerArrayMath"))),
+                        TNLManip.addFirst(expr));
+
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toString"),
+                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                "IntegerArrayMath"))),
+                        TNLManip.addFirst(expr));
+		/*
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+                // need to add the toComplexArray() method to IntegerArrayMath
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toComplexArray"),
+                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                "IntegerArrayMath"))),
+                        TNLManip.addFirst(expr));
+		*/
+	    default:
+		throw new RuntimeException("cannot convert from INT_ARRAY:" + expr + " (kind: "
+					   + exprKind + ") to kind " + targetKind);
+            }
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
+        throw new RuntimeException("cannot convert DOUBLE_ARRAY:" + expr + " (kind: "
+				   + exprKind + ") to kind " + targetKind
+				   + " ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY" 
+				   + ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY);
+
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
             switch (targetKind) {
 
@@ -1471,12 +1583,21 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             }
             break;
         }
-        throw new RuntimeException("cannot convert " + expr + " (kind " +
-                exprKind + ") to kind " + targetKind);
+        throw new RuntimeException("cannot convert " + expr + " (kind: "
+				   + exprKind + ") to kind " + targetKind
+				   + " ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN" 
+				   + ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN);
+
+	
         // return null;
     }
 
     protected VarInitDeclNode _visitVarInitDeclNode(VarInitDeclNode node) {
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+                    + "_visitVarInitDeclNode(): " + node);
+        }
+
         TypeNode defType = node.getDefType();
 
         node.setDefType((TypeNode) defType.accept(this, null));
@@ -1484,12 +1605,38 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         TreeNode initTreeNode = node.getInitExpr();
 
         if (initTreeNode != AbsentTreeNode.instance) {
+	    if (_debug) {
+		System.out.println("ExtendedJavaConverter."
+				   + "_visitVarInitDeclNode(): "
+				   + "initTreeNode: " + initTreeNode); 
+	    }
             int defKind = _typeID.kind(defType);
+	    if (_debug) {
+		System.out.println("ExtendedJavaConverter."
+				   + "_visitVarInitDeclNode(): "
+				   + "defKind: " + defKind);
+	    }
             int exprKind = _typeID.kind(_typeVisitor.type((ExprNode) initTreeNode));
 
+	    if (_debug) {
+		System.out.println("ExtendedJavaConverter."
+				   + "_visitVarInitDeclNode(): "
+				   + "\n defKind: " + defKind
+				   + "\n exprKind: " + exprKind
+				   + "\n defType: " + defType
+				   + "\n initTreeNode: " + initTreeNode
+				   );
+	    }
             node.setInitExpr(convertExprToKind(
                     (ExprNode) initTreeNode.accept(this, null),
                     exprKind, defKind));
+        }
+
+        if (_debug) {
+            System.out.println("ExtendedJavaConverter."
+			       + "_visitVarInitDeclNode(): "
+			       + "returning node: " +
+			       node);
         }
 
         return node;
@@ -1538,4 +1685,10 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         return new TypeNameNode(
                 new NameNode(AbsentTreeNode.instance, className));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Set to true to turn on debugging messages.
+    protected final static boolean _debug = false;
 }
