@@ -11,6 +11,18 @@ Local Resources
 <li> <a href="help.html">Getting Help</a>
 </menu>
 
+Contents
+<menu>
+<li> <a href="#applets">Troubleshooting Applets</a>
+	<menu>
+	<li> <a href="#jdk">Java version</a>
+	<li> <a href="#Diagnosing problems">Diagnosing problems</a>
+	<li> <a href="#CLASSPATH">CLASSPATH variable</a>
+	<li> <a href="#Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a>
+	<li> <a href="#Other Applet Resources">Other Applet Resources</a>
+	</menu>
+</menu>
+
 <H2><a name="applets">Troubleshooting Applets</a></H2>
 <p>
 In theory, Java programs are "write once, run everywhere." In practice,
@@ -33,8 +45,8 @@ We assume that you are running under a standard browser with Java applets
 enabled, and that your computer has sound capability supported by Java.
 Most modern PCs and workstations with reasonably recent versions of the
 standard browsers (Netscape and Internet Explorer) meet these requirements.
-<H3>
-<A NAME="jdk"></A>Java version</H3>
+
+<H3><A NAME="jdk">Java version</A></H3>
 Most of the applets on these pages require JDK 1.1 (JDK stands for the
 Java Development Kit). JDK 1.1 is supported by Netscape 4.06 and higher,
 and Internet Explorer 4.0 and higher.
@@ -72,9 +84,20 @@ on the Environment tab. If the CLASSPATH variable is set, we suggest clearing
 it (you may want to save its value, since it may be needed by some other
 program). You then probably have to restart your browser.
 
-<h3>Applet Troubleshooting Checklist</h3>
+<h3><a name="Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a></h3>
 If you have problems with applets, follow the checklist below
 <ol>
+
+<li> Reload the frame.  Under Netscape Communicator, right click on
+the frame, and then select <CODE>Reload Frame</CODE>.
+
+
+<li> Reload all the frames by hitting the <CODE>Reload</CODE> button.
+This is likely to bring you back to the Ptolemy II toplevel page.
+Under Netscape Communicator, holding the Shift key down and hitting
+the <CODE>Reload</CODE> button will reload any Java
+<CODE>.class</CODE> or <CODE>.jar</CODE> files
+
 <li> Restart your browser.
 
 <li> Look for an error message in the Java console.
@@ -117,7 +140,7 @@ with the following information:
 </ol>
 
 
-<h3>Other Applet Resources</h3>
+<h3><a name="Other Applet Resources">Other Applet Resources</a></h3>
 
 <menu>
 <li> <A HREF="http://ptolemy.eecs.berkeley.edu/java/doc/jdk11browsers.html">More information about JDK 1.1 compatible browsers.</A>
