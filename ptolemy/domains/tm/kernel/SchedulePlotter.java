@@ -104,28 +104,33 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     public void event(String actorName, double time, int scheduleEvent) {
         try {
 	    if (scheduleEvent == -1) {
-	        plot.clear(true);
-                _taskMap.clear();
-                _taskState.clear();
+                if (plot != null) {
+                    plot.clear(true);
+                    _taskMap.clear();
+                    _taskState.clear();
+                }
 	    } else {
-	        Object taskID = _taskMap.get(actorName);
-                int id;
-	        if (taskID == null) {
-	            id = _taskMap.size();
-	            _taskMap.put(actorName, new Integer(id));
-		    _taskState.add(new Integer(0));
-		    plot.addLegend(id, actorName);
-	        } else {
-	            id = ((Integer) taskID).intValue();
-	        }
-	        int _oldState = ((Integer) _taskState.get(id)).intValue();
-	        plot.addPoint(id, time, id  + _oldState/2.1, true);
-	        plot.addPoint(id, time, id + scheduleEvent/2.1, true);
-		plot.repaint();
-                _taskState.set(id, new Integer(scheduleEvent));
-	    }
+                if (_taskMap != null) {
+                    Object taskID = _taskMap.get(actorName);
+                    int id;
+                    if (taskID == null) {
+                        id = _taskMap.size();
+                        _taskMap.put(actorName, new Integer(id));
+                        _taskState.add(new Integer(0));
+                        plot.addLegend(id, actorName);
+                    } else {
+                        id = ((Integer) taskID).intValue();
+                    }
+                    int _oldState = ((Integer) _taskState.get(id)).intValue();
+                    plot.addPoint(id, time, id  + _oldState/2.1, true);
+                    plot.addPoint(id, time, id + scheduleEvent/2.1, true);
+                    plot.repaint();
+                    _taskState.set(id, new Integer(scheduleEvent));
+                }
+            }
 	} catch (Exception e) {
             System.out.println("event: Ignoring " + e);
+            e.printStackTrace();
 	}
     }
 
