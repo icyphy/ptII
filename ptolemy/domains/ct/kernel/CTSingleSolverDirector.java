@@ -36,8 +36,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
-import java.util.*;
-import collections.LinkedList;
+import java.util.Iterator;
+//import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSingleSolverDirector
@@ -291,16 +291,16 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         // FIXME: Do we need this? If the last fire of the integrators
         //        has already emitted token, then the output actors
         //        can use them. That is at least true for implicit methods.
-        Enumeration integrators = scheduler.dynamicActorSchedule();
-        while(integrators.hasMoreElements()) {
-            CTDynamicActor dyn =(CTDynamicActor)integrators.nextElement();
+        Iterator integrators = scheduler.scheduledDynamicActorList().iterator();
+        while(integrators.hasNext()) {
+            CTDynamicActor dyn =(CTDynamicActor)integrators.next();
             if(_debugging) _debug("Excite State..."+
                     ((Nameable)dyn).getName());
             dyn.emitTentativeOutputs();
         }
-        Enumeration outputactors = scheduler.outputSchedule();
-        while(outputactors.hasMoreElements()) {
-            Actor nextoutputactor = (Actor)outputactors.nextElement();
+        Iterator outputactors = scheduler.scheduledOutputActorList().iterator();
+        while(outputactors.hasNext()) {
+            Actor nextoutputactor = (Actor)outputactors.next();
             if(_debugging) _debug("Fire output..."+
                     ((Nameable)nextoutputactor).getName());
             nextoutputactor.fire();
@@ -349,15 +349,15 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      */
     protected void _eventPhaseExecution() throws IllegalActionException {
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration evgens = sched.eventGenerators();
-        while(evgens.hasMoreElements()) {
-            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
+        Iterator evgens = sched.eventGeneratorList().iterator();
+        while(evgens.hasNext()) {
+            CTEventGenerator evg = (CTEventGenerator) evgens.next();
             evg.emitCurrentEvents();
         }
         // fire all the discrete actors?
-        Enumeration evints = sched.eventInterpreters();
-        while(evints.hasMoreElements()) {
-            CTEventInterpreter evg = (CTEventInterpreter) evints.nextElement();
+        Iterator evints = sched.waveformGeneratorList().iterator();
+        while(evints.hasNext()) {
+            CTEventInterpreter evg = (CTEventInterpreter) evints.next();
             evg.consumeCurrentEvents();
         }
     }
@@ -443,10 +443,10 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     protected boolean _isOutputAcceptable() throws IllegalActionException {
         boolean successful = true;
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.outputSSCActors();
-        while (sscs.hasMoreElements()) {
+        Iterator sscs = sched.outputSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             successful = successful && a.isThisStepSuccessful();
         }
         return successful;
@@ -462,10 +462,10 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     protected boolean _isStateAcceptable() throws IllegalActionException {
         boolean successful = true;
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.stateTransitionSSCActors();
-        while (sscs.hasMoreElements()) {
+        Iterator sscs = sched.stateTransitionSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             successful = successful && a.isThisStepSuccessful();
         }
         return successful;
@@ -524,18 +524,18 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     protected double _predictNextStepSize() throws IllegalActionException {
         double predictedstep = getMaxStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.stateTransitionSSCActors();
-        while (sscs.hasMoreElements()) {
+        Iterator sscs = sched.stateTransitionSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             double pre = a.predictedStepSize();
             if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
         }
-        sscs = sched.outputSSCActors();
-        while (sscs.hasMoreElements()) {
+        sscs = sched.outputSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             double pre = a.predictedStepSize();
             if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
@@ -554,10 +554,10 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         if(_debugging) _debug(getFullName() + "refine step wrt state.");
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.stateTransitionSSCActors();
-        while (sscs.hasMoreElements()) {
+        Iterator sscs = sched.stateTransitionSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             if(_debugging) _debug(((Nameable)a).getName() + "refine..."
                     + a.refinedStepSize());
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
@@ -575,10 +575,10 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     protected double _refinedStepWRTOutput() throws IllegalActionException {
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.outputSSCActors();
-        while (sscs.hasMoreElements()) {
+        Iterator sscs = sched.outputSSCActorList().iterator();
+        while (sscs.hasNext()) {
             CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
+                (CTStepSizeControlActor) sscs.next();
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }
         return refinedstep;

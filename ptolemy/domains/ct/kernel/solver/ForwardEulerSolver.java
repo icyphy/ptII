@@ -33,7 +33,7 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,15 +139,15 @@ public class ForwardEulerSolver extends FixedStepSolver {
         if(dir.STAT) {
             dir.NFUNC++;
         }
-        Enumeration actors = sch.stateTransitionSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        Iterator actors = sch.scheduledStateTransitionActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
-        actors = sch.dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        actors = sch.scheduledDynamicActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }

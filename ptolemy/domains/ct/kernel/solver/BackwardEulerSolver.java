@@ -33,7 +33,7 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -152,9 +152,9 @@ public class BackwardEulerSolver extends FixedStepSolver
         }
         resetRound();
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
-        Enumeration actors = sch.dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            CTDynamicActor next = (CTDynamicActor)actors.nextElement();
+        Iterator actors = sch.scheduledDynamicActorList().iterator();
+        while(actors.hasNext()) {
+            CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
@@ -165,16 +165,16 @@ public class BackwardEulerSolver extends FixedStepSolver
                 dir.NFUNC ++;
             }
             _setConverge(true);
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledStateTransitionActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Firing..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledDynamicActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Refiring..."+
                         ((Nameable)next).getName());
                 next.fire();

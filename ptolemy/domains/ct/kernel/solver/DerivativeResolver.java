@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.Director;
 import ptolemy.actor.Actor;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,25 +157,25 @@ public class DerivativeResolver extends ODESolver{
         resetRound();
         dir.setCurrentStepSize(0.0);
         dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-        Enumeration actors = sch.dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            CTDynamicActor next = (CTDynamicActor)actors.nextElement();
+        Iterator actors = sch.scheduledDynamicActorList().iterator();
+        while(actors.hasNext()) {
+            CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
         if(dir.STAT) {
             dir.NFUNC ++;
         }
-        actors = sch.stateTransitionSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        actors = sch.scheduledStateTransitionActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug(getFullName() + " Firing..."+
                     ((Nameable)next).getName());
             next.fire();
         }
-        actors = sch.dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        actors = sch.scheduledDynamicActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug(getFullName() + " Refiring..."+
                     ((Nameable)next).getName());
             next.fire();

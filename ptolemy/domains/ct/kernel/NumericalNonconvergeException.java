@@ -29,7 +29,7 @@
 
 package ptolemy.domains.ct.kernel;
 import ptolemy.kernel.util.*;
-import java.util.Enumeration;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NumericalNonconvergeException

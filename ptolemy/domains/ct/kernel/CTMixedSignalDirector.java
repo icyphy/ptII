@@ -36,8 +36,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
-import java.util.*;
-import collections.LinkedList;
+import java.util.Iterator;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
@@ -485,9 +485,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
         // detected events
         CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration evgens = sched.eventGenerators();
-        while(evgens.hasMoreElements()) {
-            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
+        Iterator evgens = sched.eventGeneratorList().iterator();
+        while(evgens.hasNext()) {
+            CTEventGenerator evg = (CTEventGenerator) evgens.next();
             if(evg.hasCurrentEvent()) {
                 return true;
             }
@@ -523,9 +523,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     protected void _markStates() {
         CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.statefulActors();
-        while(memactors.hasMoreElements()) {
-            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
+        Iterator memactors = scheduler.statefulActorList().iterator();
+        while(memactors.hasNext()) {
+            CTStatefulActor mem = (CTStatefulActor)memactors.next();
             if(_debugging) _debug("Save State..."+
                     ((Nameable)mem).getName());
             mem.markState();
@@ -542,9 +542,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     protected void _rollback() throws IllegalActionException{
         CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.statefulActors();
-        while(memactors.hasMoreElements()) {
-            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
+        Iterator memactors = scheduler.statefulActorList().iterator();
+        while(memactors.hasNext()) {
+            CTStatefulActor mem = (CTStatefulActor)memactors.next();
             if(_debugging) _debug("Restore State..."+
                     ((Nameable)mem).getName());
             mem.goToMarkedState();

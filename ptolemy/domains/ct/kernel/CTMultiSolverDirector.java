@@ -37,8 +37,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
-import java.util.*;
-import collections.LinkedList;
+import java.util.Iterator;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
@@ -222,16 +222,16 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         if(!isBPIteration()) {
             double predictedstep = 10.0*getCurrentStepSize();
             CTScheduler sched = (CTScheduler)getScheduler();
-            Enumeration sscs = sched.stateTransitionSSCActors();
-            while (sscs.hasMoreElements()) {
+            Iterator sscs = sched.stateTransitionSSCActorList().iterator();
+            while (sscs.hasNext()) {
                 CTStepSizeControlActor a =
-                    (CTStepSizeControlActor) sscs.nextElement();
+                    (CTStepSizeControlActor) sscs.next();
                 predictedstep = Math.min(predictedstep, a.predictedStepSize());
             }
-            sscs = sched.outputSSCActors();
-            while (sscs.hasMoreElements()) {
+            sscs = sched.outputSSCActorList().iterator();
+            while (sscs.hasNext()) {
                 CTStepSizeControlActor a =
-                    (CTStepSizeControlActor) sscs.nextElement();
+                    (CTStepSizeControlActor) sscs.next();
                 predictedstep = Math.min(predictedstep, a.predictedStepSize());
             }
             return predictedstep;

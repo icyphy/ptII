@@ -33,7 +33,7 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,10 +102,10 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         CTDirector dir = (CTDirector) getContainer();
         super.resolveStates();
 
-        Enumeration actors = ((CTScheduler)dir.getScheduler()
-                              ).dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        Iterator actors = ((CTScheduler)dir.getScheduler()
+                              ).scheduledDynamicActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug(getFullName() + "update..."+((Nameable)next).getName());
             next.postfire();
         }

@@ -33,7 +33,7 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+import java.util.Iterator;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -224,22 +224,22 @@ public class ExplicitRK23Solver extends ODESolver{
                     " must have a director to fire.");
         }
         resetRound();
-        Enumeration actors;
+        Iterator actors;
         // for the first iteration after a breakpoint, create the history.
         if(dir.isBPIteration()) {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                CTDynamicActor next = (CTDynamicActor)actors.nextElement();
+            actors = sch.scheduledDynamicActorList().iterator();
+            while(actors.hasNext()) {
+                CTDynamicActor next = (CTDynamicActor)actors.next();
                 _debug(getFullName() + ": Build integrator history"
                         +((Nameable)next).getName());
                 next.emitTentativeOutputs();
             }
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledStateTransitionActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + ": Build integrator history..."
                         +((Nameable)next).getName());
                 next.fire();
@@ -249,18 +249,18 @@ public class ExplicitRK23Solver extends ODESolver{
             if(dir.STAT) {
                 dir.NFUNC ++;
             }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledDynamicActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + " firing..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
             dir.setCurrentTime(dir.getCurrentTime()+
                     dir.getCurrentStepSize()*_timeInc[i]);
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledStateTransitionActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + " firing..."+((Nameable)next).getName());
                 next.fire();
             }

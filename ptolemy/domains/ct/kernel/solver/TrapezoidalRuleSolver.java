@@ -32,7 +32,9 @@ package ptolemy.domains.ct.kernel.solver;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.domains.ct.kernel.*;
-import java.util.Enumeration;
+//import java.util.Enumeration;
+import java.util.Iterator;
+
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,9 +120,9 @@ public class TrapezoidalRuleSolver extends ODESolver{
         }
         resetRound();
         // prediction
-        Enumeration actors = sch.dynamicActorSchedule();
-        while(actors.hasMoreElements()) {
-            Actor next = (Actor)actors.nextElement();
+        Iterator actors = sch.dynamicActorList().iterator();
+        while(actors.hasNext()) {
+            Actor next = (Actor)actors.next();
             _debug("Guessing..."+((Nameable)next).getName());
             next.fire();
         }
@@ -133,16 +135,16 @@ public class TrapezoidalRuleSolver extends ODESolver{
             }
             incrRound();
             _setConverge(true);
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledStateTransitionActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + "Firing..."+((Nameable)next).getName());
 
                 next.fire();
             }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
+            actors = sch.scheduledDynamicActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
                 _debug(getFullName() + " refiring..."+
                         ((Nameable)next).getName());
                 next.fire();
@@ -152,9 +154,9 @@ public class TrapezoidalRuleSolver extends ODESolver{
                 //startOverLastStep();
                 resetRound();
                 // prediction
-                actors = sch.dynamicActorSchedule();
-                while(actors.hasMoreElements()) {
-                    Actor next = (Actor)actors.nextElement();
+                actors = sch.scheduledDynamicActorList().iterator();
+                while(actors.hasNext()) {
+                    Actor next = (Actor)actors.next();
                     _debug(getFullName()+" asking..."+
                             ((Nameable)next).getName());
                     next.fire();
