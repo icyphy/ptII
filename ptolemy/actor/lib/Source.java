@@ -100,16 +100,10 @@ public abstract class Source extends TypedAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    Source newobj = (Source)super.clone(ws);
-	    newobj.output = (TypedIOPort)newobj.getPort("output");
-	    newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Source newobj = (Source)super.clone(ws);
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
+        return newobj;
     }
 
     /** Read at most one input token from each channel of the trigger
