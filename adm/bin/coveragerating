@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Tue Oct  3 18:08:57 2000 by cxh]-
+# -[Fri Feb 22 09:01:41 2002 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -112,7 +112,8 @@ awk ' BEGIN {
 	print "<html><head>"
 	print "<title>Ptolemy II Coverage Summary</title>"
 	print "</head><body>"
-	print "<h1>Package Coverage </h1>"
+	print "<h1>&nbsp;&nbsp;Package Coverage</h1>"
+	print date
 	print "<menu>"
     }
     { if ($0 ~ />Package /) {
@@ -123,7 +124,7 @@ awk ' BEGIN {
     }
     END {
         print "</menu>" 
-    }' /tmp/coveragerating.out >/tmp/coveragerating.toc
+    }' date="`date`" /tmp/coveragerating.out >/tmp/coveragerating.toc
 
 cp $summaryfile $summaryfile.bak
 cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
