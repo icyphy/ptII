@@ -70,7 +70,7 @@ public class SquareWaveResponse {
                     "Usage: WaveBERK23 [breakpointODESolver] [ODESolver]");
             return;
         }
-             
+
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
             sys.setName( "system");

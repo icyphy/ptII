@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -41,7 +41,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HoverLinearizer
-/** 
+/**
 Linearization of the Hover mode
 Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
 Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
@@ -50,7 +50,7 @@ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 */
 public class HoverLinearizer extends CTActor{
     /** Constructor
-     */	
+     */
     public HoverLinearizer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -137,14 +137,14 @@ public class HoverLinearizer extends CTActor{
         outputR.setInput(false);
         outputR.setOutput(true);
         outputR.setMultiport(false);
-        outputR.setTypeEquals(DoubleToken.class);       
-        
+        outputR.setTypeEquals(DoubleToken.class);
+
         String s = new String();
         for(int i = 0; i< 5; i++) {
             s = s + _alphaP[i] + " ";
         }
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
-        
+
         _cPx = 0.0;
         paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));
 
@@ -190,7 +190,7 @@ public class HoverLinearizer extends CTActor{
         outputVx.broadcast(new DoubleToken(Vx));
         outputVz.broadcast(new DoubleToken(Vz));
     }
-        
+
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Never thrown.*
@@ -205,13 +205,13 @@ public class HoverLinearizer extends CTActor{
             _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
         _cPx = ((DoubleToken)paramCPx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();     
+        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
     }
 
     /** Input port Px, single port with type double.
      */
     public TypedIOPort inputPx;
-    
+
     /** Input port DPx, single port with type double.
      */
     public TypedIOPort inputDPx;
@@ -231,7 +231,7 @@ public class HoverLinearizer extends CTActor{
     /** Input port Pz, single port with type double.
      */
     public TypedIOPort inputPz;
-    
+
     /** Input port DPz, single port with type double.
      */
     public TypedIOPort inputDPz;
@@ -278,7 +278,7 @@ public class HoverLinearizer extends CTActor{
      *  default -2.0.
      */
     public Parameter paramCPz;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

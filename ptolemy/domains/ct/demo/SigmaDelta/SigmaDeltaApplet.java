@@ -53,10 +53,10 @@ import ptolemy.data.expr.Parameter;
 A second order CT subsystem is used to model the beam.
 The voltage on the beam-gap capacitor is sampled every T seconds (much
 faster than the required output of the digital signal),  then filtered by
-a lead compensator (FIR filter), and fed to an one-bit quantizer. 
+a lead compensator (FIR filter), and fed to an one-bit quantizer.
 The outputs of the quantizer are converted to force and fed back to the
-beams. The outputs are also counted and averaged every N*T seconds to 
-produce the digital output. In our example, the external acceleration 
+beams. The outputs are also counted and averaged every N*T seconds to
+produce the digital output. In our example, the external acceleration
 is a Sin wave.
 Reference:  Mark A. Lemkin, <I>"Micro Accelerometer Design with Digital
 Feedback Control"</I>, doctoral dissertation,  University of California,
@@ -89,7 +89,7 @@ public class SigmaDeltaApplet extends CTApplet {
     Panel runcontrols = new Panel();
     controlpanel.add("East",runcontrols);
     runcontrols.add(_createRunControls(2));
-        
+
     Panel plotpanel = new Panel();
     plotpanel.setLayout(new GridLayout(2, 1));
     add(plotpanel, "Center");
@@ -143,7 +143,7 @@ public class SigmaDeltaApplet extends CTApplet {
         _ctPlot.plot.addLegend(0,"Position");
         _ctPlot.plot.addLegend(1,"Input");
         _ctPlot.plot.addLegend(2, "Control");
-            
+
         _sampler =
             new CTPeriodicSampler(ctsub, "Sampler");
 
@@ -190,7 +190,7 @@ public class SigmaDeltaApplet extends CTApplet {
         _dePlot.plot.addLegend(0, "Accum");
         _dePlot.plot.addLegend(1, "Quantize");
 
-        DEFIRfilter mav = new DEFIRfilter(_toplevel, "MAV", 
+        DEFIRfilter mav = new DEFIRfilter(_toplevel, "MAV",
                 "0.1 0.1 0.1 0.1" +
                 " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
 
@@ -236,7 +236,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Execute the system only when the current system is not running.
      *  This overrides the base class to read the
      *  values in the query box first.
@@ -257,7 +257,7 @@ public class SigmaDeltaApplet extends CTApplet {
                 _sampler.SamplePeriod.setToken(new DoubleToken(
                         _query.doubleValue("sample")));
                 System.out.println("sampler set");
-                
+
                 // adjust plot sizes
                 System.out.println("set up plots");
                 _ctPlot.plot.setXRange(0.0, stopT);

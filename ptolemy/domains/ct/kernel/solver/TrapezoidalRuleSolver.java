@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -37,13 +37,13 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
-/** 
+/**
 This class is under significant rework. Please don't use it!!!
-@author Jie Liu 
+@author Jie Liu
 @version $Id$
 */
 public class TrapezoidalRuleSolver extends ODESolver{
-    
+
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -143,7 +143,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
                 actors = sch.dynamicActorSchedule();
                 while(actors.hasMoreElements()) {
                     Actor next = (Actor)actors.nextElement();
-                    _debug(getFullName()+" asking..."+ 
+                    _debug(getFullName()+" asking..."+
                             ((Nameable)next).getName());
                     next.fire();
                 }

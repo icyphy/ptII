@@ -72,7 +72,7 @@ public class HelicopterApplet extends CTApplet {
         add(controlpanel);
         Panel progresspanel = new Panel();
         //progresspanel.setLayout(new BorderLayout());
-        add(progresspanel);        
+        add(progresspanel);
         _currentTimeCanvas = new ProgressBar();
         controlpanel.add(_currentTimeCanvas);
 
@@ -114,7 +114,7 @@ public class HelicopterApplet extends CTApplet {
             // Create the composite actors.
             // ---------------------------------
 
-            CTCompositeActor sub = new CTCompositeActor(_toplevel, 
+            CTCompositeActor sub = new CTCompositeActor(_toplevel,
                     "Controllers");
             _hsdir = new HSDirector(sub, "HSDirector");
 
@@ -300,8 +300,8 @@ public class HelicopterApplet extends CTApplet {
 
             HelicopterActor heli = new HelicopterActor(_toplevel, "Helicopter");
             ControllerActor ctrl = new ControllerActor(_toplevel, "Controller");
-            XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel, 
-                    "XZHigherDerivatives");     
+            XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel,
+                    "XZHigherDerivatives");
 
             CTIntegrator Px = new CTIntegrator(_toplevel, "IntegratorPx");
             CTIntegrator DPx = new CTIntegrator(_toplevel, "IntegratorDPx");
@@ -328,7 +328,7 @@ public class HelicopterApplet extends CTApplet {
             xzPlot.plot.setSize(200, 200);
             xzPlot.plot.addLegend(0,"(Px,Pz)");
 
-            TimedPlotter vxPlot = new TimedPlotter(_toplevel, 
+            TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
             vxPlot.setPanel(vxPanel);
             vxPlot.plot.setGrid(true);
@@ -337,7 +337,7 @@ public class HelicopterApplet extends CTApplet {
             vxPlot.plot.setSize(200, 200);
             vxPlot.plot.addLegend(0,"Vx");
 
-            TimedPlotter pzPlot = new TimedPlotter(_toplevel, 
+            TimedPlotter pzPlot = new TimedPlotter(_toplevel,
                     "Vertical Position");
             pzPlot.setPanel(pzPanel);
             pzPlot.plot.setGrid(true);
@@ -346,7 +346,7 @@ public class HelicopterApplet extends CTApplet {
             pzPlot.plot.setSize(200, 200);
             pzPlot.plot.addLegend(0,"Pz");
 
-            TimedPlotter thPlot = new TimedPlotter(_toplevel, 
+            TimedPlotter thPlot = new TimedPlotter(_toplevel,
                     "Pitch Angle");
             thPlot.setPanel(thPanel);
             thPlot.plot.setGrid(true);
@@ -466,7 +466,7 @@ public class HelicopterApplet extends CTApplet {
 
             //_debug("Set parameters");
             // CT Director parameters
-            //Parameter initstep = 
+            //Parameter initstep =
             //   (Parameter)_dir.getAttribute("InitialStepSize");
             _dir.InitStepSize.setToken(new DoubleToken(0.01));
 
@@ -499,7 +499,7 @@ public class HelicopterApplet extends CTApplet {
             Pz.InitialState.setToken(new DoubleToken(-1.5));
 
             //Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
-            Tm.InitialState.setToken(new DoubleToken(48.02));            
+            Tm.InitialState.setToken(new DoubleToken(48.02));
 
             MINUS.gain.setToken(new DoubleToken(-1.0));
 
@@ -519,11 +519,11 @@ public class HelicopterApplet extends CTApplet {
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    CTCompositeActor _createLinearizer(TypedCompositeActor container, 
+    CTCompositeActor _createLinearizer(TypedCompositeActor container,
             int code)
             throws NameDuplicationException, IllegalActionException {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
-        CTEmbeddedNRDirector subdir = 
+        CTEmbeddedNRDirector subdir =
             new CTEmbeddedNRDirector(sub, "CTInnerDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
@@ -695,7 +695,7 @@ public class HelicopterApplet extends CTApplet {
         }
 
         // sub dir parameters
-        //Parameter initstep = 
+        //Parameter initstep =
         //        (Parameter)subdir.getAttribute("InitialStepSize");
         subdir.InitStepSize.setToken(new DoubleToken(0.01));
 
@@ -855,7 +855,7 @@ public class HelicopterApplet extends CTApplet {
                 g.setColor(new Color(255, 0, 0));
                 g.fill3DRect(10, 10, _switchTime[1], 20, true);
                 g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10, 
+                g.fill3DRect(10+_switchTime[1], 10,
                         _switchTime[2]-_switchTime[1], 20, true);
                 g.setColor(new Color(0, 0, 255));
                 g.fill3DRect(10+_switchTime[2], 10, _width, 20, true);
@@ -865,10 +865,10 @@ public class HelicopterApplet extends CTApplet {
                 g.setColor(new Color(255, 0, 0));
                 g.fill3DRect(10, 10, _switchTime[1], 20, true);
                 g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10, 
+                g.fill3DRect(10+_switchTime[1], 10,
                         _switchTime[2]-_switchTime[1], 20, true);
                 g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[2], 10, 
+                g.fill3DRect(10+_switchTime[2], 10,
                         _switchTime[3]-_switchTime[2], 20, true);
                 g.setColor(new Color(255, 0, 255));
                 g.fill3DRect(10+_switchTime[3], 10, _width, 20, true);
@@ -877,15 +877,15 @@ public class HelicopterApplet extends CTApplet {
                 g.setColor(new Color(255, 0, 0));
                 g.fill3DRect(10, 10, _switchTime[1], 20, true);
                 g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10, 
+                g.fill3DRect(10+_switchTime[1], 10,
                         _switchTime[2]-_switchTime[1], 20, true);
                 g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[2], 10, 
+                g.fill3DRect(10+_switchTime[2], 10,
                         _switchTime[3]-_switchTime[2], 20, true);
                 g.setColor(new Color(255, 0, 255));
-                g.fill3DRect(10+_switchTime[3], 10, 
+                g.fill3DRect(10+_switchTime[3], 10,
                         _switchTime[4]-_switchTime[3], 20, true);
-                g.setColor(new Color(0, 0, 255)); 
+                g.setColor(new Color(0, 0, 255));
                 g.fill3DRect(10+_switchTime[4], 10, _width, 20, true);
                 break;
             default:

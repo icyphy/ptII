@@ -105,12 +105,12 @@ public class ForwardEulerSolver extends FixedStepSolver{
 
 
     /** Return true always, indicating that the states of the system
-     *  is correctly resolved. 
+     *  is correctly resolved.
      *  The resolved states are at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire for one iteration 
+     *  schedule from the scheduler and fire for one iteration
      *  (which consists of 1 round).
-     *  
+     *
      * @exception IllegalActionException If the firing of some actors
      *       throw it.
      */

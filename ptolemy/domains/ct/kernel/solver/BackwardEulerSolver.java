@@ -86,7 +86,7 @@ public class BackwardEulerSolver extends FixedStepSolver
     }
 
     /** For the integrator, do x(n+1)=x(n)+h*x'(n+1). Test if this
-     *  calculation is 
+     *  calculation is
      *  converge for this integrator.
      *
      *  @param integrator The integrator of that calls this method.

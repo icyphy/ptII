@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
@@ -37,15 +37,15 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySSControlActor
-/** 
+/**
 Dummy actor for step size control. SISO.
 @author  Jie Liu
 @version $Id$
 */
-public class CTDummySSControlActor extends CTActor 
+public class CTDummySSControlActor extends CTActor
     implements CTStepSizeControlActor{
     /** Constructor
-     */	
+     */
     public CTDummySSControlActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -74,7 +74,7 @@ public class CTDummySSControlActor extends CTActor
     public double predictedStepSize() {
         return java.lang.Double.MAX_VALUE;
     }
-    
+
     /** Return 0.0.
      *  @return 0.0.
      */

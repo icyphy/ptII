@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySink
-/** 
+/**
 Dummy actor for sink. Multi-input, no output.
 @author  Jie Liu
 @version $Id$

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -40,7 +40,7 @@ import ptolemy.domains.ct.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ControllerActor
-/** 
+/**
 The controller for the helicopter. It has the form:
 <pre><code>
     +-         -+         +-    +-  -+ -+
@@ -56,35 +56,35 @@ inv(K) =  [             ]
           [kInv21 kInv22]
 and
 kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
      (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
- 
+
 kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
      (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
- 
+
 kInv21 = Cos[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
        (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
- 
+
 kInv22 = Sin[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) + 
+   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
        (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
- 
+
     [b1]
 b = [  ]
     [b2]
 
-b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m + 
-   (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) + 
-   (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) - 
-   (3*Dotth^2*DotTM*Sin[th])/m - 
+b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
+   (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) +
+   (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) -
+   (3*Dotth^2*DotTM*Sin[th])/m -
    (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
- 
-b2 = (3*Dotth^2*DotTM*Cos[th])/m + 
-   (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) + 
-   (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m + 
-   (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) + 
+
+b2 = (3*Dotth^2*DotTM*Cos[th])/m +
+   (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) +
+   (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m +
+   (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) +
    (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
 </pre>
 The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
@@ -193,7 +193,7 @@ public class ControllerActor extends CTActor{
         double A = ((DoubleToken)inputA.get(0)).doubleValue();
         double Vx = ((DoubleToken)inputVx.get(0)).doubleValue();
         double Vz = ((DoubleToken)inputVz.get(0)).doubleValue();
-        
+
         double CosTh2 = Math.pow(Math.cos(Th), 2);
         double SinTh2 = Math.pow(Math.sin(Th), 2);
         double mass2 = _mass*_mass;
@@ -201,41 +201,41 @@ public class ControllerActor extends CTActor{
         double IK11 = ((_Mm*Tm*Math.sin(Th))/(_Iy*_mass) +
                 (_hm*Tm*Tm*Math.cos(A)*Math.sin(Th))/(_Iy*_mass)) /
             ((_Mm*Tm*CosTh2)/(_Iy*mass2) +
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
+                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
+                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
                     (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
-        
-        double IK12 = (-((_Mm*Tm*Math.cos(Th))/(_Iy*_mass)) - 
+
+        double IK12 = (-((_Mm*Tm*Math.cos(Th))/(_Iy*_mass)) -
                 (_hm*Tm*Tm*Math.cos(A)*Math.cos(Th))/(_Iy*_mass))/
-            ((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
+            ((_Mm*Tm*CosTh2)/(_Iy*mass2) +
+                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
                     (_Mm*Tm*SinTh2)/(_Iy*mass2) +
                     (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2));
 
         double IK21 = Math.cos(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
+            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) +
+                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
+                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
                     (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
 
         double IK22 = Math.sin(Th)/
-            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) + 
-                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) + 
-                    (_Mm*Tm*SinTh2)/(_Iy*mass2) + 
+            (_mass*((_Mm*Tm*CosTh2)/(_Iy*mass2) +
+                    (_hm*Tm*Tm*Math.cos(A)*CosTh2)/(_Iy*mass2) +
+                    (_Mm*Tm*SinTh2)/(_Iy*mass2) +
                     (_hm*Tm*Tm*Math.cos(A)*SinTh2)/(_Iy*mass2)));
 
         double B1 = (3.0*DDTm*DTh*Math.cos(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.cos(Th))/_mass + 
+            (DTh*DTh*DTh*Tm*Math.cos(Th))/_mass +
             (DTm*_hm*Tm*Math.cos(Th)*Math.sin(A))/(_Iy*_mass) +
             (3.0*DTm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) -
-            (3.0*DTh*DTh*DTm*Math.sin(Th))/_mass - 
+            (3.0*DTh*DTh*DTm*Math.sin(Th))/_mass -
             (3.0*DTh*Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
- 
-        double B2 = (3.8*DTh*DTh*DTm*Math.cos(Th))/_mass + 
+
+        double B2 = (3.8*DTh*DTh*DTm*Math.cos(Th))/_mass +
             (3.0*DTh*Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass)+
             (3.0*DDTm*DTh*Math.sin(Th))/_mass -
-            (DTh*DTh*DTh*Tm*Math.sin(Th))/_mass + 
-            (DTm*_hm*Tm*Math.sin(A)*Math.sin(Th))/(_Iy*_mass) + 
+            (DTh*DTh*DTh*Tm*Math.sin(Th))/_mass +
+            (DTm*_hm*Tm*Math.sin(A)*Math.sin(Th))/(_Iy*_mass) +
             (3.0*DTm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
 
         double DDDTm = IK11*(B1+Vx) + IK12*(B2+Vz);
@@ -261,23 +261,23 @@ public class ControllerActor extends CTActor{
     /** Input port Tm
      */
     public TypedIOPort inputTm;
-    
+
     /** Input port DTm = dTm/dt
      */
     public TypedIOPort inputDTm;
-    
+
     /** Input port DDTm = ddTm/dtt
      */
     public TypedIOPort inputDDTm;
-    
+
     /** Input port a
      */
     public TypedIOPort inputA;
-    
+
     /** Input port Th
      */
     public TypedIOPort inputTh;
-   
+
     /** Input port DTh
      */
     public TypedIOPort inputDTh;

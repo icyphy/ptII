@@ -132,7 +132,7 @@ public class StickyBallApplet extends CTApplet {
             FSMState ctrlInc = new FSMState(ctrl, "Separate");
             FSMState ctrlDec = new FSMState(ctrl, "Together");
             ctrl.setInitialState(ctrlInc);
-            FSMTransition ctrlTr1 = 
+            FSMTransition ctrlTr1 =
                 ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("touched");
             // ctrlTr1.setInitEntry(true);
@@ -140,8 +140,8 @@ public class StickyBallApplet extends CTApplet {
             HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
             // FIXME: the initial sticking force.
             HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
-            FSMTransition ctrlTr2 = 
-                ctrl.createTransition(ctrlDec, ctrlInc);            
+            FSMTransition ctrlTr2 =
+                ctrl.createTransition(ctrlDec, ctrlInc);
             ctrlTr2.setTriggerCondition("F > STI || F < -STI");
             //ctrlTr2.setInitEntry(true);
             HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
@@ -154,7 +154,7 @@ public class StickyBallApplet extends CTApplet {
             //hs.setDirector(hsdir);
             hsdir.setController(ctrl);
 
-            //System.out.println("Building the dynamics of " 
+            //System.out.println("Building the dynamics of "
             //        + "two separate balls.");
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
 
@@ -193,7 +193,7 @@ public class StickyBallApplet extends CTApplet {
             ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
 
             AddSubtract ctIncE3 = new AddSubtract(ctInc, "E3");
-            CTZeroCrossingDetector ctIncD = 
+            CTZeroCrossingDetector ctIncD =
                 new CTZeroCrossingDetector(ctInc, "ZD");
 
             // the ports
@@ -318,7 +318,7 @@ public class StickyBallApplet extends CTApplet {
             ctDecOP2.link(ctDecR2);
             ctDec.connect(ctDecOF, ctDecE2.output);
             CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
-                    ctDec, "CTDecDir");            
+                    ctDec, "CTDecDir");
             //ctDecDir.addDebugListener(new StreamListener());
 
             // connect the hybrid system

@@ -40,7 +40,7 @@ import ptolemy.data.*;
 //// ExplicitRK23Solver
 /**
 This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
-For an ODE with form: <BR> 
+For an ODE with form: <BR>
 dx/dt = f(x, t) <BR>
 it does the following:<BR>
 K0 = f(x(n), tn);<BR>
@@ -93,7 +93,7 @@ public class ExplicitRK23Solver extends ODESolver{
     public final int getIntegratorAuxVariableCount() {
         return 4;
     }
- 
+
     /** This method is delegated to the fire() method of the integrator.
      *  It implements the formula in the class document.
      *
@@ -239,7 +239,7 @@ public class ExplicitRK23Solver extends ODESolver{
                             +((Nameable)next).getName());
                 next.fire();
             }
-        } 
+        }
         for (int i = 0; i < _timeInc.length; i++) {
             if(dir.STAT) {
                 dir.NFUNC ++;
@@ -274,7 +274,7 @@ public class ExplicitRK23Solver extends ODESolver{
 
     //name
     private static final String _name = "CT_Runge_Kutta_2_3_Solver";
-    
+
     // time increase value.
     private static final double[] _timeInc = {0.5, 0.25, 0.25};
 
@@ -282,7 +282,7 @@ public class ExplicitRK23Solver extends ODESolver{
     private static final double[][] _B = {{0.5},
                                           {0, 0.75},
                                           {2.0/9.0, 1.0/3.0, 4.0/9.0}};
-    // E coefficients                                           
+    // E coefficients
     private static final double[] _E =
     {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
 

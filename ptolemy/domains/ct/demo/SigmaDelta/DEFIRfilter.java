@@ -59,7 +59,7 @@ public class DEFIRfilter extends DEActor {
     public DEFIRfilter(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         this(container, name, _DEFAULT_TAPS);
-    }    
+    }
 
 
     /** Construct an FIR filter with the specified filter taps.
@@ -198,8 +198,8 @@ public class DEFIRfilter extends DEActor {
 
 
         } else {
-            throw new InternalErrorException("Schedule error! " + 
-                    "DEFIRfilter is" + 
+            throw new InternalErrorException("Schedule error! " +
+                    "DEFIRfilter is" +
                     " fired w/o any tokens.");
         }
     }
@@ -209,7 +209,7 @@ public class DEFIRfilter extends DEActor {
 
     // the ports.
     public DEIOPort output;
-    public DEIOPort input;    
+    public DEIOPort input;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -227,10 +227,10 @@ public class DEFIRfilter extends DEActor {
 
     // Parameter for delay
     private Parameter _paramDelay;
-    // delay of the actor 
+    // delay of the actor
     private double _delay = 0.0;
 
     // the default filter taps.
-    private static final double[] _DEFAULT_TAPS = {1, 1}; 
+    private static final double[] _DEFAULT_TAPS = {1, 1};
 
 }

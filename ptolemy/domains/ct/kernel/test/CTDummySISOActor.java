@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
@@ -36,14 +36,14 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyActor
-/** 
+/**
 For testing schedules.
 @author  Jie Liu
 @version $Id$
 */
 public class CTDummySISOActor extends CTActor{
     /** Constructor
-     */	
+     */
     public CTDummySISOActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

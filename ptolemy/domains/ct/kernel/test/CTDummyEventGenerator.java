@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
@@ -37,7 +37,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyEventGenerator
-/** 
+/**
 Dummy actor that implements the CTEventGenerator interface. SISO
 @author  Jie Liu
 @version $Id$
@@ -45,7 +45,7 @@ Dummy actor that implements the CTEventGenerator interface. SISO
 */
 public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
     /** Constructor
-     */	
+     */
     public CTDummyEventGenerator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

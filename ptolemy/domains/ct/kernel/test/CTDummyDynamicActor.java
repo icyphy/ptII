@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
@@ -36,14 +36,14 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyDynamicActor
-/** 
+/**
 Dummy actor that implement the CTDynamicActor interface. SISO.
 @author  Jie Liu
 @version $Id$
 */
 public class CTDummyDynamicActor extends CTActor implements CTDynamicActor{
     /** Constructor
-     */	
+     */
     public CTDummyDynamicActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

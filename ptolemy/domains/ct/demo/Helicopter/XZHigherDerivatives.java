@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -40,18 +40,18 @@ import ptolemy.domains.ct.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// XZHigherDerivatives
-/** 
+/**
 Compute the third and fourth derivatives of Px and Pz
 DDDotPx = (Dotth*TM*Cos[th))/m + (DotTM*Math.sin[th))/m
- 
-DDDDotPx = (2*Dotth*DotTM*Cos[th))/m + 
-   (TM*Cos[th)*(a*MM + hM*TM*Math.sin[a)))/(Iy*m) + (DDotTM*Math.sin[th))/m - 
+
+DDDDotPx = (2*Dotth*DotTM*Cos[th))/m +
+   (TM*Cos[th)*(a*MM + hM*TM*Math.sin[a)))/(Iy*m) + (DDotTM*Math.sin[th))/m -
    (Dotth^2*TM*Math.sin[th))/m
- 
+
 DDDotPz = -((DotTM*Cos[th))/m) + (Dotth*TM*Math.sin[th))/m
- 
-DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m + 
-   (2*Dotth*DotTM*Math.sin[th))/m + 
+
+DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
+   (2*Dotth*DotTM*Math.sin[th))/m +
    (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
 
 @author  liuj
@@ -64,7 +64,7 @@ public class XZHigherDerivatives extends CTActor{
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
-     */	
+     */
     public XZHigherDerivatives(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -156,23 +156,23 @@ public class XZHigherDerivatives extends CTActor{
         double Th = ((DoubleToken)inputTh.get(0)).doubleValue();
         double DTh = ((DoubleToken)inputDTh.get(0)).doubleValue();
         double A = ((DoubleToken)inputA.get(0)).doubleValue();
-        
+
         double CosTh2 = Math.pow(Math.cos(Th),2);
         double SinTh2 = Math.pow(Math.sin(Th),2);
         double mass2 = _mass*_mass;
 
         double D3Px = (DTh*Tm*Math.cos(Th))/_mass + (DTm*Math.sin(Th))/_mass;
- 
-        double D4Px = (2.0*DTh*DTm*Math.cos(Th))/_mass + 
+
+        double D4Px = (2.0*DTh*DTm*Math.cos(Th))/_mass +
             (Tm*Math.cos(Th)*(A*_Mm + _hm*Tm*Math.sin(A)))/(_Iy*_mass) +
             (DDTm*Math.sin(Th))/_mass - (DTh*DTh*Tm*Math.sin(Th))/_mass;
- 
+
         double D3Pz = -((DTm*Math.cos(Th))/_mass) +(DTh*Tm*Math.sin(Th))/_mass;
- 
-        double D4Pz = -((DDTm*Math.cos(Th))/_mass) + 
+
+        double D4Pz = -((DDTm*Math.cos(Th))/_mass) +
             (DTh*DTh*Tm*Math.cos(Th))/_mass + (2.0*DTh*DTm*Math.sin(Th))/_mass
             + (Tm*(A*_Mm + _hm*Tm*Math.sin(A))*Math.sin(Th))/(_Iy*_mass);
-        
+
         outputD3Px.broadcast(new DoubleToken(D3Px));
         outputD4Px.broadcast(new DoubleToken(D4Px));
         outputD3Pz.broadcast(new DoubleToken(D3Pz));
@@ -194,23 +194,23 @@ public class XZHigherDerivatives extends CTActor{
     /** Input port Tm
      */
     public TypedIOPort inputTm;
-    
+
     /** Input port DTm = dTm/dt
      */
     public TypedIOPort inputDTm;
-    
+
     /** Input port DDTm = ddTm/dtt
      */
     public TypedIOPort inputDDTm;
-    
+
     /** Input port a
      */
     public TypedIOPort inputA;
-    
+
     /** Input port Th
      */
     public TypedIOPort inputTh;
-   
+
     /** Input port DTh
      */
     public TypedIOPort inputDTh;
@@ -223,7 +223,7 @@ public class XZHigherDerivatives extends CTActor{
     /** Output port D4Px = ddddPx/dtttt
      */
     public TypedIOPort outputD4Px;
-    
+
     /** Output port D3Pz = dddPz/dttt
      */
     public TypedIOPort outputD3Pz;
@@ -231,7 +231,7 @@ public class XZHigherDerivatives extends CTActor{
     /** Output port D4Pz = ddddPz/dtttt
      */
     public TypedIOPort outputD4Pz;
-    
+
     /** Parameter for Iy, double, default 0.271256.
      */
     public Parameter paramIy;

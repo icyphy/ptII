@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -41,7 +41,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClimbLinearizer
-/** 
+/**
 Linearization of the Climb mode
 Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
 Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
@@ -50,7 +50,7 @@ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 */
 public class ClimbLinearizer extends CTActor{
     /** Constructor
-     */	
+     */
     public ClimbLinearizer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -137,14 +137,14 @@ public class ClimbLinearizer extends CTActor{
         outputR.setInput(false);
         outputR.setOutput(true);
         outputR.setMultiport(false);
-        outputR.setTypeEquals(DoubleToken.class);       
-        
+        outputR.setTypeEquals(DoubleToken.class);
+
         String sV = new String();
         for(int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
         paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
-        
+
         _cVx = 4.7;
         paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));
 
@@ -190,7 +190,7 @@ public class ClimbLinearizer extends CTActor{
         outputVx.broadcast(new DoubleToken(Vx));
         outputVz.broadcast(new DoubleToken(Vz));
     }
-        
+
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
@@ -201,22 +201,22 @@ public class ClimbLinearizer extends CTActor{
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 4) {
-            throw new IllegalActionException ( this, 
+            throw new IllegalActionException ( this,
                     "Not enough parameter numbers.");
         }
         while(stokens.hasMoreTokens() && index < 4) {
             String valueToken = stokens.nextToken();
             _alphaV[index++] = (new Double(valueToken)).doubleValue();
-        }        
+        }
 
         _cVx = ((DoubleToken)paramCVx.getToken()).doubleValue();
-        _cVz = ((DoubleToken)paramCVz.getToken()).doubleValue();     
+        _cVz = ((DoubleToken)paramCVz.getToken()).doubleValue();
     }
 
     /** Input port Px
      */
     public TypedIOPort inputPx;
-    
+
     /** Input port DPx
      */
     public TypedIOPort inputDPx;
@@ -236,7 +236,7 @@ public class ClimbLinearizer extends CTActor{
     /** Input port Pz
      */
     public TypedIOPort inputPz;
-    
+
     /** Input port DPz
      */
     public TypedIOPort inputDPz;
@@ -288,7 +288,7 @@ public class ClimbLinearizer extends CTActor{
     ////                         private variables                 ////
 
     private double[] _alphaV = {100.0, 110.0, 57.0, 12.80};
-  
+
     private double _cVx;
 
     private double _cVz;
