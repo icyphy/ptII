@@ -37,7 +37,8 @@ DIRS =
 # Root of Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/xercesImpl.jar
+#CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/xercesImpl.jar
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
