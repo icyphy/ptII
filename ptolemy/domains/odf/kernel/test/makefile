@@ -47,7 +47,6 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Event.tcl \
 	ODFThread.tcl \
 	TimedQueueReceiver.tcl
 
