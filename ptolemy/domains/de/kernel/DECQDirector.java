@@ -199,7 +199,7 @@ public class DECQDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private inner class                    ////
+    ////                         private inner class               ////
     
     // private inner class CQValue: wrapper for the datas that want to be
     // stored in the queue.
