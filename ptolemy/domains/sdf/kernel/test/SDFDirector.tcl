@@ -289,7 +289,7 @@ test SDFDirector-6.2 {Test transparent activation} {
 ####
 #
 # Tests 7.* test multirate execution with hierarchy
-test SDFScheduler-7.1 {Multirate and Hierarchy execution tests} {
+test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
@@ -309,8 +309,8 @@ test SDFScheduler-7.1 {Multirate and Hierarchy execution tests} {
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
 
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]

@@ -47,7 +47,8 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 proc _getSchedule {toplevel scheduler} {
-    $toplevel preinitialize
+    [$toplevel getManager] initialize
+    [$toplevel getManager] wrapup
     _testEnums schedule $scheduler
 }
 ######################################################################
@@ -230,41 +231,41 @@ test SDFScheduler-6.1 {Multirate Scheduling tests} {
 
 test SDFScheduler-6.2 {Multirate Scheduling tests} {
 
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
     $scheduler setValid false
 
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Delay Consumer Delay Consumer}}}
 
 test SDFScheduler-6.3 {Multirate Scheduling tests} {
 
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
     $scheduler setValid false
 
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Delay Consumer Consumer}}}
 
 test SDFScheduler-6.4 {Multirate Scheduling tests} {
 
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
     $scheduler setValid false
 
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Ramp Delay Consumer}}}
 
 test SDFScheduler-6.5 {Multirate Scheduling tests} {
 
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
     $scheduler setValid false
 
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Delay Ramp Delay Consumer}}}
 
@@ -301,6 +302,11 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
     $scheduler setValid false
     $s5 setValid false
 
+ #   set debuglistener [java::new ptolemy.kernel.util.StreamListener]
+ #   $scheduler addDebugListener $debuglistener
+ #   $director addDebugListener $debuglistener
+ #   $manager addDebugListener $debuglistener
+
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
     list $sched1 $sched2
@@ -311,13 +317,13 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
 #
 test SDFScheduler-7.2 {Multirate and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Ramp Cont Consumer Cont Consumer}} Delay}
 
@@ -327,7 +333,7 @@ test SDFScheduler-7.2 {Multirate and Hierarchy Scheduling tests} {
 test SDFScheduler-7.3 {Multirate and Hierarchy Scheduling tests} {
     # uses previous setup.
 
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
@@ -335,7 +341,7 @@ test SDFScheduler-7.3 {Multirate and Hierarchy Scheduling tests} {
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
 
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Ramp Cont Consumer Consumer}} Delay}
 
@@ -344,13 +350,13 @@ test SDFScheduler-7.3 {Multirate and Hierarchy Scheduling tests} {
 #
 test SDFScheduler-7.4 {Multirate and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Ramp Ramp Cont Consumer}} Delay}
 
@@ -359,13 +365,13 @@ test SDFScheduler-7.4 {Multirate and Hierarchy Scheduling tests} {
 #
 test SDFScheduler-7.5 {Multirate and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Ramp Cont Ramp Cont Consumer}} Delay}
 
@@ -400,55 +406,55 @@ test SDFScheduler-8.1 {input Multiport, Multirate Scheduling tests} {
 
 test SDFScheduler-8.2 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Ramp2 Ramp1 Consumer}}}
 
 test SDFScheduler-8.3 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Consumer Ramp1 Consumer}}}
 
 test SDFScheduler-8.4 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Ramp1 Consumer}}}
 
 test SDFScheduler-8.5 {input Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Consumer}}}
 
@@ -524,55 +530,55 @@ test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
 
 test SDFScheduler-8.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer1 Consumer2}}}
 
 test SDFScheduler-8.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer2 Ramp Consumer1 Consumer2}}}
 
 test SDFScheduler-8.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer2}}}
 
 test SDFScheduler-8.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2}}}
 
@@ -640,55 +646,55 @@ test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
 
 test SDFScheduler-9.2 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Ramp2 Ramp1 Ramp2 Ramp1 Cont}} Consumer}
 
 test SDFScheduler-9.3 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Ramp2 Ramp1 Cont Ramp1 Cont}} Consumer}
 
 test SDFScheduler-9.4 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Ramp2 Ramp1 Ramp1 Cont}} Consumer}
 
 test SDFScheduler-9.5 {Input Multiport, Multirate, and Hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Ramp2 Ramp1 Cont}} Consumer}
 
@@ -731,55 +737,55 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
 
 test SDFScheduler-9.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer2 Consumer1 Consumer2}} Ramp}
 
 test SDFScheduler-9.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Cont Consumer2 Cont Consumer1 Consumer2}} Ramp}
 
 test SDFScheduler-9.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer2 Consumer2}} Ramp}
 
 test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer2}} Ramp}
 
@@ -834,55 +840,55 @@ test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
 
 test SDFScheduler-10.12 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer1 Consumer2}}}
 
 test SDFScheduler-10.13 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer2 Ramp Consumer1 Consumer2}}}
 
 test SDFScheduler-10.14 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer2}}}
 
 test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     $s5 setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2}}}
 
@@ -925,11 +931,11 @@ test SDFScheduler-11.1 {Multirate and transparent hierarchy Scheduling tests} {
 #
 test SDFScheduler-11.2 {Multirate and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Delay Consumer Delay Consumer}}}
 
@@ -939,11 +945,11 @@ test SDFScheduler-11.2 {Multirate and transparent hierarchy Scheduling tests} {
 test SDFScheduler-11.3 {Multirate and transparent hierarchy Scheduling tests} {
     # uses previous setup.
 
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Delay Consumer Consumer}}}
 
@@ -952,11 +958,11 @@ test SDFScheduler-11.3 {Multirate and transparent hierarchy Scheduling tests} {
 #
 test SDFScheduler-11.4 {Multirate and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Ramp Delay Consumer}}}
 
@@ -965,11 +971,11 @@ test SDFScheduler-11.4 {Multirate and transparent hierarchy Scheduling tests} {
 #
 test SDFScheduler-11.5 {Multirate and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Delay Ramp Delay Consumer}}}
 
@@ -1008,47 +1014,47 @@ test SDFScheduler-12.1 {Input Multirate and transparent hierarchy Scheduling tes
 
 test SDFScheduler-12.2 {Input Multiport, Multirate, and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Ramp2 Ramp1 Consumer}}}
 
 test SDFScheduler-12.3 {Input Multiport, Multirate, and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Consumer Ramp1 Consumer}}}
 
 test SDFScheduler-12.4 {Input Multiport, Multirate, and transparent hierarchy Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Ramp1 Consumer}}}
 
 test SDFScheduler-12.5 {Input Multiport, Multirate, and transparent hierarch Scheduling tests} {
     # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a3 input] setTokenConsumptionRate 2
+    [java::field $a2 output] setTokenProductionRate 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a3 input] setTokenConsumptionRate 1
+    [java::field $a2 output] setTokenProductionRate 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp2 Ramp1 Consumer}}}
 
@@ -1085,47 +1091,47 @@ test SDFScheduler-12.11 {Output Multirate and hierarch Scheduling tests} {
 
 test SDFScheduler-12.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
+    [java::field $a1 output] setTokenProductionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
+    [java::field $a1 output] setTokenProductionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer1 Consumer2}}}
 
 test SDFScheduler-12.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer2 Ramp Consumer1 Consumer2}}}
 
 test SDFScheduler-12.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2 Consumer2}}}
 
 test SDFScheduler-12.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-    $a2 setTokenConsumptionRate [java::field $a2 input] 2
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
+    [java::field $a1 output] setTokenProductionRate 2
+    [java::field $a2 input] setTokenConsumptionRate 2
+    [java::field $a3 input] setTokenConsumptionRate 2
 
     $scheduler setValid false
     set sched1 [_getSchedule $toplevel $scheduler]
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    $a2 setTokenConsumptionRate [java::field $a2 input] 1
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
+    [java::field $a1 output] setTokenProductionRate 1
+    [java::field $a2 input] setTokenConsumptionRate 1
+    [java::field $a3 input] setTokenConsumptionRate 1
     list $sched1
 } {{{Ramp Consumer1 Consumer2}}}
 
