@@ -93,34 +93,6 @@
         <link port="AddSubtract.plus" relation="relation2"/>
         <link port="AddSubtract.output" relation="relation6"/>
     </entity>
-    <entity name="1:1:SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 225.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="5.0" max="5.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -138,14 +110,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 90.0]">
         </property>
     </entity>
-    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5, 5}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 140.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 140.0]">
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 225.0]">
         </property>
     </entity>
     <relation name="1:1:relation" class="ptolemy.actor.TypedIORelation">
@@ -161,9 +139,9 @@
     <link port="Topologia SDF.port" relation="1:1:relation"/>
     <link port="Topologia SDF.port2" relation="relation2"/>
     <link port="Topologia SDF.port4" relation="relation"/>
-    <link port="1:1:SequencePlotter.input" relation="relation"/>
     <link port="Ramp.output" relation="1:1:relation"/>
     <link port="NonStrictDelay.input" relation="relation"/>
     <link port="NonStrictDelay.output" relation="relation2"/>
-    <link port="NonStrictDisplay.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation"/>
 </entity>

@@ -35,36 +35,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 110.0]">
         </property>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Saida do Ramp">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 110.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="0.0" max="0.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="topologia SR" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
         </property>
@@ -127,6 +97,14 @@
         <link port="Scale.input" relation="relation"/>
         <link port="Scale.output" relation="relation4"/>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 115.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[260.0, 110.0]">
         </vertex>
@@ -134,7 +112,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation2"/>
     <link port="topologia SR.port" relation="relation"/>
     <link port="topologia SR.port3" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>

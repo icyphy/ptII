@@ -113,33 +113,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 145.0]">
         </property>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 4, 11, 26, 57, 120, 247, 502, 1013}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 145.0}">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 145.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="9.0"/>
-<yRange min="10.0" max="6133.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -155,5 +135,5 @@
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
