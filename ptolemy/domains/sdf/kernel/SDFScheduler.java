@@ -137,6 +137,226 @@ public class SDFScheduler extends Scheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor, as supplied by
+     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogeneous and return a
+     *  rate of 1.
+     */
+    protected int _getTokenConsumptionRate(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
+        if(param == null) {
+            if(p.isInput())
+                return 1;
+            else
+                return 0;
+        } else
+            return ((IntToken)param.getToken()).intValue();
+    }
+
+    /**
+     * Get the number of tokens that are produced on this output port
+     * during initialization, as supplied by
+     * by the port's "TokenInitProduction" parameter.   If the parameter
+     * does not exist, then assume the actor is zero-delay and return
+     * a value of zero.
+     */
+    protected int _getTokenInitProduction(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
+        if(param == null)
+            return 0;
+        return ((IntToken)param.getToken()).intValue();
+    }
+
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor during each firing,
+     *  as supplied by
+     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogeneous and return a
+     *  rate of 1.
+     */
+    protected int _getTokenProductionRate(IOPort p) {
+        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
+        if(param == null) {
+            if(p.isOutput())
+                return 1;
+            else
+                return 0;
+        }
+        return ((IntToken)param.getToken()).intValue();
+    }
+
+    /** Initialize the local data members of this object.  */
+    protected void _localMemberInitialize() {
+        LLMap _firingvector = new LLMap();
+        _firingvectorvalid = true;
+    }
+
+    /** Return the scheduling sequence.  An exception will be thrown if the
+     *  graph is not schedulable.  This occurs in the following circumstances:
+     *  <ul>
+     *  <li>The graph is not a connected graph.
+     *  <li>No integer solution exists for the balance equations.
+     *  <li>The graph contains cycles without delays (deadlock).
+     *  <li>Multiple output ports are connected to the same broadcast
+     *  relation. (equivalent to a non-deterministic merge)
+     *  </ul>
+     *
+     * @return An Enumeration of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable.
+     */
+
+    protected Enumeration _schedule() throws NotSchedulableException {
+        StaticSchedulingDirector dir =
+            (StaticSchedulingDirector)getContainer();
+        CompositeActor ca = (CompositeActor)(dir.getContainer());
+
+        // A linked list containing all the actors
+        CircularList AllActors = new CircularList();
+        Enumeration Entities = ca.deepGetEntities();
+
+
+        while(Entities.hasMoreElements()) {
+            ComponentEntity a = (ComponentEntity)Entities.nextElement();
+
+            if(a instanceof CompositeActor) {
+                Director containedDirector =
+                    ((CompositeActor) a).getDirector();
+                if(containedDirector instanceof StaticSchedulingDirector) {
+                    Scheduler containedScheduler =
+                        ((StaticSchedulingDirector) containedDirector)
+                        .getScheduler();
+                    try {
+                        containedScheduler.schedule();
+                    } catch (IllegalActionException e) {
+                        // This should never happen.
+                        throw new InternalErrorException(e.getMessage());
+                    }
+                }
+            }
+
+            // Fill AllActors with the list of things that we can schedule
+            // FIXME: What if other things can be scheduled than actors?
+            if(a instanceof Actor) AllActors.insertLast(a);
+        }
+
+        // First solve the balance equations
+        LLMap firings = _solveBalanceEquations(AllActors.elements());
+        firings = _normalizeFirings(firings);
+
+        _setFiringVector(firings);
+
+        _debug("Firing Vector:");
+        _debug(firings.toString() + "\n");
+
+        // Schedule all the actors using the calculated firings.
+        CircularList result = _scheduleConnectedActors(AllActors);
+
+        _setFiringVector(firings);
+
+        _debug("Firing Vector:");
+        _debug(firings.toString() + "\n");
+
+        _setContainerRates();
+
+        setValid(true);
+
+        return result.elements();
+    }
+
+
+    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
+            throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Input Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("TokenConsumptionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port,"TokenConsumptionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+
+    protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
+            throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Output Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("TokenProductionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port,"TokenProductionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+
+    protected void _setTokenInitProduction(Entity e, IOPort port, int rate)
+            throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Input Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("TokenInitProduction");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port,"TokenInitProduction",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     // The static name
@@ -210,60 +430,7 @@ public class SDFScheduler extends Scheduler {
         return _firingvector;
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor, as supplied by
-     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
-     */
-    protected int _getTokenConsumptionRate(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
-        if(param == null) {
-            if(p.isInput())
-                return 1;
-            else
-                return 0;
-        } else
-            return ((IntToken)param.getToken()).intValue();
-    }
 
-    /**
-     * Get the number of tokens that are produced on this output port
-     * during initialization, as supplied by
-     * by the port's "TokenInitProduction" parameter.   If the parameter
-     * does not exist, then assume the actor is zero-delay and return
-     * a value of zero.
-     */
-    protected int _getTokenInitProduction(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
-        if(param == null)
-            return 0;
-        return ((IntToken)param.getToken()).intValue();
-    }
-
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor during each firing,
-     *  as supplied by
-     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
-     */
-    protected int _getTokenProductionRate(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
-        if(param == null) {
-            if(p.isOutput())
-                return 1;
-            else
-                return 0;
-        }
-        return ((IntToken)param.getToken()).intValue();
-    }
-
-    /** Initialize the local data members of this object.  */
-    protected void _localMemberInitialize() {
-        LLMap _firingvector = new LLMap();
-        _firingvectorvalid = true;
-    }
 
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration.   Multiply all of the
@@ -512,80 +679,6 @@ public class SDFScheduler extends Scheduler {
                 remainingActors.removeOneOf(connectedActor);
             }
         }
-    }
-
-    /** Return the scheduling sequence.  An exception will be thrown if the
-     *  graph is not schedulable.  This occurs in the following circumstances:
-     *  <ul>
-     *  <li>The graph is not a connected graph.
-     *  <li>No integer solution exists for the balance equations.
-     *  <li>The graph contains cycles without delays (deadlock).
-     *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge)
-     *  </ul>
-     *
-     * @return An Enumeration of the deeply contained opaque entities
-     *  in the firing order.
-     * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable.
-     */
-
-    protected Enumeration _schedule() throws NotSchedulableException {
-        StaticSchedulingDirector dir =
-            (StaticSchedulingDirector)getContainer();
-        CompositeActor ca = (CompositeActor)(dir.getContainer());
-
-        // A linked list containing all the actors
-        CircularList AllActors = new CircularList();
-        Enumeration Entities = ca.deepGetEntities();
-
-
-        while(Entities.hasMoreElements()) {
-            ComponentEntity a = (ComponentEntity)Entities.nextElement();
-
-            if(a instanceof CompositeActor) {
-                Director containedDirector =
-                    ((CompositeActor) a).getDirector();
-                if(containedDirector instanceof StaticSchedulingDirector) {
-                    Scheduler containedScheduler =
-                        ((StaticSchedulingDirector) containedDirector)
-                        .getScheduler();
-                    try {
-                        containedScheduler.schedule();
-                    } catch (IllegalActionException e) {
-                        // This should never happen.
-                        throw new InternalErrorException(e.getMessage());
-                    }
-                }
-            }
-
-            // Fill AllActors with the list of things that we can schedule
-            // FIXME: What if other things can be scheduled than actors?
-            if(a instanceof Actor) AllActors.insertLast(a);
-        }
-
-        // First solve the balance equations
-        LLMap firings = _solveBalanceEquations(AllActors.elements());
-        firings = _normalizeFirings(firings);
-
-        _setFiringVector(firings);
-
-        _debug("Firing Vector:");
-        _debug(firings.toString() + "\n");
-
-        // Schedule all the actors using the calculated firings.
-        CircularList result = _scheduleConnectedActors(AllActors);
-
-        _setFiringVector(firings);
-
-        _debug("Firing Vector:");
-        _debug(firings.toString() + "\n");
-
-        _setContainerRates();
-
-        setValid(true);
-
-        return result.elements();
     }
 
     /** Create a schedule for a set of UnscheduledActors.  Given a valid
@@ -1002,93 +1095,6 @@ public class SDFScheduler extends Scheduler {
     private void _setFiringVector(LLMap newfiringvector) {
         _firingvector = newfiringvector;
         _firingvectorvalid = true;
-    }
-
-    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Input Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("TokenConsumptionRate");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"TokenConsumptionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
-    }
-
-    protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Output Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("TokenProductionRate");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"TokenProductionRate",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
-    }
-
-    protected void _setTokenInitProduction(Entity e, IOPort port, int rate)
-            throws NotSchedulableException {
-        if(rate <= 0) throw new NotSchedulableException(
-                "Rate must be > 0");
-        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not an Input Port.");
-        Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
-                port.getName() + " is not contained in Entity " +
-                e.getName());
-        Parameter param = (Parameter)
-            port.getAttribute("TokenInitProduction");
-        try {
-            if(param != null) {
-                param.setToken(new IntToken(rate));
-            } else {
-                param = new Parameter(port,"TokenInitProduction",
-                        new IntToken(rate));
-            }
-        } catch (Exception exception) {
-            // This should never happen.
-            // e might be NameDuplicationException, but we already
-            // know it doesn't exist.
-            // e might be IllegalActionException, but we've already
-            // checked the error conditions
-            throw new InternalErrorException(exception.getMessage());
-        }
     }
 
     /** Simulate the consumption of tokens by the actor during an execution.
