@@ -33,16 +33,16 @@ package ptolemy.actor.lib;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Typeable;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -79,6 +79,12 @@ public class ArrayElement extends Transformer {
     public ArrayElement(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        
+        // set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType inputArrayType = (ArrayType)input.getType();
+        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         index = new PortParameter(this, "index");
@@ -98,6 +104,22 @@ public class ArrayElement extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ArrayElement newObject = (ArrayElement)super.clone(workspace);
+        newObject.input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType inputArrayType = (ArrayType)newObject.input.getType();
+        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
+        return newObject;
+    }
 
     /** Consume at most one array from the input port and produce
      *  one of its elements on the output port.  If there is no token
