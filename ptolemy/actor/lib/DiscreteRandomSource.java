@@ -135,7 +135,7 @@ public class DiscreteRandomSource extends RandomSource {
             // Allow for roundoff error.
             if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this,
-                        "Parameter values is required to sum to one.");
+                        "Parameter values are required to sum to one.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -193,6 +193,7 @@ public class DiscreteRandomSource extends RandomSource {
 
             if (randomValue <= cdf) {
                 _current = valuesToken.getElement(i);
+                return;
             }
         }
 
