@@ -168,8 +168,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
                     "Attempt to get token that does not have "
                     + "have the earliest time stamp.");
         }
-        DDEDirector director = (DDEDirector)
-    ((Actor)getContainer().getContainer()).getDirector();
         synchronized( this ) {
             if ( _terminate ) {
                 throw new TerminateProcessException("");
@@ -242,8 +240,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public boolean hasToken(Branch branch) {
         Workspace workspace = getContainer().workspace();
-        DDEDirector director = (DDEDirector)((Actor)
-                getContainer().getContainer()).getDirector();
         Thread thread = Thread.currentThread();
         TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 
@@ -572,10 +568,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  @param time The time stamp associated with the token.
      */
     public void put(Token token, double time, Branch branch) {
-        Thread thread = Thread.currentThread();
         Workspace workspace = getContainer().workspace();
-        DDEDirector director = (DDEDirector)((Actor)
-                getContainer().getContainer()).getDirector();
 
         synchronized(this) {
 

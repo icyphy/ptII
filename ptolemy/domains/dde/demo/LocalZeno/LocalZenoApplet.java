@@ -305,7 +305,6 @@ public class LocalZenoApplet extends PtolemyApplet {
         getContentPane().add( _divaPanel );
 
         _graph = _constructDivaGraph();
-        final MutableGraphModel finalGraphModel = _graph;
         // display the graph.
         final GraphController gc = new LocalZenoGraphController();
         final GraphPane gp = new GraphPane(gc, _graph);
@@ -381,23 +380,9 @@ public class LocalZenoApplet extends PtolemyApplet {
     // The Diva graph
     private MutableGraphModel _graph;
 
-    // Flag to prevent spurious exceptions being thrown during _go().
-    private boolean _initCompleted = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
 
 
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutListener
-
-    private class LayoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-            final GraphModel g = _graph;
-            _doLayout(g, gp);
-        }
-    }
+      
 
     ///////////////////////////////////////////////////////////////////
     //// LocalZenoGraphController

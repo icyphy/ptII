@@ -74,7 +74,6 @@ public class DDEPutToken extends DDEPut {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
-        Token token = new Token();
         while (cnt < _numTokens) {
             Receiver[][] rcvrs = outputPort.getRemoteReceivers();
             for ( int i = 0; i < rcvrs.length; i++ ) {
@@ -114,7 +113,7 @@ public class DDEPutToken extends DDEPut {
     ////                         private variables                 ////
 
     private int _numTokens;
-    private int _pauseCnt = -1;
+
     private Token[] _tokens = null;
     private double[] _times = null;
     private boolean _oneArg = false;

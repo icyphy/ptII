@@ -154,7 +154,6 @@ public class TimeKeeper {
      * @return double The output time of this time keeper.
      */
     public synchronized double getOutputTime() {
-        Thread thread = Thread.currentThread();
 
         if ( !((ComponentEntity)_actor).isAtomic() ) {
             return _outputTime;

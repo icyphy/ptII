@@ -93,8 +93,7 @@ public class TwoPut extends TypedAtomicActor {
             for ( int j = 0; j < inRcvrs[i].length; j++ ) {
                 DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
                 if ( inRcvr.hasToken() ) {
-                    token = inRcvr.get();
-                    Thread thread = Thread.currentThread();
+                    token = inRcvr.get()
                     output1.broadcast(token);
                 }
             }

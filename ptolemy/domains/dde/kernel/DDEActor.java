@@ -155,7 +155,6 @@ public class DDEActor extends TypedAtomicActor {
      * @see ptolemy.domains.dde.kernel.DDEThread
      */
     Token _getNextInput() throws IllegalActionException {
-        String calleeName = getName();
         Thread thread = Thread.currentThread();
         if ( thread instanceof DDEThread ) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();

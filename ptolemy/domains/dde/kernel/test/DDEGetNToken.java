@@ -119,7 +119,6 @@ public class DDEGetNToken extends DDEGet {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
-        Token token;
         while (cnt < _numTokens) {
             boolean finished = false;
             Thread thread = Thread.currentThread();

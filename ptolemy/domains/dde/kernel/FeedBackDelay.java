@@ -176,7 +176,6 @@ public class FeedBackDelay extends DDEActor {
             ((BooleanToken)realDelay.getToken()).booleanValue();
         Thread thread = Thread.currentThread();
         if ( thread instanceof DDEThread ) {
-            DDEThread ddeThread = (DDEThread)thread;
             if ( token instanceof NullToken ) {
                 if ( delayNullVal ) {
                     _sendOutToken( token,
