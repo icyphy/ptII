@@ -18,6 +18,7 @@
 <li> <a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
 <li> <a href="#gr">GR (Three-D Graphics)</a>
 <li> <a href="#pn">PN (Process Networks)</a>
+<li> <a href="#psdf">SDF (Parameterized Synchronous Dataflow)</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
 <li> <a href="#sr">SR (Synchronous/Reactive)</a>
 <li> <a href="#tm">TM (Timed Multitasking)</a>
@@ -303,6 +304,41 @@ The PN domain in Ptolemy II has a highly experimental timed extension.
 This adds to the blocking reads a method for stalling processes until
 time advances. We anticipate that this timed extension will make
 interoperation with timed domains much more practical.
+
+<h2><a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a></h2>
+<p>
+   The Parameterized Synchronous Dataflow (PSDF) domain,
+   created by Steve Neuendorffer, and
+   Shuvra S. Bhattacharyya (University of Maryland at College Park)
+   is an
+   extension of the Synchronous Dataflow (SDF) domain that allows for
+   more extensive reconfiguration of models.  The SDF domain uses
+   static analysis of variable dependence to detect cases where rate
+   parameters may change.  By default, SDF disallows reconfiguration
+   of all rate parameters.  If rate parameters are allowed to change,
+   then SDF checks that rate parameters do not change during execution
+   of the schedule, and declares that inferred rate parameters for
+   external ports change as often as the internal rate parameters.
+
+   <p>This domain offers two key extensions:
+   <ol>
+   <li> Dependence analysis is used to determine if the modification to the
+   rate parameters occurs during execution of the SDF schedule.  If
+   this test passes, then a parameterized schedule is constructed.
+
+   <li> The generated schedule is checked for local synchrony, to determine
+   if external rate parameters may change.  The correct dependency
+   information for external ports is then declared.
+
+   </ol>
+
+   Note that the resulting behavior is identical to the SDF scheduler,
+   with rate parameter changes allowed, except much more efficient, since
+   scheduling on the fly is not necessary during every reconfiguration.
+   Additionally, code can be generated for the PSDF domain that allows
+   for efficient reconfiguration.  The added precision of dependency analysis
+   for external rate parameters also means that some hierarchical models that
+   would be ruled out by the SDF checks are allowed.
 
 <h2><a name="sdf">SDF</a></h2>
 <p>
