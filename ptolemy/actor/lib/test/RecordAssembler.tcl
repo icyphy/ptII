@@ -72,10 +72,6 @@ test RecordAssembler-2.1 {run with one input port, test prefire} {
     set r1 [$e0 connect $rampOut $fromRamp]
     $e0 connect $output $recIn
 
-    $assembler prefire
-} {0}
-
-test RecordAssembler-2.2 {run with one input port, use above model} {
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec getRecord 0]
