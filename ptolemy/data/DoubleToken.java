@@ -146,10 +146,10 @@ public class DoubleToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != DoubleToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
-
+        
         if (((DoubleToken)object).doubleValue() == _value) {
             return true;
         }

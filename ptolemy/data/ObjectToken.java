@@ -101,7 +101,7 @@ public class ObjectToken extends Token {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != ObjectToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

@@ -187,7 +187,7 @@ public class FixToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != FixToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

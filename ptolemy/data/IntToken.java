@@ -146,7 +146,7 @@ public class IntToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != IntToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

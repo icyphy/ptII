@@ -204,7 +204,7 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
-        if (object.getClass() != BooleanMatrixToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

@@ -144,7 +144,7 @@ public class ComplexToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != ComplexToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

@@ -151,7 +151,7 @@ public class StringToken extends AbstractConvertibleToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != StringToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

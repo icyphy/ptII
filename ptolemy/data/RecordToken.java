@@ -121,7 +121,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
-        if (object.getClass() != RecordToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

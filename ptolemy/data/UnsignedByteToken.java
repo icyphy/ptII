@@ -191,7 +191,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != UnsignedByteToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

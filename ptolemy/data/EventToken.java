@@ -57,7 +57,7 @@ public class EventToken extends Token {
      *   instance of a subclass of Token or any other classes.
      */
     public boolean equals(Object object) {
-        if (object.getClass() == Token.class) {
+        if (object.getClass() == getClass()) {
             return true;
         }
         return false;

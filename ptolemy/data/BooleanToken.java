@@ -195,7 +195,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != BooleanToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

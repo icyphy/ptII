@@ -213,7 +213,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
-        if (object.getClass() != LongMatrixToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

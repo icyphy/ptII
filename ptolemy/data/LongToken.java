@@ -134,7 +134,7 @@ public class LongToken extends ScalarToken {
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
-        if (object.getClass() != LongToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

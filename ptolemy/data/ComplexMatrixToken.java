@@ -231,7 +231,7 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
-        if (object.getClass() != ComplexMatrixToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 

@@ -200,7 +200,7 @@ public class FixMatrixToken extends MatrixToken {
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
-        if (object.getClass() != FixMatrixToken.class) {
+        if (object.getClass() != getClass()) {
             return false;
         }
 
