@@ -2,7 +2,7 @@
 A class that determines names of various entities to use for
 C code generation.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2001-2003 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

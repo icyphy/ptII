@@ -1,6 +1,6 @@
 /* Conversion of Ptolemy II models to generic weighted graphs.
 
- Copyright (c) 2001-2002 The University of Maryland. All rights reserved.
+ Copyright (c) 2001-2003 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above

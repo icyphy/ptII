@@ -1,7 +1,7 @@
 /* An actor that produces a javax.media.jai.RenderedOp from an
    image file specified as a URL.
 
-@Copyright (c) 2001 The Regents of the University of California.
+@Copyright (c) 2001-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

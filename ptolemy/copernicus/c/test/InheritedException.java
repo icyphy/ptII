@@ -3,7 +3,7 @@ A class that tests a single simple non-nested exception within a method. It
 throws an Exception of type java.io.IOException and catches anything of
 type java.lang.Exception.
 
-Copyright (c) 2001-2002 The University of Maryland
+Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

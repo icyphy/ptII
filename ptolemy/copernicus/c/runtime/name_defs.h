@@ -1,7 +1,7 @@
 /*******************************************************************
 Definitions of Names of Objects, and limits of variables
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2001-2003 The University of Maryland.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

@@ -1,7 +1,7 @@
 /* A simple class for testing standard output. This class sends the number
  * 42 to Out.println(int) instead of Simple.out.println().
 
-Copyright (c) 2001-2002 The University of Maryland
+Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

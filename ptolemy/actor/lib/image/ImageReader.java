@@ -1,7 +1,7 @@
 /* An actor that reads an image from a URL parameter and Object Token
 that contains a java.awt.Image
 
-@Copyright (c) 2001-2002 The Regents of the University of California.
+@Copyright (c) 2001-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* An actor that produces a sequence of frames from a video camera.
 
-@Copyright (c) 2001 The Regents of the University of California.
+@Copyright (c) 2001-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

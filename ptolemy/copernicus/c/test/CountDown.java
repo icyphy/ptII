@@ -1,6 +1,6 @@
 /* A class that outputs the numbers from 10 down to 0.
 
-Copyright (c) 2001-2002 The University of Maryland
+Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -2,7 +2,7 @@
 A simple program to test if inner classes can access public, protected and
 private fields of outer classes.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2001-2003 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

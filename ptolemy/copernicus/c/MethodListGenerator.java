@@ -3,7 +3,7 @@ A class that extracts ordered lists of method declarations
 with an ordering convention that facilitates translation
 of methods into function pointers (e.g., for C code generation).
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2001-2003 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

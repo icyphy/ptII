@@ -5,7 +5,7 @@ Dummy C code for overridden method
 Contains initializations needed to get System.out.println() and other
 needed functionality to be supported.
 
-Copyright (c) 2001 The University of Maryland.
+Copyright (c) 2001-2003 The University of Maryland.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
