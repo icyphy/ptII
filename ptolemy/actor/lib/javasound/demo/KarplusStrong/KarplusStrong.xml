@@ -5,9 +5,9 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="32000">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="32">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="68.0, 34.0">
         </property>
