@@ -94,8 +94,13 @@ public class BasicJApplet extends JApplet {
      */
     public void init() {
 
-        GraphicalMessageHandler.setContext(this);
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+        // Under Java 1.4.1_02, it seems like popping up a modal
+        // dialog from within the browser hangs the browser, so
+        // instead we use a non-graphical message handler.
+        //GraphicalMessageHandler.setContext(this);
+        //MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+
+        MessageHandler.setMessageHandler(new MessageHandler());
 
         // Process the background parameter.
         _background = null;
@@ -119,7 +124,7 @@ public class BasicJApplet extends JApplet {
      */
     public void report(Throwable throwable) {
         report(MessageHandler.shortDescription(throwable)
-                + " thrown by applet.", throwable);
+                + " thrown by applet!", throwable);
     }
 
     /** Report a message to the user.
