@@ -714,14 +714,35 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
 
 
+    /** Generate C code for an invocation of the 'new' (class instance
+     *  allocation) operator.  In other words, generate a call to
+     *  the corresponding version of the class constructor function.
+     *
+     *  @param node The AST node of the 'new' operation to be translated.
+     *  @param args Unused placeholder for visitor arguments.
+     *  @return Equivalent C code for the given 'new' operation.
+     */
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
         TreeNode enclosingInstance = node.getEnclosingInstance();
-
+       
+        // Extract the C function name of the associated class constructor. 
+        JavaDecl declaration = JavaDecl.getDecl(node);
+        TreeNode declarationNode = declaration.getSource();
+        if ((declarationNode == null) ||
+            !(declarationNode instanceof ConstructorDeclNode)) {
+            throw new RuntimeException("Could not resolve allocate node."
+                    + " A dump of the offending AST node follows.\n"
+                    + node.toString());
+        }
+        String functionName = (String)(declarationNode.getProperty(C_NAME_KEY));
+        
+        // FIXME figure out what support needs to be done for enclosing
+        // instances.    
         int enclosingID = enclosingInstance.classID();
-
-        if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) {
+        if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) 
+        {
 
             LinkedList enclosingStringList = (LinkedList)
                 node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
@@ -730,11 +751,9 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             retList.addLast(".");
         }
 
-        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
-
-        retList.addLast("new ");
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
+        retList.addLast(functionName);
         retList.addLast("(");
+        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
         retList.addLast(_commaList(argsList));
         retList.addLast(")");
 
@@ -1295,6 +1314,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         int level = ((Integer)(node.getProperty(INDENTATION_KEY))).intValue();
         return _indent(level);
     }
+
 
 
 }
