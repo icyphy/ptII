@@ -125,7 +125,6 @@ public class Memory extends CSPActor {
             }
         }
 
-        boolean beginning = true;
         StringToken token;
 
         while (true) {
