@@ -171,7 +171,7 @@ public class ArrayToken extends Token {
     }
 
     /** Return the length of the contained token array.
-     *  @return an Int.
+     *  @return The length of the contained token array.
      */
     public int length() {
 	return _value.length;
@@ -244,9 +244,8 @@ public class ArrayToken extends Token {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  The syntax is similar to a Matlab row vector.
-     *  @return A String beginning with "[" that contains expressions
-     *  for every element in the array separated by commas, ending with "]".
+     *  @return A String beginning with "{" that contains expressions
+     *  for every element in the array separated by commas, ending with "}".
      */
     public String toString() {
 	String s = "{";
