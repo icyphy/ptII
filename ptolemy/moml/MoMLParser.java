@@ -423,7 +423,7 @@ public class MoMLParser extends HandlerBase {
         // If there were any unrecognized elements, warn the user.
         if (_unrecognized != null) {
             StringBuffer warning = new StringBuffer(
-                    "Warning: Unrecognized elements:");
+                    "Warning: Unrecognized XML elements:");
             Iterator elements = _unrecognized.iterator();
             while (elements.hasNext()) {
                 warning.append(" " + elements.next().toString());
