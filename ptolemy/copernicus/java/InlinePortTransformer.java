@@ -335,8 +335,9 @@ public class InlinePortTransformer extends SceneTransformer {
                                 
                         if(SootUtilities.derivesFrom(type.getSootClass(), 
                                 PtolemyUtilities.portClass)) {
-                            // If we are invoking a method on a port class, then
-                            // attempt to get the constant value of the port.
+                            // If we are invoking a method on a port
+                            // class, then attempt to get the constant
+                            // value of the port.
                             TypedIOPort port = (TypedIOPort)
                                 getPortValue(method, (Local)r.getBase(), 
                                         stmt, localDefs, localUses);
@@ -352,6 +353,19 @@ public class InlinePortTransformer extends SceneTransformer {
                                        
                             }
                                     
+
+                            // Inline namedObj methods on the attribute.
+                            if(r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     port.getFullName()));
+                            } 
+                            if(r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     port.getName()));
+                            } 
+
                             String methodName = r.getMethod().getName();
                             if(port.getWidth() == 0 &&
                                     (methodName.equals("hasToken") ||

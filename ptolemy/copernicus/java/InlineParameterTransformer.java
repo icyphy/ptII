@@ -262,8 +262,9 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                         if(SootUtilities.derivesFrom(type.getSootClass(), 
                                 PtolemyUtilities.settableClass)) {
-                            // If we are invoking a method on a variable class, then
-                            // attempt to get the constant value of the variable.
+                            // If we are invoking a method on a
+                            // variable class, then attempt to get the
+                            // constant value of the variable.
                             Attribute attribute =
                                 getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
                             if(debug) System.out.println("Settable base = " + attribute);
@@ -273,10 +274,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                             // exception throw.
                             if(attribute == null) {
                                 Local exceptionLocal =
-                                    SootUtilities.createRuntimeException(body, stmt,
+                                    SootUtilities.createRuntimeException(
+                                            body, stmt,
                                             "NullPointerException: " + r);
                                 body.getUnits().swapWith(stmt, 
-                                        Jimple.v().newThrowStmt(exceptionLocal));
+                                        Jimple.v().newThrowStmt(
+                                                exceptionLocal));
                             }
 
                             // Inline getType, setTypeEquals, etc...
@@ -285,29 +288,52 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         stmt, box, r, (Typeable)attribute);
                             }
 
-                            // For Variables, we handle get/setToken, get/setExpression
-                            // different from other settables
+                            // Inline namedObj methods on the attribute.
+                            if(r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     attribute.getFullName()));
+                            } 
+                            if(r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     attribute.getName()));
+                            } 
+
+                            // For Variables, we handle get/setToken,
+                            // get/setExpression different from other
+                            // settables
                             if(attribute instanceof Variable) {
                                 // Deal with tricky methods separately.
 
-                                // Match the subsignature so we catch isomorphic subclasses as well...
+                                // Match the subsignature so we catch
+                                // isomorphic subclasses as well...
                                 if(r.getMethod().getSubSignature().equals(
                                         PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
-                                    SootClass variableClass = r.getMethod().getDeclaringClass();
-                                    SootMethod constructorWithoutToken = variableClass.getMethod(
-                                            PtolemyUtilities.variableConstructorWithoutToken.getSubSignature());
-                                    // Replace the three-argument constructor 
-                                    // with a two-argument constructor.
-                                    // We do this for several reasons: 
-                                    // 1) The assignment is redundant...  all 
-                                    // parameters are initialized with the appropriate
-                                    // value.
-                                    // 2) The type of the token
-                                    // is often wrong for polymorphic actors.
-                                    // 3) Later on, when we inline all token constructors,
-                                    // there is no longer a token to pass to the 
-                                    // constructor.   It is easier to just deal with 
-                                    // it now... 
+                                    SootClass variableClass = 
+                                        r.getMethod().getDeclaringClass();
+                                    SootMethod constructorWithoutToken =
+                                        variableClass.getMethod(
+                                                PtolemyUtilities.variableConstructorWithoutToken.getSubSignature());
+                                    // Replace the three-argument
+                                    // constructor with a two-argument
+                                    // constructor.  We do this for
+                                    // several reasons:
+
+                                    // 1) The assignment is
+                                    // redundant...  all parameters
+                                    // are initialized with the
+                                    // appropriate value.
+
+                                    // 2) The type of the token is
+                                    // often wrong for polymorphic
+                                    // actors.
+
+                                    // 3) Later on, when we inline all
+                                    // token constructors, there is no
+                                    // longer a token to pass to the
+                                    // constructor.  It is easier to
+                                    // just deal with it now...
                                   
                                     // Create a new two-argument contructor.
                                     box.setValue(Jimple.v().newSpecialInvokeExpr(

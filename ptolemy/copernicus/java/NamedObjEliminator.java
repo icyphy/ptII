@@ -131,7 +131,6 @@ public class NamedObjEliminator extends SceneTransformer {
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
                     
-                    // If any box is removable, then remove the statement.
                     for(Iterator boxes = unit.getUseAndDefBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
@@ -142,7 +141,8 @@ public class NamedObjEliminator extends SceneTransformer {
                         // Fix super.<init> calls. constructor...
                         if(value instanceof SpecialInvokeExpr) {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            if(expr.getBase().equals(body.getThisLocal())) {
+                            if(expr.getBase().equals(body.getThisLocal()) &&
+                               expr.getMethod().getName().equals("<init>")) {
                                 System.out.println("replacing constructor = " 
                                         + unit + " in method " + method);
                                 
@@ -160,12 +160,15 @@ public class NamedObjEliminator extends SceneTransformer {
                             body.getUnits().swapWith(identityStmt,
                                     Jimple.v().newAssignStmt(
                                             identityStmt.getLeftOp(),
+                                            
                                             NullConstant.v()));
                         }
+                        
                     }
                 }
             }
         }
+        // Reset the hierarchy, since we've changed superclasses and such.
         Scene.v().setActiveHierarchy(new Hierarchy());
         for(Iterator i = Scene.v().getApplicationClasses().iterator(); 
             i.hasNext();) {
@@ -213,11 +216,31 @@ public class NamedObjEliminator extends SceneTransformer {
                         // remove attachText
                         if(value instanceof InvokeExpr) {
                             InvokeExpr expr = (InvokeExpr)value;
-                            if(expr.getMethod().equals(
-                                   PtolemyUtilities.attachTextMethod)) {
+                            if(expr.getMethod().getSubSignature().equals(
+                                   PtolemyUtilities.attachTextMethod.getSubSignature())) {
                                 body.getUnits().remove(unit);
                                 break;
                             }
+                            // Inline namedObj methods on the
+                            // attribute.  
+                            // FIXME: This should do the
+                            // whole traceback business to ensure that
+                            // we are calling the methods on the
+                            // toplevel object.  This assumes we've
+                            // already removed other namedobj methods
+                            // on the object objects already.  See
+                            // InlineParameterTransformer and
+                            // InlinePortTransformer
+                            if(expr.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     _model.getFullName()));
+                            } 
+                            if(expr.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                box.setValue(StringConstant.v(
+                                                     _model.getName()));
+                            } 
                         }
                         // Remove other remaining method invocations.
                         // &&

@@ -840,6 +840,12 @@ public class PtolemyUtilities {
     // ptolemy.kernel.util.Settable.getExpression();
     public static SootMethod getExpressionMethod;
 
+    // ptolemy.kernel.util.NamedObj.getFullName
+    public static SootMethod getFullNameMethod;
+
+    // ptolemy.kernel.util.NamedObj.getName
+    public static SootMethod getNameMethod;
+
     // SootMethod representing
     // ptolemy.kernel.Entity.getPort
     public static SootMethod getPortMethod;
@@ -978,6 +984,11 @@ public class PtolemyUtilities {
                 "void attributeChanged(ptolemy.kernel.util.Attribute)");
         attachTextMethod = namedObjClass.getMethod(
                 "void _attachText(java.lang.String,java.lang.String)");
+        getFullNameMethod = 
+            namedObjClass.getMethod("java.lang.String getFullName()");
+        getNameMethod = 
+            namedObjClass.getMethod("java.lang.String getName()");
+
 
         attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
