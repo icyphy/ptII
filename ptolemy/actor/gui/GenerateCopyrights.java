@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
@@ -75,7 +76,36 @@ public class GenerateCopyrights {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate HTML for the Entities in a configuration. 
+    /** Generate HTML about the copyrights for classes that might
+     *  be present in the configuration.  This method contains
+     *  a list of classes and corresponding copyrights.  If
+     *  a class in the list is present, then we generate html
+     *  that contains a link to the copyright.  Note that if the
+     *  copyright file need not be present on the local machine,
+     *  we generate a link to the copy on the Ptolemy website.
+     *  @return A String containing HTML that describes what
+     *  copyrights are used by Entities in the configuration
+     */
+    public static String generateHTML() {
+        // A Map of copyrights, where the key is a URL naming
+        // the copyright and the value is a List of entities
+        // that use that as a copyright.
+        Map copyrightsMap = new HashMap();
+
+        // Alphabetical by className
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.joystick.Joystick",
+                "ptolemy/actor/lib/joystick/copyright.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.python.PythonScript",
+                "ptolemy/actor/lib/python/copyright.htm");
+        return generateHTML(copyrightsMap);
+    }
+
+
+    /** Generate HTML about the copyrights for the Entities in a
+     *  configuration. 
      *  @param configurationPath The configuration, for example
      *  "ptolemy/configs/full/configuration.xml"
      *  @return A String containing HTML that describes what
@@ -86,9 +116,9 @@ public class GenerateCopyrights {
         CompositeEntity configurationEntity =
             _expandConfiguration(configurationPath);
         
-        // A set of copyrights, where the key is a URL naming
+        // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
-        // that use that as a copyright
+        // that use that as a copyright.
         Map copyrightsMap = new HashMap();
 
         List entityList = configurationEntity.deepEntityList();
@@ -105,7 +135,11 @@ public class GenerateCopyrights {
             FileAttribute copyrightAttribute
                 = (FileAttribute) namedObj.getAttribute("_copyright");
             if (copyrightAttribute != null) {
-                URL copyrightURL = copyrightAttribute.asURL();
+                // Note that we don't get the value as a URL
+                // here because we do that later while generate the
+                // HTML in case we want to try to refer to the 
+                // website version
+                String copyrightURL = copyrightAttribute.getExpression();
                 Set entitiesSet = (Set) copyrightsMap.get(copyrightURL);
                 if (entitiesSet == null) {
                     // This is the first time we've seen this copyright,
@@ -124,19 +158,49 @@ public class GenerateCopyrights {
                 }
             }
         }
+        return generateHTML(copyrightsMap);
+    }
+
+
+    /** Generate HTML for the Entities in a copyrightMap.
+     *  @param copyrightsMap A Map of copyrights, where the key
+     *  is the URL naming the copyright and the value is a List
+     *  of entities that use that copyright.
+     *  @return A String containing HTML that describes what
+     *  copyrights are used by Entities in the configuration
+     */   
+    public static String generateHTML(Map copyrightsMap) {
+        String ptIICopyright = _findURL("ptolemy/configs/doc/copyright.htm");
+        String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
 
         // Ok, now generate HTML
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
-                + "</head>\n<body>\n<dl>\n");
+                + "</head>\n<body>\n<dl>\n" 
+                + "<h1>Ptolemy II Copyrights</h1>\n"
+                + "The primary copyright for Ptolemy II can be found\n"
+                + "in <a href=\"" + ptIICopyright + "\"><code>"
+                + ptIICopyright + "</code></a>\n"
+                + "<p>Ptolemy II uses AElfred as an XML Parser.\n"
+                + "AElfred is covered by the copyright in\n "
+                + "<a href=\"" + aelfredCopyright + "\"><code>"
+                + aelfredCopyright + "</code></a>\n"
+                + "<p>Various portions of Ptolemy II use code that falls\n"
+                + "under other copyrights.\n"
+                + "<p>Below, we list actors and their corresponding "
+                + "copyright.\n"
+                + "If an actor is not listed below, then the Ptolemy II\n "
+                + "copyright is the primary copyright"
+                + "<dl>\n");
+                
         Iterator copyrights = copyrightsMap.entrySet().iterator();
         while (copyrights.hasNext()) {
             Map.Entry entry = (Map.Entry)copyrights.next();
-            URL copyrightURL = (URL)entry.getKey();
+            String copyrightURL = (String)entry.getKey();
             Set entitiesSet = (Set)entry.getValue();
 
             StringBuffer entityBuffer = new StringBuffer();
-            entities = entitiesSet.iterator();
+            Iterator entities = entitiesSet.iterator();
             while (entities.hasNext()) {
                 if (entityBuffer.length() > 0) {
                     entityBuffer.append(", ");
@@ -144,29 +208,19 @@ public class GenerateCopyrights {
                 String entityClassName = (String)entities.next();
 
                 // If we have javadoc, link to it.
-                String entityHTML = entityClassName;
-
                 // Assuming that entityClassName contains a dot separated
                 // classpath here.
-                String docName = "doc.codeDoc." + entityBuffer;
-                try {
-                    // This works in Web Start, see
-                    // http://java.sun.com/products/javawebstart/faq.html#54
-                    URL toRead = Thread.currentThread()
-                        .getContextClassLoader().getResource(
-                                docName.replace('.', '/') + ".html");
-                    entityHTML = "<a href=\"" + toRead.toString() 
-                        + "\">" + entityHTML + "</a>";
-                } catch (Exception ex) {
-                    // Ignore, we could not find the documentation.
-                }
-                entityBuffer.append(entityHTML);
+                String docName = "doc.codeDoc." + entityClassName;
+                String codeDoc = _findURL(docName.replace('.', '/') + ".html");
+                entityBuffer.append("<a href=\"" + codeDoc
+                        + "\">" + entityClassName + "</a>");
             }
 
+            String foundCopyright = _findURL(copyrightURL);
 
             htmlBuffer.append("<dt>" + entityBuffer
-                    + "\n<dd> <a href=\"" + copyrightURL + "\"><code>"
-                    + copyrightURL + "</code></a>\n");
+                    + "\n<dd> <a href=\"" + foundCopyright + "\"><code>"
+                    + foundCopyright + "</code></a>\n");
         }
         htmlBuffer.append("</dl>\n</body>\n</html>");
         return htmlBuffer.toString();
@@ -194,13 +248,41 @@ public class GenerateCopyrights {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // If a className is can be found, then add the className
+    // and copyrightPath to copyrightsMap 
+    private static void _addIfPresent(Map copyrightsMap,
+            String className, String copyrightPath) {
+        try {
+            Class.forName(className);
+            Set entitiesSet = (Set) copyrightsMap.get(copyrightPath);
+            if (entitiesSet == null) {
+                // This is the first time we've seen this copyright,
+                // add a key/value pair to copyrights, where the key
+                // is the URL of the copyright and the value is Set
+                // of entities that correspond with that copyright.
+
+                entitiesSet = new HashSet();
+
+                entitiesSet.add(className);
+                copyrightsMap.put(copyrightPath, entitiesSet);
+            } else {
+                // Other classes are using this copyright, so add this
+                // one to the list.
+                entitiesSet.add(className);
+            }
+        } catch (Exception ex) {
+            // Ignore, this just means that the classname could
+            // not be found, so we need not include information
+            // about the copyright.
+            System.out.println("_addIfPresent: " + ex);
+        }
+    }
     /** Parse a configuration and return a CompositeEntity. 
      *  @param configurationPath The configuration, for example
      *  "ptolemy/configs/full/configuration.xml"
      *  @return A CompositeEntity that contains the configuration.
      */
-    // FIXME: should be private
-    public static CompositeEntity _expandConfiguration(String
+    private static CompositeEntity _expandConfiguration(String
             configurationPath) throws Exception {
         MoMLParser parser = new MoMLParser();
         // FIXME: save old filters?
@@ -232,4 +314,35 @@ public class GenerateCopyrights {
             (CompositeEntity)parser.parse(configurationURL, configurationURL);
     }
 
+    // Look for the localURL, and if we cannot find it, refer
+    // to the url on the website that corresponds with this version of
+    // Ptolemy II
+    private static String _findURL(String localURL) {
+        try {
+            URL url = Thread.currentThread()
+                .getContextClassLoader().getResource(localURL);
+            return url.toString();
+        } catch (Exception ex) {
+            // Ignore it and use the copyright from the website
+
+            // Substitute in the first two tuples of the version
+            // If the version is 3.0-beta-2, we end up with 3.0
+            StringBuffer majorVersionBuffer = new StringBuffer();
+
+            Iterator tuples = VersionAttribute.CURRENT_VERSION.iterator();
+
+            // Get the first two tuples and separate them with a dot.
+            if (tuples.hasNext()) {
+                majorVersionBuffer.append((String)tuples.next());
+                if (tuples.hasNext()) {
+                    majorVersionBuffer.append(".");
+                    majorVersionBuffer.append((String)tuples.next());
+                }
+            }
+            String majorVersion = majorVersionBuffer.toString();
+            return "http://ptolemy.eecs.berkeley.edu/ptolemyII/"
+                + "ptII" + majorVersion + "/ptII"
+                + majorVersion + "/" + localURL;
+        }
+    }
 }
