@@ -201,6 +201,17 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     }
 
+    /** Clears the the implicit surface function and gradient function.
+     *  @exception IllegalActionException If the super class throws
+     *  it.
+     */
+    public void wrapup() throws IllegalActionException {
+        _surfaceFunction = null;
+        _xGradientFunction = null;
+        _yGradientFunction = null;
+        _thetaGradientFunction = null;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     
