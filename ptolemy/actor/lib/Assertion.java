@@ -37,11 +37,20 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeTypeInference;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ScopeExtender;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Type;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
@@ -51,12 +60,45 @@ import ptolemy.kernel.util.*;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Assertion
 /**
+The Assertion actor evaluates an assertion that includes references
+to the inputs. The ports are referenced by the variables that have 
+the same name as the port. If the assertion is satisfied, nothing 
+happens. If not, an exception will be thrown.
+To use this class, instantiate it, then add ports (instances of TypedIOPort).
+In vergil, you can add ports by right clicking on the icon and selecting
+"Configure Ports".  In MoML you can add ports by just including ports
+of class TypedIOPort, set to be inputs, as in the following example:
+<p>
+<pre>
+   &lt;entity name="assertion" class="ptolemy.actor.lib.Assertion"&gt;
+      &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
+          &lt;property name="input"/&gt;
+      &lt;/port&gt;
+   &lt;/entity&gt;
+</pre>
+<p>
+The <i>assertion</i> parameter specifies an assertion that can
+refer to the inputs by name.  By default, the assertion
+is empty, and attempting
+to execute the actor without setting it triggers an exception.
+<p>
+The <i>errorTolerance</i> parameter specifies the accuracy of
+inputs referenced by the assertion. By default, the errorTolerance
+is 1e-4.
+<p>
+NOTE: There are a number of limitations in the current implementation.
+First, the errorTolerance adds constraints on the accuracy of the
+inputs. An alternative way is to leave the evaluator to handle
+the errorTolerance. Which one is better is still under discussion.
+Second, 
 
 @author Haiyang Zheng
 @version $Id$
@@ -130,11 +172,46 @@ public class Assertion extends TypedAtomicActor {
     public Object clone(Workspace workspace)
 	throws CloneNotSupportedException {
         Assertion newObject = (Assertion)super.clone(workspace);
+        newObject._tokenMap = null;
+        newObject._errorTolerance = (double)1e-4;
+        newObject._parseTree = null;
+        newObject._parseTreeEvaluator = null;
+        newObject._scope = null;
         return newObject;
     }
 
-    /** Update tokens in input ports.
+    /** Evaluate the assertion.
+     *  @exception IllegalActionException If the assertion is not valid.
      */
+    public Token evaluate() throws IllegalActionException {
+        Token result;
+        try {
+            if(_parseTree == null) {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(
+                        assertion.getExpression());
+            }
+            if(_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            if(_scope == null) {
+                _scope = new VariableScope();
+            }
+            result = _parseTreeEvaluator.evaluateParseTree(
+                    _parseTree, _scope);
+	    return result;
+        } catch (IllegalActionException ex) {
+            // Chain exceptions to get the actor that threw the exception.
+            throw new IllegalActionException(this, ex, "Assertion invalid.");
+        }
+    }
+
+    /** Consume tokens in input ports.
+     *  @exception IllegalActionException If the evaluation of the assertion
+     *   triggers it, or if there is no director, or if a
+     *   connected input has no tokens.    
+     */
+
     public void fire() throws IllegalActionException {
 
         Director director = getDirector();
@@ -158,28 +235,31 @@ public class Assertion extends TypedAtomicActor {
 			// calculate the precison specified by the error tolerance
 			// log10(errorTolerance) = logE(errorTolerance)/logE(10)
 			double precision = Math.log(_errorTolerance)/Math.log(10);
-			int decimalPlace = (int) Math.abs(Math.round(precision));
+			int preciseBits = (int) Math.abs(Math.round(precision));
 
 			BigDecimal valueBD = new BigDecimal(value);
-			valueBD = valueBD.setScale(decimalPlace,BigDecimal.ROUND_HALF_UP);
+			valueBD = valueBD.setScale(preciseBits,BigDecimal.ROUND_HALF_UP);
 			value = valueBD.doubleValue();
 			inputToken = new DoubleToken(value);
+
+			if (_debugging) {
+			    _debug("the modified input is" + ((DoubleToken)inputToken).doubleValue());
+			}
 		    }
 
-                    Variable var =
-                        (Variable)(getAttribute(port.getName()));
-                    var.setToken(inputToken);
+		    // update the local copy of the input values
+                    _tokenMap.put(port.getName(), inputToken);
                 }
             }
         }
     }
-
 
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _tokenMap = new HashMap();
     }
 
     /** Evaluation the assertion.
@@ -188,7 +268,7 @@ public class Assertion extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
 
-        BooleanToken result = (BooleanToken) assertion.getToken();
+        BooleanToken result = (BooleanToken) evaluate();
 
         if (!result.booleanValue()) {
             throw new IllegalActionException(this,
@@ -278,9 +358,101 @@ public class Assertion extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    // Find the variable with the given name in the scope of
+    // this actor, and return it.  If there is no such
+    // variable, then return null.
+    private Variable _findVariable(String name) {
+        NamedObj container = (NamedObj)Assertion.this;
+        while (container != null) {
+            Variable result = _searchIn(container, name);
+            if (result != null) {
+                return result;
+            } else {
+                container = (NamedObj)container.getContainer();
+            }
+        }
+        return null;
+    }
+
+    // Search in the container for an attribute with the given name.
+    // Search recursively in any instance of ScopeExtender in the
+    // container.
+    private Variable _searchIn(NamedObj container, String name) {
+        Attribute result = container.getAttribute(name);
+        if (result != null && result instanceof Variable)
+            return (Variable)result;
+        Iterator extenders =
+            container.attributeList(ScopeExtender.class).iterator();
+        while (extenders.hasNext()) {
+            ScopeExtender extender = (ScopeExtender)extenders.next();
+            result = extender.getAttribute(name);
+            if (result != null && result instanceof Variable)
+                return (Variable)result;
+        }
+        return null;
+    }
+
+    private class VariableScope implements ParserScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Token get(String name) throws IllegalActionException {
+
+            Token token = (Token)_tokenMap.get(name);
+            if(token != null) {
+                return token;
+            }
+            
+            Variable result = _findVariable(name);     
+            if (result != null) {
+                return result.getToken();
+            }
+            return null;
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Type getType(String name) throws IllegalActionException {
+
+            // Check the port names.
+            TypedIOPort port = (TypedIOPort)getPort(name);
+            if(port != null) {
+                return port.getType();
+            }
+              
+            Variable result = _findVariable(name);
+            if(result != null) {
+                return result.getType();
+            }
+            return null;
+        }
+
+        /** Return the list of attributes within the scope.
+         *  @return The list of attributes within the scope.
+         */
+        public NamedList variableList() {
+            return null;
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Parameter, the error tolerance, local copy
     protected double _errorTolerance;
+    
+    // The local copy of the input tokens.
+    private Map _tokenMap;
 
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+    private ASTPtRootNode _parseTree = null;
+    private VariableScope _scope = new VariableScope();
 }
