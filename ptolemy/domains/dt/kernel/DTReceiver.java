@@ -270,6 +270,14 @@ public class DTReceiver extends SDFReceiver {
         _localTime = _localTime + _deltaTime;
         return super.get();
     }
+    
+    /**  Return the local time associated with this receiver.
+     *
+     *   @return The local time associated with this receiver.
+     */
+    public double getCurrentTime() {
+        return _localTime;
+    }
 
 
     /** Return the time interval between tokens for this receiver.

@@ -4,7 +4,7 @@
 <entity name="sr" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[23, 34]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[36, 69]">
     </property>
     <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -24,7 +24,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="152.0, 165.0">
+        <property name="_location" class="ptolemy.moml.Location" value="141.0, 208.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -67,20 +67,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="438.0, 303.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,5.0,10.0,PI/2.8,PI/3.9,PI/4.1}">
         </property>
@@ -106,6 +92,5 @@
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="Display.input" relation="relation3"/>
     <link port="Test.input" relation="relation3"/>
 </entity>

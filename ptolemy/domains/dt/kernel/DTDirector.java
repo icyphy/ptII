@@ -236,7 +236,6 @@ public class DTDirector extends SDFDirector {
      *  director returns false in its prefire().
      */
     public void fire() throws IllegalActionException {
-    //  -fire-
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
         double presentTime;
@@ -250,6 +249,7 @@ public class DTDirector extends SDFDirector {
         // and during fire(), so time may not be properly updated
         // before this stage of the execution.
         _checkValidTimeIntervals();
+        _postfirereturns = true;
 
         if (!_isFiringAllowed) {
             return;
@@ -305,7 +305,9 @@ public class DTDirector extends SDFDirector {
                     _debug("Firing " + ((Nameable)actor).getFullName());
 
                 actor.fire();
-                _postfirereturns = actor.postfire();
+
+                // note: short circuit evaulation here
+                _postfirereturns = actor.postfire() && _postfirereturns;
 
                 if (isFiringNonDTCompositeActor) {
 		            _pseudoTimeEnabled = false;
@@ -318,7 +320,7 @@ public class DTDirector extends SDFDirector {
         if ((outsideDirector != null) && _shouldDoInternalTransferOutputs) {
             _issueTransferOutputs();
         }
-
+        // fire_
     }
 
 
@@ -544,8 +546,6 @@ public class DTDirector extends SDFDirector {
      *  it.
      */
     public boolean postfire() throws IllegalActionException {
-    //  -postfire-
-
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
         _currentTime = _formerValidTimeFired + timeIncrement;
@@ -554,9 +554,9 @@ public class DTDirector extends SDFDirector {
           return true;
         }
 
-        boolean returnValue = super.postfire();
+        boolean returnValue = super.postfire() && _postfirereturns;
         return returnValue;
-
+        // When an actor's postfire_ returns false, whole model should stop.
     }
 
     /** Check the input ports of the container composite actor (if there
