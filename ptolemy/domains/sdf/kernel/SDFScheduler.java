@@ -516,7 +516,7 @@ public class SDFScheduler extends Scheduler {
                         inputPort.getFullName());
             }
 
-             int threshold = getTokenConsumptionRate(inputPort);
+            int threshold = getTokenConsumptionRate(inputPort);
             if (_debugging && VERBOSE) {
                 _debug("Threshold = " + threshold);
             }
@@ -1780,13 +1780,13 @@ public class SDFScheduler extends Scheduler {
                 }
 
                 for (int destinationIndex = 0;
-                        destinationIndex < receivers[sourceChannel].length;
-                        destinationIndex++) {
+                     destinationIndex < receivers[sourceChannel].length;
+                     destinationIndex++) {
                     IOPort connectedPort = (IOPort)
-                            receivers[sourceChannel][destinationIndex].
-                            getContainer();
+                        receivers[sourceChannel][destinationIndex].
+                        getContainer();
                     ComponentEntity connectedActor =
-                            (ComponentEntity) connectedPort.getContainer();
+                        (ComponentEntity) connectedPort.getContainer();
 
                     // The channel of the destination port that is
                     // connected to sourceChannel.
@@ -1820,9 +1820,9 @@ public class SDFScheduler extends Scheduler {
                         // Check and see whether the connectedActor
                         // can be scheduled.
                         int inputCount = _countUnfulfilledInputs(
-                               (Actor)connectedActor,
-                               actorList,
-                               waitingTokens);
+                                (Actor)connectedActor,
+                                actorList,
+                                waitingTokens);
                         int firingsRemaining = _getFiringCount(connectedActor);
                         // If so, then add it to the proper list.
                         // Note that the

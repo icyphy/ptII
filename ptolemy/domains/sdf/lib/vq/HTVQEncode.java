@@ -433,7 +433,7 @@ public class HTVQEncode extends Transformer {
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
             p0[0][0] = _lookupTable[stage][ip];
             stage++;
-          }
+        }
 
         return p0[0][0];
     }

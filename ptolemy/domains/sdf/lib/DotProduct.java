@@ -93,7 +93,7 @@ public class DotProduct extends TypedAtomicActor {
         // Set the type constraints.
         output.setTypeAtLeast(new PortFunction(input1, input2));
 
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////

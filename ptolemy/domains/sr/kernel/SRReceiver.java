@@ -111,8 +111,8 @@ public class SRReceiver extends AbstractReceiver {
     public void clear() throws IllegalActionException {
         if (isKnown() && hasToken()) {
             throw new IllegalActionException(
-            "SRReceiver: Cannot transition from a present state "
-            + "to an absent state.");
+                    "SRReceiver: Cannot transition from a present state "
+                    + "to an absent state.");
         }
         _token = null;
         _known = true;
@@ -130,7 +130,7 @@ public class SRReceiver extends AbstractReceiver {
         }
         if (!isKnown()) {
             throw new UnknownTokenException(
-                "SRReceiver: get() called on SRReceiver with unknown state.");
+                    "SRReceiver: get() called on SRReceiver with unknown state.");
         }
         return _token;
     }

@@ -379,8 +379,8 @@ public class TMDirector extends Director {
                         // Start a new task.
                         // Now the behavior depend on whether the
                         // execution is preemptive.
-                         _preemptive =
-                           ((BooleanToken)preemptive.getToken()).booleanValue();
+                        _preemptive =
+                            ((BooleanToken)preemptive.getToken()).booleanValue();
                         if (!_preemptive) {
                             event = (TMEvent)_eventQueue.take();
                             event.startProcessing();

@@ -226,7 +226,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         Schedule schedule = _getSchedule();
         boolean usingRandomizedScheduler =
-               (getScheduler() instanceof SRRandomizedScheduler);
+            (getScheduler() instanceof SRRandomizedScheduler);
 
         _initFiring();
 
@@ -540,7 +540,7 @@ public class SRDirector extends StaticSchedulingDirector {
                     // Whether all inputs are known must be checked before
                     // firing to handle cases with self-loops.
                     boolean allInputsKnownBeforeFiring =
-                            _areAllInputsKnown(actor);
+                        _areAllInputsKnown(actor);
                     actor.fire();
 
                     if (_actorsFired == null) {

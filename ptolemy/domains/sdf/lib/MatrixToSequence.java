@@ -187,7 +187,7 @@ public class MatrixToSequence extends SDFTransformer {
         int actualRowCount = token.getRowCount();
         int actualColumnCount = token.getColumnCount();
         boolean enforce = ((BooleanToken)enforceMatrixSize.getToken())
-                .booleanValue();
+            .booleanValue();
         if (enforce) {
             int rowsValue = ((IntToken)rows.getToken()).intValue();
             int columnsValue = ((IntToken)columns.getToken()).intValue();

@@ -171,14 +171,14 @@ public class SequenceToMatrix extends SDFTransformer {
         // Use reflection, to avoid having to have a case statement
         // on the type.
         Class outputTokenClass
-                = ((UnsizedMatrixType)output.getType()).getTokenClass();
+            = ((UnsizedMatrixType)output.getType()).getTokenClass();
         Class[] argumentTypes = new Class[3];
         argumentTypes[0] = Token[].class;
         argumentTypes[1] = int.class;
         argumentTypes[2] = int.class;
         try {
             Constructor constructor
-                    = outputTokenClass.getConstructor(argumentTypes);
+                = outputTokenClass.getConstructor(argumentTypes);
             Object[] arguments = new Object[3];
             arguments[0] = valueArray;
             arguments[1] = new Integer(rowsValue);
@@ -187,7 +187,7 @@ public class SequenceToMatrix extends SDFTransformer {
             output.send(0, outputToken);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-            "Cannot find a suitable output matrix type.");
+                    "Cannot find a suitable output matrix type.");
         }
     }
 
