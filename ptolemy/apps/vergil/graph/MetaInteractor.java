@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright (c) 1998-2000 The Regents of the University of California.
+ * Copyright (c) 1998-2003 The Regents of the University of California.
  * All rights reserved. See the file COPYRIGHT for details.
  *
  */

@@ -374,7 +374,7 @@ public abstract class Top extends JFrame {
                 "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
-                "Copyright (c) 1997-2001, " +
+                "Copyright (c) 1997-2003, " +
                 "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }

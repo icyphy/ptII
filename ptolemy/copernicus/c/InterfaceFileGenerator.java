@@ -2,7 +2,7 @@
 A C code generator for generating "interface header files"
 that implement Java classes.
 
-Copyright (c) 2002 The University of Maryland.
+Copyright (c) 2002-2003 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

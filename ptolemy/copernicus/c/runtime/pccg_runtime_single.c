@@ -1,7 +1,7 @@
 /*
 Code for runtime functions used in single-class mode.
 
-Copyright (c) 2002 The University of Maryland.
+Copyright (c) 2002-2003 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
