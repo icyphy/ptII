@@ -4,7 +4,7 @@
 # Author:  Christopher Hylands
 # Version: $Id$
 #
-# Copyright (c) 1990-1998 The Regents of the University of California.
+# Copyright (c) 1998 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,57 +30,49 @@
 # 						COPYRIGHTENDKEY
 
 # This script attempts to determine the location of the
-# Java Pxgraph class file and JAVAHOME.
+# Java Ptplot class file and JAVAHOME.
 #
-# To run this script, you need to set the TYCHO and JAVAHOME
+# To run this script, you need to set the PTII and JAVAHOME
 # environment variables.  If you do not set these variables
 # then the script will guess values.
 #
-# If the Pxgraph class is at /users/ptdesign/tycho/java/ptolemy/plot/Pxgraph.class
-# then the TYCHO variable should be set to /users/ptdesign/tycho
+# If the PlotApplication class is at
+# /users/ptII/ptolemy/plot/PlotApplication.class
+# then the PTII variable should be set to /users/ptII
 #
 # Your JAVAHOME variable should be set to the directory that
 # contains your Java distribution.  For example, your .cshrc could contain:
-# setenv JAVAHOME /opt/jdk1.1.5
+# setenv JAVAHOME /opt/jdk1.1.7
 #
-# See the Pxgraph class documentation for further instructions.
+# See the PlotApplication class documentation for further instructions.
 #
 # These are the defaults that we use in the script below.
 # If you are installing this script, feel free to edit these
 
-PTDEFAULT=/users/ptdesign
-TYDEFAULT=/users/ptdesign/tycho
+PTIIDEFAULT=/users/ptII
 JAVADEFAULT=/usr/java
 
 ################
 # You probably don't want to edit below here
 
-# We attempt to set the PTOLEMY variable so we can use
-# it if TYCHO is not set.
-if [ -z "$PTOLEMY" ]; then
-    if [ "$TYCHO" -a -f "$TYCHO/../bin/ptarch" ]; then
-	PTOLEMY="$TYCHO/.."
-	export PTOLEMY
-    elif [ -d "$PTDEFAULT" ]; then
-	PTOLEMY="$PTDEFAULT"
-	export PTOLEMY
+if [ -z "$PTII" ]; then
+    if [ -d "$PTIIDEFAULT" ]; then
+	PTII="$PTIIDEFAULT"
+	export PTII
     fi
 fi
 
-if [ -z "$TYCHO" ]; then
-    if [ "$PTOLEMY" -a -f "$PTOLEMY/tycho/bin/ptarch" ]; then
-	TYCHO="$PTOLEMY/tycho"
-	export TYCHO
-    elif [ -d "$TYDEFAULT" ]; then
-	TYCHO="$TYDEFAULT"
-	export TYCHO
-    fi
-    export TYCHO
-fi
-
-if [ ! -f $TYCHO/java/ptolemy/plot/ptolemy.plot.jar ]; then
-    echo "$0: Warning, $TYCHO/java/ptolemy/plot/ptolemy.plot.jar does not exist"
+if [ ! -f $PTII/ptolemy/plot/ptolemy.plot.jar ]; then
+    echo "$0: Warning, $PTII/java/ptolemy/plot/ptolemy.plot.jar does not exist"
     echo "  Perhaps you need to install ptplot or edit the variables in $0?"
+fi
+
+# We can start up either Pxgraph or PlotApplication here
+if [ "`basename $0`" = "pxgraph" ]; then
+    javastartupclass=ptolemy.plot.Pxgraph
+
+else
+    javastartupclass=ptolemy.plot.PlotApplication
 fi
 
 windows=no
@@ -143,14 +135,14 @@ if [ "$windows" = "yes" ]; then
     # Windows via Cygwin32
     # chdir prints the current directory in DOS format.
     # The tr command deletes the \r at the end
-    WINTYCHOJAVA=`(cd $TYCHO/java; cmd /c chdir) | tr -d '\r'`
-    $JAVAHOME/bin/java -classpath $WINTYCHOJAVA\;$JAVAHOME\\lib\\classes.zip ptolemy.plot.Pxgraph ${1+"$@"}
+    WINPTII=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
+    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip $javastartupclass ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
-    CLASSPATH=$TYCHO/java
+    CLASSPATH=$PTII
     export CLASSPATH
-    java ptolemy.plot.Pxgraph ${1+"$@"}
+    java $javastartupclass ${1+"$@"}
 else
-    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip ptolemy.plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $PTII:$JAVAHOME/lib/classes.zip $javastartupclass ${1+"$@"}
 fi
 
 
