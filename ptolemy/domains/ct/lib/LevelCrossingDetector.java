@@ -211,21 +211,21 @@ public class LevelCrossingDetector extends Transformer
         if (director.isDiscretePhase()) {
             if (hasCurrentEvent()) {
                 // Emit event.
-                if (_debugging) {
-                    _debug(getFullName() + " Emitting event: " +
-                            (_inputToken != null
-                                    ? _inputToken.toString()
-                                    : "inputToken == null, sending "
-                                    + "defaultEventValue.getToken()"));
+                if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
+                    output.send(0, defaultEventValue.getToken());
+                    if (_debugging) {
+                        _debug(getFullName() + " Emitting event: " + defaultEventValue.getToken());
+                    }
+                } else {
+                    output.send(0, new DoubleToken(_level));
+                    if (_debugging) {
+                        _debug(getFullName() + " Emitting event: " + _level);
+                    }
                 }
-		if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
-            output.send(0, defaultEventValue.getToken());
-        } else {
-            output.send(0, new DoubleToken(_level));
-        }
                 _eventNow = false;
             }
         }
+        super.fire();
     }
 
     /** Return true if there is an event at the current time.
@@ -243,7 +243,7 @@ public class LevelCrossingDetector extends Transformer
         super.initialize();
         _first = true;
         _eventMissed = false;
-        _enabled = false;
+        _enabled = true;
         _eventNow = false;
         if (_levelChanged) {
             _level = ((DoubleToken)level.getToken()).doubleValue();
@@ -269,6 +269,11 @@ public class LevelCrossingDetector extends Transformer
      */
     public boolean isThisStepAccurate() {
         if (_first) {
+            if (_debugging) {
+                _debug(this.getFullName() + " has _first as true.");
+                _debug(this.getFullName() + " has last trigger " + _lastTrigger);
+                _debug(this.getFullName() + " has current trigger " + _thisTrigger);
+            }
             _first = false;
             _eventNow = false;
             return true;
@@ -277,6 +282,11 @@ public class LevelCrossingDetector extends Transformer
         // If at breakpoints, no step size refinement is necessary.
         // The step size is 0.0, and it is always accurate.
         if (((CTDirector)getDirector()).isBreakpointIteration()) {
+            if (_debugging) {
+                _debug(this.getFullName() + " is in breakpoint iteration.");
+                _debug(this.getFullName() + " has last trigger " + _lastTrigger);
+                _debug(this.getFullName() + " has current trigger " + _thisTrigger);
+            }
             // Check if the discontinuity generates events.
             if ((_lastTrigger - _level) * (_thisTrigger - _level)
                     < 0.0) {
@@ -296,6 +306,7 @@ public class LevelCrossingDetector extends Transformer
             _debug(this.getFullName() + " This trigger " + _thisTrigger);
             _debug(this.getFullName() + " The last trigger " + _lastTrigger);
         }
+
         if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
@@ -335,6 +346,9 @@ public class LevelCrossingDetector extends Transformer
      */
     public boolean postfire() {
         _lastTrigger = _thisTrigger;
+        if (_debugging) {
+            _debug("Called postfire()");
+        }
         return true;
     }
 
@@ -395,7 +409,7 @@ public class LevelCrossingDetector extends Transformer
     // this trigger input.
     private double _thisTrigger;
 
-    // flag indicating if the event detection is enable for this step
+    // flag indicating if the event detection is enabled for this step
     private boolean _enabled;
 
     // flag indicating if there is an event at the current time.
