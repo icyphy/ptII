@@ -65,6 +65,7 @@ public class RcvrTimeTriple extends NamedObj {
             int priority ) {
         super();
         _rcvr = rcvr;
+	int x;
         try {
             setTime(rcvrTime); 
             setPriority(priority);
