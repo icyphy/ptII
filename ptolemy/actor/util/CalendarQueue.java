@@ -684,10 +684,6 @@ public class CalendarQueue implements Debuggable {
             tail = null;
         }
 
-        public final Object first() {
-            return head.contents;
-        }
-
         public final boolean includes(Object object) {
             return (head.find(object) != null);
         }
