@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 # Version: $Id$
 # Author: Christopher Hylands
 #
@@ -83,7 +83,10 @@ cp $shortfiles $reviewdir
 ####################################
 echo "Generating PostScript of the docs"
 cd $reviewdir/codeDoc
-sh /users/cxh/pt/tycho/bin/html2ps -d javadocs.ps $basedir
+
+# html2ps is a hack that often does not work
+sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $basedir
+
 cd ..
 psnup -n 2 < javadocs.ps > javadocs2up.ps
 
@@ -97,13 +100,14 @@ distill *.ps
 
 
 # HTML file to generate
-outfile=$reviewname.html
-
+# This file is _not_ called index.html so that reviews can see the 
+# contents of this directory.
+outfile=review.htm
 
 
 ####################################
 echo "Generate a html file with the appropriate links"
-cat > $outfile <<EOF
+cat >$outfile <<EoF
 <!-- $Id$
 
 This file should be of the form yyyymmdd-design.htm, for example
@@ -114,7 +118,7 @@ Links are relative, not absolute.
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<link href="../../lib/default.css" rel="stylesheet" type="text/css">
+<link href="/~ptII/lib/default.css" rel="stylesheet" type="text/css">
 <title>Title</title>
 </head>
 <body>
@@ -138,20 +142,24 @@ Links are relative, not absolute.
 EoF
 
 
-for file in $shortfiles do
-    echo "  <li><a href="reviewname/$file"><code>$file</code><a/>" >> outfile
+for file in $shortfiles
+do
+    echo "  <li><a href=\"$file\"><code>$file</code><a/>" >>$outfile
 done
 
-cat <<Eof
-  <li><a href="$reviewname/javafiles2up.pdf" target="_top">PDF printout of above files in 2up</a>"
+cat >>$outfile <<EOF
+  <li><a href="javafiles.ps" target="_top">PostScript</a> -
+<a href="javafiles.pdf" target="_top">PDF</a>
+  <li><a href="javafiles2up.ps" target="_top">2 up PostScript</a> -
+<a href="javafiles2up.pdf" target="_top">2 up PDF</a>
   </menu>
 <li> Javadoc 
   <menu>
-  <li><a href="$reviewname/codeDoc/index.html">HTML</a>
-  <li><a href="$reviewname/javadocs.ps">PostScript</a> -
-    <a href="$reviewname/javadocs.pdf">PDF</a> -
-  <li><a href="$reviewname/javafiles2up.ps" target="_top">2 up PostScript</a> -
-<a href="$reviewname/javafiles2up.pdf" target="_top">2 up PDF</a>
+  <li><a href="codeDoc/index.html">HTML</a>
+  <li><a href="javadocs.ps">PostScript</a> -
+    <a href="javadocs.pdf">PDF</a>
+  <li><a href="javadocs2up.ps" target="_top">2 up PostScript</a> -
+<a href="javadocs2up.pdf" target="_top">2 up PDF</a>
   </menu>
 <li> <i>UML Diagram</i>
 </menu>
