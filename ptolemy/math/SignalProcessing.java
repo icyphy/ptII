@@ -50,309 +50,6 @@ public class SignalProcessing {
     // be instantiated.
     private SignalProcessing() {}
 
-    /** This class generates samples of a Gaussian function with the
-     *  specified mean and standard deviation.
-     *  The function computed is :
-     *  <p>
-     *  <pre>
-     *  h(t) = (1/(sqrt(2*PI) * stdDev) *
-     *         exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
-     *  </pre>
-     *  </p>
-     */
-    public static class GaussianSampleGenerator implements SampleGenerator {
-
-        /** Construct a GaussianSampleGenerator.
-         *  @param mean The mean of the Gaussian function.
-         *  @param phase The standard deviation of the Gaussian function.
-         */
-        public GaussianSampleGenerator(double mean, double standardDeviation) {
-            _mean = mean;
-            _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
-            _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
-        }
-
-        /** Return a sample of the Gaussian function, sampled at the
-         *  specified time.
-         */
-        public final double sampleAt(double time) {
-            double shiftedTime = time - _mean;
-            return _factor *
-                Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
-        }
-
-        private final double _mean, _oneOverVariance, _factor;
-        private static final double ONE_OVER_SQRT_TWO_PI =
-        1.0 / Math.sqrt(2 * Math.PI);
-    }
-
-    /** This class generates samples of a line with the specified
-     *  slope and y-intercept.
-     *  The function computed is :
-     *  <p>
-     *  <pre>
-     *  h(t) = slope * t + yIntercept
-     *  </pre>
-     *  </p>
-     */
-    public static class LineSampleGenerator implements SampleGenerator {
-
-        /** Construct a LineSampleGenerator.
-         *  @param slope The slope of the line.
-         *  @param yIntercept The y-intercept of the line.
-         */
-        public LineSampleGenerator(double slope, double yIntercept) {
-            _slope = slope;
-            _yIntercept = yIntercept;
-        }
-
-        /** Return a sample of the line, sampled at the specified time.
-         */
-        public final double sampleAt(double time) {
-            return _slope * time + _yIntercept;
-        }
-
-        private final double _slope, _yIntercept;
-    }
-
-    /** This class generates samples of a sawtooth wave with the specified
-     *  period and phase. The returned values range between -1.0 and 1.0.
-     */
-    public static class SawtoothSampleGenerator implements SampleGenerator {
-
-        /** Construct a SawtoothSampleGenerator with the given period and
-         *  phase.  The phase is given as a fraction of a cycle,
-         *  typically ranging from 0.0 to 1.0.  If the phase is 0.0 or 1.0,
-         *  the wave begins at zero with a rising slope.  If it is 0.5, it
-         *  begins at the falling edge with value -1.0.
-         *  If it is 0.25, it begins at +0.5.
-         */
-        SawtoothSampleGenerator(double period, double phase) {
-            _period = period;
-            _phase = phase;
-        }
-
-        /** Return a sample of the sawtooth wave, sampled at the
-         *  specified time.
-         */
-        public final double sampleAt(double time) {
-            double point = ((time / _period) + _phase + 0.5) % 1.0;
-            return 2.0 * point - 1.0;
-        }
-
-        private final double _period, _phase;
-    }
-
-    /** This class generates samples of a sinusoidal wave.
-     *  The function computed is :
-     *  <p>
-     *  <pre>
-     *  h(t) = cos(frequency * t + phase)
-     *  </pre>
-     *  </p>
-     *  To use this class to generate a sine wave, simply
-     *  subtract PI/2 from the
-     *  phase, since sin(t) = cos(t - PI/2).
-     */
-    public static class SinusoidSampleGenerator implements SampleGenerator {
-
-        /**
-         *  Construct a SinusoidSampleGenerator.
-         *  @param frequency The frequency of the cosine wave, in radians per
-         *  unit time.
-         *  @param phase The phase shift, in radians.
-         *  @param range The absolute value of the range of the wave.
-         */
-        public SinusoidSampleGenerator(double frequency, double phase) {
-            _frequency = frequency;
-            _phase = phase;
-        }
-
-        public final double sampleAt(double time) {
-            return Math.cos(_frequency * time + _phase);
-        }
-
-        private final double _frequency, _phase;
-    }
-
-    /** This class generates samples of a raised cosine pulse, or if the
-     *  excess is zero, a modified sinc function.
-     *  <p>
-     *  The function that is computed is:
-     *  <p>
-     *  <pre>
-     *         sin(PI t/T)   cos(excess PI t/T)
-     *  h(n) = ----------- * -----------------
-     *          PI t/T      1-(2 excess t/T)<sup>2</sup>
-     *  </pre>
-     *  <p>
-     *  This is called a "raised cosine pulse" because in the frequency
-     *  domain its shape is that of a raised cosine.
-     *  <p>
-     *  For some applications, you may wish to apply a window function to this
-     *  impulse response, since it is rather abruptly terminated at the two \
-     *  ends.
-     *  <p>
-     *  This implementation is ported from the Ptolemy 0.x implementation
-     *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: <a href=http://www.amazon.com/exec/obidos/ASIN/0792393910/qid%3D910596335/002-4907626-8092437>E. A. Lee and D. G. Messerschmitt,
-     *  <i>Digital Communication, Second Edition</i>,
-     *  Kluwer Academic Publishers, Boston, 1994.</a>
-     *
-     */
-    public static class RaisedCosineSampleGenerator implements SampleGenerator {
-
-        /*  Construct a RaisedCosineSampleGenerator.
-         *  @param firstZeroCrossing The time of the first zero crossing,
-         *  after time zero. This would be the symbol interval in a
-         *  communications application of this pulse.
-         *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
-         */
-        public RaisedCosineSampleGenerator(double firstZeroCrossing,
-                double excess) {
-            _oneOverFZC = 1.0 / firstZeroCrossing;
-            _excess = excess;
-        }
-
-        /**  Return a sample of the raised cosine pulse, sampled at the
-         *  specified time.
-         */
-        public final double sampleAt(double time) {
-            if (time == 0.0) return 1.0;
-            double x = time * _oneOverFZC;
-            double s = sinc(Math.PI * x);
-
-            if (_excess == 0.0) return s;
-
-            x *= _excess;
-            double denominator = 1.0 - 4.0 * x * x;
-            // If the denominator is close to zero, take it to be zero.
-            if (close(denominator, 0.0)) {
-                return s * ExtendedMath.PI_OVER_4;
-            }
-            return s * Math.cos(Math.PI * x) / denominator;
-        }
-
-        private final double _oneOverFZC;
-        private final double _excess;
-    }
-
-    public static class SincSampleGenerator implements SampleGenerator {
-        public SincSampleGenerator(double firstZeroCrossing) {
-            _piOverFZC = Math.PI / firstZeroCrossing;
-        }
-
-        public final double sampleAt(double time) {
-            return sinc(_piOverFZC * time);
-        }
-
-        private final double _piOverFZC;
-    }
-
-    /** This class generates samples of a square-root raised cosine pulse.
-     *  The function computed is:
-     *  <p>
-     *  <pre>
-     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
-     *  h(t) =  ---------------------------------------------------
-     *                PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
-     *  </pre>
-     *  <p>
-     *  where <i>x</i> is the the excess bandwidth.
-     *  This pulse convolved with itself will, in principle, be equal
-     *  to a raised cosine pulse.  However, because the pulse decays rather
-     *  slowly for low excess bandwidth, this ideal is not
-     *  closely approximated by short finite approximations of the pulse.
-     *  <p>
-     *  This implementation is ported from the Ptolemy 0.x implementation
-     *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: E. A. Lee and D. G. Messerschmitt,
-     *  <i>Digital Communication, Second Edition</i>,
-     *  Kluwer Academic Publishers, Boston, 1994.
-     */
-    public static class SqrtRaisedCosineSampleGenerator
-        implements SampleGenerator {
-        /** Construct a SqrtRaisedCosineSampleGenerator.
-         *  @param firstZeroCrossing The time of the first zero crossing of
-         *  the corresponding raised cosine pulse.
-         *  @param excess The excess bandwidth of the corresponding raised
-         *  cosine pulse.
-         */
-        public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
-                double excess) {
-
-            _excess = excess;
-
-            _oneOverFZC = 1.0 / firstZeroCrossing;
-            _sqrtFZC = Math.sqrt(firstZeroCrossing);
-            _squareFZC = firstZeroCrossing * firstZeroCrossing;
-
-            _onePlus  = (1.0 + _excess)* Math.PI * _oneOverFZC;
-            _oneMinus = (1.0 - _excess)* Math.PI * _oneOverFZC;
-
-            _fourExcess = 4.0 * _excess;
-            _eightExcessPI = 8.0 * _excess * Math.PI;
-            _sixteenExcess = 16.0 * _excess;
-
-            _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
-                _sqrtFZC;
-            _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
-            _fzcSqrtFZCOverEightExcessPI =
-                firstZeroCrossing * _sqrtFZC / _eightExcessPI;
-            _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
-
-            _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
-                _fourExcess;
-        }
-
-        /*  Return a sample of the raised cosine pulse, sampled at the
-         *  specified time.
-         *  @param time The time at which to sample the pulse.
-         *  @return A double.
-         */
-        public final double sampleAt(double time) {
-
-            if (time == 0.0) {
-                return _sampleAtZero;
-            }
-
-            double x = time * _oneOverFZC;
-            if (_excess == 0.0) {
-                return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
-            }
-
-            double squareTime = time * time;
-            double oneMinusTime = _oneMinus * time;
-            double onePlusTime  = _onePlus * time;
-            // Check to see whether we will get divide by zero.
-
-            double denominator = squareTime * _sixteenExcess - _squareFZC;
-
-            if (close(denominator, 0.0)) {
-                double oneOverTime = 1.0 / time;
-
-                return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
-                    (_onePlus * Math.sin(onePlusTime) -
-                            _oneMinusFZCOverFourExcess * oneOverTime *
-                            Math.cos(oneMinusTime) +
-                            _fzcOverFourExcess * squareTime * 
-                            Math.sin(oneMinusTime));
-            }
-            return _fourExcessOverPISqrtFZC *
-                (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
-                        (x * _fourExcess)) / (1.0 - _sixteenExcess * x * x);
-        }
-
-        private final double _oneOverFZC, _sqrtFZC, _squareFZC;
-        private final double _onePlus, _oneMinus;
-        private final double _excess, _fourExcess, _eightExcessPI;
-        private final double _sixteenExcess;
-        private final double _sampleAtZero;
-        private final double _fourExcessOverPISqrtFZC;
-        private final double _fzcSqrtFZCOverEightExcessPI;
-        private final double _fzcOverFourExcess, _oneMinusFZCOverFourExcess;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -1395,6 +1092,312 @@ public class SignalProcessing {
 
     /** The number of window types that can be generated. */
     public static final int WINDOW_TYPES = 6;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** This class generates samples of a Gaussian function with the
+     *  specified mean and standard deviation.
+     *  The function computed is :
+     *  <p>
+     *  <pre>
+     *  h(t) = (1/(sqrt(2*PI) * stdDev) *
+     *         exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
+     *  </pre>
+     *  </p>
+     */
+    public static class GaussianSampleGenerator implements SampleGenerator {
+
+        /** Construct a GaussianSampleGenerator.
+         *  @param mean The mean of the Gaussian function.
+         *  @param phase The standard deviation of the Gaussian function.
+         */
+        public GaussianSampleGenerator(double mean, double standardDeviation) {
+            _mean = mean;
+            _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
+            _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
+        }
+
+        /** Return a sample of the Gaussian function, sampled at the
+         *  specified time.
+         */
+        public final double sampleAt(double time) {
+            double shiftedTime = time - _mean;
+            return _factor *
+                Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
+        }
+
+        private final double _mean, _oneOverVariance, _factor;
+        private static final double ONE_OVER_SQRT_TWO_PI =
+        1.0 / Math.sqrt(2 * Math.PI);
+    }
+
+    /** This class generates samples of a line with the specified
+     *  slope and y-intercept.
+     *  The function computed is :
+     *  <p>
+     *  <pre>
+     *  h(t) = slope * t + yIntercept
+     *  </pre>
+     *  </p>
+     */
+    public static class LineSampleGenerator implements SampleGenerator {
+
+        /** Construct a LineSampleGenerator.
+         *  @param slope The slope of the line.
+         *  @param yIntercept The y-intercept of the line.
+         */
+        public LineSampleGenerator(double slope, double yIntercept) {
+            _slope = slope;
+            _yIntercept = yIntercept;
+        }
+
+        /** Return a sample of the line, sampled at the specified time.
+         */
+        public final double sampleAt(double time) {
+            return _slope * time + _yIntercept;
+        }
+
+        private final double _slope, _yIntercept;
+    }
+
+    /** This class generates samples of a sawtooth wave with the specified
+     *  period and phase. The returned values range between -1.0 and 1.0.
+     */
+    public static class SawtoothSampleGenerator implements SampleGenerator {
+
+        /** Construct a SawtoothSampleGenerator with the given period and
+         *  phase.  The phase is given as a fraction of a cycle,
+         *  typically ranging from 0.0 to 1.0.  If the phase is 0.0 or 1.0,
+         *  the wave begins at zero with a rising slope.  If it is 0.5, it
+         *  begins at the falling edge with value -1.0.
+         *  If it is 0.25, it begins at +0.5.
+         */
+        SawtoothSampleGenerator(double period, double phase) {
+            _period = period;
+            _phase = phase;
+        }
+
+        /** Return a sample of the sawtooth wave, sampled at the
+         *  specified time.
+         */
+        public final double sampleAt(double time) {
+            double point = ((time / _period) + _phase + 0.5) % 1.0;
+            return 2.0 * point - 1.0;
+        }
+
+        private final double _period, _phase;
+    }
+
+    /** This class generates samples of a sinusoidal wave.
+     *  The function computed is :
+     *  <p>
+     *  <pre>
+     *  h(t) = cos(frequency * t + phase)
+     *  </pre>
+     *  </p>
+     *  To use this class to generate a sine wave, simply
+     *  subtract PI/2 from the
+     *  phase, since sin(t) = cos(t - PI/2).
+     */
+    public static class SinusoidSampleGenerator implements SampleGenerator {
+
+        /**
+         *  Construct a SinusoidSampleGenerator.
+         *  @param frequency The frequency of the cosine wave, in radians per
+         *  unit time.
+         *  @param phase The phase shift, in radians.
+         *  @param range The absolute value of the range of the wave.
+         */
+        public SinusoidSampleGenerator(double frequency, double phase) {
+            _frequency = frequency;
+            _phase = phase;
+        }
+
+        public final double sampleAt(double time) {
+            return Math.cos(_frequency * time + _phase);
+        }
+
+        private final double _frequency, _phase;
+    }
+
+    /** This class generates samples of a raised cosine pulse, or if the
+     *  excess is zero, a modified sinc function.
+     *  <p>
+     *  The function that is computed is:
+     *  <p>
+     *  <pre>
+     *         sin(PI t/T)   cos(excess PI t/T)
+     *  h(n) = ----------- * -----------------
+     *          PI t/T      1-(2 excess t/T)<sup>2</sup>
+     *  </pre>
+     *  <p>
+     *  This is called a "raised cosine pulse" because in the frequency
+     *  domain its shape is that of a raised cosine.
+     *  <p>
+     *  For some applications, you may wish to apply a window function to this
+     *  impulse response, since it is rather abruptly terminated at the two \
+     *  ends.
+     *  <p>
+     *  This implementation is ported from the Ptolemy 0.x implementation
+     *  by Joe Buck, Brian Evans, and Edward A. Lee.
+     *  Reference: <a href=http://www.amazon.com/exec/obidos/ASIN/0792393910/qid%3D910596335/002-4907626-8092437>E. A. Lee and D. G. Messerschmitt,
+     *  <i>Digital Communication, Second Edition</i>,
+     *  Kluwer Academic Publishers, Boston, 1994.</a>
+     *
+     */
+    public static class RaisedCosineSampleGenerator implements SampleGenerator {
+
+        /*  Construct a RaisedCosineSampleGenerator.
+         *  @param firstZeroCrossing The time of the first zero crossing,
+         *  after time zero. This would be the symbol interval in a
+         *  communications application of this pulse.
+         *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
+         */
+        public RaisedCosineSampleGenerator(double firstZeroCrossing,
+                double excess) {
+            _oneOverFZC = 1.0 / firstZeroCrossing;
+            _excess = excess;
+        }
+
+        /**  Return a sample of the raised cosine pulse, sampled at the
+         *  specified time.
+         */
+        public final double sampleAt(double time) {
+            if (time == 0.0) return 1.0;
+            double x = time * _oneOverFZC;
+            double s = sinc(Math.PI * x);
+
+            if (_excess == 0.0) return s;
+
+            x *= _excess;
+            double denominator = 1.0 - 4.0 * x * x;
+            // If the denominator is close to zero, take it to be zero.
+            if (close(denominator, 0.0)) {
+                return s * ExtendedMath.PI_OVER_4;
+            }
+            return s * Math.cos(Math.PI * x) / denominator;
+        }
+
+        private final double _oneOverFZC;
+        private final double _excess;
+    }
+
+    public static class SincSampleGenerator implements SampleGenerator {
+        public SincSampleGenerator(double firstZeroCrossing) {
+            _piOverFZC = Math.PI / firstZeroCrossing;
+        }
+
+        public final double sampleAt(double time) {
+            return sinc(_piOverFZC * time);
+        }
+
+        private final double _piOverFZC;
+    }
+
+    /** This class generates samples of a square-root raised cosine pulse.
+     *  The function computed is:
+     *  <p>
+     *  <pre>
+     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
+     *  h(t) =  ---------------------------------------------------
+     *                PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
+     *  </pre>
+     *  <p>
+     *  where <i>x</i> is the the excess bandwidth.
+     *  This pulse convolved with itself will, in principle, be equal
+     *  to a raised cosine pulse.  However, because the pulse decays rather
+     *  slowly for low excess bandwidth, this ideal is not
+     *  closely approximated by short finite approximations of the pulse.
+     *  <p>
+     *  This implementation is ported from the Ptolemy 0.x implementation
+     *  by Joe Buck, Brian Evans, and Edward A. Lee.
+     *  Reference: E. A. Lee and D. G. Messerschmitt,
+     *  <i>Digital Communication, Second Edition</i>,
+     *  Kluwer Academic Publishers, Boston, 1994.
+     */
+    public static class SqrtRaisedCosineSampleGenerator
+        implements SampleGenerator {
+        /** Construct a SqrtRaisedCosineSampleGenerator.
+         *  @param firstZeroCrossing The time of the first zero crossing of
+         *  the corresponding raised cosine pulse.
+         *  @param excess The excess bandwidth of the corresponding raised
+         *  cosine pulse.
+         */
+        public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
+                double excess) {
+
+            _excess = excess;
+
+            _oneOverFZC = 1.0 / firstZeroCrossing;
+            _sqrtFZC = Math.sqrt(firstZeroCrossing);
+            _squareFZC = firstZeroCrossing * firstZeroCrossing;
+
+            _onePlus  = (1.0 + _excess)* Math.PI * _oneOverFZC;
+            _oneMinus = (1.0 - _excess)* Math.PI * _oneOverFZC;
+
+            _fourExcess = 4.0 * _excess;
+            _eightExcessPI = 8.0 * _excess * Math.PI;
+            _sixteenExcess = 16.0 * _excess;
+
+            _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
+                _sqrtFZC;
+            _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
+            _fzcSqrtFZCOverEightExcessPI =
+                firstZeroCrossing * _sqrtFZC / _eightExcessPI;
+            _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
+
+            _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
+                _fourExcess;
+        }
+
+        /*  Return a sample of the raised cosine pulse, sampled at the
+         *  specified time.
+         *  @param time The time at which to sample the pulse.
+         *  @return A double.
+         */
+        public final double sampleAt(double time) {
+
+            if (time == 0.0) {
+                return _sampleAtZero;
+            }
+
+            double x = time * _oneOverFZC;
+            if (_excess == 0.0) {
+                return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
+            }
+
+            double squareTime = time * time;
+            double oneMinusTime = _oneMinus * time;
+            double onePlusTime  = _onePlus * time;
+            // Check to see whether we will get divide by zero.
+
+            double denominator = squareTime * _sixteenExcess - _squareFZC;
+
+            if (close(denominator, 0.0)) {
+                double oneOverTime = 1.0 / time;
+
+                return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
+                    (_onePlus * Math.sin(onePlusTime) -
+                            _oneMinusFZCOverFourExcess * oneOverTime *
+                            Math.cos(oneMinusTime) +
+                            _fzcOverFourExcess * squareTime * 
+                            Math.sin(oneMinusTime));
+            }
+            return _fourExcessOverPISqrtFZC *
+                (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
+                        (x * _fourExcess)) / (1.0 - _sixteenExcess * x * x);
+        }
+
+        private final double _oneOverFZC, _sqrtFZC, _squareFZC;
+        private final double _onePlus, _oneMinus;
+        private final double _excess, _fourExcess, _eightExcessPI;
+        private final double _sixteenExcess;
+        private final double _sampleAtZero;
+        private final double _fourExcessOverPISqrtFZC;
+        private final double _fzcSqrtFZCOverEightExcessPI;
+        private final double _fzcOverFourExcess, _oneMinusFZCOverFourExcess;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
