@@ -390,6 +390,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/sr \
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
+		ptolemy/domains \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure; \
