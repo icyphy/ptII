@@ -40,7 +40,7 @@ This is a base interface for specific mappings. For efficiency, the derived
 mappings should define their own methods to actually perform the associated
 mapping function. These methods can thus be specialized, for example, to return
 the desired return type (rather than an Object). Also, derived Mappings
-may choose, again for efficiency reasons, to forego any error-checking
+may choose, again for efficiency reasons, to forgo any error-checking
 in the methods that implement their mapping functions (i.e, they may
 assume that the arguments are in the corresponding domains). In such cases,
 the {@link #inDomain(Object)} method can be used when it is desired

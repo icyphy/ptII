@@ -74,7 +74,7 @@ public class SelfLoopAnalysis extends Analysis {
      *  @return A description of the analysis.
      */
     public String toString() {
-        return "Self-loop anlaysis for the following graph.\n"
+        return "Self-loop analysis for the following graph.\n"
                 + graph().toString();
     }
 

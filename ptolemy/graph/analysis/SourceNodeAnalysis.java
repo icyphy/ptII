@@ -20,6 +20,9 @@
  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph.analysis;
@@ -94,10 +97,8 @@ public class SourceNodeAnalysis extends Analysis {
      *  @return A description of the source nodes.
      */
     public String toString() {
-        String result = "Source node anlaysis for the following graph.\n"
-                + graph().toString();
-        result += "The source nodes are:\n" + _cachedResult();
-        return result;
+        return "Source node analysis for the following graph.\n"
+            + graph().toString() "The source nodes are:\n" + _cachedResult();
     }
 
     ///////////////////////////////////////////////////////////////////

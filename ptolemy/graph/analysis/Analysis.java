@@ -28,7 +28,7 @@ import ptolemy.graph.Graph;
 
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
-/** A base class for analyses on graphs. To faciliate demand-driven
+/** A base class for analyses on graphs. To facilitate demand-driven
 and incremental recomputation (e.g., see [1]) of analyses, analysis results
 are cached
 internally (see {@link #_cachedResult()}), and are recomputed only
@@ -210,7 +210,7 @@ abstract public class Analysis {
      *  @return A description of the analysis.
      */
     public String toString() {
-        return "Anlaysis for the following graph.\n"
+        return "Analysis for the following graph.\n"
                 + graph().toString();
     }
 

@@ -20,6 +20,9 @@
  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph.analysis;
@@ -106,7 +109,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      *  @return A description of the analysis.
      */
     public String toString() {
-        return "Transitive closure anlaysis for the following graph.\n"
+        return "Transitive closure analysis for the following graph.\n"
                 + graph().toString();
     }
 
