@@ -29,6 +29,7 @@
 
 package pt.actor;
 
+import pt.graph.*;
 import pt.kernel.*;
 import pt.kernel.util.*;
 import pt.kernel.mutation.*;
@@ -400,6 +401,32 @@ public class Director extends NamedObj implements Executable {
      */
     public void removeMutationListener(MutationListener listener) {
         _mutationListeners.removeOneOf(listener);
+    }
+
+    /** Check types on all the connections and resolve undeclared types.
+     *  If the container is not an instance of TypedCompositeActor,
+     *  do nothing.
+     *  @exception TypeConflictException there are type conflicts in
+     *   the topology.
+     */
+    public void resolveTypes() {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if ( !(container instanceof TypedCompositeActor)) {
+            return;
+        }
+        Enumeration constraints =
+                ((TypedCompositeActor)container).typeConstraints();
+ 
+        InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
+        solver.addInequalities(constraints);
+ 
+        // find the greatest solution (most general types)
+        boolean resolved = solver.solve(false);
+        if( !resolved) {
+            // FIXME: should have a new TypeConflictException
+            throw new InvalidStateException("Type Conflict.");
+        }
+        // FIXME: also need to check if any port is resolved to NaT.
     }
 
     /** Invoke initialize(), then invoke iterate() until it returns false,
