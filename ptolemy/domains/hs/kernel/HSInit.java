@@ -36,7 +36,7 @@ import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.util.VariableList;
+import ptolemy.domains.hs.kernel.util.VariableList;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
