@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<property name="UnitConversions" class="ptolemy.data.unit.UnitSystem">
+<group>
 
 
 <!-- References: -->
@@ -33,15 +33,15 @@
 <property name="pint" class="ptolemy.data.expr.Parameter" value="2*cup"/> <!--Liquid-->
 <property name="quart" class="ptolemy.data.expr.Parameter" value="2*pint"/> <!--Liquid-->
 <property name="astronomicalUnit" class="ptolemy.data.expr.Parameter" value="1.495979E+11*meter"/> <!--APPROXIMATE-->
-<property name="inch" class="ptolemy.data.expr.Parameter" value="0.0254*meters"/>
-<property name="foot" class="ptolemy.data.expr.Parameter" value="0.3048*meters"/>
+<property name="inch" class="ptolemy.data.expr.Parameter" value="0.0254*meter"/>
+<property name="foot" class="ptolemy.data.expr.Parameter" value="0.3048*meter"/>
 <property name="yard" class="ptolemy.data.expr.Parameter" value="3*foot"/>
 <property name="cord" class="ptolemy.data.expr.Parameter" value="128*foot^3"/>
 <property name="footUSSurvey" class="ptolemy.data.expr.Parameter" value="0.3048006*meter"/> <!--APPROXIMATE-->
 <property name="fathom" class="ptolemy.data.expr.Parameter" value="6*footUSSurvey"/>
 <property name="acre" class="ptolemy.data.expr.Parameter" value="43560*footUSSurvey^2"/>
 <property name="acreFoot" class="ptolemy.data.expr.Parameter" value="acre*footUSSurvey"/>
-<property name="mileNautical" class="ptolemy.data.expr.Parameter" value="1852*meters"/>
+<property name="mileNautical" class="ptolemy.data.expr.Parameter" value="1852*meter"/>
 <property name="mile" class="ptolemy.data.expr.Parameter" value="5280*foot"/>
 <property name="barn" class="ptolemy.data.expr.Parameter" value="1E-28*meter^2"/>
 <property name="hectare" class="ptolemy.data.expr.Parameter" value="1E+4*meter^2"/>
@@ -107,4 +107,4 @@
       </svg>
     </configure>
   </property>
-</property>
+</group>
