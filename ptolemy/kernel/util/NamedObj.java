@@ -1351,7 +1351,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  by calling getMoMLInfo().
      *  @see NamedObj#getMoMLInfo()
      */
-    public class MoMLInfo {
+    public class MoMLInfo implements Serializable {
 
         /** Construct an object with default values for the fields.
          *  @param owner The object that this describes.
@@ -1363,26 +1363,27 @@ public class NamedObj implements Nameable, Debuggable,
         ///////////////////////////////////////////////////////////////
         ////                     public members                    ////
 
-        /** The MoML class name, which defaults to the Java class name
-         *  of the enclosing class.*/
+        /** @serial The MoML class name, which defaults to the Java
+         *  class name of the enclosing class.*/
         public String className;
 
-        /** A list of objects that defer their MoML definitions to the
-         *  owner of this MoMLInfo object.  Note that this might be null.
-         *  To ensure that it is not null, access it using
-         *  getDeferredFrom().
+        /** @serial A list of objects that defer their MoML
+         *  definitions to the owner of this MoMLInfo object.  Note
+         *  that this might be null.  To ensure that it is not null,
+         *  access it using getDeferredFrom().
          */
         public List deferredFrom;
 
-        /** The object that the owner defers its MoML definition to,
-         *  or null if it does not defer its MoML definition.
+        /** @serial The object that the owner defers its MoML
+         *  definition to, or null if it does not defer its MoML
+         *  definition.
          */
         public NamedObj deferTo;
 
-        /** The MoML element name. This defaults to "entity".*/
+        /** @serial The MoML element name. This defaults to "entity".*/
         public String elementName = "entity";
 
-        /** The source attribute. */
+        /** @serial The source attribute. */
         public String source;
 
         ///////////////////////////////////////////////////////////////
