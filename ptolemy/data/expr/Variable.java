@@ -783,26 +783,30 @@ public class Variable extends Attribute implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
-	/*if (getContainedToken() == null) {*/
-        if (_token == null && _currentExpression == null) {
-            return _constraints.elements();
-	} 
+        // FIXME: before we can generate constraints from the expressions
+	// directly, try to evaluate the expression to get a token.
+	// if the evaluate throws an exception, ignore the constraints
+	// between the expression and the type of this variable.
+	Token containedToken = null;
+	try {
+	    containedToken = getContainedToken();
+	} catch (Exception ex) {
+	    // FIXME: before the exception mechanism in the expr
+	    // package is fixed, catch all exceptions above.
+
+	    // do nothing, not generating constraints.
+	}
+	if (containedToken == null) {
+	    return _constraints.elements();
+	}
 
 	LinkedList result = new LinkedList();
 	result.appendElements(_constraints.elements());
 
-        if (_token != null) {
-            /* add a constraint derived from the current token */
-	    TypeConstant tokenType =
-                    new TypeConstant(getContainedToken().getClass());
-	    Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
-	    result.insertLast(ineq);
-	}
-
-	if (_currentExpression != null) {
-            /* add the constraints derived from the current expression */
-            /* FIXME: to be done */
-        }
+	TypeConstant tokenType =
+                   	new TypeConstant(containedToken.getClass());
+	Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
+	result.insertLast(ineq);
 
 	return result.elements();
     }
