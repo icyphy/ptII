@@ -83,31 +83,31 @@ public class CTPeriodicSampler extends Transformer
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The parameter for the sampling period; the type is double; the
      *  default value is 1.0.
      */
     public Parameter samplePeriod;
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-            /** Update the parameter if it has been changed.
-             *  The new parameter will be used only after this method is called.
-             *  @exception IllegalActionException If the sampling rate set is
-             *  less than or equal to 0.
-             */
-            public void attributeChanged(Attribute att) throws IllegalActionException{
-                double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
-                if(p <= 0) {
-                    throw new IllegalActionException(this,
-                            " Sample period must be greater than 0.");
-                } else {
-                    _samplePeriod = p;
-                }
-            }
+    /** Update the parameter if it has been changed.
+     *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException If the sampling rate set is
+     *  less than or equal to 0.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException{
+        double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+        if(p <= 0) {
+            throw new IllegalActionException(this,
+                    " Sample period must be greater than 0.");
+        } else {
+            _samplePeriod = p;
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
@@ -118,7 +118,8 @@ public class CTPeriodicSampler extends Transformer
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        CTPeriodicSampler newObject = (CTPeriodicSampler)super.clone(workspace);
+        CTPeriodicSampler newObject =
+            (CTPeriodicSampler)super.clone(workspace);
         newObject.input.setMultiport(true);
         newObject.output.setMultiport(true);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -211,8 +212,8 @@ public class CTPeriodicSampler extends Transformer
       return true;
       }*/
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // the local copy of the sample period.
     private double _samplePeriod;
