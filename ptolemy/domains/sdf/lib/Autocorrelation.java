@@ -206,6 +206,8 @@ public class Autocorrelation extends SDFTransformer {
             for(int j = 0; j < _numberOfInputs - i; j++) {
                 sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
             }
+            // FIXME: The following might be integer division, which
+            // will yield weird results.
             if (biasedValue) {
                 _outputs[i + _numberOfLags - notsymmetric]
                          = sum.divide(numberOfInputs.getToken());
@@ -219,7 +221,7 @@ public class Autocorrelation extends SDFTransformer {
         for(int i = _numberOfLags - 1 - notsymmetric; i >= 0; i--) {
             _outputs[i] = _outputs[2 * (_numberOfLags - notsymmetric) - i];
         }
-        output.send(0, _outputs, _numberOfOutputs);
+        output.broadcast(_outputs, _numberOfOutputs);
     }
 
     /** If there are not sufficient inputs, then return false.
