@@ -31,7 +31,11 @@
 
 ME =		ptolemy/configs/doc
 
-DIRS =		demo
+# There is no demo directory, put demos in the corresponding domain
+# directory so that we can find them if we are looking at domains.
+# An alternative would be to split the demo subdirectory into
+# directories by domain
+DIRS =		#demo
 
 # Root of the Java directory
 ROOT =		../../..
