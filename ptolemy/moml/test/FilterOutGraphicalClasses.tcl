@@ -74,7 +74,7 @@ FilterOutGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
         </property>
