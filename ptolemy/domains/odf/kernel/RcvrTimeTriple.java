@@ -68,13 +68,12 @@ public class RcvrTimeTriple extends NamedObj {
             int priority ) {
         super();
         _rcvr = rcvr;
-        try {
-            setTime(rcvrTime);
-            setPriority(priority);
-        } catch( IllegalActionException e) {
-            System.err.println("Invalid time argument for "
-                    + "RcvrTimeTriple()");
+        _priority = priority;
+        if( rcvrTime < _rcvrTime && rcvrTime != -1 ) {
+            System.out.println(" Rcvr times must be monotonically "
+                    + "non-decreasing!\n");
         }
+        _rcvrTime = rcvrTime;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,34 +94,11 @@ public class RcvrTimeTriple extends NamedObj {
         return _priority;
     }
 
-    /** Set the priority of this RcvrTimeTriple.
-     * @param priority The priority associated with this RcvrTimeTriple
-     */
-    public void setPriority( int priority ) {
-        _priority = priority;
-    }
-
     /** Return the time of this RcvrTimeTriple.
      * @return double The time of this RcvrTimeTriple.
      */
     public double getTime() {
         return _rcvrTime;
-    }
-
-    /** Set the time of this RcvrTimeTriple. The time must be greater
-     *  than or equal to any previous rcvr times associated with
-     *  the TimedQueueReceiver.
-     * @param time The time associated with this RcvrTimeTriple
-     * @exception IllegalActionException If the specified time is less than
-     *  previously set rcvrTimes and is not equal to -1.
-     */
-    public void setTime( double time ) throws IllegalActionException {
-        if( time < _rcvrTime && time != -1 ) {
-            throw new IllegalActionException( getContainer(),
-                    " Rcvr times must be monotonically "
-                    + "non-decreasing!\n");
-        }
-        _rcvrTime = time;
     }
 
     ///////////////////////////////////////////////////////////////////
