@@ -80,6 +80,13 @@ public class StreamExec {
         _updateProgressBar(0);
     }
 
+    /** Return the value of the Process.  Typically the return value
+     *  of this method is used to have the caller wait for the process
+     *  to exit.
+     */   
+    public Process getProcess() {
+        return _process;
+    }
     /** Main method used for testing.
      *  To run a simple test, use:
      *  <pre>
@@ -121,6 +128,8 @@ public class StreamExec {
                 }
                 public void finished() {
                     updateStatusBar(get().toString());
+                    stdout(get().toString());
+
                 }
             };
         _worker.start();
@@ -134,6 +143,7 @@ public class StreamExec {
      */
     public void stderr(final String text) {
         System.err.println(text);
+        System.err.flush();
     }
 
     /** Append the text message to the output.  A derived class could
@@ -143,6 +153,7 @@ public class StreamExec {
      */
     public void stdout(final String text) {
         System.out.println(text);
+        System.out.flush();
     }
 
     /** Set the text of the status bar.  In this base class, do
@@ -247,7 +258,6 @@ public class StreamExec {
 			throw interrupted;
 	    	    }
                 }
-		stdout("All Done.");
 	    } catch (final IOException io) {
 		stderr("IOException: " + io);
             }
@@ -282,8 +292,9 @@ public class StreamExec {
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
-                while ( (line = bufferedReader.readLine()) != null)
+                while ( (line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout(/*_streamType + ">" +*/ line);
+                }
 	    } catch (IOException ioe) {
 		_streamExec.stderr("IOException: " + ioe);
 	    }
