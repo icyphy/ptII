@@ -365,7 +365,7 @@ public final class Workspace implements Nameable, Serializable {
 
         // need to wait for read access
         // first increment this to make the record not empty, so as to
-        // prevent the recrod from being deleted from the _readerRecords
+        // prevent the record from being deleted from the _readerRecords
         // table by other threads
         record.failedReadAttempts++;
 
@@ -377,7 +377,7 @@ public final class Workspace implements Nameable, Serializable {
                 wait();
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(current.getName()
-                        + " - thread interruped while waiting to get "
+                        + " - thread interrupted while waiting to get "
                         + "read access: " + ex.getMessage());
             }
         }
@@ -464,7 +464,7 @@ public final class Workspace implements Nameable, Serializable {
                     wait();
                 } catch (InterruptedException ex) {
                     throw new InternalErrorException(current.getName()
-                            + " - thread interruped while waiting to get "
+                            + " - thread interrupted while waiting to get "
                             + "write access: " + ex.getMessage());
                 }
             }
@@ -687,7 +687,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         if (record == null || count > record.failedReadAttempts) {
-            throw new InvalidStateException(this, "Trying to reaquire "
+            throw new InvalidStateException(this, "Trying to reacquire "
                     + "read permission not in record.");
         }
 
