@@ -1,4 +1,4 @@
-# Tests for the BasePNDirector class
+# Tests for the PNDirector class
 #
 # @Author: Mudit Goel
 #
@@ -112,3 +112,37 @@ test PNDirector-5.2 {Test creation of a receiver} {
 	    [$d4 newReceiver]]
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}
+
+######################################################################
+####
+#
+test PNDirector-7.1 {Test finishing methods} {
+    set e71 [java::new ptolemy.actor.CompositeActor]
+    $e71 setName E71
+    set manager [java::new ptolemy.actor.Manager]
+    $e71 setManager $manager
+    set d71 [java::new ptolemy.domains.pn.kernel.PNDirector]
+    $d71 setName D71    
+    $e71 setDirector $d71
+    set p1 [$d71 getAttribute "Initial_queue_capacity"]
+    _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
+    set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e71 t1]
+    set p1 [$t1 getPort input]
+    set p2 [$t1 getPort output]
+    $e71 connect $p1 $p2
+    $manager run
+    set prof [$t1 getProfile]
+    #This tests that the application can run twice without recreating the 
+    #model
+    $t1 clearProfile
+    $manager run
+    list $prof [$t1 getProfile]
+} {{broadcast new token 0
+broadcast new token 1
+received new token 0
+received new token 1
+} {broadcast new token 0
+broadcast new token 1
+received new token 0
+received new token 1
+}}

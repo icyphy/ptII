@@ -55,7 +55,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 
 set toplevel [java::new ptolemy.actor.CompositeActor]
-set dir [java::new ptolemy.domains.pn.kernel.BasePNDirector]
+set dir [java::new ptolemy.domains.pn.kernel.PNDirector]
 $toplevel setDirector $dir
 set sink [java::new ptolemy.domains.pn.kernel.test.TestSink $toplevel "sink"]
 set port [$sink getPort "input"]
@@ -165,8 +165,8 @@ test PNQueueReceiver-5.1 {Check is...Boundary() methods for single layer boundar
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
-    set topdir [java::new ptolemy.domains.pn.kernel.BasePNDirector $toplevel "topdirector"]
-    set wormdir [java::new ptolemy.domains.pn.kernel.BasePNDirector $wormhole "wormdirector"]
+    set topdir [java::new ptolemy.domains.pn.kernel.PNDirector $toplevel "topdirector"]
+    set wormdir [java::new ptolemy.domains.pn.kernel.PNDirector $wormhole "wormdirector"]
 
 
     # Assign Directors/Managers
@@ -286,9 +286,9 @@ test PNQueueReceiver-5.2 {Check is...Boundary() for multilayered boundaries} {
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set outerworm [java::new ptolemy.actor.TypedCompositeActor $toplevel "outerworm"]
     set innerworm [java::new ptolemy.actor.TypedCompositeActor $outerworm "innerworm"]
-    set topdir [java::new ptolemy.domains.pn.kernel.BasePNDirector $toplevel "topdirector"]
-    set outerwormdir [java::new ptolemy.domains.pn.kernel.BasePNDirector $outerworm "outerwormdirector"]
-    set innerwormdir [java::new ptolemy.domains.pn.kernel.BasePNDirector $innerworm "innerwormdirector"]
+    set topdir [java::new ptolemy.domains.pn.kernel.PNDirector $toplevel "topdirector"]
+    set outerwormdir [java::new ptolemy.domains.pn.kernel.PNDirector $outerworm "outerwormdirector"]
+    set innerwormdir [java::new ptolemy.domains.pn.kernel.PNDirector $innerworm "innerwormdirector"]
 
     # Assign Directors/Managers
     $toplevel setManager $mgr
