@@ -203,7 +203,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
-    public synchronized void addExecutionListener(ExecutionListener listener) {
+    public void addExecutionListener(ExecutionListener listener) {
         if (listener == null) return;
         if (_executionListeners == null) {
             _executionListeners = new LinkedList();
@@ -548,6 +548,8 @@ public class Manager extends NamedObj implements Runnable {
     public void pauseOnBreakpoint(String breakpointMessage) {
         try {
             if (_state == ITERATING) {
+                // This will deadlock if called from, say, the UI
+                // thread, because execute() holds the lock.
                 synchronized(this) {
                     if (_state == ITERATING) {
                         // Set the new state to show that execution is paused
@@ -652,7 +654,7 @@ public class Manager extends NamedObj implements Runnable {
      *  do nothing.
      *  @param listener The listener to remove.
      */
-    public synchronized void removeExecutionListener(ExecutionListener listener) {
+    public void removeExecutionListener(ExecutionListener listener) {
         if (listener == null || _executionListeners == null) return;
         _executionListeners.remove(listener);
     }
@@ -968,6 +970,9 @@ public class Manager extends NamedObj implements Runnable {
                 // Ignore this and return.
             }
         } else {
+            // FIXME: This will almost certainly deadlock if called
+            // from a thread apart from the executing thread because execute()
+            // is synchronized, so the running thread holds the lock!
             synchronized(this) {
                 while (getState() != IDLE && getState() != CORRUPTED) {
                     try {
