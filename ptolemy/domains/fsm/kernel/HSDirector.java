@@ -158,7 +158,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
                         actors[i].fire();
-			actors[i].postfire();
+                        actors[i].postfire();
                     }
                 }
             }
@@ -169,7 +169,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
-            	actor.fire();
+                    actor.fire();
         }
 
         ctrl._setInputsFromRefinement();
@@ -311,8 +311,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
-	    refinement.postfire();
-	    // take out event outputs generated in ref.postfire()
+            refinement.postfire();
+            // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();

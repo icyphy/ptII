@@ -165,16 +165,16 @@ public class Transition extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         guardExpression = new StringAttribute(this, "guardExpression");
-	outputActions = new OutputActionsAttribute(this, "outputActions");
+        outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
-	exitAngle.setTypeEquals(BaseType.DOUBLE);
+        exitAngle.setTypeEquals(BaseType.DOUBLE);
         gamma = new Parameter(this, "gamma");
         gamma.setVisibility(Settable.NONE);
         gamma.setExpression("0.0");
-	gamma.setTypeEquals(BaseType.DOUBLE);
+        gamma.setTypeEquals(BaseType.DOUBLE);
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
@@ -182,7 +182,7 @@ public class Transition extends ComponentRelation {
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
-	triggerExpression.setVisibility(Settable.NONE);
+        triggerExpression.setVisibility(Settable.NONE);
         _guard = new Variable(this, "_guard");
         // Make the variable lazy since it will often have
         // an expression that cannot be evaluated.
@@ -273,11 +273,11 @@ public class Transition extends ComponentRelation {
             preemptive.getToken();
             workspace().incrVersion();
         }
-	// The guard and trigger expressions can only be evaluated at run
-	// time, because the input variables they can reference are created
-	// at run time. guardExpression and triggerExpression are string
-	// attributes used to convey expressions without being evaluated.
-	// _guard and _trigger are the variables that do the evaluation.
+        // The guard and trigger expressions can only be evaluated at run
+        // time, because the input variables they can reference are created
+        // at run time. guardExpression and triggerExpression are string
+        // attributes used to convey expressions without being evaluated.
+        // _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
@@ -450,10 +450,10 @@ public class Transition extends ComponentRelation {
             aLabel = true;
         }
         if (aLabel) {
-	    return buffer.toString();
-	} else {
-	    return "";
-	}
+            return buffer.toString();
+        } else {
+            return "";
+        }
     }
 
     /** Return the trigger expression. The trigger expression should evaluate

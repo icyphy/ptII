@@ -206,21 +206,21 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     public void fire() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), "fire at time: "+getCurrentTime());
 
-	FSMActor ctrl = getController();
+        FSMActor ctrl = getController();
         ctrl._setInputVariables();
         if(_debugging) _debug(getFullName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
 
-	if (tr != null) {
-	    Actor[] actors = tr.destinationState().getRefinement();
+        if (tr != null) {
+            Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
                         actors[i].fire();
-			actors[i].postfire();
+                        actors[i].postfire();
                     }
                 }
             }
@@ -231,27 +231,27 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
                         actors[i].fire();
-			actors[i].postfire();
+                        actors[i].postfire();
                     }
                 }
             }
             return;
         }
 
-	Actor[] actors = st.getRefinement();
-	if (actors != null) {
-	    for (int i = 0; i < actors.length; ++i) {
+        Actor[] actors = st.getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
                 if (_stopRequested) break;
-		if (actors[i].prefire()) {
+                if (actors[i].prefire()) {
                     if(_debugging)
                         _debug(getFullName(), " fire refinement",
                                ((ptolemy.kernel.util.NamedObj)
                                 actors[i]).getName());
                     actors[i].fire();
-		    actors[i].postfire();
-		}
-	    }
-	}
+                    actors[i].postfire();
+                }
+            }
+        }
 
         ctrl._setInputsFromRefinement();
 
@@ -362,24 +362,24 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     public double getNextIterationTime() {
         try {
             Actor[] actors = getController().currentState().getRefinement();
-	    if (actors == null || actors.length == 0) {
-		return super.getNextIterationTime();
-	    }
-	    double result = Double.MAX_VALUE;
-	    boolean givenByRefinement = false;
-	    for (int i = 0; i < actors.length; ++i) {
-		if (actors[i].getDirector() != this) {
+            if (actors == null || actors.length == 0) {
+                return super.getNextIterationTime();
+            }
+            double result = Double.MAX_VALUE;
+            boolean givenByRefinement = false;
+            for (int i = 0; i < actors.length; ++i) {
+                if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
                             actors[i].getDirector().getNextIterationTime());
-		    givenByRefinement = true;
-		}
+                    givenByRefinement = true;
+                }
             }
-	    if (givenByRefinement) {
-		return result;
-	    } else {
-		return super.getNextIterationTime();
-	    }
+            if (givenByRefinement) {
+                return result;
+            } else {
+                return super.getNextIterationTime();
+            }
         } catch (IllegalActionException ex) {
             // No mode controller, return that given by the superclass.
         }
@@ -404,20 +404,20 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             IllegalActionException exception)
             throws IllegalActionException {
 
-	FSMActor fsm = getController();
+        FSMActor fsm = getController();
         fsm._setInputsFromRefinement();
         State st = fsm.currentState();
         Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
 
-	if (tr == null) {
-	    ModelErrorHandler container = getContainer();
-	    if (container != null) {
-		//The following statement leads to dead loop
-		// because the container will call this method again.
-		//return container.handleModelError(context, exception);
+        if (tr == null) {
+            ModelErrorHandler container = getContainer();
+            if (container != null) {
+                //The following statement leads to dead loop
+                // because the container will call this method again.
+                //return container.handleModelError(context, exception);
 
-		throw exception;
-	    }
+                throw exception;
+            }
         }
 
         if(_debugging) _debug("ModelError: " + exception.getMessage() + " is discarded.");
@@ -452,25 +452,25 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      */
     public Receiver newReceiver() {
         return new Mailbox() {
-		public boolean hasRoom() {
-		    return true;
-		}
+                public boolean hasRoom() {
+                    return true;
+                }
 
-		public void put(Token token) {
-		    try {
-			if (hasToken() == true) {
-			    get();
-			}
-			super.put(token);
-		    } catch (NoRoomException ex) {
-			throw new InternalErrorException("One-place buffer: "
-				+ ex.getMessage());
-		    } catch (NoTokenException ex) {
-			throw new InternalErrorException("One-place buffer: "
-				+ ex.getMessage());
-		    }
-		}
-	    };
+                public void put(Token token) {
+                    try {
+                        if (hasToken() == true) {
+                            get();
+                        }
+                        super.put(token);
+                    } catch (NoRoomException ex) {
+                        throw new InternalErrorException("One-place buffer: "
+                                + ex.getMessage());
+                    } catch (NoTokenException ex) {
+                        throw new InternalErrorException("One-place buffer: "
+                                + ex.getMessage());
+                    }
+                }
+            };
     }
 
     /** Return true if the mode controller wishes to be scheduled for
@@ -550,10 +550,10 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-	super.setContainer(container);
-	if (container !=null) {
-	    container.setModelErrorHandler(this);
-	}
+        super.setContainer(container);
+        if (container !=null) {
+            container.setModelErrorHandler(this);
+        }
     }
 
     /** Set the current time of the model under this director.
@@ -692,9 +692,9 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                             Nameable cont = receiver.getContainer()
                                 .getContainer();
                             if (cont == controller) {
-				resultsList.add(receiver);
-			    } else {
-				// check transitions
+                                resultsList.add(receiver);
+                            } else {
+                                // check transitions
                                 Iterator transitions =
                                     state.nonpreemptiveTransitionList()
                                     .iterator();
@@ -707,27 +707,27 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                 }
                                 // check refinements
                                 List stateList = new LinkedList();
-				stateList.add(state);
-			        transitions =
+                                stateList.add(state);
+                                transitions =
                                     state.preemptiveTransitionList()
                                     .iterator();
-				while (transitions.hasNext()) {
-				    Transition transition =
+                                while (transitions.hasNext()) {
+                                    Transition transition =
                                         (Transition)transitions.next();
-				    stateList.add(transition
+                                    stateList.add(transition
                                             .destinationState());
                                     _checkActorsForReceiver
                                         (transition.getRefinement(), cont,
                                          receiver, resultsList);
-				}
-				Iterator nextStates = stateList.iterator();
-				while (nextStates.hasNext()) {
-				    actors =
+                                }
+                                Iterator nextStates = stateList.iterator();
+                                while (nextStates.hasNext()) {
+                                    actors =
                                         ((State)nextStates.next())
                                         .getRefinement();
                                     _checkActorsForReceiver
                                         (actors,cont, receiver, resultsList);
-				}
+                                }
                             }
                         }
                         allReceiversArray[i] =
@@ -772,15 +772,15 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                          Nameable cont, Receiver receiver,
                                          List resultsList) {
         if (actors != null) {
-	    for (int k = 0; k < actors.length; ++k) {
-	        if (cont == actors[k]) {
-		    if (!resultsList.contains(receiver)) {
-		        resultsList.add(receiver);
-			break;
-		    }
-		}
-	    }
-	}
+            for (int k = 0; k < actors.length; ++k) {
+                if (cont == actors[k]) {
+                    if (!resultsList.contains(receiver)) {
+                        resultsList.add(receiver);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     // Create the controllerName attribute.

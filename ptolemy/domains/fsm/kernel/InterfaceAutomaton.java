@@ -1179,7 +1179,7 @@ public class InterfaceAutomaton extends FSMActor {
     //
     private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton)
             throws IllegalActionException {
-	return _computeProduct(automaton, false);
+        return _computeProduct(automaton, false);
     }
 
     // Compute the product of this automaton and the argument. Also store
@@ -1324,11 +1324,11 @@ public class InterfaceAutomaton extends FSMActor {
                                 if ( !destinationsInArgument.isEmpty()) {
                                     // case 1Ba. q has T output. Add T to
                                     // product as internal transition
-				    Iterator destinations =
-				        destinationsInArgument.iterator();
-				    while (destinations.hasNext()) {
-					State destinationInArgument =
-					        (State)destinations.next();
+                                    Iterator destinations =
+                                        destinationsInArgument.iterator();
+                                    while (destinations.hasNext()) {
+                                        State destinationInArgument =
+                                                (State)destinations.next();
                                         State destinationInProduct = _addState(
                                                         product,
                                                         destinationInThis,
@@ -1340,7 +1340,7 @@ public class InterfaceAutomaton extends FSMActor {
                                             stateInProduct,
                                             destinationInProduct,
                                             transitionName + ";");
-				    }
+                                    }
                                 } else {
                                     // case 1Bb. q does not have T output.
                                     // Transition cannot happen, ignore.
@@ -1435,11 +1435,11 @@ public class InterfaceAutomaton extends FSMActor {
                                 if ( !destinationsInThis.isEmpty()) {
                                     // case 1Ba. p has T output. Add T to
                                     // product as internal transition
-				    Iterator destinations =
-				        destinationsInThis.iterator();
-				    while (destinations.hasNext()) {
-				        State destinationInThis =
-					    (State)destinations.next();
+                                    Iterator destinations =
+                                        destinationsInThis.iterator();
+                                    while (destinations.hasNext()) {
+                                        State destinationInThis =
+                                            (State)destinations.next();
                                         State destinationInProduct = _addState(
                                                     product,
                                                     destinationInThis,
@@ -1451,7 +1451,7 @@ public class InterfaceAutomaton extends FSMActor {
                                             stateInProduct,
                                             destinationInProduct,
                                             transitionName + ";");
-				    }
+                                    }
                                 } else {
                                     // case 1Bb. p does not have T output.
                                     // Transition cannot happen, ignore.
@@ -1570,13 +1570,13 @@ public class InterfaceAutomaton extends FSMActor {
                                     if ( !destinationsInArgument.isEmpty()) {
                                         // case 2Ba. q has T input. Add T to
                                         // product as internal transition.
-					Iterator destinations =
-					    destinationsInArgument.iterator();
-					while (destinations.hasNext()) {
-					    State destinationInArgument =
-					        (State)destinations.next();
+                                        Iterator destinations =
+                                            destinationsInArgument.iterator();
+                                        while (destinations.hasNext()) {
+                                            State destinationInArgument =
+                                                (State)destinations.next();
                                             State destinationInProduct =
-					        _addState(
+                                                _addState(
                                                     product,
                                                     destinationInThis,
                                                     destinationInArgument,
@@ -1587,7 +1587,7 @@ public class InterfaceAutomaton extends FSMActor {
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
-					}
+                                        }
                                     } else {
                                         // case 2Bb. q does not have T input.
                                         // stateInProduct is illegal
@@ -1666,13 +1666,13 @@ public class InterfaceAutomaton extends FSMActor {
                                     if ( !destinationsInThis.isEmpty()) {
                                         // case 2Ba. p has T input. Add T
                                         // to product as internal transition.
-					Iterator destinations =
-					    destinationsInThis.iterator();
-					while (destinations.hasNext()) {
-					    State destinationInThis =
-					        (State)destinations.next();
+                                        Iterator destinations =
+                                            destinationsInThis.iterator();
+                                        while (destinations.hasNext()) {
+                                            State destinationInThis =
+                                                (State)destinations.next();
                                             State destinationInProduct =
-					        _addState(
+                                                _addState(
                                                         product,
                                                         destinationInThis,
                                                         destinationInArgument,
@@ -1683,7 +1683,7 @@ public class InterfaceAutomaton extends FSMActor {
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
-					}
+                                        }
                                     } else {
                                         // case 2Bb. p does not have T input.
                                         // stateInProduct is illegal
@@ -1862,7 +1862,7 @@ public class InterfaceAutomaton extends FSMActor {
     // than one state if the automaton is non-deterministic.
     // Return an empty set if such a transition does not exist.
     private Set _getDestinationStates(State state, String label) {
-	Set destinations = new HashSet();
+        Set destinations = new HashSet();
         ComponentPort outPort = state.outgoingPort;
         Iterator iterator = outPort.linkedRelationList().iterator();
         while (iterator.hasNext()) {

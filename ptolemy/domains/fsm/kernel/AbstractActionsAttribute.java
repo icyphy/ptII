@@ -332,23 +332,23 @@ public abstract class AbstractActionsAttribute extends Action {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
             if (_destinationNames != null) {
-		_destinations = new LinkedList();
+                _destinations = new LinkedList();
                 Iterator destinationNames = _destinationNames.iterator();
                 while (destinationNames.hasNext()) {
                     String destinationName = (String)destinationNames.next();
                     NamedObj destination = _getDestination(destinationName);
                     _destinations.add(destination);
                 }
-	    }
-	    if (_variables != null) {
-		Iterator variables = _variables.iterator();
-		_variables = new LinkedList();
-		while (variables.hasNext()) {
-		    Variable variable = (Variable)variables.next();
-		    Transition container = (Transition)getContainer();
-		    _variables.add(container.getAttribute(variable.getName()));
-		}
-	    }
+            }
+            if (_variables != null) {
+                Iterator variables = _variables.iterator();
+                _variables = new LinkedList();
+                while (variables.hasNext()) {
+                    Variable variable = (Variable)variables.next();
+                    Transition container = (Transition)getContainer();
+                    _variables.add(container.getAttribute(variable.getName()));
+                }
+            }
             _destinationsListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();

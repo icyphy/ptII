@@ -131,7 +131,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @param workspace The workspace that will list the actor.
      */
     public FSMActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         _init();
     }
 
@@ -193,9 +193,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._connectionMapsVersion = -1;
-	newObject._connectionMaps = null;
+        newObject._connectionMaps = null;
         newObject._initialStateVersion = -1;
-	newObject._inputVariableMap = new HashMap();
+        newObject._inputVariableMap = new HashMap();
         return newObject;
     }
 
@@ -298,16 +298,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return The manager.
      */
     public Manager getManager() {
-	try {
-	    _workspace.getReadAccess();
-	    CompositeEntity container = (CompositeEntity)getContainer();
-	    if (container instanceof CompositeActor) {
-		return ((CompositeActor)container).getManager();
-	    }
-	    return null;
-	} finally {
-	    _workspace.doneReading();
-	}
+        try {
+            _workspace.getReadAccess();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            if (container instanceof CompositeActor) {
+                return ((CompositeActor)container).getManager();
+            }
+            return null;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Initialize this actor.  Goto initial state.
@@ -367,15 +367,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
     public int iterate(int count) throws IllegalActionException {
-	int n = 0;
-	while (n++ < count && !_stopRequested) {
-	    if (prefire()) {
-		fire();
-		if(!postfire()) return STOP_ITERATING;
-	    } else {
+        int n = 0;
+        while (n++ < count && !_stopRequested) {
+            if (prefire()) {
+                fire();
+                if(!postfire()) return STOP_ITERATING;
+            } else {
                 return NOT_READY;
-	    }
-	}
+            }
+        }
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -400,7 +400,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             // This exception should not occur.
             throw new InternalErrorException(
                     "TypedAtomicActor.newPort: Internal error: " +
-		    ex.getMessage());
+                    ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
@@ -736,19 +736,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             Action action = (Action)actions.next();
             action.execute();
         }
-	if (_lastChosenTransition.destinationState() == null) {
-	    throw new IllegalActionException(this, _lastChosenTransition,
+        if (_lastChosenTransition.destinationState() == null) {
+            throw new IllegalActionException(this, _lastChosenTransition,
                     "The transition is enabled but does not have a "
                     + "destination state.");
-	}
+        }
         _currentState = _lastChosenTransition.destinationState();
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
-	BooleanToken resetToken =
-	        (BooleanToken)_lastChosenTransition.reset.getToken();
-	if (resetToken.booleanValue()) {
-	    Actor[] actors = _currentState.getRefinement();
+        BooleanToken resetToken =
+                (BooleanToken)_lastChosenTransition.reset.getToken();
+        if (resetToken.booleanValue()) {
+            Actor[] actors = _currentState.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_debugging)
@@ -757,7 +757,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     actors[i].initialize();
                 }
             }
-	}
+        }
         _setCurrentConnectionMap();
     }
 
@@ -1061,7 +1061,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             while (states.hasNext()) {
                 state = (State)states.next();
                 Map stateMap = new HashMap();
-		TypedActor[] actors = state.getRefinement();
+                TypedActor[] actors = state.getRefinement();
                 // Determine the boolean flags for each input port.
                 Iterator inPorts = inputPortList().iterator();
                 while (inPorts.hasNext()) {
@@ -1078,14 +1078,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     while (relations.hasNext()) {
                         IORelation relation = (IORelation)relations.next();
                         boolean linked = false;
-			for (int i = 0; i < actors.length; ++i) {
-			    Iterator outports =
+                        for (int i = 0; i < actors.length; ++i) {
+                            Iterator outports =
                                     actors[i].outputPortList().iterator();
-			    while (outports.hasNext()) {
-				IOPort outport = (IOPort)outports.next();
-				linked = linked | outport.isLinked(relation);
-			    }
-			}
+                            while (outports.hasNext()) {
+                                IOPort outport = (IOPort)outports.next();
+                                linked = linked | outport.isLinked(relation);
+                            }
+                        }
                         for (int j = 0; j < relation.getWidth(); ++j) {
                             flags[channelIndex+j] = linked;
                         }
@@ -1132,7 +1132,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     private void _init() {
         // Create a more reasonable default icon.
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
                 "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
