@@ -74,7 +74,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #   for pid 0, Win32 error 6
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=/bin/tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=/bin/tar clean all src.jar hyvisual.jar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/usr/local/bin/tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
@@ -290,7 +290,7 @@ $(PTII_SRC): $(PTII_FULL)
 # the files come out in the right location
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_04/bin/jar
+JAR=c:/j2sdk1.4.2_06/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
@@ -320,7 +320,7 @@ src_jar: #$(PTII_SRC)
 # the files come out in the right location
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_05/bin/jar
+JAR=c:/j2sdk1.4.2_06/bin/jar
 HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 
 # The Jar file that we create.
