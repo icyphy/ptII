@@ -235,6 +235,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                     + getCurrentTime());
         }
         produceOutput();
+        _discretePhaseExecution();
     }
 
     /** Register the break point to this director and to the executive
@@ -309,7 +310,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) _debug(getFullName(), " postfire.");
-        _discretePhaseExecution();
+        // FIXME: this postfire method produces outputs
+        //_discretePhaseExecution();
         updateContinuousStates();
         // The current time will be the begin time of the next iteration.
         _setIterationBeginTime(getCurrentTime());
