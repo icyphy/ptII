@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II doc/design/usingVergil directory
+# Makefile for the Ptolemy II doc/design/usingVergil/images directory
 #
 # Author: Christopher Hylands (makefile only)
 # Version: $Id$
@@ -29,32 +29,89 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/design/usingVergil
+ME =		doc/design/usingVergil/images
 
 # Sub directories to run make in.
-DIRS =		images
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	usingVergil
+PTPACKAGE = 	images
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	images/images.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	index.htm
-
+	usingVergil10.gif \
+	usingVergil11.gif \
+	usingVergil12.gif \
+	usingVergil13.gif \
+	usingVergil14.gif \
+	usingVergil15.gif \
+	usingVergil16.gif \
+	usingVergil17.gif \
+	usingVergil18.gif \
+	usingVergil19.gif \
+	usingVergil2.gif \
+	usingVergil20.gif \
+	usingVergil21.gif \
+	usingVergil22.gif \
+	usingVergil23.gif \
+	usingVergil24.gif \
+	usingVergil25.gif \
+	usingVergil26.gif \
+	usingVergil27.gif \
+	usingVergil28.gif \
+	usingVergil29.gif \
+	usingVergil3.gif \
+	usingVergil30.gif \
+	usingVergil31.gif \
+	usingVergil32.gif \
+	usingVergil33.gif \
+	usingVergil34.gif \
+	usingVergil35.gif \
+	usingVergil36.gif \
+	usingVergil37.gif \
+	usingVergil38.gif \
+	usingVergil39.gif \
+	usingVergil4.gif \
+	usingVergil40.gif \
+	usingVergil41.gif \
+	usingVergil42.gif \
+	usingVergil43.gif \
+	usingVergil44.gif \
+	usingVergil45.gif \
+	usingVergil46.gif \
+	usingVergil47.gif \
+	usingVergil48.gif \
+	usingVergil49.gif \
+	usingVergil5.gif \
+	usingVergil50.gif \
+	usingVergil51.gif \
+	usingVergil52.gif \
+	usingVergil53.gif \
+	usingVergil54.gif \
+	usingVergil55.gif \
+	usingVergil56.gif \
+	usingVergil57.gif \
+	usingVergil58.gif \
+	usingVergil59.gif \
+	usingVergil6.gif \
+	usingVergil60.gif \
+	usingVergil61.gif \
+	usingVergil62.gif \
+	usingVergil63.gif \
+	usingVergil64.gif \
+	usingVergil7.gif \
+	usingVergil8.gif \
+	usingVergil9.gif \
+	usingVergila.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -69,9 +126,4 @@ OPTIONAL_FILES =
 
 install: jars
 
-updateimages:
-	for file in usingVergil/Output/images/usingVergil[0-9]*.gif; \
-	do \
-		cp $$file `echo $$file | sed 's@usingVergil/Output/images/usingVergil@index-@'g`; \
-	done
 include $(ROOT)/mk/ptno-compile.mk
