@@ -48,10 +48,12 @@ import ptolemy.kernel.util.*;
 /**
 Generate a convolutional code by passing the information sequence to be
 transmitted through a linear finite-state shift register.
+The input port only accepts integers 0 or 1. The output port produces
+a sequence of 0 and 1.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
-The number of bits per time that should be shifted into and along the
-shift register is given by the <i>inputNumber</i> parameter, which
+The number of bits per firing that should be shifted into and along the
+shift register is given by the <i>inputBlockSize</i> parameter, which
 should be a positive integer.
 The polynomials are given by the <i>polynomialArray</i> parameter, which
 should be an array of positive integers. Each integer indicates one
@@ -95,9 +97,9 @@ public class ConvolutionalCoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        inputNumber = new Parameter(this, "inputNumber");
-        inputNumber.setTypeEquals(BaseType.INT);
-        inputNumber.setExpression("1");
+        inputBlockSize = new Parameter(this, "inputBlockSize");
+        inputBlockSize.setTypeEquals(BaseType.INT);
+        inputBlockSize.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
@@ -135,10 +137,10 @@ public class ConvolutionalCoder extends Transformer {
     public Parameter initial;
 
     /** Integer defining the number of bits that the shift register
-     *  takes in each time. It should be a positive integer. Its
+     *  takes in each firing. It should be a positive integer. Its
      *  default value is the integer 1.
      */
-    public Parameter inputNumber;
+    public Parameter inputBlockSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -161,8 +163,8 @@ public class ConvolutionalCoder extends Transformer {
                 throw new IllegalActionException(this,
                 "shift register's value must be non-negative.");
             }
-        } else if (attribute == inputNumber) {
-            _inputNumber = ((IntToken)inputNumber.getToken()).intValue();
+        } else if (attribute == inputBlockSize) {
+            _inputNumber = ((IntToken)inputBlockSize.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
                         "inputLength must be non-negative.");
@@ -177,7 +179,6 @@ public class ConvolutionalCoder extends Transformer {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
-            //int maxPolyValue = 0;
             for(int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
@@ -193,7 +194,7 @@ public class ConvolutionalCoder extends Transformer {
         }
     }
 
-    /** Read "<i>inputLength</i>" bits from the input port and shift
+    /** Read "<i>inputBlockSize</i>" bits from the input port and shift
      *  them into the shift register. Compute the parity for each
      *  polynomial specified in <i>polynomialArray</i>. Send the results
      *  in sequence. The n-th bit corresponds to the parity computed
@@ -267,9 +268,9 @@ public class ConvolutionalCoder extends Transformer {
 
     /** Calculate the parity given by the polynomial and the
      *  state of shift register.
-     *  @param mask Polynomial.
+     *  @param mask The polynomial array.
      *  @param reg State of shift register.
-     *  @return Parity.
+     *  @return Parities stored in an array.
      */
     private int[] _calculateParity(int[] mask, int maskNumber, int reg) {
         int[] parity = new int[maskNumber];
@@ -301,7 +302,7 @@ public class ConvolutionalCoder extends Transformer {
     // Updated state of the shift register.
     private int _latestShiftReg;
 
-    // Number bits the actor consumes per firing.
+    // Number of bits the actor consumes per firing.
     private int _inputNumber;
 
     // Polynomial array.
@@ -310,11 +311,8 @@ public class ConvolutionalCoder extends Transformer {
     // Number of polynomials.
     private int _maskNumber;
 
-    // Length of the shift register.
-    private int _shiftRegLength = 0;
-
     // A flag indicating that the private variable
-    //  _inputNumber is invalid.
+    // _inputNumber is invalid.
     private transient boolean _inputNumberInvalid = true;
 
     // Since this actor always sends one of two tokens,
