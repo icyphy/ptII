@@ -72,7 +72,7 @@ public class PortLocationDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if(!(target instanceof Entity)) return null;
+        if (!(target instanceof Entity)) return null;
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
                 // Create a dialog for configuring the object.

@@ -77,18 +77,18 @@ public class SetIconAction extends FigureAction {
         String path = null;
         StringAttribute imagePath =
             (StringAttribute)object.getAttribute("_imagePath");
-        if ( imagePath != null ) {
+        if (imagePath != null) {
             path = imagePath.getExpression();
         }
         JFileChooser iconChooser = new JFileChooser();
-        iconChooser.setDialogTitle( "Select an Image" );
+        iconChooser.setDialogTitle("Select an Image");
         ImageFileFilter filter = new ImageFileFilter();
-        iconChooser.setFileFilter( filter );
+        iconChooser.setFileFilter(filter);
         // If the image has been previously set, set the selected file
         // to the previously set file path.
-        if ( path != null ) {
-            iconChooser.setSelectedFile( new File(path) );
-        } else if ( _directory != null ) {
+        if (path != null) {
+            iconChooser.setSelectedFile(new File(path));
+        } else if (_directory != null) {
             iconChooser.setCurrentDirectory(_directory);
         } else {
             // The default on Windows is to open at user.home, which is
@@ -112,46 +112,44 @@ public class SetIconAction extends FigureAction {
 
                 String extension = getExtension(file);
                 StringBuffer moml = new StringBuffer(
-                        "<group>\n<property name=\"_imagePath\" " +
-                        "class=\"ptolemy.kernel.util.StringAttribute\" " +
-                        "value=\"" + file.getCanonicalPath() + "\"/>\n" +
-                        "<property name=\"_iconDescription\"" +
-                        " class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\"" +
-                        ">\n <configure> ");
+                        "<group>\n<property name=\"_imagePath\" "
+                        + "class=\"ptolemy.kernel.util.StringAttribute\" "
+                        + "value=\"" + file.getCanonicalPath() + "\"/>\n"
+                        + "<property name=\"_iconDescription\""
+                        + " class=\"ptolemy.kernel.util."
+                        + "SingletonConfigurableAttribute\""
+                        + ">\n <configure> ");
 
                 if (extension.equalsIgnoreCase("svg")
                      || extension.equalsIgnoreCase("xml")) {
                     // read in the svg from a file
                     BufferedReader reader = new BufferedReader(
-                            new FileReader( file ) );
+                            new FileReader(file));
 
                    String temp = new String();
-                   while ((temp = reader.readLine()) != null ) {
+                   while ((temp = reader.readLine()) != null) {
                        moml.append(temp);
                    }
-                   moml.append( " </configure>\n</property>\n</group> " );
-                   ChangeRequest request = new MoMLChangeRequest(
-                           object,
-                           object,
-                           moml.toString(),
-                           null
-                           );
+                   moml.append(" </configure>\n</property>\n</group> ");
+                   ChangeRequest request =
+                       new MoMLChangeRequest(object, object,
+                               moml.toString(), null);
                    object.requestChange(request);
                 }
                 else
                 {// insert the gif into svg markup
                    moml.append (
-                           "<svg>\n<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\" style=\"fill:white\"></rect>" +
-                           "<image x=\"0\" y=\"0\" width=\"60\" height=\"40\" xlink:href=\"file:" +
-                           file.getCanonicalPath() +
-                           "\"></image>\n</svg>\n" +
-                           " </configure>\n</property>\n</group>");
+                           "<svg>\n<rect x=\"0\" y=\"0\" width=\"60\" "
+                           + "height=\"40\" style=\"fill:white\"></rect>"
+                           + "<image x=\"0\" y=\"0\" width=\"60\" "
+                           + "height=\"40\" xlink:href=\"file:"
+                           + file.getCanonicalPath()
+                           + "\"></image>\n</svg>\n"
+                           + " </configure>\n</property>\n</group>");
 
-                   ChangeRequest request = new MoMLChangeRequest(
-                           object,
-                           object,
-                           moml.toString(),
-                           null);
+                   ChangeRequest request =
+                       new MoMLChangeRequest(object, object,
+                               moml.toString(), null);
                      object.requestChange(request);
                 }
                 _directory = iconChooser.getCurrentDirectory();
@@ -202,7 +200,7 @@ public class SetIconAction extends FigureAction {
             if (extension != null) {
                 if (extension.equalsIgnoreCase("gif")
                         || extension.equalsIgnoreCase("svg")
-                        || extension.equalsIgnoreCase("xml") ) {
+                        || extension.equalsIgnoreCase("xml")) {
                     return true;
                 } else {
                     return false;
@@ -216,5 +214,4 @@ public class SetIconAction extends FigureAction {
             return "Supported Image Formats (gif, svg, xml)";
         }
     }
-
 }
