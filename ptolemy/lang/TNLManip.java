@@ -226,7 +226,8 @@ public class TNLManip {
         while (iterator.hasNext()) {
             Object object = iterator.next();
 
-            if (object instanceof TreeNode) {
+            if (object == null) retList.add(NullValue.instance);
+            else if (object instanceof TreeNode) {
                 TreeNode node = (TreeNode) object;
 
                 returnValue = node.accept(visitor, args, setChildReturnValues);
@@ -237,8 +238,6 @@ public class TNLManip {
                     retList.add(returnValue);
                 }
 
-                // FIXME: In the case of a null return value, should
-                // NullValue.instance be set as the property value?             
                 node.setProperty(node.RETURN_VALUE_AS_ELEMENT_KEY, returnValue);
 
             } else if (object instanceof List) {
