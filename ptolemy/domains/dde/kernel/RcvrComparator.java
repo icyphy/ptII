@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+@ProposedRating Green (davisj@eecs.berkeley.edu)
 @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
@@ -46,11 +46,11 @@ A RcvrComparator is used to sort receivers controlled by a time keeper.
 Receivers are sorted according to rcvrTime and priority using the 
 compare() method. First receivers are sorted according to rcvrTime. 
 RcvrTimes are partitioned into three categories: nonnegative times, 
-PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE times. 
-Nonnegative times precede IGNORE times precede INACTIVE times. Within 
-the nonnegative time category, smaller times precede larger times. The 
-IGNORE and INACTIVE categories each consist of a single value so within 
-these categories comparison results in equality. 
+PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE 
+times. Nonnegative times precede IGNORE times precede INACTIVE times. 
+Within the nonnegative time category, smaller times precede larger 
+times. The IGNORE and INACTIVE categories each consist of a single 
+value so within these categories comparison results in equality. 
 
 If it is determined that two receivers are equivalent according to 
 rcvrTime, then comparison is made according to the receiver priority.
@@ -76,9 +76,9 @@ public class RcvrComparator implements Comparator {
     /** Compare two receivers according to rcvrTime and priority.
      *  Return +1, -1 or 0 if the first receiver argument will be
      *  ordered before, after or equivalent to the second receiver
-     *  argument, respectively. Base the ordering first on the rcvrTimes. 
-     *  If the rcvrTimes are equal, then base the ordering on the receiver
-     *  priority. 
+     *  argument, respectively. Base the ordering first on the 
+     *  rcvrTimes. If the rcvrTimes are equal, then base the 
+     *  ordering on the receiver priority. 
      *  @exception ClassCastException If obj1 and obj2 are
      *   not instances of PrioritizedTimedQueue.
      */
@@ -103,8 +103,6 @@ public class RcvrComparator implements Comparator {
 	} else {
 	    _timeKeeper._ignoredRcvrs = false;
 	}
-/*
-*/
 
 	// Compare Nonnegative Time with Negative Time
 	if( time1 >= 0 && time2 < 0 ) {

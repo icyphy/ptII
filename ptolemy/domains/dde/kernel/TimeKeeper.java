@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+@ProposedRating Green (davisj@eecs.berkeley.edu)
 @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
@@ -49,11 +49,11 @@ A TimeKeeper is instantiated by a DDEThread and is used by the thread
 to manage time for the thread's actor. A TimeKeeper has a list of
 DDEReceivers that are contained by the actor that the thread controls.
 As tokens flow through the DDEReceivers, the TimeKeeper keeps track
-of the advancement of time.
+of the advancement of time local to the actor.
 <P>
 DDEReceivers each have three important variables: <I>receiver time</I>,
 <I>last time</I> and <I>priority</I>. The receiver time of a DDEReceiver
-is equal to the time of the oldest event that resides on the receiver.
+is equal to the time of the oldest event that resides in the receiver.
 The last time is equal to the time of the newest event residing on the
 receiver.
 <P>
@@ -81,7 +81,7 @@ its receivers and their corresponding receiver times and priorities.
 As tokens are placed in and taken out of the receivers of an actor,
 the TimeKeeper's receiver list is updated. The receiver list is sorted
 by RcvrComparator. This same information allows the TimeKeeper to 
-determine what the current time is.
+determine what the current time is local to the actor.
 
 @author John S. Davis II
 @version $Id$
@@ -171,13 +171,6 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
-	String name = ((Nameable) _actor).getName();
-	/*
-	if( name.equals("join") ) {
-	    System.out.println("*****removeAllIgnoreTokens() called by "+name+" at time "+_currentTime);
-	}
-	*/
-
 	if( _rcvrList == null ) {
 	    return;
 	}
@@ -234,7 +227,7 @@ public class TimeKeeper {
     /** Set the current time of this TimeKeeper. If the specified
      *  time is less than the previous value for current time, then
      *  throw an IllegalArgumentException. Do not throw an
-     *  IllegalActionException if the current time is set to
+     *  IllegalArgumentException if the current time is set to
      *  PrioritizedTimedQueue.INACTIVE to indicate termination.
      * @param time The new value for current time.
      * @exception IllegalArgumentException If there is an attempt to
@@ -270,9 +263,6 @@ public class TimeKeeper {
 
 	double time = tqr.getRcvrTime();
 	if( time == PrioritizedTimedQueue.IGNORE ) {
-	    /*
-	    System.out.println("#### SET IGNORE #####");
-	    */
 	    _ignoredRcvrs = true;
 	}
 
@@ -369,12 +359,6 @@ public class TimeKeeper {
      */
     synchronized void setRcvrPriorities()
             throws IllegalActionException {
-		/*
-	String name = ((Nameable)_actor).getName();
-	System.out.println("##### TimeKeeper Set Priorities: "+name+" #####");
-		*/
-
-
 
         LinkedList listOfPorts = new LinkedList();
 	Iterator inputPorts = _actor.inputPortList().iterator();

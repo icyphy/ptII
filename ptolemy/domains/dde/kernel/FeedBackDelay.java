@@ -193,10 +193,6 @@ public class FeedBackDelay extends DDEActor {
      * @see ptolemy.domains.dde.kernel.DDEReceiver
      */
     public void initialize() throws IllegalActionException {
-	// System.out.println("##### FeedBackDelay.initialize() #####");
-
-
-
 	super.initialize();
 
         Receiver[][] rcvrs = output.getRemoteReceivers();

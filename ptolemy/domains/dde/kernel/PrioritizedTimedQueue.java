@@ -25,7 +25,7 @@ storing tokens with time stamps.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+@ProposedRating Green (davisj@eecs.berkeley.edu)
 @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
@@ -302,11 +302,6 @@ public class PrioritizedTimedQueue {
      * @exception NoTokenException If the queue is empty.
      */
     public synchronized void removeIgnoredToken() {
-	/*
-	String name = ((Nameable)_container.getContainer()).getName();
-	System.out.println("*****removeIgnoredToken() called on "+name);
-	*/
-
 
         if( getRcvrTime() != PrioritizedTimedQueue.IGNORE ) {
             return;
@@ -340,33 +335,12 @@ public class PrioritizedTimedQueue {
         
 	// Set the receiver time if value is still IGNORE
 	if( getRcvrTime() == PrioritizedTimedQueue.IGNORE ) {
-	    /* FIXME
-	    if( name.equals("join") ) {
-		System.out.println("##### STILL IGNORE #####");
-	    }
-	    */
 	    if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		/*
-		if( name.equals("join") ) {
-		    System.out.println("Ignore time of "+name+
-			    " replaced with time of "+timeKeeper.getCurrentTime());
-		}
-		*/
 		setRcvrTime( timeKeeper.getCurrentTime() );
 	    }
 	}
-        
-	/* FIXME
-        // Call updateRcvrList() even if _queue.size() == 0,
-        // so that the triple is no longer in front.
-        if( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
-            timeKeeper.updateRcvrList(this);
-        }
-	*/
     }
 
     /** Set the queue capacity of this receiver.

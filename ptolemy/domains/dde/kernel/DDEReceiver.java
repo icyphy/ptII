@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+@ProposedRating Green (davisj@eecs.berkeley.edu)
 @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
@@ -66,11 +66,11 @@ but identical local time advancement, then the hasToken() method of the
 receiver with the highest priority will true (the others will return
 false). 
 <P>
-If a receiver with a nonnegative receiver time is empty, then the hasToken() 
-method will perform a blocking read. Once, a token is available then
-hasToken() will return true or false according to the minimum time 
-advancement rules cited in the preceding paragraph. Note that hasToken()
-blocks while get() does not block.
+If a receiver with a nonnegative receiver time is empty, then the 
+hasToken() method will perform a blocking read. Once, a token is 
+available then hasToken() will return true or false according to 
+the minimum time advancement rules cited in the preceding paragraph. 
+Note that hasToken() blocks while get() does not block.
 <P>
 DDEReceivers process certain events that are hidden from view by
 ports and actors. In particular, NullTokens and time stamps of 
@@ -138,7 +138,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  safe to call by calling hasToken() first. Note that 
      *  this method does not perform a blocking read but hasToken()
      *  does.
-     *  FIXME
      * @return The oldest token on this queue.
      * @exception NoTokenException If this method is called while
      *  hasToken() returns false.
@@ -177,81 +176,18 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  receiver's actor. The sorting rules are found in
      *  ptolemy.domains.dde.kernel.RcvrComparator.
      *  <P>
-     *  Note that this method calls uses no synchronization directly 
-     *  and calls 
-     *  hasToken(workspace, director, timeKeeper, _hideNullTokens).
-     *  The version of hasToken (with parameters) is recursive and
-     *  handles synchronization.
+     *  If at any point during this method this receiver is scheduled 
+     *  for termination, then throw a TerminateProcessException to 
+     *  cease execution of the actor that contains this receiver.
      * @return Return true if the get() method of this receiver will
      *  return a token without throwing a NoTokenException.
      */
-    public boolean yohasToken() {
-	Workspace workspace = getContainer().workspace();
-        DDEDirector director = (DDEDirector)((Actor) 
-		getContainer().getContainer()).getDirector();
-	Thread thread = Thread.currentThread();
-        
-	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-            return hasToken(workspace, director, timeKeeper, _hideNullTokens);
-        }
-        return false;
-        
-        /*
-	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-
-	    int value = 0;
-	    timeKeeper.updateRcvrList( this );
-	    while( value == 0 ) {
-		// FIXME
-		// if( this != timeKeeper.getFirstRcvr() ) {
-		//    return false;
-		// }
-		value = getNextTokenType(workspace, director, 
-			timeKeeper, _hideNullTokens);
-		// JFIXME
-		// if( value == 0 ) {
-		//     timeKeeper.sendOutNullTokens(this);
-		// }
-	    }
-	    if( value == 1 ) {
-		return true;
-	    } else if( value == -1 ) {
-		return false;
-	    } 
-	}
-	return false;
-        */
-    }
-        
-        
-    /** Return true if the get() method of this receiver will return a
-     *  token without throwing a NoTokenException. This method is
-     *  recursive and contains a large block of code that is
-     *  synchronized. It takes parameters to avoid have to gain
-     *  access to the workspace within the synchronized block.
-     *  <P>
-     *  If at any point during this method this receiver is scheduled 
-     *  for termination, then throw a TerminateProcessException to cease 
-     *  execution of the actor that contains this receiver.
-     */
-    public boolean hasToken(Workspace workspace, 
-    		DDEDirector director, TimeKeeper timeKeeper, 
-                boolean _hideNullTokens) {
-        return false;
-    }
-    
     public boolean hasToken() {
-	String name = ((Nameable)getContainer().getContainer()).getName();
-
-        System.out.println(name+".hasToken() Beginning instantiation");
 	Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)((Actor) 
 		getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
 	TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-        System.out.println(name+".hasToken() Through with instantiation");
         
 	if( !(thread instanceof DDEThread) ) {
             return false;
@@ -271,7 +207,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    // Determine if this Receiver is in Front
 	    /////////////////////////////////////////
 	    if( this != timeKeeper.getFirstRcvr() ) {
-        	System.out.println(name+".hasToken() returning false");
 	        return false;
 	    }
 
@@ -288,15 +223,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( getRcvrTime() == IGNORE && !_terminate ) {
 	        timeKeeper.removeAllIgnoreTokens();
 
-	        /* JFIXME
-	        */
                 sendNullTokens = true;
-                
-                /*
-	        timeKeeper.sendOutNullTokens(this);
-	        return hasToken(workspace, director, 
-			timeKeeper, _hideNullTokens);
-                */
             }
 
 	    ///////////////////////////
@@ -304,24 +231,16 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ///////////////////////////
             if( super.hasToken() && !_terminate && !sendNullTokens ) {
 	        if ( !hasNullToken() ) {
-        	    System.out.println(name+".hasToken() returning true");
 	            return true;
 	        } else {
 		    // Treat Null Tokens Normally For Feedback
 		    if( !_hideNullTokens ) {
-        	        System.out.println(name+".hasToken() returning true");
 		        return true;
 		    }
 
 		    // Deal With Null Tokens Separately
 		    super.get();
                     sendNullTokens = true;
-                    
-                    /*
-		    timeKeeper.sendOutNullTokens(this);
-	            return hasToken(workspace, director, 
-			timeKeeper, _hideNullTokens);
-                    */
 	        }
 	    }
 
@@ -346,23 +265,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	        }
                 throw new TerminateProcessException("");
 	    }
-	    /*
-            return 0;
-	    return hasToken(workspace, director, 
-			timeKeeper, _hideNullTokens);
-	    */
         }
         
-        System.out.println(name+".hasToken() out of synchronization");
         if( sendNullTokens ) {
 	    timeKeeper.sendOutNullTokens(this);
         }
-        System.out.println(name+".hasToken() through sending NullTokens");
 	return hasToken(); 
-        /*
-	return hasToken(workspace, director, 
-        	timeKeeper, _hideNullTokens);
-        */
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
@@ -407,22 +315,49 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @param time The time stamp associated with the token.
      */
     public void put(Token token, double time) {
-        IOPort port = (IOPort)getContainer();
-        String portName = ((Nameable)port).getName();
-	String actorName = ((Nameable)port.getContainer()).getName();
-	boolean realToken = false;
-	boolean nullToken = false;
-	if( token instanceof NullToken ) {
-	    nullToken = true;
-	} else {
-	    realToken = true;
-	}
 	Thread thread = Thread.currentThread();
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
         director = (DDEDirector)((Actor) 
 		getContainer().getContainer()).getDirector();
-	_put(token, time, workspace, director);
+                
+        synchronized(this) {
+        
+            if( time > getCompletionTime() &&
+                    getCompletionTime() != ETERNITY && !_terminate ) {
+	        time = INACTIVE;
+	    }
+
+            if( super.hasRoom() && !_terminate ) {
+                super.put(token, time);
+		if( _readPending ) {
+		    director.removeInternalReadBlock();
+		    _readPending = false;
+		    notifyAll();
+		}
+                return;
+            }
+
+            if ( !super.hasRoom() && !_terminate ) {
+		_writePending = true;
+                director.addWriteBlock(this);
+		while( _writePending && !_terminate ) {
+		    workspace.wait( this );
+		}
+            }
+
+            if( _terminate ) {
+		if( _writePending ) {
+		    _writePending = false;
+                    director.removeWriteBlock( this );
+		}
+                throw new TerminateProcessException( getContainer(),
+                        "This receiver has been terminated "
+                        + "during _put()");
+            }
+	}
+        
+        put(token, time);
     }
 
     /** Schedule this receiver to terminate. After this method is
@@ -468,7 +403,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  available tokens it finds are NullTokens. Specify that
      *  NullTokens should not be taken into consideration by
      *  hasToken() if the parameter is true; otherwise do consider
-     *  NullTokens.
+     *  NullTokens. This method is used in special circumstances
+     *  in NullTokens must be manipulated at the actor level. In 
+     *  particular, FeedBackDelay use this method so that it can
+     *  "see" NullTokens that it receives and give them appropriate
+     *  delay values.
      * @parameter hide The parameter indicating whether NullTokens
      *  should be taken into consideration by hasToken().
      */
@@ -478,157 +417,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods 		   ////
-
-    /** This method provides the recursive functionality of 
-     *  hasToken() for general receivers.
-     */
-    public synchronized int getNextTokenType(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper,
-	    boolean _hideNullTokens ) {
-	/* FIXME
-	String name = ((Nameable)getContainer().getContainer()).getName();
-	if( name.equals("join") ) {
-	    timeKeeper.printRcvrList();
-	}
-	*/
-
-	//////////////////////
-	// Update the RcvrList
-	//////////////////////
-	timeKeeper.updateRcvrList( this );
-
-	/////////////////////////////////////////
-	// Determine if this Receiver is in Front
-	/////////////////////////////////////////
-	if( this != timeKeeper.getFirstRcvr() ) {
-	    return -1;
-	}
-
-	//////////////////////////////////////////
-	// Determine if the TimeKeeper is inactive 
-	//////////////////////////////////////////
-        if( timeKeeper.getNextTime() == INACTIVE ) {
-            requestFinish();
-	}
-
-	///////////////////
-	// Check Rcvr Times
-	///////////////////
-        if( getRcvrTime() == IGNORE && !_terminate ) {
-	    timeKeeper.removeAllIgnoreTokens();
-
-	    /* JFIXME
-	    */
-	    timeKeeper.sendOutNullTokens(this);
-
-	    return 0;
-        }
-
-	///////////////////////////
-	// Check Token Availability
-	///////////////////////////
-        if( super.hasToken() && !_terminate ) {
-	    if( hasNullToken() ) {
-		// Treat Null Tokens Normally For Feedback
-		if( !_hideNullTokens ) {
-		    return 1;
-		}
-
-		// Deal With Null Tokens Separately
-		super.get();
-		timeKeeper.sendOutNullTokens(this);
-                return 0;
-	    }
-	    return 1;
-	}
-
-	////////////////////////
-	// Perform Blocking Read
-	////////////////////////
-	if( !super.hasToken() && !_terminate ) {
-	    _readPending = true;
-            director.addInternalReadBlock();
-	    while( _readPending && !_terminate ) {
-		workspace.wait( this );
-	    }
-	}
-
-	////////////////////
-	// Check Termination
-	////////////////////
-	if( _terminate ) {
-	    if( _readPending ) {
-		_readPending = false;
-		director.removeInternalReadBlock();
-	    }
-            throw new TerminateProcessException("");
-	}
-	/*
-        return 0;
-	*/
-	return getNextTokenType(workspace, director, 
-			timeKeeper, _hideNullTokens);
-    }
-    
-    /** This method provides the recursive functionality
-     *  of put(Token, double).
-     */
-    private void _put(Token token, double time, Workspace workspace,
-	    DDEDirector director) {
-	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
-	    String callerName = ((Nameable)((DDEThread)thread).getActor()).getName();
-	    String calleeName = 
-		((Nameable)getContainer().getContainer()).getName();
-	    /*
-	    if( token instanceof NullToken ) {
-		System.out.println("put() with NullToken called on "+calleeName+" at time = "+time+" by "+callerName);
-	    } else {
-		System.out.println("put() with RealToken called on "+calleeName+" at time = "+time+" by "+callerName);
-	    }
-	    */
-	}
-
-
-        synchronized(this) {
-        
-            if( time > getCompletionTime() &&
-                    getCompletionTime() != ETERNITY && !_terminate ) {
-	        time = INACTIVE;
-	    }
-
-            if( super.hasRoom() && !_terminate ) {
-                super.put(token, time);
-		if( _readPending ) {
-		    director.removeInternalReadBlock();
-		    _readPending = false;
-		    notifyAll();
-		}
-                return;
-            }
-
-            if ( !super.hasRoom() && !_terminate ) {
-		_writePending = true;
-                director.addWriteBlock(this);
-		while( _writePending && !_terminate ) {
-		    workspace.wait( this );
-		}
-            }
-
-            if( _terminate ) {
-		if( _writePending ) {
-		    _writePending = false;
-                    director.removeWriteBlock( this );
-		}
-                throw new TerminateProcessException( getContainer(),
-                        "This receiver has been terminated "
-                        + "during _put()");
-            }
-	}
-        
-        _put(token, time, workspace, director);
-        
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly variables           ////
