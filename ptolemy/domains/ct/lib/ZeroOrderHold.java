@@ -52,7 +52,7 @@ event until the next discrete event arrives.
 */
 
 public class ZeroOrderHold extends Transformer
-    implements CTWaveformGenerator, CTDynamicActor {
+    implements CTWaveformGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
