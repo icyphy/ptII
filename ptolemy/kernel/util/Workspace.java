@@ -86,12 +86,12 @@ Only one thread can be writing to the workspace at a time, and
 while the write permission is held, no thread can read the workspace.
 Again, the call to doneWriting() is essential, or the workspace
 will remain permanently locked to either reading or writing.
-The call to getWriteAccess() will suspend the calling thread until 
-the access can be granted. If the calling thread has read access, 
-the read access is released before suspending the thread. This has 
-important implications. In particular, the topology may change during 
-the call to getWriteAccess(). That is, the topology before and after 
-the call may be different. Thus you should be cautious about using 
+The call to getWriteAccess() will suspend the calling thread until
+the access can be granted. If the calling thread has read access,
+the read access is released before suspending the thread. This has
+important implications. In particular, the topology may change during
+the call to getWriteAccess(). That is, the topology before and after
+the call may be different. Thus you should be cautious about using
 information collected before the call after the call returns.
 <p>
 Note that it is not necessary to obtain a write lock just to add
@@ -278,13 +278,13 @@ public class Workspace implements Nameable, Serializable {
                     depth = new ReadDepth();
                     _readers.put(current, depth);
                 }
-                
+
                 depth.incr();
                 return;
             }
             try {
                 wait();
-                
+
             } catch(InterruptedException ex) {
                 throw new InternalErrorException(
                         "Thread interrupted while waiting for read access!"
@@ -311,12 +311,12 @@ public class Workspace implements Nameable, Serializable {
      *  has been obtained.  It is essential that doneWriting() be called
      *  after this, or read or write permission may never again be granted in
      *  this workspace.
-     *  Before suspending the calling thread, if the thread has read 
-     *  permission, that read permission is released. Once the write 
-     *  permission is acquired, the read permission is restored. Note, 
-     *  however, that since the read permission is released some other 
-     *  thread may acquire write permission and modify the topology. 
-     *  Thus the topology may be different before and after the call 
+     *  Before suspending the calling thread, if the thread has read
+     *  permission, that read permission is released. Once the write
+     *  permission is acquired, the read permission is restored. Note,
+     *  however, that since the read permission is released some other
+     *  thread may acquire write permission and modify the topology.
+     *  Thus the topology may be different before and after the call
      *  to this method.
      */
     public synchronized void getWriteAccess() {
@@ -489,7 +489,7 @@ public class Workspace implements Nameable, Serializable {
     // read permission.
     private Hashtable _readers = new Hashtable();
 
-    // A table by readers (threads) whose permissions have been suspended 
+    // A table by readers (threads) whose permissions have been suspended
     // while they wait for write access.
     private Hashtable _suspendedReaders = new Hashtable();
 

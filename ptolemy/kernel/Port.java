@@ -327,7 +327,7 @@ public class Port extends NamedObj {
 
     /** Set the name of the port. If there is already an port
      *  of the container entity with the same name, then throw an
-     *  exception. 
+     *  exception.
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */

@@ -219,9 +219,9 @@ public class ComponentRelation extends Relation {
         }
     }
 
-    /** Set the name of the ComponentRelation. If there is already 
+    /** Set the name of the ComponentRelation. If there is already
      *  a ComponentRelation of the container with the same name, throw an
-     *  exception. 
+     *  exception.
      *  @exception NameDuplicationException If there is already a relation
      *   with the same name in the container.
      */

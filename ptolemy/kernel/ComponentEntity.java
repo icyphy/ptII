@@ -233,9 +233,9 @@ public class ComponentEntity extends Entity {
         }
     }
 
-    /** Set the name of the ComponentEntity. If there is already 
+    /** Set the name of the ComponentEntity. If there is already
      *  a ComponentEntity of the container with the same name, throw an
-     *  exception. 
+     *  exception.
      *  @exception NameDuplicationException If there already is an entity
      *   in the container with the same name.
      */
@@ -248,7 +248,7 @@ public class ComponentEntity extends Entity {
             ComponentEntity another = (ComponentEntity)
                 container.getEntity(name);
             if((another != null) && (another != this)) {
-                throw new NameDuplicationException(container, 
+                throw new NameDuplicationException(container,
                     "already contains an entity with the name "+name+".");
             }
         }
