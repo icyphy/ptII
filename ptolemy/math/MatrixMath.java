@@ -69,24 +69,6 @@ public final class MatrixMath {
         return matrix[0].length;
     }
 
-    /** Return a new matrix (zero-filled by Java) with the same
-     *  dimensions as the input matrix argument.
-     *  @param matrix A matrix of doubles.
-     *  @retval A new matrix of doubles.
-     */
-    public static final double[][] alloc(double[][] matrix) {
-        return new double[matrix.length][matrix[0].length];
-    }
-
-    /** Return a new matrix (zero-filed by Java) with the specified
-     *  rows and columns.
-     *  @param rows An int.
-     *  @param columns An int.
-     */
-    public static final double[][] alloc(int rows, int columns) {
-        return new double[rows][columns];
-    }
-
     /** Return a new array that is filled with the contents of the matrix.
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
@@ -147,28 +129,6 @@ public final class MatrixMath {
         for (int i = 0; i < rows; i++) {
             int offset = i * cols;
             for (int j = 0; j < cols; j++) {
-                array[offset + j] = matrix[i][j];
-            }
-        }
-    }
-
-    /** Replace the array elements with those in the matrix argument.
-     *  Values from the matrix are copied to the array up to the
-     *  specified row and column.
-     *  The doubles are stored row by row, i.e. using the notation
-     *  (row, column), the entries of the array are in the following order
-     *  for a matrix limited to m rows and n columns :
-     *  (0,0), (0,1), (0,2), ... , (0,n-1), (1,0), (1,1), ... , (m-1,n-1)
-     *  @param array An array of doubles.
-     *  @param matrix A matrix of doubles.
-     *  @param maxRows An int, specifying the maximum row of the matrix.
-     *  @param maxCols An int, specifying the maximum column of the matrix.
-     */
-    public static final void fillArray(double[] array, double[][] matrix,
-                                       int maxRows, int maxCols) {
-        for (int i = 0; i < maxRows; i++) {
-            int offset = i * maxCols;
-            for (int j = 0; j < maxCols; j++) {
                 array[offset + j] = matrix[i][j];
             }
         }
@@ -318,19 +278,6 @@ public final class MatrixMath {
         return result;
     }
 
-    /** Modify the matrix argument by
-     *  adding the second argument to every element.
-     *  @param matrix An matrix of doubles.
-     *  @param z The double to add.
-     */
-    public final void addR(double[][] matrix, double z) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                matrix[i][j] += z;
-            }
-        }
-    }
-
     /** Return a new matrix that is constructed from the argument by
      *  adding the second matrix to the first one.
      *  @param matrix1 The first matrix of doubles.
@@ -345,19 +292,6 @@ public final class MatrixMath {
             }
         }
         return result;
-    }
-
-    /** Modify the first matrix argument by
-     *  adding the second matrix argument
-     *  @param matrix1 The first (modified) matrix of doubles.
-     *  @param matrix2 The second matrix of doubles.
-     */
-    public static final void addR(double[][] matrix1, double[][] matrix2) {
-        for (int i = 0; i < matrix1.length-1; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrix1[i][j] += matrix2[i][j];
-            }
-        }
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -377,19 +311,6 @@ public final class MatrixMath {
         return result;
     }
 
-    /** Modify the first matrix argument by subtracting the second matrix
-     *  argument from the first one.
-     *  @param matrix1 The first (modified) matrix of doubles.
-     *  @param matrix2 The second matrix of doubles.
-     */
-    public static final void subtractR(double[][] matrix1, double[][] matrix2) {
-        for (int i = 0; i < matrix1.length-1; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrix1[i][j] -= matrix2[i][j];
-            }
-        }
-    }
-
     /** Return a new matrix that is the additive inverse of the
      *  argument matrix.
      *  @param matrix A matrix of doubles.
@@ -403,18 +324,6 @@ public final class MatrixMath {
             }
         }
         return result;
-    }
-
-    /** Modify the matrix argument by replacing it with its additive
-     *  inverse.
-     *  @param matrix A matrix of doubles.
-     */
-    public static final void negativeR(double[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                matrix[i][j] = -matrix[i][j];
-            }
-        }
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -466,29 +375,6 @@ public final class MatrixMath {
         return result;
     }
 
-    /** Modify the argument vector by pre-multiplying it by a matrix.
-     *  The number of columns of the matrix must equal the number of elements
-     *  in the vector. The array is treated as a column vector.
-     *  @param matrix A matrix of doubles.
-     *  @param array An array of doubles.
-     */
-    public static final void preMultiplyR(double[][] matrix,
-                                          double[] array) {
-        // Allocate some temporary storage because we can't do this inline.
-        double[] result = new double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            double sum = 0.0;
-            for (int j = 0; j < array.length; j++) {
-                sum += matrix[i][j] * array[j];
-            }
-            result[i] = sum;
-        }
-        // Copy temporary back to input vector
-        for (int k = 0; k < array.length; k++) {
-            array[k] = result[k];
-        }
-    }
-
     /** Return a new vector that is constructed from the argument by
      *  post-multiplying the vector by a matrix. The number of rows of 
      *  the matrix must equal the number of elements in the vector.
@@ -509,31 +395,6 @@ public final class MatrixMath {
             result[i] = sum;
         }
         return result;
-    }
-
-    /** Modify the argument vector by post-multiplying it by a matrix.
-     *  The number of rows of the matrix must equal the number of elements in
-     *  the vector. The returned vector will have the same size as the input
-     *  vector. The array is treated as a row vector.
-     *  @param array An array of doubles.
-     *  @param matrix A matrix of doubles.
-     */
-    public static final void postMultiplyR(double[] array,
-                                           double[][] matrix) {
-        // Allocate some temporary storage because we can't do this inline.
-        double[] result = new double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            double sum = 0.0;
-            for (int j = 0; j < array.length; j++) {
-                sum += matrix[j][i] * array[j];
-            }
-            result[i] = sum;
-        }
-
-        // Copy temporary back to input vector
-        for (int k = 0; k < array.length; k++) {
-            array[k] = result[k];
-        }
     }
 
     /** Return a new matrix that is constructed by element by element
@@ -586,20 +447,6 @@ public final class MatrixMath {
         return result;
     }
 
-    /** Modify the first matrix argument by element by element
-     *  division by the second matrix argument.
-     *  @param matrix1 A matrix of doubles.
-     *  @param matrix2 A matrix of doubles.
-     */
-    public static final void pwiseDivideR(double[][] matrix1,
-                                          double[][] matrix2) {
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrix1[i][j] /= matrix2[i][j];
-            }
-        }
-    }
-
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
      *  @param matrix A matrix of doubles.
@@ -614,19 +461,6 @@ public final class MatrixMath {
             }
         }
         return result;
-    }
-
-    /** Modify the argument matrix by multiplying the matrix by a scalefactor.
-     *  @param matrix A matrix of doubles.
-     *  @scalefactor The constant to multiply the matrix by.
-     */
-    public static final void scaleR(double[][] matrix,
-                              double scalefactor) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                matrix[i][j] *= scalefactor;
-            }
-        }
     }
 
     /** Return a new matrix that is constructed by transposing the input
@@ -645,20 +479,6 @@ public final class MatrixMath {
     }
 
     // The following methods are valid only on square matrices.
-
-    /** Overwrite the input matrix argument (must be a square matrix)
-     *  with its transpose.
-     *  @param matrix A matrix of doubles.
-     */
-    public static final void transposeR(double[][] matrix) {
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 0; j < i; j++) {
-                double temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
-            }
-        }
-    }
 
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
@@ -823,10 +643,10 @@ public final class MatrixMath {
         sb.append('{');
 
         for (int i = 0; i < MatrixMath.rows(M); i++) {
-            
+                                      
             // Replace with ArrayMath.toString(M[i]) when it gets in line
 
-            sb.append('{');
+            sb.append('{');         
             for (int j = 0; j < MatrixMath.columns(M); j++) {
                sb.append(Double.toString(M[i][j]));
                
