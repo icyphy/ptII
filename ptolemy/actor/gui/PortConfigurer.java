@@ -122,7 +122,7 @@ public class PortConfigurer extends Query implements QueryListener {
                 if (!_changed.contains(name)
                         && !_changed.contains(typeEntryName)) continue;
 
-                String value = stringValue(name);
+                String value = getStringValue(name);
 
                 // First, parse the value, which may be a comma-separated list.
                 Set selectedValues = new HashSet();
@@ -165,7 +165,7 @@ public class PortConfigurer extends Query implements QueryListener {
 
                 if (_changed.contains(typeEntryName)) {
                     // Type designation has changed.
-                    String type = stringValue(typeEntryName);
+                    String type = getStringValue(typeEntryName);
                     moml.append(
                             "<property name=\"_type\" "
                             + "class = \"ptolemy.actor.TypeAttribute\" "

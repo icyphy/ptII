@@ -256,7 +256,7 @@ public class PtolemyQuery extends Query
 		String moml = "<property name=\""
 		    + castAttribute.getName(parent)
                     + "\" value=\""
-                    + StringUtilities.escapeForXML(stringValue(name))
+                    + StringUtilities.escapeForXML(getStringValue(name))
                     + "\"/>";
                 request = new MoMLChangeRequest(
                         this,         // originator
@@ -269,7 +269,7 @@ public class PtolemyQuery extends Query
 		request = new ChangeRequest(this, name) {
                         protected void _execute()
                             throws IllegalActionException {
-                            attribute.setExpression(stringValue(name));
+                            attribute.setExpression(getStringValue(name));
 
                             attribute.validate();
                             /* NOTE: Earlier version:
@@ -468,7 +468,7 @@ public class PtolemyQuery extends Query
     public void valueChanged(final Settable attribute) {
         // Do this in the event thread, since it depends on interacting
         // with the UI.  In particular, there is no assurance that
-        // stringValue() will return the correct value if it is called
+        // getStringValue() will return the correct value if it is called
         // from another thread.  And this method is called whenever an
         // attribute change has occurred, which can happen in any thread.
         SwingUtilities.invokeLater(new Runnable() {
@@ -493,7 +493,7 @@ public class PtolemyQuery extends Query
 
                             // Compare value against what is in
                             // already to avoid changing it again.
-                            if (!stringValue(name).equals(newValue)) {
+                            if (!getStringValue(name).equals(newValue)) {
                                 set(name, attribute.getExpression());
                             }
                         }

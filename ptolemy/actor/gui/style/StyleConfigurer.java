@@ -163,7 +163,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	ParameterEditorStyle found = null;
 	Attribute param = _object.getAttribute(name);
 	for (int i = 0; i < parameterStyles.length && found == null; i++) {
-	    if (stringValue(name).equals(parameterStyles[i].getName())) {
+	    if (getStringValue(name).equals(parameterStyles[i].getName())) {
 		found = parameterStyles[i];
 	    }
 	}

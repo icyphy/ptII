@@ -93,7 +93,7 @@ public class RenameConfigurer extends Query
      */
     public void apply() {
         if (_changed) {
-            String newName = stringValue("New name");
+            String newName = getStringValue("New name");
 
             // The context for the MoML should be the first container
             // above this object in the hierarchy that defers its
@@ -122,7 +122,7 @@ public class RenameConfigurer extends Query
             moml.append(newName);
             moml.append("\"/>");
             // Remove or show name.
-            boolean showName = booleanValue("Show name");
+            boolean showName = getBooleanValue("Show name");
             if (_object instanceof Port) {
                 if (showName) {
                     moml.append("<property name=\"_showName\" "

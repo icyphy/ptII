@@ -137,7 +137,7 @@ public class EditParametersDialog extends ComponentDialog
                     null);
             // If the OK button was pressed, then queue a mutation
             // to delete the parameter.
-            String deleteName = query.stringValue("delete");
+            String deleteName = query.getStringValue("delete");
 
             if (dialog.buttonPressed().equals("OK")
                     && !deleteName.equals("")) {
@@ -214,13 +214,13 @@ public class EditParametersDialog extends ComponentDialog
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    String newName = _query.stringValue("name");
+                    String newName = _query.getStringValue("name");
                     ComponentDialog dialog =
                         _openAddDialog(exception.getMessage()
                             + "\n\nPlease enter a new default value:",
                             newName,
-                            _query.stringValue("default"),
-                            _query.stringValue("class"));
+                            _query.getStringValue("default"),
+                            _query.getStringValue("class"));
                     _target.removeChangeListener(EditParametersDialog.this);
                     if (!dialog.buttonPressed().equals("OK")) {
                         // Remove the parameter, since it seems to be erroneous
@@ -278,11 +278,11 @@ public class EditParametersDialog extends ComponentDialog
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
         // A blank property name is interpreted as a cancel.
-        String newName = _query.stringValue("name");
+        String newName = _query.getStringValue("name");
 
         // Need to escape quotes in default value.
         String newDefValue = StringUtilities.escapeForXML(
-                _query.stringValue("default"));
+                _query.getStringValue("default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\""
@@ -290,7 +290,7 @@ public class EditParametersDialog extends ComponentDialog
                 + "\" value=\""
                 + newDefValue.toString()
                 + "\" class=\""
-                + _query.stringValue("class")
+                + _query.getStringValue("class")
                 + "\"/>";
             _target.addChangeListener(this);
             _target.requestChange(
