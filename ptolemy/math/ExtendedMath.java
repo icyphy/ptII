@@ -94,11 +94,14 @@ public class ExtendedMath {
         return Math.log(x) * _ONEOVERLN2;
     }
 
-    /** Return the hyperbolic sine of the argument.
-     *  FIXME: What is the assumed range of the argument?
-     */
-    public static final double sinh(final double x) {
-        return (Math.exp(x) - Math.exp(-x))/2;
+    public static final int roundToInt(final double x) {
+        long tmp = Math.round(x);
+        if (tmp > Integer.MAX_VALUE || tmp < Integer.MIN_VALUE) {
+            throw new IllegalArgumentException
+                ("double value " + x +"does not fit "+
+                 "into an Integer.");
+        }
+        return (int)tmp;
     }
 
     /** If the argument is less than zero, return -1, otherwise
@@ -107,6 +110,13 @@ public class ExtendedMath {
     public static final int sgn(final double x) {
         if (x<0) return -1;
         else return 1;
+    }
+
+    /** Return the hyperbolic sine of the argument.
+     *  FIXME: What is the assumed range of the argument?
+     */
+    public static final double sinh(final double x) {
+        return (Math.exp(x) - Math.exp(-x))/2;
     }
 
     ///////////////////////////////////////////////////////////////////
