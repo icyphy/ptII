@@ -115,7 +115,7 @@ public class LevelCrossingDetector extends Transformer
     ////                         public variables                  ////
 
    /** The parameter that specifies the default output event value
-     *  if the input port is not connected to any thing. If the
+     *  if the input port is not connected to anything. If the
      *  input is connected, this value is ignored.
      *  By default, it contains a DoubleToken of value 0.0.
      */
@@ -153,13 +153,13 @@ public class LevelCrossingDetector extends Transformer
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException{
         if (attribute == errorTolerance) {
-            double p = ((DoubleToken)errorTolerance.getToken()
+            double tolerance = ((DoubleToken)errorTolerance.getToken()
                         ).doubleValue();
-            if (p <= 0) {
+            if (tolerance <= 0) {
                 throw new IllegalActionException(this,
                         "Error tolerance must be greater than 0.");
             }
-            _errorTolerance = p;
+            _errorTolerance = tolerance;
         } else if (attribute == level) {
             _levelChanged = true;
         } else {
@@ -208,8 +208,7 @@ public class LevelCrossingDetector extends Transformer
         // CTPeriodicSampler, where discrete events are generated
         // at the end of a continuous phase execution. The reason
         // is the difference between breakpoint and detected event.
-        
-        // A break point is an event that is guaranteed to happen,
+        // A breakpoint is an event that is guaranteed to happen,
         // while a detected event is not. Therefore, the strategy to
         // handle detected events is to defer their production into
         // the discrete phase execution. In continuous phase execution,
