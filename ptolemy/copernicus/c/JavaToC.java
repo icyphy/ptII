@@ -66,11 +66,6 @@ public class JavaToC {
      *  .h files).
      *  @param classPath The classpath to use during the conversion.
      *  @param className The name of the class to translate.
-     *  @param generateSingleClass Indicates whether (true) or not (false).
-     *  @param verbose Whether it should output standard messages during
-     *  compilation.
-     *  "single class mode" should be used during the conversion
-     *  (see {@link Context#getSingleClassMode()} for details).
      */
     public static void convert(String classPath, String className)
             throws IOException {
