@@ -101,7 +101,7 @@ IntTypeNode S PrimitiveTypeNode
 FloatTypeNode S PrimitiveTypeNode
 LongTypeNode S PrimitiveTypeNode
 DoubleTypeNode S PrimitiveTypeNode
-TypeNameNode C ReferenceTypeNode k 0 NameNode name k
+TypeNameNode C ReferenceTypeNode i NamedNode i k 0 NameNode name k
 ArrayTypeNode C ReferenceTypeNode k 0 TypeNode baseType k
 VoidTypeNode S TypeNode
 

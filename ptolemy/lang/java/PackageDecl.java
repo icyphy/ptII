@@ -117,6 +117,8 @@ public class PackageDecl extends JavaDecl {
 
             	  if ((length > 5) && name.substring(length - 5).equals(".java")) {
                     className = name.substring(0, length - 5);
+                 } else if ((length > 6) && name.substring(length - 6).equals(".jskel")) {
+                    className = name.substring(0, length - 6);
                  }
 
       	          if (className != null) {

@@ -65,7 +65,7 @@ package ptolemy.lang;
  *
  *  @author ctsay@eecs.berkeley.edu
  */
-public class Decl extends PropertyMap {
+public class Decl extends TrackedPropertyMap {
 
   protected Decl(String name, int category0) {
     _name = name;
@@ -94,14 +94,14 @@ public class Decl extends PropertyMap {
 
     Decl d = (Decl) o;
 
-    return ((category == d.category) && _name.equals(d.getName())); 
+    return ((category == d.category) && _name.equals(d.getName()));
   }
 
   public String toString() {
     return "{" + _name + ", " + category + "}";
   }
 
-  public final int category;
+  public int category;
 
   protected String _name;
 

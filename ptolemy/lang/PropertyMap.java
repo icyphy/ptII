@@ -18,6 +18,10 @@ public class PropertyMap extends HashMap {
     return (obj == null);
   }
 
+  /**
+   *  Get a property.
+   *  Throw a RuntimeException if the property in not defined.
+   */
   public Object getDefinedProperty(String property) {
     Object retval = super.get(property);
 
@@ -27,10 +31,17 @@ public class PropertyMap extends HashMap {
     return retval;
   }
 
+  /**
+   *  Get a property. If the property is not defined, returned null.
+   */
   public Object getProperty(String property) {
     return super.get(property);
   }
 
+  /**
+   *  Set a property.
+   *  Throw a RuntimeException if the property in not defined.
+   */
   public Object setDefinedProperty(String property, Object obj) {
     if (obj == null) {
        obj = NullValue.instance;
@@ -44,6 +55,9 @@ public class PropertyMap extends HashMap {
     return retval;
   }
 
+  /**
+   *  Set a property. The property may or may not have been defined already.
+   */
   public Object setProperty(String property, Object obj) {
     if (obj == null) {
        obj = NullValue.instance;
@@ -55,6 +69,7 @@ public class PropertyMap extends HashMap {
     return super.remove(property);
   }
 
+  /** Return true iff this instance has the specified property. */
   public boolean hasProperty(String property) {
     return super.containsKey(property);
   }

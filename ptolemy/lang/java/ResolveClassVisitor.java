@@ -1,7 +1,9 @@
 package ptolemy.lang.java;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.HashSet;
 
 import ptolemy.lang.*;
 
@@ -38,7 +40,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         if (superDecl.category != JavaDecl.CG_CLASS) {
            ApplicationUtility.error("class " + node.getName().getIdent() +
-            " cannot extend interface " + superDecl.getName()); 
+            " cannot extend interface " + superDecl.getName());
         }
 
         node.setSuperClass(superDecl.getDefType());
@@ -50,10 +52,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         LinkedList declInterfaceList = new LinkedList();
 
-        ListIterator interfaceItr = node.getInterfaces().listIterator();
+        Iterator interfaceItr = node.getInterfaces().listIterator();
 
         while (interfaceItr.hasNext()) {
-            ClassDecl intf = (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceItr.next());
+            ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
+             (NamedNode) interfaceItr.next());
 
             if (intf.category != JavaDecl.CG_INTERFACE) {
                ApplicationUtility.error("class " + node.getName().getIdent() +
@@ -67,7 +70,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         // add this declaration to outer class's environment, if applicable
         _addToEnclosingClassEnviron(args.get(1), me);
 
-        Environ myEnviron = (Environ) me.getDefinedProperty("environ");
+        Environ myEnviron = me.getEnviron();
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
@@ -137,10 +140,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         LinkedList declInterfaceList = new LinkedList();
 
-        ListIterator interfaceItr = node.getInterfaces().listIterator();
+        Iterator interfaceItr = node.getInterfaces().listIterator();
 
         while (interfaceItr.hasNext()) {
-            ClassDecl intf = (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceItr.next());
+            ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
+             (NamedNode) interfaceItr.next());
 
             if (intf.category != JavaDecl.CG_INTERFACE) {
                ApplicationUtility.error("class " + node.getName().getIdent() +
@@ -154,7 +158,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         // add this declaration to outer class's environment, if applicable
         _addToEnclosingClassEnviron(args.get(1), me);
 
-        Environ myEnviron = (Environ) me.getDefinedProperty("environ");
+        Environ myEnviron = me.getEnviron();
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
@@ -164,7 +168,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
         // Set implied modifiers of interface members
-        ListIterator declItr = myEnviron.allProperDecls();
+        Iterator declItr = myEnviron.allProperDecls();
 
         while (declItr.hasNext()) {
             JavaDecl decl = (JavaDecl) declItr.next();
@@ -194,6 +198,84 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         return null;
     }
 
+    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+
+        ClassDecl classDecl = (ClassDecl) args.get(0);
+
+        int modifiers = node.getModifiers();
+
+        // private methods or methods in private or final classes are final
+        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
+           modifiers |= Modifier.FINAL_MOD;
+        }
+
+        int classMod = classDecl.getModifiers();
+
+        if ((classMod & (Modifier.PRIVATE_MOD | Modifier.FINAL_MOD)) != 0) {
+           modifiers |= Modifier.FINAL_MOD;
+        }
+
+        node.setModifiers(modifiers);
+
+        if (node.getBody() == AbsentTreeNode.instance) {
+           if ((modifiers & Modifier.ABSTRACT_MOD) != 0) {
+              if ((modifiers & (Modifier.PRIVATE_MOD | Modifier.STATIC_MOD |
+                   Modifier.FINAL_MOD | Modifier.SYNCHRONIZED_MOD |
+                   Modifier.NATIVE_MOD)) != 0) {
+                 ApplicationUtility.error("can't use private, static, final, " +
+                  "synchronized, or native with abstract");
+              }
+           } else if ((modifiers & Modifier.NATIVE_MOD) == 0) {
+              ApplicationUtility.error("abstract or native required on " +
+               " methods without a body");
+           }
+        } else if ((modifiers &
+                    (Modifier.ABSTRACT_MOD | Modifier.NATIVE_MOD)) != 0) {
+           ApplicationUtility.error("an abstract or native method " +
+            "cannot have a body");
+        }
+
+        // Check that this method is legal
+
+        Environ classEnv = (Environ) args.get(0);
+
+        NameNode name = node.getName();
+        String methodName = name.getIdent();
+
+        Iterator methodItr = classEnv.lookupFirstProper(
+         methodName, JavaDecl.CG_METHOD);
+
+        MethodDecl d = new MethodDecl(methodName, node.getReturnType(),
+         modifiers, node, classDecl, node.getParams(),
+         (Collection) node.getThrowsList());
+
+        while (methodItr.hasNext()) {
+
+           MethodDecl dd = (MethodDecl) methodItr.next();
+
+           if (dd.conflictsWith(d)) {
+              ApplicationUtility.error("illegal overloading of " + methodName);
+           }
+        }
+
+        classEnv.add(d);
+
+        name.setProperty("decl", d);
+
+        // now that we have anonymous classes, we should visit the body
+        TreeNode block = node.getBody();
+
+        if (block != AbsentTreeNode.instance) {
+
+           LinkedList childArgs = new LinkedList();
+           childArgs.addLast(NullTypeNode.instance); // enclosing class decl
+           childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+           block.accept(this, childArgs);
+        }
+
+        return null;
+    }
+
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         return null;
     }
@@ -218,17 +300,18 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         }
     }
 
-    /** Return  a default constructor for the class declared by ClassDeclNode,
+    /** Return a default constructor for the class declared by ClassDeclNode,
      *  as it would be produced by the parser, had it been written
      *  explicitly:  [public] Foo() { super(); }
      */
-    public static ConstructorDeclNode _makeDefaultConstructor(ClassDeclNode cl) {
+    protected static ConstructorDeclNode _makeDefaultConstructor(ClassDeclNode cl) {
         return new ConstructorDeclNode(cl.getModifiers() & Modifier.PUBLIC_MOD,
          new NameNode(AbsentTreeNode.instance, cl.getName().getIdent()),
          new LinkedList(), new LinkedList(),
          new BlockNode(new LinkedList()),
          new SuperConstructorCallNode(new LinkedList()));
     }
+
 
     /** The package this compile unit is in. */
     protected PackageDecl _pkgDecl = null;

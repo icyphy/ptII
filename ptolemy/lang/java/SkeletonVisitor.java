@@ -107,7 +107,7 @@ public class SkeletonVisitor extends JavaVisitor {
 
         if (!foundDefConstruct) {
            newMemberList.addFirst(new ConstructorDeclNode(Modifier.PUBLIC_MOD,
-            node.getName(), new LinkedList(), new LinkedList(),            
+            node.getName(), new LinkedList(), new LinkedList(),
             new BlockNode(new LinkedList()),
             new SuperConstructorCallNode(new LinkedList())));
         }
@@ -146,6 +146,12 @@ public class SkeletonVisitor extends JavaVisitor {
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        int modifiers = node.getModifiers();
+        
+        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
+           return null;
+        }
+
         node.setConstructorCall(new SuperConstructorCallNode(new LinkedList()));
         node.setBody(new BlockNode(new LinkedList()));
         return node;

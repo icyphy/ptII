@@ -43,10 +43,7 @@ public class PackageResolutionVisitor extends JavaVisitor {
 
         node.setProperty("environ", environ);
 
-        LinkedList nameList = new LinkedList();
-        nameList.addLast("java");
-        nameList.addLast("lang");
-        StaticResolution.importOnDemand(node, nameList.listIterator());
+        StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
 
         node.accept(new ResolvePackageVisitor(), null);
 

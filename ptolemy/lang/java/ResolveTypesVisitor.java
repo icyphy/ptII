@@ -58,10 +58,6 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    public Object visitVoidTypeNode(VoidTypeNode node, LinkedList args) {
-        return null;
-    }
-
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
@@ -78,7 +74,13 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        return _visitUserTypeNode(node, args);
+        _visitUserTypeNode(node, args);
+
+        if (!_isSkippable(node)) {
+           // resolve the super class with the same input environment
+           node.getSuperClass().accept(this, args);
+        }
+        return null;
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
@@ -86,19 +88,24 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+
         if (_lazy) {
            if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
               // don't resolve anything if it's a private method
               return null;
            }
 
+           // get the environment of this node
+           LinkedList childArgs = new LinkedList();
+           childArgs.addLast(node.getDefinedProperty("environ"));
+
            // resolve only the return type, parameters and exceptions thrown
-           node.getReturnType().accept(this, args);
-           TNLManip.traverseList(this, node, args, node.getParams());
-           TNLManip.traverseList(this, node, args, node.getThrowsList());
+           node.getReturnType().accept(this, childArgs);
+           TNLManip.traverseList(this, node, childArgs, node.getParams());
+           TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
            return null;
         }
-        return _defaultVisit(node, args);
+        return _visitNodeWithEnviron(node);
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
@@ -108,12 +115,28 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
               return null;
            }
 
+           // get the environment of this node
+           LinkedList childArgs = new LinkedList();
+           childArgs.addLast(node.getDefinedProperty("environ"));
+
+
            // resolve only the parameters and exceptions thrown
-           TNLManip.traverseList(this, node, args, node.getParams());
-           TNLManip.traverseList(this, node, args, node.getThrowsList());
+           TNLManip.traverseList(this, node, childArgs, node.getParams());
+           TNLManip.traverseList(this, node, childArgs, node.getThrowsList());
            return null;
         }
-        return _defaultVisit(node, args);
+        return _visitNodeWithEnviron(node);
+    }
+
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
+        return _visitNodeWithEnviron(node);    }
+
+    public Object visitForNode(ForNode node, LinkedList args) {
+        return _visitNodeWithEnviron(node);
+    }
+
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+        return _visitNodeWithEnviron(node);
     }
 
     /** The default visit method. Visits all child nodes with the same
@@ -134,7 +157,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(envObj);
 
-        return TNLManip.traverseList(this, node, childArgs, node.children());
+        TNLManip.traverseList(this, node, childArgs, node.children());
+
+        return null;
     }
 
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
@@ -147,6 +172,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         // environment for this class
         childArgs.addLast(node.getDefinedProperty("environ"));
 
+        TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
         return null;

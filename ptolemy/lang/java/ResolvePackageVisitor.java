@@ -137,6 +137,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            // Assume this is the definition of 'other'
            ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
+
         } else {
            int modifiers = node.getModifiers();
            JavaDecl encDecl;
@@ -169,6 +170,11 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            }
 
            ocl = cl;
+        }
+
+        // fix category if this is an interface
+        if (!isClass) {
+           ocl.category = JavaDecl.CG_INTERFACE;
         }
 
         Environ env = new Environ(encEnv);

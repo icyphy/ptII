@@ -62,7 +62,7 @@ class Main {
         StaticResolution.declResolution();
     }
 
-    LinkedList unitList = StaticResolution.allFiles;
+    LinkedList unitList = StaticResolution.fullyResolvedFiles;
     ListIterator unitItr = unitList.listIterator();
 
     while (unitItr.hasNext()) {

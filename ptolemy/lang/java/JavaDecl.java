@@ -69,16 +69,9 @@ import ptolemy.lang.*;
  *     Outer-level packages have as their container the special Decl
  *     PackageDecl.SYSTEM_PACKAGE
  *
- *   ATTRIBUTE type
- *     Decls of entities that "have a type"---such as local variables,
- *     parameters, fields, and methods---define this member.  Types are
- *     represented as pointers to AST nodes of type TypeNode, just as they
- *     are during parsing.  Packages, statement labels, classes, and
- *     interfaces don't have types (although the latter two ARE types).
- *
  *   ATTRIBUTE modifiers
  *     Classes, interfaces, and their members have modifiers, as defined
- *     by Modifier;
+ *     by Modifier.
  *
  *   ATTRIBUTE environ
  *     Classes, interfaces, and packages define environments:  mappings of
@@ -94,16 +87,10 @@ import ptolemy.lang.*;
  *     and so on.  Decls that arise as the result of importing a class
  *     have special dummy source nodes created for them.
  *
- *   ATTRIBUTE isType()
- *     True for Decls that represent classes or interfaces.
- *
  *   ATTRIBUTE asType()
  *     For Decls for which isType() is true, a resolved
  *     TypeNameNode that stands for the type this class represents.  That
  *     is, it is a TypeNameNode whose decl() is THIS.
- *
- *   ATTRIBUTE overrides(), overrides (d)
- *     Methods indicate which declaration D they override/hide.
  *
  *  Code and comments converted from Decl in the Titanium project.
  *
@@ -168,22 +155,6 @@ public abstract class JavaDecl extends Decl {
 
   /** Return true iff this declaration has modifiers. */
   public boolean hasModifiers() { return false; }
-
-  /** Indicate which declaration the declaration overrides/hides. Return null
-   *  if this is the initial definition of the method.
-   */
-  public JavaDecl getOverrides() {
-    throw new RuntimeException(getClass().getName() + " has no overrides.");
-  }
-
-  /** Indicate that the declaration overrides/hides the specified declaration.
-   */
-  public void setOverrides(JavaDecl dummy) {
-    throw new RuntimeException(getClass().getName() + " has no overrides.");
-  }
-
-  /** Return true iff this declaration can override/hide another declaration. */
-  public boolean hasOverrides() { return false; }
 
   /** Return the source node associated with this declaration. */
   public TreeNode getSource() {
@@ -252,21 +223,52 @@ public abstract class JavaDecl extends Decl {
     return SearchPath.NAMED_PATH;
   }
 
-  /** Return the Decl associated with the named node. */
+  /** Return the Decl associated with the named node. Return null if the
+   *  Decl is not found.
+   */
   public static final JavaDecl getDecl(NamedNode node) {
     return (JavaDecl) node.getName().getProperty("decl");
   }
 
-  public static final int CG_CLASS = 1;        // Type ClassDecl representing a class
-  public static final int CG_INTERFACE = 2;	// Type ClassDecl representing an interface
-  public static final int CG_FIELD = 4;		// Type FieldDecl
-  public static final int CG_METHOD = 8;		// Type MethodDecl
-  public static final int CG_CONSTRUCTOR = 16;	// Type MethodDecl
-  public static final int CG_LOCALVAR = 32;	// Type LocalVarDecl
-  public static final int CG_FORMAL = 64;		// Type FormalParameterDecl
-  public static final int CG_PACKAGE = 128;	// Type PackageDecl
-  public static final int CG_STMTLABEL = 256;	// Type StmtLblDecl
-  public static final int CG_PRIMITIVE = 512;  // Type PrimitiveDecl
+  /** Return the Decl associated with the name. Return null if the
+   *  Decl is not found.
+   */
+  public static final JavaDecl getDecl(NameNode node) {
+    return (JavaDecl) node.getProperty("decl");
+  }
 
+  /** Type ClassDecl representing a class. */
+  public static final int CG_CLASS = 1;
+
+  /** Type ClassDecl representing an interface. */
+  public static final int CG_INTERFACE = 2;
+
+  /** Type FieldDecl */
+  public static final int CG_FIELD = 4;
+
+  /** Type MethodDecl representing a method. */
+  public static final int CG_METHOD = 8;
+
+  /** Type MethodDecl representing a constructor. */
+  public static final int CG_CONSTRUCTOR = 16;
+
+  /** Type LocalVarDecl. */
+  public static final int CG_LOCALVAR = 32;
+
+  /** Type FormalParameterDecl. */
+  public static final int CG_FORMAL = 64;
+
+  /** Type PackageDecl. */
+  public static final int CG_PACKAGE = 128;
+
+  /** Type StmtLblDecl. */
+  public static final int CG_STMTLABEL = 256;
+
+  //public static final int CG_PRIMITIVE = 512;  // Type PrimitiveDecl.
+
+  /** A constant used to search for either a class or interface. */
   public static final int CG_USERTYPE = CG_CLASS | CG_INTERFACE;
+
+  /** A constant used to search for either a method or constructor. */
+  public static final int CG_INVOKABLE = CG_METHOD | CG_CONSTRUCTOR;
 }
