@@ -58,7 +58,7 @@ public class PNInterleave extends PNStar{
         _input2 = addInPort(this, "input2");
         _output = addOutPort(this, "output");
         _myExecutive = myExecutive;
-        _myExecutive.register(this);
+        _myExecutive.registerStar(this);
     }
 
     /** Description
