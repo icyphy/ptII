@@ -36,7 +36,8 @@ import ptolemy.actor.util.Time;
    Interface for CT directors. This interface defines the methods for lower 
    level CT directors to access information of the top level CT director.    
 
-   @see CTDirector, CTTransparentDirector
+   @see CTDirector
+   @see CTTransparentDirector
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
