@@ -319,7 +319,16 @@ public class Configuration extends CompositeEntity {
                         + in.toExternalForm());
                 return null;
             }
-            effigy.identifier.setExpression(identifier);
+	    if (effigy.identifier.getExpression().compareTo("Unnamed") == 0) {
+		// If the value identifier field of the effigy we just
+		// created is "Unnamed", then set it to the value of
+		// the identifier parameter.
+		// 
+		// HSIFEffigyFactory sets effiigy.identifier because it 
+		// converts the file we specified from HSIF to MoML and then
+		// opens up a file other than the one we specified.
+		effigy.identifier.setExpression(identifier);
+	    }
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
             if (in.getProtocol().equals("file")) {
