@@ -1,0 +1,214 @@
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+    </director>
+    <entity name="ImageSequence1" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
+        <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;../../../ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
+        </property>
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="startFrame" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
+        </property>
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="73.0" y="96.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImageDisplay2" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="574.0" y="114.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImagePartition5" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="174.0" y="111.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImageUnpartition6" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
+        <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
+        </property>
+        <property name="partitionColumns" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="487.0" y="115.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="HTVQEncode7" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;../../../ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        </property>
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="282.0" y="114.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="176">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="176">
+            </property>
+        </port>
+    </entity>
+    <entity name="VQDecode8" class="ptolemy.domains.sdf.lib.vq.VQDecode">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;../../../ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        </property>
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="176">
+        </property>
+        <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="377.0" y="130.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="176">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="176">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImageDisplay17" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+            <location x="160.0" y="224.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="TokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex4" class="ptolemy.moml.Vertex">
+            <location x="119.0" y="119.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex10" class="ptolemy.moml.Vertex">
+            <location x="224.0" y="123.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex12" class="ptolemy.moml.Vertex">
+            <location x="326.0" y="135.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex14" class="ptolemy.moml.Vertex">
+            <location x="430.0" y="133.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex16" class="ptolemy.moml.Vertex">
+            <location x="523.0" y="122.0"/>
+        </vertex>
+    </relation>
+    <link port="ImageSequence1.output" relation="relation3"/>
+    <link port="ImageDisplay2.input" relation="relation15"/>
+    <link port="ImagePartition5.input" relation="relation3"/>
+    <link port="ImagePartition5.output" relation="relation9"/>
+    <link port="ImageUnpartition6.input" relation="relation13"/>
+    <link port="ImageUnpartition6.output" relation="relation15"/>
+    <link port="HTVQEncode7.input" relation="relation9"/>
+    <link port="HTVQEncode7.output" relation="relation11"/>
+    <link port="VQDecode8.input" relation="relation11"/>
+    <link port="VQDecode8.output" relation="relation13"/>
+    <link port="ImageDisplay17.input" relation="relation3"/>
+</model>
