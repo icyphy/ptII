@@ -99,13 +99,25 @@ public class ArrayType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if ( !isCompatible(token)) {
+        if ( !isCompatible(token.getType())) {
             throw new IllegalArgumentException("ArrayType.convert: " +
                     "Cannot convert the argument token " + token + 
                     " to the type " + this + ".");
         }
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
+
+	// if the argument array token is empty, return an empty array
+	// token.
+	if (argumentArrayToken.length() == 0) {
+	    if (_elementType == BaseType.UNKNOWN) {
+	        // Since any type is a substitution instance of UNKNOWN, just
+                // return the argument.
+		return token;
+	    } else {
+	        return new ArrayToken(_elementType);
+	    }
+	}
 
         Token[] argumentArray = argumentArrayToken.arrayValue();
         Token[] resultArray = new Token[argumentArray.length];
@@ -165,26 +177,25 @@ public class ArrayType extends StructuredType {
         }
     }
 
-    /** Test if the argument token is compatible with this type.
-     *  If this type is a constant, the argument is compatible if it can be
-     *  converted losslessly to a token of this type; If this type is a
-     *  variable, the argument is compatible if its type is a substitution
-     *  instance of this type, or if it can be converted losslessly to a
-     *  substitution instance of this type.
-     *  @param token A Token.
+    /** Test if the argument type is compatible with this type.
+     *  If this type is a constant, the argument is compatible if it is less
+     *  than or equal to this type in the type lattice; If this type is a
+     *  variable, the argument is compatible if it is a substitution
+     *  instance of this type.
+     *  @param type A Type.
      *  @return True if the argument is compatible with this type.
      *  @see ptolemy.data.type.ArrayType#convert
      */
-    public boolean isCompatible(Token token) {
-        ArrayToken arrayToken;
-	if (token instanceof ArrayToken) {
-	    arrayToken = (ArrayToken)token;
+    public boolean isCompatible(Type type) {
+        ArrayType arrayType;
+	if (type instanceof ArrayType) {
+	    arrayType = (ArrayType)type;
 	} else {
 	    return false;
 	}
 
-        Token elementToken = arrayToken.getElement(0);
-	return _elementType.isCompatible(elementToken);
+        Type elementType = arrayType.getElementType();
+	return _elementType.isCompatible(elementType);
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if

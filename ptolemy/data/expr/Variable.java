@@ -820,7 +820,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
         if (_token != null) {
-	    if (type.isCompatible(_token)) {
+	    if (type.isCompatible(_token.getType())) {
 		_token = type.convert(_token);
 	    } else {
                 throw new IllegalActionException(this,
@@ -1261,7 +1261,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    if (declaredType instanceof StructuredType) {
 		((StructuredType)declaredType).initialize(BaseType.UNKNOWN);
 	    }
-	    if (declaredType.isCompatible(newToken)) {
+	    if (declaredType.isCompatible(newToken.getType())) {
 		newToken = declaredType.convert(newToken);
 	    } else {
                 throw new IllegalActionException(this,

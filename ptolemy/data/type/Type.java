@@ -66,16 +66,15 @@ public interface Type {
      */
     public boolean equals(Type type);
 
-    /** Test if the argument token is compatible with this type.
+    /** Test if the argument type is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
-     *  argument is compatible if it can be converted losslessly to a token
-     *  of this type; If this type is a variable, the argument is compatible
-     *  if its type is a substitution instance of this type, or if it can
-     *  be converted losslessly to a substitution instance of this type.
-     *  @param token A Token.
+     *  argument is compatible if it is the same or less than this type in
+     *  the type lattice; If this type is a variable, the argument is
+     *  compatible if it is a substitution instance of this type.
+     *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
-    public boolean isCompatible(Token token);
+    public boolean isCompatible(Type type);
 
     /** Test if this Type is a constant. A Type is a constant if it
      *  does not contain BaseType.UNKNOWN in any level within it.

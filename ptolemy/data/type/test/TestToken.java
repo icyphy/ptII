@@ -141,16 +141,16 @@ public class TestToken extends Token {
             return TestToken.convert(t);
         }
  
-        /** Test if the argument token is compatible with this type. The method
-         *  returns true if this type is UNKNOWN, since any type is a substitution
-         *  instance of it. If this type is not UNKNOWN, this method returns true
-         *  if the argument type is less than or equal to this type in the type
-         *  lattice, and false otherwise.
-         *  @param t A Token.
-         *  @return True if the argument token is compatible with this type.
+        /** Test if the argument type is compatible with this type.
+	 *  The method returns true if this type is UNKNOWN, since any type
+	 *  is a substitution instance of it. If this type is not UNKNOWN,
+	 *  this method returns true if the argument type is less than or
+	 *  equal to this type in the type lattice, and false otherwise.
+         *  @param type An instance of Type.
+         *  @return True if the argument type is compatible with this type.
          */
-        public boolean isCompatible(Token t) {
-            return t.getType() == this;
+        public boolean isCompatible(Type type) {
+            return type == this;
         }
         
         /** Test if this Type is UNKNOWN.

@@ -122,7 +122,7 @@ public class RecordType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if ( !isCompatible(token)) {
+        if ( !isCompatible(token.getType())) {
             throw new IllegalArgumentException("RecordType.convert: " +
                     "Cannot convert the token " + token.toString() +
                     " to this type " + this.toString());
@@ -208,31 +208,30 @@ public class RecordType extends StructuredType {
         return _fields.keySet().hashCode() + 2917;
     }
 
-    /** Test if the argument token is compatible with this type.
-     *  If this type is a constant, the argument is compatible if it can be
-     *  converted losslessly to a token of this type; If this type is a
-     *  variable, the argument is compatible if its type is a substitution
-     *  instance of this type, or if it can be converted losslessly to a
-     *  substitution instance of this type.
-     *  @param token A Token.
+    /** Test if the argument type is compatible with this type.
+     *  If this type is a constant, the argument is compatible if it is less
+     *  than or equal to this type in the type lattice; If this type is a
+     *  variable, the argument is compatible if it is a substitution
+     *  instance of this type.
+     *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
-    public boolean isCompatible(Token token) {
-        if ( !(token instanceof RecordToken)) {
+    public boolean isCompatible(Type type) {
+        if ( !(type instanceof RecordType)) {
             return false;
         }
 
-        RecordToken argRecTok = (RecordToken)token;
-        Iterator iter = _fields.keySet().iterator();
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
-	    Token value = (Token)argRecTok.get(label);
-            if (value == null) {
+        RecordType argumentRecordType = (RecordType)type;
+        Iterator iterator = _fields.keySet().iterator();
+        while (iterator.hasNext()) {
+            String label = (String)iterator.next();
+	    Type argumentFieldType = argumentRecordType.get(label);
+            if (argumentFieldType == null) {
                 // argument token does not contain this label
                 return false;
             }
-            Type type = (Type)this.get(label);
-            if ( !type.isCompatible(value)) {
+            Type thisFieldType = this.get(label);
+            if ( !thisFieldType.isCompatible(argumentFieldType)) {
                 return false;
             }
         }

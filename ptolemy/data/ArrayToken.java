@@ -49,13 +49,24 @@ public class ArrayToken extends Token {
 
     /** Construct an ArrayToken with the specified token array. All the
      *  tokens in the array must have the same type, otherwise an
-     *  exception will be thrown.
+     *  exception will be thrown. Also, this array cannot have length
+     *  zero because the element type cannot be determined. To construct
+     *  an array token with a zero-length array, use the constructor that
+     *  takes a Type argument.
      *  @param value An array of tokens.
      *  @exception IllegalActionException If the tokens in the array
-     *   do not have the same type.
+     *   do not have the same type, or the length of the array is zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
         _initialize(value);
+    }
+
+    /** Construct an empty ArrayToken with the specified type.
+     *  @param type The element type of this array token.
+     */
+    public ArrayToken(Type type) {
+	_value = new Token[0];
+        _elementType = type;
     }
 
     /** Construct an ArrayToken from the specified string.
@@ -269,8 +280,12 @@ public class ArrayToken extends Token {
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by the element token.
      */
-    public Token one()
-	    throws IllegalActionException {
+    public Token one() throws IllegalActionException {
+	// if this array token has length zero, return this.
+	if (length() == 0) {
+	    return this;
+	}
+
 	Token oneVal = _value[0].one();
 	Token[] oneValArray = new Token[_value.length];
 	for (int i = 0; i < _value.length; i++) {
@@ -328,8 +343,12 @@ public class ArrayToken extends Token {
      *  @exception IllegalActionException If additive identity is not
      *   supported by the element token.
      */
-    public Token zero()
-	    throws IllegalActionException {
+    public Token zero() throws IllegalActionException {
+	// if this array token has length zero, return this.
+	if (length() == 0) {
+	    return this;
+	}
+
 	Token zeroVal = _value[0].zero();
 	Token[] zeroValArray = new Token[_value.length];
 	for (int i = 0; i < _value.length; i++) {
@@ -358,6 +377,11 @@ public class ArrayToken extends Token {
 
     // initialize this token using the specified array.
     private void _initialize(Token[] value) throws IllegalActionException {
+	if (value.length == 0) {
+	    throw new IllegalActionException("ArrayToken._initialize: The "
+	            + "length of the specified array is zero.");
+	}
+
 	_elementType = value[0].getType();
 	int length = value.length;
 	_value = new Token[length];

@@ -112,20 +112,20 @@ public abstract class BaseType implements Type, Serializable {
         return super.hashCode();
     }
    
-    /** Test if the argument token is compatible with this type. The method
+    /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
      *  if the argument type is less than or equal to this type in the type
      *  lattice, and false otherwise.
-     *  @param t A Token.
-     *  @return True if the argument token is compatible with this type.
+     *  @param type An instance of Type.
+     *  @return True if the argument is compatible with this type.
      */
-    public boolean isCompatible(Token t) {
+    public boolean isCompatible(Type type) {
 	if (this == UNKNOWN) {
 	    return true;
 	}
 
-	int typeInfo = TypeLattice.compare(this, t.getType());
+	int typeInfo = TypeLattice.compare(this, type);
 	return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     }
 

@@ -142,8 +142,9 @@ test RecordType-4.0 {Test isCompatible} {
 
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-    list [$empRT isCompatible $r1] [$sdRT isCompatible $r1] \
-         [$varRT isCompatible $r1]
+    list [$empRT isCompatible [$r1 getType]] \
+         [$sdRT isCompatible [$r1 getType]] \
+         [$varRT isCompatible [$r1 getType]]
 } {1 1 1}
 
 ######################################################################
@@ -160,8 +161,9 @@ test RecordType-4.1 {Test isCompatible} {
 
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-    list [$empRT isCompatible $r1] [$sdRT isCompatible $r1] \
-         [$varRT isCompatible $r1]
+    list [$empRT isCompatible [$r1 getType]] \
+         [$sdRT isCompatible [$r1 getType]] \
+         [$varRT isCompatible [$r1 getType]]
 } {1 0 1}
 
 ######################################################################
