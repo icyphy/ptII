@@ -78,28 +78,24 @@ public class TestDirector extends AtomicActor {
      *  and return after relinquishing the read accesses on the workspace.
      *  This method is synchronized both on this class and the inner class
      */
-    public void fire() {
-        try {
-            int i = 0;
-            for (i = 0; i < 2; i++) {
-                output.broadcast(new IntToken(i));
-                profile += "broadcast new token " + i + "\n";
-            }
-            for (i = 0; i < 2; i++) {
-                int ans = ((IntToken)input.get(0)).intValue();
-                profile += "received new token " + ans + "\n";
-            }
-            try {
-                ((CompositeActor)getContainer()).workspace().getReadAccess();
-                ((BasePNDirector)getDirector()).wrapup();
-            } finally {
-                ((CompositeActor)getContainer()).workspace().doneReading();
-            }
-            output.broadcast(new IntToken(i));
-            profile += "broadcast new token " + i + "\n";
-        } catch (IllegalActionException e) {
-            System.out.println(e.toString());
-        }
+    public synchronized void fire() throws IllegalActionException {
+	int i = 0;
+	for (i = 0; i < 2; i++) {
+	    output.broadcast(new IntToken(i));
+	    profile += "broadcast new token " + i + "\n";
+	}
+	for (i = 0; i < 2; i++) {
+	    int ans = ((IntToken)input.get(0)).intValue();
+	    profile += "received new token " + ans + "\n";
+	}
+	try {
+	    ((CompositeActor)getContainer()).workspace().getReadAccess();
+	    ((BasePNDirector)getDirector()).finish();
+	} finally {
+	    ((CompositeActor)getContainer()).workspace().doneReading();
+	}
+	output.broadcast(new IntToken(i));
+	profile += "broadcast new token " + i + "\n";
     }
     
     /** Return a profile which contains the various actions performed by this 
