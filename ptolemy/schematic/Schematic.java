@@ -58,7 +58,22 @@ public class Schematic extends SchematicElement {
         super("schematic");
         entities = (HashedMap) new HashedMap();
         relations = (HashedMap) new HashedMap();
-    }
+        description = new XMLElement("description");
+        addChildElement(description);
+        setVersion("");
+   }
+
+    /** 
+     * Create a new Schematic object with the specified attributes
+     */
+    public Schematic (HashedMap attributes) {
+        super("schematic", attributes);
+        entities = (HashedMap) new HashedMap();
+        relations = (HashedMap) new HashedMap();
+        description = new XMLElement("description");
+        addChildElement(description);
+        if(!hasAttribute("version")) setVersion("");
+   }
 
     /**
      * Add a new entity to this schematic. The name
@@ -83,7 +98,7 @@ public class Schematic extends SchematicElement {
      * schematic.
      */
     public boolean containsEntity (String name) {
-        return relations.includesKey(name);
+        return entities.includesKey(name);
     }
 
     /**
@@ -102,6 +117,13 @@ public class Schematic extends SchematicElement {
         return entities.keys();
     }
 
+    /** 
+     * Return a long description string of this Schematic.
+     */
+    public String getDescription() {
+        return description.getPCData();
+    }
+
     /**
      * Return the schematic entity that has the given name.
      * Throw an exception if there is no entity with the
@@ -118,6 +140,12 @@ public class Schematic extends SchematicElement {
      */
     public SchematicRelation getRelation (String name) {
         return (SchematicRelation) relations.at(name);
+    }
+
+    /** Return the version of this schematic.
+     */
+    public String getVersion() {
+        return getAttribute("version");
     }
 
     /**
@@ -150,6 +178,20 @@ public class Schematic extends SchematicElement {
         entities.removeAt(name);
     }
 
+    /** 
+     * Set the string that contains the long description of this library.
+     */
+    public void setDescription(String s) {
+        description.setPCData(s);
+    }   
+
+    /** Set the string that represents the version of this schematic.
+     */
+    public void setVersion(String s) {
+        setAttribute("version",s);
+    }
+
+    XMLElement description;
     HashedMap entities;
     HashedMap relations;
 
