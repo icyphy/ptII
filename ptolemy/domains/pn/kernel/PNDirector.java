@@ -111,7 +111,12 @@ put() method of the receiver. Thus if there is a process that does not
 communicate with other processes in the model, then the simulation may 
 never pause in that model.
 <p>
-
+Though this class defines and uses a event-listener mechanism for notifying
+the listeners of the various states a process is in, this mechanism is expected
+to change to a great extent in the later versions of this class. A developer
+must keep that in mind while building applications by using this mechanism. It
+is highly recommended that the user do not use this mechanism as the future
+changes might not be compatible with the current listener mechanism.<p>
 
 @author Mudit Goel
 @version $Id$
@@ -176,7 +181,7 @@ public class PNDirector extends BasePNDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         PNDirector newobj = (PNDirector)super.clone(ws);
-	newobj._urgentMutations = false;
+	newobj._mutationsRequested = false;
         return newobj;
     }
 
@@ -191,7 +196,8 @@ public class PNDirector extends BasePNDirector {
      *  are processed. Note that change requests processed successfully
      *  prior to the failed request are <i>not</i> undone.
      *  Initialize any new actors created, create receivers for them, 
-     *  initialize them and create new threads for them. After all threads
+     *  initialize the receivers and create new threads for the new actors
+     *  created. After all threads
      *  are created, resume the execution and start the threads for the 
      *  newly created actors.
      *  
@@ -213,13 +219,13 @@ public class PNDirector extends BasePNDirector {
 	    throws IllegalActionException {
 	boolean urgentmut;
         Workspace worksp = workspace();
+	//Loop until a real deadlock is detected.
 	while (_readBlockCount != _getActiveActorsCount()) {
 	    synchronized (this) {
-		while (!_checkForDeadlock() && !_urgentMutations) {
+		while (!_isDeadlocked() && !_mutationsRequested) {
 		    worksp.wait(this);
 		}
-		urgentmut = _urgentMutations;
-		//_urgentMutations = false;
+		urgentmut = _mutationsRequested;
 	    }
 	    if (urgentmut) {
 		pause();
@@ -227,17 +233,15 @@ public class PNDirector extends BasePNDirector {
 		    _processTopologyRequests();
 		    synchronized(this) {
 			_mutationBlockCount = 0;
-			_urgentMutations = false;
+			_mutationsRequested = false;
 			notifyAll();
 		    }
-		    // FIXME: Should type resolution be done here?
 		} catch (TopologyChangeFailedException e) {
 		    throw new IllegalActionException(
 			    "Topology change error: " + e.getMessage());
 		}
 	    } else {
-		//_notdone = !_handleDeadlock();
-		_handleDeadlock();
+		_notdone = !_handleDeadlock();
 	    }
 	}
 	return;
@@ -255,6 +259,9 @@ public class PNDirector extends BasePNDirector {
      *  it notifies the calling thread to resume. On resuming, decrease the 
      *  count of processes blocked while waiting for topology changes.
      *  This method is synchronized on the director.
+     *  <p>
+     *  This method is called by the processes requesting mutations and not
+     *  the directing thread.
      *  
      *  @param request An object with commands to perform topology changes
      *  and to inform the topology listeners of the same.
@@ -265,17 +272,16 @@ public class PNDirector extends BasePNDirector {
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
 	super.queueTopologyChangeRequest(request);
 	synchronized(this) {
-	    _urgentMutations = true;
+	    _mutationsRequested = true;
 	    _informOfMutationBlock();
 	    notifyAll();
-	    while(_urgentMutations) {
+	    while(_mutationsRequested) {
 		try {
 		    wait();
 		} catch (InterruptedException e) {
 		    System.err.println(e.toString());
 		}
 	    }
-	    //_informOfMutationUnblock();
 	}
     }
 
@@ -283,9 +289,12 @@ public class PNDirector extends BasePNDirector {
     ////                       protected methods                   ////
 
     /** Return true if a deadlock is detected. Return false otherwise.
+     *  A detected deadlock is when all the active processes in the container
+     *  are either blocked on a read, write or are waiting after requesting
+     *  a mutation.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _checkForDeadlock() {
+    protected synchronized boolean _isDeadlocked() {
 	if (_readBlockCount + _writeBlockCount + _mutationBlockCount
 		>= _getActiveActorsCount()) {
 	    return true;
@@ -295,12 +304,15 @@ public class PNDirector extends BasePNDirector {
     }
 
     /** Return true if the execution has paused or deadlocked. 
-     *  Return false otherwise. This method should be used only to detect
-     *  if the execution has paused. To detect deadlocks, _checkForDeadlock
-     *  should be used.
-     *  @return true if the execution has paused.
+     *  Return false otherwise. 
+     *  Return true if all the active processes in the container are either 
+     *  blocked on a read, blocked on a write, paused or waiting after 
+     *  requesting a mutation.
+     *  This method should be used only to detect
+     *  if the execution has paused. To detect deadlocks, use _isDeadlocked().
+     *  @return true if the execution has paused or deadlocked.
      */
-    protected synchronized boolean _checkForPause() {
+    protected synchronized boolean _isPaused() {
 	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount()
 		+ _mutationBlockCount >= _getActiveActorsCount()) {
 	    return true;
@@ -318,21 +330,27 @@ public class PNDirector extends BasePNDirector {
      *  prior to the failed request are <i>not</i> undone.
      *
      *  Initialize any new actors created, create receivers for them, 
-     *  initialize them and create new threads for them. After all threads
+     *  initialize the receivers and create new threads for the new actors. 
+     *  After all threads
      *  are created, resume the execution and start the threads for the 
      *  newly created actors.
      *
      *  @exception IllegalActionException If any of the pending requests have
-     *  already been implemented.
+     *  already been implemented or if the type system detects a type conflict
+     *  after performing the requested mutations.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     protected void _processTopologyRequests()
             throws IllegalActionException, TopologyChangeFailedException {
 	Workspace worksp = workspace();
-	//pause();
 	super._processTopologyRequests();
+	//Perform the type resolution.
+	try {
+	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+	} catch (TypeConflictException e) {
+	    throw new IllegalActionException (this, e.toString());
+	}
 	LinkedList threadlist = new LinkedList();
-	//FIXME: Where does the type resolution go?
 	Enumeration newactors = _newActors();
 	while (newactors.hasMoreElements()) {
 	    Actor actor = (Actor)newactors.nextElement();
@@ -356,7 +374,7 @@ public class PNDirector extends BasePNDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    private boolean _urgentMutations = false;
+    private boolean _mutationsRequested = false;
 }
 
 

@@ -63,7 +63,8 @@ of the ProcessDirector. A process is considered <i>active</i> from its
 creation until its termination. An active process can block when trying to 
 read from a channel (read-blocked), when trying to write to a channel 
 (write-blocked), when waiting for a queued topology change request to be
-processed (mutation-blocked) or when waiting for time to progress. Time can
+processed (mutation-blocked) or when waiting for time to progress 
+(time-blocked). Time can
 progress for an active process in this model of computation only when the
 process is  blocked.
 <p>
@@ -99,7 +100,7 @@ receivers on which a process is blocked on a write.
 This breaks the deadlock and the execution can proceed.
 <p>
 A timed deadlock is when all the processes under the control of this 
-director are blocked, atleast one process is blocked on a delay (timed-block)
+director are blocked, atleast one process is blocked on a delay (time-blocked)
 and no process is blocked on a write. This director supports a notion of global
 time. All active processes that are not blocked and are executing concurrently
 are executing at the same global time. A process that wants time to advance, 
@@ -107,7 +108,7 @@ suspends itself by calling the fireAt() method of the director and specifies
 the time it wants to be awakened at. Time can advance only when a timed 
 deadlock occurs. In such a case, the director
 processes requests for mutations, if any. Otherwise the director advances time
-to the time when the first delay-blocked process can be awakened.
+to the time when the first timed-blocked process can be awakened.
 <p>
 This director is capable of handling mutations of graphs (dynamic changes to 
 topology). These mutations are deterministic and are performed only when a 
@@ -125,7 +126,12 @@ put() method of the receiver. Thus if there is a process that does not
 communicate with other processes in the model, then the simulation may 
 never pause in that model.
 <p>
-
+Though this class defines and uses a event-listener mechanism for notifying
+the listeners of the various states a process is in, this mechanism is expected
+to change to a great extent in the later versions of this class. A developer
+must keep that in mind while building applications by using this mechanism. It
+is highly recommended that the user do not use this mechanism as the future
+changes might not be compatible with the current listener mechanism.<p>
 
 @author Mudit Goel
 @version $Id$
@@ -138,12 +144,9 @@ public class TimedPNDirector extends BasePNDirector {
      *  Create a director parameter "Initial_queue_capacity" with the default 
      *  value 1. This sets the initial capacities of the FIFO queues in all 
      *  the receivers created in the PN domain. 
-     *  A priority queue is created to keep a track of delayed actors sorted
-     *  by the time at which they wish to be awakened. 
      */
     public TimedPNDirector() {
         super();
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the default workspace with the given name.
@@ -153,13 +156,10 @@ public class TimedPNDirector extends BasePNDirector {
      *  Create a director parameter "Initial_queue_capacity" with the default 
      *  value 1. This sets the initial capacities of the queues in all 
      *  the receivers created in the PN domain.
-     *  A priority queue is created to keep a track of delayed actors sorted
-     *  by the time at which they wish to be awakened. 
      *  @param name Name of this director.
      */
     public TimedPNDirector(String name) {
         super(name);
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -170,14 +170,11 @@ public class TimedPNDirector extends BasePNDirector {
      *  Create a director parameter "Initial_queue_capacity" with the default 
      *  value 1. This sets the initial capacities of the queues in all 
      *  the receivers created in the PN domain.
-     *  A priority queue is created to keep a track of delayed actors sorted
-     *  by the time at which they wish to be awakened.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      */
     public TimedPNDirector(Workspace workspace, String name) {
         super(workspace, name);
-        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -198,10 +195,9 @@ public class TimedPNDirector extends BasePNDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TimedPNDirector newobj = (TimedPNDirector)super.clone(ws);
-	newobj._eventQueue.clear();
-	newobj._currenttime = 0;
+	newobj._eventQueue = new CalendarQueue(new DoubleCQComparator());
 	newobj._delayBlockCount = 0;
-	newobj._timedMutations = false;
+	newobj._mutationsRequested = false;
         return newobj;
     }
     /** Suspend the calling thread until a deadlock
@@ -216,7 +212,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  process. 
      *  If the deadlock is a timed deadlock, process any pending topology 
      *  change requests. If there are no pending requests, then advance the
-     *  time to the earliest value when a delay blocked process can be 
+     *  time to the earliest value when a time-blocked process can be 
      *  awakenened. If the  deadlock detected is a real deadlock, then do 
      *  nothing.
      *  
@@ -226,8 +222,8 @@ public class TimedPNDirector extends BasePNDirector {
      *  request fails, the request is undone, and no further requests
      *  are processed. Note that change requests processed successfully
      *  prior to the failed request are <i>not</i> undone.
-     *  Initialize any new actors created, create receivers for them, 
-     *  initialize them and create new threads for them. After all threads
+     *  Create receivers for any new actors created, initialize the new actors,
+     *  and create new threads for these actors. After all threads
      *  are created, resume the execution and start the threads for the 
      *  newly created actors. This method returns only on occurence of a real
      *  deadlock.
@@ -241,20 +237,23 @@ public class TimedPNDirector extends BasePNDirector {
 	    throws IllegalActionException {
         boolean timedmut;
         Workspace worksp = workspace();
+	//Loop until a real deadlock is detected.
 	while (_readBlockCount != _getActiveActorsCount()) {
 	    synchronized (this) {
-		while (!_checkForDeadlock()) {
+		while (!_isDeadlocked()) {
 		    worksp.wait(this);
 		}
-		timedmut = _timedMutations;
+		// A deadlock is detected.
+		timedmut = _mutationsRequested;
 	    }
+	    //If artificial deadlock, then resolve it.
 	    if (_writeBlockCount != 0) {
-		System.out.println("Artificial deadlock");
 		_incrementLowestWriteCapacityPort();
-	    } else if (timedmut) {
+	    } else if (timedmut) { 
+		//If some process has requested mutations
+		// then process them.
 		try {
 		    _processTopologyRequests();
-		    // FIXME: Should type resolution be done here?
 		} catch (TopologyChangeFailedException e) {
 		    throw new IllegalActionException("TopologyChangeFailed: " +
 			    e.getMessage());
@@ -279,35 +278,35 @@ public class TimedPNDirector extends BasePNDirector {
      */
     public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {
+	if (newfiringtime < getCurrentTime()) {
+	    throw new IllegalActionException(this, "The process wants to "
+		    + " get fired in the past!");
+	}
         _eventQueue.put(new Double(newfiringtime), actor);
         _informOfDelayBlock();
         try {
             while (getCurrentTime() < newfiringtime) {
-                wait(); //Should I call workspace().wait(this) ?
+                wait(); 
             }
-        } catch (InterruptedException e) {}
-    }
-
-    /** Return the current time of the simulation.
-     *  @return the current time of the simulation
-     *  @deprecate This should be removed after the Director class gets the 
-     *  functionality.
-     */
-    public synchronized double getCurrentTime() {
-        return _currenttime;
+        } catch (InterruptedException e) {
+	    System.err.println(e.toString());
+	}
     }
 
 
-    /** Set the current time.
-     *  @exception IllegalActionException If time cannot be changed
-     *   due to the state of the simulation.
-     *  @param newTime The new current simulation time.
-     *  @deprecate This should be removed after the Director class gets the 
-     *  functionality.
+    /** Set the current time of the model under this director.
+     *  @exception IllegalActionException If an attempt is made to change the
+     *  time to less than the current time.
+     *  @param newTime The new time of the model.
      */
-    public synchronized void setCurrentTime(double newTime)
+    public void setCurrentTime(double newTime)
             throws IllegalActionException {
-        _currenttime = newTime;
+	if (newTime < getCurrentTime()) {
+	    throw new IllegalActionException(this, "Attempt to set the "+
+		    "time to past.");
+	} else {
+	    super.setCurrentTime(newTime);
+	}
     }
 
     /** Add a topology change request to the request queue and suspend the 
@@ -333,9 +332,9 @@ public class TimedPNDirector extends BasePNDirector {
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
 	super.queueTopologyChangeRequest(request);
 	synchronized(this) {
-	    _timedMutations = true;
+	    _mutationsRequested = true;
 	    _informOfMutationBlock();
-	    while(_timedMutations) {
+	    while(_mutationsRequested) {
 		try {
 		    wait();
 		} catch (InterruptedException e) {
@@ -350,9 +349,11 @@ public class TimedPNDirector extends BasePNDirector {
     ////                       protected methods                   ////
 
     /** Return true if a deadlock is detected. Return false otherwise.
+     *  Return true if all the active processes in the container are either
+     *  read-blocked, write-blocked, time-blocked or mutation-blocked.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _checkForDeadlock() {
+    protected synchronized boolean _isDeadlocked() {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount 
 		+ _mutationBlockCount >= _getActiveActorsCount()) {
 	    return true;
@@ -362,12 +363,15 @@ public class TimedPNDirector extends BasePNDirector {
     }
 
     /** Return true if the execution has paused or deadlocked. 
-     *  Return false otherwise. This method should be used only to detect
-     *  if the execution has paused. To detect deadlocks, _checkForDeadlock
+     *  Return false otherwise. 
+     *  Return true if all the active processes in the container are either
+     *  read-blocked, write-blocked, time-blocked, mutation-blocked or paused.
+     *  This method should be used only to detect
+     *  if the execution has paused. To detect deadlocks, _isDeadlocked()
      *  should be used.
-     *  @return true if the execution has paused.
+     *  @return true if the execution has paused or deadlocked.
      */
-    protected synchronized boolean _checkForPause() {
+    protected synchronized boolean _isPaused() {
 	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
 		_mutationBlockCount + _delayBlockCount 
 		>= _getActiveActorsCount()) {
@@ -384,7 +388,7 @@ public class TimedPNDirector extends BasePNDirector {
      */
     protected synchronized void _informOfDelayBlock() {
 	_delayBlockCount++;
-	if (_checkForDeadlock() || _checkForPause()) {
+	if (_isDeadlocked() || _isPaused()) {
 	    notifyAll();
 	}
 	return;
@@ -402,43 +406,57 @@ public class TimedPNDirector extends BasePNDirector {
      *  On detection of a timed deadlock, advance time to the earliest
      *  time that a delayed process is waiting for, wake up all the actors
      *  waiting for time to advance to the new time, and remove them from 
-     *  the priority queue. 
-     *  
+     *  the priority queue. This method cannot handle instances of an 
+     *  articial deadlock. This is called by the fire() method which handles
+     *  instances of artificial deadlock before calling this method.
+     *  This method is synchronized on the director.
      *  @return true if a real deadlock is detected, false otherwise.
      *  @exception IllegalActionException Not thrown in this base class. This
      *  might be thrown by derived classes.
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
-            //Check if there are any events in the future.
-	if (_delayBlockCount ==0) {
-	    System.out.println("real deadlock. Everyone would be erased");
+        //Return true if there are no time-blocked processes.
+	if (_delayBlockCount == 0) {
 	    return true;
 	} else {
 	    //Advance time to next possible time.
 	    synchronized(this) {
 		try {
+		    //Take the first time-blocked process from the queue.
 		    _eventQueue.take();
-		    _currenttime = 
-			((Double)(_eventQueue.getPreviousKey())).doubleValue();
+		    //Advance time to the resumption time of this process.
+		    setCurrentTime(((Double)(_eventQueue.getPreviousKey()))
+			    .doubleValue());
 		    _informOfDelayUnblock();
 		} catch (IllegalAccessException e) {
 		    throw new InternalErrorException("Inconsistency"+
 			    " in number of actors blocked on delays count"+
 			    " and the entries in the CalendarQueue");
 		}
-		
+
+		//Remove any other process waiting to be resumed at the new
+		//advanced time (the new currenttime).
 		boolean sametime = true;
 		while (sametime) {
+		    //If queue is not empty, then determine the resumption
+		    //time of the next process.
 		    if (!_eventQueue.isEmpty()) {
 			try {
+			    //Remove the first process from the queue.
 			    Actor actor = (Actor)_eventQueue.take();
+			    //Get the resumption time of the newly removed
+			    //process.
 			    double newtime = ((Double)(_eventQueue.
 				    getPreviousKey())).doubleValue();
-			    if (newtime == _currenttime) {
+			    //If the resumption time of the newly removed
+			    //process is the same as the newly advanced time
+			    //then unblock it. Else put the newly removed
+			    //process back on the event queue.
+			    if (newtime == getCurrentTime()) {
 				_informOfDelayUnblock();
 			    } else {
-				_eventQueue.put(new Double(newtime), actor);
+				_eventQueue.put (new Double(newtime), actor);
 				sametime = false;
 			    }
 			} catch (IllegalAccessException e) {
@@ -462,22 +480,30 @@ public class TimedPNDirector extends BasePNDirector {
      *  are processed. Note that change requests processed successfully
      *  prior to the failed request are <i>not</i> undone.
      *
-     *  Initialize any new actors created, create receivers for them, 
-     *  initialize them and create new threads for them. After all threads
-     *  are created, unblock the processes blocked on a mutation 
-     *  (mutation-blocked) and start the threads for the 
+     *  After processing the mutation requests, resolve the types of the
+     *  topology. Throw an IllegalActionException if type conflicts are 
+     *  detected. Otherwise, create receivers for any new actors created, 
+     *  initialize the new actors and create new threads for these actors. 
+     *  After all threads are created, unblock the processes blocked on a 
+     *  mutation (mutation-blocked) and start the threads for the 
      *  newly created actors.
      *
      *  @exception IllegalActionException If any of the pending requests have
-     *  already been implemented.
+     *  already been implemented or the type system detects some type conflicts
+     *  after performing the mutations.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     protected void _processTopologyRequests()
             throws IllegalActionException, TopologyChangeFailedException {
 	Workspace worksp = workspace();
 	super._processTopologyRequests();
+	//Perform type resolution.
+	try {
+	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+	} catch (TypeConflictException e) {
+	    throw new IllegalActionException(this, e.toString());
+	}
 	LinkedList threadlist = new LinkedList();
-	//FIXME: Where does the type resolution go?
 	Enumeration newactors = _newActors();
 	while (newactors.hasMoreElements()) {
 	    Actor actor = (Actor)newactors.nextElement();
@@ -488,27 +514,40 @@ public class TimedPNDirector extends BasePNDirector {
 	    _addNewThread(pnt);
 	}
 	synchronized (this) {
-	    _timedMutations = false;
+	    _mutationsRequested = false;
 	    _mutationBlockCount = 0;
+	    //Tell all the processes that requested mutations that their
+	    //requests have been processed.
 	    notifyAll();
 	}
 	Enumeration threads = threadlist.elements();
 	//Starting threads;
 	while (threads.hasMoreElements()) {
-	    ProcessThread pnt = (ProcessThread)threads.nextElement();
-	    pnt.start();
+	    ((ProcessThread)threads.nextElement()).start();
 	}
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+
+    /** The priority queue that stores the list of processes waiting for time
+     *  to advance. These processes are sorted by the time they want to resume
+     *  at.
+     */
+    protected CalendarQueue _eventQueue = 
+	    new CalendarQueue(new DoubleCQComparator());
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    protected CalendarQueue _eventQueue;
-    protected double _currenttime = 0;
+
+    /** The number of time-blocked processes. */
+    private int _delayBlockCount = 0;
     
-    private boolean _timedMutations = false;
-    protected int _delayBlockCount = 0;
+    /** The flag that indicates whether some process has requested mutations
+     *  or not.
+     */
+    private boolean _mutationsRequested = false;
 }
 
 
