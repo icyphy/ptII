@@ -142,7 +142,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  the printed plot will not have spurious buttons.  Thus, this method
      *  should be used only by applets, which normally do not have menus.
      */
-    public void setButtons (boolean visible) {
+    public void setButtons(boolean visible) {
         super.setButtons(visible);
 
         if (_startButton == null) {
