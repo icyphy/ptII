@@ -76,7 +76,7 @@ public class DataUtilities {
      *  @param entity The entity containing the expression.
      *  @param entityClass The class corresponding to the given entity.
      *  @param expression The expression.
-     *  @param nameToField A map from an identifier to a SootField in
+     *  @param nameToFieldOrLocal A map from an identifier to a SootField in
      *  entityClass.
      *  @param nameToType A map from an identifier to a ptolemy data type.
      *  @param body The body to add code to.
@@ -84,7 +84,7 @@ public class DataUtilities {
      */
     public static Local generateExpressionCodeBefore(
             Entity entity, SootClass entityClass, String expression,
-            Map nameToField, Map nameToType,
+            Map nameToFieldOrLocal, Map nameToType,
             JimpleBody body, Unit insertPoint) {
         Local local;
         try {
@@ -93,7 +93,7 @@ public class DataUtilities {
                 parser.generateParseTree(expression);
             ActorCodeGenerationScope scope =
                 new ActorCodeGenerationScope(
-                        entity, entityClass, nameToField,
+                        entity, entityClass, nameToFieldOrLocal,
                         nameToType, body, insertPoint);
             ParseTreeCodeGenerator generator =
                 new ParseTreeCodeGenerator();
@@ -113,18 +113,18 @@ public class DataUtilities {
      *  @param entity The entity containing the expression.
      *  @param entityClass The class corresponding to the given entity.
      *  @param expression The expression.
-     *  @param nameToField A map from an identifier to a SootField in
+     *  @param nameToFieldOrLocal A map from an identifier to a SootField in
      *  entityClass.
      *  @param nameToType A map from an identifier to a ptolemy data type.
      *  @param body The body to add code to.
      */
     public static Local generateExpressionCode(
             Entity entity, SootClass entityClass, String expression,
-            Map nameToField, Map nameToType, JimpleBody body) {
+            Map nameToFieldOrLocal, Map nameToType, JimpleBody body) {
         Stmt insertPoint = Jimple.v().newNopStmt();
         body.getUnits().add(insertPoint);
         return generateExpressionCodeBefore(entity, entityClass, expression,
-                nameToField, nameToType, body, insertPoint);
+                nameToFieldOrLocal, nameToType, body, insertPoint);
     }
 
     /** An inner class used by the <i>generateExpressionCode()</I>
@@ -136,9 +136,9 @@ public class DataUtilities {
         extends ptolemy.data.expr.ModelScope
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(
-                Entity entity, SootClass entityClass, Map nameToField,
+                Entity entity, SootClass entityClass, Map nameToFieldOrLocal,
                 Map nameToType, JimpleBody body, Unit insertPoint) {
-            _nameToField = nameToField;
+            _nameToFieldOrLocal = nameToFieldOrLocal;
             _nameToType = nameToType;
             _body = body;
             _insertPoint = insertPoint;
@@ -177,9 +177,12 @@ public class DataUtilities {
             //                 return tokenLocal;
             //             }
 
-            SootField portField = (SootField)_nameToField.get(name);
-
-            if (portField != null) {
+            Object identifierReference = _nameToFieldOrLocal.get(name);
+            if (identifierReference instanceof Local) {
+                return (Local) identifierReference;
+            }
+            if (identifierReference instanceof SootField) {
+                SootField portField = (SootField)identifierReference;
 
                 Local portLocal = Jimple.v().newLocal("portToken",
                         PtolemyUtilities.getSootTypeForTokenType(
@@ -227,7 +230,8 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 Entity entityContainer =
-                    FieldsForEntitiesTransformer.getEntityContainerOfObject(result);
+                    FieldsForEntitiesTransformer.getEntityContainerOfObject(
+                            result);
                 String deepName = result.getName(entityContainer);
 
                 _units.insertBefore(
@@ -306,7 +310,7 @@ public class DataUtilities {
             }
         }
 
-        private Map _nameToField;
+        private Map _nameToFieldOrLocal;
         private Map _nameToType;
         private JimpleBody _body;
         private Unit _insertPoint;

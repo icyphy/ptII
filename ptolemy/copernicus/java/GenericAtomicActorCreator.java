@@ -176,6 +176,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     entity, body.getThisLocal(),
                     entity, body.getThisLocal(),
                     entityInstanceClass);
+         
             LocalNameStandardizer.v().transform(body, "at.lns");
             LocalSplitter.v().transform(body, "at.ls");
         }

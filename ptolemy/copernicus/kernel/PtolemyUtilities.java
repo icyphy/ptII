@@ -33,6 +33,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
@@ -268,7 +269,8 @@ public class PtolemyUtilities {
                     localName, stringTokenClass, stringTokenConstructor,
                     StringConstant.v(((StringToken)token).stringValue()));
             return tokenLocal;
-        } else if (token instanceof MatrixToken) {
+        } else if (token instanceof MatrixToken ||
+                   token instanceof FunctionToken) {
             // Can't do this for all tokens, because it causes an
             // infinite loop!
             String expression = token.toString();
@@ -523,6 +525,56 @@ public class PtolemyUtilities {
                     Jimple.v().newStaticFieldRef(fixTypeField)),
                     insertPoint);
             return typeLocal;
+        } else if (type instanceof ptolemy.data.type.FunctionType) {
+            ptolemy.data.type.FunctionType functionType =
+                (ptolemy.data.type.FunctionType)type;
+            // recurse
+            String typeName = "type_function";
+
+            // Create the new array of types.
+            Local typeArrayLocal = Jimple.v().newLocal("typeArray",
+                    ArrayType.v(RefType.v(typeClass), 1));
+            body.getLocals().add(typeArrayLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(typeArrayLocal,
+                    Jimple.v().newNewArrayExpr(RefType.v(typeClass),
+                            IntConstant.v(functionType.getArgCount()))),
+                    insertPoint);
+
+            for (int i = 0; i < functionType.getArgCount(); i++) {
+                ptolemy.data.type.Type elementType =
+                    functionType.getArgType(i);
+                Local elementTypeLocal = buildConstantTypeLocal(body,
+                        insertPoint, elementType);
+                           
+                // Store into the array of types.
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        Jimple.v().newArrayRef(typeArrayLocal,
+                                IntConstant.v(i)),
+                        elementTypeLocal),
+                        insertPoint);
+            }
+
+            Local returnTypeLocal = buildConstantTypeLocal(body,
+                    insertPoint, functionType.getReturnType());
+           
+            // Create the new local and assign to local variable.
+            Local typeLocal = Jimple.v().newLocal(typeName,
+                    RefType.v(functionTypeClass));
+            body.getLocals().add(typeLocal);
+            units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                    Jimple.v().newNewExpr(RefType.v(functionTypeClass))),
+                    insertPoint);
+
+            // invoke the initializer.
+            SootMethod typeConstructor =
+                SootUtilities.searchForMethodByName(functionTypeClass, "<init>");
+            System.out.println("typeConstructor = " + typeConstructor);
+            units.insertBefore(Jimple.v().newInvokeStmt(
+                    Jimple.v().newSpecialInvokeExpr(typeLocal,
+                            typeConstructor, typeArrayLocal, returnTypeLocal)),
+                    insertPoint);
+            return typeLocal;
+
         }
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());
@@ -715,6 +767,8 @@ public class PtolemyUtilities {
             return RefType.v("ptolemy.data.ArrayToken");
         } else if (type instanceof ptolemy.data.type.RecordType) {
             return RefType.v("ptolemy.data.RecordToken");
+        } else if (type instanceof ptolemy.data.type.FunctionType) {
+            return RefType.v("ptolemy.data.FunctionToken");
         } else if (!type.isInstantiable()) {
             // We should be able to do something better here...
             // This means that the port
@@ -754,6 +808,10 @@ public class PtolemyUtilities {
         } else if (className.equals("ptolemy.data.RecordToken")) {
             return new ptolemy.data.type.RecordType(
                     new String[0], new ptolemy.data.type.Type[0]);
+        } else if (className.equals("ptolemy.data.FunctionToken")) {
+            return new ptolemy.data.type.FunctionType(
+                    new ptolemy.data.type.Type[0], 
+                    ptolemy.data.type.BaseType.UNKNOWN);
         } else if (className.equals("ptolemy.data.Token")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.ScalarToken")) {
@@ -1160,6 +1218,21 @@ public class PtolemyUtilities {
     // SootMethod representing
     // ptolemy.actor.gui.Configuration findEffigy
     public static SootMethod findEffigyMethod;
+
+    // SootClass representing
+    // ptolemy.data.FunctionToken
+    public static SootClass functionTokenClass;
+
+    public static SootMethod functionTokenConstructor;
+    public static SootMethod functionTokenApplyMethod;
+
+    // SootClass representing
+    // ptolemy.data.type.FunctionType
+    public static SootClass functionTypeClass;
+
+    // SootClass representing
+    // ptolemy.data.FunctionToken$Function
+    public static SootClass functionInterface;
 
     // SootMethod representing
     // ptolemy.kernel.util.Settable.getExpression();
@@ -1729,5 +1802,16 @@ public class PtolemyUtilities {
 
         inequalityTermClass =
             Scene.v().loadClassAndSupport("ptolemy.graph.InequalityTerm");
+
+        functionTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.FunctionToken");
+        functionTokenApplyMethod = 
+            functionTokenClass.getMethod("ptolemy.data.Token apply(ptolemy.data.Token[])");
+        functionTokenConstructor = 
+            functionTokenClass.getMethod("void <init>(ptolemy.data.FunctionToken$Function,ptolemy.data.type.FunctionType)");
+        functionInterface =
+            Scene.v().loadClassAndSupport("ptolemy.data.FunctionToken$Function");
+        functionTypeClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.type.FunctionType");
     }
 }
