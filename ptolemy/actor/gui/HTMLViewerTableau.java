@@ -277,16 +277,14 @@ public class HTMLViewerTableau extends Tableau {
                 relativePath = uri.toString()
                     .substring(ptIIDirAsURI.toString().length() + offset);
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
-
-                if (relativePath.startsWith("/")) {
-                    relativePath = relativePath.substring(1);
-                }
-
             }
         }
         if (relativePath == null) {
             return null;
         } else {
+            if (relativePath.startsWith("/")) {
+                relativePath = relativePath.substring(1);
+            }
             URL anotherURL = Thread.currentThread()
                 .getContextClassLoader()
                 .getResource(relativePath);
