@@ -1393,7 +1393,7 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(SwitchCase node) {
         if (node.isDefault()) {
             _output(_indent);
-            _output("default :\n");
+            _output("default:\n");
         } else {
             _output(_indent);
             _output("case ");
@@ -1414,7 +1414,11 @@ public class ASTFormatter extends ASTVisitor {
         _openBrace();
         for (Iterator it = node.statements().iterator(); it.hasNext(); ) {
             Statement s = (Statement) it.next();
+            if (!(s instanceof SwitchCase))
+                _increaseIndent();
             s.accept(this);
+            if (!(s instanceof SwitchCase))
+                _decreaseIndent();
         }
         _closeBrace();
         return false;
