@@ -59,11 +59,11 @@ public class FixMatrixToken extends MatrixToken {
      *  fractional part.
      */
     public FixMatrixToken() {
-	_rowCount = 1;
-	_columnCount = 1;
+        _rowCount = 1;
+        _columnCount = 1;
         _precision = new Precision(32, 32);
-	_value = new FixPoint[1][1];
-	_value[0][0] = Quantizer.round( 0.0, _precision );
+        _value = new FixPoint[1][1];
+        _value[0][0] = Quantizer.round( 0.0, _precision );
     }
 
     /** Construct a FixMatrixToken with the specified 2-D matrix.
@@ -76,10 +76,10 @@ public class FixMatrixToken extends MatrixToken {
      *   matrix is null.
      */
     public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
-	if (value == null) {
-	    throw new IllegalActionException("FixMatrixToken: The specified "
-		    + "matrix is null.");
-	}
+        if (value == null) {
+            throw new IllegalActionException("FixMatrixToken: The specified "
+                    + "matrix is null.");
+        }
         _initialize(value);
     }
 
@@ -91,7 +91,7 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	FixMatrixToken token = (FixMatrixToken)tree.evaluateParseTree();
+        FixMatrixToken token = (FixMatrixToken)tree.evaluateParseTree();
         FixPoint[][] value = token.fixMatrix();
         _initialize(value);
     }
@@ -113,28 +113,28 @@ public class FixMatrixToken extends MatrixToken {
      *   be carried out.
      */
     public static FixMatrixToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof FixMatrixToken) {
-	    return (FixMatrixToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof FixMatrixToken) {
+            return (FixMatrixToken)token;
+        }
 
-	int compare = TypeLattice.compare(BaseType.FIX_MATRIX, token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException(
+        int compare = TypeLattice.compare(BaseType.FIX_MATRIX, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "[fix]"));
-	}
+        }
 
-	// try Fix
-// 	compare = TypeLattice.compare(BaseType.FIX, token);
-// 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-// 	    FixPoint[][] result = new FixPoint[1][1];
-// 	    FixToken tem = FixToken.convert(token);
-// 	    result[0][0] = tem.fixValue();
-// 	    return new FixMatrixToken(result);
-// 	}
+        // try Fix
+//         compare = TypeLattice.compare(BaseType.FIX, token);
+//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+//             FixPoint[][] result = new FixPoint[1][1];
+//             FixToken tem = FixToken.convert(token);
+//             result[0][0] = tem.fixValue();
+//             return new FixMatrixToken(result);
+//         }
 
-	// The argument is below FixMatrixToken in the type hierarchy,
+        // The argument is below FixMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "[fix]"));
@@ -149,50 +149,50 @@ public class FixMatrixToken extends MatrixToken {
      *   matrices are equal.
      */
     public boolean equals(Object object) {
-	// This test rules out instances of a subclass.
-	if (object.getClass() != FixMatrixToken.class) {
-	    return false;
-	}
+        // This test rules out instances of a subclass.
+        if (object.getClass() != FixMatrixToken.class) {
+            return false;
+        }
 
-	FixMatrixToken matrixArgument = (FixMatrixToken)object;
+        FixMatrixToken matrixArgument = (FixMatrixToken)object;
         if (_rowCount != matrixArgument.getRowCount()) {
             return false;
-	}
-	if (_columnCount != matrixArgument.getColumnCount()) {
-	    return false;
-	}
+        }
+        if (_columnCount != matrixArgument.getColumnCount()) {
+            return false;
+        }
 
-	FixPoint[][] matrix = matrixArgument.fixMatrix();
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		if ( !_value[i][j].equals(matrix[i][j])) {
-		    return false;
-		}
-	    }
-	}
+        FixPoint[][] matrix = matrixArgument.fixMatrix();
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                if ( !_value[i][j].equals(matrix[i][j])) {
+                    return false;
+                }
+            }
+        }
 
-	return true;
+        return true;
     }
 
     /** Return the content of this token as a new 2-D FixPoint matrix.
      *  @return A 2-D FixPoint matrix
      */
     public FixPoint[][] fixMatrix() {
-	FixPoint[][] matrix = new FixPoint[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
+        FixPoint[][] matrix = new FixPoint[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
                 // FixPoint is immutable, so no need to copy.
-		matrix[i][j] = _value[i][j];
-	    }
-	}
-	return matrix;
+                matrix[i][j] = _value[i][j];
+            }
+        }
+        return matrix;
     }
 
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
     public int getColumnCount() {
-	return _columnCount;
+        return _columnCount;
     }
 
     /** Return the element of the matrix at the specified
@@ -205,7 +205,7 @@ public class FixMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-	return new FixToken(_value[row][column]);
+        return new FixToken(_value[row][column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -232,14 +232,14 @@ public class FixMatrixToken extends MatrixToken {
      *  @return The number of rows in the matrix.
      */
     public int getRowCount() {
-	return _rowCount;
+        return _rowCount;
     }
 
     /** Return the type of this token.
      *  @return BaseType.FIX_MATRIX
      */
     public Type getType() {
-	return BaseType.FIX_MATRIX;
+        return BaseType.FIX_MATRIX;
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -247,14 +247,14 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	double code = 0.0;
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		code += _value[i][j].doubleValue();
-	    }
-	}
+        double code = 0.0;
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                code += _value[i][j].doubleValue();
+            }
+        }
 
-	return (int)code;
+        return (int)code;
     }
 
     /** Return a new Token representing the left multiplicative
@@ -266,13 +266,13 @@ public class FixMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token one() {
-	FixPoint[][] result = new FixPoint[_rowCount][_rowCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _rowCount; j++) {
-		result[i][j] = Quantizer.round( 0.0, _precision );
-	    }
-	    result[i][i] = Quantizer.round( 1.0, _precision );
-	}
+        FixPoint[][] result = new FixPoint[_rowCount][_rowCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _rowCount; j++) {
+                result[i][j] = Quantizer.round( 0.0, _precision );
+            }
+            result[i][i] = Quantizer.round( 1.0, _precision );
+        }
         try {
             return new FixMatrixToken(result);
         } catch (IllegalActionException ex) {
@@ -290,13 +290,13 @@ public class FixMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token oneRight() {
-	FixPoint[][] result = new FixPoint[_columnCount][_columnCount];
-	for (int i = 0; i < _columnCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = Quantizer.round( 0.0, _precision );
-	    }
-	    result[i][i] = Quantizer.round( 0.0, _precision);
-	}
+        FixPoint[][] result = new FixPoint[_columnCount][_columnCount];
+        for (int i = 0; i < _columnCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                result[i][j] = Quantizer.round( 0.0, _precision );
+            }
+            result[i][i] = Quantizer.round( 0.0, _precision);
+        }
         try {
             return new FixMatrixToken(result);
         } catch (IllegalActionException ex) {
@@ -313,13 +313,13 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new FixMatrixToken containing the additive identity.
      */
     public Token zero() {
-	FixPoint[][] result = new FixPoint[_rowCount][_columnCount];
-	FixPoint zero = Quantizer.round( 0.0, _precision);
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = zero;
-	    }
-	}
+        FixPoint[][] result = new FixPoint[_rowCount][_columnCount];
+        FixPoint zero = Quantizer.round( 0.0, _precision);
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                result[i][j] = zero;
+            }
+        }
         try {
             return new FixMatrixToken(result);
         } catch (IllegalActionException ex) {
@@ -343,7 +343,7 @@ public class FixMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
-    	FixPoint[][] result = convertedArgument.fixMatrix();
+            FixPoint[][] result = convertedArgument.fixMatrix();
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 result[i][j] = result[i][j].add(_value[i][j]);
@@ -446,7 +446,7 @@ public class FixMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
-    	FixPoint[][] result = convertedArgument.fixMatrix();
+            FixPoint[][] result = convertedArgument.fixMatrix();
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 result[i][j] = result[i][j].subtract(_value[i][j]);
@@ -504,12 +504,12 @@ public class FixMatrixToken extends MatrixToken {
     // matrix. This method is used by the constructors.
     private void _initialize(FixPoint[][] value)
             throws IllegalActionException {
-	_rowCount = value.length;
-	_columnCount = value[0].length;
-	_value = new FixPoint[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
+        _rowCount = value.length;
+        _columnCount = value[0].length;
+        _value = new FixPoint[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                _value[i][j] = value[i][j];
                 Precision precision = value[i][j].getPrecision();
                 if (_precision != null && !_precision.equals(precision)) {
                     throw new IllegalActionException(
@@ -517,8 +517,8 @@ public class FixMatrixToken extends MatrixToken {
                             + " with unequal precisions.");
                 }
                 _precision = precision;
-	    }
-	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

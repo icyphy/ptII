@@ -55,13 +55,13 @@ public class BooleanToken extends AbstractConvertibleToken {
     /** Construct a token with value false
      */
     public BooleanToken() {
-	_value = false;
+        _value = false;
     }
 
     /** Construct a token with the specified value.
      */
     public BooleanToken(boolean b) {
-	_value = b;
+        _value = b;
     }
 
     /** Construct a token with the specified string.
@@ -101,10 +101,10 @@ public class BooleanToken extends AbstractConvertibleToken {
      *   a BooleanToken.
      */
     public static BooleanToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof BooleanToken) {
-	    return (BooleanToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof BooleanToken) {
+            return (BooleanToken)token;
+        }
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
@@ -124,15 +124,15 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != BooleanToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != BooleanToken.class) {
+            return false;
+        }
 
-	if (((BooleanToken)object).booleanValue() == _value) {
-	    return true;
-	}
-	return false;
+        if (((BooleanToken)object).booleanValue() == _value) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the instance of this class corresponding to the given
@@ -152,7 +152,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  @return BaseType.BOOLEAN
      */
     public Type getType() {
-	return BaseType.BOOLEAN;
+        return BaseType.BOOLEAN;
     }
 
     /** Return a hash code value for this token. This method returns 1 if this
@@ -160,10 +160,10 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	if (_value) {
-	    return 1;
-	}
-	return 0;
+        if (_value) {
+            return 1;
+        }
+        return 0;
     }
 
     /** Return a new BooleanToken with the logical not of the value

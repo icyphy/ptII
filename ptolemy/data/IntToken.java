@@ -66,7 +66,7 @@ public class IntToken extends ScalarToken {
      *   be created with the given String.
      */
     public IntToken(String init) throws IllegalActionException {
-	try {
+        try {
             _value = (Integer.valueOf(init)).intValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
@@ -110,13 +110,13 @@ public class IntToken extends ScalarToken {
                             token, "int"));
         }
 
-	compare = TypeLattice.compare(BaseType.BYTE, token);
-	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    ByteToken bytetoken = ByteToken.convert(token);
-	    return new IntToken(bytetoken.intValue());
-	}
+        compare = TypeLattice.compare(BaseType.BYTE, token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            ByteToken bytetoken = ByteToken.convert(token);
+            return new IntToken(bytetoken.intValue());
+        }
 
- 	// The argument is below ByteToken in the type hierarchy,
+         // The argument is below ByteToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "int"));
@@ -136,15 +136,15 @@ public class IntToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != IntToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != IntToken.class) {
+            return false;
+        }
 
-	if (((IntToken)object).intValue() == _value) {
-	    return true;
-	}
-	return false;
+        if (((IntToken)object).intValue() == _value) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
@@ -159,7 +159,7 @@ public class IntToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return _value;
+        return _value;
     }
 
     /** Return the value in the token as an int.
@@ -192,10 +192,10 @@ public class IntToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
-	String unitString = "";
-	if ( !_isUnitless()) {
-	    unitString = " * " + unitsString();
-	}
+        String unitString = "";
+        if ( !_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
         return Integer.toString(_value) + unitString;
     }
 

@@ -83,12 +83,12 @@ public class ObjectToken extends Token {
      *   cannot be carried out.
      */
     public static ObjectToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof ObjectToken) {
-	    return (ObjectToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof ObjectToken) {
+            return (ObjectToken)token;
+        }
 
-	throw new IllegalActionException(
+        throw new IllegalActionException(
                 notSupportedConversionMessage(token, "object"));
     }
 
@@ -100,22 +100,22 @@ public class ObjectToken extends Token {
      *   contained object is equal to the object contained in this token.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != ObjectToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != ObjectToken.class) {
+            return false;
+        }
 
-	if (((ObjectToken)object).getValue().equals(_value)) {
-	    return true;
-	}
-	return false;
+        if (((ObjectToken)object).getValue().equals(_value)) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
     public Type getType() {
-	return BaseType.OBJECT;
+        return BaseType.OBJECT;
     }
 
     /** Return the value of the token, a reference to an object.
@@ -130,7 +130,7 @@ public class ObjectToken extends Token {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return _value.hashCode();
+        return _value.hashCode();
     }
 
     /** Return the value of this token as a string that can be parsed

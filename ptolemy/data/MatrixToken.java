@@ -563,7 +563,7 @@ public abstract class MatrixToken extends Token {
      *   supported by the derived class.
      */
     public Token oneRight()
-	    throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException("Right multiplicative identity " +
                 "not supported on " + getClass().getName() + " objects.");
     }
@@ -718,15 +718,15 @@ public abstract class MatrixToken extends Token {
             }
         }
 
-	ArrayToken result;
-	try {
-	    result = new ArrayToken(output);
-	} catch (IllegalActionException illegalAction) {
-	    // Cannot happen, since the elements of MatrixToken always
-	    // have the same type.
-	    throw new InternalErrorException("MatrixToken.toArray: Cannot "
+        ArrayToken result;
+        try {
+            result = new ArrayToken(output);
+        } catch (IllegalActionException illegalAction) {
+            // Cannot happen, since the elements of MatrixToken always
+            // have the same type.
+            throw new InternalErrorException("MatrixToken.toArray: Cannot "
                     + "construct ArrayToken. " + illegalAction.getMessage());
-	}
+        }
         return result;
     }
 

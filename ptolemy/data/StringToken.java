@@ -86,25 +86,25 @@ public class StringToken extends AbstractConvertibleToken {
      *   be carried out.
      */
     public static StringToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof StringToken) {
-	    return (StringToken) token;
-	}
+            throws IllegalActionException {
+        if (token instanceof StringToken) {
+            return (StringToken) token;
+        }
 
-	int compare = TypeLattice.compare(BaseType.STRING, token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException(
+        int compare = TypeLattice.compare(BaseType.STRING, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "string"));
-	}
+        }
 
-	if (token instanceof MatrixToken || token instanceof ScalarToken ||
+        if (token instanceof MatrixToken || token instanceof ScalarToken ||
                 token instanceof BooleanToken) {
-	    String str = token.toString();
-	    return new StringToken(str);
-	}
+            String str = token.toString();
+            return new StringToken(str);
+        }
 
- 	// The argument is below StringToken in the type hierarchy,
+         // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "string"));
@@ -117,22 +117,22 @@ public class StringToken extends AbstractConvertibleToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != StringToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != StringToken.class) {
+            return false;
+        }
 
-	if (((StringToken)object).stringValue().equals(_value)) {
-	    return true;
-	}
-	return false;
+        if (((StringToken)object).stringValue().equals(_value)) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
      *  @return BaseType.STRING
      */
     public Type getType() {
-	return BaseType.STRING;
+        return BaseType.STRING;
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -140,7 +140,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return _value.hashCode();
+        return _value.hashCode();
     }
 
     /** Return the string that this token contains.  Note that this is
@@ -166,7 +166,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new StringToken containing an empty string.
      */
     public Token zero() {
-	return new StringToken("");
+        return new StringToken("");
     }
 
     ///////////////////////////////////////////////////////////////////

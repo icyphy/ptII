@@ -116,7 +116,7 @@ public class FixToken extends ScalarToken {
     public FixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	FixToken token = (FixToken)tree.evaluateParseTree();
+        FixToken token = (FixToken)tree.evaluateParseTree();
         _value = token.fixValue();
     }
 
@@ -137,10 +137,10 @@ public class FixToken extends ScalarToken {
      *  cannot be carried out.
      */
     public static FixToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof FixToken) {
-	    return (FixToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof FixToken) {
+            return (FixToken)token;
+        }
 
         int compare = TypeLattice.compare(BaseType.FIX, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
@@ -149,7 +149,7 @@ public class FixToken extends ScalarToken {
                             token, "fix"));
         }
 
-	throw new IllegalActionException(
+        throw new IllegalActionException(
                 notSupportedConversionMessage(token, "fix"));
     }
 
@@ -170,16 +170,16 @@ public class FixToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != FixToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != FixToken.class) {
+            return false;
+        }
 
-	if (((FixToken)object).fixValue().equals(_value)) {
-	    return true;
-	}
+        if (((FixToken)object).fixValue().equals(_value)) {
+            return true;
+        }
 
-	return false;
+        return false;
     }
 
     /** Return the value of this token as a FixPoint.
@@ -193,7 +193,7 @@ public class FixToken extends ScalarToken {
      *  @return BaseType.FIX.
      */
     public Type getType() {
-	return BaseType.FIX;
+        return BaseType.FIX;
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -201,8 +201,8 @@ public class FixToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	double code = _value.doubleValue();
-	return (int)code;
+        double code = _value.doubleValue();
+        return (int)code;
     }
 
     /** Returns a new Token representing the multiplicative identity
@@ -225,7 +225,7 @@ public class FixToken extends ScalarToken {
      */
     public String toString() {
         Precision precision = _value.getPrecision();
-	return "fix(" + _value.toString() +
+        return "fix(" + _value.toString() +
             "," + precision.getNumberOfBits() +
             "," + precision.getIntegerBitLength() + ")";
     }

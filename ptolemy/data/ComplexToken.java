@@ -55,13 +55,13 @@ public class ComplexToken extends ScalarToken {
     /** Construct a ComplexToken with Complex 0.0+0.0i
      */
     public ComplexToken() {
-	_value = Complex.ZERO;
+        _value = Complex.ZERO;
     }
 
     /** Construct a ComplexToken with the specified value.
      */
     public ComplexToken(Complex value) {
-	_value = value;
+        _value = value;
     }
 
     /** Construct a ComplexToken from the specified string.
@@ -71,7 +71,7 @@ public class ComplexToken extends ScalarToken {
     public ComplexToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	ComplexToken token = (ComplexToken)tree.evaluateParseTree();
+        ComplexToken token = (ComplexToken)tree.evaluateParseTree();
         _value = token.complexValue();
     }
 
@@ -100,27 +100,27 @@ public class ComplexToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static ComplexToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof ComplexToken) {
-	    return (ComplexToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof ComplexToken) {
+            return (ComplexToken)token;
+        }
 
-	int compare = TypeLattice.compare(BaseType.COMPLEX, token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException(
+        int compare = TypeLattice.compare(BaseType.COMPLEX, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "complex"));
-	}
+        }
 
-	compare = TypeLattice.compare(BaseType.DOUBLE, token);
-	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    DoubleToken doubleToken = DoubleToken.convert(token);
-	    return new ComplexToken(doubleToken.complexValue());
-	}
+        compare = TypeLattice.compare(BaseType.DOUBLE, token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            DoubleToken doubleToken = DoubleToken.convert(token);
+            return new ComplexToken(doubleToken.complexValue());
+        }
 
-	// The argument is below ComplexToken in the type hierarchy,
+        // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
-	throw new IllegalActionException(
+        throw new IllegalActionException(
                 notSupportedConversionMessage(token, "complex"));
     }
 
@@ -131,22 +131,22 @@ public class ComplexToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != ComplexToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != ComplexToken.class) {
+            return false;
+        }
 
-	if (((ComplexToken)object).complexValue().equals(_value)) {
-	    return true;
-	}
-	return false;
+        if (((ComplexToken)object).complexValue().equals(_value)) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
      *  @return BaseType.COMPLEX
      */
     public Type getType() {
-	return BaseType.COMPLEX;
+        return BaseType.COMPLEX;
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -154,7 +154,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return (int)_value.magnitude();
+        return (int)_value.magnitude();
     }
 
     /** Returns a new ComplexToken with value 1.0.

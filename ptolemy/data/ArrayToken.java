@@ -68,7 +68,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @param type The element type of this array token.
      */
     public ArrayToken(Type type) {
-	_value = new Token[0];
+        _value = new Token[0];
         _elementType = type;
     }
 
@@ -86,7 +86,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     public ArrayToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	ArrayToken token = (ArrayToken)tree.evaluateParseTree();
+        ArrayToken token = (ArrayToken)tree.evaluateParseTree();
 
         Token[] value = token.arrayValue();
         _initialize(value);
@@ -101,9 +101,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return An array of tokens.
      */
     public Token[] arrayValue() {
-	Token[] result = new Token[_value.length];
-	System.arraycopy(_value, 0, result, 0, _value.length);
-	return result;
+        Token[] result = new Token[_value.length];
+        System.arraycopy(_value, 0, result, 0, _value.length);
+        return result;
     }
 
     /** Return true if the argument is an array token of the same length and
@@ -114,25 +114,25 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   and the elements are equal to that of this token.
      */
     public boolean equals(Object object) {
-	// This test rules out instances of a subclass.
-	if (object.getClass() != ArrayToken.class) {
-	    return false;
-	}
+        // This test rules out instances of a subclass.
+        if (object.getClass() != ArrayToken.class) {
+            return false;
+        }
 
-	ArrayToken arrayArgument = (ArrayToken)object;
-	int length = arrayArgument.length();
-	if (_value.length != length) {
-	    return false;
-	}
+        ArrayToken arrayArgument = (ArrayToken)object;
+        int length = arrayArgument.length();
+        if (_value.length != length) {
+            return false;
+        }
 
-	Token[] array = arrayArgument.arrayValue();
-	for (int i = 0; i < length; i++) {
-	    if ( !_value[i].equals(array[i])) {
-		return false;
-	    }
-	}
+        Token[] array = arrayArgument.arrayValue();
+        for (int i = 0; i < length; i++) {
+            if ( !_value[i].equals(array[i])) {
+                return false;
+            }
+        }
 
-	return true;
+        return true;
     }
 
     /** Return the element at the specified index.
@@ -142,21 +142,21 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   outside the range of the token array.
      */
     public Token getElement(int index) {
-	return _value[index];
+        return _value[index];
     }
 
     /** Return the type contained in this ArrayToken.
      *  @return A Type.
      */
     public Type getElementType() {
-	return _elementType;
+        return _elementType;
     }
 
     /** Return the type of this ArrayToken.
      *  @return An ArrayType.
      */
     public Type getType() {
-	return new ArrayType(_elementType);
+        return new ArrayType(_elementType);
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -165,22 +165,22 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	if (length() == 0) {
-	    return 0;
-	}
+        if (length() == 0) {
+            return 0;
+        }
 
-	int code = _value[0].hashCode();
-	for (int i = 1; i < length(); i++) {
-	    code += _value[i].hashCode();
-	}
-	return code;
+        int code = _value[0].hashCode();
+        for (int i = 1; i < length(); i++) {
+            code += _value[i].hashCode();
+        }
+        return code;
     }
 
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
     public int length() {
-	return _value.length;
+        return _value.length;
     }
 
     /** Returns a new ArrayToken representing the multiplicative identity.
@@ -193,17 +193,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   supported by the element token.
      */
     public Token one() throws IllegalActionException {
-	// if this array token has length zero, return this.
-	if (length() == 0) {
-	    return this;
-	}
+        // if this array token has length zero, return this.
+        if (length() == 0) {
+            return this;
+        }
 
-	Token oneVal = _value[0].one();
-	Token[] oneValArray = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    oneValArray[i] = oneVal;
-	}
-	return new ArrayToken(oneValArray);
+        Token oneVal = _value[0].one();
+        Token[] oneValArray = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            oneValArray[i] = oneVal;
+        }
+        return new ArrayToken(oneValArray);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -212,14 +212,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  for every element in the array separated by commas, ending with "}".
      */
     public String toString() {
-	String s = "{";
-	for (int i = 0; i < length(); i++) {
-	    s += _value[i].toString();
-	    if (i < (length()-1)) {
-		s += ", ";
-	    }
-	}
-	return s + "}";
+        String s = "{";
+        for (int i = 0; i < length(); i++) {
+            s += _value[i].toString();
+            if (i < (length()-1)) {
+                s += ", ";
+            }
+        }
+        return s + "}";
     }
 
     /** Returns a new ArrayToken representing the additive identity.
@@ -232,17 +232,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   supported by the element token.
      */
     public Token zero() throws IllegalActionException {
-	// if this array token has length zero, return this.
-	if (length() == 0) {
-	    return this;
-	}
+        // if this array token has length zero, return this.
+        if (length() == 0) {
+            return this;
+        }
 
-	Token zeroVal = _value[0].zero();
-	Token[] zeroValArray = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    zeroValArray[i] = zeroVal;
-	}
-	return new ArrayToken(zeroValArray);
+        Token zeroVal = _value[0].zero();
+        Token[] zeroValArray = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            zeroValArray[i] = zeroVal;
+        }
+        return new ArrayToken(zeroValArray);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,14 +262,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _add(Token rightArgument)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].add(argArray[i]);
-	}
+        _checkArgument(rightArgument);
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        Token[] result = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            result[i] = _value[i].add(argArray[i]);
+        }
 
-	return new ArrayToken(result);
+        return new ArrayToken(result);
     }
 
     /** Return a new token whose value is the value of this token
@@ -283,14 +283,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _divide(Token rightArgument)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].divide(argArray[i]);
-	}
+        _checkArgument(rightArgument);
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        Token[] result = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            result[i] = _value[i].divide(argArray[i]);
+        }
 
-	return new ArrayToken(result);
+        return new ArrayToken(result);
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -303,21 +303,21 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
+        _checkArgument(rightArgument);
 
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	for (int i = 0; i < _value.length; i++) {
-	    // Here is where isCloseTo() differs from isEqualTo().
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        for (int i = 0; i < _value.length; i++) {
+            // Here is where isCloseTo() differs from isEqualTo().
 
-	    // Note that we return false the first time we hit an
-	    // element token that is not close to our current element token.
-	    BooleanToken result = _value[i].isCloseTo(argArray[i], epsilon);
-	    if (result.booleanValue() == false) {
-		return BooleanToken.FALSE;
-	    }
-	}
+            // Note that we return false the first time we hit an
+            // element token that is not close to our current element token.
+            BooleanToken result = _value[i].isCloseTo(argArray[i], epsilon);
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
+            }
+        }
 
-	return BooleanToken.TRUE;
+        return BooleanToken.TRUE;
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -330,17 +330,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
- 	_checkArgument(rightArgument);
+         _checkArgument(rightArgument);
 
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	for (int i = 0; i < _value.length; i++) {
-	    BooleanToken result = _value[i].isEqualTo(argArray[i]);
-	    if (result.booleanValue() == false) {
-		return BooleanToken.FALSE;
-	    }
-	}
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        for (int i = 0; i < _value.length; i++) {
+            BooleanToken result = _value[i].isEqualTo(argArray[i]);
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
+            }
+        }
 
-	return BooleanToken.TRUE;
+        return BooleanToken.TRUE;
    }
 
     /** Return a new token whose value is the value of this token
@@ -355,14 +355,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _modulo(Token rightArgument)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].modulo(argArray[i]);
-	}
+        _checkArgument(rightArgument);
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        Token[] result = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            result[i] = _value[i].modulo(argArray[i]);
+        }
 
-	return new ArrayToken(result);
+        return new ArrayToken(result);
     }
 
     /** Return a new token whose value is the value of this token
@@ -376,14 +376,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].multiply(argArray[i]);
-	}
+        _checkArgument(rightArgument);
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        Token[] result = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            result[i] = _value[i].multiply(argArray[i]);
+        }
 
-	return new ArrayToken(result);
+        return new ArrayToken(result);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -398,14 +398,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
-	_checkArgument(rightArgument);
-	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].subtract(argArray[i]);
-	}
+        _checkArgument(rightArgument);
+        Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+        Token[] result = new Token[_value.length];
+        for (int i = 0; i < _value.length; i++) {
+            result[i] = _value[i].subtract(argArray[i]);
+        }
 
-	return new ArrayToken(result);
+        return new ArrayToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -414,38 +414,38 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     // Throw an exception if the argument is not an ArrayToken of the
     // same length.
     private void _checkArgument(Token token) throws IllegalActionException {
-	if ( !(token instanceof ArrayToken)) {
-	    throw new IllegalActionException("The argument is not " +
+        if ( !(token instanceof ArrayToken)) {
+            throw new IllegalActionException("The argument is not " +
                     "an ArrayToken, its type was: " + token.getType() + ".");
-	}
+        }
 
-	int length = ((ArrayToken)token).length();
-	if (_value.length != length) {
-	    throw new IllegalActionException("The argument is an " +
+        int length = ((ArrayToken)token).length();
+        if (_value.length != length) {
+            throw new IllegalActionException("The argument is an " +
                     "ArrayToken of different length.");
-	}
+        }
     }
 
     // initialize this token using the specified array.
     private void _initialize(Token[] value) throws IllegalActionException {
-	if (value.length == 0) {
-	    throw new IllegalActionException("ArrayToken._initialize: The "
-	            + "length of the specified array is zero.");
-	}
+        if (value.length == 0) {
+            throw new IllegalActionException("ArrayToken._initialize: The "
+                    + "length of the specified array is zero.");
+        }
 
-	_elementType = value[0].getType();
-	int length = value.length;
-	_value = new Token[length];
-	for (int i = 0; i < length; i++) {
-	    if (_elementType.equals(value[i].getType())) {
-	    	_value[i] = value[i];
-	    } else {
-		throw new IllegalActionException("ArrayToken._initialize: "
+        _elementType = value[0].getType();
+        int length = value.length;
+        _value = new Token[length];
+        for (int i = 0; i < length; i++) {
+            if (_elementType.equals(value[i].getType())) {
+                    _value[i] = value[i];
+            } else {
+                throw new IllegalActionException("ArrayToken._initialize: "
                         + "Elements of the array do not have the same type:"
-			+ "value[0]=" + value[0].toString()
-			+ " value[" + i + "]=" + value[i]);
-	    }
-	}
+                        + "value[0]=" + value[0].toString()
+                        + " value[" + i + "]=" + value[i]);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -135,10 +135,10 @@ public class Token implements Serializable {
      *   instance of a subclass of Token or any other classes.
      */
     public boolean equals(Object object) {
-	if (object.getClass() == Token.class) {
-	    return true;
-	}
-	return false;
+        if (object.getClass() == Token.class) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
@@ -155,7 +155,7 @@ public class Token implements Serializable {
      *  @return The integer 0.
      */
     public int hashCode() {
-	return 0;
+        return 0;
     }
 
     /** Test that the value of this Token is close to the argument
@@ -174,7 +174,7 @@ public class Token implements Serializable {
      */
     public final BooleanToken isCloseTo(Token token)
             throws IllegalActionException{
-	return isCloseTo(token, ptolemy.math.Complex.epsilon);
+        return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
     /** Test that the value of this Token is close to the argument

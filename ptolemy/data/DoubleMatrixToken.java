@@ -56,7 +56,7 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public DoubleMatrixToken() {
         double[][] value = new double[1][1];
-	value[0][0] = 0.0;
+        value[0][0] = 0.0;
         _initialize(value, DO_NOT_COPY);
     }
 
@@ -86,8 +86,8 @@ public class DoubleMatrixToken extends MatrixToken {
     public DoubleMatrixToken(final double[][] value, final int copy)
             throws IllegalActionException {
         if (value == null) {
-	    throw new IllegalActionException("DoubleMatrixToken: The "
-		    + "specified matrix is null.");
+            throw new IllegalActionException("DoubleMatrixToken: The "
+                    + "specified matrix is null.");
         }
         _initialize(value, copy);
     }
@@ -100,7 +100,7 @@ public class DoubleMatrixToken extends MatrixToken {
     public DoubleMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	DoubleMatrixToken token = (DoubleMatrixToken)tree.evaluateParseTree();
+        DoubleMatrixToken token = (DoubleMatrixToken)tree.evaluateParseTree();
         double[][] value = token.doubleMatrix();
         _initialize(value, DO_COPY);
     }
@@ -182,29 +182,29 @@ public class DoubleMatrixToken extends MatrixToken {
      *   matrices are equal.
      */
     public boolean equals(Object object) {
-	// This test rules out instances of a subclass.
-	if (object.getClass() != DoubleMatrixToken.class) {
-	    return false;
-	}
+        // This test rules out instances of a subclass.
+        if (object.getClass() != DoubleMatrixToken.class) {
+            return false;
+        }
 
-	DoubleMatrixToken matrixArgument = (DoubleMatrixToken)object;
+        DoubleMatrixToken matrixArgument = (DoubleMatrixToken)object;
         if (_rowCount != matrixArgument.getRowCount()) {
             return false;
-	}
-	if (_columnCount != matrixArgument.getColumnCount()) {
-	    return false;
-	}
+        }
+        if (_columnCount != matrixArgument.getColumnCount()) {
+            return false;
+        }
 
-	double[][] matrix = matrixArgument.doubleMatrix();
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		if (_value[i][j] != matrix[i][j]) {
-		    return false;
-		}
-	    }
-	}
+        double[][] matrix = matrixArgument.doubleMatrix();
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                if (_value[i][j] != matrix[i][j]) {
+                    return false;
+                }
+            }
+        }
 
-	return true;
+        return true;
     }
 
     /** Return the number of columns in the matrix.
@@ -266,14 +266,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	double code = 0.0;
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		code += _value[i][j];
-	    }
-	}
+        double code = 0.0;
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                code += _value[i][j];
+            }
+        }
 
-	return (int)code;
+        return (int)code;
     }
 
     /** Return a new Token representing the left multiplicative
@@ -284,14 +284,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token one() {
-	try {
+        try {
             return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
                     DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("DoubleMatrixToken.one: "
-		    + "Cannot create identity matrix.");
-	}
+            // should not happen
+            throw new InternalErrorException("DoubleMatrixToken.one: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the right multiplicative
@@ -302,14 +302,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token oneRight() {
-	try {
+        try {
             return new DoubleMatrixToken(
-		    DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
+                    DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("DoubleMatrixToken.oneRight: "
-		    + "Cannot create identity matrix.");
-	}
+            // should not happen
+            throw new InternalErrorException("DoubleMatrixToken.oneRight: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the additive identity.
@@ -319,14 +319,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the additive identity.
      */
     public final Token zero() {
-	try {
+        try {
             return new DoubleMatrixToken(new double[_rowCount][_columnCount],
                     DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("DoubleMatrixToken.zero: "
-		    + "Cannot create zero matrix.");
-	}
+            // should not happen
+            throw new InternalErrorException("DoubleMatrixToken.zero: "
+                    + "Cannot create zero matrix.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

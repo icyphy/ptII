@@ -143,15 +143,15 @@ public class DoubleToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != DoubleToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != DoubleToken.class) {
+            return false;
+        }
 
-	if (((DoubleToken)object).doubleValue() == _value) {
-	    return true;
-	}
-	return false;
+        if (((DoubleToken)object).doubleValue() == _value) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
@@ -166,7 +166,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return (int)_value;
+        return (int)_value;
     }
 
     /** Returns a new DoubleToken with value 1.0.
@@ -192,10 +192,10 @@ public class DoubleToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
-	String unitString = "";
-	if ( !_isUnitless()) {
-	    unitString = " * " + unitsString();
-	}
+        String unitString = "";
+        if ( !_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
 
         double mag = Math.abs(_value);
         if (mag == 0.0 || (mag < 1000000 && mag > .001)) {

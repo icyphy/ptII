@@ -87,7 +87,7 @@ public class ByteToken extends ScalarToken {
      *   be created from the given string.
      */
     public ByteToken(String init) throws IllegalActionException {
-	try {
+        try {
             _value = (Byte.valueOf(init)).byteValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
@@ -150,15 +150,15 @@ public class ByteToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != ByteToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != ByteToken.class) {
+            return false;
+        }
 
-	if (((ByteToken)object).byteValue() == _value) {
-	    return true;
-	}
-	return false;
+        if (((ByteToken)object).byteValue() == _value) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
@@ -173,7 +173,7 @@ public class ByteToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return _value;
+        return _value;
     }
 
     /** Return the value in the token as a byte.
@@ -215,10 +215,10 @@ public class ByteToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#unitsString
      */
     public String toString() {
-	String unitString = "";
-	if ( !_isUnitless()) {
-	    unitString = " * " + unitsString();
-	}
+        String unitString = "";
+        if ( !_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
         return Byte.toString(_value) + unitString;
     }
 
@@ -237,9 +237,9 @@ public class ByteToken extends ScalarToken {
     public int unsignedConvert(byte value) {
         int intValue = value;
         if (intValue < 0) {
-	    intValue += 256;
-	}
-	return intValue;
+            intValue += 256;
+        }
+        return intValue;
     }
 
     /** Returns a new ByteToken with value 0.

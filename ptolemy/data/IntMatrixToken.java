@@ -54,8 +54,8 @@ public class IntMatrixToken extends MatrixToken {
      *  only element in the matrix has value 0.0
      */
     public IntMatrixToken() {
-	int[][] value = new int[1][1];
-	value[0][0] = 0;
+        int[][] value = new int[1][1];
+        value[0][0] = 0;
         _initialize(value, DO_NOT_COPY);
     }
 
@@ -68,10 +68,10 @@ public class IntMatrixToken extends MatrixToken {
      */
     public IntMatrixToken(int[] value, int rows, int columns)
             throws IllegalActionException {
-	if (value == null) {
-	    throw new IllegalActionException("IntMatrixToken: The specified "
-		    + "matrix is null.");
-	}
+        if (value == null) {
+            throw new IllegalActionException("IntMatrixToken: The specified "
+                    + "matrix is null.");
+        }
         _rowCount = rows;
         _columnCount = columns;
         _value = IntegerMatrixMath.toMatrixFromArray(value, rows, columns);
@@ -104,10 +104,10 @@ public class IntMatrixToken extends MatrixToken {
      */
     protected IntMatrixToken(int[][] value, int copy)
             throws IllegalActionException {
-	if (value == null) {
-	    throw new IllegalActionException("IntMatrixToken: The specified "
-		    + "matrix is null.");
-	}
+        if (value == null) {
+            throw new IllegalActionException("IntMatrixToken: The specified "
+                    + "matrix is null.");
+        }
         _initialize(value, copy);
     }
 
@@ -119,7 +119,7 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
+        IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
         int[][] value = token.intMatrix();
         _initialize(value, DO_COPY);
     }
@@ -226,29 +226,29 @@ public class IntMatrixToken extends MatrixToken {
      *   matrices are equal.
      */
     public boolean equals(Object object) {
-	// This test rules out instances of a subclass.
-	if (object.getClass() != IntMatrixToken.class) {
-	    return false;
-	}
+        // This test rules out instances of a subclass.
+        if (object.getClass() != IntMatrixToken.class) {
+            return false;
+        }
 
-	IntMatrixToken matrixArgument = (IntMatrixToken)object;
+        IntMatrixToken matrixArgument = (IntMatrixToken)object;
         if (_rowCount != matrixArgument.getRowCount()) {
             return false;
-	}
-	if (_columnCount != matrixArgument.getColumnCount()) {
-	    return false;
-	}
+        }
+        if (_columnCount != matrixArgument.getColumnCount()) {
+            return false;
+        }
 
-	int[][] matrix = matrixArgument.intMatrix();
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		if (_value[i][j] != matrix[i][j]) {
-		    return false;
-		}
-	    }
-	}
+        int[][] matrix = matrixArgument.intMatrix();
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                if (_value[i][j] != matrix[i][j]) {
+                    return false;
+                }
+            }
+        }
 
-	return true;
+        return true;
     }
 
     /** Return the number of columns in the matrix.
@@ -310,14 +310,14 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	int code = 0;
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		code += _value[i][j];
-	    }
-	}
+        int code = 0;
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                code += _value[i][j];
+            }
+        }
 
-	return code;
+        return code;
     }
 
     /** Return the content in the token as a 2-D int matrix.
@@ -344,14 +344,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token one() {
-	try {
+        try {
             return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
                     DO_NOT_COPY);
-	} catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("IntMatrixToken.one: "
-		    + "Cannot create identity matrix.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.one: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the right multiplicative
@@ -362,14 +362,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token oneRight() {
-	try {
+        try {
             return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
                     DO_NOT_COPY);
-	} catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("IntMatrixToken.oneRight: "
-		    + "Cannot create identity matrix.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.oneRight: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the additive identity.
@@ -379,14 +379,14 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new IntMatrixToken containing the additive identity.
      */
     public Token zero() {
-	try {
+        try {
             return new IntMatrixToken(new int[_rowCount][_columnCount],
                     DO_NOT_COPY);
-	} catch (IllegalActionException illegalAction) {
-	    // should not happen
-	    throw new InternalErrorException("IntMatrixToken.zero: "
-		    + "Cannot create zero matrix.");
-	}
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.zero: "
+                    + "Cannot create zero matrix.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

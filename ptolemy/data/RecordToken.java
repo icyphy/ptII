@@ -79,15 +79,15 @@ public class RecordToken extends AbstractNotConvertibleToken {
     public RecordToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-	RecordToken token = (RecordToken)tree.evaluateParseTree();
+        RecordToken token = (RecordToken)tree.evaluateParseTree();
 
         Object[] labelObjects = token.labelSet().toArray();
         String[] labels = new String[labelObjects.length];
         Token[] values = new Token[labelObjects.length];
-	for (int i=0; i<labelObjects.length; i++) {
-	    labels[i] = (String)labelObjects[i];
-	    values[i] = token.get(labels[i]);
-	}
+        for (int i=0; i<labelObjects.length; i++) {
+            labels[i] = (String)labelObjects[i];
+            values[i] = token.get(labels[i]);
+        }
         _initialize(labels, values);
     }
 
@@ -101,10 +101,10 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *   same set of labels and the corresponding fields are equal.
      */
     public boolean equals(Object object) {
-	// This test rules out instances of a subclass.
-	if (object.getClass() != RecordToken.class) {
-	    return false;
-	}
+        // This test rules out instances of a subclass.
+        if (object.getClass() != RecordToken.class) {
+            return false;
+        }
 
         RecordToken recordToken = (RecordToken)object;
 
@@ -158,16 +158,16 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	int code = 0;
+        int code = 0;
         Set labelSet = _fields.keySet();
         Iterator iterator = labelSet.iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
             Token token = this.get(label);
-	    code += token.hashCode();
+            code += token.hashCode();
         }
 
-	return code;
+        return code;
     }
 
     /** Return the labels of this token as a Set.

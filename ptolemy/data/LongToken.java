@@ -49,13 +49,13 @@ public class LongToken extends ScalarToken {
     /** Construct a token with long integer 0.
      */
     public LongToken() {
-	_value = 0;
+        _value = 0;
     }
 
     /** Construct a token with the specified value.
      */
     public LongToken(long value) {
-	_value = value;
+        _value = value;
     }
 
     /** Construct a token from the given String.
@@ -64,10 +64,10 @@ public class LongToken extends ScalarToken {
      */
     public LongToken(String init) throws IllegalActionException {
         try {
-	    _value = (Long.valueOf(init)).longValue();
-	} catch (NumberFormatException e) {
-	    throw new IllegalActionException(e.getMessage());
-	}
+            _value = (Long.valueOf(init)).longValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,25 +87,25 @@ public class LongToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static LongToken convert(Token token)
-	    throws IllegalActionException {
-	if (token instanceof LongToken) {
-	    return (LongToken)token;
-	}
+            throws IllegalActionException {
+        if (token instanceof LongToken) {
+            return (LongToken)token;
+        }
 
-	int compare = TypeLattice.compare(BaseType.LONG, token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException(
+        int compare = TypeLattice.compare(BaseType.LONG, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "long"));
-	}
+        }
 
-	compare = TypeLattice.compare(BaseType.INT, token);
-	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    IntToken inttoken = IntToken.convert(token);
-	    return new LongToken(inttoken.longValue());
-	}
+        compare = TypeLattice.compare(BaseType.INT, token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            IntToken inttoken = IntToken.convert(token);
+            return new LongToken(inttoken.longValue());
+        }
 
-	throw new IllegalActionException(
+        throw new IllegalActionException(
                 notSupportedConversionMessage(token, "long"));
     }
 
@@ -116,22 +116,22 @@ public class LongToken extends ScalarToken {
      *  same value.
      */
     public boolean equals(Object object) {
-	// This test rules out subclasses.
-	if (object.getClass() != LongToken.class) {
-	    return false;
-	}
+        // This test rules out subclasses.
+        if (object.getClass() != LongToken.class) {
+            return false;
+        }
 
-	if (((LongToken)object).longValue() == _value) {
-	    return true;
-	}
-	return false;
+        if (((LongToken)object).longValue() == _value) {
+            return true;
+        }
+        return false;
     }
 
     /** Return the type of this token.
      *  @return BaseType.LONG_MATRIX
      */
     public Type getType() {
-	return BaseType.LONG;
+        return BaseType.LONG;
     }
 
     /** Return a hash code value for this token. This method returns the
@@ -139,13 +139,13 @@ public class LongToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	return (int)_value;
+        return (int)_value;
     }
 
     /** Return the value in the token as a long.
      */
     public long longValue() {
-	return (long)_value;
+        return (long)_value;
     }
 
     /** Returns a new LongToken with value 1.
