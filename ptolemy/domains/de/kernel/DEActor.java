@@ -71,7 +71,7 @@ public class DEActor extends TypedAtomicActor {
      */
     public double getCurrentTime() throws IllegalActionException {
         DEDirector dir = (DEDirector) getDirector();
-        if (dir==null) {
+        if (dir == null) {
             throw new IllegalActionException("No director available");
         }
         return dir.getCurrentTime();
@@ -83,7 +83,7 @@ public class DEActor extends TypedAtomicActor {
      */
     public double getStartTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
-	if (dir==null) {
+	if (dir == null) {
 	    throw new IllegalActionException("No director available");
 	}
 	return dir.getStartTime();
@@ -95,7 +95,7 @@ public class DEActor extends TypedAtomicActor {
      */
     public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
-	if (dir==null) {
+	if (dir == null) {
 	    throw new IllegalActionException("No director available");
 	}
 	return dir.getStopTime();
