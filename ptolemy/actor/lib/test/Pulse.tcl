@@ -90,7 +90,8 @@ test Pulse-2.3 {test with two-dimensional output values} {
         $valuesParam setToken [java::new ptolemy.data.DoubleMatrixToken $values]
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Cannot set values parameter to a non-row vector.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Cannot set values parameter to a non-row vector.}}
 
 ######################################################################
 #### Test error conditions
@@ -102,7 +103,8 @@ test Pulse-3.1 {test indexes that are out of order} {
         $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Value of indexes must be an array of nonnegative integers increasing in value.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Value of indexes must be an array of nonnegative integers increasing in value.}}
 
 test Pulse-3.2 {test negative indexes} {
     set indexes [java::new {int[][]} {1 3} [list [list -1 0 1]]]
@@ -111,7 +113,8 @@ test Pulse-3.2 {test negative indexes} {
         $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Value of indexes must be an array of nonnegative integers increasing in value.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Value of indexes must be an array of nonnegative integers increasing in value.}}
 
 test Pulse-3.3 {test values and indexes of different dimensions} {
     set indexes [java::new {int[][]} {1 3} [list [list 1 2 3]]]
@@ -124,5 +127,6 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
         [$e0 getManager] execute
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Parameters values and indexes have different lengths.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
+Parameters values and indexes have different lengths.}}
 

@@ -72,7 +72,8 @@ test Expression-2.1 {run with default empty expression} {
     set m [$e0 getManager]
     catch {$m execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.expr: Expression yields a null result: null}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.expr:
+Expression yields a null result: null}}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
