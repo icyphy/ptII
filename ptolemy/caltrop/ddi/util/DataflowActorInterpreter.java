@@ -343,7 +343,7 @@ public class DataflowActorInterpreter {
     }
 
     /**
-     * Return the number of initialziers in this actor.
+     * Return the number of initializers in this actor.
      * @return Number of initializers.
      */
 
