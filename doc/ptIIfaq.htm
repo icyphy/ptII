@@ -6,46 +6,50 @@
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+ <!--  Note that if you include hyperlink, be sure to 
+       include URL in the text so that we can have a text only version.
+ -->
 <h1>Ptolemy II Frequently Asked Questions</h1>
 <menu>
 
-<li> <a href="#General Questions"><B>1. General</B></a>
+<li> <a href="#General Questions"><b>1. General</b></a>
 	<menu>
-	<li> <a href="#ptolemy II description"><B>1.1 What is Ptolemy II?</B></a>
-	<li> <a href="#ptolemy classic"><B>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</B></a>
+	<li> <a href="#ptolemy II description"><b>1.1 What is Ptolemy II?</b></a>
+	<li> <a href="#ptolemy classic"><b>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
 
 
-	<LI> <A HREF="#ptolemy II copyright"><B>1.3 What is the copyright?</B></A>
-	<LI> <A HREF="#mailing list"><B>1.4 Is there a mailing list?</B></A>
+	<li> <a href="#ptolemy II copyright"><b>1.3 What is the copyright?</b></a>
+	<li> <a href="#mailing list"><b>1.4 Is there a mailing list?</b></a>
 	</menu>
 
-<LI> <A HREF="#ptolemy II faq: installation"><B>2. Installation questions</B></A>
-	<MENU>
-	<LI> <A HREF="#downloading Ptolemy II"><B>2.1 How do I download
-	Ptolemy II?</B></A>
+<li> <a href="#ptolemy II faq: installation"><b>2. Installation questions</b></a>
+	<menu>
+	<li> <a href="#downloading Ptolemy II"><b>2.1 How do I download
+	Ptolemy II?</b></a>
 
-	<LI> <A HREF="#platforms that Ptolemy II runs under"><B>2.2 What
-	platforms does Ptolemy II run under?</B></A>
+	<li> <a href="#platforms that Ptolemy II runs under"><b>2.2 What
+	platforms does Ptolemy II run under?</b></a>
 
-	<LI> <A HREF="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
-	<MENU>
+	<li> <a href="#ptolemy II installation, what do I need"><b>2.3 What do I need to Install Ptolemy II?</b></a>
+	<li> <a href="#ptolemy II installation, how do I invoke Ptolemy II?"><b>2.4 How do I invoke Ptolemy II?</b></a>
+	</menu> 
+<li> <a href="#ptolemy II faq: extending"><b>3. Extending Ptolemy II</b></a>
+	<menu>
+	<li> <a href="#Adding actors"><b>3.1 How do I add an actor?</b></a>
 
-<LI> <A HREF="#ptolemy II faq: extending"><B>3. Extending Ptolemy II</B></A>
-	<MENU>
-	<LI> <A HREF="#Adding actors"><B>3.1 How do I add an actor?</B></A>
+	<li> <a href="#Interfacing to C/C++"><b>3.1 How do I interface to C/C++</b></a>
 
-	<LI> <A HREF="#Interfacing to C/C++"><B>3.1 How do I interface to C/C++</B></A>
-
-	<LI> <A HREF="#Customizing the GUI"><B>3.3 How do I customize the GUI?</B></A>
-	<MENU>
+	<li> <a href="#Customizing the GUI"><b>3.3 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>3.4 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>3.5 Is there a scripting interface to Ptolemy II ?</b></a>
+	</menu>
 
 </menu>
 
-<h2><a name="General Questions"><B>1. General</B></a></h2>
-
+<h2><a name="General Questions"><b>1. General</b></a></h2>
 <dl>
 
-<dt> <a name="#ptolemy II description"><B>1.1 What is Ptolemy II?</B></a>
+<dt> <a name="ptolemy II description"><b>1.1 What is Ptolemy II?</b></a>
 <dd> 
 <p>
 Ptolemy II is a software framework developed as part of the Ptolemy project.
@@ -62,27 +66,38 @@ interactions between components. A major problem area being addressed is
 the use of heterogeneous mixtures of models of computation.
 </p>
 <p>
-The <a href="http://ptolemy.eecs.berkeley.edu/index.html" target="_top">Ptolemy Project web page</a>
+ <!-- For clarity, we do not always display the URL here   -->
+
+The Ptolemy Project 
+(<a href="http://ptolemy.eecs.berkeley.edu/index.html" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu</CODE></a>)
+
 contains much more information about the
 project. The work is conducted in the
+
+
 <a href="http://www.eecs.berkeley.edu/" target="_top">Department of Electrical Engineering and Computer Sciences</a>
 of the
 <a href="http://www.berkeley.edu/" target="_top">University of California at Berkeley</a>.
 The project is directed by
-<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html" target="_top">Prof. Edward Lee</a>.
+Prof. Edward A. Lee 
+(<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/~eal</CODE></a>)
+
 The project is named after
 <a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm" target="_top">Claudius Ptolemaeus</a>,
 the second century Greek astronomer, mathematician, and geographer.
 </p>
-</dl>
 
 
 
-<dt> <a name="#ptolemy classic"><B>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</B></a>
+<dt> <a name="ptolemy classic"><b>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
 <dd>
-Ptolemy II and Ptolemy 0.x are two very different software systems.
+ <p>
+This FAQ covers Ptolemy II.
+The Ptolemy Classic FAQ can be found at  
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq</CODE></a>
+</p>
 
-Ptolemy 0.x is fairly mature software in that the design is stable and
+ <p>Ptolemy 0.x is fairly mature software in that the design is stable and
 mostly unchanging. The Ptolemy II software system is under active development.
 
 <menu>
@@ -101,14 +116,13 @@ using SDF semantics.
 <br> Ptolemy II can generate code for non-hierarchical SDF models
 and for hierarchical Giotto models.
 
-
 </menu>
 
-<DT> <A NAME="ptolemy II copyright"><B>1.3 What is the copyright?</B></A>
+<dt> <a name="ptolemy II copyright"><b>1.3 What is the copyright?</b></a>
 <DD> Ptolemy II is released under the fairly liberal UC Berkeley copyright,
 
 see 
-<a href="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm"><code>http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm</code></a>
 
 Most files have the copyright at the top.
 
@@ -120,9 +134,9 @@ copyright notice.
 Prof. Ousterhout was developing Tcl here at UC Berkeley.  This
 copyright was also used in Ptolemy Classic, which has been used in
 commercial products, see
-<a href="http://ptolemy.eecs.berkeley.edu/archive/links.htm"><CODE>http://ptolemy.eecs.berkeley.edu/archive/links.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/archive/links.htm"><code>http://ptolemy.eecs.berkeley.edu/archive/links.htm</code></a>
 
-<DT> <A NAME="mailing list"><B>1.4 Is there a mailing list?</B></A>
+<dt> <a name="mailing list"><b>1.4 Is there a mailing list?</b></a>
 <DD> 
 The Ptolemy mailing lists are run by the Majordomo mailing list 
 server.  This server can automatically subscribe you to mailing
@@ -140,11 +154,11 @@ light (a few messages a year).
  <p>To subscribe to the ptolemy-interest mailing list, send mail to:
 ptolemy-interest-request@ptolemy.eecs.berkeley.edu with the word
 "subscribe" in the body (not the subject) of the letter.
-
+ </p>
  <p>All mail to ptolemy-interest also goes to ptolemy-hackers, so if you
 subscribe to ptolemy-hackers, there is no need to subscribe to
 ptolemy-interest too.
-
+ </p>
 
 <dt>  Ptolemy Hackers Mailing list
 <dd> This is a discussion list for Ptolemy questions, bug reports, and to
@@ -157,6 +171,7 @@ newsgroup.
 ptolemy-hackers-request@ptolemy.eecs.berkeley.edu with the word 
 "subscribe" in the body of the letter.  To leave the newsgroup put
 the word "unsubscribe" in the body of your message.
+ </p>
 </dl>
 
 The best way to get questions answered is to subscribe to ptolemy-hackers
@@ -165,37 +180,121 @@ and then send email to that list.
  <p>Ptolemy is distributed without support or warranty.  However, if you
 really need to contact a human being with a Ptolemy question, you can
 send email to: ptolemy@eecs.berkeley.edu.
+</dl>
 
-<H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
+<h2><a name="ptplot faq: installation"><b>2. Installation questions</b></a></h2>
 <dl>
-<dt> <A NAME="downloading Ptolemy II"><B>2.1 How do I download	Ptolemy II?</B></A>
+<dt> <a name="downloading Ptolemy II"><b>2.1 How do I download	Ptolemy II?</b></a>
 <dd> Ptolemy II is available in several formats including applets, source code, a Windows installer and Web Start. 
 For details, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</CODE></a>
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE></CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
 
-<dt> <A NAME="#platforms that Ptolemy II runs under"><B>2.2 What platforms does Ptolemy II run under?</B></A>
+<dt> <a name="platforms that Ptolemy II runs under"><b>2.2 What platforms does Ptolemy II run under?</b></a>
 <dd> Ptolemy II is written in Java, so it should run on any platform
 that supports a recent Java Virtual machine.  Locally, we use
 Windows XP and Windows 2000 with the Cygwin toolkit for development.
 The nightly builds run under Solaris 8.  Some people in the group use Linux.
 
-<dl>
-<dt> <A NAME="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
+<dt> <a name="ptolemy II installation, what do I need"><b>2.3 What do I need to Install Ptolemy II?</b></a>
 <dd> At the minimum, you need the Java Runtime Environment.
 For details, see the installation pages at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</CODE></a>
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE></CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
+
+<dt> <a name="ptolemy II installation, how do I invoke Ptolemy II?"><b>2.4 How do I invoke Ptolemy II?</b></a>
+<dd> 
+If you install Ptolemy II using the Windows installer, then
+menu choices should be added to <CODE>Start</CODE> -&gt; 
+<CODE>Programs</CODE> -&gt; <CODE>Ptolemy</CODE>.
+
+ <p>
+Ptolemy II models can be run from the command line, this is what we do
+for the nightly test suite.
+  <dl>
+
+  <dt> <CODE>$PTII/bin/vergil foo.xml</CODE>
+  <dd> will bring up a visual editor for the model defined in foo.xml.
+  The visual editor allows you to change the model and run it.
+
+  <dt> <CODE>$PTII/bin/ptolemy foo.xml</CODE>
+  <dd> will bring up a run control panel for that model and allow you to run
+  it
+
+  <dt> <CODE>$PTII/bin/ptexecute foo.xml</CODE>
+  <dd> will run the model.  The model need not be graphical.
+  </dl>
+
 </dl>
 
-<H2><A NAME="ptolemy II faq: extending"><B>3. Extending Ptolemy II</B></A></H2>
+<h2><a name="ptolemy II faq: extending"><b>3. Extending Ptolemy II</b></a></h2>
 <dl>
-<dt> <A NAME="Adding actors"><B>3.1 How do I add an actor?</B></A>
+<dt> <a name="Adding actors"><b>3.1 How do I add an actor?</b></a>
+<dd> See the <code>Add Actor</code> link in
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 
-	<LI> <A HREF="#Interfacing to C/C++"><B>3.1 How do I interface to C/C++</B></A>
+<dt> <a name="Interfacing to C/C++"><b>3.1 How do I interface to C/C++</b></a>
+<dd>
+Ptolemy II is written in Java, and Java has the Java Native Interface
+(JNI), see
+<a href="http://java.sun.com/j2se/1.4/docs/guide/jni/index.html" target="_top">Sun's JDK1.4 JNI Enhancements page at <CODE>http://java.sun.com/j2se/1.4/docs/guide/jni/index.html</CODE></a>.
 
-	<LI> <A HREF="#Customizing the GUI"><B>3.3 How do I customize the GUI?</B></A>
-	<MENU>
+ <p>Zoltan Kemenczy and others at Research In Motion, Ltd. developed an
+interface to Matlab that uses JNI, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm</code></a>
+
+ <p>Using JNI to interface to a C/C++ package on one platform is
+fairly straightforward, but it can be difficult to configure the paths
+that JNI in truly platform independent manner so that the same
+code will work on multiple platforms.  For example, the Ptolemy II/Matlab interface currently works only under Windows.
+
+
+
+<dt> <a name="Customizing the GUI"><b>3.3 How do I customize the GUI?</b></a>
+<dd> 
+Ptolemy II uses Diva to display block diagram editors.
+ <br>Information about Diva can be found at
+<a href="http://www.gigascale.org/diva" target="_top"><code>http://www.gigascale.org/diva</code></a>
+Ptolemy II uses the notion of Tableaus to manage state for tools.
+The Ptolemy II design document has a chapter that discusses the UI
+API.
+
+ <p>The code that brings up the JVM Properties window is a simple example,
+the code is at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/actor/gui/JVMTableau.java"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/actor/gui/JVMTableau.java</code></a>
+ <p>
+
+ <!-- We can't reliably display .xml in a browser -->
+<CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE>
+adds this feature with this line:
+<pre>
+       &lt;property name="JVM Properties" 
+                  class="ptolemy.actor.gui.JVMTableau$Factory"/&gt;
+</pre>
+
+
+<dt> <a name="MoML"><b>3.4 What file format are the models stored in?</b></a>
+<dd> Ptolemy II stores models in an XML format called MoML.
+The design doc covers MoML in detail.
+ <p>The beauty of using a human readable (though verbose) file
+format is that we can use standard tools like XSLT and sed to 
+transform models.
+	
+<dt> <a name="Scripting"><b>3.5 Is there a scripting interface to Ptolemy II ?</b></a>
+
+<dd> The Ptolemy II test suite uses Jacl, a Java implementation of Tcl
+as a scripting language.  With Jacl, we can build and run models
+using an interpreted scripting environment without compilation
+and avoiding the usual edit/compile/run loop.
+
+ <br>For details, see the Testing link in 
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
+	
+
+
+
+
+</dl>
 
 </menu>
 
