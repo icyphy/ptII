@@ -211,6 +211,7 @@ public class Plot extends PlotBox {
     public synchronized void addPointWithErrorBars(int dataset,
             double x, double y, double yLowEB, double yHighEB,
             boolean connected) {
+        if (dataset >= _numsets || dataset < 0 || _datasetoverflow) return;
         if (_xlog) {
             if (x <= 0.0) {
                 System.err.println("Can't plot non-positive X values "+
@@ -279,8 +280,7 @@ public class Plot extends PlotBox {
     public synchronized void init() {
         if (_debug > 8) System.out.println("Plot: init");
 
-        setNumSets(_numsets);
-        _currentdataset = -1;
+        setNumSets(_MAX_DATASETS);
 
         super.init();
         if (_dataurls != null ) {
@@ -739,7 +739,9 @@ public class Plot extends PlotBox {
                     "_MAX_DATASETS and recompile");
         }
 
-        this._numsets = numsets;
+        _currentdataset = -1;
+        _datasetoverflow = false;
+        _numsets = numsets;
         _points = new Vector[numsets];
         _prevx = new long[numsets];
         _prevy = new long[numsets];
@@ -1210,6 +1212,7 @@ public class Plot extends PlotBox {
                             StringBuffer datasetname = new StringBuffer();
                             _firstinset = true;
                             _sawfirstdataset = true;
+                            // FIXME: we allow more than _numsets datasets here
                             _currentdataset++;
                             if (_currentdataset >= _MAX_MARKS)
                                 _currentdataset = 0;
@@ -1268,8 +1271,16 @@ public class Plot extends PlotBox {
                 // new data set
                 _firstinset = true;
                 _sawfirstdataset = true;
-                _currentdataset++;
-                if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
+                if (!_datasetoverflow)
+                    _currentdataset++;
+                // If we provide more data than _numsets, ignore it.
+                if (_currentdataset >= _numsets || _datasetoverflow) {
+                    // We need _datasetoverflow to stop from reading more
+                    // datasets.  If we don't have it then we skip reading
+                    // only one dataset, and then start reading again.
+                    _datasetoverflow = true;
+                    _currentdataset = -1;
+                }
                 String legend = (line.substring(8)).trim();
                 addLegend(_currentdataset, legend);
                 return true;
@@ -1385,8 +1396,11 @@ public class Plot extends PlotBox {
     //////////////////////////////////////////////////////////////////////////
     ////                       protected variables                        ////
     
-    // The current dataset
+    // The current dataset.
     protected int _currentdataset = -1;
+    
+    // True if we tried to read in more datasets than the value of _numsets.
+    protected boolean _datasetoverflow = false;
     
     // A vector of datasets.
     protected Vector[] _points;
@@ -1403,11 +1417,12 @@ public class Plot extends PlotBox {
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
+        if (_datasetoverflow) return false;
         if (! _sawfirstdataset  || _currentdataset < 0) {
             // We did not set a DataSet line, but
             // we did get called with -<digit> args
             _sawfirstdataset = true;
-            ++_currentdataset;
+            _currentdataset++;
         }
         if (_debug > 14) {
             System.out.println("Plot _addLegendIfNecessary( "+connected+" ) "+
@@ -1443,7 +1458,7 @@ public class Plot extends PlotBox {
             System.out.println("Plot: addPoint " + dataset + " "+
                     x+" "+y+" "+connected+" "+yLowEB+" "+yHighEB+" "+errorBar);
         }
-        if (dataset >= _numsets || dataset < 0) return;
+        if (dataset >= _numsets || dataset < 0 || _datasetoverflow) return;
         
         // For auto-ranging, keep track of min and max.
         if (x < _xBottom) _xBottom = x;
