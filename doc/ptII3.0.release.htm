@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.2 Release Notes</title>
+<title>Ptolemy II 3.0 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 2.2 Release Notes</h1>
+<h1>Ptolemy II 3.0 Release Notes</h1>
 
 Ptolemy II is a set of Java packages supporting heterogeneous,
 concurrent modeling and design.  Its <code>kernel</code> package
@@ -48,6 +48,8 @@ how to use Vergil.
 to the newsgroups etc.  See also main.htm
  -->
 <ul>
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">CI</a>:
+	 component interaction (experimental),
 <li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
 	 communicating sequential processes,
 <li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
@@ -78,135 +80,62 @@ to the newsgroups etc.  See also main.htm
 
 <h2>Platforms</h2>
 
-The core of Ptolemy II 2.2 is 100% Java, so it should work on any
-platform that has JDK1.3
+The core of Ptolemy II 3.0 is 100% Java, so it should work on any
+platform that has JDK1.4 or later
 
- <p>We developed Ptolemy II 2.2 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
+ <p>We developed Ptolemy II 3.0 under Solaris 8 and Windows XP sp1 
+and with JDK1.4.1_02. 
 
-Ptolemy II 2.2 will not compile under JDK1.2.2.
-
-<p>The code generation facility requires JDK1.3.0, it will not
-work under JDK 1.4.0
+Ptolemy II 3.0 will not compile under Java 1.3 because we use the
+java.lang.URI class, which is present only in Java 1.4 and later
 
 <!--whatsnew-->
-<h2>Major Features that are new in Ptolemy 2.2 </h2>
+<h2>Major Features that are new in Ptolemy 3.0 </h2>
 <menu>
-
-<li> <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.htm">Modal Models</a>
- (Xiaojun Liu, Edward A. Lee)
-<br>A model model is one whose behavior depends on its "mode"
-of operation. A modal model in Ptolemy II is an FSM (finite state machine)
-combined hierarchically with other models. A state in the FSM represents
-a mode of operation, and can have a refinement that gives the behavior
-in that model.
-The refinement can be another FSM or some other model using some other
-Ptolemy domain. This example combines DE, FSM, and SDF to model a
-system where regularly sampled signals are perturbed by irregular
-events in time.
+<li> Expression language rework
+ (Steve Neuendorffer, Edward A. Lee)
+<br>
 </li>
 
-<li> <a href="codegen.htm">Code Generation</a>
-(Primary Author: Stephen Neuendorffer, Contributor: Christopher Hylands)
- <br>This release includes a limited prototype of our code generation facility
-that will generate .class files for non-hierarchical SDF models
 
- <br>Note that the code generator will not work in an applet, but will
-work with Web Start, the Windows installer and the standard configure
-and build
-
-<li> <a href="codeDoc/ptolemy/data/unit/package-summary.html">ptolemy.data.unit</a> -
-<a href="../ptolemy/data/unit/demo/Units/Units.htm">Units Demo</a>
-(Primary Authors: Yuhong Xiong, Xiaojun Liu, Contributors: Winthrop Williams, Edward A. Lee)
-<br>
-A major source of errors in embedded software is incorrect application
-of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
-Ptolemy II that is quite clever. A suite of constants are defined, with
-names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
-"days". In each unit category ("length" or "time" for example), there
-is a primary unit with respect to which all the others are specified.
-Thus, for example, if the primary unit of length is meters, then the
-expression "1.0 * cm" will have an internal value of 0.01 * meters.
-Compound units are specified by just multiplying and dividing, as in
-for example "1.0 * cm/second".
-
-<p>The way this is realized is that these unit constants are tokens just
-like other Ptolemy II data, and multiplication and division are
-overloaded in the base classes for numeric valued tokens.  We continue
 to work on this architecture to enable users to customize the unit
 system on a per-model basis.
 
-<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">Timed Multitasking Domain</a>
-(Jie Liu) - an implementation of a model of
-computation based on priority-driven multitasking, as common in
-real-time operating systems (RTOSs), but with more deterministic
-behavior
-
-<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">Synchronous/Reactive Domain</a>:
-(Primary Author: Paul Whitaker, Contributors: Elaine Cheong, John Reekie)
-
-<li> <a href="webStartHelp.htm">Web Start</a>
- (Christopher Hylands) -  
-Ptolemy II includes support to build distributions using Sun's Web Start
-facility, which allows end users to download fully functional distributions
-via the web.
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">Component Interaction Domain</a>
+(Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
+both event-driven and demand-driven styles of computation.
 
 <li> Vergil updates
 (Steve Neuendorffer, Edward A. Lee, John Reekie)
  Vergil has been improved
  and the following features have been added
 	<menu>
-	<li> Annotations - It is now much easier to annotate a model with
-	text.
-	<li> Parameters - The model can display top level parameter
-	names and values
-	<li> Snap to grid - It is now much easier to line up actors
-	<li> Panner, zoom - The panner and zoom facilities make
-	it easier to navigate large
-	<li> Improved FSM editor
-	<li> Animation - It is now possible to show which actors are firing
-	when.
-	<li> Better icons - Some icons such as Const, Scale and Expression
-	will display their values.  
-	<li> Set data types of ports
-	<li> Java Virtual Machine properties window - JVM Properties
-	can be queried and garbage collection requested.
-	<li> <a href="../ptolemy/domains/ct/doc/signal_types.htm">Documentation for setting CT signal types</a>
-	</menu>
-See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/index.htm</code></a> for more complete information
-
+	<li> Undo/Redo
+	<li> Port Parameters
 </menu>
 
-<h2>Other Features that are new in Ptolemy II 2.2</h2>
+<h2>Other Features that are new in Ptolemy II 3.0</h2>
 
 <ul>
 
-
-<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto Domain rewrite</a>: 
-(Haiyang Zheng) - The Giotto scheduler was rewritten and the kernel
-was updated.
-
-<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
-(Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
-to perform multiple runs of refinement on a model.
-
-<li> <a href="coding/debugging.htm">Support for <code>jdb</code></a> 
-(Zoltan Kemenczy, Research In Motion, Ltd.) -
-The scripts that invoke Ptolemy II have been extended to support
-<code>jdb</code>, the Java Debugger.
-
 <li> Ptolemy II Matlab interface
 (Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.) -
-The Matlab Expression actor uses JNI to invoke the Matlab engine, 
-evaluate Matlab expressions and return the results to Ptolemy II.
-The Matlab Expression actor works only under Windows, and requires
-that Matlab be installed on your local machine.
+The Matlab interface has been updated to provide
+<menu>
+<li> Logical variable support for Matlab version 6.5 (R13)
+
+<li> Remove (the need for) ptmatlab.dll being in the user's path
+
+<li> Removed warnings for gcc version 3.2 (used by latest cygwins)
+
+<li> Add support/configuration for building on Linux
+</menu>
+Resources:
  <menu>
  <li> <a href="../ptolemy/matlab/matlab.htm">Ptolemy II Matlab Interface Overview</a>
  <a href="codeDoc/ptolemy/matlab/package-summary.html">Java class documentation</a>
  <li> <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab Expression Demonstration</a> -
- Windows only, requires that Matlab be installed locally, will not work within
+ Requires that Matlab be installed locally, will not work within
  an applet, but will work with Web Start
  </menu>
 
@@ -219,117 +148,51 @@ classes; performance improvements by caching search results; widened token to
 java-type conversions for function arguments and results.
 
 
-<li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
- (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
-The graph package was redesigned and reimplemented.
 
+<li> <a href="codeDoc/ptolemy/data/FunctionToken.html">ptolemy.data.FunctionToken</a> 
+(Xiaojun Liu, Steve Neuendorffer)
+Token that contains a function.
 
-<li> <a href="codeDoc/ptolemy/kernel/attributes/VersionAttribute.html">VersionAttribute</a>
-(Christopher Hylands, Edward A. Lee) -
-Models can be annotated with the Web Start format version number of
-Ptolemy II that is required to run the model.  In the future, we will
-use this attribute to manage backward compatibility.
+<li> <a href="codeDoc/ptolemy/data/ImageToken.html">ptolemy.data.ImageToken</a>
+(James Yeh) - An abstract token that contains images.  Derived tokens
+such as 
+<a href="codeDoc/ptolemy/data/AWTImageToken.html">ptolemy.data.AWTImageToken</a>,
+<a
+href="codeDoc/ptolemy/actor/lib/jai/JAIImageToken.html">ptolemy.actor.lib.jai.JAIImageToken</a>
+extend ImageToken.
 
-<li> <a href="codeDoc/ptolemy/data/UnsignedByteToken.html">ptolemy.data.UnsignedByteToken</a>
-(Winthrop Williams, Steve Neuendorffer) - A new Token supporting
-unsigned bytes.
-
- <!-- Tcl shell is not shipping in 2.2, it makes the download larger.-->
 
 </ul>
 
 <h3>New Demonstrations</h3>
 
 <menu>
-<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
-	Continuous Time
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">CI</a>:
+	Component Interaction
+
  <menu>
- <li> <a href="../ptolemy/domains/ct/demo/BouncingBall/BouncingBall.htm">Bouncing Ball</a>  (Requires Java 3D, see the <a href="../ptolemy/domains/gr/doc/main.htm">GR domain</a>)
- A Continuous Time model that uses a Finite State Machine and the GR
- domain to simulate a bouncing ball.
-
- <li> <a href="../ptolemy/domains/ct/demo/CarTracking/CarTracking.htm">Car Tracking</a>
- A following car tracking a leading car in an unreliable 
- communication environment.
-
- <li> <a href="../ptolemy/domains/ct/demo/Switch/Switch.htm">Switching Continuous Signals</a>
- Shows how to handle hybrid systems with both continuous and discrete inputs
- and outputs.
- <li> <a href="../ptolemy/domains/ct/demo/Thermostat/Thermostat.htm">Modal Thermostat</a>
- A thermostat model where the refinements of the
- modes in the state machine are the same model.
- <li> <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units</a>
- A demonstration of the Units facility
+ <li> <a href="../domains/ci/demo/Router/Router.xml">Router</a> 
  </menu>
+
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	 Discrete Event
-<menu>
-<li> <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.htm">Modal Model</a>
-This example combines DE, FSM, and SDF to model a
-system where regularly sampled signals are perturbed by irregular
-events in time.
-</menu>
-
-
-<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
-	 Finite State Machines
  <menu>
- <li> <a href="../ptolemy/domains/fsm/demo/Blending/Blending.htm">Blending</a>
- A blending controller with two major control modes.
- <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple&nbsp;Runs</a> 
- A state machine performs multiple runs of the refinement of mode1. 
+ <li> <a href="../actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0)
  </menu>
 
-<li><a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
-	Synchronous Periodic Systems
+
+<li><a href="../ptolemy/domains/giotto/doc/body.htm" target="body">FSM</a>:
+	Finite State Machine
  <menu>
- <li> <a href="../ptolemy/domains/giotto/demo/Composite/Composite.htm">Composite</a>
-A composite demo with a Giotto model embedded in a DE model.
-
- </menu>
-
-<li><a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
-	3-D graphics (experimental)
- <menu>
- <li> <a href="../ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.htm">FurutaPendulum</a>
- The Furuta pendulum has a motor controlling the angle of an arm, from
- which a free-swinging pendulum hangs. The objective is to swing the
- pendulum up and then balance it.
-
+ <li> <a href="../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;BSC</a>
+ <li> <a href="../domains/fsm/demo/StateTracker/StateTracker.xml">State&nbsp;Tracker</a>
  </menu>
 
 <li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
 	Synchronous Dataflow
  <menu>
- <li><a href="../ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.htm">LMSAdaptive</a>
- An adaptive filter
- <li><a href="../ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.htm">MaximumEntropySpectrum</a>
- A spectral estimation example
+ <li><a href="../actor/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a>
  </menu>
-
-
-<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	Synchronous/Reactive (experimental)
- <menu>
- <li><a href="../ptolemy/domains/sr/demo/TokenRing/TokenRing.htm">TokenRing</a>
- A cyclic token-ring arbiter composed of three blocks.
- </menu>
-
-<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
-	Timed Multitasking (experimental).
- <menu>
- <li><a href="../ptolemy/domains/tm/demo/Controllers/Controllers.htm" target="main">Controllers</a>
-   Two (independent) control loops whose controllers share the same CPU.
- <li><a href="../ptolemy/domains/tm/demo/FFT/FFT.htm" target="main">FFT</a>
-   This model shows the use of background process for long running tasks in 
-   the TM domain.
- <li><a href="../ptolemy/domains/tm/demo/MergedEvents/MergedEvents.htm" target="main">MergedEvents</a>
- <li><a href="../ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.htm" target="main">SimpleTasks</a>
-  This model shows two independent tasks on a
-  single CPU machine.
- </menu>
-
-
 </menu>
 
 
@@ -341,226 +204,70 @@ A composite demo with a Giotto model embedded in a DE model.
 
 <dl>
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/Accumulator.html"><code>Accumulator</code></a>
-<dd> (Edward A. Lee)
-An actor that outputs the sum of the inputs so far.
+<dt> <a href="codeDoc/ptolemy/actor/lib/BusAssembler.html"><code>BusAssembler</code></a>
+<dd> (Zoltan Kemenczy, Research in Motion Limited)
+Assemble input port channels into output bus.
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
+<dt> <a href="codeDoc/ptolemy/actor/lib/BusDisassembler.html"><code>BusDisassembler</code></a>
+<dd> (Zoltan Kemenczy, Research in Motion Limited)
+split input bus channels onto output port channels.
+
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/Rician.html"><code>Rician</code></a>
+<dd> (Rachel Zhou)
+An actor that outputs a random sequence with a Rician distribution.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/Stop.html"><code>Stop</code></a>
+<dd> (Edward A. Lee)
+An actor that stops a model executing when it receives a true token.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/ThrowException.html"><code>ThrowException</code></a>
+<dd> (Edward A. Lee)
+An actor that throws an exception when it receives a true token.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/ThrowModelError.html"><code>ThrowModelError</code></a>
+<dd> (Edward A. Lee)
+An actor that throws a model error when it receives a true token.
+
+</dl>
+
+<li>  <a href="codeDoc/ptolemy/actor/lib/conversions/package-summary.html">ptolemy.actor.lib.conversions</a>:
+
+<dl>
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/ExpressionToToken.html"><code>ExpressionToToken</code></a>
 <dd> (Steve Neuendorffer)
-A polymorphic multiplexor with boolean select.
+An actor that reads expressions and parses them into tokens.
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/conversions.html"><code>TokenToExpressions</code></a>
 <dd> (Steve Neuendorffer)
-A polymorphic multiplexor with boolean select.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanSelect.html"><code>BooleanSelect</code></a> 
-<dd> (Steve Neuendorffer)
-A polymorphic multiplexor with boolean select.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanSwitch.html"><code>BooleanSwitch</code></a> 
-<dd> (Steve Neuendorffer)
-A polymorphic multiplexor with boolean select.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/ClassWrapper.html"><code>ClassWrapper</code></a> 
-An actor that wraps (an instance of) a Java class.
-<dd> (Xiaojun Liu)
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/Counter.html"><code>Counter</code></a> 
-An up-down counter.
-<dd> (Steve Neuendorffer)
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/Differential.html"><code>Differential</code></a> 
-<dd> (Edward A. Lee)
-An actor that outputs the difference between successive inputs.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/DoubleReader.html"><code>DoubleReader</code></a> 
-<dd> (Jie Liu, Christopher Hylands)
-An actor that outputs doubles read from a URL.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/Limiter.html"><code>Limiter</code></a> 
-<dd> (Edward A. Lee)
-An actor that limits the input to a specified range.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/LinearDifferenceEquationSystem.html"><code>LinearDifferenceEquationSystem</code></a> 
-<dd> (Jie Liu, Elaine Cheong)
-Linear Difference Equation System.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/LookupTable.html"><code>LookupTable</code></a> 
-<dd> (Paul Whitaker, Christopher Hylands)
-A lookup table that outputs internally stored data given an index
-Parameter.
-
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/NonStrictTest.html"><code>NonStrictTest</code></a> 
-<dd> (Paul Whitaker, Christopher Hylands)
-Check the input streams against a parameter value, ignoring absent values.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/URLDirectoryReader.html"><code>URLDirectoryReader</code></a> 
-<dd> (Christopher Hylands)
-An actor that reads a URL naming a directory and outputs each
-element of the directory one at a time.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/VectorAssembler.html"><code>VectorAssembler</code></a> 
-<dd> (Jie Liu, Elaine Cheong)
-An actor that reads a token from each input channel to assemble a
-DoubleMatrixToken.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/VectorDisassembler.html"><code>VectorDisassembler</code></a> 
-<dd> (Jie Liu, Elaine Cheong)
-An actor that disassembles a DoubleMatrixToken to a multiport output.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/WallClockTime.html"><code>WallClockTime</code></a> 
-<dd> (Edward A. Lee)
-Output the elapsed time in seconds.
+An actor that converts tokens into expressions.
 
 </dl>
 
-<li>  <a href="codeDoc/ptolemy/actor/lib/comm/package-summary.html">ptolemy.actor.lib.comm</a>:
+<li>  <a href="codeDoc/ptolemy/actor/lib/jai/package-summary.html">ptolemy.actor.lib.jai</a>:
 
 <dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/comm/SerialComm.html"><code>SerialComm</code></a> 
-<dd> (Winthrop Williams)
-Read and write from a serial port
+<dt> Java Advanced Imaging
+<dd> (James Yeh)
+Actors that use the Java Advanced Imaginv framework
 </dl>
 
-<li> 
- <a href="codeDoc/ptolemy/actor/lib/conversions/package-summary.html">ptolemy.actor.lib.conversions</a>:
+<li>  <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">ptolemy.actor.lib.jmf</a>:
 
 <dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/BooleanToAnything.html"><code>BooleanToAnything</code></a> 
-<dd> (Edward A. Lee)
-An actor that converts a boolean token into any other data type.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/InUnitsOf.html"><code>InUnitsOf</code></a> 
-<dd> (Yuhong Xiong, Xiaojun Liu, Edward Lee)
-An actor that converts input tokens to specified units.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/IntArrayToString.html"><code>IntArrayToString</code></a> 
-<dd> (Winthrop Williams)
-An actor that converts an array of integers into a string.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/LongToDouble.html"><code>LongToDouble</code></a> 
-<dd> (Christopher Hylands)
-An actor that converts a LongToken into a DoubleToken.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/StringToIntArray.html"><code>StringToIntArray</code></a> 
-<dd> (Winthrop Williams)
-An actor that converts a string to an array of integers.
-
+<dt> Java Media Framework actors
+<dd> (James Yeh)
+Actors that use the Java Media Framework
 </dl>
 
-
-<li> <a href="codeDoc/ptolemy/actor/lib/gui/package-summary.html">ptolemy.actor.lib.gui</a>:
-
-<dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/gui/MatrixVisualizer.html"><code>MatrixVisualizer</code></a> 
-<dd> (Neil Turner, Steve Neuendorffer)
-An actor for 2-D visualization of matrices.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/gui/RealTimePlotter.html"><code>RealTimePlotter</code></a> 
-<dd> (Edward A. Lee)
-Plot input data as a function of elapsed real time.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/gui/SliderSource.html"><code>SliderSource</code></a> 
-<dd> (Xiaojun Liu)
-An actor whose output is controlled by a slider in the run window.
-
-</dl>
-
-
-<li> <a href="codeDoc/ptolemy/actor/lib/logic/package-summary.html">ptolemy.actor.lib.logic</a>:
-
-<dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/logic/IsPresent.html"><code>IsPresent</code></a> 
-<dd> (Edward A. Lee)
-Output true if the input is present, false otherwise.
-</dl>
-
-<li> <a href="codeDoc/ptolemy/actor/lib/net/package-summary.html">ptolemy.actor.lib.net</a>:
-
-<dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/net/DatagramReader.html"><code>DatagramReader</code></a> 
-<dd> (Winthrop Williams)
-An actor that asynchronously reads datagram packets.
-<dt> <a href="codeDoc/ptolemy/actor/lib/net/DatagramWriter.html"><code>DatagramWriter</code></a> 
-<dd> (Winthrop Williams)
-An actor that sends its input as a UDP datagram packet.
-</dl>
-
-<li> <a href="codeDoc/ptolemy/domains/ct/lib/package-summary.html">ptolemy.domains.ct.lib</a>:
-
-<dl>
-<dt> <a href="codeDoc/ptolemy/domains/ct/lib/EventSource.html"><code>EventSource</code></a> 
-<dd> (Jie Liu)
-Generate discrete events at prespecified time instants.
-<dt> <a href="codeDoc/ptolemy/domains/ct/lib/FirstOrderHold.html"><code>FirstOrderHold</code></a> 
-<dd> (Jie Liu)
-An actor that takes a value and a derivative and does first order projection.
-
-<dt> <a href="codeDoc/ptolemy/domains/ct/lib/LevelCrossingDetector.html"><code>LevelCrossingDetector</code></a> 
-<dd> (Jie Liu)
-A CT actor that detects level crossings of its trigger input signal.
-
-</dl>
-
-<li> <a href="codeDoc/ptolemy/domains/de/lib/package-summary.html">ptolemy.domains.de.lib</a>:
-
-<dl>
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/EventButton.html"><code>EventButton</code></a> 
-<dd> (Winthrop Williams, Paul Whitaker)
-An actor that generates an empty token in response to a click of a button.
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/EventFilter.html"><code>EventFilter</code></a> 
-<dd> (Steve Neuendorffer, Sonia Sachs)
-An actor that filters false boolean tokens.
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/Inhibit.html"><code>Inhibit</code></a>
-<dd> (Steve Neuendorffer)
-An actor that produces a copy of the most recent input each time
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/PreemptableTask.html"><code>PreemptableTask</code></a> 
-<dd> (Elaine Cheong, Yang Zhao, Xiaojun Liu)
-An actor that simulates a preemptable task.
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/Previous.html"><code>Previous</code></a> 
-<dd> (Edward A. Lee)
-An actor that outputs the previous event when it receives an event.
-
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/Queue.html"><code>Queue</code></a> 
-<dd> (Steve Neuendorffer)
-An actor that implements a queue of events.
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/QueueWithNextOut.html"><code>QueueWithNextOut</code></a> 
-<dd> (Winthrop Williams, Steve Neuendorffer)
-An actor that implements a queue of events with a nextOut port
-
-<dt> <a href="codeDoc/ptolemy/domains/de/lib/SamplerWithDefault.html"><code>SamplerWithDefault</code></a> 
-<dd> (Steve Neuendorffer, Jie Liu, Edward A. Lee)
-An actor that produces a copy of the most recent input each time
-
-</dl>
-
-<li> <a href="codeDoc/ptolemy/domains/sdf/lib/package-summary.html">ptolemy.domains.sdf.lib</a>:
-
-
-<dl>
-<dt> <a href="codeDoc/ptolemy/domains/sdf/lib/DoubleToMatrix.html"><code>DoubleToMatrix</code></a> 
-<dd> (Edward A. Lee)
-An actor that converts a sequence of input tokens to a matrix.
-
-<dt> <a href="codeDoc/ptolemy/domains/sdf/lib/MatrixToDouble.html"><code>MatrixToDouble</code></a> 
-<dd> (Edward A. Lee)
-An actor that converts a matrix to sequence of output tokens.
-
-</dl>
 
 </ul>
 
 
 <h2>Backward compatibility issues</h2>
-Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 2.2.
+Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 3.0.
 
  <p>The MoMLParser has been extended to include a list of backward
 compatibility filters that look for actors that have changed while
@@ -694,7 +401,7 @@ recompiling is safer.
 
 <!--vergilDocs-->
 <h2>Limitations</h2>
-Version 2.2 has a number of limitations.
+Version 3.0 has a number of limitations.
 
 <h3>Release Limitations</h3>
 <ul>
@@ -792,7 +499,7 @@ com.microstar.xml.XmlException: XML element "entity" triggers exception:
 Attempted to find as a moml class, but got: 
              java.security.AccessControlException: access denied
              (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
-	     in file:/C:/Program Files/Ptolemy/Ptolemy II 2.2 beta2/
+	     in file:/C:/Program Files/Ptolemy/Ptolemy II 3.0 beta2/
                    ptolemy/moml/demo/Networked/ at line 62 and column 118
 	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
 	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:944)
@@ -812,7 +519,7 @@ Attempted to find as a moml class, but got:
 	not on the local file system, so we get a SecurityException.
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.2/ptII2.2/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.2/ptII2.2/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
 	</ul>
 
 <li> Web Start issues:
