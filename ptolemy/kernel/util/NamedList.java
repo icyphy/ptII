@@ -295,7 +295,7 @@ public final class NamedList implements Cloneable, Serializable {
         } else if (priorIndex != index) {
             _namedList.remove(element);
             _namedList.add(index, element);
-            return index;
+            return priorIndex;
         } else {
             return -1;
         }
