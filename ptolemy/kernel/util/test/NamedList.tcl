@@ -77,6 +77,7 @@ test NamedList-1.1 {Get information about an instance of NamedObj} {
   properties:    class elements
     
   superclass:    java.lang.Object
+    
 }}
 
 ######################################################################
