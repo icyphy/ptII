@@ -61,6 +61,7 @@ JSRCS = \
 	CTMultiply.java \
 	CTPrintln.java \
 	CTRamp.java \
+	CTSink.java \
 	CTSquareWave.java 
 
 EXTRA_SRCS =	$(JSRCS)
