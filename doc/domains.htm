@@ -14,6 +14,8 @@
 <li> <a href="#dde">DDE (Distributed Discrete Events)</a>
 <li> <a href="#dt">DT (Discrete Time)</a>
 <li> <a href="#fsm">FSM (Finite State Machines)</a>
+<li> <a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
+<li> <a href="#gr">GR (Three-D Graphics)</a>
 <li> <a href="#pn">PN (Process Networks)</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
 <li> <a href="#sr">SR (Synchronous/Reactive)</a>
@@ -24,8 +26,8 @@
 In the CSP domain (communicating sequential processes), created by Neil
 Smyth, actors represent concurrently executing processes,
 implemented as Java threads. These processes communicate by atomic,
-instantaneous actions called rendezvous (or sometimes, synchronous
-message passing). If two processes are to communicate, and one reaches
+instantaneous actions called "rendezvous" (or sometimes, "synchronous
+message passing"). If two processes are to communicate, and one reaches
 the point first at which it is ready to communicate, then it stalls
 until the other process is ready to communicate. “Atomic” means that
 the two processes are simultaneously involved in the exchange, and that
@@ -147,18 +149,22 @@ a time stamp less than some specified value.
 <h2><a name="dt">DT</a></h2>
 <p>
 
-The discrete-time (DT) domain, which has not been written yet, will
-extend the SDF domain (described below) with a notion of time between
+The discrete-time (DT) domain, created by Chamberlain Fong,
+extends the SDF domain (described below) with a notion of time between
 tokens. Communication between actors takes the form of a sequence of
 tokens where the time between tokens is uniform. Multirate models,
 where distinct connections have distinct time intervals between tokens,
-will be supported.
+are supported.  The model of computation ensures that computations
+are always causal, meaning that output tokens that depend on input
+tokens are always produced with time values greater than or equal
+to those of the input tokens.  In order to ensure causal semantics,
+this domain automatically introduces delays in multirate models.
 
 <h2><a name="fsm">FSM</a></h2>
 <p>
 
-The finite-state machine (FSM) domain, written by Xiaojun Liu (but not
-yet released), is radically different from the other Ptolemy II
+The finite-state machine (FSM) domain, created by Xiaojun Liu,
+is radically different from the other Ptolemy II
 domains. The entities in this domain represent not actors but rather
 state, and the connections represent transitions between states.
 Execution is a strictly ordered sequence of state transitions. The FSM
@@ -183,7 +189,7 @@ get very large even in the face of only modest complexity. This makes
 the models unwieldy.
 <p>
 
-The latter problem can often be solved by using FSMs in combination
+Both problems can often be solved by using FSMs in combination
 with concurrent models of computation. This was first noted by David
 Harel, who introduced that Statecharts formalism. Statecharts combine a
 loose version of synchronous-reactive modeling (described below) with
@@ -200,12 +206,41 @@ combined with CT, they yield hybrid systems and modal models. When
 combined with SR (described below), they yield something close to
 Statecharts. When combined with process networks, they resemble SDL.
 
+<h2><a name="giotto">Giotto</a></h2>
+<p>
+The Giotto domain, created by Christoph Meyer Kirsch, is an
+experimental domain designed for synchronous periodic systems. It is a
+timed domain, where each invocation of a component occurs at a well
+defined time instant, and its results are made available at the
+beginning of its next periodic cycle. The number of times that a
+component executes per iteration is called its frequency. The frequency
+defaults to one, but can be specified to be some other value, with
+certain technical constraints (frequencies in a model must be
+harmonically related). 
+</p>
+
+<h2><a name="gr">GR</a></h2>
+<p>
+The GR domain, created by Chamberlain Fong, is an
+experimental domain designed for three dimensional graphical
+animations. It is an untimed domain with particular optimizations
+aimed at reducing recomputations of scene graph components.
+A model consists of a set of three dimensional graphical elements,
+such as spheres, cylinders, etc., composed and transformed to
+form a scene graph.  It is particularly interesting and useful
+to couple this domain with others, where the
+other domains provide the transformations for the graphical
+elements.  For example, a model of a physical system might
+be constructed in CT and animated in GR.
+</p>
+
 <h2><a name="pn">PN</a></h2>
 <p>
 
 In the process networks (PN) domain, created by Mudit Goel,
 processes communicate by sending messages through channels that can
-buffer the messages. The sender of the message need not wait for the
+buffer the messages. Each actor is implemented as a Java thread.
+An actor that is a sender of a message need not wait for the
 receiver to be ready to receive the message. This style of
 communication is often called asynchronous message passing. There are
 several variants of this technique, but the PN domain specifically
@@ -257,7 +292,9 @@ dataflow (BDF) models sometimes yield to deadlock and boundedness
 analysis, although fundamentally these questions are undecidable.
 Dynamic dataflow (DDF) uses only run-time analysis, and thus makes no
 attempt to statically answer questions about deadlock and boundedness.
-Neither a BDF nor DDF domain has yet been written in Ptolemy II.
+Neither a BDF nor DDF domain has yet been written in Ptolemy II,
+although both are available in Ptolemy Classic, and could be fairly
+easily ported.
 Process networks (PN) serves in the interrim to handle computations
 that do not match the restrictions of SDF.
 
@@ -282,6 +319,7 @@ realizations, modularity is compromised by the need to seek a global
 fixed point at each clock tick. An SR domain has not yet been
 implemented in Ptolemy II, although the methods used by Stephen Edwards
 in Ptolemy Classic can be adapted to this purpose.
-
+</p>
+<p></p>
 </body>
 </html>
