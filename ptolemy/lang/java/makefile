@@ -150,6 +150,20 @@ RegenerateCode:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
 		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
+# FIXME: we can't ship these
+JAVASRC_STUBS=/users/ptII/vendors/sun/src
+
+analysis:
+	@echo "Perform static semantic analysis"
+	@echo " (You can ignore ambiguous reference warnings)"
+	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
+
+codegen:
+	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
