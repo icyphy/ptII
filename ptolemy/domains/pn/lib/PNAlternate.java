@@ -52,7 +52,11 @@ public class PNAlternate extends PNStar {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Description
+    /** Initializes the Star. Should be called before execution
+     * @param myExecutive is the executive responsible for execution
+     * @exception NameDuplicationException is thrown if more than one port 
+     *  with the same name is added to the star
+     * @exception GraphException is thrown if a port with a null name is passed
      */	
     public void initialize(PNExecutive myExecutive)
             throws NameDuplicationException, GraphException {
@@ -62,6 +66,10 @@ public class PNAlternate extends PNStar {
         _myExecutive.registerStar(this);
     }
     
+    /** Reads one input from it's input port and writes this token to each 
+     *  of it's output ports. Needs to read one token each for every output
+     *  port. Goes through the list of ports in a circular order. 
+     */
     public void run() {
         int data;
         try {
@@ -86,6 +94,8 @@ public class PNAlternate extends PNStar {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    /* The input port */
     private PNInPort _input;
+    /* The output port */
     private PNOutPort _output;
 }
