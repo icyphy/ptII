@@ -248,11 +248,11 @@ public class RTOSEvent implements Comparable {
      *  @return The token as a string with necessary information.
      */
     public final String toString() {
-        return "RTOSEvent(token=" + _token + ", priority=" + _priority
-            + ", destination="
+        return "RTOSEvent(token = " + _token + ", priority = " + _priority
+            + ", destination = "
             + _actor
-            + ", hasStarted=" + _hasStarted
-            + ", processingTime=" + _processingTime + ")";
+            + ", hasStarted = " + _hasStarted
+            + ", processingTime = " + _processingTime + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

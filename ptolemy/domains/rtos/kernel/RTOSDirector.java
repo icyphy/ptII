@@ -396,7 +396,7 @@ public class RTOSDirector extends Director {
                         if (!_preemptive) {
                             event = (RTOSEvent)_eventQueue.take();
                             event.startProcessing();
-                                // Set it priority to o so it won't
+                                // Set it priority to 0 so it won't
                                 // be preempted.
                             event.setPriority(0);
                             _eventQueue.put(event);
@@ -663,6 +663,50 @@ public class RTOSDirector extends Director {
         }
     }
 
+    /** Send the status of the current RTOS scheduling to all debug
+     *  listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    protected final void _displaySchedule() {
+      if(_eventQueue != null) {
+	Object[] events = _eventQueue.toArray();
+//	System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
+	for (int i = events.length-1; i >= 0; i-- ) {
+	  String actorName = ((Nameable)((RTOSEvent)events[i]).actor()).getName();
+	  double time = getCurrentTime();
+	  int scheduleEvent = SchedulePlotter.TASK_BLOCKED;
+	  if (i == 0) {
+	    scheduleEvent = SchedulePlotter.TASK_RUNNING;
+	  }
+//	  System.out.println("EVENT: " + actorName + ", " +
+//                           time + ", " + scheduleEvent);
+	  _displaySchedule(actorName, time, scheduleEvent);
+	}
+      }
+    }
+
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    protected final void _displaySchedule(String actorName,
+					  double time, int scheduleEvent) {
+        synchronized(this) {
+	    if (_scheduleDisplay != null) {
+                Iterator listeners = _scheduleListeners.iterator();
+                while (listeners.hasNext()) {
+                    ((ScheduleListener)listeners.next()).
+		       event(actorName, time, scheduleEvent);
+                }
+            }
+        }
+    }
+
+
     /** Put an event into the event queue with the specified destination
      *  receiver, token, and priority.
      *  @param event The event to be enqueued.
@@ -678,6 +722,12 @@ public class RTOSDirector extends Director {
                 event.toString());
         _eventQueue.put(event);
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                    private variables                           ////
+
+    /** @serial The list of schedule listeners registered with this object. */
+    protected LinkedList _scheduleListeners = null;
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
@@ -733,56 +783,6 @@ public class RTOSDirector extends Director {
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), time);
     }
-
-    /** Send the status of the current RTOS scheduling to all debug
-     *  listeners that have registered.
-     *  By convention, messages should not include a newline at the end.
-     *  The newline will be added by the listener, if appropriate.
-     *  @param message The message.
-     */
-    protected final void _displaySchedule() {
-      if(_eventQueue != null) {
-	Object[] events = _eventQueue.toArray();
-//	System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
-	for (int i = events.length-1; i >= 0; i-- ) {
-	  String actorName = ((Nameable)((RTOSEvent)events[i]).actor()).getName();
-	  double time = getCurrentTime();
-	  int scheduleEvent = SchedulePlotter.TASK_BLOCKED;
-	  if (i == 0) {
-	    scheduleEvent = SchedulePlotter.TASK_RUNNING;
-	  }
-//	  System.out.println("EVENT: " + actorName + ", " +
-//                           time + ", " + scheduleEvent);
-	  _displaySchedule(actorName, time, scheduleEvent);
-	}
-      }
-    }
-
-
-    /** Send a debug message to all debug listeners that have registered.
-     *  By convention, messages should not include a newline at the end.
-     *  The newline will be added by the listener, if appropriate.
-     *  @param message The message.
-     */
-    protected final void _displaySchedule(String actorName,
-					  double time, int scheduleEvent) {
-        synchronized(this) {
-	    if (_scheduleDisplay != null) {
-                Iterator listeners = _scheduleListeners.iterator();
-                while (listeners.hasNext()) {
-                    ((ScheduleListener)listeners.next()).
-		       event(actorName, time, scheduleEvent);
-                }
-            }
-        }
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                    private variables                           ////
-
-    /** @serial The list of schedule listeners registered with this object. */
-        protected LinkedList _scheduleListeners = null;
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private variables                           ////
