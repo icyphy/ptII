@@ -92,46 +92,6 @@ the receiver and the priority of the receiver. Each actor contains a list
 consisting of one RcvrTimeTriple per receiver contained by the actor. As 
 tokens are placed in and taken out of the receivers of an actor, the list 
 of RcvrTimeTriples is updated.
-<P>
-***
-Synchronization Notes:
-***
-<P>
-This domain observes a hierarchy of synchronization locks. When multiple
-synchronization locks are required, they must be obtained in an order that
-is consistent with this hierarchy. Adherence to this hierarchical ordering
-ensures that deadlock can not occur due to circular lock dependencies.
-<P>
-The following synchronization hierarchy is utilized:
-<P>
-1. read/write access on the workspace <BR>
-2. synchronization on the receiver <BR>
-3. synchronization on the director <BR>
-4. synchronization on the actor <BR>
-5. (other) synchronization on the workspace <BR>
-<P>
-We say that lock #1 is at the highest level in the hierarchy and lock #5
-is at the lowest level.
-<P>
-As an example, a method that synchronizes on a receiver can not contain
-read/write access on the workspace; such accesses must occur outside of
-the receiver synchronization. Similarly, a method which synchronizes on a
-director must not synchronize on the receiver or contain read/write
-accesses on the workspace; it can contain synchronizations on actors or
-the workspace.
-<P>
-The justification of the chosen ordering of this hierarchy is based on
-the access a method has to the fields of its object versus the fields of
-other objects. The more (less) a method focuses on the internal state of
-its object and non-synchronized methods of external objects, the lower
-(higher) the method is placed in the synchronization hierarchy. In the
-case of read/write access on the workspace, the corresponding methods,
-i.e, getReadAccess() and getWriteAccess(), access the current thread
-running in the JVM. This external access deems these methods as being at
-the top of the hierarchy. All other synchronizations on the workspace only
-focus on the internal state of the workspace and hence are at the bottom
-of the synchronization hierarchy.
-<P>
 
 @author John S. Davis II
 @version @(#)ODActor.java	1.18	11/19/98
@@ -238,7 +198,8 @@ public class ODActor extends AtomicActor {
      *  have the lowest time stamp of all pending tokens for this actor. 
      *  If there exists a set of multiple receivers that share a common 
      *  minimum rcvrTime, then return the token contained by the highest 
-     *  priority receiver within this set. 
+     *  priority receiver within this set. If this actor contains no
+     *  receivers then return null.
      *  <P>
      *  The following describes the algorithm that this method implements.
      *  <P>
@@ -272,132 +233,50 @@ public class ODActor extends AtomicActor {
      * @see ODReceiver
      */
     public Token getNextToken() {
-        
-        // Increment the getNextToken counter
-        _cntr++;
-
-        Workspace workSpc = workspace();
-        ODDirector director = (ODDirector)getDirector();
-        
-        String name = getName();
-        
-        /*
-        if( name.equals("printer") ) {
-            System.out.println("\n\n\n"+name+": Entered getNextToken()");
-	    // printRcvrList();
-        }
-        */
-        
         if( _rcvrTimeList.size() == 0 ) {
-            // System.out.println("No receivers. Return from getNextToken()");
             return null;
         }
         
-        /* BEGINNING ORIGINAL STUFF
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
-        ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
-        _currentTime = triple.getTime();
-	END OF ORIGINAL STUFF */
+        Workspace workSpc = workspace();
+        ODDirector director = (ODDirector)getDirector();
+        String name = getName();
+        
+        RcvrTimeTriple bestTriple = (RcvrTimeTriple)_rcvrTimeList.first();
+        ODReceiver lowestRcvr = (ODReceiver)bestTriple.getReceiver();
+        _currentTime = bestTriple.getTime();
 
-	// BEGINNING OF NEW STUFF
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
-        ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
-        _currentTime = triple.getTime();
-
-        /*
-	if( _currentTime > 9.0 && name.equals("printer") ) {
-	    System.out.println("getNextToken() time = " + _currentTime);
-	    System.out.println("getNextToken() counter = "+_cntr);
-	}
-        */
-
-	if( triple.getTime() == -1.0 ) {
-	    // All receivers have completed. 
-	    // Prepare to terminate.
-	    // System.out.println("All receivers have completed."); 
-	    // printRcvrList();
+	if( bestTriple.getTime() == -1.0 ) {
 	    noticeOfTermination();
 	    lowestRcvr.setFinish();
 	    lowestRcvr.get();
-	    // Should never get to this point
 	    System.out.println("Didn't throw TerminateProcessException "
 			       + "in ODActor.get()");
 	}
-	// END OF NEW STUFF
 
-        
-        if( _currentTime > 2.0 && name.equals("printer") ) {
-	    // System.out.println("preparing to call get");
-	    // System.out.println("getNextToken() time = " + _currentTime);
-	    // System.out.println("getNextToken() counter = "+_cntr);
-            // printRcvrList();
-        }
-        /*
-        */
         Token token = lowestRcvr.get();
-        /*
-        if( _currentTime > 9.0 && name.equals("printer") ) {
-        // if( name.equals("printer") ) {
-            System.out.println("just finished calling get");
-	    System.out.println("getNextToken() time = " + _currentTime);
-        }
-        */
         
         if( token != null ) {
-            /*
-            if( name.equals("printer") ) {
-                System.out.println(name+" returned a token: 1st non-null");
-            }
-            */
-	    // updateRcvrList( triple );
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
-                // This means that there must be a different
-                // receiver which has the minimum arc time
-                // after the token was actually received -
-                // recall that the receiver may have been
-                // blocking and then received an arc time
-                // that was not the minimum.
-                
-                // if( name.equals("printer") ) {
-	        if( _currentTime > 9.0 && name.equals("printer") ) {
-                    System.out.println(name+" has minimum receiver time.");
-                }
-                /*
-                */
-                /*
-	        if( _currentTime > 9.0 && name.equals("printer") ) {
-		    System.out.println("getNextToken() time = "+_currentTime);
-		}
-                */
+                // This means that there must be a different receiver 
+	        // which has the minimum rcvrTime after the token was 
+	        // actually received - recall that the receiver may have 
+	        // been blocking and then received an receiver time that 
+	        // was not the minimum.
+
                 return getNextToken();
-                
             } else {
-                // This means that multiple arcs have the 
-                // the same minimum arc time. Find the arc
-                // with the lowest time and priority.
+                // This means that multiple receivers have the the same 
+	        // minimum rcvrTime. Find the receiver with the lowest 
+	        // time and priority.
                 
-                // if( name.equals("printer") ) {
-	        if( _currentTime > 9.0 && name.equals("printer") ) {
-                    System.out.println(name+" has no minimum receiver time.");
-                }
-                /*
-                */
-                
-                RcvrTimeTriple priorityTriple = getHighestPriorityTriple();
-                lowestRcvr = (ODReceiver)priorityTriple.getReceiver();
+                bestTriple = getHighestPriorityTriple();
+                lowestRcvr = (ODReceiver)bestTriple.getReceiver();
                 lowestRcvr.setSimultaneousIgnore(true);
                 token = lowestRcvr.get();
                 
                 if( token != null ) {
-                    // updateRcvrList( priorityTriple );
-                    /*
-                    if( name.equals("printer") ) {
-                        System.out.println(name+
-                                " returned a token: 2nd non-null.");
-                    }
-                    */
                     return token;
                 } else {
                     // This means that although originally there was 
@@ -406,19 +285,10 @@ public class ODActor extends AtomicActor {
                     // had the minimum time. The result is that there 
                     // is another minimum.
                     
-                    // if( name.equals("printer") ) {
-	            if( _currentTime > 9.0 && name.equals("printer") ) {
-                        System.out.println(name+ 
-                                " minimum rcvrTime must have changed.");
-                    }
-                    /*
-                    */
-                        
                     return getNextToken();
                 }
             }
         }
-        // System.out.println("Reached end of getNextToken()");
     }
 
     /** Return true if the minimum receiver time is unique to a single
@@ -429,7 +299,7 @@ public class ODActor extends AtomicActor {
      * @return True if the minimum rcvrTime is unique to a single receiver 
      *  or if there are no receivers; otherwise return false.
      */
-    public boolean hasMinRcvrTime() {
+    public synchronized boolean hasMinRcvrTime() {
         if( _rcvrTimeList.size() < 2 ) {
             return true;
         }
@@ -481,9 +351,10 @@ public class ODActor extends AtomicActor {
      *  are connected downstream of this actor's cessation. Return false
      *  to indicate that future execution can not occur.
      * @return False to indicate that future execution can not occur.
+     * @exception IllegalActionException Not thrown in this class. May be
+     *  thrown in derived classes.
      */
-    public boolean postfire() {
-        // System.out.println(getName()+" is calling postfire()");
+    public boolean postfire() throws IllegalActionException {
         noticeOfTermination();
         return false;
     }
@@ -582,7 +453,7 @@ public class ODActor extends AtomicActor {
      * @param triple The RcvrTimeTriple to be positioned in the list.
      */
     public synchronized void updateRcvrList(RcvrTimeTriple triple) {
-	_removeRcvrList( triple );
+	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
     }
     
@@ -687,7 +558,7 @@ public class ODActor extends AtomicActor {
     
     /** Remove the specified RcvrTimeTriple from the list of triples.
      */
-    private void _removeRcvrList(RcvrTimeTriple triple) {
+    private void _removeRcvrTriple(RcvrTimeTriple triple) {
 
         Receiver rcvrToBeRemoved = triple.getReceiver();
         
@@ -713,9 +584,6 @@ public class ODActor extends AtomicActor {
     // positive rcvrTime of each input receiver. This value is 
     // updated in getNextToken().
     private double _currentTime = 0.0;
-
-    private int _cntr = 0;
-
 
 }
 
