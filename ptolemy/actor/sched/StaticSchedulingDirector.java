@@ -105,7 +105,8 @@ public class StaticSchedulingDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
-     *  no topology listeners, and no scheduler.
+     *  no topology listeners, and a clone of the original scheduler, 
+     *  if one existed.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -115,7 +116,11 @@ public class StaticSchedulingDirector extends Director {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         StaticSchedulingDirector newobj = (StaticSchedulingDirector)
             super.clone(ws);
-        newobj._scheduler = null;
+	if(_scheduler != null) {
+	    newobj._scheduler = (Scheduler)_scheduler.clone(ws);
+	} else {
+	    newobj._scheduler = null;
+	}
         return newobj;
     }
 
