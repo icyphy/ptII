@@ -73,9 +73,7 @@ all: sources jclass $(JZIP)
 install: sources jclass javadocs $(JZIP) 
 docs: javadocs
 
-tests:: $(EXTRA_SRCS) test_example
-test_example:
-	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSystem
+tests:: $(EXTRA_SRCS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
