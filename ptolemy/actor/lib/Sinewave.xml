@@ -42,12 +42,6 @@
         <property name="_location" class="ptolemy.moml.Location" value="360.0, 129.0">
         </property>
     </port>
-    <port name="trigger" class="ptolemy.actor.TypedIOPort">
-        <property name="input"/>
-        <property name="multiport"/>
-        <property name="_location" class="ptolemy.moml.Location" value="27.5, 109.0">
-        </property>
-    </port>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -95,12 +89,8 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="output" relation="relation1"/>
-    <link port="trigger" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
-    <link port="Ramp.trigger" relation="relation"/>
     <link port="Sine Function.input" relation="relation2"/>
     <link port="Sine Function.output" relation="relation1"/>
 </class>
