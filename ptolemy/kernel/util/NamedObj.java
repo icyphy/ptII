@@ -71,7 +71,7 @@ public class NamedObj {
     /** 
      * @return a reference to the list of parameters.  
      */
-    public ParamList getParam(){
+    public ParamList getParams(){
         if( _paramList == null){
             _paramList = new ParamList();
         }
