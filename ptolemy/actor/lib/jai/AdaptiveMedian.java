@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    a value can be determine, or we hit the the maximum window size.  If this
    happens, then the pixel is kept.  This process is repeated for each pixel.
 
-   @author James Yeh
+   @author James Yeh, Contributor: Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 3.0
 */
@@ -156,15 +156,15 @@ public class AdaptiveMedian extends Transformer {
                             }
                         }
                         double median = _getMedian(temp, windowSize);
-                        double max = _getMax(temp, windowSize);
-                        double min = _getMin(temp, windowSize);
+                        double max = _getMaximum(temp, windowSize);
+                        double min = _getMinimum(temp, windowSize);
 
                         // If the median of the region of interest is
                         // strictly less than the maximum value, and
                         // strictly greater than the minimum value, we
                         // then have two routes.  If the data in the
                         // center is strictly greater than the
-                        // minimum, and stricly less than the maximum,
+                        // minimum, and strictly less than the maximum,
                         // then just keep the data point.  If it is
                         // either the minimum or the maximum, then
                         // output the medium because there is a very
@@ -216,51 +216,51 @@ public class AdaptiveMedian extends Transformer {
 
     /** Find the largest value in a region of interest.
      */
-    private double _getMax(double[][] input, int size) {
-        double temp = input[0][0];
+    private double _getMaximum(double[][] input, int size) {
+        double maximum = input[0][0];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (input[i][j] > temp) {
-                    temp = input[i][j];
+                if (input[i][j] > maximum) {
+                    maximum = input[i][j];
                 }
             }
         }
-        return temp;
+        return maximum;
     }
 
     /** Find the median value in a region of interest.
      */
     private double _getMedian(double[][] input, int size) {
-        double[] temp = new double[size*size];
+        double[] median = new double[size*size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                temp[i*size + j] = input[i][j];
+                median[i*size + j] = input[i][j];
             }
         }
         for (int i = 0; i < size*size; i++) {
             for (int j = 0; j < size*size - 1; j++) {
-                if (temp[j] > temp[j+1]) {
-                    double tempval = temp[j];
-                    temp[j] = temp[j+1];
-                    temp[j+1] = tempval;
+                if (median[j] > median[j+1]) {
+                    double temporaryValue = median[j];
+                    median[j] = median[j+1];
+                    median[j+1] = temporaryValue;
                 }
             }
         }
-        return temp[(size*size-1)/2];
+        return median[(size*size-1)/2];
     }
 
     /** Find the minimum value in a region of interest.
      */
-    private double _getMin(double[][] input, int size) {
-        double temp = input[0][0];
+    private double _getMinimum(double[][] input, int size) {
+        double minimum = input[0][0];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (input[i][j] < temp) {
-                    temp = input[i][j];
+                if (input[i][j] < minimum) {
+                    minimum = input[i][j];
                 }
             }
         }
-        return temp;
+        return minimum;
     }
 
     ///////////////////////////////////////////////////////////////////
