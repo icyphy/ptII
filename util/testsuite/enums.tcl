@@ -90,6 +90,15 @@ proc enumToFullNames {enum} {
 }
 
 ######################################################################
+#### enumToStrings
+# Return a list of strings obtained by invoking the toString method
+# on the objects in the argument, which is an enumeration.
+#
+proc enumToStrings {enum} {
+    return [objectsToStrings [enumToObjects $enum]]
+}
+
+######################################################################
 #### enumToTokenValues
 # Invoke enumToObjects followed by objectsToTokenValues.
 #
@@ -185,6 +194,19 @@ proc objectsToFullNames {objlist} {
         } else {
             lappend results NOT_NAMEABLE.
         }
+    }
+    return $results
+}
+
+######################################################################
+#### objectsToStrings
+# Return a list of strings obtained by invoking the toString method
+# on the objects in the argument, which is a list.
+#
+proc objectsToStrings {objlist} {
+    set results {}
+    foreach obj $objlist {
+        lappend results $obj
     }
     return $results
 }
