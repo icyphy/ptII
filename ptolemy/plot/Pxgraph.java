@@ -38,29 +38,31 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.lang.Byte;
+import java.lang.Thread;
+import java.lang.InterruptedException; 
 
 import java.net.URL;
 import java.net.MalformedURLException;
 
 /* A class thrown by Pxgraph */
-class InvalidCommandLineArgumentException extends Throwable {
+class CmdLineArgException extends Throwable {
 
-  public InvalidCommandLineArgumentException() { super(); }
-  public InvalidCommandLineArgumentException(String s) { super(s); }
+  public CmdLineArgException() { super(); }
+  public CmdLineArgException(String s) { super(s); }
  
 }
 
-class BadPlotDataException extends Throwable {
+class PlotDataException extends Throwable {
 
-  public BadPlotDataException() { super(); }
-  public BadPlotDataException(String s) { super(s); }
+  public PlotDataException() { super(); }
+  public PlotDataException(String s) { super(s); }
  
 }
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
 /** 
-Java implementation of the Unix X Windows xgraph plotter program
+ * Java implementation of the Unix X Windows xgraph plotter program.
 @author Christopher Hylands
 @version $Id$
 @see Plot
@@ -84,7 +86,7 @@ public class Pxgraph {
 
 	try {
 	    pxgraph.parseArgs(arg);
-	} catch (InvalidCommandLineArgumentException e) {
+	} catch (CmdLineArgException e) {
 	    System.err.println("Failed to parse command line arguments: "
 			       + e);
 	    System.exit(1);
@@ -104,6 +106,15 @@ public class Pxgraph {
         args[10] = new String(pxgraph.getCommandOption("-t"));
 
 	myAppletFrame = new AppletFrame("plot.Plot",args);
+	if (pxgraph.getCommandFlag("-test")) {
+	    if (debug) System.out.println("Sleeping for 2 seconds");
+	    try {
+		Thread.currentThread().sleep(2000);
+	    }
+	    catch (InterruptedException e) {
+	    }
+	    System.exit(0);
+	}
     }
 
      /** Return the value of the boolean command line flag.
@@ -162,21 +173,54 @@ public class Pxgraph {
 	String tmpfilename = new String("/tmp/pxgraph.tmp");
 	File tmpfile = new File(tmpfilename);
 
+	FileOutputStream fos = null;
+	DataInputStream dis = null;
+
         if (debug)  
 	    System.out.print("preprocess: top\n");
 	
 	try {
-	    FileOutputStream fos = new FileOutputStream(tmpfile);
+	    fos = new FileOutputStream(tmpfile);
 	    addHeader(fos);
-	    if (getCommandFlag("-binary")) {
-		convertBinaryFile(fos);
+
+	    if (dataurl.length() == 0) {
+		// Open up stdin
+		dis = new DataInputStream(System.in);
 	    } else {
-		copyDataURLFile(fos);
+		// Try opening as URL, if that fails, open as a file.
+		try {
+		    URL url;
+		    url = new URL(dataurl);
+		    dis = new DataInputStream(url.openStream());
+		} catch (MalformedURLException e) {
+		    try {
+			dis = new DataInputStream(new FileInputStream(dataurl));
+		    } catch (FileNotFoundException me) {
+			System.out.println("FileNotFoundException:" + me);
+			return;
+		    } catch (SecurityException me) {
+			System.out.println("SecurityException:" + me);
+			return;
+		    }
+		} catch (IOException ioe) {
+		    System.out.println("IOException: " + ioe);
+		    return;
+		}
 	    }
-	    fos.close();
+
+	    if (getCommandFlag("-binary")) {
+		convertBinaryFile(dis,fos);
+	    } else {
+		copyDataURLFile(dis,fos);
+	    }
+
+	    if (dis != null) dis.close();
+	    if (fos != null) fos.close();
+
 	} catch (IOException e) {
-	    System.err.println("preprocess: " + e);
+	    System.err.println("preprocessor IOException: " + e);
 	}
+
 	dataurl=tmpfilename;
     }
 
@@ -196,23 +240,27 @@ public class Pxgraph {
 		if (commandFlags[i][2].equals("true")) {
 		    String plotDirective = new String(commandFlags[i][3]);
 		    if (debug)
-			System.out.print("addHeader: " + plotDirective + "\n");
-		    fos.write(plotDirective.getBytes());
+			System.out.println("addHeader: " + plotDirective);
+		    if (plotDirective.equals("NotSupported")) {
+			System.err.println("pxgraph: Warning " +
+					   commandFlags[i][0] + 
+					   " is not yet supported");
+		    } else {
+			fos.write(plotDirective.getBytes());
+		    }
 		}
 	    }
 	} catch (FileNotFoundException e) {
-	    System.err.println("FileStreamsTest: " + e);
+	    System.err.println("addHeader: " + e);
 	} catch (IOException e) {
-	    System.err.println("FileStreamsTest: " + e);
+	    System.err.println("addHeader: " + e);
 	}
     }
 
     /* Convert a binary pxgraph file to a ascii file
      */	
-    private void convertBinaryFile(FileOutputStream fos){ 
+    private void convertBinaryFile(DataInputStream dis, FileOutputStream fos){ 
 	try {
-	    URL data = new URL(dataurl);
-	    DataInputStream dis = new DataInputStream(data.openStream());
 	    int c;
 	    boolean printedDataSet = false;
 	    try {
@@ -264,7 +312,7 @@ public class Pxgraph {
 		    case 'm':
 			break;
 		    default:
-			throw new BadPlotDataException("Don't understand `"
+			throw new PlotDataException("Don't understand `"
                                               + c + 
 					      "'character in binary data");
 		    }
@@ -273,35 +321,29 @@ public class Pxgraph {
 		}
 	    } catch (EOFException me) {
 		dis.close();
-	    } catch (BadPlotDataException me) {
+	    } catch (PlotDataException me) {
 		dis.close();
-		System.out.println("BadPlotDataException: " + me);
+		System.out.println("PlotDataException: " + me);
 	    }
-	} catch (MalformedURLException me) {
-	    System.out.println("MalformedURLException: " + me);
 	} catch (IOException ioe) {
 	    System.out.println("IOException: " + ioe);
 	}
-	
     }
 
     /* Copy the dataurl file to the already open temporary file
      */	
-    private void copyDataURLFile(FileOutputStream fos){ 
-	try {
-	    URL data = new URL(dataurl);
-	    DataInputStream dis = new DataInputStream(data.openStream());
-	    String inputLine;
-	    while ((inputLine = dis.readLine()) != null) {
-		fos.write(inputLine.getBytes());
-		fos.write('\n');
-	    }
-	    dis.close();
-	} catch (MalformedURLException me) {
-	    System.out.println("MalformedURLException: " + me);
-	} catch (IOException ioe) {
-	    System.out.println("IOException: " + ioe);
-	}
+    private void copyDataURLFile(DataInputStream dis, FileOutputStream fos){ 
+        try {
+            String inputLine;
+            while ((inputLine = dis.readLine()) != null) {
+                fos.write(inputLine.getBytes());
+                fos.write('\n');
+            }
+            dis.close();
+        } catch (IOException ioe) {
+            System.out.println("IOException: " + ioe);
+            return;
+        }
     }
 
 
@@ -309,30 +351,48 @@ public class Pxgraph {
      */	
     private void dumpArgs () {
         int j;
+	boolean printeddatasetheader = false;
+	System.out.println("Command options that take values:"); 
         for(j=0;j<commandOptions.length;j++) {
-            System.out.print(commandOptions[j][0] + " "
+            System.out.println("  " + commandOptions[j][0] + " "
                 + commandOptions[j][1] + " " 
                 + commandOptions[j][2] + " "
-                + commandOptions[j][3] + "\n");
+                + commandOptions[j][3]);
         }
 
+	System.out.println("Boolean command flags:");
         for(j=0;j<commandFlags.length;j++) {
-            System.out.print(commandFlags[j][0] + " "
+            System.out.println("  " + commandFlags[j][0] + " "
                 + commandFlags[j][1] + " " 
-            	+ commandFlags[j][2] + "\n");
+            	+ commandFlags[j][2]);
         }
-        System.out.print("dataurl = " + dataurl + "\n");
-        System.out.print("width = " + width + "\n");
-        System.out.print("height = " + height + "\n");
+	
+	System.out.println("Values of various parameters:");
+        System.out.println("dataurl = " + dataurl);
+        System.out.println("width = " + width);
+        System.out.println("height = " + height);
         for(j=0;j<datasets.length;j++) {
-	    if (datasets[j] != null)
-		System.out.print("dataset " + j + " = " + datasets[j]);
+	    if (datasets[j] != null) {
+		if (!printeddatasetheader) {
+		    printeddatasetheader = true;
+		    System.out.println("Dataset titles passed in as args");
+		}
+		System.out.println(" dataset " + j + " = " + datasets[j]);
+	    }
 	}
     }
 
 
+    /* help - print out help
+     */	
+    private void help () {
+	System.out.println("Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]");
+	dumpArgs();
+	System.exit(1);
+    }
+
     private void parseArgs(String[] args) 
-	throws InvalidCommandLineArgumentException{
+	throws CmdLineArgException{
         int i = 0, j;
         String arg;
         boolean parsedFlag;
@@ -362,7 +422,7 @@ public class Pxgraph {
                 width = arg.substring(1,arg.indexOf('x'));
                 if (arg.indexOf('+') != -1) {
                     height = arg.substring(arg.indexOf('x')+1,
-                        arg.indexOf('+')-1);
+                        arg.indexOf('+'));
                 } else {
                     if (arg.length() > arg.indexOf('x')) {
                         height = arg.substring(arg.indexOf('x')+1,
@@ -391,13 +451,16 @@ public class Pxgraph {
 	    if (!parsedFlag) {
 	    // If we got to here, then we failed to parse the arg 
 		throw new 
-		    InvalidCommandLineArgumentException("Failed to parse `" 
+		    CmdLineArgException("Failed to parse `" 
                           + arg + "'");
 	    }
 	}
         if (i < args.length) {
             dataurl=args[i];
         }
+
+	if (getCommandFlag("-help")) help();
+	if (getCommandFlag("-db")) debug=true;
         if (debug) dumpArgs();
         
     }
@@ -405,34 +468,45 @@ public class Pxgraph {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    // For debugging, set debug to true and recompile
-    private boolean debug = true;
+    // For debugging, set debug to true and recompile.
+    private static boolean debug = false;
 
     // Default URL to be opened
-    private String dataurl = "http://ptolemy.eecs.berkeley.edu/java/plot/demo/data.plt";
+    private String dataurl = "";
 
     private String width = "400";      // Default width of the graph
     private String height = "400";     // Default height of the graph
 
     // Array of command line arguments that have values.
+    // For example, we have:
+    //    {"-bd", "<color>", "Border", "false", "White", "Unsupported"},
+    // Then the elements of the row are
+    // -bd          - The command line argument we search for.
+    // <color>      - A description of the value that is expected.
+    // Border       - The X Resource or option name, currently not used. 
+    // false        - If the arg is set, then this is set to "true"
+    // White        - The initial default, which is updated with the
+    //                value true if this arg is present in the command line.
+    // Unsupported  - If the arg is set, then we add this string to the
+    //                header file, followed by the value of the 
     private String commandOptions[][] = {
-        {"-bd", "<color>", "Border", "White"},
-        {"-bg", "<color>", "BackGround", "White"},
-        {"-brb", "<base>", "BarBase", "0"},
-        {"-brw", "<width>", "BarWidth", "1"},
-        {"-bw", "<size>", "BorderSize", "1"},
-        {"-fg", "<color>", "Foreground", "Black"},
-        {"-gw", "<pixels>", "GridStyle", "1"},
-        {"-lf", "<fontname>", "LabelFont", "helvetica-12"},
-        {"-lw", "<width>", "LineWidth", "0"},
-        {"-lx", "<xl,xh>", "XLowLimit, XHighLimit", "0"},
-        {"-ly", "<yl,yh>", "YLowLimit, YHighLimit", "0"},
-        {"-t", "<title>", "TitleText", "An X Graph"},
-        {"-tf", "<fontname>", "TitleFont", "helvetica-18"},
-        {"-x", "<unitName>", "XUnitText", "X"},
-        {"-y", "<unitName>", "YUnitText", "Y"},
-        {"-zg", "<color>", "ZeroColor", "Black"},
-        {"-zw", "<width>", "ZeroWidth", "0"},
+        {"-bd", "<color>", "Border", "false", "White", "Unsupported"},
+        {"-bg", "<color>", "BackGround", "false", "White", "Unsupported"},
+        {"-brb", "<base>", "BarBase", "false", "0", "Unsupported"},
+        {"-brw", "<width>", "BarWidth", "false", "1", "Bars: "},
+        {"-bw", "<size>", "BorderSize", "false", "1", "Unsupported"},
+        {"-fg", "<color>", "Foreground", "false", "Black", "Unsupported"},
+        {"-gw", "<pixels>", "GridStyle", "false", "1", "Unsupported"},
+        {"-lf", "<fontname>", "LabelFont", "false", "helvetica-12", "Unsupported"},
+        {"-lw", "<width>", "LineWidth", "false", "0", "UnSupported"},
+        {"-lx", "<xl,xh>", "XLowLimit, XHighLimit", "false", "0", "XRange: "},
+        {"-ly", "<yl,yh>", "YLowLimit, YHighLimit", "false", "0", "YRange: "},
+        {"-t", "<title>", "TitleText", "false", "An X Graph", ""},
+        {"-tf", "<fontname>", "TitleFont", "false", "helvetica-18"},
+        {"-x", "<unitName>", "XUnitText", "false", "X", "XLabel: "},
+        {"-y", "<unitName>", "YUnitText", "false", "Y", "YLabel: "},
+        {"-zg", "<color>", "ZeroColor", "false", "Black", "Unsupported"},
+        {"-zw", "<width>", "ZeroWidth", "false", "0", "Unsupported"},
     };
 
     // Array of command line flags that are booleans.
@@ -446,19 +520,23 @@ public class Pxgraph {
     // Bars: on     - If the arg is set, then we add this string to
     //                the header file.
     private String commandFlags[][] = {
-        {"-bar", "BarGraph", "false", "Bars: on"},
-        {"-bb", "BoundBox", "false", ""},
+        {"-bar", "BarGraph", "false", "Bars: on\nMarks: none\nLines: off\n"},
+        {"-bb", "BoundBox", "false", "NotSupported"},
         {"-binary", "Binary", "false", ""},
         {"-db", "Debug", "false", ""},
+	// -help is not in the original X11 pxgraph.
+        {"-help", "Help", "false", ""},
         {"-lnx", "LogX", "false", "NotSupported"},
         {"-lny", "LogY", "false", "NotSupported"},
-        {"-m", "Markers", "false", "Marks: various" },
-        {"-M", "StyleMarkers", "false", "Marks: various" },
-        {"-nl", "NoLines", "false", "Lines: off" },
-        {"-p", "PixelMarkers", "false", "Marks: points" },
-        {"-P", "LargePixel", "false", "Marks: dots" },
-        {"-rv", "ReverseVideo", "false", ""},
-        {"-tk", "Ticks", "false", ""},
+        {"-m", "Markers", "false", "Marks: various\n" },
+        {"-M", "StyleMarkers", "false", "Marks: various\n" },
+        {"-nl", "NoLines", "false", "Lines: off\n" },
+        {"-p", "PixelMarkers", "false", "Marks: points\n" },
+        {"-P", "LargePixel", "false", "Marks: dots\n" },
+        {"-rv", "ReverseVideo", "false", "NotSupported"},
+	// -test is not in the original X11 pxgraph.  We use it for testing
+        {"-test", "Test", "false", ""},
+        {"-tk", "Ticks", "false", "Grid: off\n"},
     };
     private static final int MAX_DATASETS = 63; // Maximum number of datasets
     private String datasets[];
