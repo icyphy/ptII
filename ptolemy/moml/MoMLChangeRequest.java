@@ -182,12 +182,19 @@ public class MoMLChangeRequest extends ChangeRequest {
         _mergeWithPreviousUndo = mergeWithPrevious;
     }
     
-    /** Specify whether or not to report errors via the handler
-     *  that is registered with the parser. By default, if this
-     *  method is not called, errors will be reported. Note that in either
-     *  case, exceptions will be reported to any change listeners
-     *  that are registered with this object via their changeFailed()
-     *  method.
+    /** Specify whether or not to report errors via the handler that
+     *  is registered with the parser. The initial default is to not
+     *  report errors to the registered handler. If this method is not
+     *  called with a true argument, errors will be reported to the
+     *  registered handler. Note that in either case, if the handler
+     *  returns ErrorHandler.CANCEL, then exceptions will be reported
+     *  to any change listeners that are registered with this object
+     *  via their changeFailed() method.  If the handler returns
+     *  ErrorHandler.CONTINUE, then the exception will not be reported
+     *  to any change listeners and the change listener will think
+     *  that the change succeeded.
+     * 
+     *  @see #ErrorHandler 
      *  @param report False to disable error reporting.
      */
     public void setReportErrorsToHandler(boolean report) {
