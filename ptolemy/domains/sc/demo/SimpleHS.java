@@ -67,22 +67,28 @@ public class SimpleHS {
             sys.setManager(mgr);
 
             // the top level DE director
-            DEDirector dedir = new DEDirector("DETopLevelDirector");
+            CTMixedSignalDirector dedir = new CTMixedSignalDirector("CTTopLevelDirector");
             sys.setDirector(dedir);
 
             // a DE clock
-            DEClock clk = new DEClock(sys, "Clock");
-            Parameter intv = (Parameter)clk.getAttribute("interval");
-            intv.setToken(new DoubleToken(0.1));
+            //DEClock clk = new DEClock(sys, "Clock");
+            //Parameter intv = (Parameter)clk.getAttribute("interval");
+            //intv.setToken(new DoubleToken(0.1));
 
             // a DE ramp
-            DERamp ramp = new DERamp(sys, "Ramp", 1.0, 0.0);
+            CTRamp ramp = new CTRamp(sys, "Ramp");
+            Parameter p = (Parameter)ramp.getAttribute("InitialValue");
+            p.setToken(new DoubleToken(1.0));
+            p.parameterChanged(null);
+            p = (Parameter)ramp.getAttribute("Slope");
+            p.setToken(new DoubleToken(0.0));
+            p.parameterChanged(null);
 
             // the plot
-            DEPlot plot = new DEPlot(sys, "Plot");
+            CTPlot plot = new CTPlot(sys, "Plot");
 
             // a simple hybrid system
-            TypedCompositeActor hs = new TypedCompositeActor(sys, "HS");
+            CTCompositeActor hs = new CTCompositeActor(sys, "HS");
             // the ports
             TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
             hsin.setInput(true);
@@ -93,10 +99,13 @@ public class SimpleHS {
             TypedIOPort hsst = (TypedIOPort)hs.newPort("state");
             hsst.setOutput(true);
             hsst.setDeclaredType(DoubleToken.class);
+            TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
+            hstr.setOutput(true);
+            hstr.setDeclaredType(DoubleToken.class);
  
 
             // the FSM controller
-            SCController ctrl = new DEFSMActor(hs, "Controller");
+            SCController ctrl = new SCController(hs, "Controller");
             SCState ctrlInc = new SCState(ctrl, "Increasing");
             SCState ctrlDec = new SCState(ctrl, "Decreasing");
             ctrl.setInitialState(ctrlInc);
@@ -110,12 +119,12 @@ public class SimpleHS {
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "output");
 
             // the hybrid system director
-            SCDirector hsdir = new SCDirector("HSDirector");
+            HSDirector hsdir = new HSDirector("HSDirector");
             hs.setDirector(hsdir);
             hsdir.setController(ctrl);
 
             // the first ct subsystem
-            TypedCompositeActor ctInc = new TypedCompositeActor(hs, "Increasing");
+            CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
             CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
             CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
             CTZeroCrossingDetector ctIncD = new CTZeroCrossingDetector(ctInc, "ZD");
@@ -138,10 +147,17 @@ public class SimpleHS {
             TypedIOPort ctIncSt = (TypedIOPort)ctInc.newPort("state");
             ctIncSt.setOutput(true);
             ctIncSt.setDeclaredType(DoubleToken.class);
+            TypedIOPort ctIncTr = (TypedIOPort)ctInc.newPort("trig");
+            ctIncTr.setOutput(true);
+            ctIncTr.setDeclaredType(DoubleToken.class);
             // connect ctInc
             ctInc.connect(ctIncIn, ctIncH.input);
             ctInc.connect(ctIncH.output, ctIncI.input);
-            ctInc.connect(ctIncGFo, ctIncD.trigger);
+            //ctInc.connect(ctIncGFo, ctIncD.trigger);
+            Relation ctIncR2 = ctInc.newRelation("R2");
+            ctIncGFo.link(ctIncR2);
+            ctIncD.trigger.link(ctIncR2);
+            ctIncTr.link(ctIncR2);
             ctInc.connect(ctIncD.output, ctIncOut);
             ctInc.connect(ctIncS.output, ctIncSt);
             TypedIORelation ctIncR1 = (TypedIORelation)ctInc.newRelation("CTIncR1");
@@ -153,7 +169,7 @@ public class SimpleHS {
             ctInc.setDirector(ctIncDir);
 
             // the second ct subsystem
-            TypedCompositeActor ctDec = new TypedCompositeActor(hs, "Decreasing");
+            CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
             CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
             CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
             CTGain ctGain = new CTGain(ctDec, "Gain");
@@ -177,11 +193,18 @@ public class SimpleHS {
             TypedIOPort ctDecSt = (TypedIOPort)ctDec.newPort("state");
             ctDecSt.setOutput(true);
             ctDecSt.setDeclaredType(DoubleToken.class);
+            TypedIOPort ctDecTr = (TypedIOPort)ctDec.newPort("trig");
+            ctDecTr.setOutput(true);
+            ctDecTr.setDeclaredType(DoubleToken.class);
             // connect ctDec
             ctDec.connect(ctDecIn, ctDecH.input);
             ctDec.connect(ctDecH.output, ctGain.input);
             ctDec.connect(ctGain.output, ctDecI.input);
-            ctDec.connect(ctDecGFo, ctDecD.trigger);
+            //ctDec.connect(ctDecGFo, ctDecD.trigger);
+            Relation ctDecR2 = ctDec.newRelation("R2");
+            ctDecGFo.link(ctDecR2);
+            ctDecD.trigger.link(ctDecR2);
+            ctDecTr.link(ctDecR2);
             ctDec.connect(ctDecD.output, ctDecOut);
             ctDec.connect(ctDecS.output, ctDecSt);
             TypedIORelation ctDecR1 = (TypedIORelation)ctDec.newRelation("CTDecR1");
@@ -208,16 +231,24 @@ public class SimpleHS {
             hsst.link(hsr3);
             ctIncSt.link(hsr3);
             ctDecSt.link(hsr3);
+            Relation hsr4 = hs.newRelation("HSr4");
+            hstr.link(hsr4);
+            ctIncTr.link(hsr4);
+            ctDecTr.link(hsr4);
 
             // connect the top level system
-            sys.connect(clk.output, ramp.input);
+            //sys.connect(clk.output, ramp.input);
             sys.connect(ramp.output, hsin);
             sys.connect(hsout, plot.input);
             sys.connect(hsst, plot.input);
+            sys.connect(hstr, plot.input);
+
+//System.out.println("HSOUT: " + hsout.numLinks() + " " + hsout.numInsideLinks());
+//System.out.println("HSTR: " + hstr.numLinks() + " " + hstr.numInsideLinks());
 
             // try to run the system
             dedir.setStopTime(15.0);
-
+           
             // CT director parameters
             Parameter initStep = (Parameter)ctIncDir.getAttribute("InitialStepSize");
             initStep.setExpression("0.001");
@@ -260,6 +291,22 @@ public class SimpleHS {
             Parameter gain = (Parameter)ctGain.getAttribute("Gain");
             gain.setExpression("-1.0");
             gain.parameterChanged(null);
+
+            // CT director parameters
+            initStep = (Parameter)dedir.getAttribute("InitialStepSize");
+            initStep.setExpression("0.001");
+            initStep.parameterChanged(null);
+            minStep = (Parameter)dedir.getAttribute("MinimumStepSize");
+            minStep.setExpression("1e-3");
+            minStep.parameterChanged(null);
+            bpsol = (Parameter)dedir.getAttribute("BreakpointODESolver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            bpsol.setToken(tok);
+            bpsol.parameterChanged(null);
+            dfsol = (Parameter)dedir.getAttribute("ODESolver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            dfsol.setToken(tok);
+            dfsol.parameterChanged(null);
 
             mgr.startRun();
 
