@@ -55,9 +55,8 @@ foreach i $configs {
     # The list of filters is static, so we reset it in case there
     # filters were already added.
     $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
+    # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
     removeGraphicalClasses $parser
 
