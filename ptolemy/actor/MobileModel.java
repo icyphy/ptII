@@ -131,14 +131,14 @@ public class MobileModel extends TypedCompositeActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** Initialize this actor. create a new moml parser for passing
-      * the applied model to it.
+    /** Initialize this actor. create a new moml parser for passing
+     * the applied model to it.
      *  @exception IllegalActionException If there is no director, or
      *  if the director's initialize() method throws it, or if the
      *  actor is not opaque.
      */
-     public void initialize() throws IllegalActionException {
-         if (_debugging) {
+    public void initialize() throws IllegalActionException {
+        if (_debugging) {
             _debug("Invoking init");
         }
         _model = null;
@@ -153,7 +153,7 @@ public class MobileModel extends TypedCompositeActor{
             connect(input, constActor.trigger);
             connect(constActor.output, output);
 
-       }catch (Exception ex) {
+        }catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
         //connect(input, output);
@@ -210,19 +210,19 @@ public class MobileModel extends TypedCompositeActor{
             //remove the old model inside first, if there is one.
             String delete = _requestToRemoveAll(this);
             MoMLChangeRequest removeRequest = new MoMLChangeRequest(
-                           this,            // originator
-                           this,            // context
-                           delete,          // MoML code
-                           null);
+                    this,            // originator
+                    this,            // context
+                    delete,          // MoML code
+                    null);
             requestChange(removeRequest);
             //add the entity represented by the new model string.
             //Fixme: the reason I do the change by two change request is because
             //when I tried to group them in one, I got a parser error...
             MoMLChangeRequest request = new MoMLChangeRequest(
-                               this,            // originator
-                               this,          // context
-                               _model.exportMoML(), // MoML code
-                               null);
+                    this,            // originator
+                    this,          // context
+                    _model.exportMoML(), // MoML code
+                    null);
             requestChange(request);
             //connect the model.
             StringBuffer moml = new StringBuffer("<group>");
@@ -236,10 +236,10 @@ public class MobileModel extends TypedCompositeActor{
             moml.append("<link port=\"output\" relation=\"newR2\"/>");
             moml.append("</group>");
             MoMLChangeRequest request2 = new MoMLChangeRequest(
-                                this,            // originator
-                                this,          // context
-                                moml.toString(), // MoML code
-                                null);
+                    this,            // originator
+                    this,          // context
+                    moml.toString(), // MoML code
+                    null);
             requestChange(request2);
             if (_debugging) {
                 _debug("issues change request to modify the model");
@@ -263,10 +263,10 @@ public class MobileModel extends TypedCompositeActor{
         //clean the inside content.
         String delete = _requestToRemoveAll(this);
         MoMLChangeRequest removeRequest = new MoMLChangeRequest(
-                               this,            // originator
-                               this,            // context
-                               delete,          // MoML code
-                               null);
+                this,            // originator
+                this,            // context
+                delete,          // MoML code
+                null);
         requestChange(removeRequest);
         super.wrapup();
     }
@@ -276,23 +276,23 @@ public class MobileModel extends TypedCompositeActor{
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-            Iterator attributes = attributeList().iterator();
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
-                attribute.exportMoML(output, depth);
-            }
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                port.exportMoML(output, depth);
-            }
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            attribute.exportMoML(output, depth);
+        }
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            port.exportMoML(output, depth);
+        }
 
         // Next write the links.
         output.write(exportLinks(depth, null));
     }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         private methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
     /** construct a modl string for the composite actor to delete
      * of its entities and relations.
      *  @param actor The composite actor.

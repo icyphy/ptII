@@ -99,7 +99,7 @@ public class MobileFunction extends TypedAtomicActor{
     /** Initialize this actor.
      *  @exception IllegalActionException.
      */
-     public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         _function = null;
         _argList = new LinkedList();
         //System.out.println("--- invoke initialize of model manager, and do nothing. \n");
@@ -135,7 +135,7 @@ public class MobileFunction extends TypedAtomicActor{
         }
     }
 
-     /** return true if the actor either of its input port has token.
+    /** return true if the actor either of its input port has token.
      *  @exception IllegalActionException should never be throwed
      */
     public boolean prefire() throws IllegalActionException {
