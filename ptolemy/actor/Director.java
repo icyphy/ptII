@@ -98,7 +98,7 @@ The director also provides methods to optimize the iteration portion of a
 simulation. This is done by letting the workspace to be read-only during
 an iteration. In this base class, the default implementation prevent the
 workspace to be read-only. Derived classes (e.g. domain specific
-directors) should override the _writeAccessPreference() method to let
+directors) should override the _writeAccessRequired() method to let
 the workspace to be read-only. (Note that the workspace might still be
 writable, it all depends on other directors in the simulation).
 
@@ -178,15 +178,18 @@ public class Director extends NamedObj implements Executable {
 
     /** Invoke an iteration on all of the deeply contained actors of the
      *  container of this Director.  In general, this may be called more
-     *  than once in the same iteration of the Directors container.
+     *  than once in the same iteration of the Director's container.
      *  An iteration is defined as multiple invocations of prefire(), until
      *  it returns true, any number of invocations of fire(),
      *  followed by one invocation of postfire().
-     *  Notice that we ignore the return value of postfire() in this base
-     *  class.   In general, derived classes will want to do something
-     *  intelligent with the returned value.
+     *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
+     *  <p>
+     *  In this base class, an attempt is made to fire each actor exactly
+     *  once, in the order they were created.  Prefire is called once, and
+     *  if prefire returns true, then fire is called once, followed by
+     *  postfire.  The return value from postfire is ignored.
      *
      *  @exception IllegalActionException If any called method of one
      *  of the associated actors throws it.
@@ -235,7 +238,7 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
-    /** Return the current time of the simulation under this director.
+    /** Return the current time of the model being executed by this director.
      *  In this base class,
      *  it returns 0. The derived class should override this method
      *  and return the current time.
@@ -297,21 +300,22 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Return whether this director and all its lower level directors would
-     *  ever need write access on the workspace. This method first check
-     *  the 'personal' preference of this director, if this director wants
-     *  write access then just return true. Otherwise, this method continue by
-     *  recursively call ones in the lower level directors. If any of those
-     *  lower level directors disagree to have the workspace being read-only,
-     *  then return true.
-     *  @return true If this director disagree to have the workspace
-     *  being read-only, false otherwise.
+    /** Return true if this director, or any of its contained directors 
+     *  requires write access on the workspace. If this Director requires 
+     *  write access (_writeAccessRequired returns true), then 
+     *  This method returns true.   Otherwise, needWriteAccess is called
+     *  recursively on all the local directors of all deeply 
+     *  contained entities that are opaque composite actors.
+     *  If any of those lower level directors requires write access, then 
+     *  this method will return true.  Otherwise, this method returns false.
+     * 
+     *  @return true If this director, or any of its contained directors,
+     *  needs write access to the workspace.
      *  @exception InvalidStateException If the director does not have
-     *     a container.
-     *
+     *  a container.
      */
     public final boolean needWriteAccess() {
-        if (_writeAccessPreference()) {
+        if (_writeAccessRequired()) {
             return true;
         }
         CompositeActor container = ((CompositeActor)getContainer());
@@ -330,7 +334,6 @@ public class Director extends NamedObj implements Executable {
                         // everyone has to respect it.
                         return true;
                     }
-
                 }
             }
             // Up to this point, all lower level directors have been queried
@@ -338,9 +341,8 @@ public class Director extends NamedObj implements Executable {
             // Therefore, return false.
             return false;
         } else {
-            throw new InvalidStateException("Each director need to be " +
-                    "associated with a composite actor before simulation " +
-                    "is started.");
+            throw new InvalidStateException("Director is not " +
+                    "associated with a composite actor!");
         }
     }
 
@@ -623,7 +625,7 @@ public class Director extends NamedObj implements Executable {
      * request fails, the request is undone, snd no further requests
      * are processed. Note that change requests processed successfully
      * prior to the failed request are <i>not</i> undone.
-     *
+     * <p>
      * Any new actors added to the topology during the course of
      * processing the mutation requests can be obtained with the
      * _newActors() method.
@@ -683,13 +685,16 @@ public class Director extends NamedObj implements Executable {
         _queuedTopologyRequests = null;
     }
 
-    /** Indicate whether this director would like to have write access
-     *  during its iteration. By default, the return value is true, indicating
-     *  the need for a write access.
+    /** Indicate whether this director would requires write access
+     *  on the workspace during execution. 
+     *  <p>
+     *  In this base class, we assume 
+     *  that write access is required and return true.  The method 
+     *  should probably be overridden by derived classes.
      *
-     *  @return True if this director need write access, false otherwise.
+     *  @return true
      */
-    protected boolean _writeAccessPreference() {
+    protected boolean _writeAccessRequired() {
         return true;
     }
 
