@@ -90,6 +90,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.LocatableNodeController;
+import ptolemy.vergil.kernel.VergilUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurerDialog
@@ -148,9 +149,12 @@ public class PortConfigurerDialog
         _portTable.setPreferredScrollableViewportSize(new Dimension(600, 70));
 
         _portTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent me) {
-                if (me.getButton() == MouseEvent.BUTTON3) {
-                    Point point = me.getPoint();
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if ((VergilUtilities.macOSLookAndFeel()
+                    && mouseEvent.isPopupTrigger())
+                    || (!VergilUtilities.macOSLookAndFeel()
+                        && mouseEvent.getButton() == MouseEvent.BUTTON3)) {
+                    Point point = mouseEvent.getPoint();
                     int row = _portTable.rowAtPoint(point);
                     _setSelectedRow(row);
                 }
