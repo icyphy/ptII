@@ -2,7 +2,7 @@
 <!-- Do not edit. Do not add SCCS keywords. -->
 
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/~ptdesign/ptml.dtd">
 
 <iconlibrary name="root" version="1.0">
 <header>
