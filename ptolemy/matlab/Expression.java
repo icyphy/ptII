@@ -131,7 +131,7 @@ public class Expression extends TypedAtomicActor {
      */
     public Expression(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException,
-                   java.lang.Exception  {
+            java.lang.Exception  {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -141,18 +141,18 @@ public class Expression extends TypedAtomicActor {
 
         TransientSingletonConfigurableAttribute
             iconDescription = new TransientSingletonConfigurableAttribute(
-                               this, "_iconDescription");
+                    this, "_iconDescription");
         iconDescription.configure(null, null,
-              "<svg>"
-            + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
+                "<svg>"
+                + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
 
-            + "<image x=\"4\" y=\"3\" width=\"32\" height=\"32\" "
-            +        "xlink:href=\"ptolemy/matlab/matlab.jpg\"></image>"
-         // + "<polygon style=\"fill:#FF6930;stroke:black\" "
-         // +          "points=\"25,4 39,30 25,24 11,30\"/>"
+                + "<image x=\"4\" y=\"3\" width=\"32\" height=\"32\" "
+                +        "xlink:href=\"ptolemy/matlab/matlab.jpg\"></image>"
+                // + "<polygon style=\"fill:#FF6930;stroke:black\" "
+                // +          "points=\"25,4 39,30 25,24 11,30\"/>"
 
-            + "<text x=\"6\" y=\"38\" style=\"font-size:12\">Matlab</text>"
-            + "</svg>");
+                + "<text x=\"6\" y=\"38\" style=\"font-size:12\">Matlab</text>"
+                + "</svg>");
 
         matlabEngine = new Engine();
     }
@@ -220,42 +220,42 @@ public class Expression extends TypedAtomicActor {
         _iterationCount = 1;
         _iteration.setToken(new IntToken(_iterationCount));
 
-            // Process any additional directories to be added to matlab's
-            // path. The list may contain paths relative to the directory in
-            // which ptolemy was started or any directory listed in the current
-            // classpath (in this order, first match wins). See
-            // UtilityFunctions.findFile()
+        // Process any additional directories to be added to matlab's
+        // path. The list may contain paths relative to the directory in
+        // which ptolemy was started or any directory listed in the current
+        // classpath (in this order, first match wins). See
+        // UtilityFunctions.findFile()
 
         _addPathCommand = null;         // Assume none
         _previousPath = null;
-            Parameter packageDirectories =
-		(Parameter)getAttribute("packageDirectories");
+        Parameter packageDirectories =
+            (Parameter)getAttribute("packageDirectories");
 
-            if (packageDirectories != null) {
-                StringTokenizer dirs = new
-                    StringTokenizer((String)
-				    ((StringToken)packageDirectories
-				     .getToken()).stringValue(),",");
-                StringBuffer cellFormat = new StringBuffer(512);
-                cellFormat.append("{");
-                if (dirs.hasMoreTokens()) {
-                    cellFormat.append("'" + UtilityFunctions
-				      .findFile(dirs.nextToken()) + "'");
-                }
-                while (dirs.hasMoreTokens()) {
-                    cellFormat.append(",'" + UtilityFunctions
-				      .findFile(dirs.nextToken()) + "'");
-                }
-                cellFormat.append("}");
+        if (packageDirectories != null) {
+            StringTokenizer dirs = new
+                StringTokenizer((String)
+                        ((StringToken)packageDirectories
+                                .getToken()).stringValue(),",");
+            StringBuffer cellFormat = new StringBuffer(512);
+            cellFormat.append("{");
+            if (dirs.hasMoreTokens()) {
+                cellFormat.append("'" + UtilityFunctions
+                        .findFile(dirs.nextToken()) + "'");
+            }
+            while (dirs.hasMoreTokens()) {
+                cellFormat.append(",'" + UtilityFunctions
+                        .findFile(dirs.nextToken()) + "'");
+            }
+            cellFormat.append("}");
 
-                if (cellFormat.length() > 2) {
+            if (cellFormat.length() > 2) {
                 _addPathCommand = "addedPath_ = " + cellFormat.toString()
-                                  + ";addpath(addedPath_{:});";
+                    + ";addpath(addedPath_{:});";
                 matlabEngine.evalString("previousPath_=path");
                 _previousPath = matlabEngine.get("previousPath_");
             }
-                }
-            }
+        }
+    }
 
     /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
@@ -279,9 +279,9 @@ public class Expression extends TypedAtomicActor {
                     matlabEngine.evalString(_addPathCommand);
 
                 matlabEngine.put("time",
-                                 new DoubleToken(director.getCurrentTime()));
+                        new DoubleToken(director.getCurrentTime()));
                 matlabEngine.put("iteration",
-                                 _iteration.getToken());
+                        _iteration.getToken());
                 Iterator inputPorts = inputPortList().iterator();
                 while(inputPorts.hasNext()) {
                     IOPort port = (IOPort)(inputPorts.next());

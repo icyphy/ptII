@@ -184,7 +184,7 @@ public class Engine {
      */
     public void open() throws IllegalActionException {
         open(null);              // Use default invocation, no
-                                        // output buffering
+        // output buffering
     }
 
     /** Open a connection to a matlab engine.  Currently all matlab
@@ -211,23 +211,23 @@ public class Engine {
                     engUserCount = 1;
                     if (debug > 0) {
                         System.out.println("matlabEngine.open(" + startCmd
-                                           + ") = " + eng + ", engUserCount = "
-                                           + engUserCount);
+                                + ") = " + eng + ", engUserCount = "
+                                + engUserCount);
                     }
                 }
             } else {
                 engUserCount++;
                 if (debug > 0) {
                     System.out.println("matlabEngine.open(" + startCmd
-                                       + ") : reusing eng = " + eng
-                                       + ", engUserCount = "+engUserCount);
+                            + ") : reusing eng = " + eng
+                            + ", engUserCount = "+engUserCount);
                 }
             }
             if (eng == 0) {
                 throw new IllegalActionException("matlabEngine.open("
-                                                 + startCmd
-                                                 + ") : can't find matlab"
-                                                 + "engine.");
+                        + startCmd
+                        + ") : can't find matlab"
+                        + "engine.");
             }
         }
     }
@@ -245,7 +245,7 @@ public class Engine {
                 engUserCount--;
                 if (debug > 0) {
                     System.out.println("matlabEngine.close() : engUserCount = "
-                                       + engUserCount);
+                            + engUserCount);
                 }
                 if (engUserCount <= 0) {
                     retval = ptmatlabEngClose(eng, engOutputBuffer);
@@ -268,7 +268,7 @@ public class Engine {
         synchronized(semaphore) {
             if (eng == 0) {
                 throw new IllegalActionException("matlabEngine.evalStr(): "
-                                                 + errNotOpened);
+                        + errNotOpened);
             }
             if (debug > 0) {
                 System.out.println("matlabEngine.evalString(\""
@@ -292,21 +292,21 @@ public class Engine {
         synchronized(semaphore) {
             if (eng == 0) {
                 throw new IllegalActionException("matlabEngine.get(): "
-                                                 + errNotOpened);
+                        + errNotOpened);
             }
             long ma = ptmatlabEngGetArray(eng, name);
             if (ma == 0) {
                 throw new IllegalActionException("matlabEngine.get(" + name
-                                                 + "): can't find matlab "
-                                                 + "variable \""
-                                                 + name + "\"\n"
-                                                 getOutput().stringValue());
+                        + "): can't find matlab "
+                        + "variable \""
+                        + name + "\"\n"
+                        getOutput().stringValue());
             }
             retval = _convertMxArrayToToken(ma);
             ptmatlabDestroy(ma, name);
             if (debug > 0) {
                 System.out.println("matlabEngine.get(" + name + ") = "
-                                   + retval.toString());
+                        + retval.toString());
             }
         }
         return retval;
@@ -333,11 +333,11 @@ public class Engine {
         synchronized(semaphore) {
             if (eng == 0) {
                 throw new IllegalActionException("matlabEngine.put(): "
-                                                 + errNotOpened);
+                        + errNotOpened);
             }
             if (debug > 0) {
                 System.out.println("matlabEngine.put(" + name + ", "
-                                   + t.toString()+")");
+                        + t.toString()+")");
             }
             long ma = _createMxArray(name, t);
             retval = ptmatlabEngPutArray(eng, name, ma);
@@ -360,46 +360,46 @@ public class Engine {
     // C-Mx style functions
     private native long ptmatlabCreateCellMatrix(String name, int n, int m);
     private native long
-	ptmatlabCreateString(String name, String s, int n, int m);
+    ptmatlabCreateString(String name, String s, int n, int m);
     private native long
-	ptmatlabCreateDoubleMatrixOneDim(String name, double[]a, int length);
+    ptmatlabCreateDoubleMatrixOneDim(String name, double[]a, int length);
     private native long
-	ptmatlabCreateDoubleMatrix(String name, double[][]a, int n, int m);
+    ptmatlabCreateDoubleMatrix(String name, double[][]a, int n, int m);
     private native long
-	ptmatlabCreateComplexMatrixOneDim(String name, Complex[]a, int length);
+    ptmatlabCreateComplexMatrixOneDim(String name, Complex[]a, int length);
     private native long
-	ptmatlabCreateComplexMatrix(String name, Complex[][]a, int n, int m);
+    ptmatlabCreateComplexMatrix(String name, Complex[][]a, int n, int m);
     private native long
-	ptmatlabCreateStructMatrix(String name, Object[] fieldNames,
-				   int n, int m);
+    ptmatlabCreateStructMatrix(String name, Object[] fieldNames,
+            int n, int m);
     private native void
-        ptmatlabDestroy(long mxArray, String name);
+    ptmatlabDestroy(long mxArray, String name);
     private native long
-	ptmatlabGetCell(long mxArray, int n, int m);
+    ptmatlabGetCell(long mxArray, int n, int m);
     private native String
-	ptmatlabGetClassName(long mxArray);
+    ptmatlabGetClassName(long mxArray);
     private native int[]
-	ptmatlabGetDimensions(long mxArray);
+    ptmatlabGetDimensions(long mxArray);
     private native Complex[][]
-        ptmatlabGetComplexMatrix(long mxArray, int n, int m);
+    ptmatlabGetComplexMatrix(long mxArray, int n, int m);
     private native double[][]
-        ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
+    ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
     private native String ptmatlabGetFieldNameByNumber(long mxArray, int k);
     private native long
-	ptmatlabGetFieldByNumber(long mxArray, int k, int n, int m);
+    ptmatlabGetFieldByNumber(long mxArray, int k, int n, int m);
     private native int ptmatlabGetNumberOfFields(long mxArray);
     private native String ptmatlabGetString(long mxArray, int n);
     private native String ptmatlabGetOutput(long outputBuffer, int n);
     private native boolean ptmatlabIsComplex(long mxArray);
     private native void
-	ptmatlabSetCell(String name, long mxArray,
-			int n, int m, long valueMxArray);
+    ptmatlabSetCell(String name, long mxArray,
+            int n, int m, long valueMxArray);
     private native void
-	ptmatlabSetString(String name, long mxArray,
-			  int n, String s, int slen);
+    ptmatlabSetString(String name, long mxArray,
+            int n, String s, int slen);
     private native void
-	ptmatlabSetStructField(String name, long mxArray, String fieldName,
-			       int n, int m, long valueMxArray);
+    ptmatlabSetStructField(String name, long mxArray, String fieldName,
+            int n, int m, long valueMxArray);
 
 
     // Converts a matlab engine mxArray (ma) variable to a Ptolemy II Token.
@@ -413,7 +413,7 @@ public class Engine {
     // @see Engine
 
     private Token _convertMxArrayToToken(long ma)
-	throws IllegalActionException {
+            throws IllegalActionException {
         String maClassStr = ptmatlabGetClassName(ma);
         int[] dims = ptmatlabGetDimensions(ma);
         int nRows = dims[0];
@@ -425,8 +425,8 @@ public class Engine {
                 Complex[][] a = ptmatlabGetComplexMatrix(ma, nRows, nCols);
                 if (a == null) {
 		    throw new IllegalActionException("can't get complex "
-						     + "matrix from matlab "
-						     + "engine.");
+                            + "matrix from matlab "
+                            + "engine.");
 		}
 		if (scalar) {
 		    retval = new ComplexToken(a[0][0]);
@@ -437,8 +437,8 @@ public class Engine {
                 double[][] a = ptmatlabGetDoubleMatrix(ma, nRows, nCols);
                 if (a == null) {
 		    throw new IllegalActionException("can't get double "
-						     + "matrix from matlab "
-						     + "engine.");
+                            + "matrix from matlab "
+                            + "engine.");
 		}
 		if (scalar) {
                     double tmp = a[0][0];
@@ -468,11 +468,11 @@ public class Engine {
                             fieldValues[k] = _convertMxArrayToToken(fma);
                         } else {
                             throw new IllegalActionException("can't get field "
-                                                             + fieldNames[k] +
-                                                             + "from matlab "
-                                                             + "struct "
-                                                             + nRows + "x"
-                                                             + nCols);
+                                    + fieldNames[k] +
+                                    + "from matlab "
+                                    + "struct "
+                                    + nRows + "x"
+                                    + nCols);
                         }
                     }
                     ta[m] = new RecordToken(fieldNames, fieldValues);
@@ -517,8 +517,8 @@ public class Engine {
             }
         } else {
             throw new IllegalActionException("no support for mxArray class "
-					     + maClassStr + " " + dims[0]
-					     + " x " + dims[1]);
+                    + maClassStr + " " + dims[0]
+                    + " x " + dims[1]);
         }
         return retval;
     }
@@ -532,7 +532,7 @@ public class Engine {
     // @see Engine
 
     private long _createMxArray(String name, Token t)
-	throws IllegalActionException {
+            throws IllegalActionException {
         long ma = 0;
         if (t instanceof ArrayToken) {
             Token[] ta = ((ArrayToken)t).arrayValue();
@@ -540,25 +540,25 @@ public class Engine {
                 ma = ptmatlabCreateCellMatrix(name, 1, ta.length);
                 if (ma == 0) {
 		    throw new IllegalActionException("couldn't create cell "
-						     + "array "+name);
+                            + "array "+name);
 		}
                 for (int n = 0; n < ta.length; n++) {
                     long fma = _createMxArray("("+n+")", ta[n]);
                     if (fma == 0) {
 			throw new IllegalActionException("couldn't create "
-							 + "array for index "
-							 + n
-							 + " in cell array "
-							 + name);
+                                + "array for index "
+                                + n
+                                + " in cell array "
+                                + name);
 		    }
                     ptmatlabSetCell(name, ma, 0, n, fma);
                 }
             } else {
-              String s = ((StringToken)ta[0]).stringValue();
+                String s = ((StringToken)ta[0]).stringValue();
                 ma = ptmatlabCreateString(name, s, ta.length, s.length());
                 for (int n = 1; n < ta.length; n++) {
-                  s = ((StringToken)ta[n]).stringValue();
-                  ptmatlabSetString(name, ma, n, s, s.length());
+                    s = ((StringToken)ta[n]).stringValue();
+                    ptmatlabSetString(name, ma, n, s, s.length());
                 }
             }
         } else if (t instanceof RecordToken) {
@@ -566,19 +566,19 @@ public class Engine {
             ma = ptmatlabCreateStructMatrix(name, fieldNames, 1, 1);
             if (ma == 0) {
 		throw new IllegalActionException("couldn't create struct "
-						 + "array " + name);
+                        + "array " + name);
 	    }
             for (int n = 0; n < fieldNames.length; n++) {
                 Token f = ((RecordToken)t).get((String)fieldNames[n]);
                 long fma = _createMxArray((String)fieldNames[n], f);
                 if (fma == 0) {
 		    throw new IllegalActionException("couldn't create array "
-						     + "for field "
-						     + fieldNames[n]
-						     + " in struct " + name);
+                            + "for field "
+                            + fieldNames[n]
+                            + " in struct " + name);
 		}
                 ptmatlabSetStructField(name, ma, (String)fieldNames[n],
-				       0, 0, fma );
+                        0, 0, fma );
             }
         } else if (t instanceof StringToken) {
             String s = ((StringToken)t).stringValue();
@@ -598,7 +598,7 @@ public class Engine {
         }
         if (ma == 0) {
 	    throw new IllegalActionException("couldn't create array for "
-					     + name);
+                    + name);
 	}
         return ma;
     }
