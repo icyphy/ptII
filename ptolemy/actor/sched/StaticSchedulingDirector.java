@@ -91,8 +91,8 @@ public class StaticSchedulingDirector extends Director {
      *
      *  @param container The container of this director.
      *  @param name Name of this director.
-     *  @exception IllegalActionException Not thrown in this base
-     *  class.  May be thrown in the derived classes if the director
+     *  @exception IllegalActionException Not thrown in this base class.
+     *   May be thrown in the derived classes if the director
      *  is not compatible with the specified container.
      *  @exception NameDuplicationException If the name collides with
      *  an attribute that already exists in the given container.
