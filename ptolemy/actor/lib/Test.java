@@ -143,7 +143,7 @@ public class Test extends Sink {
         if (attribute == correctValues) {
             if (!(correctValues.getToken() instanceof ArrayToken)) {
                 throw new IllegalActionException(this,
-                "correctValues parameter is required to have an array value.");
+                        "correctValues parameter is required to have an array value.");
             }
         }
     }
@@ -189,7 +189,7 @@ public class Test extends Sink {
             return true;
         }
         Token referenceToken
-                = ((ArrayToken)(correctValues.getToken())).getElement(_count);
+            = ((ArrayToken)(correctValues.getToken())).getElement(_count);
         Token[] reference;
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
@@ -199,24 +199,24 @@ public class Test extends Sink {
                 reference = ((ArrayToken)referenceToken).arrayValue();
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                "Test fails in iteration " + _count + ".\n"
-                + "Width of input is " + width
-                + ", but correctValues parameter is not an array of arrays.");
+                        "Test fails in iteration " + _count + ".\n"
+                        + "Width of input is " + width
+                        + ", but correctValues parameter is not an array of arrays.");
             }
             if (width != reference.length) {
                 throw new IllegalActionException(this,
-                "Test fails in iteration " + _count + ".\n"
-                + "Width of input is " + width
-                + ", which does not match the width of the " + _count
-                + "-th element of correctValues, "
-                + reference.length);
+                        "Test fails in iteration " + _count + ".\n"
+                        + "Width of input is " + width
+                        + ", which does not match the width of the " + _count
+                        + "-th element of correctValues, "
+                        + reference.length);
             }
         }
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(i)) {
                 throw new IllegalActionException(this,
-                "Test fails in iteration " + _count + ".\n"
-                + "Empty input on channel " + i);
+                        "Test fails in iteration " + _count + ".\n"
+                        + "Empty input on channel " + i);
             }
             Token token = input.get(i);
             if (token instanceof DoubleToken) {
@@ -229,15 +229,15 @@ public class Test extends Sink {
                         = ((DoubleToken)(tolerance.getToken())).doubleValue();
                     if (Math.abs(correct - seen) > ok) {
                         throw new IllegalActionException(this,
-                        "Test fails in iteration " + _count + ".\n"
-                        + "Value was: " + seen
-                        + ". Should have been: " + correct);
+                                "Test fails in iteration " + _count + ".\n"
+                                + "Value was: " + seen
+                                + ". Should have been: " + correct);
                     }
                 } catch (ClassCastException ex) {
                     throw new IllegalActionException(this,
-                    "Test fails in iteration " + _count + ".\n"
-                    + "Input is a double but correct value is not: "
-                    + correctValue.toString());
+                            "Test fails in iteration " + _count + ".\n"
+                            + "Input is a double but correct value is not: "
+                            + correctValue.toString());
                 }
             } else if (token instanceof ComplexToken) {
                 // Check using tolerance.
@@ -252,24 +252,24 @@ public class Test extends Sink {
                     if (Math.abs(correct.real - seen.real) > ok ||
                             Math.abs(correct.imag - seen.imag) > ok) {
                         throw new IllegalActionException(this,
-                        "Test fails in iteration " + _count + ".\n"
-                        + "Value was: " + seen
-                        + ". Should have been: " + correct);
+                                "Test fails in iteration " + _count + ".\n"
+                                + "Value was: " + seen
+                                + ". Should have been: " + correct);
                     }
                 } catch (ClassCastException ex) {
                     throw new IllegalActionException(this,
-                    "Test fails in iteration " + _count + ".\n"
-                    + "Input is complex but correct value is not: "
-                    + correctValue.toString());
+                            "Test fails in iteration " + _count + ".\n"
+                            + "Input is complex but correct value is not: "
+                            + correctValue.toString());
                 }
             } else {
                 Token correctValue = reference[i];
                 BooleanToken result = token.isEqualTo(correctValue);
                 if (!result.booleanValue()) {
                     throw new IllegalActionException(this,
-                    "Test fails in iteration " + _count + ".\n"
-                    + "Value was: " + token
-                    + ". Should have been: " + correctValue);
+                            "Test fails in iteration " + _count + ".\n"
+                            + "Value was: " + token
+                            + ". Should have been: " + correctValue);
                 }
             }
         }

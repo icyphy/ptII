@@ -110,21 +110,21 @@ public class DiscreteRandomSource extends RandomSource {
             throws IllegalActionException {
         if (attribute == pmf) {
             DoubleMatrixToken pmfMatrixToken
-                    = (DoubleMatrixToken) pmf.getToken();
+                = (DoubleMatrixToken) pmf.getToken();
             if (pmfMatrixToken.getRowCount() != 1) {
                 throw new IllegalActionException(this,
-                "Parameter pmf is required to be a row vector.");
+                        "Parameter pmf is required to be a row vector.");
             }
             double[] pmfArray = pmfMatrixToken.doubleMatrix()[0];
             double sum = DoubleArrayMath.sum(pmfArray);
             // Allow for roundoff error.
             if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this,
-                "Parameter values is required to sum to one.");
+                        "Parameter values is required to sum to one.");
             }
-       } else {
-          super.attributeChanged(attribute);
-       }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Allow the type of <i>values</i> to change. This will cause
@@ -138,19 +138,19 @@ public class DiscreteRandomSource extends RandomSource {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-       if (attribute == values) {
-           // set the output type to be the type of the
-           // element at values[0][0]
-           Token value = ((MatrixToken) values.getToken())
-                  .getElementAsToken(0, 0);
-           output.setTypeEquals(value.getType());
-           Director dir = getDirector();
-           if (dir != null) {
-              dir.invalidateResolvedTypes();
-           }
-       } else {
-          super.attributeTypeChanged(attribute);
-       }
+        if (attribute == values) {
+            // set the output type to be the type of the
+            // element at values[0][0]
+            Token value = ((MatrixToken) values.getToken())
+                .getElementAsToken(0, 0);
+            output.setTypeEquals(value.getType());
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateResolvedTypes();
+            }
+        } else {
+            super.attributeTypeChanged(attribute);
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -188,17 +188,17 @@ public class DiscreteRandomSource extends RandomSource {
         double[] pmfArray = pmfMatrixToken.doubleMatrix()[0];
         MatrixToken valuesMatrixToken = (MatrixToken) values.getToken();
         if (pmfArray.length != valuesMatrixToken.getColumnCount() ||
-               valuesMatrixToken.getRowCount() != 1) {
+                valuesMatrixToken.getRowCount() != 1) {
             throw new IllegalActionException(this,
-            "Parameters values and pmf are required to be row vectors "
-            + "of the same dimension.");
+                    "Parameters values and pmf are required to be row vectors "
+                    + "of the same dimension.");
         }
         double cdf = 0.0;
         for (int i = 0; i < pmfArray.length; i++) {
             cdf += pmfArray[i];
             if (randomValue <= cdf) {
-               _current = valuesMatrixToken.getElementAsToken(0, i);
-               return true;
+                _current = valuesMatrixToken.getElementAsToken(0, i);
+                return true;
             }
         }
         // We shouldn't get here, but if we do, we output the last value.

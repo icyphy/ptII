@@ -154,7 +154,7 @@ public class TrigFunction extends Transformer {
                 _function = TAN;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized trigonometric function: " + spec);
+                        "Unrecognized trigonometric function: " + spec);
             }
         }
     }
@@ -232,29 +232,29 @@ public class TrigFunction extends Transformer {
     private double _doFunction(double in) {
         double result;
         switch(_function) {
-            case ACOS:
-                result = Math.acos(in);
-                break;
-            case ASIN:
-                result = Math.asin(in);
-                break;
-            case ATAN:
-                result = Math.atan(in);
-                break;
-            case COS:
-                result = Math.cos(in);
-                break;
-            case SIN:
-                result = Math.sin(in);
-                break;
-            case TAN:
-                result = Math.tan(in);
-                break;
-            default:
-                throw new InternalErrorException(
-                "Invalid value for _function private variable. "
-                + "TrigFunction actor (" + getFullName()
-                + ")");
+        case ACOS:
+            result = Math.acos(in);
+            break;
+        case ASIN:
+            result = Math.asin(in);
+            break;
+        case ATAN:
+            result = Math.atan(in);
+            break;
+        case COS:
+            result = Math.cos(in);
+            break;
+        case SIN:
+            result = Math.sin(in);
+            break;
+        case TAN:
+            result = Math.tan(in);
+            break;
+        default:
+            throw new InternalErrorException(
+                    "Invalid value for _function private variable. "
+                    + "TrigFunction actor (" + getFullName()
+                    + ")");
         }
         return result;
     }

@@ -132,7 +132,7 @@ public class DB extends Transformer {
             } else {
                 outNumber = ptolemy.math.SignalProcessing.decibel( number );
                 if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
-System.out.println("dividing by 2.0");
+                    System.out.println("dividing by 2.0");
                     outNumber /= 2.0;
                 }
                 if ( outNumber < minValue ) {
