@@ -209,10 +209,11 @@ public class HTMLAbout {
         return htmlBuffer.toString();
     }
 
-    /** Call Configuration.openModel() on all the local .xml files that
-     *  are linked to from an HTML file.
+    /** Call Configuration.openModel() on all the local .xml, .htm and .html
+     *  files are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
-     *  to the .xml files.  If this argument is the empty string, then
+     *  to the .xml, .htm and .html files.
+     *  If this argument is the empty string, then
      *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched.
@@ -221,7 +222,7 @@ public class HTMLAbout {
             throws Exception {
 
         URL demosURL = _getDemoURL(demosFileName);
-        List modelList = _getModelURLs(demosURL);
+        List modelList = _getURLs(demosURL, ".*(.xml|.htm|.html)");
         Iterator models = modelList.iterator();
         while (models.hasNext()) {
             String model = (String)models.next();
@@ -341,7 +342,11 @@ public class HTMLAbout {
 
     // Return a list of URLs for local .xml files linked to in demosURL.
     private static List  _getModelURLs(URL demosURL) throws IOException {
+        return _getURLs(demosURL, ".xml$");
+    }
 
+    private static List _getURLs(URL demosURL, String regexp)
+            throws IOException {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                         demosURL.openStream()));
@@ -371,7 +376,7 @@ public class HTMLAbout {
                 String modelLink =
                     demos.substring(modelStartIndex + 6, modelEndIndex);
                 if (!modelLink.startsWith("http://")
-                        && modelLink.endsWith(".xml")) {
+                        && modelLink.matches(regexp)) {
                     // If the link does not start with http://, but ends
                     // with .xml, then we add it to the list
                     modelList.add(modelLink);
