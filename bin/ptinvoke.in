@@ -373,7 +373,12 @@ SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 # FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
 # In the short term, we just use TOSROOT, which the user should have
 # set during the installation of TinyOS.
-TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT}
+#
+# The problem is that the nesc/configure script does not understand
+# "c:/" style syntax, it works with "/cygdrive/c/", yet Java
+# does not understand /cygdrive/c syntax, so we hack
+TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
 
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
