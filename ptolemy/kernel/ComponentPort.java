@@ -266,7 +266,7 @@ public class ComponentPort extends Port {
         }
     }
 
-   /** Insert a link to the specified relation at the specified index,
+    /** Insert a link to the specified relation at the specified index,
      *  and notify the container by calling its connectionsChanged() method.
      *  This overrides the base class to allow inside links as well as links
      *  at the same level of the hierarchy.
