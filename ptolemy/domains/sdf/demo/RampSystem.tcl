@@ -48,7 +48,7 @@ $dir setScheduler $scheduler
 $dir setScheduleValid false
 
 set listener [java::new ptolemy.domains.sdf.lib.testlistener]
-$manager registerExecutionListener $listener
+$manager addExecutionListener $listener
 
 # Build the system
 set ramp [java::new ptolemy.domains.sdf.lib.SDFRamp $sys Ramp]
@@ -77,7 +77,7 @@ set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 java::call $debug register $debugger
 
 # Run it
-$manager go 5
+$manager blockingGo 5
 
 
 

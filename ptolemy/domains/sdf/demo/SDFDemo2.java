@@ -56,7 +56,7 @@ public class SDFdemo2 {
              
                 
       
-                m.go(6);
+                m.blockingGo(6);
         }
 }    
  
