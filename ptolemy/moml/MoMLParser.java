@@ -701,7 +701,6 @@ public class MoMLParser extends HandlerBase {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
                             _current.getAttribute(propertyName);
-
                     String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
@@ -728,7 +727,11 @@ public class MoMLParser extends HandlerBase {
                                 _parser.getLineNumber(),
                                 _parser.getColumnNumber());
                             }
-                            ((Variable)property).setExpression(value);
+                            Variable variable = (Variable)property;
+                            variable.setExpression(value);
+                            // Force evaluation so that any listeners
+                            // are notified.
+                            variable.getToken();
                         }
                     } else {
                         // Previously existing property with this name.
@@ -746,7 +749,11 @@ public class MoMLParser extends HandlerBase {
                             "property named \"" + propertyName
                             + "\" is not an instance of Variable,"
                             + " so its value cannot be set.");
-                            ((Variable)property).setExpression(value);
+                            Variable variable = (Variable)property;
+                            variable.setExpression(value);
+                            // Force evaluation so that any listeners
+                            // are notified.
+                            variable.getToken();
                         }
                     }
                     _containers.push(_current);

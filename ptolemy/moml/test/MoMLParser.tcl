@@ -403,7 +403,7 @@ test MoMLParser-1.10 {test with hierarchy} {
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
-        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="port" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -426,7 +426,7 @@ test MoMLParser-1.11 {test instantiation of a class} {
     "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
 <model name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
-        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="port" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -434,7 +434,7 @@ test MoMLParser-1.11 {test instantiation of a class} {
         </entity>
     </class>
     <entity name="b" class=".top.a">
-        <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
 </model>
@@ -462,7 +462,7 @@ test MoMLParser-1.12 {test instantiation of a class} {
     set b [$toplevel getEntity b]
     $b exportMoML
 } {<entity name="b" class=".a">
-    <property name="prop" class="ptolemy.data.expr.Parameter" value="x">
+    <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
 }
@@ -487,7 +487,7 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
 } {{<entity name="b" class=".a">
-    <property name="prop" class="ptolemy.data.expr.Parameter" value="x">
+    <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
 } {<entity name="c" class=".a">
