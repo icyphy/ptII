@@ -52,7 +52,7 @@ public class CSPProcessor extends CSPActor {
 
     /**
      */
-    public CSPProcessor(CompositeActor cont, String name) 
+    public CSPProcessor(CompositeActor cont, String name, int code) 
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          
@@ -60,6 +60,8 @@ public class CSPProcessor extends CSPActor {
          _requestIn = new IOPort(this, "requestIn", true, false);
          _memoryOut = new IOPort(this, "memoryOut", false, true);
          _memoryIn = new IOPort(this, "memoryIn", true, false);
+         
+         _code = code;
          
     }
          
@@ -71,24 +73,55 @@ public class CSPProcessor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
         
         // State 1 
-	System.out.println("STATE 1: " +getName());
-        double delayTime = java.lang.Math.random() * 10.0;
+        if( getName().equals("proc1") ) {
+	    System.out.println("STATE 1: " +getName());
+        } else if( getName().equals("proc2") ) {
+	    System.out.println("\tSTATE 1: " +getName());
+        } else {
+	    System.out.println("\t\tSTATE 1: " +getName());
+        }
+        double delayTime = java.lang.Math.random();
+        if( delayTime < 0.25 ) {
+            delayTime = 2.5;
+        } else if ( delayTime >= 0.25 && delayTime < 0.5 ) {
+            delayTime = 5.0;
+        } else if ( delayTime >= 0.5 && delayTime < 0.75 ) {
+            delayTime = 7.5;
+        } else {
+            delayTime = 10.0;
+        }
         System.out.println(getName()+" delaying for "+delayTime+" seconds.");
         delay( delayTime ); 
-        System.out.println(getName()+" is finished delaying.");
-        
-        // State 2 
-	System.out.println("STATE 2: " +getName());
         IntToken iToken = new IntToken( _code ); 
         _requestOut.broadcast(iToken); 
         
-        System.out.println(getName()+" is finished sending request.");
+        // State 2 
+        if( getName().equals("proc1") ) {
+	    System.out.println("STATE 2: " +getName());
+        } else if( getName().equals("proc2") ) {
+	    System.out.println("\tSTATE 2: " +getName());
+        } else {
+	    System.out.println("\t\tSTATE 2: " +getName());
+        }
+        BooleanToken bToken = (BooleanToken)_requestIn.get(0); 
         
         // State 3 
-	System.out.println("STATE 3: " +getName());
-        BooleanToken bToken = (BooleanToken)_requestIn.get(0); 
+        if( getName().equals("proc1") ) {
+	    System.out.println("STATE 3: " +getName());
+        } else if( getName().equals("proc2") ) {
+	    System.out.println("\tSTATE 3: " +getName());
+        } else {
+	    System.out.println("\t\tSTATE 3: " +getName());
+        }
         if( bToken.booleanValue() ) {
-            System.out.println(getName()+" is accessing memory");
+            // State 4
+            if( getName().equals("proc1") ) {
+	        System.out.println("STATE 4: " +getName());
+            } else if( getName().equals("proc2") ) {
+                System.out.println("\tSTATE 4: " +getName());
+            } else {
+                System.out.println("\t\tSTATE 4: " +getName());
+            }
             if( read ) {
                 _memoryIn.get(0);
             }
@@ -99,11 +132,21 @@ public class CSPProcessor extends CSPActor {
             return;
         }
         
-        // State 4
-	System.out.println("STATE 4: " +getName());
+        // System.out.println(getName()+ ": Negative Ack!!!");
         accessMemory(read);
     }
 
+    /**
+     */
+    public boolean endYet() {
+        double time = _dir.getCurrentTime();
+        if( time > 50.0 ) {
+            System.out.println(getName() + " is ending because of time.");
+            return true;
+        }
+        return false;
+    }
+    
     /**
      */
     public void fire() throws IllegalActionException {
@@ -113,9 +156,20 @@ public class CSPProcessor extends CSPActor {
             } else {
                 accessMemory(false);
             }
+            if( endYet() ) {
+                return;
+            }
         }
     }
         
+    /**
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        CompositeActor ca = (CompositeActor)getContainer();
+        _dir = (CSPDirector)ca.getDirector();
+    }
+    
     /**
      */
     public boolean performReadNext() {
@@ -134,4 +188,6 @@ public class CSPProcessor extends CSPActor {
     private IOPort _memoryOut;
     
     private int _code;
+    
+    private CSPDirector _dir;
 }
