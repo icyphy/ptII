@@ -47,7 +47,6 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
-	codegen.htm \
 	contents.css \
 	contentsheader.htm \
 	default.css \
@@ -124,14 +123,6 @@ ALLJSRCS =		$(PTINYJSRCS) \
 			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
-			ptolemy.lang \
-			ptolemy.lang.java \
-			ptolemy.lang.java.extended \
-			ptolemy.lang.java.nodetypes \
-			ptolemy.lang.java.tree \
-			ptolemy.codegen \
-			ptolemy.codegen.saveasjava \
-			ptolemy.domains.sdf.codegen \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml \
@@ -199,14 +190,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/data/type/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
-			../ptolemy/lang/*.java \
-			../ptolemy/lang/java/*.java \
-			../ptolemy/lang/java/extended/*.java \
-			../ptolemy/lang/java/nodetypes/*.java \
-			../ptolemy/lang/java/tree/*.java \
-			../ptolemy/codegen/*.java \
-			../ptolemy/codegen/saveasjava/*.java \
-			../ptolemy/domains/sdf/codegen \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
