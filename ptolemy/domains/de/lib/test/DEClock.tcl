@@ -52,11 +52,11 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test DEClock-2.1 {Test the constructors} {
     set ws [java::new ptolemy.kernel.util.Workspace]
-    set actor [java::new ptolemy.actor.CompositeActor $ws]
+    set actor [java::new ptolemy.actor.TypedCompositeActor $ws]
     set dir [java::new ptolemy.domains.de.kernel.DECQDirector]
     $actor setDirector $dir
-    set exe [java::new ptolemy.actor.Director]
-    $actor setExecutiveDirector $exe
+    set man [java::new ptolemy.actor.Manager]
+    $actor setManager $man
     set clock [java::new ptolemy.domains.de.lib.DEClock $actor "MyClock" 1.0 1.0]
     list \
 } {}
