@@ -335,7 +335,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  It then adjusts the workspace reference and clones the
      *  attributes on the attribute list, if there is one. In addition,
      *  if this object has the MoML element name "class", as determined
-     *  by className field of the associated MoMLInfo object,
+     *  by elementName field of the associated MoMLInfo object,
      *  then the new object will not export
      *  its contents when exportMoML() is called, but rather will
      *  declare that it extends this one, and will export only its attributes.
@@ -563,8 +563,7 @@ public class NamedObj implements Nameable, Debuggable,
      *      &lt;/<i>element</i>&gt;
      *  </pre>
      *  By default, the element name is "entity."  The default class name
-     *  is the Java classname of this instance.  This default is
-     *  represented by a null className field in the MoMLInfo object.
+     *  is the Java classname of this instance.
      *  The source attribute is by default left off altogether.
      *  <p>
      *  If this object has been cloned from another whose element name
@@ -996,7 +995,7 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Indicate that the description(int) method should include everything.
      */
-    public static final int COMPLETE = ~0;
+    public static final int COMPLETE = 0;
 
     /** Indicate that the description(int) method should include the class name.
      */
