@@ -38,7 +38,9 @@ import ptolemy.actor.process.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
+
 import java.util.Enumeration;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,7 +199,7 @@ public class TimedPNDirector extends BasePNDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TimedPNDirector newobj = (TimedPNDirector)super.clone(ws);
-	newobj._eventQueue = new CalendarQueue(new DoubleCQComparator());
+	newobj._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator());
 	newobj._delayBlockCount = 0;
 	newobj._mutationsRequested = false;
         return newobj;
@@ -272,7 +274,7 @@ public class TimedPNDirector extends BasePNDirector {
 	    throw new IllegalActionException(this, "The process wants to "
 		    + " get fired in the past!");
 	}
-        _eventQueue.put(new Double(newfiringtime), actor);
+        _eventQueue.put(new TimedEvent(newfiringtime, actor));
         _informOfDelayBlock();
         try {
             while (getCurrentTime() < newfiringtime) {
@@ -552,10 +554,9 @@ public class TimedPNDirector extends BasePNDirector {
 	    synchronized(this) {
 		try {
 		    //Take the first time-blocked process from the queue.
-		    _eventQueue.take();
+		    TimedEvent event = (TimedEvent)_eventQueue.take();
 		    //Advance time to the resumption time of this process.
-		    setCurrentTime(((Double)(_eventQueue.getPreviousKey()))
-			    .doubleValue());
+		    setCurrentTime(event.timeStamp);
 		    _informOfDelayUnblock();
 		} catch (IllegalActionException e) {
 		    throw new InternalErrorException("Inconsistency"+
@@ -572,11 +573,11 @@ public class TimedPNDirector extends BasePNDirector {
 		    if (!_eventQueue.isEmpty()) {
 			try {
 			    //Remove the first process from the queue.
-			    Actor actor = (Actor)_eventQueue.take();
+                            TimedEvent event = (TimedEvent)_eventQueue.take();
+			    Actor actor = (Actor)event.contents;
 			    //Get the resumption time of the newly removed
 			    //process.
-			    double newtime = ((Double)(_eventQueue.
-				    getPreviousKey())).doubleValue();
+			    double newtime = event.timeStamp;
 			    //If the resumption time of the newly removed
 			    //process is the same as the newly advanced time
 			    //then unblock it. Else put the newly removed
@@ -584,7 +585,7 @@ public class TimedPNDirector extends BasePNDirector {
 			    if (newtime == getCurrentTime()) {
 				_informOfDelayUnblock();
 			    } else {
-				_eventQueue.put (new Double(newtime), actor);
+				_eventQueue.put(new TimedEvent(newtime, actor));
 				sametime = false;
 			    }
 			} catch (IllegalActionException e) {
@@ -609,7 +610,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  at.
      */
     protected CalendarQueue _eventQueue =
-	    new CalendarQueue(new DoubleCQComparator());
+	    new CalendarQueue(new TimedEvent.TimeComparator());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
