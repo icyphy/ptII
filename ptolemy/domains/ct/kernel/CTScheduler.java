@@ -812,7 +812,8 @@ public class CTScheduler extends Scheduler{
             Iterator successors = successorList(generator).iterator();
             while(successors.hasNext()) {
                 Object nextActor = successors.next();
-                if (!_discretes.contains(nextActor)) {
+                if (!_discretes.contains(nextActor) && 
+                    !_waveGenerators.contains(nextActor)) {
                     throw new NotSchedulableException(getContainer(),
                             (NamedObj)nextActor
                             + " is a successor of an event generator "
@@ -827,7 +828,8 @@ public class CTScheduler extends Scheduler{
             Iterator predecessors = predecessorList(generator).iterator();
             while(predecessors.hasNext()) {
                 Object nextActor = predecessors.next();
-                if (!_discretes.contains(nextActor)) {
+                if (!_discretes.contains(nextActor) && 
+                    !_eventGenerators.contains(nextActor)) {
                     throw new NotSchedulableException (getContainer(),
                             (NamedObj)nextActor
                             + " is a predecessor of a waveform generator "
@@ -948,8 +950,6 @@ public class CTScheduler extends Scheduler{
 
             _scheduleList.addLast(_outputSchedule);
         }
-
-       
 
         setValid(true);
         return Collections.enumeration(_scheduleList);
