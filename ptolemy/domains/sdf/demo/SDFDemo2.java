@@ -1,3 +1,9 @@
+/** a demo for the SDF domain.  demonstrates an actor with more than one 
+ *  on each port.   
+ *  @author Steve Neuendorffer
+ *  @version $Id$
+ */
+
 package ptolemy.domains.sdf.demo;
 
 import ptolemy.kernel.*;
@@ -9,8 +15,6 @@ import ptolemy.domains.sdf.lib.*;
 import java.util.Enumeration;
 
 import gui.DynamicGraphView;
-
-import ptolemy.debug.*;
 
 public class SDFdemo2 {
 
