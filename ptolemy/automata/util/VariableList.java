@@ -1,6 +1,6 @@
 /* A VariableList contains a list of Variables.
 
- Copyright (c) 1997-%Q% The Regents of the University of California.
+ Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,26 +35,26 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import collections.LinkedList;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableList
 /**
 A VariableList contains a list of Variables.
 <p>
-Besides its function as aggregation of a set of variables, the variable
-list affects the variables contained in it in two ways: if setReportChange()
-has been called with a false argument, the variables in the list will not
-notify the parameters/variables that depends on them when their values
-change. If setRespondToChange() has been called with a false argument, then
-the variables in the list will not evaluate automatically when notified of
-changes in the parameters/variables they depend on, so it is the user's
-responsibility to call evaluate() on these variables before reading their 
-values.
-<p>
+Besides its function as an aggregation of a set of variables, the 
+variable list affects the behavior of the variables contained in it in 
+two ways: if setReportChange(false) has been called, the variables in 
+the list will not notify the parameters/variables that depends on them 
+when their values change. If setRespondToChange(false) has been called,
+then the variables in the list will not re-evaluate automatically when 
+notified of changes in the parameters/variables they depend on, so it 
+is the user's responsibility to call evaluate() on these variables 
+before reading their values.
 
 @author Xiaojun Liu
-@version %W% %G%
+@version $Id$
 @see ptolemy.automata.util.Variable
 */
 
@@ -104,8 +104,9 @@ public class VariableList extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a variable to this list. If there is already a variable
-     *  with the same name in the list, then throw a
+    /** Add a variable to this list. Notify the variables that have
+     *  included this list of variables in their scope. If there is 
+     *  already a variable with the same name in the list, throw a
      *  NameDuplicationException.
      *  @param var The variable to be added to the list.
      *  @exception IllegalActionException If the variable is not in the 
@@ -116,6 +117,8 @@ public class VariableList extends Attribute {
      */ 
     public void addVariable(Variable var) 
             throws IllegalActionException, NameDuplicationException {
+        // this._addAttribute(var) will be called consequently, and 
+        // the notification is done there
         var.setContainer(this);
     }
 
@@ -136,11 +139,14 @@ public class VariableList extends Attribute {
     }
 
     /** Create new variables in this list with the same name as the 
-     *  Nameable objects in the enumeration argument.
+     *  Nameable objects in the enumeration argument. Notify the 
+     *  variables that have included this list of variables in their 
+     *  scope.
      *  @param nameables An enumeration of Nameable objects specifying
      *   the names of variables to be created.
      *  @exception NameDuplicationException If there is already a
-     *   variable with the same name in the list. 
+     *   variable with the same name in the list, or if there are two
+     *   Nameable objects with the same name in the argument. 
      */
     public void createVariables(Enumeration nameables) 
             throws NameDuplicationException {
@@ -181,8 +187,8 @@ public class VariableList extends Attribute {
     }
 
     /** Remove a variable from this list. Do nothing if the variable
-     *  to be removed is not in this list. Notify all the dependents
-     *  of this list.
+     *  to be removed is not in this list. Notify the variables that 
+     *  have included this list of variables in their scope.
      *  @param var The variable to be removed from this list.
      */
     public void removeVariable(Variable var) {
@@ -190,21 +196,13 @@ public class VariableList extends Attribute {
             return;
         }
         try {
+            // this._addAttribute(var) will be called consequently, 
+            // and the notification is done there
             var.setContainer(null);
         } catch (IllegalActionException ex) {
             // this should not happen
         } catch (NameDuplicationException ex) {
             // this should not happen
-        }
-        if (_dependents == null) {
-            // nothing depends on variables in this list
-            return;
-        }
-        ParameterEvent event = new ParameterEvent(var);
-        Enumeration list = _dependents.elements();
-        while (list.hasMoreElements()) {
-            ParameterListener next = (ParameterListener)list.nextElement();
-            next.parameterRemoved(event);
         }
     }
 
@@ -213,7 +211,7 @@ public class VariableList extends Attribute {
      *  the variables in this list can take token as value. 
      *  @param token The value to be set to the variables.
      *  @exception IllegalArgumentException The token cannot be
-     *   placed in some variable in this list.
+     *   placed in some variables in this list.
      */ 
     public void setAllVariables(ptolemy.data.Token token) 
             throws IllegalArgumentException {
@@ -224,17 +222,17 @@ public class VariableList extends Attribute {
         }
     }
 
-    /** Specify the container NamedObj, adding this variable list to the
-     *  list of attributes of the argument if it is not null. Remove this 
-     *  variable list from the list of attributes of the current container 
-     *  and notify all dependent variables which are registered with this 
-     *  variable list that this list has been removed. If the container 
-     *  already contains an attribute with the same name, then throw an 
-     *  exception and make no change. Similarly, if the container is not 
-     *  in the same workspace as this list, throw an exception. If this 
-     *  list is already contained by the container, do nothing. If this 
-     *  list is on the directory of the workspace, then remove it from 
-     *  there. 
+    /** Specify the container NamedObj. Add this variable list to the
+     *  list of attributes of the argument if it is not null. Remove 
+     *  this variable list from the list of attributes of the current 
+     *  container and notify the variables that have included this 
+     *  list of variables in their scope that this list is removed. 
+     *  If the container already contains an attribute with the same 
+     *  name, then throw an exception and make no change. Similarly, 
+     *  if the container is not in the same workspace as this list, 
+     *  throw an exception. If this list is already contained by the 
+     *  container, do nothing. If this list is on the directory of the 
+     *  workspace, then remove it from there. 
      *  This method is write synchronized on the workspace and increments 
      *  its version number.
      *  @param container The container to attach this list as an attribute.
@@ -251,15 +249,16 @@ public class VariableList extends Attribute {
             return;
         }
         if (_dependents != null) {
-            Enumeration list = _dependents.elements();
-            while (list.hasMoreElements()) {
-                Variable next = (Variable)list.nextElement();
+            Enumeration vars = _dependents.elements();
+            while (vars.hasMoreElements()) {
+                Variable next = (Variable)vars.nextElement();
                 next.removeFromScope(this);
             }
+            _dependents.clear();
         }
         super.setContainer(container);
         return;
-    }        
+    }
 
     /** If the argument is false, the variables in this list will not 
      *  notify their dependents of changes in value.
@@ -295,17 +294,24 @@ public class VariableList extends Attribute {
             var.setToken(token);
         }
     }
-    
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Override the base class to throw an exception if the attribute
      *  is not a Variable. If it is, then invoke the base class method.
+     *  Notify the variables that have included this list of variables
+     *  in their scope. NameDuplicationException is thrown if there is
+     *  a variable with the same name as the argument in the scope of 
+     *  any of the variables which have included this list of variables
+     *  in their scope.
      *  This method should not be used directly. Use the setContainer()
      *  method of the variable instead.
-     *  @param attr The attribute to be added.
+     *  @param attr The attribute (variable) to be added.
      *  @exception NameDuplicationException If this list already has a 
-     *   variable with the same name.
+     *   variable with the same name, or there is a variable with the 
+     *   same name as the argument in the scope of any of the variables 
+     *   which have included this list of variables in their scope.
      *  @exception IllegalActionException If the attribute is not an
      *   instance of Variable.
      */
@@ -316,11 +322,14 @@ public class VariableList extends Attribute {
                     "Cannot add to variable list.");
         }
         super._addAttribute(attr);
+        _notifyAddVar((Variable)attr);
     }       
 
-    /** Add the variable to the list of dependents. These are notified
-     *  when a variable is removed from this list, or the list is moved
-     *  to another container.
+    /** Add the variable as a dependent of this variable list. A 
+     *  dependent is a variable having this list of variables in
+     *  its scope. These dependents are notified when a variable 
+     *  is added to or removed from this variable list, or this
+     *  list is moved to another container.
      *  @param var The dependent variable.
      */
     protected void _addDependent(Variable var) { 
@@ -332,6 +341,19 @@ public class VariableList extends Attribute {
         _dependents.insertAt(0, var);
     } 
 
+    /** Remove the given attribute. The attribute should be a variable
+     *  so notify dependents.
+     *  @param attr The attribute to be removed.
+     */
+    protected void _removeAttribute(NamedObj param) {
+        if (!(param instanceof Variable)) {
+            throw new InvalidStateException(this, param, 
+                    "VariableList can only have Variable as attribute.");
+        }
+        super._removeAttribute(param);
+        _notifyRemoveVar((Variable)param);
+    }
+
     /** Remove the variable from the list of dependents. Do nothing
      *  if the variable is not in the dependent list.
      *  @param var The variable to be removed from dependent list.
@@ -341,14 +363,51 @@ public class VariableList extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+    /*  Notify the dependent variables that the argument has been 
+     *  added to this variable list.
+     *  @param var The variable added to this variable list.
+     *  @exception NameDuplicationException If there is a variable 
+     *   with the same name as the argument already in a dependent
+     *   variable's scope.
+     */
+    private void _notifyAddVar(Variable var)
+            throws NameDuplicationException {
+        if (_dependents == null ) {
+            return;
+        }
+        Enumeration vars = _dependents.elements();
+        while (vars.hasMoreElements()) {
+            Variable next = (Variable)vars.nextElement();
+            next._addVarToScope(var);
+        }
+    }
+
+    /*  Notify the dependent variables that the argument is removed
+     *  from this variable list.
+     *  @param var The variable removed from this variable list.
+     */
+    private void _notifyRemoveVar(Variable var) {
+        if (_dependents == null ) {
+            return;
+        }
+        Enumeration vars = _dependents.elements();
+        while (vars.hasMoreElements()) {
+            Variable next = (Variable)vars.nextElement();
+            next._removeVarFromScope(var);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    /*  If false, the variables in this list will not notify their 
+    /** If false, the variables in this list will not notify their 
      *  dependents of changes in value. 
      */
     protected boolean _reportChange = true;
 
-    /*  If false, the variables in this list will not respond to 
+    /** If false, the variables in this list will not respond to 
      *  changes in value of the parameters/variables on which they 
      *  depend. The variables' evaluate() method should be called
      *  before accessing their value.
@@ -363,13 +422,4 @@ public class VariableList extends Attribute {
     private LinkedList _dependents = null;
 
 }
-     
-
-
-
-
-
-
-
-
 
