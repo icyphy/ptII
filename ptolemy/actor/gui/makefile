@@ -133,7 +133,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass $(PTCLASSJAR)
 
-
+demo: all
+	$(ROOT)/bin/ptolemy /users/cxh/ptII/ptolemy/moml/demo/modulation.xml 
+	$(ROOT)/bin/vergil /users/cxh/ptII/ptolemy/moml/demo/modulation.xml 
 depend:
 	@echo "no dependencies in this directory"
 
