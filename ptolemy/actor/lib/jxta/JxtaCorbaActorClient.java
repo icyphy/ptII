@@ -116,16 +116,24 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             _configDir = System.getProperty("user.dir");
             System.setProperty(_CONFIG_DIR, _configDir);
         }
-        try
-            {
-                InputStream configProperties = new FileInputStream(_configDir + "/" + _CONFIG_FILE);
-                _properties.load(configProperties);
-                configProperties.close();
-            }
-        catch( IOException e)
-            {
+        InputStream configProperties = null;
+        String configFile = _configDir + "/" + _CONFIG_FILE;
+        try {
+            configProperties = new FileInputStream(configFile);
+            _properties.load(configProperties);
+        } catch( IOException e) {
                 System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
+        } finally { 
+            if (configProperties != null) {
+                try {
+                    configProperties.close();
+                } catch (Throwable throwable) {
+                      System.out.println("Ignoring failure to close stream "
+                            + "on " + configFile + "'");
+                      throwable.printStackTrace();
+                }
             }
+        }
 
         PeerGroup netPeerGroup = null;
         try {

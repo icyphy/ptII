@@ -117,17 +117,25 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
         //} else {
         String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
         //}
+
         _properties = new Properties(System.getProperties());
-        try
-            {
-                InputStream configProperties = new FileInputStream(_CONFIG_FILE);
+        InputStream configProperties = null;
+        try {
+                configProperties = new FileInputStream(_CONFIG_FILE);
                 _properties.load(configProperties);
-                configProperties.close();
-            }
-        catch( IOException e)
-            {
+        } catch( IOException e) {
                 System.out.println( "Warning: Can't find configuration propertiees file. ' " + e.getMessage() + "'");
+        } finally { 
+            if (configProperties != null) {
+                try {
+                    configProperties.close();
+                } catch (Throwable throwable) {
+                      System.out.println("Ignoring failure to close stream "
+                            + "on '" + _CONFIG_FILE + "'");
+                      throwable.printStackTrace();
+                }
             }
+        }
 
         PeerGroup netPeerGroup = null;
         try {
@@ -309,9 +317,10 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
         // Get the responding peer's advertisement as a string
         String responderAdvString = response.getPeerAdv();
 
+        InputStream is = null;
         try {
             // create a peer advertisement
-            InputStream is = new ByteArrayInputStream(responderAdvString.getBytes());
+            is = new ByteArrayInputStream(responderAdvString.getBytes());
             PeerAdvertisement responderAdv = (PeerAdvertisement)
                 AdvertisementFactory.newAdvertisement(
                         XML_MIME_TYPE, is);
@@ -323,7 +332,18 @@ public class Peer extends TypedAtomicActor implements QueryHandler, DiscoveryLis
             System.out.println("Warning: cannot parse remote peer's advertisement.\n"
                     + e.getMessage());
             return;
+        } finally { 
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (Throwable throwable) {
+                      System.out.println("Ignoring failure to close stream "
+                            + "on remote peer's advertisement");
+                      throwable.printStackTrace();
+                }
+            }
         }
+
 
         // now print out each discovered peer
         PeerAdvertisement newAdv = null;
