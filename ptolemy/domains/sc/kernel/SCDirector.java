@@ -298,7 +298,7 @@ System.out.println("SCDirector: get controller's current refinement.");
 
 /* REMOVE! */
 //System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName()
-	+ " is " + result);
+//+ " is " + result);
         }
 
         // result = result & _controller.prefire();
