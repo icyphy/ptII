@@ -32,6 +32,10 @@
 
 
 
+if {[string compare removeGraphicalClasses [info procs removeGraphicalClasses]] != 0} \
+        then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+} {}
 
 proc speedComparison  {xmlFile \
 	{modelName "" } \
@@ -44,6 +48,11 @@ proc speedComparison  {xmlFile \
     global relativePathToPTII
     if { $modelName == "" } {
 	set parser [java::new ptolemy.moml.MoMLParser]
+
+	# Filter out graphical classes while inside MoMLParser
+	# See ptII/util/testsuite/removeGraphicalClasses.tcl
+	removeGraphicalClasses $parser
+
 	set toplevel [$parser parseFile $xmlFile]
 	set modelName [string range [$toplevel getFullName] 1 end]
     }
@@ -188,6 +197,11 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
     # For example ptolemy/domains/dt/kernel/test/auto/Chain3.xml defines
     # a system called TestChain3
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # Filter out graphical classes while inside MoMLParser
+    # See ptII/util/testsuite/removeGraphicalClasses.tcl
+    removeGraphicalClasses $parser
+
     set toplevel [$parser parseFile $modelPath]
     # Strip off the leading .
     set modelName [string range [$toplevel getFullName] 1 end]
