@@ -78,6 +78,7 @@ JSRCS = \
 	ConfigurationEffigy.java \
 	Configurer.java \
 	DebugListenerTableau.java \
+	DialogTableau.java \
 	EditorFactory.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \

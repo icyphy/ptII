@@ -159,7 +159,8 @@ public class DialogTableau extends Tableau {
             return newDialog;
         } catch (Exception ex) {
             MessageHandler.error(
-                "Failed to create a DialogTableau for " + target.getFullName());
+                "Failed to create a DialogTableau for " + target.getFullName(),
+                ex);
         }
         return null;
     }
