@@ -60,6 +60,7 @@ public abstract class UnsizedMatrixType extends StructuredType
     public UnsizedMatrixType(Class c, String name) {
         _tokenClass = c;
         _name = name;
+        BaseType._addType(this, name, c);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -357,12 +357,11 @@ public abstract class BaseType implements Type, Serializable {
     public static final GeneralType GENERAL = new GeneralType();
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private constructor                  ////
+    ////                    package private method                 ////
 
-    // The constructor is private to make a type safe enumeration.
-    private BaseType(Class c, String name) {
-        _tokenClass = c;
-        _name = name;
+    // Add entries in this class to index the given name and class to
+    // the given type.
+    static void _addType(Type type, String name, Class theClass) {
         // Because the private variables are below the public variables
         // that call this initializer,
         // it doesn't work to initialize this statically.
@@ -372,8 +371,18 @@ public abstract class BaseType implements Type, Serializable {
         if (_classNameToType == null) {
             _classNameToType = new HashMap();
         }
-        _nameToType.put(_name, this);
-        _classNameToType.put(c.getName(), this);
+        _nameToType.put(name, type);
+        _classNameToType.put(theClass.getName(), type);        
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private constructor                  ////
+
+    // The constructor is private to make a type safe enumeration.
+    private BaseType(Class c, String name) {
+        _tokenClass = c;
+        _name = name;
+        _addType(this, name, c);
     }
 
     ///////////////////////////////////////////////////////////////////
