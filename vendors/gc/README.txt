@@ -14,7 +14,7 @@ As of 4/03, we were using version 6.1
 
 To install, do
  
-cd $PTII/vendors/boehm
+cd $PTII/vendors/gc
 # Download
 http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
 tar -zxf gc.tar.gz
