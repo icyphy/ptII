@@ -118,11 +118,16 @@ char *header[] =
 
 char *jheader[] =
 {
+  "import java.io.BufferedReader;",
+  "import java.io.DataInputStream;",
+  "import java.io.InputStreamReader;",
+  "import java.io.InputStream;",
   "import java.io.File;",
-  "import java.io.RandomAccessFile;",
   "import java.io.FileReader;",
-  "import java.io.StreamTokenizer;",
   "import java.io.LineNumberReader;",
+  "import java.io.RandomAccessFile;",
+  "import java.io.Reader;",
+  "import java.io.StreamTokenizer;",
   "\n\n\n",
   "//#####################################################################",
   "@JAVA@// class: %s\n",
