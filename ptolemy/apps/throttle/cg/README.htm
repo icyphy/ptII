@@ -11,11 +11,57 @@
 to run.
 <code>sliding.xml</code> modified to run.
 This version uses the custom Sign actor.
+ <p>Below are instructions on how to run this model
+<ol>
+<li> Make the Sign actor in <CODE>$PTII/ptolemy/apps/cg</CODE>
+<pre>
+    c:\users\cxh\ptII\ptolemy\apps\throttle\cg 
+</pre>
+
+<li> Start up Vergil and display this file.
+<pre>
+$PTII/bin/vergil ptolemy/apps/throttle/cg/README.htm
+</pre>
+
+<li> Select <a href="sliding2.xml"><CODE>sliding2.xml</CODE></a>
+
+
+<li>  View -&gt; Generate Code
+
+<li> Change the directory, compile options and run options
+to match your system
+For example, in directory, 
+<pre>
+    c:\users\cxh\ptII\ptolemy\apps\throttle\cg 
+</pre>
+
+becomes
+<pre>
+    c:\ptII\ptolemy\apps\throttle\cg
+</pre>
+
+compile and run change from
+<pre>
+    -classpath "c:\users\cxh\ptII;"
+</pre>
+
+to
+<pre>
+    -classpath "c:\ptII;"
+</pre>
+
+If you make these changes and save the model, then you will not 
+need to make them each time
+
+
+<li>  Hit the Generate Button.  The run will take roughly 3.5 minutes
+
+</ol>
 
 
 <dt> <a href="Controller.xml"><CODE>Controller.xml</CODE></a>
 <dd> Composite Actor written by Edward A. Lee
-Edward wrote:
+ <br>Edward wrote:
 <BLOCKQUOTE>
 Attached is the model I started modifying.  It currently
 just outputs a sinewave, which is probably right...
