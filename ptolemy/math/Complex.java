@@ -63,7 +63,7 @@ public final class Complex implements Cloneable, Serializable {
 
     /** Construct a Complex equal to zero.
      */
-    public Complex () {
+    public Complex() {
         this.real = 0.0;
         this.imag = 0.0;
     }
@@ -71,7 +71,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Construct a Complex with a zero imaginary part.
      *  @param  real The real part.
      */
-    public Complex (double real) {
+    public Complex(double real) {
         this.real = real;
         this.imag = 0.0;
     }
@@ -80,7 +80,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param real The real part.
      *  @param imag The imaginary part.
      */
-    public Complex (double real, double imag) {
+    public Complex(double real, double imag) {
         this.real = real;
         this.imag = imag;
     }
@@ -97,7 +97,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param z A complex number.
      *  @return A new complex number.
      */
-    public Complex add (Complex z) {
+    public Complex add(Complex z) {
         return new Complex(real + z.real, imag + z.imag);
     }
 
@@ -109,7 +109,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex acos () {
+    public Complex acos() {
         Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
@@ -125,7 +125,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex acosh () {
+    public Complex acosh() {
         Complex c1 = new Complex(real*real-imag*imag-1.0, 2.0*real*imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
@@ -135,7 +135,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Return the angle or argument of this complex number.
      *  @return A number in the range -<em>pi</em> to <em>pi</em>.
      */
-    public double angle () {
+    public double angle() {
         return  Math.atan2(imag, real);
     }
 
@@ -147,7 +147,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex asin () {
+    public Complex asin() {
         Complex c1 = new Complex(1.0-real*real+imag*imag, -2.0*real*imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(c2.real-imag, c2.imag+real);
@@ -163,7 +163,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex asinh () {
+    public Complex asinh() {
         Complex c1 = new Complex(1.0+real*real-imag*imag, 2.0*real*imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
@@ -178,7 +178,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex atan () {
+    public Complex atan() {
         double denom = real*real+(imag+1.0)*(imag+1.0);
         Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
                 2.0*real/denom);
@@ -194,7 +194,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex atanh () {
+    public Complex atanh() {
         double denom = (1.0-real)*(1.0-real)+imag*imag;
         Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
                 2.0*imag/denom);
@@ -206,7 +206,7 @@ public final class Complex implements Cloneable, Serializable {
      *  of this complex number.
      *  @return A new complex number.
      */
-    public Complex conjugate () {
+    public Complex conjugate() {
         // Avoid negative zero.
         if (imag != 0.0) return  new Complex(real, -imag);
         else return new Complex(real, imag);
@@ -220,7 +220,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex cos () {
+    public Complex cos() {
         Complex c1 = new Complex(-imag, real);
         Complex c2 = c1.exp();
         Complex c3 = new Complex(imag, -real);
@@ -236,7 +236,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex cosh () {
+    public Complex cosh() {
         Complex c1 = exp();
         Complex c2 = new Complex(-real, -imag);
         Complex c3 = c1.add(c2.exp());
@@ -251,7 +251,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex cot () {
+    public Complex cot() {
         Complex c1 = tan();
         return c1.reciprocal();
     }
@@ -264,7 +264,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex csc () {
+    public Complex csc() {
         Complex c1 = sin();
         return c1.reciprocal();
     }
@@ -274,7 +274,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param divisor The denominator in the division.
      *  @return A new complex number.
      */
-    public Complex divide (Complex divisor) {
+    public Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denom = divisor.magSquared();
         return new Complex((real*divisor.real+imag*divisor.imag)/denom,
@@ -295,7 +295,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param z A complex exponent.
      *  @return A new complex number.
      */
-    public Complex exp () {
+    public Complex exp() {
         double magnitude =  Math.exp(real);
         return polarToComplex(magnitude, imag);
     }
@@ -305,7 +305,7 @@ public final class Complex implements Cloneable, Serializable {
      *  class.
      *  @return True if this is infinite.
      */
-    public boolean isInfinite () {
+    public boolean isInfinite() {
         return  ( Double.isInfinite(real) || Double.isInfinite(imag) );
     }
 
@@ -315,7 +315,7 @@ public final class Complex implements Cloneable, Serializable {
      *  class.
      *  @return True if this is NaN.
      */
-    public boolean isNaN () {
+    public boolean isNaN() {
         return  ( Double.isNaN(real) || Double.isNaN(imag) );
     }
 
@@ -328,14 +328,14 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex log () {
+    public Complex log() {
         return  new Complex( Math.log(mag()), angle() );
     }
 
     /** Return the magnitude or absolute value of this complex number.
      *  @return A non-negative number.
      */
-    public double mag () {
+    public double mag() {
         return Math.sqrt(magSquared());
     }
 
@@ -345,7 +345,7 @@ public final class Complex implements Cloneable, Serializable {
      *  result).
      *  @return A non-negative number.
      */
-    public double magSquared () {
+    public double magSquared() {
         return (real*real) + (imag*imag);
     }
 
@@ -354,14 +354,14 @@ public final class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      *  @see Complex#scale
      */
-    public Complex multiply (Complex w) {
+    public Complex multiply(Complex w) {
         return new Complex(w.real*real-w.imag*imag, w.real*imag+w.imag*real);
     }
 
     /** Negate both the real and imaginary parts of this complex number.
      *  @return A new complex number.
      */
-    public Complex negate () {
+    public Complex negate() {
         // Avoid negative zero.
         double r = 0.0;
         double i = 0.0;
@@ -375,7 +375,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param angle The angle.
      *  @return A new complex number.
      */
-    public static Complex polarToComplex (double magnitude, double angle) {
+    public static Complex polarToComplex(double magnitude, double angle) {
         if (magnitude < 0.0) {
             angle +=  Math.PI;
             magnitude = -magnitude;
@@ -391,7 +391,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param y A complex number.
      *  @return A new complex number.
      */
-    public Complex pow (Complex y) {
+    public Complex pow(Complex y) {
         // This formula follows from expanding the input form
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
@@ -406,7 +406,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Return a new complex number that is the reciprocal of this one.
      *  @return A new complex number.
      */
-    public Complex reciprocal () {
+    public Complex reciprocal() {
         // This algorithm results from writing 1/a as (a*)/magSquared(a).
         double magSquared = magSquared();
         return new Complex(real/magSquared, -imag/magSquared);
@@ -418,7 +418,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      *  @see Complex#multiply
      */
-    public Complex scale (double scalar) {
+    public Complex scale(double scalar) {
         return new Complex(real*scalar, imag*scalar);
     }
 
@@ -430,7 +430,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex sec () {
+    public Complex sec() {
         Complex c1 = cos();
         return c1.reciprocal();
     }
@@ -443,7 +443,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex sin () {
+    public Complex sin() {
         Complex c1 = new Complex(-imag, real);
         Complex c2 = c1.exp();
         Complex c3 = new Complex(imag, -real);
@@ -459,7 +459,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex sinh () {
+    public Complex sinh() {
         Complex c1 = exp();
         Complex c2 = new Complex(-real, -imag);
         Complex c3 = c1.subtract(c2.exp());
@@ -475,7 +475,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex sqrt () {
+    public Complex sqrt() {
         double magnitude = Math.sqrt(mag());
         double angle = angle()*0.5;
         return polarToComplex(magnitude, angle);
@@ -485,7 +485,7 @@ public final class Complex implements Cloneable, Serializable {
      *  @param w A complex number.
      *  @return A new complex number.
      */
-    public Complex subtract (Complex w) {
+    public Complex subtract(Complex w) {
         return new Complex(real-w.real, imag-w.imag);
     }
 
@@ -497,7 +497,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex tan () {
+    public Complex tan() {
         Complex c1 = sin();
         return c1.divide(cos());
     }
@@ -510,7 +510,7 @@ public final class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      *  @return A new complex number.
      */
-    public Complex tanh () {
+    public Complex tanh() {
         Complex c1 = sinh();
         return c1.divide(cosh());
     }
@@ -518,7 +518,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Return a string representation of this Complex.
      * @return A string of the form "<em>x</em> + <em>y</em>i".
      */
-    public String toString () {
+    public String toString() {
         if (imag >= 0) {
             return "" + real + " + " + imag + "i";
         } else {
