@@ -31,6 +31,7 @@
 package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.KernelException;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -85,11 +86,10 @@ public class StreamErrorHandler implements ErrorHandler {
             String element,
             NamedObj context,
             Throwable exception) {
-       String message = "Error encountered in:\n"
-               + element
-               + "\n"
-               + exception.getMessage();
-        _output.println(message);
+        _output.println("Error encountered in:\n"
+                + element
+                + "\n"
+                + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 
