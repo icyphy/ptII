@@ -77,8 +77,6 @@ all: jclass
 
 install: jclass jars
 
-demo: $(JCLASS)
-	java -classpath "$(CLASSPATH)" ptolemy.actor.gui.ptjacl.JTextAreaTclShell
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
