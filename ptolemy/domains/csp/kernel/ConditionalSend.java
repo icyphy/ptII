@@ -39,23 +39,35 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalSend
 /**
-Class for executing a conditional send in a separate thread.
-For rendezvous, the receiver is the key synchronization point.
-ConditionalSend branches are designed to be used once. Upon instantiation,
-private members are set to the receiver to try to send to, the parent
-object they are performing the conditional rendezvous for, and the
-identification number of the branch according to the parent.
+Represents a guarded communication statement in which the 
+communication is a send(). Thus is represents 
+<br>
+     guard; send() => statements
+<br>
+It is one branch of either a CDO or a CIF conditional 
+communication construct. 
 <p>
-A ConditionalSend branch is created to perform a single conditional
-communication. The information it contains in its private members is
-immutable and fixed upon creation. This class is designed to be executed
-in a separate thread. If it succeeds in rendezvousing, it notifies the
-parent actor and terminates. If it cannot rendezvous immediately, it waits
-until it can rendezvous or until it receives notification that another
-branch has succeeded , in which case it notifies the parent actor that
-it failed to rendezvous and terminates.
+The branches used in a conditional communication construct are 
+controlled by the chooseBranch method of CSPActor. Thus any actor 
+that wishes to use a CDO or a CIF must derive from CSPActor.
 <p>
-There are roughly three parts to the run method, each of which is relevant
+Each branch is created to perfrom one communication. If the guard for 
+the branch is true, then a thread is created for to try and perfrom 
+the appropriate rendezvous. If the branch 
+suceeds and is allowed to rendezvous, then it registers itself with 
+the parent actor and the thread it is running in dies. Otherwsise it 
+continues to trya nd rendezvous until it suceeds or it is notified that 
+another branch has suceeded in with its rendezvous, in which case this 
+branch has failed and the thread it is running in dies.
+<p>
+For rendezvous, the receiver is the key synchronization point. The 
+receiver with which this branch will try to rendezvous is set upon 
+instantiation. It is determined from the port and channel which is 
+passed in in the constructor.
+<p>
+The algorithm by which a branch determines whether or not it has 
+succeeded with its rendezvous is executed in the run method. There are 
+roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
 Case 1: There is a get already waiting at the rendezvous point. In this case
@@ -91,26 +103,27 @@ second to check that the rendezvous can proceed(see case 2).
 <p>
 @author  Neil Smyth
 @version $Id$
-
+<p>
+@see ptolemy.domains.csp.kernel.ConditionalBranch
 */
 
 public class ConditionalSend extends ConditionalBranch implements Runnable {
 
-    /** Create a conditional receive branch.
-     *  FIXME: perhaps could do away with a lot of these tests if conditional
-     *   branches are only called by parser generated code?
+    /** Create a guarded communication with a send communication.
+     *  @param guard The guard for the guarded communication statement
+     *   represented by this object.
      *  @param port The IOPort containing the channel (and thus receiver)
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @exception IllegalActionException thrown if the channel has more
+     *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalSend(IOPort port, int channel, int branch, Token t)
-            throws IllegalActionException {
-         super(port, branch);
+    public ConditionalSend(boolean guard, IOPort port, int channel, 
+            int branchID, Token t) throws IllegalActionException {
+         super(guard, port, branchID);
          Receiver[][] receivers;
          try {
              port.workspace().getReadAccess();
@@ -184,7 +197,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             if (getParent()._amIFirst(getID())) {
                                 // I am the branch that succeeds
                                 getReceiver().put(_token);
-                                getParent()._branchSucceeded(getID(), null);
+                                getParent()._branchSucceeded(getID());
                                 return;
                             } else {
                                 _checkAndWait();
@@ -210,7 +223,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             if (side2._amIFirst(getID())) {
                                 rec.put(_token);
                                 rec._setConditionalReceive(false, null);
-                                getParent()._branchSucceeded(getID(), null);
+                                getParent()._branchSucceeded(getID());
                                 return;
                             } else {
                                 // receive side not first, so release "first"
@@ -242,7 +255,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     CSPReceiver rec = getReceiver();
                                     rec._setConditionalSend(false, null);
                                     rec.put(_token);
-                                    getParent()._branchSucceeded(getID(),null);
+                                    getParent()._branchSucceeded(getID());
                                     return;
                                 }
                             }
@@ -261,17 +274,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     ": ConditionalSend terminated: " + ex.getMessage());
             getParent()._branchFailed(getID());
         } finally {
+            _token = null;
             getReceiver()._setConditionalSend(false, null);
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    /** The token this conditional send is trying to send. It is fixed
-     * upon creation of the branch (it is immutable).
-     */
-     protected Token _token;
 }
 
 
