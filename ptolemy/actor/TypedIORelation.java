@@ -35,7 +35,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
-import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
