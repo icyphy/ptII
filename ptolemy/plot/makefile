@@ -59,6 +59,8 @@ PTAUXJAR = plotapplet.jar
 JSRCS = \
 	CmdLineArgException.java \
 	EPSGraphics.java \
+	Histogram.java \
+	HistogramApplet.java \
 	LogicAnalyzer.java \
 	LogicAnalyzerFrame.java \
 	Message.java \

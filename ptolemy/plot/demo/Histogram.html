@@ -1,0 +1,40 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Histogram</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Histogram</h1>
+
+<p>
+<applet name="Histogram"
+    code="ptolemy.plot.HistogramApplet"
+    width=500 height=300
+    codebase="../../.."
+    archive="ptolemy/plot/ptolemy.plotapplet.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+<p>
+
+The above applet shows three histograms. The one in red is a histogram
+of a cosine signal with amplitude 5.0, showing that fewer values lie in
+the ranges in the middle than near the amplitude extremes.
+Each bar is centered in the middle of a histogram bin.
+The height of each bar represents the number of samples that lie
+within that bin.  The bar is not as wide as the bin so that multiple
+histograms show at once.
+<p>
+The blue histogram represents 1000 random numbers in the range (-5.0, 5.0).
+The cyan histogram represents 1000 Gaussian random numbers with
+mean zero and standard deviation 2.0.
+<p>
+<a href="../doc/toc.html" target="contents"><img src="../../../doc/img/up.gif" alt="up to main plot menu"></a>
+<a href="Marks.html" target="main"><img src="../../../doc/img/next.gif" alt="forward to next demo"></a>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
