@@ -153,15 +153,11 @@ public class HTMLViewer extends TableauFrame
             // will expand the configuration and report any problems
             if (event.getDescription()
                     .startsWith("about:expandConfiguration")) {
-                System.out.println("Expanding " + event.getDescription());
                 try {
                     URI aboutURI = new URI(event.getDescription());
-                    System.out.println("uri: " + aboutURI);
-                    System.out.println("uri.getFragment: " + aboutURI.getFragment());
                     String moml =
                         HTMLAbout.expandConfiguration(aboutURI.getFragment());
 
-                    System.out.println("moml.length: " + moml.length());
                     // Generate a copyright page in a temporary file
                     File temporaryFile = File.createTempFile(
                             "configuration", "htm");
@@ -171,8 +167,6 @@ public class HTMLViewer extends TableauFrame
                     fileWriter.write(moml, 0 , moml.length());
                     fileWriter.close();
                     newURL = temporaryFile.toURL();
-                    System.out.println("fileWriter:" + fileWriter);
-                    System.out.println("newURL: " + newURL);
                 } catch (Exception ex) {
                     new RuntimeException("Can't expand "
                             + event.getDescription(), ex);
