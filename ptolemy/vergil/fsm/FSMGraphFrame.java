@@ -44,6 +44,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.vergil.basic.BasicGraphFrame;
 
 import javax.swing.JMenu;
@@ -98,6 +99,7 @@ public class FSMGraphFrame extends BasicGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
+            new JMenuItem("Listen to Director", KeyEvent.VK_D),
             new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
             new JMenuItem("Animate States", KeyEvent.VK_A),
             new JMenuItem("Stop Animating", KeyEvent.VK_S),
@@ -179,7 +181,18 @@ public class FSMGraphFrame extends BasicGraphFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             try {
-                if (actionCommand.equals("Listen to State Machine")) {
+                if(actionCommand.equals("Listen to Director")) {
+                    Effigy effigy = (Effigy)getTableau().getContainer();
+                    // Create a new text effigy inside this one.
+                    Effigy textEffigy = new TextEffigy(effigy,
+                            effigy.uniqueName("debug listener"));
+                    DebugListenerTableau tableau =
+                            new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"));
+                    tableau.setDebuggable(
+                                  ((FSMActor)getModel()).getDirector());
+                }
+                else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy)getTableau().getContainer();
                     // Create a new text effigy inside this one.
                     Effigy textEffigy = new TextEffigy(effigy,
