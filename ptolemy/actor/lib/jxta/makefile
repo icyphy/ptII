@@ -50,18 +50,31 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JxtaCorbaActorClient.java
+	JxtaCorbaActorClient.java \
+	MoMLSimpleApplication.java \
+	Peer.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	Peer.properties \
+	PtolemyActorExchangeGroup.adv \
+	actors.xml \
+	jxta.xml \
+	model.xml \
+	test.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
+	 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
