@@ -10,6 +10,7 @@ import diva.graph.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
+import diva.canvas.connector.*;
 import diva.canvas.toolbox.*;
 import diva.util.gui.TutorialWindow;
 
@@ -40,13 +41,30 @@ import javax.swing.SwingUtilities;
  */
 public class BusContentionDemo_diva {
 
-    private BusContentionDemo_diva() {
+    public BusContentionDemo_diva() {
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          main method                      ////
+
+    public static void main(String argv[]) {
+        BusContentionDemo_diva demo = new BusContentionDemo_diva();
+
+	demo.initializeDemo();
+	demo.runDemo();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     */
+    public void initializeDemo() {
         _nodeMap = new HashMap();
         _jgraph = new JGraph();
 
         // Construct the Ptolemy kernel topology
-        CompositeActor topLevelActor = constructPtolemyModel();
+        _topLevelActor = constructPtolemyModel();
 
         // Construct the graph representing the PN topology
         GraphModel model = constructDivaGraph();
@@ -59,7 +77,11 @@ public class BusContentionDemo_diva {
             ex.printStackTrace();
             System.exit(0);
         }
+    }
  
+    /**
+     */
+    public void runDemo() {
         // Add the State Listener
         StateListener listener = 
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
@@ -69,16 +91,9 @@ public class BusContentionDemo_diva {
 
         // Run the model
 	System.out.println("Connections made");
- 	topLevelActor.getManager().run();
+ 	_topLevelActor.getManager().run();
         System.out.println("Bye World\n");
 	return;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          main method                      ////
-
-    public static void main(String argv[]) {
-        new BusContentionDemo_diva();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,7 +226,7 @@ public class BusContentionDemo_diva {
         
         // Display the window
         _window.getContentPane().add("Center", g);
-        _window.setSize(800, 300);
+        _window.setSize(500, 500);
         _window.setLocation(100, 100);
         _window.setVisible(true);
 
@@ -220,6 +235,7 @@ public class BusContentionDemo_diva {
         GraphPane gp = (GraphPane) g.getCanvasPane();
         GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
+        gv.setEdgeRenderer(new LocalEdgeRenderer());
         g.setGraphModel(model);
 
         // Do the layout
@@ -248,6 +264,8 @@ public class BusContentionDemo_diva {
     CSPProcessor _processActor1;
     CSPProcessor _processActor2;
     CSPProcessor _processActor3;
+
+    CompositeActor _topLevelActor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -356,5 +374,35 @@ public class BusContentionDemo_diva {
             w.getLabel().setAnchor(SwingConstants.NORTH);
             return w;
         }
+    }
+
+    //////////////////////////////////
+    //// LocalEdgeRenderer
+
+    /**
+     * LocalEdgeRenderer draws arrowheads on both ends of the connector
+     */
+    public class LocalEdgeRenderer implements EdgeRenderer {
+      /**
+       * Render the edge
+       */
+      public Connector render (Edge edge, Site tailSite, Site headSite) {
+	StraightConnector c = new StraightConnector(tailSite, headSite);
+
+	// Create an arrow at the head
+	Arrowhead headArrow = new Arrowhead(
+					    headSite.getX(), headSite.getY(),
+					    headSite.getNormal());
+	c.setHeadEnd(headArrow);
+
+	// Create an arrow at the tail
+	Arrowhead tailArrow = new Arrowhead(
+					    tailSite.getX(), tailSite.getY(),
+					    tailSite.getNormal());
+	c.setTailEnd(tailArrow);
+
+	c.setUserObject(edge);
+	return c;
+      }
     }
 }
