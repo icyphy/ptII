@@ -33,6 +33,7 @@
 # Mixed case words are split into their constituent words
 
 # If the local dictionary can be found, use it
+# Keep the local dictionary in sort order
 LOCALFILE=
 if [ -f "$PTII/util/testsuite/ptlocaldict" ]; then
 	LOCALFILE="+$PTII/util/testsuite/ptlocaldict"
@@ -40,7 +41,8 @@ else
 	echo "$0: The Ptolemy II local dictionary at '$PTII/util/testsuite/ptlocaldict' can't be found"
 fi
 
+# The sed calls split up words with internal capitalization
 spell $LOCALFILE ${1+"$@"} |
 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' \
-	    -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' \
-	    -e 's/\./ /g'  | spell 
+	    -e 's/^\([A-Z]*\)\([A-Z][^A-Z]+$\)/\1 \2/g' \
+	    -e 's/\./ /g'  | spell $LOCALFILE
