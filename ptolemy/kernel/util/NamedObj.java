@@ -390,7 +390,11 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newObject._attributes = null;
-            newObject._workspace = workspace;
+            if(workspace == null) {
+                newObject._workspace = _DEFAULT_WORKSPACE;
+            } else {
+                newObject._workspace = workspace;
+            }
             newObject._fullNameVersion = -1;
 
             if (_attributes != null) {
