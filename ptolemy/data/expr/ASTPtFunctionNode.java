@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import java.lang.reflect.*;
 import java.util.Enumeration;
 import collections.LinkedList;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionNode
@@ -66,7 +67,6 @@ and evaluate the parse tree for the expression argument to obtain
 the Token to be stored in this node.
 <p>
 FIXME: add note about function argument types and the return type.
-FIXME: need to add in ComplexToken when it is written.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -88,20 +88,21 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             String exp = "";
             try {
                 if (parser == null) {
-                    System.out.println("HELP!!!");
+                    throw new InvalidStateException("ASTPtFunctionNode: " +
+                            " recursive call to null parser.");
                 }
                 NamedList scope = parser.getScope();
                 exp = childTokens[0].stringValue();
                 ASTPtRootNode tree = parser.generateParseTree(exp, scope);
                 return tree.evaluateParseTree();
             } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("ASTPtFunctionNode: could " +
-                "not parse and evaluate expression " + exp + ", " + 
-                ex.getMessage());
+                throw new IllegalArgumentException("ASTPtFunctionNode: " +
+                        "could not parse and evaluate expression " + exp + 
+                        ", " + ex.getMessage());
             } catch (IllegalArgumentException ex) {
-                throw new IllegalArgumentException("ASTPtFunctionNode: could " +
-                "not parse and evaluate expression " + exp + ", " + 
-                ex.getMessage());
+                throw new IllegalArgumentException("ASTPtFunctionNode: " +
+                        "could not parse and evaluate expression " + exp + 
+                        ", " + ex.getMessage());
             }
         }
 
@@ -127,6 +128,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (child instanceof BooleanToken) {
                 argValues[i] = new Boolean(((BooleanToken)child).getValue());
                 argTypes[i] = Boolean.TYPE;
+            } else if (child instanceof ComplexToken) {
+                argValues[i] = ((ComplexToken)child).getValue();
+                argTypes[i] = argValues[i].getClass();;
             } else {
                 throw new IllegalArgumentException("FunctionNode: "+
                         "Invalid argument  type, valid types are: " +
@@ -167,6 +171,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     return new StringToken((String)result);
                 } else if (result instanceof Boolean) {
                     return new BooleanToken(((Boolean)result).booleanValue());
+                } else if (result instanceof Complex) {
+                    return new ComplexToken((Complex)result);
                 } else  {
                     throw new IllegalArgumentException("FunctionNode: "+
                         "result of function " + funcName + " not a valid type"+
