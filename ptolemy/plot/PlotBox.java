@@ -248,7 +248,7 @@ public class PlotBox extends Applet {
          // NOTE: We assume a one-line title.
          int titley = 0;
          int titlefontheight = tfm.getHeight();
-         if (_title != null || __yExp != 0) {
+         if (_title != null || _yExp != 0) {
              titley = titlefontheight + _topPadding;
          }
         
@@ -261,7 +261,7 @@ public class PlotBox extends Applet {
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
         int ySPos = drawRect.y + drawRect.height - 5; 
-        if (_xExp != 0 && __xticks == null) {
+        if (_xExp != 0 && _xticks == null) {
             int xSPos = drawRect.x + drawRect.width - _rightPadding;
             String superscript = Integer.toString(_xExp);
             xSPos -= sfm.stringWidth(superscript);
@@ -286,7 +286,7 @@ public class PlotBox extends Applet {
         _lry = drawRect.height-labelheight-_bottomPadding-3; 
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
-        _ytickscale = height/(__yMax - __yMin);
+        _ytickscale = height/(_yMax - __yMin);
 
         ///////////////////// vertical axis
 
@@ -294,7 +294,7 @@ public class PlotBox extends Applet {
         // NOTE: subjective spacing factor.
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
-        double yStep=_roundUp((__yMax-__yMin)/(double)ny);
+        double yStep=_roundUp((_yMax-__yMin)/(double)ny);
         
         // Compute y starting point so it is a multiple of yStep.
         double yStart=yStep*Math.ceil(_yMin/yStep);
@@ -315,7 +315,7 @@ public class PlotBox extends Applet {
         int ind = 0;
         if (_yticks == null) {
             // automatic ticks
-            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 // NOTE: The following clever solution doesn't always work:
@@ -365,7 +365,7 @@ public class PlotBox extends Applet {
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
-        _xtickscale = width/(__xMax - __xMin);
+        _xtickscale = width/(_xMax - __xMin);
         
         // White background for the plotting rectangle
         graphics.setColor(Color.white);
@@ -382,10 +382,10 @@ public class PlotBox extends Applet {
         if (_yticks == null) {
             // auto-ticks
             ind = 0;
-            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                int yCoord1 = _lry - (int)((ypos-_yMin)*__ytickscale);
+                int yCoord1 = _lry - (int)((ypos-_yMin)*_ytickscale);
                 // The lowest label is shifted up slightly to avoid
                 // colliding with x labels.
                 int offset = 0;
@@ -448,7 +448,7 @@ public class PlotBox extends Applet {
             // NOTE: 5 additional pixels between labels.
             int nx = 2 + width/(maxlabelwidth+5);
             // Compute x increment.
-            double xStep=_roundUp((__xMax-__xMin)/(double)nx);
+            double xStep=_roundUp((_xMax-__xMin)/(double)nx);
         
             // Compute x starting point so it is a m_ultiple of xStep.
             double xStart=xStep*Math.ceil(_xMin/xStep);
@@ -461,7 +461,7 @@ public class PlotBox extends Applet {
             for (double xpos=xStart; xpos <= _xMax; xpos += xStep) {
                 String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
 						 * 0.001);
-                xCoord1 = _ulx + (int)((xpos-_xMin)*__xtickscale);
+                xCoord1 = _ulx + (int)((xpos-_xMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -481,7 +481,7 @@ public class PlotBox extends Applet {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
                 if (xpos > _xMax || xpos < _xMin) continue;
-                xCoord1 = _ulx + (int)((xpos-_xMin)*__xtickscale);
+                xCoord1 = _ulx + (int)((xpos-_xMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -690,15 +690,15 @@ public class PlotBox extends Applet {
         boolean pointinside = y <= _lry && y >= _uly &&
 	    x <= _lrx && x >= _ulx;
         // erase previous rectangle, if there was one.
-        if ((_zoomx != -1 || __zoomy != -1) && pointinside) {
+        if ((_zoomx != -1 || _zoomy != -1) && pointinside) {
             // Ability to zoom out added by William Wu.
             // If we are not already zooming, figure out whether we
             // are zooming in or out.
-            if (_zoomin == false && __zoomout == false){
+            if (_zoomin == false && _zoomout == false){
                 if (y < _zoomy) {
                     _zoomout = true;
                     // Draw reference box.
-                    graphics.drawRect(_zoomx-15, __zoomy-15, 30, 30);
+                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
                 } else if (y > _zoomy) {
                     _zoomin = true; 
                 }
@@ -707,21 +707,21 @@ public class PlotBox extends Applet {
             if (_zoomin == true){   
                 graphics.setXORMode(Color.white);
                 // Erase the previous box if necessary.
-                if ((_zoomxn != -1 || __zoomyn != -1) && (__drawn == true)) {
-                    int minx = Math.min(_zoomx, __zoomxn);
-                    int maxx = Math.max(_zoomx, __zoomxn);
-                    int miny = Math.min(_zoomy, __zoomyn);
-                    int maxy = Math.max(_zoomy, __zoomyn);
+                if ((_zoomxn != -1 || _zoomyn != -1) && (__drawn == true)) {
+                    int minx = Math.min(_zoomx, _zoomxn);
+                    int maxx = Math.max(_zoomx, _zoomxn);
+                    int miny = Math.min(_zoomy, _zoomyn);
+                    int maxy = Math.max(_zoomy, _zoomyn);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 }
                 // Draw a new box if necessary.
                 if (y > _zoomy) {
                     _zoomxn = x;
                     _zoomyn = y;
-                    int minx = Math.min(_zoomx, __zoomxn);
-                    int maxx = Math.max(_zoomx, __zoomxn);
-                    int miny = Math.min(_zoomy, __zoomyn);
-                    int maxy = Math.max(_zoomy, __zoomyn);
+                    int minx = Math.min(_zoomx, _zoomxn);
+                    int maxx = Math.max(_zoomx, _zoomxn);
+                    int miny = Math.min(_zoomy, _zoomyn);
+                    int maxy = Math.max(_zoomy, _zoomyn);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                     graphics.setPaintMode();
                     _drawn = true;
@@ -730,18 +730,18 @@ public class PlotBox extends Applet {
             } else if (_zoomout == true){
                 graphics.setXORMode(Color.white);
                 // Erase previous box if necessary.
-                if ((_zoomxn != -1 || __zoomyn != -1) && (__drawn == true)) {
-                    int x_diff = Math.abs(_zoomx-__zoomxn);
-                    int y_diff = Math.abs(_zoomy-__zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, __zoomy-15-y_diff,
+                if ((_zoomxn != -1 || _zoomyn != -1) && (__drawn == true)) {
+                    int x_diff = Math.abs(_zoomx-_zoomxn);
+                    int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                            30+x_diff*2, 30+y_diff*2);
                 }
                 if (y < _zoomy){
                     _zoomxn = x;
                     _zoomyn = y;     
-                    int x_diff = Math.abs(_zoomx-__zoomxn);
-                    int y_diff = Math.abs(_zoomy-__zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, __zoomy-15-y_diff,
+                    int x_diff = Math.abs(_zoomx-_zoomxn);
+                    int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
                     graphics.setPaintMode();
                     _drawn = true;
@@ -764,12 +764,12 @@ public class PlotBox extends Applet {
 	    x <= _lrx && x >= _ulx;
         boolean handled = false;
         if (_zoomin == true){  
-            if (_zoomxn != -1 || __zoomyn != -1) {
+            if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
-                int minx = Math.min(_zoomx, __zoomxn);
-                int maxx = Math.max(_zoomx, __zoomxn);
-                int miny = Math.min(_zoomy, __zoomyn);
-                int maxy = Math.max(_zoomy, __zoomyn);
+                int minx = Math.min(_zoomx, _zoomxn);
+                int maxx = Math.max(_zoomx, _zoomxn);
+                int miny = Math.min(_zoomy, _zoomyn);
+                int maxy = Math.max(_zoomy, _zoomyn);
                 graphics.setXORMode(Color.white);
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
@@ -790,9 +790,9 @@ public class PlotBox extends Applet {
         } else if (_zoomout == true){
             // Erase previous rectangle.
             graphics.setXORMode(Color.white);
-            int x_diff = Math.abs(_zoomx-__zoomxn);
-            int y_diff = Math.abs(_zoomy-__zoomyn);
-            graphics.drawRect(_zoomx-15-x_diff, __zoomy-15-y_diff,
+            int x_diff = Math.abs(_zoomx-_zoomxn);
+            int y_diff = Math.abs(_zoomy-_zoomyn);
+            graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                     30+x_diff*2, 30+y_diff*2);
             graphics.setPaintMode();
             if (pointinside) {
@@ -814,8 +814,8 @@ public class PlotBox extends Applet {
             handled = true;
         }
         _drawn = false;
-        _zoomin = __zoomout = false;
-        _zoomxn = __zoomyn = __zoomx = __zoomy = -1;
+        _zoomin = _zoomout = false;
+        _zoomxn = _zoomyn = __zoomx = __zoomy = -1;
         return handled;
     }
 
@@ -1196,9 +1196,9 @@ public class PlotBox extends Applet {
         }
         // Find the exponent.
         double largest = Math.max(Math.abs(min),Math.abs(max));
-        _xExp = (int) Math.floor(Math.log(largest)*__log10scale);
+        _xExp = (int) Math.floor(Math.log(largest)*_log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
-        if (_xExp > 1 || __xExp < -1) {
+        if (_xExp > 1 || _xExp < -1) {
             double xs = 1.0/Math.pow(10.0,(double)_xExp);
             _xMin = min*xs;
             _xMax = max*xs;
@@ -1226,15 +1226,15 @@ public class PlotBox extends Applet {
         }
         // Find the exponent.
         double largest = Math.max(Math.abs(min),Math.abs(max));
-        _yExp = (int) Math.floor(Math.log(largest)*__log10scale);
+        _yExp = (int) Math.floor(Math.log(largest)*_log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
-        if (_yExp > 1 || __yExp < -1) {
+        if (_yExp > 1 || _yExp < -1) {
             double ys = 1.0/Math.pow(10.0,(double)_yExp);
-            __yMin = min*ys;
-            __yMax = max*ys;
+            _yMin = min*ys;
+            _yMax = max*ys;
         } else {
-            __yMin = min;
-            __yMax = max;
+            _yMin = min;
+            _yMax = max;
             _yExp = 0;
         }
         _yMin = min;
@@ -1252,9 +1252,9 @@ public class PlotBox extends Applet {
     private boolean _binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double __yMax, __yMin, __xMax, __xMin;
+    private double _yMax, __yMin, __xMax, __xMin;
     // The power of ten by which the range numbers should be multiplied.
-    private int _yExp, __xExp;
+    private int _yExp, _xExp;
 
     // Scaling used in making tick marks
     private double _ytickscale, _xtickscale;
@@ -1268,14 +1268,14 @@ public class PlotBox extends Applet {
     private String _errorMsg[];
     
     // The title and label strings.
-    private String _xlabel, __ylabel, __title;
+    private String _xlabel, _ylabel, __title;
     
     // Legend information.
     private Vector _legendStrings;
     private Vector _legendDatasets;
     
     // If XTicks or YTicks are given
-    private Vector _xticks, __xticklabels, __yticks, __yticklabels;
+    private Vector _xticks, _xticklabels, __yticks, __yticklabels;
 
     // A button for filling the plot
     private Button _fillButton;

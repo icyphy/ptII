@@ -173,7 +173,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     
     private Thread _plotThread;
    
-    private Button _startButton, __stopButton;
+    private Button _startButton, _stopButton;
     
     private boolean _running = false;
 }

@@ -597,8 +597,8 @@ public class Plot extends PlotBox {
                 break;
             case 2:
                 // dots
-                graphics.fillOval(xpos-_radius, ypos-__radius,
-				   _diameter, __diameter); 
+                graphics.fillOval(xpos-_radius, ypos-_radius,
+				   _diameter, _diameter); 
                 break;
             case 3:
                 // marks
@@ -606,28 +606,28 @@ public class Plot extends PlotBox {
                 switch (dataset) {
                     case 0:
                         // filled circle
-                        graphics.fillOval(xpos-_radius, ypos-__radius,
-					  _diameter, __diameter); 
+                        graphics.fillOval(xpos-_radius, ypos-_radius,
+					  _diameter, _diameter); 
                         break;
                     case 1:
                         // cross
-                        graphics.drawLine(xpos-_radius, ypos-__radius,
-					  xpos+_radius, ypos+__radius); 
-                        graphics.drawLine(xpos+_radius, ypos-__radius,
-					  xpos-_radius, ypos+__radius); 
+                        graphics.drawLine(xpos-_radius, ypos-_radius,
+					  xpos+_radius, ypos+_radius); 
+                        graphics.drawLine(xpos+_radius, ypos-_radius,
+					  xpos-_radius, ypos+_radius); 
                         break;
                     case 2:
                         // square
-                        graphics.drawRect(xpos-_radius, ypos-__radius,
-					  _diameter, __diameter); 
+                        graphics.drawRect(xpos-_radius, ypos-_radius,
+					  _diameter, _diameter); 
                         break;
                     case 3:
                         // filled triangle
                         xpoints = new int[4];
                         ypoints = new int[4];
                         xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+__radius;
-                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+__radius;
+                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+_radius;
+                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+_radius;
                         xpoints[3] = xpos; ypoints[3] = ypos-_radius;
                         graphics.fillPolygon(xpoints, ypoints, 4);
                         break;
@@ -644,28 +644,28 @@ public class Plot extends PlotBox {
                         break;
                     case 5:
                         // circle
-                        graphics.drawOval(xpos-_radius, ypos-__radius,
-					  _diameter, __diameter); 
+                        graphics.drawOval(xpos-_radius, ypos-_radius,
+					  _diameter, _diameter); 
                         break;
                     case 6:
                         // plus sign
                         graphics.drawLine(xpos, ypos-_radius, xpos,
 					  ypos+_radius); 
-                        graphics.drawLine(xpos-_radius, ypos, xpos+__radius,
+                        graphics.drawLine(xpos-_radius, ypos, xpos+_radius,
 					  ypos); 
                         break;
                     case 7:
                         // filled square
-                        graphics.fillRect(xpos-_radius, ypos-__radius,
-					  _diameter, __diameter); 
+                        graphics.fillRect(xpos-_radius, ypos-_radius,
+					  _diameter, _diameter); 
                         break;
                     case 8:
                         // triangle
                         xpoints = new int[4];
                         ypoints = new int[4];
                         xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+__radius;
-                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+__radius;
+                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+_radius;
+                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+_radius;
                         xpoints[3] = xpos; ypoints[3] = ypos-_radius;
                         graphics.drawPolygon(xpoints, ypoints, 4);
                         break;
@@ -841,7 +841,7 @@ public class Plot extends PlotBox {
     private int _diameter = 6;
     
     // Information about the previously plotted point.
-    private int _prevx[], __prevy[];
+    private int _prevx[], _prevy[];
     // Maximum number of _datasets.
     private static final int _MAX_DATASETS = 63;
 }
