@@ -63,7 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(MODELS) \
 	$(C_FILES) \
 	$(H_FILES) \
-	main.c
+	README.htm
 
 EXTRA_SRCS = \
 	$(JSRCS) \
