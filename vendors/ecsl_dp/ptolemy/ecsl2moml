@@ -458,6 +458,7 @@ $0 ~ /<entity/ {
 
        location="[" x "," y "]"
        relationLocationMap[dstLine] = location
+       relationPortMap[dstLine] = name
 
        indent = substr($0, 0, index($0,"<") - 1)  
        print indent "<!-- relationLocationMap " dstLine, "[" x "," y "] -->" 
@@ -562,15 +563,20 @@ $0 ~ /<entity/ {
                 }
             }
 
+            indent = substr($0, 0, index($0,"<") - 1)  
+
             # Get the location, if any
             if (relationLocationMap[name] == "") { 
                 print $0
             } else {
-                indent = substr($0, 0, index($0,"<") - 1)  
                 # Get rid of the />
                 print substr($0, 0, length($0)-2) ">"
                 print indent "    <vertex name=\"vertex1\" value=\"" relationLocationMap[name] "\"/>" 
                print indent "</relation>"
+            }
+            # Get the port, if any
+            if (relationPortMap[name] != "") { 
+                print indent "<link port=\"" relationPortMap[name] "\" relation=\"" name "\"/>"
             }
         } else {
             print $0   
