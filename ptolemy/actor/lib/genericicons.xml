@@ -9,7 +9,7 @@
 <configure>
 <![CDATA[
 	<xmlgraphic>
-	<rectangle coords="0 0 60 40" fill="orange"/>
+	<rectangle coords="0 0 60 40" fill="white"/>
 	<polygon coords="10 10 50 20 10 30" fill="blue"/>
 	</xmlgraphic>
 ]]>
@@ -20,7 +20,7 @@
 <configure>
 <![CDATA[
 	<xmlgraphic>
-	<rectangle coords="0 0 60 40" fill="orange"/>
+	<rectangle coords="0 0 60 40" fill="white"/>
 	<polygon coords="50 10 10 20 50 30" fill="blue"/>
 	</xmlgraphic>
 ]]>
@@ -31,7 +31,7 @@
 <configure>
 <![CDATA[
 	<xmlgraphic>
-	<rectangle coords="0 0 60 40" fill="orange"/>
+	<rectangle coords="0 0 60 40" fill="white"/>
 	<polygon coords="30 10 10 20 30 30 50 20" fill="blue"/>
 	</xmlgraphic>
 ]]>
@@ -42,7 +42,7 @@
 <configure>
 <![CDATA[
 	<xmlgraphic>
-	<ellipse coords="0 0 40 40" fill="orange"/>
+	<ellipse coords="0 0 40 40" fill="white"/>
 	</xmlgraphic>
 ]]>
 </configure>
