@@ -44,12 +44,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 test Overflow-1.0 {names} {
     set overflow_clip [java::call ptolemy.math.Overflow forName "clip"];
+    set overflow_general [java::call ptolemy.math.Overflow forName "general"];
     set overflow_grow [java::call ptolemy.math.Overflow forName "grow"];
     set overflow_modulo [java::call ptolemy.math.Overflow forName "modulo"];
     set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
     set overflow_throw [java::call ptolemy.math.Overflow forName "throw"];
     set overflow_to_zero [java::call ptolemy.math.Overflow getName "to_zero"];
     set overflow_trap [java::call ptolemy.math.Overflow getName "trap"];
+    set overflow_unknown [java::call ptolemy.math.Overflow forName "unknown"];
     set overflow_wrap [java::call ptolemy.math.Overflow getName "wrap"];
     catch { set overflow_zzz [java::call ptolemy.math.Overflow getName "zzz"]; } msg
     set big_99 [java::new java.math.BigInteger "99" ]
@@ -67,27 +69,31 @@ test Overflow-1.0 {names} {
     set big__99 [java::new java.math.BigInteger "-99" ]
     list "
 [ $overflow_clip toString ] 
+[ $overflow_general toString ] 
 [ $overflow_grow toString ] 
 [ $overflow_modulo toString ] 
 [ $overflow_saturate toString ] 
 [ $overflow_throw toString ] 
 [ $overflow_to_zero toString ] 
 [ $overflow_trap toString ] 
+[ $overflow_unknown toString ] 
 [ $overflow_wrap toString ] 
 $msg "
 } {{
 saturate 
+general 
 grow 
 modulo 
 saturate 
 trap 
 to_zero 
 trap 
+unknown 
 modulo 
 java.lang.IllegalArgumentException: Unknown overflow strategy "zzz". }}
 
 ####################################################################
-test Overflow-2.5 {clone} {
+test Overflow-1.5 {clone} {
     set clone [$overflow_grow clone]
     list \
 	[$clone equals $overflow_grow] \
@@ -96,10 +102,39 @@ test Overflow-2.5 {clone} {
 	[expr {[$clone hashCode] == [$overflow_trap hashCode]}]
 } {1 1 0 0}
 
-
+####################################################################
+test Overflow-2.0 {general} {
+    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,general,unnecessary" ]
+    list "
+[ [ $overflow_general quantize $big_99 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_5 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_4 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_3 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_2 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_1 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big_0 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__1 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__2 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__3 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__4 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__5 $quant_3_0] toString ] 
+[ [ $overflow_general quantize $big__99 $quant_3_0] toString ] "
+} {{
+99 
+5 
+4 
+3 
+2 
+1 
+0 
+-1 
+-2 
+-3 
+-4 
+-5 
+-99 }}
 
 ####################################################################
-
 test Overflow-2.0 {grow} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,grow,unnecessary" ]
     list "
@@ -162,6 +197,7 @@ test Overflow-2.1 {modulo} {
 3 
 -3 }}
 
+####################################################################
 test Overflow-2.2 {saturate} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,saturate,unnecessary" ]
     list "
@@ -193,6 +229,31 @@ test Overflow-2.2 {saturate} {
 -4 
 -4 }}
 
+####################################################################
+test Overflow-2.2.5 {minusInfinity} {
+    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
+    list "
+[[ $overflow_clip minusInfinity $quant_3_0 ] toString]
+[ $overflow_grow minusInfinity $quant_3_0 ]
+[ $overflow_modulo minusInfinity $quant_3_0 ]
+[[ $overflow_saturate minusInfinity $quant_3_0 ] toString]
+[ $overflow_throw minusInfinity $quant_3_0 ]
+[[ $overflow_to_zero minusInfinity $quant_3_0 ] toString]
+[ $overflow_trap minusInfinity $quant_3_0 ]
+[ $overflow_wrap minusInfinity $quant_3_0 ]
+"
+} {{
+-4
+java0x0
+java0x0
+-4
+java0x0
+0
+java0x0
+java0x0
+}}
+
+####################################################################
 test Overflow-2.3 {overflow_to_zero} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
     list "
@@ -224,6 +285,31 @@ test Overflow-2.3 {overflow_to_zero} {
 0 
 0 }}
 
+####################################################################
+test Overflow-2.2.5 {plusInfinity} {
+    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
+    list "
+[[ $overflow_clip plusInfinity $quant_3_0 ] toString]
+[ $overflow_grow plusInfinity $quant_3_0 ]
+[ $overflow_modulo plusInfinity $quant_3_0 ]
+[[ $overflow_saturate plusInfinity $quant_3_0 ] toString]
+[ $overflow_throw plusInfinity $quant_3_0 ]
+[[ $overflow_to_zero plusInfinity $quant_3_0 ] toString]
+[ $overflow_trap plusInfinity $quant_3_0 ]
+[ $overflow_wrap plusInfinity $quant_3_0 ]
+"
+} {{
+3
+java0x0
+java0x0
+3
+java0x0
+0
+java0x0
+java0x0
+}}
+
+####################################################################
 test Overflow-2.4 {trap} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,trap,unnecessary" ]
     catch { [ [ $overflow_trap quantize $big_99 $quant_3_0] toString ] } msg_99
@@ -259,3 +345,35 @@ java.lang.ArithmeticException: Maximum overflow threshold exceeded.
 -4 
 java.lang.ArithmeticException: Minimum overflow threshold exceeded. 
 java.lang.ArithmeticException: Minimum overflow threshold exceeded. }}
+
+####################################################################
+test Overflow-5.0 {unknown} {
+    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,unknown,unnecessary" ]
+    list "
+[ [ $overflow_unknown quantize $big_99 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_5 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_4 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_3 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_2 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_1 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big_0 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__1 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__2 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__3 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__4 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__5 $quant_3_0] toString ] 
+[ [ $overflow_unknown quantize $big__99 $quant_3_0] toString ] "
+} {{
+99 
+5 
+4 
+3 
+2 
+1 
+0 
+-1 
+-2 
+-3 
+-4 
+-5 
+-99 }}
