@@ -577,7 +577,7 @@ model is known as a Lorenz attractor.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
 </entity>

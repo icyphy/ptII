@@ -124,7 +124,7 @@ RemoveGraphicalClasses.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 5.0">
         </property>
@@ -167,7 +167,7 @@ RemoveGraphicalClasses.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 5.0">
         </property>

@@ -252,6 +252,16 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.Expression",
                     expressionClassChanges);
+                    
+        // _hideName in visible attributes.
+        HashMap hideNameClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        hideNameClassChanges.put("_hideName",
+                "ptolemy.kernel.util.SingletonAttribute");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.kernel.util.Attribute",
+                    hideNameClassChanges);
 
         // MathFunction
         HashMap mathFunctionClassChanges = new HashMap();
