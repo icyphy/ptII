@@ -43,7 +43,7 @@ include $(CONFIG)
 
 CLASSPATH = ../../../..
 
-TCL_SRCS =
+TCL_SRCS = index.html
 
 JSRCS = \
 	ClockApplet.java \
