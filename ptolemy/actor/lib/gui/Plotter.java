@@ -303,6 +303,7 @@ public class Plotter extends TypedAtomicActor
         if (_container == null) {
             // Create a new plot and frame.
             plot = new Plot();
+            plot.setTitle(getName());
             plot.setButtons(true);
             _frame = new PlotFrame(getFullName(), plot);
 	    _frame.setVisible(true);
@@ -313,6 +314,7 @@ public class Plotter extends TypedAtomicActor
             } else {
                 if (plot == null) {
                     plot = new Plot();
+                    plot.setTitle(getName());
                 }
                 plot.setButtons(true);
                 _container.add(plot);
