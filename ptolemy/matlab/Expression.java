@@ -33,6 +33,11 @@
 */
 
 package ptolemy.matlab;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -44,18 +49,13 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.matlab.Engine.ConversionParameters;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression
@@ -70,7 +70,10 @@ Engine}. The expression is any valid matlab expression, e.g.:
 The expression may include references to the input port names, current
 time (<i>time</i>), and a count of the firing (<i>iteration</i>). This
 is similar to <a
-href="../../ptolemy/actor/lib/Expression.html">Expression</a>. <p>
+href="../../ptolemy/actor/lib/Expression.html">Expression</a>.
+To refer to parameters in scope, use $name or ${name} within
+the expression.
+<p>
 
 The matlab engine is opened (started) during prefire() by the first
 matlab Expression actor. Subsequent open()s simply increment a use
@@ -136,7 +139,7 @@ public class Expression extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        expression = new StringAttribute(this, "expression");
+        expression = new StringParameter(this, "expression");
 
         _dataParameters = new Engine.ConversionParameters();
 
@@ -163,9 +166,10 @@ public class Expression extends TypedAtomicActor {
 
     /** The parameter that is evaluated to produce the output.
      *  Typically, this parameter evaluates an expression involving
-     *  the inputs.
+     *  the inputs. To refer to parameters in scope within the expression,
+     *  use $name or ${name}, where "name" is the name of the parameter.
      */
-    public StringAttribute expression;
+    public StringParameter expression;
 
     /** If true (checked), 1x1 matrix results are converted to
         ScalarTokens instead of a 1x1 MatrixToken, default is
@@ -317,7 +321,7 @@ public class Expression extends TypedAtomicActor {
                     matlabEngine.put(engine, port.getName(), port.get(0));
                 }
                 matlabEngine.evalString
-                    (engine, expression.getExpression());
+                    (engine, ((StringToken)expression.getToken()).stringValue());
                 Iterator outputPorts = outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort)(outputPorts.next());
