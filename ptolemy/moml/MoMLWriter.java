@@ -141,7 +141,7 @@ public class MoMLWriter extends Writer {
      *  an XML string.
      */
     public void write(NamedObj object, int depth, String name)
-        throws IOException {
+            throws IOException {
         synchronized(lock) {
             // A lot of things aren't persistent and are just skipped.
             if(object instanceof NotPersistent)
@@ -207,11 +207,11 @@ public class MoMLWriter extends Writer {
      *  Return true if anything was written, or false if nothing was written.
      */
     public boolean writeContents(NamedObj object, int depth)
-        throws IOException {
+            throws IOException {
         synchronized(lock) {
             boolean wroteAnything = false;
             NamedObj.MoMLInfo info = object.getMoMLInfo();
-             // Write if nothing is being deferred to and there is no
+            // Write if nothing is being deferred to and there is no
             // class name.
             NamedObj deferredObject = null;
             if(info.deferTo != null) {
@@ -242,8 +242,8 @@ public class MoMLWriter extends Writer {
                         try {
                             String source = "<entity name=\""
                                 + object.getName() + "\" class=\""
-                                + deferredClass + "\"/>";
-                            deferredObject = parser.parse(source);
+                                    + deferredClass + "\"/>";
+                                    deferredObject = parser.parse(source);
                         } catch (Exception ex) {
                             // Damn, no workspace constructor.  Let's
                             // try a container, name constructor.
@@ -257,12 +257,12 @@ public class MoMLWriter extends Writer {
                                 + "class=\"ptolemy.kernel.CompositeEntity\">\n"
                                 + "<entity name=\""
                                 + object.getName() + "\" class=\""
-                                + deferredClass + "\"/>\n"
-                                + "</entity>";
-                            CompositeEntity toplevel = (CompositeEntity)
-                                parser.parse(source);
-                            deferredObject =
-                                toplevel.getEntity(object.getName());
+                                    + deferredClass + "\"/>\n"
+                                        + "</entity>";
+                                    CompositeEntity toplevel = (CompositeEntity)
+                                        parser.parse(source);
+                                    deferredObject =
+                                        toplevel.getEntity(object.getName());
                         }
                     }
                     if(deferredObject != null) {
@@ -392,7 +392,7 @@ public class MoMLWriter extends Writer {
                             //        deferredEntity);
                             wroteAnything &=
                                 _writeForDeferred(entity, deferredEntity,
-                                    depth);
+                                        depth);
                         }
                     }
                     Iterator relations = container.relationList().iterator();
@@ -505,11 +505,11 @@ public class MoMLWriter extends Writer {
             writer.write(object, depth);
             String string = stringWriter.toString();
 
-           // If the object is different, then write it.
+            // If the object is different, then write it.
             if(!string.equals(deferredString)) {
                 //   System.out.println("string = " + string);
                 //   System.out.println("deferredString = " + deferredString);
-                 write(string);
+                write(string);
                 return true;
             }
             return false;
