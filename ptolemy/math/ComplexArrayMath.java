@@ -51,6 +51,17 @@ public class ComplexArrayMath {
     // Protected constructor prevents construction of this class.
     protected ComplexArrayMath() {}
 
+   /** Return the given complex number with the absolute value of the real part.
+     */
+    public static final Complex[] absValues (Complex[] array) {
+	int length = array.length;
+
+	for (int i = 0; i < length; i++) {
+	    array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
+	}
+	return array;
+    }
+
     /** Return a new array that is constructed from the argument by
      *  adding the complex number z to every element.
      *  @return A new array of complex numbers.
@@ -279,6 +290,7 @@ public class ComplexArrayMath {
      *  @throws IllegalArgumentException If <i>bottom</i> has either a
      *   real or imaginary part larger than the corresponding part of
      *   <i>top</i>.
+     *  </p>
      */
     public static final Complex[] limit(final Complex[] array,
             final Complex bottom, final Complex top) 
@@ -791,12 +803,12 @@ public class ComplexArrayMath {
      *  @param array2 The second array.
      *  @param maxError The threshold for the magnitude of the difference.
      *  @throws IllegalArgumentException If the arrays are not of the same
-     *   length, or if <i>maxErorr</i> is negative.
+     *   length, or if <i>maxError</i> is negative.
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, double maxError) {
         int length = _commonLength(array1, array2,
-                "ComplexArrayMath.areMagnitudesWithin");
+                "ComplexArrayMath.within");
 
         if (maxError < 0) {
             throw new IllegalArgumentException(
@@ -807,27 +819,72 @@ public class ComplexArrayMath {
             double realDifference = array1[i].real - array2[i].real;
             double imagDifference = array1[i].imag - array2[i].imag;
             if (realDifference*realDifference + imagDifference*imagDifference
-                   > maxError) {
+                   > maxError*maxError) {
                 return false;
             }
         }
         return true;
     }
 
-    // FIXME: Need two more version: One that takes a double
-    // array as the third argument, and one that takes a complex array.
-
-    /** Return the given complex number with the absolute value of the real part.
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to the corresponding
+     *  element in <i>maxError</i>. If both arrays are empty, return true.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError The array of thresholds for the magnitudes of the difference.
+     *  @throws IllegalArgumentException If the arrays are not of the same
+     *   length, or if an elment in <i>maxError</i> is negative.
      */
-    public static final Complex[] absValues (Complex[] array) {
-	int length = array.length;
+    public static final boolean within(Complex[] array1,
+            Complex[] array2, double[] maxError) {
 
-	for (int i = 0; i < length; i++) {
-	    array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
-	}
-	return array;
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.within");
+
+        for (int i = 0; i < length; i++) {
+
+	    if (maxError[i] < 0) {
+		throw new IllegalArgumentException(
+			 "ComplexArrayMath.within requires that the third argument "
+			  + "be non-negative.");
+	    }
+
+            double realDifference = array1[i].real - array2[i].real;
+            double imagDifference = array1[i].imag - array2[i].imag;
+            if (realDifference*realDifference + imagDifference*imagDifference
+                   > maxError[i]*maxError[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
+
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the magnitude of the corresponding element in <i>maxError</i>. 
+     *  If both arrays are empty, return true.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError An array of complex numbers whose magnitude 
+     *  for each element is taken to be the distance threshold.
+     *  @throws IllegalArgumentException If the arrays are not of the same
+     *   length.
+     */
+    public static final boolean within(Complex[] array1,
+            Complex[] array2, Complex[] maxError) {
+	
+	int length = maxError.length;
+	double[] doubleError = new double[length];
+	
+	for (int i = 0; i < length; i++) {
+	    doubleError[i] = maxError[i].magnitude();
+	}
+
+        return within(array1, array2, doubleError);
+    }
+
+ 
     ///////////////////////////////////////////////////////////////////
     //    protected methods
 

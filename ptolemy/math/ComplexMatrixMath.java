@@ -185,106 +185,6 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Returns true iff the differences of all the real and imaginary
-     *  parts of corresponding elements of 2 matrices, that are of the
-     *  same size, are all within a constant range, [-R, R], where R
-     *  is the allowed error.  The specified absolute difference must
-     *  be non-negative.
-     *  More concisely, abs(Re{M1[i, j]} - Re{M2[i, j]})
-     *  and abs(Re{M1[i, j]} - Re{M2[i, j]}) must both be within [-R, R]
-     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
-     *  @param matrix1 A matrix of complex numbers.
-     *  @param matrix2 A matrix of complex numbers.
-     *  @param absoluteError A Complex indicating the absolute value of the
-     *  allowed error.
-     *  @return A boolean condition.
-     */
-    public static final boolean arePartsWithin(final Complex[][] matrix1,
-            final Complex[][] matrix2, double absoluteError) {
-        if (absoluteError < 0.0) {
-            throw new IllegalArgumentException(
-                    "within(): absoluteError (" + absoluteError +
-                    " must be non-negative.");
-        }
-
-        int rows = _rows(matrix1);
-        int columns = _columns(matrix1);
-
-        _checkSameDimension("arePartsWithin", matrix1, matrix2);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real)
-                        > absoluteError) ||
-                        (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag)
-                                > absoluteError)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
-    /** Return true if the first argument is greater than the second argument 
-     *  (both complex numbers):
-     *  (a+ib) > (c+id) provided either a > c or a=c and b > d. 
-     */
-    public static final boolean ifgreater(Complex num1,
-            Complex num2) {
-        
-	if (((num1.real > num2.real) || (num1.real == num2.real)) && (num1.imag > num2.imag)) {
-	    return true;
-	}
-	else {
-	    return false;
-	}
-    }
-
-    /** Return true if the first argument is less than the second argument 
-     *  (both complex numbers):
-     *  (a+ib) < (c+id) provided either a < c or a=c and b < d. 
-     */
-    public static final boolean ifless(Complex num1,
-            Complex num2) {
-        
-	if (((num1.real < num2.real) || (num1.real == num2.real)) && (num1.imag < num2.imag)) {
-	    return true;
-	}
-	else {
-	    return false;
-	}
-    }
-  
-    /** Return true if all the absolute differences between corresponding
-     *  elements of matrix1 and matrix2, for both the real and imaginary parts,
-     *  are all less than or equal to maxError. Otherwise, return false.
-     *  Throw an IllegalArgument exception if the matrices are not of the same
-     *  length. If both matrices are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
-     */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex maxError) {
-        int rows = _rows(matrix1);
-        int columns = _columns(matrix1);
-
-	Complex temp = new Complex();
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-
-		temp = matrix1[i][j].subtract(matrix2[i][j]);
-	    
-		// ifgreater returns true if temp > maxError.
-		if (ifgreater(temp,maxError)) {
-		    return false;
-		}
-	    }
-	}
-        
-        return true;
-    }
-
     /** Return the given complex number with the absolute value of the real part.
      */
     public static final Complex[][] absValues (Complex[][] matrix) {
@@ -300,36 +200,7 @@ public class ComplexMatrixMath {
 	return matrix;
     }
 
-    /** Return true if all the absolute differences between corresponding
-     *  elements of matrix1 and matrix2, for both the real and imaginary parts,
-     *  are all less than or equal to the elements in maxError. Otherwise, return false.
-     *  Throw an IllegalArgument exception if the matrices are not of the same
-     *  length. If both matrices are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
-     */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex[][] maxError) {
-        int rows = _rows(matrix1);
-        int columns = _columns(matrix1);
-
-	Complex temp = new Complex();
-	maxError = absValues(maxError);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-
-		temp = matrix1[i][j].subtract(matrix2[i][j]);
-	    
-		// ifgreater returns true if temp > maxError.
-		if (ifgreater(temp,maxError[i][j])) {
-		    return false;
-		}
-	    }
-	}
-        
-        return true;
-    }
-
+ 
     /** Return a new matrix that is constructed by conjugating the elements
      *  in the input matrix.
      */
@@ -566,7 +437,6 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
      *  This method is from [1]
-     *  THIS IS NOW TESTED.
      */
     public static final Complex[][] inverse(final Complex[][] A) {
         _checkSquare("inverse", A);
@@ -1170,6 +1040,136 @@ public class ComplexMatrixMath {
         }
         return returnValue;
     }
+
+
+    /** Return true if all the distances between corresponding elements in
+     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
+     *  the magnitude of <i>maxError</i>. If both matrices are empty,
+     *  return true.
+     *  <p>
+     *  @param array1 The first matrix.
+     *  @param array2 The second matrix.
+     *  @param maxError A complex number whose magnitude is taken to
+     *   be the distance threshold.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions.
+     *  </p>
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, Complex maxError) {
+        return within(matrix1, matrix2, maxError.magnitude());
+    }
+
+    /** Return true if all the distances between corresponding elements in
+     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
+     *  the magnitude of <i>maxError</i>. If both matrices are empty, return true.
+     *  <p>
+     *  @param array1 The first matrix.
+     *  @param array2 The second matrix.
+     *  @param maxError The threshold for the magnitude of the difference.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions, or if <i>maxError</i> is negative.
+     *  </p>
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, double maxError) {
+        _checkSameDimension("within", matrix1, matrix2);
+
+        if (maxError < 0) {
+            throw new IllegalArgumentException(
+                    "ComplexMatrixMath.within requires that the third argument "
+                    + "be non-negative.");
+        }
+        
+	int rows = _rows (matrix1);
+	int columns = _columns (matrix1);
+
+	for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+            double realDifference = matrix1[i][j].real - matrix2[i][j].real;
+            double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
+
+            if (realDifference*realDifference + imagDifference*imagDifference
+                   > maxError*maxError) {
+                return false;
+            }
+	    }
+	}
+        return true;
+    }
+
+    /** Return true if all the distances between corresponding elements in
+     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to corresponding
+     *  elements in <i>maxError</i>. If both matrices are empty, return true.
+     *  <p>
+     *  @param array1 The first matrix.
+     *  @param array2 The second matrix.
+     *  @param maxError The matrix of thresholds for the magnitudes of difference.
+     *  @throws IllegalArgumentException If the matrices do not have the same
+     *   dimensions, or if an elment in <i>maxError</i> is negative.
+     *  </p>
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, double[][] maxError) {
+
+        _checkSameDimension("within", matrix1, matrix2);
+
+     	int rows = _rows (matrix1);
+	int columns = _columns (matrix1);
+
+	for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+		if (maxError[i][j] < 0) {
+		    throw new IllegalArgumentException(
+			 "ComplexMatrixMath.within requires that the third argument "
+			  + "be non-negative.");
+	    }
+
+            double realDifference = matrix1[i][j].real - matrix2[i][j].real;
+            double imagDifference = matrix1[i][j].imag - matrix2[i][j].imag;
+
+            if (realDifference*realDifference + imagDifference*imagDifference
+                   > maxError[i][j]*maxError[i][j]) {
+                return false;
+            }
+	    }
+	}
+        return true;
+    }
+
+
+    /** Return true if all the distances between corresponding elements in
+     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
+     *  the magnitude of the corresponding element in <i>maxError</i>. 
+     *  If both matrices are empty, return true.
+     *  <p>
+     *  @param array1 The first matrix.
+     *  @param array2 The second matrix.
+     *  @param maxError A matrix of complex numbers whose magnitudes 
+     *  for each element are taken to be the distance thresholds.
+     *  @throws IllegalArgumentException If the arrays are not of the same
+     *   length.
+     *  </p>
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, Complex[][] maxError) {
+	
+        int rows = _rows (maxError);
+	int columns = _columns (maxError);
+
+	double[][] doubleError = new double[rows][columns];
+
+	for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+		doubleError[i][j] = maxError[i][j].magnitude();
+	    }
+	}
+
+        return within(matrix1, matrix2, doubleError);
+    }
+
 
     /** Return a new complex matrix whose entries are all zero.
      *  The size of the matrix is specified by the input arguments.
