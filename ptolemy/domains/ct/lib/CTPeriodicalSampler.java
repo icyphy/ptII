@@ -93,7 +93,7 @@ public class CTPeriodicalSampler extends CTActor
 
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         double tnow = dir.getCurrentTime();
-        if( Math.abs(tnow-_nextSamplingTime) < dir.getTimeAccuracy()) {
+        if( Math.abs(tnow- _nextSamplingTime)<dir.getTimeAccuracy()) {
             dir.setFireEndTime(tnow);
             if(DEBUG) {
                 System.out.println("set FireEndTime:" + tnow);
@@ -117,7 +117,7 @@ public class CTPeriodicalSampler extends CTActor
                 }
                 output.broadcast(value);
                 _nextSamplingTime = tnow+_samplePeriod;
-                dir.fireAfterDelay(this, _samplePeriod);
+                dir.fireAt(this, _nextSamplingTime);
             }
         }
         return true;
@@ -134,7 +134,7 @@ public class CTPeriodicalSampler extends CTActor
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
-        dir.fireAfterDelay(this, _samplePeriod);
+        dir.fireAt(this, _nextSamplingTime);
         if(DEBUG) {
             System.out.println("Sampler: next sampling time= "
                 + _nextSamplingTime);

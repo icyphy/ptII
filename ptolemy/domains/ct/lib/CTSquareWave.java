@@ -149,7 +149,7 @@ public class CTSquareWave extends CTActor {
         //System.out.println("next flip time="+nextfliptime);
         if ((nextfliptime > now) &&
         (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
-            dir.fireAfterDelay(this, nextfliptime-now);
+            dir.fireAt(this, nextfliptime);
         }
         return true;
     }
