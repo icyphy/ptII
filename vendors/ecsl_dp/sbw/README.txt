@@ -45,24 +45,43 @@ Follow the instructions for "Generate the modeling lang/paradigm" above
 
 File -> Import XML, Browse to ECSL_DP-meta.xme
 In GME, click on the uml button to the left of the X
+The tooltip says:  "Converts GME metamodel to equivalent UML Class diagram"
 
-I get "MetaGME2Uml Com Exception: The paradign is not registered"
+I get "MetaGME2Uml Com Exception: The paradigm is not registered"
+
+The message comes from
+c:/Program Files/GME/Interfaces/Mga.idl:
+[helpstring("The paradigm is not registered")]
+		E_MGA_PARADIGM_NOTREG			= 0x87650011,
+
 
 BTW - MetaGme2Uml is part of GREAT
 http://www.isis.vanderbilt.edu/Projects/Mobies/downloads.asp?req=Downloads/ESCM-1.3R.pdf
 
-  2. After this, re-register your ECSL-DP metamodel, because the
-  MetaGme2Uml interpreter might changed some role name registry settings
-  in your metamodel.
-          (The interpreter is quite rudimentary, it always displays this
-  message, even if re-registration is not necessary)
-  3. Open the ECSL-DP UML class diagram and run the UML2XML interpreter,
-  which will produce an ECSL-DP.xml file.
-  4. Run the UDM code generator, udm.exe, on this ECSL-DP.xml file. You'll
-  need the ECSL-DP.xsd file to perform the conversion below.
-  5. Use the generated ECSL-DP.xml file to specify the <diagramname>
-  argument(!) of udmcopy:
-           udmcopy.exe sbw.mga sbw.xml ECSL-DP.xml
+bash-2.05b$ c:/Program\ Files/isis/great/bin/MetaGME2UML ECSL_DP.mga ECSL_DP_uml.mga
+MetaGME to UML Converter Utility v1.3.3
+(c) 2004 Institute for Integrated Systems
+Vanderbilt University
+
+Exception occured: Com exception: The paradigm is not registered
+
+bash-2.05b$ 
+
+This command works:
+c:/Program\ Files/isis/great/bin/MetaGME2UML ECSL_DP.mga ECSL_DP_uml.mem
+
+>  2. After this, re-register your ECSL-DP metamodel, because the
+>  MetaGme2Uml interpreter might changed some role name registry settings
+>  in your metamodel.
+>          (The interpreter is quite rudimentary, it always displays this
+>  message, even if re-registration is not necessary)
+>  3. Open the ECSL-DP UML class diagram and run the UML2XML interpreter,
+>  which will produce an ECSL-DP.xml file.
+>  4. Run the UDM code generator, udm.exe, on this ECSL-DP.xml file. You'll
+>  need the ECSL-DP.xsd file to perform the conversion below.
+>  5. Use the generated ECSL-DP.xml file to specify the <diagramname>
+>  argument(!) of udmcopy:
+>           udmcopy.exe sbw.mga sbw.xml ECSL-DP.xml
   (Make sure ECSL-DP.xsd is in PATH.)
 
 
