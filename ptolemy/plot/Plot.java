@@ -1348,48 +1348,86 @@ public class Plot extends PlotBox {
                 line = line.substring(4, line.length()).trim();
             }
             line = line.trim();
-            StringBufferInputStream inp =
-                new StringBufferInputStream(line);
-            // StringBufferInput is deprecated, but StringReader is not in1.0.2
-            //StringReader inp = new StringReader(pxgraphargs);
-            try {
-                StreamTokenizer stoken = new StreamTokenizer(inp);// Deprecated
-                stoken.whitespaceChars(0, ','); // comma is whitespace
-                int c = stoken.nextToken();
-                // If we get an error, we silently ignore it.
-                if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
-                    double xpt = stoken.nval;
-                    c = stoken.nextToken();
-                    if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
-                        double ypt = stoken.nval;
-                        c = stoken.nextToken();
-                        if (stoken.ttype != StreamTokenizer.TT_NUMBER) {
-                            // We have x and y, now add the point.
+
+            // We can't use StreamTokenizer here because it can't
+            // process numbers like 1E-01.  
+            // This code is somewhat optimized for speed, since
+            // most data consists of two data points, we want
+            // to handle that case as efficiently as possible.
+
+            int fieldsplit = line.indexOf(",");
+            if (fieldsplit == -1) {
+                fieldsplit = line.indexOf(" ");
+            }
+            if (fieldsplit == -1) {
+                fieldsplit = line.indexOf(" ");  // a tab
+            }
+
+            if (fieldsplit > 0) {
+                String x = (line.substring(0, fieldsplit)).trim();
+                String y = (line.substring(fieldsplit+1)).trim();
+                // Any more separators?
+                int fieldsplit2 = y.indexOf(",");
+                if (fieldsplit2 == -1) {
+                        fieldsplit2 = y.indexOf(" ");
+                    }
+                if (fieldsplit2 == -1) {
+                        fieldsplit2 = y.indexOf(" ");  // a tab
+                }
+                if (fieldsplit2 > 0) {
+                    line = (y.substring(fieldsplit2+1)).trim();
+                    y = (y.substring(0,fieldsplit2)).trim();
+                }
+                try {
+                    Double xpt = new Double(x);
+                    Double ypt = new Double(y);
+                    if (fieldsplit2 > 0) {
+                        // There was one separator after the y value, now
+                        // look for another separator.
+                        int fieldsplit3 = line.indexOf(",");
+                        if (fieldsplit3 == -1) {
+                            fieldsplit3 = line.indexOf(" ");
+                        }
+                        if (fieldsplit3 == -1) {
+                            fieldsplit2 = line.indexOf(" ");  // a tab
+                        }
+
+                        if (fieldsplit3 > 0) {
+                            // We have more numbers, assume that this is
+                            // an error bar
+                            String yl = (line.substring(0,
+                                    fieldsplit3)).trim();
+                            String yh = (line.substring(fieldsplit3+1)).trim();
+                            Double yLowEB = new Double(yl);
+                            Double yHighEB = new Double(yh);
                             connected = _addLegendIfNecessary(connected);
-                            addPoint(_currentdataset, xpt, ypt, connected);
+                            addPointWithErrorBars(_currentdataset,
+                                    xpt.doubleValue(),
+                                    ypt.doubleValue(),
+                                    yLowEB.doubleValue(),
+                                    yHighEB.doubleValue(),
+                                    connected);
                             return true;
                         } else {
-                            // If there are two more numbers, assume that
-                            // they are y values for the error bars.
-                            if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
-                                double yLowEB = stoken.nval;
-                                c = stoken.nextToken();
-                                if (stoken.ttype ==
-                                    StreamTokenizer.TT_NUMBER) {
-                                    double yHighEB = stoken.nval;
-                                    connected =
-                                        _addLegendIfNecessary(connected);
-                                    addPointWithErrorBars(_currentdataset,
-                                            xpt, ypt, yLowEB, yHighEB,
-                                            connected);
-                                    return true;
-                                }
-                            }
+                            // It is unlikely that we have a fieldsplit2 >0
+                            // but not fieldsplit3 >0, but just in case:
+
+                            connected = _addLegendIfNecessary(connected);
+                            addPoint(_currentdataset, xpt.doubleValue(),
+                                    ypt.doubleValue(), connected);
+                            return true;
                         }
+                    } else {
+                        // There were no more fields, so this is
+                        // a regular pt.
+                        connected = _addLegendIfNecessary(connected);
+                        addPoint(_currentdataset, xpt.doubleValue(),
+                                ypt.doubleValue(), connected);
+                        return true;
                     }
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return false;
