@@ -787,9 +787,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			link.setHead(newLinkHead);
 			if(relationNameToAdd != null) {
                             ComponentRelation relation =
-			    (ComponentRelation)getToplevel().getRelation(
+			    (ComponentRelation)container.getRelation(
                                     relationNameToAdd);
-			    link.setRelation(relation);
+      			    link.setRelation(relation);
 			} else {
 			    link.setRelation(null);
 			}
@@ -866,8 +866,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		       super._execute();
 		       link.setTail(newLinkTail);
 		       if(relationNameToAdd != null) {
-                           link.setRelation(getToplevel().getRelation(
-                                   relationNameToAdd));
+                           ComponentRelation relation =
+                           (ComponentRelation)container.getRelation(
+                                   relationNameToAdd);
+                           link.setRelation(relation);
 		       } else {
 			   link.setRelation(null);
 		       }
@@ -1316,7 +1318,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     // link connected to the given relation.  In some cases, it may
     // be necessary to create a vertex to represent the relation as well.
     private void _updateLinks(ComponentRelation relation) {
-	List linkedPortList = relation.linkedPortList();
+        List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
 
 	// Go through all the links that currently exist, and remove ports
@@ -1325,25 +1327,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	Iterator links = _linkSet.iterator();
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
-	    // only consider links that are associated with this relation.
+            // only consider links that are associated with this relation.
 	    if(link.getRelation() != relation) continue;
-	    // remove any ports that this link is linked to.  We don't need
+      	    // remove any ports that this link is linked to.  We don't need
 	    // to manufacture those links.
 	    Object tail = link.getTail();
 	    Object tailObj = getSemanticObject(tail);
-	    if(tailObj != null && linkedPortList.contains(tailObj)) {
-		linkedPortList.remove(tailObj);
+            if(tailObj != null && linkedPortList.contains(tailObj)) {
+                linkedPortList.remove(tailObj);
 	    }
 	    Object head = link.getHead();
 	    Object headObj = getSemanticObject(head);
-	    if(headObj != null && linkedPortList.contains(headObj)) {
-		linkedPortList.remove(headObj);
+            if(headObj != null && linkedPortList.contains(headObj)) {
+                linkedPortList.remove(headObj);
 	    }
 	}
-
+        
 	// Count the linked ports.
 	int unlinkedPortCount = linkedPortList.size();
-
+        
 	// If there are no links left to create, then just return.
 	if(unlinkedPortCount == 0) return;
 
