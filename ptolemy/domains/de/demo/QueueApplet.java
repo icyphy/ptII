@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -81,7 +84,7 @@ public class QueueApplet extends Applet {
         // The applet has four panels, shown in a 2x2 grid
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(2,2));
+        appletPanel.setLayout(new GridLayout(2, 2));
         add(appletPanel, "Center");
 
         // _la is the drawing panel for DELogicAnalyzer actor.
@@ -101,7 +104,7 @@ public class QueueApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,1));
+        simulationParam.setLayout(new GridLayout(2, 1));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
