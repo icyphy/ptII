@@ -404,6 +404,7 @@ public class ComponentPort extends Port {
 
     /** Return true the the given port is deeply connected with this port.
      *  This method is read-synchronized on the workspace.
+     *  @param port The port that is checked for deep connectivity.
      *  @return True if the given port is deeply connected.
      */
     public boolean isDeeplyConnected(ComponentPort port) {
@@ -417,6 +418,7 @@ public class ComponentPort extends Port {
     }
 
     /** Return true if the given relation is linked from inside.
+     *  @param relation The relation that is checked.  
      *  @return True if the given relation is linked from inside.
      */
     public boolean isInsideLinked(Relation relation) {
