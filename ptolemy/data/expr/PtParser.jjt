@@ -6,6 +6,7 @@ LOOKAHEAD=1;
 //DEBUG_TOKEN_MANAGER = true;
 MULTI = true;
 STATIC = false;
+NODE_USES_PARSER = true;
 }
 
 PARSER_BEGIN(PtParser)
@@ -195,6 +196,13 @@ public class PtParser {
         return _classesSearched;
     }
     
+    /** Return the list of Parameters that comprise the current scope.
+     *  @return The current scope.
+     */	
+     public NamedList getScope() {
+	return _scope;
+     }
+	
 
     /** Add a constant to the list of constants that the parser recognizes.
      *  It is a static method. It stores the constant in a Hashtable, with 
