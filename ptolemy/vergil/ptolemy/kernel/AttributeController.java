@@ -133,7 +133,7 @@ public class AttributeController extends LocatableNodeController {
 	    }
 
 	    Figure figure = icon.createFigure();
-            figure.setToolTipText(object.getName());
+            figure.setToolTipText(object.getClass().getName());
 	    return figure;
 	}
     }

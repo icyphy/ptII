@@ -154,7 +154,7 @@ public class PortController extends LocatableNodeController {
 		figure = new BasicFigure(polygon, fill, (float)1.5);
                 PtolemyGraphModel model =
                     (PtolemyGraphModel)getController().getGraphModel();
-                figure.setToolTipText(port.getName(model.getToplevel()));
+                figure.setToolTipText(port.getName());
 
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;

@@ -81,6 +81,8 @@ JSRCS = \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
 	PtolemyFrame.java \
+	RenameConfigurer.java \
+	RenameDialog.java \
 	RunTableau.java \
 	TableauFrame.java \
 	TextEditor.java \

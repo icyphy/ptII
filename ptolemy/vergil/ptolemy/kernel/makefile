@@ -60,6 +60,7 @@ JSRCS = \
 	PortDialogFactory.java \
 	PtolemyGraphModel.java \
 	RelationController.java \
+	RenameDialogFactory.java \
 	ViewerGraphController.java
 
 EXTRA_SRCS =	$(JSRCS)

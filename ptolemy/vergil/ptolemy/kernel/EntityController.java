@@ -240,7 +240,7 @@ public class EntityController extends LocatableNodeController {
 	    Figure figure = icon.createFigure();
             PtolemyGraphModel model =
                 (PtolemyGraphModel)getController().getGraphModel();
-            figure.setToolTipText(object.getName(model.getToplevel()));
+            figure.setToolTipText(object.getClass().getName());
 	    return figure;
 	}
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HybridSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="CTTopLevelDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
+<entity name="Hybrid System" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -25,13 +25,35 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="71.0, 44.0">
+        <property name="_location" class="ptolemy.moml.Location" value="105.0, 40.0">
+        </property>
+    </property>
+    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="409.0, 129.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid system, which mixes
+continuous-time modeling with finite state machines.
+In this example, two point masses on springs oscillate.
+However, they may collide, in which case, they stick
+together, and oscillate together. The stickiness
+decays, and they eventually come apart again.
+This is an example of a modal model, where
+there are two modes, "together" and "separate".
+Each mode is modeled by a state in an FSM,
+and each state refines to a continuous-time
+model of the dynamics in that mode.
+.</text>
+           </svg>
+           </configure>
         </property>
     </property>
     <entity name="Const1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="142.0, 183.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 243.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -44,7 +66,7 @@
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="142.0, 264.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 324.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -54,38 +76,38 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="plot" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="463.0, 223.0">
+        <property name="_location" class="ptolemy.moml.Location" value="411.0, 286.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
-<yRange min="-0.5" max="3.0"/>
+<xRange min="0.01" max="50.0"/>
+<yRange min="0.2586664613936116" max="2.2569570699726995"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
-    <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
+                                </configure>    </entity>
+    <entity name="Hybrid System" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+        <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="84.0, 42.0">
+            <property name="_location" class="ptolemy.moml.Location" value="104.0, 42.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="248.0, 285.0">
         </property>
         <port name="force1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -244,7 +266,7 @@
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 42.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="240.0, 135.0">
+            <property name="_location" class="ptolemy.moml.Location" value="239.0, 135.0">
             </property>
             <port name="force1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -636,10 +658,10 @@
     </relation>
     <link port="Const1.output" relation="_R0"/>
     <link port="Const2.output" relation="_R1"/>
-    <link port="plot.input" relation="_R2"/>
-    <link port="plot.input" relation="_R3"/>
-    <link port="HS.force1" relation="_R0"/>
-    <link port="HS.force2" relation="_R1"/>
-    <link port="HS.P1" relation="_R2"/>
-    <link port="HS.P2" relation="_R3"/>
+    <link port="Plot Positions vs Time.input" relation="_R2"/>
+    <link port="Plot Positions vs Time.input" relation="_R3"/>
+    <link port="Hybrid System.force1" relation="_R0"/>
+    <link port="Hybrid System.force2" relation="_R1"/>
+    <link port="Hybrid System.P1" relation="_R2"/>
+    <link port="Hybrid System.P2" relation="_R3"/>
 </entity>

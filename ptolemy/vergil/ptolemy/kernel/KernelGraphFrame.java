@@ -202,6 +202,7 @@ public class KernelGraphFrame extends GraphFrame {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
@@ -215,6 +216,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new PortDialogFactory());
+	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
@@ -229,6 +231,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new PortDescriptionFactory());
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
 

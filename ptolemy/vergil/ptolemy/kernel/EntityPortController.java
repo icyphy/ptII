@@ -121,7 +121,7 @@ public class EntityPortController extends NodeController {
 
             PtolemyGraphModel model =
                 (PtolemyGraphModel)getController().getGraphModel();
-            figure.setToolTipText(port.getName(model.getToplevel()));
+            figure.setToolTipText(port.getName());
 
 	    // Wrap the figure in a TerminalFigure to set the direction that
 	    // connectors exit the port.  Note that this direction is the

@@ -10,16 +10,41 @@ by a higher frequency one (the carrier).</doc>
     <property name="frequency2" class="ptolemy.data.expr.Parameter" value="PI*0.02">
         <doc>Frequency of the sinusoidal signal</doc>
     </property>
-    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="Synchronous Dataflow (SDF) Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
             <doc>Number of iterations in an execution.</doc>
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="62.0, 23.0">
+        <property name="_location" class="ptolemy.moml.Location" value="119.0, 32.0">
         </property>
     </property>
-    <entity name="carrier" class="ptolemy.actor.lib.Sinewave">
+    <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="389.0, 212.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model forms the product of two sinusoids.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="1:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="105.0, 275.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The models with the red outlines
+are hierarchical.  Right click and
+select "Look Inside" to see their
+inner definition.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <entity name="Carrier" class="ptolemy.actor.lib.Sinewave">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -33,7 +58,7 @@ by a higher frequency one (the carrier).</doc>
         <property name="_location" class="ptolemy.moml.Location" value="118.0, 204.0">
         </property>
     </entity>
-    <entity name="signal" class="ptolemy.actor.lib.Sinewave">
+    <entity name="Signal" class="ptolemy.actor.lib.Sinewave">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -44,10 +69,10 @@ by a higher frequency one (the carrier).</doc>
             <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="46.0, 89.0">
+        <property name="_location" class="ptolemy.moml.Location" value="67.0, 105.0">
         </property>
     </entity>
-    <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
+    <entity name="Multiplier" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.moml.Location" value="250.0, 150.0">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
@@ -62,8 +87,10 @@ by a higher frequency one (the carrier).</doc>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="Sequence Plotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -71,13 +98,23 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="382.99998474121094, 89.0">
+        <property name="_location" class="ptolemy.moml.Location" value="381.99998474121094, 89.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-    </entity>
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-1.0" max="1.0"/>
+<noGrid/>
+</plot>?>
+                        </configure>    </entity>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
@@ -86,11 +123,11 @@ by a higher frequency one (the carrier).</doc>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="carrier.output" relation="r1"/>
-    <link port="signal.output" relation="r2"/>
-    <link port="mult.multiply" relation="r1"/>
-    <link port="mult.multiply" relation="r2"/>
-    <link port="mult.output" relation="r3"/>
-    <link port="display.input" relation="r2"/>
-    <link port="display.input" relation="r3"/>
+    <link port="Carrier.output" relation="r1"/>
+    <link port="Signal.output" relation="r2"/>
+    <link port="Multiplier.multiply" relation="r1"/>
+    <link port="Multiplier.multiply" relation="r2"/>
+    <link port="Multiplier.output" relation="r3"/>
+    <link port="Sequence Plotter.input" relation="r2"/>
+    <link port="Sequence Plotter.input" relation="r3"/>
 </entity>

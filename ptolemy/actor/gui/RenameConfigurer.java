@@ -1,0 +1,155 @@
+/* A GUI widget for renaming an object.
+
+ Copyright (c) 1998-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+*/
+
+package ptolemy.actor.gui;
+
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLChangeRequest;
+
+import javax.swing.BoxLayout;
+
+//////////////////////////////////////////////////////////////////////////
+//// RenameConfigurer
+/**
+This class is an editor widget to rename an object.
+
+@see Configurer
+@author Edward A. Lee
+@version $Id$
+*/
+
+public class RenameConfigurer extends Query
+        implements ChangeListener, QueryListener {
+
+    /** Construct a rename configurer for the specified entity.
+     *  @param object The entity to configure.
+     */
+    public RenameConfigurer(NamedObj object) {
+        super();
+	this.addQueryListener(this);
+	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	setTextWidth(25);
+        _object = object;
+        addLine("New name", "New name", object.getName());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Apply the changes by renaming the object.
+     */
+    public void apply() {
+        if (_changed) {
+            String newName = stringValue("New name");
+
+            // The context for the MoML should be the first container
+            // above this object in the hierarchy that defers its
+            // MoML definition, or the immediate parent if there is none.
+            NamedObj parent = MoMLChangeRequest.getDeferredToParent(_object);
+            if (parent == null) {
+                parent = (NamedObj)_object.getContainer();
+            }
+            String oldName = _object.getName(parent);
+
+            // NOTE: This is awkward, but we need to know what is being
+            // renamed to create the right MoML.
+            StringBuffer moml = new StringBuffer("<");
+            String elementName = "entity";
+            if (_object instanceof Port) {
+                elementName = "port";
+            } else if (_object instanceof Attribute) {
+                elementName = "property";
+            } else if (_object instanceof Relation) {
+                elementName = "relation";
+            }
+            moml.append(elementName);
+            moml.append(" name=\"");
+            moml.append(oldName);
+            moml.append("\"><rename name=\"");
+            moml.append(newName);
+            moml.append("\"/></");
+            moml.append(elementName);
+            moml.append(">");
+
+            ChangeRequest request = new MoMLChangeRequest(
+                    this,            // originator
+                    parent,          // context
+                    moml.toString(), // MoML code
+                    null);           // base
+
+            request.addChangeListener(this);
+            parent.requestChange(request);
+        }
+    }
+
+    /** Called to notify that one of the entries has changed.
+     *  This simply sets a flag that enables application of the change
+     *  when the apply() method is called.
+     *  @param name The name of the entry that changed.
+     */
+    public void changed(String name) {
+        _changed = true;
+    }
+
+    /** React to the fact that the change has been successfully executed
+     *  by doing nothing.
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        // Nothing to do.
+    }
+
+    /** React to the fact that the change has failed by reporting it.
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // Ignore if this is not the originator.
+        if (change.getSource() != this) return;
+        if (!change.isErrorReported()) {
+            change.setErrorReported(true);
+            MessageHandler.error("Rename failed: ", exception);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Indicator that the name has changed.
+    private boolean _changed = false;
+
+    // The object that this configurer configures.
+    private NamedObj _object;
+}
