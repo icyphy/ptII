@@ -80,13 +80,13 @@ public class EditorDropTarget extends DropTarget {
          * graph editor.
          */
         public void drop(DropTargetDropEvent dtde) {
-            Node data = null;
+            SchematicEntity data = null;
 
             if(dtde.isDataFlavorSupported(SchematicPalette.nodeFlavor)) {
                 try {
 		    System.out.println(SchematicPalette.nodeFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    data = (Node)dtde.getTransferable().
+		    data = (SchematicEntity)dtde.getTransferable().
 			getTransferData(SchematicPalette.nodeFlavor);
                     System.out.println("Data is [" + data + "]");//DEBUG
                 }
@@ -105,8 +105,9 @@ public class EditorDropTarget extends DropTarget {
             else {
                 Point p = dtde.getLocation();
                 System.out.println("Dropping at " + p); //DEBUG
-                GraphController gc = ((JGraph)getComponent()).getGraphPane().getGraphController();
-                gc.addNode(data, p.x, p.y);
+                GraphController gc = 
+		    ((JGraph)getComponent()).getGraphPane().getGraphController();
+                ((EditorGraphController) gc).addEntity(data, p.x, p.y);
                 dtde.dropComplete(true); //success!
             }
         }

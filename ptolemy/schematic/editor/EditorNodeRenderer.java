@@ -76,18 +76,17 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    SchematicEntity entity = (SchematicEntity) n;
 	    Icon icon = entity.getIcon();	    
             Figure background = icon.createFigure();
-	    figure = new IconFigure(background, entity.getName());
+	    figure = new CompositeFigure(background);
 	    
-	    Enumeration terminals = entity.terminals();
-	    // FIXME this needs to do the right thing. 
-	    while(terminals.hasMoreElements()) {
-		SchematicTerminal terminal = 
-	    	    (SchematicTerminal) terminals.nextElement();
-		StraightTerminal terminalFigure = new StraightTerminal();
-		terminalFigure.setUserObject(terminal);
-		((IconFigure)figure).addTerminal(
-		    terminalFigure, SwingConstants.NORTH, 50);
-	    }
+	    //Enumeration terminals = entity.terminals();
+	    //while(terminals.hasMoreElements()) {
+	    //	SchematicTerminal terminal = 
+	    // 	    (SchematicTerminal) terminals.nextElement();
+	    //	Figure terminalFigure = render(terminal);
+	    //	terminalFigure.setUserObject(terminal);
+	    //	((IconFigure)figure).addTerminal(
+	    //	    terminalFigure, SwingConstants.NORTH, 50);
+	    //}
 	    //	    double scale = getCompositeScale();
 	    //figure.getTransformContext().getTransform().scale(scale, scale);
 	}

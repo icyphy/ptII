@@ -38,9 +38,14 @@ import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
 import diva.canvas.interactor.*;
+import diva.canvas.toolbox.*;
+import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
 import java.awt.event.InputEvent;
 import java.util.HashMap;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorGraphController
@@ -103,6 +108,7 @@ public class EditorGraphController extends GraphController {
         // Create and set up the target for connectors
         PerimeterTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
+		System.out.println(f.getUserObject().toString());
                 return (f.getUserObject() instanceof SchematicTerminal);
 		// FIXME Used needs something like: ||
 		// (f instanceof FigureWrapper &&
@@ -121,6 +127,123 @@ public class EditorGraphController extends GraphController {
         // The mouse filter needs to accept regular click or control click
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
         manipulator.setHandleFilter(handleFilter);
+    }
+
+    /** Add an entity to this graph editor and render it
+     * at the given location.
+     */
+    public void addEntity(SchematicEntity entity, double x, double y) {
+	addNode(entity, x, y);
+	
+	/*
+	Enumeration terminals = entity.terminals();
+	while(terminals.hasMoreElements()) {
+	    SchematicTerminal terminal = 
+		(SchematicTerminal) terminals.nextElement();
+	    drawNode(terminal, x + terminal.getX(), y + terminal.getY());
+	} 
+	*/       
+    }
+
+    /** Add an edge to this graph editor and render it
+     * from the given tail node to an autonomous site at the
+     * given location. The "end" flag is either HEAD_END
+     * or TAIL_END, from diva.canvas.connector.ConnectorEvent.
+     */
+    public void addEdge(Edge edge, Node node, int end, double x, double y) {
+        Figure nf = (Figure) node.getVisualObject();
+        FigureLayer layer = getGraphPane().getForegroundLayer();
+        Site headSite, tailSite;
+
+        if (end == ConnectorEvent.TAIL_END) {
+            tailSite = getConnectorTarget().getTailSite(nf, x, y);
+            headSite = new AutonomousSite(layer, x, y);
+            getGraphImpl().setEdgeTail(edge, node);
+        } else {
+            tailSite = new AutonomousSite(layer, x, y);
+            headSite = getConnectorTarget().getHeadSite(nf, x, y);
+            getGraphImpl().setEdgeHead(edge, node);
+        }
+	System.out.println("tailsite = " + tailSite);
+	System.out.println("headsite = " + headSite);
+        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
+        ef.setInteractor(getEdgeInteractor());
+
+        // Add to the view and model
+        ef.setUserObject(edge);
+        edge.setVisualObject(ef);
+        layer.add(ef);
+    }
+
+    /** Add a node to this graph editor and render it
+     * at the given location.
+     */
+    public void addNode(Node n, double x, double y) {
+        // Create a figure for it
+        drawNode(n,x,y);
+ 
+        // Add to the graph
+        getGraphImpl().addNode(n, getGraph());
+    }
+    
+    /** Draw an edge.
+     */
+    public void drawEdge(Edge edge) {
+        Node tail = edge.getTail();
+        Node head = edge.getHead();
+        FigureLayer layer = getGraphPane().getForegroundLayer();
+        Figure tf = (Figure) tail.getVisualObject();
+        Figure hf = (Figure) head.getVisualObject();
+
+        // Get a tail site
+        Rectangle2D bounds = tf.getBounds();
+        Site tailSite = getConnectorTarget().getTailSite(tf,
+                bounds.getCenterX(), bounds.getCenterY());
+
+        // Get a head site
+        bounds = hf.getBounds();
+        Site headSite = getConnectorTarget().getHeadSite(hf,
+                bounds.getCenterX(), bounds.getCenterY());
+
+        // Create the figure
+        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
+        edge.setVisualObject(ef);
+        ef.setUserObject(edge);
+        ef.setInteractor(getEdgeInteractor());
+        layer.add(ef);
+    }
+
+    /** Draw a node at the given location.
+     */
+    public void drawNode(Node n, double x, double y) {
+	// Create a figure for it
+        Figure nf = getNodeRenderer().render(n);
+        nf.setInteractor(getNodeInteractor());
+	getGraphPane().getForegroundLayer().add(nf);
+
+	if(n instanceof SchematicEntity) {
+	    Enumeration terminals = ((SchematicEntity) n).terminals();
+	    while(terminals.hasMoreElements()) {
+		SchematicTerminal terminal = 
+		    (SchematicTerminal) terminals.nextElement();
+		Figure terminalFigure = getNodeRenderer().render(terminal);
+		terminalFigure.setInteractor(getNodeInteractor());
+
+		((CompositeFigure)nf).add(terminalFigure);
+		CanvasUtilities.translateTo(terminalFigure, 
+					  terminal.getX(), 
+					  terminal.getY());
+
+		terminalFigure.setUserObject(terminal);
+		terminal.setVisualObject(terminalFigure);
+	    }
+	}
+
+        CanvasUtilities.translateTo(nf, x, y);
+ 
+        // Add to the view and model
+        nf.setUserObject(n);
+        n.setVisualObject(nf);
     }
 
     /**
@@ -180,22 +303,24 @@ public class EditorGraphController extends GraphController {
 	    EntityTemplate template = new EntityTemplate();
 	    //FIXME Hack to get a usable icon
 	    try {
-		PTMLParser parser = new PTMLParser();
-		String url = new String("file:/users/neuendor/ptII/ptolemy/" + 
-					"schematic/util/test/" + 
-					"exampleIconLibrary.ptml");
-		XMLElement root = parser.parse(url);
-		IconLibrary library = 
-		    PTMLObjectFactory.createIconLibrary(root);
-		Icon icon = (Icon) library.icons().nextElement();
-		template.setIcon(icon);
+		URL urlbase = new URL("file:" + System.getProperty("PTII"));
+		URL iconlibURL = new URL(urlbase, 
+		    "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
+		URL entitylibURL = new URL(urlbase, 
+		    "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
+		IconLibrary iconlibrary = 
+		    PTMLObjectFactory.parseIconLibrary(iconlibURL);
+		EntityLibrary entitylibrary = 
+		    PTMLObjectFactory.parseEntityLibrary(
+			entitylibURL, iconlibrary);
+		template = entitylibrary.findEntityTemplate("SDF.SaveImage");
 	    } catch (Exception ex) {
 		System.out.println(ex.getMessage());
 	    }
 	    //End Hack
 
             Node n = getGraphImpl().createCompositeNode(template);
-            addNode(n, e.getLayerX(), e.getLayerY());
+            addEntity((SchematicEntity)n, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -214,7 +339,7 @@ public class EditorGraphController extends GraphController {
             Figure f = evt.getTarget();
             Edge e = (Edge)c.getUserObject();
             Node n = (f == null) ? null : (Node)f.getUserObject();
-            GraphImpl impl = getGraphImpl();
+	    GraphImpl impl = getGraphImpl();
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
                 impl.setEdgeHead(e, n);
@@ -239,7 +364,7 @@ public class EditorGraphController extends GraphController {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
-	    System.out.println(sourcenode.toString());
+	    System.out.println(((PTMLObject)sourcenode).description());
 	    if(!(sourcenode instanceof SchematicTerminal)) return;
 
             FigureLayer layer = (FigureLayer) e.getLayerSource();

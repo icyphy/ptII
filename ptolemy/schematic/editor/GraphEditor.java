@@ -404,16 +404,6 @@ public class GraphEditor extends AbstractApplication {
                     "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
             entitylibURL = new URL(urlbase, 
                     "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
-        }
-        catch (Exception ex) {
-            System.out.println("Couldn't construct url");
-            System.out.println(ex.getMessage());
-        }
-
-        // Parse the icon libraries
-        _iconLibrary = null;
-        _entityLibrary = null;
-        try {
             _iconLibrary = PTMLObjectFactory.parseIconLibrary(iconlibURL);
             System.out.println("Parsed:\n" + _iconLibrary);
 
