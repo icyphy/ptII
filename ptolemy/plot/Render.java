@@ -92,7 +92,7 @@ public class Render extends PlotBox {
     }
 
     /** Get the current colormap.
-    */
+     */
     public synchronized int[][] getColormap() {
         return _colormap;
     }
@@ -135,13 +135,6 @@ public class Render extends PlotBox {
 
                     setTitle("Sample image");
 
-                    // I thought that this would remove the padding from the
-                    // plot rectangle, but it didn't.
-//                     _topPadding = 0;
-//                     _bottomPadding = 0;
-//                     _rightPadding = 0;
-//                    _leftPadding = 0;
-
                     // Create the stripes in data form (arrays).
                     int[] stripe1 = new int[10];
                     int colorValue = _HIGHCOLOR;
@@ -153,6 +146,11 @@ public class Render extends PlotBox {
                             colorValue = _LOWCOLOR;
                         }
                     }
+
+		    //		    System.out.println("_ulx = " + _ulx);
+		    //		    System.out.println("_uly = " + _uly);
+		    //		    System.out.println("_lrx = " + _lrx);
+		    //		    System.out.println("_lry = " + _lry);
                     
                     int[] stripe2 = new int[10];
                     System.arraycopy(stripe1, 0, stripe2, 1,
@@ -192,48 +190,41 @@ public class Render extends PlotBox {
     }
 
     /** Set the colormap.
-    * The user needs to give a 3-by-256 integer array as a colormap.
-    */
+     *  The user needs to give a 3-by-256 integer array as a colormap.
+     *  @param colormap The new colormap used to render images.
+     */
     public synchronized void setColormap(int[][] colormap){
         _colormap = colormap;
     }
 
     /** Set the x increment.
+     *  @param xIncrement The increment in units of the x-axis of each stripe.
      */
     public synchronized void setXIncrement(double xIncrement) {
 	_xIncrement = xIncrement;
     }
 
     /** Set the x offset.
+     *  @param xOffset The starting value of the x-axis.
      */
     public synchronized void setXOffset(double xOffset) {
 	_xOffset = xOffset;
     }
 
     /** Set the y increment.
+     *  @param yIncrement The increment in units of the y-axis of each patch
+     *  within each stripe.
      */
     public synchronized void setYIncrement(double yIncrement) {
 	_yIncrement = yIncrement;
     }
 
     /** Set the y offset.
+     *  @param yOffset The starting value of the y-axis.
      */
     public synchronized void setYOffset(double yOffset) {
 	_yOffset = yOffset;
     }
-
-    // The thought here is to override setYRange() then just call the super
-    // method with slightly smaller ranges that take into account the extra
-    // padding that will be added.  The complications I foresee are the
-    // getYRange() method will have to be overridden as well, and the values
-    // might be a little off by having to multiply a smaller number by a
-    // padding factor to get the slightly larger desired size plot rectangle.
-    // I left this unfinished because of the complications.
-    // Instead I uncommented some code in PlotBox that disallows padding if
-    // the ranges have been specified by the setYRange().
-    //    public synchronized void setYRange(double min, double max) {
-    //	      super.setYRange( ) 
-    //    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -246,18 +237,14 @@ public class Render extends PlotBox {
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
 
-        // We must call PlotBox._drawPlot() before calling _drawPlotPoint
+        // We must call PlotBox._drawPlot() before calling _drawStripe
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
 
-        double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) +
+	double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) +
 	    1.0;
-        //(_ulx + 1);
 
-        double width = (double)((_originalXhigh - _originalXlow) * _xscale) / 
-	    (double)_imageData.size();
-        // divided by the
-        // number of stripes (i.e _imageData.size())
+        double width = _xIncrement * _xscale;
 
         ListIterator imageDataIterator = _imageData.listIterator(0);
 
@@ -267,20 +254,9 @@ public class Render extends PlotBox {
             // System.out.println("x = " + x);
             x += width;
         }
-         
-        // Draw an oval centered at zero, with width 1 and height 1/2.
-//         int ulyOval = _lry - (int)((0.5 - _yMin) * _yscale);
-//         int ulxOval = _ulx + (int) ((-1 - _xMin) * _xscale);
-//         int ovalWidth = (int)(2 * _xscale);
-//         int ovalHeight = (int)(1 * _yscale);
-// 
-//         graphics.setColor(java.awt.Color.magenta);
-//         graphics.drawOval(ulxOval,ulyOval,ovalWidth, ovalHeight);
 
-
-  
-            // Indicate that the plot is showing.
-            _showing = true;
+	// Indicate that the plot is showing.
+	_showing = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -290,9 +266,73 @@ public class Render extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Draw the specified stripe.
+    /** Clip the patch to the visible x-range.
+     *  @param x The proposed starting x-value of the patch.
+     *  @param width The proposed width of the patch.
      */
+    private int[] _clipXWidth(int x, int width) {
+	int[] retrn = new int[2];
 
+	// if the patch extends across the entire width of the plot rectangle
+	if (x < _ulx + 1 && x + width > _lrx - 1) {
+	    retrn[0] = _ulx + 1;
+	    retrn[1] = _lrx - _ulx - 1;
+	} // if the patch is on the left border line
+	else if (x < _ulx + 1 && x + width > _ulx + 1) {
+	    retrn[0] = _ulx + 1;
+	    retrn[1] = width - (_ulx - x);
+	} // if the patch is within the left and right borders
+	else if (x >= _ulx + 1 && x + width <= _lrx - 1) {
+	    retrn[0] = x;
+	    retrn[1] = width;
+	} // if the patch is on the right border
+	else if (x <= _lrx - 1 && x + width > _lrx - 1) {
+	    retrn[0] = x;
+	    retrn[1] = _lrx - x;
+	} // if the patch is outside of both the left and right borders
+	else {
+	    retrn[0] = _NOTVISIBLE;
+	}
+	return retrn;
+    }
+
+    /** Clip the patch to the visible y-range.
+     *  @param y The proposed starting y-value of the patch.
+     *  @param height The proposed height of the patch.
+     */
+    private int[] _clipYHeight(int y, int height) {
+	int[] retrn = new int[2];
+
+	// if the patch extends across the entire height of the plot rectange
+	if (y < _uly + 1 && y + height > _lry - 1) {
+	    retrn[0] = _uly + 1;
+	    retrn[1] = _lry - _uly - 1;
+	} // if the patch is on the top border line
+	else if (y < _uly + 1 && y + height >= _uly + 1) {
+	    retrn[0] = _uly + 1;
+	    retrn[1] = height - (_uly - y);
+	} // if the patch is within the top and bottom borders
+	else if (y >= _uly + 1 && y + height <= _lry - 1) {
+	    retrn[0] = y;
+	    retrn[1] = height;
+	} // if the patch is on the bottom border
+	else if (y <= _lry - 1 && y + height > _lry - 1) {
+	    retrn[0] = y;
+	    retrn[1] = _lry - y;
+	} // if the patch is outside of both the top and bottom borders
+	else {
+	    retrn[0] = _NOTVISIBLE;
+	}
+
+	return retrn;
+    }
+    /** Draw the specified stripe.
+     *  @param graphics The graphics context.
+     *  @param stripe The stripe to be drawn.
+     *  @param x The x coordinate in pixels of the left edge of the rectangle
+     *  to be drawn.
+     *  @param width The width of the rectangle to be drawn.
+     */
      private void _drawStripe(Graphics graphics, int[] stripe,
                               double x, double width) {
 
@@ -301,19 +341,12 @@ public class Render extends PlotBox {
              width = 1.0;
          }
 
-         // Draw the stripe one patch at a time.
-
-         int length = stripe.length;
-
- 
          // Draw the stripe one patch (data element) at a time.
-         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1;
-	 //(_uly + 1);
+         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1.0;
 
-         double height = (double)((_originalYhigh - _originalYlow) * _yscale) /
- 	     (double)length;
+	 double height = _yIncrement * _yscale;
 
-         for (int i = 0; i < length; i++) {
+         for (int i = 0; i < stripe.length; i++) {
              _drawPatch(graphics, (int)x, (int)y, (int)width, (int)height,
                         stripe[i]);
 
@@ -344,6 +377,20 @@ public class Render extends PlotBox {
 
         // Set the color.
         graphics.setColor(new Color(r, g, b));
+
+	// Clip the patch to the visible range.
+	int[] xAndWidth = _clipXWidth(x, width);
+	x = xAndWidth[0];
+	width = xAndWidth[1];
+
+	int[] yAndHeight = _clipYHeight(y, height);
+	y = yAndHeight[0];
+	height = yAndHeight[1];
+
+	// If the patch is not visible return without having drawn anything.
+	if (x == _NOTVISIBLE || y == _NOTVISIBLE) {
+	    return;
+	}
 
         // Draw the patch.
         graphics.fillRect(x, y, width, height);
@@ -379,6 +426,10 @@ public class Render extends PlotBox {
     /** A test color value from 0 through 255.
     */
     private static final int _LOWCOLOR = 175;
+
+    /** The flag indicating whether the patch to be drawn is visible.
+     */
+    private static final int _NOTVISIBLE = -999;
 
     /** @serial Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
