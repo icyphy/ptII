@@ -31,6 +31,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -107,12 +108,28 @@ public class Select extends Transformer {
 
     /** Read an input token from the specified input channel and produce
      *  it on the output.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the <i>select</i> input is out of range.
      */
     public void fire() throws IllegalActionException {
-        // Redo this check in case the control has changed since prefire().
-        if (input.hasToken(_control)) {
-            output.send(0, input.get(_control));
+        boolean enabled = false;
+        if (control.hasToken(0)) {
+            _channel = ((IntToken)control.get(0)).intValue();
+            enabled = true;
+        }
+        boolean inRange = false;
+        for (int i = 0; i < input.getWidth(); i++) {
+            inRange = inRange || (i == _channel);
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
+                if (enabled && i == _channel) {
+                    output.send(0, token);
+                }
+            }
+        }
+        if (!inRange) {
+            throw new IllegalActionException(this,
+                    "Select input is out of range: " + _channel + ".");
         }
     }
 
@@ -122,7 +139,7 @@ public class Select extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _control = 0;
+        _channel = 0;
     }
 
     /** Read a control token, if there is one, and check to see
@@ -134,12 +151,9 @@ public class Select extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (control.hasToken(0)) {
-            _control = ((IntToken)control.get(0)).intValue();
-        }
-        if (_control < 0
-                || _control > input.getWidth()
-                || !input.hasToken(_control)) {
+        if (_channel < 0
+                || _channel > input.getWidth()
+                || !input.hasToken(_channel)) {
             return false;
         }
         return super.prefire();
@@ -149,5 +163,5 @@ public class Select extends Transformer {
     ////                         private variables                 ////
 
     // The most recently read control token.
-    private int _control = 0;
+    private int _channel = 0;
 }

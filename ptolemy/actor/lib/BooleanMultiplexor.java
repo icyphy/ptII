@@ -111,27 +111,36 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean flag = ((BooleanToken) select.get(0)).booleanValue();
-        Token trueToken = trueInput.get(0);
-        Token falseToken = falseInput.get(0);
-
-        if (flag) {
-            output.send(0, trueToken);
-        } else {
-            output.send(0, falseToken);
+        boolean enabled = false;
+        if (select.hasToken(0)) {
+            _control = ((BooleanToken) select.get(0)).booleanValue();
+            enabled = true;
+        }
+        if (trueInput.hasToken(0)) {
+            Token trueToken = trueInput.get(0);
+            if (enabled && _control) {
+                output.send(0, trueToken);
+            }
+        }
+        if (falseInput.hasToken(0)) {
+            Token falseToken = falseInput.get(0);
+            if (enabled && !_control) {
+                output.send(0, falseToken);
+            }
         }
     }
 
-    /** Return false if any input channel does not have a token.
-     *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough tokens to fire.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (!select.hasToken(0)) return false;
-        if (!trueInput.hasToken(0)) return false;
-        if (!falseInput.hasToken(0)) return false;
-        return super.prefire();
+    /** Initialize to the default, which is to use channel zero. */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _control = false;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The control input. */
+    private boolean _control = false;
+
 }
 
