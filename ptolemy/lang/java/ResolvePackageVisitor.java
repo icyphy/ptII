@@ -69,12 +69,12 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        Scope environ = (Scope) node.getDefinedProperty(ENVIRON_KEY);
+        Scope scope = (Scope) node.getDefinedProperty(ENVIRON_KEY);
 
-        _pkgEnv  = (Scope) environ.parent();
+        _pkgEnv  = (Scope) scope.parent();
 
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(environ);            // enclosing scope =
+        childArgs.addLast(scope);            // enclosing scope =
         // file scope
         childArgs.addLast(Boolean.FALSE);      // inner class = false
         childArgs.addLast(NullValue.instance); // no enclosing decl

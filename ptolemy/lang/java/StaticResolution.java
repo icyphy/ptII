@@ -361,12 +361,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIteratorator environIter = _findPossibles(nameNode, env, null,
+        ScopeIteratorator scopeIter = _findPossibles(nameNode, env, null,
                 pkgDecl, category);
 
         // no check for multiple matches (this should be handled by
         // the static resolution passes)
-        return (JavaDecl) environIter.nextDecl();
+        return (JavaDecl) scopeIter.nextDecl();
     }
 
     /** Return the method or constructor declaration with the given
@@ -395,7 +395,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIteratorator environIter = _findPossibles(nameNode, env, null,
+        ScopeIteratorator scopeIter = _findPossibles(nameNode, env, null,
                 pkgDecl, category);
 
         ResolveFieldVisitor resolveFieldVisitor =
@@ -404,7 +404,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // no check for multiple matches (this should be handled by
         // the static resolution passes)
         return (MemberDecl)
-	    resolveFieldVisitor.resolveCall(environIter, methodArgs);
+	    resolveFieldVisitor.resolveCall(scopeIter, methodArgs);
     }
 
     

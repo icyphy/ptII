@@ -1,6 +1,5 @@
-/*
-A JavaVisitor that resolves the names of the import nodes of an
-abstract syntax tree for a Java program.
+/* Resolve names of local variables, formal parameters, field accesses,
+method calls, and statement labels.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -29,141 +28,451 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
+
 */
 
 package ptolemy.lang.java;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class ResolveImportsVisitor extends JavaVisitor
-    implements JavaStaticSemanticConstants {
+/** A visitor that does name resolution.
+After this phase, all fields and methods are referred to via
+ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode.
+ObjectNode is only used for local variables and parameters.
 
-    public ResolveImportsVisitor() {
+The decl in methods may be wrong, because overloading resolution is
+done later (when types become available)
+
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
+ */
+public class ResolveNameVisitor extends ReplacementJavaVisitor
+    implements JavaStaticSemanticConstants {
+    public ResolveNameVisitor() {
         super(TM_CUSTOM);
     }
 
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        return node;
+    }
+
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+        return node;
+    }
+
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        _compileUnit = node;
-        _fileEnv = (Scope) node.getDefinedProperty(ENVIRON_KEY); // file scope
-        _importEnv = _fileEnv.parent().parent();
 
-        // initialize importedPackages property
-        if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
-            _importedPackages = new LinkedList();
+        //System.out.println("resolve name on " +
+        //        node.getDefinedProperty(IDENT_KEY));
 
-            node.setProperty(IMPORTED_PACKAGES_KEY, _importedPackages);
+        _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
+
+        NameContext c = new NameContext();
+        c.scope = (Scope) node.getDefinedProperty(ENVIRON_KEY);
+
+        LinkedList childArgs = TNLManip.addFirst(c);
+
+        TNLManip.traverseList(this, childArgs, node.getDefTypes());
+
+        //System.out.println("finished resolve name on " +
+        //        node.getDefinedProperty(IDENT_KEY));
+
+        return node;
+    }
+
+    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+        return _visitUserTypeDeclNode(node, args);
+    }
+
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+        node.setInitExpr((TreeNode) node.getInitExpr().accept(this, args));
+
+        NameContext ctx = (NameContext) args.get(0);
+        Scope env = ctx.scope;
+
+        NameNode name = node.getName();
+        String varName = name.getIdent();
+
+        Decl other = env.lookup(varName, CG_FORMAL);
+
+        if (other != null) {
+            throw new RuntimeException("declaration shadows " + varName);
+        }
+
+        other = env.lookupProper(varName, CG_LOCALVAR);
+
+        if (other != null) {
+            throw new RuntimeException("redeclaration of " + varName);
+        }
+
+        LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
+                node.getModifiers(), node);
+
+        env.add(d);
+        name.setProperty(DECL_KEY, d);
+
+        return node;
+    }
+
+    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.encLoop = null;
+        subCtx.breakTarget = null;
+
+        Scope newEnv1 = new Scope(ctx.scope);
+        subCtx.scope = newEnv1;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setParams(TNLManip.traverseList(this, childArgs,
+                node.getParams()));
+
+        TreeNode body = node.getBody();
+        subCtx.scope = new Scope(newEnv1);
+
+        if (body != AbsentTreeNode.instance) {
+            node.setBody((BlockNode) body.accept(this, childArgs));
+        }
+
+        return node;
+    }
+
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.encLoop = null;
+        subCtx.breakTarget = null;
+
+        Scope newEnv1 = new Scope(ctx.scope);
+        subCtx.scope = newEnv1;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setParams(TNLManip.traverseList(this, childArgs,
+                node.getParams()));
+
+        subCtx.scope = new Scope(newEnv1);
+
+        node.setConstructorCall((ConstructorCallNode)
+                node.getConstructorCall().accept(this, childArgs));
+
+        node.setBody((BlockNode) node.getBody().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+        return _visitUserTypeDeclNode(node, args);
+    }
+
+    public Object visitParameterNode(ParameterNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        Scope env = ctx.scope;
+
+        NameNode name = node.getName();
+        String varName = name.getIdent();
+
+        Decl other = env.lookup(varName, CG_FORMAL | CG_LOCALVAR);
+
+        if (other != null) {
+            throw new RuntimeException("declaration shadows " + varName);
+        }
+
+        FormalParameterDecl d = new FormalParameterDecl(varName,
+                node.getDefType(), node.getModifiers(), node);
+
+        name.setProperty(DECL_KEY, d);
+        env.add(d);
+
+        return node;
+    }
+
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        NameContext subctx = (NameContext) ctx.clone();
+        subctx.scope = new Scope(ctx.scope);
+
+        node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
+                node.getStmts()));
+
+        return node;
+    }
+
+    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        NameNode label = node.getName();
+        String labelString = label.getIdent();
+
+        Decl other = ctx.scope.lookup(labelString, CG_STMTLABEL);
+
+        Scope newEnv = new Scope(ctx.scope);
+
+        if (other != null) {
+            throw new RuntimeException("duplicate " + labelString);
+        }
+
+        StmtLblDecl d = new StmtLblDecl(labelString, node);
+
+        label.setProperty(DECL_KEY, d);
+
+        newEnv.add(d);
+
+        NameContext subCtx = (NameContext) ctx.clone();
+        subCtx.scope = newEnv;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setStmt((StatementNode) node.getStmt().accept(this, childArgs));
+        return node;
+    }
+
+    public Object visitSwitchNode(SwitchNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        node.setExpr((ExprNode) node.getExpr().accept(this, args));
+
+        subCtx.breakTarget = node;
+        subCtx.scope = new Scope(ctx.scope);
+
+        node.setSwitchBlocks(
+                TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
+                        node.getSwitchBlocks()));
+
+        return node;
+    }
+
+    public Object visitLoopNode(LoopNode node, LinkedList args) {
+        node.setTest((ExprNode) node.getTest().accept(this, args));
+
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.breakTarget = node;
+        subCtx.encLoop = node;
+        subCtx.scope = new Scope(ctx.scope);
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+        node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
+        node.setAftStmt((TreeNode) node.getAftStmt().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitForNode(ForNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.scope = new Scope(ctx.scope);
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setInit(TNLManip.traverseList(this, childArgs, node.getInit()));
+        subCtx.breakTarget = node;
+        subCtx.encLoop = node;
+
+        node.setTest((ExprNode) node.getTest().accept(this, childArgs));
+        node.setUpdate(TNLManip.traverseList(this, childArgs, node.getUpdate()));
+        node.setStmt((StatementNode) node.getStmt().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitBreakNode(BreakNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        if ((node.getLabel() == AbsentTreeNode.instance) &&
+                (ctx.breakTarget == null)) {
+            throw new RuntimeException("unlabeled break only allowed in loops or switches");
+        }
+
+        _resolveJump(node, ctx.breakTarget, ctx.scope);
+
+        return node;
+    }
+
+    public Object visitContinueNode(ContinueNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        if (ctx.encLoop == null) {
+            throw new RuntimeException("unlabeled continue only allowed in loops");
+        }
+
+        _resolveJump(node, ctx.encLoop, ctx.scope);
+
+        if (node.hasProperty(JUMP_DESTINATION_KEY)) {
+
+            StatementNode dest = (StatementNode)
+                node.getDefinedProperty(JUMP_DESTINATION_KEY);
+
+            if (!(dest instanceof IterationNode)) {
+                throw new RuntimeException("continue's target is not a loop");
+            }
+        }
+
+        return node;
+    }
+
+    public Object visitCatchNode(CatchNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        NameContext subCtx = (NameContext) ctx.clone();
+        subCtx.scope = new Scope(ctx.scope);
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setParam((ParameterNode) node.getParam().accept(this, childArgs));
+        node.setBlock((BlockNode) node.getBlock().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitThisNode(ThisNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitObjectNode(ObjectNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameNode name = node.getName();
+
+        return StaticResolution.resolveAName(name, ctx.scope,
+                ctx.currentClass, _currentPackage,
+                ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
+    }
+
+    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+        subCtx.resolveAsObject = true;
+
+        node.setObject((ExprNode) (node.getObject().accept(this, TNLManip.addFirst(subCtx))));
+
+        return node;
+    }
+
+    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+
+        subCtx.resolveAsObject = true;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        // CHECK ME : is this all that needs to be done?
+
+        return node;
+    }
+
+    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
+
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+        subCtx.resolveAsObject = false;
+
+        node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.addFirst(subCtx)));
+
+        return node;
+    }
+
+    /* The default visit method comes from ReplacementJavaVisitor. */
+
+    protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
+            LinkedList args) {
+        NameContext  ctx = new NameContext();
+
+        ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+
+        ctx.scope = decl.getScope();
+        ctx.currentClass = decl.getDefType();
+
+        LinkedList childArgs = TNLManip.addFirst(ctx);
+
+        node.setMembers(
+                TNLManip.traverseList(this, childArgs, node.getMembers()));
+
+        return node;
+    }
+
+    protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
+            Scope env) {
+        TreeNode label = node.getLabel();
+
+        if (label == AbsentTreeNode.instance) {
+            node.setProperty(JUMP_DESTINATION_KEY, noLabel);
         } else {
-            _importedPackages =
-                (Collection) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);
+            NameNode labelName = (NameNode) label;
+            String labelString = labelName.getIdent();
+
+            StmtLblDecl dest = (StmtLblDecl)
+                env.lookup(labelString, CG_STMTLABEL);
+
+            if (dest == null) {
+                throw new RuntimeException("label " + labelString + " not found");
+            }
+
+            labelName.setProperty(DECL_KEY, dest);
+
+            LabeledStmtNode labeledStmtNode = (LabeledStmtNode) dest.getSource();
+            node.setProperty(JUMP_DESTINATION_KEY, labeledStmtNode.getStmt());
         }
-
-        _importOnDemand("java.lang");
-
-        TNLManip.traverseList(this, null, node.getImports());
-
-        return null;
+        return node;
     }
 
-    public Object visitImportNode(ImportNode node, LinkedList args) {
+    protected static class NameContext implements Cloneable {
+        public NameContext() {}
 
-        NameNode name = node.getName();
-
-        StaticResolution.resolveAName(name,
-                (Scope) StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
-                CG_USERTYPE);
-
-        JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
-        JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
-
-        if ((old != null) && (old != current)) {
-            if (old != current) {
-                throw new RuntimeException("attempt to import conflicting name: " +
-                        old.getName());
+        public Object clone() {
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalError("clone of NameContext not supported");
             }
         }
 
-        _importEnv.add((ClassDecl) name.getDefinedProperty(DECL_KEY));
+        /** The last scope. */
+        public Scope scope = null;
 
-        return null;
+        /** The type of the current class. */
+        public TypeNameNode currentClass = null;
+
+        public TreeNode breakTarget = null;
+
+        /** The enclosing loop. null if not in a loop. */
+        public TreeNode encLoop = null;
+
+        boolean resolveAsObject = true;
     }
 
-    public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
-
-        NameNode name = node.getName();
-
-        StaticResolution.resolveAName(name,
-                StaticResolution.SYSTEM_PACKAGE.getScope(), null,  null, CG_PACKAGE);
-
-        PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
-
-        _importOnDemand(decl);
-
-        return null;
-    }
-
-    /** The default visit method. We shouldn't visit this node, so throw an exception. */
-    protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        throw new RuntimeException("ResolveImports not defined on node type : " +
-                node.getClass().getName());
-    }
-
-    protected final void _importOnDemand(PackageDecl importedPackage) {
-
-        //System.out.println("ResolveImportsVisitor._importOnDemand : importing " +
-        //        importedPackage.toString());
-
-        // ignore duplicate imports
-        if (_importedPackages.contains(importedPackage)) {
-            System.err.println("Warning: ResolveImportsVisitor._importOnDemand : ignoring duplicated package "
-                    + importedPackage.toString());
-            return;
-        }
-
-        _importedPackages.add(importedPackage);
-
-        Scope pkgEnv = importedPackage.getScope();
-
-        Iterator envItr = pkgEnv.allProperDecls();
-
-        while (envItr.hasNext()) {
-            JavaDecl type = (JavaDecl) envItr.next();
-
-            if (type.category != CG_PACKAGE) {
-                //System.out.println("_importOnDemand: adding " + type.toString());
-                _importEnv.add(type); // conflicts appear on use only
-            }
-        }
-
-        //System.out.println("_importOnDemand : finished" +
-        //        importedPackage.toString());
-    }
-
-    // we can get rid of this by added java.lang to the import list
-    protected final void _importOnDemand(String qualName) {
-        NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
-
-        StaticResolution.resolveAName(name,
-                StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
-                CG_PACKAGE);
-
-        _importOnDemand((PackageDecl) name.getDefinedProperty(DECL_KEY));
-    }
-
-
-    /** The CompileUnitNode that is the root of the tree. */
-    protected CompileUnitNode _compileUnit = null;
-
-    /** The file scope. */
-    protected Scope _fileEnv = null;
-
-    /** The import scope. */
-    protected Scope _importEnv = null;
-
-    /** The Collection of imported packages for this compile unit. */
-    protected Collection _importedPackages = null;
+    /** The package this compile unit is in. */
+    protected PackageDecl _currentPackage = null;
 }
