@@ -215,6 +215,18 @@ public class ProcessDirector extends Director {
      *   to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
+        // Reset the receivers.
+        Enumeration ports = actor.inputPorts();
+        while( ports.hasMoreElements() ) {
+            IOPort port = (IOPort)ports.nextElement();
+            Receiver[][] rcvrs = port.getReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    ((ProcessReceiver)rcvrs[i][j]).reset();
+                }
+            }
+        }
+                
         // Initialize threads
         ProcessThread processThread = _getProcessThread(actor, this);
         _threadList.insertFirst(processThread);
