@@ -168,9 +168,7 @@ BASECLASSFILES = \
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
 		$(ME)/PlotLive.class \
-		$(ME)/PlotLiveApplet.class \
-		'$(ME)/PlotLive$$StartButtonListener.class' \
-		'$(ME)/PlotLive$$StopButtonListener.class' \
+		$(ME)/PlotLiveApplet.class
 
 # Class files that permit editing and histograms, used by
 # complex applets and applications
@@ -180,19 +178,21 @@ COMPLEXCLASSFILES = \
 		'$(ME)/EditablePlot$$UndoListener.class' \
 		$(ME)/EditablePlot.class \
 		$(ME)/Histogram.class \
-		$(ME)/HistogramApplet.class
-
-# Class files used in applications
-APPLICATIONCLASSFILES = \
-		$(COMPLEXCLASSFILES) \
-		'$(ME)/PlotApplication$$1.class' \
-		$(ME)/PlotApplication.class \
+		$(ME)/HistogramApplet.class \
+		'$(ME)/PlotLive$$StartButtonListener.class' \
+		'$(ME)/PlotLive$$StopButtonListener.class' \
 		'$(ME)/PlotFrame$$1.class' \
 		'$(ME)/PlotFrame$$2.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
 		'$(ME)/PlotFrame$$SpecialMenuListener.class' \
 		$(ME)/PlotFrame.class
+
+# Class files used in applications
+APPLICATIONCLASSFILES = \
+		$(COMPLEXCLASSFILES) \
+		'$(ME)/PlotApplication$$1.class' \
+		$(ME)/PlotApplication.class
 
 # Jar file for simple applets
 $(PTAUXJAR): $(JSRCS) $(JCLASS)
