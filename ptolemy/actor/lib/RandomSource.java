@@ -79,20 +79,6 @@ public abstract class RandomSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        RandomSource newobj = (RandomSource)super.clone(ws);
-        newobj.seed = (Parameter)newobj.getAttribute("seed");
-        return newobj;
-    }
-
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.

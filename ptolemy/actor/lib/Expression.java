@@ -100,6 +100,7 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new Parameter(this, "expression");
+
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
     }
@@ -133,12 +134,11 @@ public class Expression extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+
     public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
+ 	    throws CloneNotSupportedException {
         Expression newobj = (Expression)super.clone(ws);
         newobj._iterationCount = 1;
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.expression = (Parameter)newobj.getAttribute("expression");
         newobj._time = (Variable)newobj.getAttribute("time");
         newobj._iteration = (Variable)newobj.getAttribute("iteration");
         return newobj;

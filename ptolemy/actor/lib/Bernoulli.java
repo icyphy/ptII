@@ -84,21 +84,6 @@ public class Bernoulli extends RandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the public variables.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Bernoulli newobj = (Bernoulli)super.clone(ws);
-        newobj.trueProbability =
-            (Parameter)newobj.getAttribute("trueProbability");
-        return newobj;
-    }
-
     /** Send a random boolean to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.

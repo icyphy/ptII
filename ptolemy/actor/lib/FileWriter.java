@@ -108,19 +108,6 @@ public class FileWriter extends Writer {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FileWriter newobj = (FileWriter)super.clone(workspace);
-        newobj.filename = (Parameter)newobj.getAttribute("filename");
-        return newobj;
-    }
-
     /** Open the specified file, if any.
      *  @exception IllegalActionException If the file cannot be opened,
      *   or if the parent class throws it.

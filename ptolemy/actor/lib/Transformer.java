@@ -75,22 +75,4 @@ public class Transformer extends TypedAtomicActor {
      *  to be at least that of the input.
      */
     public TypedIOPort output;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Transformer newobj = (Transformer)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
 }

@@ -215,13 +215,9 @@ public class Pulse extends SequenceSource {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Pulse newobj = (Pulse)super.clone(ws);
-        newobj.indexes = (Parameter)newobj.getAttribute("indexes");
         try {
-            newobj.indexes = (Parameter)newobj.getAttribute("indexes");
             newobj.attributeChanged(newobj.indexes);
-            newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(newobj.values);
-            newobj.repeat = (Parameter)newobj.getAttribute("repeat");
             newobj.attributeChanged(newobj.repeat);
             // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();

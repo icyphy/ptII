@@ -157,21 +157,6 @@ public class DiscreteRandomSource extends RandomSource {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the public members.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        DiscreteRandomSource newobj = (DiscreteRandomSource) super.clone(ws);
-        newobj.pmf = (Parameter) newobj.getAttribute("pmf");
-        newobj.values = (Parameter) newobj.getAttribute("values");
-        return newobj;
-    }
-
     /** Output the token selected in the prefire() method.
      *  @exception IllegalActionException If there is no director.
      */

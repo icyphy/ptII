@@ -107,7 +107,6 @@ public class Scale extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Scale newobj = (Scale)super.clone(ws);
-        newobj.factor = (Parameter)newobj.getAttribute("factor");
 	newobj.output.setTypeAtLeast(newobj.input);
 	newobj.output.setTypeAtLeast(newobj.factor);
         return newobj;

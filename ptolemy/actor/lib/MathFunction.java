@@ -167,25 +167,6 @@ public class MathFunction extends TypedAtomicActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        MathFunction newobj = (MathFunction)super.clone(ws);
-        newobj.function = (StringAttribute)newobj.getAttribute("function");
-        newobj.firstOperand = (TypedIOPort)newobj.getPort("firstOperand");
-        if (secondOperand != null) {
-          newobj.secondOperand = (TypedIOPort)newobj.getPort("secondOperand");
-        }
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** Compute the specified math function of the input.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.

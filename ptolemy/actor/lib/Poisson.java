@@ -186,8 +186,6 @@ public class Poisson extends TimedSource {
 	    throws CloneNotSupportedException {
         Poisson newobj = (Poisson)super.clone(ws);
         try {
-            newobj.meanTime = (Parameter)newobj.getAttribute("meanTime");
-            newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(values);
 	    // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();

@@ -145,10 +145,7 @@ public class Quantizer extends Transformer {
 	    throws CloneNotSupportedException {
         Quantizer newobj = (Quantizer)super.clone(ws);
         try {
-            newobj.levels = (Parameter)newobj.getAttribute("levels");
             newobj.attributeChanged(newobj.levels);
-            newobj.input.setTypeEquals(BaseType.DOUBLE);
-            newobj.output.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

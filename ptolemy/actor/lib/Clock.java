@@ -239,13 +239,10 @@ public class Clock extends TimedSource {
 	    throws CloneNotSupportedException {
         Clock newobj = (Clock)super.clone(ws);
         try {
-            newobj.offsets = (Parameter)newobj.getAttribute("offsets");
             newobj.attributeChanged(newobj.offsets);
-            newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(values);
-            newobj.period = (Parameter)newobj.getAttribute("period");
 
-	    // set the type constraints.
+	    // Set the type constraints.
 	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
 	    newobj.output.setTypeAtLeast(elemTerm);

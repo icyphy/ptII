@@ -101,22 +101,6 @@ public class Maximum extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Maximum newobj = (Maximum)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.channelNumber = (TypedIOPort)newobj.getPort("channelNumber");
-        newobj.maximumValue = (TypedIOPort)newobj.getPort("maximumValue");
-        return newobj;
-    }
-
     /** Read at most one token from each input channel and broadcast the one
      *  with the largest value to the <i>maximumValue</i>output.
      *  In addition, broadcast its channel number to the <i>channelNumber</i>

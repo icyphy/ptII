@@ -101,22 +101,6 @@ public class Minimum extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Minimum newobj = (Minimum)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.channelNumber = (TypedIOPort)newobj.getPort("channelNumber");
-        newobj.minimumValue = (TypedIOPort)newobj.getPort("minimumValue");
-        return newobj;
-    }
-
     /** Read at most one token from each input channel and send the one
      *  with the least value to the output.  If there is no input, then
      *  produce no output.

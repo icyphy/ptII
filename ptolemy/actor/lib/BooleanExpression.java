@@ -64,21 +64,4 @@ public class BooleanExpression extends Expression {
         super(container, name);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        BooleanExpression newobj = (BooleanExpression)super.clone(ws);
-        newobj.output.setTypeEquals(BaseType.BOOLEAN);
-        return newobj;
-    }
 }

@@ -200,24 +200,6 @@ public class Interpolator extends SequenceSource {
 	}
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Interpolator newobj = (Interpolator)super.clone(ws);
-        newobj.indexes = (Parameter)newobj.getAttribute("indexes");
-        newobj.values = (Parameter)newobj.getAttribute("values");
-        newobj.order = (Parameter)newobj.getAttribute("order");
-        newobj.period = (Parameter)newobj.getAttribute("period");
-        return newobj;
-    }
-
     /** Output the value at the current iteration count. The output is
      *  one of the reference values if the iteration count matches one
      *  of the indexes, or is interpolated otherwise.

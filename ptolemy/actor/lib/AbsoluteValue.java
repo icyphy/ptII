@@ -87,7 +87,6 @@ public class AbsoluteValue extends Transformer {
         AbsoluteValue newobj = (AbsoluteValue)super.clone(ws);
 	newobj.output.setTypeAtLeast(new FunctionTerm(newobj.input));
 	newobj.output.setTypeAtMost(BaseType.SCALAR);
-
         return newobj;
     }
 

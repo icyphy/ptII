@@ -110,21 +110,6 @@ public class TimedSource extends Source implements TimedActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <i>stopTime</i> public member
-     *  to the parameter of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        TimedSource newobj = (TimedSource)super.clone(ws);
-        newobj.stopTime = (Parameter)newobj.getAttribute("stopTime");
-        return newobj;
-    }
-
     /** Initialize the actor. Schedule a refiring of this actor at the
      *  stoptime given by the stopTime parameter.
      *  @exception IllegalActionException If there is no director.

@@ -153,19 +153,6 @@ public class Test extends Sink {
         }
     }
 
-    /** Clone the actor into the specified workspace.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Test newobj = (Test)super.clone(ws);
-        newobj.correctValues = (Parameter)newobj.getAttribute("correctValues");
-        newobj.tolerance = (Parameter)newobj.getAttribute("tolerance");
-        return newobj;
-    }
-
     /** Override the base class to set the iteration counter to zero.
      *  @exception IllegalActionException If the base class throws it.
      */

@@ -117,22 +117,6 @@ public class AddSubtract extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        AddSubtract newobj = (AddSubtract)super.clone(ws);
-        newobj.plus = (TypedIOPort)newobj.getPort("plus");
-        newobj.minus = (TypedIOPort)newobj.getPort("minus");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** If there is at least one token on the input ports, add
      *  tokens from the <i>plus</i> port, subtract tokens from the
      *  <i>minus</i> port, and send the result to the

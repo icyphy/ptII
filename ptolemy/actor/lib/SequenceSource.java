@@ -90,22 +90,6 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>firingCountLimit</code> public member
-     *  to the parameter of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        SequenceSource newobj = (SequenceSource)super.clone(ws);
-        newobj.firingCountLimit =
-            (Parameter)newobj.getAttribute("firingCountLimit");
-        return newobj;
-    }
-
     /** Initialize the iteration counter.  A derived class must call
      *  this method in its initialize() method or the <i>firingCountLimit</i>
      *  feature will not work.

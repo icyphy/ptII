@@ -69,21 +69,4 @@ public class Sink extends TypedAtomicActor {
     /** The input port, which is a multiport.
      */
     public TypedIOPort input;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>input</code>
-     *  variable to equal the new port.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Sink newobj = (Sink)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        return newobj;
-    }
 }

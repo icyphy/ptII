@@ -83,21 +83,6 @@ public class RealTimeDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        RealTimeDelay newobj = (RealTimeDelay)super.clone(ws);
-        newobj.delay = (Parameter)newobj.getAttribute("delay");
-        return newobj;
-    }
-
     /** Output the inputs directly.
      *  @exception IllegalActionException If there is no director.
      */

@@ -90,22 +90,6 @@ public abstract class Source extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>output</code>
-     *  variable to equal the new port.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Source newobj = (Source)super.clone(ws);
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
-        return newobj;
-    }
-
     /** Read at most one input token from each channel of the trigger
      *  input and discard it.  If the trigger input is not connected,
      *  then this method does nothing.  Derived classes should be

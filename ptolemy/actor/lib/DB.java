@@ -106,20 +106,6 @@ public class DB extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DB newobj = (DB)super.clone(ws);
-        newobj.inputIsPower = (Parameter)newobj.getAttribute("inputIsPower");
-        newobj.min = (Parameter)newobj.getAttribute("min");
-        return newobj;
-    }
-
     /** Read a token from the input and convert its value into a
      *  decibel representation. If the input does not contain any tokens,
      *  do nothing.

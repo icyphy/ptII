@@ -112,22 +112,6 @@ public class MultiplyDivide extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        MultiplyDivide newobj = (MultiplyDivide)super.clone(ws);
-        newobj.multiply = (TypedIOPort)newobj.getPort("multiply");
-        newobj.divide = (TypedIOPort)newobj.getPort("divide");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** If there is at least one token on the input ports, multiply
      *  tokens from the <i>multiply</i> port, divide by
      *  tokens from the <i>divide</i> port,

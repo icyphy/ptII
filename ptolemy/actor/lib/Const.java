@@ -106,7 +106,6 @@ public class Const extends Source {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Const newobj = (Const)super.clone(ws);
-        newobj.value = (Parameter)newobj.getAttribute("value");
 	// Set the type constraint.
 	newobj.output.setTypeAtLeast(newobj.value);
         return newobj;

@@ -24,9 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (lmuliadi@eecs.berkeley.edu)
-
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -36,11 +35,13 @@ import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.type.Typeable;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
@@ -124,6 +125,52 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         throw new IllegalActionException(this,
                 "Attribute type changes are not allowed. Attempt to change: "
                 + attribute.getName());
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports, parameters and string attributes,
+     *  if any.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        TypedAtomicActor newObject = (TypedAtomicActor)super.clone(workspace);
+        Class myClass = getClass();
+        Field fields[] = myClass.getFields();
+        for(int i = 0; i < fields.length; i++) {
+            try {
+                // We can't use instanceof here because we don't actually
+                // have an instance of the object to call instanceof on.
+                // getType() returns a Class.
+                if (fields[i].getType() == _TYPED_IO_PORT_CLASS) {
+                        fields[i].set(newObject,
+                                newObject.getPort(fields[i].getName()));
+                } else {
+                    // We need to check for both Parameter and StringAttribute,
+                    // both of which implement UserSettable.
+                    // A faster way would be to check to see if the
+                    // type of the field was wither Parameter or
+                    // StringAttribute, but if we ever extended UserSettable
+                    // with another class, then clone() would not clone
+                    // the new class.
+                    Class interfaces[] = fields[i].getType().getInterfaces();
+                    for(int j = 0; j < interfaces.length; j++) {
+                        if (interfaces[j] == _USER_SETTABLE_CLASS) {
+                            fields[i].set(newObject,
+                                    newObject.
+                                    getAttribute(fields[i].getName()));
+                        }
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new CloneNotSupportedException(e.getMessage() +
+                        ": " + fields[i].getName());
+            }
+        }
+        return newObject;
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -280,5 +327,21 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                     "Incompatible port class for this actor.");
         }
         super._addPort(port);
+    }
+
+
+    private static final Class _TYPED_IO_PORT_CLASS;
+    private static final Class _USER_SETTABLE_CLASS;
+
+
+    static {
+        try {
+            _USER_SETTABLE_CLASS =
+                Class.forName("ptolemy.kernel.util.UserSettable");
+            _TYPED_IO_PORT_CLASS = Class.forName("ptolemy.actor.TypedIOPort");
+
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
+        }
     }
 }

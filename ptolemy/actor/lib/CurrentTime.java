@@ -61,30 +61,12 @@ public class CurrentTime extends TimedSource {
     public CurrentTime(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
 	// set the type constraints.
 	output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>init</code> and <code>step</code>
-     *  public members to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        CurrentTime newobj = (CurrentTime)super.clone(ws);
-	// set the type constraints.
-	output.setTypeEquals(BaseType.DOUBLE);
-        return newobj;
-    }
 
     /** Send the current value of the state of this actor to the output.
      *  @exception IllegalActionException If send() throws it.
@@ -95,6 +77,3 @@ public class CurrentTime extends TimedSource {
         output.send(0, new DoubleToken(dir.getCurrentTime()));
     }
 }
-
-
-

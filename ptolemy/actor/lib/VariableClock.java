@@ -98,21 +98,6 @@ public class VariableClock extends Clock {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        VariableClock newobj = (VariableClock)super.clone(ws);
-        newobj.periodControl = (TypedIOPort)newobj.getPort("periodControl");
-        return newobj;
-    }
-
     /** If there is an input on the <i>periodControl</i> port, read it
      *  and set the value of the <i>period</i> parameter.
      *  Then call the base class fire() method.

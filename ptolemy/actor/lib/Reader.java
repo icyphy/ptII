@@ -161,9 +161,6 @@ public class Reader extends Source {
             throws CloneNotSupportedException {
         Reader newobj = (Reader)super.clone(workspace);
         newobj.output.setMultiport(true);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
-        newobj.sourceURL = (Parameter)newobj.getAttribute("sourceURL");
-        newobj.refresh = (Parameter)newobj.getAttribute("refresh");
         try {
             newobj.attributeChanged(newobj.sourceURL);
         } catch (IllegalActionException ex) {

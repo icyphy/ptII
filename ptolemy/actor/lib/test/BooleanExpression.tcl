@@ -57,7 +57,13 @@ test BooleanExpression-1.1 {test clone} {
     $exprmaster setContainer [java::null]
     $expr setContainer $e0
     $expr description 1
-} {ptolemy.actor.lib.BooleanExpression}
+    # Make sure that clone is giving us a boolean
+    set output [java::field [java::cast ptolemy.actor.lib.Expression $expr] \
+	    output]
+    set outputType [$output getType]
+    list [$expr description 1] \
+	    [$outputType toString]
+} {ptolemy.actor.lib.BooleanExpression boolean}
 
 test BooleanExpression-2.1 {run with default empty BooleanExpression} {
     set in1 [java::new ptolemy.actor.TypedIOPort $expr in1 true false]

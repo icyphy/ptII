@@ -83,23 +83,6 @@ public class Average extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Average newobj = (Average)super.clone(ws);
-        newobj.output.setTypeSameAs(newobj.input);
-        newobj.reset = (TypedIOPort)newobj.getPort("reset");
-        newobj.reset.setInput(true);
-        newobj.reset.setTypeEquals(BaseType.BOOLEAN);
-        return newobj;
-    }
-
     /** Consume at most one token from the <i>input</i>
      *  and compute the average of the input tokens so far. Send the
      *  result to the output.  If there is no input token available,

@@ -90,23 +90,6 @@ public class Gaussian extends RandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Gaussian newobj = (Gaussian)super.clone(ws);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
-        newobj.mean = (Parameter)newobj.getAttribute("mean");
-        newobj.standardDeviation = (Parameter)newobj.getAttribute(
-                "standardDeviation");
-        return newobj;
-    }
-
     /** Send a random number with a Gaussian distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
