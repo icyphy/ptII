@@ -205,8 +205,8 @@ public class Token implements Serializable {
             // then if we don't catch and rethrow the exception, the
             // message will say something about "equality"
             // instead of "closeness".
-            throw new IllegalActionException(this, ex,
-                    _notSupportedMessage("closeness", this, token))
+            throw new IllegalActionException(null, null, ex,
+                    _notSupportedMessage("closeness", this, token));
         }
     }
 
