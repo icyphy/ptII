@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -240,8 +241,9 @@ public class Tableau extends ComponentEntity {
     private void _setSize() {
         String sizeSpec = size.getExpression();
         if (_frame != null && !sizeSpec.trim().equals("")) {
+            _frame.getRootPane().setPreferredSize(new Dimension(500,330));
             // FIXME: As usual with Swing, the following has no effect :-(
-            _frame.getContentPane().setSize(500,300);
+            _frame.getContentPane().setSize(500,330);
         }
     }
 
