@@ -13,6 +13,7 @@ To Do:
 7 run ptolemy classic SR
 
 5 write
+  how can the user choose between the schedulers?
 
 -------------------------------------------------------------------------------
 
