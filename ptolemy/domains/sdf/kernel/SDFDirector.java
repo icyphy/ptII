@@ -42,6 +42,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -90,6 +91,19 @@ of tokens they produce or consume.  See the
 @link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
 The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
 in a model to specify the delay across a relation.
+<p>
+The <i>allowDisconnectedGraphs</i> parameter of this director determines
+whether disconnected graphs are permitted.
+A model may have two or more graphs of actors that
+are not connected.  The schedule can jump from one graph to
+another among the disconnected graphs. There is nothing to
+force the scheduler to finish executing all actors on one
+graph before firing actors on another graph. However, the
+order of execution within an graph should be correct.
+Usually, disconnected graphs in an SDF model indicates an
+error.
+The default value of the allowDisconnectedGraphs parameter is a 
+BooleanToken with the value false.
 <p>
 The <i>iterations</i> parameter of this director corresponds to a
 limit on the number of times the director will fire its hierarchy
@@ -162,6 +176,19 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** A parameter representing whether disconnected graphs are
+     *  permitted.  A model may have two or more graphs of actors that
+     *  are not connected.  The schedule can jump from one graph to
+     *  another among the disconnected graphs. There is nothing to
+     *  force the scheduler to finish executing all actors on one
+     *  graph before firing actors on another graph. However, the
+     *  order of execution within an graph should be correct.
+     *  Usually, disconnected graphs in an SDF model indicates an
+     *  error.  The default value is a BooleanToken with the value
+     *  false.
+     */
+    public Parameter allowDisconnectedGraphs;
+
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
@@ -195,7 +222,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == vectorizationFactor) {
+        if (attribute == allowDisconnectedGraphs
+            || attribute == vectorizationFactor ) {
             invalidateSchedule();
         }
         super.attributeChanged(attribute);
@@ -484,6 +512,10 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException, NameDuplicationException {
         SDFScheduler scheduler =
                 new SDFScheduler(this, uniqueName("Scheduler"));
+
+        allowDisconnectedGraphs = new Parameter(this,
+                "allowDisconnectedGraphs", new BooleanToken(false));
+        allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);

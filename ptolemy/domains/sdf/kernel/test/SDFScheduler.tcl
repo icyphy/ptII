@@ -566,11 +566,44 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} s1
     list $sched1 $s1
-} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors!
+} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
 Reached Actors:
 .Toplevel.Consumer1
 Unreached Actors:
 .Toplevel.Consumer2 }}
+
+test SDFScheduler-8.7.1 {input Multiport with no connections - disconnected graph permitted} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
+    set port [java::field $a3 input]
+    $port setMultiport true
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
+    set port [java::field $a3 input]
+    $port setMultiport true
+
+    $scheduler setValid false
+
+
+    set allowDisconnectedGraphs \
+	[java::cast ptolemy.data.expr.Parameter \
+	     [$director getAttribute allowDisconnectedGraphs]]
+    $allowDisconnectedGraphs setExpression "true"
+
+
+    set sched1 {}
+    catch { _initialize $toplevel
+    set sched1 [_getSchedule $scheduler]} s1
+    list $sched1 $s1
+} {{{Consumer2 Consumer1}} {{Consumer2 Consumer1}}
+
 
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
