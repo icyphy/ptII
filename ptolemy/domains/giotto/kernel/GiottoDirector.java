@@ -187,6 +187,25 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Schedule an actor to be fired at the specified absolute time.
+     *  This method is only intended to be called from within main
+     *  simulation thread.  Actors that create their own asynchronous
+     *  threads should used the fireAtCurrentTime() method to schedule
+     *  firings.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If the specified time is in the past.
+     */
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+//         if (_eventQueue == null) {
+//             throw new IllegalActionException(this,
+//                     "Calling fireAt() before preinitialize().");
+//         }
+        if(_debugging) {
+            _debug("fireAt() called by " + actor + " for time " + time);
+        }
+    }
 
     /** Return the next time that this director expects activity.
      *  @return The time of the next iteration.
@@ -277,6 +296,31 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // Grab the next schedule to execute.
         Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex);
 
+	// We only do synchronization to real time here and leave time
+	// update to upper level directors or the postfile process.
+	if (_synchronizeToRealTime) {
+	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
+	    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+
+	    if (_expectedNextIterationTime > elapsedTimeInSeconds) {
+		long timeToWait = (long)
+                    ((_expectedNextIterationTime - elapsedTimeInSeconds) * 1000.0);
+                if (timeToWait > 0) {
+                    if (_debugging) {
+			_debug("Waiting for real time to pass: " + timeToWait);
+		    }
+                    // Synchronize on the scheduler.
+                    Scheduler scheduler = getScheduler();
+		    synchronized(scheduler) {
+			try {
+			    scheduler.wait(timeToWait);
+			} catch (InterruptedException ex) {
+			    // Continue executing.
+			}
+		    }
+		}
+	    }
+	}
 
         // Find the actors that will be invoked in this minor cycle (unit)
         // and update the receivers that are their destinations.
@@ -330,33 +374,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		}
 	    }
         }
-	// We only do synchronization to real time here and leave time
-	// update to upper level directors or the postfile process.
-
-	if (_synchronizeToRealTime) {
-	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
-	    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
-
-	    if (_expectedNextIterationTime > elapsedTimeInSeconds) {
-		long timeToWait = (long)
-                    ((_expectedNextIterationTime - elapsedTimeInSeconds) * 1000.0);
-		if (timeToWait > 0) {
-		    if (_debugging) {
-			_debug("Waiting for real time to pass: " + timeToWait);
-		    }
-                    // Synchronize on the scheduler.
-                    Scheduler scheduler = getScheduler();
-		    synchronized(scheduler) {
-			try {
-			    scheduler.wait(timeToWait);
-			} catch (InterruptedException ex) {
-			    // Continue executing.
-			}
-		    }
-		}
-	    }
-	}
-
     }
 
     /** Initialize the actors associated with this director.
