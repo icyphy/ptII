@@ -246,10 +246,16 @@ public class MoMLApplication {
 		File absoluteFile = file.getAbsoluteFile();
                 try {
                     if (!absoluteFile.exists()) {
-                        throw new IOException();
+                        throw new IOException("'" + absoluteFile
+                                + "' does not exist." );
                     }
                 } catch (java.security.AccessControlException accessControl) {
-                    throw new IOException();
+                    IOException exception =
+                        new IOException("AccessControlException while "
+                                + "trying to read '" + absoluteFile + "'");
+                    // IOException does not have a cause argument constructor.
+                    exception.initCause(accessControl);
+                    throw exception;
                 }
 		specURL = absoluteFile.getCanonicalFile().toURL();
 
@@ -278,7 +284,8 @@ public class MoMLApplication {
                         .getContextClassLoader().getResource(spec);
 
                     if (specURL == null) {
-                        throw new Exception();
+                        throw new Exception("getResource(\"" + spec
+                                + "\") returned null.");
                     } else {
 			// If we have a jar URL, convert spaces to %20
 			// so as to avoid multiple windows with the
@@ -292,8 +299,21 @@ public class MoMLApplication {
 			urlStream.close();
                         return specURL;
                     }
-                } catch (Exception exception) {
-                    throw new IOException("File not found: " + spec);
+                } catch (Exception ex3) {
+                    // Use a very verbose message in case opening
+                    // the configuration fails under Web Start.
+                    // Without this error message, users will
+                    // have no hope of telling us why Web Start failed.
+                    IOException exception =
+                        new IOException("File not found: '" + spec
+                                + "'\n caused by:\n" + ex3
+                                + "\n caused by:\n"
+                                + ex2
+                                + "\n caused by:\n"
+                                + ex);
+                    // IOException does not have a cause argument
+                    exception.initCause(ex3);
+                    throw exception;
                 }
             }
         }
