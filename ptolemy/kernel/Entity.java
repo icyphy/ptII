@@ -1,6 +1,6 @@
 /* An Entity is an aggregation of ports.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -128,6 +128,27 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Enumerate all connected ports.
+     *  Ports in this entity is not included unless there is a loopback, 
+     *  meaning that two distinct ports of this entity are linked to the same
+     *  relation.  This method is sychronized on the workspace.  The connected
+     *  entities can be obtained from the ports using getContainer().
+     *  @return An enumeration of Port objects.
+     */	
+    public Enumeration connectedPorts() {
+        synchronized(workspace()) {
+            // This works by constructing a linked list and then enumerating it.
+            LinkedList storedEntities = new LinkedList();
+            Enumeration ports = _portList.getElements(); 
+
+            while( ports.hasMoreElements() ) {
+                Port port = (Port)ports.nextElement();
+                storedEntities.appendElements( port.connectedPorts() );
+            }
+            return storedEntities.elements();
+        }
+    }
+
     /** Return a description of the object.
      *  @param verbosity The level of verbosity.
      */
@@ -163,45 +184,6 @@ public class Entity extends NamedObj {
         }
     }
 
-    /** Enumerate all connected ports.
-     *  Ports in this entity is not included unless there is a loopback, 
-     *  meaning that two distinct ports of this entity are linked to the same
-     *  relation.  This method is sychronized on the workspace.  The connected
-     *  entities can be obtained from the ports using getContainer().
-     *  @return An enumeration of Port objects.
-     */	
-    public Enumeration getConnectedPorts() {
-        synchronized(workspace()) {
-            // This works by constructing a linked list and then enumerating it.
-            LinkedList storedEntities = new LinkedList();
-            Enumeration ports = _portList.getElements(); 
-
-            while( ports.hasMoreElements() ) {
-                Port port = (Port)ports.nextElement();
-                storedEntities.appendElements( port.getConnectedPorts() );
-            }
-            return storedEntities.elements();
-        }
-    }
-
-    /** Enumerate linked relations. 
-     *  This method is sychronized on the workspace.
-     *  @return An enumeration of Relation objects.
-     */	
-    public Enumeration getLinkedRelations() {
-        synchronized(workspace()) {
-            LinkedList storedRelations = new LinkedList();
-            Enumeration ports = _portList.getElements(); 
-
-            while( ports.hasMoreElements() ) {
-                Port port = (Port)ports.nextElement(); 
-                Enumeration relations = port.getLinkedRelations(); 
-                storedRelations.appendElements( relations );
-            }
-            return storedRelations.elements();
-        }
-    }
-
     /** Return the port belonging to this entity that has the specified name.
      *  This method is sychronized on the workspace.
      *  @return A port with the given name, or null if none exists.
@@ -220,6 +202,24 @@ public class Entity extends NamedObj {
     public Enumeration getPorts() {
         synchronized(workspace()) {
             return _portList.getElements();
+        }
+    }
+
+    /** Enumerate linked relations. 
+     *  This method is sychronized on the workspace.
+     *  @return An enumeration of Relation objects.
+     */	
+    public Enumeration linkedRelations() {
+        synchronized(workspace()) {
+            LinkedList storedRelations = new LinkedList();
+            Enumeration ports = _portList.getElements(); 
+
+            while( ports.hasMoreElements() ) {
+                Port port = (Port)ports.nextElement(); 
+                Enumeration relations = port.linkedRelations(); 
+                storedRelations.appendElements( relations );
+            }
+            return storedRelations.elements();
         }
     }
 
