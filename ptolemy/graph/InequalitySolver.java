@@ -370,7 +370,7 @@ public class InequalitySolver {
 		    updateTerm.setValue(value);
 	        } catch (IllegalActionException ex) {
 		    throw new InvalidStateException("InequalitySolver.solve: " +
-                            "Can't update variable. " +
+                            "Can't update variable.\n" +
                             ex.getMessage());
 	        }
 
