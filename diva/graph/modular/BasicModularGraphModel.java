@@ -103,7 +103,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
     }
 
     /**
-     * Return the semantic object correspoding
+     * Return the semantic object corresponding
      * to the given node, edge, or composite.
      */
     public Object getSemanticObject(Object o) {
@@ -119,7 +119,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
     }
 
     /**
-     * Set the semantic object correspoding
+     * Set the semantic object corresponding
      * to the given node, edge, or composite.
      */
     public void setSemanticObject(Object o, Object sem) {

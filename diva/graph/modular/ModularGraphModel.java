@@ -120,7 +120,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     }
 
     /**
-     * Return the semantic object correspoding
+     * Return the semantic object corresponding
      * to the given node, edge, or composite.
      */
     public abstract Object getSemanticObject(Object o);
@@ -200,7 +200,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
             Object value);
 
     /**
-     * Set the semantic object correspoding
+     * Set the semantic object corresponding
      * to the given node, edge, or composite.
      */
     public abstract void setSemanticObject(Object o, Object sem);
