@@ -100,10 +100,10 @@ public final class HTVQEncode extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         _ypartsize = ((IntToken)p.getToken()).intValue();
 
-        _codewords =
-            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
-        _tokens =
-            new IntMatrixToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+        _codewords =  new IntToken[_yframesize * _xframesize /
+                _ypartsize / _xpartsize];
+        _tokens = new IntMatrixToken[_yframesize * _xframesize /
+                _ypartsize / _xpartsize];
 
         p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
@@ -113,7 +113,7 @@ public final class HTVQEncode extends SDFAtomicActor {
                     try {
                         // showStatus("Reading data");
                         URL dataurl = new URL(_baseurl, filename);
-                        System.out.println("dataurl=" + dataurl);
+                        System.out.println("dataurl = " + dataurl);
                         source = dataurl.openStream();
                         //showStatus("Done");
                     } catch (MalformedURLException e) {
