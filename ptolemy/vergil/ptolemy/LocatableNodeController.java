@@ -31,6 +31,7 @@
 package ptolemy.vergil.ptolemy;
 
 import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.TerminalFigure;
@@ -188,18 +189,8 @@ public class LocatableNodeController extends BasicNodeController {
      */
     protected Figure _renderNode(java.lang.Object node) {
         if (_hide(node)) {
-            // If there was a previous figure, then make the new figure the
-            // same size.  Otherwise, make it 10x10.
-            Figure oldFigure = getController().getFigure(node);
-            Figure newFigure = null;
-            if (oldFigure != null) {
-                newFigure = new BasicRectangle(oldFigure.getBounds(),
-                        new Color(0, 0, 0, 0));
-            } else {
-                newFigure = new BasicRectangle(0, 0, 10, 10,
-                        new Color(0, 0, 0, 0));
-            }
-            // NOTE: Color is completely transparent.
+            // Return an empty figure.
+            Figure newFigure = new CompositeFigure();
             newFigure.setInteractor(getNodeInteractor());
             newFigure.setUserObject(node);
             getController().setFigure(node, newFigure);
@@ -209,11 +200,12 @@ public class LocatableNodeController extends BasicNodeController {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Return true if the specified node contains an attribute named "_hide".
-    private boolean _hide(java.lang.Object node) {
+    /** In this base class, return true if the specified node contains an
+     *  attribute named "_hide". Derived classes can override this method
+     *  to provide more sophisticated methods of choosing which nodes to
+     *  display.
+     */
+    protected boolean _hide(java.lang.Object node) {
         if (node instanceof Location) {
             if (((NamedObj)((Location)node)
                     .getContainer()).getAttribute("_hide") != null) {
