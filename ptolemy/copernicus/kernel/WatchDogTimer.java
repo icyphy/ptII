@@ -60,6 +60,7 @@ public class WatchDogTimer extends SceneTransformer {
     public void cancel() {
             System.out.println("WatchDogTimer.cancel(): canceling");
             _timer.cancel();
+	    _timer = null;
     }
 
     public String getDefaultOptions() {
@@ -144,9 +145,12 @@ public class WatchDogTimer extends SceneTransformer {
                 }
             }
         };
+	if (_timer == null) {
+	    _timer = new Timer();
+	}
         _timer.schedule(doTimeToDie, timeToDie);
     }
 
-    private Timer _timer = new Timer();
+    private Timer _timer = null;
 }
 
