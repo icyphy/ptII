@@ -140,7 +140,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Blocking read on the token. This method will not return until
      *  there is a new token be put into the receiver.
      *  @return A token.
-     *  @exception NoTokenException Never thrown.
+     *  @exception NoTokenException Not thrown in this base class
      */
     public Token get() throws NoTokenException {
         Token t;
@@ -190,7 +190,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Put a token into this receiver. It will notify all the blocking
      *  reads on the token.
      *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException Not thrown in this class.
+     *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException {
         synchronized (_lock) {
