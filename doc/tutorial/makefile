@@ -60,9 +60,7 @@ PTCLASSJAR =
 JSRCS = \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
-	TutorialApplet3.java \
-	TutorialApplet4.java \
-	TutorialApplet5.java
+	TutorialApplet3.java
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
@@ -71,8 +69,6 @@ EXTRA_SRCS =	$(JSRCS) \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
 	TutorialApplet3.htm \
-	TutorialApplet4.htm \
-	TutorialApplet5.htm \
 	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -99,7 +95,6 @@ demo: all
 	appletviewer TutorialApplet1.htm
 	appletviewer TutorialApplet2.htm
 	appletviewer TutorialApplet3.htm
-	appletviewer TutorialApplet4.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
