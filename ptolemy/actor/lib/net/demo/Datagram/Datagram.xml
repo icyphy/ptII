@@ -62,7 +62,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.io.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.io.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="10000">
@@ -83,7 +83,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.io.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.io.DatagramReceiver">
         <property name="port" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="132.5, 208.5">
@@ -117,7 +117,7 @@
     <link port="Clock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation"/>
-    <link port="DatagramSender.data" relation="relation2"/>
-    <link port="DatagramReceiver.output" relation="relation3"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
+    <link port="DatagramReader.output" relation="relation3"/>
     <link port="Display.input" relation="relation3"/>
 </entity>

@@ -21,9 +21,9 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">(This wire carries no data.  It is used 
-to insure that DatagramReceiver blocks 
+to insure that DatagramReader blocks 
 on receive only after the datagram has 
-been sent by DatagramSender.)</text></svg></configure>
+been sent by DatagramWriter.)</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -87,7 +87,7 @@ string such as {1,5,10,25}.</text></svg></configure>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Ptolemy parser reconstructs the original token.  
 However, the type of the data being sent must be known 
-at design time because the type of DatagramReceiver's 
+at design time because the type of DatagramReader's 
 output port must be configured to match it.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -118,7 +118,7 @@ output port must be configured to match it.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
@@ -141,7 +141,7 @@ output port must be configured to match it.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
@@ -194,9 +194,9 @@ output port must be configured to match it.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation"/>
-    <link port="DatagramReceiver.output" relation="relation"/>
-    <link port="DatagramReceiver.trigger" relation="relation3"/>
-    <link port="DatagramSender.data" relation="relation2"/>
-    <link port="DatagramSender.triggerOutput" relation="relation3"/>
+    <link port="DatagramReader.output" relation="relation"/>
+    <link port="DatagramReader.trigger" relation="relation3"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
+    <link port="DatagramWriter.triggerOutput" relation="relation3"/>
     <link port="Ramp.output" relation="relation2"/>
 </entity>

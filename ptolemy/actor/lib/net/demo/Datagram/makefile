@@ -57,12 +57,12 @@ OTHER_FILES_TO_BE_JARED = \
 	DemoDatagramDE.xml \
 	DemoDatagramMirror.xml \
 	DemoDatagramParsed.xml \
-	DemoDatagramReceiver.xml \
-	DemoDatagramReceiverDEx.xml \
-	DemoDatagramReceiverNotOverwrite.xml \
-	DemoDatagramReceiverOverwrite.xml \
+	DemoDatagramReader.xml \
+	DemoDatagramReaderDEx.xml \
+	DemoDatagramReaderNotOverwrite.xml \
+	DemoDatagramReaderOverwrite.xml \
 	DemoDatagramSDF.xml \
-	DemoDatagramSender.xml \
+	DemoDatagramWriter.xml \
 	DemoDatagramUnparsed.xml
 
 EXTRA_SRCS = \

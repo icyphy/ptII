@@ -69,7 +69,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="4096">
@@ -90,7 +90,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramSender3" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter3" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="4096">
@@ -111,7 +111,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
@@ -179,7 +179,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="1:DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="1:DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="4096">
@@ -241,9 +241,9 @@
     <link port="Clock.output" relation="relation3"/>
     <link port="Display.input" relation="relation7"/>
     <link port="SingleEvent.output" relation="relation5"/>
-    <link port="DatagramSender.data" relation="relation2"/>
-    <link port="DatagramSender3.data" relation="relation7"/>
-    <link port="DatagramReceiver.output" relation="relation"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
+    <link port="DatagramWriter3.data" relation="relation7"/>
+    <link port="DatagramReader.output" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Const.trigger" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation"/>
@@ -251,7 +251,7 @@
     <link port="AddSubtract.output" relation="relation7"/>
     <link port="1:Const.output" relation="relation4"/>
     <link port="1:Const.trigger" relation="relation"/>
-    <link port="1:DatagramSender.data" relation="relation8"/>
+    <link port="1:DatagramWriter.data" relation="relation8"/>
     <link port="2:Const.output" relation="relation8"/>
     <link port="2:Const.trigger" relation="relation3"/>
 </entity>

@@ -337,7 +337,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
      *  The first option allows reconstruction of any data type upon
      *  reception.  The "for_Ptolemy_parser" setting is designed to be
-     *  used in partnership with a similarly configured DatagramSender.
+     *  used in partnership with a similarly configured DatagramWriter.
      *  The other two options are for receiving
      *  general data in raw form.  These formats are also convenient for
      *  receiving arrays of bytes and integers respectively.  The former
@@ -1249,7 +1249,7 @@ public class DatagramReader extends TypedAtomicActor {
                         // -> java.lang.NullPointerException
                         //throw new RuntimeException("-null ptr-");
 			// -> java.lang.RuntimeException: -null ptr-
-			//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+			//     at ptolemy.actor.lib.net.DatagramReader$ListenerThread.run(DatagramReceiver.java:935)
                     }
                 }
 

@@ -47,7 +47,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 //import java.awt.event.MouseListener;
 
-// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not pruned)
+// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
 //import ptolemy.actor.AtomicActor;
 //import ptolemy.actor.IOPort;
   import ptolemy.actor.TypedAtomicActor;

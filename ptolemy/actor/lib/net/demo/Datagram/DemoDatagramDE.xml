@@ -38,7 +38,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
@@ -102,7 +102,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="440">
@@ -144,9 +144,9 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation4"/>
-    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation3"/>
-    <link port="DatagramReceiver.output" relation="relation4"/>
+    <link port="DatagramReader.output" relation="relation4"/>
 </entity>

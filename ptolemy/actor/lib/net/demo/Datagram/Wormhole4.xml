@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="375.0, 275.0">
         </property>
     </property>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="65000">
@@ -63,7 +63,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
@@ -242,10 +242,10 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DatagramReceiver.returnAddress" relation="relation12"/>
-    <link port="DatagramReceiver.output" relation="relation7"/>
-    <link port="DatagramSender.remoteAddress" relation="relation8"/>
-    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="DatagramReader.returnAddress" relation="relation12"/>
+    <link port="DatagramReader.output" relation="relation7"/>
+    <link port="DatagramWriter.remoteAddress" relation="relation8"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
     <link port="Sampler.input" relation="relation5"/>
     <link port="Sampler.output" relation="relation9"/>
     <link port="Sampler.trigger" relation="relation4"/>

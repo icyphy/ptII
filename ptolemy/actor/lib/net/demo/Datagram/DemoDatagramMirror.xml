@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="160.0, 99.5">
         </property>
     </property>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4097">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
@@ -39,7 +39,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
@@ -83,7 +83,7 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="295.0, 205.0">
         </vertex>
     </relation>
-    <link port="DatagramReceiver.output" relation="relation2"/>
-    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="DatagramReader.output" relation="relation2"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
     <link port="Display.input" relation="relation2"/>
 </entity>

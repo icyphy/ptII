@@ -40,7 +40,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="65000">
@@ -79,7 +79,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
@@ -234,10 +234,10 @@
     <link port="Wormhole.pasteOutput" relation="relation10"/>
     <link port="Wormhole.copyTrigger" relation="relation11"/>
     <link port="Wormhole.copyInput" relation="relation3"/>
-    <link port="DatagramReceiver.returnAddress" relation="relation12"/>
-    <link port="DatagramReceiver.output" relation="relation7"/>
-    <link port="DatagramSender.remoteAddress" relation="relation8"/>
-    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="DatagramReader.returnAddress" relation="relation12"/>
+    <link port="DatagramReader.output" relation="relation7"/>
+    <link port="DatagramWriter.remoteAddress" relation="relation8"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
     <link port="Sampler.input" relation="relation5"/>
     <link port="Sampler.output" relation="relation3"/>
     <link port="Sampler.trigger" relation="relation4"/>
