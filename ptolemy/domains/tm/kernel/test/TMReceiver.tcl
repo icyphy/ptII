@@ -59,3 +59,92 @@ test TMReceiver-4.2 {hasToken} {
 } {0 1 1 0}
 
 
+######################################################################
+####
+#
+test TMReceiver-4.2 {put with a uncontained receiver } {
+    set rec42 [java::new ptolemy.domains.tm.kernel.TMReceiver]
+    # Don't set the priority attribute of the port
+    catch {$rec42 put [java::new ptolemy.data.IntToken 2]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.InternalErrorException: put() requires that the port has a container}}
+
+######################################################################
+####
+#
+test TMReceiver-4.3 {put port that does not have a container} {
+    set rec43 [java::new ptolemy.domains.tm.kernel.TMReceiver]
+    set ioPort [java::new ptolemy.actor.IOPort]
+    $ioPort setName IOPort1
+    $rec43 setContainer $ioPort
+    # Don't set the priority attribute of the port
+    catch {$rec43 put [java::new ptolemy.data.IntToken 2]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.InternalErrorException: put() requires that the port 'ptolemy.actor.IOPort {.IOPort1}' that contains this receiver be itself contained}}
+
+######################################################################
+####
+#
+test TMReceiver-4.4 {put port that has a container} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName top
+    set manager [java::new ptolemy.actor.Manager $w topManager]
+
+    set director \
+            [java::new ptolemy.domains.tm.kernel.TMDirector $e0 TMDirector]
+
+    set a0 [java::new ptolemy.actor.TypedAtomicActor $e0 A0]
+    set ioPort [java::new ptolemy.actor.TypedIOPort $a0 ioPort1]
+
+    set rec44 [java::new ptolemy.domains.tm.kernel.TMReceiver]
+    $rec44 setContainer $ioPort
+
+    # This test is fairly complex.  If it craps out, consider
+    # removing the code from here own down, except for the puts
+    # themselves.
+
+    # cover debug() clauses
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set debugListener [java::new ptolemy.kernel.util.StreamListener $printStream]
+
+    $director addDebugListener $debugListener
+
+    # Call preinitialize() so that TMDirector._eventQueue is initialized
+    $director preinitialize
+
+
+    # Don't set the priority attribute of the port
+    $rec44 put [java::new ptolemy.data.IntToken 2]
+
+    # Don't set the priority attribute of the port
+    set priorityIOPort1 [java::new ptolemy.data.expr.Parameter \
+			   $ioPort "priority" \
+			   [java::new ptolemy.data.IntToken 4]]
+
+    $rec44 put [java::new ptolemy.data.IntToken 7]
+
+    $printStream flush
+    $director removeDebugListener $debugListener
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" debugOutput
+    list $debugOutput
+
+} {{Updating TMDirector parameter _iconDescription
+Updating TMDirector parameter stopTime
+Updating TMDirector parameter preemptive
+Updating TMDirector parameter defaultTaskExecutionTime
+Updating TMDirector parameter synchronizeToRealTime
+Invoking preinitialize():  .top.A0
+Finished preinitialize().
+enqueue event: to TMEvent(token = 2, priority = 5, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
+enqueue event: to TMEvent(token = 7, priority = 4, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
+}}
+
+
+
+
+
