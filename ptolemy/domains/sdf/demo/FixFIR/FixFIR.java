@@ -125,7 +125,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _query.addQueryListener(this);
             getContentPane().add( _query );
 
-            // Create and Impuls
+            // Create and Impulse
             int pvalues[][] = {{1}};
             int pindexes[][] = {{0}};
             _pulse = new Pulse(_toplevel, "ramp");
