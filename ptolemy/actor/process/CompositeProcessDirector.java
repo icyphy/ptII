@@ -52,8 +52,8 @@ hierarchical heterogeneity. As with ProcessDirector
 CompositeProcessDirectors need to keep a count of the number of active
 processes and the number of processes that are blocked for any reason
 (e.g., trying to read from an empty channel in PN).
-CompositeProcessDirector extends ProcessDirector by facilitating models
-that consist of non-atomic actors.
+CompositeProcessDirector is a subclass of ProcessDirector to facilitate
+models that consist of non-atomic actors.
 <P>
 A composite process director can be contained by an opaque composite
 actor that is contained by a composite actor. Ports contained by opaque
