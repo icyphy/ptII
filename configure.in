@@ -2335,6 +2335,9 @@ fi
 PTX10_DIR=
 #
 
+# Set to the location of the X10 classes
+X10_CLASSES=
+
 # We only need to look for x10 if $PTII/ptolemy/actor/lib/x10 exists
 X10_USER_DIR="$PTII/ptolemy/actor/lib/x10"
 if test ! -d "$X10_USER_DIR"; then
@@ -2352,12 +2355,14 @@ else
       	AC_MSG_CHECKING([for \$X10_DIR/tjx10p-11/lib/x10.jar])
 	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
 	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
+	   AC_MSG_RESULT([$X10_CLASSES])
 	else
-	   X10_CLASSES=no
+	   X10_CLASSES=
+	   AC_MSG_RESULT([no])
         fi
-	AC_MSG_RESULT([$X10_CLASSES])
     fi
-    if test "$X10_CLASSES" = "no"; then
+
+    if test -z "$PTX10_DIR"; then
         AC_MSG_WARN([Failed to find tjx10p-11/lib/x10.jar
     perhaps X10 is not installed?
     You need not download X10 unless you plan on building applications
