@@ -53,37 +53,56 @@
 # Please keep the procs in this file alphabetical.
 
 ######################################################################
-#### _testCrossRefListElements
-# Given a CrossRefList, return a Tcl List containing its elements
+#### _testEnums
+# This internal procedure provides common functionality for
+# the other procs below.
+# This proc returns a list consisting of the names of all of the
+# elements in the enum returned by calling the method named by enummethod.
 #
-proc _testCrossRefListElements {args} {
+# enummethod is the name of the method to be called on the object to get
+# the enum.
+#
+# args is one or more objects.
+#
+proc _testEnums {enummethod args} {
     set results {}
-    foreach crossreflist $args {
-	if {$crossreflist == [java::null]} {
-	    return $results
-	} 
-	set lresults {}
-	for {set crossrefenum [$crossreflist elements]} \
-		{$crossrefenum != [java::null] && \
-		[$crossrefenum hasMoreElements] == 1} \
-		{} {
-	    set enumelement [$crossrefenum nextElement]
-	    if [ java::instanceof $enumelement pt.kernel.NamedObj] {
-		lappend lresults [$enumelement getName]
-	    } else {
-		lappend lresults $enumElement
+    foreach objecttoenum $args {
+	if {$objecttoenum == [java::null]} {
+	    lappend results [java::null]
+	} else {
+	    set lresults {}
+	    for {set enum [$objecttoenum $enummethod]} \
+		    {$enum != [java::null] && \
+		    [$enum hasMoreElements] == 1} \
+		    {} {
+		set enumelement [$enum nextElement]
+		if [ java::instanceof $enumelement pt.kernel.NamedObj] {
+		    lappend lresults [$enumelement getName]
+		} else {
+		    lappend lresults $enumElement
+		}
 	    }
+	    lappend results $lresults
 	}
-	lappend results $lresults
     }
     return $results
 }
 
 ######################################################################
+#### _testCrossRefListElements
+# Given one or more CrossRefLists, return a Tcl List containing 
+# a list of lists of the elements in each CrossRefList
+#
+proc _testCrossRefListElements {args} {
+    eval _testEnums elements $args
+}
+
+######################################################################
 #### _testParamListEnumParams
-# Given a ParamList, return a Tcl List containing its Params
+# Given a ParamList, return a Tcl List containing its Params.
 #
 proc _testParamListEnumParams {paramlist} {
+    # We don't use _testEnums here because we want to call getValue too.
     set results {}
     if {$paramlist == [java::null]} {
 	return $results
@@ -103,17 +122,6 @@ proc _testParamListEnumParams {paramlist} {
 #### _testPortEnumRelations
 # Given a Port, return a Tcl List containing its Relations.
 #
-proc _testPortEnumRelations {port} {
-    set results {}
-    if {$port == [java::null]} {
-	return $results
-    } 
-    for {set enum [$port enumRelations]} \
-	    {$enum != [java::null] && \
-	    [$enum hasMoreElements] == 1} \
-	    {} {
-	set relation [$enum nextElement]
-	lappend results [list [$relation getName]]
-    }
-    return $results
+proc _testPortEnumRelations {args} {
+    eval _testEnums enumRelations $args
 }
