@@ -77,6 +77,11 @@ FilterOutGraphicalClasses.</text></svg></configure>
 #
 test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
     set filter [java::new ptolemy.moml.FilterOutGraphicalClasses]
 
     # ptolemy.copernicus.kernel.KernelMain does this
