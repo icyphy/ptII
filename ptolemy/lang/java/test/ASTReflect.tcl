@@ -153,35 +153,196 @@ END ConstructorDeclNode
 }}}
 
 test ASTReflect-3.1 {check out fields} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
+    set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestFields"]
     set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
     list [listToStrings $astList]
 } {{{FieldDeclNode
  DefType: TypeNameNode
            Name: NameNode
-                  Ident: NamedObj
+                  Ident: Boolean
                   Qualifier: AbsentTreeNode (leaf)
                  END NameNode
           END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myBoolean
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Character
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myCharacter
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Byte
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myByte
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Short
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myShort
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Integer
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myInteger
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Long
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myLong
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Float
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myFloat
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: TypeNameNode
+           Name: NameNode
+                  Ident: Double
+                  Qualifier: AbsentTreeNode (leaf)
+                 END NameNode
+          END TypeNameNode
+ Modifiers: 1
+ Name: NameNode
+        Ident: myDouble
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: BoolTypeNode (leaf)
  Modifiers: 2
  Name: NameNode
-        Ident: _publicField
+        Ident: _myBoolean
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: CharTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myCharacter
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: ByteTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myByte
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: ShortTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myShort
         Qualifier: AbsentTreeNode (leaf)
        END NameNode
  InitExpr: AbsentTreeNode (leaf)
 END FieldDeclNode
 } {FieldDeclNode
  DefType: IntTypeNode (leaf)
- Modifiers: 20
+ Modifiers: 2
  Name: NameNode
-        Ident: _privateField
+        Ident: _myInteger
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: LongTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myLong
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: FloatTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myFloat
+        Qualifier: AbsentTreeNode (leaf)
+       END NameNode
+ InitExpr: AbsentTreeNode (leaf)
+END FieldDeclNode
+} {FieldDeclNode
+ DefType: DoubleTypeNode (leaf)
+ Modifiers: 2
+ Name: NameNode
+        Ident: _myDouble
         Qualifier: AbsentTreeNode (leaf)
        END NameNode
  InitExpr: AbsentTreeNode (leaf)
 END FieldDeclNode
 }}}
 
-test ASTReflect-3.1 {check out innerclasses} {
+test ASTReflect-4.1 {check out innerclasses} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect innerClassesASTList $class]
     list [listToStrings $astList]

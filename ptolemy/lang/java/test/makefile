@@ -49,6 +49,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	ReflectTest.java \
+	ReflectTestFields.java \
 	ReflectTestInterface.java
 
 # Non-graphical Java tests written in Tcl
