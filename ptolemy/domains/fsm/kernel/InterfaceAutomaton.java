@@ -585,7 +585,6 @@ public class InterfaceAutomaton extends FSMActor {
                     // remove ending "?"
                     String transitionName = transitionLabel.substring(0,
                                              transitionLabel.length()-1);
-                    String relationName = transition.getName();
 
                     // switch depending on type of transition
                     int transitionType = transition.getType();
@@ -598,7 +597,7 @@ public class InterfaceAutomaton extends FSMActor {
                             State destinationInProduct = _addState(product,
                                 destinationInThis, stateInArgument, frontier);
                             _addTransition(product,
-                              this.getName() + NAME_CONNECTOR + relationName,
+                              this.getName(),
                               stateInProduct, destinationInProduct,
                               transitionLabel);
                         } else {
@@ -614,8 +613,7 @@ public class InterfaceAutomaton extends FSMActor {
                                     frontier);
                                 _addTransition(product,
                                   this.getName() + NAME_CONNECTOR
-                                      + automaton.getName() + NAME_CONNECTOR
-                                      + relationName,
+                                      + automaton.getName(),
                                   stateInProduct, destinationInProduct,
                                   transitionName + ";");
                             } else {
@@ -633,7 +631,7 @@ public class InterfaceAutomaton extends FSMActor {
                             State destinationInProduct = _addState(product,
                                 destinationInThis, stateInArgument, frontier);
                             _addTransition(product,
-                              this.getName() + NAME_CONNECTOR + relationName,
+                              this.getName(),
                               stateInProduct, destinationInProduct,
                               transitionLabel);
                         } else {
@@ -659,8 +657,7 @@ public class InterfaceAutomaton extends FSMActor {
                         // case 3. T is internal for p. Add T to product
                         State destinationInProduct = _addState(product,
                                 destinationInThis, stateInArgument, frontier);
-                        _addTransition(product,
-                          this.getName() + NAME_CONNECTOR + relationName,
+                        _addTransition(product, this.getName(),
                           stateInProduct, destinationInProduct,
                           transitionLabel);
                     } else {
@@ -685,7 +682,6 @@ public class InterfaceAutomaton extends FSMActor {
                     // remove ending "?"
                     String transitionName = transitionLabel.substring(0,
                                              transitionLabel.length()-1);
-                    String relationName = transition.getName();
 
                     // switch depending on type of transition
                     int transitionType = transition.getType();
@@ -698,8 +694,7 @@ public class InterfaceAutomaton extends FSMActor {
                             State destinationInProduct = _addState(product,
                                 stateInThis, destinationInArgument, frontier);
                             _addTransition(product,
-                              automaton.getName() + NAME_CONNECTOR
-                                  + relationName,
+                              automaton.getName(),
                               stateInProduct, destinationInProduct,
                               transitionLabel);
                         } else {
@@ -715,8 +710,7 @@ public class InterfaceAutomaton extends FSMActor {
                                     frontier);
                                 _addTransition(product,
                                   this.getName() + NAME_CONNECTOR
-                                      + automaton.getName() + NAME_CONNECTOR
-                                      + relationName,
+                                      + automaton.getName(),
                                   stateInProduct, destinationInProduct,
                                   transitionName + ";");
                             } else {
@@ -734,8 +728,7 @@ public class InterfaceAutomaton extends FSMActor {
                             State destinationInProduct = _addState(product,
                                 stateInThis, destinationInArgument, frontier);
                             _addTransition(product,
-                              automaton.getName() + NAME_CONNECTOR
-                                  + relationName,
+                              automaton.getName(),
                               stateInProduct, destinationInProduct,
                               transitionLabel);
                         } else {
@@ -762,7 +755,7 @@ public class InterfaceAutomaton extends FSMActor {
                         State destinationInProduct = _addState(product,
                             stateInThis, destinationInArgument, frontier);
                         _addTransition(product,
-                          automaton.getName() + NAME_CONNECTOR + relationName,
+                          automaton.getName(),
                           stateInProduct, destinationInProduct,
                           transitionLabel);
                     } else {
@@ -1051,14 +1044,12 @@ public class InterfaceAutomaton extends FSMActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The state names in the composition automaton is formed by
+    // The state name in the composition automaton is formed by
     // <nameInThisAutomaton><NAME_CONNECTOR><nameInArgumentAutomaton>
-    // The transition names prefix in the composition is formed by
-    // (1) <nameOfAutomaton><NAME_CONNECTOR><nameOfTransition> for
-    // non-shared transitions;
-    // (2) <nameOfAutomaton1><NAME_CONNECTOR><nameofAutomaton2>\
-    // <NAME_CONNECTOR><nameofTransition>
-    // for shared transitions.
+    // The transition name prefix in the composition is formed by
+    // (1) <nameOfAutomaton> for non-shared transitions;
+    // (2) <nameOfAutomaton1><NAME_CONNECTOR><nameofAutomaton2> for shared
+    //     transitions.
     // The name of the product automaton is
     // <thisName><NAME_CONNECTOR><argumentName>
     private final String NAME_CONNECTOR = "_";
