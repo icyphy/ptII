@@ -49,8 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-    analysis/analysis.jar \
-    exception/exception.jar
+    analysis/analysis.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -97,7 +96,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass $(PTCLASSALLJAR)
 
 
 # Get the rest of the rules
