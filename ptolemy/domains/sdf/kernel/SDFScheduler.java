@@ -372,7 +372,7 @@ public class SDFScheduler extends Scheduler {
 	_debug("counting unfufilled inputs for " +
 	       ((Entity) a).getFullName());
 
-	int InputCount = 0;
+	int inputCount = 0;
 	while(ainputPorts.hasMoreElements()) {
 	    IOPort ainputPort = (IOPort) ainputPorts.nextElement();
 	    _debug("checking input " +
@@ -387,11 +387,11 @@ public class SDFScheduler extends Scheduler {
 		    isonlyexternalport = false;
 	    }
 	    
-	    int threshold
-		= _getTokenConsumptionRate(ainputPort);
+	    int threshold =
+		_getTokenConsumptionRate(ainputPort);
 	    _debug("Threshold = " + threshold);
-	    int[] tokens
-		= (int []) waitingTokens.at(ainputPort);
+	    int[] tokens =
+		(int []) waitingTokens.at(ainputPort);
 	    
 	    boolean isalreadyfulfilled = true;
 	    int channel;
@@ -404,9 +404,9 @@ public class SDFScheduler extends Scheduler {
 		    isalreadyfulfilled = false;
 	    }
 	    if(!isonlyexternalport && !isalreadyfulfilled)
-		InputCount++;
+		inputCount++;
 	}
-	return InputCount;
+	return inputCount;
     }
 
     /** Return the number of firings associated with the Actor.   This is
@@ -742,7 +742,7 @@ public class SDFScheduler extends Scheduler {
 		    
 		    Enumeration crelations = ainputport.linkedRelations();
 		    
-		    int channelnumber = 0;
+		    int channelNumber = 0;
 		    // Add the tokens from init production.
 		    while(crelations.hasMoreElements()) {
 			IORelation crelation = 
@@ -764,18 +764,18 @@ public class SDFScheduler extends Scheduler {
 			int rate = _getTokenInitProduction(cport);
 			if(rate > 0) {
 			    for(int j = 0; j < crelation.getWidth(); j++)
-				tokencount[channelnumber++] += 
+				tokencount[channelNumber++] += 
 				    _getTokenProductionRate(cport);
 			}
 		    }
 		}
-		int inputcount = _countUnfulfilledInputs(a, actorList,
+		int inputCount = _countUnfulfilledInputs(a, actorList,
 							 waitingTokens);
-		if(inputcount == 0)
+		if(inputCount == 0)
 		    readyToScheduleActorList.insertFirst((ComponentEntity) a);
 		
 		_debug("Actor " + ((ComponentEntity) a).getName() +
-		       " has " + (new Integer(inputcount)).toString() +
+		       " has " + (new Integer(inputCount)).toString() +
 		       " unfulfilledInputs.");
 	    }
 	    
@@ -845,7 +845,7 @@ public class SDFScheduler extends Scheduler {
 		    // Otherwise the actor still has firings left
 		    else {
 			// Count the number of unfulfilled inputs.
-			int inputcount = 
+			int inputCount = 
 			    _countUnfulfilledInputs((Actor)currentActor,
 						    unscheduledActorList, 
 						    waitingTokens);
@@ -853,7 +853,7 @@ public class SDFScheduler extends Scheduler {
 			// ReadytoSchedule actors
 			// so if it can be fired again right away, 
 			// put it back on the list.
-			if(inputcount < 1)
+			if(inputCount < 1)
 			    // if the actor can still be scheduled, then put it
 			    // at the END of readyToScheduleActorList.
 			    readyToScheduleActorList.insertLast(currentActor);
