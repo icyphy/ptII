@@ -110,6 +110,7 @@ public class BranchController implements Runnable {
             if( !hasBranches() ) {
                 return;
             }
+            restart();
             setActive(true);
             LinkedList threadList = new LinkedList();
             BranchThread bThread = null;
@@ -128,8 +129,6 @@ public class BranchController implements Runnable {
                 branch.reset();
                 bThread.start();
             }
-
-	    // _engagementsAllowed = true;
         }
     }
     
@@ -157,9 +156,6 @@ public class BranchController implements Runnable {
 		    + "BranchController's container.");
 	}
         
-        if( _ports == null ) {
-            _ports = new LinkedList();
-        }
         if( _ports.contains(port) ) {
             throw new IllegalActionException(port, "This port "
             	    + "is already controlled by this " 
@@ -207,30 +203,6 @@ public class BranchController implements Runnable {
 	    _branches.add(branch);
 	}
     }
-
-    /**
-    public synchronized boolean areEngagementsComplete() {
-        if( !_engagementsAllowed || !isActive() ) {
-            return true;
-        }
-	if( _engagements.size() == _maxEngagers ) {
-	    Iterator engagements = _engagements.iterator();
-	    Branch branch = null;
-	    while( engagements.hasNext() ) {
-		branch = (Branch)engagements.next();
-		if( branch.numberOfCompletedEngagements() 
-			< _maxEngagements ) {
-		    _engagementsAllowed = true;
-		    return false;
-		}
-	    }
-	    _engagementsAllowed = false;
-	    return true;
-	}
-	_engagementsAllowed = true;
-	return false;
-    }
-     */
 
     /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
@@ -286,7 +258,6 @@ public class BranchController implements Runnable {
      */
     public synchronized void endIteration() {
         _iterationIsOverCache = true;
-    	// _engagementsAllowed = false;
         _engagements.clear();
         notifyAll();
     }
@@ -371,22 +342,13 @@ public class BranchController implements Runnable {
         if( !hasBranches() ) {
             return true;
         }
-        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
+        if( _branchesBlocked >= _branches.size() ) {
             if( _branchesBlocked > 0 ) {
                 return true;
             }
         }
         return false;
     }
-    
-    /**
-    public synchronized boolean isDeadlocked() {
-        if( _branchesBlocked == _branchesActive ) {
-            return true;
-        } 
-        return false;
-    }
-     */
     
     /** Called by ConditionalSend and ConditionalReceive to check if
      *  the calling branch is the first branch to be ready to rendezvous.
@@ -432,7 +394,6 @@ public class BranchController implements Runnable {
 	} else if( _iterationIsOverCache ) {
 	    return true;
         }
-	// return areEngagementsComplete();
 	if( _engagements.size() == _maxEngagers ) {
 	    Iterator engagements = _engagements.iterator();
 	    Branch branch = null;
@@ -440,83 +401,23 @@ public class BranchController implements Runnable {
 		branch = (Branch)engagements.next();
 		if( branch.numberOfCompletedEngagements() 
 			< _maxEngagements ) {
-		    // _engagementsAllowed = true;
 		    return false;
 		}
 	    }
-	    // _engagementsAllowed = false;
 	    return true;
 	}
-	// _engagementsAllowed = true;
 	return false;
     }
 
-    /**
-    public synchronized boolean areEngagementsComplete() {
-        if( !_engagementsAllowed || !isActive() ) {
-            return true;
-        }
-	if( _engagements.size() == _maxEngagers ) {
-	    Iterator engagements = _engagements.iterator();
-	    Branch branch = null;
-	    while( engagements.hasNext() ) {
-		branch = (Branch)engagements.next();
-		if( branch.numberOfCompletedEngagements() 
-			< _maxEngagements ) {
-		    _engagementsAllowed = true;
-		    return false;
-		}
-	    }
-	    _engagementsAllowed = false;
-	    return true;
-	}
-	_engagementsAllowed = true;
-	return false;
-    }
-     */
-
-    /** Return true if all of the branches controlled by this
-     *  controller are stopped. Stopped branches are defined
-     *  as either being locked or waiting for the next
-     *  iteration. If this controller has no branches, then
-     *  return true.
-     * @return True if all branches controlled by this 
-     *  controller are stopped or if there are no branches;
-     *  return false otherwise.
-    public boolean isStopped() {
-        if( !hasBranches() ) {
-            return true;
-        }
-        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
-            if( _branchesStopped > 0 ) {
-                return true;
-            }
-            if( _branchesBlocked > 0 ) {
-                return true;
-            }
-        }
-        return false;
-    }
-     */
-    
     /** Restart this controller by resetting the branches that
      *  it controls and setting flags so engagements can take
-     *  place. If this controller is inactive, do nothing. This
-     *  method is synchronized and will notify any threads that
-     *  are synchronized to this object.
+     *  place. This method is synchronized and will notify any 
+     *  threads that are synchronized to this object.
      */
     public synchronized void restart() {
-        /*
-        if( !isActive() ) {
-            return;
-        }
-        */
-	// _engagementsAllowed = false;
-        
-        
 	_iterationIsOverCache = true;
-	_engagements.clear();
 
+	_engagements.clear();
 	_branchesBlocked = 0;
         _branchesActive = 0;
 
@@ -526,8 +427,8 @@ public class BranchController implements Runnable {
 	    branch = (Branch)branches.next();
 	    branch.reset();
 	}
-
 	_iterationIsOverCache = false;
+
 	notifyAll();
     }
 
@@ -614,12 +515,6 @@ public class BranchController implements Runnable {
         }
     }
 
-    /**
-     */
-    public int getNumberOfBranches() {
-	return _branches.size();;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -638,7 +533,7 @@ public class BranchController implements Runnable {
     /**
      */
     private boolean _hasInputPorts() {
-    	if( _ports == null ) {
+    	if( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
@@ -652,7 +547,7 @@ public class BranchController implements Runnable {
     /**
      */
     private boolean _hasOutputPorts() {
-    	if( _ports == null ) {
+    	if( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
@@ -674,23 +569,17 @@ public class BranchController implements Runnable {
     // trying to rendezvous.
     private int _branchesBlocked = 0;
     
-    // The number of branches that are waiting for
-    // the next iteration.
-    private int _branchesStopped = 0;
-
     // The CompositeActor who owns this controller object.
     private CompositeActor _parentActor;
 
     private LinkedList _branches = new LinkedList(); 
-    private LinkedList _ports;
+    private LinkedList _ports = new LinkedList();
     private LinkedList _engagements = new LinkedList();
     
     private int _maxEngagements = -1;
     private int _maxEngagers = -1;
 
     private boolean _active = false;
-
-    private boolean _engagementsAllowed = false;
 
     private LinkedList _blockedReceivers = new LinkedList();
     

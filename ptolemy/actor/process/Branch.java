@@ -71,7 +71,7 @@ reference should be set to null.
 public class Branch {
 
     /** Construct a Branch object.
-     *  This constructor is intended for testing purposes only.
+     * @deprecated Use this constructor for testing purposes only.
      */
     public Branch(BranchController cntlr) throws 
     	    IllegalActionException {
@@ -84,6 +84,10 @@ public class Branch {
 	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
         
+        if( prodRcvr == null || consRcvr == null ) {
+            throw new IllegalActionException("The boundary "
+            	    + "receivers of this branch are null.");
+        }
         if( !prodRcvr.isProducerReceiver() ) {
             throw new IllegalActionException("Not producer "
             	    + "receiver");
@@ -232,6 +236,7 @@ public class Branch {
      */
     public void registerRcvrBlocked(ProcessReceiver rcvr) {
     	if( !_rcvrBlocked ) {
+    	    _rcvrBlocked = true;
             _controller._branchBlocked(rcvr);
         }
     }
@@ -241,6 +246,7 @@ public class Branch {
      */
     public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
     	if( _rcvrBlocked ) {
+    	    _rcvrBlocked = false;
             _controller._branchUnBlocked(rcvr);
         }
     }

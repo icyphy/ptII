@@ -156,6 +156,32 @@ test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
 
 } {1}
 
+######################################################################
+#### Continued from above
+#
+test Branch-3.1 {Check blocking methods} {
+    set val 1
+    
+    if { [$cntlrIn isBlocked] != 0 } {
+    	$val = 0
+    }
+    
+    set rcvr [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
+    
+    $branch registerRcvrBlocked $rcvr
+    if { [$cntlrIn isBlocked] != 1 } {
+    	$val = 0
+    }
+    
+    $branch registerRcvrUnBlocked $rcvr
+    if { [$cntlrIn isBlocked] != 0 } {
+    	$val = 0
+    }
+    
+    list $val
+
+} {1}
+   
 
 
 
