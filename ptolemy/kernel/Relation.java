@@ -101,7 +101,7 @@ public class Relation extends NamedObj {
      *  This method is synchronized on the workspace.
      *  @return An Enumeration of Entity objects.
      */	
-    public Enumeration getLinkedEntities() {
+    public Enumeration linkedEntities() {
         synchronized(workspace()) {
             Enumeration ports = _portList.getLinks();
             LinkedList storedEntities = new LinkedList();

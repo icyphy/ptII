@@ -63,17 +63,17 @@ test Relation-1.1 {Get information about an instance of Relation} {
   class:         pt.kernel.Relation
   fields:        
   methods:       {description int} {equals java.lang.Object} getClass ge
-    tContainer getFullName getLinkedEntities getName hashCo
-    de linkedPorts {linkedPortsExcept pt.kernel.Port} notif
-    y notifyAll numLinks {setName java.lang.String} toStrin
-    g {unlink pt.kernel.Port} unlinkAll wait {wait long} {w
-    ait long int} workspace
+    tContainer getFullName getName hashCode linkedEntities 
+    linkedPorts {linkedPortsExcept pt.kernel.Port} notify n
+    otifyAll numLinks {setName java.lang.String} toString {
+    unlink pt.kernel.Port} unlinkAll wait {wait long} {wait
+     long int} workspace
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
     } {pt.kernel.Relation pt.kernel.Workspace java.lang.Str
     ing}
     
-  properties:    class container fullName linkedEntities name
+  properties:    class container fullName name
     
   superclass:    pt.kernel.NamedObj
     
@@ -112,9 +112,9 @@ test Relation-4.1 {Test linkedPortsExcept on a Relation that has no ports} {
 ######################################################################
 ####
 # 
-test Relation-5.1 {Test getLinkedEntities on a Relation that has no ports} {
+test Relation-5.1 {Test linkedEntities on a Relation that has no ports} {
     set r1 [java::new pt.kernel.Relation]
-    set enum  [$r1 getLinkedEntities]
+    set enum  [$r1 linkedEntities]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
 } {{java.util.NoSuchElementException: exhausted enumeration} 0}
@@ -162,20 +162,20 @@ test Relation-8.1 {Test a Relation with two named ports} {
 ######################################################################
 ####
 # 
-test Relation-9.1 {Test a getLinkedEntities with two named ports, same entity} {
+test Relation-9.1 {Test a linkedEntities with two named ports, same entity} {
     set r1 [java::new pt.kernel.Relation "my relation"]
     set e1 [java::new pt.kernel.Entity "my entity"]
     set p1 [java::new pt.kernel.Port $e1 "my port"]
     set p2 [java::new pt.kernel.Port $e1 "my other port"]
     $p1 link $r1
     $p2 link $r1
-    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+    list [$r1 numLinks] [_testRelationLinkedEntities $r1]
 } {2 {{{my entity} {my entity}}}}
 
 ######################################################################
 ####
 # 
-test Relation-10.1 {getLinkedEntities with two named ports, distinct entities} {
+test Relation-10.1 {linkedEntities with two named ports, distinct entities} {
     set r1 [java::new pt.kernel.Relation "my relation"]
     set e1 [java::new pt.kernel.Entity "my entity"]
     set e2 [java::new pt.kernel.Entity "other entity"]
@@ -183,7 +183,7 @@ test Relation-10.1 {getLinkedEntities with two named ports, distinct entities} {
     set p2 [java::new pt.kernel.Port $e2 "my other port"]
     $p1 link $r1
     $p2 link $r1
-    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+    list [$r1 numLinks] [_testRelationLinkedEntities $r1]
 } {2 {{{my entity} {other entity}}}}
 
 ######################################################################
@@ -198,7 +198,7 @@ test Relation-11.1 {unlink a port} {
     $p1 link $r1
     $p2 link $r1
     $r1 unlink $p1
-    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+    list [$r1 numLinks] [_testRelationLinkedEntities $r1]
 } {1 {{{other entity}}}}
 
 ######################################################################
@@ -213,5 +213,5 @@ test Relation-12.1 {unlinkALL ports} {
     $p1 link $r1
     $p2 link $r1
     $r1 unlinkAll 
-    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+    list [$r1 numLinks] [_testRelationLinkedEntities $r1]
 } {0 {{}}}
