@@ -44,36 +44,34 @@ import javax.crypto.Cipher;
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
 /**
-A base class that implements general functions used by cipher
-actors.
+A base class for actors that encrypt and decrypt data.
 
 <p>Cipher actors are any actors which perform encryption or
-decryption based on the Java JCE.
+decryption based on the Java Cryptography Extension (JCE).
+See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about the JCE.
 
 <p> Actors extending this class take in an unsigned byte array at the
 <i>input</i>, process the data based on the <i>algorithm</i> parameter
-and send a unsigned byte array on the <i>output</i>.  The algorithms
-that maybe implemented are limited to those that are implemented
+and send a unsigned byte array to the <i>output</i>.  The algorithms
+that may be implemented are limited to those that are implemented
 by "providers" following the JCE specifications and installed in the
-machine being run. The mode and padding can also be specified in the
-<i>mode</i> and <i>padding</i> parameters.  In case a provider
-specific instance of an algorithm is needed, the provider may also be
-specified in the <i>provider</i> parameter. The <i>keySize</i>
-parameter allows implementations of algorithms using various key
-sizes.
+machine being run. The mode and padding of the algorithm can also be
+specified in the <i>mode</i> and <i>padding</i> parameters.
+In case a provider specific instance of an algorithm is needed,
+the provider may also be specified in the <i>provider</i> parameter.
+The <i>keySize</i> parameter allows implementations of algorithms
+using various key sizes.
 
-<p>Concrete actors derived this base class must implement the
+<p>Concrete actors derived from this base class must implement the
 {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
-The initialize() method of this actor calls javax.crypt.Cipher.getInstance()
-with an argument that is created from the values of the <i>algorithm</i>,
-<i>padding</i> and <i>keySize</i> parameters. Derived classes
-should call _cipher.init() with the value of the key in the fire() method.
- The_process() method in a derived class usually calls _cipher.doFinal().
-
-<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).  See the
-{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
-resources about JCA and JCE.
+The initialize() method of this actor sets _cipher to the
+value of javax.crypt.Cipher.getInstance() with an argument that is
+created from the values of the <i>algorithm</i>, <i>padding</i> and
+<i>keySize</i> parameters. Derived classes should call _cipher.init()
+with the value of the key in the fire() method.  The_process() method
+in a derived class usually calls _cipher.doFinal().
 
 @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
@@ -97,6 +95,8 @@ abstract public class CipherActor extends CryptographyActor {
         mode.setVisibility(Settable.EXPERT);
         mode.setExpression("");
         mode.addChoice("");
+        // The meaning of these is covered in the documentation of mode
+        // in the ports and parameters section.
         mode.addChoice("NONE");
         mode.addChoice("CBC");
         mode.addChoice("CFB");
@@ -118,18 +118,20 @@ abstract public class CipherActor extends CryptographyActor {
     ////                     ports and parameters                  ////
 
     /** The mode component when the Cipher is instantiated.
+     *  Algorithms can be run in several different modes.
      *  The mode is specified as a string.
      *  Names for modes and modes implemented vary based on the provider.
      *  Possible values include
      * <dl>
      * <dt><code></code> (<i>The empty string</i>)
-     * <dd>Use the default setting for the algorithm
+     * <dd>Use the default setting for the algorithm.
      *
      * <dt><code>NONE</code>
-     * <dd>No mode.
+     * <dd>No mode, meaning that the algorithm does not use a mode.
      *
      * <dt><code>CBC</code>
      * <dd>Cipher Block Chaining Mode, as defined in FIPS PUB 81.
+     * CBC is usually the mode that is used.
      *
      * <dt><code>CFB</code>
      * <dd>Cipher Feedback Mode, as defined in FIPS PUB 81.
@@ -139,7 +141,8 @@ abstract public class CipherActor extends CryptographyActor {
      * Institute of Standards and Technology (NIST) Federal
      * Information Processing Standard (FIPS) PUB 81, "DES Modes of
      * Operation," U.S. Department of Commerce, Dec 1980.
-     *
+     * ECM is best for encrypting small pieces of data.  If possible,
+     * use CBC instead.
      * <dt><code>OFB</code>
      * <dd>Output Feedback Mode, as defined in FIPS PUB 81.
      *
@@ -157,7 +160,19 @@ abstract public class CipherActor extends CryptographyActor {
     public StringParameter mode;
 
     /** The padding scheme used by the cipher during encryption.
-     *  The padding is specified as a string.
+     *  In cryptography, padding is used to handle situations where the input
+     *  data must be an exact multiple of the block size for the algorithm
+     *  <a href="http://www.di-mgt.com.au/cryptopad.html#whennopadding" target="_top">http://www.di-mgt.com.au/cryptopad.html#whennopadding</a> says:
+     *  <blockquote>
+     *  Block cipher algorithms like DES and Blowfish in Electronic Code Book
+     *  (ECB) and Cipher Block Chaining (CBC) mode require their input to be
+     *  an exact multiple of the block size. If the plaintext to be encrypted
+     *  is not an exact multiple, you need to pad before encrypting by adding
+     *  a padding string. When decrypting, the receiving party needs to know
+     *  how to remove the padding, if any.
+     *  </blockquote>
+     * 
+     *  <p>The padding is specified as a string.
      *  Names for parameter and parameters implemented vary based on the
      *  provider.
      *  Possible values include
@@ -204,11 +219,31 @@ abstract public class CipherActor extends CryptographyActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mode) {
+            _updateCipherNeeded = true;
             _mode = ((StringToken)mode.getToken()).stringValue();
         } else if (attribute == padding) {
+            _updateCipherNeeded = true;
             _padding = ((StringToken)padding.getToken()).stringValue();
+        } else if (attribute == algorithm) {
+            _updateCipherNeeded = true;
+            super.attributeChanged(attribute);
         } else {
             super.attributeChanged(attribute);
+        }
+    }
+
+    /** Update _cipher if an attribute has changed and then invoke
+     *  super.fire() to transform the input data.
+     *
+     *  @exception IllegalActionException If thrown by the base class or
+     *  if there is a problem processing the data.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        if (_updateCipherNeeded) {
+            // If the user changed a parameter, reinitialize _cipher.  
+            _updateCipher();
+            _updateCipherNeeded = false;
         }
     }
 
@@ -221,8 +256,25 @@ abstract public class CipherActor extends CryptographyActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _mode = ((StringToken)mode.getToken()).stringValue();
-        _padding = ((StringToken)padding.getToken()).stringValue();
+        if (_updateCipherNeeded) {
+            _updateCipher();
+            _updateCipherNeeded = false;
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    Protected Methods                      ////
+
+    /** The value of _cipher is updated by calling 
+     * javax.crypt.Cipher.getInstance() with an argument that is
+     * created from the values of the _algorithm, _mode and _padding.
+     */
+    protected void _updateCipher() throws IllegalActionException {
+        // Usually, this method is called from initialize().
+        // This method may end up being called in fire() if
+        // the user changed attributes while the model is running.
+
         try {
             // If the mode or padding parameters are the empty
             // string, then we use the default for the algorithm
@@ -253,7 +305,6 @@ abstract public class CipherActor extends CryptographyActor {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                    Protected Variables                    ////
 
@@ -268,4 +319,11 @@ abstract public class CipherActor extends CryptographyActor {
     /** The padding scheme to be used process the data.
      */
     protected String _padding;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    Private Variables                      ////
+
+    // Set to true if one of the parameters changed and we need to
+    // call _updateCipher().
+    private boolean _updateCipherNeeded = true;
 }

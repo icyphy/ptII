@@ -68,16 +68,18 @@ generate signatures of data.
 <i>input</i>, process the data based on the <i>algorithm</i> parameter
 and send an unsigned byte array to the <i>output</i>.  The algorithms
 that maybe implemented are limited those that are implemented by
-"providers" following the JCE specifications and installed on the
-machine being run.  If a provider specific instance of an algorithm is
+"providers" following the Java Cryptography Extension (JCE)
+specifications and installed on the machine being run.
+If a provider specific instance of an algorithm is
 needed, the provider may be specified in the <i>provider</i>
-parameter.  This class takes care of basic initialization of the
-subclasses. The <i>keySize</i> also allows implementations of
+parameter. The <i>keySize</i> also allows implementations of
 algorithms using various key sizes.
 
-<p>Concrete actors derived from this base class must include
+<p>Concrete actors derived from this base class must include a
 {@link #_process(byte[])} method that processes the data appropriately.
 The _process() method is called by CryptographyActor.fire().
+This class takes care of basic initialization of the <i>algorithm</i>
+and <i>provider</i> parameters for use by the subclasses.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -141,6 +143,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                 }
 
                 keySize = new Parameter(this, "keySize", new IntToken(1024));
+                keySize.setTypeEquals(BaseType.INT);                
             }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,17 +152,17 @@ abstract public class CryptographyActor extends TypedAtomicActor {
     /** Specify the algorithm to be used to process data.
      *  The algorithm is specified as a string. The algorithms are
      *  limited to those implemented by providers using the Java JCE
-     *  which are found on the Java virtual machine The initial
+     *  which are found on the Java virtual machine. The initial
      *  default is the first value returned by
      *  java.security.Security.getAlgorithms();
      */
     public StringParameter algorithm;
 
-    /** Specify a provider for the given algorithm.
-     *  The default value is "SystemDefault" which allows the
-     *  system to choose the provider based on the JCE architecture.
+    /** The input port. The type of this port is unsigned byte array.
+     *  Data is read in on this port, processed by the _process() method
+     *  during fire() and passed to the <i>output</i> port.
      */
-    public StringParameter provider;
+    public TypedIOPort input;
 
     /** Specify the size of the key to be created.
      *  The key size is an integer value representing the number of bits in
@@ -174,14 +177,9 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
+     *  <p>FIXME: What if the algorithm does not use the keySize?
      */
     public Parameter keySize;
-
-    /** The input port. The type of this port is unsigned byte array.
-     *  Data is read in on this port, processed by the _process() method
-     *  during fire() and passed to the <i>output</i> port.
-     */
-    public TypedIOPort input;
 
     /** The output port.  The type of this port is unsigned byte array.
      *  This port sends out the processed data received from the <i>input</i>
@@ -189,6 +187,11 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    /** Specify a provider for the given algorithm.
+     *  The default value is "SystemDefault" which allows the
+     *  system to choose the provider based on the JCE architecture.
+     */
+    public StringParameter provider;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -219,16 +222,16 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-                if (attribute == algorithm) {
-                    _algorithm = ((StringToken)algorithm.getToken()).stringValue();
-                } else if (attribute == keySize) {
-                    _keySize = ((IntToken)keySize.getToken()).intValue();
-                } else if (attribute == provider) {
-                    _provider = ((StringToken)provider.getToken()).stringValue();
-                } else {
-                    super.attributeChanged(attribute);
-                }
-            }
+        if (attribute == algorithm) {
+            _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+        } else if (attribute == keySize) {
+            _keySize = ((IntToken)keySize.getToken()).intValue();
+        } else if (attribute == provider) {
+            _provider = ((StringToken)provider.getToken()).stringValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Read data from the from the <i>input</i> and process the
      *  data based on the <i>algorithm</i>, and <i>provider</i> by calling
@@ -239,8 +242,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  if there is a problem processing the data.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: Should this be doing this fire() or postfire()?
-        super.fire();
+        super.fire(); // super.fire() will print out debugging messages. 
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
@@ -256,19 +258,6 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                     "Problem sending data");
         }
 
-    }
-
-    /** Retrieve the value of the <i>algorithm</i>, <i>provider</i>,
-     * <i>keySize</i> parameters.
-     *
-     * @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // FIXME: should we call attributeChanged() instead?
-        _algorithm = ((StringToken)algorithm.getToken()).stringValue();
-        _provider = ((StringToken)provider.getToken()).stringValue();
-        _keySize = ((IntToken)keySize.getToken()).intValue();
     }
 
     /** Take an array of unsigned bytes and convert it to an ArrayToken.
@@ -293,7 +282,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
 
     /** Process the input data based on parameter specifications.
      *  Subclasses should process the data using one of the signature
-     *  or cipher classes provided in the JCE or JCA.
+     *  or cipher classes provided in the JCA or JCE.
      *
      * @param dataBytes The data to be processed.
      * @return The processed data.
