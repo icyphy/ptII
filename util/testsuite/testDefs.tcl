@@ -212,6 +212,11 @@ proc dotests {file args} {
 #
 proc doneTests {args} {
     global PASSED FAILED KNOWN_FAILED NEWLY_PASSED duration reallyExit
+
+    # Attempt to flush the javascope database.  The alternative is
+    # to run jsinstr with JSINTRFLAGS=-IFLUSHCLASS=true 
+    java::call COM.sun.suntest.javascope.database.js\$ flush
+
     puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
 	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
     Failed: $FAILED Known Failed: $KNOWN_FAILED) [pwd]"
