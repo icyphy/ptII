@@ -77,7 +77,7 @@ public class LogicalNot extends Transformer {
      */
     public void fire() throws IllegalActionException {
 	if(input.hasToken(0)) {
-            output.send(0,((BooleanToken)input.get(0)).not());
+            output.send(0, ((BooleanToken)input.get(0)).not());
         }
     }
 }
