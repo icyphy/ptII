@@ -11,6 +11,7 @@
   <import source="../../domains/de/lib/deentities.xml"/>
   <import source="../../domains/fsm/lib/fsmentities.xml"/>
   <import source="../../apps/lego/legoentities.xml"/>
+  <import source="../../apps/agilent/agilententities.xml"/>
   <entity name="generic" class=".generic"/>
   <entity name="sdf" class=".sdf"/>
   <entity name="sdfvq" class=".sdfvq"/>
@@ -18,4 +19,5 @@
   <entity name="de" class=".de"/>
   <entity name="fsm" class=".fsm"/>
   <entity name="lego" class=".lego"/>
+  <entity name="agilent" class=".agilent"/>
 </class>
