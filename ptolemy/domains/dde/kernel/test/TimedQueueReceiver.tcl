@@ -59,151 +59,112 @@ test TimedQueueReceiver-2.1 {Check IOPort container in new receiver} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-3.1 {Check that hasToken() works for empty queue} {
+test TimedQueueReceiver-3.1 {Check hasToken(), hasRoom(), rcvrTime
+and lastTime for empty queue} {
     set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
-    set actor [java::new ptolemy.domains.dde.kernel.DDEActor]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
-    list [expr { 0 == [$tqr hasToken] } ]
-} {1}
+    set hasToken [$tqr hasToken]
+    set hasRoom [$tqr hasRoom]
+    set rcvrTime [$tqr getRcvrTime]
+    set lastTime [$tqr getLastTime]
+    list $hasToken $hasRoom $rcvrTime $lastTime
+} {0 1 0.0 0.0}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-3.2 {Check hasToken() for non-empty queue} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
-
+test TimedQueueReceiver-3.2 {Check hasToken() after putting token} {
+    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
-    $tqr put $t1 0.0
-    $tqr put $t2 5.0
-    list [expr { 1 == [$tqr hasToken] } ]
-} {1}
+    $tqr put $t1 5.0
+    set hasToken [$tqr hasToken]
+    set rcvrTime1 [$tqr getRcvrTime]
+    set lastTime1 [$tqr getLastTime]
+    $tqr put $t1 15.0
+    set rcvrTime2 [$tqr getRcvrTime]
+    set lastTime2 [$tqr getLastTime]
+    list $hasToken $rcvrTime1 $lastTime1 $rcvrTime2 $lastTime2
+} {1 5.0 5.0 5.0 15.0}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-4.1 {Check hasRoom() for finite, empty queue} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
-
-    $tqr setCapacity 10
-    list [expr { 1 == [$tqr hasRoom] } ]
-} {1}
-
-######################################################################
-####
-#
-test TimedQueueReceiver-4.2 {Check that hasRoom() works for full queue} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
+test TimedQueueReceiver-4.1 {Check hasRoom() for full queue} {
+    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
     $tqr setCapacity 2
-
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    $tqr put $t1 10.0
-    $tqr put $t2 12.5
+    $tqr put $t1 5.0
+    $tqr put $t2 5.0
     list [expr { 0 == [$tqr hasRoom] } ]
 } {1}
 
 ######################################################################
 ####
-#
+# Continued from above
+test TimedQueueReceiver-4.2 {Check exception message for full queue} {
+    set t3 [java::new ptolemy.data.Token]
+    set cap [$tqr getCapacity]
+    catch {$tqr put $t3 10.0} msg
+    list $cap $msg
+} {2 {ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot insert token.}}
+
+######################################################################
+####
+# Continued from above
 test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
     set actor [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
-
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
-    $tqr put $t1 3.5
-    $tqr put $t2 3.6
-    $tqr put $t3 3.7
-    list [expr { 1 == [$tqr hasRoom] } ]
-} {1}
+    $tqr setContainer $iop
+    set t4 [java::new ptolemy.data.Token]
+    catch {$tqr put $t4 3.7} msg
+    list $msg
+} {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+test TimedQueueReceiver-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
     set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-    $tqr setReceivingTimeKeeper $keeper
 
-    set token0 [java::new ptolemy.data.Token]
-    set token1 [java::new ptolemy.data.Token]
-    set token2 [java::new ptolemy.data.Token]
+    set t0 [java::new ptolemy.data.Token]
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
 
-    $tqr put $token0 5.0
+    $tqr put $t0 5.0
+    $tqr put $t1 7.0
+
     set rcvrTime0 [$tqr getRcvrTime]
     set lastTime0 [$tqr getLastTime]
 
-    $tqr put $token1 7.0
+    set outToken0 [$tqr get]
+    set rslt0 [expr { $outToken0 == $t0 } ]
+
+    $tqr put $t2 15.0
+
     set rcvrTime1 [$tqr getRcvrTime]
     set lastTime1 [$tqr getLastTime]
 
-    set outToken0 [$tqr get]
-    set rcvrTime2 [$tqr getRcvrTime]
-    set lastTime2 [$tqr getLastTime]
+    set outToken1 [$tqr get]
+    set rslt1 [expr { $outToken1 == $t1 } ]
 
-    $tqr put $token2 15.0
     set rcvrTime3 [$tqr getRcvrTime]
-    set lastTime3 [$tqr getLastTime]
 
-    list $rcvrTime0 $lastTime0 $rcvrTime1 $lastTime1 $rcvrTime2 \
-	    $lastTime2 $rcvrTime3 $lastTime3
-} {5.0 5.0 5.0 7.0 7.0 7.0 7.0 15.0}
+    $tqr get
 
-######################################################################
-####
-#
-test TimedQueueReceiver-6.1 {Check for exception with put() given \
-	full queue} {
-    set wkspc [java::new ptolemy.kernel.util.Workspace]
-    set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
-    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
-	    $comp "Receiver"]
-    set actorSend [java::new ptolemy.actor.TypedAtomicActor \
-	    $comp "Sender"]
-    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
-	    "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set rkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actorRcvr]
-    set skeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actorSend]
+    set empty [expr { [$tqr hasToken] == 0 } ]
 
-    $tqr setReceivingTimeKeeper $rkeeper
-    $tqr setSendingTimeKeeper $skeeper
-    $tqr setCapacity 0
-    set token [java::new ptolemy.data.Token]
+    set rcvrTime4 [$tqr getRcvrTime]
+    set rcvrTime5 [$tqr getRcvrTime]
 
-    catch {$tqr put $token 0.0} msg
-    list $msg
-} {{ptolemy.actor.NoRoomException: ..Receiver.port: Queue is at capacity. Cannot insert token.}}
+    list $rcvrTime0 $lastTime0 $rslt0 $rcvrTime1 $lastTime1 $rslt1 $rcvrTime3 $rcvrTime4 $rcvrTime5 $empty
+} {5.0 7.0 1 7.0 15.0 1 15.0 15.0 15.0 1}
 
 ######################################################################
 ####
-#
+# Continued from above
 test TimedQueueReceiver-6.2 {Check for exception with get() given empty \
 	queue} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
-    set t [java::new ptolemy.data.Token]
     catch {$tqr get} msg 
     list $msg
 } {{java.util.NoSuchElementException: The FIFOQueue is empty!}}
