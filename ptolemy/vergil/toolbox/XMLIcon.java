@@ -97,13 +97,18 @@ public class XMLIcon extends EditorIcon implements ValueListener {
                 // Listen for changes in value to the icon description.
                 _description.addValueListener(this);
             }
-
-            // we are changing the description attribute, so clear the cache.
-            _updatePaintedList();
+            
+            // clear the caches
+            _recreateFigure();
         }
         
+        // update the painted list, if necessary
+        paintedList();
+        
         if(_paintedList == null) {
-       	    return _createDefaultBackgroundFigure();
+            // If the paintedList is still null, then return the default
+            // figure.
+            return _createDefaultBackgroundFigure();
         } else {
             return new PaintedFigure(_paintedList);
         }
@@ -113,7 +118,6 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      *  @return The painted list contained by this icon.
      */
     public PaintedList paintedList() {
-        // FIXME: Is this update appropriate?  EAL
         if (_paintedList == null) {
             _updatePaintedList();           
         }
@@ -137,7 +141,6 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     public void valueChanged(Settable settable) {
         if (((Nameable)settable).getName().equals("_iconDescription")) {
             _recreateFigure();
-            _paintedList = null;
         }
     }
 
@@ -168,6 +171,14 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         if (bracket == 2) result += "}";
 
         return result;
+    }
+
+    /** Recreate the figure.  Call to cause createIcon() to call
+     *  createBackgroundFigure() to obtain a new figure.
+     */
+    protected void _recreateFigure() {
+        super._recreateFigure();
+        _paintedList = null;
     }
 
     ///////////////////////////////////////////////////////////////////
