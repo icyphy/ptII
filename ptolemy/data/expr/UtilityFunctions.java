@@ -70,7 +70,7 @@ public class UtilityFunctions {
      *  is returned if the specified file could not be located.
      *  FIXME: what do with format of file?, e.g. if file is
      *  spread over many lines should we remove the newlines
-     *  and make one long one line string? Alos this currently
+     *  and make one long one line string? Also this currently
      *  only looks in the working directory.
      * @param filename The file we want to read the text from.
      * @return StringToken containing the text contained in
