@@ -76,34 +76,42 @@ public abstract class ODStringSource extends ODSourceActor {
     public void fire() throws IllegalActionException {
         int cnt = 0;
 	boolean nextOutputReady = false;
+	boolean notFinishedYet = true;
         StringToken strToken = null; 
         StringTime strTime = null;  
         
-        while( cnt < _contents.size() ) {
-        //  while( getCurrentTime() < _endTime ) {
-            getNextToken();
+	// FIXME: This is valid because ODSourceActor.initialize()
+        // getNextToken();
+        while( cnt <= _contents.size() ) {
+	    if( cnt == _contents.size() ) {
+	        notFinishedYet = false;
+	    }
+
+	    if( notFinishedYet ) {
+                getNextToken();
+	    }
+
 	    if( nextOutputReady ) {
 		_output.send( 0, strToken );
 		// _output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
 
+	    if( notFinishedYet ) {
             strTime = (StringTime)_contents.at(cnt);
             strToken = new StringToken( strTime.getString() );
             double fireTime = strTime.getTime();
-            /*
-            System.out.println(getName() + " fired \"" 
-                    + strTime.getString() +
-                    "\" at time = " + fireTime );
-            */
-            try {
+
                 refireAfterDelay( fireTime );
-		nextOutputReady = true;
-            } catch ( IllegalActionException e ) {
-                System.out.println("refireAfterDelay IllegalActionException!");
-            }
+	        nextOutputReady = true;
+	    }
+
             cnt++;
         }
+            /*
+            System.out.println(getName() + " fired \"" 
+                    + strTime.getString() + "\" at time = " + fireTime );
+            */
         // ((ODDirector)getDirector()).addWriteBlock();
         // System.out.println("#####"+getName()+" is finished executing");
     }
