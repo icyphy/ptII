@@ -180,6 +180,10 @@ public class FunctionToken extends Token {
          *  @param function The function to check congruency against.
          */
         public boolean isCongruent(Function function);
+
+        /** Return a string representation
+         */
+        public String toString();
     }
 }
 
