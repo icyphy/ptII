@@ -45,7 +45,8 @@ EXTRA_SRCS = \
 	javalinks.html \
 	packages.html \
 	rating.html \
-	style.html
+	style.html \
+	testing.html
 
 MISC_FILES =	$(DIRS)
 
