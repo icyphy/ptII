@@ -99,8 +99,8 @@ the received datagram originated from.  <p>
 
 NOTE: Ideally, there would be more encoding options than
 provided here.  However, I believe the best way to fill out this 
-repertoir is to make a separate encode/decode or pack/repack/unpack 
-actor.  Such an actor would better refactor this functionality than 
+repertoire is to make a separate encode/decode or pack/repack/unpack 
+actor.  Such an actor would better re-factor this functionality than 
 to duplicate it in each I/O actor (as has been done here with the 
 datagram actors).  <p><p>
 
@@ -136,7 +136,7 @@ have default outputs as well, but they are not parameter-programmable. <p><p>
 NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
 number assigned to its local datagram socket.  Initially, the local
 socket number is set to 4004.  There is no particular reason for choosing 
-this number, except that is noticeable in the code and in vergil, thus 
+this number, except that is noticeable in the code and in Vergil, thus 
 encouraging you to change it to any desired value in the range 0..65535.
 
 Some commonly used port numbers (a.k.a. socket numbers) are shown below:
@@ -175,7 +175,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // ports - Ordering here sets the order they show up in vergil
+        // ports - Ordering here sets the order they show up in Vergil
         returnAddress = new TypedIOPort(this, "returnAddress");
         returnAddress.setTypeEquals(BaseType.STRING);
         returnAddress.setOutput(true);
@@ -194,7 +194,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
 
-        // parameters - Ordering here sets the order they show up in vergil
+        // parameters - Ordering here sets the order they show up in Vergil
         localSocketNumber = new Parameter(this, "localSocketNumber");
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4004));
@@ -215,7 +215,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         defaultOutput.setExpression("0");
 
         // Repeat has not been implemented.  However, I'd place it
-        // here so that it would show up in vergil below
+        // here so that it would show up in Vergil below
         // <i>defaultOutput</i>.  It works in tandem with the above
         // two parameters in that, if blocking is true, that takes
         // precedence.  Otherwise, if no data is available for
@@ -336,7 +336,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     /** Boolean directive in case datagrams pile up.  Default is true.
      *  If false, datagrams will queue up (mostly in the platform,
-     *  some in the actor).  The datagram used at each invoction of
+     *  some in the actor).  The datagram used at each invocation of
      *  fire will be the oldest in the queue.  On the other hand, if
      *  <i>overwrite</i> is true, then minimal queuing will occur and
      *  the most recent data will be used when fire() is called.
@@ -474,7 +474,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
         // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
         // notify potentially waiting fire() or thread respectively
-        // that it might nolonger need to wait.  Each will recheck its
+        // that it might no longer need to wait.  Each will recheck its
         // conditions when notified, so extra notifications merely
         // waste a little CPU.
 
@@ -876,7 +876,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
      *  FIXME: There exists a circumstance where stopFire() could fail
      *  to stop the fire() method, and the fire() method could block
-     *  indefinintly.  This occurs if stopFire() is called after
+     *  indefinitely.  This occurs if stopFire() is called after
      *  fire() is called (or after the director commits itself to
      *  calling fire()) but before fire() enters the synchronized
      *  section in which it blocks with a wait() call.  In theory,

@@ -401,6 +401,8 @@ public class DatagramSender extends TypedAtomicActor {
             throw new IllegalActionException(this, "The default remote "
                     + "address specifies an unknown host: "
                     + ex.getMessage());
+	    // Or, can be that no DNS server is available.
+	    // Funny that this only happened when I put "" around 128...!?
         }
 
         _remoteSocketNumber =
