@@ -55,38 +55,46 @@ This actor reads audio samples and plays them. Specifically,
 the input stream that this actor reads is interpreted as
 consisting of audio samples. This actor writes this stream
 of audio samples to the audio output port of the computer,
-which typically consists of the computer speaker of the
+which typically consists of the computer speaker or the
 headphones output. The audio samples that are supplied to
 this actor should be doubles in the range [-1.0, 1.0]. Thus,
 the input port of this actor is of type DoubleToken. Any input
 tokens that are outside of the valid range will be hard-clipped
 to fall within the range [-1.0, 1.0] before they are written
- to the audio output port of the computer.
+to the audio output port of the computer.
 <p>
-This actor should
-be fired often enough to
-prevent underflow of the internal audio playback buffer.
-Underflow should be avoided, since it will result in audio
-discontinuities (heard as clicks) in the output.
+This actor should be fired often enough to prevent underflow of 
+the internal audio playback buffer. Underflow should be avoided, 
+since it will result in audio discontinuities (heard as clicks) 
+in the output. No exception will be thrown if underflow occurs.
 <p>
-The following parameters
-should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that these parameters may
-be changed while audio capture is active.  If this actor is used
-in conjunction with an AudioCapture actor, changing a parameter will
-cause the parameter value of the AudioCapture to automatically be
-set to the same value.
+The following parameters should be set accordingly. In all cases, 
+an exception is thrown if an illegal parameter value is used. 
+Note that these parameters may be changed while audio capture is 
+active. If this actor is used in conjunction with an AudioCapture 
+actor, changing a parameter of this actor will cause the 
+corresponding parameter value of the AudioCapture actor to 
+automatically be set to the same value.
 <p>
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
 The default value is 8000. Allowable values are 8000, 11025,
-22050, 44100, and 48000 Hz.
+22050, 44100, and 48000 Hz. Some sound cards support 96000 Hz
+operation, but this is not supported in Java.
 <li><i>bitsPerSample</i> should be set to desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
+Some sound cards support 20 and 24 bit audio, but this is not
+supported in Java.
 <li><i>channels</i> should be set to desired number of audio
 channels. Allowable values are 1 (for mono) and 2 (for stereo).
-The default value is 1.
+The default value is 1. Some sound cards support more than two
+audio channels, but this is not supported in Java.
 </ul>
+<p>
+It should be noted that at most one AudioCapture and one AudioPlayer
+actor may be used simultaneously. Otherwise, an exception will
+occur. This restriction may be lifted in a future version of
+this actor.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
 @author  Brian K. Vogel
@@ -145,33 +153,33 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     /** The desired sample rate to use, in Hz. Valid values
      *  are dependent on the audio hardware (sound card), but typically
      *  include at least 8000, 11025, 22050, 44100, and 48000. The
-     *  default value of the sample rate is 8000 Hz.
+     *  default value of the sample rate is 8000 Hz. Some sound cards 
+     *  support 96000 Hz operation, but this is not supported in Java.
      *  <p>
-     *  If this
-     *  actor is used simultaneously with an AudioCapture actor,
-     *  the same sample rate must be used for both actors,
-     *  since most sound cards require the capture and playback rates
-     *  to be the same. This actor will automatically cause the
-     *  parameters of an AudioCapture actor to be set to the same
-     *  values as the parameters of this actor.
+     *  If this actor is used simultaneously with an AudioCapture actor,
+     *  then this parameter will be constrained to be the same for
+     *  both actors, since most sound cards require the capture and 
+     *  playback parameters to be the same. This actor will 
+     *  automatically cause the parameters of an AudioCapture actor 
+     *  to be set to the same values as the parameters of this actor.
      *  <p>
      *  An exception will be occur if this parameter is set to an
      *  unsupported sample rate.
      */
     public Parameter sampleRate;
 
-    /** The number desired number of bits per sample.
-     *  Allowed values are dependent
-     *  on the audio hardware, but typically at least include
-     *  8 and 16. The default value is 16.
+    /** The number of bits per sample to use. Allowed values 
+     *  are dependent on the audio hardware, but typically at 
+     *  least include 8 and 16. The default value is 16.
+     *  Some sound cards support 20 and 24 bit audio, but this is not
+     *  supported in Java.
      *  <p>
-     *  If this
-     *  actor is used simultaneously with an AudioCapture actor,
-     *  the same sample rate must be used for both actors,
-     *  since most sound cards require the capture and playback rates
-     *  to be the same. This actor will automatically cause the
-     *  parameters of an AudioCapture actor to be set to the same
-     *  values as the parameters of this actor.
+     *  If this actor is used simultaneously with an AudioCapture actor,
+     *  then this parameter will be constrained to be the same for
+     *  both actors, since most sound cards require the capture and 
+     *  playback parameters to be the same. This actor will 
+     *  automatically cause the parameters of an AudioCapture actor 
+     *  to be set to the same values as the parameters of this actor.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  unsupported sample size.
@@ -179,17 +187,17 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     public Parameter bitsPerSample;
 
     /** The number of audio channels to use. . Valid values
-     *  are dependent on the audio hardware (sound card), but typically
+     *  are dependent on the sound card, but typically
      *  at least include 1 (for mono) and 2 (for stereo). The
-     *  default value is 1.
+     *  default value is 1. Some sound cards support more than
+     *  two audio channels, but this is not supported in Java.
      *  <p>
-     *  If this
-     *  actor is used simultaneously with an AudioCapture actor,
-     *  the same sample rate must be used for both actors,
-     *  since most sound cards require the capture and playback rates
-     *  to be the same. This actor will automatically cause the
-     *  parameters of an AudioCapture actor to be set to the same
-     *  values as the parameters of this actor.
+     *  If this actor is used simultaneously with an AudioCapture actor,
+     *  then this parameter will be constrained to be the same for
+     *  both actors, since most sound cards require the capture and 
+     *  playback parameters to be the same. This actor will 
+     *  automatically cause the parameters of an AudioCapture actor 
+     *  to be set to the same values as the parameters of this actor.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  an unsupported channel number.
@@ -267,12 +275,12 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	}
     }
 
-    /** Depending on the mode, open a new audio file for writing,
-     *  or open audio resources for live playback.
-     *  If file writing mode is used, any existing file of the same
-     *  name will be overwritten.
-     *  @exception IllegalActionException If the file cannot be opened,
-     *   or if the parent class throws it.
+    /** Obtain access to the audio playback hardware, and start playback.
+     *  An exception will occur if there is a problem starting
+     *  playback. This will occur if another AudioPlayer actor has
+     *  already started audio playback.
+     *  @exception IllegalActionException If there is a problem 
+     *   begining audio playback.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -291,19 +299,13 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     /** If there are at least <i>count</i> tokens on the input
      *  port, invoke <i>count</i> iterations of this actor.
      *  Otherwise, do nothing, and return a value of NOT_READY.
-     *  One token is read from each channel in an iteration.
-     *  The audio output is either
-     *  a sound file and/or the speaker, depending on the current
-     *  mode, which is controlled by the value of the <i>pathName</i>
-     *  parameter.
+     *  One token is read from each channel in an iteration
+     *  and written to the audio output port of the computer, 
+     *  which is typically the computer speaker or the headphones output.
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. It is recommended for
-     *  performance reasons that a large value of <i>count</i> be used
-     *  when this actor is used in live playback mode. This actor is
-     *  optimized to provide good performance even if the value of
-     *  <i>count</i> changes often.
+     *  domain that supports vectorized actors. 
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY if there
@@ -358,7 +360,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	return COMPLETED;
     }
 
-     /** Notify that the an audio parameter of LiveSound has
+    /** Notify this actor that the an audio parameter of LiveSound has
      *  changed.
      *
      *  @param event The live sound change event.
@@ -424,10 +426,10 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 
 
     /** At most one token is read from each channel and written to the
-     *  audio output. The audio output is either a sound file and/or
-     *  the speaker, depending on the current mode, which is
-     *  controlled by the value of the <i>pathName</i> parameter.
-     *  @exception IllegalActionException If audio cannot be played.
+     *  audio output port of the computer, which is typically the
+     *  computer speaker or the headphones output.
+     *  @exception IllegalActionException If there is a problem
+     *   playing audio.
      */
     public boolean postfire() throws IllegalActionException {
 	int returnVal = iterate(1);
@@ -443,9 +445,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	return false;
     }
 
-    /** Set up the input port's consumption rate. For optimization,
-     *  allocate variables
-     *  for use in the postfire() method.
+    /** Set up the number of channels to use.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -454,10 +454,10 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	    ((IntToken)channels.getToken()).intValue();
     }
 
-    /** Close the specified file and any open audio resources,
-     *  if any.
-     *  @exception IllegalActionException If the audio resources
-     *   cannot be freed.
+    /** Stop audio playback and free up any audio resources used
+     *  for audio playback.
+     *  @exception IllegalActionException If there is a problem
+     *   stoping audio playback.
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();

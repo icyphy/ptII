@@ -253,9 +253,7 @@ public class AudioWriter extends Sink {
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. This actor is
-     *  optimized to provide good performance even if the value of
-     *  <i>count</i> changes often.
+     *  domain that supports vectorized actors.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY if there
@@ -328,8 +326,7 @@ public class AudioWriter extends Sink {
 	return false;
     }
 
-    /** Set up the input port's consumption rate. For optimization,
-     *  allocate variables
+    /** Set up the number channels to use.
      *  for use in the postfire() method.
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -339,10 +336,9 @@ public class AudioWriter extends Sink {
 	    ((IntToken)channels.getToken()).intValue();
     }
 
-    /** Close the specified file and any open audio resources,
-     *  if any.
-     *  @exception IllegalActionException If the audio resources
-     *   cannot be freed.
+    /** Close the specified file.
+     *  @exception IllegalActionException If there is a problem
+     *   closing the file.
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();

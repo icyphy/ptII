@@ -106,6 +106,8 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
 @see AudioPlayback
+@see SoundWriter
+@see SoundWriter
 */
 public class AudioCapture extends Source implements LiveSoundListener {
 
@@ -256,8 +258,11 @@ public class AudioCapture extends Source implements LiveSoundListener {
     }
 
     /** Read parameter values and begin the sound capture process.
-     *  @exception IllegalActionException If the parameters
-     *             are out of range.
+     *  An exception will occur if there is a problem starting
+     *  capture. This will occur if another AudioCapture actor has
+     *  already started audio capture.
+     *  @exception IllegalActionException If there is a problem
+     *   starting audio capture.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

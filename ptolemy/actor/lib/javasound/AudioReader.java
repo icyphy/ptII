@@ -1,5 +1,5 @@
-/* An actor that outputs the sequence of sample values from an
-   audio source.
+/* An actor that outputs the sequence of sample values from a
+   sound file specified as a URL.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (vogel@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (vogel@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -51,10 +51,11 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 /**
-This actor sequentially outputs the samples from an sound file, specified as a
-URL. Although the sound file must be specified as a URL, it is
-still possible to specify files on the local file system. The audio
-samples are converted to DoubleTokens that may range from [-1.0, 1.0].
+This actor sequentially outputs the samples from an sound file, 
+specified as a URL. Although the sound file must be specified 
+as a URL, it is still possible to specify files on the local 
+file system. The audio samples that a read from the file are 
+converted to DoubleTokens that may range from [-1.0, 1.0].
 Thus, the output type of this actor is DoubleToken.
 <p>
 <b>Usage</b>
@@ -67,17 +68,18 @@ postfire() will return false when the end of the sound
 file is reached.
 <p>
 There are security issues involved with accessing files and audio
-resources in applets. Applets are
-only allowed access to files specified by a URL and located
-on the machine from which the applet is loaded. The
-.java.policy file may be modified to grant applets more
-privileges.
+resources in applets. Applets are only allowed access to files 
+specified by a URL and located on the machine from which the 
+applet is loaded. The .java.policy file may be modified to grant 
+applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
 @version $Id$
-@see ptolemy.media.javasound.SoundReader
-@see ptolemy.actor.lib.javasound.AudioSink
+@see ptolemy.media.javasound.LiveSound
+@see SoundWriter
+@see SoundCapture
+@see SoundPlayback
 */
 public class AudioReader extends Source {
 
@@ -104,8 +106,8 @@ public class AudioReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** The URL of the file to read from. This parameter contains
-     *  a StringToken. The default value of this parameter is the URL
+    /** The URL of the file to read from. The default value of this 
+     * parameter is the URL
      *  http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav.
      *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
@@ -123,7 +125,6 @@ public class AudioReader extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Handle change requests for all parameters. An exception is
      *  thrown if the requested change is not allowed.
@@ -178,9 +179,7 @@ public class AudioReader extends Source {
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. This actor is
-     *  optimized to provide good performance even if the value of
-     *  <i>count</i> changes often.
+     *  domain that supports vectorized actors. 
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Return STOP_ITERATING if the
