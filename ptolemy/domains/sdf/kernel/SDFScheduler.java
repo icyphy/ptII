@@ -41,8 +41,6 @@ import java.util.*;
 import collections.LinkedList;
 import collections.HashedMap;
 import collections.HashedSet;
-import ptolemy.debug.*;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFScheduler
@@ -97,16 +95,18 @@ public class SDFScheduler extends Scheduler{
     }
 
     public int getFiringCount(ComponentEntity entity) {
-        try {
+        //        try {
+            Debug.println(_firingvector.toString());
             return ((Integer) _firingvector.at(entity)).intValue();
-        }
+            /*        }
         catch (NoSuchElementException e) {
             return 0;
-        }
+        }*/
     }
 
     public void setFiringCount(ComponentEntity entity, int count) {
-        _firingvector.putAt(entity, new Integer(count));
+        _firingvector = (HashedMap)
+            _firingvector.puttingAt(entity, new Integer(count));
     }
 
     /*    public Fraction getFractionalFiringCount(ComponentEntity entity) {
@@ -175,6 +175,9 @@ public class SDFScheduler extends Scheduler{
         
         setFiringVector(Firings);
         
+        Debug.print("Firing Vector:");
+        Debug.println(Firings.toString());
+       
         setValid(true);
 
         return result.elements();
@@ -488,6 +491,58 @@ public class SDFScheduler extends Scheduler{
         return Firings; 
     }
 
+    protected int _internalInputCount(Actor a, HashedSet unscheduledactors) {
+               Enumeration ainputPorts = a.inputPorts();
+
+
+            // Also initialize all actors as having the appropriate 
+            // number of unfulfilled inputs. Notice that an inputport that is 
+            // connected only to ports that are external to UnscheduledActors
+            // are always considered to be fulfilled.
+       
+            int InputCount = 0;
+            while(ainputPorts.hasMoreElements()) {                
+                IOPort ainputPort = (IOPort) ainputPorts.nextElement();
+                Enumeration cports = ainputPort.deepConnectedOutPorts();
+                
+                boolean isonlyexternalport = true;
+                while(cports.hasMoreElements()) {
+                    IOPort cport = (IOPort) cports.nextElement();
+                    if(unscheduledactors.includes(cport.getContainer()))
+                        isonlyexternalport = false;
+                }
+                if(!isonlyexternalport)
+                    InputCount++;
+            }
+            return InputCount;
+    }
+
+    protected boolean _simulateInputConsumption(ComponentEntity currentActor,
+            HashedMap waitingTokens) 
+        throws IllegalActionException {
+        boolean stillReadyToSchedule = true;
+        // update tokensWaiting on the actor's input ports.
+        Enumeration inputPorts = ((Actor) currentActor).inputPorts();
+        while(inputPorts.hasMoreElements()) {
+                    IOPort inputPort = (IOPort) inputPorts.nextElement();
+                    int tokens = 
+                        ((Integer) waitingTokens.at(inputPort)).intValue();
+                    int tokenrate = 
+                        ((DataflowActor) currentActor)
+                        .getTokenConsumptionRate(inputPort);
+                    tokens -= tokenrate;
+
+                    // keep track of whether or not this actor can fire again
+                    // immediately
+                    if(tokens < tokenrate) stillReadyToSchedule = false;
+
+                    // update the number of pseudo-tokens waiting on each input
+                    waitingTokens.putAt(inputPort, new Integer(tokens));
+                }
+return stillReadyToSchedule;
+}
+
+
     /** Create a schedule for a set of UnscheduledActors.
      *
      *  @param UnscheduledActors The Actors that need to be scheduled.  
@@ -523,31 +578,29 @@ public class SDFScheduler extends Scheduler{
         HashedMap waitingTokens = new HashedMap();
 
         Enumeration SchedulableEntities = UnscheduledActors.elements();
+        // Fill ReadyToScheduleActors with all the actors that have 
+        // no unfulfilled input ports, and are thus ready to fire.
         while(SchedulableEntities.hasMoreElements()) {
             Actor a = (Actor)SchedulableEntities.nextElement();
-         
-            // Fill ReadyToScheduleActors with all the actors that have 
-            // no input ports, and are thus ready to fire.
-            Enumeration ainputPorts = a.inputPorts();
-            if(ainputPorts.hasMoreElements() == false) 
-                ReadyToScheduleActors.insertFirst((ComponentEntity) a);
-         
-            // Also initialize all actors as having the appropriate 
-            // number of unfulfilled inputs. 
-            int InputCount = 0;
-            while(ainputPorts.hasMoreElements()) {                
-                IOPort ainputPort = (IOPort) ainputPorts.nextElement();
-                InputCount++;
+            
+            Enumeration ainputports = a.inputPorts();
+            while(ainputports.hasMoreElements()) {
+                IOPort ainputport = (IOPort) ainputports.nextElement();
                 // Initialize the waitingTokens at all the inputports to zero
-                waitingTokens.putAt(ainputPort,new Integer(0));
+                waitingTokens.putAt(ainputport,new Integer(0));
             }
 
+
+            int inputcount = _internalInputCount(a, UnscheduledActors);
+            if(inputcount == 0)
+                ReadyToScheduleActors.insertFirst((ComponentEntity) a);
             // map a->InputCount  
-            unfulfilledInputs.putAt(a,new Integer(InputCount));
+            unfulfilledInputs.putAt(a,new Integer(inputcount));
+
             Debug.print("Actor ");
             Debug.print(((ComponentEntity) a).getName());
             Debug.print(" has ");
-            Debug.print((new Integer(InputCount)).toString());
+            Debug.print((new Integer(inputcount)).toString());
             Debug.println(" unfulfilledInputs.");
         }
 
@@ -565,25 +618,14 @@ public class SDFScheduler extends Scheduler{
                 
                 Debug.println("Scheduling Actor "+currentActor.getName());
 
-                boolean stillReadyToSchedule = true;
-                // update tokensWaiting on the actor's input ports.
-                Enumeration inputPorts = ((Actor) currentActor).inputPorts();
-                while(inputPorts.hasMoreElements()) {
-                    IOPort inputPort = (IOPort) inputPorts.nextElement();
-                    int tokens = 
-                        ((Integer) waitingTokens.at(inputPort)).intValue();
-                    int tokenrate = 
-                        ((DataflowActor) currentActor)
-                        .getTokenConsumptionRate(inputPort);
-                    tokens -= tokenrate;
 
-                    // keep track of whether or not this actor can fire again
-                    // immediately
-                    if(tokens < tokenrate) stillReadyToSchedule = false;
+                boolean stillReadyToSchedule = 
+                    _simulateInputConsumption(currentActor,waitingTokens);
 
-                    // update the number of pseudo-tokens waiting on each input
-                    waitingTokens.putAt(inputPort, new Integer(tokens));
-                }
+                // Reset the number of unfulfilled inputs.
+                int inputcount = _internalInputCount((Actor)currentActor, 
+                    UnscheduledActors);
+                unfulfilledInputs.putAt(currentActor, new Integer(inputcount));
                 
                 // Update the firingCount for this actor.
                 int firingsRemaining = getFiringCount(currentActor);
