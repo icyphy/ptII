@@ -39,7 +39,7 @@ import ptolemy.data.*;
 
 @author John S. Davis II
 @version $Id$
-@see ptolemy.actors.Token
+@see ptolemy.data.Token
 */
 
 public class NullToken extends Token {

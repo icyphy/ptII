@@ -40,7 +40,7 @@ package ptolemy.domains.de.kernel;
  *
  *  @author Lukito Muliadi
  *  @version $Id$
- *  @see DECQComparator
+ *  @see DECQEventQueue
  */
 public class DEEventTag {
 

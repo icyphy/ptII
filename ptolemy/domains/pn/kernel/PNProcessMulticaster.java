@@ -43,7 +43,7 @@ methods.
 
 @author John Reekie
 @version $Id$
-@see TopologyChangeRequest
+@see ptolemy.kernel.event.TopologyChangeRequest
 */
 public class PNProcessMulticaster implements PNProcessListener {
 

@@ -75,8 +75,8 @@ limit on the number of times the director will fire its hierarchy
 before it returns false in postfire.  If this number is not greater
 than zero, then no limit is set and postfire will always return true.
 The default value of the iterations parameter is an IntToken with value zero.
-@see ptolemy.domains.sdf.SDFScheduler
-@see ptolemy.domains.sdf.SDFReceiver
+@see ptolemy.domains.sdf.kernel.SDFScheduler
+@see ptolemy.domains.sdf.kernel.SDFReceiver
 
 @author Steve Neuendorffer
 @version $Id$

@@ -262,7 +262,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  atomic (see CompositeEntity), and always returns false if the entities
      *  are not in the same workspace.
      *  This method is read-synchronized on the workspace.
-     *  @see CompositeEntity.isAtomic
+     *  @see ptolemy.kernel.CompositeEntity#isAtomic()
      *  @return True if this contains the argument, directly or indirectly.
      */
     public boolean deepContains(NamedObj inside) {

@@ -179,7 +179,7 @@ public final class ArrayMath {
      *  @param bottom The bottom limit.
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
-     *  @see Double
+     *  @see java.lang.Double
      *  @deprecated
      */
     public static double[] limit(double[] array, double bottom, double top) {

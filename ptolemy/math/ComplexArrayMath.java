@@ -239,7 +239,7 @@ public final class ComplexArrayMath {
      *  @param bottom The bottom limit.
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
-     *  @see Double
+     *  @see java.lang.Double
      */
     public static final double[] limit(double[] array, double bottom, 
      double top) {

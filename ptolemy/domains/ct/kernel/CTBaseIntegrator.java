@@ -83,7 +83,7 @@ multistep methods.
 @author Jie Liu
 @version $Id$
 @see ODESolver
-@see CTDiretor
+@see CTDirector
 */
 public class CTBaseIntegrator extends CTActor
         implements CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {

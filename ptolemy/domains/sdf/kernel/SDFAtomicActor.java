@@ -63,8 +63,8 @@ needs to be done when execution starts, or when the topology changes.
 @author Stephen Neuendorffer
 @version $Id$
 @see ptolemy.domains.sdf.kernel.SDFDirector
-@see ptolemy.actors.TypedCompositeActor
-@see ptolemy.actors.IOPort
+@see ptolemy.actor.TypedCompositeActor
+@see ptolemy.actor.IOPort
 */
 public class SDFAtomicActor extends TypedAtomicActor {
 

@@ -87,8 +87,9 @@ Note that reconstructing the schedule is expensive, so the schedule is
 locally cached for as long as possible, and mutations under SDF
 should be avoided.  
 
-@see ptolemy.actor.Scheduler
+@see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.kernel.SDFAtomicActor
+
 @author Stephen Neuendorffer
 @version $Id$
 */

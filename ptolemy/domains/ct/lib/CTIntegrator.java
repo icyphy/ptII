@@ -43,7 +43,7 @@ come from the ODEsolver.
 */
 public class CTIntegrator extends CTBaseIntegrator {
     /** construct the integrator.
-     * @see pt.domains.ct.kernel.CTBaseIntegrator
+     * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
      * @param container The CTSubSystem this star belongs to
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
