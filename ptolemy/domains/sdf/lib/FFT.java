@@ -114,16 +114,16 @@ public class FFT extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         int i;
-        input.getArray(0, inTokenArray);
+	inTokenArray = input.get(0, _consumptionRate);
         for (i = 0; i < _consumptionRate; i++) {
-            inDoubleArray[i] = inTokenArray[i].doubleValue();
+            inDoubleArray[i] = ((DoubleToken)inTokenArray[i]).doubleValue();
         }
         Complex[] outComplexArray =
             SignalProcessing.FFTComplexOut( inDoubleArray, _orderValue );
         for (i = 0; i < _productionRate; i++) {
             outTokenArray[i] = new ComplexToken( outComplexArray[i] );
         }
-        output.sendArray(0, outTokenArray);
+	output.send(0, outTokenArray, _productionRate);
     }
 
     /** Set up the consumption and production constants.
@@ -160,7 +160,7 @@ public class FFT extends TypedAtomicActor {
     private int _transformSize;
     private int _orderValue;
 
-    private DoubleToken[] inTokenArray;
+    private Token[] inTokenArray;
     private ComplexToken[] outTokenArray;
 
     private double[] inDoubleArray;
