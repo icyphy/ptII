@@ -85,17 +85,16 @@ public class AngleProcessor extends TypedAtomicActor {
 
     public void fire() throws IllegalActionException {
         double angle;
-        double PI = 6.2831853071796;
         /** Get current function and gradient information.
          */
 
         angle = ((DoubleToken)inputAngle.get(0)).doubleValue();
 
         while (angle < 0) {
-            angle = angle + PI;
+            angle = angle + 2 * Math.PI;
         }
-        while (angle >= PI) {
-            angle = angle - PI;
+        while (angle >= 2 * Math.PI) {
+            angle = angle - 2 * Math.PI;
         }
 
         outputAngle.send(0, new DoubleToken(angle));
