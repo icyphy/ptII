@@ -98,7 +98,8 @@ NOTE: There are a number of limitations in the current implementation.
 First, the errorTolerance adds constraints on the accuracy of the
 inputs. An alternative way is to leave the evaluator to handle
 the errorTolerance. Which one is better is still under discussion.
-Second, 
+Second, the code redundency issues need resolved by refactoring
+with the Expression actor.
 
 @author Haiyang Zheng
 @version $Id$
@@ -136,7 +137,7 @@ public class Assertion extends TypedAtomicActor {
      */
     public Parameter assertion;
 
-    /** The parameter of error tolerance of type double. By default,
+    /** The parameter of error tolerance. By default,
      *  it contains a DoubleToken of 1e-4.
      */
     public Parameter errorTolerance;
@@ -262,9 +263,8 @@ public class Assertion extends TypedAtomicActor {
         _tokenMap = new HashMap();
     }
 
-    /** Evaluation the assertion.
-     *  @exception IllegalActionException If the assertion fails,
-     *  or if there is no director.
+    /** Evaluation of the assertion.
+     *  @exception IllegalActionException If the assertion fails.
      */
     public boolean postfire() throws IllegalActionException {
 

@@ -148,7 +148,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     
     /** Return true if this step does not violate the assertion.
      *  If the assertion does not hold, reduce the step size half and
-     *  return false, otherwise, return true.
+     *  return false.
      *  @return True if the assertion holds.
      */
     public boolean isThisStepAccurate() {
@@ -165,7 +165,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 		CTDirector dir = (CTDirector)getDirector();
 		_eventMissed = true;
 
-		// The refined step size is half of former one.
+		// The refined step size is half of the previous one.
 		_refineStep = 0.5*dir.getCurrentStepSize();
 
 		if (_debugging) _debug(getFullName() +
@@ -187,7 +187,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 	return true;
     }
 
-    /** Evaluate the assertion and increment the iteration count.
+    /** Evaluate the assertion.
      *  @exception IllegalActionException If the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
