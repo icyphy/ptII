@@ -760,6 +760,15 @@ public class PlotBox extends Panel {
         }
     }
     
+     /**
+      * Rescales so that the data that is currently plotted just fits.
+      */
+     public synchronized void fillPlot () {
+         // This method is present so that client programs need not
+         // know about _graphics
+         _fillPlot(_graphics);
+     }
+
     /**
      * Get the Font by name.  
      * @deprecated: As of JDK1.1, use Font.decode() instead.
@@ -1149,22 +1158,31 @@ public class PlotBox extends Panel {
             try {
                 URL url = null;
                 if (documentBase == null && _documentBase != null) {
+                    System.out.println("PlotBox: parseFile: copying _documentBase");
                     documentBase = _documentBase;
                 }
                 if (documentBase == null) {
+                    System.out.println("PlotBox: parseFile: new URL: " + dataurl);
                     url = new URL(dataurl);
                 } else {
                     try {
+                        System.out.println("PlotBox: parseFile: new URL: " +
+                                documentBase + " " + dataurl);
                         url = new URL(documentBase, dataurl);
                     } catch (NullPointerException e) {
                         // If we got a NullPointerException, then perhaps we
                         // are calling this as an application, not as an applet
+                        System.out.println("PlotBox: parseFile: caught NPE");
+
                         url = new URL(dataurl);
                     }
                 }
+                        System.out.println("PlotBox: parseFile: before new DataInputStream: url: " +url);
                 in = new DataInputStream(url.openStream());
+                        System.out.println("PlotBox: parseFile: after new DataInputStream: in: " +in);
             } catch (MalformedURLException e) {
                 try {
+                    System.out.println("PlotBox: parseFile: caught Malf");
                     // Just try to open it as a file.
                     in = new DataInputStream(new FileInputStream(dataurl));
                 } catch (FileNotFoundException me) {
@@ -1186,7 +1204,7 @@ public class PlotBox extends Panel {
                 return;
             }
         }
-
+        System.out.println("PlotBox: parseFile: before _newFile");
         _newFile(); // Hook for child classes to do any preprocessing.
 
         // Can't use cursors with jdk1.0.2, which we require for netscape4
