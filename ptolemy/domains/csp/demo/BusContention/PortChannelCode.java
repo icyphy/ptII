@@ -1,4 +1,5 @@
-/* PortChannelCode
+/* An object that carries prioritization information to be
+associated with contenders in a resource contention scheme.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,14 +42,26 @@ import java.util.Hashtable;
 //////////////////////////////////////////////////////////////////////////
 //// PortChannelCode
 /**
-   FIXME: add description!!
+A PortChannelCode is an object that carries prioritization information 
+to be associated with different contenders in a resource contention
+scheme. A PortChannelCode consists of three components as its name 
+implies and each instance of PortChannelCode is associated with a 
+single resource contender. The port (channel) value represents the 
+port (channel) through which a particular contender is connected. The 
+code value represents the priority assigned to the contender.
 
 @author John S. Davis II
 @version $Id$
-
 */
 
 public class PortChannelCode {
+    
+    /** Construct a PortChannelCode with the specified port, 
+     *  channel and priority code.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @param code The specified code.
+     */
     public PortChannelCode(IOPort port, int channel, int code) {
         _port = port;
         _channel = channel;
@@ -58,19 +71,22 @@ public class PortChannelCode {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Return the channel associated with this object.
+     * @return The channel associated with this object.
      */
     public int getChannel() {
         return _channel;
     }
 
-    /**
+    /** Return the code associated with this object.
+     * @return The code associated with this object.
      */
     public int getCode() {
         return _code;
     }
 
-    /**
+    /** Return the port associated with this object.
+     * @return The port associated with this object.
      */
     public IOPort getPort() {
         return _port;

@@ -1,4 +1,4 @@
-/* Processor
+/* A CSP actor that contends for a shared resource. 
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -50,38 +50,99 @@ import java.awt.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// Processor
 /**
+A CSP actor that contends for a shared resource. A Processor actor
+is granted access to the shared resource via a Controller actor.
+The processor must connect to a Controller via its requestInput
+and requestOutput ports. The shared resource that the Processor 
+attempts to gain access to is a Memory actor. The memory actor
+is connected to via the Processor's memoryInput and memoryOutput
+ports.
+
+The Processor actor has four informal states. In state one it 
+determines at what time it will next attempt to access the 
+shared resource. It will then place a request at the determined
+time. In state two, it will wait to see if it has been granted
+the request. The Processor enters state three if it is granted
+the request. It remains in state three for 300 milliseconds, 
+accesses the shared resource and then returns to state two. If 
+the Processor is denied its request, then it enters four and
+remains in that state for 300 milliseconds after which it returns
+to state four.
+
+In addition to the resource contention features of Processor,
+it can also notify an ExecEventListener as this actor jumps between 
+its three states. Such notification is enabled by adding an 
+ExecEventListener to this actor's listener list via the addListeners() 
+method. Listeners can be removed via the removeListeners() method. 
+ExecEventListeners are currently implemented to serve as conduits 
+between Ptolemy II and the Diva graphical user interface.
 
 @author John S. Davis II
 @version $Id$
-
 */
 
 public class Processor extends CSPActor {
 
-    /**
+    /** Construct a Processor actor with the specified container, 
+     *  name and priority code of this actor.
+     * @param cont The container of this actor.
+     * @param name The name of this actor.
+     * @param code The priority code of this actor.
+     * @exception IllegalActionException If the actor cannot be 
+     *  contained by the proposed container.
+     * @exception NameDuplicationException If the container 
+     *  already has an actor with this name.
      */
     public Processor(TypedCompositeActor cont, String name, int code)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
-        _requestOut = new TypedIOPort(this, "requestOut", false, true);
-        _requestIn = new TypedIOPort(this, "requestIn", true, false);
-        _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
-        _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
+        requestOutput = new TypedIOPort(this, "requestOutput", false, true);
+        requestInput = new TypedIOPort(this, "requestInput", true, false);
+        memoryOutput = new TypedIOPort(this, "memoryOutput", false, true);
+        memoryInput = new TypedIOPort(this, "memoryInput", true, false);
 
-        _requestOut.setTypeEquals(BaseType.INT);
-        _requestIn.setTypeEquals(BaseType.BOOLEAN);
-        _memoryOut.setTypeEquals(BaseType.STRING);
-        _memoryIn.setTypeEquals(BaseType.GENERAL);
+        requestOutput.setTypeEquals(BaseType.INT);
+        requestInput.setTypeEquals(BaseType.BOOLEAN);
+        memoryOutput.setTypeEquals(BaseType.STRING);
+        memoryInput.setTypeEquals(BaseType.GENERAL);
 
         _code = code;
 
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The resource request input port. Resources are granted through
+     *  this port. The type of this port is BaseType.BOOLEAN. 
+     */
+    public TypedIOPort requestInput;
+    
+    /** The resource request output port. Resource requests are made
+     *  through this port with a token that include's the requestor's
+     *  priority level. The type of this port is BaseType.INT. 
+     */
+    public TypedIOPort requestOutput;
+    
+    /** The input port through which this actor receives data from
+     *  the shared resource. The type of this port is BaseType.GENERAL.
+     */
+    public TypedIOPort memoryInput;
+    
+    /** The output port through which this actor sends data to the 
+     *  shared resource. The type of this port is BaseType.STRING.
+     */
+    public TypedIOPort memoryOutput;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Add an ExecEventListener to this actor's list of
+     *  listeners. If the specified listener already exists
+     *  in this actor's list, then allow both instances to
+     *  separately remain on the list.
+     * @param listener The specified ExecEventListener.
      */
     public void addListeners(ExecEventListener listener) {
         if( _listeners == null ) {
@@ -90,14 +151,15 @@ public class Processor extends CSPActor {
         _listeners.insertLast(listener);
     }
 
-    /**
+    /** Attempt to access the shared resource. 
+     * @exception IllegalActionException If there is an error
+     *  during communication through any of this actor's ports.
      */
     public void accessMemory(boolean read) throws IllegalActionException {
 
         // State 1
         generateEvents( new ExecEvent( this, 1 ) );
         {
-	    // generateEvents( new ExecEvent( this, 1 ) );
             if( _topGraphic != null ) {
                 _topGraphic.receiveEvent(this, 1);
             }
@@ -114,7 +176,7 @@ public class Processor extends CSPActor {
         }
         delay( delayTime );
         IntToken iToken = new IntToken( _code );
-        _requestOut.broadcast(iToken);
+        requestOutput.broadcast(iToken);
 
         // State 2
         generateEvents( new ExecEvent( this, 2 ) );
@@ -124,7 +186,7 @@ public class Processor extends CSPActor {
 	    e.printStackTrace();
             throw new RuntimeException(e.toString());
 	}
-        BooleanToken bToken = (BooleanToken)_requestIn.get(0);
+        BooleanToken bToken = (BooleanToken)requestInput.get(0);
 
         if( bToken.booleanValue() ) {
             // State 3
@@ -136,11 +198,11 @@ public class Processor extends CSPActor {
 		throw new RuntimeException(e.toString());
 	    }
             if( read ) {
-                _memoryIn.get(0);
+                memoryInput.get(0);
             }
             else {
                 StringToken strToken = new StringToken( getName() );
-                _memoryOut.broadcast(strToken);
+                memoryOutput.broadcast(strToken);
             }
             return;
         } else {
@@ -157,7 +219,10 @@ public class Processor extends CSPActor {
         accessMemory(read);
     }
 
-    /**
+    /** Return true when the time of the director has exceeded 
+     *  50; return false otherwise.
+     * @return True when the global time has exceeded 50; return
+     *  false otherwise.
      */
     public boolean endYet() {
         double time = _dir.getCurrentTime();
@@ -167,7 +232,10 @@ public class Processor extends CSPActor {
         return false;
     }
 
-    /**
+    /** Execute this actor by requesting and accepting access
+     *  to a shared resource until endYet() returns true.
+     * @exception IllegalActionException If an error occurs
+     *  during communication through one of the ports.
      */
     public void fire() throws IllegalActionException {
         while(true) {
@@ -182,7 +250,10 @@ public class Processor extends CSPActor {
         }
     }
 
-    /**
+    /** Notify all ExecEventListeners on this actor's 
+     *  listener list that the specified event was 
+     *  generated.
+     * @param event The specified ExecEvent.
      */
     public void generateEvents(ExecEvent event) {
         if( _listeners == null ) {
@@ -196,7 +267,10 @@ public class Processor extends CSPActor {
         }
     }
 
-    /**
+    /** Call initialize of the corresponding superclass method and
+     *  store a reference to this actor's local director.
+     * @exception IllegalActionException If the superclass method
+     *  throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -204,7 +278,11 @@ public class Processor extends CSPActor {
         _dir = (CSPDirector)ca.getDirector();
     }
 
-    /**
+    /** Return true if this actor has randomly determined to attempt
+     *  to read data from the shared resource on its next memory
+     *  access; otherwise return false.
+     * @return True if this actor will attempt to read from the
+     *  shared resource; return false otherwise.
      */
     public boolean performReadNext() {
         if( java.lang.Math.random() < 0.5 ) {
@@ -213,7 +291,9 @@ public class Processor extends CSPActor {
         return false;
     }
 
-    /**
+    /** Remove one instance of the specified ExecEventListener 
+     *  from this actor's list of listeners. 
+     * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {
         if( _listeners == null ) {
@@ -222,7 +302,9 @@ public class Processor extends CSPActor {
         _listeners.removeOneOf(listener);
     }
 
-    /**
+    /** Specify the BusContentionGraphic that will house
+     *  demo's associated with this actor.
+     * @param bcg The specified BusContentionGraphic.
      */
     public void setGraphicFrame(BusContentionGraphic bcg)
             throws IllegalActionException {
@@ -236,15 +318,8 @@ public class Processor extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private TypedIOPort _requestIn;
-    private TypedIOPort _requestOut;
-    private TypedIOPort _memoryIn;
-    private TypedIOPort _memoryOut;
-
     private int _code;
-
     private CSPDirector _dir;
-
     private LinkedList _listeners;
     private BusContentionGraphic _topGraphic;
 }

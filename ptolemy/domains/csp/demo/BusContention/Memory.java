@@ -1,4 +1,5 @@
-/* Memory
+/* A CSP actor that continually performs conditional rendezvous in 
+an alternating fashion with its input and output ports.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -43,42 +44,68 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// Memory
 /**
+A CSP actor that continually performs conditional rendezvous in 
+an alternating fashion with its input and output ports. The Memory
+actor can optionally send tokens with string values during
+conditional rendezvous.
 
 @author John S. Davis II
 @version $Id$
-
 */
 
 public class Memory extends CSPActor {
 
-    /**
+    /** Construct a Memory actor with the specified container 
+     *  and name.
+     * @param cont The container of this actor.
+     * @param name The name of this actor.
+     * @exception IllegalActionException If the actor cannot be 
+     *  contained by the proposed container.
+     * @exception NameDuplicationException If the container 
+     *  already has an actor with this name.
      */
     public Memory(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
-        _input = new TypedIOPort(this, "input", true, false);
-        _output = new TypedIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
 
-        _input.setMultiport(true);
-        _output.setMultiport(true);
+        input.setMultiport(true);
+        output.setMultiport(true);
 
-        _input.setTypeEquals(BaseType.STRING);
-        _output.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.GENERAL);
 
         _strValue = "initialValue";
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port. The type of this port is BaseType.STRING.
+     *  This is a multiport.
+     */
+    public TypedIOPort input;
+    
+    /** The output port. The type of this port is BaseType.GENERAL.
+     *  This is a multiport.
+     */
+    public TypedIOPort output;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Execute this actor indefinitely unless there is an error
+     *  during one of the conditional rendezvous attempts.
+     * @exception IllegalActionException If there is an error
+     *  during communication via the ports.
      */
     public void fire() throws IllegalActionException {
 
         if( _numInChannels == -1 ) {
             _numInChannels = 0;
-            Receiver[][] rcvrs = _input.getReceivers();
+            Receiver[][] rcvrs = input.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     _numInChannels++;
@@ -87,7 +114,7 @@ public class Memory extends CSPActor {
         }
         if( _numOutChannels == -1 ) {
             _numOutChannels = 0;
-            Receiver[][] rcvrs = _output.getRemoteReceivers();
+            Receiver[][] rcvrs = output.getRemoteReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     _numOutChannels++;
@@ -102,18 +129,20 @@ public class Memory extends CSPActor {
             token = new StringToken( _strValue );
 
             int numBranches = _numInChannels + _numOutChannels;
-            ConditionalBranch[] branches = new ConditionalBranch[numBranches];
+            ConditionalBranch[] branches = 
+            	    new ConditionalBranch[numBranches];
 
             // Receive Branches
             for( int i = 0; i < _numInChannels; i++ ) {
                 branches[i] = new
-                    ConditionalReceive(true, _input, i, i);
+                    ConditionalReceive(true, input, i, i);
             }
 
             // Send Branches
             for( int i = 0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
-                    ConditionalSend(true, _output, i, i+_numInChannels, token);
+                    ConditionalSend(true, output, i, 
+                    i+_numInChannels, token);
             }
 
             int br = chooseBranch( branches );
@@ -123,7 +152,8 @@ public class Memory extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-	        System.err.println("InterruptedException during Thread.sleep()");
+	        System.err.println("InterruptedException during "
+                	+ "Thread.sleep()");
 		e.printStackTrace();
 	    }
 
@@ -138,6 +168,10 @@ public class Memory extends CSPActor {
         }
     }
 
+    /** Return the value of the string that is associated with
+     *  the input token.
+     * @return The String value of the input token.
+     */
     public synchronized String getString() {
         return _strValue;
     }
@@ -145,11 +179,8 @@ public class Memory extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    private TypedIOPort _input;
-    private TypedIOPort _output;
-
     private int _numInChannels = -1;
     private int _numOutChannels = -1;
-
     private String _strValue = null;
+    
 }
