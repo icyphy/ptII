@@ -37,6 +37,7 @@ ME =		java/pt/domains/pn/stars
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
+#JAVAHOME =      ../../../../../../jdk1.1.5
 
 DIRS = 		demo #test doc
 
@@ -59,16 +60,16 @@ JSRCS = \
 	PNDAConverter.java \
 	PNInterleave.java \
 	PNQuantizer.java \
-	PNRamp.java \
 	PNRDController.java \
 	PNRDDecider.java \
 	PNRDDecoder.java \
 	PNRDIdentifier.java \
 	PNRDInfo.java \
 	PNRDMainController.java \
+	PNRamp.java \
 	PNRedirect.java \
 	PNSieve.java \
-	PNSink.java
+	PNSink.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
