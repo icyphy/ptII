@@ -167,6 +167,31 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         _init();
     }
 
+    /** Return a string representation of the buffer sizes of the relations
+     *  in the model. This diagnostic method shows the buffer size
+     *  expression for each relation along with the relation itself.
+     *
+     *  @return A string representation of the buffer sizes.
+     */
+    public String displayBufferSizes() {
+        String result = new String();
+        PSDFDirector director = (PSDFDirector)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        Iterator relations = model.relationList().iterator();
+        while (relations.hasNext()) {
+            Relation relation = (Relation)relations.next();
+            Variable variable = (Variable)relation.getAttribute("bufferSize");
+            result += (relation.getName() + ": "); 
+            if (variable == null) {
+                result+=("null"); 
+            } else {
+                result += variable.getExpression(); 
+            }
+            result += "\n";
+        }
+        return result;
+    }
+
     /** Return the parameterized scheduling sequence.  
      *  An exception will be thrown if the graph is not schedulable.  
      *
@@ -200,6 +225,19 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                  scheduler);
         _debug("Completed PSDFScheduler._getSchedule().\n The "
                 + "schedule follows.\n" + result.toString() + "\n");
+        _debug("Saving buffer sizes\n");
+        _saveBufferSizes(_bufferSizeMap);
+        _debug("Printing buffer sizes\n"); 
+        _debug(displayBufferSizes() + "\n"); 
+        if (_debugging) {
+            _debug("The buffer size map:\n"); 
+            Iterator relations = _bufferSizeMap.keySet().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                _debug(relation.getName() + ": " 
+                        + _bufferSizeMap.get(relation) + "\n");
+            }
+        }
 
         return (Schedule)result;
     }
@@ -316,10 +354,13 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                     // have their buffer sizes progressively replaced by
                     // those of outer clusterings, and will end up with
                     // the buffer size determined by the outermost clustering.
+                    _debug("Associating buffer size expression '" 
+                            + bufferSizeExpression
+                            + "' with relation '"
+                            + relation.getName()
+                            + "'\n"); 
                     _bufferSizeMap.put(relation, bufferSizeExpression); 
                 }
-                
-
                 return symbolicSchedule;
             }
         } catch (Exception exception) {
