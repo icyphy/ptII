@@ -118,7 +118,7 @@ public class VergilApplication extends MoMLApplication {
      *  command-line arguments.
      *  @param args The command-line arguments.
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
 	// FIXME: Java superstition dictates that if you want something
 	// to work, you should invoke it in event thread.  Otherwise,
 	// weird things happens at the user interface level.  This
