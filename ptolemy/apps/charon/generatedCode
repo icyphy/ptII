@@ -1,0 +1,107 @@
+agent DISTANCE ( real initialDistance )
+{
+  write analog real distance;
+  read analog real velBehind, velInFront;
+  init { distance = initialDistance ; }
+  mode top = DISTANCETopMode (  ) ;
+}
+agent VELOCITY ( real vMax, real vMin, real vInit )
+{
+  write analog real vel;
+  read analog real acc;
+  init { vel = vInit ; }
+  mode top = VELOCITYTopMode ( vMax, vMin ) ;
+}
+agent CONTROLLER ( real aMin, real aMax, real elow1, real elow2, real eup1, real eup2, real rvlow1, real rvlow2, real rvup1, real rvup2, real k11, real k12, real k21, real k22, real k31, real k32, real lambdaP, real lambdaV, real epsE, real accInit )
+{
+  write analog real acc;
+  read analog real dist, otherVel, myVel;
+  init { acc = epsE ; }
+  mode top = CONTROLLERTopMode ( aMin, aMax, elow1, elow2, eup1, eup2, rvlow1, rvlow2, rvup1, rvup2, k11, k12, k21, k22, k31, k32, lambdaP, lambdaV ) ;
+}
+agent PLATOON_i ( real aMin, real aMax, real vMin, real vMax, real elow1, real elow2, real eup1, real eup2, real rvlow1, real rvlow2, real rvup1, real rvup2, real k11, real k12, real k21, real k22, real k31, real k32, real lambdaP, real lambdaV, real epsE, real vInit )
+{
+  write analog real velFollower
+  read analog real dist, velOther;
+  private analog real acc, myVel;
+  agent velocity = VELOCITY ( vMax, vMin, vInit );
+  agent controller = CONTROLLER ( aMin, aMax, elow1, elow2, eup1, eup2, rvlow1, rvlow2, rvup1, rvup2, k11, k12, k21, k22, k31, k32, lambdaP, lambdaV, epsE, accInit );
+       [ otherVel, myVel := velOther, vel ] ;
+
+}
+agent PLATOON_i_MINUS_1 ( real vMax, real vMin, real aMax, real aMin, real vInit )
+{
+  write analog real vel;
+  
+  init { vel = vInit ; }
+  mode top = PLATOON_i_MINUS_1TopMode ( vMax, vMin, aMax, aMin ) ;
+}
+agent V2VcharonTXT (  )
+{
+  
+  
+  private analog real velBehind, velInFront, dist, velOther;
+  agent distance = DISTANCE ( 100.0 );
+       [ velBehind, velInFront := velFollower, vel ] ;
+  agent platoon_i = PLATOON_i ( -5.0, 2.0, 0.0, 30.0, -100.0, -2.0, 20.0, 200.0, -50.0, -50.0, 0.0, 0.0, -3.0, -1.5, -3.0, -0.75, -1.0, -0.125, 10.0, 1.0, 10.0, 25.0 );
+       [ dist, velOther := distance, vel ] ;
+  agent platoon_i_minus_1 = PLATOON_i_MINUS_1 ( 30.0, 0.0, 2.0, -5.0, 20.0 );
+
+}
+mode DISTANCETopMode (  )
+{
+  write analog real distance;
+  read analog real velBehind, velInFront;
+  diff { d(distance) == velInFront - velBehind ; } 
+
+  
+}
+mode VELOCITYTopMode ( real vMax, real vMin )
+{
+  write analog real vel;
+  read analog real acc;
+  diff { d(vel) == acc ; }
+
+  inv { vel >= vMin && vel <= vMax } 
+}
+mode CONTROLLERTopMode ( real aMin, real aMax, real elow1, real elow2, real eup1, real eup2, real rvlow1, real rvlow2, real rvup1, real rvup2, real k11, real k12, real k21, real k22, real k31, real k32, real lambdaP, real lambdaV )
+{
+  write analog real acc;
+  read analog real dist, otherVel, myVel;
+  mode previous = previousMode ( elow1, eup1, rvlow1, rvup1, k11, k21, k31, lambdaP, lambdaV );
+  mode optimum = optimumMode ( elow2, eup2, rvlow2, rvup2, k12, k22, k32, lambdaP, lambdaV );
+  trans from default to optimum
+  when ( true ) do { } 
+  trans from previous to optimum
+  when ( (dist - lambdaV * myVel <= eup1+lambdaP) && (lambdaV * myVel - dist <= epsE - eup1 - lambdaP)) 
+  do {}
+  trans from optimum to previous
+  when ( (dist - lambdaV*myVel <= elow2 +epsE + lambdaP) && (lambdaV * myVel - dist <= -elow2 - lambdaP)) 
+  do {}
+
+  
+}
+mode previousMode ( real elow1, real eup1, real rvlow1, real rvup1, real k11, real k21, real k31, real lambdaP, real lambdaV )
+{
+  write analog real acc;
+  read analog real dist, otherVel, myVel;
+  diff { d(acc) == -k31*dist -k21*otherVel + (k21 + k31*lambdaV)*myVel + k11*acc + k31*lambdaP ; } 
+
+  inv { dist - lambdaV*myVel <= eup + lambdaP && lambdaV * myVel - dist <= -elow - lambdaP && otherVel - (1 + rvup/100)*myVel <= 0 && (1 + rvlow/100)*myVel - otherVel <= 0 && 0.675*myVel <= otherVel - 3 } 
+}
+mode optimumMode ( real elow2, real eup2, real rvlow2, real rvup2, real k12, real k22, real k32, real lambdaP, real lambdaV )
+{
+  write analog real acc;
+  read analog real dist, otherVel, myVel;
+  diff { d(acc) == -k32*dist -k22*otherVel + (k22 + k32*lambdaV)*myVel + k12*acc + k32*lambdaP ; } 
+
+  inv { dist - lambdaV*myVel <= eup + lambdaP && lambdaV * myVel - dist <= -elow - lambdaP && otherVel - (1 + rvup/100)*myVel <= 0 && (1 + rvlow/100)*myVel - otherVel <= 0 } 
+}
+mode PLATOON_i_MINUS_1TopMode ( real vMax, real vMin, real aMax, real aMin )
+{
+  write analog real vel;
+  
+  diff { d(vel) == a ; } 
+
+  inv { vel >= vMin && vel <= vMax && a >= aMin && a <= aMax } 
+}

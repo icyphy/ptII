@@ -35,6 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.lib.Expression;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -57,6 +58,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -132,11 +134,11 @@ public class CharonCodeGenerator extends Attribute {
 	try {
 	    // initialization
 	    generatedCode = "";
+	    _modeCode = "";
 	    if (!_initialize()) {
 	        return "Can not generate code for this model!";
     	    }
 
-	    _currentDepth = depthInHierarchy();
 	    String containerName = _container.getName();
 
 	    generatedCode += _compositeAgentCode(_container)
@@ -262,9 +264,15 @@ public class CharonCodeGenerator extends Attribute {
 	    subAgentCode += "  agent "
 			  + subAgent.getName().toLowerCase() + " = "
 			  + subAgent.getName()
-			  + " ( "
-			  + _agentParameters((NamedObj)subAgent, false)
-			  + " );"
+			  + " ( ";
+
+	    if (actor.depthInHierarchy() == 0) {
+		subAgentCode += _agentParameterTokens((NamedObj)subAgent);
+	    } else {
+		subAgentCode += _agentParameters((NamedObj)subAgent, false);
+	    }
+
+    	    subAgentCode += " );"
 			  + _endLine;
 
 	    ListIterator subAgentInputs = subAgent.inputPortList().listIterator();
@@ -361,15 +369,18 @@ public class CharonCodeGenerator extends Attribute {
 
 	compositeCodeString += " "
 		    + actor.getName()
-		    + " ( "
-		    + _agentParameters((NamedObj)actor, true)
-		    + " )" + _endLine
-		    + "{" + _endLine
-		    + "  " + outputString + _endLine
-		    + "  " + inputString + _endLine
-		    + "  " + privateVariables + _endLine
-		    + subAgentCode + _endLine
-		    + "}" + _endLine;
+		    + " ( ";
+
+	if (actor.depthInHierarchy() != 0)
+	    compositeCodeString += _agentParameters((NamedObj)actor, true);
+
+	compositeCodeString += " )" + _endLine
+			    + "{" + _endLine
+			    + "  " + outputString + _endLine
+			    + "  " + inputString + _endLine
+			    + "  " + privateVariables + _endLine
+			    + subAgentCode + _endLine
+			    + "}" + _endLine;
 
         return compositeCodeString;
     }
@@ -393,7 +404,6 @@ public class CharonCodeGenerator extends Attribute {
 	while (parameters.hasNext()) {
 
 	    String parameterName = ((NamedObj)parameters.next()).getName();
-
 	    if (parameterName.startsWith("_")) continue;
 
 	    if (parameterString == "") {
@@ -408,6 +418,37 @@ public class CharonCodeGenerator extends Attribute {
 	}
 
 	return parameterString;
+     }
+
+    /** Generate string of evaluated tokens of parameters of the agent.
+     *
+     *  @param agent whether the parameters belong to.
+     *  @return string of evaluated parameters.
+     */
+     private String _agentParameterTokens(NamedObj agent) throws IllegalActionException {
+
+	LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
+	ListIterator parameters = parameterList.listIterator();
+
+	String tokenString = "";
+
+	while (parameters.hasNext()) {
+
+	    Parameter parameter = (Parameter) parameters.next();
+	    String parameterName = parameter.getName();
+	    if (parameterName.startsWith("_")) continue;
+
+	    String tokenValue = parameter.getToken().toString();
+
+	    if (tokenString == "") {
+	        tokenString += tokenValue;
+	    } else {
+	        tokenString += ", "
+			     + tokenValue;
+	    }
+	}
+
+	return tokenString;
      }
 
     /** Generate code for the agent.
@@ -425,12 +466,23 @@ public class CharonCodeGenerator extends Attribute {
 	String modeString = "";
 	String modeParameterString = "";
 	String typedModeParameterString = "";
-	String flowString = _graphToText(actor);
+	String flowString = "";
 	String invariantString = "";
 
 	LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
 	int parameterNumber = parameterList.size();
 	ListIterator parameters = parameterList.listIterator();
+
+	Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
+	if (invariantPara  != null) {
+	    invariantString = "inv { "
+			    + ((StringToken)invariantPara.getToken()).stringValue()
+			    + " } ";
+	    //get rid of _invariant parameter
+	    //parameterNumber --;
+	    //FIXME: it seems that after getAttribute,
+	    //the attribute does not exist?
+	}
 
 	_inPorts = actor.inputPortList().iterator();
 	while (_inPorts.hasNext()) {
@@ -455,13 +507,15 @@ public class CharonCodeGenerator extends Attribute {
 
 	while (parameters.hasNext()) {
 
+	    String parameterName = ((NamedObj)parameters.next()).getName();
+
+	    if (parameterName.startsWith("_")) {
+		continue;
+	    }
+
 	    if (parameters.nextIndex() >= (parameterNumber - outportNumber)) {
 		parameterForOutport = true;
       	    }
-
-	    String parameterName = ((NamedObj)parameters.next()).getName();
-
-	    if (parameterName.startsWith("_")) continue;
 
 	    if (parameterString == "") {
 	        parameterString += "real "
@@ -509,7 +563,9 @@ public class CharonCodeGenerator extends Attribute {
 	}
 
 	if (outputString != "") outputString += ";";
+
 	initString = "init { " + initString + " }";
+
 	modeString = "mode top = "
 		   + actor.getName()
 		   + "TopMode"
@@ -528,6 +584,7 @@ public class CharonCodeGenerator extends Attribute {
 		    + "  " + initString + _endLine
 		    + "  " + modeString + _endLine
 		    + "}" + _endLine;
+
 
 	if (FSMDirector.class.isInstance(actor.getDirector())) {
 	    // mode code generation goes here.
@@ -548,6 +605,7 @@ public class CharonCodeGenerator extends Attribute {
 		       + subModeString;
 
 	} else {
+	    flowString = _graphToText(actor);
 	    _modeCode += "mode "
 		       + actor.getName()
 		       + "TopMode"
@@ -599,6 +657,19 @@ public class CharonCodeGenerator extends Attribute {
 		       + " );"
 		       + _endLine;
 
+	    Actor[] refinements = st.getRefinement();
+//	    System.out.println(((NamedObj)refinements[0]).getName());
+	    CompositeActor refinement = (CompositeActor) refinements[0];
+
+	    flowString = _graphToText(refinement);
+
+	    Parameter invariantPara = (Parameter) refinement.getAttribute("_invariant");
+	    if (invariantPara  != null) {
+		invariantString = "inv { "
+				+ ((StringToken)invariantPara.getToken()).stringValue()
+				+ " } ";
+	    }
+
 	    subModeCode += "mode "
 		         + st.getName() + "Mode "
 			 + "( "
@@ -640,9 +711,85 @@ public class CharonCodeGenerator extends Attribute {
      */
 
      private String _graphToText(CompositeActor container) throws IllegalActionException {
-	String txtString = "";
-	List actors = container.entityList();
+	// It is not trivial to transform graph to text.
+	// Here, we assume there is only one Integrator and one expression actor.
 
+	String txtString = "";
+	LinkedList actors = new LinkedList(container.entityList());
+	ListIterator actorIterator = actors.listIterator();
+
+	// we begin with Integrator.
+	AtomicActor beginActor = new AtomicActor();
+	while (actorIterator.hasNext()) {
+	    Actor actor = (Actor) actorIterator.next();
+	    if (Integrator.class.isInstance(actor)) {
+	        beginActor = (AtomicActor) actor;
+		break;
+	    }
+	}
+
+	if (beginActor == null) {
+	    throw new IllegalActionException("Integrator is needed!");
+	} else {
+
+	    // we trace the output of the Integrator
+	    // we assume the output of the integrator is connectted
+	    // to the container output directly and they have same names
+	    // for simplicity at this time.
+	    // FIXME: we really need to reconsider the methods of ports.
+	    // I always found something I do not need but could not find what I need!
+	    List outputs = beginActor.outputPortList();
+	    ListIterator outputIterator = outputs.listIterator();
+	    String outputName = "";
+	    if (outputs.size() != 1) {
+		throw new IllegalActionException("Integrator only have one output!  " + outputs.size());
+	    } else {
+		TypedIOPort output = (TypedIOPort) outputIterator.next();
+		ListIterator sinkIterator = output.connectedPortList().listIterator();
+		while (sinkIterator.hasNext()) {
+		    TypedIOPort sink = (TypedIOPort) sinkIterator.next();
+		    if (sink.isOutput()) {
+		        //FIXME: we need to consider depth in hierarchy
+			//to avoid two outputs connected to same output
+			//of composite actor
+			outputName = sink.getName();
+		    }
+		}
+		txtString += "diff { d("
+			   + outputName
+			   + ") == ";
+	    }
+
+	    // we trace the input of the integrator
+	    List inputs = beginActor.inputPortList();
+	    ListIterator inputIterator = inputs.listIterator();
+	    if (inputs.size() != 1) {
+		throw new IllegalActionException("Integrator only have one input!");
+	    } else {
+		TypedIOPort input = (TypedIOPort) inputIterator.next();
+		List sources = input.connectedPortList();
+		if (sources.size() != 1) {
+		    throw new IllegalActionException("There is only one connection to the input!");
+		} else {
+		    TypedIOPort source = (TypedIOPort) sources.get(0);
+		    // just an integrator
+		    if (source.isInput()) {
+			txtString += source.getName() + " ; }" + _endLine;
+		    }
+		    // some expression actor
+		    else {
+			AtomicActor expressionActor = (AtomicActor) source.getContainer();
+			if (Expression.class.isInstance(expressionActor)) {
+			    Parameter expPara = (Parameter) expressionActor.getAttribute("expression");
+			    txtString += expPara.getExpression()
+				       + " ; } " + _endLine;
+			} else {
+			    throw new IllegalActionException("This should be Expression Atomic Actor!");
+			}
+		    }
+		}
+	    }
+	 }
 	return txtString;
      }
 
@@ -652,7 +799,6 @@ public class CharonCodeGenerator extends Attribute {
     private FSMActor _modeSwitchController;
     private TypedCompositeActor _container;
     private String _endLine = "\n";
-    private int _currentDepth;
     private Iterator _inPorts, _outPorts;
     private LinkedList _agents;
     private String _modeCode = "";
