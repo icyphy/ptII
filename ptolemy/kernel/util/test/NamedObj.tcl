@@ -391,29 +391,16 @@ test NamedObj-11.1 {Test exportMoML} {
 
 test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
     # The following causes clones of $a to defer their MoML definition to $a.
+    # NOTE: This is basically what the MoML parser has to do to deal with
+    # clones and instances and inheritance.
     java::field [$a getMoMLInfo] elementName "class"
+    java::field [$a getMoMLInfo] className ".A"
+    java::field [$a getMoMLInfo] superclass "ptolemy.kernel.util.NamedObj"
     # Old version
     # $a setMoMLElementName "class"
     set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
-    set a3 [java::new ptolemy.kernel.util.Attribute $a1 "A3"]
-    $b exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="A" extends=".A">
-    <property name="A1" class="ptolemy.kernel.util.Attribute">
-        <property name="A2" class="ptolemy.kernel.util.Attribute">
-        </property>
-    </property>
-</class>
-}
-
-test NamedObj-11.3 {Test referTo of a class} {
-    # NOTE: The following isn't necessary because the class elementName
-    # is cloned.
-    # java::field [$b getMoMLInfo] elementName class
-    # Old version
-    # $b setMoMLElementName class
+    $b setDeferMoMLDefinitionTo $a
+    java::field [$b getMoMLInfo] superclass ".A"
     $b exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"

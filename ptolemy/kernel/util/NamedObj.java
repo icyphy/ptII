@@ -403,14 +403,28 @@ public class NamedObj implements Nameable, Debuggable,
                     _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(newObject);
                 }
 
-                // If the master is a class, then its full name
-                // becomes the class name of the clone.
+                // NOTE: The value for the classname and superclass isn't
+                // correct if this cloning operation is meant to create
+                // an extension rather than a clone.  A clone has exactly
+                // the same className and superclass as the master.
+                // It is up to the caller to correct these fields if
+                // that is the case.  It cannot be done here because
+                // we don't know the name of the new class.
+                newObject._MoMLInfo.className = _MoMLInfo.className;
+                newObject._MoMLInfo.superclass = _MoMLInfo.superclass;
+
+                /* NOTE: This is what we used to do, which isn't right
+                   because we don't know whether the class is being
+                   cloned or extended.
+                // If the master is a class, then the name of the master
+                // becomes the class name of the instance.
                 if (getMoMLInfo().elementName.equals("class")) {
                     newObject._setDeferMoMLDefinitionTo(this);
                     newObject._MoMLInfo.className = getFullName();
                 } else {
                     newObject._MoMLInfo.className = _MoMLInfo.className;
                 }
+                */
             }
             return newObject;
         } finally {
@@ -607,11 +621,12 @@ public class NamedObj implements Nameable, Debuggable,
             throws IOException {
         String momlElement = getMoMLInfo().elementName;
         String className = getMoMLInfo().className;
+        String superclass = getMoMLInfo().superclass;
         String template = null;
         if (momlElement.equals("class")) {
-            template = "\" extends=\"";
+            template = "\" extends=\"" + superclass + "\"";
         } else {
-            template = "\" class=\"";
+            template = "\" class=\"" + className + "\"";
         }
         if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
@@ -635,9 +650,7 @@ public class NamedObj implements Nameable, Debuggable,
                 + momlElement
                 + " name=\""
                 + name
-                + template
-                + className
-                + "\"");
+                + template);
         if (getMoMLInfo().source != null) {
             output.write(" source=\"" + getMoMLInfo().source + "\">\n");
         } else {
@@ -915,6 +928,44 @@ public class NamedObj implements Nameable, Debuggable,
 	} else {
 	    container.requestChange(change);
 	}
+    }
+
+    /** Specify that when generating a MoML description of this named
+     *  object, instead of giving a detailed description, refer to the
+     *  specified other object.  The name of that other object goes
+     *  into the "class" or "extends" attribute of the MoML element
+     *  defining this object.  This method is called when this object
+     *  is constructed by cloning another object that identifies itself
+     *  as a MoML "class".  In addition, calling this method
+     *  suppresses description of the contents
+     *  of this named object (_exportMoMLContents() is not called).
+     *  Only the attributes are described in the body of the element.
+     *  To re-enabled detailed descriptions, call this method with
+     *  a null argument.  This method is write synchronized on
+     *  the workspace because it modifies the object that is the
+     *  argument to refer back to this one.
+     *  @param referTo The object to refer to.
+     *  @see #exportMoML(Writer, int)
+     */
+    public void setDeferMoMLDefinitionTo(NamedObj deferTo) {
+        try {
+            _workspace.getWriteAccess();
+            if (getMoMLInfo().deferTo != null) {
+                // NOTE: Referring directly to _MoMLInfo is safe here
+                // because getMoMLInfo() above ensures this is non-null.
+                if (_MoMLInfo.deferTo.getMoMLInfo().deferredFrom != null) {
+                    // Removing a previous reference.
+                    _MoMLInfo.deferTo._MoMLInfo.deferredFrom.remove(this);
+                }
+            }
+            _MoMLInfo.deferTo = deferTo;
+            if (deferTo != null) {
+                // FIXME: These should be weak references.
+                deferTo._MoMLInfo.getDeferredFrom().add(this);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -1353,47 +1404,6 @@ public class NamedObj implements Nameable, Debuggable,
     private String _name;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Specify that when generating a MoML description of this named
-     *  object, instead of giving a detailed description, refer to the
-     *  specified other object.  The name of that other object goes
-     *  into the "class" or "extends" attribute of the MoML element
-     *  defining this object.  This method is called when this object
-     *  is constructed by cloning another object that identifies itself
-     *  as a MoML "class".  In addition, calling this method
-     *  suppresses description of the contents
-     *  of this named object (_exportMoMLContents() is not called).
-     *  Only the attributes are described in the body of the element.
-     *  To re-enabled detailed descriptions, call this method with
-     *  a null argument.  This method is write synchronized on
-     *  the workspace because it modifies the object that is the
-     *  argument to refer back to this one.
-     *  @param referTo The object to refer to.
-     *  @see #exportMoML(Writer, int)
-     */
-    private void _setDeferMoMLDefinitionTo(NamedObj deferTo) {
-        try {
-            _workspace.getWriteAccess();
-            if (getMoMLInfo().deferTo != null) {
-                // NOTE: Referring directly to _MoMLInfo is safe here
-                // because getMoMLInfo() above ensures this is non-null.
-                if (_MoMLInfo.deferTo.getMoMLInfo().deferredFrom != null) {
-                    // Removing a previous reference.
-                    _MoMLInfo.deferTo._MoMLInfo.deferredFrom.remove(this);
-                }
-            }
-            _MoMLInfo.deferTo = deferTo;
-            if (deferTo != null) {
-                // FIXME: These should be weak references.
-                deferTo._MoMLInfo.getDeferredFrom().add(this);
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** This class is a data structure for storing MoML information
@@ -1409,7 +1419,9 @@ public class NamedObj implements Nameable, Debuggable,
          *  @param owner The object that this describes.
          */
         protected MoMLInfo(NamedObj owner) {
-            className = owner.getClass().getName();
+            Class ownerClass = owner.getClass();
+            className = ownerClass.getName();
+            superclass = ownerClass.getSuperclass().getName();
         }
 
         ///////////////////////////////////////////////////////////////
@@ -1434,6 +1446,10 @@ public class NamedObj implements Nameable, Debuggable,
 
         /** @serial The MoML element name. This defaults to "entity".*/
         public String elementName = "entity";
+
+        /** @serial The superclass of this class.
+         */
+        public String superclass;
 
         /** @serial The source attribute, which gives an external URL
          *   associated with an entity (presumably from which the entity
