@@ -113,7 +113,6 @@ public class ProcessDirector extends Director {
     public ProcessDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,6 +177,21 @@ public class ProcessDirector extends Director {
         }
     }
 
+    /** Invoke the initialize() methods of all the deeply contained
+     *  actors in the container (a composite actor) of this director.
+     *  These are expected to call initialize(Actor), which will
+     *  result in the creation of a new thread for each actor.
+     *  Also, set current time to 0.0, or to the current time of
+     *  the executive director of the container, if there is one.
+     *
+     *  @exception IllegalActionException If the initialize() method
+     *   of one of the deeply contained actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _stoppedActorCount = 0;
+    }
+
     /** Initialize the given actor.  This class overrides the base
      *  class to reset the flags for all of the receivers, and to
      *  create a new ProcessThread for each actor being controlled.
@@ -222,6 +236,15 @@ public class ProcessDirector extends Director {
         return _stopRequested;
     }
 
+    /** Return true if a stop has been requested on the director.
+     *  This is used by the ProcessThread to tell the difference
+     *  between a request to pause and a request to stop.
+     *  @return True if stop() has been called.
+     */
+    public boolean isStopFireRequested() {
+        return _stopFireRequested;
+    }
+
     /** Return a new receiver of a type compatible with this director.
      *  In class, this returns a new Mailbox.
      *  @return A new Mailbox.
@@ -241,6 +264,7 @@ public class ProcessDirector extends Director {
             _debug("Called postfire().");
             _debug("_notDone = " + _notDone);
             _debug("_stopRequested = " + _stopRequested);
+            _debug("_stopFireRequested = " + _stopFireRequested);
         }
         _notDone = _notDone && !_stopRequested;
         if (_debugging) {
@@ -257,13 +281,9 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
+        // Clear the stopFire flag and trigger all of the actor threads.
+        _stopFireRequested = false;
         synchronized(this) {
-            _stoppedActorCount = 0;
-            Iterator threads = _actorThreadList.iterator();
-            while (threads.hasNext()) {
-                ProcessThread procThread = (ProcessThread)threads.next();
-                procThread.cancelStopThread();
-            }
             notifyAll();
         }
 
@@ -309,20 +329,17 @@ public class ProcessDirector extends Director {
             _debug("stop() has been called.");
         }
         _stopRequested = true;
-        Iterator threads = _actorThreadList.iterator();
-        while (threads.hasNext() ) {
-            ProcessThread thread = (ProcessThread)threads.next();
-
-            // Call stopThread() on the threads first.
-            // FIXME: Race condition here... When thread stops
-            // and when stop is called is probably nondeterministic.
-            thread.stopThread();
-            thread.getActor().stop();
-            // I'm not sure why we need the interrupt here...but it
-            // seems to help.
-            thread.interrupt();
+        _stopFireRequested = true;
+        if (_actorThreadList != null) {
+            Iterator threads = _actorThreadList.iterator();
+            while (threads.hasNext() ) {
+                ProcessThread thread = (ProcessThread)threads.next();
+                thread.getActor().stop();
+                // I'm not sure why we need the interrupt here...but it
+                // seems to help.
+                thread.interrupt();
+            }
         }
-        _stopRequested = true;
     }
 
     /** Request that execution stop at the conclusion of the current
@@ -335,15 +352,11 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
+        _stopFireRequested = true;
         if (_actorThreadList != null) {
             Iterator threads = _actorThreadList.iterator();
             while (threads.hasNext() ) {
                 ProcessThread thread = (ProcessThread)threads.next();
-
-                // Call stopThread() on the threads first.
-                // FIXME: Race condition here... When thread stops
-                // and when stop is called is probably nondeterministic.
-                thread.stopThread();
                 thread.getActor().stopFire();
             }
         }
@@ -493,6 +506,19 @@ public class ProcessDirector extends Director {
         notifyAll();
     }
 
+
+    /** Decrease the count of stopped actors by one.  This method is
+     *  called by instances of ProcessThread after detecting that the
+     *  stopFire() flag has been cleared. This method may be
+     *  overridden in derived classes to added domain specific
+     *  functionality. Implementations of this method must be
+     *  synchronized.
+     */
+    protected synchronized void _actorHasRestarted() {
+        _stoppedActorCount--;
+        notifyAll();
+    }
+
     /** Decrease the count of blocked actors by one and unregister the
      *  receiver that was previously blocked. This method may be
      *  overridden in derived classes to added domain specific
@@ -554,6 +580,11 @@ public class ProcessDirector extends Director {
      *  reasons.
      */
     protected synchronized void _decreaseActiveCount() {
+        if ( _debugging ) {
+            _debug("Thread for actor " + 
+                    ((ProcessThread)Thread.currentThread()).getActor()
+                    + " is deactivating.");
+        }
         _activeActorCount--;
         notifyAll();
     }
@@ -572,6 +603,13 @@ public class ProcessDirector extends Director {
      */
     protected final synchronized int _getBlockedActorsCount() {
         return _blockedActorCount;
+    }
+
+    /** Return the number of actors that are currently stopped.
+     *  @return Return the number of actors that are currently stopped.
+     */
+    protected final synchronized int _getStoppedActorsCount() {
+        return _stoppedActorCount;
     }
 
     /** Create a new ProcessThread for controlling the actor that
@@ -636,11 +674,13 @@ public class ProcessDirector extends Director {
     // The count of stopped actors
     private int _stoppedActorCount = 0;
 
+    // Indicator that a stopFire has been requested by a call to
+    // stopFire().
+    private boolean _stopFireRequested = false;
+
     // The threads started by this director.
     private LinkedList _actorThreadList;
 
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
-
-    private String _name = null;
 }

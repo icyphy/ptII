@@ -115,17 +115,6 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Request that execution of the actor controlled by this
-     *  thread continue.  This is normally called by the ProcessDirector
-     *  in the prefire method.
-     */
-    public void cancelStopThread() {
-        if (_threadStopRequested) {
-            _debug("-- Thread request to stop has been canceled.");
-        }
-        _threadStopRequested = false;
-    }
-
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
@@ -154,15 +143,22 @@ public class ProcessThread extends PtolemyThread {
                 // might be called before we get to this.
                 // This will cause postfire() on the actor
                 // to return false, which will stop its execution.
-                if (_threadStopRequested) {
+                if (_director.isStopFireRequested()) {
                     // And wait until the flag has been cleared.
                     _debug("-- Thread pause requested. Get lock on director.");
                     synchronized (_director) {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
                         _director._actorHasStopped();
-                        while (_threadStopRequested
-                                && !_director.isStopRequested()) {
+                       
+                        while (_director.isStopFireRequested()) {
+                            // If a stop has been requested, in addition
+                            // to a stopFire, then stop execution
+                            // altogether and skip to wrapup().
+                            if (_director.isStopRequested()) {
+                                _debug("-- Thread stop requested, so cancel iteration.");
+                                break;
+                            }
                             _debug("-- Thread waiting for canceled pause request.");
                             try {
                                 workspace.wait(_director);
@@ -173,15 +169,7 @@ public class ProcessThread extends PtolemyThread {
                         }
                         // NOTE: Do we need to indicate that actor has
                         // restarted, with something like
-                        // _director._actorHasRestarted();
-                    }
-                    // If a stop has been requested, then either
-                    // pause execution (if the director does not report
-                    // that a stop has been requested) or stop
-                    // execution altogether and run wrapup().
-                    if (_director.isStopRequested()) {
-                        _debug("-- Thread stop requested, so cancel iteration.");
-                        break;
+                        _director._actorHasRestarted();
                     }
                     _debug("-- Thread resuming.");
                 }
@@ -229,40 +217,6 @@ public class ProcessThread extends PtolemyThread {
                 }
             }
         }
-        /*
-          catch (TerminateProcessException t) {
-          // Process was terminated.
-          _debug("-- Blocked Receiver call threw TerminateProcessException.");
-          } catch (IllegalActionException e) {
-          _debug("-- Exception: " + e);
-          System.out.println(_name + " encountered exception");
-          _manager.notifyListenersOfException(e);
-          System.out.println(_name + " notified exception");
-          } catch (Throwable t) {
-          System.out.println("caught throwable " + t);
-          t.printStackTrace();
-          } finally {
-          try {
-          wrapup();
-          } catch (IllegalActionException e) {
-          _debug("-- Exception: " + e);
-          _manager.notifyListenersOfException(e);
-          } finally {
-          System.out.println(_name + " going to stop");
-          _director._decreaseActiveCount();
-          _debug("-- Thread stopped.");
-          }
-          }*/
-    }
-
-    /** Request that execution of the actor controlled by this
-     *  thread stop. Call stopFire() on all composite actors
-     *  that are contained by the composite actor that contains
-     *  this director.
-     */
-    public void stopThread() {
-        _threadStopRequested = true;
-        _debug("-- Thread requested to stop.");
     }
 
     /** End the execution of the actor under the control of this
@@ -283,6 +237,5 @@ public class ProcessThread extends PtolemyThread {
     private Actor _actor;
     private ProcessDirector _director;
     private Manager _manager;
-    private boolean _threadStopRequested = false;
     private String _name;
 }
