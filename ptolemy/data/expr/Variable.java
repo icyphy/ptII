@@ -1574,7 +1574,8 @@ public class Variable extends Attribute
             // reverse the changes
             _token = oldToken;
 
-            if (_varType instanceof StructuredType) {
+            if (_varType instanceof StructuredType
+                    && oldVarType instanceof StructuredType) {
                 ((StructuredType)_varType).updateType(
                         (StructuredType)oldVarType);
             } else {
