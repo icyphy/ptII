@@ -94,7 +94,7 @@ proc pxgraphTest { args } {
 #
 test Pxgraph-1.1 {Test set labeling} {
     global pxgraphfile1 pxgraphfile2
-    pxgraphTest  -0 '' -binary ../demo/data/bin.plt
+    pxgraphTest  -0 {''} -binary ../demo/data/bin.plt
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
@@ -304,7 +304,18 @@ test Pxgraph-2.2 {Flags: -bar} {
 test Pxgraph-2.3 {Flags: -bb (Ignored)} {
     global pxgraphfile1
     pxgraphTest  -bb $pxgraphfile1
-} {}
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
+<plot>
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
+}
 
 test Pxgraph-2.4 {Flags: -bigendian} {
     global pxgraphfile1
@@ -493,12 +504,12 @@ test Pxgraph-2.15 {Flags: -p (PixelMarkers) } {
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
 <!-- Ptolemy plot, version 3.1, PlotML format. -->
-<default connected="no" marks="points"/>
+<default marks="points"/>
 <dataset>
 <m x="0.0" y="0.0"/>
-<m x="1.0" y="1.0"/>
-<m x="2.0" y="2.0"/>
-<m x="3.0" y="-0.2"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
 </dataset>
 </plot>
 }
@@ -510,12 +521,12 @@ test Pxgraph-2.16 {Flags: -p (PixelsMarkers) -nl } {
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
 <!-- Ptolemy plot, version 3.1, PlotML format. -->
-<default marks="dots"/>
+<default connected="no" marks="points"/>
 <dataset>
 <m x="0.0" y="0.0"/>
-<p x="1.0" y="1.0"/>
-<p x="2.0" y="2.0"/>
-<p x="3.0" y="-0.2"/>
+<m x="1.0" y="1.0"/>
+<m x="2.0" y="2.0"/>
+<m x="3.0" y="-0.2"/>
 </dataset>
 </plot>
 }
@@ -575,61 +586,8 @@ test Pxgraph-2.20 {Flags: -rv (Reverse Video)} {
     global pxgraphfile1
     # FIXME: The write output does not capture -rv
     pxgraphTest  -rv $pxgraphfile1
-} {  <!ELEMENT barGraph EMPTY>
-    <!ATTLIST barGraph width CDATA #IMPLIED>
-    <!ATTLIST barGraph offset CDATA #IMPLIED>
-  <!ELEMENT bin EMPTY>
-    <!ATTLIST bin width CDATA #IMPLIED>
-    <!ATTLIST bin offset CDATA #IMPLIED>
-  <!ELEMENT dataset (m | move | p | point)*>
-    <!ATTLIST dataset connected (yes | no) #IMPLIED>
-    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
-    <!ATTLIST dataset name CDATA #IMPLIED>
-    <!ATTLIST dataset stems (yes | no) #IMPLIED>
-  <!ELEMENT default EMPTY>
-    <!ATTLIST default connected (yes | no) "yes">
-    <!ATTLIST default marks (none | dots | points | various) "none">
-    <!ATTLIST default stems (yes | no) "no">
-  <!ELEMENT noColor EMPTY>
-  <!ELEMENT noGrid EMPTY>
-  <!ELEMENT title (#PCDATA)>
-  <!ELEMENT wrap EMPTY>
-  <!ELEMENT xLabel (#PCDATA)>
-  <!ELEMENT xLog EMPTY>
-  <!ELEMENT xRange EMPTY>
-    <!ATTLIST xRange min CDATA #REQUIRED>
-    <!ATTLIST xRange max CDATA #REQUIRED>
-  <!ELEMENT xTicks (tick)+>
-  <!ELEMENT yLabel (#PCDATA)>
-  <!ELEMENT yLog EMPTY>
-  <!ELEMENT yRange EMPTY>
-    <!ATTLIST yRange min CDATA #REQUIRED>
-    <!ATTLIST yRange max CDATA #REQUIRED>
-  <!ELEMENT yTicks (tick)+>
-    <!ELEMENT tick EMPTY>
-      <!ATTLIST tick label CDATA #REQUIRED>
-      <!ATTLIST tick position CDATA #REQUIRED>
-    <!ELEMENT m EMPTY>
-      <!ATTLIST m x CDATA #IMPLIED>
-      <!ATTLIST m x CDATA #REQUIRED>
-      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST m highErrorBar CDATA #IMPLIED>
-    <!ELEMENT move EMPTY>
-      <!ATTLIST move x CDATA #IMPLIED>
-      <!ATTLIST move x CDATA #REQUIRED>
-      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST move highErrorBar CDATA #IMPLIED>
-    <!ELEMENT p EMPTY>
-      <!ATTLIST p x CDATA #IMPLIED>
-      <!ATTLIST p x CDATA #REQUIRED>
-      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST p highErrorBar CDATA #IMPLIED>
-    <!ELEMENT point EMPTY>
-      <!ATTLIST point x CDATA #IMPLIED>
-      <!ATTLIST point x CDATA #REQUIRED>
-      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST point highErrorBar CDATA #IMPLIED>
-]>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
 <!-- Ptolemy plot, version 3.1, PlotML format. -->
 <dataset>
