@@ -53,7 +53,7 @@ When the <i>decimation</i> (<i>interpolation</i>)
 parameters are different from unity, the filter behaves exactly
 as it were followed (preceded) by a DownSample (UpSample) actor.
 However, the implementation is much more efficient than
-it would be using UpSample and DownSample stars;
+it would be using UpSample or DownSample actors;
 a polyphase structure is used internally, avoiding unnecessary use
 of memory and unnecessary multiplication by zero.
 Arbitrary sample-rate conversions by rational factors can
@@ -70,8 +70,9 @@ If the interpolation ratio is <i>i < /i>, then <i>f</i>/2 is a fraction
 1/2<i>i < /i> of the sample rate at which you must design your filter.
 <p>
 The <i>decimationPhase</i> parameter is somewhat subtle.
-It is exactly equivalent the phase parameter of the DownSample
-star.Its interpretation is as follows; when decimating,
+
+It is exactly equivalent the phase parameter of the DownSample actor.
+Its interpretation is as follows; when decimating,
 samples are conceptually discarded (although a polyphase structure
 does not actually compute the discarded samples).
 If you are decimating by a factor of three, then you will select
@@ -90,9 +91,9 @@ For more information about polyphase filters, see F. J. Harris,
 @see ptolemy.data.Token
 @see ptolemy.domains.sdf.lib.FIR
 */
-
 public class FIR extends SDFAtomicActor {
-
+    // FIXME: support mutations.
+    // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -109,9 +110,10 @@ public class FIR extends SDFAtomicActor {
         output = new SDFIOPort(this, "output", false, true);
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
+        decimation = new Parameter(this, "decimation", new IntToken(1));
+        decimationPhase = new Parameter(this, "decimationPhase", 
+					new IntToken(0));
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
-
-        // FIXME: Added decimation and decimationPhase parameters
         attributeTypeChanged( taps );
     }
 
@@ -124,33 +126,39 @@ public class FIR extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
+    /** The decimation ratio of the filter. This must contain an
+     *  IntToken, and by default it has value one.
+     */
+    public Parameter decimation;
+
+    /** The decimation phase of the filter. This must contain an
+     *  IntToken, and by default it has value zero.
+     */
+    public Parameter decimationPhase;
+
     /** The interpolation ratio of the filter. This must contain an
      *  IntToken, and by default it has value one.
      */
     public Parameter interpolation;
 
-    /** The taps of the filter. This is a row vector embedded in in a
-     *  token of type FixMatrixToken. By default, it is empty,
+    /** The taps of the filter. This is a row vector embedded in a
+     *  token of type MatrixToken. By default, it contains a single zero,
      *  meaning that the output of the filter is zero.
      */
     public Parameter taps;
 
-    // FIXME: Check that the above comment is correct.
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the meanTime parameter, check that it is
-     *  positive.
-     * @exception IllegalActionException If the
-     *  meanTime value is not positive.
+    /** Set the type constraints on the input and output port.
+     * @exception IllegalActionException by derived classes.
      */
-    public void attributeTypeChanged(Attribute attribute)
+    public void attributeTypeChanged(Attribute attribute) 
             throws IllegalActionException {
         if (attribute == taps) {
 
 	    // Get the first token from the Matrix
-	    // Used this token to extract its type.
+	    // Uses this token to extract its type.
 	    Token tmpToken =
                 ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
 
@@ -158,8 +166,8 @@ public class FIR extends SDFAtomicActor {
 	    // _zero = tmpToken.zero();
 
 	    // Set the type to the input and output port.
-	    input.setTypeEquals( tmpToken.getType() );
-	    output.setTypeEquals( tmpToken.getType() );
+	    input.setTypeEquals(tmpToken.getType());
+	    output.setTypeEquals(tmpToken.getType());
 
         } else {
             super.attributeTypeChanged(attribute);
@@ -177,6 +185,10 @@ public class FIR extends SDFAtomicActor {
             FIR newobj = (FIR)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.decimation =
+                (Parameter)newobj.getAttribute("decimation");
+            newobj.decimationPhase =
+                (Parameter)newobj.getAttribute("decimationPhase");
             newobj.interpolation =
                 (Parameter)newobj.getAttribute("interpolation");
             newobj.taps = (Parameter)newobj.getAttribute("taps");
@@ -192,12 +204,10 @@ public class FIR extends SDFAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
-
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
 
-        // FIXME: consume just one input for now.
         if (--_mostRecent < 0) _mostRecent = _data.length - 1;
         _data[_mostRecent] = input.get(0);
 
@@ -239,19 +249,19 @@ public class FIR extends SDFAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        IntToken interptoken = (IntToken)(interpolation.getToken());
-        _interp = interptoken.intValue();
-
-        // FIXME: Support multirate.  Get values from parameters.
-        _dec = 1;
-        _decPhase = 0;
-
-        // FIXME: Does the SDF infrastructure support accessing past samples?
-        // FIXME: Handle mutations.
+        IntToken token;
+	token = (IntToken)(interpolation.getToken());
+        _interp = token.intValue();
+	token = (IntToken)(decimation.getToken());
+        _dec = token.intValue();
+	token = (IntToken)(decimationPhase.getToken());
+	_decPhase = token.intValue();
+        
         input.setTokenConsumptionRate(_dec);
         output.setTokenProductionRate(_interp);
         if (_decPhase >= _dec) {
-            throw new IllegalActionException(this,"decimationPhase too large");
+            throw new IllegalActionException(this,
+					     "decimationPhase too large");
         }
 
 	// Get the taps now to allows for type resolution before initialize
@@ -261,10 +271,9 @@ public class FIR extends SDFAtomicActor {
 	_zero = _tapsToken.getElementAsToken(0, 0).zero();
     }
 
-    /** Initialize the taps of the FIR filter.
-     *  @exception IllegalActionException If the parent class throws it.
+    /** Initialize the actor.
      */
-    public void initialize() throws  IllegalActionException {
+    public void initialize() throws IllegalActionException {
 	super.initialize();
 
         _taps = new Token[_tapsToken.getColumnCount()];
@@ -283,7 +292,6 @@ public class FIR extends SDFAtomicActor {
             _data[i] = _zero;
         }
         _mostRecent = datalength;
-
     }
 
     ///////////////////////////////////////////////////////////////////

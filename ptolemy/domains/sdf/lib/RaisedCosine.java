@@ -107,7 +107,7 @@ I. Korn, <i>Digital Communications</i>, Van Nostrand Reinhold, New York, 1985.
 */
 
 public class RaisedCosine extends FIR {
-
+    // FIXME: support mutations.
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -180,7 +180,6 @@ public class RaisedCosine extends FIR {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        // FIXME: Doesn't handle mutations.
         double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
         int inter = ((IntToken)(symbolInterval.getToken())).intValue();
         int len = ((IntToken)(length.getToken())).intValue();

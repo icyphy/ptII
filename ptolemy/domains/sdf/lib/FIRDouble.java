@@ -38,17 +38,20 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// FIR
+//// FIRDouble
 /**
-This actor implements a finite-impulse response
-filter with multirate capability.
+This actor implements a finite-impulse response filter with multirate 
+capability.  It differs from the standard FIR filter in that its input, 
+output and taps are restricted to be doubles, which allows faster 
+computation.
 
 @author Edward A. Lee
 @version $Id$
 */
 
 public class FIRDouble extends FIR {
-
+    // FIXME: support mutations.
+    // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -87,7 +90,6 @@ public class FIRDouble extends FIR {
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
 
-        // FIXME: consume just one input for now.
         if (--_mostRecent < 0) _mostRecent = _data.length - 1;
         _data[_mostRecent] = ((DoubleToken)(input.get(0))).doubleValue();
 
