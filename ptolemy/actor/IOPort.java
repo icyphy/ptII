@@ -1651,6 +1651,42 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return a list of the ports connected to this port on the
+     *  inside that can send data to this port.  This includes
+     *  both output ports and opaque input ports that are
+     *  connected on the inside to this port. This port must
+     *  be an opaque output port, otherwise return an empty list.
+     *  @return A list of IOPort objects.
+     */
+    public List insideSourcePortList() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+            if (!(container instanceof CompositeActor && isOutput()
+                    && isOpaque())) {
+                // Return an empty list, since this port cannot receive data
+                // from the inside.
+                return new LinkedList();
+            }
+            Director dir = ((CompositeActor) container).getDirector();
+            int depthOfDirector = dir.depthInHierarchy();
+            LinkedList result = new LinkedList();
+            Iterator ports = deepInsidePortList().iterator();
+            while (ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                int depth = ((NamedObj)port.getContainer()).depthInHierarchy();
+                if (port.isInput() && depth < depthOfDirector) {
+                    result.addLast(port);
+                } else if (port.isOutput() && depth >= depthOfDirector) {
+                    result.addLast(port);
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is

@@ -1590,10 +1590,36 @@ test IOPort-21.1 {test insideSinkPortList} {
     $p1 link $r1
     $p2 link $r1
     set d [java::new ptolemy.actor.Director $e0 D0]
-    listToFullNames [$p0 insideSinkPortList]
-} {.E0.E1.E2.P2}
+    list [listToFullNames [$p0 insideSinkPortList]] [listToFullNames [$p0 insideSourcePortList]]
+} {.E0.E1.E2.P2 {}}
 
 test IOPort-21.2 {test insideSinkPortList} {
     set d1 [java::new ptolemy.actor.Director $e1 D1]
-    listToFullNames [$p0 insideSinkPortList]
-} {.E0.E1.P1}
+    list [listToFullNames [$p0 insideSinkPortList]] [listToFullNames [$p0 insideSourcePortList]] [listToFullNames [$p1 insideSinkPortList]] [listToFullNames [$p1 insideSourcePortList]]
+} {.E0.E1.P1 {} .E0.E1.E2.P2 {}}
+
+test IOPort-21.3 {test insideSourcePortList} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 E1]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e1 E2]
+    set p0 [java::new ptolemy.actor.TypedIOPort $e0 P0]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
+    $p0 setOutput true
+    $p1 setOutput true
+    $p2 setOutput true
+    set r0 [java::new ptolemy.actor.TypedIORelation $e0 R0]
+    set r1 [java::new ptolemy.actor.TypedIORelation $e1 R1]
+    $p0 link $r0
+    $p1 link $r0
+    $p1 link $r1
+    $p2 link $r1
+    set d [java::new ptolemy.actor.Director $e0 D0]
+    list [listToFullNames [$p0 insideSinkPortList]] [listToFullNames [$p0 insideSourcePortList]]
+} {{} .E0.E1.E2.P2}
+
+test IOPort-21.4 {test insideSourcePortList} {
+    set d1 [java::new ptolemy.actor.Director $e1 D1]
+    list [listToFullNames [$p0 insideSinkPortList]] [listToFullNames [$p0 insideSourcePortList]] [listToFullNames [$p1 insideSinkPortList]] [listToFullNames [$p1 insideSourcePortList]]
+} {{} .E0.E1.P1 {} .E0.E1.E2.P2}
