@@ -1003,7 +1003,14 @@ public class ComplexMatrixMath {
      *  format argument.
      *
      *  @param matrix A matrix of Complex numbers.
-     *  @param asf The type of ArrayStringFormat.
+     *  @param elementDelimiter The delimiter between elements,
+     *  typically ", ".
+     *  @param matrixBegin The start of the matrix, typically "{".
+     *  @param matrixEnd The end of the matrix, typically "{".
+     *  @param vectorBegin The start of the vector, typically "{".
+     *  @param vectorDelimiter The delimiter between elements,
+     *  typically ", ".
+     *  @param vectorEnd The end of the vector, typically "}".
      *  @return A new String representing the matrix in the specified format.
      */
     public static final String toString(final Complex[][] matrix,
