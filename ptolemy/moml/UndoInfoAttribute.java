@@ -235,7 +235,7 @@ public class UndoInfoAttribute extends SingletonAttribute
         if (_clearRedoInfo) {
             _redoEntries.clear();
         }
-        // Set the fag to true - this implies that two successive undo push
+        // Set the flag to true - this implies that two successive undo push
         // requests will clear the redo stack which is correct.
         _clearRedoInfo = true;
     }
