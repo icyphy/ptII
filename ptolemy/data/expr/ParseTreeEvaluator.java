@@ -23,8 +23,8 @@
  LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 package ptolemy.data.expr;
@@ -55,7 +55,7 @@ This class evaluates a parse tree given a reference to its root node.
 It implements a visitor that visits the parse tree in depth-first order,
 evaluating each node and storing the result as a token in the node.
 Two exceptions are logic nodes and the ternary if node (the ? : construct),
-which do not necessarily evaluate children nodes.
+which do not necessarily evaluate all children nodes.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -95,69 +95,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // and return it.
         _scope = null;
         return node.getToken();
-    }
-
-    /** Evaluate the specified function.
-     *  The function must be defined as one of the registered functions
-     *  with PtParser.
-     *  @param functionName The function name.
-     *  @param argTypes An array of argument types.
-     *  @param argValues An array of argument values.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    public static ptolemy.data.Token functionCall(String functionName,
-            Type[] argTypes, Object[] argValues)
-            throws IllegalActionException {
-        CachedMethod method = CachedMethod.findMethod(functionName,
-                argTypes, CachedMethod.FUNCTION);
-        if (method.isValid()) {
-            ptolemy.data.Token result = method.invoke(argValues);
-            return result;
-        } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-            for (int i = 0; i < argValues.length; i++) {
-                if (i == 0) {
-                    buffer.append(argValues[i].toString());
-                } else {
-                    buffer.append(", " + argValues[i].toString());
-                }
-            }
-            throw new IllegalActionException("No matching function: " +
-                    functionName + "( " + buffer + " ).");
-        }
-    }
-
-    /** Evaluate the specified method.  The object on which the method
-     *  is evaluated should be the first argument.
-     *  @param methodName The method name.
-     *  @param argTypes An array of argument types.
-     *  @param argValues An array of argument values.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    public static ptolemy.data.Token methodCall(String methodName,
-            Type[] argTypes, Object[] argValues)
-            throws IllegalActionException {
-        CachedMethod method = CachedMethod.findMethod(methodName,
-                argTypes, CachedMethod.METHOD);
-        if (method.isValid()) {
-            ptolemy.data.Token result = method.invoke(argValues);
-            return result;
-        } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-            for (int i = 0; i < argValues.length; i++) {
-                if (i == 0) {
-                    buffer.append(argValues[i].toString());
-                } else {
-                    buffer.append(", " + argValues[i].toString());
-                }
-            }
-            throw new IllegalActionException("No matching function " +
-                    methodName + "( " + buffer + " ).");
-        }
     }
 
     /** Construct an ArrayToken that contains the tokens from the
@@ -278,6 +215,42 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Apply a function to the children of the specified node.
      *  This also handles indexing into matrices and arrays, which look
      *  like function calls.
+     *  
+     *  In the simplest cases, if the function is being applied to an
+     *  expression that evaluated to a FunctionToken, an ArrayToken,
+     *  or a MatrixToken, then the function application is simply
+     *  applied to the available arguments.
+     *  
+     *  More complex is if the function is being applied to an
+     *  expression that does not evaluate as above, resulting in three
+     *  cases:  Of primary interest is a function node that represents the
+     *  invocation of a Java method registered with the expression
+     *  parser.  This method uses the reflection mechanism in the
+     *  CachedMethod class to find the correct method, based on the
+     *  types of the arguments and invoke it.  See that class for
+     *  information about how method arguments are matched.
+     *
+     *  A second case is the eval() function, which is handled
+     *  specially in this method.  The argument to the function is
+     *  evaluated, and the parsed as a string using the expression
+     *  parser.  The result is then evaluated *in this evaluator*.
+     *  This has the effect that any identifiers are evaluated in the
+     *  same scope as the original expression.
+     * 
+     *  A third case is the matlab() function, which is also handled
+     *  specially in this method, allowing the evaluation of
+     *  expressions in matlab if matlab is installed.  The matlab
+     *  function is of the form
+     *  <em>matlab("expression",arg1,arg2,...)</em>, where
+     *  <em>arg1,arg2,...</em>is a list of arguments appearing in
+     *  <em>"expression"</em>. Note that this form of invoking matlab
+     *  is limited to returning only the first return value of a
+     *  matlab function. If you need multiple return values, use the
+     *  matlab {@link ptolemy.matlab.Expression} actor. If a
+     *  "packageDirectories" Parameter is in the scope of this
+     *  expression, it's value is added to the matlab path while the
+     *  expression is being executed (like {@link
+     *  ptolemy.matlab.Expression}).
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
@@ -476,7 +449,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             argTypes[i] = token.getType();
         }
 
-        ptolemy.data.Token result = functionCall(
+        ptolemy.data.Token result = _functionCall(
                 node.getFunctionName(), argTypes, argValues);
         node.setToken(result);
     }
@@ -726,7 +699,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             argTypes[i] = token.getType();
         }
 
-        ptolemy.data.Token result = methodCall(
+        ptolemy.data.Token result = _methodCall(
                 node.getMethodName(), argTypes, argValues);
 
         node.setToken(result);
@@ -1138,6 +1111,68 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // Evaluate the value of the root node.
         node.visit(this);
         return node.getToken();
+    }
+
+    /** Evaluate the specified function.  The function must be defined
+     *  as one of the registered functions with PtParser.
+     *  @param functionName The function name.
+     *  @param argTypes An array of argument types.
+     *  @param argValues An array of argument values.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    protected static ptolemy.data.Token _functionCall(String functionName,
+            Type[] argTypes, Object[] argValues)
+            throws IllegalActionException {
+        CachedMethod method = CachedMethod.findMethod(functionName,
+                argTypes, CachedMethod.FUNCTION);
+        if (method.isValid()) {
+            ptolemy.data.Token result = method.invoke(argValues);
+            return result;
+        } else {
+            // If we reach this point it means the function was not found on
+            // the search path.
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < argValues.length; i++) {
+                if (i == 0) {
+                    buffer.append(argValues[i].toString());
+                } else {
+                    buffer.append(", " + argValues[i].toString());
+                }
+            }
+            throw new IllegalActionException("No matching function: " +
+                    functionName + "( " + buffer + " ).");
+        }
+    }
+
+    /** Evaluate the specified method.  The object on which the method
+     *  is evaluated should be the first argument.
+     *  @param methodName The method name.
+     *  @param argTypes An array of argument types.
+     *  @param argValues An array of argument values.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    protected static ptolemy.data.Token _methodCall(String methodName,
+            Type[] argTypes, Object[] argValues)
+            throws IllegalActionException {
+        CachedMethod method = CachedMethod.findMethod(methodName,
+                argTypes, CachedMethod.METHOD);
+        if (method.isValid()) {
+            ptolemy.data.Token result = method.invoke(argValues);
+            return result;
+        } else {
+            // If we reach this point it means the function was not found on
+            // the search path.
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < argValues.length; i++) {
+                if (i == 0) {
+                    buffer.append(argValues[i].toString());
+                } else {
+                    buffer.append(", " + argValues[i].toString());
+                }
+            }
+            throw new IllegalActionException("No matching function " +
+                    methodName + "( " + buffer + " ).");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

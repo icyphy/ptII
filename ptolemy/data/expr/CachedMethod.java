@@ -49,13 +49,24 @@ import java.util.Iterator;
 An instance of this class represents a method or function that is
 invoked by the Ptolemy II expression evaluator.  Instances of this
 class are returned by the static findMethod() method, and can be
-invoked by the apply() method.
+invoked by the apply() method.  This class is used by the expression
+language to find Java methods that are bound in expressions that use
+function application, i.e. an ASTPtFunctionNode, and in method
+invocation, i.e. an ASTPtMethodNode.
 
 <p> This class is used to represent two distinct types of Java methods
 that can be invoked.  The METHOD type corresponds to an instance
 method of a java class, invoked on an object of an appropriate class
 (the <it>base class</it>).  The FUNCTION type corresponds to a static
-method of a java class.
+method of a java class.  These types corresponds to the two distinct
+expression constructs that can be used to invoke Java methods.  The
+type of construct reflected can be queried using the
+getCachedMethodType() method, which returns either {@link #FUNCTION}
+or {@link #METHOD}.  Additionally, this class can be used to represent
+Java methods that were not found.  If the CachedMethod corresponds to
+an invokeable Java method, then the isValid() method will return true.
+CachedMethods that are not valid cannot be invoked by the invoke()
+method.
 
 <p> This class provides several services that distinguish it from
 Java's built-in reflection mechanism:
@@ -73,13 +84,52 @@ Java's built-in reflection mechanism:
 5) Allows for the possibility of several automatic conversions that
    increase the applicability of single methods
 
-<p> Instances of this class have a type returned by getCachedMethodType(), which
-is either {@link #FUNCTION} or {@link #METHOD}.  FUNCTION indicates
-that it is a function (a static method of a class registered with the
-parser), while METHOD indicates that it is a method of a Token.  If
-the method or function is actually found, then the CachedMethod is
-considered valid, as returned by the isValid() method.  CachedMethods
-that are not valid cannot be invoked by the invoke() method.
+<p> The automatic conversions that are allowed on the arguments of
+reflected Java methods can be particularly tricky to understand.  The
+findMethod() method is fairly aggressive about finding valid methods
+to invoke.  In particular, given a set of arguments with token types,
+the findMethod() method might return a cached method that:
+
+1) Accepts token arguments of exactly the same type.
+2) Accepts token arguments that are of a type that the given types can
+   be automatically converted to, as determined by the Ptolemy type
+   lattice.
+3) Accepts the corresponding Java native type of either of the first
+   two cases, i.e. an IntToken argument may reflect a method that
+   accepts a Java int.
+4) Accepts a corresponding Java array type, if the argument type is an
+   ArrayType.
+5) Accepts a corresponding Java array of array type, if the argument
+   type is a MatrixType.
+
+The underlying conversions are implemented by the {@link
+ConversionUtilities} class, which has more specific documentation the
+underlying conversions.  The inverse of the same conversions are
+performed on the results of a Java method invocation, in order to
+convert the result back into a Ptolemy token.
+
+<p> Since there may be many methods that match a particular function
+application or method invocation, under the above conversions, the
+findMethod() method attempts to return the most specific Java method
+that can be called.  Generally speaking, conversions are preferred in
+the above order.  If one Java method is not clearly preferrable to all
+others, then the findMethod() method will throw an exception.  This
+may happen if there are multiple functions defined with varying
+argument types.
+
+<p> Additionally, the findMethod() method may return a CachedMethod
+that automatically "maps" arrays and matrices over a scalar function.
+The result of invoking the CachedMethod is an array or matrix of
+whatever type is returned by the original function.
+
+<p> As an example of how this works, evaluation of the expression
+"fix([0.5, 0.1; 0.4, 0.3], 16, 1)" performs results in the invocation
+of the method named "fix" in the ptolemy.data.expr.FixPointFunctions
+that takes a Java double and two Java ints and returns an instance of
+ptolemy.math.FixPoint.  This function is invoked once for each element
+of the matrix (converting each DoubleToken into the corresponding
+double, and each IntToken into the corresponding int), and the results
+are packaged back into a 2x2 FixMatrixToken.  
 
 <p> Additional classes to be searched for static methods can be added
 through the method registerFunctionClass() in PtParser.  This class
@@ -193,6 +243,16 @@ public class CachedMethod {
      *  This method attempts to find the specified function in the cache,
      *  and searches the registered classes only if the function is not
      *  in the cache.
+     *
+     *  <p> This method first attempts to resolve the function in the
+     *  registered function classes by finding a method and a set of
+     *  argument conversions that allow the method to be invoked on
+     *  the given types.  If the above fails and at least one argument
+     *  is an array type or matrix type, a map is attempted over those
+     *  argument types and the registered function classes are
+     *  searched again. This process is repeated until all arguments
+     *  are scalars or a function signature match is found.
+     *
      *  @param methodName The method or function name.
      *  @param argTypes The argument types, including as the first element
      *   the type of object on which the method is invoked, if this is a

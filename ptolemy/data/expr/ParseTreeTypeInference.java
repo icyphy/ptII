@@ -21,8 +21,8 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 package ptolemy.data.expr;
@@ -53,16 +53,25 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public Type getType(ASTPtRootNode node) {
-        return node.getType();
-    }
-
+    /** Infer the type of the parse tree with the specified root node.
+     *  @param node The root of the parse tree.
+     *  @return The result of evaluation.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
     public Type inferTypes(ASTPtRootNode node)
             throws IllegalActionException {
         node.visit(this);
         return node.getType();
     }
 
+    /** Infer the type of the parse tree with the specified root node using
+     *  the specified scope to resolve the values of variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The result of evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
     public Type inferTypes(ASTPtRootNode node, ParserScope scope)
             throws IllegalActionException {
         _scope = scope;
@@ -71,6 +80,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         return node.getType();
     }
 
+    /** Set the type of the given node to be an ArrayType that is the
+     *  least upper bound of the types of the node's children.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -81,6 +95,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 TypeLattice.lattice().leastUpperBound(childTypes)));
     }
 
+    /** Set the type of the given node to be the type that is the
+     *  least upper bound of the types of the node's children.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -92,6 +111,14 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
+    /** Set the type of the given node to be a function type whose
+     *  argument types are determined by the children of the node.
+     *  The return type of the function type is determined by
+     *  inferring the type of function's expression in a scope that
+     *  adds identifiers for each argument to the current scope.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         final Map map = new HashMap();
@@ -127,6 +154,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         return;
     }
 
+    /** Set the type of the given node to be the return type of the
+     *  function determined for the given node.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
@@ -235,6 +267,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Set the type of the given node to be the least upper bound of
+     *  the types of the two branches of the if.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -254,6 +291,14 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         trueType, falseType));
     }
 
+    /** Set the type of the given node to be the type of constant the
+     *  variable refers to, if the node represents a constant, or the
+     *  type of the identifier the node refers to in the current
+     *  scope.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error
+     *  occurs, or an identifier is not bound in the current scope.
+     */
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -265,12 +310,21 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node, _getTypeForName(node.getName()));
     }
 
+    /** Set the type of the given node to be boolean.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
         _setType(node, BaseType.BOOLEAN);
     }
 
+    /** Set the type of the given node to be an MatrixType based on the
+     *  least upper bound of the types of the node's children.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -285,6 +339,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node, matrixType);
     }
 
+    /** Set the type of the given node to be the return type of the
+     *  method determined for the given node.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -324,6 +383,12 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     node.getMethodName() + "( " + buffer + " ).");
         }
     }
+
+    /** Set the type of the given node to be the type of the first
+     *  child of the given node.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -331,6 +396,12 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type baseType = ((ASTPtRootNode)node.jjtGetChild(0)).getType();
         _setType(node, baseType);
     }
+
+    /** Set the type of the given node to be the least upper bound
+     *  type of the types of the node's children.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
 
@@ -341,6 +412,14 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node,
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
+
+    /** Set the type of the given node to be a record token that
+     *  contains fields for each name in the record construnction,
+     *  where the type of each field in the record is determined by
+     *  the corresponding type of the child nodes.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -354,12 +433,21 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
     }
 
+    /** Set the type of the given node to be boolean.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
         _setType(node, BaseType.BOOLEAN);
     }
 
+    /** Set the type of the given node to be the type of the first
+     *  child of the given node.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -367,6 +455,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node, baseType);
     }
 
+    /** Set the type of the given node to be the least upper bound
+     *  type of the types of the node's children.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -377,6 +470,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
+    /** Set the type of the given node to be the type of the
+     *  child of the given node.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -465,7 +563,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-            Type type = getType(child);
+            Type type = child.getType();
             if (type == null) {
                 throw new RuntimeException("node " + child + " has no type.");
             }
