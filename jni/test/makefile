@@ -109,7 +109,8 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 #CLASSPATH="../..;c:\cxh\ptII/lib/diva.jar;.;c:\cxh\ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.1_01/bin/java"  "-Dptolemy.ptII.dir=c:\cxh\ptII"  tcl.lang.Shell alljtests.tcl
 
 shared:
-	gcc -shared -o $(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX) \
+	gcc -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
+		-o $(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX) \
 		$(SHAREDBASE).c
 
 # Get the rest of the rules
