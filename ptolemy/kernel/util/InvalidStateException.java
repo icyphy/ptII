@@ -58,34 +58,46 @@ public class InvalidStateException extends KernelRuntimeException {
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  name of the first argument and the second argument string.
-     *  @param obj The object.
+     *  name of the first argument, the cause and the third argument string.
+     *  @param object The nameable object involved in the exception
+     *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public InvalidStateException(Nameable obj, String detail) {
-        this(obj, null, null, detail);
-    }
-
-    /** Constructs an Exception with a detail message that includes the
-     *  names of the first two arguments plus the third argument string.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
-     *  @param detail The message.
-     */
-    public InvalidStateException(Nameable obj1, Nameable obj2,
-            String detail) {
-        this(obj1, obj2, null, detail);
-    }
-
-    /** Constructs an Exception with a detail message that includes the
-     *  names of the first two arguments plus the third argument string.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
-     *  @param detail The message.
-     */
-    public InvalidStateException(Nameable obj1, Nameable obj2,
+    public InvalidStateException(Nameable object,
             Throwable cause, String detail) {
-        super(obj1, obj2, cause, detail);
+        super(object, null, cause, detail);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     *  name of the first argument and the second argument string.
+     *  @param object The object.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Nameable object, String detail) {
+        this(object, null, null, detail);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument string.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Nameable object1, Nameable object2,
+            String detail) {
+        this(object1, object2, null, detail);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument string.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Nameable object1, Nameable object2,
+            Throwable cause, String detail) {
+        super(object1, object2, cause, detail);
     }
 
     /** Construct an exception with a detail message that includes the
@@ -113,12 +125,12 @@ public class InvalidStateException extends KernelRuntimeException {
         String prefix = "";
         String name;
         while(objects.hasMoreElements()) {
-            Object obj = objects.nextElement();
-            if (obj instanceof Nameable) {
-                name = KernelException._getFullName((Nameable)obj);
+            Object object = objects.nextElement();
+            if (object instanceof Nameable) {
+                name = KernelException._getFullName((Nameable)object);
             } else {
                 name = "<Object of class " +
-                    (obj.getClass()).getName() + ">";
+                    (object.getClass()).getName() + ">";
             }
             prefix += name + ", ";
         }
