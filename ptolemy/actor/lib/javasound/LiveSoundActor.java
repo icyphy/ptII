@@ -54,7 +54,7 @@ sound through the ptolemy.media.LiveSound class.  This class manages the
 parameters for live sound.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
-@author  Steve Neuendorffer
+@author Steve Neuendorffer
 @version  $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound

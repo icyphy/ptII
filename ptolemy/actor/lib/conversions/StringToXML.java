@@ -46,7 +46,7 @@ This actor converts a string token to an xml token.
 <p>FIXME: The type of the output ports is set to XmlTOken for now.
        It should ???.
 
-@author  Yang Zhao
+@author Yang Zhao
 @version $Id$
 @since Ptolemy II 3.1
 */
