@@ -11,7 +11,6 @@
 <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
 <entity name="HammingCoder" class="ptolemy.actor.lib.comm.HammingCoder"/>
 <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder"/>
-<entity name="HDFActor" class="ptolemy.actor.lib.comm.HDFActor"/>
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
