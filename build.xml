@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!--
+ *    '$RCSfile$'
+ *
+ *     '$Author$'
+ *       '$Date$'
+ *   '$Revision$'
+ *
+ *  For Details: http://kepler.ecoinformatics.org
+ *
+ * Copyright (c) 2003 The Regents of the University of California.
+ * All rights reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without
+ * license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the
+ * above copyright notice and the following two paragraphs appear in
+ * all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ * FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
+ * IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY
+ * OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ * PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY
+ * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+<project name="ptolemy" default="jar" basedir=".">
+   <property environment="env"/>
+   <property name="PTII" value="${env.PTII}"/>
+
+   <target name="config">
+      <!-- Customize these properties for your system -->
+   </target>
+
+   <path id="project.class.path">
+       <fileset dir="${PTII}/lib">
+           <include name="**/*.jar"/>
+       </fileset>
+   </path>
+
+   <target name="init" depends="config">
+      <!-- It is less likely you'll need to make any changes from here down,
+           but customization is possible -->
+      <property name="installdir" value="${PTII}" />
+      <property name="name" value="ptolemy"/>
+      <property name="Name" value="Ptolemy"/>
+      <property name="debug" value="on"/>
+      <property name="release" value="3.0.2"/>
+
+      <property name="srcdir" value="${PTII}" />
+      <property name="testdir" value="${PTII}/tests" />
+      <property name="testtorun" value="Foo" />
+      <property name="build.dir" value="${PTII}/build"/>
+      <property name="build.src" value="${build.dir}/src"/>
+      <property name="build.dest" value="${build.dir}/classes"/>
+      <property name="build.docs" value="${build.dir}/docs"/>
+      <property name="build.samples" value="${build.dir}/samples"/>
+      <property name="build.tests" value="${build.dir}/tests"/>
+      <property name="build.tmp" value="${build.dir}/tmp"/>
+      <property name="build.data" value="${build.dir}/data"/>
+      <property name="build.javadocs" value="${build.dir}/docs/codeDoc"/>
+      <property name="build.img" value="${installdir}"/>
+
+      <property name="dist.dir" value="dist"/>
+      <property name="ver.dir" value="${dist.dir}/${name}-${release}"/>
+      <property name="ver.src" value="${ver.dir}/src"/>
+   </target>
+
+   <target name="prepare" depends="init">
+      <mkdir dir="${build.dir}"/>
+      <mkdir dir="${build.src}"/>
+      <mkdir dir="${build.dest}"/>
+      <mkdir dir="${build.javadocs}"/>
+      <mkdir dir="${build.tmp}"/>
+
+      <copy todir="${build.src}" filtering="yes">
+        <fileset dir="${srcdir}">
+          <include name="diva/**/*.java"/>
+          <include name="ptolemy/**/*.java"/>
+          <include name="util/**/*.java"/>
+          <include name="com/**/*.java"/>
+          <exclude name="ptolemy/domains/gr/**"/>
+          <!-- temporarily exclude the source we can't compile -->
+          <!-- later add these in as switches -->
+          <exclude name="ptolemy/apps/**"/>
+          <exclude name="ptolemy/caltrop/**"/>
+          <exclude name="ptolemy/chic/**"/>
+          <exclude name="ptolemy/copernicus/**"/>
+          <exclude name="ptolemy/actor/lib/io/comm/**"/>
+          <exclude name="ptolemy/actor/lib/jai/**"/>
+          <exclude name="ptolemy/actor/lib/jmf/**"/>
+          <exclude name="ptolemy/actor/lib/joystick/**"/>
+          <exclude name="ptolemy/actor/lib/jxta/**"/>
+          <exclude name="ptolemy/actor/lib/x10/**"/>
+          <exclude name="ptolemy/moml/jxta/**"/>
+          <exclude name="ptolemy/domains/pdf/**"/>
+          <exclude name="ptolemy/plot/servlet/**"/>
+          <exclude name="ptolemy/component/**"/>
+          <exclude name="ptolemy/domains/ct/demo/**"/>
+          <exclude name="**/CVS*"/>
+          <exclude name="**/.#*"/>
+        </fileset>
+      </copy>
+   </target>
+
+   <target name="compile" depends="prepare">
+       <javac srcdir="${build.src}"
+              destdir="${build.dest}"
+              debug="${debug}"
+              failonerror="false">
+            <classpath refid="project.class.path"/>
+       </javac>
+   </target>
+
+   <target name="jar" depends="compile">
+       <delete file="${build.dir}/${name}.jar" />
+       <jar jarfile="${build.dir}/${name}.jar" basedir="${build.dest}" />
+   </target>
+
+   <target name="install" depends="jar">
+       <copy todir="${installdir}/lib" filtering="no">
+         <fileset dir="${build.dir}">
+           <include name="*.jar"/>
+         </fileset>
+       </copy>
+   </target>
+
+   <target name="clean" depends="init">
+       <delete dir="${build.dir}" />
+   </target>
+
+   <target name="jdoc" depends="prepare">
+       <javadoc packagenames="ptolemy.*"
+           sourcepath="${build.src}"
+           destdir="${build.javadocs}"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="${Name} API"
+           />
+   </target>
+
+  <target name="vergil" depends="install">
+     <java classname="ptolemy.vergil.VergilApplication"
+           dir="${PTII}" fork="yes"
+           classpathref="project.class.path"
+           classpath="${PTII}"
+           failonerror="true">
+         <jvmarg value="-Dptolemy.ptII.dir=${PTII}"/>
+     </java>
+  </target>
+
+  <target name="run" depends="install">
+    <java classname="ptolemy.vergil.VergilApplication"
+           dir="${PTII}" fork="yes"
+           classpathref="project.class.path"
+           classpath="${PTII}"
+           failonerror="true">
+      <jvmarg value="-Dptolemy.ptII.dir=${PTII}"/>
+    </java>
+  </target>
+
+  <target name="go">
+    <java classname="ptolemy.vergil.VergilApplication"
+           dir="${PTII}" fork="yes"
+           classpathref="project.class.path"
+           classpath="${PTII}"
+           failonerror="true">
+      <jvmarg value="-Dptolemy.ptII.dir=${PTII}"/>
+    </java>
+  </target>
+
+</project>
