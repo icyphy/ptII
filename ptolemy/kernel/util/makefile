@@ -104,6 +104,7 @@ OPTIONAL_FILES = \
 	'NamedObj$$MoMLInfo.class' \
 	'Settable$$Visibility.class' \
 	'Workspace$$1.class' \
+	'Workspace$$AccessRecord.class' \
 	'Workspace$$ReadDepth.class' \
 	$(PTCLASSJAR)
 
