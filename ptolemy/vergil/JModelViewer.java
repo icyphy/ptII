@@ -50,7 +50,7 @@ can still be modified by accessing them through context-menus.
 public class JModelViewer extends JGraph {
     /** Construct a view on the given Ptolemy II entity.
      */
-    public JModelViewer (CompositeEntity entity) {
+    public JModelViewer(CompositeEntity entity) {
         super();
 	GraphPane pane = new GraphPane(new ViewerGraphController(),
 				       new VergilGraphImpl());
