@@ -81,37 +81,50 @@ public class PNQueueReceiver extends QueueReceiver {
      *  @exception TerminateProcessException Terminate the simulation. 
      *  This is a runtime exception
      */
-    public synchronized Token get() {
+    public Token get() {
+	//System.out.println("someone in receiver.get");
+	Workspace workspace = getContainer().workspace();
+	PNDirector director = ((PNDirector)((Actor)(getContainer().getContainer())).getDirector());
 	try {
 	    while (!_terminate && !super.hasToken()) {
-		((PNDirector)((Actor)(getContainer().getContainer())).getDirector()).readBlock();
-		_readpending = true;
-		while (_readpending) {
-		    (getContainer().workspace()).wait(this);
+		//System.out.println(getContainer().getFullName()+" Reading block");
+		synchronized (this) {
+		    director.readBlock();
+		    //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
+		    _readpending = true;
+		    while (_readpending) {
+			//System.out.println("Waiting in the workspace");
+			workspace.wait(this);
+		    }
 		}
-		//_waitOnRead();
 	    }
 	} catch (IllegalActionException e) {
 	    System.err.println(e.toString());
 	}
-	
-	if (_terminate) {
-	    throw new TerminateProcessException("");
-	} else {
-	    //_canContinue(); //Checking for pause currently
-	    //synchronized (this) {
-	    Token result = super.get();
-	    //Check if pending write to the Queue
-	    if (_writepending) {
-		((PNDirector)((Actor)(getContainer().getContainer())).getDirector()).writeUnblock(this);
+	//System.out.println("Halfway thru receiver.get()");
+	synchronized (this) {
+	    if (_terminate) {
+		throw new TerminateProcessException("");
+	    } else {
+		while (_pause) {
+		    //System.out.println(" Actually pausing");
+		    workspace.wait(this);
+		}
+	    }
+	}
+	Token result = super.get();
+	//Check if pending write to the Queue
+	if (_writepending) {
+	    //System.out.println(getContainer().getFullName()+" being unblocked");
+	    synchronized(this) {
+		director.writeUnblock(this);
 		_writepending = false;
 		notifyAll(); //Wake up threads waiting on a write
 	    }
-	    return result;
 	}
-	//}
+	return result;
     }
-	
+    
     public boolean hasRoom() throws IllegalActionException {
 	return true;
     }
@@ -125,7 +138,7 @@ public class PNQueueReceiver extends QueueReceiver {
      * @param recep is the receptionist/queue on which the check is being made
      * @return val true if a read is pending else false
      */
-    public boolean isReadPending() {
+    public synchronized boolean isReadPending() {
 	return _readpending;
     }
 
@@ -134,7 +147,7 @@ public class PNQueueReceiver extends QueueReceiver {
      * @param recep is the receptionist/queue on which the check is being made
      * @return val true if a write is pending else false
      */
-    public boolean isWritePending() {
+    public synchronized boolean isWritePending() {
 	return _writepending;
     }
 
@@ -142,56 +155,78 @@ public class PNQueueReceiver extends QueueReceiver {
      *  @param token The token to put on the queue.
      *  @exception NoRoomException If the queue is full.
      */
-    public synchronized void put(Token token) {
-	//System.out.println("putting token in PNQueueReceiver");
+    public void put(Token token) {
+	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
+	Workspace workspace = getContainer().workspace();
+	PNDirector director = (PNDirector)((Actor)(getContainer().getContainer())).getDirector();
 	try {
+	    //Workspace workspace = getContainer().workspace();
+	    //workspace.getReadAccess();
 	    if (!super.hasRoom()) {
-		//synchronized(this) {
-		_writepending = true;
-		((PNDirector)((Actor)(getContainer().getContainer())).getDirector()).writeBlock(this);
-		while(!_terminate && !super.hasRoom()) {
-		    //System.out.println(getContainer().getFullName()+" waiting on write");
-		    while(_writepending) {
-			(getContainer().workspace()).wait(this);
+		synchronized(this) {
+		    _writepending = true;
+		}
+		//System.out.println(getContainer().getFullName()+" being writeblocked");
+		director.writeBlock(this);
+		synchronized(this) {
+		    while (!_terminate && !super.hasRoom()) {
+			//System.out.println(getContainer().getFullName()+" waiting on write");
+			while(_writepending) {
+			    workspace.wait(this);
+			}
 		    }
-		    //_waitOnWrite();
 		}
 	    }
-	    //}
 	} catch (IllegalActionException ex) {
 	    System.out.println("Fixme in PNQueueReceiver");
 	}
-	if (_terminate) {
-	    throw new TerminateProcessException("");
-	} else { //token can be put in the queue
-	    //_canContinue();
-	    super.put(token);
-	    //Check if pending write to the Queue
-	    //synchronized (this) {
+	synchronized(this) {
+	    if (_terminate) {
+		throw new TerminateProcessException("");
+	    } else { //token can be put in the queue
+		while (_pause) {
+		    //System.out.println("Pausing in puuuuuuuuuut");
+		    //System.out.println(((Entity)getContainer().getFullName()Container()).getName()+" PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+		    workspace.wait(this);
+		}
+	    }
+	}
+	super.put(token);
+	//Check if pending write to the Queue
+	synchronized(this) {
 	    if (_readpending) {
 		//System.out.println("readunblocking*** "+getContainer().getFullName());
-		((PNDirector)((Actor)(getContainer().getContainer())).getDirector()).readUnblock();
+		director.readUnblock();
 		_readpending = false;
 		notifyAll(); 
 		//Wake up all threads waiting on a write to this receiver
-		//}
 	    }
 	}
     }
     
+    public synchronized void setPause(boolean pause) {
+	if (pause) {
+	    _pause = true;
+	    //System.out.println("Pausing ...........................");
+	} else {
+	    _pause = false;
+	    //System.out.println("Not paused AAAAAAAAAAAAAAAAAAAAAAA");
+	    notifyAll();
+	}
+    }
 
     /** Add or remove the queue from list of queues blocked on a read depending
      * on the value of the boolean val
      * @param val is true f 
      */
-    public void setReadPending(boolean readpending) {
+    public synchronized void setReadPending(boolean readpending) {
 	_readpending = readpending;
     }
     
     /** Set the write Pending flag to a true or a false
      * @param val is the value to which the flag should be set to
      */
-    public void setWritePending(boolean writepending) {
+    public synchronized void setWritePending(boolean writepending) {
 	_writepending = writepending;
     }
 
@@ -201,75 +236,6 @@ public class PNQueueReceiver extends QueueReceiver {
     }
 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-//     private synchronized void _canContinue() {
-// 	if (!_pause) return;
-// 	else { //paused
-// 	    int depth = 0;
-// 	    Port port = (Port)getContainer();
-// 	    Workspace _workspace = ((Workspace)port.getContainer());
-// 	    //wait();
-// 	    try {
-// 		try {
-// 		    depth = _workspace.releaseAllReadPermissions();
-// 		    while (_pause) {
-// 			wait();
-// 		    }
-// 		} catch (InterruptedException ex) {
-// 		    throw new InternalErrorException(
-// 			    "Thread interrupted while paused! " +
-// 			    ex.getMessage());
-// 		}
-// 	    } finally {
-// 		_workspace.reacquireReadPermissions(depth);
-// 	    }
-// 	    return;
-// 	}
-//     }
-
-//     private synchronized void _waitOnRead() {
-// 	int depth = 0;
-// 	Port port = (Port)getContainer();
-// 	Workspace _workspace = ((Workspace)port.workspace());
-// 	try {
-// 	    try {
-// 		depth = _workspace.releaseAllReadPermissions();
-// 		while (_readpending) {
-// 		    wait();
-// 		}
-// 	    } catch (InterruptedException ex) {
-// 		throw new InternalErrorException(
-// 			"Thread interrupted while blocked on a read! " +
-// 			ex.getMessage());
-// 	    }   
-// 	} finally {
-// 	    _workspace.reacquireReadPermissions(depth);
-// 	}
-//     }
-
-//     private synchronized void _waitOnWrite() {
-// 	int depth = 0;
-// 	Port port = (Port)getContainer();
-// 	Workspace _workspace = ((Workspace)port.workspace());
-// 	try {
-// 	    try {
-// 		depth = _workspace.releaseAllReadPermissions();
-// 		while (_writepending) {
-// 		    wait();
-// 		}
-// 		//_workspace.getReadAccess(depth);
-// 	    } catch (InterruptedException ex) {
-// 		throw new InternalErrorException(
-// 			"Thread interrupted while blocked on a read! " +
-// 			ex.getMessage());
-// 	    }   
-// 	} finally {
-// 	    _workspace.reacquireReadPermissions(depth);
-// 	}
-//     }    
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
