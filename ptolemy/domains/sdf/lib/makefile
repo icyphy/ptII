@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayToSequence.java \
 	BitsToInt.java \
 	Delay.java \
 	FIR.java \

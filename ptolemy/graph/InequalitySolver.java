@@ -80,7 +80,6 @@ public class InequalitySolver {
      *  @param ineq an <code>Inequality</code>
      */
     public void addInequality(Inequality ineq) {
-
 	// put ineq. to _Ilist
 	Integer indexWrap = new Integer(_Ilist.size());
 	Info info = new Info(ineq);
@@ -333,6 +332,12 @@ public class InequalitySolver {
 	    }
 	}
 
+	// FIXME: This outer loop is a hack for making structured type work
+	// should consider changing the algorithm to loop through all
+	// inequalities and not using _NS
+	boolean allSatisfied = false;
+	while ( !allSatisfied) {
+
 	// solve the inequalities
         while (_NS.size() > 0) {
 
@@ -385,6 +390,23 @@ public class InequalitySolver {
                 }
             }
         }
+
+	// FIXME: This part is a hack for making structured type work.
+	allSatisfied = true;
+	for (int i = 0; i < _Ilist.size(); i++) {
+	    Info info = (Info)_Ilist.get(i);
+	    if (info._inCvar) {
+	    	if (info._ineq.isSatisfied(_cpo)) {
+		    info._inserted = false;
+		} else { 	// insert to _NS
+                    _NS.addLast(new Integer(i));
+		    info._inserted = true;
+		    allSatisfied = false;
+		}
+	    }
+	}
+	}
+
 
         // Check the inequalities not involved in the above iteration.
 	// These inequalities are the ones in the "Ccnst" set in the

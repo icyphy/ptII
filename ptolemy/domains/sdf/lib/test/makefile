@@ -50,6 +50,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ArrayToSequence.tcl \
 	BitsToInt.tcl\
 	Delay.tcl\
 	IntToBits.tcl \

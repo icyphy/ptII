@@ -1,4 +1,4 @@
-/* Bundle a sequence of n input tokens into an ArrayToken.
+/* Read ArrayTokens and send their elements to the output.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;
 import ptolemy.data.Token;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.BaseType;
@@ -45,24 +44,25 @@ import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+// import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// SequenceToArray
+//// ArrayToSequence
 /**
-This actor bundles a certain number of input tokens into an ArrayToken.
-The number of tokens to be bundled into an ArrayToken is determined
-by the parameter <i>TokenConsumptionRate</i> at the input port.
+This actor reads ArrayTokens at the input and writes the array elements
+to the output. The parameter <i>TokenProductionRate</i> at the output
+port must agree with the number of elements in each input ArrayToken.
+If this is not true, an exception will be thrown.
 <p>
-This actor is polymorphic. It can accept intput of any type and will
-send ArrayTokens of corresponding type.
+This actor is polymorphic. It can accept ArrayTokens with any element
+type and send out tokens corresponding to that type.
 <p>
 
 @author Yuhong Xiong
 @version $Id$
 */
 
-public class SequenceToArray extends SDFAtomicActor {
+public class ArrayToSequence extends SDFAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -72,23 +72,25 @@ public class SequenceToArray extends SDFAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SequenceToArray(TypedCompositeActor container, String name)
+    public ArrayToSequence(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         input = new SDFIOPort(this, "input", true, false);
         output = new SDFIOPort(this, "output", false, true);
 
-	// set the TokenConsumptionRate to default 1.
+	// TokenConsumptionRate is 1.
 	setTokenConsumptionRate(input, 1);
 
-	// TokenProductionRate is 1.
+	// set the TokenProductionRate to default 1.
 	setTokenProductionRate(output, 1);
 
-	// set the output type to be an ArrayType.
-	output.setTypeEquals(new ArrayType(BaseType.NAT));
+	// set type constraints.
+	input.setTypeEquals(new ArrayType(BaseType.NAT));
+	ArrayType inputType = (ArrayType)input.getType();
+	InequalityTerm elemTerm = inputType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -112,9 +114,14 @@ public class SequenceToArray extends SDFAtomicActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         try {
-            SequenceToArray newobj = (SequenceToArray)(super.clone(ws));
+            ArrayToSequence newobj = (ArrayToSequence)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+
+	    // set the type constraints
+	    ArrayType inputType = (ArrayType)newobj.input.getType();
+	    InequalityTerm elemTerm = inputType.getElementTypeTerm();
+	    newobj.output.setTypeAtLeast(elemTerm);
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -123,31 +130,34 @@ public class SequenceToArray extends SDFAtomicActor {
         }
     }
 
-    /** Consume the inputs and produce the output ArrayToken.
-     *  @exception IllegalActionException Not Thrown.
+    /** Consume the input ArrayToken and produce the outputs.
+     *  @exception IllegalActionException If the number of elements in the
+     *   input ArrayToken is not the same as the token production rate.
      */
     public void fire() throws IllegalActionException {
-	int length = getTokenConsumptionRate(input);
-	Token[] valueArray = new Token[length];
-
-	for (int i=0; i<length; i++) {
-	    valueArray[i] = input.get(0);
+	ArrayToken token = (ArrayToken)input.get(0);
+	int rate = getTokenProductionRate(output);
+	if (token.length() != rate) {
+	    throw new IllegalActionException("ArrayToSequence.fire: The " +
+		"number of elements in the input ArrayToken (" +
+		token.length() + ") is not the same as the token production " +
+		"rate (" + rate + ").");
 	}
-        output.send(0, new ArrayToken(valueArray));
+
+	Token[] elements = token.arrayValue();
+	for (int i=0; i<rate; i++) {
+            output.send(0, elements[i]);
+	}
     }
 
-    /** Return the type constraint that the type of the elements of the
-     *  output array is no less than the type of the input port.
+    /** Return the type constraint that the type of the output port is no
+     *  less than the type of the elements of the input array.
      *  @return An Enumeration of Inequality.
      */
     public Enumeration typeConstraints () {
-	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm elemTerm = outArrType.getElementTypeTerm();
-	Inequality ineq = new Inequality(input.getTypeTerm(), elemTerm);
-
-	LinkedList result = new LinkedList();
-	result.insertLast(ineq);
-	return result.elements();
+	// Override the base class implementation to not use the default
+	// constraints.
+	return output.typeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////
