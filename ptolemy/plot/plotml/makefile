@@ -59,6 +59,7 @@ JSRCS = EditablePlotMLApplet.java \
 	PlotMLParser.java
 
 EXTRA_SRCS =	$(JSRCS) \
+	PlotML_1.dtd \
 	plotml.dtd
 
 # Files or directories that are present, but that 'make checkjunk'
