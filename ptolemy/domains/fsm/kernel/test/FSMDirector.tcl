@@ -114,7 +114,7 @@ test FSMDirector-4.1 {test action methods} {
     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
     [java::field $src step] setExpression "3"
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
-    set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
+	[java::field $e1 directorClass] setExpression "ptolemy.domains.fsm.kernel.FSMDirector"
 #    The following commented statements were the way to construct
 #    a modal model before the ModalModel class was implemented.
 #    We use ModalModel class instead to avoid GraphConstructionException
@@ -303,7 +303,7 @@ test FSMDirector-7.1 {test clone a modal model} {
     [java::field $src step] setExpression "3"
 
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
-    set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
+	[java::field $e1 directorClass] setExpression "ptolemy.domains.fsm.kernel.FSMDirector"
     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
