@@ -312,6 +312,9 @@ awk 'BEGIN {
 } ' < $tmpfile2 > $tmpfile1
 
 
+relationsFile=ecsl2moml.relations
+rm -f $relationsFile
+
 # Convert OutputPort and InputPort
 awk '
 $0 ~ /<entity/ {
@@ -440,12 +443,12 @@ $1 ~ /<\/entity>/ {
     indent = substr($0, 0, index($0,"<") - 1)  
 
 
+    # Handle places where we need to add a relation
     for (addRelation in addRelations) {
        if ( length(addRelations[addRelation]) > 0 ) {
            addRelationsFullName = addRelationsContainer[addRelation] "_" addRelations[addRelation] "_multiPort"
            print indent "<relation name=\"" addRelationsFullName "\" class=\"ptolemy.actor.TypedIORelation\"/>"
            print indent "<link port=\"" addRelation "\" relation=\"" addRelationsFullName "\"/>" 
-           addRelations[addRelation] = ""
        }
     }
 
@@ -468,17 +471,36 @@ $1 ~ /<\/entity>/ {
           } else {
               nf = split(relation, relations, " ") 
               for(i = 1; i <= nf; i++) {
-              print indent "<link port=\"" link "\" relation=\"" relations[i] "\"/>" 
+                  # If the port is an addRelations port, then
+                  # we will substitute n the next awk run
+                  addRelationsHack = 0
+                  for (addRelation in addRelations) {
+                      if ( length(addRelations[addRelation]) > 0 ) {
+                           addRelationsFullName = addRelationsContainer[addRelation] "_" addRelations[addRelation] "_multiPort"
+                           if (link == addRelationsFullName) {
+                               addRelationsHack = 1
+                               print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
+                           }
+                       }
+                  } 
+                  if (addRelationsHack == 0) {
+                      print indent "<link port=\"" link "\" relation=\"" relations[i] "\"/>"
+                  }
               }
           }
           links[link] = ""  
        }
 
     }
-
+    for (addRelation in addRelations) {
+       if ( length(addRelations[addRelation]) > 0 ) {
+          addRelations[addRelation] = ""
+       }
+    }
 }' < $tmpfile1 > $tmpfile2
 
-
+# Substitute relation names for relations where we had to add a port
+sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
 
 # Parameter
 awk '{
@@ -525,9 +547,9 @@ awk '{
     } else {
        print $0
     } 
-} ' < $tmpfile2 > $tmpfile1
+} ' < $tmpfile1 > $tmpfile2
 
 
-cp $tmpfile1 $output
+cp $tmpfile2 $output
 
 rm -f $tmpfile1 $tmpfile2
