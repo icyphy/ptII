@@ -165,20 +165,20 @@ public class GeneratorTableau extends Tableau {
 
             JButton moreInfoButton = new JButton("More Info");
             moreInfoButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    Configuration configuration = getConfiguration();
-                    URL infoURL =
-                        getClass().getResource("../../../doc/codegen.htm");
-                    try {
-                        configuration.openModel(
-                                null, infoURL, infoURL.toExternalForm());
-                    } catch (Exception ex) {
-                        throw new InternalErrorException(
-                                "Failed to open doc/codegen.htm: "
-                                + ex);
+                    public void actionPerformed(ActionEvent evt) {
+                        Configuration configuration = getConfiguration();
+                        URL infoURL =
+                            getClass().getResource("../../../doc/codegen.htm");
+                        try {
+                            configuration.openModel(
+                                    null, infoURL, infoURL.toExternalForm());
+                        } catch (Exception ex) {
+                            throw new InternalErrorException(
+                                    "Failed to open doc/codegen.htm: "
+                                    + ex);
+                        }
                     }
-                }
-            });
+                });
             caveatsPanel.add(moreInfoButton);
             component.add(caveatsPanel);
 
@@ -235,156 +235,156 @@ public class GeneratorTableau extends Tableau {
             getContentPane().add(component, BorderLayout.CENTER);
 
             stopButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    Iterator execs = _execs.iterator();
-                    while(execs.hasNext()) {
-                        _Exec exec = (_Exec)execs.next();
-                        exec.destroy();
-                        text.append("Cancelled.\n");
+                    public void actionPerformed(ActionEvent evt) {
+                        Iterator execs = _execs.iterator();
+                        while(execs.hasNext()) {
+                            _Exec exec = (_Exec)execs.next();
+                            exec.destroy();
+                            text.append("Cancelled.\n");
+                        }
                     }
-                }
-            });
+                });
 
             goButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-			// Handle the directory entry.
-                        String directoryName = options.directory
-                            .getExpression();
-
-			// If the directory name is empty, then set
-			// directory to the current working directory.
-			File directory = new File(directoryName);
-                        if(!directory.isDirectory()) {
-                            throw new IllegalActionException(model,
-                                    "Not a directory: " + directoryName);
-                        }
-
-			if (!directory.canWrite()) {
-                            throw new IllegalActionException(model,
-                                    "Can't write: " + directoryName);
-			}
-			// Handle the generator entry.
-                        boolean deep = ((BooleanToken)options.deep.getToken())
-                            .booleanValue();
-
-			File destination = null;
-			if (!deep) {
-                            // Write the generated code.
-                            destination = new File(directoryName,
-                                    model.getName() + ".java");
-
-                            FileWriter outfile = new FileWriter(destination);
-                            PrintWriter outprinter = new PrintWriter(outfile);
-                            outprinter.print(
-                                    (new SaveAsJava()).generate(model));
-                            outfile.close();
-			} else {
-			    // FIXME: what if this is not an SDF Model?
-
-                            // Handle the package entry.
-                            // This is out of order because we use the
-                            // packageName in the generator.
-                            String packageName = options.packageName
+                    public void actionPerformed(ActionEvent evt) {
+                        try {
+                            // Handle the directory entry.
+                            String directoryName = options.directory
                                 .getExpression();
-                            if (packageName.length() > 0
-                                    && ! packageName.endsWith(".") ) {
-                                packageName = packageName + '.';
+
+                            // If the directory name is empty, then set
+                            // directory to the current working directory.
+                            File directory = new File(directoryName);
+                            if(!directory.isDirectory()) {
+                                throw new IllegalActionException(model,
+                                        "Not a directory: " + directoryName);
                             }
 
-			    SDFCodeGenerator codeGenerator =
-				new SDFCodeGenerator();
-			    codeGenerator.
-				setOutputDirectoryName(directoryName);
-			    codeGenerator.
-				setOutputPackageName(packageName);
+                            if (!directory.canWrite()) {
+                                throw new IllegalActionException(model,
+                                        "Can't write: " + directoryName);
+                            }
+                            // Handle the generator entry.
+                            boolean deep = ((BooleanToken)options.deep.getToken())
+                                .booleanValue();
 
-			    // Create a manager.
-			    Manager manager = ((CompositeActor)model)
-				.getManager();
-			    //			    if (manager == null) {
+                            File destination = null;
+                            if (!deep) {
+                                // Write the generated code.
+                                destination = new File(directoryName,
+                                        model.getName() + ".java");
 
-                            ((CompositeActor)model)
-                                .setManager(new Manager(model.workspace(),
-                                        "manager"));
-                            manager = ((CompositeActor)model).getManager();
+                                FileWriter outfile = new FileWriter(destination);
+                                PrintWriter outprinter = new PrintWriter(outfile);
+                                outprinter.print(
+                                        (new SaveAsJava()).generate(model));
+                                outfile.close();
+                            } else {
+                                // FIXME: what if this is not an SDF Model?
+
+                                // Handle the package entry.
+                                // This is out of order because we use the
+                                // packageName in the generator.
+                                String packageName = options.packageName
+                                    .getExpression();
+                                if (packageName.length() > 0
+                                        && ! packageName.endsWith(".") ) {
+                                    packageName = packageName + '.';
+                                }
+
+                                SDFCodeGenerator codeGenerator =
+                                    new SDFCodeGenerator();
+                                codeGenerator.
+                                    setOutputDirectoryName(directoryName);
+                                codeGenerator.
+                                    setOutputPackageName(packageName);
+
+                                // Create a manager.
+                                Manager manager = ((CompositeActor)model)
+                                    .getManager();
+                                //			    if (manager == null) {
+
+                                ((CompositeActor)model)
+                                    .setManager(new Manager(model.workspace(),
+                                            "manager"));
+                                manager = ((CompositeActor)model).getManager();
 				//}
 
-			    LinkedList models = new LinkedList();
-			    models.add(model);
-			    codeGenerator.setModels(models);
+                                LinkedList models = new LinkedList();
+                                models.add(model);
+                                codeGenerator.setModels(models);
 
-			    // FIXME: the output should go into the text widget
-			    // FIXME: this should be run in the background
-			    codeGenerator.generateCode();
-			    destination = new File(
-                                    codeGenerator.getPackageDirectoryName(),
-                                    model.getName() + ".java");
-			}
-                        report("Code generation complete.");
-
-			// Handle the show checkbox.
-			boolean show = ((BooleanToken)options.show.getToken())
-                            .booleanValue();
-                        if (show) {
-                            URL codeFile = destination.toURL();
-                            Configuration config = (Configuration)toplevel();
-                            // FIXME: If we previously had this file open,
-                            // we need to refresh the tableau.
-                            config.openModel(null, codeFile,
-                                    codeFile.toExternalForm());
-                        }
-
-			// Handle the compile and run.
-			boolean compile = ((BooleanToken)options.compile
-                                .getToken()).booleanValue();
-			boolean run = ((BooleanToken)options.run.getToken())
-                            .booleanValue();
-
-                        List execCommands = new LinkedList();
-
-                        int index = 0;
-                        if (compile) {
-                            String compileOptions = options
-                                .compileOptions.getExpression();
-			    execCommands.add(
-                                    "javac "
-                                    + compileOptions
-                                    + " "
-                                    + directoryName
-                                    + File.separatorChar
-                                    + model.getName()
-                                    + ".java");
-                        }
-                        if (run) {
-                            String runOptions = options
-                                .runOptions.getExpression();
-                            String className = options
-                                .packageName.getExpression();
-                            if (className.length() > 0
-                                    && ! className.endsWith(".") ) {
-                                className = className + '.' + model.getName();
-                            } else {
-                                className = model.getName();
+                                // FIXME: the output should go into the text widget
+                                // FIXME: this should be run in the background
+                                codeGenerator.generateCode();
+                                destination = new File(
+                                        codeGenerator.getPackageDirectoryName(),
+                                        model.getName() + ".java");
                             }
-			    execCommands.add("java "
-                                    + runOptions
-                                    + " ptolemy.actor.gui"
-                                    + ".CompositeActorApplication -class"
-                                    + className);
-                        }
-                        if(execCommands.size() > 0) {
-			    text.setText("");
-			    _Exec exec = new _Exec(text, execCommands);
-                            _execs.add(exec);
+                            report("Code generation complete.");
 
-			    new Thread(exec).start();
+                            // Handle the show checkbox.
+                            boolean show = ((BooleanToken)options.show.getToken())
+                                .booleanValue();
+                            if (show) {
+                                URL codeFile = destination.toURL();
+                                Configuration config = (Configuration)toplevel();
+                                // FIXME: If we previously had this file open,
+                                // we need to refresh the tableau.
+                                config.openModel(null, codeFile,
+                                        codeFile.toExternalForm());
+                            }
+
+                            // Handle the compile and run.
+                            boolean compile = ((BooleanToken)options.compile
+                                    .getToken()).booleanValue();
+                            boolean run = ((BooleanToken)options.run.getToken())
+                                .booleanValue();
+
+                            List execCommands = new LinkedList();
+
+                            int index = 0;
+                            if (compile) {
+                                String compileOptions = options
+                                    .compileOptions.getExpression();
+                                execCommands.add(
+                                        "javac "
+                                        + compileOptions
+                                        + " "
+                                        + directoryName
+                                        + File.separatorChar
+                                        + model.getName()
+                                        + ".java");
+                            }
+                            if (run) {
+                                String runOptions = options
+                                    .runOptions.getExpression();
+                                String className = options
+                                    .packageName.getExpression();
+                                if (className.length() > 0
+                                        && ! className.endsWith(".") ) {
+                                    className = className + '.' + model.getName();
+                                } else {
+                                    className = model.getName();
+                                }
+                                execCommands.add("java "
+                                        + runOptions
+                                        + " ptolemy.actor.gui"
+                                        + ".CompositeActorApplication -class"
+                                        + className);
+                            }
+                            if(execCommands.size() > 0) {
+                                text.setText("");
+                                _Exec exec = new _Exec(text, execCommands);
+                                _execs.add(exec);
+
+                                new Thread(exec).start();
+                            }
+                        } catch (Exception ex) {
+                            MessageHandler.error("Code generation failed.", ex);
                         }
-                    } catch (Exception ex) {
-                        MessageHandler.error("Code generation failed.", ex);
                     }
-		}
-            });
+                });
 	}
     }
 
@@ -488,42 +488,42 @@ public class GeneratorTableau extends Tableau {
                 while(commands.hasNext()) {
                     final String command = (String)commands.next();
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            _text.append("Executing: " + command + "\n");
-                        }
-                    });
+                            public void run() {
+                                _text.append("Executing: " + command + "\n");
+                            }
+                        });
 
                     _process = runtime.exec(command);
 
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            try {
-                                InputStream errorStream =
-                                    _process.getErrorStream();
-                                BufferedReader reader =
-                                    new
-                                    BufferedReader(new
-                                            InputStreamReader(errorStream));
-                                String line;
-                                while((line = reader.readLine()) != null) {
-                                    _text.append(line + '\n');
-                                }
-                                reader.close();
+                            public void run() {
+                                try {
+                                    InputStream errorStream =
+                                        _process.getErrorStream();
+                                    BufferedReader reader =
+                                        new
+                                            BufferedReader(new
+                                                InputStreamReader(errorStream));
+                                    String line;
+                                    while((line = reader.readLine()) != null) {
+                                        _text.append(line + '\n');
+                                    }
+                                    reader.close();
 
-                                errorStream = _process.getInputStream();
-                                reader =
-                                    new
-                                    BufferedReader(new
-                                            InputStreamReader(errorStream));
-			        while((line = reader.readLine()) != null) {
-                                    _text.append(line);
+                                    errorStream = _process.getInputStream();
+                                    reader =
+                                        new
+                                            BufferedReader(new
+                                                InputStreamReader(errorStream));
+                                    while((line = reader.readLine()) != null) {
+                                        _text.append(line);
+                                    }
+                                    reader.close();
+                                } catch (IOException io) {
+                                    _text.append("IOException: " + io + '\n' );
                                 }
-                                reader.close();
-                            } catch (IOException io) {
-                                _text.append("IOException: " + io + '\n' );
                             }
-                        }
-                    });
+                        });
 
                     try {
                         int processReturnCode = _process.waitFor();
@@ -542,10 +542,10 @@ public class GeneratorTableau extends Tableau {
                 }
 	    } catch (final IOException io) {
                 SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        _text.append("IOException: " + io + '\n' );
-                    }
-                });
+                        public void run() {
+                            _text.append("IOException: " + io + '\n' );
+                        }
+                    });
             }
         }
 

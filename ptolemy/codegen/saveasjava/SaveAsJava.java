@@ -96,64 +96,64 @@ class SaveAsJava {
         code += "public class "
             + sanitizedName
             + " extends "
-                + _getClassName(compositeModel)
-                    + " {\n\n" + _indent(1)
-                    + "public " + sanitizedName
-                    + "(Workspace w) throws"
-                    + " IllegalActionException {\n" + _indent(2)
-                    + "super(w);\n\n" + _indent(2) + "try {\n";
+            + _getClassName(compositeModel)
+            + " {\n\n" + _indent(1)
+            + "public " + sanitizedName
+            + "(Workspace w) throws"
+            + " IllegalActionException {\n" + _indent(2)
+            + "super(w);\n\n" + _indent(2) + "try {\n";
 
-                // When exporting MoML, we want to identify the class
-                // as the parent class rather than this class so that
-                // this class need not be present to instantiate the
-                // model.
-                code += _indent(2)
-                    + "getMoMLInfo().className = \""
-                    + _getClassName(compositeModel)
-                        + "\";\n";
+        // When exporting MoML, we want to identify the class
+        // as the parent class rather than this class so that
+        // this class need not be present to instantiate the
+        // model.
+        code += _indent(2)
+            + "getMoMLInfo().className = \""
+            + _getClassName(compositeModel)
+            + "\";\n";
 
-                    // Generate attributes.
-                    code += _generateAttributes(compositeModel);
+        // Generate attributes.
+        code += _generateAttributes(compositeModel);
 
-                    // Generate code to instantiate
-                    // and connect the system components.
-                    code += _generateComponents(compositeModel);
+        // Generate code to instantiate
+        // and connect the system components.
+        code += _generateComponents(compositeModel);
 
-                    // Generate trailer code for the
-                    // composite actor constructor
-                    code += _indent(2)
-                        + "} catch (NameDuplicationException e) {\n"
-                        + _indent(3)
-                        + "throw new RuntimeException(e.toString());\n"
-                        + _indent(2) + "}\n"
-                        + _indent(1) + "}\n"
-                        + "}\n";
+        // Generate trailer code for the
+        // composite actor constructor
+        code += _indent(2)
+            + "} catch (NameDuplicationException e) {\n"
+            + _indent(3)
+            + "throw new RuntimeException(e.toString());\n"
+            + _indent(2) + "}\n"
+            + _indent(1) + "}\n"
+            + "}\n";
 
-                    // Generate statements for importing classes.
-                    _insertIfUnique(
-                            "ptolemy.kernel.util.Workspace",
-                            _importList);
-                    _insertIfUnique(
-                            "ptolemy.kernel.util.IllegalActionException",
-                            _importList);
-                    _insertIfUnique(
-                            "ptolemy.kernel.util.NameDuplicationException",
-                            _importList);
-                    try {
-                        Iterator iter = _importList.iterator();
-                        while (iter.hasNext()) {
-                            String p = (String)(iter.next());
-                            importCode += "import " + p + ";\n";
-                        }
-                        code = importCode + "\n" + code;
-                    } catch (Exception ex) {
-                        throw new IllegalActionException(ex.getMessage()
-                                + "Exception raised while creating the "
-                                + "import list '"
-                                + importCode + "'.\n");
-                    }
+        // Generate statements for importing classes.
+        _insertIfUnique(
+                "ptolemy.kernel.util.Workspace",
+                _importList);
+        _insertIfUnique(
+                "ptolemy.kernel.util.IllegalActionException",
+                _importList);
+        _insertIfUnique(
+                "ptolemy.kernel.util.NameDuplicationException",
+                _importList);
+        try {
+            Iterator iter = _importList.iterator();
+            while (iter.hasNext()) {
+                String p = (String)(iter.next());
+                importCode += "import " + p + ";\n";
+            }
+            code = importCode + "\n" + code;
+        } catch (Exception ex) {
+            throw new IllegalActionException(ex.getMessage()
+                    + "Exception raised while creating the "
+                    + "import list '"
+                    + importCode + "'.\n");
+        }
 
-                    return code;
+        return code;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -259,16 +259,16 @@ class SaveAsJava {
             code += _indent(3)
                 + className
                 + " "
-                    + sanitizedName
-                    + " = new "
-                        + className
-                        + "("
-                            + containerName
-                            + ", \""
-                                + sanitizedName
-                                + "\");\n";
-                                code += _generatePorts(model);
-                                code += _generateAttributes(model);
+                + sanitizedName
+                + " = new "
+                + className
+                + "("
+                + containerName
+                + ", \""
+                + sanitizedName
+                + "\");\n";
+            code += _generatePorts(model);
+            code += _generateAttributes(model);
         }
         else nameAsContainer = "this";
 
@@ -305,9 +305,9 @@ class SaveAsJava {
                     }
                     code += "connect ("
                         + _name(port1)
-                            + ", "
-                            + _name(port2)
-                                + ");\n";
+                        + ", "
+                        + _name(port2)
+                        + ");\n";
                 }
                 // Explicitly instantiate the relation,
                 // generate code to set relevant attributes of the
@@ -318,23 +318,23 @@ class SaveAsJava {
                     code += _indent(3)
                         + relationClassName
                         + " "
-                            + _name(relation);
-                            code += " = new "
-                                + relationClassName
-                                + "("
-                                    + nameAsContainer;
-                                code += ", \""
-                                    + _name(relation)
-                                        + "\");\n";
-                                    code += relationAttributes;
-                                    while (ports.hasNext()) {
-                                        Port p = (Port)ports.next();
-                                        code += _indent(3)
-                                            + _name(p)
-                                                + ".link("
-                                                + _name(relation)
-                                                    + ");\n";
-                                    }
+                        + _name(relation);
+                    code += " = new "
+                        + relationClassName
+                        + "("
+                        + nameAsContainer;
+                    code += ", \""
+                        + _name(relation)
+                        + "\");\n";
+                    code += relationAttributes;
+                    while (ports.hasNext()) {
+                        Port p = (Port)ports.next();
+                        code += _indent(3)
+                            + _name(p)
+                            + ".link("
+                            + _name(relation)
+                            + ");\n";
+                    }
                 }
             }
 
