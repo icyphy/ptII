@@ -250,18 +250,15 @@ public class PNDirector extends CompositeProcessDirector {
      *  thrown by derived classes.
      */
     public boolean postfire() throws IllegalActionException {
-        _notDone = _notDone && !_stopRequested;
-	//If the container has input ports and there are active processes
-	//in the container, then the execution might restart on receiving
+        _notDone = super.postfire();
+	// If the container has input ports and there are active processes
+	// in the container, then the execution might restart on receiving
 	// additional data.
-	if (!((((CompositeActor)getContainer()).
-		inputPortList()).isEmpty())
-		&& _getActiveActorsCount() != 0 ){
-            // System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
-	    return _notDone;
+	if (!((((CompositeActor)getContainer()).inputPortList()).isEmpty())
+		&& _getActiveActorsCount() != 0) {
+            // Avoid returning false on detected deadlock.
+	    return !_stopRequested;
 	} else {
-            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
-	    //	    + " again.");
 	    return _notDone;
 	}
     }
