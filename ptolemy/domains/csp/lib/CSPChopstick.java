@@ -44,9 +44,14 @@ import ptolemy.data.expr.Parameter;
 /**
 Chopstick in Sieve of Eratosthenes demo. Each Chopstick can only be used by 
 one philosopher at a time. When it is not being used it can be 
-claimed by either of the two philophers next to it. Once it has 
+claimed by either of the two philosophers next to it. Once it has 
 been claimed, it is not available until it is released by the 
-philospopher holding it.
+philosopher holding it.
+<p>
+This actor has four ports, each of width one: two are used to communicate 
+with the philosopher on the left, and two are used to communicate with the 
+buffer on the right. Two ports are needed to communicate with each philosopher
+as the philosopher holds the chopstick for some random time.
 <p>
 @author Neil Smyth
 @version 
@@ -54,7 +59,17 @@ philospopher holding it.
 */
 
 public class CSPChopstick extends CSPActor {
-    public CSPChopstick() throws IllegalActionException, NameDuplicationException{
+    /** Construct a CSPChopstick in the default workspace with an empty string
+     *  as its name. 
+     *  The actor is created with two input ports and two output 
+     *  ports, all of width one. The input ports are called "leftIn" 
+     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  and "rightOut".
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     */
+    public CSPChopstick() 
+            throws IllegalActionException, NameDuplicationException{
         super();
         leftOut = new IOPort(this, "leftOut", false, true);
         leftIn = new IOPort(this, "leftIn", true, false);
@@ -62,12 +77,23 @@ public class CSPChopstick extends CSPActor {
         rightIn = new IOPort(this, "rightIn", true, false);
     }
 
+    /** Construct a CSPChopstick in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown. The actor is created with 
+     *  two input ports and two output 
+     *  ports, all of width one. The input ports are called "leftIn" 
+     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  and "rightOut".
+     *  <p>
+     *  @param container The CompositeActor that contains this actor.
+     *  @param name The actor's name.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name argument coincides with
+     *   an entity already in the container.
+     */
     public CSPChopstick(CompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
-         this(cont, name, 1);
-    }
-
-    public CSPChopstick(CompositeActor cont, String name, int depth)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          leftOut = new IOPort(this, "leftOut", false, true);
@@ -79,7 +105,17 @@ public class CSPChopstick extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    public void fire() {
+    /** Executes the code in this actor. This actor uses a CDO 
+     *  construct when it is waiting to be used by either of the 
+     *  philosophers next to it. Once one of the philosophers is using 
+     *  it, this actor waits to receive a message that the philosopher 
+     *  is finished eating (using it). It is a good example of using a CDO.
+     *  This process continues executing until a TerminateProcessException 
+     *  is thrown.
+     *  @exception IllegalActionException If an error occurs during 
+     *   executing the process.
+     */
+    public void fire() throws IllegalActionException {
         try {
             boolean guard = true;
             boolean continueCDO = true;
@@ -95,32 +131,31 @@ public class CSPChopstick extends CSPActor {
 
                 // step 3
                 if (successfulBranch == 0) {
-                    // Print some info here
+                    // Wait for philosopher on left to finish eating.
                     leftIn.get(0);
                 } else if (successfulBranch == 1) {
-                    // Print some info here
+                    // Wait for philosopher on right to finish eating.
                     rightIn.get(0);
                 } else if (successfulBranch == -1) {
                     // all guards false so exit CDO
                     continueCDO = false;
                 } else {
-                    throw new TerminateProcessException(getName() + ": " +
-                            "branch id returned during execution of CDO.");
+                    throw new IllegalActionException(getName() + ": " +
+                            "invalid branch id returned during execution " +
+                            "of CDO.");
                 }
             }
-        } catch (IllegalActionException ex) {
-            System.out.println(getName() + ": IllegalActionException, " +
-                    "exiting" + ex.getMessage());
         } catch (NoTokenException ex) {
-            System.out.println(getName() + ": cannot get  token.");
+            throw new IllegalActionException(getName() + ": cannot " +
+                    "get token.");
         }
     }
 
-    public IOPort leftIn;
-    public IOPort leftOut;
-    public IOPort rightIn;
-    public IOPort rightOut;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
+
+    private IOPort leftIn;
+    private IOPort leftOut;
+    private IOPort rightIn;
+    private IOPort rightOut;
 }
