@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 Descramble the input bit sequence using a feedback shift register.
 The taps of the feedback shift register are given by the <i>polynomial</i>
-parameter. The initialState state of the shift register is given by the
+parameter. The initial state of the shift register is given by the
 <i>initialState</i> parameter. This is a self-synchronizing descrambler that
 will exactly reverse the operation of the Scrambler if the polynomials
 are the same. The low-order bit of the polynomial should always be set.
@@ -76,9 +76,9 @@ public class DeScrambler extends Transformer {
         polynomial.setTypeEquals(BaseType.INT);
         polynomial.setExpression("0440001");
 
-        initial = new Parameter(this, "initialState");
-        initial.setTypeEquals(BaseType.INT);
-        initial.setExpression("1");
+        initialState = new Parameter(this, "initialState");
+        initialState.setTypeEquals(BaseType.INT);
+        initialState.setExpression("1");
 
         // Declare input data type.
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -103,7 +103,7 @@ public class DeScrambler extends Transformer {
      *  n-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 1.
      */
-    public Parameter initial;
+    public Parameter initialState;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -165,11 +165,11 @@ public class DeScrambler extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg = ((IntToken)initial.getToken()).intValue();
+        _latestShiftReg = _shiftReg = ((IntToken)initialState.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new
-     *  initialState state for the next iteration.
+     *  initial state for the next iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {

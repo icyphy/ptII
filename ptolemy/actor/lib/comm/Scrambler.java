@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Scrambler
 /**
 Scramble the input bit sequence using a feedback shift register.
-The initialState state of the shift register is given by the <i>initialState</i>
+The initial state of the shift register is given by the <i>initialState</i>
 parameter, which should be a non-negative integer.
 The taps of the feedback shift register are given by the <i>polynomial</i>
 parameter, which should be a positive integer.
@@ -79,7 +79,7 @@ states that a register with <i>N</i> bits can take on.  This one missing
 state, in fact, is a <i>lock-up</i> state, in that if the input is
 an appropriate constant, the scrambler will cease to produce random-looking
 output, and will output a constant. For example, if the input is all zeros,
-and the initialState state of the scrambler is zero, then the outputs will be all
+and the initial state of the scrambler is zero, then the outputs will be all
 zero, hardly random. This is easily avoided by initializing the scrambler
 to some non-zero state. The default value for the <i>shiftReg</i> is set to 1.
 <p>
@@ -173,9 +173,9 @@ public class Scrambler extends Transformer {
         polynomial.setTypeEquals(BaseType.INT);
         polynomial.setExpression("0440001");
 
-        initial = new Parameter(this, "initialState");
-        initial.setTypeEquals(BaseType.INT);
-        initial.setExpression("1");
+        initialState = new Parameter(this, "initialState");
+        initialState.setTypeEquals(BaseType.INT);
+        initialState.setExpression("1");
 
         // Create input port and declare data types.
         //input = new TypedIOPort(this, "input", true, false);
@@ -199,7 +199,7 @@ public class Scrambler extends Transformer {
      *  n-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 1.
      */
-    public Parameter initial;
+    public Parameter initialState;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -268,11 +268,11 @@ public class Scrambler extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg
-            = ((IntToken)initial.getToken()).intValue();
+            = ((IntToken)initialState.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new
-     *  initialState state for the next iteration.
+     *  initial state for the next iteration.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
