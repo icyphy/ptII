@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -117,7 +117,7 @@ public class EditablePlot extends Plot {
      */
     public double[][] getData(int dataset) {
         _checkDatasetIndex(dataset);
-        Vector pts = (Vector)_points.elementAt(_dataset);
+        Vector pts = (Vector)_points.elementAt(dataset);
         int size = pts.size();
         double[][] result = new double[2][size];
         for (int i = 0; i < size; i++) {
@@ -329,7 +329,7 @@ public class EditablePlot extends Plot {
     // form returned by getData.
     private void _setData(int dataset, double[][] data) {
         _checkDatasetIndex(dataset);
-        Vector pts = (Vector)_points.elementAt(_dataset);
+        Vector pts = (Vector)_points.elementAt(dataset);
         int size = pts.size();
         if (data[0].length < size) size = data[0].length;
         for (int i = 0; i < size; i++) {
