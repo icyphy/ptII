@@ -277,6 +277,16 @@ findchanges:
 	rm -f $(FINDCHANGEFILE)
 	$(PTIIADM)/bin/findchanges > $(FINDCHANGEFILE)
 
+# Logdir
+GENLOGDIR = $(GENDIR)/logs
+
+# Make the log dir if necessary
+$(GENLOGDIR):
+	if [ -d $@ ]; then \
+		echo "Making $@ directory"; \
+		mkdir -p $@; \
+	fi
+
 ####################################
 # Build and generate test case coverage on a remote host 
 
@@ -291,7 +301,7 @@ REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 REMOTE1HOST = tycho
 
 # Log file to save the results in
-REMOTE1LOG = $(GENDIR)/logs/remote1.out
+REMOTE1LOG = $(GENLOGDIR)/remote1.out
 
 # JavaScope database, gets removed every night
 JSDATABASE=/users/ptII/jsdatabase
@@ -302,7 +312,7 @@ JSOUTDIR=/users/ptII/public_html/nightly/js
 # Create a separate tree and run the test suite with code coverage
 # on REMOTE1HOST
 remote1: remote1coverage
-remote1coverage: $(PTII_SRC)
+remote1coverage: $(PTII_SRC) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE1HOST) for code coverage"
 	@echo "#"
@@ -493,10 +503,10 @@ REMOTE2HOME = /vol/$(REMOTE2HOST)/$(REMOTE2HOST)2/ptII
 REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
 
 # Log file to save the results in
-REMOTE2LOG = $(GENDIR)/logs/remote2.out
+REMOTE2LOG = $(GENLOGDIR)/remote2.out
 
 remote2: remote2jdk1.1
-remote2jdk1.1:  $(PTII_SRC)
+remote2jdk1.1:  $(PTII_SRC) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE2HOST) with JDK1.1 "
 	@echo "#"
@@ -580,10 +590,10 @@ REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)2/ptII
 REMOTE3PTIIDIST = $(REMOTE3HOME)/ptII
 
 # Log file to save the results in
-REMOTE3LOG = $(GENDIR)/logs/remote3.out
+REMOTE3LOG = $(GENLOGDIR)/remote3.out
 
 remote3: remote3cvs
-remote3cvs:
+remote3cvs:  $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE3HOST) by doing a cvs checkout "
 	@echo "#"
@@ -667,19 +677,19 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 PTIINIGHTLY_TXT = $(PTIIADM)/test/ptIInightly.txt
 
 # Semaphore file for the remote1 build
-REMOTE1DONEFILE = $(GENDIR)/logs/remote1done
+REMOTE1DONEFILE = $(GENLOGDIR)/remote1done
 remote1done: $(REMOTE1DONEFILE) remotealldone
 $(REMOTE1DONEFILE):
 	date > $@
 
 # Semaphore file for the remote2 build
-REMOTE2DONEFILE = $(GENDIR)/logs/remote2done
+REMOTE2DONEFILE = $(GENLOGDIR)/remote2done
 remote2done: $(REMOTE2DONEFILE) remotealldone
 $(REMOTE2DONEFILE):
 	date > $@
 
 # Semaphore file for the remote3 build
-REMOTE3DONEFILE = $(GENDIR)/logs/remote3done
+REMOTE3DONEFILE = $(GENLOGDIR)/remote3done
 remote3done: $(REMOTE3DONEFILE) remotealldone
 $(REMOTE3DONEFILE):
 	date > $@
