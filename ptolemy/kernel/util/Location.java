@@ -57,9 +57,9 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Green (cxh)
 */
 public class Location extends SingletonAttribute
-    implements Locatable {
+        implements Locatable {
 
-    // FIXME: Note hat this class does not extend from StringAttribute
+    // FIXME: Note that this class does not extend from StringAttribute
     // because it is a singleton.  Thus, there is a bunch of code
     // duplication here.  The fix would be to modify StringAttribute
     // so that we could have a singleton.
@@ -254,8 +254,6 @@ public class Location extends SingletonAttribute
     public void setExpression(String expression) {
         _expression = expression;
         _expressionSet = true;
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setOverrideDepth(0);
     }
 
     /** Set the location in some cartesian coordinate system, and notify
@@ -273,10 +271,8 @@ public class Location extends SingletonAttribute
         _expressionSet = false;
         if (_setLocation(location)) {
             // If the location was modified in _setLocation(),
-            // we mark this object as being modified.
-
-            // Make sure the new value is exported in MoML.  EAL 12/03.
-            setOverrideDepth(0);
+            // then make sure the new value is exported in MoML.
+            setPersistent(true);
         }
     }
 
@@ -335,6 +331,23 @@ public class Location extends SingletonAttribute
         _setLocation(location);
         // FIXME: If _setLocation() returns true, should we call
         // setModifiedFromClass() like we do elsewhere?
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Location)destination).setLocation(_location);
     }
 
     ///////////////////////////////////////////////////////////////////

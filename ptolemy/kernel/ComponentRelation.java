@@ -249,7 +249,8 @@ public class ComponentRelation extends Relation {
             } else {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                setOverrideDepth(0);
+                // FIXME: Inappropriate?
+                // setOverrideDepth(0);
                 
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change

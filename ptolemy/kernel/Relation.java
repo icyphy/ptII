@@ -330,7 +330,7 @@ public class Relation extends NamedObj {
             throw new InternalErrorException(
                     "Expected "
                     + container.getFullName()
-                    + " to contain a port with name "
+                    + " to contain a relation with name "
                     + relativeName
                     + " and class "
                     + getClass().getName());

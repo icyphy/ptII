@@ -131,8 +131,6 @@ public class ConfigurableAttribute
         _configureText = text;
         // FIXME: Do we really want to call this right away?
         validate();
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setOverrideDepth(0);
     }
 
     /** Return the base specified in the most recent call to the
@@ -306,6 +304,26 @@ public class ConfigurableAttribute
                     + "<configure" + sourceSpec + ">"
                     + _configureText
                     + "</configure>\n");
+        }
+    }
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        try {
+            ((Configurable)destination).configure(
+                    _base, _configureSource, _configureText);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Propagation failed.");
         }
     }
 

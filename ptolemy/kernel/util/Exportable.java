@@ -178,10 +178,17 @@ public interface Exportable extends Nameable {
      */
     public void setClassName(String name);
 
-    /** Set the persistence of this object.
+    /** Set the persistence of this object. If the persistence is not
+     *  specified with this method, then by default the object will be
+     *  persistent unless it is derivable by derivation from a class.
      *  A persistent object has a non-empty MoML description that can be used
      *  to re-create the object. To make an instance non-persistent,
-     *  call this method with the argument <i>false</i>.
+     *  call this method with the argument <i>false</i>. To force
+     *  it to always be persistent, irrespective of its relationship
+     *  to a class, then call this with argument <i>true</i>. Note
+     *  that this will have the additional effect that it no longer
+     *  inherits properties from the class, so in effect, calling
+     *  this with <i>true</i> overrides values given by the class.
      *  @param isPersistent False to make this object non-persistent.
      *  @see #isPersistent()
      */

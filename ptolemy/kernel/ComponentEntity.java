@@ -305,7 +305,8 @@ public class ComponentEntity extends Entity {
 
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                setOverrideDepth(0);
+                // FIXME: Inappropriate?
+                // setOverrideDepth(0);
                 
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
@@ -458,7 +459,7 @@ public class ComponentEntity extends Entity {
             throw new InternalErrorException(
                     "Expected "
                     + container.getFullName()
-                    + " to contain a port with name "
+                    + " to contain an entity with name "
                     + relativeName
                     + " and class "
                     + getClass().getName());

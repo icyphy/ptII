@@ -164,7 +164,8 @@ public class Attribute extends NamedObj {
                 }
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                setOverrideDepth(0);
+                // FIXME: Inappropriate?
+                // setOverrideDepth(0);
             }
             _container = container;
             if (previousContainer != null) {

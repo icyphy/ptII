@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
@@ -181,13 +180,13 @@ public class Prototype extends NamedObj implements Instantiable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isClassDefinition()) {
+            super.exportMoML(output, depth, name);
+            return;
+        }
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
         if (_suppressMoML(depth)) {
-            return;
-        }
-        if (!isClassDefinition()) {
-            super.exportMoML(output, depth, name);
             return;
         }
 
@@ -294,6 +293,7 @@ public class Prototype extends NamedObj implements Instantiable {
             workspace = container.workspace();
         }
         Prototype clone = (Prototype)clone(workspace);
+        
         // The cloning process results an object that defers change
         // requests.  By default, we do not want to defer change
         // requests, but more importantly, we need to execute
@@ -454,33 +454,6 @@ public class Prototype extends NamedObj implements Instantiable {
                 }
             }
         }
-    }
-
-    /** Return the depth of the deferral that defines the specified object.
-     *  This overrides the base class so that if this object defers to
-     *  another that defines the defined object, and the exported
-     *  MoML of the defined object is identical to the exported MoML
-     *  of the deferred to object, then it returns 0.  Otherwise,
-     *  it defers to the base class.
-     *  Otherwise, it defers to the base class.
-     *  @param definedObject The object whose definition we seek.
-     *  @return The depth of the deferral.
-     */
-    protected int _getDeferralDepth(NamedObj definedObject) {
-        if (_parent != null && deepContains(definedObject)) {
-            String relativeName = definedObject.getName(this);
-            // Regrettably, we have to look at the type
-            // of definedObject to figure out how to look it up.
-            if (definedObject instanceof Attribute) {
-                Attribute definition = _parent.getAttribute(relativeName);
-                if (definition != null
-                        && definedObject.exportMoML()
-                        .equals(definition.exportMoML())) {
-                    return 0;
-                }
-            }
-        }
-        return super._getDeferralDepth(definedObject);
     }
 
     ///////////////////////////////////////////////////////////////////

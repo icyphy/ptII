@@ -144,13 +144,33 @@ public class Documentation extends StringAttribute {
     public String getValue() {
         return getExpression();
     }
+    
+    /** Override the base class to remove this instance from
+     *  its container if the argument is an empty string.
+     *  @param expression The value of the string attribute.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container.
+     */
+    public void setExpression(String expression)
+            throws IllegalActionException {
+        if (expression.equals("")) {
+            try {
+                setContainer(null);
+            } catch (NameDuplicationException e) {
+                throw new InternalErrorException(e);
+            }
+        } else {
+            super.setExpression(expression);
+        }
+    }
+
 
     /** Set the documentation string.
      *  @param value The documentation.
      */
     public void setValue(String value) {
         try {
-            super.setExpression(value);
+            setExpression(value);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

@@ -239,6 +239,25 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    // FIXME: For all propagations, there
+    // are two problems that we haven't dealt with.
+    // 1) The changes are not atomic. If a failure occurs
+    //    halfway through propagation, then the model is
+    //    corrupted, and no further editing is reliably possible.
+    //    For example, the derivation invariant may not be
+    //    satisfied.
+    // 2) If the original change was in a class definition
+    //    and the objects to which the change propagates
+    //    are in different models, then it is not
+    //    safe to make changes in those models. They may
+    //    be executing for example. One way to find out
+    //    whether it is safe is to ask them
+    //    isDeferringChangeRequests(), but if we use
+    //    ChangeRequests to propagate we take a severe
+    //    performance hit and make it essentially
+    //    impossible to make the change atomic (see
+    //    (1) above).
+
     /**  Add a MoMLFilter to the end of the list of MoMLFilters used
      *  to translate names.
      *  Note that this method is static.  The specified MoMLFilter
@@ -653,27 +672,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         } else if (elementName.equals("configure")) {
             try {
-                ((Configurable)_current).configure(
+                Configurable castCurrent = (Configurable)_current;
+                String previousSource = castCurrent.getConfigureSource();
+                String previousText = castCurrent.getConfigureText();
+                castCurrent.configure(
                         _base, _configureSource, _currentCharData.toString());
 
-                _current.setOverrideDepth(0);
+                // Propagate to derived classes and instances.
+                try {
+                    List propagatedList = _current.propagateValue();
+                } catch (IllegalActionException ex) {
+                    // Propagation failed. Restore previous value.
+                    castCurrent.configure(_base, previousSource, previousText);
+                    throw ex;
+                }                        
 
-                // Propagate to instances and derived classes.
-                List depthList = new LinkedList();
-                Iterator heritage
-                    = _current.getShadowedDerivedList(depthList).iterator();
-                Iterator depths
-                    = depthList.iterator();
-                while (heritage.hasNext()) {
-                    Configurable derived
-                        = (Configurable)heritage.next();
-                    int depth = ((Integer)depths.next()).intValue();
-                    derived.configure(
-                            _base, _configureSource, _currentCharData.toString());
-                    // The above sets the modified field, which
-                    // need to revise because we are propagating.
-                    ((NamedObj)derived).setOverrideDepth(depth);
-                }
+                // Force MoML export, since this is being set directly.
+                _current.setPersistent(true);
 
             } catch (NoClassDefFoundError e) {
                 // If we are running without a display and diva.jar
@@ -697,46 +712,40 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     previousValue = previous.getValue();
                 }
 
-                // Set the doc value only if there is character data
-                // and if it differs from the previous.
-                // NOTE: This will replace any preexisting doc element with the
-                // same name, since Documentation is a SigletonAttribute.
-                if (_currentCharData.length() > 0
-                        && !_currentCharData.equals(previousValue)) {
+                // Set the doc value only if it differs from the previous.
+                if (!_currentCharData.equals(previousValue)) {
                     if (previous != null) {
-                        previous.setExpression(_currentCharData.toString());
-                        previous.setOverrideDepth(0);
-
-                        // Propagate to instances and derived classes.
-                        List depthList = new LinkedList();
-                        Iterator heritage
-                            = previous.getShadowedDerivedList(depthList).iterator();
-                        Iterator depths
-                            = depthList.iterator();
-                        while (heritage.hasNext()) {
-                            int depth = ((Integer)depths.next()).intValue();
-                            Documentation derived
-                                = (Documentation)heritage.next();
-                            derived.setExpression(
-                                    _currentCharData.toString());
-                            // The above sets the modified field, which
-                            // need to reverse because we are propagating.
-                            derived.setOverrideDepth(depth);
+                        String newString = _currentCharData.toString();
+                        previous.setExpression(newString);
+                   
+                        // Propagate to derived classes and instances.
+                        // If the new string is empty, this will remove
+                        // the doc tag from any derived object that has
+                        // not overridden the value of the doc tag.
+                        try {
+                            List propagatedList = previous.propagateValue();
+                        } catch (IllegalActionException ex) {
+                            // Propagation failed. Restore previous value.
+                            previous.setExpression(previousValue);
+                            throw ex;
                         }
+                        if (newString.equals("")) {
+                            previous.setContainer(null);
+                        }
+                        // Force MoML export since this is being set directly.
+                        previous.setPersistent(true);
+
                     } else {
+                        
                         Documentation doc
                             = new Documentation(_current, _currentDocName);
                         doc.setValue(_currentCharData.toString());
-                        doc.setOverrideDepth(0);
+                        doc.setPersistent(true);
 
                         // Propagate to instances and derived classes.
-                        List depthList = new LinkedList();
                         Iterator heritage
-                            = _current.getShadowedDerivedList(depthList).iterator();
-                        Iterator depths
-                            = depthList.iterator();
+                            = _current.getDerivedList().iterator();
                         while (heritage.hasNext()) {
-                            int depth = ((Integer)depths.next()).intValue();
                             NamedObj derived = (NamedObj)heritage.next();
                             Documentation newDoc = new Documentation(
                                     derived, _currentDocName);
@@ -744,23 +753,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             // The above sets the modified field true, which
                             // need to reverse because we are propagating.
                             newDoc.setDerived(true);
-                            newDoc.setOverrideDepth(depth);
                         }
-                    }
-                } else {
-                    // Empty doc tag.  Remove previous doc element, if
-                    // there is one.
-                    if (previous != null) {
-                        // Propagate to instances and derived classes.
-                        Iterator heritage
-                            = previous.getShadowedDerivedList(null).iterator();
-                        while (heritage.hasNext()) {
-                            Documentation derived
-                                = (Documentation)heritage.next();
-                            derived.setContainer(null);
-                        }
-
-                        previous.setContainer(null);
                     }
                 }
                 if (_undoEnabled && _undoContext.isUndoable()) {
@@ -1075,6 +1068,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + cwd
                                 + File.pathSeparator
                                 + source
+                                + "\n"
                                 + exception.getMessage()
                                 + "\n");
                     }
@@ -2704,24 +2698,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // If value is null or same as before, then there is
                 // nothing to do.
                 if (value != null && !value.equals(previousValue)) {
+                    
                     vertex.setExpression(value);
-                    vertex.setOverrideDepth(0);
-                    _paramsToParse.add(vertex);
-
-                    // Propagate to instances and derived classes.
-                    List depthList = new LinkedList();
-                    Iterator heritage
-                        = vertex.getShadowedDerivedList(depthList).iterator();
-                    Iterator depths
-                        = depthList.iterator();
-                    while (heritage.hasNext()) {
-                        int depth = ((Integer)depths.next()).intValue();
-                        Vertex derived = (Vertex)heritage.next();
-                        derived.setExpression(value);
-                        // The above sets the modified field true, which
-                        // need to reverse because we are propagating.
-                        derived.setOverrideDepth(depth);
-                        _paramsToParse.add(derived);
+                    
+                    // Propagate to derived classes and instances.
+                    try {
+                        List propagatedList = vertex.propagateValue();
+                        _paramsToParse.addAll(propagatedList);
+                        // Force MoML export since this is being set directly.
+                        vertex.setPersistent(true);
+                        _paramsToParse.add(vertex);
+                    } catch (IllegalActionException ex) {
+                        // Propagation failed. Restore previous value.
+                        vertex.setExpression(previousValue);
+                        throw ex;
                     }
                 }
 
@@ -4304,11 +4294,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                     _parser.getColumnNumber());
                         }
                         Settable settable = (Settable)property;
-                        // NOTE: Since this property is being now created,
-                        // we do not have to worry about whether we are
-                        // propagating a change that is shadowed by a
-                        // change from class definition.
                         settable.setExpression(value);
+                        // Since the value is being set directly,
+                        // force MoML export.
+                        property.setPersistent(true);
                         _paramsToParse.add(property);
                     }
                     createdNew = true;
@@ -4351,39 +4340,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 _parser.getColumnNumber());
                     }
                     Settable settable = (Settable)property;
+                    String previousValue = settable.getExpression();
+                    // NOTE: It is not correct to do nothing even
+                    // if the value is not changed.  If the value of
+                    // of an instance parameter is explicitly set,
+                    // and that value happens to be the same as the
+                    // value in the base class, then it should keep
+                    // that value even if the base class later changes.
+                    // if (!value.equals(previousValue)) {
                     settable.setExpression(value);
-                    property.setOverrideDepth(0);
+                    
+                    // Propagate.
+                    List propagatedList = property.propagateValue();
+                    _paramsToParse.addAll(propagatedList);
+                    
+                    // Force MoML export, since this value is
+                    // being set directly.
+                    property.setPersistent(true);
                     _paramsToParse.add(property);
-
-                    // Propagate, if appropriate.
-                    List depthList = new LinkedList();
-                    Iterator propagated
-                        = property.getShadowedDerivedList(depthList).iterator();
-                    Iterator depths
-                        = depthList.iterator();
-                    while (propagated.hasNext()) {
-                        // The following cast is safe because property is known
-                        // to be of type Attribute.
-                        final Attribute attribute = (Attribute)propagated.next();
-                        final int depth = ((Integer)depths.next()).intValue();
-                        // Use a change request because we can't be sure
-                        // that the change is applicable now.
-                        ChangeRequest request = new ChangeRequest(
-                                this, "Propagating change from "
-                                + property.getFullName()) {
-                                protected void _execute() throws IllegalActionException {
-                                    ((Settable)attribute).setExpression(value);
-                                    // Indicate that the current value is propagated in.
-                                    attribute.setOverrideDepth(depth);
-                                }
-                            };
-                        request.addChangeListener(this);
-                        attribute.requestChange(request);
-                        // Need to make sure that the above attribute is validated
-                        // after the change request is processed. That is taken
-                        // care of in endDocument().
-                        _paramsToParse.add(attribute);
-                    }
                 }
             }
             _pushContext();

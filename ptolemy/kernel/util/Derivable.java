@@ -61,57 +61,14 @@ public interface Derivable extends Nameable {
      *  containers from a container of this object).
      *  Implementors may return an empty
      *  list, but should not return null. This method should return a
-     *  complete list, including objects that have been overridden
-     *  (as indicated by getOverrideDepth()).
+     *  complete list, including objects that have been overridden.
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
-     *  be clones constructed directly or indirectly).
+     *  be clones constructed directly or indirectly, via another clone).
      *  @return A list of objects of the same class as the object on
      *   which this is called.
-     *  @see #getOverrideDepth()
-     *  @see #getShadowedDerivedList(List)
      */
     public List getDerivedList();
-
-    /** Return -1 if this is not an inherited object, 0 if this
-     *  is an inherited object that has been modified locally, and
-     *  a depth greater than zero if this inherited object has
-     *  been modified by propagation at the returned depth above
-     *  this object in the containment hierarchy.
-     *  @return An integer indicating whether this object has been
-     *   modified and how.
-     *  @see #setOverrideDepth(int)
-     */
-    public int getOverrideDepth();
-
-    /** Return a list of objects derived from this one that are
-     *  not overridden. An object is overridden if either its
-     *  getOverrideDepth() method returns 0, or if it is shadowed
-     *  by an object along the path from this object to it.
-     *  Intuitively, shadowing occurs if
-     *  a change has been previously propagated higher in the
-     *  hierarchy than the specified depth.
-     *  <p>
-     *  Implementors may return an empty list, but should not return null.
-     *  All objects in the returned list are required to be of the same
-     *  class as the object on which this method is called (they should
-     *  be clones constructed directly or indirectly).
-     *  <p>
-     *  If a non-null argument is given, then the specified list
-     *  will be populated with the integers <i>m</i><sub>i</sub>
-     *  in the derivation chain. Note that the length of this list
-     *  is the same as the length of the returned list, and that
-     *  the returned list does not include the first object in
-     *  the derivation chain (this object).
-     *  @param depthList If non-null, then the specified list will
-     *   be populated with instances of java.lang.Integer representing
-     *   the depths of propagation along the derivation chain.
-     *  @return A list of objects of the same class as the object on
-     *   which this is called.
-     *  @see #getOverrideDepth()
-     *  @see #getDerivedList()
-     */
-    public List getShadowedDerivedList(List depthList);
 
     /** Return true if this object is a derived object.  An object
      *  is derived if it is created in its container as a side effect
@@ -121,43 +78,32 @@ public interface Derivable extends Nameable {
      *  and this object was created during that instantiation.
      *  If this method returns true, then there is typically no need
      *  to export a description of this object to a persistent representation
-     *  (such as MoML), unless this object has been modified (as indicated
-     *  by getOverrideDepth().  Moreover, if this method returns true,
+     *  (such as MoML), unless this object has been overridden in some
+     *  way.  Moreover, if this method returns true,
      *  then it is reasonable to prohibit certain changes to this object,
      *  such as a name change or a change of container.  Such changes
      *  break the relationship with the object from which this inherits.
      *  @see Instantiable
-     *  @see #getOverrideDepth()
-     *  @return True if the object is an inherited object.
+     *  @return True if the object is a derived object.
      */
     public boolean isDerived();
+    
+    /** Propagate the value (if any) held by an implementor of this
+     *  object to derived objects that have not been overridden.
+     *  Implementors are required to leave all derived objects
+     *  unchanged if any single derived object throws an exception
+     *  when attempting to propagate the value to it.
+     *  @return The list of objects to which propagation occurred.
+     *  @throws IllegalActionException If propagation is not possible.
+     */
+    public List propagateValue() throws IllegalActionException;
 
     /** Set whether this object is a derived object.  If an object
      *  is derived, then normally has no persistent representation
-     *  when it is exported (unless it is overridden, as indicated
-     *  by getOverrideDepth()) and cannot have its name
-     *  or container changed.
+     *  when it is exported (unless it is overridden) and cannot
+     *  have its name or container changed.
      *  @param isDerived True to mark this object as a derived object.
      *  @see #isDerived()
      */
     public void setDerived(boolean isDerived);
-
-    /** Specify whether this object overrides its inherited value,
-     *  and if so, at what depth above in the hierarchy the parent
-     *  relationship that triggered this override occurred.  This has an
-     *  effect only if setDerived() has been called with a true
-     *  argument.  In that case, if this method is called with
-     *  argument 0, then this object will export MoML despite the
-     *  fact that it is a derived object.  I.e., call this with
-     *  0 to specify that this derived object has been
-     *  modified directly. To reverse the effect of this call, call it again
-     *  with -1 argument.
-     *  @param depth The depth above this object in the hierarchy at
-     *   which the propagation occurred, or 0 to indicate that the
-     *   override is direct (not propagated), or -1 to indicate that
-     *   the object is not overridden.
-     *  @see #setDerived(boolean)
-     *  @see #getOverrideDepth()
-     */
-    public void setOverrideDepth(int depth);
 }
