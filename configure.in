@@ -835,7 +835,7 @@ fi
 # Defaults for ptII.mk and bin/ptinvoke.in
 # Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JODE_DIR='${PTII}/vendors/jode/1.0.93'
+JODE_DIR='${PTII}/vendors/jode/1.1.1'
 JODE_CLASSES='${JODE_DIR}/jode.jar'
 
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
@@ -845,9 +845,9 @@ if test ! -d "$PTII/vendors/jode"; then
 else
     AC_MSG_CHECKING([for jode directory])
     AC_ARG_WITH(jode, [  --with-jode=DIR       use JODE from DIR,
-                          defaults to \$PTII/vendors/jode/1.0.93],
+                          defaults to \$PTII/vendors/jode/1.1.1],
 	JODE_DIR=$withval,
-	JODE_DIR=$PTII/vendors/jode/1.0.93)
+	JODE_DIR=$PTII/vendors/jode/1.1.1)
 
     if test -d "$JODE_DIR"; then
 	AC_MSG_RESULT([$JODE_DIR])
@@ -868,7 +868,7 @@ else
     if you plan on debugging the byte code based code generator.
     Jode can be downloaded from http://jode.sourceforge.net/download.php'])
 	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
-	JODE_DIR='${PTII}/vendors/jode/1.0.93'
+	JODE_DIR='${PTII}/vendors/jode/1.1.1'
    	JODE_CLASSES='${JODE_DIR}/jode.jar'
     #else
 	# Set to jode and used in
