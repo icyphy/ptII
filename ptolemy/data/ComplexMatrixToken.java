@@ -132,12 +132,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
             if (t instanceof ScalarToken) {
                 Complex scalar = ((ScalarToken)t).complexValue();
-                result = new Complex[_rowCount][_columnCount];
-                for (int i = 0; i < _rowCount; i++) {
-                    for (int j = 0; j < _columnCount; j++) {
-                        result[i][j] = scalar.add(_value[i][j]);
-                    }
-                }                
+                result = ComplexMatrixMath.add(_value, scalar);
             } else {
                 // the specified token is not a scalar.
                 ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
