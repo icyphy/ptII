@@ -15,6 +15,8 @@
       <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/>
       <!--property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/-->
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <!-- If you remove TimedPNDirector, then please update the pn chapter -->
+      <property name="Timed PN Director" class="ptolemy.domains.pn.kernel.TimedPNDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PSDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
