@@ -9,7 +9,7 @@ in Vergil. Each of these programs are described below:
 This program can be used to compose two or more interface automata. The usage
 is:
 
-java -classpath <class_path_to_ptII> ptolemy.domains.fsm.kernel.test.Compse <ia1.xml> <ia2.xml> ...
+java -classpath <class_path_to_ptII> ptolemy.domains.fsm.kernel.test.Compose <ia1.xml> <ia2.xml> ...
 
 where <class_path_to_ptII> is the path to the Ptolemy II tree. <ia1.xml> and
 <ia2.xml> are the MoML file names for interface automata. Two or more MoML
