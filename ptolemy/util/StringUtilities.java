@@ -428,6 +428,58 @@ public class StringUtilities {
         return string;
     }
 
+    /** Perform file prefix substitution.
+
+     *  If <i>string</i> starts with <i>prefix<i>, then we return a
+     *  new string that consists of the value or <i>replacement</i>
+     *  followed by the value of <i>string</i> with the value of
+     *  <i>prefix</i> removed.  For example,
+     *  substituteFilePrefix("c:/ptII", "c:/ptII/ptolemy, "$PTII")
+     *  will return "$PTII/ptolemy"
+     *
+     *  <p>If <i>prefix</i> is not a simple prefix of <i>string</i>, then
+     *  we use the file system to find the canonical names of the files.
+     *  For this to work, <i>prefix<i> and <i>string</i> should name
+     *  files that exist, see java.io.File.getCanonicalFile() for details.
+     * 
+     *  <p>If <i>prefix</i> is not a prefix of <i>string</i>, then
+     *  we return <i>string<i>
+     *  
+     *  @param prefix The prefix string, for example, "c:/ptII".
+     *  @param string The string to be substituted, for example,
+     *  "c:/ptII/ptolemy".
+     *  @param replacement The replacement to be substituted in, for example,
+     *  "$PTII"
+     *  @return The possibly substituted string.
+     */   
+    public static String substituteFilePrefix(String prefix,
+            String string, String replacement) {
+
+        // This method is currently used by $PTII/util/testsuite/auto.tcl
+
+        if (string.startsWith(prefix)) {
+            // Hmm, what about file separators?
+            return replacement + string.substring(prefix.length());
+        } else {
+            try {
+                String prefixCanonicalPath =
+                    (new File(prefix)).getCanonicalPath();
+
+                String stringCanonicalPath =
+                    (new File(string)).getCanonicalPath();
+
+                if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
+                    return replacement
+                        + stringCanonicalPath.substring(
+                                prefixCanonicalPath.length());
+                }
+            } catch (Throwable throwable) {
+                // ignore.
+            }
+        }
+        return string;
+    }
+
     /** Tokenize a String to an array of Strings for use with
      *  Runtime.exec(String []).
      *
