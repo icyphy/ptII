@@ -60,6 +60,8 @@ public class PNRedirect extends AtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+
     /** Reads a token from it's input stream and writes it to the output
      */
     public void fire() throws IllegalActionException {
@@ -73,6 +75,12 @@ public class PNRedirect extends AtomicActor{
 	    _output.broadcast(data);
 	    System.out.println(this.getName()+" writes "+data.stringValue()+" to "+_output.getName());
 	}
+    }
+
+    public void initialize() {
+        if (_initValue == null) {
+            _initValue = new IntToken(0);
+        }
     }
 
     /** Sets the Initial Value parameter to the value specified
