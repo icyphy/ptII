@@ -436,7 +436,10 @@ public class CompositeEntity extends ComponentEntity {
      */	
     public Enumeration getRelations() {
         synchronized(workspace()) {
-            return _containedRelations.getElements();
+            NamedList relationsCopy = new NamedList(_containedRelations);
+            Enumeration relations = relationsCopy.getElements();
+            //return _containedRelations.getElements();
+            return relations;
         }
     }
 
