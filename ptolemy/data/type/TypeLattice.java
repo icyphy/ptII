@@ -131,7 +131,7 @@ public class TypeLattice {
         }
         int i1 = type1.getTypeHash();
         int i2 = type2.getTypeHash();
-        
+
         // Uncommment the false below to measure the impact of
         // _lattice.compare() on ptolemy.data package performance... Run
         // ptolemy/data/type/test/performance.xml before and after...(zk)
@@ -165,7 +165,7 @@ public class TypeLattice {
         return _compareCache[index1][index2];
     }
 
-    /** Set the result for the types that have the given two 
+    /** Set the result for the types that have the given two
      *  indexes as hashes.
      */
     private static final void _setCachedTypeComparisonResult(
@@ -510,7 +510,7 @@ public class TypeLattice {
 
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
-          
+
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
             _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);

@@ -60,7 +60,7 @@ thread. Also, it highlights objects in red rather than yellow.
 @since Ptolemy II 2.0
 */
 public class AnimationRenderer implements SelectionRenderer {
-    
+
     /** Create a new selection renderer with the default prototype
      *  decorator.
      */
@@ -147,7 +147,7 @@ public class AnimationRenderer implements SelectionRenderer {
                         if (parent != null) {
                             FigureDecorator d
                                     = _prototypeDecorator.newInstance(figure);
-                            parent.decorate(figure,d); 
+                            parent.decorate(figure,d);
                             _decorators.put(figure,d);
                         }
                     }
@@ -171,7 +171,7 @@ public class AnimationRenderer implements SelectionRenderer {
     /** The prototype decorator
      */
     protected FigureDecorator _prototypeDecorator;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

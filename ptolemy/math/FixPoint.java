@@ -312,8 +312,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  required behaviour or use Overflow.TRAP and/or Rounding.UNNECESSARY
      *  to throw exceptions if external interaction is required.
      */
-    public Error getError() { 
-        return _error; 
+    public Error getError() {
+        return _error;
     }
 
     /** Return a precision to represent this number. This is constructed

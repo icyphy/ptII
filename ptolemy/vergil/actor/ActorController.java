@@ -247,12 +247,12 @@ public class ActorController extends AttributeController {
 	    int eastPortCount = 0;
 	    int southPortCount = 0;
             int northPortCount = 0;
-            
+
 	    while(nodes.hasNext()) {
 		Port port = (Port) nodes.next();
                 StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
                 StringAttribute ordinal  = (StringAttribute)port.getAttribute("_ordinal");
-                
+
                 if (cardinal == null) {
                     if(!(port instanceof IOPort)) {
                         southPortCount++;
@@ -271,7 +271,7 @@ public class ActorController extends AttributeController {
                         } else {
                             southPortCount++;
                             southPorts.add(port);
-                        } 
+                        }
                     }
                 }
                 else {
@@ -296,7 +296,7 @@ public class ActorController extends AttributeController {
                         } else {
                             southPortCount++;
                             southPorts.add(port);
-                        } 
+                        }
                     }
                 }
 	    }
@@ -365,7 +365,7 @@ public class ActorController extends AttributeController {
         ////                     private methods                   ////
 
         // re-order the ports according to _ordinal property
-        private 
+        private
         void _reOrderPorts( Vector ports ) {
             int size = ports.size();
             Enumeration enum = ports.elements();
@@ -378,7 +378,7 @@ public class ActorController extends AttributeController {
                 port = (IOPort)enum.nextElement();
                 ordinal = (StringAttribute)port.getAttribute("_ordinal");
 
-                if ( ordinal != null ) { 
+                if ( ordinal != null ) {
                     number = Integer.parseInt( ordinal.getExpression() ) ;
                     if ( number >= size ) {
                         ports.remove( index );
@@ -402,7 +402,7 @@ public class ActorController extends AttributeController {
                         ports.remove( index );
                         ports.add( number, port );
                     }
-                  
+
                 }
                 index++;
             }
@@ -509,14 +509,14 @@ public class ActorController extends AttributeController {
 
                 // effigy is the whole model.
                 Effigy effigy = (Effigy)tableau.getContainer();
-                
+
                 // We want to open a new window that behaves as a
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
                 Effigy textEffigy = new TextEffigy(effigy,
                         effigy.uniqueName("debugListener" + object.getName()));
-                
+
                 DebugListenerTableau debugTableau =
                     new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"
@@ -569,7 +569,7 @@ public class ActorController extends AttributeController {
                 }
                 return;
             }
-            
+
             CompositeEntity entity = (CompositeEntity)object;
             try {
                 _configuration.openModel(entity);

@@ -41,7 +41,7 @@ public abstract class GraphToDotty {
     public static String convert(DirectedGraph g, String ename) {
 	return null;
     }
- 
+
     /**
      * Print a .dot file header
      **/

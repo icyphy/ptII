@@ -239,7 +239,7 @@ public class DatagramReader extends TypedAtomicActor {
         defaultOutput = new Parameter(this, "defaultOutput");
         defaultOutput.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
         defaultOutput.setExpression("{0ub}");
-        
+
         // Repeat has not been implemented.  However, I'd place it
         // here so that it would show up in Vergil below
         // <i>defaultOutput</i>.  It works in tandem with the above
@@ -419,7 +419,7 @@ public class DatagramReader extends TypedAtomicActor {
 
         } else if (attribute == defaultOutput) {
             synchronized(_syncDefaultOutputs) {
-                _defaultOutputToken = 
+                _defaultOutputToken =
                     output.getType().convert(defaultOutput.getToken());
             }
             // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
@@ -511,7 +511,7 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                 }
             } // Sync(this)
-          
+
             // In the case of <i>actorBufferLength</i>, simply cache
             // the parameter.  The thread used this value to set the
             // size of a buffer prior to the socket.receive() call.
@@ -570,7 +570,7 @@ public class DatagramReader extends TypedAtomicActor {
         // to ensure that the thread does mess with it while it is in use
         // here.
         synchronized(_syncFireAndThread) {
-            int bytesAvailable = 0; 
+            int bytesAvailable = 0;
             byte[] dataBytes = new byte[0];
 
             // If requested, block awaiting a packet (useful in SDF).
@@ -699,7 +699,7 @@ public class DatagramReader extends TypedAtomicActor {
         catch (SocketException ex) {
             throw new IllegalActionException(this, ex,
                     " Failed to create a new socket on port " + portNumber);
-                  
+
         }
 
         // Set flag so that thread will [Set and] get platform's buffer length.
@@ -723,7 +723,7 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        // FIXME: Is this necessary?  
+        // FIXME: Is this necessary?
         if (container != getContainer()) {
             wrapup();
         }
@@ -742,7 +742,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  anyway.  Thus, when pausing or stopping execution, it will on
      *  rare occasion be necessary to press 'pause' or 'stop' a second
      *  time.
-     * 
+     *
      *  I tried to clean this up, so that one, and exactly one,
      *  stopFire() call would suffice.  These experiments and some
      *  thought about them are discussed below.  However, the bottom

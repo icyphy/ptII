@@ -56,11 +56,11 @@ public class ActorGraphTableau extends Tableau {
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
      */
-    public ActorGraphTableau(Workspace workspace) 
+    public ActorGraphTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
-    
+
     /** Create a tableau with the specified container and name, with
      *  no specified default library.
      *  @param container The container.
@@ -87,7 +87,7 @@ public class ActorGraphTableau extends Tableau {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
-            NamedObj model = container.getModel(); 
+            NamedObj model = container.getModel();
             if (model == null) {
                 return;
             }
@@ -98,7 +98,7 @@ public class ActorGraphTableau extends Tableau {
                         + model);
             }
             CompositeEntity entity = (CompositeEntity)model;
-            
+
             ActorGraphFrame frame = new ActorGraphFrame(
                     entity, this, defaultLibrary);
             setFrame(frame);

@@ -201,7 +201,7 @@ public class FeedBackDelay extends DDEActor {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-        
+
         Receiver[][] receivers = output.getRemoteReceivers();
 	for ( int i = 0; i < receivers.length; i++ ) {
 	    for ( int j = 0; j < receivers[i].length; j++ ) {

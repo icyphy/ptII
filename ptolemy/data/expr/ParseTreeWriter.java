@@ -65,17 +65,17 @@ public class ParseTreeWriter implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _stream.print("{");
         _printChildrenSeparated(node, ", ");
         _stream.print("}");
     }
-    public void visitBitwiseNode(ASTPtBitwiseNode node) 
+    public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _printChildrenSeparated(node, node.getOperator().image);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException  {
 		_printChild(node, 0);
         _stream.print("(");
@@ -87,9 +87,9 @@ public class ParseTreeWriter implements ParseTreeVisitor {
 		if (n > 1) {
 			_printChild(node, n - 1);
 		}
-        _stream.print(")");            
+        _stream.print(")");
     }
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node) 
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException  {
         _stream.print("(function (");
         List args = node.getArgumentNameList();
@@ -105,7 +105,7 @@ public class ParseTreeWriter implements ParseTreeVisitor {
 		_printChildrenSeparated(node, ", ");
 		_stream.print(")");
 	}
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node) 
+    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _printChild(node, 0);
         _stream.print("?");
@@ -113,7 +113,7 @@ public class ParseTreeWriter implements ParseTreeVisitor {
         _stream.print(":");
         _printChild(node, 2);
     }
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         System.out.print(node.getName());
     }
@@ -149,7 +149,7 @@ public class ParseTreeWriter implements ParseTreeVisitor {
                 _printChild(node, i);
             }
         }
-        _stream.print(")");            
+        _stream.print(")");
     }
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
@@ -188,7 +188,7 @@ public class ParseTreeWriter implements ParseTreeVisitor {
             throws IllegalActionException {
         _printChildrenSeparated(node, node.getLexicalTokenList());
     }
-    public void visitUnaryNode(ASTPtUnaryNode node) 
+    public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         if(node.isMinus()) {
             _stream.print("-");
@@ -199,14 +199,14 @@ public class ParseTreeWriter implements ParseTreeVisitor {
         }
         _printChild(node, 0);
     }
-   
-    private void _printChild(ASTPtRootNode node, int index) 
+
+    private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(index);
         child.visit(this);
     }
 
-    private void _printChildrenSeparated(ASTPtRootNode node, String string) 
+    private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
         if(node.jjtGetNumChildren() > 0) {
             _printChild(node, 0);

@@ -53,11 +53,11 @@ public class test1 extends TypedAtomicActor {
     public test1(CompositeEntity container, String name)
 		throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-		
+
         input = new SDFIOPort(this, "input", true, false);
         output = new SDFIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
-		
+
     }
 
 //      ///////////////////////////////////////////////////////////////////
@@ -92,11 +92,11 @@ public class test1 extends TypedAtomicActor {
      * ControlFlow
      * - none
      * DataFlow
-     * - UnopExpr 
+     * - UnopExpr
      **/
     public void method2(int b) {
 	int a = (b + 5) * 4 + 3;
-	a = -a;	    
+	a = -a;
     }
 
     /** fieldref **/
@@ -156,20 +156,20 @@ public class test1 extends TypedAtomicActor {
 	if ((b < 4 || b > c) && c == 10) {
 	    d = 2;
 	} else {
-	    d = 4;	    
+	    d = 4;
 	}
 	d = 2;
 	if ((b < 4 || b > 10) && c == 10 || (c < 3 && b > 5)) {
 	    d = 2;
 	} else {
-	    d = 4;	    
+	    d = 4;
 	}
 	d = 3;
 	if ((b < 4 || b > 10) && c == 10 || (c < 3 && b > 5) ||
 	    (b > 4 || b < 6)) {
 	    d = 2;
 	} else {
-	    d = 4;	    
+	    d = 4;
 	}
     }
     public void method15(int b, int c) {
@@ -177,7 +177,7 @@ public class test1 extends TypedAtomicActor {
 	if (b < 4 || b > 10) {
 	    d = 2;
 	} else {
-	    d = 4;	    
+	    d = 4;
 	}
     }
     public void method16(int b, int c) {
@@ -187,7 +187,7 @@ public class test1 extends TypedAtomicActor {
 	    if (b == 9)
 		d = 5;
 	} else {
-	    d = 4;	    
+	    d = 4;
 	}
     }
 
@@ -197,7 +197,7 @@ public class test1 extends TypedAtomicActor {
 	if (b < 4) {
 	    if (b==3) {
 		d += b;
-	    } else 
+	    } else
 		d -= b;
 	} else {
 	    if (b > 7)
@@ -426,7 +426,7 @@ public class test1 extends TypedAtomicActor {
 
     /** Used to test serial combining (one fork) with field member **/
     public int method37xx(int a) {
-	int d = 4;	
+	int d = 4;
 	e += a;
 	if (a > 5) {
 	    e = a * 2 + e;
@@ -436,7 +436,7 @@ public class test1 extends TypedAtomicActor {
 
     /** e is not used before block **/
     public int method37_1(int a) {
-	int d = 4;	
+	int d = 4;
 	if (a > 5) {
 	    e = a * 2 + e;
 	}
@@ -445,7 +445,7 @@ public class test1 extends TypedAtomicActor {
 
     /** e is not used before block **/
     public int method37_2(int a) {
-	int d = 4;	
+	int d = 4;
 	e = d;
 	if (a > 5) {
 	    e = a * 2 + e;
@@ -455,7 +455,7 @@ public class test1 extends TypedAtomicActor {
 
     /** e is not used before block **/
     public int method37_2_1(int a) {
-	int d = 4;	
+	int d = 4;
 	d = e;
 	if (a > 5) {
 	    e = a * 2 + e;
@@ -465,7 +465,7 @@ public class test1 extends TypedAtomicActor {
 
     /** e is not used before block **/
     public int method37_3(int a) {
-	int d = 4;	
+	int d = 4;
 	e = d;
 	if (a > 5) {
 	    e = a * 2 + e;
@@ -576,7 +576,7 @@ public class test1 extends TypedAtomicActor {
     /****************************************************
      * Hardware Generation
      ****************************************************/
-     
+
     /* Simple method with one basic block and one operation */
     public int hwgen1(int a, int b) {
 	int c = a + b;
@@ -613,7 +613,7 @@ public class test1 extends TypedAtomicActor {
 	return !((a & b | !c) ^ a);
     }
 
-    // TODO: 
+    // TODO:
     public boolean hwgen3_2(boolean a, boolean b, boolean c) {
 	return a && b || c;
     }
@@ -642,16 +642,16 @@ public class test1 extends TypedAtomicActor {
 
 	a=3;
 	b=a*4;
-	
+
 	t1.e = b;
 
 	a=2;
 	c=a+5+t1.e+t1.e;
 	d=b-c + f();
-	
+
 	if (d > 8){
 	    d=a*a+e;
 	}
     }
-    
+
 }

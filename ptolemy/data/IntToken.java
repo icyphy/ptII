@@ -122,7 +122,7 @@ public class IntToken extends ScalarToken {
             IntToken result = new IntToken(unsignedByteToken.intValue());
             result._unitCategoryExponents =
                 unsignedByteToken._copyOfCategoryExponents();
-            return result;        
+            return result;
         }
 
         // The argument is below UnsignedByteToken in the type hierarchy,
@@ -192,7 +192,7 @@ public class IntToken extends ScalarToken {
     /** Returns a token representing the result of shifting the bits
      *  of this token towards the least significant bit, filling the
      *  most significant bits with zeros.  This treats the value as an
-     *  unsigned number, which may have the effect of destroying the 
+     *  unsigned number, which may have the effect of destroying the
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.

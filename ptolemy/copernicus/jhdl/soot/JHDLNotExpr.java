@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import soot.jimple.internal.*;
 //////////////////////////////////////////////////////////////////////////
 //// JHDLNotExpr
 /**
- * 
+ *
  * A Not expression in Java (i.e. the ! operator) is implemented as
  * an IfStmt in which constant Boolean values are assigned to the
  * corresponding value. This method will scan through the chain
@@ -46,7 +46,7 @@ import soot.jimple.internal.*;
  * this control flow construct with a dataflow expression.
  *
  * This class looks a lot like soot.jimple.internal.AbstractNegExpr
- * 
+ *
  * @see ptolemy.copernicus.jhdl.soot.BooleanNotCompactor
  *
  * @author Mike Wirthlin
@@ -87,7 +87,7 @@ public class JHDLNotExpr implements UnopExpr {
     }
 
     /** Returns a hash code for this object, consistent with structural equality. */
-    public int equivHashCode() 
+    public int equivHashCode()
     {
         return op.equivHashCode();
     }
@@ -102,13 +102,13 @@ public class JHDLNotExpr implements UnopExpr {
         return "!" + " " + ((ToBriefString) op).toBriefString();
     }
 
-    
+
     public Type getType()
     {
         Value op = getOpBox().getValue();
 
         if(op.getType().equals(IntType.v()) || op.getType().equals(ByteType.v()) ||
-            op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) || 
+            op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) ||
             op.getType().equals(CharType.v()))
             return IntType.v();
         else if(op.getType().equals(LongType.v()))
@@ -128,4 +128,4 @@ public class JHDLNotExpr implements UnopExpr {
     ValueBox opBox;
     Value op;
 }
- 
+

@@ -102,7 +102,7 @@ graph before firing actors on another graph. However, the
 order of execution within an graph should be correct.
 Usually, disconnected graphs in an SDF model indicates an
 error.
-The default value of the allowDisconnectedGraphs parameter is a 
+The default value of the allowDisconnectedGraphs parameter is a
 BooleanToken with the value false.
 <p>
 The <i>iterations</i> parameter of this director corresponds to a
@@ -350,7 +350,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         try {
             Schedule sched = scheduler.getSchedule();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Failed to compute schedule:");
         }
     }
@@ -451,7 +451,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that " 
+                    "Attempted to transferOutputs on a port that "
                     + "is not an opaque input port.");
         }
         int rate = SDFScheduler.getTokenProductionRate(port);

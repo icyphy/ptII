@@ -41,7 +41,7 @@ public class RequiredBlockDataFlowGraph extends BlockDataFlowGraph {
 
   public RequiredBlockDataFlowGraph(Block block) throws JHDLUnsupportedException {
     super(block);
-    
+
   }
 
   public HashSet getRequiredNodeSet() {
@@ -49,17 +49,17 @@ public class RequiredBlockDataFlowGraph extends BlockDataFlowGraph {
     if (_requiredNodeSet == null) {
       _requiredNodeSet = new HashSet();
     }
-    
+
     return _requiredNodeSet;
   }
 
-  protected Node _processInvokeExpr(InvokeExpr ie) 
+  protected Node _processInvokeExpr(InvokeExpr ie)
     throws JHDLUnsupportedException {
 
     if (_requiredNodeSet == null) {
       _requiredNodeSet = new HashSet();
     }
-    
+
     //The data flattening will start from output ports, so
     //they are the required nodes
     if (ie.getMethod().getName().equals("send")){

@@ -118,13 +118,13 @@ public class InlineTokenTransformer extends SceneTransformer {
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            
+
             // What about static methods?
             if (method.isStatic()) {
                 continue;
             }
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            
+
             // Add a this local...  note that we might not have one.
             Local thisLocal;
             try {
@@ -133,24 +133,24 @@ public class InlineTokenTransformer extends SceneTransformer {
                 //FIXME: what if no thisLocal?
                 continue;
             }
-            
+
             if (_debug) System.out.println("method = " + method);
-            
+
             int count = 0;
             boolean doneSomething = true;
             while (doneSomething) {
                 doneSomething = false;
                 // System.out.println("Inlining tokens iteration " + count++);
-                
+
                 CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
                 // This will help us figure out where locals are defined.
                 _localDefs = new SimpleLocalDefs(unitGraph);
-                
+
                 // Analyze and tokens that are constructed in this
                 // method...  these will likely not have fields
                 // for them.
                 _tokenAnalysis = new TokenConstructorAnalysis(body, _localDefs);
-                
+
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt stmt = (Stmt)units.next();
@@ -162,13 +162,13 @@ public class InlineTokenTransformer extends SceneTransformer {
                         if (value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                            if (_debug) System.out.println("invoking = " + r.getMethod());
-                            
+
                             // Skip initializers.
                             if (r.getMethod().getName().equals("<init>")) {
                                 continue;
-                            } 
+                            }
                             doneSomething |= _replaceTokenInvocation(actor, body, stmt, box, r);
-                   
+
                     }
                 }
             }
@@ -183,16 +183,16 @@ public class InlineTokenTransformer extends SceneTransformer {
                 SootClass theClass =
                     Scene.v().loadClassAndSupport(className);
                 _inlineTokenCalls(theClass, entity);
-                
+
             }
         }
-    }        
-    private boolean _replaceTokenInvocation(ComponentEntity actor, 
+    }
+    private boolean _replaceTokenInvocation(ComponentEntity actor,
             JimpleBody body, Unit unit, ValueBox box, InstanceInvokeExpr r) {
         boolean doneSomething = false;
         if (r.getBase().getType() instanceof RefType) {
             RefType type = (RefType)r.getBase().getType();
-                                
+
             //System.out.println("baseType = " + type);
             // Statically evaluate constant arguments.
             Value argValues[] = new Value[r.getArgCount()];
@@ -208,10 +208,10 @@ public class InlineTokenTransformer extends SceneTransformer {
                     break;
                 }
             }
-                                
+
             if (SootUtilities.derivesFrom(type.getSootClass(),
                         PtolemyUtilities.tokenClass)) {
-                                    
+
                 // if we are invoking a method on a token class, then
                 // attempt to get the constant value of the token.
                 Token token = getTokenValue(actor, (Local)r.getBase(), unit, _localDefs,
@@ -231,7 +231,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                     Object object =
                         SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
                     if (_debug) System.out.println("method result  = " + object);
-                                        
+
                     Type returnType = r.getMethod().getReturnType();
                     if (returnType instanceof ArrayType) {
                     } else if (returnType instanceof RefType) {

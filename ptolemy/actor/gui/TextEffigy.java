@@ -140,7 +140,7 @@ public class TextEffigy extends Effigy {
                 try {
                     // If we are running under WebStart, and try
                     // view source on a .html file that is not in
-                    // ptsupport.jar, then we may end up here, 
+                    // ptsupport.jar, then we may end up here,
                     // so we look for the file as a resource.
                     URL jarURL = JNLPUtilities
                         .jarURLEntryResource(in.toString());
@@ -231,7 +231,7 @@ public class TextEffigy extends Effigy {
 	public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
-            String editorPreference = 
+            String editorPreference =
                 System.getProperty("ptolemy.user.texteditor",".");
             Class effigyClass;
             try {
@@ -291,9 +291,9 @@ public class TextEffigy extends Effigy {
                 return (Effigy) _newTextEffigyURL.invoke
                     (null, new Object[]{container, base, in});
             } catch (java.lang.reflect.InvocationTargetException ex) {
-                throw new java.lang.reflect.InvocationTargetException(ex, 
+                throw new java.lang.reflect.InvocationTargetException(ex,
                         " Invocation of method failed!. Method was: "
-                        + _newTextEffigyURL 
+                        + _newTextEffigyURL
                         + "\nwith arguments( container = " + container
                         + " base = " + base + " in = " + in + ")");
             }

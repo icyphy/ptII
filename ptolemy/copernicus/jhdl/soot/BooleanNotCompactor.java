@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -75,7 +75,7 @@ import soot.toolkits.graph.Block;
 //////////////////////////////////////////////////////////////////////////
 //// BooleanNotCompactor
 /**
- * 
+ *
  * A Not expression in Java (i.e. the ! operator) is implemented as
  * an IfStmt in which constant Boolean values are assigned to the
  * corresponding value. This method will scan through the chain
@@ -90,8 +90,8 @@ import soot.toolkits.graph.Block;
  * @since Ptolemy II 2.0
 */
 public class BooleanNotCompactor {
-    
-    public static void compact(SootMethod method) 
+
+    public static void compact(SootMethod method)
 	throws IllegalActionException {
 	Body mbody = method.retrieveActiveBody();
 	PatchingChain chain = mbody.getUnits();
@@ -184,7 +184,7 @@ public class BooleanNotCompactor {
 	System.out.println(a);
 	Unit preceeding = (Unit) chain.getPredOf(root);
 	chain.insertAfter(a,preceeding);
-	
+
 	// Remove units
 	chain.remove(root);
 	chain.remove(successor);
@@ -197,12 +197,12 @@ public class BooleanNotCompactor {
 
     public static void main(String args[]) {
 
-	soot.SootMethod testMethod = 
+	soot.SootMethod testMethod =
 	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 
 	soot.Body body = testMethod.retrieveActiveBody();
-	soot.toolkits.graph.CompleteUnitGraph unitGraph = 
-	    new soot.toolkits.graph.CompleteUnitGraph(body);	
+	soot.toolkits.graph.CompleteUnitGraph unitGraph =
+	    new soot.toolkits.graph.CompleteUnitGraph(body);
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("beforegraph",bbgraph);
 	try {
@@ -213,7 +213,7 @@ public class BooleanNotCompactor {
 	}
 	bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("aftergraph",bbgraph);
-	
+
     }
 
 }

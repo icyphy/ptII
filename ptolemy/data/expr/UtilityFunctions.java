@@ -171,7 +171,7 @@ public class UtilityFunctions {
      *  though if certain properties are not defined, then we
      *  make various attempts to determine them and then set them.
      *  See the javadoc page for java.util.System.getProperties() for
-     *  a list of system properties.  
+     *  a list of system properties.
      *  <p>The following properties are handled specially
      *  <dl>
      *  <dt> "ptolemy.ptII.dir"
@@ -195,7 +195,7 @@ public class UtilityFunctions {
      *  @deprecated Use
      *  {@link ptolemy.util.StringUtilities.getProperty(String)}
      *  instead
-     */ 
+     */
     public static String getProperty(String propertyName) {
         return StringUtilities.getProperty(propertyName);
     }
@@ -237,13 +237,13 @@ public class UtilityFunctions {
      *  then \n characters are converted to spaces, and \r characters
      *  are removed.  For example, if a file contains
      *  <pre>
-     *  "   
+     *  "
      *  foo
      *  "
      *  </pre>
      *  Then <code>eval(readfile("foo.txt"))</code> will return
      *  <code>" foo "</code>.  FIXME: this is a bug, we need to be smarter
-     *  here.   
+     *  here.
      *  <br>Use readFile({@link #findFile}) to specify files relative to the
      *  current user directory or classpath.<p>
      *  A StringToken can be converted to any valid Token it represents
@@ -377,7 +377,7 @@ public class UtilityFunctions {
 
     /** Get the string text contained in the specified resource.
      *  Resource strings look like filenames without a leading slash
-     *  and are always loaded relative to the Java class path. 
+     *  and are always loaded relative to the Java class path.
      *  An empty string is returned if the specified file could
      *  not be located.  If the contents of the file consists of more
      *  than one line, then \n characters are converted to spaces, and
@@ -416,7 +416,7 @@ public class UtilityFunctions {
                 } catch (IOException e) {
                     break;
                 }
-                
+
                 if (line == null) break;
                 result += line + newline;
                 //System.out.println("read in line: \"" +

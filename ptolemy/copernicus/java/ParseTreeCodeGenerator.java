@@ -59,15 +59,15 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public Local generateCode(ASTPtRootNode node, JimpleBody body, 
-            CodeGenerationScope scope) 
+    public Local generateCode(ASTPtRootNode node, JimpleBody body,
+            CodeGenerationScope scope)
             throws IllegalActionException {
         Stmt insertPoint = Jimple.v().newNopStmt();
         body.getUnits().add(insertPoint);
         return generateCode(node, body, insertPoint, scope);
     }
-    public Local generateCode(ASTPtRootNode node, JimpleBody body, 
-            Stmt insertPoint, CodeGenerationScope scope) 
+    public Local generateCode(ASTPtRootNode node, JimpleBody body,
+            Stmt insertPoint, CodeGenerationScope scope)
             throws IllegalActionException {
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         typeInference.inferTypes(node, scope);
@@ -85,23 +85,23 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         return local;
     }
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _generateAllChildren(node);
-        
+
         Local local = _getChildTokensLocal(node);
-  
-        Local tokenLocal = Jimple.v().newLocal("token", 
+
+        Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.arrayTokenClass));
         _body.getLocals().add(tokenLocal);
-        
+
         _units.insertBefore(Jimple.v().newAssignStmt(
              tokenLocal, Jimple.v().newNewExpr(
                      RefType.v(PtolemyUtilities.arrayTokenClass))), _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
              Jimple.v().newSpecialInvokeExpr(tokenLocal,
                  PtolemyUtilities.arrayTokenConstructor, local)), _insertPoint);
-                   
+
        _nodeToLocal.put(node, tokenLocal);
     }
 
@@ -115,7 +115,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 "The number of child nodes must be greater than zero");
 
         Local resultLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
-         
+
         // Make sure that exactly one of AND, OR, XOR is set.
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
@@ -124,19 +124,19 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 ((ASTPtRootNode) node.jjtGetChild(0)).getType());
         SootClass tokenClass = bitwiseType.getSootClass();
 
-        Local tokenLocal = Jimple.v().newLocal("token", 
+        Local tokenLocal = Jimple.v().newLocal("token",
                 bitwiseType);
         _body.getLocals().add(tokenLocal);
-      
+
         _units.insertBefore(Jimple.v().newAssignStmt(
                                     tokenLocal,
                                     Jimple.v().newCastExpr(
                                             resultLocal,
                                             bitwiseType)), _insertPoint);
-            
+
         for (int i = 1; i < numChildren; i++ ) {
             Local nextLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
-       
+
             SootMethod method;
             if(node.isBitwiseAnd()) {
                 method = SootUtilities.searchForMethodByName(
@@ -158,9 +158,9 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                     tokenLocal,
                                     method,
                                     nextLocal)), _insertPoint);
-            
+
         }
-        Local tokenCastLocal = Jimple.v().newLocal("token", 
+        Local tokenCastLocal = Jimple.v().newLocal("token",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(tokenCastLocal);
         _units.insertBefore(
@@ -169,10 +169,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                         Jimple.v().newCastExpr(
                                 tokenLocal,
                                 PtolemyUtilities.tokenType)), _insertPoint);
-        
+
         _nodeToLocal.put(node, tokenCastLocal);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
@@ -185,15 +185,15 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
         if(_isValidName(node.getFunctionName())) {
             Local local = _getLocalForName(node.getFunctionName());
-            Local resultLocal = Jimple.v().newLocal("token", 
+            Local resultLocal = Jimple.v().newLocal("token",
                     RefType.v(PtolemyUtilities.tokenClass));
             _body.getLocals().add(resultLocal);
             if(argCount == 1) {
                 // array..
-                Local tokenCastLocal = Jimple.v().newLocal("indexToken", 
+                Local tokenCastLocal = Jimple.v().newLocal("indexToken",
                         RefType.v(PtolemyUtilities.arrayTokenClass));
                 _body.getLocals().add(tokenCastLocal);
-                  
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tokenCastLocal,
@@ -209,7 +209,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         indexTokenLocal,
                                         RefType.v(PtolemyUtilities.intTokenClass))), _insertPoint);
 
-                Local indexLocal = Jimple.v().newLocal("index", 
+                Local indexLocal = Jimple.v().newLocal("index",
                         IntType.v());
                 _body.getLocals().add(indexLocal);
                 _units.insertBefore(
@@ -218,7 +218,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                 Jimple.v().newVirtualInvokeExpr(
                                         indexTokenLocal,
                                         PtolemyUtilities.intValueMethod)), _insertPoint);
-                             
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 resultLocal,
@@ -226,13 +226,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         tokenCastLocal,
                                         PtolemyUtilities.arrayGetElementMethod,
                                         indexLocal)), _insertPoint);
-                                        
+
             } else if(argCount == 2) {
                 // matrix..
-                Local tokenCastLocal = Jimple.v().newLocal("indexToken", 
+                Local tokenCastLocal = Jimple.v().newLocal("indexToken",
                         RefType.v(PtolemyUtilities.matrixTokenClass));
                 _body.getLocals().add(tokenCastLocal);
-                  
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tokenCastLocal,
@@ -255,10 +255,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         columnIndexTokenLocal,
                                         RefType.v(PtolemyUtilities.intTokenClass))), _insertPoint);
 
-                Local rowIndexLocal = Jimple.v().newLocal("rowIndex", 
+                Local rowIndexLocal = Jimple.v().newLocal("rowIndex",
                         IntType.v());
                 _body.getLocals().add(rowIndexLocal);
-                 Local columnIndexLocal = Jimple.v().newLocal("columnIndex", 
+                 Local columnIndexLocal = Jimple.v().newLocal("columnIndex",
                         IntType.v());
                 _body.getLocals().add(columnIndexLocal);
                 _units.insertBefore(
@@ -267,14 +267,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                 Jimple.v().newVirtualInvokeExpr(
                                         rowIndexTokenLocal,
                                         PtolemyUtilities.intValueMethod)), _insertPoint);
-                             
+
                  _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 columnIndexLocal,
                                 Jimple.v().newVirtualInvokeExpr(
                                         columnIndexTokenLocal,
                                         PtolemyUtilities.intValueMethod)), _insertPoint);
-                             
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 resultLocal,
@@ -282,7 +282,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         tokenCastLocal,
                                         PtolemyUtilities.matrixGetElementAsTokenMethod,
                                         rowIndexLocal, columnIndexLocal)), _insertPoint);
-                         
+
             } else {
 		throw new IllegalActionException("Wrong number of indices "
 			+ "when referencing " + node.getFunctionName());
@@ -290,19 +290,19 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             _nodeToLocal.put(node, resultLocal);
             return;
         }
-        
+
         if (node.getFunctionName().compareTo("eval") == 0) {
             throw new IllegalActionException(
                     "unimplemented case");
         }
-        
+
         if (node.getFunctionName().compareTo("matlab") == 0) {
             throw new IllegalActionException(
                     "unimplemented case");
         }
 
         // Otherwise, try to reflect the method name.
-   
+
         // The array of token types that the method takes.
         ptolemy.data.type.Type[] argTypes =
             new ptolemy.data.type.Type[argCount];
@@ -311,10 +311,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
 
         // Find the method...
-        CachedMethod cachedMethod = 
+        CachedMethod cachedMethod =
             CachedMethod.findMethod(node.getFunctionName(),
                     argTypes, CachedMethod.FUNCTION);
-        
+
         if(cachedMethod.isMissing()) {
             throw new IllegalActionException("Function " + cachedMethod +
                     " not found.");
@@ -324,19 +324,19 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 cachedMethod instanceof CachedMethod.ArrayMapCachedMethod ||
                 cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
             throw new IllegalActionException(
-                    "CodeGeneration not supported for " + 
+                    "CodeGeneration not supported for " +
                     cachedMethod.getClass());
         }
 
         Method method = cachedMethod.getMethod();
-      
+
         // Find the corresponding soot method.
         SootMethod sootMethod = SootUtilities.getSootMethodForMethod(method);
 
         // The list of locals that are arguments to the function.
         List args = new LinkedList();
-     
-        CachedMethod.ArgumentConversion[] conversions = 
+
+        CachedMethod.ArgumentConversion[] conversions =
             cachedMethod.getConversions();
         for (int i = 0; i < argCount; i++) {
             Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i + 1));
@@ -348,29 +348,29 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
 
         Type returnType = sootMethod.getReturnType();
-        Local returnLocal = Jimple.v().newLocal("returnValue", 
+        Local returnLocal = Jimple.v().newLocal("returnValue",
                 returnType);
         _body.getLocals().add(returnLocal);
 
         // Actually invoke the method.
         _units.insertBefore(
                 Jimple.v().newAssignStmt(
-                        returnLocal, 
+                        returnLocal,
                         Jimple.v().newStaticInvokeExpr(
                                 sootMethod, args)), _insertPoint);
-      
+
         // Convert the result back to a token.
         Local tokenLocal = _convertJavaResultToToken(returnLocal, returnType);
-        
-     
-        
+
+
+
         //       Jimple.v().newStaticInvokeExpr(
         //                                 methodCallEvaluationMethod,
         //                                 argList)));
-      
+
         /*
    RefType objectType = RefType.v(PtolemyUtilities.objectClass);
-        Local argValuesLocal = Jimple.v().newLocal("tokenArray", 
+        Local argValuesLocal = Jimple.v().newLocal("tokenArray",
                 ArrayType.v(objectType, 1));
         _body.getLocals().add(argValuesLocal);
         _units.insertBefore(
@@ -393,13 +393,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
 
         RefType typeType = RefType.v("ptolemy.data.type.Type");
-        Local argTypesLocal = Jimple.v().newLocal("tokenTypes", 
+        Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
                 ArrayType.v(typeType, 1));
         _body.getLocals().add(argTypesLocal);
-        Local typeLocal = Jimple.v().newLocal("classType", 
+        Local typeLocal = Jimple.v().newLocal("classType",
                 typeType);
         _body.getLocals().add(typeLocal);
-        Local tokenLocal = Jimple.v().newLocal("token", 
+        Local tokenLocal = Jimple.v().newLocal("token",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(tokenLocal);
 
@@ -409,17 +409,17 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                         Jimple.v().newNewArrayExpr(
                                 typeType,
                                 IntConstant.v(argCount))), _insertPoint);
-        
+
         Local indexLocal = Jimple.v().newLocal("index", IntType.v());
         _body.getLocals().add(indexLocal);
-        
+
         // The list of initializer instructions.
         List initializerList = new LinkedList();
         initializerList.add(
                 Jimple.v().newAssignStmt(
                         indexLocal,
                         IntConstant.v(0)), _insertPoint);
-        
+
         // The list of body instructions.
         List bodyList = new LinkedList();
         bodyList.add(
@@ -446,8 +446,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                 argTypesLocal,
                                 indexLocal),
                         typeLocal));
-                
-                
+
+
         // Increment the index.
         bodyList.add(
                 Jimple.v().newAssignStmt(
@@ -455,12 +455,12 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                         Jimple.v().newAddExpr(
                                 indexLocal,
                                 IntConstant.v(1))));
-        
+
         Expr conditionalExpr =
             Jimple.v().newLtExpr(
                     indexLocal,
                     IntConstant.v(argCount));
-        
+
         Stmt stmt = Jimple.v().newNopStmt();
         _units.insertBefore(stmt);
 
@@ -469,8 +469,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 initializerList,
                 bodyList,
                 conditionalExpr);
-               
-        SootMethod methodCallEvaluationMethod = 
+
+        SootMethod methodCallEvaluationMethod =
             Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token functionCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
         List argList = new ArrayList();
         argList.add(StringConstant.v(node.getFunctionName()));
@@ -484,8 +484,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                         Jimple.v().newStaticInvokeExpr(
                                 methodCallEvaluationMethod,
                                 argList)));
-                         
-         */     
+
+         */
         _nodeToLocal.put(node, tokenLocal);
     }
 
@@ -493,13 +493,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
     // returnLocal, with the given returnType to a token type.  Return
     // the new token local.
     private Local _convertJavaResultToToken(
-            Local returnLocal, Type returnType) 
+            Local returnLocal, Type returnType)
             throws IllegalActionException {
         Local tokenLocal;
 
         if(returnType instanceof RefType &&
                 SootUtilities.derivesFrom(
-                        ((RefType)returnType).getSootClass(), 
+                        ((RefType)returnType).getSootClass(),
                         PtolemyUtilities.tokenClass)) {
             tokenLocal = returnLocal;
         } else if(returnType.equals(
@@ -543,53 +543,53 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                     PtolemyUtilities.booleanMatrixTokenClass,
                     PtolemyUtilities.booleanMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else if(returnType.equals(ArrayType.v(IntType.v(),2))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.intMatrixTokenClass,
                     PtolemyUtilities.intMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else if(returnType.equals(ArrayType.v(LongType.v(),2))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleMatrixTokenClass,
                     PtolemyUtilities.doubleMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else if(returnType.equals(ArrayType.v(DoubleType.v(),2))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleMatrixTokenClass,
                     PtolemyUtilities.doubleMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.Complex"),2))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.complexMatrixTokenClass,
                     PtolemyUtilities.complexMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.fixMatrixTokenClass,
                     PtolemyUtilities.fixMatrixTokenConstructor,
                     returnLocal);
-            
+
         } else {
             throw new IllegalActionException("unrecognized case");
         }
         return tokenLocal;
     }
 
-    private Local _convertTokenArgToJavaArg(Local tokenLocal, 
+    private Local _convertTokenArgToJavaArg(Local tokenLocal,
             ptolemy.data.type.Type tokenType,
             CachedMethod.ArgumentConversion conversion)
             throws IllegalActionException {
-        
+
         if(conversion == CachedMethod.IDENTITY) {
-            Local tempLocal = Jimple.v().newLocal("arg" , 
+            Local tempLocal = Jimple.v().newLocal("arg" ,
                     PtolemyUtilities.tokenType);
             _body.getLocals().add(tempLocal);
-            
+
             // Add the new local to the list of arguments
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
@@ -598,13 +598,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                     _insertPoint);
             return tempLocal;
         } else if(conversion == CachedMethod.ARRAYTOKEN) {
-            Local tempLocal = Jimple.v().newLocal("arg" , 
+            Local tempLocal = Jimple.v().newLocal("arg" ,
                     RefType.v(PtolemyUtilities.arrayTokenClass));
             _body.getLocals().add(tempLocal);
-            Local resultLocal = Jimple.v().newLocal("arg" , 
+            Local resultLocal = Jimple.v().newLocal("arg" ,
                     ArrayType.v(RefType.v(PtolemyUtilities.objectClass), 1));
             _body.getLocals().add(resultLocal);
-            
+
             // Add the new local to the list of arguments
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
@@ -621,10 +621,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             return resultLocal;
         } else if(conversion == CachedMethod.NATIVE) {
             if(tokenType == ptolemy.data.type.BaseType.DOUBLE) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.doubleTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         DoubleType.v());
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
@@ -642,10 +642,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.doubleValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.UNSIGNED_BYTE) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.unsignedByteTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ByteType.v());
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
@@ -663,10 +663,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.unsignedByteValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.INT) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.intTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         IntType.v());
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
@@ -684,10 +684,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.intValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.LONG) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.longTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         LongType.v());
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
@@ -705,14 +705,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.longValueMethod)), _insertPoint);
                 return resultLocal;
             }  else if(tokenType == ptolemy.data.type.BaseType.STRING) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.stringTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         RefType.v("java.lang.String"));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -727,14 +727,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.stringValueMethod)), _insertPoint);
                 return resultLocal;
             }  else if(tokenType == ptolemy.data.type.BaseType.BOOLEAN) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.booleanTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         BooleanType.v());
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -749,14 +749,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.booleanValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.COMPLEX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.complexTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         RefType.v("ptolemy.math.Complex"));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-                    
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -771,14 +771,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.complexValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.FIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.intTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         RefType.v("ptolemy.math.FixPoint"));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -793,14 +793,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.fixValueMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.DOUBLE_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.doubleMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(DoubleType.v(),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -815,14 +815,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.doubleMatrixMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.INT_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.intMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(IntType.v(),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -837,14 +837,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.intMatrixMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.LONG_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.longMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(LongType.v(),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -859,14 +859,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.longMatrixMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.BOOLEAN_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.booleanMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(BooleanType.v(),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -881,14 +881,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.booleanMatrixMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.COMPLEX_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.complexMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(RefType.v("ptolemy.math.Complex"),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -903,14 +903,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.complexMatrixMethod)), _insertPoint);
                 return resultLocal;
             } else if(tokenType == ptolemy.data.type.BaseType.FIX_MATRIX) {
-                Local tempLocal = Jimple.v().newLocal("arg" , 
+                Local tempLocal = Jimple.v().newLocal("arg" ,
                         RefType.v(PtolemyUtilities.fixMatrixTokenClass));
                 _body.getLocals().add(tempLocal);
-                Local resultLocal = Jimple.v().newLocal("arg" , 
+                Local resultLocal = Jimple.v().newLocal("arg" ,
                         ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2));
                 _body.getLocals().add(resultLocal);
                 // Add the new local to the list of arguments
-           
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 tempLocal,
@@ -941,15 +941,15 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
         Local conditionTokenLocal =
             (Local)_nodeToLocal.get(node.jjtGetChild(0));
-        
-        Local booleanTokenLocal = Jimple.v().newLocal("result" , 
+
+        Local booleanTokenLocal = Jimple.v().newLocal("result" ,
                 RefType.v(PtolemyUtilities.booleanTokenClass));
         _body.getLocals().add(booleanTokenLocal);
-        Local flagLocal = Jimple.v().newLocal("result" , 
+        Local flagLocal = Jimple.v().newLocal("result" ,
                 BooleanType.v());
         _body.getLocals().add(flagLocal);
 
-        Local resultLocal = Jimple.v().newLocal("result" , 
+        Local resultLocal = Jimple.v().newLocal("result" ,
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(resultLocal);
 
@@ -977,7 +977,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                 IntConstant.v(1)),
                         startTrue),
                 _insertPoint);
-        
+
         // Otherwise, do the false branch,
          _generateChild(node, 2);
          // Assign the false result
@@ -991,7 +991,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
          _units.insertBefore(startTrue,
                  _insertPoint);
-         
+
         // Otherwise, do the true branch,
          _generateChild(node, 1);
          // Assign the true result
@@ -1004,18 +1004,18 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
          _nodeToLocal.put(node, resultLocal);
     }
 
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node) 
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-        throw new IllegalActionException("Cannot generate code" + 
+        throw new IllegalActionException("Cannot generate code" +
                 " for function definitions!");
     }
 
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             Stmt insertPoint = Jimple.v().newNopStmt();
             _units.insertBefore(insertPoint, _insertPoint);
-            Local local = PtolemyUtilities.buildConstantTokenLocal(_body, 
+            Local local = PtolemyUtilities.buildConstantTokenLocal(_body,
                     insertPoint, node.getToken(), "token");
             _nodeToLocal.put(node, local);
             return;
@@ -1024,25 +1024,25 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _nodeToLocal.put(node, _getLocalForName(node.getName()));
     }
 
-    public void visitLogicalNode(ASTPtLogicalNode node) 
+    public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
-      
+
         // Note that we take care to have short-circuit evaluation here.
-        Local conditionLocal = Jimple.v().newLocal("condition" , 
+        Local conditionLocal = Jimple.v().newLocal("condition" ,
                 BooleanType.v());
         _body.getLocals().add(conditionLocal);
-        
-        Local booleanTokenLocal = Jimple.v().newLocal("result" , 
+
+        Local booleanTokenLocal = Jimple.v().newLocal("result" ,
                 RefType.v(PtolemyUtilities.booleanTokenClass));
         _body.getLocals().add(booleanTokenLocal);
-        Local flagLocal = Jimple.v().newLocal("result" , 
+        Local flagLocal = Jimple.v().newLocal("result" ,
                 BooleanType.v());
         _body.getLocals().add(flagLocal);
 
         Stmt failedStmt = Jimple.v().newNopStmt();
         Stmt satisfiedStmt = Jimple.v().newNopStmt();
-        
+
         // Determine if we are doing AND or OR
         Constant conditionConstant =
             node.isLogicalAnd() ? IntConstant.v(1) : IntConstant.v(0);
@@ -1090,7 +1090,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                         conditionLocal,
                         notConditionConstant),
                 _insertPoint);
-         
+
         _units.insertBefore(satisfiedStmt,
                 _insertPoint);
 
@@ -1104,11 +1104,11 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _nodeToLocal.put(node, resultLocal);
     }
 
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node) 
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _generateAllChildren(node);
 
-        Local resultLocal = Jimple.v().newLocal("tokenResult", 
+        Local resultLocal = Jimple.v().newLocal("tokenResult",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(resultLocal);
 
@@ -1130,7 +1130,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
         _nodeToLocal.put(node, resultLocal);
     }
-    public void visitMethodCallNode(ASTPtMethodCallNode node) 
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
@@ -1140,7 +1140,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         // The first child is the token on which to invoke the method.
 
         // Handle indexing into a record.
-        ptolemy.data.type.Type baseTokenType = 
+        ptolemy.data.type.Type baseTokenType =
             ((ASTPtRootNode)node.jjtGetChild(0)).getType();
         if(argCount == 1 &&
                 baseTokenType instanceof RecordType) {
@@ -1148,19 +1148,19 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             if(type.labelSet().contains(node.getMethodName())) {
                 Local originalBaseLocal = (Local)
                     _nodeToLocal.get(node.jjtGetChild(0));
-                Local baseLocal = Jimple.v().newLocal("base", 
+                Local baseLocal = Jimple.v().newLocal("base",
                         RefType.v(PtolemyUtilities.recordTokenClass));
                 _body.getLocals().add(baseLocal);
                 // Cast the record.
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
-                                baseLocal, 
+                                baseLocal,
                                 Jimple.v().newCastExpr(
                                         originalBaseLocal,
                                         RefType.v(PtolemyUtilities.recordTokenClass))), _insertPoint);
 
                 // invoke get()
-                Local returnLocal = Jimple.v().newLocal("returnValue", 
+                Local returnLocal = Jimple.v().newLocal("returnValue",
                         RefType.v(PtolemyUtilities.tokenClass));
                 _body.getLocals().add(returnLocal);
                 _units.insertBefore(
@@ -1171,10 +1171,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         PtolemyUtilities.recordGetMethod,
                                         StringConstant.v(node.getMethodName()))), _insertPoint);
                 _nodeToLocal.put(node, returnLocal);
-                                
+
                 return;
             }
-        }        
+        }
 
         // The array of token types that the method takes.
         ptolemy.data.type.Type[] argTypes =
@@ -1184,10 +1184,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
 
         // Find the method...
-        CachedMethod cachedMethod = 
+        CachedMethod cachedMethod =
             CachedMethod.findMethod(node.getMethodName(),
                     argTypes, CachedMethod.METHOD);
-        
+
         if(cachedMethod.isMissing()) {
             throw new IllegalActionException("Function " + cachedMethod +
                     " not found.");
@@ -1196,21 +1196,21 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         if(cachedMethod instanceof CachedMethod.ArrayMapCachedMethod ||
                 cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
             throw new IllegalActionException(
-                    "CodeGeneration not supported for " + 
+                    "CodeGeneration not supported for " +
                     cachedMethod.getClass());
         }
 
         Method method = cachedMethod.getMethod();
-      
+
         // Find the corresponding soot method.
         SootMethod sootMethod = SootUtilities.getSootMethodForMethod(method);
 
         Local originalBaseLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         RefType baseType = RefType.v(sootMethod.getDeclaringClass());
-        Local baseLocal = Jimple.v().newLocal("base", 
+        Local baseLocal = Jimple.v().newLocal("base",
                baseType);
         _body.getLocals().add(baseLocal);
-           
+
         if(cachedMethod instanceof CachedMethod.BaseConvertCachedMethod) {
             RefType tempBaseType = PtolemyUtilities.getSootTypeForTokenType(
                     argTypes[0]);
@@ -1220,24 +1220,24 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                             cachedMethod).getBaseConversion());
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
-                            baseLocal, 
+                            baseLocal,
                             Jimple.v().newCastExpr(
                                     tempBaseLocal,
                                     baseType)), _insertPoint);
         } else {
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
-                            baseLocal, 
+                            baseLocal,
                             Jimple.v().newCastExpr(
                                     originalBaseLocal,
                                     baseType)), _insertPoint);
         }
-        
+
 
         // The list of locals that are arguments to the function.
         List args = new LinkedList();
-     
-        CachedMethod.ArgumentConversion[] conversions = 
+
+        CachedMethod.ArgumentConversion[] conversions =
             cachedMethod.getConversions();
         for (int i = 1; i < node.jjtGetNumChildren(); i++) {
             Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
@@ -1249,24 +1249,24 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         }
 
         Type returnType = sootMethod.getReturnType();
-        Local returnLocal = Jimple.v().newLocal("returnValue", 
+        Local returnLocal = Jimple.v().newLocal("returnValue",
                 returnType);
         _body.getLocals().add(returnLocal);
 
         // Actually invoke the method.
         _units.insertBefore(
                 Jimple.v().newAssignStmt(
-                        returnLocal, 
+                        returnLocal,
                         Jimple.v().newVirtualInvokeExpr(
                                 baseLocal, sootMethod, args)), _insertPoint);
-      
+
         // Convert the result back to a token.
         Local tokenLocal = _convertJavaResultToToken(returnLocal, returnType);
-        
-     
-        
+
+
+
    //      RefType objectType = RefType.v(PtolemyUtilities.objectClass);
-//         Local argValuesLocal = Jimple.v().newLocal("tokenArray", 
+//         Local argValuesLocal = Jimple.v().newLocal("tokenArray",
 //                 ArrayType.v(objectType, 1));
 //         _body.getLocals().add(argValuesLocal);
 //         _units.insertBefore(
@@ -1286,13 +1286,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //         }
 
 //         RefType typeType = RefType.v("ptolemy.data.type.Type");
-//         Local argTypesLocal = Jimple.v().newLocal("tokenTypes", 
+//         Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
 //                 ArrayType.v(typeType, 1));
 //         _body.getLocals().add(argTypesLocal);
-//         Local typeLocal = Jimple.v().newLocal("classType", 
+//         Local typeLocal = Jimple.v().newLocal("classType",
 //                 typeType);
 //         _body.getLocals().add(typeLocal);
-//         Local tokenLocal = Jimple.v().newLocal("token", 
+//         Local tokenLocal = Jimple.v().newLocal("token",
 //                 PtolemyUtilities.tokenType);
 //         _body.getLocals().add(tokenLocal);
 
@@ -1302,17 +1302,17 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //                         Jimple.v().newNewArrayExpr(
 //                                 typeType,
 //                                 IntConstant.v(argCount))));
-        
+
 //         Local indexLocal = Jimple.v().newLocal("index", IntType.v());
 //         _body.getLocals().add(indexLocal);
-        
+
 //         // The list of initializer instructions.
 //         List initializerList = new LinkedList();
 //         initializerList.add(
 //                 Jimple.v().newAssignStmt(
 //                         indexLocal,
 //                         IntConstant.v(0)));
-        
+
 //         // The list of body instructions.
 //         List bodyList = new LinkedList();
 //         bodyList.add(
@@ -1333,8 +1333,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //                                 argTypesLocal,
 //                                 indexLocal),
 //                         typeLocal));
-                
-                
+
+
 //         // Increment the index.
 //         bodyList.add(
 //                 Jimple.v().newAssignStmt(
@@ -1342,12 +1342,12 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //                         Jimple.v().newAddExpr(
 //                                 indexLocal,
 //                                 IntConstant.v(1))));
-        
+
 //         Expr conditionalExpr =
 //             Jimple.v().newLtExpr(
 //                     indexLocal,
 //                     IntConstant.v(argCount));
-        
+
 //         Stmt stmt = Jimple.v().newNopStmt();
 //         _units.insertBefore(stmt);
 
@@ -1356,8 +1356,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //                 initializerList,
 //                 bodyList,
 //                 conditionalExpr);
-               
-//         SootMethod methodCallEvaluationMethod = 
+
+//         SootMethod methodCallEvaluationMethod =
 //             Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token methodCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
 //         List argList = new ArrayList();
 //         argList.add(StringConstant.v(node.getMethodName()));
@@ -1371,34 +1371,34 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 //                         Jimple.v().newStaticInvokeExpr(
 //                                 methodCallEvaluationMethod,
 //                                 argList)));
-                              
+
         _nodeToLocal.put(node, tokenLocal);
     }
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
-        
+
         _generateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-       
-        Local resultLocal = Jimple.v().newLocal("result", 
+
+        Local resultLocal = Jimple.v().newLocal("result",
                 RefType.v(PtolemyUtilities.tokenClass));
         _body.getLocals().add(resultLocal);
-        
-        Local tokenLocal = Jimple.v().newLocal("token", 
+
+        Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.tokenClass));
         _body.getLocals().add(tokenLocal);
-        
-        Local timesLocal = Jimple.v().newLocal("times", 
+
+        Local timesLocal = Jimple.v().newLocal("times",
                 IntType.v());
         _body.getLocals().add(timesLocal);
-        
+
         _units.insertBefore(
                 Jimple.v().newAssignStmt(
                         resultLocal,
                         (Local)_nodeToLocal.get(node.jjtGetChild(0))), _insertPoint);
-        
+
         for(int i = 1; i < numChildren; i++) {
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
@@ -1416,7 +1416,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                             Jimple.v().newVirtualInvokeExpr(
                                     tokenLocal,
                                     PtolemyUtilities.tokenIntValueMethod)), _insertPoint);
-            
+
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
                             resultLocal,
@@ -1432,7 +1432,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
         _generateAllChildren(node);
 
-        Local tokenLocal = Jimple.v().newLocal("token", 
+        Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.tokenClass));
         _body.getLocals().add(tokenLocal);
 
@@ -1444,7 +1444,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is " +
                 "not equal to number of operators plus one");
-    
+
         Local resultLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         for(int i = 1; i < numChildren; i++) {
             Token operator = (Token)lexicalTokenList.get(i - 1);
@@ -1483,20 +1483,20 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
         _nodeToLocal.put(node, resultLocal);
     }
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node) 
+    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         _generateAllChildren(node);
-        
+
         int numChildren = node.jjtGetNumChildren();
-        
+
         _assert(node.getFieldNames().size() == numChildren,
                 node, "The number of labels and values does not " +
                 "match in parsing a record expression.");
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
         RefType stringType = RefType.v("java.lang.String");
-        
-        Local labelsLocal = Jimple.v().newLocal("labelArray", 
+
+        Local labelsLocal = Jimple.v().newLocal("labelArray",
                 ArrayType.v(stringType, 1));
         _body.getLocals().add(labelsLocal);
         _units.insertBefore(
@@ -1514,22 +1514,22 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                     IntConstant.v(i)),
                             StringConstant.v(labels[i])), _insertPoint);
         }
-        
-        
+
+
         Local valuesLocal = _getChildTokensLocal(node);
-        
-        Local tokenLocal = Jimple.v().newLocal("token", 
+
+        Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.recordTokenClass));
         _body.getLocals().add(tokenLocal);
-        
+
         _units.insertBefore(Jimple.v().newAssignStmt(
              tokenLocal, Jimple.v().newNewExpr(
                      RefType.v(PtolemyUtilities.recordTokenClass))), _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
              Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                 PtolemyUtilities.recordTokenConstructor, 
+                 PtolemyUtilities.recordTokenConstructor,
                      labelsLocal, valuesLocal)), _insertPoint);
-                   
+
        _nodeToLocal.put(node, tokenLocal);
      }
     public void visitRelationalNode(ASTPtRelationalNode node)
@@ -1548,16 +1548,16 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
 
 
         Type scalarType = RefType.v("ptolemy.data.ScalarToken");
-        Local tokenLocal = Jimple.v().newLocal("token", 
+        Local tokenLocal = Jimple.v().newLocal("token",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(tokenLocal);
-        Local leftScalarLocal = Jimple.v().newLocal("leftScalar", 
+        Local leftScalarLocal = Jimple.v().newLocal("leftScalar",
                 scalarType);
         _body.getLocals().add(leftScalarLocal);
-        Local rightScalarLocal = Jimple.v().newLocal("rightScalar", 
+        Local rightScalarLocal = Jimple.v().newLocal("rightScalar",
                     scalarType);
         _body.getLocals().add(rightScalarLocal);
-        
+
         if(operator.kind == PtParserConstants.EQUALS) {
             _units.insertBefore(
                     Jimple.v().newAssignStmt(
@@ -1591,7 +1591,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                Jimple.v().newCastExpr(
                                        rightLocal,
                                        scalarType)), _insertPoint);
-            
+
             if(operator.kind == PtParserConstants.GTE) {
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
@@ -1655,13 +1655,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         Token operator = (Token)node.getOperator();
         Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         Local bitsLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
-        Local resultLocal = Jimple.v().newLocal("tokenResult", 
+        Local resultLocal = Jimple.v().newLocal("tokenResult",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(resultLocal);
-         Local scalarLocal = Jimple.v().newLocal("scalar", 
+         Local scalarLocal = Jimple.v().newLocal("scalar",
                 scalarType);
         _body.getLocals().add(scalarLocal);
-        Local intLocal = Jimple.v().newLocal("bits", 
+        Local intLocal = Jimple.v().newLocal("bits",
                 IntType.v());
         _body.getLocals().add(intLocal);
 
@@ -1704,13 +1704,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         } else {
             _assert(false, node, "Invalid operation");
         }
-       _nodeToLocal.put(node, resultLocal);    
+       _nodeToLocal.put(node, resultLocal);
     }
-    public void visitSumNode(ASTPtSumNode node) 
+    public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _generateAllChildren(node);
 
-        Local tokenLocal = Jimple.v().newLocal("token", 
+        Local tokenLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.tokenClass));
         _body.getLocals().add(tokenLocal);
 
@@ -1722,7 +1722,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _assert(numChildren == lexicalTokenList.size() + 1, node,
                 "The number of child nodes is " +
                 "not equal to number of operators plus one");
-    
+
         Local resultLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         for(int i = 1; i < numChildren; i++) {
             Token operator = (Token)lexicalTokenList.get(i - 1);
@@ -1758,14 +1758,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _assert(node.jjtGetNumChildren() == 1, node,
                 "Unary node must have exactly one child!");
 
-        Local resultLocal = Jimple.v().newLocal("token", 
+        Local resultLocal = Jimple.v().newLocal("token",
                 RefType.v(PtolemyUtilities.tokenClass));
         _body.getLocals().add(resultLocal);
 
         Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
 
         if(node.isMinus()) {
-            Local zeroLocal = Jimple.v().newLocal("token", 
+            Local zeroLocal = Jimple.v().newLocal("token",
                     RefType.v(PtolemyUtilities.tokenClass));
             _body.getLocals().add(zeroLocal);
 
@@ -1782,7 +1782,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                        tokenLocal)), _insertPoint);
         } else if(node.isNot()) {
             Type booleanType = RefType.v("ptolemy.data.BooleanToken");
-            Local booleanLocal = Jimple.v().newLocal("token", 
+            Local booleanLocal = Jimple.v().newLocal("token",
                     booleanType);
             _body.getLocals().add(booleanLocal);
             _units.insertBefore(Jimple.v().newAssignStmt(
@@ -1790,13 +1790,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                Jimple.v().newCastExpr(
                                        tokenLocal,
                                        booleanType)), _insertPoint);
-          
+
             _units.insertBefore(Jimple.v().newAssignStmt(
                                booleanLocal,
                                Jimple.v().newInterfaceInvokeExpr(
                                        booleanLocal,
                                        PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
-          
+
              _units.insertBefore(Jimple.v().newAssignStmt(
                                resultLocal,
                                Jimple.v().newCastExpr(
@@ -1804,7 +1804,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                        PtolemyUtilities.tokenType)), _insertPoint);
         } else if(node.isBitwiseNot()) {
             Type bitwiseType = RefType.v("ptolemy.data.BitwiseOperationToken");
-            Local bitwiseLocal = Jimple.v().newLocal("token", 
+            Local bitwiseLocal = Jimple.v().newLocal("token",
                     bitwiseType);
             _body.getLocals().add(bitwiseLocal);
             _units.insertBefore(Jimple.v().newAssignStmt(
@@ -1812,19 +1812,19 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                Jimple.v().newCastExpr(
                                        tokenLocal,
                                        bitwiseType)), _insertPoint);
-          
+
             _units.insertBefore(Jimple.v().newAssignStmt(
                                bitwiseLocal,
                                Jimple.v().newInterfaceInvokeExpr(
                                        bitwiseLocal,
                                        PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
-          
+
              _units.insertBefore(Jimple.v().newAssignStmt(
                                resultLocal,
                                Jimple.v().newCastExpr(
                                        bitwiseLocal,
                                        PtolemyUtilities.tokenType)), _insertPoint);
-          
+
         } else {
             _assert(false, node, "Unrecognized unary node");
         }
@@ -1844,13 +1844,13 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         if(!flag) {
             throw new InternalErrorException(message + ": " + node.toString());
         }
-    }    
+    }
 
-    /** Loop through all of the children of this node, 
+    /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
      */
-    protected void _generateAllChildren(ASTPtRootNode node) 
+    protected void _generateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
         for (int i = 0; i < numChildren; i++) {
@@ -1866,15 +1866,15 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
         child.visit(this);
     }
-    
+
     protected Local _getLocalForName(String name)
             throws IllegalActionException {
         if(_scope != null) {
-            Local local = _scope.getLocal(name); 
+            Local local = _scope.getLocal(name);
             if(local != null) {
                 return local;
             }
-        }          
+        }
         throw new IllegalActionException(
                 "The ID " + name + " is undefined.");
     }
@@ -1891,14 +1891,14 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             return false;
         }
     }
-    
+
     /** Create a new local that references an array of tokens.  The
      * array will have the size of the number of children of the given
      * node.  Add code to the body to initialize and populate the
      * array.
      */
     protected Local _getChildTokensLocal(ASTPtRootNode node) {
-        Local arrayLocal = Jimple.v().newLocal("tokenArray", 
+        Local arrayLocal = Jimple.v().newLocal("tokenArray",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         _body.getLocals().add(arrayLocal);
         _units.insertBefore(

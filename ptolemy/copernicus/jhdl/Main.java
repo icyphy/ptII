@@ -179,7 +179,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
-                
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4",
                         JimpleWriter.v()));
@@ -227,7 +227,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.circuit",
                         ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));
-        
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));

@@ -13,8 +13,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 
-/* 
- * This applet renders an ellipse overlapping a rectangle with the compositing rule and 
+/*
+ * This applet renders an ellipse overlapping a rectangle with the compositing rule and
  * alpha value selected by the user.
 */
 
@@ -40,7 +40,7 @@ public class Composite extends JApplet implements ItemListener {
         alphaLabel.setFont(newFont);
         alphaLabel.setHorizontalAlignment(JLabel.CENTER);
         layOut.setConstraints(alphaLabel, l);
-        getContentPane().add(alphaLabel);   
+        getContentPane().add(alphaLabel);
         GridBagConstraints c = new GridBagConstraints();
         getContentPane().setLayout(layOut);
 
@@ -51,7 +51,7 @@ public class Composite extends JApplet implements ItemListener {
         rulesLabel.setFont(newFont);
         rulesLabel.setHorizontalAlignment(JLabel.CENTER);
         layOut.setConstraints(rulesLabel, l);
-        getContentPane().add(rulesLabel);   
+        getContentPane().add(rulesLabel);
 
         GridBagConstraints a = new GridBagConstraints();
         a.gridwidth = GridBagConstraints.RELATIVE;
@@ -81,14 +81,14 @@ public class Composite extends JApplet implements ItemListener {
         rules.addItemListener(this);
         getContentPane().add(rules);
 
-        GridBagConstraints fC = new GridBagConstraints(); 
+        GridBagConstraints fC = new GridBagConstraints();
         fC.fill = GridBagConstraints.BOTH;
         fC.weightx = 1.0;
         fC.weighty = 1.0;
         fC.gridwidth = GridBagConstraints.REMAINDER;
         comp = new CompPanel();
         layOut.setConstraints(comp, fC);
-        getContentPane().add(comp); 
+        getContentPane().add(comp);
 
         validate();
     }
@@ -129,12 +129,12 @@ public class Composite extends JApplet implements ItemListener {
 
 class CompPanel extends JPanel {
 
-    AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC);  
+    AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC);
     float alpha = 1.0f;
 
     public CompPanel(){}
 
-// Resets the alpha and composite rules with selected items.	
+// Resets the alpha and composite rules with selected items.
     public void changeRule(String a, int rule) {
         alpha = Float.valueOf(a).floatValue();
         ac = AlphaComposite.getInstance(getRule(rule), alpha);
@@ -163,7 +163,7 @@ class CompPanel extends JPanel {
 
         Dimension d = getSize();
         int w = d.width;
-        int h = d.height; 
+        int h = d.height;
 
         // Creates the buffered image.
         BufferedImage buffImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -179,11 +179,11 @@ class CompPanel extends JPanel {
         // Draws the rectangle and ellipse into the buffered image.
         gbi.setColor(new Color(0.0f, 0.0f, 1.0f, 1.0f));
         gbi.fill(new Rectangle2D.Double(rectx, recty, 150, 100));
-        gbi.setColor(new Color(1.0f, 0.0f, 0.0f, 1.0f));    
+        gbi.setColor(new Color(1.0f, 0.0f, 0.0f, 1.0f));
         gbi.setComposite(ac);
         gbi.fill(new Ellipse2D.Double(rectx+rectx/2,recty+recty/2,150,100));
 
         // Draws the buffered image.
         g2.drawImage(buffImg, null, 0, 0);
     }
-}   
+}

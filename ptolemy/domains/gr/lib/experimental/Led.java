@@ -67,12 +67,12 @@ public class Led extends Box3D {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
+
         emissivity = new TypedIOPort(this, "emissivity");
         emissivity.setInput(true);
         emissivity.setTypeEquals(BaseType.DOUBLE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -86,8 +86,8 @@ public class Led extends Box3D {
          _material = new Material();
          _material.setCapability(Material.ALLOW_COMPONENT_READ|Material.ALLOW_COMPONENT_WRITE);
         _appearance = new Appearance();
-        _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ|Appearance.ALLOW_MATERIAL_WRITE);  
-               
+        _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ|Appearance.ALLOW_MATERIAL_WRITE);
+
         _material.setDiffuseColor(_color);
         if (_shine > 1.0) {
             _material.setSpecularColor(whiteColor);
@@ -106,8 +106,8 @@ public class Led extends Box3D {
 		    PolygonAttributes feature2 = new PolygonAttributes();
 		    feature2.setCullFace(feature2.CULL_NONE);
 		    _appearance.setPolygonAttributes(feature2);
-        }*/ 
-        /* 
+        }*/
+        /*
         if (_wireframeMode) {
             PolygonAttributes feature1 = new PolygonAttributes();
 		    feature1.setPolygonMode(feature1.POLYGON_LINE);
@@ -129,18 +129,18 @@ public class Led extends Box3D {
     protected void _createModel() throws IllegalActionException {
        super._createModel();
        System.out.println("create model");
-       _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ|Shape3D.ALLOW_APPEARANCE_WRITE);  
+       _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ|Shape3D.ALLOW_APPEARANCE_WRITE);
 
     }
-    
-    
+
+
      public boolean prefire() throws IllegalActionException {
         boolean returnValue = super.prefire();
         returnValue = true;
         return returnValue;
     }
-    
-    
+
+
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
      *  @exception IllegalActionException If the value of some parameters can't
@@ -162,8 +162,8 @@ public class Led extends Box3D {
                 //unLitBoxTG.addChild(new Box(0.1f, 0.1f, 0.1f, Box.GENERATE_NORMALS, redGlowMat));
             }
         }
-    
+
     }
 
-    
+
 }

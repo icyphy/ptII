@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (yourname@eecs.berkeley.edu)
@@ -56,7 +56,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
     public Object getParent(Object node) {
         return ((Locatable)node).getContainer().getContainer();
     }
-    
+
     /** Return an iterator over the edges coming into the given node.
      *  @param node The node.
      *  @return A NullIterator, since no edges are attached to attributes.
@@ -64,7 +64,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
     public Iterator inEdges(Object node) {
         return new NullIterator();
     }
-    
+
     /** Return an iterator over the edges coming out of the given node.
      *  @param node The node.
      *  @return A NullIterator, since no edges are attached to attributes.
@@ -83,12 +83,12 @@ public class AttributeNodeModel extends NamedObjNodeModel {
     public void removeNode(final Object eventSource, final Object node) {
         final Object prevParent = getParent(node);
         NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
-        
+
         NamedObj container = _getChangeRequestParent(attribute);
-        
+
         String moml = "<deleteProperty name=\""
                 + attribute.getName(container) + "\"/>\n";
-        
+
         // Note: The source is NOT the graph model.
         ChangeRequest request =
                  new MoMLChangeRequest(this, container, moml);

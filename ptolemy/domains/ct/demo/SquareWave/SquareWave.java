@@ -77,7 +77,7 @@ public class SquareWave extends TypedCompositeActor {
         numerator.setExpression("{500.0}");
         denominator = new Parameter(this, "denominator");
         denominator.setExpression("{1.0, 10.0, 1000.0}");
- 
+
         Clock sqwv = new Clock(this, "SQWV");
         sqwv.period.setExpression("period");
         sqwv.values.setExpression("{2.0, -2.0}");

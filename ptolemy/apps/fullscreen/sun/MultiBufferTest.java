@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class MultiBufferTest {
-    
+
     private static Color[] COLORS = new Color[] {
         Color.red, Color.blue, Color.green, Color.white, Color.black,
         Color.yellow, Color.gray, Color.cyan, Color.pink, Color.lightGray,
@@ -20,9 +20,9 @@ public class MultiBufferTest {
         new DisplayMode(640, 480, 16, 0),
         new DisplayMode(640, 480, 8, 0)
     };
-    
+
     Frame mainFrame;
-    
+
     public MultiBufferTest(int numBuffers, GraphicsDevice device) {
         try {
             GraphicsConfiguration gc = device.getDefaultConfiguration();
@@ -56,7 +56,7 @@ public class MultiBufferTest {
             device.setFullScreenWindow(null);
         }
     }
-    
+
     private static DisplayMode getBestDisplayMode(GraphicsDevice device) {
         for (int x = 0; x < BEST_DISPLAY_MODES.length; x++) {
             DisplayMode[] modes = device.getDisplayModes();
@@ -71,14 +71,14 @@ public class MultiBufferTest {
         }
         return null;
     }
-    
+
     public static void chooseBestDisplayMode(GraphicsDevice device) {
         DisplayMode best = getBestDisplayMode(device);
         if (best != null) {
             device.setDisplayMode(best);
         }
     }
-    
+
     public static void main(String[] args) {
         try {
             int numBuffers = 2;

@@ -562,7 +562,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 //             return new ArrayType(BaseType.STRING);
 //         } else {
         } else {
-            throw new IllegalActionException("unrecognized type " 
+            throw new IllegalActionException("unrecognized type "
                     + tokenClass);
         }
         } catch(ClassNotFoundException ex) {

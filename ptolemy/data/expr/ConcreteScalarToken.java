@@ -71,7 +71,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected ScalarToken _add(ScalarToken rightArgument) 
+    protected ScalarToken _add(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("add", this, rightArgument));
@@ -111,7 +111,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument) 
+    protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException  {
         throw new IllegalActionException(
                 notSupportedMessage("divide", this, rightArgument));
@@ -120,7 +120,7 @@ public class ConcreteScalarToken extends ScalarToken {
     /** Throw an exception.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon)  
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("isCloseTo", this, rightArgument));
@@ -128,7 +128,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument)  
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("isEqualTo", this, rightArgument));
@@ -136,7 +136,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
      /** Throw an exception.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument)  
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("isLessThan", this, rightArgument));
@@ -144,7 +144,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected ScalarToken _modulo(ScalarToken rightArgument) 
+    protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException  {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
@@ -152,7 +152,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected ScalarToken _multiply(ScalarToken rightArgument)  
+    protected ScalarToken _multiply(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("multiply", this, rightArgument));
@@ -160,7 +160,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    protected ScalarToken _subtract(ScalarToken rightArgument)  
+    protected ScalarToken _subtract(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("subtract", this, rightArgument));

@@ -81,7 +81,7 @@ public class ZeroOrderHold extends Transformer
                 new StringToken("DISCRETE"));
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
-        
+
         _attachText("_iconDescription", "<svg>\n" +
             "<rect x=\"-30\" y=\"-20\" "
             + "width=\"60\" height=\"40\" "

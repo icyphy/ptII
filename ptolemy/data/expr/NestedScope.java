@@ -50,13 +50,13 @@ list until a mapping is found.
 */
 
 public class NestedScope implements ParserScope {
-    
+
     /** Construct a new scope that consists of the given list of scopes.
      */
     public NestedScope(List scopeList) {
         _scopeList = scopeList;
     }
-    
+
     /** Look up and return the value with the specified name in the
      *  scope. Start from the first scope in the list supplied to the
 	 *  constructor. If a value is found, return the value, otherwise
@@ -106,7 +106,7 @@ public class NestedScope implements ParserScope {
     }
 //NOTE: we probably need a method to collect all the mappings defined in a
 //scope. Such a method could return a hash map from names to value tokens.
-    
+
     private List _scopeList;
 }
 

@@ -420,7 +420,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 _breakPoints = new TotallyOrderedSet(
                         new FuzzyDoubleComparator(resolution));
             }
-            if (actor != null 
+            if (actor != null
                     && time - minStep > currentTime - resolution) {
                 // NOTE: The extra firings introduced here will cause all
                 // actors to be fired at the specified times, except discrete

@@ -95,7 +95,7 @@ public class ComplexToken extends ScalarToken {
     /** Convert the specified token into an instance of ComplexToken.
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
-     *  token.  
+     *  token.
      *  If the argument is already an instance of ComplexToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below ComplexToken in the type hierarchy, it is converted to
@@ -126,9 +126,9 @@ public class ComplexToken extends ScalarToken {
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             result._unitCategoryExponents =
                 doubleToken._copyOfCategoryExponents();
-            return result;        
+            return result;
         }
-        
+
         // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(

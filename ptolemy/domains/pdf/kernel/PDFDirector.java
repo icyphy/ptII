@@ -132,11 +132,11 @@ public class PDFDirector extends Director {
 
     /** The name of the initialization graph.  This parameter
      *  should contain a StringToken.  The model will be fired once
-     *  every time this director is fired prior to the model.  
+     *  every time this director is fired prior to the model.
      */
     public StringAttribute init;
 
-    /** The name of the model.  
+    /** The name of the model.
      */
     public StringAttribute model;
 
@@ -174,16 +174,16 @@ public class PDFDirector extends Director {
             if(_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
-            
+
             actor.fire();
             _postfirereturns = _postfirereturns && actor.postfire();
-            
+
             name = model.getExpression();
             actor = (Actor) container.getEntity(name);
             if(_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
-            
+
             actor.fire();
             _postfirereturns = _postfirereturns && actor.postfire();
         }
@@ -344,20 +344,20 @@ public class PDFDirector extends Director {
                     "an opaque output port.");
         }
         System.out.println("transferring Outputs for port" + port.getFullName());
-                      
+
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        Entity initEntity = 
+        Entity initEntity =
             (Entity) container.getEntity(init.getExpression());
-        Entity modelEntity = 
+        Entity modelEntity =
             (Entity) container.getEntity(model.getExpression());
-        Attribute attribute = modelEntity.getAttribute(port.getName());        
+        Attribute attribute = modelEntity.getAttribute(port.getName());
         boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 System.out.println("channel " + i);
                 if (insiderecs[i] != null) {
-                    System.out.println("has " + insiderecs[i].length + 
+                    System.out.println("has " + insiderecs[i].length +
                             " Receivers");
                     for (int j = 0; j < insiderecs[i].length; j++) {
                         System.out.println("checking hasToken number" + j);
@@ -365,7 +365,7 @@ public class PDFDirector extends Director {
                             try {
                                 System.out.println("transferring");
                                 ptolemy.data.Token t = insiderecs[i][j].get();
-                                if(port.getContainer().equals(initEntity) &&  
+                                if(port.getContainer().equals(initEntity) &&
                                     port.deepConnectedPortList().size() > 0) {
                                     System.out.println("Setting");
                                     Settable settable = (Settable)attribute;
@@ -374,7 +374,7 @@ public class PDFDirector extends Director {
                                     System.out.println("Sending");
                                     port.send(i, t);
                                 }
-                                    
+
                                 trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(

@@ -70,11 +70,11 @@ public class FixPointQuantization extends Quantization {
      *  <i>precision,overflow</i> or
      *  <i>precision,overflow,rounding</i>, and may optionally be
      *  enclosed in parentheses.
-     * 
+     *
      *  <p> <i>precision</i> must be one of the Precision formats;
      *  <i>integer-bits.fraction-bits</i> or
-     *  <i>total-bits/integer-bits</i>. 
-     * 
+     *  <i>total-bits/integer-bits</i>.
+     *
      *  <p> <i>overflow</i> must be
      *  one of the Overflow strategies; e.g.  <i>saturate</i> or
      *  <i>modulo</i> or <i>trap</i>.   The default is <i>saturate</i>.

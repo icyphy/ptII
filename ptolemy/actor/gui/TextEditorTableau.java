@@ -112,7 +112,7 @@ public class TextEditorTableau extends Tableau {
 	public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
-            String editorPreference = 
+            String editorPreference =
                 System.getProperty("ptolemy.user.texteditor",".");
             Class tableauClass;
             Class effigyClass;
@@ -129,7 +129,7 @@ public class TextEditorTableau extends Tableau {
                 effigyClass = Class.forName
                     ("ptolemy.actor.gui.TextEffigy");
             }
-            _tableauConstructor = 
+            _tableauConstructor =
                 tableauClass.getConstructor
                 (new Class[]{TextEffigy.class, String.class});
             _newTextEffigyText =

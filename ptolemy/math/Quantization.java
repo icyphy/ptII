@@ -100,7 +100,7 @@ that its value is set in the constructor and cannot then be modified.
 @see Rounding
 */
 public abstract class Quantization implements Cloneable, Serializable {
-    
+
     /** Construct a Quantization with the given precision, overflow
      *  strategy, and rounding strategy.
      */

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -82,13 +82,13 @@ import soot.toolkits.graph.Block;
  * This significantly simplifies subsequent control-flow anaylsis.
  *
  * @see ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression
- * 
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
 public class ConditionalControlCompactor {
-    
+
     /**
      * This static method takes a SootMethod and compacts successive
      * Control-flow statements. The result is a modified SootMethod
@@ -97,7 +97,7 @@ public class ConditionalControlCompactor {
      * modified SootMethod cannot be used to generate byte codes as
      * several new Expression nodes unique to this package are used.
      **/
-    public static void compact(SootMethod method) 
+    public static void compact(SootMethod method)
 	throws IllegalActionException {
 
 	Body mbody = method.retrieveActiveBody();
@@ -105,7 +105,7 @@ public class ConditionalControlCompactor {
 
 	// Iterate over entire graph until compaction results in no new changes
 	boolean unitsModified = false;
-	// This vector contains Units that have been removed in a given 
+	// This vector contains Units that have been removed in a given
 	// pass of the loop. This is used to keep track of Units that
 	// may be skipped when analyzing the Unit chain.
 	Vector removedUnits = new Vector(chain.size());
@@ -115,7 +115,7 @@ public class ConditionalControlCompactor {
 	    // iterate over all Units in the method chain
 	    Iterator i = chain.snapshotIterator();
 	    for (Unit current = (Unit) i.next();i.hasNext();) {
-		
+
     		//System.out.println("Attemping to merge Unit "+
 		//current);
 
@@ -136,7 +136,7 @@ public class ConditionalControlCompactor {
 		// and marge units as modfied. If merging is not
 		// possible, get next unit.
 		if (mergedUnit != null) {
-		    removedUnits.add(mergedUnit);		    
+		    removedUnits.add(mergedUnit);
 		    unitsModified = true;
 		} else {
 		    if (i.hasNext()) {
@@ -157,14 +157,14 @@ public class ConditionalControlCompactor {
      * pattern when deciding to merge:
      * - Current unit must be an instance of the IfStmt
      * - Successor of unit must also be an IfStmt
-     * - The target of the root IfStmt is the same as one of 
+     * - The target of the root IfStmt is the same as one of
      *   the two targets of the successor IfStmt.
-     * 
+     *
      * This method is looking for the following pattern:
      * Unit n:   rootIfStmt -> target1
      * Unit n+1: succIfStmt -> target2
      * Unit n+2: succSuccessor
-     * 
+     *
      * And (target1 == target2) or (target1 == succSuccessor)
      *
      * If (target1 == succSuccessor), replace Unit n and Unit n+1
@@ -179,17 +179,17 @@ public class ConditionalControlCompactor {
      * Gotos and preserves the byte code ordering of the chain.
      *
      **/
-    protected static Unit mergeUnit(PatchingChain chain, Unit root) 
+    protected static Unit mergeUnit(PatchingChain chain, Unit root)
 	throws IllegalActionException {
-	
+
 	// 1. Is root an IfStmt?
 	if (!(root instanceof IfStmt))
 	    return null;
 	IfStmt rootIfStmt = (IfStmt) root;
 	Unit rootTarget = rootIfStmt.getTarget();
-	
+
 	// 2. Is successor an IfStmt? If so, continue with the merge.
-	//    If not, call mergeBooleanAssign to attempt a different 
+	//    If not, call mergeBooleanAssign to attempt a different
 	//    merge.
 	Unit successor = (Unit) chain.getSuccOf(root);
 	if (!(successor instanceof IfStmt))
@@ -203,7 +203,7 @@ public class ConditionalControlCompactor {
 	if (!((rootTarget == successorSuccessor) ^
 	      (rootTarget == successorTarget)))
 	    return null;
-	    
+
 	// root and successor units can be merged.
 	Value rootCondition = rootIfStmt.getCondition();
 	Value successorCondition = successorIfStmt.getCondition();
@@ -214,15 +214,15 @@ public class ConditionalControlCompactor {
 	    newExpression = new CompoundAndExpression(
 		CompoundBooleanExpression.invertValue(rootCondition),
 		successorCondition);
-						      
+
 	} else {
 	    // Expression = rootCondition | successorCondition
-	    newExpression = 
+	    newExpression =
 		new CompoundOrExpression(rootCondition,
 					 successorCondition);
 	}
 	rootIfStmt.setCondition(newExpression);
-	
+
 	// 5. Remove successor & patch target
 	chain.remove(successor);
 	if (rootTarget == successorSuccessor)
@@ -231,15 +231,15 @@ public class ConditionalControlCompactor {
 	return successor;
     }
 
-    protected static Unit mergeUnit2(PatchingChain chain, Unit root) 
+    protected static Unit mergeUnit2(PatchingChain chain, Unit root)
 	throws IllegalActionException {
-	
+
 	// 1. Is root an IfStmt?
 	if (!(root instanceof IfStmt))
 	    return null;
 	IfStmt rootIfStmt = (IfStmt) root;
 	Unit rootTarget = rootIfStmt.getTarget();
-	
+
 	// 2. Is successor an IfStmt?
 	Unit successor = (Unit) chain.getSuccOf(root);
 	if (!(successor instanceof IfStmt))
@@ -253,7 +253,7 @@ public class ConditionalControlCompactor {
 	if (!((rootTarget == successorSuccessor) ^
 	      (rootTarget == successorTarget)))
 	    return null;
-	    
+
 	// root and successor units can be merged.
 	Value rootCondition = rootIfStmt.getCondition();
 	Value successorCondition = successorIfStmt.getCondition();
@@ -264,15 +264,15 @@ public class ConditionalControlCompactor {
 	    newExpression = new CompoundAndExpression(
 		CompoundBooleanExpression.invertValue(rootCondition),
 		successorCondition);
-						      
+
 	} else {
 	    // Expression = rootCondition | successorCondition
-	    newExpression = 
+	    newExpression =
 		new CompoundOrExpression(rootCondition,
 					 successorCondition);
 	}
 	rootIfStmt.setCondition(newExpression);
-	
+
 	// 5. Remove successor & patch target
 	chain.remove(successor);
 	if (rootTarget == successorSuccessor)
@@ -280,16 +280,16 @@ public class ConditionalControlCompactor {
 
 	return successor;
     }
- 
+
 
     public static void main(String args[]) {
 
-	soot.SootMethod testMethod = 
+	soot.SootMethod testMethod =
 	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 
 	soot.Body body = testMethod.retrieveActiveBody();
-	soot.toolkits.graph.CompleteUnitGraph unitGraph = 
-	    new soot.toolkits.graph.CompleteUnitGraph(body);	
+	soot.toolkits.graph.CompleteUnitGraph unitGraph =
+	    new soot.toolkits.graph.CompleteUnitGraph(body);
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("beforegraph",bbgraph);
 	try {

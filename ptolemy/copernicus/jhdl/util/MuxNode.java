@@ -33,7 +33,7 @@ public class MuxNode implements GraphNode {
       if (returnNode != null){
 	return returnNode;
       }
-      
+
 	System.out.println("Getting from true input");
 	Node trueResult = _trueInput.createDataFlow(graph, value);
 	System.out.println("Getting from false input");
@@ -47,7 +47,7 @@ public class MuxNode implements GraphNode {
 	System.out.println("true: "+trueResult);
 	System.out.println("false: "+falseResult);
 	System.out.println("cond: "+condResult);
-	
+
 	if (trueResult == null && falseResult == null){ //&& condResult == null)
 	  _valueToResult.put(value, null);
 	  return null;
@@ -62,7 +62,7 @@ public class MuxNode implements GraphNode {
 	  _valueToResult.put(value, trueResult);
 	  return trueResult;
 	}
-	
+
 	MuxNode newMux = new MuxNode(trueResult, falseResult, condResult, 1);
 
 	Node newMuxNode = graph.addNodeWeight(newMux);
@@ -73,11 +73,11 @@ public class MuxNode implements GraphNode {
 	    graph.addEdge(falseResult, newMuxNode, "false");
 	    //if (!graph.edgeExists(condResult, newMuxNode))
 	    graph.addEdge(condResult, newMuxNode, "cond");
-	
+
 	_valueToResult.put(value, newMuxNode);
 	return newMuxNode;
     }
-    
+
     public String toString(){
 	return "mux";
     }

@@ -112,12 +112,12 @@ public class VariableLattice extends Lattice {
      *  of doubles.
      */
     public TypedIOPort newCoefficients;
- 
+
     /** The parameter that gives the number of tokens consumed by the input
      *  port.  This is set equal to <i>blockSize</i>.
      */
     public Parameter input_tokenConsumptionRate;
-   
+
     /** The parameter that gives the number of tokens produces by the output
      *  port.  This is set equal to <i>blockSize</i>.
      */
@@ -142,7 +142,7 @@ public class VariableLattice extends Lattice {
                 throw new IllegalActionException(this,
                         "Invalid blockSize: " + _blockSizeValue);
             }
-            
+
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();

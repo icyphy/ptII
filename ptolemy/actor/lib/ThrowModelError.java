@@ -78,7 +78,7 @@ public class ThrowModelError extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel that has a token,
-     *  and if any token is true, invoke the model error handler. 
+     *  and if any token is true, invoke the model error handler.
      *  @exception IllegalActionException If FIXME
      *  @return Whatever the base class returns (probably true).
      */

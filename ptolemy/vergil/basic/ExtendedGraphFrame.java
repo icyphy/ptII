@@ -254,7 +254,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
         private void _cancelFullScreenMode() {
             _screen.dispose();
-            _screen = null;  
+            _screen = null;
             // Put the component back into the original window.
             _splitPane.setRightComponent(_jgraph);
             // Restore association with the graph panner.

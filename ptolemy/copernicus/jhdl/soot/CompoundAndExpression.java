@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -51,14 +51,14 @@ import soot.jimple.Jimple;
 
 public class CompoundAndExpression extends AbstractCompoundExpression {
 
-    public CompoundAndExpression(Value op1, Value op2) { 
+    public CompoundAndExpression(Value op1, Value op2) {
 	super(op1,op2);
     }
     public final String getSymbol() { return " && "; }
     public Object clone() {
 	return new CompoundAndExpression( Jimple.cloneIfNecessary(getOp1()),
 					  Jimple.cloneIfNecessary(getOp2()));
-					 
+
     }
     public CompoundBooleanExpression invert() throws IllegalActionException {
 	// Apply demorgan's theorem

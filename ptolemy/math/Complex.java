@@ -156,7 +156,7 @@ public class Complex implements Cloneable, Serializable {
         return  Math.atan2(imag, real);
     }
 
-    /** Return the principal arc sine of this complex number.  
+    /** Return the principal arc sine of this complex number.
      *  This is defined by:
      *  <pre>
      *   asin(z) = -i * log(i*z + sqrt(1 - z*z))
@@ -193,7 +193,7 @@ public class Complex implements Cloneable, Serializable {
         return c3.log();
     }
 
-    /** Return the principal arc tangent of this complex 
+    /** Return the principal arc tangent of this complex
      *  number.  This is defined by:
      *  <pre>
      *  atan(z) = -i/2 * log((i-z)/(i+z))
@@ -262,7 +262,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c4.real*0.5, c4.imag*0.5);
     }
 
-    /** Return the hyperbolic cosine of this complex 
+    /** Return the hyperbolic cosine of this complex
      *  number.  This is defined by:
      *  <pre>
      *  cosh(z) = (exp(z) + exp(-z))/2
@@ -400,13 +400,13 @@ public class Complex implements Cloneable, Serializable {
      *  class.
      *  <p>
      *  @return True if this is NaN.
-     *  </p>     
+     *  </p>
      */
     public final boolean isNaN() {
         return  ( Double.isNaN(real) || Double.isNaN(imag) );
     }
 
-    /** Return the natural logarithm of this complex 
+    /** Return the natural logarithm of this complex
      *  number.  The principal value is returned, which
      *  is
      *  <pre>
@@ -437,7 +437,7 @@ public class Complex implements Cloneable, Serializable {
      *  result).
      *  <p>
      *  @return A non-negative number which is the magnitude of this complex number.
-     *  </p>     
+     *  </p>
      */
     public double magnitudeSquared() {
         return (real*real) + (imag*imag);

@@ -170,7 +170,7 @@ public class IOPortController extends AttributeController {
 // 		direction = SwingUtilities.SOUTH;
 // 	    }
 
-          if ( cardinal == null && port instanceof IOPort ) 
+          if ( cardinal == null && port instanceof IOPort )
           {
              if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
 		   direction = SwingUtilities.SOUTH;
@@ -246,15 +246,15 @@ public class IOPortController extends AttributeController {
                    polygon.transform( transform );
                 }
              }
-          } 
-          else 
+          }
+          else
           {
 	   	   direction = SwingUtilities.SOUTH;
                AffineTransform transform = new AffineTransform();
                transform.setToRotation( Math.toRadians( 90 ) );
                polygon.transform( transform );
 	    }
-            
+
 	    Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
@@ -307,14 +307,14 @@ public class IOPortController extends AttributeController {
 
                 // effigy is of the whole model.
                 Effigy effigy = (Effigy)tableau.getContainer();
-                
+
                 // We want to open a new window that behaves as a
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
                 Effigy textEffigy = new TextEffigy(effigy,
                         effigy.uniqueName("debugListener" + object.getName()));
-                
+
                 DebugListenerTableau debugTableau =
                     new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"

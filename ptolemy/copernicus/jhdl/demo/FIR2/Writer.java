@@ -78,7 +78,7 @@ public class Writer extends TypedAtomicActor{
      *  standard output.
      */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

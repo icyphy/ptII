@@ -97,7 +97,7 @@ public class FileChooserQuery extends JFrame
     }
 
     /** Create a FileChooserQuery and configure it
-     */	
+     */
     public static void main(String[] args) {
         JFrame frame = new FileChooserQuery();
 

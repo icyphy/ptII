@@ -304,12 +304,12 @@ public class AppletWriter extends SceneTransformer {
 		new File(_ptIIDirectory, (String)classMap.get(className));
 	    if (potentialSourceJarFile.exists()) {
 		// Ptolemy II development trees will have jar files
-		// if 'make install' was run. 
+		// if 'make install' was run.
 		_copyFile(_ptIIDirectory + File.separator
 			  + (String)classMap.get(className),
-			  _outputDirectory, 
+			  _outputDirectory,
 			  (String)classMap.get(className));
-		
+
 	    } else {
 		// Under Web Start, the resource that contains a class
 		// will have a mangled name, so we copy the jar file.
@@ -328,9 +328,9 @@ public class AppletWriter extends SceneTransformer {
                             + "\n\tclassResource:    " + classResource
                             + "\n\t_outputDirectory: " + _outputDirectory
                             + "\n\tclassName:        " + className
-                            + "\n\tclassMap.get():   " 
+                            + "\n\tclassMap.get():   "
                             + (String)classMap.get(className));
-                    _copyFile(classResource, _outputDirectory, 
+                    _copyFile(classResource, _outputDirectory,
                             (String)classMap.get(className));
 		} else {
 		    throw new IOException("Could not find '" + className
@@ -380,7 +380,7 @@ public class AppletWriter extends SceneTransformer {
         BufferedOutputStream out =
             new BufferedOutputStream(new FileOutputStream(destinationFile));
 	int c;
-	
+
 	while ((c = in.read()) != -1)
 	    out.write(c);
 

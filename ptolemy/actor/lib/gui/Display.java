@@ -300,7 +300,7 @@ public class Display extends Sink implements Placeable {
         _scrollPane.setBackground(null);
         _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         _scrollPane.setViewportBorder(new LineBorder(Color.black));
-        
+
         _container.add(_scrollPane);
         textArea.setBackground(Color.white);
         String titleSpec = title.getExpression();

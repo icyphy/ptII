@@ -206,22 +206,22 @@ public class IIR extends Transformer {
         try {
             newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
             newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            
+
             ArrayType numeratorType = (ArrayType)newObject.numerator.getType();
             InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm);
-            
+
             ArrayType denominatorType = (ArrayType)newObject.denominator.getType();
             InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm2);
-            
+
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
         } catch (IllegalActionException ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }
         return newObject;
-    }    
+    }
 
     /** If at least one input token is available, consume a single
      *  input token, apply the filter to that input token, and
@@ -290,7 +290,7 @@ public class IIR extends Transformer {
                     _denominator.length);
             _stateVector = new Token[stateSize];
             Token zero = _numerator[0].zero();
-            
+
             for (int j = 0; j < _stateVector.length; j++) {
                 _stateVector[j] = zero;
             }

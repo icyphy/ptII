@@ -95,7 +95,7 @@ public class SoftClip {
 	    LiveSound.setTransferSize(getSamplesSize);
 
 	    int putSamplesSize = getSamplesSize;
-   
+
 	    LiveSound.startCapture(consumer);
 
 	    LiveSound.startPlayback(producer);
@@ -143,6 +143,6 @@ public class SoftClip {
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}
-	
+
     }
 }

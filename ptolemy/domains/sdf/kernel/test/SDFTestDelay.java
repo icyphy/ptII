@@ -83,7 +83,7 @@ public class SDFTestDelay extends TypedAtomicActor {
          * then Ptolemy will always guarantee that there will be a token
          * ready when you are fired.
          */
-        input_tokenConsumptionRate = 
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate", new IntToken(1));
        /* The getPort method (in ptolemy.kernel.Entity) finds a port by
          * name.  It returns a Port object, but all the ports in the
@@ -97,9 +97,9 @@ public class SDFTestDelay extends TypedAtomicActor {
 
         /* Similarly for the output port */
         output = new TypedIOPort(this,"output", false, true);
-        output_tokenProductionRate = 
+        output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate", new IntToken(1));
-        
+
         output.setTypeEquals(BaseType.INT);
     }
 
@@ -135,7 +135,7 @@ public class SDFTestDelay extends TypedAtomicActor {
         /* Figure out how many tokens should be copied from the input to the
          * output.
          */
-        int tokens = 
+        int tokens =
             ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
         if (((IntToken)output_tokenProductionRate.getToken()).intValue() != tokens)
             throw new IllegalActionException(

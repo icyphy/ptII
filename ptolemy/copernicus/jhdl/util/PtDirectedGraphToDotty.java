@@ -79,7 +79,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
 	for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
 	    Node source = (Node)nodes.next();
 	    for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
-		Edge edge= (Edge)succs.next();		
+		Edge edge= (Edge)succs.next();
 		Node dest= edge.sink();
 		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
 		if (edge.hasWeight()){

@@ -95,7 +95,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the given token to each element of this array. 
+    /** Add the given token to each element of this array.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be added to an element of this token.
@@ -131,18 +131,18 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // moment the code generator cannot deal with it.
 // (Token[])
 //             java.lang.reflect.Array.newInstance(
-//                     getElementType().getTokenClass(), 
+//                     getElementType().getTokenClass(),
 //                     _value.length);
         System.arraycopy(_value, 0, result, 0, _value.length);
         return result;
     }
 
-    /** Divide each element of this array by the given token. 
+    /** Divide each element of this array by the given token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be divided into an element of this token.
      */
-    public ArrayToken elementDivide(Token token) 
+    public ArrayToken elementDivide(Token token)
             throws IllegalActionException {
         Token[] result = new Token[_value.length];
         try {
@@ -230,7 +230,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value.length;
     }
 
-    /** Modulo each element of this array by the given token. 
+    /** Modulo each element of this array by the given token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be used with modulo.
@@ -383,7 +383,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument is an
      *  ArrayToken of different length, or calling the divide method
      *  of the element token throws it.
-     */ 
+     */
     protected Token _divide(Token rightArgument)
             throws IllegalActionException {
         _checkArgumentLength(rightArgument);
@@ -408,7 +408,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         _checkArgumentLength(rightArgument);
         ArrayToken rightArray = (ArrayToken)rightArgument;
-     
+
         for (int i = 0; i < _value.length; i++) {
             // Here is where isCloseTo() differs from isEqualTo().
 
@@ -460,7 +460,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     protected Token _modulo(Token rightArgument)
             throws IllegalActionException {
         _checkArgumentLength(rightArgument);
- 
+
         ArrayToken rightArray = (ArrayToken)rightArgument;
         Token[] result = new Token[_value.length];
         for (int i = 0; i < _value.length; i++) {
@@ -519,7 +519,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     // same length.
     private void _checkArgumentLength(Token token)
         throws IllegalActionException {
-        
+
         int length = ((ArrayToken)token).length();
         if (length() != length) {
             throw new IllegalActionException("The length of the argument (" +

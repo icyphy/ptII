@@ -1112,7 +1112,7 @@ public class SDFPortInliner implements PortInliner {
                             arrayType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
-                    System.out.println("creating field = " + field + 
+                    System.out.println("creating field = " + field +
                             " of size " + bufferSize);
 
                     // Tag the field with the type.
@@ -1132,7 +1132,7 @@ public class SDFPortInliner implements PortInliner {
             }
         }
 
-        // In each actor class, create an         
+        // In each actor class, create an
         _createInsideBufferReferences();
 
         // Loop over all the _model instance classes.
@@ -1239,7 +1239,7 @@ public class SDFPortInliner implements PortInliner {
         BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
-            new SootField("_portbuffer_" + 
+            new SootField("_portbuffer_" +
                     StringUtilities.sanitizeName(port.getName()) + "_" +
                     StringUtilities.sanitizeName(type.toString()),
                     ArrayType.v(tokenType, 2), Modifier.PUBLIC);
@@ -1339,7 +1339,7 @@ public class SDFPortInliner implements PortInliner {
             // If the port is connected.
             if (port.getWidthInside() > 0) {
                 // Create a field for the indexes into the buffer for that field.
-                SootField indexArrayField = new SootField("_indexInside_" + 
+                SootField indexArrayField = new SootField("_indexInside_" +
                         StringUtilities.sanitizeName(port.getName()),
                         ArrayType.v(IntType.v(), 1), Modifier.PUBLIC);
                 _modelClass.addField(indexArrayField);
@@ -1399,7 +1399,7 @@ public class SDFPortInliner implements PortInliner {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)port.getType();
 
-                    _createPortInsideBufferReference(_modelClass, 
+                    _createPortInsideBufferReference(_modelClass,
                             port, type, typeNameToInsideBufferField);
                 }
             }
@@ -1416,7 +1416,7 @@ public class SDFPortInliner implements PortInliner {
         BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
-            new SootField("_portinsidebuffer_" + 
+            new SootField("_portinsidebuffer_" +
                     StringUtilities.sanitizeName(port.getName()) + "_" +
                     StringUtilities.sanitizeName(type.toString()),
                     ArrayType.v(tokenType, 2), Modifier.PUBLIC);
@@ -1615,7 +1615,7 @@ public class SDFPortInliner implements PortInliner {
                                         Jimple.v().newStaticFieldRef(arrayField)),
                                 unit);
                         int bufferSize = _getBufferSize(relation);
-                        
+
                         // remember the size of the buffer.
                         bufferSizeValue = IntConstant.v(bufferSize);
                     }
@@ -1782,7 +1782,7 @@ public class SDFPortInliner implements PortInliner {
         }
         return bufferSize;
     }
-    
+
     private CompositeActor _model;
     private SootClass _modelClass;
     private Map _options;

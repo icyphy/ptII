@@ -120,7 +120,7 @@ public class FIR extends TypedAtomicActor {
     public FIR(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	
+
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
 	// Set type constraints.
@@ -128,13 +128,13 @@ public class FIR extends TypedAtomicActor {
 //  	InequalityTerm elementTerm = paramType.getElementTypeTerm();
 //  	output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
-	
+
 	_taps0 = new FixToken(0.023428499999999998, 16, 2);
 	_taps1 = new FixToken(0.05305302, 16, 2);
 	_taps2 = new FixToken(0.1391898, 16, 2);
 
 	_zero = _taps0.zero();
-	
+
 	_data0 = _zero;
 	_data1 = _zero;
 	_data2 = _zero;
@@ -256,7 +256,7 @@ public class FIR extends TypedAtomicActor {
 
 //  	a=3;
 //  	b=a*4;
-	
+
 //  	a=2;
 //  	c=a+5;
 //  	d=b-c;
@@ -265,12 +265,12 @@ public class FIR extends TypedAtomicActor {
 //  	    d=a*a;
 //  	}
 //      }
-    
+
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
-    
+
     public void fire() throws IllegalActionException {
 
         // Phase keeps track of which phase of the filter coefficients
@@ -282,7 +282,7 @@ public class FIR extends TypedAtomicActor {
 	if (--_mostRecent < 0) _mostRecent = 2;
 
 	_data0=input.get(0);
-	
+
 //  	switch(_mostRecent){
 //  	case 0: _data0 = input.get(0); break;
 //  	case 1: _data1 = input.get(0); break;
@@ -298,7 +298,7 @@ public class FIR extends TypedAtomicActor {
 //  	} else if (_mostRecent == 2){
 //  	    _data2 = input.get(0);
 //  	}
-	
+
 	//Can't support arrays yet
 	//_data[_mostRecent] = input.get(0);
 	//}
@@ -314,10 +314,10 @@ public class FIR extends TypedAtomicActor {
                 // Compute the inner product.
 //  	for (int i = 0; i < _phaseLength; i++) {
 //  	    int tapsIndex = i;
-	    
+
 //  	    int dataIndex =
 //  		(_mostRecent + i)%(_data.length);
-	    
+
 //  	    if (tapsIndex < _taps.length) {
 //  		_tapItem = _taps[tapsIndex];
 //  		_dataItem = _data[dataIndex];
@@ -329,9 +329,9 @@ public class FIR extends TypedAtomicActor {
 
 	//// Manual unrolling of above FOR loop
 	int tapsIndex = 0;
-	
+
 	int dataIndex = (_mostRecent + 0)%(3);
-	
+
 	if (tapsIndex < 3) {
 	    _tapItem = _taps0;
 	    //Man, I need to find a way to get arrays working...
@@ -344,15 +344,15 @@ public class FIR extends TypedAtomicActor {
 	    } else if (dataIndex == 2){
 		_dataItem = _data2;
 	    }
-	    
+
 	    _dataItem = _tapItem.multiply( _dataItem );
 	    _outToken = _outToken.add( _dataItem );
 	}
-	
+
 //  	tapsIndex = 1;
-	
+
 //  	dataIndex = (_mostRecent + 1)%(3);
-	
+
 //  	if (tapsIndex < 3) {
 //  	    _tapItem = _taps1;
 
@@ -366,15 +366,15 @@ public class FIR extends TypedAtomicActor {
 //  	    } else if (dataIndex == 2){
 //  		_dataItem = _data2;
 //  	    }
-	    
+
 //  	    _dataItem = _tapItem.multiply( _dataItem );
 //  	    _outToken = _outToken.add( _dataItem );
 //  	}
-	
+
 //  	tapsIndex = 2;
-	
+
 //  	dataIndex = (_mostRecent + 2)%(3);
-	
+
 //  	if (tapsIndex < 3) {
 //  	    _tapItem = _taps2;
 
@@ -388,15 +388,15 @@ public class FIR extends TypedAtomicActor {
 //  	    } else if (dataIndex == 2){
 //  		_dataItem = _data2;
 //  	    }
-	    
+
 //  	    _dataItem = _tapItem.multiply( _dataItem );
 //  	    _outToken = _outToken.add( _dataItem );
 //  	}
 
 	output.send(0, _outToken);
     }
-    
-    
+
+
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return what the superclass returns.
      *  @return False if the number of input tokens available is not at least
@@ -441,7 +441,7 @@ public class FIR extends TypedAtomicActor {
 
 //          //_phaseLength = (int)(_taps.length / _interpolationValue);
 //  	_phaseLength = _taps.length;
-	
+
 //          //if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
 
 //          // Create new data array and initialize index into it.
@@ -510,7 +510,7 @@ public class FIR extends TypedAtomicActor {
     protected Token _data0;
     protected Token _data1;
     protected Token _data2;
-    
+
     //    private static final int NUM_TAPS=3;
     private int NUM_TAPS=3;
 }

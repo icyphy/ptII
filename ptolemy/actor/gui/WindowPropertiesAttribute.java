@@ -101,7 +101,7 @@ public class WindowPropertiesAttribute extends Parameter {
 
             // Construct field names for the record token (currently only one).
             String[] names = new String[1];
-            names[0] = "bounds";            
+            names[0] = "bounds";
 
             setToken(new RecordToken(names, values));
         } catch (IllegalActionException ex) {

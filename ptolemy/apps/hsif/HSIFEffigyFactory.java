@@ -71,7 +71,7 @@ public class EffigyFactory extends CompositeEntity {
     ////                         public methods                    ////
 
     /** Return false, indicating that this effigy factory is not
-     *  capable of creating an effigy without a URL being specified. 
+     *  capable of creating an effigy without a URL being specified.
      *  @return False.
      */
     public boolean canCreateBlankEffigy() {

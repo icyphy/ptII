@@ -78,14 +78,14 @@ it is capable of sensing keystrokes.  <p>
 Only two keystrokes are sensed, control-C (for copy) and control-V
 (for paste).  This actor is designed to work with SystemClipboard.java<p>
 
-The actor contains a private inner class which generates the JFrame.  
-This frame sets up call-backs which react to the keystrokes.  When 
-called back, these in turn call the director's fireAtCurrentTime() 
-method.  This causes the director to call fire() on the actor.  The 
-actor then broadcasts tokens from one or both outputs depending on 
+The actor contains a private inner class which generates the JFrame.
+This frame sets up call-backs which react to the keystrokes.  When
+called back, these in turn call the director's fireAtCurrentTime()
+method.  This causes the director to call fire() on the actor.  The
+actor then broadcasts tokens from one or both outputs depending on
 which keystroke(s) have occurred since the actor was last fired.  <p>
 
-NOTE: This actor only works in DE due to its reliance on the 
+NOTE: This actor only works in DE due to its reliance on the
 director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
@@ -129,7 +129,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Broadcast the keystrokes detected since the last firing.  
+    /** Broadcast the keystrokes detected since the last firing.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
@@ -167,7 +167,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
     /** The JFrame window */
     private MyFrame _myframe;
 
-    /** The flags indicating which keys have been pressed since 
+    /** The flags indicating which keys have been pressed since
      *  the last firing og the actor.
      */
     private boolean _copyKeyPressed = false;
@@ -180,7 +180,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
 
         /** Construct a JFrame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end 
+         *  appear.  This is done by calling show() at the end
          *  of this constructor.
          *  @see Tableau#show() */
         public MyFrame() {
@@ -218,7 +218,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
 			    throw new RuntimeException("-fireAt* catch-");
 			}
 			if (_debugging) _debug("pasteFrom.. has completed");
-		    } 
+		    }
 	    };
 
             getContentPane().setLayout(new BorderLayout());

@@ -57,7 +57,7 @@ public class FunctionToken extends Token {
 	public FunctionToken(Function f) {
 		_function = f;
 	}
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -82,10 +82,10 @@ public class FunctionToken extends Token {
 
 	///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-	
+
 	// The object that implements the function.
 	private Function _function;
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

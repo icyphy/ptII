@@ -130,7 +130,7 @@ public class DDEDirector extends CompositeProcessDirector {
     public DDEDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        
+
         double value = PrioritizedTimedQueue.ETERNITY;
         stopTime = new
             Parameter(this, "stopTime", new DoubleToken(value));
@@ -240,7 +240,7 @@ public class DDEDirector extends CompositeProcessDirector {
         try {
             if (_debugging) {
                 _debug("fireAt " + actor + " time " + time);
-                _debug("current time was " + timeKeeper.getCurrentTime()); 
+                _debug("current time was " + timeKeeper.getCurrentTime());
             }
             timeKeeper.setCurrentTime(time);
         } catch (IllegalArgumentException e) {

@@ -62,7 +62,7 @@ adapter.  This class contains static methods that can be use
 to set up the full screen display
 
 <p>Some of the code in this file is based on code from
-http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html    
+http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html
 
 @see ptolemy.domains.sdf.lib.image.MultiBuffer
 @author  Christopher Hylands
@@ -86,10 +86,10 @@ public class MultiBufferTest {
 	    ptIIDirectoryProperty = "";
 	}
 
-	// Amount of time to delay in milliseconds. 
+	// Amount of time to delay in milliseconds.
 	double delay = 1000.0;
 
-	System.out.println("All BufferCapabilities:\n" 
+	System.out.println("All BufferCapabilities:\n"
 			   + allBufferCapabilities());
 
 	GraphicsEnvironment graphicsEnvironment =
@@ -149,7 +149,7 @@ public class MultiBufferTest {
 
 
 	    BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
-	    BufferCapabilities bufferCapabilities = 
+	    BufferCapabilities bufferCapabilities =
 		bufferStrategy.getCapabilities();
 	    System.out.println(bufferCapabilitiesToString(bufferCapabilities));
 	    for (int i = 0; i < numberOfBuffers; i++) {
@@ -159,7 +159,7 @@ public class MultiBufferTest {
 		if (!bufferStrategy.contentsLost()) {
 		    //if(true) {
 		    //Color backgroundColor = _COLORS.[i];
-		    Color backgroundColor = Color.black; 		    
+		    Color backgroundColor = Color.black;
 		    // Fade to black
 		    g.setColor(backgroundColor);
 		    System.out.println("after setColor");
@@ -184,7 +184,7 @@ public class MultiBufferTest {
 			    Transform.rotate(originalImage, 90);
 			originalImage = rotatedImage;
 		    }
-			
+
 		    int maximumDimension = bounds.width;
 		    if (originalImage.getHeight(null)
 		      > originalImage.getWidth(null)) {
@@ -209,13 +209,13 @@ public class MultiBufferTest {
 		    if (height < bounds.height) {
 			yOffset = (bounds.height - height)/2;
 		    }
-			    
+
 		    System.out.println("About to drawImage");
 		    g.drawImage(scaledImage, xOffset, yOffset,
 		    		width, height,
 		    		backgroundColor,
 		    		originalImageIcon.getImageObserver());
-		    /*g.drawImage(originalImage, 
+		    /*g.drawImage(originalImage,
 				bounds.x, bounds.y,
 			        bounds.width, bounds.height,
 		    		backgroundColor,
@@ -242,7 +242,7 @@ public class MultiBufferTest {
 
 		    int alphaCount = 100;
 
-		    for( int m = 0; m < alphaCount; m++) { 
+		    for( int m = 0; m < alphaCount; m++) {
 			//float alpha = (float)m / (float)alphaCount;
 			float alpha = 0.05f
 			    + ((float)m / (float)alphaCount) * 0.5f;
@@ -283,7 +283,7 @@ public class MultiBufferTest {
 	    device.setFullScreenWindow(null);
         }
     }
-    
+
 
     public static String allBufferCapabilities() {
 	StringBuffer results = new StringBuffer();
@@ -292,17 +292,17 @@ public class MultiBufferTest {
 	GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
 	System.out.println("Number of GraphicsDevices "
 			   + "from graphicsEnvironment\n    "
-			   + graphicsEnvironment + ": " 
+			   + graphicsEnvironment + ": "
 			   + graphicsDevices.length);
-	for (int j = 0; j < graphicsDevices.length; j++) { 
+	for (int j = 0; j < graphicsDevices.length; j++) {
 	    GraphicsDevice graphicsDevice = graphicsDevices[j];
 	    results.append("GraphicsDevice: " + j + ". "
 			   + graphicsDevice + "\n");
 
 	    DisplayMode[] displayModes = graphicsDevice.getDisplayModes();
-	    System.out.println("  Number of DisplayModes " 
-			       + "from graphicsDevice\n     " 
-			       + graphicsDevice + ": " 
+	    System.out.println("  Number of DisplayModes "
+			       + "from graphicsDevice\n     "
+			       + graphicsDevice + ": "
 			       + displayModes.length);
 
 	    for (int k = 0; k < displayModes.length; k++ ) {
@@ -315,8 +315,8 @@ public class MultiBufferTest {
 	    GraphicsConfiguration[] graphicsConfigurations =
 		graphicsDevice.getConfigurations();
 	    System.out.println("  Number of GraphicsConfigurations "
-			       + "from graphicsDevice\n    "  
-			       + graphicsDevice + ": " 
+			       + "from graphicsDevice\n    "
+			       + graphicsDevice + ": "
 			       + graphicsConfigurations.length);
 
 	    for (int i = 0; i < graphicsConfigurations.length; i++) {
@@ -355,7 +355,7 @@ public class MultiBufferTest {
 	return results.toString();
     }
 
-    public static String 
+    public static String
 	bufferCapabilitiesToString(BufferCapabilities bufferCapabilities) {
 	    return("   BufferCapabilities: " + bufferCapabilities
 		   + "\n    getBackBufferCapabilities():\n    "
@@ -377,7 +377,7 @@ public class MultiBufferTest {
 	imageCapabilitiesToString(ImageCapabilities imageCapabilities) {
 	return ("  ImageCapabilities: " + imageCapabilities
 		+ "\n        isAccelerated: "
-		+ imageCapabilities.isAccelerated() 
+		+ imageCapabilities.isAccelerated()
 		+ " isTrueVolatile: "
 		+ imageCapabilities.isTrueVolatile()
 		+ "\n");

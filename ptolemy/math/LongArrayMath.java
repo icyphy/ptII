@@ -762,7 +762,7 @@ public class LongArrayMath {
     }
 
     /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2 are all less than or equal to the 
+     *  elements of array1 and array2 are all less than or equal to the
      *  elements in maxError. Otherwise return false.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.

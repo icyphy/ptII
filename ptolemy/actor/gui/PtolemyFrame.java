@@ -227,7 +227,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                         throw new InternalErrorException(
                         "Failed to create URIAttribute for new location!");
                     }
-                }                            
+                }
                 return;
             }
         }

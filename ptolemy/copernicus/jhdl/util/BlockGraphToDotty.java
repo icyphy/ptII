@@ -38,7 +38,7 @@ public class BlockGraphToDotty extends GraphToDotty {
         while(it.hasNext()) {
             Block currentBlock = (Block) it.next();
             m.put(currentBlock.getHead(),  "Block " + (new Integer(currentBlock.getIndexInMethod()).toString()));
-        }     
+        }
 
 	int count=0;
 	HashMap hm=new HashMap();
@@ -60,7 +60,7 @@ public class BlockGraphToDotty extends GraphToDotty {
 	    boolean endsWithIf = source.getTail() instanceof IfStmt;
 
 	    //System.err.println(source.toShortString());
-	    
+
 	    for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
 		Block dest= (Block)succs.next();
 		sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");

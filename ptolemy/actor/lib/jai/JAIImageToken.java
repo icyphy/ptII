@@ -49,16 +49,16 @@ import ptolemy.kernel.util.IllegalActionException;
    @version $Id$
 */
 public class JAIImageToken extends ImageToken {
-        
+
     /** Construct a token with a specified RenderedOp.
      */
     public JAIImageToken(RenderedOp value) {
         _renderedOp = value;
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Convert a javax.media.jai.RenderedOp to a java.awt.Image and
      *  return it.
      */
@@ -68,26 +68,26 @@ public class JAIImageToken extends ImageToken {
         _awtImage = (Image) _bufferedImage;
         return _awtImage;
     }
-    
+
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
     public Type getType() {
         return BaseType.OBJECT;
     }
-    
+
     /** Return the value of the token, a renderedop.
      *  @return The RenderedOp in this token.
      */
     public RenderedOp getValue() {
         return _renderedOp;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////        
+    ////                         private variables                 ////
     private Image _awtImage;
     private BufferedImage _bufferedImage;
     private PlanarImage _planarImage;
     private RenderedOp _renderedOp;
-    
+
 }

@@ -47,7 +47,7 @@ public class Mutate {
     private DEDirector _director;
 
     public Mutate() throws IllegalActionException,
-            NameDuplicationException { 
+            NameDuplicationException {
 	_top = new TypedCompositeActor();
 	_top.setName("top");
 	manager = new Manager();

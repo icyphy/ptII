@@ -1,4 +1,4 @@
-/* The transition controller for modal transitions 
+/* The transition controller for modal transitions
 
  Copyright (c) 1998-2002 The Regents of the University of California and
  Research in Motion Limited.
@@ -66,7 +66,7 @@ This class provides interaction with relations that contain general purpose
 refinements that are fired on state transitions in an FSM graph. It's
 implementation is largely copied from ModalController.
 
-@author David Hermann, Research In Motion Limited 
+@author David Hermann, Research In Motion Limited
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -78,7 +78,7 @@ public class ModalTransitionController extends TransitionController {
      */
     public ModalTransitionController(final GraphController controller) {
         super(controller);
-        
+
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(

@@ -36,7 +36,7 @@ import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.attributes.URIAttribute; 
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -118,14 +118,14 @@ public class MakefileWriter extends SceneTransformer {
     }
 
     /** Convert targetPackage "foo/bar" to codeBase
-     *  "../../.."  
+     *  "../../.."
      *  @param targetPackage The package where we are creating the code
      *  @param outputDirectory The directory where we are producing code.
-     *  @param ptIIDirectory The Ptolemy II directory, usually the value 
-     *  of $PTII 
+     *  @param ptIIDirectory The Ptolemy II directory, usually the value
+     *  of $PTII
      *  @returns The codebase.  If the codebase is ".", then we may
      *  want to copy jar files.
-     */   
+     */
     public static String codeBase(String targetPackage,
             String outputDirectory,
             String ptIIDirectory) {
@@ -145,7 +145,7 @@ public class MakefileWriter extends SceneTransformer {
 	String codeBase = buffer.toString();
 
         if (JNLPUtilities.isRunningUnderWebStart()) {
-            // If we are under WebStart, we always copy jar files 
+            // If we are under WebStart, we always copy jar files
             // because under WebStart the jar files have munged names,
             // and the applet will not find them even if
             codeBase = ".";
@@ -194,7 +194,7 @@ public class MakefileWriter extends SceneTransformer {
      *  <code>ptolemy.copernicus.applet.cg.Butterfly</code>
      *  <dt>templateDirectory
      *  <dd>The directory where we should read the makefile.in file
-     *  
+     *
      *  </dl>
      */
     protected void internalTransform(String phaseName, Map options)
@@ -219,7 +219,7 @@ public class MakefileWriter extends SceneTransformer {
                     + "ptolemy/copernicus/Copernicus.java for details");
         }
 
-        System.out.println("MakefileWriter: parsing " + 
+        System.out.println("MakefileWriter: parsing " +
                 _generatorAttributeFileName);
 
         GeneratorAttribute generatorAttribute = null;
@@ -233,10 +233,10 @@ public class MakefileWriter extends SceneTransformer {
 
             CompositeActor toplevel;
 
-            // Get the old filters, save them, add our own 
+            // Get the old filters, save them, add our own
             // filters, use them, remove our filters,
             // and then readd the old filters in the finally clause.
-            // We do something 
+            // We do something
             // similar in GeneratorAttribute.updateModelAttributes()
             List oldFilters = parser.getMoMLFilters();
             parser.setMoMLFilters(null);
@@ -255,7 +255,7 @@ public class MakefileWriter extends SceneTransformer {
             }
 
             generatorAttribute = (GeneratorAttribute)
-                toplevel.getAttribute(Copernicus.GENERATOR_NAME, 
+                toplevel.getAttribute(Copernicus.GENERATOR_NAME,
                         GeneratorAttribute.class);
             if (generatorAttribute == null) {
                 System.out.println("MakefileWriter: Warning, parsing '"
@@ -294,20 +294,20 @@ public class MakefileWriter extends SceneTransformer {
 
         Map substituteMap;
         try {
-            substituteMap = Copernicus.newMap(generatorAttribute); 
+            substituteMap = Copernicus.newMap(generatorAttribute);
             substituteMap.put("@outDir@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
             substituteMap.put("@templateDirectory@", _templateDirectory);
             substituteMap.putAll(_addedSubstitutions);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(_model, ex,
-                    "Problem generating substitution map from " 
+                    "Problem generating substitution map from "
                     + generatorAttribute);
         }
 
 	try {
             System.out.println("MakefileWriter: reading '"
-                    + _templateDirectory + "makefile.in'\n\t writing '" 
+                    + _templateDirectory + "makefile.in'\n\t writing '"
                     + _outputDirectory + "makefile'");
 
             Copernicus.substitute(_templateDirectory + "makefile.in",
@@ -358,7 +358,7 @@ public class MakefileWriter extends SceneTransformer {
 	File parentFile = new File(parent);
 	File possibleSubdirectoryFile = new File(possibleSubdirectory);
 	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
-	    throw new IOException ("'" + parent + "' or '" 
+	    throw new IOException ("'" + parent + "' or '"
 				   + possibleSubdirectory + "' is a file, "
 				   + "it should be a directory");
 	}
@@ -380,7 +380,7 @@ public class MakefileWriter extends SceneTransformer {
 
     // The relative path to $PTII, for example "../../..".
     private String _codeBase;
-    
+
     // The file name of the MoML file that contains the GeneratorAttribute
     // that contains the key/value pairs we will use when substituting
     // in the makefile.

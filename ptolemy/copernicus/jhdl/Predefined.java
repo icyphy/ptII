@@ -1,4 +1,4 @@
-/* 
+/*
    Provides the implementation for actors that are predefined and don't need
    to be analyzed.
 
@@ -51,24 +51,24 @@ public class Predefined {
     private static final String[] _definedNames = {
 	"ptolemy.domains.sdf.lib.SampleDelay", "ptolemy.domains.sdf.lib.FIR"
     };
-  
+
     public Predefined(){
 	_definedSet=new HashSet();
 	for (int i=0; i < _definedNames.length; i++){
 	    _definedSet.add(_definedNames[i]);
 	}
     }
-  
+
     public boolean isDefined(Entity entity){
 	return _definedSet.contains(entity.getClass().getName());
     }
 
     public void convertEntityToGraph(Entity entity, DirectedGraph graph)
 	throws IllegalActionException {
-    
+
 	if (!isDefined(entity))
 	    throw new IllegalActionException(entity+" not predefined");
-    
+
 	String name=entity.getClass().getName();
 	if (name.equals("ptolemy.domains.sdf.lib.SampleDelay"))
 	    graphSampleDelay(entity, graph);
@@ -99,6 +99,6 @@ public class Predefined {
 	graph.addEdge(input, entity);
 	graph.addEdge(entity, output);
     }
-  
+
     private HashSet _definedSet;
 }

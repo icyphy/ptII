@@ -182,7 +182,7 @@ public class Thermostat extends TypedCompositeActor{
         // connect ctInc
         //ctInc.connect(ctIncIn, ctIncH.input);
         //ctInc.connect(ctIncH.output, ctIncI.input);
-        
+
         ctInc.connect(ctIncIn, ctIncI.input);
         Relation ctIncR2 = ctInc.newRelation("R2");
         ctIncGF.output.link(ctIncR2);

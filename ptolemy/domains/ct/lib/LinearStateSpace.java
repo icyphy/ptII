@@ -411,7 +411,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      */
     public void stopFire() {
         return;
-    } 
+    }
 
     /** Set the opaqueness back to true and call the wrapup() method
      *  of the super class.

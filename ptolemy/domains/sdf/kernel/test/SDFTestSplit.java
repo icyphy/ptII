@@ -53,14 +53,14 @@ public class SDFTestSplit extends TypedAtomicActor {
         input.setTypeEquals(BaseType.INT);
 
         output1 = new TypedIOPort(this, "output1", false, true);
-        output1_tokenProductionRate = 
+        output1_tokenProductionRate =
             new Parameter(output1, "tokenProductionRate", new IntToken(1));
         output1.setTypeEquals(BaseType.INT);
 
         output2 = new TypedIOPort(this, "output2", false, true);
-        output2_tokenProductionRate = 
+        output2_tokenProductionRate =
             new Parameter(output2, "tokenProductionRate", new IntToken(1));
-                
+
         output2.setTypeEquals(BaseType.INT);
     }
 

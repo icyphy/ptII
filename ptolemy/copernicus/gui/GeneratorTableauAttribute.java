@@ -102,7 +102,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(
                         configuration.getDirectory(), toString());
                 codeEffigy.setModified(true);
-		
+
                 configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,

@@ -52,30 +52,30 @@ import java.util.*;
 
 public class ControlSootDFGBuilder extends SootDFGBuilder {
 
-    public ControlSootDFGBuilder(SootBlockDirectedGraph g) 
+    public ControlSootDFGBuilder(SootBlockDirectedGraph g)
 	throws SootASTException {
 	super(g);
     }
 
-    public static SootBlockDirectedGraph createGraph(Block block) 
+    public static SootBlockDirectedGraph createGraph(Block block)
 	throws SootASTException {
 
-	SootBlockDirectedGraph graph = 
+	SootBlockDirectedGraph graph =
 	    new SootBlockDirectedGraph(block);
 	new ControlSootDFGBuilder(graph);
 	return graph;
     }
 
-    public Value processConditionExpr(ConditionExpr ce) 
+    public Value processConditionExpr(ConditionExpr ce)
 	throws SootASTException {
 	if (ce instanceof CompoundBooleanExpression)
 	    return processCompoundBooleanExpression((CompoundBooleanExpression) ce);
-	else	    
+	else
 	    return super.processConditionExpr(ce);
-    }    
+    }
 
     public Value processConditionExpr(ConditionExpr ce, Value op1, Value op2) {
-	// connect Node associated with two ops 
+	// connect Node associated with two ops
 	Node op1Node = _valueMap.getValueNode(op1);
 	Node op2Node = _valueMap.getValueNode(op2);
 	Node ceNode = _valueMap.getValueNode(ce);
@@ -85,7 +85,7 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	return ce;
     }
 
-    public Value processCompoundBooleanExpression(CompoundBooleanExpression ce) 
+    public Value processCompoundBooleanExpression(CompoundBooleanExpression ce)
 	throws SootASTException {
 
 	Value op1 = ce.getOp1();
@@ -97,7 +97,7 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
     }
 
     public Value processCompoundBooleanExpression(CompoundBooleanExpression ce,
-						  ConditionExpr cond1, 
+						  ConditionExpr cond1,
 						  ConditionExpr cond2) {
 	return null;
     }

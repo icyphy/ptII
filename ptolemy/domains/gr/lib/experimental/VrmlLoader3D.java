@@ -60,12 +60,12 @@ import java.net.MalformedURLException;
 //////////////////////////////////////////////////////////////////////////
 //// VrmlLoader3D
 
-/** 
+/**
 @author C. Fong
 @version $Id$
 */
 public class VrmlLoader3D extends GRShadedShape {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +78,7 @@ public class VrmlLoader3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        filename = new Parameter(this, "filename", 
+        filename = new Parameter(this, "filename",
                                  new StringToken("chopper.obj"));
     }
 

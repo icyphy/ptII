@@ -60,12 +60,12 @@ import java.net.MalformedURLException;
 //////////////////////////////////////////////////////////////////////////
 //// VrmlLoader3D
 
-/** 
+/**
 @author C. Fong
 @version $Id$
 */
 public class VrmlLoad extends GRPickActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,12 +78,12 @@ public class VrmlLoad extends GRPickActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        filename = new Parameter(this, "filename", 
+        filename = new Parameter(this, "filename",
                                  new StringToken("mwave.wrl"));
     }
 
     public Parameter filename;
-    
+
     protected BranchGroup _getBranchGroup() {
         return (BranchGroup) obj.getSceneGroup();
     }
@@ -129,7 +129,7 @@ public class VrmlLoad extends GRPickActor {
     	obj = scene;
     	branchGroup = obj.getSceneGroup();
     }
-    
+
     public void processCallback() {
         super.processCallback();
         try {

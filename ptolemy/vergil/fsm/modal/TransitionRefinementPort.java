@@ -47,18 +47,18 @@ import ptolemy.kernel.util.*;
 A port for transition refinements in modal models.  This port
 mirrors certain changes to it in the ports of the container of the container.
 That container in turn mirrors those changes in other refinements and/or
-controllers.  
+controllers.
 <p>
 For output ports, this class creates a sibling "input" port. The sibling
 port is normally treated like any other port but mirrors changes via it's
-output sibling. This is so that TransitionRefinement instances can get the 
-outputs from the State refinements without having the port be an input/output. 
-This sibling port is labeled as "port_in" where port is the name of the 
+output sibling. This is so that TransitionRefinement instances can get the
+outputs from the State refinements without having the port be an input/output.
+This sibling port is labeled as "port_in" where port is the name of the
 corresponding output port.
 
 @see ModalPort
 @see TransitionRefinement
-@author David Hermann, Research In Motion Limited 
+@author David Hermann, Research In Motion Limited
 @version $Id$
 */
 
@@ -108,21 +108,21 @@ public class TransitionRefinementPort extends RefinementPort {
             if (_mirrorDisable || getContainer() == null) {
                 // process request for the sibling
                 if (_hasSibling && isOutput() && getContainer() != null) {
-                    TransitionRefinement transContainer = 
+                    TransitionRefinement transContainer =
                                 (TransitionRefinement) oldContainer;
-                    TransitionRefinementPort sibling = 
+                    TransitionRefinementPort sibling =
                         (TransitionRefinementPort)transContainer.getPort(
                                                         getName() + "_in");
-                
+
                     sibling._mirrorDisable  = true;
                     sibling.setContainer(container);
                     sibling._mirrorDisable = false;
                 }
-                
+
                 // Have already called the super class.
                 // This time, process the request.
                 super.setContainer(container);
-                
+
             } else {
                 // if this is the input port of a pair of siblings,
                 // then forward request to the output port of the pair
@@ -133,7 +133,7 @@ public class TransitionRefinementPort extends RefinementPort {
                     // we are the input sibling, extract "real" port name
                     portName = getName().substring(0, getName().length() - 3);
                 }
-                    
+
                 if (oldContainer != null) {
                     Nameable modal = oldContainer.getContainer();
                     if (modal instanceof ModalModel) {
@@ -212,17 +212,17 @@ public class TransitionRefinementPort extends RefinementPort {
 
                 // process request for the sibling
                 if (_hasSibling && isOutput() && getContainer() != null) {
-                    TransitionRefinement container = 
+                    TransitionRefinement container =
                         (TransitionRefinement) getContainer();
-                    TransitionRefinementPort sibling = 
+                    TransitionRefinementPort sibling =
                         (TransitionRefinementPort)container.getPort(
                                                         getName() + "_in");
-                
+
                     sibling._mirrorDisable  = true;
                     sibling.setMultiport(isMultiport);
                     sibling._mirrorDisable = false;
                 }
-                
+
                 super.setMultiport(isMultiport);
             } else {
                 _mirrorDisable = true;
@@ -245,7 +245,7 @@ public class TransitionRefinementPort extends RefinementPort {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Set the name of the port, and mirror the change in all the
      *  mirror ports.
      *  This method is write-synchronized on the workspace, and increments
@@ -263,20 +263,20 @@ public class TransitionRefinementPort extends RefinementPort {
                 //change sibling
                 if(_hasSibling && isOutput() && getContainer() != null)
                 {
-                    TransitionRefinement container = 
+                    TransitionRefinement container =
                                 (TransitionRefinement) getContainer();
-                    TransitionRefinementPort sibling = 
+                    TransitionRefinementPort sibling =
                         (TransitionRefinementPort)container.getPort(
                                                         getName() + "_in");
                     sibling._mirrorDisable = true;
                     sibling.setName(name + "_in");
                     sibling._mirrorDisable = false;
                 }
-                
+
                 // Have already called the super class.
                 // This time, process the request.
                 super.setName(name);
-                
+
             } else {
                 _mirrorDisable = true;
                 boolean success = false;
@@ -326,40 +326,40 @@ public class TransitionRefinementPort extends RefinementPort {
             } else {
                 return;
             }
-        }   
+        }
         try {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
                 super.setOutput(isOutput);
-                
+
                 // now create a sibling if we
                 // don't otherwise have one
                 if(!_hasSibling && isOutput) {
-                    
+
                     try {
-                        TransitionRefinement container = 
+                        TransitionRefinement container =
                                           (TransitionRefinement) getContainer();
-                        TransitionRefinementPort sibling = 
+                        TransitionRefinementPort sibling =
                                 new TransitionRefinementPort(container,
                                                         getName() + "_in");
-                    
+
                         sibling._hasSibling = true;
                         sibling._mirrorDisable = true;
                         // set attributes of sibling
                         sibling.setInput(true);
                         sibling.setMultiport(isMultiport());
-                        
+
                         sibling._mirrorDisable = false;
-                    
+
                         // link the port relation should already exist
                         // from this port's creation in newPort()
                         String relationName = getName() + "Relation";
                         ModalModel model = (ModalModel) container.getContainer();
                         Relation relation = model.getRelation(relationName);
                         if(relation != null) {
-                            sibling.link(relation);                   
+                            sibling.link(relation);
                         }
                         _hasSibling = true;
                     } catch(IllegalActionException ex) {

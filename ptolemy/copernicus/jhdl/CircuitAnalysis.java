@@ -89,11 +89,11 @@ import ptolemy.copernicus.jhdl.util.MergedControlFlowGraph;
 public class CircuitAnalysis {
     /** Construct a new analysis
      */
-    public CircuitAnalysis(Entity entity, SootClass theClass) 
+    public CircuitAnalysis(Entity entity, SootClass theClass)
     throws IllegalActionException {
 	DirectedGraph graph = new DirectedGraph();
         _graph = graph;
-       
+
         System.out.println("className = " + entity.getClass().getName());
 
 	//Handle cases that have been predefined and don't need analyzing
@@ -105,7 +105,7 @@ public class CircuitAnalysis {
 	//  	  }
 	//  	  return;
 	//  	}
-	
+
         // Analyze the bodies of the appropriate methods for things that
         // are not sample delays.
         _requiredNodeMap = new HashMap();
@@ -113,19 +113,19 @@ public class CircuitAnalysis {
 	DirectedGraph prefire_graph=null;
 	DirectedGraph fire_graph=null;
 	DirectedGraph postfire_graph=null;
-	
+
         if(theClass.declaresMethodByName("prefire")) {
-            prefire_graph = 
+            prefire_graph =
 		_analyzeMethod(theClass.getMethodByName("prefire"));
 //              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
         }
         if(theClass.declaresMethodByName("fire")) {
-	    fire_graph = 
+	    fire_graph =
 		_analyzeMethod(theClass.getMethodByName("fire"));
 //              _analyze(fire_graph, theClass.getMethodByName("fire"));
         }
         if(theClass.declaresMethodByName("postfire")) {
-	    postfire_graph = 
+	    postfire_graph =
 		_analyzeMethod(theClass.getMethodByName("postfire"));
 //              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
         }
@@ -134,7 +134,7 @@ public class CircuitAnalysis {
 //  	_appendGraph(graph, fire_graph);
 //  	_appendGraph(graph, postfire_graph);
 
-        // get rid of non-essential nodes of 
+        // get rid of non-essential nodes of
 //          boolean changed = true;
 //          while(changed) {
 //              changed = false;
@@ -162,7 +162,7 @@ public class CircuitAnalysis {
 
 
 
-	
+
 	/* This isn't ready yet.. this should act on graphs at each node,
 	   not the top-level control flow graph
         // Go though and eliminate unnecessary nodes.  These are nodes
@@ -191,7 +191,7 @@ public class CircuitAnalysis {
                 removeSet.add(node);
             }
         }
-       
+
         // Remove all the edges & nodes
         for(Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
@@ -224,7 +224,7 @@ public class CircuitAnalysis {
 		    String name=sootMethod.getName();
 
 		    return false;
-	  
+
 		    //  	  //Don't inline get() or send() methods on ports.  They are
 		    //  	  //handled separately
 		    //  	  //if (name.equals("get") || name.equals("send")){
@@ -246,27 +246,27 @@ public class CircuitAnalysis {
 
 		    if (name.equals(sc.getName()))
 			return true;
-	  
+
 		    while (sc.hasSuperclass()){
 			sc=sc.getSuperclass();
 			if (name.equals(sc.getName()))
 			    return true;
 		    }
-	  
+
 		    return false;
 		}
 	    };
     }
-  
+
 
     public static void main(String args[]) {
 	TypedCompositeActor system = new TypedCompositeActor();
 	try {
 	  ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
-	    ptolemy.domains.sdf.kernel.SDFDirector(system,"director");	
-	  ptolemy.copernicus.jhdl.demo.FIR2.FIR f = 
+	    ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
+	  ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
 	    new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
-	  SootClass entityClass = 
+	  SootClass entityClass =
 	    Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
 	  entityClass.setApplicationClass();
 	  if (entityClass == null) {
@@ -281,7 +281,7 @@ public class CircuitAnalysis {
 
     /**
      **/
-    protected DirectedGraph _analyzeMethod(SootMethod method) 
+    protected DirectedGraph _analyzeMethod(SootMethod method)
 	throws IllegalActionException {
         Body body = method.retrieveActiveBody();
   	DirectedGraph mcfg = new MergedControlFlowGraph(body);
@@ -289,7 +289,7 @@ public class CircuitAnalysis {
 
 	return mcfg;
     }
-  
+
     protected DirectedGraph _extractDataFlow(DirectedGraph graph){
 
 	//Make the requiredNodeMap from each graph's requiredNodeSet
@@ -306,7 +306,7 @@ public class CircuitAnalysis {
 	}
 
 	DirectedGraph dg=new DirectedGraph();
-	
+
 	Set keys=requiredNodeMap.keySet();
 	for (Iterator i=keys.iterator(); i.hasNext(); ){
 	    Object requiredValue=i.next();
@@ -317,7 +317,7 @@ public class CircuitAnalysis {
 	}
 
 	return dg;
-	
+
     }
 
     /**
@@ -334,7 +334,7 @@ public class CircuitAnalysis {
 
 	Collection sinks = graph.sinkNodes();
 	Collection sources = append.sourceNodes();
-	
+
 	// add nodes to new graph
 	for (Iterator i=append.nodes().iterator(); i.hasNext();){
 	    Node node=(Node)i.next();
@@ -353,10 +353,10 @@ public class CircuitAnalysis {
 		graph.addEdge(first, second);
 	    }
 	}
-	
+
     }
-    
-    protected ptolemy.data.type.Type _getPortType(Port port) 
+
+    protected ptolemy.data.type.Type _getPortType(Port port)
 	throws RuntimeException {
 	ptolemy.data.type.Type t=null;
 	try {
@@ -381,7 +381,7 @@ public class CircuitAnalysis {
 }
 
 class PermissiveBlockDataFlowGraph extends BlockDataFlowGraph {
-    public PermissiveBlockDataFlowGraph(Block block) 
+    public PermissiveBlockDataFlowGraph(Block block)
 	throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
 	super(block);
     }

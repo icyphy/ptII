@@ -63,13 +63,13 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node) 
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
         return evaluateParseTree(node, null);
     }
-    
+
     public ptolemy.data.Token evaluateParseTree(
-            ASTPtRootNode node, ParserScope scope) 
+            ASTPtRootNode node, ParserScope scope)
             throws IllegalActionException {
         _scope = scope;
         // Evaluate the value of the root node.
@@ -78,9 +78,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         _scope = null;
         return node.getToken();
     }
-    
-    public static ptolemy.data.Token functionCall(String methodName, 
-            int argCount, Type[] argTypes, Object[] argValues) 
+
+    public static ptolemy.data.Token functionCall(String methodName,
+            int argCount, Type[] argTypes, Object[] argValues)
             throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(methodName,
                 argTypes, CachedMethod.FUNCTION);
@@ -98,13 +98,13 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                     buffer.append(", " + argValues[i].toString());
                 }
             }
-            throw new IllegalActionException("No matching function " + 
+            throw new IllegalActionException("No matching function " +
                     methodName + "( " + buffer + " ).");
         }
     }
 
-   public static ptolemy.data.Token methodCall(String methodName, 
-           int argCount, Type[] argTypes, Object[] argValues) 
+   public static ptolemy.data.Token methodCall(String methodName,
+           int argCount, Type[] argTypes, Object[] argValues)
            throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(methodName,
                 argTypes, CachedMethod.METHOD);
@@ -122,18 +122,18 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                     buffer.append(", " + argValues[i].toString());
                 }
             }
-            throw new IllegalActionException("No matching function " + 
+            throw new IllegalActionException("No matching function " +
                     methodName + "( " + buffer + " ).");
         }
     }
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
         _evaluateAllChildren(node);
-        
+
         int numChildren = node.jjtGetNumChildren();
 
         ptolemy.data.Token[] tokens = _getChildTokens(node);
@@ -160,9 +160,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                     " which does not support bitwise operations.");
         }
 
-        BitwiseOperationToken bitwiseResult = 
+        BitwiseOperationToken bitwiseResult =
             (BitwiseOperationToken)result;
- 
+
         // Make sure that exactly one of AND, OR, XOR is set.
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
@@ -181,12 +181,12 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 bitwiseResult = bitwiseResult.bitwiseOr(nextToken);
             } else {
                 bitwiseResult = bitwiseResult.bitwiseXor(nextToken);
-            } 
+            }
         }
         node.setToken((ptolemy.data.Token)bitwiseResult);
     }
 
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         // A flag for debugging.
         boolean debug = false;
@@ -202,9 +202,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
             // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
             _evaluateAllChildren(node);
-			
+
             value = node.jjtGetChild(0).getToken();
-            
+
             int numChildren = node.jjtGetNumChildren();
             if(value instanceof ArrayToken) {
                 if(numChildren == 2) {
@@ -256,9 +256,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         if (node.getFunctionName().compareTo("eval") == 0) {
             if (node.jjtGetNumChildren() == 2) {
                 _evaluateChild(node, 1);
-                ptolemy.data.Token token = 
+                ptolemy.data.Token token =
                     node.jjtGetChild(1).getToken();
-                
+
                 if(token instanceof StringToken) {
                     // Note that we do not want to store a reference to
                     // the parser, because parsers take up alot of memory.
@@ -281,7 +281,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         if (node.getFunctionName().compareTo("matlab") == 0) {
             _evaluateChild(node, 1);
-            ptolemy.data.Token token = 
+            ptolemy.data.Token token =
                 node.jjtGetChild(1).getToken();
 	    if (token instanceof StringToken) {
                 // Invoke the matlab engine to evaluate this function
@@ -299,7 +299,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                             packageDirectories =
                                 _scope.get("packageDirectories");
                         }
-                        if (packageDirectories != null && 
+                        if (packageDirectories != null &&
                                 packageDirectories instanceof StringToken) {
                             StringTokenizer dirs = new
                                 StringTokenizer
@@ -347,7 +347,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                             matlabEngine.put
                                 (engine, var.getName(), var.getToken());
                         }
-                        matlabEngine.evalString(engine, 
+                        matlabEngine.evalString(engine,
                                 "result__=" + expression);
                         result = matlabEngine.get(engine, "result__");
                     }
@@ -385,7 +385,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 node.getFunctionName(), argCount, argTypes, argValues);
         node.setToken(result);
     }
-	
+
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         // collect all free variables in the function definition
@@ -416,7 +416,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         node.setToken(result);
         return;
     }
-    
+
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
@@ -449,7 +449,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
         }
-        
+
         ASTPtRootNode tokenChild, typeChild;
         if (value) {
             tokenChild = (ASTPtRootNode)node.jjtGetChild(1);
@@ -462,15 +462,15 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         tokenChild.visit(this);
         ptolemy.data.Token token = tokenChild.getToken();
         Type type = _typeInference.inferTypes(typeChild, _scope);
-              
+
         Type conversionType = (Type)TypeLattice.lattice().leastUpperBound(
                 type, token.getType());
-        
+
         token = conversionType.convert(token);
         node.setToken(token);
     }
 
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
@@ -490,14 +490,14 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 "The ID " + node.getName() + " is undefined.");
     }
 
-    public void visitLogicalNode(ASTPtLogicalNode node) 
+    public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
 
         // Note that we do not always evaluate all of the children...
-        // We perform short-circuit evaluation instead and evaluate the 
+        // We perform short-circuit evaluation instead and evaluate the
         // children in order until the final value is determined, after
         // which point no more children are evaluated.
 
@@ -510,14 +510,14 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
         if(!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
-                    + "operation on " + result + " which is a " 
+                    + "operation on " + result + " which is a "
                     + result.getClass().getName());
         }
-        
+
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(),
                 node, "Invalid operation");
-       
+
         // Perform both the short-circuit AND and short-circuit OR in
         // one piece of code.
         // FIXME: I dislike that this is not done in the token classes...
@@ -541,8 +541,8 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
         node.setToken(BooleanToken.getInstance(flag));
     }
-        
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node) 
+
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
@@ -553,36 +553,36 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         if (node.getForm() == 1) {
             int numChildren = node.jjtGetNumChildren();
             ptolemy.data.Token[] tokens = _getChildTokens(node);
-            result = MatrixToken.create(tokens, node.getRowCount(), 
+            result = MatrixToken.create(tokens, node.getRowCount(),
                              node.getColumnCount());
         } else if (node.getForm() == 2) {
             try {
                 int columnCount = MatrixToken.determineSequenceLength(
                         (ScalarToken)node.jjtGetChild(0).getToken(),
-                        (ScalarToken)node.jjtGetChild(1).getToken(), 
+                        (ScalarToken)node.jjtGetChild(1).getToken(),
                         (ScalarToken)node.jjtGetChild(2).getToken());
                 // Make sure that all following rows have the same number
                 // of columns.
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if(columnCount != MatrixToken.determineSequenceLength(
                             (ScalarToken)node.jjtGetChild(3*i).getToken(),
-                            (ScalarToken)node.jjtGetChild(3*i+1).getToken(), 
+                            (ScalarToken)node.jjtGetChild(3*i+1).getToken(),
                             (ScalarToken)node.jjtGetChild(3*i+2).getToken())) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
                     }
                 }
-                
+
                 ptolemy.data.Token[] tokens =
                     new ptolemy.data.Token[node.getRowCount() * columnCount];
                 for(int i = 0; i < node.getRowCount(); i++) {
-                    ptolemy.data.Token[] newTokens = 
+                    ptolemy.data.Token[] newTokens =
                         MatrixToken.createTokenSequence(
                                 node.jjtGetChild(3*i).getToken(),
                                 node.jjtGetChild(3*i+1).getToken(),
                                 columnCount);
-                    System.arraycopy(newTokens, 0, 
+                    System.arraycopy(newTokens, 0,
                             tokens, columnCount * i, columnCount);
                 }
                 result = MatrixToken.create(tokens,
@@ -597,7 +597,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         node.setToken(result);
     }
 
-    public void visitMethodCallNode(ASTPtMethodCallNode node) 
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
         throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
@@ -629,11 +629,11 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         ptolemy.data.Token result = methodCall(
                 node.getMethodName(), argCount, argTypes, argValues);
-        
+
         node.setToken(result);
     }
 
-    public void visitPowerNode(ASTPtPowerNode node) 
+    public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
@@ -642,11 +642,11 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        
+
         // Operator is always exponentiation
-        
-        // Note that since we use an iterative integer method, instead of 
-        // a logarithmic method, the fastest thing is to apply the 
+
+        // Note that since we use an iterative integer method, instead of
+        // a logarithmic method, the fastest thing is to apply the
         // exponentiation inside out, i.e. left to right.
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
         for(int i = 1; i < numChildren; i++) {
@@ -695,22 +695,22 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
         node.setToken(result);
     }
-        
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node) 
+
+    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
         throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
         _evaluateAllChildren(node);
-        
+
         int numChildren = node.jjtGetNumChildren();
-        
+
         _assert(node.getFieldNames().size() == numChildren,
                 node, "The number of labels and values does not " +
                 "match in parsing a record expression.");
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
-        
+
         ptolemy.data.Token[] tokens = _getChildTokens(node);
         node.setToken(new RecordToken(labels, tokens));
     }
@@ -763,9 +763,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         node.setToken(result);
     }
 
-//     public void visitRootNode(ASTPtRootNode node) 
+//     public void visitRootNode(ASTPtRootNode node)
 //             throws IllegalActionException {
-//         _assert(numChildren == 1, node, 
+//         _assert(numChildren == 1, node,
 //                 "The root node must have exactly one child");
 //         setToken(((ASTPtRootNode)node.jjtGetChild(0)).getToken());
 //    }
@@ -809,7 +809,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         node.setToken(result);
     }
 
-    public void visitSumNode(ASTPtSumNode node) 
+    public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
@@ -883,13 +883,13 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         if(!flag) {
             throw new InternalErrorException(message + ": " + node.toString());
         }
-    }    
-    
-    /** Loop through all of the children of this node, 
+    }
+
+    /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
      */
-    protected void _evaluateAllChildren(ASTPtRootNode node) 
+    protected void _evaluateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
         for (int i = 0; i < numChildren; i++) {
@@ -902,12 +902,12 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
      *  so the calling method should do that.
      */
     protected ptolemy.data.Token[] _getChildTokens(ASTPtRootNode node) {
-        ptolemy.data.Token[] tokens = 
+        ptolemy.data.Token[] tokens =
             new ptolemy.data.Token[node.jjtGetNumChildren()];
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
             tokens[i] = child.getToken();
-        }    
+        }
         return tokens;
     }
 
@@ -919,7 +919,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
         child.visit(this);
     }
-    
+
     /** Evaluate the array index operation represented by the given node.
      *  @param node The syntax tree node that caused this method to be
      *  called.
@@ -983,7 +983,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                     integerRowIndex, integerColumnIndex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException("The index ("
-                    + rowIndex + "," + columnIndex 
+                    + rowIndex + "," + columnIndex
                     + ") is out of bounds to the matrix '"
                     + value + "'.");
         }
@@ -992,7 +992,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
     // Evaluate the given parse tree in the same scope that is
     // currently being evaluated.
     protected ptolemy.data.Token _evaluateParseTree(
-            ASTPtRootNode node) 
+            ASTPtRootNode node)
             throws IllegalActionException {
         // Evaluate the value of the root node.
         node.visit(this);
@@ -1001,19 +1001,19 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
     private ParserScope _scope;
     private ParseTreeTypeInference _typeInference;
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                       inner classes                       ////
 
 	private class ExpressionFunction implements FunctionToken.Function {
-		
+
 		public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
 				ParserScope freeVariablesScope) {
 			_argumentNames = new ArrayList(argumentNames);
 			_exprRoot = exprRoot;
 			_freeVariablesScope = freeVariablesScope;
 		}
-		
+
 		public ptolemy.data.Token apply(List args)
 				throws IllegalActionException {
 			if (_parseTreeEvaluator == null) {
@@ -1034,7 +1034,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 			ParserScope evaluationScope = new NestedScope(listOfScopes);
 			return _parseTreeEvaluator.evaluateParseTree(_exprRoot, evaluationScope);
 		}
-		
+
 		public int getNumberOfArguments() {
 			return _argumentNames.size();
 		}

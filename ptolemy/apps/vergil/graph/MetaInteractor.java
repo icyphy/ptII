@@ -21,7 +21,7 @@ import java.util.Hashtable;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 
-/** 
+/**
  * An abstract class that implements Interactor. This class provides
  * simple implementations of most of the required methods of
  * interactors. The listener methods are all implemented,
@@ -47,7 +47,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
     /** The mouse filter
      */
     private MouseFilter _mouseFilter = MouseFilter.defaultFilter;
-    
+
     public MetaInteractor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

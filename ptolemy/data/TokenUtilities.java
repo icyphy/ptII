@@ -49,7 +49,7 @@ public class TokenUtilities {
 
     // Note that these fields are public, since they are sometimes
     // useful to have in other places, like the code generator.
- 
+
     /** The format that is used to print floating point numbers that
      *  are not very large, or very small.  The number of fractional
      *  digits here is determined by the place at which common
@@ -57,14 +57,14 @@ public class TokenUtilities {
      */
     public static final DecimalFormat regularFormat =
     new DecimalFormat("####0.0############");
-   
+
     // Note: This used to be new DecimalFormat("0.0############E0##"),
     // but compiling with gcj resulted in the following error:
     // 'Exception in thread "main" class
     // java.lang.ExceptionInInitializerError:
     // java.lang.IllegalArgumentException: digit mark following zero
     // in exponent - index: 17'
-    
+
     /** The format that is used to print floating point numbers that
      *  are very large, or very small.
      */

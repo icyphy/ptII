@@ -106,8 +106,8 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     /**
      * create the topology of the graph.
      **/
-    protected void _createGraph(BriefBlockGraph bbg) 
-	throws IllegalActionException {	
+    protected void _createGraph(BriefBlockGraph bbg)
+	throws IllegalActionException {
 
 	// Save Body
 	_bbgraph = bbg;
@@ -130,7 +130,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 	    Node nb = node(block);
 
 	    List succs = block.getSuccs();
-	    //Get successors to this block and add an edge to graph for 
+	    //Get successors to this block and add an edge to graph for
 	    //each one.
 	    for (Iterator successors=succs.iterator(); successors.hasNext();){
 		Block succ=(Block)successors.next();
@@ -175,7 +175,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     }
 
     public static DirectedAcyclicCFG _main(String args[]) {
-	soot.SootMethod testMethod = 
+	soot.SootMethod testMethod =
 	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 	DirectedAcyclicCFG _cfg=null;
 	try {

@@ -193,11 +193,11 @@ public class CommandLineTransformer extends SceneTransformer {
                         modelField);
             units.insertBefore(Jimple.v().newAssignStmt(fieldRef, modelLocal),
                     insertPoint);
-            
+
             // Set the name.
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(modelLocal, 
+                            Jimple.v().newVirtualInvokeExpr(modelLocal,
                                     PtolemyUtilities.setNameMethod,
                                     StringConstant.v(_model.getName()))),
                     insertPoint);
@@ -383,10 +383,10 @@ public class CommandLineTransformer extends SceneTransformer {
     protected int _iterationsDefault = 50;
 
     /** Default value for the class name that is used as the command
-     *  line template.  The initial default value is 
+     *  line template.  The initial default value is
      *  "ptolemy.copernicus.java.CommandLineTemplate");
-     */   
-    protected String _commandLineTemplateDefault = 
+     */
+    protected String _commandLineTemplateDefault =
     "ptolemy.copernicus.java.CommandLineTemplate";
 
     private String _getFinalName(String dottedName) {
@@ -440,7 +440,7 @@ public class CommandLineTransformer extends SceneTransformer {
 
         Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
         body.getLocals().add(postfireReturnsLocal);
-        
+
         Local iterationLocal = null;
         if (iterationLimit > 1) {
             iterationLocal = Jimple.v().newLocal("iteration",
@@ -488,7 +488,7 @@ public class CommandLineTransformer extends SceneTransformer {
                                   SootUtilities.searchForMethodByName(modelClass,
                                           "postfire"))),
                 unit);
-        
+
         // If postfire returned false,
         // then we're done.
         units.insertBefore(Jimple.v().newIfStmt(

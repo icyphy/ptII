@@ -140,7 +140,7 @@ public class CommandLineTemplate {
                 System.out.println(modelName +
                         ": Stats before execution:    "
                         + buffer1);
-                  
+
                 // Second, we run and print memory stats.
                 startRun(model);
 
@@ -148,7 +148,7 @@ public class CommandLineTemplate {
                 long freeMemory2 = runtime.freeMemory()/1024;
                 timeAndMemory(startTime,
                         totalMemory2, freeMemory2, buffer2);
-                
+
                 System.out.println(modelName +
                         ": Execution stats:           "
                         + buffer2);

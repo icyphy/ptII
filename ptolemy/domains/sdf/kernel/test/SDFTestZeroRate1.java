@@ -75,17 +75,17 @@ public class SDFTestZeroRate1 extends Transformer {
 	value = new Parameter(this, "value", new IntToken(1));
 
 	input_rate1 = new Parameter(this, "input_rate1", new IntToken(1));
-	input_tokenConsumptionRate = 
+	input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate1");
 
 	output_rate1 = new Parameter(this, "output_rate1", new IntToken(1));
-	output_tokenProductionRate = 
+	output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("output_rate1");
 	// Set the type constraint.
 	output.setTypeAtLeast(value);
-	
+
 
     }
 
@@ -117,7 +117,7 @@ public class SDFTestZeroRate1 extends Transformer {
      public void attributeChanged(Attribute attribute)
              throws IllegalActionException {
          SDFDirector dir = (SDFDirector)getDirector();
-         
+
          if (dir != null) {
              dir.invalidateSchedule();
          }
@@ -143,7 +143,7 @@ public class SDFTestZeroRate1 extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	for (int i = 0; i < ((IntToken)input_rate1.getToken()).intValue(); 
+	for (int i = 0; i < ((IntToken)input_rate1.getToken()).intValue();
              i++) {
             input.get(0);
 	}
@@ -175,7 +175,7 @@ public class SDFTestZeroRate1 extends Transformer {
 	//    Actor actor = (Actor)allActors.next();
         //   String schedActName = ((Nameable)actor).getName();
 	//    System.out.println("Actor in scheduler: " + schedActName);
-	//}	
+	//}
     }
 
     ///////////////////////////////////////////////////////////////////

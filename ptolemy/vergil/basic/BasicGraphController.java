@@ -256,7 +256,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     Point2D origin = figure.getOrigin();
                     double originalUpperLeftX = origin.getX();
                     double originalUpperLeftY = origin.getY();
-                    
+
                     // NOTE: the following call may trigger an evaluation,
                     // which results in another recursive call to this method.
                     // Thus, we ignore the inside call and detect it with a
@@ -268,15 +268,15 @@ public abstract class BasicGraphController extends AbstractGraphController
                     } finally {
                         _inValueChanged = false;
                     }
-                    
+
                     double translationX = newLocation[0] - originalUpperLeftX;
                     double translationY = newLocation[1] - originalUpperLeftY;
-                    
+
                     if (translationX != 0.0 || translationY != 0.0) {
                         // The translate method supposedly handles the required
                         // repaint.
                         figure.translate(translationX, translationY);
-                        
+
                         // Reroute edges linked to this figure.
                         GraphModel model = getGraphModel();
                         Object userObject = figure.getUserObject();
@@ -486,7 +486,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                 }
 	    } else {
                 // Transform
-                AffineTransform current = 
+                AffineTransform current =
                     getGraphPane().getTransformContext().getTransform();
                 AffineTransform inverse;
                 try {
@@ -496,7 +496,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     throw new RuntimeException(ex.toString());
                 }
                 Point2D point = new Point2D.Double(getX(), getY());
-                
+
                 inverse.transform(point, point);
 		x = point.getX();
 		y = point.getY();
@@ -506,19 +506,19 @@ public abstract class BasicGraphController extends AbstractGraphController
                     (AbstractBasicGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
-            NamedObj container = 
+            NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
                 container = toplevel;
             }
-                
+
             final NamedObj context = container;
 	    final String portName = toplevel.uniqueName("port");
 	    final String locationName = "_location";
 	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
             if (container != toplevel) {
-                moml.append("<entity name=\"" + 
+                moml.append("<entity name=\"" +
                         toplevel.getName(container) + "\">\n");
             }
 	    moml.append("<port name=\"" + portName + "\">\n");

@@ -1040,7 +1040,7 @@ public class Variable extends Attribute
                 }
             }
             // FIXME: we need exception chaining here!  Otherwise, exceptions
-            // thrown in attributeChanged will get reported to the user as 
+            // thrown in attributeChanged will get reported to the user as
             // originating here.
             throw new IllegalActionException(message.toString());
         }
@@ -1688,10 +1688,10 @@ public class Variable extends Attribute
                 return result.getToken();
             } else {
                 return null;
-            }        
+            }
         }
 
-        /** Return the object in the model that corresponds to the given 
+        /** Return the object in the model that corresponds to the given
          *  identifier name in this scope.  This class always returns a
          *  variable.
          */

@@ -109,7 +109,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      */
-    public PNDirector() 
+    public PNDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
         Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
@@ -125,7 +125,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
      */
-    public PNDirector(Workspace workspace) 
+    public PNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",

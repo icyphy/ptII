@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitScope
 /**
-An implementation of ParserScope that includes an explicit list of 
+An implementation of ParserScope that includes an explicit list of
 Variables in the scope.
 
 @author Steve Neuendorffer
@@ -46,14 +46,14 @@ Variables in the scope.
 */
 
 public class ExplicitScope implements ParserScope {
-    
+
     /** Construct a new scope that includes the objects in the given
      *  list, which must contain only variables.
      */
     public ExplicitScope(NamedList list) {
         _list = list;
     }
-    
+
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
      *  @return The token associated with the given name in the scope.
@@ -64,7 +64,7 @@ public class ExplicitScope implements ParserScope {
         Variable variable = (Variable)_list.get(name);
         if(variable == null) {
             return null;
-        } 
+        }
         return variable.getToken();
     }
 
@@ -90,7 +90,7 @@ public class ExplicitScope implements ParserScope {
     public NamedList variableList() {
         return _list;
     }
-    
+
     private NamedList _list;
 }
 

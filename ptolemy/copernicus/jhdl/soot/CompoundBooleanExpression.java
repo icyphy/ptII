@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -83,7 +83,7 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
      * Value must be of type ConditionExpr (an IllegalActionException
      * will be thrown if a different type is passed). This method will
      * create a new ConditionExpr that is the inverse of the
-     * ConditionExpr Value in the argument. 
+     * ConditionExpr Value in the argument.
      *
      * The following mapping is used:
      *
@@ -119,9 +119,9 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
 		throw new IllegalActionException("Unknown ConditionExpr "+
 						 inValue.getClass());
 	} else
-	    throw new IllegalActionException("Can't Invert " + 
+	    throw new IllegalActionException("Can't Invert " +
 					     inValue.getClass());
 	return newValue;
     }
-    
+
 }

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -46,12 +46,12 @@ import java.util.Map;
  * This interface provides a mapping between Objects and lists.
  * The value of the key/value pair of the Map is a List object.
  * This allows multiple Objects to be mapped with a single key.
- * 
+ *
  **/
 public interface MapList extends Map {
-    
+
     public void add(Object key, Object value);
-    /** Get the Object at position <code>index</code> 
+    /** Get the Object at position <code>index</code>
      * associated with Object key **/
     public Object get(Object key, int index);
     /** Get the first object associated with Object key **/
@@ -61,5 +61,5 @@ public interface MapList extends Map {
     /** Get the List object associated with Object key **/
     public List getList(Object key);
     public void setList(Object key, List l);
-    public Object clone(); 
+    public Object clone();
 }

@@ -83,14 +83,14 @@ public class TransformerAdapter extends SceneTransformer {
                 if (!method.isConcrete())
                     continue;
                 try {
-                    
+
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
-                    
+
                     // FIXME: pass in the options.
                     // Currently this is not possible because the
                     // internalTransform method is protected.
                     _transformer.transform(body, phaseName, "");
-                    
+
                 } catch (RuntimeException ex) {
                     System.err.println("Exception occured while processing "
                             + method);

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -59,13 +59,13 @@ import soot.toolkits.graph.Block;
 */
 
 public class MergedControlFlowGraph extends DirectedGraph {
-    
+
     public MergedControlFlowGraph(SootMethod method) throws IllegalActionException {
 	this(method.retrieveActiveBody());
     }
 
     public MergedControlFlowGraph(Body body) throws IllegalActionException {
-	super();	
+	super();
 
 	_bbgraph = new BriefBlockGraph(body);
 	_createGraph();
@@ -119,7 +119,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 
 	    //Get successors to this block and add an edge
 	    //to graph for each one
-	    for (Iterator succs=block.getSuccs().iterator(); 
+	    for (Iterator succs=block.getSuccs().iterator();
 		 succs.hasNext();){
 		Block succ=(Block)succs.next();
 		Node sb = node(blockToSuperBlockMap.get(succ));
@@ -128,7 +128,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	}
  	if (!isAcyclic()) {
  	    System.err.println(PtDirectedGraphToDotty.convert(this,"this"));
-             System.out.println("Warning! Graph has feedback");    
+             System.out.println("Warning! Graph has feedback");
              //    throw new IllegalActionException("Feedback currently not supported");
  	}
     }
@@ -137,36 +137,36 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	//Get a topological sort
 	Map nodeToLabel = new HashMap();
 	SuperBlock sorted[]=null;
-	
+
 	Object []temp=topologicalSort(nodes()).toArray();
-	sorted=new SuperBlock[temp.length];   
+	sorted=new SuperBlock[temp.length];
 	for (int i=0; i < temp.length; i++){
 	    sorted[i]=(SuperBlock)((Node)temp[i]).getWeight();
 	}
-	
+
 	for (int i=0; i < sorted.length; i++){
 	    sorted[i].combineLabels(this);
 	    for (Iterator succs = successors(node(sorted[i])).iterator();
 		 succs.hasNext();){
 		Node succ = (Node)succs.next();
-		
+
 		sorted[i].propagateLabelsTo((SuperBlock)succ.getWeight());
 	    }
 	}
-	
+
     }
 
     public static void main(String args[]) {
-	String classname = 
+	String classname =
 	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTCLASS;
-	String methodname = 
+	String methodname =
 	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTMETHOD;
 	if (args.length > 0)
 	    classname = args[0];
 	if (args.length > 1)
 	    methodname = args[1];
-	
-	soot.SootClass testClass = 
+
+	soot.SootClass testClass =
 	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
 	if (testClass == null) {
 	    System.err.println("Class "+classname+" not found");
@@ -179,7 +179,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	}
 	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
 	soot.Body body = testMethod.retrieveActiveBody();
-	
+
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
 	try {

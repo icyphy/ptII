@@ -89,7 +89,7 @@ public class Const extends TypedAtomicActor {
      */
     public Parameter value;
     public TypedIOPort output = null;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

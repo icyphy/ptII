@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// TestToken
 /**
 
-This is a new type of token.  It is used to test the TypeLattice to 
+This is a new type of token.  It is used to test the TypeLattice to
 ensure that unspecified token types are allowed, and simply made incomparable
 to everything else.
 
@@ -85,7 +85,7 @@ public class TestToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof TestToken) {
             return new BooleanToken(this == token);
-        } else 
+        } else
             throw new IllegalActionException(
                     "Equality test not supported between "
                     + this.getClass().getName() + " and "
@@ -104,17 +104,17 @@ public class TestToken extends Token {
     }
 
     public static class TestType implements Type, Serializable {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         /** Return this, that is, return the reference to this object.
          *  @return A BaseType.
          */
         public Object clone() {
             return this;
         }
-        
+
         /** Convert the specified token to a token having the type
          *  represented by this object.
          *  @param t A token.
@@ -127,11 +127,11 @@ public class TestToken extends Token {
             if (token instanceof TestToken) {
                 return token;
             } else {
-                throw new IllegalActionException("Attempt to convert token " 
-                        + token + 
+                throw new IllegalActionException("Attempt to convert token "
+                        + token +
                         " into a test token, which is not possible.");
             }
-        } 
+        }
 
         /** Return the class for tokens that this basetype represents.
          */
@@ -150,14 +150,14 @@ public class TestToken extends Token {
         public boolean isCompatible(Type type) {
             return type == this;
         }
-        
+
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
         public boolean isConstant() {
             return true;
         }
-        
+
         /** Determine if the argument represents the same BaseType as this
          *  object.
          *  @param t A Type.
@@ -167,7 +167,7 @@ public class TestToken extends Token {
         public boolean equals(Type t) {
             return this == t;
         }
-        
+
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
@@ -175,7 +175,7 @@ public class TestToken extends Token {
             return Type.HASH_INVALID;
         }
 
-     
+
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond
          *  to an abstract token class, or an interface, or UNKNOWN.
@@ -184,7 +184,7 @@ public class TestToken extends Token {
         public boolean isInstantiable() {
             return true;
         }
-        
+
         /** Return true if the argument is a
          *  substitution instance of this type.
          *  @param type A Type.
@@ -193,7 +193,7 @@ public class TestToken extends Token {
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
-        
+
         /** Return the string representation of this type.
          *  @return A String.
          */
@@ -201,7 +201,7 @@ public class TestToken extends Token {
             return "test";
         }
     }
-        
+
     public static final Type TYPE = new TestType();
 
     ///////////////////////////////////////////////////////////////////

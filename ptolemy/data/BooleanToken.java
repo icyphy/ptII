@@ -50,7 +50,7 @@ the constructor that takes a boolean argument.
 @since Ptolemy II 0.2
 */
 
-public class BooleanToken extends AbstractConvertibleToken 
+public class BooleanToken extends AbstractConvertibleToken
     implements BitwiseOperationToken {
 
     /** Construct a token with value false
@@ -190,7 +190,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  the given token.
      *  @return The boolean AND.
      */
-    public BitwiseOperationToken bitwiseAnd(Token rightArgument) 
+    public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
         if(!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(

@@ -182,7 +182,7 @@ public class ModelTransformer extends SceneTransformer {
         try {
             _constAnalysis = new ConstVariableModelAnalysis(_model);
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to calculate constant vars: " + 
+            throw new RuntimeException("Failed to calculate constant vars: " +
                     ex.getMessage());
         }
 
@@ -368,7 +368,7 @@ public class ModelTransformer extends SceneTransformer {
 	Local variableLocal = Jimple.v().newLocal("variable",
                 variableType);
 	body.getLocals().add(variableLocal);
- 
+
         /*    NamedObj classObject = _findDeferredInstance(namedObj);
               System.out.println("Class object for " + namedObj.getFullName());
               System.out.println(classObject.exportMoML());
@@ -377,11 +377,11 @@ public class ModelTransformer extends SceneTransformer {
         for (Iterator attributes = namedObj.attributeList().iterator();
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
-            
+
             if(ActorTransformer._isIgnorableAttribute(attribute)) {
                 continue;
             }
-            
+
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
@@ -424,7 +424,7 @@ public class ModelTransformer extends SceneTransformer {
                 updateCreatedSet(namedObj.getFullName() + "."
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
-          
+
                 // Initialize the newly created variable.
                 if (attribute instanceof Variable) {
                     // If the attribute is a parameter, then set its
@@ -435,9 +435,9 @@ public class ModelTransformer extends SceneTransformer {
                             Jimple.v().newCastExpr(
                                     local,
                                     variableType));
-                    
+
                     body.getUnits().add(assignStmt);
-                    
+
                     Token token = null;
                     try {
                         token = ((Variable)attribute).getToken();
@@ -454,7 +454,7 @@ public class ModelTransformer extends SceneTransformer {
                     Local tokenLocal =
                         PtolemyUtilities.buildConstantTokenLocal(body,
                                 assignStmt, token, "token");
-                
+
                     // call setToken.
                     body.getUnits().add(
                             Jimple.v().newInvokeStmt(
@@ -471,7 +471,7 @@ public class ModelTransformer extends SceneTransformer {
                 } else if (attribute instanceof Settable) {
                     // If the attribute is settable, then set its
                     // expression.
-                
+
                     // cast to Settable.
                     body.getUnits().add(Jimple.v().newAssignStmt(
                                                 settableLocal,
@@ -518,12 +518,12 @@ public class ModelTransformer extends SceneTransformer {
             ex.printStackTrace();
             throw new RuntimeException(ex.getMessage());
         }
-        
+
         // Create fields for attributes.
         ModelTransformer.createFieldsForAttributes(
                 body, entity, entityLocal,
                 entity, entityLocal, entityClass, createdSet);
-        
+
         // Initialize the parameters of the class entity.
         for (Iterator attributes =
                  entity.attributeList(Settable.class).iterator();
@@ -534,7 +534,7 @@ public class ModelTransformer extends SceneTransformer {
             if (classSettable != null) {
                 try {
                     if (settable instanceof Variable) {
-                        
+
                         ((Variable)classSettable).setToken(
                                 ((Variable)settable).getToken());
                     } else {
@@ -550,8 +550,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set entities.
-    private static void _entities(JimpleBody body, 
-            Local containerLocal, CompositeActor container, 
+    private static void _entities(JimpleBody body,
+            Local containerLocal, CompositeActor container,
             Local thisLocal, CompositeActor composite,
             EntitySootClass modelClass,
             HashSet createdSet, Map options) {
@@ -589,7 +589,7 @@ public class ModelTransformer extends SceneTransformer {
                                         PtolemyUtilities.getEntityMethod,
                                         StringConstant.v(
                                                 entity.getName(composite)))));
-                // and then cast 
+                // and then cast
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(local,
                                 Jimple.v().newCastExpr(entityLocal,
@@ -597,12 +597,12 @@ public class ModelTransformer extends SceneTransformer {
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
-                
+
                 _ports(body, thisLocal, composite,
                         local, entity, modelClass, createdSet);
-            } else {  
+            } else {
                 //  System.out.println("Creating new!");
-                
+
                 // Create a new local variable.  The name of the local is
                 // determined automatically.  The name of the NamedObj is
                 // the same as in the model.  (Note that this might not be
@@ -610,12 +610,12 @@ public class ModelTransformer extends SceneTransformer {
                 local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         thisLocal, entity.getName());
-                           
+
                 updateCreatedSet(
                         composite.getFullName() + "." + entity.getName(),
                         entity, entity, createdSet);
             //    if (entity instanceof CompositeActor) {
-//                     _composite(body, containerLocal, container, 
+//                     _composite(body, containerLocal, container,
 //                             local, (CompositeActor)entity,
 //                             modelClass, createdSet, options);
 //                 } else {
@@ -627,12 +627,12 @@ public class ModelTransformer extends SceneTransformer {
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
-                
+
                 _ports(body, containerLocal, container,
                         local, entity, modelClass, createdSet);
                 //   }
             }
-            
+
             _entityLocalMap.put(entity, local);
         }
     }
@@ -653,7 +653,7 @@ public class ModelTransformer extends SceneTransformer {
              ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    //System.out.println("ModelTransformer: port: " + port);
-	  
+
             // FIXME: what about subclasses?
             //  String className = port.getClass().getName();
             String className = "ptolemy.actor.TypedIOPort";
@@ -662,11 +662,11 @@ public class ModelTransformer extends SceneTransformer {
             String portName = port.getName(container);
             String fieldName = getFieldNameForPort(port, container);
 	    Local portLocal;
-            
+
             if (createdSet.contains(port.getFullName())) {
                 //    System.out.println("already created!");
                 portLocal = Jimple.v().newLocal("port",
-                        portType); 
+                        portType);
                 body.getLocals().add(portLocal);
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
@@ -742,7 +742,7 @@ public class ModelTransformer extends SceneTransformer {
                                             ioportLocal,
                                             PtolemyUtilities.portSetTypeMethod,
                                             typeLocal)));
-                }                
+                }
                 portLocal = local;
             }
 

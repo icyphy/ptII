@@ -2,13 +2,13 @@
 
 Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.actor.gui.ptjacl;
- 
+
 import tcl.lang.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -44,9 +44,9 @@ import javax.swing.SwingUtilities;
 
 /**
  A Simple Tcl Shell embedded in a JPanel.
- 
+
  <p>FIXME: We should have a common base class that handles typing
- commands at an interpreter. 
+ commands at an interpreter.
 
  @author John Reekie, Christopher Hylands
  @version $Id$
@@ -67,7 +67,7 @@ public class JTextAreaTclShell extends JPanel {
 		  .createTitledBorder(BorderFactory
 				      .createLineBorder(Color.black),
 				      ""));
-    
+
 	// Event handling
 	_jTextArea.addKeyListener(new ShellKeyListener());
 
@@ -117,7 +117,7 @@ public class JTextAreaTclShell extends JPanel {
      *  To run a simple test, use:
      *  <pre>
      *	java -classpath $PTII:$PTII/lib/ptjacl.jar ptolemy.actor.gui.ptjacl.JTextAreaTclShell
-     *  </pre>		
+     *  </pre>
      */
     public static void main(String [] args) {
         JFrame jFrame = new JFrame("JTextAreaTclShell Example");
@@ -269,7 +269,7 @@ public class JTextAreaTclShell extends JPanel {
             default:
             // Otherwise we got a regular character. Don't consume it,
             // and TextArea will take care of displaying it.
-        } 
+        }
       }
     }
   }

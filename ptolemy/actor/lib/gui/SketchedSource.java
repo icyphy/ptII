@@ -385,7 +385,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         double yBottomValue = ((DoubleToken)yBottom.getToken()).doubleValue();
         double yTopValue = ((DoubleToken)yTop.getToken()).doubleValue();
         plot.setYRange(yBottomValue, yTopValue);
-    }        
+    }
 
     // Update the initial trace parameter if the sketch on screen has
     // been modified by the user.

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ModelScope
 /**
 An abstract class that is useful for implementing expression language
-scopes for Ptolemy models. 
+scopes for Ptolemy models.
 
 @author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
@@ -49,8 +49,8 @@ scopes for Ptolemy models.
 */
 
 public abstract class ModelScope implements ParserScope {
-    
-    /** Return the object in the model that corresponds to the given 
+
+    /** Return the object in the model that corresponds to the given
      *  identifier name in this scope.
      */
     public abstract NamedObj getScopedObject(String name);
@@ -60,7 +60,7 @@ public abstract class ModelScope implements ParserScope {
      *  given object, and any variable contained in a scope extending
      *  attribute inside any of those containers.  If no variable exists
      *  with the given name, then return null.
-     */ 
+     */
     public static Variable getScopedVariable(Variable variable, String name) {
         NamedObj container = (NamedObj)variable.getContainer();
         while (container != null) {
@@ -73,11 +73,11 @@ public abstract class ModelScope implements ParserScope {
         }
         return null;
     }
-    
+
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the
     // container.
-    private static Variable _searchIn(Variable variable, 
+    private static Variable _searchIn(Variable variable,
             NamedObj container, String name) {
         Attribute result = container.getAttribute(name);
         if (result != null

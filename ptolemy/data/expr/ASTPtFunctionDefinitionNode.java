@@ -87,7 +87,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     public List getArgumentNameList() {
         return _argList;
     }
-	
+
     /** Close this node.
      */
     public void jjtClose() {

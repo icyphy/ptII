@@ -51,7 +51,7 @@ public class SDFTestRamp extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output_tokenProductionRate = 
+        output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate", new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _value = 0;
@@ -63,7 +63,7 @@ public class SDFTestRamp extends TypedAtomicActor {
 
     public TypedIOPort output;
     public Parameter output_tokenProductionRate;
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.

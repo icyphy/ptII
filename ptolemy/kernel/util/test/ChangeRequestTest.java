@@ -154,7 +154,7 @@ public class ChangeRequestTest implements ChangeListener {
 
     public void waitForCompletionTask() {
         Thread waitForCompletionThread =
-            new /*Ptolemy*/Thread ( new Runnable() { 
+            new /*Ptolemy*/Thread ( new Runnable() {
                 public void run() {
                     System.out.println(Thread.currentThread().getName()
                             + " About to wait for completion");

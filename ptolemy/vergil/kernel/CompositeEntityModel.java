@@ -92,7 +92,7 @@ public class CompositeEntityModel implements CompositeModel {
         }
         return _nodeList.size();
     }
-    
+
     /** Return an iterator over all the nodes contained in the graph
      *  for the specified composite. If the argument is not an
      *  instance of CompositeEntity, then return an empty iterator.
@@ -158,7 +158,7 @@ public class CompositeEntityModel implements CompositeModel {
             ComponentEntity entity = (ComponentEntity)entities.next();
             nodes.add(_getLocation(entity));
         }
-        
+
         // Add a graph node for every external port.
         // The node is actually the location contained by the port.
         // If the port does not contain a location, then create one.
@@ -167,7 +167,7 @@ public class CompositeEntityModel implements CompositeModel {
             ComponentPort port = (ComponentPort)ports.next();
             nodes.add(_getLocation(port));
         }
-        
+
         // Add a node for every relation that has a vertex and
         // doesn't connect exactly two ports.
         // NOTE: This particular part of the graph model is irrelevant
@@ -177,7 +177,7 @@ public class CompositeEntityModel implements CompositeModel {
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation)relations.next();
             List vertexList = relation.attributeList(Vertex.class);
-            
+
             if (vertexList.size() != 0) {
                 // Add in all the vertexes.
                 Iterator vertexes = vertexList.iterator();
@@ -203,7 +203,7 @@ public class CompositeEntityModel implements CompositeModel {
                 }
             }
         }
-        
+
         // Add a node for every director or visible attribute.
         // The node is again the location.
         // For directors, if there is no location, then create one.
@@ -212,7 +212,7 @@ public class CompositeEntityModel implements CompositeModel {
         Iterator attributes = composite.attributeList().iterator();
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
-            
+
             if (attribute instanceof Director) {
                 nodes.add(_getLocation(attribute));
             } else {
@@ -224,7 +224,7 @@ public class CompositeEntityModel implements CompositeModel {
                 }
             }
         }
-        
+
         // Return the final result.
         return nodes;
     }

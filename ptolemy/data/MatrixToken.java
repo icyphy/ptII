@@ -212,7 +212,7 @@ public abstract class MatrixToken extends Token {
      *  matrix token, or the array of tokens is not the right size, or
      *  the array is null.
      */
-    public static MatrixToken create(Token[] tokens, int rows, int columns) 
+    public static MatrixToken create(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         Object[] typeTerms = new Object[tokens.length];
         for (int i = 0; i < tokens.length; i++) {
@@ -220,7 +220,7 @@ public abstract class MatrixToken extends Token {
         }
 
         Type type = (Type)TypeLattice.lattice().leastUpperBound(typeTerms);
-   
+
         MatrixToken token;
         if (type == BaseType.UNKNOWN) {
             throw new IllegalActionException("Cannot resolve type for "
@@ -256,7 +256,7 @@ public abstract class MatrixToken extends Token {
      *  tokens of the given type cannot be added together.
      */
     public static Token[] createTokenSequence(
-            Token start, Token increment, int length) 
+            Token start, Token increment, int length)
             throws IllegalActionException {
         Token[] result = new Token[length];
         Token value = start;
@@ -291,7 +291,7 @@ public abstract class MatrixToken extends Token {
         if(increment.isEqualTo(increment.zero()).booleanValue()) {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment is zero.");
-        } else if(increment.isLessThan(zero).booleanValue() && 
+        } else if(increment.isLessThan(zero).booleanValue() &&
                 start.isLessThan(end).booleanValue()) {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment has the wrong sign.");
@@ -300,7 +300,7 @@ public abstract class MatrixToken extends Token {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment has the wrong sign.");
         } else {
-            ScalarToken diff = 
+            ScalarToken diff =
                 (ScalarToken)end.subtract(start).divide(increment);
             int count;
             // UGH...  I don't see how to abstract this nicely...
@@ -314,7 +314,7 @@ public abstract class MatrixToken extends Token {
             if(count < 1) {
                 throw new InternalErrorException(
                         "The determined count does not make sense.");
-            } 
+            }
             return count;
         }
     }

@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -71,7 +71,7 @@ import soot.*;
 */
 public class BDFGToJHDLCircuit {
 
-    public BDFGToJHDLCircuit(BlockDataFlowGraph bdfg, JHDLTestbench parent) 
+    public BDFGToJHDLCircuit(BlockDataFlowGraph bdfg, JHDLTestbench parent)
 	throws JHDLUnsupportedException {
 	_cell = new Logic(parent,"newcell");
 	_jtb = parent;
@@ -80,7 +80,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected void _processDFG() throws JHDLUnsupportedException {
-	
+
 	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",_bdfg);
 	Collection outputNodes = _determineOutputNodes();
 	_trimNonReachableNodes(outputNodes);
@@ -94,10 +94,10 @@ public class BDFGToJHDLCircuit {
 	} catch (IllegalActionException e) {
 	    throw new JHDLUnsupportedException(e.getMessage());
 	}
-	
+
 	// create a hashmap between nodes (key) and wires (value)
 	_wireMap = new HashMap(_bdfg.nodeCount());
-	
+
 	// sequence through the nodes in the graph in topological
 	// order.
 	for (Iterator i=c.iterator();i.hasNext();) {
@@ -108,16 +108,16 @@ public class BDFGToJHDLCircuit {
 
     /**
      * This method will return a Collection of Node objects that represent
-     * output Wires. 
+     * output Wires.
      *
      * The default behavior is to find the Node associated with the
      * return statement.
      **/
-    protected Collection _determineOutputNodes() 
+    protected Collection _determineOutputNodes()
 	throws JHDLUnsupportedException {
-	Vector v = new Vector(1); 
+	Vector v = new Vector(1);
 	// Find return statement node
-	Node returnNode = null; 
+	Node returnNode = null;
 	for (Iterator i=_bdfg.nodes().iterator();
 	     i.hasNext() && (returnNode == null);) {
 	    Node n = (Node) i.next();
@@ -129,13 +129,13 @@ public class BDFGToJHDLCircuit {
 	    throw new JHDLUnsupportedException("No return statement in this basic block");
 	return v;
     }
-    
+
     protected void _trimNonReachableNodes(Collection outputNodes) {
 
 	Collection keepers = new Vector(_bdfg.nodeCount());
 	for (Iterator i=outputNodes.iterator();i.hasNext();) {
 	    Node output = (Node) i.next();
-	    Collection k=_bdfg.backwardReachableNodes(output);	    
+	    Collection k=_bdfg.backwardReachableNodes(output);
 	    keepers.addAll(k);
 	    keepers.add(output);
 	}
@@ -157,7 +157,7 @@ public class BDFGToJHDLCircuit {
 	// Process Node
 	Object nweight = node.getWeight();
 	if (DEBUG) System.out.println("Node="+nweight.getClass().getName());
-	
+
 	if (nweight instanceof ParameterRef) {
 	    _processParameterRef(node);
 	} else if (nweight instanceof Local) {
@@ -177,7 +177,7 @@ public class BDFGToJHDLCircuit {
 	}
     }
 
-    protected void _processParameterRef(Node node) 
+    protected void _processParameterRef(Node node)
 	throws JHDLUnsupportedException {
 	ParameterRef pr = (ParameterRef) node.getWeight();
 	Type t = pr.getType();
@@ -220,7 +220,7 @@ public class BDFGToJHDLCircuit {
 	    _unsupportedOperation(weight);
     }
 
-    protected void _processBinopExpr(Node node) 
+    protected void _processBinopExpr(Node node)
 	throws JHDLUnsupportedException {
 
 	// get two nodes coming into this op
@@ -228,12 +228,12 @@ public class BDFGToJHDLCircuit {
 	Wire wire2=null;
 	for (Iterator ie=_bdfg.inputEdges(node).iterator();
 	     ie.hasNext();) {
-	    Edge e = (Edge) ie.next();		    
+	    Edge e = (Edge) ie.next();
 	    if (!e.hasWeight())
 		_error("Missing weight on Edge " + e);
 	    Node source = e.source();
 	    Wire o = _getWire(source);
-	    
+
 	    String op = (String) e.getWeight();
 	    if (op.equals("op1")) {
 		wire1 = o;
@@ -244,7 +244,7 @@ public class BDFGToJHDLCircuit {
 	}
 	if (wire1==null || wire2==null)
 	    throw new JHDLUnsupportedException("Missing input wire");
- 
+
 	Wire output=null;
 	Object nweight = node.getWeight();
 	if (nweight instanceof AddExpr) {
@@ -276,10 +276,10 @@ public class BDFGToJHDLCircuit {
 	} else
 	    _unsupportedOperation(nweight);
 	_wireMap.put(node,output);
-	
+
     }
 
-    protected void _processUnopExpr(Node node) 
+    protected void _processUnopExpr(Node node)
 	throws JHDLUnsupportedException {
 	// get nodes coming into this op
 	Wire wire1=null;
@@ -304,7 +304,7 @@ public class BDFGToJHDLCircuit {
     }
 
     protected Wire _processConditionExpr(Node node, Wire wire1,
-					 Wire wire2) 
+					 Wire wire2)
 	throws JHDLUnsupportedException {
 
 	Object nweight = node.getWeight();
@@ -313,9 +313,9 @@ public class BDFGToJHDLCircuit {
 	else
 	    return _processSimpleConditionExpr(node,wire1,wire2);
     }
-    
+
     protected Wire _processCompoundBooleanExpression(Node node, Wire wire1,
-						     Wire wire2) 
+						     Wire wire2)
 	throws JHDLUnsupportedException {
 
 	Object nweight = node.getWeight();
@@ -323,17 +323,17 @@ public class BDFGToJHDLCircuit {
 	    return _createAnd(wire1,wire2);
 	} else if (nweight instanceof CompoundOrExpression) {
 	    return _createOr(wire1,wire2);
-	} else 
+	} else
 	    _unsupportedOperation(nweight);
 	return null;
     }
 
-    protected Wire _processSimpleConditionExpr(Node node, Wire wire1, 
-					       Wire wire2) 
+    protected Wire _processSimpleConditionExpr(Node node, Wire wire1,
+					       Wire wire2)
 	throws JHDLUnsupportedException {
 
 	// TODO: more agressive bitwidth analysis
-	int wireSize = wire1.getWidth() > wire2.getWidth() ? 
+	int wireSize = wire1.getWidth() > wire2.getWidth() ?
 	    wire2.getWidth() : wire1.getWidth();
 
 	Wire newWire1 = wire1.range(wireSize-1,0);
@@ -343,11 +343,11 @@ public class BDFGToJHDLCircuit {
 	Wire conditionTrue = _cell.wire(1);
 
 	// LE, GE, GT, and LT are all performed with an adder
-	if (weight instanceof LeExpr || 
+	if (weight instanceof LeExpr ||
 	    weight instanceof GeExpr ||
 	    weight instanceof GtExpr ||
 	    weight instanceof LtExpr) {
-	    
+
 	    Wire notB = _cell.not(newWire2);
 	    Wire cin = _cell.wire(1);
 	    Wire sum = _cell.wire(32);
@@ -380,7 +380,7 @@ public class BDFGToJHDLCircuit {
 		_cell.buf_o(equal,conditionTrue);
 	    else
 		_cell.not_o(equal,conditionTrue);
-	} else 
+	} else
 	    _unsupportedOperation(weight);
 	return conditionTrue;
     }
@@ -431,7 +431,7 @@ public class BDFGToJHDLCircuit {
 	return _cell.not(wire);
     }
 
-    protected void _processReturnStmt(Node node) 
+    protected void _processReturnStmt(Node node)
 	throws JHDLUnsupportedException {
 	// Get input wire
 	Node predecessor=null;
@@ -448,7 +448,7 @@ public class BDFGToJHDLCircuit {
 	// create a primary output
 	createPrimaryOutput(outputWire);
     }
-    
+
     protected void _processBinaryMux(Node node)
 	throws JHDLUnsupportedException {
 
@@ -503,10 +503,10 @@ public class BDFGToJHDLCircuit {
 
     protected static void _error(String s)
 	throws JHDLUnsupportedException {
-	throw new JHDLUnsupportedException(s);	
+	throw new JHDLUnsupportedException(s);
     }
 
-    protected static void _unsupportedOperation(Object o) 
+    protected static void _unsupportedOperation(Object o)
 	throws JHDLUnsupportedException {
 	throw new JHDLUnsupportedException("Object "+
 					   o.getClass().getName()+

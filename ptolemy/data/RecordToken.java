@@ -80,7 +80,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        
+
         if(token instanceof RecordToken) {
             RecordToken recordToken = (RecordToken)token;
             Object[] labelObjects = recordToken.labelSet().toArray();
@@ -300,7 +300,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 values[i] = value1.add(value2);
             }
         }
-        
+
         return new RecordToken(labels, values);
     }
 
@@ -338,7 +338,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 values[i] = value1.divide(value2);
             }
         }
-       
+
         return new RecordToken(labels, values);
     }
 
@@ -370,7 +370,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 return BooleanToken.FALSE;
             }
         }
-        
+
         return BooleanToken.TRUE;
     }
 
@@ -401,7 +401,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 return BooleanToken.FALSE;
             }
         }
-        
+
         return BooleanToken.TRUE;
     }
 
@@ -439,7 +439,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 values[i] = value1.modulo(value2);
             }
         }
-        
+
         return new RecordToken(labels, values);
     }
 
@@ -477,7 +477,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 values[i] = value1.multiply(value2);
             }
         }
-        
+
         return new RecordToken(labels, values);
     }
 
@@ -509,7 +509,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             Token value2 = recordToken.get(labels[i]);
             values[i] = value1.subtract(value2);
         }
-    
+
         return new RecordToken(labels, values);
     }
 

@@ -150,7 +150,7 @@ public class StockQuote extends Source {
             if (st.sval == null) {
 		    throw new IllegalActionException(this, "StockQuote.fire:"
                             + " Did not find tickerString: " + tickerString
-                            + " in " + spec + ".\n" 
+                            + " in " + spec + ".\n"
                             + " Perhaps the format changed,"
                             + " Try changing _matchString");
 
@@ -207,7 +207,7 @@ public class StockQuote extends Source {
     ////                         private variables                 ////
 
     private String _urlString = "http://quote.yahoo.com/q?s=";
-    private String _matchString = 
+    private String _matchString =
         "<td nowrap align=left><font face=arial size=-1><a href=\"/q?s=";
 }
 

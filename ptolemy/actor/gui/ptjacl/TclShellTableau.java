@@ -110,7 +110,7 @@ public class TclShellTableau extends Tableau {
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
 	    JPanel tclShellPanel = new JTextAreaTclShell();
-	    component.add(tclShellPanel);		    
+	    component.add(tclShellPanel);
             getContentPane().add(component, BorderLayout.CENTER);
 	}
 	///////////////////////////////////////////////////////////////////

@@ -157,7 +157,7 @@ public class Scale extends Transformer {
     ////                      private methods                      ////
 
     // Scale the given input token on the left by the given factor.
-    private Token _scaleOnLeft(Token input, Token factor) 
+    private Token _scaleOnLeft(Token input, Token factor)
             throws IllegalActionException {
         if(input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken)input).arrayValue();
@@ -165,15 +165,15 @@ public class Scale extends Transformer {
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnLeft(argArray[i], factor);
             }
-            
+
             return new ArrayToken(result);
         } else {
             return factor.multiply(input);
         }
     }
-    
+
     // Scale the given input token on the right by the given factor.
-    private Token _scaleOnRight(Token input, Token factor) 
+    private Token _scaleOnRight(Token input, Token factor)
             throws IllegalActionException {
         if(input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken)input).arrayValue();
@@ -181,7 +181,7 @@ public class Scale extends Transformer {
             for (int i = 0; i < argArray.length; i++) {
                 result[i] = _scaleOnRight(argArray[i], factor);
             }
-            
+
             return new ArrayToken(result);
         } else {
             return input.multiply(factor);
@@ -296,7 +296,7 @@ public class Scale extends Transformer {
 	        Type elementType = ((ArrayType)portType).getElementType();
                 Type newElementType = (Type)compute(elementType, paramType);
 		return new ArrayType(newElementType);
-	    } else { 
+	    } else {
 	        CPO lattice = TypeLattice.lattice();
 		return lattice.leastUpperBound(portType, paramType);
 	    }

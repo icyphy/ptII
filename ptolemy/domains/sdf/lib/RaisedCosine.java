@@ -204,9 +204,9 @@ public class RaisedCosine extends FIR {
             throw new IllegalActionException(this, "Length was " +
                     lengthValue + " which is not greater than zero.");
         }
-        
+
         double center = lengthValue * 0.5;
-        
+
         DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
             (DoubleUnaryOperation)
             new SignalProcessing.SqrtRaisedCosineSampleGenerator(
@@ -214,7 +214,7 @@ public class RaisedCosine extends FIR {
             (DoubleUnaryOperation)
             new SignalProcessing.RaisedCosineSampleGenerator(
                     symbolIntervalValue, excessBWValue);
-        
+
         double[] tapsArray =
             SignalProcessing.sampleWave(lengthValue, -center, 1.0,
                     raisedCosineSampleGenerator);
@@ -222,7 +222,7 @@ public class RaisedCosine extends FIR {
         for (int i = 0; i < tapsArray.length; i++) {
             tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
         }
-        
+
         taps.setToken(new ArrayToken(tapsArrayToken));
     }
 }

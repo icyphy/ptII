@@ -148,7 +148,7 @@ public class JNLPUtilities {
                                              File directory)
         throws IOException {
 
-        URL jarURL = _lookupJarURL(jarURLName);        
+        URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
         // File.createTempFile() does the bulk of the work for us,
@@ -175,11 +175,11 @@ public class JNLPUtilities {
      *  a similar directory in the classpath if possible.  In this
      *  context, by similar directory, we mean the directory where
      *  the file would found if it was not in the jar url.
-     *  For example, if the jar url is 
+     *  For example, if the jar url is
      *  jar:file:/ptII/doc/design.jar!/doc/design/design.pdf
      *  then this method will read design.pdf from design.jar
      *  and save it as /ptII/doc/design.pdf.
-     *        
+     *
      *  @param jarURLName The name of the jar URL to read.  jar URLS start
      *  with "jar:" and have a "!/" in them.
      *  @return the name of the file that was created or
@@ -187,7 +187,7 @@ public class JNLPUtilities {
      */
     public static String saveJarURLInClassPath(String jarURLName)
         throws IOException {
-    
+
         URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
@@ -202,14 +202,14 @@ public class JNLPUtilities {
         String jarURLFileName = jarURLName.substring(0, jarSeparatorIndex);
         String entryFileName = jarURLName.substring(jarSeparatorIndex + 2);
 
-        // We assume / is the file separator here because URLs 
+        // We assume / is the file separator here because URLs
         // _BY_DEFINITION_ have / as a separator and not the Microsoft
         // non-conforming hack of using a backslash.
 
         String jarURLParentFileName =
             jarURLFileName.substring(0,jarURLFileName.lastIndexOf("/"));
 
-        String parentEntryFileName = 
+        String parentEntryFileName =
             entryFileName.substring(0, entryFileName.lastIndexOf("/"));
 
         if (jarURLParentFileName.endsWith(parentEntryFileName)
@@ -238,7 +238,7 @@ public class JNLPUtilities {
 
     // Copy sourceURL to destinationFile without doing any byte conversion.
     private static void _binaryCopyURLToFile(URL sourceURL,
-            File destinationFile) 
+            File destinationFile)
             throws IOException {
 
         BufferedInputStream input =
@@ -261,7 +261,7 @@ public class JNLPUtilities {
     }
 
 
-    // Lookup a jarURLName as a resource.  
+    // Lookup a jarURLName as a resource.
     private static URL _lookupJarURL(String jarURLName) throws IOException {
         // We call jarURLEntryResource here so that we get a URL
         // that has the right jar file associated with the right entry.

@@ -43,7 +43,7 @@ import ptolemy.data.type.TypeLattice;
 /**
 A token that contains a 64-bit signed mantissa, signed exponent double
 precision floating-point number (IEEE 754).  This class handles overflow and
-underflow as does normal java arithmetic on doubles. 
+underflow as does normal java arithmetic on doubles.
 
  <p> Note that a double cannot be losslessly converted to a long, and
 vice versa, as both have 64-bit representations in Java.
@@ -122,7 +122,7 @@ public class DoubleToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
-            result._unitCategoryExponents = 
+            result._unitCategoryExponents =
                 intToken._copyOfCategoryExponents();
             return result;
         } else {

@@ -129,7 +129,7 @@ public class FixToken extends ScalarToken {
         } else {
             throw new IllegalActionException("A FixToken cannot be"
                     + " created from the expression '" + init + "'");
-        } 
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

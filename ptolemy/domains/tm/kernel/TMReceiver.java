@@ -223,7 +223,7 @@ public class TMReceiver extends AbstractReceiver {
             if (priority == null) {
                 if (port.getContainer() == null) {
                     throw new InternalErrorException(
-                            "put() requires that the port '" + port 
+                            "put() requires that the port '" + port
                             + "' that contains this receiver be itself "
                             + "contained");
                 }
@@ -236,8 +236,8 @@ public class TMReceiver extends AbstractReceiver {
                     priorityValue = ((IntToken)priority.getToken()).
                         intValue();
                 } catch (ClassCastException ex) {
-                    throw new InternalErrorException(null, ex, 
-                            "priorityValue '" + priority.getToken() 
+                    throw new InternalErrorException(null, ex,
+                            "priorityValue '" + priority.getToken()
                             + "' must be an integer in " + getContainer());
                 }
             }

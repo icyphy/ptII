@@ -309,7 +309,7 @@ public class ExternalIOPortController extends AttributeController {
         public NameWrapper (Figure f, String label) {
             _child = f;
             f.setParent(this);
-            
+
             _label = new LabelFigure(label, _labelFont);
 
             _label.setPadding(0);

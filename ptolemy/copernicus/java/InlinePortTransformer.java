@@ -125,17 +125,17 @@ public class InlinePortTransformer extends SceneTransformer {
         _options = options;
         _phaseName = phaseName;
         _debug = Options.getBoolean(options, "debug");
-   
+
         _inlineAllPortsIn(ModelTransformer.getModelClass(), _model);
- 
+
     }
- 
+
     // Inline methods in all classes, starting at the bottom of the
     // hierarchy...
     private void _inlineAllPortsIn(
             SootClass modelClass, CompositeActor model) {
         Director director = model.getDirector();
-        
+
         // Loop over all the model instance classes.
         for (Iterator entities = model.deepEntityList().iterator();
              entities.hasNext();) {
@@ -162,7 +162,7 @@ public class InlinePortTransformer extends SceneTransformer {
         _inlinePortCalls(modelClass, model, inliner);
     }
 
-    // inline inside port calls at for the given model, and 
+    // inline inside port calls at for the given model, and
     // outside port calls for the entities of the given model.
     private void _inlinePortCalls(
             SootClass modelClass, CompositeActor model,
@@ -173,7 +173,7 @@ public class InlinePortTransformer extends SceneTransformer {
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            
+
             System.out.println("inline inside port body of " +
                     method + " = " + body);
             boolean moreToDo = true;
@@ -223,7 +223,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
-        
+
         CompleteUnitGraph unitGraph =
             new CompleteUnitGraph(body);
         // This will help us figure out where locals are defined.
@@ -415,7 +415,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                 // an array of tokens.
                                 // In either case, replace the get with circular array ref.
                                 inliner.inlineGet(body, stmt, box, r, port);
-        
+
 
                             } else if (r.getMethod().getName().equals("send")) {
                                 // Could be send that takes a channel and returns a token,
@@ -452,7 +452,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
-        
+
         CompleteUnitGraph unitGraph =
             new CompleteUnitGraph(body);
         // This will help us figure out where locals are defined.
@@ -654,7 +654,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
                             }
                         }
-       
+
                 }
             }
         }
@@ -690,10 +690,10 @@ public class InlinePortTransformer extends SceneTransformer {
                 while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = 
+                        DefinitionStmt useStmt =
                             (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof FieldRef) {
-                            SootField field = 
+                            SootField field =
                                 ((FieldRef)useStmt.getLeftOp()).getField();
                             return _getFieldValueTag(field);
                         }
@@ -725,7 +725,7 @@ public class InlinePortTransformer extends SceneTransformer {
                 return (TypedIOPort)object;
             } else {
                 throw new RuntimeException("The object " +
-                        object.getFullName() + 
+                        object.getFullName() +
                         " was not a port.");
             }
         }

@@ -327,7 +327,7 @@ public class ModalModel extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Class names of directors compatible with this
      * ModalModel. Derived classes should override this if they desire
      * additional or different directors. */

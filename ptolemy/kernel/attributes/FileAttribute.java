@@ -293,7 +293,7 @@ public class FileAttribute extends StringAttribute {
      *  "$CLASSPATH", then search for the file relative to the classpath.
      *  If the name is relative, then it is relative to the directory
      *  returned by getBaseDirectory().
-     *  @return A buffered reader. 
+     *  @return A buffered reader.
      *  @see #getBaseDirectory()
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened.

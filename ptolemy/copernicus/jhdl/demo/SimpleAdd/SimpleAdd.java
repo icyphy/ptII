@@ -90,7 +90,7 @@ public class SimpleAdd extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Get an integer token from the <i>input1</i> and add
-     *  an integer token from the <i>input2</i> port and 
+     *  an integer token from the <i>input2</i> port and
      *  send the result to the <i>output</i> port.
      *
      *  @exception IllegalActionException If there is no director,

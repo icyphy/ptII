@@ -38,9 +38,9 @@ import java.util.Arrays;
 /**
 A set of manipulation routines that are useful for factoring most of
 the difficulty of dealing with units out of individual token classes.
-Furthermore, having these as static methods which do not depend on 
+Furthermore, having these as static methods which do not depend on
 token classes can improve generated code.  Generally, the methods in this
-class manipulate arrays of integers, where each index in the array 
+class manipulate arrays of integers, where each index in the array
 corresponds to a different category of units, and the value of each
 element in the array corresponds to the factor in that unit.
 Generally, multiplying two tokens adds adds their units, dividing two
@@ -58,12 +58,12 @@ unit array is encountered.
 @since Ptolemy II 0.2
 */
 public class UnitUtilities {
-    
+
     /** There are no instances of this class.
      */
     private UnitUtilities() {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -239,7 +239,7 @@ public class UnitUtilities {
                     result[i] += units2[i];
                 }
             }
-            
+
             if (isUnitless(result)) {
                 return null;
             }

@@ -59,7 +59,7 @@ import java.util.Map;
 
 /**
 A transformer that writes an interpreted version of a model.
-This transformer is very similar to 'Save As'.  This transformer is 
+This transformer is very similar to 'Save As'.  This transformer is
 used as a control case to compare the effects of other code
 generators against a purely interpreted (non-code generation) run.
 This transformer is the smallest standalone Ptolemy II transformer.

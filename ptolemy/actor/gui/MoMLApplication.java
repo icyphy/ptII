@@ -137,7 +137,7 @@ public class MoMLApplication {
         // Create a parser to use.
         _parser = new MoMLParser();
 
-	// We set the list of MoMLFilters to handle Backward Compatibility. 
+	// We set the list of MoMLFilters to handle Backward Compatibility.
         _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
         _parseArgs(args);
@@ -300,7 +300,7 @@ public class MoMLApplication {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION 
+                    + VersionAttribute.CURRENT_VERSION
                     + ", Build $Id$");
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -387,7 +387,7 @@ public class MoMLApplication {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
                         _parser.reset();
-			
+
 			try {
 			    NamedObj toplevel = _parser.parse(base, inURL.openStream());
 			    if (toplevel instanceof Configuration) {
@@ -400,7 +400,7 @@ public class MoMLApplication {
 			    // If inURL is a jarURL check for %20
 			    String detailMessage = "";
 			    try {
-				if (inURL.toString().indexOf("!/") != -1 
+				if (inURL.toString().indexOf("!/") != -1
 				    && inURL.toString().indexOf("%20") != -1) {
 				    detailMessage = " The URL contains "
 					+ "'!/', so it may be a jar "
@@ -412,7 +412,7 @@ public class MoMLApplication {
 			    } catch (Exception ex2) {
 				// Ignored
 			    }
-			    throw new Exception("Failed to parse '" + inURL 
+			    throw new Exception("Failed to parse '" + inURL
 					    + "'" + detailMessage , ex);
 			}
                     }

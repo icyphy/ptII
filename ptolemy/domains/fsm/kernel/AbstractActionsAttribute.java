@@ -126,7 +126,7 @@ public abstract class AbstractActionsAttribute extends Action {
     }
 
     /** Return the destination object referred to by the given name.
-     *  Depending on the subclass of this class, this might be a variable, 
+     *  Depending on the subclass of this class, this might be a variable,
      *  or an output port.
      *  @exception IllegalActionException If the given name is not a valid
      *  destination for this action.
@@ -145,13 +145,13 @@ public abstract class AbstractActionsAttribute extends Action {
                 _destinationNames.indexOf(name));
         return var.getExpression();
     }
-    
+
     /** Return the channel number associated with the given name, assuming
      *  that the destination is a port object.
      *  @exception IllegalActionException If the name does not refer to a
      *  port, or a channel has not been specified for the name.
      */
-    public int getChannel(String name) 
+    public int getChannel(String name)
             throws IllegalActionException {
         Integer integer = (Integer)_numbers.get(
                 _destinationNames.indexOf(name));
@@ -161,10 +161,10 @@ public abstract class AbstractActionsAttribute extends Action {
        }
        return integer.intValue();
     }
-    
+
     /** Test if a channel number is associated with the given name.
      *  @return true If a channel was specified.
-     */      
+     */
     public boolean isChannelSpecified(String name) {
         Integer integer = (Integer)_numbers.get(
                 _destinationNames.indexOf(name));

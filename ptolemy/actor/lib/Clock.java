@@ -68,7 +68,7 @@ provide data to this port.  It will not be sufficient to merely be
 linked to a relation. So that this <i>start</i> port can
 be used meaningfully in the CT domain, it is declared DISCRETE, and it
 should be connected to an event generator.  Other domains ignore this
-declaration. 
+declaration.
 <p>
 At the beginning of each time interval of length given by <i>period</i>,
 this actor initiates a sequence of output events with values given by
@@ -339,7 +339,7 @@ public class Clock extends TimedSource {
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
-            
+
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this,
                             "Offset number "

@@ -67,7 +67,7 @@ public class ConstVariableRate extends Const {
     public ConstVariableRate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	Parameter tokenProductionRate = 
+	Parameter tokenProductionRate =
 	    new Parameter(output, "tokenProductionRate",
                     new IntToken(1));
     	rate = new Parameter(this, "rate", new IntToken(1));
@@ -95,11 +95,11 @@ public class ConstVariableRate extends Const {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 	if (attribute == rate) {
-	    _productionRate = 
+	    _productionRate =
 		((IntToken)rate.getToken()).intValue();
 	    if(_productionRate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
-	    Parameter tokenProductionRate = 
+	    Parameter tokenProductionRate =
 		(Parameter)output.getAttribute("tokenProductionRate");
 	    tokenProductionRate.setToken(new IntToken(_productionRate));
 	    Director dir = getDirector();
@@ -121,7 +121,7 @@ public class ConstVariableRate extends Const {
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        ConstVariableRate newObject = 
+        ConstVariableRate newObject =
 	    (ConstVariableRate)super.clone(workspace);
         return newObject;
     }

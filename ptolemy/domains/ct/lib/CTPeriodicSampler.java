@@ -166,7 +166,7 @@ public class CTPeriodicSampler extends Transformer
     }
 
     /** Set the next sampling time as the start time (i.e. the current time).
-     *  We do not register the start time as a breakpoint, since the 
+     *  We do not register the start time as a breakpoint, since the
      *  director will fire at the start time any way.
      *  @exception IllegalActionException If thrown by the supper class.
      */
@@ -178,7 +178,7 @@ public class CTPeriodicSampler extends Transformer
                 + _nextSamplingTime);
     }
 
-    /** Set the next sampling time and return true. 
+    /** Set the next sampling time and return true.
      *  It computes the next sampling time,
      *  and registers it as a breakpoint.
      *  @return True.
@@ -188,7 +188,7 @@ public class CTPeriodicSampler extends Transformer
         if (director.isDiscretePhase() && _hasCurrentEvent) {
             // register for the next event.
             _nextSamplingTime += _samplePeriod;
-            if (_debugging) _debug(getFullName(), "request fire at" 
+            if (_debugging) _debug(getFullName(), "request fire at"
                 + _nextSamplingTime);
             getDirector().fireAt(this, _nextSamplingTime);
         }

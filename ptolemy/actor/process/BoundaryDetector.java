@@ -93,7 +93,7 @@ public class BoundaryDetector {
                 connectedPort = (IOPort)ports.next();
                 connectedEntity = (ComponentEntity)connectedPort.getContainer();
                 if (connectedEntity == contEntity.getContainer()
-			&& connectedPort.isInput() 
+			&& connectedPort.isInput()
                         && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
@@ -164,7 +164,7 @@ public class BoundaryDetector {
                 connectedEntity =
                     (ComponentEntity)connectedPort.getContainer();
                 if ( connectedEntity == contEntity.getContainer()
-			&& connectedPort.isInput() 
+			&& connectedPort.isInput()
                         && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
@@ -218,7 +218,7 @@ public class BoundaryDetector {
             while ( ports.hasNext() ) {
                 connectedPort = (IOPort)ports.next();
                 connectedEntity = (ComponentEntity)connectedPort.getContainer();
-                if ( connectedPort.isOpaque() 
+                if ( connectedPort.isOpaque()
                         && !connectedEntity.isAtomic()
 			&& connectedPort.isOutput() ) {
                     // The port container of this receiver is
@@ -264,7 +264,7 @@ public class BoundaryDetector {
             }
             ComponentEntity innerEntity =
                 (ComponentEntity)innerPort.getContainer();
-            if ( innerEntity != null 
+            if ( innerEntity != null
                     && !innerEntity.isAtomic() && innerPort.isOpaque() ) {
                 // The containing receiver is contained by the port
                 // of a composite actor.

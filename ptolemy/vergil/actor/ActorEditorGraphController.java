@@ -255,7 +255,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private MouseFilter _controlFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
- 
+
     /** The interactors that interactively creates edges. */
     private LinkCreator _linkCreator;  // For control-click
     private LinkCreator _linkCreator2;  // For shift-click
@@ -417,7 +417,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 }
 	    } else {
                 // Transform
-                AffineTransform current = 
+                AffineTransform current =
                     getGraphPane().getTransformContext().getTransform();
                 AffineTransform inverse;
                 try {
@@ -427,7 +427,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     throw new RuntimeException(ex.toString());
                 }
                 Point2D point = new Point2D.Double(getX(), getY());
-                
+
                 inverse.transform(point, point);
 		x = point.getX();
 		y = point.getY();
@@ -436,7 +436,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    ActorGraphModel graphModel = (ActorGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
-            NamedObj container = 
+            NamedObj container =
                 MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
                 container = toplevel;
@@ -447,7 +447,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    // Create the relation.
 	    StringBuffer moml = new StringBuffer();
             if (container != toplevel) {
-                moml.append("<entity name=\"" + 
+                moml.append("<entity name=\"" +
                         toplevel.getName(container) + "\">\n");
             }
 	    moml.append("<relation name=\"" + relationName + "\">\n");

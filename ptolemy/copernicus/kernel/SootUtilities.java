@@ -1164,10 +1164,10 @@ public class SootUtilities {
                                 }
                             }
                         } catch (Exception ex) {
-                            throw new KernelRuntimeException(ex, 
+                            throw new KernelRuntimeException(ex,
                                     "foldClass: Problem with "
                                     + "retrieveActiveBody()");
-                        } 
+                        }
                         SiteInliner.inlineSite(invokeMethod,
                                 stmt, newMethod);
                     }
@@ -1229,7 +1229,7 @@ public class SootUtilities {
 
         while (methods.hasNext()) {
             SootMethod method = (SootMethod) methods.next();
-            
+
             //  System.out.println("checking method " + method);
             if (method.getName().equals(name) &&
                     args.size() == method.getParameterCount()) {
@@ -1265,13 +1265,13 @@ public class SootUtilities {
      */
     public static SootMethod getSootMethodForMethod(Method method) {
         StringBuffer buffer = new StringBuffer();
- 
+
         buffer.append("<" + Scene.v().quotedNameOf(
                               method.getDeclaringClass().getName()) + ": ");
         String returnType = method.getReturnType().getName();
 
         buffer.append(returnType + " " + Scene.v().quotedNameOf(method.getName()) + "(");
-        
+
         Class[] parameterTypes = method.getParameterTypes();
         if(parameterTypes.length > 0) {
             buffer.append(parameterTypes[0].getName());
@@ -1282,7 +1282,7 @@ public class SootUtilities {
         }
         buffer.append(")");
         buffer.append(">");
-      
+
 //         SootClass math = Scene.v().getSootClass("java.lang.Math");
 //         Iterator methods = math.getMethods().iterator();
 //         while(methods.hasNext()) {

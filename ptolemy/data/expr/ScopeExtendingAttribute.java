@@ -101,7 +101,7 @@ public class ScopeExtendingAttribute extends Attribute
         if (oldContainer != container) {
             // Every variable in the new scope that may be shadowed by
             // a variable inside this attribute must be invalidated.
-            // This does not include variables inside the container itself, 
+            // This does not include variables inside the container itself,
             // which take precedence.
             if(container != null) {
                 _invalidateShadowedSettables(
@@ -140,7 +140,7 @@ public class ScopeExtendingAttribute extends Attribute
         Iterator scopeAttributes = object.attributeList(
                 ScopeExtendingAttribute.class).iterator();
         while (scopeAttributes.hasNext()) {
-           ScopeExtendingAttribute attribute = 
+           ScopeExtendingAttribute attribute =
                 (ScopeExtendingAttribute)scopeAttributes.next();
             Iterator variables = attribute.attributeList(
                     Variable.class).iterator();

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////////////
 //// TestEngine
 /** Provides a simple demo of capabilities.<p>
-Use: "ptinvoke ptolemy.matlab.test.TestEngine" 
+Use: "ptinvoke ptolemy.matlab.test.TestEngine"
 in this directory to execute, output goes to stdout.<p>
 TODO: automate regression test (python?, jtcl?)
 @author Zoltan Kemenczy, Research in Motion Limited
@@ -63,7 +63,7 @@ public class TestEngine {
         long [] engineHandle = eng.open();
         eng.evalString(engineHandle, "clear");
         DoubleMatrixToken tx = new DoubleMatrixToken(new double[][]{{1,2,3}});
-        System.out.println("\nNote: All data output is via " 
+        System.out.println("\nNote: All data output is via "
 			   + "Token.toString() on tokens");
         System.out.println("that are put/get from the matlab engineHandle.");
         System.out.println("\nCreate 1x3 double matrix x:");

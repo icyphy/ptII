@@ -62,7 +62,7 @@ public class StringUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Abbreviate a string. 
+    /** Abbreviate a string.
      *  If the string is longer than 80 characters, truncate it by
      *  displaying the first 37 chars, then ". . .", then the last 38
      *  characters.
@@ -111,7 +111,7 @@ public class StringUtilities {
      *  though if certain properties are not defined, then we
      *  make various attempts to determine them and then set them.
      *  See the javadoc page for java.util.System.getProperties() for
-     *  a list of system properties.  
+     *  a list of system properties.
      *  <p>The following properties are handled specially
      *  <dl>
      *  <dt> "ptolemy.ptII.dir"
@@ -132,7 +132,7 @@ public class StringUtilities {
      *  </dl>
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
-     */ 
+     */
     public static String getProperty(String propertyName) {
 	// NOTE: getProperty() will probably fail in applets, which
 	// is why this is in a try block.
@@ -160,13 +160,13 @@ public class StringUtilities {
             // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
             // then return file:/c:/ptII/
             File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
-            
+
             try {
                 URL ptIIAsURL = ptIIAsFile.toURL();
                 return ptIIAsURL.toString();
             } catch (java.net.MalformedURLException malformed) {
                 throw new RuntimeException(
-                        "While trying to find '" + propertyName 
+                        "While trying to find '" + propertyName
                         + "', could not convert '"
                         + ptIIAsFile + "' to a URL",
                         malformed);
@@ -180,7 +180,7 @@ public class StringUtilities {
 	    URL namedObjURL =
 		Thread.currentThread().getContextClassLoader()
 		.getResource(namedObjPath);
-							
+
 	    if (namedObjURL != null) {
 		String namedObjFileName = namedObjURL.getFile().toString();
 		// FIXME: How do we get from a URL to a pathname?
@@ -214,7 +214,7 @@ public class StringUtilities {
 				       - ptsupportJarName.length());
 		}
 
-		ptsupportJarName = File.separator + "ptolemy" 
+		ptsupportJarName = File.separator + "ptolemy"
 		    + File.separator + "ptsupport.jar";
 		if (home.endsWith(ptsupportJarName)) {
 		    home =
@@ -295,12 +295,12 @@ public class StringUtilities {
 	if (longName.length() < 80) {
 	    return longName;
 	}
-	
+
 	StringBuffer results = new StringBuffer();
 	int i;
 	for(i = 0; i < longName.length() - 80; i+=80) {
 	    results.append(longName.substring(i, i+79) + "\n");
-	}								   
+	}
 	results.append(longName.substring(i));
 
 	return results.toString();
@@ -328,7 +328,7 @@ public class StringUtilities {
 
     /** Tokenize a String to an array of Strings for use with
      *  Runtime.exec(String []).
-     * 
+     *
      *  <p>Lines that begin with an octothorpe '#' are ignored.
      *  Substrings that start and end with a double quote are considered
      *  to be a single token and are returned as a single array element.
@@ -384,7 +384,7 @@ public class StringUtilities {
 	String singleToken = "";
 
 	// Set to true if we are inside a double quoted String.
-	boolean inDoubleQuotedString = false; 
+	boolean inDoubleQuotedString = false;
 
 	while (streamTokenizer.nextToken()
 	       != StreamTokenizer.TT_EOF) {
@@ -434,7 +434,7 @@ public class StringUtilities {
     /** Return a string that contains a description of how to use this
      *  class.
      *  @param commnandTemplate  A string naming the command and the
-     *  format of the arguments, for example 
+     *  format of the arguments, for example
      *  "moml [options] [file . . .]"
      *  @param commandOptions A 2xN array of Strings that list command-line
      *  options that take arguments where the first
@@ -444,7 +444,7 @@ public class StringUtilities {
      *  @param commandFlags An array of Strings that list command-line
      *  options that are either present or not.
      *  @returns A string that descripts the command.
-     */   
+     */
     public static String usageString(String commandTemplate,
             String [][] commandOptions, String [] commandFlags) {
         // This method is static so that we can reuse it in places

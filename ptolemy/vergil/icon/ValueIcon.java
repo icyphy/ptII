@@ -48,7 +48,7 @@ import java.io.Writer;
 //// ValueIcon
 /**
 An icon that displays the value of the container, which is assumed
-to be an instance of Settable. 
+to be an instance of Settable.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$

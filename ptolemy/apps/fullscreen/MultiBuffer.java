@@ -53,7 +53,7 @@ the full screen of the display adapter.  This class contains static
 methods that can be use to set up the full screen display
 
 <p>Some of the code in this file is based on code from
-http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html    
+http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html
 
 @see ptolemy.domains.sdf.lib.image.FullScreeImageDisplay
 @author  Christopher Hylands
@@ -71,7 +71,7 @@ public class MultiBuffer {
             device.setDisplayMode(best);
         }
     }
-    
+
     /** Enter full screen mode on particular device using the best
      *	display mode.
      *  Usually, this method is called in a try block, and
@@ -185,8 +185,8 @@ public class MultiBuffer {
         }
         return null;
     }
-    
-    
+
+
     /** Return the best display mode of a graphics device.
      *  Query a graphics device for an array of possible modes and
      *  sequentially compare each possible mode with each element of an array

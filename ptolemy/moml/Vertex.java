@@ -122,7 +122,7 @@ public class Vertex extends Location {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        // This method is very similar to the superclass 
+        // This method is very similar to the superclass
         // Location.exportMoML() except that this method does not
         // include the 'class='.
 

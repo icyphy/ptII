@@ -41,8 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @version $Id$
  */
 
-public abstract class ImageToken extends Token {    
-    
+public abstract class ImageToken extends Token {
+
     /** Construct an empty token.
      */
     public ImageToken() {
@@ -50,11 +50,11 @@ public abstract class ImageToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
-    
+    ////                         public methods                    ////
+
     /** An abstract method that all subclasses must implement to ensure
      *  compatibility with the standard image processing library.
      */
     public abstract Image asAWTImage();
 }
-    
+

@@ -112,7 +112,7 @@ public class LongToken extends ScalarToken {
             LongToken result = new LongToken(intToken.longValue());
             result._unitCategoryExponents =
                 intToken._copyOfCategoryExponents();
-            return result;       
+            return result;
         }
 
         throw new IllegalActionException(
@@ -165,7 +165,7 @@ public class LongToken extends ScalarToken {
     /** Returns a token representing the result of shifting the bits
      *  of this token towards the least significant bit, filling the
      *  most significant bits with zeros.  This treats the value as an
-     *  unsigned number, which may have the effect of destroying the 
+     *  unsigned number, which may have the effect of destroying the
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.

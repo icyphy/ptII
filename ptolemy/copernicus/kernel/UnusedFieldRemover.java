@@ -134,10 +134,10 @@ public class UnusedFieldRemover extends SceneTransformer {
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
             SootClass entityClass = (SootClass)i.next();
-          
+
             unusedFieldSet.addAll(entityClass.getFields());
         }
-        
+
         // Loop through all the methods and kill all the used fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
@@ -161,7 +161,7 @@ public class UnusedFieldRemover extends SceneTransformer {
                 }
             }
         }
-        
+
         // Loop through the methods again, and kill the statements
         // that write to an unused field.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -187,7 +187,7 @@ public class UnusedFieldRemover extends SceneTransformer {
                     }
                 }
             }
-            
+
             for (Iterator fields = entityClass.getFields().snapshotIterator();
                  fields.hasNext();) {
                 SootField field = (SootField)fields.next();

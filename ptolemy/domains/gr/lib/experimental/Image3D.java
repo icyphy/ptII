@@ -70,9 +70,9 @@ public class Image3D extends GRPickActor {
 
         imageLength = new Parameter(this, "image length", new DoubleToken(0.5));
         imageHeight = new Parameter(this, "image height", new DoubleToken(0.5));
-        filename = new Parameter(this, "filename", 
+        filename = new Parameter(this, "filename",
                                  new StringToken("stripe.gif"));
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ public class Image3D extends GRPickActor {
      *  The default value of this parameter is the DoubleToken 0.5
      */
     public Parameter imageLength;
-    
+
     public Parameter filename;
 
 
@@ -101,9 +101,9 @@ public class Image3D extends GRPickActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     protected void _createModel() throws IllegalActionException {
-         QuadArray plane = new QuadArray(4, GeometryArray.COORDINATES | QuadArray.NORMALS 
+         QuadArray plane = new QuadArray(4, GeometryArray.COORDINATES | QuadArray.NORMALS
                                         | GeometryArray.TEXTURE_COORDINATE_2);
 
       Point3f p = new Point3f(-1.0f,  1.0f,  0.0f);
@@ -123,17 +123,17 @@ public class Image3D extends GRPickActor {
       plane.setTextureCoordinate(0, 0, new TexCoord2f(qq[0]));
       plane.setTextureCoordinate(0, 1, new TexCoord2f(qq[1]));
       plane.setTextureCoordinate(0, 2, new TexCoord2f(qq[2]));
-      plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));      
+      plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));
 
-     
+
       Appearance appear = new Appearance();
 
 
 
-      
+
       String fileName = (String) ((StringToken) filename.getToken()).stringValue();
-      
-      
+
+
       TextureLoader loader = new TextureLoader(fileName, ((ViewScreen)_root).getCanvas());
       ImageComponent2D image = loader.getImage();
       System.out.println("image "+image);
@@ -158,8 +158,8 @@ public class Image3D extends GRPickActor {
         //_containedNode = new Shape3D(cube);
       }
     BranchGroup top = new BranchGroup();
-    
-    
+
+
     public void processCallback() {
         super.processCallback();
         try {
@@ -169,8 +169,8 @@ public class Image3D extends GRPickActor {
         }
     }
 
-    
-    
+
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D box.
      *  @return the Java3D box.
@@ -178,7 +178,7 @@ public class Image3D extends GRPickActor {
     protected Node _getNodeObject() {
         return (Node) top;//_containedNode;
     }
-    
+
     protected BranchGroup _getBranchGroup() {
         return (BranchGroup) top;
     }
@@ -213,7 +213,7 @@ public class Image3D extends GRPickActor {
     ////                         private variables                 ////
 
     private Shape3D _containedNode;
-    
+
     private static final float[] verts = {
     // front face
 	 1.0f, -1.0f,  1.0f,
@@ -226,5 +226,5 @@ public class Image3D extends GRPickActor {
 	new Vector3f( 0.0f,  0.0f,  1.0f),	// front face
     };
 
-   
+
 }

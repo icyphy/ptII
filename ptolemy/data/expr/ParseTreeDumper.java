@@ -64,15 +64,15 @@ public class ParseTreeDumper implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitBitwiseNode(ASTPtBitwiseNode node) 
+    public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException  {
         _displayNode(node);
     }
@@ -80,11 +80,11 @@ public class ParseTreeDumper implements ParseTreeVisitor {
             throws IllegalActionException  {
         _displayNode(node);
     }
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node) 
+    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         _displayNode(node);
     }
@@ -124,14 +124,14 @@ public class ParseTreeDumper implements ParseTreeVisitor {
             throws IllegalActionException {
         _displayNode(node);
     }
-    public void visitUnaryNode(ASTPtUnaryNode node) 
+    public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _displayNode(node);
     }
-   
+
     /** Display the given node with the current prefix, recursing into
      *  the children of the node.
-     */ 
+     */
     protected void _displayNode(ASTPtRootNode node)
             throws IllegalActionException {
         if (node.isEvaluated()) {

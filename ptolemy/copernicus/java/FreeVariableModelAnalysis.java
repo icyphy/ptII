@@ -58,7 +58,7 @@ import java.util.*;
 /**
 An analysis that traverses a model to determine all the free variables
 in a hierarchical model.  The free variables in a model are defined to
-be the set of names that must be defined by variables with the model in scope 
+be the set of names that must be defined by variables with the model in scope
 for all of the expressions in the model to be evaluatable.
 
 @author Stephen Neuendorffer
@@ -67,7 +67,7 @@ for all of the expressions in the model to be evaluatable.
 */
 public class FreeVariableModelAnalysis {
 
-    /** Analyze the given model to return a set of names which must 
+    /** Analyze the given model to return a set of names which must
      *  be defined externally for the model to be completely specified.
      *  In addition, store the intermediate results for contained actors
      *  so they can be retrieved by the getFreeVariables() method.
@@ -87,7 +87,7 @@ public class FreeVariableModelAnalysis {
     public Set getFreeVariables(Entity entity) {
         Set freeVariables = (Set)_entityToFreeVariableSet.get(entity);
         if(freeVariables == null) {
-            throw new RuntimeException("Entity " + entity.getFullName() + 
+            throw new RuntimeException("Entity " + entity.getFullName() +
                     " has not been analyzed.");
         }
 
@@ -100,27 +100,27 @@ public class FreeVariableModelAnalysis {
     private Set _freeVariables(Entity model) throws IllegalActionException {
         Set set = new HashSet();
         if(model instanceof CompositeEntity) {
-            for(Iterator entities = 
+            for(Iterator entities =
                     ((CompositeEntity)model).entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 set.addAll(_freeVariables(entity));
             }
         }
-        
+
         Set variableNames = new HashSet();
-        for(Iterator variables = 
+        for(Iterator variables =
                 model.attributeList(Variable.class).iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             variableNames.add(variable.getName());
         }
         variableNames = Collections.unmodifiableSet(variableNames);
-        
+
         set.removeAll(variableNames);
-        
+
         PtParser parser = new PtParser();
-        ParseTreeFreeVariableCollector collector = 
+        ParseTreeFreeVariableCollector collector =
             new ParseTreeFreeVariableCollector();
         for(Iterator variables =
                 model.attributeList(Variable.class).iterator();
@@ -131,15 +131,15 @@ public class FreeVariableModelAnalysis {
             Set freeVars = new HashSet(collector.collectFreeVariables(root));
             Set tempSet = new HashSet(variableNames);
             tempSet.remove(variable.getName());
-            
+
             freeVars.removeAll(tempSet);
             set.addAll(freeVars);
         }
-        
+
         _entityToFreeVariableSet.put(model, set);
         return set;
     }
-    
+
     private HashMap _entityToFreeVariableSet;
     private CompositeActor _model;
 }

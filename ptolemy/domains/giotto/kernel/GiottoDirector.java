@@ -231,7 +231,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    return false;
 	} else {
 
-	    // only works for DE domain 
+	    // only works for DE domain
 
             // This screws up in the face of simultaneous
             // events... It's better without.
@@ -397,9 +397,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     // Since we delay the transfer of outputs, we have to
                     // make the receivers of the port call 'update'
                     // instead of 'put' only.
-                    
+
                     port.broadcast(initialValueParameter.getToken());
-                    
+
                     Receiver[][] channelArray = port.getRemoteReceivers();
                     for (int i = 0; i < channelArray.length; i++) {
                         Receiver[] receiverArray = channelArray[i];

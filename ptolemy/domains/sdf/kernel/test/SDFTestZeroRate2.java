@@ -81,11 +81,11 @@ public class SDFTestZeroRate2 extends Transformer {
 	input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
 	output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
 
-	input_tokenConsumptionRate = 
+	input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate");
 
-	input2_tokenConsumptionRate = 
+	input2_tokenConsumptionRate =
             new Parameter(input2, "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("input2_rate");
 
@@ -119,7 +119,7 @@ public class SDFTestZeroRate2 extends Transformer {
     public Parameter output_rate;
 
     public Parameter output2_rate;
-    
+
     public Parameter input_tokenConsumptionRate;
 
     public Parameter input2_tokenConsumptionRate;
@@ -134,7 +134,7 @@ public class SDFTestZeroRate2 extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
      /**
       *  @param attribute The attribute that has changed.
       *  @exception IllegalActionException If the parameters are out of range.
@@ -142,7 +142,7 @@ public class SDFTestZeroRate2 extends Transformer {
      public void attributeChanged(Attribute attribute)
              throws IllegalActionException {
          SDFDirector dir = (SDFDirector)getDirector();
-         
+
          if (dir != null) {
              dir.invalidateSchedule();
          }
@@ -170,15 +170,15 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue(); 
+	for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue();
              i++) {
             input.get(0);
 	}
-	for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue(); 
+	for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue();
              i++) {
             input2.get(0);
 	}
-	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue(); 
+	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
              i++) {
             output.send(0, value.getToken());
 	}
@@ -211,7 +211,7 @@ public class SDFTestZeroRate2 extends Transformer {
 	//    Actor actor = (Actor)allActors.next();
 	//    String schedActName = ((Nameable)actor).getName();
 	//    System.out.println("Actor in scheduler: " + schedActName);
-	//}	
+	//}
 
     }
 

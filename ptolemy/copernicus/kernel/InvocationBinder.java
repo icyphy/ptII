@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-2003.  
+ * Modified by the Sable Research Group and others 1997-2003.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -43,21 +43,21 @@ public class InvocationBinder extends SceneTransformer
 
     public static InvocationBinder v() { return instance; }
 
-    public String getDefaultOptions() 
+    public String getDefaultOptions()
     {
         return "insert-null-checks insert-redundant-casts allowed-modifier-changes:unsafe VTA-passes:0";
     }
 
-    public String getDeclaredOptions() 
-    { 
+    public String getDeclaredOptions()
+    {
         return super.getDeclaredOptions() + " insert-null-checks insert-redundant-casts allowed-modifier-changes VTA-passes";
     }
-    
+
     protected void internalTransform(String phaseName, Map options)
     {
         System.out.println("InvocationBinder.internalTransform(" +
                 phaseName + ", " + options + ")");
- 
+
         Date start = new Date();
         InvokeGraphBuilder.v().transform(phaseName + ".igb");
 
@@ -89,7 +89,7 @@ public class InvocationBinder extends SceneTransformer
             vta.trimActiveInvokeGraph();
             graph.refreshReachableMethods();
         }
-                
+
         if (Main.isVerbose)
             System.out.println(graph.computeStats());
 
@@ -97,8 +97,8 @@ public class InvocationBinder extends SceneTransformer
         while (classesIt.hasNext())
         {
             SootClass c = (SootClass)classesIt.next();
-            
-            LinkedList methodsList = new LinkedList(); 
+
+            LinkedList methodsList = new LinkedList();
             methodsList.addAll(c.getMethods());
 
             while (!methodsList.isEmpty())
@@ -116,7 +116,7 @@ public class InvocationBinder extends SceneTransformer
                 }
 
                 JimpleBody b = (JimpleBody)container.getActiveBody();
-                
+
                 List unitList = new ArrayList(); unitList.addAll(b.getUnits());
                 Iterator unitIt = unitList.iterator();
 
@@ -129,9 +129,9 @@ public class InvocationBinder extends SceneTransformer
 
                     InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
 
-                    if (ie instanceof StaticInvokeExpr || 
+                    if (ie instanceof StaticInvokeExpr ||
                             ie instanceof SpecialInvokeExpr) {
-                        System.out.println("skipping " + container + ":" + 
+                        System.out.println("skipping " + container + ":" +
                                 s + ": not virtual");
 
                         continue;
@@ -140,14 +140,14 @@ public class InvocationBinder extends SceneTransformer
                     System.out.println("considering " + ie);
                     List targets = graph.getTargetsOf(s);
                     System.out.println("targets = " + targets);
-                   
+
                     if (targets.size() != 1)
                         continue;
 
                     // Ok, we have an Interface or VirtualInvoke going to 1.
 
                     SootMethod target = (SootMethod)targets.get(0);
-                    
+
                     if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
                         System.out.println("skipping: no access");
 
@@ -169,7 +169,7 @@ public class InvocationBinder extends SceneTransformer
                 }
             }
         }
-        
+
         Scene.v().releaseActiveInvokeGraph();
     }
 }

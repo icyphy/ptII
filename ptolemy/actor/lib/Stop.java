@@ -63,7 +63,7 @@ stopFire() on all actors, which for threaded actors results in them
 halting upon their next attempt to read an input or write an
 output. When all actor threads have stopped, the iteration
 concludes and the model halts. <b>NOTE</b>:
-<i>This is not the best way to stop a PN model!</i> 
+<i>This is not the best way to stop a PN model!</i>
 This mechanism is nondeterministic in the sense that there is
 no way to control exactly what data is produced or consumed on
 the connections before the model stops.  To stop a PN model,
@@ -108,7 +108,7 @@ public class Stop extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel that has a token,
-     *  and if any token is true, call stop() on the director. 
+     *  and if any token is true, call stop() on the director.
      *  @exception IllegalActionException If there is no director or
      *   if there is no manager, or if the container is not a
      *   CompositeActor.

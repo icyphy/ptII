@@ -92,7 +92,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         // FIXME: This seems wrong.
         if (container instanceof CompositeActor) {
             // We need to check if the container is a CompositeActor
-            // because the reference to SchedulePlotter in tmentities.xml 
+            // because the reference to SchedulePlotter in tmentities.xml
             // is not a CompositeActor
             Director director = ((CompositeActor)container).getDirector();
             if (!(director instanceof TMDirector)) {
@@ -103,7 +103,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             ((TMDirector)director).addScheduleListener(this);
 
         }
-                
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -202,12 +202,12 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 scheduleDisplay.getContentPane().
                     add(pane, BorderLayout.CENTER);
                 scheduleDisplay.pack();
-                scheduleDisplay.setVisible(true); 
+                scheduleDisplay.setVisible(true);
 
-                PlotEffigy schedulePlotterEffigy = 
+                PlotEffigy schedulePlotterEffigy =
                     new PlotEffigy(configuration.getDirectory(),
                             container.uniqueName("schedulePlotterEffigy"));
-                
+
 
                 //schedulePlotterEffigy.setPlot(plot);
                 //schedulePlotterEffigy.identifier.setExpression("TM Schedule");

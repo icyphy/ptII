@@ -44,12 +44,12 @@ class Label {
     public Label(){
 	this(null, false, null);
     }
-    
+
     public Label(Label parent, boolean branch, SuperBlock block){
 	_parent = parent;
 	_branch = branch;
 	_block = block;
-	
+
 	if (_parent == null){
 	    _level = 0;
 	} else {
@@ -77,11 +77,11 @@ class Label {
     public int level(){
 	return _level;
     }
-    
+
     public Label getParent(){
 	return _parent;
     }
-    
+
     public boolean canCombine(Label l){
 	return (_parent == l._parent);
     }
@@ -89,7 +89,7 @@ class Label {
     public SuperBlock getSuperBlock(){
 	return _block;
     }
-    
+
 //      public ConditionExpr beginCondition(){
 //  	return _beginCondition;
 //      }
@@ -98,7 +98,7 @@ class Label {
 	//return _endCondition;
 	return null;
     }
-    
+
     /**
      * This Label's parent
      */
@@ -111,12 +111,12 @@ class Label {
 
     protected Label _trueChild;
     protected Label _falseChild;
-    
+
     /**
      * How deep in the tree is this Label
      */
     protected int _level = 0;
-    
+
 //      /**
 //       * Each Label has a beginning condition, which is the condition that caused
 //       * this label to be created

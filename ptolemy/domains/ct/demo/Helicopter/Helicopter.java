@@ -58,28 +58,28 @@ An applet that models a 2-D helicopter control system.
 @since Ptolemy II 1.0
 */
 public class Helicopter extends TypedCompositeActor {
-    
+
     public Helicopter(Workspace workspace)
 	    throws IllegalActionException, NameDuplicationException {
-    
+
         // Creating the model.
         super(workspace);
-        
+
         // Set up the top level composite actor, director and manager
         this.setName("HelicopterSystem");
-        CTMultiSolverDirector dir = new CTMultiSolverDirector(this, 
+        CTMultiSolverDirector dir = new CTMultiSolverDirector(this,
                 "OuterDirector");
         //dir.addDebugListener(new StreamListener());
-        
+
 
         // ---------------------------------
         // Create the controller actors.
         // ---------------------------------
-        
+
         CTCompositeActor sub = new CTCompositeActor(this,
                 "Controllers");
         HSDirector hsdir = new HSDirector(sub, "HSDirector");
-        
+
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
         subinPx.setOutput(false);
@@ -95,7 +95,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort subinD4Px = new TypedIOPort(sub, "inputD4Px");
         subinD4Px.setInput(true);
         subinD4Px.setOutput(false);
-        
+
         TypedIOPort subinPz = new TypedIOPort(sub, "inputPz");
         subinPz.setInput(true);
         subinPz.setOutput(false);
@@ -111,18 +111,18 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort subinD4Pz = new TypedIOPort(sub, "inputD4Pz");
         subinD4Pz.setInput(true);
         subinD4Pz.setOutput(false);
-        
+
         TypedIOPort subinAction = new TypedIOPort(sub, "inputAction");
         subinAction.setInput(true);
         subinAction.setOutput(false);
-        
+
         TypedIOPort suboutVx = new TypedIOPort(sub, "outputVx");
         suboutVx.setInput(false);
         suboutVx.setOutput(true);
         TypedIOPort suboutVz = new TypedIOPort(sub, "outputVz");
         suboutVz.setInput(false);
         suboutVz.setOutput(true);
-        
+
         FSMActor hsctrl = new FSMActor(sub, "HSController");
         hsdir.controllerName.setExpression("HSController");
 
@@ -138,7 +138,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIOPort hscInR = new TypedIOPort(hsctrl, "outputR");
         hscInR.setInput(true);
         hscInR.setOutput(false);
-        
+
         State hoverState = new State(hsctrl, "HoverState");
         State accelState = new State(hsctrl, "AccelState");
         State cruise1State = new State(hsctrl, "Cruise1State");
@@ -164,7 +164,7 @@ public class Helicopter extends TypedCompositeActor {
         cruise1State.incomingPort.link(tr2);
         tr2.setGuardExpression("(outputV >= 5.0) && (inputPz > -2.05) " +
                 "&& (inputPz < -1.95)");
-        
+
         Transition tr3 = new Transition(hsctrl, "tr3");
         cruise1State.outgoingPort.link(tr3);
         climbState.incomingPort.link(tr3);
@@ -176,7 +176,7 @@ public class Helicopter extends TypedCompositeActor {
         //
         tr4.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) " +
                 "&& (inputPz > -10.05) && (inputPz < -9.95)");
-        
+
         TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
         TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
         TypedIORelation rSubDDPx = new TypedIORelation(sub, "rSubDDPx");
@@ -191,7 +191,7 @@ public class Helicopter extends TypedCompositeActor {
         TypedIORelation rSubOutVz = new TypedIORelation(sub, "rSubOutVz");
         TypedIORelation rSubOutV = new TypedIORelation(sub, "rSubOutV");
         TypedIORelation rSubOutR = new TypedIORelation(sub, "rSubOutR");
-        
+
         subinPx.link(rSubPx);
         subinDPx.link(rSubDPx);
         subinDDPx.link(rSubDDPx);
@@ -270,7 +270,7 @@ public class Helicopter extends TypedCompositeActor {
             }
         }
         // CTActors
-        
+
         Clock clock = new Clock(this, "Clock");
         clock.period.setToken(new DoubleToken(1e308));
         clock.offsets.setExpression("{0.0, 20.0}");
@@ -284,19 +284,19 @@ public class Helicopter extends TypedCompositeActor {
 
         Integrator Px = new Integrator(this, "IntegratorPx");
         Integrator DPx = new Integrator(this, "IntegratorDPx");
-        
+
         Integrator Pz = new Integrator(this, "IntegratorPz");
         Integrator DPz = new Integrator(this, "IntegratorDPz");
 
         Integrator Th = new Integrator(this, "IntegratorTh");
         Integrator DTh = new Integrator(this, "IntegratorDTh");
-        
+
         Integrator Tm = new Integrator(this, "IntegratorTm");
         Integrator DTm = new Integrator(this, "IntegratorDTm");
         Integrator DDTm = new Integrator(this, "IntegratorDDTm");
-        
+
         Integrator A = new Integrator(this, "IntegratorA");
-        
+
         Scale MINUS = new Scale(this, "MINUS");
         //CTPlot ctPlot = new CTPlot(this, "CTPlot", ctPanel);
         XYPlotter xzPlot = new XYPlotter(this, "Helicopter Position");
@@ -308,7 +308,7 @@ public class Helicopter extends TypedCompositeActor {
         xzPlot.plot.setYRange(1.0, 12.0);
         xzPlot.plot.setSize(200, 200);
         xzPlot.plot.addLegend(0, "x, z");
-        
+
         TimedPlotter vxPlot = new TimedPlotter(this,
                 "Horizontal Speed");
         vxPlot.plot = new Plot();
@@ -341,32 +341,32 @@ public class Helicopter extends TypedCompositeActor {
         thPlot.plot.setYRange(-0.05, 0.05);
         thPlot.plot.setSize(200, 200);
         thPlot.plot.addLegend(0,"Th");
-        
+
         // CTConnections
         TypedIORelation rPx = new TypedIORelation(this, "rPx");
         TypedIORelation rDPx = new TypedIORelation(this, "rDPx");
         TypedIORelation rDDPx = new TypedIORelation(this, "rDDPx");
         TypedIORelation rD3Px = new TypedIORelation(this, "rD3Px");
         TypedIORelation rD4Px = new TypedIORelation(this, "rD4Px");
-        
+
         TypedIORelation rPz = new TypedIORelation(this, "rPz");
         TypedIORelation rDPz = new TypedIORelation(this, "rDPz");
         TypedIORelation rDDPz = new TypedIORelation(this, "rDDPz");
         TypedIORelation rD3Pz = new TypedIORelation(this, "rD3Pz");
         TypedIORelation rD4Pz = new TypedIORelation(this, "rD4Pz");
-        
+
         TypedIORelation rTh = new TypedIORelation(this, "rTh");
         TypedIORelation rDTh = new TypedIORelation(this, "rDTh");
         TypedIORelation rDDTh = new TypedIORelation(this, "rDDTh");
-        
+
         TypedIORelation rTm = new TypedIORelation(this, "rTm");
         TypedIORelation rDTm = new TypedIORelation(this, "rDTm");
         TypedIORelation rDDTm = new TypedIORelation(this, "rDDTm");
-        
+
         TypedIORelation rA = new TypedIORelation(this, "rA");
         TypedIORelation rVx = new TypedIORelation(this, "rVx");
         TypedIORelation rVz = new TypedIORelation(this, "rVz");
-        
+
         sub.getPort("outputVx").link(rVx);
         sub.getPort("outputVz").link(rVz);
         sub.getPort("inputPx").link(rPx);
@@ -374,29 +374,29 @@ public class Helicopter extends TypedCompositeActor {
         sub.getPort("inputDDPx").link(rDDPx);
         sub.getPort("inputD3Px").link(rD3Px);
         sub.getPort("inputD4Px").link(rD4Px);
-        
+
         sub.getPort("inputPz").link(rPz);
         sub.getPort("inputDPz").link(rDPz);
         sub.getPort("inputDDPz").link(rDDPz);
         sub.getPort("inputD3Pz").link(rD3Pz);
         sub.getPort("inputD4Pz").link(rD4Pz);
-        
+
         Px.output.link(rPx);
         DPx.output.link(rDPx);
         heli.outputDDPx.link(rDDPx);
         higher.outputD3Px.link(rD3Px);
         higher.outputD4Px.link(rD4Px);
-        
+
         Pz.output.link(rPz);
         DPz.output.link(rDPz);
         heli.outputDDPz.link(rDDPz);
         higher.outputD3Pz.link(rD3Pz);
         higher.outputD4Pz.link(rD4Pz);
-        
+
         Th.output.link(rTh);
         DTh.output.link(rDTh);
         heli.outputDDTh.link(rDDTh);
-        
+
         Tm.output.link(rTm);
         DTm.output.link(rDTm);
         DDTm.output.link(rDDTm);
@@ -418,7 +418,7 @@ public class Helicopter extends TypedCompositeActor {
         heli.inputTm.link(rTm);
         heli.inputA.link(rA);
         heli.inputTh.link(rTh);
-        
+
         // Connect Controller
         ctrl.inputTm.link(rTm);
         ctrl.inputDTm.link(rDTm);
@@ -430,7 +430,7 @@ public class Helicopter extends TypedCompositeActor {
         ctrl.inputTm.link(rTm);
         ctrl.inputVx.link(rVx);
         ctrl.inputVz.link(rVz);
-        
+
         // Connect XZHigherDerivatives
         higher.inputTm.link(rTm);
         higher.inputDTm.link(rDTm);
@@ -438,9 +438,9 @@ public class Helicopter extends TypedCompositeActor {
         higher.inputTh.link(rTh);
         higher.inputDTh.link(rDTh);
         higher.inputA.link(rA);
-        
+
         // Connect HoverLinearizer
-        
+
         TypedIORelation rmPz = new TypedIORelation(this, "RMPz");
         MINUS.input.link(rPz);
         MINUS.output.link(rmPz);
@@ -450,33 +450,33 @@ public class Helicopter extends TypedCompositeActor {
         vxPlot.input.link(rDPx);
         pzPlot.input.link(rmPz);
         thPlot.input.link(rTh);
-        
+
         //_debug("Set parameters");
         // CT Director parameters
         dir.initStepSize.setToken(new DoubleToken(0.1));
-        
+
         dir.minStepSize.setToken(new DoubleToken(1e-7));
-        
+
         dir.maxStepSize.setToken(new DoubleToken(0.5));
-        
+
         StringToken token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         dir.breakpointODESolver.setToken(token1);
-        
+
         StringToken token2 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         dir.ODESolver.setToken(token2);
-        
+
         dir.stopTime.setToken(new DoubleToken(70.0));
 
         Px.initialState.setToken(new DoubleToken(0.0));
-        
+
         Pz.initialState.setToken(new DoubleToken(-1.5));
-        
+
         Tm.initialState.setToken(new DoubleToken(48.02));
-        
+
         MINUS.factor.setToken(new DoubleToken(-1.0));
-        
+
         //_paramButton = (Parameter)button.getAttribute("ButtonClicked");
         // System.out.println(this.description());
         // System.out.println(dir.getScheduler().description());
@@ -594,7 +594,7 @@ public class Helicopter extends TypedCompositeActor {
         ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
         ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
         ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
-         
+
         sub.connect(hPx.input, subinPx);
         sub.connect(hDPx.input, subinDPx);
         sub.connect(hDDPx.input, subinDDPx);
@@ -625,8 +625,8 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(subinDDPx, (ComponentPort)lin.getPort("inputDDPx"));
         sub.connect(subinD3Px, (ComponentPort)lin.getPort("inputD3Px"));
         sub.connect(subinD4Px, (ComponentPort)lin.getPort("inputD4Px"));
-        
-        Relation rInPz = sub.connect(subinPz, 
+
+        Relation rInPz = sub.connect(subinPz,
             (ComponentPort)lin.getPort("inputPz"));
         //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
         sub.connect(subinDPz, (ComponentPort)lin.getPort("inputDPz"));
@@ -638,9 +638,9 @@ public class Helicopter extends TypedCompositeActor {
 
         sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
         sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
-         
-        
-        
+
+
+
         Relation rV = sub.connect(suboutV,
                 (ComponentPort)lin.getPort("outputV"));
         Relation rR = sub.connect(suboutR,

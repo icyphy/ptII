@@ -105,7 +105,7 @@ public class KernelMain {
 
 	// Handle Backward Compatibility.
 	_parser.addMoMLFilters(BackwardCompatibility.allFilters());
-        
+
 	// Filter out any graphical classes and the GeneratorAttribute
 	// itself.  If we don't filter out GeneratorAttribute, then
 	// we get quite a few attributes in the generated code, which

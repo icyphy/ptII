@@ -50,14 +50,14 @@ tokens.
 */
 
 public class NamedConstantsScope implements ParserScope {
-    
+
     /** Construct a new scope that contains the given map from names to
 	 *  value tokens.
      */
     public NamedConstantsScope(Map map) {
         _map = map;
     }
-    
+
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
      *  @return The token associated with the given name in the scope.
@@ -87,7 +87,7 @@ public class NamedConstantsScope implements ParserScope {
     public NamedList variableList() {
         return null;
     }
-    
+
     private Map _map;
 }
 

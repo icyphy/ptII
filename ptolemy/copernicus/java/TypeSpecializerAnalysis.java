@@ -137,10 +137,10 @@ public class TypeSpecializerAnalysis {
                 System.err.println("Inequality: "
                         + inequalities.next().toString());
             }
-          
+
             //       throw new RuntimeException("NO Type solution found!");
         }
-        System.out.println("Done");  
+        System.out.println("Done");
     }
 
     /** Specialize all token types that appear in the given list of
@@ -157,7 +157,7 @@ public class TypeSpecializerAnalysis {
         _solver = new InequalitySolver(TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
-        for(Iterator classes = list.iterator(); 
+        for(Iterator classes = list.iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _collectConstraints(theClass, _debug);
@@ -198,10 +198,10 @@ public class TypeSpecializerAnalysis {
                 System.err.println("Inequality: "
                         + inequalities.next().toString());
             }
-          
+
             //       throw new RuntimeException("NO Type solution found!");
         }
-        System.out.println("Done");  
+        System.out.println("Done");
     }
 
     public Type getSpecializedSootType(Local local) {
@@ -338,7 +338,7 @@ public class TypeSpecializerAnalysis {
             //  System.out.println("computing aliases for " + method);
             MustAliasAnalysis aliasAnalysis = null; //new MustAliasAnalysis(unitGraph);
             //   System.out.println("done computing aliases for " + method);
-  
+
             for (Iterator locals = body.getLocals().iterator();
                  locals.hasNext();) {
                 Local local = (Local)locals.next();
@@ -398,7 +398,7 @@ public class TypeSpecializerAnalysis {
         }
         // System.out.println("done collecting constraints for " + entityClass);
     }
-  
+
     // Given an object (which must be either a local, or a field) of
     // the given type, look into the given map and retrieve the
     // inequality term for the object.  retrieve the resolved type,
@@ -586,7 +586,7 @@ public class TypeSpecializerAnalysis {
                             localDefs,
                             localUses);
                 if (port == null) {
-                    throw new RuntimeException("Failed to find port for " + 
+                    throw new RuntimeException("Failed to find port for " +
                             unit);
                 }
                 // Don't create constant terms for
@@ -885,7 +885,7 @@ public class TypeSpecializerAnalysis {
         }
 
         public String toString() {
-            return "{VariableTerm: value = " + _currentType + ", depth = " + 
+            return "{VariableTerm: value = " + _currentType + ", depth = " +
                 PtolemyUtilities.getTypeDepth(_currentType) + ", associated object = " +
 		_object + "}";
         }

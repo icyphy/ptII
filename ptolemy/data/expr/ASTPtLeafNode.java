@@ -59,7 +59,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    /** Return the name that this node refers to.  This may be a 
+    /** Return the name that this node refers to.  This may be a
      *  literal value, such as "5", or a reference to another object,
      *  such as the name of a variable in scope.
      */

@@ -111,7 +111,7 @@ public class TimedPNDirector extends PNDirector {
      *  value 1. This sets the initial capacities of the FIFO queues in all
      *  the receivers created in the PN domain.
      */
-    public TimedPNDirector()     
+    public TimedPNDirector()
             throws IllegalActionException, NameDuplicationException {
          super();
     }

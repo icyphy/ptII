@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// JHDLTestbench.java
 /**
- * 
+ *
  *
 
 @author Mike Wirthlin
@@ -61,13 +61,13 @@ public class JHDLTestbench extends Logic implements TestBench{
 	_outputWires = new Vector();
     }
 
-    public Wire addPrimaryInputWire(String name, int bits) {	
+    public Wire addPrimaryInputWire(String name, int bits) {
 	Wire w = wire(bits,name);
 	_inputWires.add(w);
 	return w;
     }
 
-    public Wire addPrimaryOutputWire(String name, int bits) {	
+    public Wire addPrimaryOutputWire(String name, int bits) {
 	Wire w = wire(bits,name);
 	_outputWires.add(w);
 	return w;
@@ -75,5 +75,5 @@ public class JHDLTestbench extends Logic implements TestBench{
 
     protected Vector _inputWires;
     protected Vector _outputWires;
-    
+
 }

@@ -220,7 +220,7 @@ public class PtolemyQuery extends Query
                             name,
                             attribute.getExpression(),
                             base,
-                            directory);                      
+                            directory);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 }

@@ -55,7 +55,7 @@ public class SynthesisToDotty extends GraphToDotty {
     }
 
     private static String bigHack;
-    
+
     /**
      * Return a string which contains the DirectedGraph in dotty form
      * @param ename Title of the graph
@@ -63,11 +63,11 @@ public class SynthesisToDotty extends GraphToDotty {
     public static String convert(DirectedGraph g, String ename){
 	int count=0;
 	subCount=0;
-	
+
 	HashMap hm=new HashMap();
 	HashMap blockToVertex=new HashMap();
 	StringBuffer sb = new StringBuffer();
-	
+
 	sb.append("//Dotfile created by SynthesisToDotty\r\n");
 	sb.append("digraph "+ename+" {\r\n");
 	sb.append("\tcompound=true;\r\n");
@@ -98,19 +98,19 @@ public class SynthesisToDotty extends GraphToDotty {
 	    hm.put(source, name);
 	    count++;
 	}
-	
+
 	sb.append("\t// Edges\r\n");
 	for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
 	    Node source = (Node)nodes.next();
 	    for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
-		Edge edge= (Edge)succs.next();		
+		Edge edge= (Edge)succs.next();
 		Node dest= edge.sink();
-		
+
 		boolean sourceIsSB=(source.getWeight() instanceof SuperBlock) &&
 		    (blockToVertex.get(source) != null);
 		boolean destIsSB=(dest.getWeight() instanceof SuperBlock) &&
 		    (blockToVertex.get(dest) != null);
-		
+
 		if (sourceIsSB){
 		    sb.append("\t"+blockToVertex.get(source));
 		} else {
@@ -122,7 +122,7 @@ public class SynthesisToDotty extends GraphToDotty {
 		} else {
 		    sb.append(hm.get(dest));
 		}
-		
+
 		sb.append(" [");
 		if (sourceIsSB){
 		    sb.append(" ltail="+hm.get(source));
@@ -131,7 +131,7 @@ public class SynthesisToDotty extends GraphToDotty {
 		if (sourceIsSB && destIsSB){
 		    sb.append(",");
 		}
-		
+
 		if (destIsSB){
 		    sb.append(" lhead="+hm.get(dest));
 		}
@@ -140,21 +140,21 @@ public class SynthesisToDotty extends GraphToDotty {
 		    if (sourceIsSB || destIsSB){
 			sb.append(",");
 		    }
-		
+
 		    sb.append(" label=\""+
 			      convertSpecialsToEscapes(edge.getWeight().toString())
 			      +"\"");
 		}
 		sb.append("];\r\n");
 	    }
-	    	    
+
 	}
 	sb.append("}\r\n");
 	return sb.toString();
     }
 
     private static int subCount;
-    
+
     protected static String subGraph(SuperBlock b, String cluster_num){
 
 	HashMap hm=new HashMap();
@@ -163,7 +163,7 @@ public class SynthesisToDotty extends GraphToDotty {
 	Block bl=b.getBlock();
 
 	bigHack=null;
-	
+
 	sb.append("subgraph "+cluster_num+" {\r\n");
 	sb.append("\t\tlabel=\""+bl.toShortString()+"\";\r\n");
 	sb.append("\t\t// Vertices\r\n");
@@ -185,7 +185,7 @@ public class SynthesisToDotty extends GraphToDotty {
 	for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
 	    Node source = (Node)nodes.next();
 	    for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
-		Edge edge= (Edge)succs.next();		
+		Edge edge= (Edge)succs.next();
 		Node dest= edge.sink();
 		sb.append("\t\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
 		if (edge.hasWeight()){

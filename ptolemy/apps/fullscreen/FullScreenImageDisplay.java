@@ -190,7 +190,7 @@ public class FullScreenImageDisplay extends Sink {
 	    // We could try different functions on alpha here.
 	    AlphaComposite alphaComposite = null;
 	    float alpha = 0.05f;
-	    for( int m = 0; m < 100; m++) { 
+	    for( int m = 0; m < 100; m++) {
 		alphaComposite =
 		    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					       alpha);

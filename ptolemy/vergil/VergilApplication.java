@@ -65,7 +65,7 @@ import java.util.List;
 //// VergilApplication
 /**
 This application opens run control panels for models specified on the
-command line.   
+command line.
 <p>
 The exact facilities that are available are determined by an optional
 command line argument that names a directory in ptolemy/configs that
@@ -90,7 +90,7 @@ are equivalent
 If there are no command-line arguments at all, then the configuration
 file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-@author Edward A. Lee, Steve Neuendorffer, Christopher Hylands 
+@author Edward A. Lee, Steve Neuendorffer, Christopher Hylands
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.actor.gui.ModelFrame
@@ -137,23 +137,23 @@ public class VergilApplication extends MoMLApplication {
     }
 
     /**
-     *  Open the MoML file at the given location as a new library in the 
+     *  Open the MoML file at the given location as a new library in the
      *  actor library for this application.
      */
-    public static void openLibrary(Configuration configuration, 
-            File file) throws Exception {       
+    public static void openLibrary(Configuration configuration,
+            File file) throws Exception {
         final CompositeEntity libraryContainer = (CompositeEntity)
             configuration.getEntity("actor library");
         if (libraryContainer == null) {
             return;
         }
-               
+
         final ModelDirectory directory = (ModelDirectory)
             configuration.getEntity(Configuration._DIRECTORY_NAME);
         if (directory == null) {
             return;
         }
-        
+
         //FIXME: why do we have problems with spaces?
         //URL fileURL = file.toURL();
         URL fileURL =
@@ -170,16 +170,16 @@ public class VergilApplication extends MoMLApplication {
             parser.parse(fileURL, fileURL);
 
             // Now create the effigy with no tableau.
-            final PtolemyEffigy finalLibraryEffigy = 
+            final PtolemyEffigy finalLibraryEffigy =
                 new PtolemyEffigy(directory.workspace());
             finalLibraryEffigy.setSystemEffigy(true);
 
-            final ComponentEntity userLibrary = 
+            final ComponentEntity userLibrary =
                 (ComponentEntity)parser.getToplevel();
 
             finalLibraryEffigy.setName(
                     directory.uniqueName(userLibrary.getName()));
-            
+
             ChangeRequest request =
                 new ChangeRequest(configuration, file.toURL().toString()) {
                     protected void _execute() throws Exception {
@@ -190,16 +190,16 @@ public class VergilApplication extends MoMLApplication {
 
             libraryContainer.requestChange(request);
             request.waitForCompletion();
-      
+
             finalLibraryEffigy.setModel(userLibrary);
-    
+
             // Identify the URL from which the model was read
             // by inserting an attribute into both the model
             // and the effigy.
             URIAttribute uri =
                 new URIAttribute(userLibrary, "_uri");
             uri.setURL(fileURL);
-           
+
             // This is used by TableauFrame in its
             //_save() method.
             finalLibraryEffigy.uri.setURL(fileURL);
@@ -213,7 +213,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** Return a default Configuration.  The initial default configuration
      *  is the MoML file ptolemy/configs/full/configuration.xml, but
-     *  using different command line arguments can change the value    
+     *  using different command line arguments can change the value
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -233,7 +233,7 @@ public class VergilApplication extends MoMLApplication {
 
         // Read the user's vergilUserLibrary.xml file
         //
-        // Use StringUtilities.getProperty() so we get the proper 
+        // Use StringUtilities.getProperty() so we get the proper
         // canonical path
         String libraryName = StringUtilities.getProperty("user.home")
             + StringUtilities.getProperty("file.separator")
@@ -244,7 +244,7 @@ public class VergilApplication extends MoMLApplication {
             try {
                 file.createNewFile();
                 FileWriter writer = new FileWriter(file);
-                writer.write("<entity name=\"" 
+                writer.write("<entity name=\""
                         + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
                         + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
                 writer.close();
@@ -370,7 +370,7 @@ public class VergilApplication extends MoMLApplication {
             URI configurationURI =
                 new URI(specToURL("ptolemy/configs").toExternalForm());
             File configurationDirectory = new File(configurationURI);
-            ConfigurationFilenameFilter filter = 
+            ConfigurationFilenameFilter filter =
                 new ConfigurationFilenameFilter();
             File [] configurationDirectories =
                 configurationDirectory.listFiles(filter);
@@ -399,12 +399,12 @@ public class VergilApplication extends MoMLApplication {
                             Configuration configuration =
                                 _readConfiguration(configurationFileName);
                             if (configuration != null
-                                    && configuration.getAttribute("_doc") 
+                                    && configuration.getAttribute("_doc")
                                     != null
-                                    && configuration.getAttribute("_doc") 
+                                    && configuration.getAttribute("_doc")
                                     instanceof Documentation
                                 ) {
-                                Documentation doc = 
+                                Documentation doc =
                                     (Documentation)configuration
                                     .getAttribute("_doc");
                                 result += "\t" + doc.getValue() + "\n";
@@ -412,7 +412,7 @@ public class VergilApplication extends MoMLApplication {
                             }
                         }
                     } catch (Exception ex) {
-                        //result += "\tCould not read configuration" 
+                        //result += "\tCould not read configuration"
                         //    + "\n" + ex;
                         //ex.printStackTrace();
                     }
@@ -420,7 +420,7 @@ public class VergilApplication extends MoMLApplication {
                         result += "\tuses "
                             + configurationFileName + "\n";
                     }
-                } 
+                }
             }
         } catch (Exception ex) {
             result += "Warning: Failed to find configuration(s) in "
@@ -435,19 +435,19 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String _commandOptions[][] = {
-        {"-config", 
+        {"-config",
          "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"},
     };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Parse a command-line argument.  Usually, we would name this 
+    /** Parse a command-line argument.  Usually, we would name this
      *  method _parseArg(), but we want to handle any arguments that
      *  handle configuration changes before calling the parent class
      *  _parseArg() because the parent class depends either having a
      *  configuration to work with, or the parent class sets up a
-     *  configuration.   
+     *  configuration.
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -489,13 +489,13 @@ public class VergilApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The subdirectory (if any) of ptolemy/configs where the configuration 
+    // The subdirectory (if any) of ptolemy/configs where the configuration
     // may be found.  For example if vergil was called with -ptiny,
     // then this variable will be set to "ptiny", and the configuration
     // should be at ptolemy/configs/ptiny/configuration.xml
     private String _configurationSubdirectory;
 
-    // URL of the configuration to read.                                      
+    // URL of the configuration to read.
     // The URL may absolute, or relative to the Ptolemy II tree root.
     private String _configurationURLSpec;
 
@@ -512,9 +512,9 @@ public class VergilApplication extends MoMLApplication {
 
         /** Return true if the specified file names a directory
          *  that contains a file named configuration.xml
-         *  and a file named intro.htm   
+         *  and a file named intro.htm
          *  @param directory the directory in which the potential
-         *  directory was found.   
+         *  directory was found.
          *  @param name the name of the directory or file.
          *  @return true if the file is a directory that
          *  contains a file called configuration.xml

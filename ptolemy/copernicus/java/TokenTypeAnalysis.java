@@ -178,7 +178,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         if (stmt instanceof AssignStmt) {
             Value leftOp = ((AssignStmt)stmt).getLeftOp();
             if (!_isTokenType(leftOp.getType())) {
-                //     System.out.println("type " + leftOp.getType() 
+                //     System.out.println("type " + leftOp.getType()
                 //             + " is not a token");
                 return;
             }
@@ -340,7 +340,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 //}
             } else if (rightOp instanceof Local) {
                 Local local = (Local)rightOp;
-             
+
                 out.put(leftOp, in.get(local));
             } else if (rightOp instanceof NewExpr) {
                 NewExpr newExpr = (NewExpr)rightOp;
@@ -375,7 +375,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 if(tag == null) {
                    //  System.out.println("No Tag... Existing type = " + in.get(rightOp));
 //                     System.out.println("No Tag... field type = " + field.getType());
-                    
+
                     if(in.get(rightOp) == null) {
                         RefType fieldType = PtolemyUtilities.getBaseTokenType(field.getType());
                         newType = PtolemyUtilities.getTokenTypeForSootType(

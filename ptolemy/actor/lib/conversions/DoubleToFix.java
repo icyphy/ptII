@@ -71,7 +71,7 @@ defaults to <i>saturate</i> (or <i>clip</i>). Out of range values are
 saturated to the nearest representable value. Other strategies
 such as <i>modulo</i> are described under ptolemy.math.Overflow.
 
-@author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink, 
+@author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink,
 @version $Id$
 @since Ptolemy II 0.4
 @see ptolemy.data.FixToken

@@ -88,7 +88,7 @@ public interface MoMLFilter {
             throws Exception;
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a new line. 
+     *  @return the description of the filter that ends with a new line.
      */
     public String toString();
 }

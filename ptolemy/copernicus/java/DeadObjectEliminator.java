@@ -95,7 +95,7 @@ public class DeadObjectEliminator extends BodyTransformer {
         // Assume that all classes we care about have been loaded...
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         Set set = new HashSet();
-        
+
         set.addAll(hierarchy.getSubclassesOfIncluding(
                            PtolemyUtilities.tokenClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
@@ -111,7 +111,7 @@ public class DeadObjectEliminator extends BodyTransformer {
         set.addAll(hierarchy.getSubclassesOfIncluding(
                            Scene.v().loadClassAndSupport(
                                    "ptolemy.data.expr.PtParser")));
-        
+
         _removeDeadObjectCreation(body, set);
     }
 

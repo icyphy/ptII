@@ -103,14 +103,14 @@ public class UnreachableMethodRemover extends SceneTransformer {
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
 
-        // Temporary hack to deal with interfaces...  assume that methods of 
+        // Temporary hack to deal with interfaces...  assume that methods of
         // interfaces are automatically reachable.
         HashSet interfaceMethodSet= new HashSet();
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
-            
+
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             for (Iterator interfaces = theClass.getInterfaces().iterator();

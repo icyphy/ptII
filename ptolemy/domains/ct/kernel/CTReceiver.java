@@ -179,7 +179,7 @@ public class CTReceiver extends Mailbox {
      *  @return True, if the receiver is continuous or if the receiver
      *  if discrete and there is a token. False, if the receiver is
      *  discrete, and there is no token.
-     
+
     public boolean hasToken() {
         if (_type == CONTINUOUS) {
             return true;

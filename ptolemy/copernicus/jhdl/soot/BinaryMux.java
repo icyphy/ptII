@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -58,7 +58,7 @@ public class BinaryMux {
 	Node n=null;
 	for (Iterator i=g.inputEdges(muxnode).iterator();i.hasNext();) {
 	    Edge e = (Edge) i.next();
-	    if (e.hasWeight() && 
+	    if (e.hasWeight() &&
 		((String) e.getWeight()).equals(weight)) {
 		n = e.source();
 	    }
@@ -76,8 +76,8 @@ public class BinaryMux {
 	return getNode(g,muxnode,FALSE_LABEL);
     }
 
-    public String toString() { 
-	return "mux_"+_name; 
+    public String toString() {
+	return "mux_"+_name;
     }
 
     public static final String TRUE_LABEL="true";

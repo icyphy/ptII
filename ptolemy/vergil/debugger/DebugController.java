@@ -90,9 +90,9 @@ public class DebugController extends TransientSingletonConfigurableAttribute
     /** Respond to all FiringEvents.  If the DebugController has a
      *  DebugProfile containing a matching FiringEvent, then this
      *  method highlights the actor and invokes pauseOnBreakpoint() on the
-     *  manager.  
+     *  manager.
      *  @see ptolemy.actor.Manager#pauseOnBreakpoint
-     *  
+     *
      *  This is similar to doing animation.
      *  @see ptolemy.vergil.actor.ActorViewerGraphController#event
      *

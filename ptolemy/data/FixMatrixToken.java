@@ -114,7 +114,7 @@ public class FixMatrixToken extends MatrixToken {
      *  the elements of the array is null, or if one of the elements
      *  of the array cannot be losslessly converted to a fixed point.
      */
-    public FixMatrixToken(Token[] tokens, int rows, int columns) 
+    public FixMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         if(tokens == null) {
             throw new IllegalActionException(

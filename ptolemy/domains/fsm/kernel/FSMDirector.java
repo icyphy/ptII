@@ -212,7 +212,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
-        
+
 	if (tr != null) {
 	    Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
@@ -224,7 +224,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                     }
                 }
             }
-            
+
             actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -252,11 +252,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 		}
 	    }
 	}
-        
+
         ctrl._setInputsFromRefinement();
-        
+
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
-        if (tr != null) {        
+        if (tr != null) {
             actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -271,7 +271,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                         actors[i].postfire();
                     }
                 }
-                ctrl._setInputsFromRefinement();       
+                ctrl._setInputsFromRefinement();
                 //execute the output actions
                 Iterator actions = tr.choiceActionList().iterator();
                 while (actions.hasNext()) {
@@ -364,7 +364,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             Actor[] actors = getController().currentState().getRefinement();
 	    if (actors == null || actors.length == 0) {
 		return super.getNextIterationTime();
-	    }	
+	    }
 	    double result = Double.MAX_VALUE;
 	    boolean givenByRefinement = false;
 	    for (int i = 0; i < actors.length; ++i) {
@@ -401,14 +401,14 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {
-        
+
         if (!exception.getMessage().trim().startsWith("AssertionModelError")) throw exception;
-        
+
 	FSMActor fsm = getController();
-        fsm._setInputsFromRefinement();  
-        State st = fsm.currentState();     
-        Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());        
-        
+        fsm._setInputsFromRefinement();
+        State st = fsm.currentState();
+        Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
+
         if (tr == null) {
             //System.out.println("ModelError is not handled but reported to upper level.");
 	    throw exception;
@@ -677,7 +677,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                 while (states.hasNext()) {
                     state = (State)states.next();
                     TypedActor[] actors = state.getRefinement();
-                    Receiver[][] allReceiversArray 
+                    Receiver[][] allReceiversArray
                             = new Receiver[allReceivers.length][0];
                     for (int i = 0; i < allReceivers.length; ++i) {
                         resultsList.clear();
@@ -689,11 +689,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 				resultsList.add(receiver);
 			    } else {
 				// check transitions
-                                Iterator transitions = 
+                                Iterator transitions =
                                     state.nonpreemptiveTransitionList()
                                     .iterator();
                                 while(transitions.hasNext()) {
-                                    Transition transition = 
+                                    Transition transition =
                                         (Transition) transitions.next();
                                     _checkActorsForReceiver
                                         (transition.getRefinement(), cont,
@@ -771,12 +771,12 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 		    if (!resultsList.contains(receiver)) {
 		        resultsList.add(receiver);
 			break;
-		    }	
+		    }
 		}
 	    }
 	}
     }
-    
+
     // Create the controllerName attribute.
     private void _createAttribute() {
         try {

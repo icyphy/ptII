@@ -249,7 +249,7 @@ public class Transition extends ComponentRelation {
      *  expression when the state is not refined.
      */
     public StringAttribute refinementName = null;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -693,7 +693,7 @@ public class Transition extends ComponentRelation {
 
     // Variable for evaluating trigger.
     private Variable _trigger = null;
-    
+
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;
 

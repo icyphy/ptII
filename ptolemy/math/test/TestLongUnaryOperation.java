@@ -48,6 +48,6 @@ public class TestLongUnaryOperation implements LongUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */
     public long operate(long operand) {
-        return -operand; 
+        return -operand;
     }
 }

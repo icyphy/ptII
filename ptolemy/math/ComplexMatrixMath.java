@@ -239,7 +239,7 @@ public class ComplexMatrixMath {
 	return matrix;
     }
 
- 
+
     /** Return a new matrix that is constructed by conjugating the elements
      *  of the input matrix.
      *  <p>
@@ -1014,7 +1014,7 @@ public class ComplexMatrixMath {
      *  <p>
      *  @param matrix A matrix of Complex numbers.
      *  @return A new String representing the matrix in Java array initializers.
-     *  </p>     
+     *  </p>
      */
     public static final String toString(final Complex[][] matrix) {
         return toString(matrix, ArrayStringFormat.javaASFormat);
@@ -1143,7 +1143,7 @@ public class ComplexMatrixMath {
                     "ComplexMatrixMath.within requires that the third argument "
                     + "be non-negative.");
         }
-        
+
 	int rows = _rows (matrix1);
 	int columns = _columns (matrix1);
 
@@ -1206,12 +1206,12 @@ public class ComplexMatrixMath {
 
     /** Return true if all the distances between corresponding elements in
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
-     *  the magnitude of the corresponding element in <i>maxError</i>. 
+     *  the magnitude of the corresponding element in <i>maxError</i>.
      *  If both matrices are empty, return true.
      *  <p>
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
-     *  @param maxError A matrix of complex numbers whose magnitudes 
+     *  @param maxError A matrix of complex numbers whose magnitudes
      *  for each element are taken to be the distance thresholds.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
@@ -1220,7 +1220,7 @@ public class ComplexMatrixMath {
      */
     public static final boolean within(Complex[][] matrix1,
             Complex[][] matrix2, Complex[][] maxError) {
-	
+
         int rows = _rows (maxError);
 	int columns = _columns (maxError);
 
@@ -1389,7 +1389,7 @@ public class ComplexMatrixMath {
             // Check the norm to find zero rows, and save the 1 /
             // norm^2 for later computation.
             double normSqrd = ComplexArrayMath.l2normSquared(rowArray);
-	    
+
 	    Complex normSquared = new Complex (normSqrd, 0.0);
 
 	    Complex Zero_Complex = new Complex(0.0,0.0);
@@ -1426,7 +1426,7 @@ public class ComplexMatrixMath {
         };
     }
 
-    /** Return the number of rows of a matrix. 
+    /** Return the number of rows of a matrix.
      *  <p>
      *  @param matrix A matrix of complex numbers.
      *  @return The number of rows of the given matrix.

@@ -174,7 +174,7 @@ public class ProcessDirector extends Director {
     /** Initialize the given actor.  This class overrides the base
      *  class to reset the flags for all of the receivers, and to
      *  create a new ProcessThread for each actor being controlled.
-     *  This class does *NOT* directly call the initialize method of the 
+     *  This class does *NOT* directly call the initialize method of the
      *  actor. That method is instead called by the actor's thread itself.
      *  This allows actors in process domains to create tokens during
      *  initialization, since sending data in a process-based domain
@@ -186,7 +186,7 @@ public class ProcessDirector extends Director {
         if(_debugging) {
             _debug("initializing " + ((NamedObj)actor).getName());
         }
-             
+
         // Reset the receivers.
         Iterator ports = actor.inputPortList().iterator();
         while ( ports.hasNext() ) {

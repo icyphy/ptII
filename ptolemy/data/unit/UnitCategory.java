@@ -66,7 +66,7 @@ public class UnitCategory extends Attribute {
      *
      *  <p>This constructor adds the created object to the system wide
      *  UnitSystem by calling {@link UnitSystem#addUnitCategory(UnitCategory)}.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an

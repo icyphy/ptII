@@ -68,7 +68,7 @@ public class StringToken extends AbstractConvertibleToken {
             _value = new String("");
         }
         // If a String token is "has an embedded " quote", then
-        // toString() should return "has an embedded \" quote" 
+        // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {
             _toString = "\"" + _value + "\"";
         } else {

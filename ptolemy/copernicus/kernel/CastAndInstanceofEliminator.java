@@ -232,7 +232,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
      *  then replace with an assignment.
      */
     public static void replaceCast(ValueBox box,
-            Hierarchy hierarchy, Type checkType, 
+            Hierarchy hierarchy, Type checkType,
             Value op, Type opType, boolean debug) {
 
         RefType checkRef, opRef;

@@ -537,7 +537,7 @@ public class MoMLParser extends HandlerBase {
             // which resulted in _docNesting being decremented from 0 to -1,
             // which caused problems with undo.
             // See test 1.4 in filter/test/RemoveGraphicalClasses.tcl
-        
+
             // FIXME: Instead of doing string comparisons, do a hash lookup.
             if (elementName.equals("configure")) {
                 // Count configure tags so that they can nest.
@@ -788,7 +788,7 @@ public class MoMLParser extends HandlerBase {
             return parse(base, input.openStream());
         } finally {
             _xmlFile = null;
-        }    
+        }
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -2585,7 +2585,7 @@ public class MoMLParser extends HandlerBase {
 			// If we are running inside an applet, then
 			// we may end up getting a SecurityException,
 			// so we want to be sure to not throw away ex2
-			throw new IllegalActionException(null, ex2, 
+			throw new IllegalActionException(null, ex2,
                                 "Cannot find class: "
                                 + className);
 		    }
@@ -2596,19 +2596,19 @@ public class MoMLParser extends HandlerBase {
                     // the programmer, not for the user. EAL
                     StringBuffer errorMessage = new StringBuffer();
 
-                    // If there is a class format error in the 
+                    // If there is a class format error in the
                     // code generator, then we may end up obscuring
-                    // that error, requiring debugging here. 
+                    // that error, requiring debugging here.
 
                     // We use error.toString() here instead of
                     // error.getMessage() so that the name of the
                     // actual class that caused the error is reported.
                     // This is critical if the problem is a class not
                     // found error.  If we use error.getMessage()
-                    // and try to open up 
+                    // and try to open up
                     // actor/lib/comm/demo/SerialPort/SerialPort.xml
                     // when the Java Serial Comm API is not installed, we get
-                        
+
                     // Error encounted in:
                     // <entity name="SerialComm" class="ptolemy.actor.lib ...
                     // -- ptolemy.actor.lib.comm.SerialComm:
@@ -2625,8 +2625,8 @@ public class MoMLParser extends HandlerBase {
                     // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
 
                     // It is critical that the error include the
-                    // NoClassDefFoundError string -cxh 
-                        
+                    // NoClassDefFoundError string -cxh
+
                     errorMessage.append(className + ": \n "
                             + error.toString() + "\n");
 

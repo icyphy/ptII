@@ -62,11 +62,11 @@ public class FakePlotter extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
-        
+
         outVal = new TypedIOPort(this,"outVal");
         outVal.setOutput(true);
         outVal.setTypeEquals(BaseType.DOUBLE);
-        
+
         outTime = new TypedIOPort(this,"outTime");
         outTime.setOutput(true);
         outTime.setTypeEquals(BaseType.DOUBLE);
@@ -77,14 +77,14 @@ public class FakePlotter extends TypedAtomicActor {
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
-    
+
     public TypedIOPort outVal;
     public TypedIOPort outTime;
-    
+
     /*
     public void initialize() throws IllegalActionException {
     }
-    
+
     public void place(Container container) {
     }*/
 
@@ -99,7 +99,7 @@ public class FakePlotter extends TypedAtomicActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-    
+
         double currentTime;
         int width = input.getWidth();
         //int offset = ((IntToken)startingDataset.getToken()).intValue();

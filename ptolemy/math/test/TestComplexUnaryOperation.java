@@ -50,6 +50,6 @@ public class TestComplexUnaryOperation implements ComplexUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */
     public Complex operate(Complex operand) {
-        return operand.negate(); 
+        return operand.negate();
     }
 }

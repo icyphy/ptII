@@ -235,7 +235,7 @@ public class Histogram extends PlotBox {
             // Write the dataset directive
             String legend = getLegend(dataset);
             if (legend != null) {
-                output.println("<dataset name=\"" 
+                output.println("<dataset name=\""
                         + legend
                         + "\" connected=\"no\">");
             } else {
@@ -363,7 +363,7 @@ public class Histogram extends PlotBox {
             // Write the dataset directive
             String legend = getLegend(dataset);
             if (legend != null) {
-                output.println("<dataset name=\"" 
+                output.println("<dataset name=\""
                         + legend
                         + "\">");
             } else {

@@ -84,7 +84,7 @@ public class Inliner {
 	} // end of try-catch
 
 	boolean changed = false;
-    
+
 	Chain stmtChain = body.getUnits();
 	Stmt stmt = (Stmt) stmtChain.getFirst();
 	Stmt prevStmt = null;
@@ -134,7 +134,7 @@ public class Inliner {
 		    //System.out.println("N");
 		} // end of else
 	    } // end of if ()
-      
+
 	    if (stmt == lastStmt) {
 		break;
 	    } // end of if ()

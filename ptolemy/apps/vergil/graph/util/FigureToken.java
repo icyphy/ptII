@@ -68,7 +68,7 @@ public class FigureToken extends Token {
         if(token instanceof FigureToken) {
             return token;
         } else {
-            throw new IllegalActionException("Attempt to convert token " 
+            throw new IllegalActionException("Attempt to convert token "
                     + token + " into a figure token, which is not possible.");
         }
     }
@@ -80,7 +80,7 @@ public class FigureToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return 
+     *  @return
      */
     public Type getType() {
         return TYPE;
@@ -97,7 +97,7 @@ public class FigureToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if(token instanceof FigureToken) {
             return new BooleanToken(this == token);
-        } else 
+        } else
             throw new IllegalActionException(
                     "Equality test not supported between "
                     + this.getClass().getName() + " and "
@@ -116,17 +116,17 @@ public class FigureToken extends Token {
     }
 
     public static class FigureType implements Type, Serializable {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         /** Return this, that is, return the reference to this object.
          *  @return A BaseType.
          */
         public Object clone() {
             return this;
         }
-        
+
         /** Convert the specified token to a token having the type
          *  represented by this object.
          *  @param t A token.
@@ -138,7 +138,7 @@ public class FigureToken extends Token {
                 throws IllegalActionException {
             return FigureToken.convert(t);
         }
- 
+
         /** Test if the argument token is compatible with this type. The method
          *  returns true if this type is UNKNOWN, since any type is a substitution
          *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -150,14 +150,14 @@ public class FigureToken extends Token {
         public boolean isCompatible(Token t) {
             return t.getType() == this;
         }
-        
+
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
         public boolean isConstant() {
             return true;
         }
-        
+
         /** Determine if the argument represents the same BaseType as this
          *  object.
          *  @param t A Type.
@@ -167,7 +167,7 @@ public class FigureToken extends Token {
         public boolean isEqualTo(Type t) {
             return this == t;
         }
-        
+
         /** Determine if this type corresponds to an instantiable token
          *  classes. A BaseType is instantiable if it does not correspond
          *  to an abstract token class, or an interface, or UNKNOWN.
@@ -176,7 +176,7 @@ public class FigureToken extends Token {
         public boolean isInstantiable() {
             return true;
         }
-        
+
         /** Return true if the argument is a
          *  substitution instance of this type.
          *  @param type A Type.
@@ -185,7 +185,7 @@ public class FigureToken extends Token {
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
-        
+
         /** Return the string representation of this type.
          *  @return A String.
          */
@@ -193,7 +193,7 @@ public class FigureToken extends Token {
             return "figure";
         }
     }
-        
+
     public static final Type TYPE = new FigureType();
 
     ///////////////////////////////////////////////////////////////////

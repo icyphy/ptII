@@ -111,22 +111,22 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
         _indexExistingFields(ModelTransformer.getModelClass(),
                 _model);
-        
+
         _replacePortCalls(ModelTransformer.getModelClass(),
                 _model);
 
     }
 
-    private void _replacePortCalls(SootClass actorClass, 
+    private void _replacePortCalls(SootClass actorClass,
             ComponentEntity actor) {
-        
+
         // Loop through all the methods in the class.
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            
+
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
+
             CompleteUnitGraph unitGraph =
                 new CompleteUnitGraph(body);
             // This will help us figure out where locals are defined.
@@ -148,7 +148,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                                 PtolemyUtilities.getPortMethod.getSubSignature())) {
                         if(_debug) {
                             System.out.println("replacing getPort in " + unit);
-                        }   
+                        }
                         // Inline calls to getPort(arg) when
                         // arg is a string that can be
                         // statically evaluated.
@@ -164,7 +164,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                             Local baseLocal = (Local)r.getBase();
                             Value newFieldRef = _createPortField(
                                     baseLocal, name, unit, localDefs);
-                                        
+
                             box.setValue(newFieldRef);
                         } else {
                             String string = "Port cannot be " +
@@ -186,7 +186,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _replacePortCalls(entityClass, entity);
-                
+
             }
         }
     }
@@ -196,7 +196,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     // refers to that port.  If no reference is found, then return null.
     private Value _createPortField(Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
-        
+
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         Entity entity = (Entity)_classToObjectMap.get(type.getSootClass());
@@ -278,8 +278,8 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                         + " does not declare field "
                         + fieldName + " for port "
                         + port.getFullName());
-            } 
-            
+            }
+
             // retrieve the existing field.
             field = theClass.getFieldByName(fieldName);
 
@@ -287,7 +287,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             if(!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
                         + " declares field for port "
-                        + port.getFullName() + " but it has type " 
+                        + port.getFullName() + " but it has type "
                         + type);
                 continue;
             } else {
@@ -296,7 +296,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                         PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for port "
-                            + port.getFullName() + " but it has type " 
+                            + port.getFullName() + " but it has type "
                             + fieldClass.getName());
                     continue;
                 }
@@ -305,7 +305,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC) |
                     Modifier.FINAL | Modifier.PUBLIC);// | Modifier.PRIVATE);
-            
+
             field.addTag(new ValueTag(port));
             _portToFieldMap.put(port, field);
             // FIXME: call recursively
@@ -314,7 +314,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
     }
 
-    private void _indexExistingFields(SootClass actorClass, 
+    private void _indexExistingFields(SootClass actorClass,
             ComponentEntity actor) {
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
@@ -332,7 +332,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
                     ActorTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass = 
+                SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);
             }

@@ -44,8 +44,8 @@ import soot.toolkits.graph.*;
 */
 public class CircuitCreator {
 
-    public static void create(HashMutableDirectedGraph operatorGraph, 
-			      String outDir, String packageName, 
+    public static void create(HashMutableDirectedGraph operatorGraph,
+			      String outDir, String packageName,
 			      String className) throws IOException {
 	String fileName = outDir + "/" + className + ".java";
 	System.out.println("Creating JHDL file: " + fileName);
@@ -53,7 +53,7 @@ public class CircuitCreator {
         FileWriter writer = new FileWriter(outputFile);
 
         write_header(writer, packageName, className);
-        
+
         for(Iterator nodes = operatorGraph.getNodes().iterator();
             nodes.hasNext();) {
             Object node = nodes.next();
@@ -63,7 +63,7 @@ public class CircuitCreator {
         for (Iterator nodes = operatorGraph.getNodes().iterator();
              nodes.hasNext();) {
             Object node = nodes.next();
-            
+
             if (node.toString().startsWith("delay")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_reg(writer, pred, node);
@@ -77,13 +77,13 @@ public class CircuitCreator {
                 Object in2 = preds.next();
 
                 write_add(writer, in1, in2, node);
-                
+
             } else if(node.toString().startsWith("buf")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_buf(writer, pred);
             } else {
                 try {
-                    write_const(writer, node.toString(), 
+                    write_const(writer, node.toString(),
 				Integer.parseInt(node.toString()));
                 } catch (Exception ex) {
                 }
@@ -94,15 +94,15 @@ public class CircuitCreator {
         writer.close();
     }
 
-    static void write_reg(FileWriter writer, Object in, Object out) 
+    static void write_reg(FileWriter writer, Object in, Object out)
 	throws IOException {
         writer.write("    regc_o(" + _getWireName(in) + ", " +
 		     _getWireName(out) + ");\r\n");
     }
 
-    static void write_fir(FileWriter writer, Object in, Object out) 
+    static void write_fir(FileWriter writer, Object in, Object out)
 	throws IOException {
-        writer.write("    new byucc.ptolemy.domains.jhdl.lib.JHDLSimpleFir(this," 
+        writer.write("    new byucc.ptolemy.domains.jhdl.lib.JHDLSimpleFir(this,"
 		     + _getWireName(in) + ", " +
 		     _getWireName(out) + ");\r\n");
     }
@@ -116,14 +116,14 @@ public class CircuitCreator {
 
     static void write_const(FileWriter writer, Object out, int value)
 	throws IOException {
-        
+
         writer.write("    constant_o(" + _getWireName(out) + ", " +
 		     value + ");\r\n");
     }
 
     static void write_buf(FileWriter writer, Object in)
 	throws IOException {
-        writer.write("    buf_o(" + _getWireName(in) + 
+        writer.write("    buf_o(" + _getWireName(in) +
 		     ", LAD_Bus_Data_Out);\r\n");
     }
 
@@ -138,36 +138,36 @@ public class CircuitCreator {
         writer.write("import byucc.jhdl.platforms.wildcard.std_if.*;\r\n");
         writer.write("import byucc.jhdl.platforms.util.*;\r\n");
         writer.write("import byucc.jhdl.modgen.arrayMult.*;\r\n");
-        
+
         writer.write("public class " + className + " extends LogicCore {\r\n");
-        
+
         writer.write("  public static CellInterface cell_interface[] = {\r\n");
         writer.write("    clk(\"K_Clk\"),\r\n");
         writer.write("    out(\"LAD_Bus_Data_Out\",32),\r\n");
-        
-        
+
+
         writer.write("  };\r\n");
-        
+
         writer.write("  public " + className + "(wc_pe parent){\r\n");
         writer.write("    super(parent);\r\n");
-        
+
         writer.write("    Wire K_Clk=connect(\"K_Clk\",wa(\"K_Clk\"));\r\n");
-        
+
         writer.write("    Wire LAD_Bus_Data_Out = connect(\"LAD_Bus_Data_Out\",\r\n");
         writer.write("		    wa(\"LAD_Bus_Data_Out\"));\r\n");
-        
-        
+
+
         writer.write("    setDefaultClock(K_Clk);\r\n");
     }
-    
+
     static void write_footer(FileWriter writer)
 	throws IOException {
         writer.write("  }\r\n");
-        
+
         writer.write("  protected GenericInterfaceCell Clocks(GenericProcessingElement parent) {\r\n");
         writer.write("    return new K_Clock_IF(parent,\"K_Clock_IF\",constraints);\r\n");
         writer.write("  }\r\n");
-        
+
         writer.write("}\r\n");
     }
 

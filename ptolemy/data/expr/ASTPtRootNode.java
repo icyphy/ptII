@@ -95,7 +95,7 @@ public class ASTPtRootNode implements Node, Cloneable {
 
     /** Override this method if you want to customize how the node dumps
      *  out its children.
-     */       
+     */
     public void displayParseTree(String prefix) {
         if (_ptToken != null) {
             String str = toString(prefix) + ", Token type: ";
@@ -137,7 +137,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     }
 
     /** Return the evaluated token value of this node.  This value may be
-     *  set during parsing, if this represents a constant value, or may be 
+     *  set during parsing, if this represents a constant value, or may be
      *  set during parse tree evaluation.
      */
     public ptolemy.data.Token getToken() {
@@ -152,8 +152,8 @@ public class ASTPtRootNode implements Node, Cloneable {
         return _ptType;
     }
 
-    /** Return true if this node represents a constant value.  This will 
-     *  be set to true if the node is a constant leaf node (a literal, or a 
+    /** Return true if this node represents a constant value.  This will
+     *  be set to true if the node is a constant leaf node (a literal, or a
      *  reference to a constant, or if all of the children of this node are
      *  constant.
      */
@@ -175,7 +175,7 @@ public class ASTPtRootNode implements Node, Cloneable {
         if (_children != null) {
             // Trim the list of children, to reduce memory usage.
             _children.trimToSize();
-            
+
             // Check to see if this node is constant, i.e. it has
             // only constant children.
             _isConstant = true;
@@ -244,7 +244,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
         throw new IllegalActionException("The visit() method is not "
-                + " implemented for nodes of type " 
+                + " implemented for nodes of type "
                 + getClass().getName() + ".");
     }
 
@@ -258,7 +258,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Each node stores its type and state information in this variable.
      */
     protected ptolemy.data.Token _ptToken;
-    
+
     /** The type of this node.
      */
     protected ptolemy.data.type.Type _ptType;

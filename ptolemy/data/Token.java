@@ -397,7 +397,7 @@ public class Token implements Serializable {
             ptolemy.data.Token result = this;
             for( int k = 0; k < times - 1; k++ ) {
                 result = result.multiply(this);
-            }        
+            }
             return result;
         }
     }

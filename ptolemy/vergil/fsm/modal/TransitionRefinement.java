@@ -63,7 +63,7 @@ mirroring of ports in each of the refinements and the controller.
 This class implements the CTStepSizeControlActor interface so that
 it can be used to construct hybrid systems using the CT domain.<p>
 
-@author David Hermann, Research In Motion Limited 
+@author David Hermann, Research In Motion Limited
 @version $Id$
 */
 public class TransitionRefinement extends Refinement
@@ -90,7 +90,7 @@ public class TransitionRefinement extends Refinement
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Create a new port with the specified name in the container of
      *  this refinement, which in turn creates a port in this refinement
      *  all other refinements, and the controller.
@@ -106,7 +106,7 @@ public class TransitionRefinement extends Refinement
             if (_mirrorDisable || getContainer() == null) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
-                TransitionRefinementPort port = 
+                TransitionRefinementPort port =
                                 new TransitionRefinementPort(this, name);
 
                 // NOTE: This is a total kludge, but when a port is created
@@ -145,7 +145,7 @@ public class TransitionRefinement extends Refinement
             _workspace.doneWriting();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 }

@@ -369,10 +369,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 linkedPortList.remove(headObj);
 	    }
 	}
-        
+
 	// Count the linked ports.
 	int unlinkedPortCount = linkedPortList.size();
-        
+
 	// If there are no links left to create, then just return.
 	if (unlinkedPortCount == 0) return;
 
@@ -585,7 +585,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** The model for an icon that contains ports.
      */
-    public class IconModel extends NamedObjNodeModel 
+    public class IconModel extends NamedObjNodeModel
             implements CompositeNodeModel {
 	/**
 	 * Return the number of nodes contained in
@@ -661,7 +661,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 		    "Attempt to remove a node that is not an Entity. " +
 		    "node = " + node);
             }
- 
+
             // Make the request in the context of the container.
             NamedObj container = _getChangeRequestParent(deleteObj);
             // System.out.println("Queueing Change request with: " + container);
@@ -669,7 +669,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             String moml = "<" + elementName + " name=\""
                     + deleteObj.getName(container) + "\"/>\n";
 
- 
+
             // Note: The source is NOT the graph model.
             MoMLChangeRequest request =
                     new MoMLChangeRequest(
@@ -805,7 +805,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	/** Append moml to the given buffer that connects a link with the
 	 *  given head, tail, and relation.  Names in the returned moml will be
          *  relative to the given container.  This may require adding an
-	 *  anonymous relation to the ptolemy model.  
+	 *  anonymous relation to the ptolemy model.
          *  If no relation need be added, then
 	 *  null is returned.
 	 */
@@ -867,7 +867,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                     // Ugh this is ugly.
                     if (ptolemyModel != container) {
-                        return ptolemyModel.getName(container) + "." + 
+                        return ptolemyModel.getName(container) + "." +
                             relationName;
                     } else {
                         return relationName;
@@ -965,7 +965,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                             ComponentRelation relation =
 			    (ComponentRelation)container.getRelation(
                                     relationNameToAdd);
-                            if (relation == null) 
+                            if (relation == null)
                             throw new InternalErrorException(
                                     "Tried to find relation with name "
                                     + relationNameToAdd
@@ -1053,7 +1053,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                            ComponentRelation relation =
                            (ComponentRelation)container.getRelation(
                                    relationNameToAdd);
-                           if (relation == null) 
+                           if (relation == null)
                            throw new InternalErrorException(
                                    "Tried to find relation with name "
                                    + relationNameToAdd
@@ -1249,7 +1249,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 */
 	public Object getParent(Object node) {
             // Undo: If we use automatic layout, then we need to check to
-            // see if the container is null here. 
+            // see if the container is null here.
             if (((Vertex)node).getContainer() == null) {
                 return null;
             }

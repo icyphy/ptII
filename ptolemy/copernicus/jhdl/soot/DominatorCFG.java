@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -131,7 +131,7 @@ public class DominatorCFG extends DirectedAcyclicCFG {
      * and the Boolean NOT compaction transformation
      * ({@link BooleanNotCompactor#compact(SootMethod)}).
      *
-     * @param args Specifies the Classname (args[0]) and the 
+     * @param args Specifies the Classname (args[0]) and the
      * Methodname (args[1]).
      * @param writeGraphs If set true, this method will create
      * ".dot" file graphs for intermediate results.
@@ -144,7 +144,7 @@ public class DominatorCFG extends DirectedAcyclicCFG {
      **/
     public static DominatorCFG createDominatorCFG(String args[],
 						  boolean writeGraphs) {
-	soot.SootMethod testMethod = 
+	soot.SootMethod testMethod =
 	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 	DominatorCFG _cfg=null;
 	try {
@@ -155,7 +155,7 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	    /*
 	    if (writeGraphs) {
 		ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
-		BlockDataFlowGraph graphs[] = 
+		BlockDataFlowGraph graphs[] =
 		    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
 	    }
 	    */

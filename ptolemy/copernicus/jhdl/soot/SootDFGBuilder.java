@@ -49,25 +49,25 @@ import java.util.*;
 
 public class SootDFGBuilder extends SootASTVisitor {
 
-    public SootDFGBuilder(SootBlockDirectedGraph g) 
+    public SootDFGBuilder(SootBlockDirectedGraph g)
 	throws SootASTException {
 	_graph = g;
 	_valueMap = _graph.getValueMap();
 	processBlock(_graph.getBlock());
     }
 
-    public static SootBlockDirectedGraph createGraph(Block block) 
+    public static SootBlockDirectedGraph createGraph(Block block)
 	throws SootASTException {
 
-	SootBlockDirectedGraph graph = 
+	SootBlockDirectedGraph graph =
 	    new SootBlockDirectedGraph(block);
 	new SootDFGBuilder(graph);
 	return graph;
     }
 
-    public Stmt processDefinitionStmt(DefinitionStmt stmt, 
+    public Stmt processDefinitionStmt(DefinitionStmt stmt,
 				      Value rightOp, Value leftOp) {
-	
+
 	if (DEBUG) {
 	    System.out.println("Definition Statment "+stmt);
 	    System.out.println("\tRight Op="+rightOp);
@@ -83,7 +83,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return stmt;
     }
 
-    public Value processValue(Value val, boolean left) 
+    public Value processValue(Value val, boolean left)
 	throws SootASTException {
 
 	if (DEBUG) System.out.println("SootDFGBuilder:Value="+val);
@@ -91,7 +91,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	if (!left)
 	    _valueMap.getOrAddValueNode(val); // make sure it is added
 	else
-	    _valueMap.addValueNode(val);	
+	    _valueMap.addValueNode(val);
 
 	Value v = super.processValue(val,left);
 	return v;
@@ -99,7 +99,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     public Value processUnopExpr(UnopExpr expr, Value op) {
 	Node opNode = _valueMap.getValueNode(op);
-	Node exprNode = _valueMap.getValueNode(expr);	
+	Node exprNode = _valueMap.getValueNode(expr);
 	_graph.addEdge(opNode,exprNode);
 	return expr;
     }
@@ -113,18 +113,18 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return expr;
     }
 
-    public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) { 
-	return stmt; 
+    public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) {
+	return stmt;
     }
-    public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) { 
+    public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) {
 	Node returnedValue = _valueMap.getValueNode(returnVal);
 	// TODO: I need to mark the given Value with a "return" flag
 	Node returnNode = _graph.addNodeWeight(stmt);
 	_graph.addEdge(returnedValue,returnNode);
-	return stmt; 
+	return stmt;
     }
-    public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie) { 
-	return stmt; 
+    public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie) {
+	return stmt;
     }
     public Stmt processIfStmt(IfStmt stmt, ConditionExpr condition) {
 	return stmt;
@@ -141,7 +141,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
 					 boolean left) {
-	
+
 	// Node that represents field-ref Base
 	Node baseNode = _valueMap.getValueNode(base);
 	// Node that represents ifr.
@@ -156,11 +156,11 @@ public class SootDFGBuilder extends SootASTVisitor {
 	}
 	if (baseEdge == null)
 	    _graph.addEdge(baseNode,ifrNode,BASE_WEIGHT);
-	
+
  	return ifr;
     }
 
-    public Value processVirtualInvokeExpr(VirtualInvokeExpr ie, 
+    public Value processVirtualInvokeExpr(VirtualInvokeExpr ie,
 					  Value args[], Value base) {
 	Node invokeNode = _valueMap.getValueNode(ie);
 	Node baseNode = _valueMap.getValueNode(base);
@@ -177,18 +177,18 @@ public class SootDFGBuilder extends SootASTVisitor {
      * This static method will create an array of SootBlockDirectedGraph
      * objects from a Class file specified by the String array arguments.
      *
-     * @param args Specifies the Classname (args[0]) and the 
+     * @param args Specifies the Classname (args[0]) and the
      * Methodname (args[1]).
      *
      **/
-    public static SootBlockDirectedGraph[] createDataFlowGraphs(String args[], 
+    public static SootBlockDirectedGraph[] createDataFlowGraphs(String args[],
 								boolean writeGraphs) {
 
 	//SootASTVisitor.DEBUG = true;
-	Block blocks[] = 
+	Block blocks[] =
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
-	SootBlockDirectedGraph graphs[] = 
-	    new SootBlockDirectedGraph[blocks.length];	
+	SootBlockDirectedGraph graphs[] =
+	    new SootBlockDirectedGraph[blocks.length];
 	for (int i = 0 ; i < blocks.length; i++) {
 	    try {
 		graphs[i] = createGraph(blocks[i]);
@@ -199,15 +199,15 @@ public class SootDFGBuilder extends SootASTVisitor {
 		e.printStackTrace();
 		System.exit(1);
 	    }
-	} 
+	}
 	return graphs;
     }
 
     public static void main(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	Block blocks[] = 
+	Block blocks[] =
 	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
-	SootBlockDirectedGraph graphs[] = 
+	SootBlockDirectedGraph graphs[] =
 	    new SootBlockDirectedGraph[blocks.length];
 	for (int i = 0 ; i < blocks.length; i++) {
 	    try {
@@ -218,7 +218,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 		e.printStackTrace();
 		System.exit(1);
 	    }
-	} 
+	}
     }
 
     /**

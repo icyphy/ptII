@@ -66,7 +66,7 @@ import ptolemy.graph.DirectedGraph;
 
 public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
-    public IntervalBlockDirectedGraph(IntervalChain ic) 
+    public IntervalBlockDirectedGraph(IntervalChain ic)
 	throws JHDLUnsupportedException, SootASTException {
 
 	// Create DFG from the Block object associated with the root
@@ -76,12 +76,12 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	_ic = ic;
 
-	if (DEBUG) 
+	if (DEBUG)
 	    System.out.println(toShortString()+":Creating IDFG");
 
 	_processChain();
 
-	if (DEBUG) 
+	if (DEBUG)
 	    System.out.println(toShortString()+":Completed IDFG");
 
 	if (DEBUG) {
@@ -89,10 +89,10 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	    PtDirectedGraphToDotty.writeDotFile(filename,this);
 ;
 	}
-	
+
     }
 
-    protected void _processChain() 
+    protected void _processChain()
 	throws JHDLUnsupportedException, SootASTException {
 
 	// 1. Create graph for next inverval in chain if there is one.
@@ -116,7 +116,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 
 	// 3. Connect previously created chain to this node
-	if (_next != null) { 
+	if (_next != null) {
   	    _valueMap.mergeSerial(_next._valueMap);
 	}
 
@@ -126,10 +126,10 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * This method will perform a merge on a standard fork/join
      * construct.
      **/
-    protected void _simpleMerge() 
+    protected void _simpleMerge()
 	throws JHDLUnsupportedException, SootASTException {
 
-	if (DEBUG) 
+	if (DEBUG)
 	    System.out.println(toShortString()+":Merge children");
 
 	// key=IntervalChain root Node, Value=IntervalChain
@@ -137,7 +137,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	// Iterate over the children:
 	// - merge the child
-	// - save the ValueMap for the control path 
+	// - save the ValueMap for the control path
 	// key=IntervalBlockDirectedGraph, Value=ValueMap
 	HashMap childrenValueMaps = new HashMap(children.size());
 	Iterator i = children.values().iterator();i.hasNext();
@@ -145,8 +145,8 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	while (i.hasNext()) {
 	    IntervalChain childInterval = (IntervalChain) i.next();
 	    // Create a new dfg for child
-	    IntervalBlockDirectedGraph childDFG = 
-		new IntervalBlockDirectedGraph(childInterval);	    
+	    IntervalBlockDirectedGraph childDFG =
+		new IntervalBlockDirectedGraph(childInterval);
 	    ValueMap valueMapCopy = (ValueMap) _valueMap.clone();
 //    	    System.out.println("_valueMap=\n"+_valueMap);
 //    	    System.out.println("valueMapCopy=\n"+valueMapCopy);
@@ -163,16 +163,16 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	if (numChildren == 1) {
 	    // merge root w/child
  	    ValueMap childMap = (ValueMap) childMapIterator.next();
- 	    IntervalBlockDirectedGraph childDFG = 
+ 	    IntervalBlockDirectedGraph childDFG =
  		(IntervalBlockDirectedGraph) childDFGs.next();
 	    joinOneChild(childDFG,childMap);
  	} else if (numChildren == 2) {
 	    // merge two children
 	    ValueMap childMap1 = (ValueMap) childMapIterator.next();
 	    ValueMap childMap2 = (ValueMap) childMapIterator.next();
- 	    IntervalBlockDirectedGraph child1DFG = 
+ 	    IntervalBlockDirectedGraph child1DFG =
  		(IntervalBlockDirectedGraph) childDFGs.next();
- 	    IntervalBlockDirectedGraph child2DFG = 
+ 	    IntervalBlockDirectedGraph child2DFG =
  		(IntervalBlockDirectedGraph) childDFGs.next();
 	    joinTwoChildren(childMap1,child1DFG,
 			    childMap2,child2DFG);
@@ -182,7 +182,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	    // merge switch targets
 	}
     }
-    
+
     public void _specialMerge() throws JHDLUnsupportedException {
 	throw new JHDLUnsupportedException("Special Nodes not yet supported");
     }
@@ -266,7 +266,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	_valueMap = childMap;
     }
 
-    public void joinTwoChildren(ValueMap child1Map, 
+    public void joinTwoChildren(ValueMap child1Map,
 				IntervalBlockDirectedGraph child1DFG,
 				ValueMap child2Map,
 				IntervalBlockDirectedGraph child2DFG) {
@@ -293,9 +293,9 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	// Determine Values assigned in each child
 	// (not including those assigned in parent)
-	Collection child1AssignedValues = 
+	Collection child1AssignedValues =
 	    child1DFG._valueMap.getAssignedValues();
-	Collection child2AssignedValues = 
+	Collection child2AssignedValues =
 	    child2DFG._valueMap.getAssignedValues();
 
 	// Iterate over all assignment Nodes in child1
@@ -349,7 +349,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	_valueMap.updateMap();
 
     }
-    
+
     protected void printAssignedValues(Collection values) {
 	for (Iterator i=values.iterator();i.hasNext();) {
 	    Value v = (Value) i.next();
@@ -371,7 +371,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	// Get the edges associated with the original CFG.
 	Node cNode = getConditionNode();
-	
+
 	Value value = (Value) trueNode.getWeight();
  	BinaryMux bmn = new BinaryMux(value.toString());
 
@@ -380,18 +380,18 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
  	addEdge(trueNode,muxNode,BinaryMux.TRUE_LABEL);
 	addEdge(falseNode,muxNode,BinaryMux.FALSE_LABEL);
 	addEdge(cNode,muxNode,BinaryMux.CONDITION_LABEL);
-	
+
   	Node newNode = map.addValueNode(value);
 	addEdge(muxNode,newNode);
 
 	return newNode;
     }
-    
 
 
-    /** 
+
+    /**
      * Return the Node associated with the Condition of the IfStmt.
-     **/ 
+     **/
     public Node getConditionNode() {
 	IfStmt ifs = getIfStmt();
 	Value v = ifs.getCondition();
@@ -401,7 +401,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     /**
      * This method will return the IfStmt associated with the
      * last Unit in the Block associated with this graph.
-     * If the last Unit is not an IfStmt, this method will return a 
+     * If the last Unit is not an IfStmt, this method will return a
      * null.
      **/
     public IfStmt getIfStmt() {
@@ -423,16 +423,16 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * Class and Method specified in the String arguments. This
      * method creates the graph from an IntervalChain.
      *
-     * @param args Specifies the Classname (args[0]) and the 
+     * @param args Specifies the Classname (args[0]) and the
      * Methodname (args[1]).
      * @param writeGraphs If set true, this method will create
      * ".dot" file graphs for intermediate results. Specifically,
-     * this method will create a file called "merge.dot" 
+     * this method will create a file called "merge.dot"
      * that represents the merged DFG.
      *
      * @see IntervalChain#createIntervalChain(String[],boolean)
      **/
-    public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[],boolean writeGraphs) 
+    public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[],boolean writeGraphs)
 	throws JHDLUnsupportedException {
 	IntervalChain ic = IntervalChain.createIntervalChain(args,writeGraphs);
 	IntervalBlockDirectedGraph ibdg=null;
@@ -450,13 +450,13 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     public static boolean DEBUG=false;
 
     public static void main(String args[]) {
-	
-	SootBlockDirectedGraph graphs[] = 
+
+	SootBlockDirectedGraph graphs[] =
 	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
 	/*
 	for (int i = 0; i<graphs.length;i++) {
 	    System.out.print("Assigned Nodes for Graph "+i);
-	    for (Iterator j = 
+	    for (Iterator j =
 		     graphs[i].getValueMap().assignedNodes().iterator();
 		 j.hasNext();) {
 		Object o = j.next();

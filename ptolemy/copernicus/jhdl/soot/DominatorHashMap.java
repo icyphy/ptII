@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * This class will also compute the immediate dominator for each
  * Node in the graph. <p>
- * 
+ *
  * Note that this class can determine the post dominators (and
  * immediate post dominators) instead of the
  * dominators if necessary.
@@ -85,7 +85,7 @@ public class DominatorHashMap extends HashMap {
     public List getDominators(Node n) {
 	return (Vector) get(n);
     }
-    
+
     /** Returns true if Node d dominates Node n **/
     public boolean dominates(Node d, Node n) {
 	List dominates = getDominators(n);
@@ -141,7 +141,7 @@ public class DominatorHashMap extends HashMap {
 	    else
 		sb.append("None");
 	    sb.append("\n");
-	}	
+	}
 	return sb.toString();
     }
 
@@ -156,11 +156,11 @@ public class DominatorHashMap extends HashMap {
 	    Vector u = (Vector) v.clone();
 	    u.remove(n);
 	    tmp.put(n,u);
-	}	
+	}
 	for (Iterator i=keySet().iterator();i.hasNext();) {
 	    Node n = (Node) i.next();
 	    if (n==_root)
-		continue;	    
+		continue;
 	    Vector v = (Vector) tmp.get(n);
 	    Vector remove = new Vector(v.size());
 	    for (Iterator j=v.iterator();j.hasNext();) {
@@ -171,11 +171,11 @@ public class DominatorHashMap extends HashMap {
 		    if (t == s)
 			continue;
 		    if (sv.contains(t))
-			remove.add(t);		    
+			remove.add(t);
 		}
 	    }
 	    v.removeAll(remove);
-	}	
+	}
 	for (Iterator i=tmp.keySet().iterator();i.hasNext();) {
 	    Node n = (Node) i.next();
 	    Vector v = (Vector) tmp.get(n);
@@ -183,7 +183,7 @@ public class DominatorHashMap extends HashMap {
 	    if (v.size() > 0)
 		t = (Node) v.get(0);
 	    tmp.put(n,t);
-	}	
+	}
 	_immediateDominators = tmp;
 	return _immediateDominators;
     }
@@ -245,9 +245,9 @@ public class DominatorHashMap extends HashMap {
 		    predecessors = _graph.predecessors(n);
 
 		for (Iterator j=predecessors.iterator();j.hasNext();) {
-		    Node p = (Node) j.next();		    
+		    Node p = (Node) j.next();
 		    Vector pDominators = (Vector) get(p);
-		    if (intersection == null) {			
+		    if (intersection == null) {
 			// If intersection vector is null, initialize it
 			// with the dominators of p
 			intersection = new Vector(pDominators.size());
@@ -267,7 +267,7 @@ public class DominatorHashMap extends HashMap {
 		    }
 		}
 		// Vector intersection now contains the intersection of
-		// the dominators of all predecessors. 
+		// the dominators of all predecessors.
 		// Add itself.
 		intersection.add(n);
 		if (intersection.size() < nDominators.size()) {
@@ -275,7 +275,7 @@ public class DominatorHashMap extends HashMap {
 		    put(n,intersection);
 		}
 	    }
-	} while(changed);	
+	} while(changed);
 
 	// Trim size of dominator vectors (extra space no longer needed)
 	for (Iterator i = _graph.nodes().iterator(); i.hasNext();) {
@@ -285,7 +285,7 @@ public class DominatorHashMap extends HashMap {
 	}
 
     }
-    
+
     /*
     protected Object[] _reverseList(Object [] ol) {
 	int len = ol.length;
@@ -319,7 +319,7 @@ public class DominatorHashMap extends HashMap {
 	    System.exit(1);
 	}
     }
- 
+
     protected DirectedAcyclicCFG _graph;
     protected boolean _postDominates;
     protected Node _root;

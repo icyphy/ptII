@@ -133,10 +133,10 @@ public class Chop extends SDFTransformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Chop(CompositeEntity container, String name) 
+    public Chop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-                
+
         numberToRead = new Parameter(this, "numberToRead");
         numberToRead.setExpression("128");
         numberToWrite = new Parameter(this, "numberToWrite");
@@ -146,7 +146,7 @@ public class Chop extends SDFTransformer {
         usePastInputs = new Parameter(this, "usePastInputs");
         usePastInputs.setExpression("true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -219,7 +219,7 @@ public class Chop extends SDFTransformer {
                 _pastNeedsInitializing = true;
             }
         }
-        
+
         if (attribute == numberToRead ||
                 attribute == numberToWrite ||
                 attribute == offset ||

@@ -89,36 +89,36 @@ public class CircuitTransformer extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static CircuitTransformer v(CompositeActor model) { 
+    public static CircuitTransformer v(CompositeActor model) {
         return new CircuitTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
     /**
      * 1. Create a DAG that matches topology of model
-     * 2. 
+     * 2.
      **/
     protected void internalTransform(String phaseName, Map options) {
-	
+
 	System.out.println("**************************************************");
 	System.out.println("*** START JHDL");
 	System.out.println("**************************************************");
         System.out.println("\nCircuitTransformer.internalTransform("
 			   + phaseName + ", " + options + ")");
-	
+
 	//////////////////////////////////////////////
 	// Step 1. Create a DirectedGraph that matches
 	//         the topology of the model
 	//////////////////////////////////////////////
         DirectedGraph combinedGraph = _createModelGraph(_model);
-            
+
 	//////////////////////////////////////////////
 	// Step 2. Call 'CircuitAnalysis' on each actor
 	// in the model. CircuitAnalysis will create a DAG
@@ -126,8 +126,8 @@ public class CircuitTransformer extends SceneTransformer {
 	//////////////////////////////////////////////
         Set removeSet = new HashSet();
 	Map replaceMap = new HashMap();
-	
-	for(Iterator cnodes=combinedGraph.nodes().iterator(); 
+
+	for(Iterator cnodes=combinedGraph.nodes().iterator();
 	    cnodes.hasNext();) {
 
 	    Node cnode=(Node)cnodes.next();
@@ -136,7 +136,7 @@ public class CircuitTransformer extends SceneTransformer {
 	    if (!(cnode.getWeight() instanceof Entity)) continue;
 
 	    // Get directed graph of entity (if null, don't replace)
-	    DirectedGraph operatorGraph = 
+	    DirectedGraph operatorGraph =
 		_createEntityGraph((Entity) cnode.getWeight(), options);
 	    if (operatorGraph != null)
 		replaceMap.put(cnode,operatorGraph);
@@ -148,7 +148,7 @@ public class CircuitTransformer extends SceneTransformer {
 	// Step 3. Replace node in DAG with the DAG
 	// that was created by CircuitAnalysis
 	//////////////////////////////////////////////
-	for (Iterator removeNodes = replaceMap.keySet().iterator(); 
+	for (Iterator removeNodes = replaceMap.keySet().iterator();
 	     removeNodes.hasNext();){
 
 	    Node removeNode = (Node)removeNodes.next();
@@ -156,7 +156,7 @@ public class CircuitTransformer extends SceneTransformer {
 	    combinedGraph.removeNode(removeNode);
 
 	    DirectedGraph operatorGraph = (DirectedGraph)replaceMap.get(removeNode);
-	    
+
 	    for(Iterator nodes = operatorGraph.nodes().iterator(); nodes.hasNext();) {
 		Node node = (Node)nodes.next();
 		combinedGraph.addNode(node);
@@ -164,10 +164,10 @@ public class CircuitTransformer extends SceneTransformer {
 
 	    for(Iterator edges = operatorGraph.edges().iterator(); edges.hasNext();) {
 		combinedGraph.addEdge((Edge)edges.next());
-	    }	    
+	    }
 
 	}
-	
+
         // Remove all the nodes that were not required above.
 //          for(Iterator nodes = removeSet.iterator();
 //              nodes.hasNext();) {
@@ -187,7 +187,7 @@ public class CircuitTransformer extends SceneTransformer {
 //              combinedGraph.removeNode(node);
 //          }
 
-	
+
 	//  	System.out.println("Tails:");
 	//  	for (Iterator i=combinedGraph.getTails().iterator(); i.hasNext();){
 	//  	  System.out.println(i.next());
@@ -197,14 +197,14 @@ public class CircuitTransformer extends SceneTransformer {
 	//  	  System.out.println(i.next());
 	//  	}
 
-	
+
         // Remove all the loner nodes (not connected to any other node
 //  	removeSet=new HashSet();
 //  	Set loners=new HashSet();
 //  	loners.addAll(combinedGraph.sinkNodes());
 //  	loners.retainAll(combinedGraph.sourceNodes());
 //  	removeSet.addAll(loners);
-	
+
 //          for(Iterator nodes = removeSet.iterator();
 //              nodes.hasNext();) {
 //  	    Node node = (Node)nodes.next();
@@ -233,8 +233,8 @@ public class CircuitTransformer extends SceneTransformer {
 	//          try {
 	//              String targetPackage = Options.getString(options, "targetPackage");
 	//              String outDir = Options.getString(options, "outDir");
-	//              CircuitCreator.create(combinedGraph, 
-	//                      outDir, targetPackage, 
+	//              CircuitCreator.create(combinedGraph,
+	//                      outDir, targetPackage,
 	//                      "JHDL" + StringUtilities.sanitizeName(
 	//                              _model.getName()));
 	//          } catch (Exception ex) {
@@ -246,7 +246,7 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     protected DirectedGraph _createEntityGraph(Entity entity, Map options) {
-	String className = 
+	String className =
 	    ActorTransformer.getInstanceClassName(entity,options);
 
 	String entityClassName = entity.getClass().getName();
@@ -254,7 +254,7 @@ public class CircuitTransformer extends SceneTransformer {
 	if (entityClassName.equals("ptolemy.actor.lib.Const") ||
 	    entityClassName.equals("ptolemy.actor.lib.FileWriter"))
 	    return null;
-								 
+
 	System.out.println("Creating graph for class "+className+
 			   " (entity="+entityClassName+")");
 	SootClass entityClass = Scene.v().loadClassAndSupport(className);
@@ -276,7 +276,7 @@ public class CircuitTransformer extends SceneTransformer {
      * the topology of the model
      **/
     protected DirectedGraph _createModelGraph(CompositeActor model) {
-        DirectedGraph combinedGraph = new DirectedGraph();	
+        DirectedGraph combinedGraph = new DirectedGraph();
         // Loop over all the actors in the model
         for(Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity)i.next();
@@ -286,7 +286,7 @@ public class CircuitTransformer extends SceneTransformer {
 
 	    // iterate over all outPorts and add Node corresponding
 	    // to port. Also add edge between entity and port
-	    for (Iterator outPorts = 
+	    for (Iterator outPorts =
 		   ((TypedAtomicActor)entity).outputPortList().iterator();
 		 outPorts.hasNext();){
 		Object port=outPorts.next();
@@ -296,7 +296,7 @@ public class CircuitTransformer extends SceneTransformer {
 
 	    // iterate over all inPorts and add Node corresponding
 	    // to port. Also add edge between entity and port
-	    for (Iterator inPorts = 
+	    for (Iterator inPorts =
 		   ((TypedAtomicActor)entity).inputPortList().iterator();
 		 inPorts.hasNext();){
 		Object port=inPorts.next();
@@ -304,14 +304,14 @@ public class CircuitTransformer extends SceneTransformer {
 		combinedGraph.addEdge(port, entity);
 	    }
         }
-        
+
 
 	// Connect top-level inputPorts to the ports of the connected
 	// actors
 	for (Iterator inputPorts=model.inputPortList().iterator();
 	     inputPorts.hasNext();){
 	    IOPort port = (IOPort)inputPorts.next();
-	  
+
 	    for(Iterator remoteports = port.connectedPortList().iterator();
 		remoteports.hasNext();) {
 		IOPort remotePort = (IOPort)remoteports.next();
@@ -320,7 +320,7 @@ public class CircuitTransformer extends SceneTransformer {
 		combinedGraph.addEdge(port, remotePort);
 		//  	    removeSet.add(port);
 		//  	    removeSet.add(remotePort);
-	    }	  
+	    }
 	}
 
 	// Add edges to the DAG to match the topology of the
@@ -328,11 +328,11 @@ public class CircuitTransformer extends SceneTransformer {
         for(Iterator entities = model.entityList().iterator();
             entities.hasNext();) {
             TypedAtomicActor actor = (TypedAtomicActor)entities.next();
-         
+
             for(Iterator ports = actor.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                
+
                 for(Iterator remoteports = port.connectedPortList().iterator();
                     remoteports.hasNext();) {
                     IOPort remotePort = (IOPort)remoteports.next();
@@ -344,7 +344,7 @@ public class CircuitTransformer extends SceneTransformer {
         }
 
 	// Write out model
-	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph); 
+	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph);
 	return combinedGraph;
     }
 
@@ -355,10 +355,10 @@ public class CircuitTransformer extends SceneTransformer {
 	TypedCompositeActor system = new TypedCompositeActor();
 	try {
 	    ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
-		ptolemy.domains.sdf.kernel.SDFDirector(system,"director");	
-	    ptolemy.copernicus.jhdl.demo.FIR2.FIR f = 
+		ptolemy.domains.sdf.kernel.SDFDirector(system,"director");
+	    ptolemy.copernicus.jhdl.demo.FIR2.FIR f =
 		new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
-	    SootClass entityClass = 
+	    SootClass entityClass =
 		Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
 	    entityClass.setApplicationClass();
 	    if (entityClass == null) {
@@ -371,5 +371,5 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
-  
+
 }

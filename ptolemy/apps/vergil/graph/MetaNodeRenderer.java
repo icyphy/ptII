@@ -32,13 +32,13 @@ to render.
 
 @author Steve Neuendorffer
 */
-public class MetaNodeRenderer extends TypedCompositeActor 
+public class MetaNodeRenderer extends TypedCompositeActor
     implements NodeRenderer {
-      
+
     /**
      * Create a renderer which renders nodes square and orange.
      */
-    public MetaNodeRenderer(CompositeEntity container, String name) 
+    public MetaNodeRenderer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     	output = new TypedIOPort(this, "output", false, true);
@@ -46,7 +46,7 @@ public class MetaNodeRenderer extends TypedCompositeActor
     }
 
     public TypedIOPort output;
-    
+
    /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.

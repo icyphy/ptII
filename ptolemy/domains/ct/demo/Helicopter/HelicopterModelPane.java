@@ -44,7 +44,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterModelPane
 /**
-This class extends the ModelPane class to place the plots in the 
+This class extends the ModelPane class to place the plots in the
 helicopter applet in a grid way.
 
 @see ModelPane
@@ -81,7 +81,7 @@ public class HelicopterModelPane extends ModelPane {
      *  @param layout HORIZONTAL or VERTICAL layout.
      *  @param show Indicator of which controls to show.
      */
-    public HelicopterModelPane(final CompositeActor model, int layout, 
+    public HelicopterModelPane(final CompositeActor model, int layout,
             int show) {
         super(model, layout, show);
     }
@@ -104,14 +104,14 @@ public class HelicopterModelPane extends ModelPane {
         // place the placeable objects in the model
         _displays = new JPanel();
         _displays.setBackground(null);
-        
+
         add(_displays);
         _displays.setLayout(new GridLayout(2, 2));
         _displays.setBackground(null);
-        
+
         // Put placeable objects in a reasonable place.
         Iterator atomicEntities = model
-            .allAtomicEntityList().iterator(); 
+            .allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if (object instanceof Placeable) {

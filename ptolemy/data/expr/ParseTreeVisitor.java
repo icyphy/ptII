@@ -53,35 +53,35 @@ public interface ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException;
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException;
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException;
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException;
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException;
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException;
-    public void visitLogicalNode(ASTPtLogicalNode node) 
+    public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException;
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node) 
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException;
-    public void visitMethodCallNode(ASTPtMethodCallNode node) 
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException;
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException;
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException;
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node) 
+    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException;
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException;
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException;
-    public void visitSumNode(ASTPtSumNode node) 
+    public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException;
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException;

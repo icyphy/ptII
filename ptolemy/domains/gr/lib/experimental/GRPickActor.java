@@ -66,12 +66,12 @@ import java.net.MalformedURLException;
 //////////////////////////////////////////////////////////////////////////
 //// GRPickActor
 
-/** 
+/**
 @author C. Fong
 @version $Id$
 */
 abstract public class GRPickActor extends GRActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -96,8 +96,8 @@ abstract public class GRPickActor extends GRActor {
     /** BooleanToken
      */
     public TypedIOPort clicked;
-    
-    
+
+
     /** Return false if the scene graph is already initialized.
      *
      *  @return false if the scene graph is already initialized.
@@ -108,8 +108,8 @@ abstract public class GRPickActor extends GRActor {
         // Note: Actors return false on prefire if they don't want to be
         // fired and postfired in the current iteration.
         boolean returnValue = true;;
-        
-        
+
+
         if (_isSceneGraphInitialized) {
             returnValue = false;
         } else {
@@ -121,7 +121,7 @@ abstract public class GRPickActor extends GRActor {
         //System.out.println("prefire returns "+returnValue);
         return returnValue;
     }
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
         if (isDirty) {
@@ -130,7 +130,7 @@ abstract public class GRPickActor extends GRActor {
             System.out.println("sending out");
         }
     }
-    
+
     boolean isDirty = false;
     public void processCallback() {
         isDirty = true;
@@ -140,7 +140,7 @@ abstract public class GRPickActor extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /*  Create the Java3D geometry and appearance for this GR actors
      *
      *  @exception IllegalActionException if the current director
@@ -151,7 +151,7 @@ abstract public class GRPickActor extends GRActor {
         super.initialize();
         _createModel();
     }*/
-    
+
 
 
     public void initialize() throws IllegalActionException {
@@ -170,27 +170,27 @@ abstract public class GRPickActor extends GRActor {
 	    //if (pick!=null) pick.setEnable(false);
         pick = new PickCallback(this,canvas,branchGroup,bounds);
     }
-    
+
     static PickCallback pick = null;
-    
+
     abstract protected BranchGroup _getBranchGroup();
 
 
     protected Node _getNodeObject() {
         return (Node) branchGroup;
     }
-    
-    
+
+
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
     }
 
     protected void _createModel() throws IllegalActionException {
     }
-    
+
     protected BranchGroup branchGroup;
 
-    
+
     private class PickCallback extends PickMouseBehavior {
         Appearance savedAppearance = null;
         Shape3D oldShape = null;

@@ -139,7 +139,7 @@ public class LineReader extends Source {
      *  This parameter contains an IntToken, initially with value 0.
      *  The value of this parameter must be non-negative.
      */
-    public Parameter numberOfLinesToSkip; 
+    public Parameter numberOfLinesToSkip;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// JHDLUnsupportedException
 /**
- * 
+ *
  *
 
 @author Mike Wirthlin

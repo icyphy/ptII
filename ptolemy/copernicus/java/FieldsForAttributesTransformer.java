@@ -110,7 +110,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         _attributeToFieldMap = new HashMap();
         _classToObjectMap = new HashMap();
 
-        _getDirectorSig = 
+        _getDirectorSig =
             PtolemyUtilities.getDirectorMethod.getSubSignature();
         _getAttributeSig =
             PtolemyUtilities.getAttributeMethod.getSubSignature();
@@ -123,21 +123,21 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
     }
 
-    private void _replaceAttributeCalls(SootClass actorClass, 
+    private void _replaceAttributeCalls(SootClass actorClass,
             ComponentEntity actor) {
-        
+
         // Replace calls to getAttribute with field references.
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             //       System.out.println("replaceAttributeCalls in " + method);
-      
+
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            
+
             CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-            
+
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
                 Stmt unit = (Stmt)units.next();
@@ -174,7 +174,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                 String name = nameConstant.value;
                                 // perform type analysis to determine what the
                                 // type of the base is.
-                                
+
                                 Local baseLocal = (Local)r.getBase();
                                 _replaceGetAttributeMethod(
                                         body, box, baseLocal,
@@ -188,7 +188,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                     }
                 }
             }
-        }   
+        }
 
         if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
@@ -201,7 +201,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _replaceAttributeCalls(entityClass, entity);
-           
+
             }
         }
     }
@@ -216,7 +216,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         if(_debug) {
             System.out.println("replacing getAttribute in " + unit);
         }
-        
+
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj baseObject = (NamedObj)_classToObjectMap.get(type.getSootClass());
@@ -237,11 +237,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             if(entityContainer.equals(baseObject)) {
                 local = baseLocal;
             } else {
-                local = Jimple.v().newLocal("container", 
+                local = Jimple.v().newLocal("container",
                                 RefType.v(PtolemyUtilities.entityClass));
                 body.getLocals().add(local);
                 body.getUnits().insertBefore(
-                        Jimple.v().newAssignStmt(local, 
+                        Jimple.v().newAssignStmt(local,
                                 FieldsForEntitiesTransformer.getFieldRefForEntity(entityContainer)),
                         unit);
             }
@@ -333,7 +333,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             if(!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
                         + " declares field for attribute "
-                        + attribute.getFullName() + " but it has type " 
+                        + attribute.getFullName() + " but it has type "
                         + type);
                 continue;
             } else {
@@ -342,7 +342,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         PtolemyUtilities.attributeClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for attribute "
-                            + attribute.getFullName() + " but it has type " 
+                            + attribute.getFullName() + " but it has type "
                             + fieldClass.getName());
                     continue;
                 }
@@ -360,7 +360,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
     }
 
-    private void _indexExistingFields(SootClass actorClass, 
+    private void _indexExistingFields(SootClass actorClass,
             ComponentEntity actor) {
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
@@ -384,7 +384,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
                     ActorTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass = 
+                SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);
             }

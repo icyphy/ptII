@@ -161,7 +161,7 @@ public class ArrayMemory extends TypedAtomicActor {
      *  ith element of the memory to
      *  dataOutSerial.  If write has a token, copy the dataInSerial input to
      *  the ith element of memory.
-     *  If serialOrParallel = false: If read has a token, copy the contents 
+     *  If serialOrParallel = false: If read has a token, copy the contents
      *   of  the memory to  dataOutParallel.  If write has a token, copy the
      *   dataInParallel  input to  the  memory.
      *  @exception IllegalActionException If the index input
@@ -171,7 +171,7 @@ public class ArrayMemory extends TypedAtomicActor {
         BooleanToken yes = BooleanToken.TRUE;
         /**Read the Serial/Parallel Control*/
         if(serialOrParallel.hasToken(0)){
-            _serialOrParallel = 
+            _serialOrParallel =
             ((BooleanToken)serialOrParallel.get(0)).booleanValue();
         }
 

@@ -171,9 +171,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
             	actor.fire();
         }
- 
-        ctrl._setInputsFromRefinement();       
-        
+
+        ctrl._setInputsFromRefinement();
+
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         if(tr != null) {
             Actor[] transitionActors = tr.getRefinement();
@@ -181,7 +181,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 for (int i = 0; i < transitionActors.length; ++i) {
                     if (_stopRequested) break;
                     if (transitionActors[i].prefire()) {
-                        if(_debugging) { 
+                        if(_debugging) {
                             _debug(getFullName(), " fire transition refinement",
                                   ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());
                         }
@@ -318,14 +318,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             } catch (IllegalActionException e) {
 		        if (_debugging) {
 		            _debug("ModelError is thrown: " + e.getMessage());
-		        }            	
+		        }
             	handleModelError(ctrl, e);
 		        if (_debugging && handleModelError(ctrl, e)) {
 		            _debug("ModelError is processed: " + e.getMessage());
-		        }                   	
+		        }
             }
-	    */            
-	    
+	    */
+
 	    // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
@@ -336,7 +336,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         State st = ctrl.currentState();
         Transition tr =
-            ctrl._chooseTransition(st.outgoingPort.linkedRelationList()); 
+            ctrl._chooseTransition(st.outgoingPort.linkedRelationList());
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }

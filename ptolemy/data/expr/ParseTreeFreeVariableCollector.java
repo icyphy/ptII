@@ -80,7 +80,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         return set;
     }
 
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
+    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
@@ -89,7 +89,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node) 
+    public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
         for (int i = 1; i < numChildren; i++) {
@@ -100,7 +100,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
             _set.add(node.getFunctionName());
         }
     }
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node) 
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
 		_functionArgumentListStack.push(node.getArgumentNameList());
         _visitAllChildren(node);
@@ -111,12 +111,12 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         _visitAllChildren(node);
     }
 
-    public void visitLeafNode(ASTPtLeafNode node) 
+    public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
-		
+
 		Iterator nameLists = _functionArgumentListStack.iterator();
 		while (nameLists.hasNext()) {
 			List nameList = (List)nameLists.next();
@@ -126,19 +126,19 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
 				return;
 			}
 		}
-        
+
         _set.add(node.getName());
     }
 
-    public void visitLogicalNode(ASTPtLogicalNode node) 
+    public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node) 
+    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitMethodCallNode(ASTPtMethodCallNode node) 
+    public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
@@ -150,7 +150,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node) 
+    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
@@ -162,7 +162,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
             throws IllegalActionException {
         _visitAllChildren(node);
     }
-    public void visitSumNode(ASTPtSumNode node) 
+    public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
@@ -174,11 +174,11 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Loop through all of the children of this node, 
+    /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
      */
-    protected void _visitAllChildren(ASTPtRootNode node) 
+    protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
         for (int i = 0; i < numChildren; i++) {
@@ -194,7 +194,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
         child.visit(this);
     }
-    
+
     /** Test if the given identifier is valid.
      */
      protected boolean _isValidName(String name)

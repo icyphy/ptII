@@ -8,7 +8,7 @@ public class GraphicsConfigurationTest {
 	    GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice graphicsDevices[] =
 	    graphicsEnvironment.getScreenDevices();
-        for (int i = 0; i < graphicsDevices.length; i++) { 
+        for (int i = 0; i < graphicsDevices.length; i++) {
 	    String graphicsDeviceType = "UNKNOWN";
 	    switch (graphicsDevices[i].getType()) {
 	    case GraphicsDevice.TYPE_RASTER_SCREEN:
@@ -38,7 +38,7 @@ public class GraphicsConfigurationTest {
 				   + graphicsConfigurations[j].getBounds());
 		virtualBounds =
 		    virtualBounds.union(graphicsConfigurations[j].getBounds());
-	    BufferCapabilities bufferCapabilities = 
+	    BufferCapabilities bufferCapabilities =
 		graphicsConfigurations[j].getBufferCapabilities();
 	    System.out.println("BufferCapabilities: "
 			       + bufferCapabilities

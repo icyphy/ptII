@@ -156,7 +156,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
      */
     public Object clone(Workspace workspace)
         throws CloneNotSupportedException {
-        MultiInstanceComposite newObject = 
+        MultiInstanceComposite newObject =
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = _isMasterCopy;
         return newObject;
@@ -185,7 +185,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         int N = ((IntToken)nInstances.getToken()).intValue();
         // Make sure instance is correct (ignore any user errors :)
         instance.setToken(new IntToken(0));
-        
+
         TypedCompositeActor container = (TypedCompositeActor)getContainer();
 
         // In case actors in this MultiInstanceComposite refer to
@@ -230,19 +230,19 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         }
                         TypedIORelation relation = (TypedIORelation)
                             relations.get(0);
-                                               
+
                         // Iterate through other actors ports in the
                         // container that are connected to port. If a
                         // connected port is a multiport, then we create
                         // a new relation to connect the clone's newPort
                         // to that multiport. Otherwise, we use the
                         // relation above to link newPort.
-                        Iterator otherPorts = 
+                        Iterator otherPorts =
                             relation.linkedPortList(port).iterator();
                         while (otherPorts.hasNext()) {
                             TypedIOPort otherPort = (TypedIOPort)
                                 otherPorts.next();
-                            if (port.isOutput() && 
+                            if (port.isOutput() &&
                                 !otherPort.isMultiport()) {
                                 throw new IllegalActionException
                                     (getFullName()+ ".preinitialize(): "+
@@ -389,13 +389,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** Clone to create a copy of the master copy. */
     private Object _cloneClone(Workspace workspace)
         throws CloneNotSupportedException {
-        MultiInstanceComposite newObject = 
+        MultiInstanceComposite newObject =
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = false;
         return newObject;
     }
 
-    private void _addScopeExtendingAttribute() 
+    private void _addScopeExtendingAttribute()
         throws IllegalActionException {
         try {
             ScopeExtendingAttribute scopeExtender = (ScopeExtendingAttribute)

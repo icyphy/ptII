@@ -167,7 +167,7 @@ public class UndoInfoAttribute extends SingletonAttribute
     /**
      *  Returns the redo entry at the top of the stack without removing it
      *  from the stack. If there is no redo entry on the stack then return
-     *  null. 
+     *  null.
      *
      * @return    the MoML from the first redo entry, or null if there are no
      *      redo entries

@@ -403,7 +403,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	double time = director.getCurrentTime();
 	_receiverTime = time;
 	_lastTime = time;
-        // I believe this is not needed anymore, because receivers are 
+        // I believe this is not needed anymore, because receivers are
         // automatically recreated by the kernel each execution. -SN 3/19/2002
         // _queue.clear();
     }

@@ -176,7 +176,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
                     notSupportedDifferentClassesMessage("divideReverse",
                             this, leftArgument));
         }
-        
+
         try {
             return ((AbstractNotConvertibleToken)leftArgument)._divide(this);
         } catch (IllegalActionException ex) {
@@ -211,7 +211,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
                     notSupportedDifferentClassesMessage("isCloseTo",
                             this, rightArgument));
         }
-        
+
         try {
             return _isCloseTo(rightArgument, epsilon);
         } catch (IllegalActionException ex) {
@@ -335,7 +335,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
                     notSupportedDifferentClassesMessage("multiply",
                             this, rightArgument));
         }
-        
+
         try {
             return _multiply(rightArgument);
         } catch (IllegalActionException ex) {

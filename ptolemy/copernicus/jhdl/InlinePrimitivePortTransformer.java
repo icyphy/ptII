@@ -125,7 +125,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
         _options = options;
         _phaseName = phaseName;
         _debug = Options.getBoolean(options, "debug");
-   
+
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         Map portToTypeNameToBufferField = new HashMap();
@@ -133,10 +133,10 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
         Map portToTypeNameToInsideBufferField = new HashMap();
         Map portToInsideIndexArrayField = new HashMap();
 
-       _inlinePortCalls(ModelTransformer.getModelClass(), _model, 
+       _inlinePortCalls(ModelTransformer.getModelClass(), _model,
                 portToTypeNameToBufferField,
                 portToIndexArrayField,
-                portToTypeNameToInsideBufferField, 
+                portToTypeNameToInsideBufferField,
                 portToInsideIndexArrayField);
     }
 
@@ -144,7 +144,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
     private void _inlinePortCalls(SootClass modelClass, CompositeActor model,
             Map portToTypeNameToBufferField,
             Map portToIndexArrayField,
-            Map portToTypeNameToInsideBufferField, 
+            Map portToTypeNameToInsideBufferField,
             Map portToInsideIndexArrayField) {
 
         // Loop over all the model instance classes.
@@ -170,7 +170,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                     moreToDo = _inlineMethodCalls(
                             modelClass, entityClass, method, body,
                             portToTypeNameToBufferField,
-                            portToIndexArrayField, 
+                            portToIndexArrayField,
                             portToTypeNameToInsideBufferField,
                             portToInsideIndexArrayField, _debug);
                     LocalNameStandardizer.v().transform(body,
@@ -183,7 +183,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                 _inlinePortCalls(entityClass, (CompositeActor)entity,
                         portToTypeNameToBufferField,
                         portToIndexArrayField,
-                        portToTypeNameToInsideBufferField, 
+                        portToTypeNameToInsideBufferField,
                         portToInsideIndexArrayField);
             }
         }
@@ -198,7 +198,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
-        
+
         CompleteUnitGraph unitGraph =
             new CompleteUnitGraph(body);
         // This will help us figure out where locals are defined.
@@ -317,7 +317,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                             if (port.getWidth() == 0 &&
                                     (methodName.equals("hasToken") ||
                                             methodName.equals("hasRoom"))) {
-                              
+
                                 // If we try to get on a port with
                                 // zero width, then throw a runtime
                                 // exception.
@@ -677,7 +677,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)port.getType();
 
-                    _createPortInsideBufferReference(modelClass, 
+                    _createPortInsideBufferReference(modelClass,
                             port, type, typeNameToInsideBufferField);
                 }
             }

@@ -65,7 +65,7 @@ public class IntervalChain {
 
     /**
      * This constructor is called to create an IntervalChain for a top-level
-     * DominatorCFG control flow graph. 
+     * DominatorCFG control flow graph.
      **/
     public IntervalChain(DominatorCFG graph) throws IllegalActionException {
 	_parent = null;
@@ -79,7 +79,7 @@ public class IntervalChain {
      * a Node in a DominatorCFG graph. This constructor is called
      * recursively as Chains are built from a top-level graph.
      **/
-    public IntervalChain(IntervalChain parent, Node root) 
+    public IntervalChain(IntervalChain parent, Node root)
 	throws IllegalActionException {
 	_parent = parent;
 	_graph = getGraph();
@@ -169,7 +169,7 @@ public class IntervalChain {
     }
 
     /**
-     * This method will determine whether the IntervalChain is a 
+     * This method will determine whether the IntervalChain is a
      * "true" branch in an IfStmt. Will return false if it is not a
      * branch in an IfStmt or it is the "false" branch in an IfStmt.
      **/
@@ -184,7 +184,7 @@ public class IntervalChain {
 	Block b = (Block) parentRoot.getWeight();
 	Unit u = b.getTail();
 	// See if the last statement is an IfStmt
-	IfStmt ifstmt = null;	
+	IfStmt ifstmt = null;
 	if (u instanceof IfStmt)
 	    ifstmt = (IfStmt) u;
 	else
@@ -221,12 +221,12 @@ public class IntervalChain {
     public String toString() {
 	StringBuffer sb = new StringBuffer();
 	sb.append("Interval "+toShortString());
-	
+
 	if (_parent == null)
 	    sb.append(" no parent");
 	else
 	    sb.append(" parent="+is(_parent));
-	
+
 	if (_children != null) {
 	    sb.append (" children=");
 	    for (Iterator i=_children.values().iterator();i.hasNext();) {
@@ -240,14 +240,14 @@ public class IntervalChain {
 		    Node n = (Node) i.next();
 		    sb.append(ns(n)+" ");
 		}
-	    } else		
+	    } else
 		sb.append(" no children");
 	}
 
 	sb.append(" sink=");
 	if (_sink == null)
 	    sb.append("none");
-	else 
+	else
 	    sb.append(ns(_sink));
 
 	if (_next != null) {
@@ -272,7 +272,7 @@ public class IntervalChain {
     protected String ns(Node n) {
 	if (n != null)
 	    return _graph.nodeString(n);
-	else 
+	else
 	    return "null";
     }
 
@@ -285,7 +285,7 @@ public class IntervalChain {
      * This method will search the topology of the graph and create
      * the appropriate IntervalChain.
      *
-     * _root and _graph should be set before this method is called. 
+     * _root and _graph should be set before this method is called.
      *
      **/
     protected void _init() throws IllegalActionException {
@@ -338,10 +338,10 @@ public class IntervalChain {
 	    }
 	    break;
 
-	default:	    
+	default:
 	    _processForkNode();
 	    break;
- 	} 
+ 	}
 	if (DEBUG) System.out.println();
 	//System.out.println("True branch="+isTrueBranch()+" "+getRootShortString());
     }
@@ -360,8 +360,8 @@ public class IntervalChain {
      * 2. The node forks, but its children are not dominated by the
      *    root.  This is an "invalid" interval. (i.e. multiple
      *    exits). In this case, the IntervalChain is marked as
-     *    "invalid" and will subsequently be ignored. 
-     *    Nodes within such invalid intervals will be part of 
+     *    "invalid" and will subsequently be ignored.
+     *    Nodes within such invalid intervals will be part of
      *    "special" intervals.
      * 3. The node forks, but it has children that are
      *    "invalid". This node will include a sub-tree
@@ -373,10 +373,10 @@ public class IntervalChain {
 	Node child;
 	Collection rootSuccessors = _graph.successors(_root);
 	int numSuccessors = rootSuccessors.size();
-	
+
 	// iterate over direct children. Children are either dominated
 	// by the root or not. If they are dominated, create a new
-	// interval and store. 
+	// interval and store.
 	// If not, save nonDominated children in a list.
 	HashMap domChildren = new HashMap(numSuccessors);
 	Vector nonDomChildren = new Vector(numSuccessors);
@@ -396,13 +396,13 @@ public class IntervalChain {
 	}
 
 	// Determine the immediate post-dominator (ipd) of the current
-	// node. 
-	Node immediatePostDominator = 
+	// node.
+	Node immediatePostDominator =
 	    _graph.getImmediatePostDominator(_root);
 	if (DEBUG)
 	    System.out.print("Fork "+ns(_root)+" ipd="+
 			     ns(immediatePostDominator));
-	    
+
 	// If the ipd is one of the dominated children, remove it from
 	// the list of dominated children.
 	// (it will be outside of the interval since a custom
@@ -432,7 +432,7 @@ public class IntervalChain {
 		//
 		// Note that a merge Node for this interval has
 		// not yet been created (ipd may be a child interval)
-		if (childInterval.getChainSinkTarget() != 
+		if (childInterval.getChainSinkTarget() !=
 		    immediatePostDominator &&
 		    childInterval.getRoot() != immediatePostDominator) {
 		    canMerge = false;
@@ -447,7 +447,7 @@ public class IntervalChain {
 					 +")");
 		}
 	    }
-	    for (Iterator i = nonDomChildren.iterator(); 
+	    for (Iterator i = nonDomChildren.iterator();
 		 i.hasNext() && canMerge;) {
 		child = (Node) i.next();
 		if (child != immediatePostDominator) {
@@ -473,7 +473,7 @@ public class IntervalChain {
 	    // the next and continue processing.
 	    _sink = addSimpleJoinNode(immediatePostDominator);
 	    if (DEBUG) System.out.print(" sink="+ns(_sink));
-		
+
 	    if (DEBUG) System.out.println();
 	    if (_graph.dominates(_root,immediatePostDominator))
 		_next = new IntervalChain(this,immediatePostDominator);
@@ -503,11 +503,11 @@ public class IntervalChain {
 		    nodes.add(n);
 		    // add join node
 		    addSpecialJoinNode(n);
-		} 
+		}
 		if (n==_root)
 		    // don't add root
 		    addMode = true;
-	    }		
+	    }
 	    _specialChildren = nodes;
 	    // Continue chain (new interval)
 
@@ -516,28 +516,28 @@ public class IntervalChain {
 	    // the next and continue processing.
 	    _sink = addSpecialJoinNode(immediatePostDominator);
 	    if (DEBUG) System.out.print(" sink="+ns(_sink));
-		
+
 	    if (DEBUG) System.out.println();
 	    if (_graph.dominates(_root,immediatePostDominator))
 		_next = new IntervalChain(this,immediatePostDominator);
 	    else
 		_next = null;
 
-		
-	}
-    } 
 
-    
+	}
+    }
+
+
     protected Node addSimpleJoinNode(Node ipd) throws IllegalActionException {
 
 	// temporary string name for new join node
-	String newNodeWeight="join_"; 
+	String newNodeWeight="join_";
 	// Vector for edges that will need to be removed (may
 	// not be the full size of ipdInEdges)
 	Vector remove = new Vector(_graph.inputEdges(ipd).size());
 
 	// Iterate through dominated intervals and change the edge
-	// leaving the sink node to the newNode 
+	// leaving the sink node to the newNode
 	for (Iterator i = _children.values().iterator();i.hasNext();) {
 	    IntervalChain ic = (IntervalChain) i.next();
 	    Node sink = ic.getChainSinkNode();
@@ -562,7 +562,7 @@ public class IntervalChain {
 	for (Iterator i=remove.iterator();i.hasNext();) {
 	    Edge e = (Edge) i.next();
 	    _graph.removeEdge( e );
-	    _graph.addEdge(e.source(),newNode);		
+	    _graph.addEdge(e.source(),newNode);
 	}
 	_graph.addEdge(newNode, ipd);
 	//System.out.println(_graph);
@@ -583,12 +583,12 @@ public class IntervalChain {
 		Edge e = (Edge) i.next();
 		newNodeWeight += ns(e.source());
 		remove.add(e);
-	    }	    	    
+	    }
 	    Node newNode = _graph.addNodeWeight(newNodeWeight);
 	    for (Iterator i=remove.iterator();i.hasNext();) {
 		Edge e = (Edge) i.next();
 		_graph.removeEdge( e );
-		_graph.addEdge(e.source(),newNode);		
+		_graph.addEdge(e.source(),newNode);
 	    }
 	    _graph.addEdge(newNode, join);
 	    return newNode;
@@ -601,11 +601,11 @@ public class IntervalChain {
      * Class and Method specified by the String arguments.
      * This method creates the IntervalChain from a DominatorCFG.
      *
-     * @param args Specifies the Classname (args[0]) and the 
+     * @param args Specifies the Classname (args[0]) and the
      * Methodname (args[1]).
      * @param writeGraphs If set true, this method will create
      * ".dot" file graphs for intermediate results. Specifically,
-     * this method will create a file called "interval.dot" 
+     * this method will create a file called "interval.dot"
      * that represents the Intervals in the CFG.
      *
      * @see DominatorCFG#createDominatorCFG(String[],boolean)
@@ -614,12 +614,12 @@ public class IntervalChain {
 						    boolean writeGraphs) {
 	IntervalChain ic=null;
 	try {
-	    DominatorCFG _cfg = 
+	    DominatorCFG _cfg =
 		DominatorCFG.createDominatorCFG(args,writeGraphs);
 	    ic = new IntervalChain(_cfg);
 	    if (writeGraphs)
 		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("interval",_cfg);
-	    
+
 	} catch (IllegalActionException e) {
 	    System.err.println(e);
 	    System.exit(1);
@@ -638,7 +638,7 @@ public class IntervalChain {
     /** The Root Node of the interval (i.e. the entry Node of the
      * Interval). **/
     protected Node _root;
-       
+
     /** This Node is the sink for the current Interval. By definition, each
      * IntervalChain must have one entry point (_root) and one exit point. The
      * _sink is the exit point of the Interval.
@@ -663,7 +663,7 @@ public class IntervalChain {
     HashMap _children;
 
     Vector _specialChildren;
-    
-    public static boolean DEBUG = false; 
+
+    public static boolean DEBUG = false;
 
 }

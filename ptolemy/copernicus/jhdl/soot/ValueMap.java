@@ -49,7 +49,7 @@ import java.util.*;
  * necessarily representative of the underlying graph - the Values and
  * Nodes represent a subset of the Values/Nodes within a graph.
  *
- * Any changes in the underlying graph will not be reflected in 
+ * Any changes in the underlying graph will not be reflected in
  * the ValueMap. For example, adding or removing Nodes in the
  * underlying graph will have no impact on the ValueMap.
  * However, methods within the ValueMap may be used to modify the
@@ -62,7 +62,7 @@ import java.util.*;
 @since Ptolemy II 2.0 */
 
 public class ValueMap extends HashListMap {
-    
+
     /**
      * This constructor will initialize an empty HashListMap. This
      * will <em>not</em> add any Nodes or Values to the
@@ -75,7 +75,7 @@ public class ValueMap extends HashListMap {
      * <li>updateMap
      * <li>mergeSerial
      * </ul>
-     * 
+     *
      **/
     public ValueMap(SootBlockDirectedGraph graph) {
 	super();
@@ -111,10 +111,10 @@ public class ValueMap extends HashListMap {
     /**
      * This method will return a Collection that includes all of the
      * Values found within this ValueMap. Note that this may not
-     * include all Values contained within the graph. 
+     * include all Values contained within the graph.
      *
      * This method calls the keySet() method of the super HashListMap
-     * class. 
+     * class.
      **/
     public Collection getValues() {
 	return keySet();
@@ -125,7 +125,7 @@ public class ValueMap extends HashListMap {
      * ValueMap. Note that this method will <em>not</em> return all
      * the Nodes in the graph. This method will iterate through the
      * Nodes found within the HashListMap data structure and collect
-     * them into a single Collection. 
+     * them into a single Collection.
      **/
     public Collection getNodes() {
 	Vector nodes = new Vector (_graph.nodeCount());
@@ -154,9 +154,9 @@ public class ValueMap extends HashListMap {
     /**
      * This method will add a new Value weighted Node to the
      * underlying graph. The weight of the Node is the Value
-     * argument. 
-     * 
-     * In addition, this method will add a mapping in the 
+     * argument.
+     *
+     * In addition, this method will add a mapping in the
      * HashListMap between the Value and the new Node. If the
      * Value argument does not exist as a key in the HashListMap,
      * it is added to the HashListMap as a key and the Node as the
@@ -179,13 +179,13 @@ public class ValueMap extends HashListMap {
      *
      * This is the primary way of adding Value weighted Nodes to the
      * graph. Several other methods in the class use this method to add new
-     * Value weighted Nodes to the graph. 
-     * 
+     * Value weighted Nodes to the graph.
+     *
      **/
     public Node addValueNode(Value v) {
-	Value nodeValue = v; 
+	Value nodeValue = v;
 	if (v instanceof InstanceFieldRef) {
-	    InstanceFieldRef ifr = 
+	    InstanceFieldRef ifr =
 		getMatchingInstanceFieldRef((InstanceFieldRef) v);
 	    if (ifr != null)
 		nodeValue = ifr;
@@ -255,12 +255,12 @@ public class ValueMap extends HashListMap {
      * base (as returned by the InstanceFieldRef.getBase() method) of
      * each object is the same (i.e. the base object associated with
      * each IFR is the same).
-     * 
+     *
      * @see getMatchingInstanceFieldRef(InstanceFieldRef)
      **/
     // TODO: This method may need to go in a different class (more
     // general than this class)
-    public static boolean equalIFR(InstanceFieldRef ifr1, 
+    public static boolean equalIFR(InstanceFieldRef ifr1,
 				   InstanceFieldRef ifr2) {
 	return ifr1.getBase().equals(ifr2.getBase()) &&
 	    ifr1.getField().equals(ifr2.getField());
@@ -276,14 +276,14 @@ public class ValueMap extends HashListMap {
      * If the Value is an InstanceFieldRef (IFR), this method will
      * search the HashListMap for a matching IFR. The Node associated
      * with the matching IFR will be returned if it exists.
-     * 
+     *
      * @see getMatchingInstanceFieldRef(InstanceFieldRef)
      **/
     public Node getValueNode(Value v) {
 	if (containsKey(v))
 	    return (Node) getLast(v);
 	if (v instanceof InstanceFieldRef) {
-	    InstanceFieldRef ifr = 
+	    InstanceFieldRef ifr =
 		getMatchingInstanceFieldRef((InstanceFieldRef) v);
 	    Node ifrNode = (Node) getLast(ifr);
 	    //add(v,n);
@@ -361,16 +361,16 @@ public class ValueMap extends HashListMap {
 
 	//Value v = (Value) n.getWeight();
 	Value v = (Value) o;
-	
+
 	// See if the Value associated with the given Node
 	if (!containsKey(v))
 	    return false;
 	if (!isVariableValue(v))
 	    return false;
-	if (v instanceof Local && 
+	if (v instanceof Local &&
 	    _graph.inputEdgeCount(n) == 1)
 	    return true;
-	if (v instanceof InstanceFieldRef && 
+	if (v instanceof InstanceFieldRef &&
 	    _graph.inputEdgeCount(n) == 2)
 	    return true;
 	return false;
@@ -423,7 +423,7 @@ public class ValueMap extends HashListMap {
     /**
      * This method will clear all mappings within the ValueMap and
      * rebuild the mappings based on the topology of the underlying
-     * graph. 
+     * graph.
      *
      * This method will iterate through all graph Nodes in a
      * topological order. A new mapping will be added for each Value
@@ -450,12 +450,12 @@ public class ValueMap extends HashListMap {
 		if (o instanceof Value)
 		    add(o,n);
 	    }
-	}	
+	}
     }
 
 
     /**
-     * This method will merge a data flow graph as a successor of 
+     * This method will merge a data flow graph as a successor of
      * the current graph. Rather than passing the graph itself, the
      * ValueMap of the graph is passed in. The ValueMap is used
      * to decide which nodes in the successor graph are driven by
@@ -465,13 +465,13 @@ public class ValueMap extends HashListMap {
 
 	DirectedGraph succeedingGraph = successor.getGraph();
 
-	// temporary hashmap between old nodes & new. 
+	// temporary hashmap between old nodes & new.
 	// Used when connecting edges.
-	HashMap nodeMap = new HashMap(); 
+	HashMap nodeMap = new HashMap();
 
 	// Add all nodes from dfg to graph
 	for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();	    
+	    Node node = (Node) i.next();
 	    if (DEBUG) System.out.print("ValueMap:Merging node="+node+
 					" with weight "+
 					node.getWeight() + " of type " +
@@ -482,9 +482,9 @@ public class ValueMap extends HashListMap {
 	    if (nodeWeight instanceof Value) {
 		// Some nodes don't have a Value weight (binary mux node)
 		Value nodeValue = (Value) nodeWeight;
-		
+
 		if (!successor.isAssigned(node)) {
-		    newNode = this.getValueNode(nodeValue);		    
+		    newNode = this.getValueNode(nodeValue);
 		}
 		if (newNode == null) {
 		    newNode = this.addValueNode(nodeValue);
@@ -502,7 +502,7 @@ public class ValueMap extends HashListMap {
 	    Node src = e.source();
 	    if (nodeMap.containsKey(src))
 		src = (Node) nodeMap.get(src);
-	    Node snk = e.sink();		
+	    Node snk = e.sink();
 	    if (nodeMap.containsKey(snk))
 		snk = (Node) nodeMap.get(snk);
 
@@ -514,7 +514,7 @@ public class ValueMap extends HashListMap {
 		else
 		    _graph.addEdge(src,snk);
 	    }
-	}	
+	}
     }
 
     /**

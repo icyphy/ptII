@@ -174,10 +174,10 @@ public class GeneratorTableau extends Tableau {
 	    }
 
 	    if (getEffigy() == null
-                || getEffigy().uri == null 
-		|| getEffigy().uri.getURI() == null) { 
+                || getEffigy().uri == null
+		|| getEffigy().uri.getURI() == null) {
 		// If the user does File -> New -> GraphEditor,
-		// View -> Code Generator, then we might end up 
+		// View -> Code Generator, then we might end up
 		// dealing with an Effigy that has a null url.
                 // FIXME: This should work, but TableauFrame._saveAs()
                 // calls effigy.setContainer(null), which means
@@ -344,14 +344,14 @@ public class GeneratorTableau extends Tableau {
 			    // The code generator to run.  The value of this
 			    // parameter should name a subdirectory of
 			    // ptolemy/copernnicus such as "java" or "shallow".
-			    String codeGenerator = 
+			    String codeGenerator =
 				getStringToken(options, "codeGenerator");
 
 			    // Convert "java" to java.
 			    //codeGenerator =
 			    //	codeGenerator.substring(1, codeGenerator
 			    //				.length() - 1);
-								    
+
 			    String targetPath =
 				getStringToken(options, "targetPath");
 
@@ -475,7 +475,7 @@ public class GeneratorTableau extends Tableau {
 
 			    if (compile && commands != null) {
 				execCommands.add(commands.get(0));
-			    } 
+			    }
 
 			    if (show && decompile) {
 				String targetPackage =
@@ -502,8 +502,8 @@ public class GeneratorTableau extends Tableau {
 				    getStringToken(options, "classPath");
 
 				execCommands.add("javap "
-                                        + "-classpath \"" 
-					+ classPath	 
+                                        + "-classpath \""
+					+ classPath
                                         + "\" "
                                         + className);
 			    }
@@ -511,7 +511,7 @@ public class GeneratorTableau extends Tableau {
                             if (run && commands != null) {
 				execCommands.add(commands.get(1));
                             }
-                            
+
                             if (execCommands.size() > 0) {
 				exec.setCommands(execCommands);
 				exec.start();
@@ -598,7 +598,7 @@ public class GeneratorTableau extends Tableau {
 	codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
 
 	List results = new LinkedList();
-	try { 
+	try {
             // Write out the GeneratorAttribute so that we can read it in
             // when generating a makefile.
             String generatorAttributeFileName =

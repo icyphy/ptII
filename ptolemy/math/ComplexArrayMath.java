@@ -131,7 +131,7 @@ public class ComplexArrayMath {
         }
         return returnValue;
     }
- 
+
     /** Return a new array that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input array,
      *  using <i>z</i> as the right operand in all cases and the array elements
@@ -223,7 +223,7 @@ public class ComplexArrayMath {
 
     /** Return a new array that is the result of appending <i>length2</i> elements
      *  of <i>array2</i>, starting from the <i>idx2</i>th element,
-     *  to <i>length1</i> elements of <i>array1</i>, starting from 
+     *  to <i>length1</i> elements of <i>array1</i>, starting from
      *  the <i>idx1</i>th element.
      *  Appending empty arrays is supported. In that case, the corresponding
      *  idx may be any number. Allow System.arraycopy() to throw array access
@@ -311,7 +311,7 @@ public class ComplexArrayMath {
         }
         return returnValue;
     }
-     
+
     /** Return a complex number that is the dot product of the two argument
      *  arrays. The dot product is computed by the sum of the
      *  element-by-element products of <i>array1</i> and the complex
@@ -366,10 +366,10 @@ public class ComplexArrayMath {
      *  </p>
      */
     public static final Complex[] limit(Complex[] array,
-            Complex bottom, Complex top) 
+            Complex bottom, Complex top)
             throws IllegalArgumentException {
         Complex[] returnValue = new Complex[array.length];
-	
+
         // Check validity of the rectangle.
         if (bottom.real > top.real || bottom.imag > top.imag) {
             throw new IllegalArgumentException(
@@ -502,7 +502,7 @@ public class ComplexArrayMath {
      *  element-by-element multiplication of the two given arrays.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>     
+     *  </p>
      */
     public static final Complex[] multiply(Complex[] array1,
             Complex[] array2) {
@@ -701,7 +701,7 @@ public class ComplexArrayMath {
      *  @param exponent A double, which is the exponent.
      *  @return A new array that is formed by raising each
      *  element of <i>array</i> to the <i>element</i>th power.
-     *  </p>     
+     *  </p>
      */
     public static final Complex[] pow(final Complex[] array,
             final double exponent) {
@@ -831,11 +831,11 @@ public class ComplexArrayMath {
     public static final Complex[] scale (final Complex[] array, final Complex factor) {
         int len = array.length;
         Complex[] returnValue = new Complex[len];
-	
+
 	for (int i = 0; i < len; i++) {
 	    returnValue[i] = array[i].multiply(factor);
 	}
-	
+
 	return returnValue;
     }
 
@@ -861,7 +861,7 @@ public class ComplexArrayMath {
 
         return returnValue;
     }
-     
+
     /** Return a new array that is constructed by subtracting the complex
      *  number z from every element in the given array. If the array argument
      *  is of length 0, return a new array of length 0.
@@ -1047,26 +1047,26 @@ public class ComplexArrayMath {
 
     /** Return true if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
-     *  the magnitudes of the corresponding elements in <i>maxError</i>. 
+     *  the magnitudes of the corresponding elements in <i>maxError</i>.
      *  If both arrays are empty, return true.
      *  <p>
      *  @param array1 The first array.
      *  @param array2 The second array.
-     *  @param maxError An array of complex numbers whose magnitude 
+     *  @param maxError An array of complex numbers whose magnitude
      *  for each element is taken to be the distance threshold.
      *  @return True if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
-     *  the magnitudes of the corresponding elements in <i>maxError</i>. 
+     *  the magnitudes of the corresponding elements in <i>maxError</i>.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
      *  </p>
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, Complex[] maxError) {
-	
+
 	int length = maxError.length;
 	double[] doubleError = new double[length];
-	
+
 	for (int i = 0; i < length; i++) {
 	    doubleError[i] = maxError[i].magnitude();
 	}
@@ -1074,7 +1074,7 @@ public class ComplexArrayMath {
         return within(array1, array2, doubleError);
     }
 
- 
+
     ///////////////////////////////////////////////////////////////////
     //    protected methods
 

@@ -53,7 +53,7 @@ public class PBOReceiver extends AbstractReceiver {
     /** Construct an empty PBOReceiver with the specified container.
      *  @param container The container.
      */
-    public PBOReceiver(IOPort container) 
+    public PBOReceiver(IOPort container)
             throws IllegalActionException {
         super(container);
     }

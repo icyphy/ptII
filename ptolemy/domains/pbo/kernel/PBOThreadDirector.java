@@ -45,9 +45,9 @@ import java.util.Iterator;
 //// PBODirector
 /**
 This class implements the Port-based object model of computation.
-This model of computation is not data driven, like most of the other 
-ptolemy domains.  Instead, it relies on analysis and user tuning of the 
-scheduling to ensure that no important data is lost (or that lost data is 
+This model of computation is not data driven, like most of the other
+ptolemy domains.  Instead, it relies on analysis and user tuning of the
+scheduling to ensure that no important data is lost (or that lost data is
 not critical to the execution of the system).  This gives good real-time
 performance, and this model of computation is often used in embedded control
 systems.
@@ -59,8 +59,8 @@ so that an object is always guaranteed to have the most recent consistent
 available state of its inputs when it fires.   Note that in this communication
 model, data may be lost!
 <p>
-Port-based objects are normally associated with independant processes.  
-However, 
+Port-based objects are normally associated with independant processes.
+However,
 unlike Process Networks, the threads are time-driven, instead of data-driven.
 Each actor has an associated firing period, which determines how often
 it will execute.  When a process is scheduled, it reads the current state
@@ -71,18 +71,18 @@ non-deterministic output.  Some effort must be expended at some point in the
 design of a system using this domain in properly choosing the firing
 periods of each actor.
 <p>
-Instead of associating a process with each actor, this director manually 
-schedules the actors.  This can be useful for simulating execution on 
+Instead of associating a process with each actor, this director manually
+schedules the actors.  This can be useful for simulating execution on
 a target architecture that is different from the development machine.  In the
 future, a director based on actor/process could be developed that would allow
 the fastest execution on a given architecture.
 <p>
 The scheduling of actors is purposefully handled in an informal way.  Each
-actor specifies the period between firings using its 
-<i>executionPeriod</i> parameter.  The 
-scheduler attempts to fire the actor every time that period expires.  
+actor specifies the period between firings using its
+<i>executionPeriod</i> parameter.  The
+scheduler attempts to fire the actor every time that period expires.
 The time spent during firing of the actor is given by its <i>executionTime</i>
-parameter.  
+parameter.
 <p>
 This director schedules each process using a non-preemptive
 earliest deadline first strategy.
@@ -90,10 +90,10 @@ Note that this means the currentTime of the director will advance
 by the <i>executionTime</i> parameter of an actor when the actor is fired.
 This is not the optimal strategy in terms of processor utilization, but it
 is deterministic and very much simpler than trying to deal with preeemptive
-modeling.  In such a case priority scheduling of some kind is 
+modeling.  In such a case priority scheduling of some kind is
 probably necessary.
 <p>
-This director maintains a calendar queue of all the actors in the 
+This director maintains a calendar queue of all the actors in the
 simulation, and fires them in the order given by the queue.  This director
 creates receivers of class PBOReceiver, which implements the shared memory
 communication.
@@ -150,7 +150,7 @@ public class PBOThreadDirector extends Director {
         }
         _reschedule();
     }
-    
+
     private synchronized void _scheduleNew() throws IllegalActionException {
         double currentTime = getCurrentTime();
 
@@ -168,9 +168,9 @@ public class PBOThreadDirector extends Director {
             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
             event = (PBOEvent)_requestQueue.get();
             _areActorsWaiting = true;
-        }      
+        }
         _reschedule();
-    }      
+    }
 
     private synchronized void _reschedule() {
         PBOEvent nextEvent = (PBOEvent) _deadlineQueue.get();
@@ -178,10 +178,10 @@ public class PBOThreadDirector extends Director {
         if(nextActor != _executingActor) {
             // Idle the current thread.
             if(_executingActor != null) {
-                PBOThread thread = 
+                PBOThread thread =
                     (PBOThread) _threadMap.get(_executingActor);
                 thread.setPriority(IDLE);
-            }            
+            }
             // Start the new thread.
             if(nextActor != null) {
                 PBOThread nextThread =
@@ -221,7 +221,7 @@ public class PBOThreadDirector extends Director {
             }
         }
     }
-           
+
     /*       if(_deadlineQueue.isEmpty()) {
              // nothing is currently waiting, so update time to the
              // make the next actor ready to execute.
@@ -247,8 +247,8 @@ public class PBOThreadDirector extends Director {
              // The time the actor actually finished.
              double endFiringTime = getCurrentTime() +
              _getExecutionTime(executingActor);
-        
-             // first process any new activations that will 
+
+             // first process any new activations that will
              // occur before endFiringTime.
              double requestTime = ((PBOEvent)_requestQueue.get()).time();
              while(requestTime < endFiringTime) {
@@ -264,23 +264,23 @@ public class PBOThreadDirector extends Director {
              // get the next requested time
              requestTime = ((PBOEvent)_requestQueue.get()).time();
              }
-            
+
              // now fire the currently executing actor and update
              // time to reflect the amount of time spent.
              boolean postfireReturns;
              if(executingActor.prefire()) {
-             _debug("Firing actor " + ((Entity) executingActor).getFullName() + 
+             _debug("Firing actor " + ((Entity) executingActor).getFullName() +
              " at " + firingTime);
              executingActor.fire();
-	    
+
              // This is the time when the actor finishes.
              setCurrentTime(endFiringTime);
              _debug("Postfiring actor at " + getCurrentTime());
              postfireReturns = executingActor.postfire();
              _debug("done firing");
-	    
+
              } else {
-             _debug("Actor " + ((Entity) executingActor).getFullName() + 
+             _debug("Actor " + ((Entity) executingActor).getFullName() +
              " is not ready to fire.");
              }
 
@@ -291,7 +291,7 @@ public class PBOThreadDirector extends Director {
              _debug("Rescheduling composite");
              executive.fireAt(container, getNextIterationTime());
              }
-        
+
              }*/
 
     /** Schedule a firing of the given actor at the given time. It does
@@ -325,7 +325,7 @@ public class PBOThreadDirector extends Director {
     public double getCurrentTime() {
         if(_startTime > 0)
             return (double)System.currentTimeMillis() - _startTime;
-        else 
+        else
             return 0.0;
     }
 
@@ -492,7 +492,7 @@ public class PBOThreadDirector extends Director {
 	    // this should never happen
 	    throw new InternalErrorException(e.getMessage());
 	}
-        
+
         addDebugListener(new StreamListener());
     }
 
@@ -509,12 +509,12 @@ public class PBOThreadDirector extends Director {
 	    throw new IllegalActionException(
                     "Cannot get the execution period for an actor that "
                     + "is not an entity");
-        Parameter param = 
+        Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
                     "executionPeriod parameter");
-	}		     
+	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
 
@@ -533,12 +533,12 @@ public class PBOThreadDirector extends Director {
 	    throw new IllegalActionException(
                     "Cannot get the executionTime for an actor that is not " +
                     "an entity.");
-        Parameter param = 
+        Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("executionTime");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have an " +
                     "executionTime parameter.");
-	}		     
+	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
 
@@ -547,7 +547,7 @@ public class PBOThreadDirector extends Director {
     // The queue of times when actors will next become ready, ordered
     // by request times.
     private CalendarQueue _requestQueue;
-    
+
     private ThreadGroup _threadGroup;
     private HashMap _threadMap;
     private Thread _executionThread;
@@ -557,7 +557,7 @@ public class PBOThreadDirector extends Director {
 
     public static final int IDLE = Thread.MIN_PRIORITY;
     public static final int RUNNING = Thread.MIN_PRIORITY + 1;
-    
+
     private class PBOThread extends PtolemyThread {
         public PBOThread (ThreadGroup group, Actor actor) {
             super(group, ((NamedObj)actor).getName());
@@ -580,13 +580,13 @@ public class PBOThreadDirector extends Director {
                 // notifyListenersOfException(e);
             } finally {
                 //  _director._decreaseActiveCount();
-            }  
+            }
             // Copy the receivers
             actorFinished(_actor);
         }
         Actor _actor;
     }
-    
+
     // An implementation of the CQComparator interface for use with
     // calendar queue that compares two PBOEvents according to their
     // time stamps, microstep, and depth in that order.
@@ -708,7 +708,7 @@ public class PBOThreadDirector extends Director {
 
 
     public class PBOEvent implements Comparable {
-        
+
         /** Construct an event with the specified entity and time.
          *  @param actor The actor.
          *  @param time The time associated with the actor.
@@ -717,10 +717,10 @@ public class PBOThreadDirector extends Director {
             _actor = actor;
             _time = time;
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         /** Return the destination actor for this event.
          *  @return The destination actor.
          */
@@ -741,7 +741,7 @@ public class PBOThreadDirector extends Director {
         public final int compareTo(Object event) {
             return compareTo((PBOEvent)event);
         }
-        
+
         /** Compare the tag of this event with the specified event for order.
          *  Return -1, zero, or +1 if this
          *  event is less than, equal to, or greater than the specified event.
@@ -753,14 +753,14 @@ public class PBOThreadDirector extends Director {
          * @return -1, 0, or 1, depends on the order of the events.
          */
         public final int compareTo(PBOEvent event) {
-            
+
             if ( _time > event._time)  {
                 return 1;
             } else if ( _time < event._time) {
                 return -1;
-            } else 
+            } else
                 return 0;
-        
+
         }
 
         /** Compare the tag of this event with the specified and return true
@@ -779,7 +779,7 @@ public class PBOThreadDirector extends Director {
         public double time() {
             return _time;
         }
-        
+
         /** Return a description of the event, including the contained token
          *  (or "null" if there is none) and the time stamp.
          *  @return The token as a string with the time stamp.
@@ -788,14 +788,14 @@ public class PBOThreadDirector extends Director {
             return "PBOEvent(time=" + _time + ", dest="
                 + ((NamedObj)_actor).getFullName() + ")";
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-        
+
         // The destination actor.
         private Actor _actor;
-        
+
         // The time stamp of the event.
-        private double _time;        
+        private double _time;
     }
 }

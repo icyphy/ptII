@@ -51,7 +51,7 @@ import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureSource
-/** 
+/**
 
 @author Steve Neuendorffer
 */
@@ -72,7 +72,7 @@ public class FigureSource extends Source implements Configurable {
 
         output.setTypeEquals(FigureToken.TYPE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -80,10 +80,10 @@ public class FigureSource extends Source implements Configurable {
     ////                         public methods                    ////
 
     /** Configure the object with data from the specified input source
-     *  (a URL) and/or textual data.  The object should interpret the 
+     *  (a URL) and/or textual data.  The object should interpret the
      *  source first, if it is specified, followed by the literal text,
-     *  if that is specified.  The new configuration should usually 
-     *  override any old configuration wherever possible, in order to 
+     *  if that is specified.  The new configuration should usually
+     *  override any old configuration wherever possible, in order to
      *  ensure that the current state can be successfully retrieved.
      *  <p>
      *  This method is defined to throw a very general exception to allow
@@ -102,7 +102,7 @@ public class FigureSource extends Source implements Configurable {
         _base = base;
         _source = source;
         _text = text;
-    
+
         try {
             // FIXME: Do we need a base here?
             // FIXME: ignoring source.
@@ -143,7 +143,7 @@ public class FigureSource extends Source implements Configurable {
      *  this object.  Note that any configuration that was previously
      *  specified using the source attribute need not be represented here
      *  as well.
-     *  @return A configuration string, or null if no configuration 
+     *  @return A configuration string, or null if no configuration
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
@@ -164,5 +164,5 @@ public class FigureSource extends Source implements Configurable {
     private String _source = null;
 
     // The text in the body of the configure.
-    private String _text = null;   
+    private String _text = null;
 }

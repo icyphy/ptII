@@ -189,7 +189,7 @@ This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
 appear before any data.  Also, the value of the XTicks, YTicks,
 XRange or YRange directives should be in log units.
 So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
-at the 1000 mark. 
+at the 1000 mark.
 <p>
 By default, tick marks are connected by a light grey background grid.
 This grid can be turned off with the following command:
@@ -665,7 +665,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Get the current plot rectangle.
      *  Note that Rectangle returned by this method is calculated
-     *  from the values of {@link _ulx}, {@link _uly}, 
+     *  from the values of {@link _ulx}, {@link _uly},
      *  {@link lrx} and {@link _lry}.  The value passed in by
      *  setPlotRectangle() is not directly used, thus calling
      *  getPlotRectangle() may not return the same rectangle that
@@ -1231,7 +1231,7 @@ public class PlotBox extends JPanel implements Printable {
     public void setColors(Color[] colors) {
         _colors = colors;
     }
-    
+
     /** Set the file to read when init() is called.
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
@@ -1274,7 +1274,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Set the plot rectangle inside the axes.  This method
-     *  can be used to create two plots that share the same axes. 
+     *  can be used to create two plots that share the same axes.
      *  @param rectangle Rectangle space inside axes.
      *  @see #getPlotRectangle()
      */
@@ -1349,7 +1349,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
-     *  If you would like to have the X axis drawn with a 
+     *  If you would like to have the X axis drawn with a
      *  logarithmic axis, then setXLog(true) should be called before
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
@@ -1380,7 +1380,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
-     *  If you would like to have the Y axis drawn with a 
+     *  If you would like to have the Y axis drawn with a
      *  logarithmic axis, then setYLog(true) should be called before
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
@@ -1657,7 +1657,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         // If user specified a plot rectangle, compute
-        // a working plot rectangle which lies inside the 
+        // a working plot rectangle which lies inside the
         // drawRect at the user specified coordinates
         Rectangle workingPlotRectangle = null;
         if (_specifiedPlotRectangle != null) {
@@ -1667,7 +1667,7 @@ public class PlotBox extends JPanel implements Printable {
                     Math.min(drawRect.width, _specifiedPlotRectangle.width),
                     Math.min(drawRect.height, _specifiedPlotRectangle.height) );
         }
-  
+
 
         // Vertical space for title, if appropriate.
         // NOTE: We assume a one-line title.
@@ -2133,7 +2133,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Draw the label mark on the axis
                     graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                     graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-                    
+
                     // Draw the grid line
                     if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                         graphics.setColor(Color.lightGray);

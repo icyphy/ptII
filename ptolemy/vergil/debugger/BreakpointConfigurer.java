@@ -160,8 +160,8 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
             } else {
                 // If the director does not already have a
                 // DebugController, create one.
-                String moml = "<property name=\"" 
-                    + _DEBUGCONTROLLER 
+                String moml = "<property name=\""
+                    + _DEBUGCONTROLLER
                     + "\" class=\"ptolemy.vergil.debugger.DebugController\"/>";
                 ChangeRequest request = new MoMLChangeRequest(
                         this,            // originator
@@ -192,7 +192,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
         // The DebugController should not be null since the change
         // request should have added the DebugController to the
         // director.
-        DebugController debugController = 
+        DebugController debugController =
             (DebugController) director.getAttribute(_DEBUGCONTROLLER);
 
         // Register a new DebugController with the director.

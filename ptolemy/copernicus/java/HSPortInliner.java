@@ -127,7 +127,7 @@ public class HSPortInliner implements PortInliner {
         Local returnLocal =
             Jimple.v().newLocal("return", PtolemyUtilities.tokenType);
         body.getLocals().add(returnLocal);
-   
+
         Value bufferSizeValue = null;
         // Refer directly to the buffer in the _model
         int channel = 0;
@@ -164,7 +164,7 @@ public class HSPortInliner implements PortInliner {
     public void inlineGet(JimpleBody body, Stmt stmt,
             ValueBox box, InvokeExpr expr, TypedIOPort port) {
         System.out.println("inlining get at " + stmt);
-        
+
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -175,16 +175,16 @@ public class HSPortInliner implements PortInliner {
 
         Value channelValue = expr.getArg(0);
 
-        SootField field = _getBufferField(_modelClass, port, port.getType(), 
+        SootField field = _getBufferField(_modelClass, port, port.getType(),
                 channelValue, false);
-        
+
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(
                         returnLocal,
                         Jimple.v().newStaticFieldRef(field)),
                 stmt);
-     
+
         // We may be calling get without setting the return value
         // to anything.
         if (stmt instanceof DefinitionStmt) {
@@ -202,7 +202,7 @@ public class HSPortInliner implements PortInliner {
     public void inlineGetInside(JimpleBody body, Stmt stmt,
             ValueBox box, InvokeExpr expr, TypedIOPort port) {
         System.out.println("inlining getInside at " + stmt);
-        
+
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -213,16 +213,16 @@ public class HSPortInliner implements PortInliner {
 
         Value channelValue = expr.getArg(0);
 
-        SootField field = _getBufferField(_modelClass, port, port.getType(), 
+        SootField field = _getBufferField(_modelClass, port, port.getType(),
                 channelValue, true);
-        
+
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(
                         returnLocal,
                         Jimple.v().newStaticFieldRef(field)),
                 stmt);
-     
+
         // We may be calling get without setting the return value
         // to anything.
         if (stmt instanceof DefinitionStmt) {
@@ -240,16 +240,16 @@ public class HSPortInliner implements PortInliner {
             InvokeExpr expr, TypedIOPort port) {
 
         System.out.println("inlining send at " + stmt);
-        
+
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate send not supported.");
         }
 
         Value channelValue = expr.getArg(0);
 
-        SootField field = _getBufferField(_modelClass, port, port.getType(), 
+        SootField field = _getBufferField(_modelClass, port, port.getType(),
                 channelValue, false);
-        
+
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(
@@ -265,7 +265,7 @@ public class HSPortInliner implements PortInliner {
     public void inlineSendInside(JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port) {
         System.out.println("inlining sendInside at " + stmt);
-        
+
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate sendInside not supported on port "
                     + port.getFullName() + ".");
@@ -273,9 +273,9 @@ public class HSPortInliner implements PortInliner {
 
         Value channelValue = expr.getArg(0);
 
-        SootField field = _getBufferField(_modelClass, port, port.getType(), 
+        SootField field = _getBufferField(_modelClass, port, port.getType(),
                 channelValue, true);
-        
+
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(
@@ -326,7 +326,7 @@ public class HSPortInliner implements PortInliner {
                     (ptolemy.data.type.Type)typeMap.get(types.next());
                 BaseType tokenType =
                     PtolemyUtilities.getSootTypeForTokenType(type);
-               
+
                 String fieldName = relation.getName() + "_bufferLocal";
                 Local arrayLocal =
                     Jimple.v().newLocal(fieldName, tokenType);
@@ -339,7 +339,7 @@ public class HSPortInliner implements PortInliner {
                             Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
                     System.out.println("creating field = " + field);
-                          
+
 
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
@@ -450,14 +450,14 @@ public class HSPortInliner implements PortInliner {
             for (Iterator relations = relationList.iterator();
                  relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
-                
+
                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
                     if (channel == argChannel) {
                         SootField arrayField =
                             modelClass.getFieldByName(
                                     InlinePortTransformer.getBufferFieldName(relation,
                                             i, type));
-                        
+
                         return arrayField;
                     }
                 }
@@ -528,7 +528,7 @@ public class HSPortInliner implements PortInliner {
         }
         return set;
     }
-    
+
     private CompositeActor _model;
     private SootClass _modelClass;
     private Map _options;

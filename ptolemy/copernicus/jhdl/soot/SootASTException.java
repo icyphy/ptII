@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// SootASTException
 /**
 This class is a custom Exception class for reporting errors within the
-Soot abstract syntax tree. This exception is generated in the 
+Soot abstract syntax tree. This exception is generated in the
 SootASTVisitor class.
 
 @author Mike Wirthlin

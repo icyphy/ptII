@@ -581,7 +581,7 @@ public class PlotFrame extends JFrame {
 
     /** Display only .plt and .xml files */
     class PLTOrXMLFileFilter extends FileFilter {
-    
+
 	/** Accept only .plt or .xml files.
 	 *  @param file The file to be checked.
 	 *  @return true if the file is a directory, a .plot or a .xml file.
@@ -610,7 +610,7 @@ public class PlotFrame extends JFrame {
 	    }
 	    return false;
 	}
-    
+
 	/**  The description of this filter */
 	public String getDescription() {
 	    return ".plt and .xml files";

@@ -85,7 +85,7 @@ public class DDEIOPort extends TypedIOPort {
      * @exception IllegalActionException If the port is not of an
      *  acceptable class for the container, or if the container
      *  does not implement the Actor interface, or if the container
-     *  is not atomic.  
+     *  is not atomic.
      * @exception NameDuplicationException If the name coincides
      *  with a port already in the container.
      */

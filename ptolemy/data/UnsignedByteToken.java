@@ -164,7 +164,7 @@ public class UnsignedByteToken extends ScalarToken {
                 notSupportedConversionMessage(token, "byte"));
     }
 
-    /** Return the value in the token as a double. 
+    /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
@@ -216,7 +216,7 @@ public class UnsignedByteToken extends ScalarToken {
         return _value;
     }
 
-    /** Return the value in the token as an integer.  
+    /** Return the value in the token as an integer.
      *  @return The byte value contained in this token as a int.
      */
     public int intValue() {
@@ -236,7 +236,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns a token representing the result of shifting the bits
      *  of this token towards the least significant bit, filling the
      *  most significant bits with zeros.  This treats the value as an
-     *  unsigned number, which may have the effect of destroying the 
+     *  unsigned number, which may have the effect of destroying the
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.
@@ -245,13 +245,13 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(_value >>> bits);
     }
 
-    /** Return the value in the token as a long. 
+    /** Return the value in the token as a long.
      *  @return The byte value contained in this token as a long.
      */
     public long longValue() {
         return (long) unsignedConvert(_value);
     }
-  
+
     /** Returns a new UnsignedByteToken with value 1.
      *  @return A new UnsignedByteToken with value 1.
      */
@@ -353,7 +353,7 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(sum);
     }
 
-    /** Returns a token representing the bitwise NOT of this token. 
+    /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
      */
     protected ScalarToken _bitwiseNot() {
@@ -434,7 +434,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result.  
+     *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {

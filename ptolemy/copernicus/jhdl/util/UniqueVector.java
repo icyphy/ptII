@@ -48,8 +48,8 @@ public class UniqueVector extends Vector {
 
     public UniqueVector() { super(); }
     public UniqueVector(int i) { super(i); }
-    public UniqueVector(Collection c) { 
-	super(c.size()); 
+    public UniqueVector(Collection c) {
+	super(c.size());
 	addAll(c);
     }
 

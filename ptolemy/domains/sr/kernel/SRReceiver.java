@@ -193,7 +193,7 @@ public class SRReceiver extends AbstractReceiver {
      *  @exception UnknownTokenException If the state is unknown.
      *  @exception IllegalArgumentException If the state is unknown.
      *  @see #hasToken()
-     *  @since Ptolemy II 2.1  
+     *  @since Ptolemy II 2.1
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {

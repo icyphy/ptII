@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -62,11 +62,11 @@ import soot.ValueBox;
 @since Ptolemy II 2.0
 */
 
-public abstract class AbstractCompoundExpression 
+public abstract class AbstractCompoundExpression
     extends CompoundBooleanExpression
     implements Expr, ToBriefString {
 
-    public AbstractCompoundExpression(Value op1, Value op2) { 
+    public AbstractCompoundExpression(Value op1, Value op2) {
 	if (op1 instanceof ConditionExpr)
 	    this.op1Box = Jimple.v().newConditionExprBox(op1);
 	else
@@ -146,7 +146,7 @@ public abstract class AbstractCompoundExpression
     }
 
     /** Returns a hash code for this object, consistent with structural equality. */
-    public int equivHashCode() 
+    public int equivHashCode()
     {
         return op1Box.getValue().equivHashCode() * 101 + op2Box.getValue().equivHashCode() + 17
             ^ getSymbol().hashCode();
@@ -167,7 +167,7 @@ public abstract class AbstractCompoundExpression
     public String toBriefString()
     {
         Value op1 = op1Box.getValue(), op2 = op2Box.getValue();
-        String leftOp = ((ToBriefString)op1).toBriefString(), 
+        String leftOp = ((ToBriefString)op1).toBriefString(),
             rightOp = ((ToBriefString)op2).toBriefString();
 
         return "(" + leftOp + getSymbol() + rightOp + ")";

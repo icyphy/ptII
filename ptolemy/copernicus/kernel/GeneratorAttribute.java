@@ -113,7 +113,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         initialParametersURL =
 	    new Parameter(this, "initialParametersURL",
 			  new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
-    }	
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         Parameters                        ////
@@ -151,19 +151,19 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	}
 
 	// Read in the initialParameters file.
-	URL initialParameters = 
+	URL initialParameters =
 	    getClass().getClassLoader()
 	    .getResource(((StringToken)initialParametersURL.getToken())
 			 .stringValue());
 	if (initialParameters == null) {
-	    throw new IllegalActionException(this, "Failed to find the " 
+	    throw new IllegalActionException(this, "Failed to find the "
 					     + "value of the "
 					     + "initialParametersURL: '"
 					     + initialParametersURL
 					     .getExpression()
 					     + "'");
 	}
-		    
+
 
 	try {
 	    BufferedReader inputReader = new BufferedReader(
@@ -181,11 +181,11 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
   		requestChange(new MoMLChangeRequest(this, this,
   						buffer.toString()));
   	    } catch (Exception ex) {
-  		throw new IllegalActionException(this, ex, "Failed to parse " 
+  		throw new IllegalActionException(this, ex, "Failed to parse "
   						 + buffer.toString());
   	    }
 	} catch (Exception ex) {
-	    throw new IllegalActionException(this, ex, "Failed to parse '" 
+	    throw new IllegalActionException(this, ex, "Failed to parse '"
 					     + initialParametersURL
 					     .getExpression()
 					     + "'");
@@ -198,7 +198,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	_initialized = true;
     }
 
-	    
+
     /** Given a dot separated classname, return the jar file or directory
      *  where the class can be found.
      *  @param necessaryClass  The dot separated class name, for example
@@ -224,7 +224,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    }
 
 	    // Strip off the name of the resource we were looking for
-	    // so that we are left with the directory or jar file 
+	    // so that we are left with the directory or jar file
 	    // it is in
 	    resourceResults =
 		resourceResults.substring(0,resourceResults.length()-
@@ -246,7 +246,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    // File and get its path, which will return c:\ptII
 	    File resourceFile = new File(resourceResults);
 
-	    // Convert backslashes 
+	    // Convert backslashes
 	    String sanitizedResourceName =
 		StringUtilities.substitute(resourceFile.getPath(),
 					   "\\", "/");
@@ -255,10 +255,10 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	return null;
     }
 
-    /** If necessary, initialize this GeneratorAttribute and then 
+    /** If necessary, initialize this GeneratorAttribute and then
      *	sanity check the parameters and update them as necessary.
      *  The moml file named by the modelPathOrURL method parameter
-     *  is read in and the Parameters that are determined by the 
+     *  is read in and the Parameters that are determined by the
      *  model itself are checked.  Pathnames are also checked
      *
      *  @param modelPathOrURL The file pathname or URL to the model.
@@ -274,7 +274,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 	if (modelPathOrURL == null)
 	    // Get the modelPath and update modelPath and model.
-	    modelPathOrURL = 
+	    modelPathOrURL =
 		((StringToken)
 		 ((Parameter)getAttribute("modelPath"))
 		 .getToken()).stringValue();
@@ -299,7 +299,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         // if we are running under Webstart, then ptIIUserDirectory
         // does not equal ptII.
 	File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
-	if (!ptIIUserDirectoryFile.isDirectory() 
+	if (!ptIIUserDirectoryFile.isDirectory()
 	    || !ptIIUserDirectoryFile.canWrite()
             || (JNLPUtilities.isRunningUnderWebStart()
                     && ptIIUserDirectory == ptII)) {
@@ -309,7 +309,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
 
 	    // Get user.dir and create a ptII/cg subdir if necessary
-            String userDir = 
+            String userDir =
 		StringUtilities.getProperty("user.dir");
 	    if (userDir != null) {
 		ptIIUserDirectoryFile =
@@ -319,7 +319,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		    // we do it later anyway
 		    ptIIUserDirectoryFile.mkdirs();
 		}
-		if (!ptIIUserDirectoryFile.isDirectory() 
+		if (!ptIIUserDirectoryFile.isDirectory()
 		    || !ptIIUserDirectoryFile.canWrite()) {
 		    throw new IllegalActionException("'" + ptIIUserDirectory
 						     + "' was not a "
@@ -374,7 +374,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	// targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
 
 	File targetPathFile = new File(ptIIUserDirectory, targetPath);
-	if (!targetPathFile.isDirectory() 
+	if (!targetPathFile.isDirectory()
 	    || !targetPathFile.canWrite()) {
 	    // Make any directories
 	    if (!targetPathFile.mkdirs()) {
@@ -405,7 +405,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		} catch (Exception ex) {
 		    value.append(ex);
 		}
-		
+
 		results.append("Parameter:      " + attribute.getName()
 			       + "\n Expression:    "
 			       + ((Parameter)attribute).getExpression()
@@ -418,7 +418,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 ((NamedObj)attribute).getAttribute("tooltip");
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
-		results.append("\n Documentation: " 
+		results.append("\n Documentation: "
 			       + ((Documentation)tooltipAttribute).getValue());
             } else {
                 String tip = Documentation.consolidate((NamedObj)attribute);
@@ -427,7 +427,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 }
 	    }
 	    results.append("\n\n");
-	    
+
 	}
 	return results.toString();
     }
@@ -452,7 +452,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         MoMLParser parser = new MoMLParser();
 
-        // Get the old filters, save them, add our own 
+        // Get the old filters, save them, add our own
         // filters, use them, remove our filters,
         // and then readd the old filters in the finally clause.
         List oldFilters = parser.getMoMLFilters();
@@ -488,7 +488,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 					    + "'");
 		    }
 		} catch (Exception ex1) {
-		    throw new IllegalActionException(this, ex1, 
+		    throw new IllegalActionException(this, ex1,
 					"Failed to parse '"
 					+ modelPathOrURL + "'"
 					+ " Tried loading as a resource, too!"
@@ -500,7 +500,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    modelPath.setExpression("\"" + modelPathOrURL + "\"");
 
 	    // Strip off the leading '.' and then sanitize.
-	    String modelNameValue = 
+	    String modelNameValue =
 		StringUtilities
 		.sanitizeName(toplevel.getFullName().substring(1));
 
@@ -518,7 +518,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		Attribute directorIterations =
 		    director.getAttribute("iterations");
 		if (directorIterations != null) {
-		    Token iterationsToken = 
+		    Token iterationsToken =
 			((Parameter)directorIterations)
 			.getToken();
 		    iterations.setExpression(iterationsToken.toString());
@@ -550,11 +550,11 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    (ArrayToken)
 	     ((Parameter)getAttribute("necessaryClasses"))
 	     .getToken();
-	     
+
 
 	List classPathList = new LinkedList();
 	for(int i = 0; i < necessaryClassesToken.length(); i++) {
-	    String necessaryClass = 
+	    String necessaryClass =
 		((StringToken)necessaryClassesToken.getElement(i))
 		.stringValue();
 
@@ -578,7 +578,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 
 	StringBuffer necessaryClassPath = new StringBuffer();
-	
+
 	Iterator classPaths = classPathList.iterator();
 	while (classPaths.hasNext()) {
 	    if (necessaryClassPath.length() > 0) {
@@ -586,7 +586,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    }
 	    necessaryClassPath.append(classPaths.next());
 
-	} 
+	}
 
 	((Parameter)getAttribute("necessaryClassPath"))
 	    .setExpression("\"" + necessaryClassPath.toString()

@@ -59,10 +59,10 @@ import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Copernicus
-/** 
+/**
 A Standalone application that generates code using the Ptolemy II code
 generation system.  This class acts a wrapper for the copernicus.*.Main
-classes by providing defaults arguments for the various backends. 
+classes by providing defaults arguments for the various backends.
 
 The <i>generatorAttribute</i> Parameter names a MoML file that
 contains definitions for other Parameters and Variables that control
@@ -84,14 +84,14 @@ substitute in the appropriate variables and then generate code for foo.xml
 $PTII/ptolemy/copernicus/java.
 
 <p>The argument that names the xml file containing the model to generate
-code for should be a relative pathname.  The xml file argument is 
+code for should be a relative pathname.  The xml file argument is
 converted into a URL internally.
 If no xml file argument is specified,
 then code is generated for
 <code>$PTII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml</code>
 
 <p>Generating code is fairly complex, so there are many other parameters
-that can be set as the other arguments.  
+that can be set as the other arguments.
 
 <p>The general format is
 <code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
@@ -155,7 +155,7 @@ public class Copernicus {
         // the GeneratorAttribute from the model, but one problem is
         // that we filter out the GeneratorAttribute in KernelMain.
         // Another problem is that this class reads in the model and
-        // then modifies the GeneratorAttribute according to the 
+        // then modifies the GeneratorAttribute according to the
         // values of the command line arguments and other values, but
         // we never update the model with this data.
         String generatorAttributeFileName =
@@ -177,7 +177,7 @@ public class Copernicus {
     ////                         public methods                    ////
 
     /** Return the command to compile the generated code.
-     *  The <i>generatorAttribute</i> argument contains a 
+     *  The <i>generatorAttribute</i> argument contains a
      *  the <i>compileCommandTemplateFile</i> parameter that refers
      *  to a template file that contains the command to create the generated
      *  code after the parameters from <i>generatorAttribute</i>
@@ -200,14 +200,14 @@ public class Copernicus {
     }
 
     /** Return the command to run the generated code.
-     *  The <i>generatorAttribute</i> argument contains a 
+     *  The <i>generatorAttribute</i> argument contains a
      *  the <i>runCommandTemplateFile</i> parameter that refers
      *  to a template file that contains the command to run the generated
      *  code after the parameters from <i>generatorAttribute</i>
      *  are substituted in.
      *
      *  @param generatorAttribute The GeneratorAttribute that contains
-     *  the Parameters that determine the command to run. 
+     *  the Parameters that determine the command to run.
      *  @return The command to run the generated code.
      */
     public static String commandToRun(GeneratorAttribute generatorAttribute)
@@ -258,7 +258,7 @@ public class Copernicus {
     }
 
     /** Execute a command in a subshell, and print out the results
-     *  in standard error and standard out.  Lines that begin with 
+     *  in standard error and standard out.  Lines that begin with
      *  an octothorpe '#' are ignored.  Substrings that start and end with
      *  a double quote are considered to be a single argument.
      *
@@ -293,7 +293,7 @@ public class Copernicus {
                     + "\"");
         }
         System.out.flush();
-        
+
 	// 0 indicates normal execution
 	int processReturnCode = 1;
      	try {
@@ -338,10 +338,10 @@ public class Copernicus {
      *  The file is deleted when the Java virtual machine terminates.
      *  @param namedObj The NamedObj to export
      *  @returns The name of the temporary file that was created
-     *  @exception Exception If the temporary file cannot be created.  
-     *  @see java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File)   
+     *  @exception Exception If the temporary file cannot be created.
+     *  @see java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File)
      */
-    public static String exportMoMLToTemporaryFile(NamedObj namedObj) 
+    public static String exportMoMLToTemporaryFile(NamedObj namedObj)
             throws Exception {
         File temporaryFile = File.createTempFile("ptCopernicus", ".xml");
         temporaryFile.deleteOnExit();
@@ -354,7 +354,7 @@ public class Copernicus {
         writer.close();
         return temporaryFile.toString();
     }
-            
+
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
      *  @param args The command-line arguments.
@@ -382,15 +382,15 @@ public class Copernicus {
      */
     public static HashMap newMap(NamedObj namedObj)
             throws IllegalActionException {
-	HashMap substituteMap = new HashMap(); 
+	HashMap substituteMap = new HashMap();
 	Iterator attributes = namedObj.attributeList().iterator();
 	while(attributes.hasNext()) {
 	    Attribute attribute = (Attribute)attributes.next();
 	    if (attribute instanceof Variable) {
 		Variable variable = (Variable)attribute;
                 String value = variable.getToken().toString();
-                // Strip out any leading and trailing double quotes 
-                if (value.startsWith("\"") && value.length() >  2) { 
+                // Strip out any leading and trailing double quotes
+                if (value.startsWith("\"") && value.length() >  2) {
                     value = value.substring(1, value.length()-1);
                 }
                 substituteMap.put("@" + variable.getName() + "@",
@@ -398,7 +398,7 @@ public class Copernicus {
 	    }
 	}
 
-//         System.out.println("The map for " + namedObj +":"); 
+//         System.out.println("The map for " + namedObj +":");
 // 	Iterator keys = substituteMap.keySet().iterator();
 // 	while (keys.hasNext()) {
 // 	    String key = (String)keys.next();
@@ -469,9 +469,9 @@ public class Copernicus {
 
     /** Read in the contents of inputFileName, and for each Parameter
      *  in namedObj, search for strings like
-     *  <code>@<i>ParameterName</i>@</code> in inputFileName, and 
+     *  <code>@<i>ParameterName</i>@</code> in inputFileName, and
      *  substitute in the value of the Parameter and return the results.
-     *    
+     *
      *  @param inputFileName  The name of the file to read from.
      *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
@@ -483,9 +483,9 @@ public class Copernicus {
 
         Map substituteMap;
         try {
-            substituteMap = newMap(namedObj); 
+            substituteMap = newMap(namedObj);
         } catch (IllegalActionException ex) {
-            throw new IOException("Problem with " 
+            throw new IOException("Problem with "
                     + namedObj.getName());
         }
 	URL inputFileURL =
@@ -555,7 +555,7 @@ public class Copernicus {
     ////                         public variables                  ////
 
     /** The name of the GeneratorAttribute */
-    public static String GENERATOR_NAME = "_generator"; 
+    public static String GENERATOR_NAME = "_generator";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -677,7 +677,7 @@ public class Copernicus {
             _generatorAttribute =
                 new GeneratorAttribute(namedObj, GENERATOR_NAME);
             _generatorAttribute.initialize();
-            
+
             // Parse the file named by the modelPath Parameter and update
             // parameters
             _generatorAttribute.sanityCheckAndUpdateParameters(null);
@@ -688,7 +688,7 @@ public class Copernicus {
         }
 
         return usage.toString();
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -717,7 +717,7 @@ public class Copernicus {
     + "This command takes the usual Ptolemy II command line arguments\n"
     + "and a number of command line arguments that are defined in the\n"
     + "GeneratorAttribute of the model itself.\n"
-    + "Of these command line arguments, the most significant is the\n" 
+    + "Of these command line arguments, the most significant is the\n"
     + "-codeGenerator option which is used to select which code\n"
     + "generator is used.  The default value is 'java', which means\n"
     + "that $PTII/ptolemy/copernicus/java/compileCommandTemplate.txt"

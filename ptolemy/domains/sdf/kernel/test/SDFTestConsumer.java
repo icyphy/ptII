@@ -58,10 +58,10 @@ public class SDFTestConsumer extends TypedAtomicActor {
             new Parameter(input, "tokenConsumptionRate", new IntToken("1"));
         _history = new StringBuffer("");
     }
-    
+
     public TypedIOPort input;
     public Parameter input_tokenConsumptionRate;
-            
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
@@ -83,7 +83,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int tokens = 
+        int tokens =
             ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
         int i;
         for (i = 0; i < tokens; i++) {

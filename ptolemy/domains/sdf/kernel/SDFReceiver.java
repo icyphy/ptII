@@ -374,7 +374,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     // The queue containing the receiver data.
     private ArrayFIFOQueue _queue;
-    
+
     // The token array used by this receiver to return
     // data.
     private Token[] _tokenArray;

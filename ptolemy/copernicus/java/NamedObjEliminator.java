@@ -99,7 +99,7 @@ public class NamedObjEliminator extends SceneTransformer {
         int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         // First remove most method invocations that are not
         // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -110,10 +110,10 @@ public class NamedObjEliminator extends SceneTransformer {
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
+
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
@@ -139,8 +139,8 @@ public class NamedObjEliminator extends SceneTransformer {
                     } else if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-                        
-                        if ((value instanceof InvokeExpr) && 
+
+                        if ((value instanceof InvokeExpr) &&
                                 !(value instanceof SpecialInvokeExpr)) {
                             // remove attachText
                             InvokeExpr expr = (InvokeExpr)value;
@@ -172,7 +172,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                                     StringConstant.v(
                                                             _model.getFullName())),
                                             unit);
-                                } 
+                                }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
                                                PtolemyUtilities.getNameMethod.getSubSignature())) {
@@ -201,7 +201,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 }
             }
         }
-        
+
 
         List modifiedConstructorClassList = new LinkedList();
 
@@ -244,7 +244,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                   
+
                     if(unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
@@ -255,7 +255,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                     expr.getMethod().getName().equals("<init>")) {
                                 System.out.println("replacing constructor = "
                                         + unit + " in method " + method);
-                                
+
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                                      (Local)expr.getBase(),
@@ -309,24 +309,24 @@ public class NamedObjEliminator extends SceneTransformer {
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
+
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
                     if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-                        
+
                         if (value instanceof SpecialInvokeExpr) {
                             // If we're constructing one of our actor classes,
                             // then switch to the object constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
-                            if (expr.getMethod().getName().equals("<init>") && 
+                            if (expr.getMethod().getName().equals("<init>") &&
                                     modifiedConstructorClassList.contains(
                                             declaringClass)) {
                                 System.out.println(

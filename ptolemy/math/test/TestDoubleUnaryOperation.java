@@ -48,6 +48,6 @@ public class TestDoubleUnaryOperation implements DoubleUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */
     public double operate(double operand) {
-        return -operand; 
+        return -operand;
     }
 }

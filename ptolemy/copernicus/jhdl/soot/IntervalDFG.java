@@ -85,18 +85,18 @@ public class IntervalDFG extends BlockDataFlowGraph {
      * list of definitions is used to decide which assignment statements
      * (i.e. definitions) must be made available for subsequent blocks.
      **/
-    public IntervalDFG(IntervalChain ic, Collection requiredDefinitions) 
+    public IntervalDFG(IntervalChain ic, Collection requiredDefinitions)
 	throws JHDLUnsupportedException {
 
 	// Create DFG from the Block object associated with the root
 	// Node of the given IntervalChain
 	super((Block) ic.getRoot().getWeight());
 	_ic = ic;
-	
+
 	_processChain(requiredDefinitions);
     }
 
-    protected void _processChain(Collection requiredDefinitions) 
+    protected void _processChain(Collection requiredDefinitions)
 	throws JHDLUnsupportedException {
 
 	// 1. Create graph for next interval
@@ -118,13 +118,13 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    _next = null;
 
 	// 2. Determine the required definitions for the children
-	//    of this Node. 
+	//    of this Node.
 	//    The required definitions for the children are initialized
 	//    with the requiredDefinitions passed in AND by
-	//    the definitions required by the next Interval in the 
+	//    the definitions required by the next Interval in the
 	//    Chain.
 	Collection childrenDefinitions = new UniqueVector();
-	if (_next == null) 
+	if (_next == null)
 	    childrenDefinitions.addAll(requiredDefinitions);
 	else
 	    childrenDefinitions.addAll(_next.getRequiredDefinitions());
@@ -141,10 +141,10 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 	    // - Create a DFG for each child associated with this fork.
 	    // - Update the required definitions for this Node based on
-	    //   definitions required by each child. 
+	    //   definitions required by each child.
 	    // - Merge each DFG in a serial fashion (children DFGs are
 	    //   not multiplexed here).
-	    
+
 	    // key=IntervalChain root Node, Value=IntervalChain
 	    Map children = _ic.getChildren();
 	    // key=Value, Value=Node
@@ -155,7 +155,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 	    for (Iterator i = children.values().iterator();i.hasNext();) {
 		IntervalChain childInterval = (IntervalChain) i.next();
-		IntervalDFG childDFG = 
+		IntervalDFG childDFG =
 		    new IntervalDFG(childInterval,childrenDefinitions);
 		_requiredDefinitions.addAll(childDFG.getRequiredDefinitions());
 
@@ -173,7 +173,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		Iterator i = childrenIValueMaps.keySet().iterator();
 		IntervalDFG childDFG = (IntervalDFG) i.next();
 		IValueMap childMap = (IValueMap) childrenIValueMaps.get(childDFG);
-		
+
 		for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
 		    Node n = (Node) childMap.getDefs().get(origv);
@@ -189,7 +189,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		}
 	    } else if (children.values().size() == 2) {
 
-		// Two branches. Merge all of their outputs.		
+		// Two branches. Merge all of their outputs.
 		// Obtain the defintions defined by both children
 		Iterator i = childrenIValueMaps.keySet().iterator();
 		IntervalDFG child1DFG = (IntervalDFG) i.next();
@@ -214,7 +214,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		// Iterate through all of child2Values
 		for (i=child2Map.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
-		    if (isRequired(origv) && 
+		    if (isRequired(origv) &&
 			!child1Map.getDefs().containsKey(origv)) {
 			Node child2n = (Node) child2Map.getDefs().get(origv);
 			Node parentn = getOrCreateNode(origv);
@@ -230,7 +230,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	}
 	if (_ic.isSpecialMerge()) {
 	    throw new JHDLUnsupportedException("Special Nodes not yet supported");
-	}	
+	}
 
 	// add required definitions of this node
 	Vector newDefs = new Vector();
@@ -250,7 +250,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	//System.out.println();
 
 	// Connect previously created chain to this node
-	if (_next != null) { 
+	if (_next != null) {
 	    //DEBUG=true; System.out.println("*** Serial Merge ***");
   	    mergeSerial(_next);
 	    //DEBUG=false;
@@ -260,17 +260,17 @@ public class IntervalDFG extends BlockDataFlowGraph {
     /** returns new lValues **/
     public void mergeSerial(IntervalDFG dfg) {
 
-	// temporary hashmap between old nodes & new. 
+	// temporary hashmap between old nodes & new.
 	// Used when connecting edges
-	HashMap nodeMap = new HashMap(); 
-	
+	HashMap nodeMap = new HashMap();
+
 	// Add all nodes to graph
 	for (Iterator i = dfg.nodes().iterator(); i.hasNext();) {
-	    
-	    Node node = (Node) i.next();	    
+
+	    Node node = (Node) i.next();
 
 	    if (DEBUG) System.out.print("Adding node="+node);
-	    
+
 	    Node driver = findNodeDriver(dfg,node);
 	    if (driver != null)
 		nodeMap.put(node,driver);
@@ -286,17 +286,17 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		    } else
 			addNode(node);
 		} else
-		    addNode(node);		
+		    addNode(node);
 	    }
 	}
-	    
+
 	// Iterate through all edges and add to graph
 	for (Iterator i = dfg.edges().iterator(); i.hasNext();) {
 	    Edge e = (Edge) i.next();
 	    Node src = e.source();
 	    if (nodeMap.containsKey(src))
 		src = (Node) nodeMap.get(src);
-	    Node snk = e.sink();		
+	    Node snk = e.sink();
 	    if (nodeMap.containsKey(snk))
 		snk = (Node) nodeMap.get(snk);
 
@@ -311,7 +311,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		    snkWeight instanceof InstanceFieldRef)
 		    _valueMap.addNewDef(snk);
 	    }
-	}	
+	}
     }
 
     public Node addNode(Node n) {
@@ -328,11 +328,11 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     protected Node findNodeDriver(BlockDataFlowGraph dfg, Node n) {
-	
+
 	Object weight = n.getWeight();
 	if (weight instanceof Local) {
 	    if (dfg.inputEdges(n).size() == 0) {
-		// return 
+		// return
 		return _valueMap.getLastLocal(weight);
 	    } else
 		return null; // Node is being driven
@@ -351,9 +351,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
     /*
     public boolean isValueDefined(Value v) {
 	if (_requiredDefinitions.contains(v))
-	    return true;	
-	if (v instanceof InstanceFieldRef) {	    
-	    InstanceFieldRef d = 
+	    return true;
+	if (v instanceof InstanceFieldRef) {
+	    InstanceFieldRef d =
 		getMatchingInstanceFieldRef((InstanceFieldRef)v,
 					    _requiredDefinitions);
 	    if (d != null)
@@ -371,11 +371,11 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return _ic.toShortString();
     }
 
-    
-    protected Node _multiplexNodes(IntervalDFG child1DFG, 
+
+    protected Node _multiplexNodes(IntervalDFG child1DFG,
 				   Node child1,
 				   Node child2) {
-	
+
 	Value value = (Value) child1.getWeight();
 
 	// Get the edges associated with the original CFG.
@@ -387,7 +387,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    trueNode = child2;
 	    falseNode = child1;
 	}
-	
+
 //  	BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
 //  					      value.toString());
 	BinaryMux bmn = new BinaryMux(value.toString());
@@ -407,7 +407,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	addEdge(muxNode,newValueNode);
 	return newValueNode;
     }
-    
+
     /** move to higher level **/
     public Node getOrCreateNode(Value v) throws JHDLUnsupportedException {
 	Node newNode = _valueMap.getLast(v);
@@ -447,7 +447,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     /** Return the condition Value object associated with a fork Node
-     **/ 
+     **/
     public Node getConditionNode() {
 	IfStmt ifs = getIfStmt();
 	Value v = ifs.getCondition();
@@ -463,7 +463,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
     public boolean isTrueNode(IntervalDFG cidfg) {
 
-	DirectedAcyclicCFG graph = _ic.getGraph();	
+	DirectedAcyclicCFG graph = _ic.getGraph();
 	IfStmt ifs = getIfStmt();
 
 	Node childCFGNode = cidfg._ic.getRoot();
@@ -495,7 +495,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return nodes;
     }
 
-    public static IntervalDFG createIntervalDFG(String args[]) 
+    public static IntervalDFG createIntervalDFG(String args[])
 	throws JHDLUnsupportedException {
 	IntervalChain ic = IntervalChain.createIntervalChain(args,true);
 	return new IntervalDFG(ic);
@@ -505,14 +505,14 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	//BlockDataFlowGraph.DEBUG=true;
 	IntervalDFG im = null;
 	try {
-	    im = createIntervalDFG(args);	
+	    im = createIntervalDFG(args);
 	} catch (JHDLUnsupportedException e) {
 	    e.printStackTrace();
 	    System.exit(1);
 	}
 
 //  	System.out.println(im);
-//  	BlockDataFlowGraph graphs[] = 
+//  	BlockDataFlowGraph graphs[] =
 //  	    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
 //  	for (int i = 0;i<graphs.length;i++)
 //  	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
@@ -580,7 +580,7 @@ class IValueMap {
 		previous = ifr_n;
 	    }
 	}
-	return getLastInstanceFieldRef(previous);	
+	return getLastInstanceFieldRef(previous);
     }
 
     public MapList locals;
@@ -589,7 +589,7 @@ class IValueMap {
 }
 
 /*
-  
+
   - get snapshot of definitions before mergining.
   - use copy of snapshot before each iteration
     (multiple copies for each branch)

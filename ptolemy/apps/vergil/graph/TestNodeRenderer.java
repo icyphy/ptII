@@ -32,7 +32,7 @@ import ptolemy.kernel.*;
  * @rating  Red
  */
 public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
-      
+
     /**
      * The shape for nodes.
      */
@@ -63,7 +63,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     /**
      * Create a renderer which renders nodes square and orange.
      */
-    public MetaNodeRenderer(CompositeEntity container, String name) 
+    public MetaNodeRenderer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name,
                 new Rectangle2D.Double(0.0,0.0,40.0,40.0),
@@ -149,7 +149,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
 
         BasicFigure bf = new BasicFigure(shape);
         bf.setFillPaint(fill);
-	
+
 	if(model.isComposite(node)) {
             CompositeFigure rep = new CompositeFigure(bf);
 	    double scale = getCompositeScale();
@@ -197,7 +197,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     public void setNodeFill(Paint p) {
         _nodeFill = p;
     }
-        
+
     /**
      * Set the shape for nodes to be rendered in.  The
      * shape must implement Cloneable.

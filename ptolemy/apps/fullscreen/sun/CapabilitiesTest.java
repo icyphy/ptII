@@ -14,16 +14,16 @@ import javax.swing.*;
 class GCWrapper {
     private GraphicsConfiguration gc;
     private int index;
-    
+
     public GCWrapper(GraphicsConfiguration gc, int index) {
         this.gc = gc;
         this.index = index;
     }
-    
+
     public GraphicsConfiguration getGC() {
         return gc;
     }
-    
+
     public String toString() {
         return gc.toString();
     }
@@ -33,7 +33,7 @@ class GCWrapper {
  * Main frame class.
  */
 public class CapabilitiesTest extends JFrame implements ItemListener {
-    
+
     private JComboBox gcSelection = new JComboBox();
     private JCheckBox imageAccelerated = new JCheckBox("Accelerated", false);
     private JCheckBox imageTrueVolatile = new JCheckBox("Volatile", false);
@@ -45,7 +45,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
     private JCheckBox fbTrueVolatile = new JCheckBox("Volatile", false);
     private JCheckBox bbAccelerated = new JCheckBox("Accelerated", false);
     private JCheckBox bbTrueVolatile = new JCheckBox("Volatile", false);
-    
+
     public CapabilitiesTest(GraphicsDevice dev) {
         super(dev.getDefaultConfiguration());
         addWindowListener(new WindowAdapter() {
@@ -61,7 +61,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         gcSelection.addItemListener(this);
         gcChanged();
     }
-    
+
     /**
      * Creates and lays out components in the container.
      * See the comments below for an organizational overview by panel.
@@ -162,11 +162,11 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         bbPanel.add(bbTrueVolatile);
         bbTrueVolatile.setEnabled(false);
     }
-    
+
     public void itemStateChanged(ItemEvent ev) {
         gcChanged();
     }
-    
+
     private void gcChanged() {
         GCWrapper wrap = (GCWrapper)gcSelection.getSelectedItem();
         //assert wrap != null;
@@ -192,7 +192,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         bbAccelerated.setSelected(imageCaps.isAccelerated());
         bbTrueVolatile.setSelected(imageCaps.isTrueVolatile());
     }
-    
+
     private static String getFlipText(BufferCapabilities.FlipContents flip) {
         if (flip == null) {
             return "";
@@ -206,7 +206,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
             return "Copied";
         }
     }
-    
+
     public static void main(String[] args) {
         GraphicsEnvironment ge =
             GraphicsEnvironment.getLocalGraphicsEnvironment();

@@ -150,22 +150,22 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 _model);
     }
 
-    private void _replaceEntityCalls(SootClass actorClass, 
+    private void _replaceEntityCalls(SootClass actorClass,
             ComponentEntity actor) {
-        
+
         // Replace calls to entity method with field references.
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             if(_debug)
                 System.out.println("Replacing entity calls in " + method);
-        
+
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            
+
             CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-            
+
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
                 Stmt unit = (Stmt)units.next();
@@ -179,17 +179,17 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                     if (r.getMethod().getSubSignature().equals(
                                 PtolemyUtilities
                                 .getContainerMethod.getSubSignature())) {
-                        
-                        Value newFieldRef = 
+
+                        Value newFieldRef =
                             _getContainerMethodReplacementFieldRef(
                                     (Local)r.getBase(),
                                     unit, localDefs);
-                        box.setValue(newFieldRef); 
+                        box.setValue(newFieldRef);
                         if(_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
                                        PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
-                        Value newFieldRef = 
+                        Value newFieldRef =
                             Jimple.v().newStaticFieldRef((SootField)
                                     _entityToFieldMap.get(_model));
                         box.setValue(newFieldRef);
@@ -203,23 +203,23 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                 Evaluator.getConstantValueOf(nameValue);
                             String name = nameConstant.value;
 
-                            Value newFieldRef = 
+                            Value newFieldRef =
                                 _getEntityMethodReplacementFieldRef(
                                         (Local)r.getBase(), name,
                                         unit, localDefs);
-                            box.setValue(newFieldRef); 
+                            box.setValue(newFieldRef);
                             if(_debug) System.out.println("replacing " + unit);
                         } else {
                             String string = "Entity cannot be " +
                                 "statically determined";
                             throw new RuntimeException(string);
                         }
-                      
+
                     }
                 }
             }
             TypeAssigner.v().transform(body, "ta", "");
-        }   
+        }
 
         if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
@@ -232,14 +232,14 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _replaceEntityCalls(entityClass, entity);
-           
+
             }
         }
     }
 
     private Value _getContainerMethodReplacementFieldRef(Local baseLocal,
             Unit unit, LocalDefs localDefs) {
-          
+
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
@@ -280,7 +280,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
     private FieldRef _getEntityMethodReplacementFieldRef(Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
-          
+
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
@@ -328,11 +328,11 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
         return null;
     }
-  
-    private void _createEntityInstanceFields(SootClass actorClass, 
+
+    private void _createEntityInstanceFields(SootClass actorClass,
             ComponentEntity actor) {
-   
-        // Create a static field in the actor class.  This field 
+
+        // Create a static field in the actor class.  This field
         // will reference the singleton instance of the actor class.
         SootField field = new SootField(
                 "_CGInstance",
@@ -343,7 +343,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         field.addTag(new ValueTag(actor));
         _entityToFieldMap.put(actor, field);
         _fieldToEntityMap.put(field, actor);
-      
+
         // Add code to the end of each class initializer to set the
         // instance field.
         for(Iterator methods = actorClass.getMethods().iterator();
@@ -359,7 +359,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             }
         }
 
-        
+
         _classToObjectMap.put(actorClass, actor);
 
         // Loop over all the actor instance classes and get
@@ -372,7 +372,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
                     ActorTransformer.getInstanceClassName(entity, _options);
-                SootClass entityClass = 
+                SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _createEntityInstanceFields(entityClass, entity);
             }

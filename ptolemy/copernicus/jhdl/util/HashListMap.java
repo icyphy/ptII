@@ -47,7 +47,7 @@ public class HashListMap extends HashMap implements MapList {
 
     public HashListMap() { super(); }
     public HashListMap(int i) { super(i); }
-    public HashListMap(HashListMap hlm) { 
+    public HashListMap(HashListMap hlm) {
 	this(hlm.size());
 	for (Iterator i=hlm.keySet().iterator();i.hasNext();) {
 	    Object o = i.next();
@@ -57,7 +57,7 @@ public class HashListMap extends HashMap implements MapList {
 	}
     }
 
-    public void add(Object key, Object value) {	
+    public void add(Object key, Object value) {
 	List l = getCreateList(key);
 	l.add(value);
     }

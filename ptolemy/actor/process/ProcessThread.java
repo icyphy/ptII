@@ -134,7 +134,7 @@ public class ProcessThread extends PtolemyThread {
                         }
                     }
                 }
-           
+
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {

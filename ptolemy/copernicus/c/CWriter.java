@@ -131,16 +131,16 @@ public class CWriter extends SceneTransformer {
             CodeFileGenerator cGenerator = new CodeFileGenerator();
             InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
             CNames.setup();
- 
+
             RequiredFileGenerator RFG = new RequiredFileGenerator();
 
             String classPath = Scene.v().getSootClassPath();
-            System.out.println("CWriter: soot class path = " + classPath); 
+            System.out.println("CWriter: soot class path = " + classPath);
             RFG.init(classPath, sootClass.getName());
-            
+
             // Figure out if this is the main class
             System.out.println("Main file: " + mainFile);
-            System.out.println("Class name:" + sootClass.getName()); 
+            System.out.println("Class name:" + sootClass.getName());
             boolean isMainClass = false;
             MainFileGenerator mGenerator = null;
             if (mainFile.equals(sootClass.getName())) {
@@ -183,7 +183,7 @@ public class CWriter extends SceneTransformer {
             System.out.println("Done generating C code files for " + fileName);
 
         }
-        MakefileWriter.addMakefileSubstitution("@cFiles@", 
+        MakefileWriter.addMakefileSubstitution("@cFiles@",
                 sourcesList.toString());
 
         _completedTransform = true;

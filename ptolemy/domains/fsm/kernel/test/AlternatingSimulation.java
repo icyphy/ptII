@@ -139,7 +139,7 @@ public class AlternatingSimulation {
         } else {
             _printUsageAndExit();
         }
- 
+
         try {
             new AlternatingSimulation(superMoML, subMoML, onlyReacheable);
         } catch (Exception exception) {

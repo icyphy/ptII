@@ -193,7 +193,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
             _player.setMediaTime(_startTime);
 
             _player.start();
-            
+
             // If synchronizedPlay is true, then wait for the play to complete.
             boolean synch
                    = ((BooleanToken)synchronizedPlay.getToken()).booleanValue();

@@ -68,7 +68,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
     // FIXME: these issues should be addressed (cxh 8/02)
     // 1. The entire notion of a category being indexed into a vector by an
     // integer is a little strange.  I don't think we have quite the right
-    // storage structure here.  In anycase, it would be good to 
+    // storage structure here.  In anycase, it would be good to
     // discuss the implementation details in a comment inside the UnitSystem
     // method
     //
@@ -102,8 +102,8 @@ public class UnitSystem extends ScopeExtendingAttribute {
      *  If the category is not already registered, assign a unique index
      *  for the category.
      *  This method is static, so a category added here will be
-     *  available throughout the system.  
-     *  <p>Note that the 
+     *  available throughout the system.
+     *  <p>Note that the
      *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
      *  calls this method.
      *
@@ -162,7 +162,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
         // toString() cannot be static because Object.toString() is
         // not static.
         StringBuffer buffer = new StringBuffer(super.toString());
-        buffer.append("\n contains " + _categories + " categories\n"); 
+        buffer.append("\n contains " + _categories + " categories\n");
         buffer.append(_categoryVector.toString());
         return buffer.toString();
     }
@@ -173,10 +173,10 @@ public class UnitSystem extends ScopeExtendingAttribute {
     public static void reset() {
         // This method is necessary for testing.
         // UnitSystem has static state, so it makes it difficult
-        // to create multiple small UnitSystems. 
+        // to create multiple small UnitSystems.
         _indexTable = new Hashtable();
         _categories = 0;
-        _categoryVector = new Vector(); 
+        _categoryVector = new Vector();
     }
 
     ///////////////////////////////////////////////////////////////////

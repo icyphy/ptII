@@ -78,7 +78,7 @@ public class ThrowException extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel that has a token,
-     *  and if any token is true, throw an exception. 
+     *  and if any token is true, throw an exception.
      *  @exception IllegalActionException If FIXME
      *  @return Whatever the base class returns (probably true).
      */

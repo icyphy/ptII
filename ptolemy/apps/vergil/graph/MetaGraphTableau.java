@@ -52,9 +52,9 @@ import java.net.*;
 */
 public class MetaGraphTableau extends Tableau {
 
-    /** 
+    /**
      */
-    public MetaGraphTableau(Workspace workspace) 
+    public MetaGraphTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
@@ -74,12 +74,12 @@ public class MetaGraphTableau extends Tableau {
         if(getFrame() == null) {
             CompositeEntity entity = (CompositeEntity)
                 ((PtolemyEffigy)getContainer()).getModel();
-                   
+
             MetaGraphFrame frame = new MetaGraphFrame(entity, this);
-                
+
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
-        } 
+        }
         super.show();
     }
 
@@ -144,7 +144,7 @@ public class MetaGraphTableau extends Tableau {
 	}
     }
 
-    public static class MetaGraphFrame extends GraphFrame {        
+    public static class MetaGraphFrame extends GraphFrame {
         public MetaGraphFrame(CompositeEntity entity, Tableau tableau) {
             super(entity, tableau);
         }
@@ -156,15 +156,15 @@ public class MetaGraphTableau extends Tableau {
             try {
                 /*                MoMLParser parser = new MoMLParser();
                 URL url = getClass().getResource("graph.xml");
-                CompositeEntity metaModel = 
+                CompositeEntity metaModel =
                     (CompositeEntity)parser.parse(url, url);
                 */
                 _controller = (GraphController)
                     getTableau().getEntity("graphController");
-                
-                final PtolemyGraphModel graphModel = 
+
+                final PtolemyGraphModel graphModel =
                     new PtolemyGraphModel(getModel());
-               
+
                 GraphPane pane = new GraphPane(_controller, graphModel);
                 return pane;
             } catch (Exception ex) {

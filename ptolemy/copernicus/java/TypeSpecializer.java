@@ -139,7 +139,7 @@ public class TypeSpecializer extends SceneTransformer {
      *  fields in the class to their new specific Ptolemy type.
      *  Exclude locals in the given set from the typing algorithm.
      */
-    public static Map specializeTypes(boolean debug, SootClass theClass, 
+    public static Map specializeTypes(boolean debug, SootClass theClass,
             Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
 
         if (debug) System.out.println("updating types for " + theClass);
@@ -170,9 +170,9 @@ public class TypeSpecializer extends SceneTransformer {
                     if (box.getValue() instanceof NewArrayExpr) {
                         NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
                         if (debug) System.out.println("newArrayExpr = " + newArrayExpr);
-                        
+
                         Type baseType = newArrayExpr.getBaseType();
-                        Type newType = 
+                        Type newType =
                             typeAnalysis.getSpecializedSootType(newArrayExpr);
                         if (newType != null && !newType.equals(baseType)) {
                             if(debug) System.out.println("replacing with " + newType);
@@ -194,7 +194,7 @@ public class TypeSpecializer extends SceneTransformer {
                 if(!PtolemyUtilities.isTokenType(assignStmt.getLeftOp().getType())) {
                     continue;
                 }
-                
+
                 if(debug) System.out.println("checking assignment " + assignStmt);
 
                 // FIXME: We need to figure out a way to insert casts where appropriate.
@@ -204,26 +204,26 @@ public class TypeSpecializer extends SceneTransformer {
 //                         assignStmt.getLeftOp(), typeAnalysis);
 //                 rightType = _getReplacementTokenType(
 //                         assignStmt.getRightOp(), typeAnalysis);
-                
+
 //                 if(leftType != null && rightType != null && !leftType.equals(rightType)) {
-//                     if(debug) System.out.println("inserting conversion: leftType = " + 
+//                     if(debug) System.out.println("inserting conversion: leftType = " +
 //                             leftType + ", rightType = " + rightType);
-                    
-                     
+
+
 //                     // insert a call to convert(), and a cast.
 //                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
 //                     SootField field = ref.getField();
-//                     Type newType = 
+//                     Type newType =
 //                         typeAnalysis.getSpecializedSootType(field);
-//                     Local tempLocal = 
+//                     Local tempLocal =
 //                         Jimple.v().newLocal("fieldUpdateLocal", newType);
 //                     body.getLocals().add(tempLocal);
-//                     Local tokenLocal = 
+//                     Local tokenLocal =
 //                         Jimple.v().newLocal("tokenLocal", PtolemyUtilities.tokenType);
 //                     body.getLocals().add(tokenLocal);
-//                     Local typeLocal = 
+//                     Local typeLocal =
 //                         PtolemyUtilities.buildConstantTypeLocal(body, unit, leftType);
-                    
+
 //                     body.getUnits().insertBefore(
 //                             Jimple.v().newAssignStmt(tokenLocal,
 //                                     Jimple.v().newVirtualInvokeExpr(
@@ -239,19 +239,19 @@ public class TypeSpecializer extends SceneTransformer {
 //                             unit);
 //                     assignStmt.setRightOp(tempLocal);
 
-                  
+
 //                 } else {
                     FieldRef ref = (FieldRef)assignStmt.getLeftOp();
                     SootField field = ref.getField();
-                    
+
                     Type type = field.getType();
                     // Things that aren't token types are ignored.
                     // Things that are already the same type are ignored.
-                    Type newType = 
+                    Type newType =
                         typeAnalysis.getSpecializedSootType(field);
                     if (newType != null && !newType.equals(type)) {
                         if(debug) System.out.println("inserting cast");
-                        Local tempLocal = 
+                        Local tempLocal =
                             Jimple.v().newLocal("fieldUpdateLocal", newType);
                         body.getLocals().add(tempLocal);
                         body.getUnits().insertBefore(
@@ -271,14 +271,14 @@ public class TypeSpecializer extends SceneTransformer {
              fields.hasNext();) {
             SootField field = (SootField)fields.next();
             if (debug) System.out.println("updating types for " + field);
-            
+
             Type baseType = field.getType();
             RefType refType = PtolemyUtilities.getBaseTokenType(baseType);
             if(refType != null &&
                     SootUtilities.derivesFrom(refType.getSootClass(),
                             PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
-                                
+
                 Type replacementType =
                     SootUtilities.createIsomorphicType(field.getType(),
                             type);
@@ -322,7 +322,7 @@ public class TypeSpecializer extends SceneTransformer {
         } else {
             return null;
             //throw new RuntimeException("Unrecognized value:" + value);
-        } 
+        }
     }
     private CompositeActor _model;
 }

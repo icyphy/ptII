@@ -1246,11 +1246,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The name of the user library.  The default value is 
-     *  "user library".  The value of this variable is what appears 
+    /** The name of the user library.  The default value is
+     *  "user library".  The value of this variable is what appears
      *  in the Vergil left hand tree menu.
      */
-    public static String VERGIL_USER_LIBRARY_NAME = "user library";    
+    public static String VERGIL_USER_LIBRARY_NAME = "user library";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

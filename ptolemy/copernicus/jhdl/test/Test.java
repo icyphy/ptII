@@ -60,18 +60,18 @@ import soot.toolkits.graph.*;
 public class Test {
 
     /**
-     * This static String constant specifies the default class name 
+     * This static String constant specifies the default class name
      * used for all testing of JHDL code generation files.
      **/
     public static final String DEFAULT_TESTCLASS =
 	"ptolemy.copernicus.jhdl.test.test1";
 
     /**
-     * This static String constant specifies the default method name 
+     * This static String constant specifies the default method name
      * used for all testing of JHDL code generation files.
      **/
     public static final String DEFAULT_TESTMETHOD = "method1";
-    
+
     /**
      * This method will return the SootClass object associated with
      * the given fully-qualified String class name.
@@ -81,10 +81,10 @@ public class Test {
 	entityClass.setApplicationClass();
 	return entityClass;
     }
-    
+
     /**
-     * This static method returns the SootMethod object associated 
-     * with the class and method name specified in the String 
+     * This static method returns the SootMethod object associated
+     * with the class and method name specified in the String
      * arguments. The method/class name are specified
      * as command line arguments as follows:
      * <ul>
@@ -109,8 +109,8 @@ public class Test {
 	    classname = args[0];
 	if (args.length > 1)
 	    methodname = args[1];
-	
-	soot.SootClass testClass = 
+
+	soot.SootClass testClass =
 	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
 	if (testClass == null) {
 	    System.err.println("Class "+classname+" not found");
@@ -141,7 +141,7 @@ public class Test {
      * a given Method from a class. Each Block object corresponds
      * to a basic block in the control-flow graph.
      *
-     * @param args Specifies the Classname (args[0]) and the 
+     * @param args Specifies the Classname (args[0]) and the
      * Methodname (args[1]).
      *
      * @see Test#getSootMethod(String[])
@@ -150,7 +150,7 @@ public class Test {
 
 	soot.SootMethod testMethod = getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
-	
+
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	//BlockGraphToDotty.writeDotFile("cfg",bbgraph);
 	List l = bbgraph.getBlocks();

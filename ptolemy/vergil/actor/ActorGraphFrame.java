@@ -160,7 +160,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 	final ActorGraphModel graphModel = new ActorGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

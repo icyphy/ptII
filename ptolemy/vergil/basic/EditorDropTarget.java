@@ -179,12 +179,12 @@ public class EditorDropTarget extends DropTarget {
 	    final GraphController controller = pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-            NamedObj container = 
+            NamedObj container =
                     MoMLChangeRequest.getDeferredToParent(toplevel);
             if (container == null) {
                 container = toplevel;
             }
-                 
+
             while (iterator.hasNext()) {
                 NamedObj dropObj = (NamedObj) iterator.next();
                 final String name = toplevel.uniqueName(dropObj.getName());

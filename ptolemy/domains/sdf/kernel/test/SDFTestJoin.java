@@ -63,9 +63,9 @@ public class SDFTestJoin extends TypedAtomicActor {
         input2.setTypeEquals(BaseType.GENERAL);
 
         output = new TypedIOPort(this,"output", false, true);
-        output_tokenProductionRate = 
+        output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate", new IntToken(2));
-      
+
         output.setTypeEquals(BaseType.GENERAL);
     }
 

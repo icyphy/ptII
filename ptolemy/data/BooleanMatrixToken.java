@@ -104,7 +104,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  the elements of the array is null, or if one of the elements
      *  of the array cannot be losslessly converted to a boolean.
      */
-    public BooleanMatrixToken(Token[] tokens, int rows, int columns) 
+    public BooleanMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         if(tokens == null) {
             throw new IllegalActionException(

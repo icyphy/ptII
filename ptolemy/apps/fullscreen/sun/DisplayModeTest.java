@@ -18,34 +18,34 @@ import javax.swing.table.*;
  */
 class DisplayModeModel extends DefaultTableModel {
     private DisplayMode[] modes;
-    
+
     public DisplayModeModel(DisplayMode[] modes) {
         this.modes = modes;
     }
-    
+
     public DisplayMode getDisplayMode(int r) {
         return modes[r];
     }
-    
+
     public String getColumnName(int c) {
         return DisplayModeTest.COLUMN_NAMES[c];
     }
-    
+
     public int getColumnCount() {
         return DisplayModeTest.COLUMN_WIDTHS.length;
     }
-    
+
     public boolean isCellEditable(int r, int c) {
         return false;
     }
-    
+
     public int getRowCount() {
         if (modes == null) {
             return 0;
         }
         return modes.length;
     }
-    
+
     public Object getValueAt(int rowIndex, int colIndex) {
         DisplayMode dm = modes[rowIndex];
         switch (colIndex) {
@@ -94,19 +94,19 @@ public class DisplayModeTest extends JFrame implements ActionListener,
     private JTable dmList = new JTable();
     private JScrollPane dmPane = JTable.createScrollPaneForTable(dmList);
     private boolean isFullScreen = false;
-    
+
     public static final int INDEX_WIDTH = 0;
     public static final int INDEX_HEIGHT = 1;
     public static final int INDEX_BITDEPTH = 2;
     public static final int INDEX_REFRESHRATE = 3;
-    
+
     public static final int[] COLUMN_WIDTHS = new int[] {
         100, 100, 100, 100
     };
     public static final String[] COLUMN_NAMES = new String[] {
         "Width", "Height", "Bit Depth", "Refresh Rate"
     };
-    
+
     public DisplayModeTest(GraphicsDevice device) {
         super(device.getDefaultConfiguration());
         this.device = device;
@@ -123,7 +123,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         changeDM.addActionListener(this);
         changeDM.setEnabled(device.isDisplayChangeSupported());
     }
-    
+
     public void restoreDisplayMode() {
         if (waiting) {
             synchronized(exitLock) {
@@ -138,7 +138,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         }
         System.exit(0);
     }
-    
+
     public void actionPerformed(ActionEvent ev) {
         Object source = ev.getSource();
         if (source == exit) {
@@ -154,11 +154,11 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             }
         }
     }
-    
+
     public void valueChanged(ListSelectionEvent ev) {
         changeDM.setEnabled(device.isDisplayChangeSupported());
     }
-    
+
     private void initComponents(Container c) {
         setContentPane(c);
         c.setLayout(new BorderLayout());
@@ -197,7 +197,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         changeDMPanel.add(changeDM);
         controlsPanelA.add(new JPanel(), BorderLayout.CENTER);
     }
-    
+
     public void waitForExit() {
         waiting = true;
         repaint();
@@ -212,7 +212,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         super.show();
         dmList.setModel(new DisplayModeModel(device.getDisplayModes()));
     }
-    
+
     public void setDMLabel(DisplayMode newMode) {
         int bitDepth = newMode.getBitDepth();
         int refreshRate = newMode.getRefreshRate();
@@ -234,7 +234,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             + COLUMN_NAMES[INDEX_REFRESHRATE] + ": " + rr
             );
     }
-    
+
     public void begin() {
         isFullScreen = device.isFullScreenSupported();
         setUndecorated(isFullScreen);
@@ -253,7 +253,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             setVisible(true);
         }
     }
-    
+
     public static void main(String[] args) {
         GraphicsEnvironment env = GraphicsEnvironment.
             getLocalGraphicsEnvironment();

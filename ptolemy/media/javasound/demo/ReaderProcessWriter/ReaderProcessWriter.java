@@ -55,7 +55,7 @@ public class ReaderProcessWriter {
 	// File name of the output file to create.
 	String writeFile = "output2.wav";
 	// Internal buffer size for live (real-time) playback.
-	int outBufferSize = 4096; 
+	int outBufferSize = 4096;
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size.
@@ -113,7 +113,7 @@ public class ReaderProcessWriter {
 		    for (int j=0; j< channels; j++) {
 			for (int i=0; i< getSamplesSize; i++) {
 			    //  ********** INSERT PROCESSING CODE HERE ****
-			    
+
 			    // Perform soft clipping using the arc tangent.
 			    capturedSamplesArray[j][i] =
 				java.lang.Math.atan(capturedSamplesArray[j][i])*0.6;

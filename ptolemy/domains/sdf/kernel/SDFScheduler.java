@@ -1110,7 +1110,7 @@ public class SDFScheduler extends Scheduler {
                         tokenCount[channel] = 0;
                     }
 		    waitingTokens.put(inputPort, tokenCount);
-                
+
                 }
             }
 
@@ -1129,7 +1129,7 @@ public class SDFScheduler extends Scheduler {
                     portInsideWidth += relation.getWidth();
                 }
 
-                int[] tokenCount = new int[portInsideWidth];                
+                int[] tokenCount = new int[portInsideWidth];
                 for (int channel = 0;
                      channel < tokenCount.length;
                      channel++) {
@@ -1424,7 +1424,7 @@ public class SDFScheduler extends Scheduler {
             buffer.append("</relation>\n");
 
             if (_debugging) {
-                _debug("Relation " + relation.getName() + 
+                _debug("Relation " + relation.getName() +
                         " has bufferSize = " + bufferSize);
             }
         }
@@ -1477,8 +1477,8 @@ public class SDFScheduler extends Scheduler {
                             + rate.intValue());
                 }
                 // Infer init production.
-                // Note that this is a very simple type of inference...  
-                // However, in general, we don't want to try to 
+                // Note that this is a very simple type of inference...
+                // However, in general, we don't want to try to
                 // flatten this model...
                 Iterator connectedPorts = port.deepInsidePortList().iterator();
                 IOPort foundOutputPort = null;
@@ -1497,7 +1497,7 @@ public class SDFScheduler extends Scheduler {
                                     + foundOutputPort + " and "
                                     + connectedPort);
                         }
-                        _setIfNotDefined(port, "tokenInitProduction", 
+                        _setIfNotDefined(port, "tokenInitProduction",
                                 getTokenInitProduction(connectedPort));
                         if (_debugging && VERBOSE) {
                             _debug("Setting tokenInitProduction to "
@@ -1613,12 +1613,12 @@ public class SDFScheduler extends Scheduler {
             if (relation == null) {
                 continue;
             }
-            
+
             // The bufferSize for the current relation.  This is
             // put back into the buffer at the end after (possibly)
             // being updated.
             Integer bufferSize = (Integer) minimumBufferSize.get(relation);
-            
+
             int width = relation.getWidth();
             // loop through all of the channels of that relation.
             for (int i = 0; i < width; i++, sourceChannel++) {
@@ -1628,7 +1628,7 @@ public class SDFScheduler extends Scheduler {
                             + sourceChannel + ": "
                             + receivers[sourceChannel].length);
                 }
-                
+
                 for (int destinationIndex = 0;
                      destinationIndex < receivers[sourceChannel].length;
                      destinationIndex++) {
@@ -1646,7 +1646,7 @@ public class SDFScheduler extends Scheduler {
                                 receivers[sourceChannel][destinationIndex]);
                         int[] tokens = (int[]) waitingTokens.get(connectedPort);
                         tokens[destinationChannel] = count;
-                        
+
                         // Update the buffer size, if necessary.
                         // if bufferSize is null, then ignore, since we don't
                         // care about that relation.
@@ -1656,7 +1656,7 @@ public class SDFScheduler extends Scheduler {
                             bufferSize =
                                 new Integer(tokens[destinationChannel]);
                         }
-                        
+
                         if (_debugging && VERBOSE) {
                             _debug("Channel " + destinationChannel
                                     + " of " + connectedPort.getName());
@@ -1787,12 +1787,12 @@ public class SDFScheduler extends Scheduler {
                             getContainer();
                     ComponentEntity connectedActor =
                             (ComponentEntity) connectedPort.getContainer();
-                   
+
                     // The channel of the destination port that is
                     // connected to sourceChannel.
                     int destinationChannel = _getChannel(connectedPort,
                             receivers[sourceChannel][destinationIndex]);
-                    
+
                     // Increment the number of waiting tokens.
                     int[] tokens = (int[]) waitingTokens.get(connectedPort);
                     tokens[destinationChannel] += createdTokens;

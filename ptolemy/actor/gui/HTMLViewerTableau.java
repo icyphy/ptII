@@ -169,7 +169,7 @@ public class HTMLViewerTableau extends Tableau {
                 }
 		// Unfortunately, if we have a jar url, (for example
 		// jar:file:/C:/foo.jar!/intro.htm
-		// then the java.net.URI toURL() method will return 
+		// then the java.net.URI toURL() method will return
 		// a URL like jar:, which is missing the file: part
 		// This breaks Ptolemy II under WebStart.
 		URL pageURL = new URL(effigy.uri.getURI().toString());

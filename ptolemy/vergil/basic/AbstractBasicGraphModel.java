@@ -158,7 +158,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this base class, if the argument is an
      *  instance of Port, then return the port.  If the argument is an
-     *  instance of Locatable, then return the container of the Locatable. 
+     *  instance of Locatable, then return the container of the Locatable.
      *  @param element A graph element.
      *  @return The semantic object associated with this element, or null
      *   if the object is not recognized.

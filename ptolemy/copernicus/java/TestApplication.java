@@ -71,7 +71,7 @@ public class TestApplication implements ChangeListener {
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
 
-	// We set the list of MoMLFilters to handle Backward Compatibility. 
+	// We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
 	// Filter out any graphical classes.

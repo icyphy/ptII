@@ -122,7 +122,7 @@ public class LongMatrixToken extends MatrixToken {
      *  the elements of the array is null, or if one of the elements
      *  of the array cannot be losslessly converted to a long.
      */
-    public LongMatrixToken(Token[] tokens, int rows, int columns) 
+    public LongMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         if(tokens == null) {
             throw new IllegalActionException("LongMatrixToken: The specified"

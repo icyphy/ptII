@@ -850,7 +850,7 @@ public class InterfaceAutomaton extends FSMActor {
                     }
                 }
             }
-                    
+
             // explore internal transitions from subState
             ComponentPort subPort = subState.outgoingPort;
             Iterator subTransitions = subPort.linkedRelationList().iterator();
@@ -1235,8 +1235,8 @@ public class InterfaceAutomaton extends FSMActor {
     //           } else {
     //               // q is transient.
     //               // This case is symmetric as above, omitted.
-    //           } 
-    //      } 
+    //           }
+    //      }
     //
     //      (after exploring all transitions from p and q), remove p x q
     //       from frontier.

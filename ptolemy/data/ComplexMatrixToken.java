@@ -132,7 +132,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  the elements of the array is null, or if one of the elements
      *  of the array cannot be losslessly converted to an integer.
      */
-    public ComplexMatrixToken(Token[] tokens, int rows, int columns) 
+    public ComplexMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         if(tokens == null) {
             throw new IllegalActionException(

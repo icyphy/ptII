@@ -143,33 +143,33 @@ public class InlineParameterTransformer extends SceneTransformer {
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                
+
                 // What about static methods?  They don't have a this
                 // local
                 if (method.isStatic()) {
                     continue;
                 }
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
+
                 if (debug) System.out.println("method = " + method);
-                
+
                 boolean moreToDo = true;
                 while (moreToDo) {
-                    TypeAssigner.v().transform(body, 
+                    TypeAssigner.v().transform(body,
                             _phaseName + ".ta");
                     moreToDo = _inlineMethodCalls(theClass, method, body,
                             attributeToValueFieldMap, debug);
                     LocalNameStandardizer.v().transform(body,
                             _phaseName + ".lns");
                 }
-            }        
+            }
         }
 
-        //        _replaceGetTokenCalls(ModelTransformer.getModelClass(), 
+        //        _replaceGetTokenCalls(ModelTransformer.getModelClass(),
         //        _model, attributeToValueFieldMap, debug);
     }
 
-//     private void _replaceGetTokenCalls(SootClass actorClass, 
+//     private void _replaceGetTokenCalls(SootClass actorClass,
 //             ComponentEntity actor, Map attributeToValueFieldMap, boolean debug) {
 //         // inline calls to parameter.getToken and getExpression
 //         for (Iterator methods = actorClass.getMethods().iterator();
@@ -182,19 +182,19 @@ public class InlineParameterTransformer extends SceneTransformer {
 //                 continue;
 //             }
 //             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            
+
 //             if (debug) System.out.println("method = " + method);
-            
+
 //             boolean moreToDo = true;
 //             while (moreToDo) {
- //                TypeAssigner.v().transform(body, 
+ //                TypeAssigner.v().transform(body,
 //                         _phaseName + ".ta");
 //                 moreToDo = _inlineMethodCalls(actorClass, method, body,
 //                         attributeToValueFieldMap, debug);
 //                 LocalNameStandardizer.v().transform(body,
 //                         _phaseName + ".lns");
 //             }
-//         }        
+//         }
 //         if(actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
 //             CompositeActor model = (CompositeActor)actor;
 //             for (Iterator entities = model.deepEntityList().iterator();
@@ -206,7 +206,7 @@ public class InlineParameterTransformer extends SceneTransformer {
 //                     Scene.v().loadClassAndSupport(className);
 //                 _replaceGetTokenCalls(theClass, entity,
 //                         attributeToValueFieldMap, debug);
-                
+
 //             }
 //         }
 //     }
@@ -275,7 +275,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                             inlinee.retrieveActiveBody();
                             if (debug) System.out.println("Inlining method call: " + r);
                             SiteInliner.inlineSite(inlinee, stmt, method);
-                            
+
                             doneSomething = true;
                         } else {
                             // FIXME: this is a bit of a hack, but
@@ -289,7 +289,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                             doneSomething = true;
                         }
                     }
-                    
+
                         // Statically evaluate constant arguments.
                         Value argValues[] = new Value[r.getArgCount()];
                         int argCount = 0;
@@ -430,7 +430,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     if (tokenField == null) {
                                         throw new RuntimeException("No tokenField found for attribute " + attribute);
                                     }
-                                    
+
                                     Local tokenLocal = Jimple.v().newLocal("convertedToken",
                                             tokenField.getType());
                                     body.getLocals().add(tokenLocal);
@@ -445,7 +445,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                             PtolemyUtilities.typeConvertMethod,
                                                             r.getArg(0))),
                                             stmt);
-                                                                        
+
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     tokenLocal,
@@ -453,7 +453,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                             tokenLocal,
                                                             tokenField.getType())),
                                             stmt);
-                                    
+
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     Jimple.v().newStaticFieldRef(tokenField),
@@ -461,7 +461,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                             stmt);
                                     Entity container = (Entity) FieldsForEntitiesTransformer.
                                         getEntityContainerOfObject(attribute);
-                             
+
                                     StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
                                         getFieldRefForEntity(container);
                                     Local containerLocal = Jimple.v().newLocal("container",
@@ -510,7 +510,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         getEntityContainerOfObject(attribute);
                                     StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
                                         getFieldRefForEntity(container);
-                                    
+
                                     Local containerLocal = Jimple.v().newLocal("container",
                                             RefType.v(PtolemyUtilities.entityClass));
                                     body.getLocals().add(containerLocal);
@@ -567,7 +567,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         getEntityContainerOfObject(attribute);
                                     StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
                                         getFieldRefForEntity(container);
-                                    
+
                                     Local containerLocal = Jimple.v().newLocal("container",
                                             RefType.v(PtolemyUtilities.entityClass));
                                     body.getLocals().add(containerLocal);
@@ -661,10 +661,10 @@ public class InlineParameterTransformer extends SceneTransformer {
                                 System.out.println("Failed usage: " + useStmt);
                                 // We came to a field store that we
                                 // did not create... hopefully there
-                                // is one that we created.  
+                                // is one that we created.
 
                                 // continue;
-                                // 
+                                //
                                 // throw new RuntimeException("Could
                                 // not determine the static value of "
                                 // + local + " in " + method); return
@@ -704,7 +704,7 @@ public class InlineParameterTransformer extends SceneTransformer {
     // the token or expression that that field contains.
     private void _createTokenAndExpressionFields(SootClass theClass,
             NamedObj context, NamedObj container,
-            Map attributeToValueFieldMap, 
+            Map attributeToValueFieldMap,
             ConstVariableModelAnalysis constantAnalysis, boolean debug) {
         /*   SootClass tokenClass =
              Scene.v().loadClassAndSupport("ptolemy.data.Token");
@@ -736,7 +736,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     ptolemy.data.type.Type type = variable.getType();
                     Type tokenType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
-                    
+
                     boolean isConstant = constantAnalysis.getConstVariables(
                             (Entity)context).contains(attribute);
                     int modifier;
@@ -747,7 +747,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     } else {
                         modifier = Modifier.PUBLIC | Modifier.STATIC;
                     }
-                   
+
                     field = new SootField(
                             fieldName + "_CGToken",
                             tokenType,
@@ -788,7 +788,7 @@ public class InlineParameterTransformer extends SceneTransformer {
             }
         }
 
-        if(container instanceof CompositeEntity && 
+        if(container instanceof CompositeEntity &&
                 !(container instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)container;
             // Loop over all the actor instance classes.
@@ -799,7 +799,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     ActorTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
-                
+
                 _createTokenAndExpressionFields(
                         entityClass, entity, entity,
                         attributeToValueFieldMap, constantAnalysis, debug);
