@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generated on Mon Dec 15 10:58:56 2003 -->
+
+<!ELEMENT LineDefaults (parameter*)>
+<!ATTLIST LineDefaults
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Library (AnnotationDefaults*, BlockDefaults*, BlockParameterDefault*, LineDefaults*, System, parameter*)>
+<!ATTLIST Library
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT BlockDefaults (parameter*)>
+<!ATTLIST BlockDefaults
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT AnnotationDefaults (parameter*)>
+<!ATTLIST AnnotationDefaults
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT System (Annotation*, Block*, Line*, parameter*)>
+<!ATTLIST System
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Block (List*, Port*, System, parameter*)>
+<!ATTLIST Block
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT List (parameter*)>
+<!ATTLIST List
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Port (parameter*)>
+<!ATTLIST Port
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Line (Branch*, parameter*)>
+<!ATTLIST Line
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Annotation (parameter*)>
+<!ATTLIST Annotation
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Branch (Branch*, parameter*)>
+<!ATTLIST Branch
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Model (AnnotationDefaults*, BlockDefaults*, BlockParameterDefault*, LineDefaults*, System, parameter*)>
+<!ATTLIST Model
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT BlockParameterDefault (parameter*)>
+<!ATTLIST BlockParameterDefault
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT props (array*, parameter*, (range?))>
+<!ATTLIST props
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT debug (parameter*)>
+<!ATTLIST debug
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT dst (parameter*)>
+<!ATTLIST dst
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT src (parameter*)>
+<!ATTLIST src
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT chart (parameter*, (subviewS?))>
+<!ATTLIST chart
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT data (parameter*, (props?))>
+<!ATTLIST data
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT event (parameter*)>
+<!ATTLIST event
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT instance (parameter*)>
+<!ATTLIST instance
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT junction (parameter*)>
+<!ATTLIST junction
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT machine ((debug?), parameter*)>
+<!ATTLIST machine
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT state (parameter*, subviewS*)>
+<!ATTLIST state
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT target (parameter*)>
+<!ATTLIST target
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT transition ((dst?), parameter*, (slide?), (src?))>
+<!ATTLIST transition
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT subviewS (parameter*)>
+<!ATTLIST subviewS
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT range (parameter*)>
+<!ATTLIST range
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT array (parameter*)>
+<!ATTLIST array
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT slide (parameter*)>
+<!ATTLIST slide
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Stateflow (chart*, data*, event*, instance*, junction*, machine, state*, target*, transition*)>
+<!ATTLIST Stateflow
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT Simulink (Library*, Model*, Stateflow*)>
+<!ATTLIST Simulink
+	_id	ID	#IMPLIED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
+<!ELEMENT parameter EMPTY>
+<!ATTLIST parameter
+	_id	ID	#IMPLIED
+	value	CDATA	#REQUIRED
+	name	CDATA	#REQUIRED
+	archetype 	IDREF	#IMPLIED
+	derived 	IDREFS	#IMPLIED
+	instances 	IDREFS	#IMPLIED
+	desynched_atts 	CDATA	#IMPLIED
+	real_archetype 	(true|false)	#IMPLIED
+	subtype 	(true|false)	#IMPLIED
+>
+
