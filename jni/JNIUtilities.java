@@ -279,7 +279,7 @@ public class JNIUtilities {
 
         //actor.notifyAll();
 
-        String interNativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
 	String destinationDirectory =
 	    System.getProperty("user.dir") + "/jni/"
 	    + interNativeLibrary;
@@ -357,7 +357,7 @@ public class JNIUtilities {
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
         String interFuncName = "jni" + nativeFunction;
 
         String returnJType = "";
@@ -561,7 +561,7 @@ public class JNIUtilities {
 	String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
         String interFuncName = "jni" + nativeFunction;
 
         String returnType = "";
@@ -828,7 +828,7 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
         results.append(
             "# Microsoft Developer Studio Project File - Name=\""
             + interNativeLibrary
@@ -1031,7 +1031,7 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String interNativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = _getInterNativeLibrary(nativeLibrary, actor);
 	String libraryPath = libraryDirectory;
 	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
@@ -1417,6 +1417,11 @@ public class JNIUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
+
+    private static String _getInterNativeLibrary(String nativeLibrary,
+						GenericJNIActor actor) {
+	return "jni" + nativeLibrary;
+    }
 
     // Return the value of the libraryDirectory argument with the double
     // quotes stripped off.
