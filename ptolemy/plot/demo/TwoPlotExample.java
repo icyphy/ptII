@@ -36,6 +36,7 @@ import ptolemy.plot.Plot;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 // The java.io imports are only necessary for the right hand plot.
 import java.io.File;
@@ -72,6 +73,10 @@ public class TwoPlotExample extends JFrame {
         setSize(800, 300);
 
         // Create the left plot by calling methods.
+	// Note that most of these methods should be called in 
+	// the event thread, see the Plot.java class comment.
+	// In this case, main() is invoking this constructor in
+	// the event thread.
 	leftPlot.setSize(350, 300);
         leftPlot.setButtons(true);
         leftPlot.setTitle("Left Plot");
@@ -87,7 +92,11 @@ public class TwoPlotExample extends JFrame {
         leftPlot.setMarksStyle("none");
         leftPlot.setImpulses(true);
 
+	// Call setConnected before reading in data.
+	leftPlot.setConnected(false, 1);
+
         boolean first = true;
+
         for (int i = 0; i <= 100; i++) {
             leftPlot.addPoint(0, (double)i,
                     5 * Math.cos(Math.PI * i/20), !first);
@@ -161,6 +170,13 @@ public class TwoPlotExample extends JFrame {
      *  happens in the constructor.
      */
     public static void main(String args[]) {
-        TwoPlotExample twoPlotExample = new TwoPlotExample();
+	// We execute everything in the Swing Event Thread, see
+	// the comment
+        Runnable doAction = new Runnable() {
+		public void run() {
+		    TwoPlotExample twoPlotExample = new TwoPlotExample();
+		}
+	    };
+	SwingUtilities.invokeLater(doAction);
     }
 }
