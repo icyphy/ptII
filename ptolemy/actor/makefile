@@ -73,6 +73,10 @@ JSRCS = \
 	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
+	Mailbox.java \
+	NoTokenAvailableException.java \
+	Puttable.java \
+	TokenHolderFullException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
