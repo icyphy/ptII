@@ -121,7 +121,7 @@ public class MovieWriter extends Sink
         input.setTypeEquals(BaseType.OBJECT);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("movieOut.mov");
+        fileOrURL.setExpression("$TMPDIR/movieOut.mov");
 
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
@@ -143,7 +143,7 @@ public class MovieWriter extends Sink
 
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by File Attribute.  The initial default value
-     *  is the string "moveOut.mov";
+     *  is the string "$TMPDIR/movieOut.mov";
      *  @see FileParameter
      */
     public FileParameter fileOrURL;
