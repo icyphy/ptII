@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="MaximumEntropySpectrum" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
@@ -43,6 +43,8 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, -5.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -5, 1032, 779}}">
+    </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="location1" class="ptolemy.kernel.util.Location" value="35.0, 250.0">
@@ -56,36 +58,16 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 325.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 260.0">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
         <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="numberOfInputs">
@@ -99,78 +81,20 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         <doc>Autocorrelation estimator</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 260.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin">
         <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 260.0">
         </property>
-        <port name="autocorrelation" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="errorPower" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="linearPredictor" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="reflectionCoefficients" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend">
         <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 365.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="order + 1">
         </property>
-        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 365.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="9">
-            </property>
-        </port>
     </entity>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="log2resolution">
@@ -178,49 +102,14 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         <doc>Forward Fast Fourier Transform</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 365.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-        </port>
     </entity>
     <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 480.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 470.0">
         </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
         <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
@@ -229,24 +118,12 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 470.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
-        <property name="index" class="ptolemy.data.expr.Parameter" value="order">
+        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="order">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 250.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
         <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2^log2resolution">
@@ -255,57 +132,19 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 250.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-        </port>
     </entity>
     <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
         <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="order + 1">
         </property>
         <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="2^log2resolution">
         </property>
-        <property name="offset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 365.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="9">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-        </port>
     </entity>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="square">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="square">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
                 </property>
@@ -329,12 +168,6 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 480.0">
         </property>
-        <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{-1.0}">
@@ -348,13 +181,6 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 365.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
