@@ -156,7 +156,9 @@ public class Publisher extends Sink {
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
         }
-        //System.out.println("Finished preinitialization.");
+        if (_debugging) {
+            _debug(getName(), "Finished preinitialization.");
+        }
     }
 
 
@@ -177,7 +179,9 @@ public class Publisher extends Sink {
                 TokenEntry entry = new TokenEntry(name,
                         new Long(0), token);
                 _space.write(entry, null, Lease.FOREVER);
-                //System.out.println("Publisher writes " + token);
+                if(_debugging) {
+                    _debug(getName(), "Publisher writes " + token);
+                }
             }
 	} catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +

@@ -193,6 +193,9 @@ public class Subscriber extends Source implements RemoteEventListener {
     /** Fork a new thread to handle the notify event.
      */
     public void notify(RemoteEvent event) {
+        if (_debugging) {
+            _debug(getName(), "Get notified from JavaSpaces.");
+        }
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
     }
@@ -211,9 +214,13 @@ public class Subscriber extends Source implements RemoteEventListener {
                 if (_lastReadToken == null) {
                     if(_blocking) {
                         try {
-                            //System.out.println(getName() + " is waiting.");
+                            if (_debugging) {
+                                _debug(getName(), " is waiting.");
+                            }
                             _lock.wait();
-                            //System.out.println(getName() + " wakes up.");
+                            if (_debugging) {
+                                _debug(getName(), " wakes up.");
+                            }
                         } catch (InterruptedException e) {
                             throw new IllegalActionException(this,
                                     "blocking interrupted." +
@@ -224,7 +231,9 @@ public class Subscriber extends Source implements RemoteEventListener {
                         break;
                     }
                 } else {
-                    //System.out.println(getName() + " outputs a token.");
+                    if (_debugging) {
+                        _debug(getName(), " outputs a token.");
+                    }
                     output.send(0, _lastReadToken);
                     _lastReadToken = null;
                     return;
