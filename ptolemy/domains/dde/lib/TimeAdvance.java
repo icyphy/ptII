@@ -81,15 +81,15 @@ public class TimeAdvance extends DDEActor {
 	         Parameter(this, "outputValue", new DoubleToken(0.0));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     // A parameter used to specify the value of the DoubleTokens
     // that are produced as outputs of this actor.
     Parameter outputValue;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Execute this actor by consuming a token on the input and
      *  producing a DoubleToken on the output with a value specified
@@ -117,8 +117,8 @@ public class TimeAdvance extends DDEActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output;
     public TypedIOPort input;

@@ -367,7 +367,7 @@ public class LocalZenoApplication implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The mapping from Ptolemy actors to graph nodes
     private HashMap _nodeMap;
@@ -405,7 +405,7 @@ public class LocalZenoApplication implements ActionListener {
     ////                         inner classes                     ////
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// StateListener
     /**
      * StateListener is an inner class that listens to state
@@ -466,7 +466,7 @@ public class LocalZenoApplication implements ActionListener {
     }
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ThreadRenderer
 
     /**
@@ -509,7 +509,7 @@ public class LocalZenoApplication implements ActionListener {
         }
     }
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// LocalEdgeRenderer
 
     /**

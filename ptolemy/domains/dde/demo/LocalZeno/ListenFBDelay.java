@@ -169,8 +169,8 @@ public class ListenFBDelay extends FBDelay {
 	super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

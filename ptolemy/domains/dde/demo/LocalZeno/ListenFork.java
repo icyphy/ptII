@@ -70,8 +70,8 @@ public class ListenFork extends DoubleFork {
          super(cont, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add an ExecEventListener to this actor's list of listeners.
      * @params listener The ExecEventListener being add to this
@@ -157,8 +157,8 @@ public class ListenFork extends DoubleFork {
 	super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

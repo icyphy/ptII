@@ -178,8 +178,8 @@ public class ListenClock extends Clock {
         _listeners.removeOneOf(listener);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

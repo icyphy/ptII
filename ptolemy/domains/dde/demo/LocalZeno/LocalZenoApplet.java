@@ -304,7 +304,7 @@ public class LocalZenoApplet extends DDEApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The Actors
     private ListenClock _clock;
@@ -343,7 +343,7 @@ public class LocalZenoApplet extends DDEApplet {
     ////                         inner classes                     ////
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// StateListener
     /**
      * StateListener is an inner class that listens to state
@@ -404,7 +404,7 @@ public class LocalZenoApplet extends DDEApplet {
     }
 
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ThreadRenderer
 
     /**
@@ -447,7 +447,7 @@ public class LocalZenoApplet extends DDEApplet {
         }
     }
 
-    //////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// LocalEdgeRenderer
 
     /**

@@ -175,7 +175,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     public Parameter stopTime;
 

@@ -132,8 +132,8 @@ public class ListenGet extends DDEGetNToken {
         _listeners.removeOneOf(listener);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

@@ -216,7 +216,7 @@ public class FBDelay extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     protected double _delay = 4.0;
 

@@ -77,8 +77,8 @@ public class DoubleFork extends TypedAtomicActor {
 	 input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Execute this actor by consuming a real input token and producing
      *  an equivalent real token on output1.
@@ -111,8 +111,8 @@ public class DoubleFork extends TypedAtomicActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output1;
     public TypedIOPort output2;

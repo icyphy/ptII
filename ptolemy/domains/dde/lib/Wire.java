@@ -73,8 +73,8 @@ public class Wire extends TypedAtomicActor {
 	 input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Execute this actor by consuming a token on the input and producing
      *  an equivalent token the output.
@@ -118,8 +118,8 @@ public class Wire extends TypedAtomicActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output;
     public TypedIOPort input;

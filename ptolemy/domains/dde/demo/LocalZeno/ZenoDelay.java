@@ -106,8 +106,8 @@ public class ZenoDelay extends ListenFBDelay {
 	return super.getDelay();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _cntr = 0;
 

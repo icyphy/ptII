@@ -68,8 +68,8 @@ public class ListenWire extends Wire {
          super(cont, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add an ExecEventListener to this actor's list of listeners.
      * @params listener The ExecEventListener being add to this
@@ -156,8 +156,8 @@ public class ListenWire extends Wire {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

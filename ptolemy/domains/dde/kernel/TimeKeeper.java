@@ -702,7 +702,7 @@ public class TimeKeeper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     // The actor that is managed by this time keeper.
     private Actor _actor;

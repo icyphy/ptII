@@ -151,8 +151,8 @@ public class ListenSink extends DDESink {
 	super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 
