@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, java/ptolemy/kernel/doc
+# Makefile for Ptolemy II graph/doc
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
@@ -29,10 +29,11 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Tycho directory
+# Root of Ptolemy II directory
 ROOT =		../../../..
+
 # True source directory
-VPATH =		$(ROOT)/java/ptolemy/praph/doc
+VPATH =		$(ROOT)/java/ptolemy/graph/doc
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
