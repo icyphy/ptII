@@ -73,8 +73,8 @@ public class ThresholdMonitor extends TypedAtomicActor
         input.setTypeEquals(BaseType.DOUBLE);
 
         output = new TypedIOPort(this, "output", false, true);
-        input.setMultiport(false);
-        input.setTypeEquals(BaseType.BOOLEAN);
+        output.setMultiport(false);
+        output.setTypeEquals(BaseType.BOOLEAN);
 
         _thWidth = (double)1e-2;
         thresholdWidth = new Parameter(this, "thresholdWidth",
