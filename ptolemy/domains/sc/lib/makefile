@@ -54,6 +54,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DEFSMActor.java \
+        HSDirector.java \
 	HSInit.java
 
 EXTRA_SRCS =	$(JSRCS)
