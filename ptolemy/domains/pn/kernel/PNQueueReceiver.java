@@ -30,6 +30,7 @@
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.process.BoundaryDetector;
@@ -97,7 +98,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         _boundaryDetector = new BoundaryDetector(this);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -105,19 +105,40 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  a parameter is non-null then register the block with the branch.
      *  If the branch object specified as a parameter is null then
      *  register the block with the local director.
-     *
      *  @param branch The Branch managing execution of this method.
      */
-    public synchronized void prepareToBlock(Branch branch) {
-        if ( branch != null ) {
-            branch.registerReceiverBlocked(this);
-            _otherBranch = branch;
-        } else {
-            PNDirector director = ((PNDirector)((Actor)
-                                           (getContainer().getContainer())).getExecutiveDirector());
-            director._actorBlocked(this);
-            _otherBranch = branch;
+    public void prepareToBlock(Branch branch) {
+        // NOTE: This used to be synchronized on this object, but
+        // since it calls director methods that are synchronized,
+        // that would cause deadlock.
+        synchronized(_director) {
+            if ( branch != null ) {
+                branch.registerReceiverBlocked(this);
+                _otherBranch = branch;
+            } else {
+                _director._actorBlocked(this);
+                _otherBranch = branch;
+            }
         }
+    }
+    
+    /** Set the container. This overrides the base class to record
+     *  the director.
+     *  @param port The container.
+     *  @exception IllegalActionException If the container is not of
+     *   an appropriate subclass of IOPort, or if the container's director
+     *   is not an instance of PNDirector.
+     */
+    public void setContainer(IOPort port) throws IllegalActionException {
+    	super.setContainer(port);
+        Director director = ((Actor)
+                (getContainer().getContainer())).getExecutiveDirector();
+        if (!(director instanceof PNDirector)) {
+        	throw new IllegalActionException(port,
+                    "Cannot use an instance of PNQueueReceiver " +
+                    "since the director is not a PNDirector.");
+        }
+        _director = (PNDirector)director;
     }
 
     /** Unblock this receiver and register this new state with
@@ -126,16 +147,18 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  new state with the local director; otherwise, register
      *  the new state with the blocked branch.
      */
-    public synchronized void wakeUpBlockedPartner() {
-        if ( _otherBranch != null ) {
-            _otherBranch.registerReceiverUnBlocked(this);
-        } else {
-            PNDirector director = ((PNDirector)((Actor)
-                                           (getContainer().getContainer())).getExecutiveDirector());
-            director._actorUnBlocked(this);
-
+    public void wakeUpBlockedPartner() {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized(_director) {
+            if ( _otherBranch != null ) {
+                _otherBranch.registerReceiverUnBlocked(this);
+            } else {
+                _director._actorUnBlocked(this);
+            }
+            _director.notifyAll();
         }
-        notifyAll();
     }
 
     /** Get a token from this receiver. If the receiver is empty then
@@ -167,19 +190,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
-        PNDirector director = ((PNDirector)
-                ((Actor)(getContainer().getContainer()))
-                .getExecutiveDirector());
         Token result = null;
-        synchronized (this) {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
             while (!_terminate && !super.hasToken()) {
                 _readBlocked = true;
                 prepareToBlock(branch);
-                // director._actorBlocked(this);
                 while (_readBlocked && !_terminate) {
-                    // checkIfBranchIterationIsOver(branch);
                     try {
-                        workspace.wait(this);
+                        workspace.wait(_director);
                     } catch (InterruptedException e) {
                         _terminate = true;
                         break;
@@ -192,10 +213,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writeBlocked) {
-                    // director._actorUnBlocked(this);
                     wakeUpBlockedPartner();
                     _writeBlocked = false;
-                    notifyAll(); // Wake up threads waiting on a write;
                 }
             }
             return result;
@@ -239,8 +258,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -254,8 +271,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -269,8 +284,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -279,11 +292,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
-    /** This class serves as an example of a ConsumerReceiver and
-     *  hence this method returns true;
+    /** Return true if this receiver is connected to the boundary.
+     *  That is, it is in an input port that is connected on
+     *  the outside to the inside of an input port, or it is on
+     *  the inside of an output port that is connected on the
+     *  outside to an input port higher in the hierarchy.
+     *  @see #isConnectedToBoundary()
+     *  @return True if this is connected to the boundary.
      */
     public boolean isConsumerReceiver() {
-        if ( isConnectedToBoundary() ) {
+        if (isConnectedToBoundary()) {
             return true;
         }
         return false;
@@ -294,8 +312,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  contained by a composite actor. If this receiver is contained
      *  on the inside of a boundary port then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -309,8 +325,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  contained by a composite actor. If this receiver is contained
      *  on the outside of a boundary port then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -319,8 +333,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         return _boundaryDetector.isOutsideBoundary();
     }
 
-    /** This class serves as an example of a ProducerReceiver and
-     *  hence this method returns true;
+    /** Return true if this receiver is at a boundary.
+     *  @return True if this receiver is at a boundary.
      */
     public boolean isProducerReceiver() {
         if ( isOutsideBoundary() || isInsideBoundary() ) {
@@ -334,8 +348,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return a boolean indicating whether a read is blocked on this
      *  receiver or not.
      */
-    public synchronized boolean isReadBlocked() {
-        return _readBlocked;
+    public boolean isReadBlocked() {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+        	return _readBlocked;
+        }
     }
 
     /** Return a true or false to indicate whether there is a write block
@@ -343,8 +362,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return A boolean indicating whether a write is blocked  on this
      *  receiver or not.
      */
-    public synchronized boolean isWriteBlocked() {
-        return _writeBlocked;
+    public boolean isWriteBlocked() {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            return _writeBlocked;
+        }
     }
 
     /** Put a token on the queue contained in this receiver.
@@ -377,25 +401,20 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
-        PNDirector director = (PNDirector)
-            ((Actor)(getContainer().getContainer())).getExecutiveDirector();
-        synchronized(this) {
-            // if (!super.hasRoom()) {
+        // NOTE: This used to synchronize on this, but since it calls
+        // director methods that are synchronized on the director,
+        // this can cause deadlock.
+        synchronized(_director) {
             while (!_terminate && !super.hasRoom()) {
                 _writeBlocked = true;
                 prepareToBlock(branch);
-                // director._actorBlocked(this);
                 while (_writeBlocked && !_terminate ) {
-                    // while (!_terminate && !super.hasRoom()) {
-                    // while (_writeBlocked) {
-                    // checkIfBranchIterationIsOver(branch);
                     try {
-                        workspace.wait(this);
+                        workspace.wait(_director);
                     } catch (InterruptedException e) {
                         _terminate = true;
                         break;
                     }
-                    // }
                 }
             }
             if (_terminate) {
@@ -406,10 +425,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_readBlocked) {
                     wakeUpBlockedPartner();
-                    // director._actorUnBlocked(this);
                     _readBlocked = false;
-                    notifyAll();
-                    //Wake up all threads waiting on a write to this receiver;
                 }
             }
         }
@@ -429,8 +445,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param readPending true if the calling process is blocking on a
      *  read, false otherwise.
      */
-    public synchronized void setReadPending(boolean readPending) {
-        _readBlocked = readPending;
+    public void setReadPending(boolean readPending) {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            _readBlocked = readPending;
+        }
     }
 
     /** Set a state flag indicating that there is a process blocked
@@ -438,23 +459,35 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param writePending true if the calling process is blocking on
      *  a write, false otherwise.
      */
-    public synchronized void setWritePending(boolean writePending) {
-        _writeBlocked = writePending;
+    public void setWritePending(boolean writePending) {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            _writeBlocked = writePending;
+        }
     }
 
     /** Set a flag in the receiver to indicate the onset of termination.
      *  This will result in termination of any process that is either blocked
      *  on the receiver or is trying to read from or write to it.
      */
-    public synchronized void requestFinish() {
-        _terminate = true;
-        notifyAll();
+    public void requestFinish() {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            _terminate = true;
+            _director.notifyAll();
+        }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The director in charge of this receiver. */
+    private PNDirector _director;
+    
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;
     private boolean _terminate = false;

@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy PN domain kernel
+# Makefile for the Process Networks domain actor library
 #
-# @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2004 The Regents of the University of California.
+# @Copyright (c) 1998-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pn/kernel
+ME =		ptolemy/domains/pn/lib
+
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -40,42 +42,34 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		event test
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		event/event.jar
+JSRCS =
 
-PTCLASSALLJAR = kernel.jar
+OTHER_FILES_TO_BE_JARED = \
+	pnentities.xml
 
-JSRCS = NondeterministicMerge.java \
-	PNDirector.java \
-	PNQueueReceiver.java \
-	TimedPNDirector.java
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-EXTRA_SRCS =	$(JSRCS)
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	 $(DIRS) \
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS) test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules

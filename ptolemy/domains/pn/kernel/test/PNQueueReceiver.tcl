@@ -1,4 +1,4 @@
-# Tests for the Director class
+# Tests for the PNQueueReceiver class
 #
 # @Author: Mudit Goel, John S. Davis II
 #

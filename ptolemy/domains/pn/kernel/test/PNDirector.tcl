@@ -132,7 +132,6 @@ Invoking initialize()}}
 test PNDirector-5.2 {Test creation of a receiver} {
     set r1 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d3 newReceiver]]
-    #FIXME: Check if this is correct!
     set p1 [$d4 getAttribute "initialQueueCapacity"]
     _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
     set r2 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \

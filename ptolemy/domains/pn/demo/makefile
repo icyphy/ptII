@@ -49,6 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	NondeterministicMerge/NondeterministicMerge.jar \
 	OrderedMerge/OrderedMerge.jar \
 	QR/QR.jar
 

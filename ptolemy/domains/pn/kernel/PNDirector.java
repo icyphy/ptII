@@ -28,8 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.pn.kernel;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
@@ -206,8 +208,7 @@ public class PNDirector extends CompositeProcessDirector {
         _readBlockCount = 0;
         _writeBlockCount = 0;
         _writeBlockedQueues = new LinkedList();
-        //processListeners is not initialized as we might want to continue
-        //with the same listeners.
+        
         super.initialize();
     }
 
@@ -220,16 +221,16 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public Receiver newReceiver() {
         PNQueueReceiver receiver =  new PNQueueReceiver();
+        _receivers.add(new WeakReference(receiver));
+        // Set the capacity to the default. Note that it will also
+        // be set in preinitialize().
         try {
-            Parameter parameter =
-                (Parameter)getAttribute("initialQueueCapacity");
-            int capacity = ((IntToken)parameter.getToken()).intValue();
-            receiver.setCapacity(capacity);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Size of queue should be 0, and capacity should be a "
-                    + "non-negative number");
-        }
+			int capacity = ((IntToken)initialQueueCapacity.getToken())
+                    .intValue();
+			receiver.setCapacity(capacity);
+		} catch (IllegalActionException e) {
+			throw new InternalErrorException(e);
+		}
         return receiver;
     }
 
@@ -256,6 +257,29 @@ public class PNDirector extends CompositeProcessDirector {
             return !_stopRequested;
         } else {
             return _notDone;
+        }
+    }
+
+    /** Override the base class to reset the capacities of all the receivers.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        
+        // Reset the capacities of all the receivers.
+        Parameter parameter = (Parameter)getAttribute("initialQueueCapacity");
+        int capacity = ((IntToken)parameter.getToken()).intValue();
+        ListIterator receivers = _receivers.listIterator();
+        while (receivers.hasNext()) {
+        	WeakReference reference = (WeakReference)receivers.next();
+            if (reference.get() == null) {
+                // Reference has been garbage collected.
+            	receivers.remove();
+            } else {
+                PNQueueReceiver receiver = (PNQueueReceiver)reference.get();
+                receiver.clear();
+                receiver.setCapacity(capacity);
+            }
         }
     }
 
@@ -312,8 +336,9 @@ public class PNDirector extends CompositeProcessDirector {
                 = ((IntToken)maximumQueueCapacity.getToken()).intValue();
             if (maximumCapacity > 0 && capacity*2 > maximumCapacity) {
                 throw new IllegalActionException(this,
-                        "Capacity of a queue exceeds maximum capacity. "
-                        + "Perhaps you have an unbounded queue?");
+                        "Queue size exceeds the maximum capacity in port "
+                        + smallestCapacityQueue.getContainer().getFullName()
+                        + ". Perhaps you have an unbounded queue?");
             }
             smallestCapacityQueue.setCapacity(capacity*2);
         }
@@ -418,7 +443,7 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeBlockedQueues = new LinkedList();
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -437,4 +462,7 @@ public class PNDirector extends CompositeProcessDirector {
     ////                         private variables                 ////
 
     private LinkedList _processListeners = new LinkedList();
+    
+    /** The list of all receivers that this director has created. */
+    private LinkedList _receivers = new LinkedList();
 }
