@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Actor for calculating the value of f, df/dx, df/dy, and df/dtheta
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -42,7 +42,7 @@ import ptolemy.data.expr.Parameter;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
-//// Bias
+//// ImplicitSurface
 /**
 This takes state input from the aircraft, and outputs information on
 the implicit surface function, which represents the reachable set.
@@ -95,6 +95,10 @@ public class ImplicitSurface extends TypedAtomicActor {
         dthetaFile =
             new Parameter(this , "dthetaFile", new StringToken("plane.data"));
 
+        /** This flag will become true after initialize() is first
+         * called, to avoid reloading the surface function.
+         */
+        _alreadyInitialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -161,6 +165,15 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
+        /** Prevent reinitialization.
+         */
+        if (_alreadyInitialized) {
+            return;
+        }
+        else {
+            _alreadyInitialized = true;
+        }
+
         String ptII, functionName, dxName, dyName, dthetaName;
         String path = "/ptolemy/apps/softwalls/surfaces/";
         StringToken functionToken, dxToken, dyToken, dthetaToken;
@@ -201,16 +214,16 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     }
 
-    /** Clears the the implicit surface function and gradient function.
-     *  @exception IllegalActionException If the super class throws
-     *  it.
-     */
-    public void wrapup() throws IllegalActionException {
-        _surfaceFunction = null;
-        _xGradientFunction = null;
-        _yGradientFunction = null;
-        _thetaGradientFunction = null;
-    }
+//     /** Clears the the implicit surface function and gradient function.
+//      *  @exception IllegalActionException If the super class throws
+//      *  it.
+//      */
+//     public void wrapup() throws IllegalActionException {
+//         _surfaceFunction = null;
+//         _xGradientFunction = null;
+//         _yGradientFunction = null;
+//         _thetaGradientFunction = null;
+//     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
@@ -221,6 +234,9 @@ public class ImplicitSurface extends TypedAtomicActor {
     ThreeDFunction _yGradientFunction;
     ThreeDFunction _thetaGradientFunction;
 
+    /** Used to stop actor from reloading each time.
+     */
+    boolean _alreadyInitialized;
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
