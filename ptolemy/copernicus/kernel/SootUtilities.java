@@ -1259,9 +1259,10 @@ public class SootUtilities {
      */
     public static SootMethod getSootMethodForMethod(Method method) {
         StringBuffer buffer = new StringBuffer();
-
-        buffer.append("<" + Scene.v().quotedNameOf(
-                method.getDeclaringClass().getName()) + ": ");
+        String className = Scene.v().quotedNameOf(
+                method.getDeclaringClass().getName());
+        Scene.v().loadClassAndSupport(className);
+        buffer.append("<" + className + ": ");
         String returnType = method.getReturnType().getName();
 
         buffer.append(returnType + " " + Scene.v().quotedNameOf(method.getName()) + "(");
