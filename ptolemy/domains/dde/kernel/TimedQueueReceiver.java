@@ -127,7 +127,6 @@ public class TimedQueueReceiver {
 	    // the triple is no longer in front.
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	        // timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
 	        timeKeeper.updateRcvrList(this);
 	    }
 	}

@@ -294,10 +294,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
 	    // System.out.println("Time is minimum but not unique");
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
-		/*
-                timeKeeper.updateRcvrList( this, getRcvrTime(), 
-			getPriority() );
-		*/
                 timeKeeper.updateRcvrList(this);
 		return false;
 	    }
