@@ -128,19 +128,28 @@ public class ActorRecursion extends TypedCompositeActor {
      *   IllegalActionException.
      */
     public void fire() throws IllegalActionException {
-        _cloneRecursionActor();
-        getDirector().preinitialize();
-        _transferInputs();
-        _setOutputPortRate();
-        getDirector().initialize();
-        _transferOutputs();
-        ((DDFDirector)getExecutiveDirector()).
-            merge((DDFDirector)getDirector());
         try {
-            getDirector().setContainer(null);
-        } catch (NameDuplicationException ex) {
-            //should not happen.
-            throw new InternalErrorException(this, ex, null);
+            // Disable redoing type resolution because type compatibility
+            // has been guaranteed during initialization.
+            ((DDFDirector)getExecutiveDirector()).flagTypeResolution(true);
+            ((DDFDirector)getDirector()).flagTypeResolution(true);
+            
+            _cloneRecursionActor();
+            getDirector().preinitialize();
+            _transferInputs();
+            _setOutputPortRate();
+            getDirector().initialize();
+            _transferOutputs();
+            ((DDFDirector)getExecutiveDirector()).
+                    merge((DDFDirector)getDirector());
+            try {
+                getDirector().setContainer(null);
+            } catch (NameDuplicationException ex) {
+                //should not happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        } finally {
+            ((DDFDirector)getExecutiveDirector()).flagTypeResolution(false);
         }
     }
 
