@@ -34,7 +34,7 @@ import java.awt.*;
 import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotDemo
+//// PlotLiveDemo
 /** 
  * Dynamically plot a test signal, illustrating how to use the <code>PlotLive</code> class.
  */
@@ -43,6 +43,21 @@ public class PlotLiveDemo extends PlotLive {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
    
+	/**
+     * Add points to the plot.  This is called by the base class <code>run()</code>
+     * method while live plotting is enabled.
+     */
+    public void addPoints() {
+        // Plot 6 points at a time for faster response.
+        for (int i = 0; i < 6; i++) {
+            addPoint(0, Math.sin(Math.PI*_count/25), Math.cos(Math.PI * _count/100), false);
+            addPoint(0, Math.sin(Math.PI*_count/45), Math.cos(Math.PI * _count/70), true);
+            addPoint(1, Math.sin(Math.PI*_count/45), Math.cos(Math.PI * _count/70), !_first);
+            _first = false;
+            _count += 1.0;
+        }
+    }
+
     /**
      * Return a string describing this applet.
      */
@@ -60,32 +75,23 @@ public class PlotLiveDemo extends PlotLive {
      * given here.  This method also creates start and stop buttons to control
      * the plot.
      */
-    public synchronized void init () {
+    public void init () {
         setTitle("Live Plot Demo");
         setYRange(-1,1);
         setXRange(-1,1);
         setNumSets(2);
         setMarksStyle("none");
-        setPointsPersistence(100);
+        setPointsPersistence(60);
         
         // Give the user direct control over starting and stopping.
         makeButtons();
         
         super.init();
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                       private variables                          ////
     
-	/**
-     * Draw points.  This runs in a separate thread, and will run forever if
-     * allowed to.
-     */
-    public synchronized void run() {
-        boolean first = true;
-        double count = 0.0;
-        while (true) {
-            addPoint(0, Math.sin(Math.PI*count/25), Math.cos(Math.PI * count/100), !first);
-            addPoint(1, Math.sin(Math.PI*count/45), Math.cos(Math.PI * count/70), !first);
-            first = false;
-            count += 1.0;
-        }
-    }
+    private boolean _first = true;
+    private double _count = 0.0;
 }

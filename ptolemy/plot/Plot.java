@@ -32,14 +32,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 // FIXME: To do
 //   - support for oscilloscope-like plots (where x axis wraps around).
-//   - crosshair cursor and zooming in.
-//   - connected lines and steps
-//   - support error bars (ydelta, or ylow yhigh) (adjust yrange to fit error bars)
-//   - support impulses as a plot option
-//   - support bars as a plot option
-//   - support zooming in and out
+//   - steps between points rather than connected lines.
 //   - cubic spline interpolation
+//   - support error bars (ydelta, or ylow yhigh) (adjust yrange to fit error bars)
 //   - log scale axes
+
+// NOTE: The XOR drawing mode is needed in order to be able to erase plotted points and
+// restore the grid line, tick marks, and boundary rectangle.  Another alternative would
+// be to put the tick marks outside the rectangle, disallow grid marks, and adjust
+// drawing so it never overlaps the boundary rectangle.  Then erasing could be
+// done by redrawing in white. This would be better.
 
 // NOTE: There are quite a few subjective spacing parameters, all given, unfortunately,
 // in pixels.  This means that as resolutions get better, this program may need to be
@@ -64,7 +66,7 @@ import java.applet.Applet;
  * The following command defines the number of data sets to be plotted.
  * <pre>
  * NumSets: <i>positiveInteger</i>
- * </pre>
+ * <pre>
  * If data is provided for more data sets than this number, those
  * data are ignored.  Each dataset can be optionally identified with
  * color (see the base class) or with unique marks.  The style of
@@ -79,15 +81,44 @@ import java.applet.Applet;
  * Here, "points" are small dots, while "dots" are larger.  If "various"
  * is specified, then unique marks are used for the first ten data sets,
  * and then recycled.
- * Using no marks is useful only when lines connect the points in a plot,
+ * Using no marks is useful when lines connect the points in a plot,
  * which is done by default.  To disable connecting lines, use:
  * <pre>
  * Lines: off
  * </pre>
+ * To reenable them, use
+ * <pre>
+ * Lines: on
+ * </pre>
+ * You can also specify "impulses," which are lines drawn from a plotted point
+ * down to the x axis.  These are off by default, but can be turned on with the
+ * command:
+ * <pre>
+ * Impulses: on
+ * </pre>
+ * or back off with the command
+ * <pre>
+ * Impulses: off
+ * </pre>
+ * To create a bar graph, turn off lines and use any of the following commands:
+ * <pre>
+ * Bars: on
+ * Bars: <i>width</i>
+ * Bars: <i>width, offset</i>
+ * </pre>
+ * The <i>width</i> is a real number specifying the width of the bars in the units
+ * of the x axis.  The <i>offset</i> is a real number specifying how much the
+ * bar of the <i>i</i><sup>th</sup> data set is offset from the previous one.
+ * This allows bars to "peek out" from behind the ones in front.  Note that the
+ * frontmost data set will be the last one.
+ * To turn off bars, use
+ * <pre>
+ * Bars: off
+ * </pre>
  * To specify data to be plotted, start a data set with the following command:
  * <pre>
  * DataSet: <i>string</i>
- * </pre>
+ * <pre>
  * Here, <i>string</i> is a label that will appear in the legend.
  * It is not necessary to enclose the string in quotation marks.
  * The data itself is given by a sequence of commands with one of the
@@ -145,7 +176,7 @@ public class Plot extends PlotBox {
      */
 	public synchronized void drawPlot(boolean clearfirst) {
     	// Draw the axes
-    	drawAxes(clearfirst);
+    	super.drawPlot(clearfirst);
     	// Plot the points
     	for (int dataset = 0; dataset < numsets; dataset++) {
     	    Vector data = points[dataset];
@@ -192,8 +223,9 @@ public class Plot extends PlotBox {
     /**
      * Initialize the applet.  If a dataurl parameter has been specified,
      * read the file given by the URL and parse the commands in it.
+     * Also, make a button for auto-scaling the plot.
      */
-    public void init() {
+    public synchronized void init() {
         setNumSets(numsets);
         currentdataset = -1;
         super.init();
@@ -206,6 +238,54 @@ public class Plot extends PlotBox {
 	    drawPlot(true);
     }
 
+    /**
+     * Turn bars on or off.
+     */
+    public void setBars (boolean on) {
+        if (on) {
+            _bars = true;
+        } else {
+            _bars = false;
+        }
+    }
+
+    /**
+     * Turn bars on and set the width and offset.  Both are specified in units
+     * of the x axis.  The offset is the amount by which the i<sup>th</sup> data set
+     * is shifted to the right, so that it peeks out from behind the earlier data sets.
+     */
+    public void setBars (double width, double offset) {
+        _barwidth = width;
+        _baroffset = offset;
+        _bars = true;
+    }
+    
+    /**
+     * If the argument is true, then the default is to connect subsequent points with a
+     * line.  If the argument is false, then points are not connected.  When points are
+     * by default connected, individual points can be not connected by giving the appropriate
+     * argument to <code>addPoint()</code>.
+     */
+    public void setConnected (boolean on) {
+        if (on) {
+            _connected = true;
+        } else {
+            _connected = false;
+        }
+    }
+    
+    /**
+     * If the argument is true, then a line will be drawn from any plotted point down
+     * to the x axis.  Otherwise, this feature is disabled.
+     */
+    public void setImpulses (boolean on) {
+        if (on) {
+            _impulses = true;
+        } else {
+            _impulses = false;
+        }
+    }
+    
     /**
      * Set the marks style to "none", "points", "dots", or "various".  In the last
      * case, unique marks are used for the first ten data sets, then recycled.
@@ -280,8 +360,10 @@ public class Plot extends PlotBox {
      * If the fifth argument is true, then check the range and plot only points
      * and that portion of the connecting line that is in range.
      * If both the new point and the previous point are out of range, no line is drawn.
+     * Return true if the point is actually drawn.  It is not drawn if either it is
+     * out of range or there is no mark requested.
      */
-    protected void drawPoint(int dataset, int xpos, int ypos, boolean connected, boolean clip) {
+    protected boolean drawPoint(int dataset, int xpos, int ypos, boolean connected, boolean clip) {
         // Points are only distinguished up to 10 data sets.
         dataset %= 10;
         if (_pointsPersistence > 0) {
@@ -383,6 +465,35 @@ public class Plot extends PlotBox {
             }
         }
         
+        // Draw the impulse line to the x axis, if appropriate.
+        // Do not draw them if the data is out of range along the x axis
+        // or is below the y axis.
+        if (_impulses && ypos <= lry && xpos <= lrx && xpos >= ulx) {
+            int topofline = ypos;
+            if (ypos < uly) {
+                topofline = uly;
+            }
+            graphics.drawLine(xpos, topofline, xpos, lry);
+        }
+
+        // Draw the bars to the x axis, if appropriate.
+        // Do not draw them if the data is out of range along the x axis
+        // or is below the y axis.
+        if (_bars && ypos <= lry && xpos <= lrx && xpos >= ulx) {
+            int topofbar = ypos;
+            if (ypos < uly) {
+                topofbar = uly;
+            }
+            // left x position of bar.
+            int barlx = (int)(xpos - _barwidth * xscale/2 +
+                     (numsets - dataset - 1) * _baroffset * xscale);
+            // right x position of bar
+            int barrx = (int)(barlx + _barwidth * xscale);
+            if (barlx < ulx) barlx = ulx;
+            if (barrx > lrx) barrx = lrx;
+            graphics.fillRect(barlx, topofbar, barrx - barlx, lry - topofbar);
+        }
+
         int xstart = xpos;
         int ystart = ypos;
         int prevx = _prevx[dataset];
@@ -450,6 +561,7 @@ public class Plot extends PlotBox {
             // Restore paint mode in case axes get redrawn.
             graphics.setPaintMode();
         }
+        return ((pointinside || !clip) && (marks != 0));
     }
     
     /**
@@ -457,9 +569,9 @@ public class Plot extends PlotBox {
      * Lines with syntax errors are ignored.
      */
     protected boolean parseLine (String line) {
-        // parse only if the super class does not recognize the line.
         boolean connected = false;
         if (_connected) connected = true;
+        // parse only if the super class does not recognize the line.
         if (!super.parseLine(line)) {
             int start = 0;
             if (line.startsWith("Marks:")) {
@@ -474,6 +586,7 @@ public class Plot extends PlotBox {
                 catch (NumberFormatException e) {
                     // ignore bogons
                 }
+                return true;
             } else if (line.startsWith("DataSet:")) {
                 // new data set
                 _firstinset = true;
@@ -481,10 +594,47 @@ public class Plot extends PlotBox {
                 if (currentdataset >= 10) currentdataset = 0;
                 String legend = (line.substring(8)).trim();
                 addLegend(currentdataset, legend);
+                return true;
             } else if (line.startsWith("Lines:")) {
                 if (line.indexOf("off",6) >= 0) {
-                    _connected = false;
+                    setConnected(false);
+                } else {
+                    setConnected(true);
                 }
+                return true;
+            } else if (line.startsWith("Impulses:")) {
+                if (line.indexOf("off",9) >= 0) {
+                    setImpulses(false);
+                } else {
+                    setImpulses(true);
+                }
+                return true;
+            } else if (line.startsWith("Bars:")) {
+                if (line.indexOf("off",5) >= 0) {
+                    setBars(false);
+                } else {
+                    setBars(true);
+         	        int comma = line.indexOf(",", 5);
+         	        String barwidth;
+         	        String baroffset = null;
+        	        if (comma > 0) {
+                        barwidth = (line.substring(5, comma)).trim();
+                        baroffset = (line.substring(comma+1)).trim();
+                    } else {
+                        barwidth = (line.substring(5)).trim();
+                    }
+        	        try {
+        	            Double bwidth = new Double(barwidth);
+        	            double boffset = _baroffset;
+        	            if (baroffset != null) {
+        	                boffset = (new Double(baroffset)).doubleValue();
+        	            }
+        	            setBars(bwidth.doubleValue(), boffset);
+        	        } catch (NumberFormatException e) {
+        	            // ignore if format is bogus.
+        	        }
+                }
+                return true;
             } else if (line.startsWith("move:")) {
                 // a disconnected point
                 connected = false;
@@ -547,7 +697,11 @@ public class Plot extends PlotBox {
     private int _pointsPersistence = 0;
     private int _sweepsPersistence = 0;
     private boolean _connected = true;
+    private boolean _impulses = false;
     private boolean _firstinset = true;
+    private boolean _bars = false;
+    private double _barwidth = 0.5;
+    private double _baroffset = 0.05;
     
     // Give both radius and diameter of a point for efficiency.
     private int _radius = 3;

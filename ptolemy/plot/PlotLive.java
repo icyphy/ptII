@@ -42,24 +42,24 @@ import java.applet.Applet;
  * finite persistence so that old points are erased as new points are added.
  * Unfortunately, the most efficient way to erase old points is to draw graphics
  * using the "exclusive or" mode, which introduces quite a number of artifacts.
- * The most obvious is that color is lost (a bug in the AWT?).  Also, when lines
- * are drawn between points, where they overlap the points the line becomes white.
- * Moreover, if two lines overlap, they disappear.
- *
+ * When lines are drawn between points, where they overlap the points the line
+ * becomes white. Moreover, if two lines or points overlap completely, they disappear.
+ * <p>
  * This class is abstract, so it must be used by creating a derived class.
  * To use it, create a derived class with <code>init()</code> and
- * <code>run()</code> methods. The <code>init()</code> method can call methods in the
+ * <code>addPoints()</code> methods. The <code>init()</code> method can call methods in the
  * <code>Plot</code> or <code>PlotBox</code> classes
  * (both of which are base classes) to set the static properties of
  * the graph, such as the title, axis ranges, and axis labels. 
- * The <code>run()</code> method should call <code>addPoint()</code>
- * of the <code>Plot</code> class to dynamically add points to the plot.
- * This method runs in its own thread with a priority slightly lower than
- * that of the default thread, to avoid hogging resources.
- *
+ * The <code>addPoints()</code> method should call <code>addPoint()</code>
+ * of the <code>Plot</code> base class to dynamically add points to the plot.
+ * This method is called within a thread separate from the applet thread.
+ * <p>
  * The <code>init()</code> method <i>must</i> call
  * <code>super.init()</code> somewhere in its body;  along with general initialization,
  * this reads a file given by a URL if the dataurl applet parameter is specified.
+ * Thus, the initial configuration can be specified in a separate file rather
+ * than in Java code.
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
@@ -67,29 +67,62 @@ public abstract class PlotLive extends Plot implements Runnable {
     ////                         public methods                           ////
    
     /**
-     * Handle button presses to start or stop the separate thread that generates
-     * points to plot.
+     * Handle button presses to enable or disable plotting.
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _startButton) {
-            startPlot();
+            enable();
             return true;
         } else if (evt.target == _stopButton) {
-            stopPlot();
+            disable();
             return true;
         } else {
             return super.action (evt, arg);
         }
     }
 
+	/**
+     * Redefine in derived clases to add points to the plot.
+     * Adding many points at once will make the plot somewhat faster because the thread
+     * yields between calls to this method.  However, the plot will also be somewhat
+     * less responsive to user inputs such as zooming, filling, or stopping.
+     */
+    public abstract void addPoints();
+
     /**
      * Stop the thread when the applet goes away.
      */
-    public void destroy() {
+    public synchronized void destroy() {
         if (_plotThread != null && _plotThread.isAlive()) {
+            // destroying the thread while it is in wait leaves a waiting thread on
+            // the queue, apparently.  Notify the thread to die.
+            _die = true;
+            notifyAll();
+            // wait for a response.
+            try {
+                wait();
+            } catch (InterruptedException e) {}
             _plotThread.stop();
             _plotThread = null;
         }
+    }
+
+    /**
+     * Disable plotting.  While plotting is disabled, no calls are made to
+     * <code>addPoints()</code>.  The applet just sits idly waiting for plotting
+     * to be enabled.
+     */
+    public void disable() {
+        _running = false;
+    }
+
+    /**
+     * Enable plotting. While plotting is enabled, calls are made to
+     * <code>addPoints()</code>.
+     */
+    public synchronized void enable() {
+        _running = true;
+        notifyAll();
     }
 
     /**
@@ -101,50 +134,65 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     /**
      * Create a start and stop buttons, by which the user can invoke
-     * <code>startPlot()</code> and <code>stopPlot</code>.  Alternatively, a derived
+     * <code>enable()</code> and <code>disable</code>.  Alternatively, a derived class
      * might invoke these directly and dispense with the buttons.  This should be
      * called within the <code>init()</code> method in derived classes.
      */
-    public synchronized void makeButtons () {
-        // So that the buttons appear at the upper left...
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+    public void makeButtons () {
+        // So that the buttons appear at the upper right...
+        // Note that this infringes on the title space... maybe not good.
         _startButton = new Button("start");
         add(_startButton);
         _stopButton = new Button("stop");
         add(_stopButton);
-        
-        // allow a little extra room for the buttons.
-        topPadding += 5;
     }
     
-    /**
-     * Start the plotting thread if it has not been started.
-     * Resume it if it has been started but is not active.
-     * Note that this is not named "start" so that starting and
-     * stopping the thread is under the control of the user rather
-     * than the applet viewer.
+	/**
+     * This is the body of a thread that monitors which of the start or stop buttons
+     * have been pushed most recently, or which of the <code>enable()</code> or
+     * <code>disable()</code> methods has been called most recently, to determine
+     * whether to patiently wait or to call the <code>addPoints()</code> method.
+     * Between calls to <code>addPoints()</code>, it calls <code>Thread.yield()</code>
+     * so that the thread does not hog all the resources.  This somewhat slows
+     * down execution, so derived classes may wish to plot quite a few points in their
+     * <code>addPoints()</code> method, if possible.  However, plotting more points
+     * at once may also decrease the responsiveness of the user interface.
      */
-    public void startPlot() {
-        if (_plotThread != null) {
-            _plotThread.resume();
-        } else if (_plotThread == null) {
-            // start the update thread.
+    public synchronized void run() {
+        while (true) {
+            if (_die) {
+                notifyAll();
+                return;
+            }
+            if (_running) {
+                addPoints();
+                Thread.yield();
+            } else {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * Start the applet.  This is called by the applet viewer.
+     * It creates a thread to plot live data, if this has not been already done.
+     */
+    public void start() {
+        if (_plotThread == null) {
             _plotThread = new Thread(this, "Plot Thread");
-            // set priority just below default.
-            _plotThread.setPriority(4);
             _plotThread.start();
         }
     }
 
     /**
-     * Suspend the plotting thread.  This is not named "stop" so that
-     * starting and stopping of the thread is under the control of the
-     * user rather than the applet viewer.
+     * Stop the applet.  This destroys the thread created by <code>start()</code>.
      */
-    public void stopPlot() {
-        if (_plotThread != null && _plotThread.isAlive()) {
-            _plotThread.suspend();
-        }
+    public void stop() {
+        destroy();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -153,4 +201,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     private Thread _plotThread;
    
     private Button _startButton, _stopButton;
+    
+    private boolean _running = false;
+    private boolean _die = false;
 }

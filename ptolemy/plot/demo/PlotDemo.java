@@ -42,14 +42,7 @@ public class PlotDemo extends Plot {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-   
-   /* FIXME: To make into an application?
-	public static void main(String args[]) {
-		Applet applet = new Plot();
-		Frame frame = new PlotFrame("Plot",applet,500,400);
-	} 
-	*/
-	
+   	
     /**
      * Return a string describing this applet.
      */
@@ -64,7 +57,7 @@ public class PlotDemo extends Plot {
     public void init () {
         super.init();
         
-        setTitle("Simple Line Plot Demo");
+        setTitle("Line Plot Demo");
         setYRange(-4,4);
         setXRange(0,100);
         setXLabel("time");
@@ -76,6 +69,7 @@ public class PlotDemo extends Plot {
         addYTick("PI", Math.PI);
         setNumSets(10);
         setMarksStyle("none");
+        setImpulses(true);
         
         boolean first = true;
         for (int i=0; i <= 100; i++) {
