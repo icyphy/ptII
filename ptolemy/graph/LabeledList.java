@@ -47,6 +47,7 @@ the total number of elements in the list. This list features <em>O</em>(1)
 list insertion, <em>O</em>(1) testing for membership in the list,
 <em>O</em>(1) access of a list element from its associated label,
 and <em>O</em>(1) access of a label from its corresponding element.
+Removal from the list is, however, an <em>O</em>(<em>1</em>) operation.
 The element labels are useful, for example, in creating mappings from
 list elements into elements of arbitrary arrays.
 More generally, element labels can be used to maintain arbitrary
