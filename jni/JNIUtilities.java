@@ -441,7 +441,9 @@ public class JNIUtilities {
                 + _getArgumentsOutWithCType(actor, ",")
                 + ");\n\n"
                 + "JNIEXPORT "
-                + actor.getArgumentReturn().getJNIType()
+                + (actor.getArgumentReturn() == null
+                        ? "void /* Warning: getArgumentReturn() == null (1)*/" 
+                        :actor.getArgumentReturn().getJNIType())
                 + " JNICALL Java_jni_"
                 + nativeLibrary
                 + "_Jni"
@@ -958,7 +960,7 @@ public class JNIUtilities {
 
         //if there is a returned value
         Argument argRet = (Argument) actor.getArgumentReturn();
-        if (!(argRet.getJType().equals("void"))) {
+        if (argRet != null && !(argRet.getJType().equals("void"))) {
             results.append( _indent2 + "_" + argRet.getName() + " = "
                     + interNativeFunction
                     + "("
@@ -975,6 +977,10 @@ public class JNIUtilities {
             results.append(_indent2 + "return"
                     + " _" + argRet.getName() + ";\n" + _indent1 + "}\n");
         } else {
+            if (argRet == null) {
+                results.append(
+                        "/* Warning: getArgumentReturn() == null (2)*/"); 
+            }
             results.append( interNativeFunction
                     + "("
                     + _getArgumentsIn(actor, ",")
@@ -1014,9 +1020,14 @@ public class JNIUtilities {
                     + "_" + arg.getName() + ";\n");
         }
         //return
-        if (!(argRet.getJType().equals("void")))
+        if (argRet != null && !(argRet.getJType().equals("void"))) {
             results.append(_indent1 + "public " + argRet.getJType() + " " + "_"
                     + argRet.getName() + ";\n");
+        }
+
+        if (argRet == null) {
+            results.append("/* Warning: getArgumentReturn() == null (3)*/");
+        } 
 
         results.append( "\n}");
         File dir = new File(destinationDirectory);
