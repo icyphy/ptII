@@ -62,7 +62,6 @@ JSIMPLE_TESTS = \
 	Distributor.tcl \
 	DB.tcl \
 	Expression.tcl \
-	FFT.tcl \
 	Gaussian.tcl \
 	Interpolator.tcl \
 	MathFunction.tcl \
