@@ -276,33 +276,23 @@ public class AudioSource extends SDFAtomicActor {
     /** Clone the actor into the specified workspace.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            AudioSource newobj = (AudioSource)super.clone(ws);
-            newobj.source =
-		(Parameter)newobj.getAttribute("source");
-            newobj.pathName =
-		(Parameter)newobj.getAttribute("pathName");
-	    newobj.pathName =
-		(Parameter)newobj.getAttribute("sampleRate");
-	    newobj.pathName =
-		(Parameter)newobj.getAttribute("sampleSizeInBits");
-	    newobj.pathName =
-		(Parameter)newobj.getAttribute("channels");
-	    newobj.pathName =
-		(Parameter)newobj.getAttribute("bufferSize");
-	    newobj.pathName =
-		(Parameter)newobj.getAttribute("tokenProductionRate");
-            newobj.output =
-		(SDFIOPort)newobj.getPort("output");
-            // set the type constraints.
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        AudioSource newobj = (AudioSource)super.clone(ws);
+        newobj.source = (Parameter)newobj.getAttribute("source");
+        newobj.pathName = (Parameter)newobj.getAttribute("pathName");
+        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
+        newobj.sampleSizeInBits =
+            (Parameter)newobj.getAttribute("sampleSizeInBits");
+        newobj.channels = (Parameter)newobj.getAttribute("channels");
+        newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
+        newobj.tokenProductionRate = 
+            (Parameter)newobj.getAttribute("tokenProductionRate");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** Output sample values of the sound file. Semantically,
