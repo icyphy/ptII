@@ -29,23 +29,8 @@
 */
 package ptolemy.caltrop.actors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.PtolemyPlatform;
-import ptolemy.caltrop.ddi.CSPFactory;
-import ptolemy.caltrop.ddi.DDI;
-import ptolemy.caltrop.ddi.DDIFactory;
-import ptolemy.caltrop.ddi.Dataflow;
-import ptolemy.caltrop.ddi.SDFFactory;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -53,24 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
+
 import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.Import;
-import caltrop.interpreter.ast.PackageImport;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.SingleImport;
-import caltrop.interpreter.ast.TypeExpr;
-import caltrop.interpreter.environment.CacheEnvironment;
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.EnvironmentFactory;
-import caltrop.interpreter.environment.HashEnvironment;
-import caltrop.interpreter.environment.PackageEnvironment;
-import caltrop.interpreter.environment.SingleClassEnvironment;
-import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
-import caltrop.interpreter.util.ImportUtil;
 
 //////////////////////////////////////////////////////////////////////////
 //// CalInterpreter
@@ -91,13 +60,12 @@ import caltrop.interpreter.util.ImportUtil;
    <p> For further documentation on CAL, see the
    <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
-   @author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang 
+   @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-   @see caltrop.interpreter.Context
    @see PtolemyPlatform
 */
 public class CalInterpreter extends AbstractCalInterpreter {
@@ -147,6 +115,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
                         + "This sometimes occurs if saxon7.jar is not in "
                         + "your classpath.");
             }
+
             try {
                 if (actor != null) {
                     _setupActor(actor);
@@ -155,7 +124,6 @@ public class CalInterpreter extends AbstractCalInterpreter {
                 throw  new IllegalActionException(this, ex,
                         "Failed to set up actor'" + s + "'");
             }
-
         } else {
             super.attributeChanged(attribute);
         }
@@ -165,6 +133,10 @@ public class CalInterpreter extends AbstractCalInterpreter {
      * The CAL source to be interpreted.
      */
     public StringAttribute calCode;
+
+    // Default CAL code.
+    protected final static String defaultActorText = 
+    "actor CalActor () Input ==> Output : end";
 }
 
 
