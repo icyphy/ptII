@@ -173,6 +173,7 @@ public class Port extends NamedObj {
 
     /** Get the container entity.
      *  @return An instance of Entity.
+     *  @see #setContainer(Entity)
      */
     public NamedObj getContainer() {
         return _container;
@@ -231,6 +232,7 @@ public class Port extends NamedObj {
 
     /** Return true if the given Relation is linked to this port.
      *  This method is read-synchronized on the workspace.
+     *  @param r The relation.
      *  @return True if the given relation is linked to this port.
      */
     public boolean isLinked(Relation r) {
@@ -629,10 +631,11 @@ public class Port extends NamedObj {
     // so that derived classes can safely create links to ports in
     // the _addPort() method.  This is a bit of a kludge, but I see
     // no other way to make this possible. EAL
-    /** @serial The list of inside relations for this port. */
+
+    /** The list of inside relations for this port. */
     protected CrossRefList _insideLinks = new CrossRefList(this);
 
-    /** @serial The list of relations for this port. */
+    /** The list of relations for this port. */
     protected CrossRefList _relationsList = new CrossRefList(this);
 
     ///////////////////////////////////////////////////////////////////
