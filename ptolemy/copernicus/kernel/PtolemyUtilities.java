@@ -147,8 +147,15 @@ public class PtolemyUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public static Local buildConstantTokenLocal(Body body, 
-           Unit insertPoint, Token token, String localName) {
+    
+    /** Create a new Local variable in the given body with the given name.  
+     *  Insert statements into the given body before the given unit to
+     *  initialize the value of that local to a token that has
+     *  the same value as the given token.
+     *  @return The new local.
+     */
+    public static Local buildConstantTokenLocal(Body body, 
+            Unit insertPoint, Token token, String localName) {
         Chain units = body.getUnits();
         if(token instanceof ptolemy.data.ArrayToken) {
             ArrayToken arrayToken = (ArrayToken)token;
@@ -196,7 +203,7 @@ public class PtolemyUtilities {
             body.getLocals().add(tokenLocal);
             units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
                     Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                    insertPoint);;
+                    insertPoint);
             // Ugh...  otherwise we get some stupid quotes.
             if(token instanceof StringToken) {
                 StringToken stringToken = (StringToken)token;
@@ -844,6 +851,8 @@ public class PtolemyUtilities {
     public static SootMethod variableConstructorWithoutToken;
 
     public static SootMethod variableConstructorWithToken;
+    
+    public static SootMethod variableSetTokenMethod;
 
     static {
         loadSootReferences();
@@ -892,6 +901,8 @@ public class PtolemyUtilities {
                 "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String)");
         variableConstructorWithToken = variableClass.getMethod(
                 "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String,ptolemy.data.Token)");
+        variableSetTokenMethod = variableClass.getMethod(
+                "void setToken(ptolemy.data.Token)");
 
         executableInterface = 
             Scene.v().loadClassAndSupport("ptolemy.actor.Executable");
