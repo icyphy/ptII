@@ -65,7 +65,7 @@ done
 # the demo with under java -verbose
 
 #set -x
-ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
+ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
     egrep '^\[Loaded ' | \
     egrep 'Loaded (ptolemy|com.microstar)' | \
     awk '{print substr($2, 1, length($2)-1)}' | \
@@ -162,15 +162,15 @@ if [ $retval = 0 ]; then
 fi
 
 if [ "$classPathArg" != "" ]; then
-    (cd $PTJAR_TMPDIR; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
+    (cd $PTJAR_TMPDIR; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
     rm -rf $PTJAR_TMPDIR
 else
-    (cd $PTII; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
+    (cd $PTII; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
 fi
 
 
 rm -f $manifest
 
 #set -x
-$javaCommand -classpath $treeshakejar $@
+"$javaCommand" -classpath "$treeshakejar" $@
 
