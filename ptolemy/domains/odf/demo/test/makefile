@@ -1,8 +1,8 @@
 # Makefile for the Ptolemy II OD demo tests
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands
 #
-# @Version: @(#)makefile	1.60 09/28/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -29,26 +29,31 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/domains/od/demo/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS =
+JSIMPLE_TESTS = \
+	
 
 # Graphical Java tests that use Tcl.
-# Since there are no tests, we use a dummy file so that the script that builds
+# If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
@@ -62,9 +67,9 @@ MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
@@ -73,20 +78,12 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
-# Tycho-wide test definitions.
+# PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-# These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# To profile the tests using jacl, run
-# make JACLPROFILE=-prof test_simple_jacl
-# then look in java.prof
-
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple_jacl: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl $(JACLPROFILE) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
 docs: javadocs
 
@@ -95,6 +92,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
