@@ -1266,7 +1266,7 @@ public class PtolemyUtilities {
     public static SootClass functionTypeClass;
 
     // SootClass representing
-    // ptolemy.data.FunctionToken$Function
+    // ptolemy.data.Function
     public static SootClass functionInterface;
 
     // SootMethod representing
@@ -1863,9 +1863,9 @@ public class PtolemyUtilities {
         functionTokenApplyMethod = 
             functionTokenClass.getMethod("ptolemy.data.Token apply(ptolemy.data.Token[])");
         functionTokenConstructor = 
-            functionTokenClass.getMethod("void <init>(ptolemy.data.FunctionToken$Function,ptolemy.data.type.FunctionType)");
+            functionTokenClass.getMethod("void <init>(ptolemy.data.Function,ptolemy.data.type.FunctionType)");
         functionInterface =
-            Scene.v().loadClassAndSupport("ptolemy.data.FunctionToken$Function");
+            Scene.v().loadClassAndSupport("ptolemy.data.Function");
         functionTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.FunctionType");
     }
