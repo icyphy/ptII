@@ -192,7 +192,7 @@ public class ZeroCrossingDetector extends Transformer
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        //_first = true;
+        _first = true;
         if(_debugging) _debug(getFullName() + "initialize");
     }
 
@@ -209,11 +209,11 @@ public class ZeroCrossingDetector extends Transformer
      *          does not cross zero.
      */
     public boolean isThisStepAccurate() {
-        //if (_first) {
-        //    _first = false;
-        //    _eventMissed = false;
-        //    return true;
-        //}
+        if (_first) {
+            _first = false;
+            _eventNow = false;
+            return true;
+        }
         if(_debugging) {
             _debug(this.getFullName() + " This trigger " + _thisTrigger);
             _debug(this.getFullName() + " The last trigger " + _lastTrigger);
