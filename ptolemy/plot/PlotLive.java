@@ -117,6 +117,16 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  responsiveness of the user interface.
      */
     public void run() {
+        // FIXME: This is a nasty evil hack to work around a nasty
+        // evil bug with setXORMode graphics and double buffering in Swing.
+        // If we do not have a delay here, then the first lines that
+        // are drawn are offset by one pixel
+        // http://developer.java.sun.com/developer/bugParade/bugs/4188795.html
+        // http://developer.java.sun.com/developer/bugParade/bugs/4204551.html
+        // http://developer.java.sun.com/developer/bugParade/bugs/4295712.html
+        try {
+            Thread.currentThread().sleep(1000);
+        } catch (Exception e) {}
         while (_plotting || _paused) {
             if (_plotting) {
                 addPoints();
