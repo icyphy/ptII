@@ -175,7 +175,3 @@ public class ListenFBDelay extends FBDelay {
     private LinkedList _listeners;
 
 }
-
-
-
-
