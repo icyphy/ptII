@@ -78,17 +78,18 @@ public class BoxedValueIcon extends AttributeValueIcon {
     public Figure createBackgroundFigure() {
         String displayString = _displayString();
         double width = 60;
-        double heigth = 30;
+        double height = 30;
         if (displayString != null) {
             // Measure width of the text.  Unfortunately, this
             // requires generating a label figure that we will not use.
             LabelFigure label = new LabelFigure(displayString,
                     _labelFont, 1.0, SwingConstants.CENTER);
             Rectangle2D stringBounds = label.getBounds();
-            // NOTE: Padding of 20.
-            width = stringBounds.getWidth() + 20;
-            heigth = stringBounds.getHeight() + 10;
+            // NOTE: Padding of 20. Quantize the height so that
+            // snap to grid still works.
+            width = Math.floor(stringBounds.getWidth()) + 20;
+            height = Math.floor(stringBounds.getHeight()) + 10;
         }
-        return new BasicRectangle(0, 0, width, heigth, Color.white, 1);
+        return new BasicRectangle(0, 0, width, height, Color.white, 1);
     }
 }
