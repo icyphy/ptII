@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractService.java \
 	JModelViewer.java \
 	MoMLViewerApplet.java \
 	Module.java \

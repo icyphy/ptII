@@ -1,6 +1,6 @@
 /* A service for extending Vergil.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,21 +31,30 @@
 package ptolemy.vergil;
 
 //////////////////////////////////////////////////////////////////////////
-//// Service
+//// AbstractService
 /**
-A service that can be plugged into Vergil.  This allows a simple mechanism
-to extend the functionality of Vergil.  A module that whishes to publish a
-service to other modules should implement this interface, and then add the
-service object to the application.
+An abstract implementation of the service interface.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public interface Service {
+public abstract class AbstractService implements Service {
     /**
      * Return the application that this service is registered with.
      */
-    public VergilApplication getApplication();
+    public VergilApplication getApplication() {
+	return _application;
+    }
+
+    /** 
+     * Set the application that this service is registered with to be the
+     * given application.
+     */
+    protected void _setApplication(VergilApplication application) {
+	_application = application;
+    }
+    
+    VergilApplication _application;
 }
 
 
