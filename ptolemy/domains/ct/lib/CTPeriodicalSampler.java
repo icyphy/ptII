@@ -137,10 +137,10 @@ public class CTPeriodicalSampler extends CTActor
      *  If the director is not a CTMixedSignalDirector throw an exception.
      */
     public void initialize() throws IllegalActionException {
-        if(!(getDirector() instanceof CTMixedSignalDirector)) {
-            throw new IllegalActionException(this,
-                " Must be executed after a CTMixedSignalDirector.");
-        }
+        //if(!(getDirector() instanceof CTMixedSignalDirector)) {
+        //    throw new IllegalActionException(this,
+        //        " Must be executed after a CTMixedSignalDirector.");
+        //}
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;

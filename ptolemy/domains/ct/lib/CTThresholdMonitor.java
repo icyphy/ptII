@@ -92,7 +92,7 @@ public class CTThresholdMonitor extends CTActor
     /** consume this input.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("Monitor" + getFullName() + " fired.");
+        //System.out.println("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
         //_success = true;
     }

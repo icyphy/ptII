@@ -51,7 +51,7 @@ zero
 public class CTZeroCrossingDetector extends CTActor
         implements  CTStepSizeControlActor, CTEventGenerator {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -117,8 +117,8 @@ public class CTZeroCrossingDetector extends CTActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
-        System.out.println(this.getFullName() + "consumming trigger Token" +
-                _thisTrg);
+        //System.out.println(this.getFullName() + "consumming trigger Token" +
+        //        _thisTrg);
         _inputToken = input.get(0);
     }
 
@@ -140,16 +140,16 @@ public class CTZeroCrossingDetector extends CTActor
             _first = false;
             return true;
         }
-        System.out.println(this.getFullName() + "This Trigger " + _thisTrg);
-        System.out.println(this.getFullName() + "last Trigger " + _lastTrg);
+        //System.out.println(this.getFullName() + "This Trigger " + _thisTrg);
+        //System.out.println(this.getFullName() + "last Trigger " + _lastTrg);
 
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
                 //double tnow = dir.getCurrentTime(); 
                 //dir.setFireEndTime(tnow);
                 _eventNow = true;
-                System.out.println("Event Detected:" + 
-                            getDirector().getCurrentTime());
+                //System.out.println("Event Detected:" + 
+                //            getDirector().getCurrentTime());
                 _enabled = false;
             }
             _eventMissed = false;
@@ -164,8 +164,8 @@ public class CTZeroCrossingDetector extends CTActor
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                    System.out.println("Event Missed: refined step at" + 
-                           _refineStep);
+                    //System.out.println("Event Missed: refined step at" + 
+                    //       _refineStep);
                     return false;
                 }
             }
@@ -200,12 +200,12 @@ public class CTZeroCrossingDetector extends CTActor
     /** Emit the event. There's no current event after emitting it.
      */
     public void emitCurrentEvents() throws IllegalActionException{
-        System.out.println(this.getFullName() + 
-                " In emit event.");
+        //System.out.println(this.getFullName() + 
+        //        " In emit event.");
     
         if(_eventNow) {
-            System.out.println(this.getFullName() + 
-                " Emitting event.....................");
+            //System.out.println(this.getFullName() + 
+            //    " Emitting event.....................");
             output.broadcast(_inputToken);
             _eventNow = false;
         }

@@ -58,6 +58,7 @@ public class CTPrintln extends CTActor{
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
+        input.setMultiport(true);
         input.setDeclaredType(DoubleToken.class);
     }
 
@@ -66,30 +67,62 @@ public class CTPrintln extends CTActor{
 
     /**Print out the input token and the current time each in a line.
      * The format of printout is :
-     * CTTime:......
-     * CTData:......
+     * time data1 data2... 
+     * If one of the receivers has no data then skip this time point.
+     * But all the other input data are consumed.
      *  @exception IllegalActionException If there's no director or
      *        no input token when needed.
      */
 
-    public void fire() throws  IllegalActionException{
+    public boolean postfire() throws  IllegalActionException{
        CTDirector dir = (CTDirector) getDirector();
        if (dir == null) {
            throw new IllegalActionException(this,
                    "No director avaliable");
        }
-       double in = ((DoubleToken)input.get(0)).doubleValue();
-       //System.out.println("CTTime:"+
-       //        ((CTDirector)getDirector()).getCurrentTime());
-       //System.out.println("CTData:"+in);
-	System.out.println(((CTDirector)getDirector()).getCurrentTime() +"  "
-	+ in);
+       String dataString = "";
+       _hasToken = true;
+       for (int i = 0; i < _width; i++ ) {
+           if(!input.hasToken(i)) {
+               _hasToken = false;
+           } else {
+               _data[i] = ((DoubleToken)input.get(i)).doubleValue();
+               dataString += _data[i]+" ";
+           }
+       }
+       if(_hasToken) {
+           //System.out.println("CTTime:"+
+           //        ((CTDirector)getDirector()).getCurrentTime());
+           //System.out.println("CTData:"+in);
+           System.out.println(((CTDirector)getDirector()).getCurrentTime()
+                   +"  "+ dataString);
+       }
+       return true;
     }
 
-    /** The single input port.
+    /** set up the input data buffer.
+     */
+    public void initialize() {
+        _data = new double[input.getWidth()];
+    }
+
+    /** Prefire, adjust input data buffer if necessary.
+     */
+    public boolean prefire() {
+        _width = input.getWidth();
+        if(_data.length != _width) {
+            _data = new double[_width];
+        }
+        return true;
+    }
+
+    /** The input port.
      */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    private double[] _data;
+    private int _width;
+    private boolean _hasToken;
 }

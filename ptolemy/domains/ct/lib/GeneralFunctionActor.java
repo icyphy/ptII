@@ -133,8 +133,8 @@ public class GeneralFunctionActor extends TypedAtomicActor {
             IOPort outport = (IOPort)getPort(var.getName());
             outport.broadcast(var.getToken());
 
-System.out.println("GFToken on " + outport.getFullName() + " "
-        + var.getToken().stringValue());
+//System.out.println("GFToken on " + outport.getFullName() + " "
+//        + var.getToken().stringValue());
 
         }
     }

@@ -147,7 +147,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
-            System.out.println(getFullName() + "resolve state failed.");
+            //System.out.println(getFullName() + "resolve state failed.");
         }
         
         if(DEBUG) {
@@ -166,13 +166,13 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     public boolean isThisStepSuccessful() {
         try {
             if (!_isStateAcceptable()) {
-                System.out.println(getFullName() + 
-                        " current step not successful because of STATE."); 
+                //System.out.println(getFullName() + 
+                //        " current step not successful because of STATE."); 
                 _stateAcceptable = false;
                 return false;
             } else if(!_isOutputAcceptable()) {
-                System.out.println(getFullName() + 
-                        " current step not successful because of OUTPUT."); 
+                //System.out.println(getFullName() + 
+                //        " current step not successful because of OUTPUT."); 
                 _outputAcceptable = false;
                 return false;
             } else {
@@ -198,8 +198,8 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
         _first = false;
-        System.out.println(this.getFullName() +
-                "postfire...................");
+        //System.out.println(this.getFullName() +
+        //        "postfire...................");
         _eventPhaseExecution();
         updateStates();
         double bp;
@@ -281,9 +281,9 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 bp = ((Double)breakPoints.first()).doubleValue();
                 if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
                     setCurrentODESolver(getBreakpointSolver());
-                    System.out.println(getFullName() + 
-                            " Change to break point solver " + 
-                            getCurrentODESolver().getFullName());
+                    //System.out.println(getFullName() + 
+                    //        " Change to break point solver " + 
+                    //        getCurrentODESolver().getFullName());
                     break;
                 } else {
                     break;
