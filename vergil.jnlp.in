@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     @PTII_LOCALURL@.
+-->
 <!-- href is needed so that web start can cache the app and
-it will appear in the desktop icon
+     it will appear in the desktop icon
 -->
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergil.jnlp"> 
-	<information>
+  <information>
 	  <title>Ptolemy II</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
 	  <description">Simulation Environment</description>
@@ -12,18 +17,14 @@ it will appear in the desktop icon
 	  <icon href="ptplot32.gif"/>
 	  <homepage href="http://ptolemy.eecs.berkeley.edu/java/ptplot"/>
 	  <offline-allowed/>
-	</information>
+  </information>
   <security> 
-      <all-permissions/> 
+        <all-permissions/> 
   </security> 
   <resources>
-    <j2se version="1.2+"/>
-    <jar href="ptolemy/vergil/vergil.jar"/>
-    <jar href="ptolemy/actor/gui/gui.jar"/>
-    <jar href="ptolemy/configs/doc/doc.jar"/>
-    <jar href="ptolemy/ptolemy.jar"/>
-    <jar href="doc/docConfig.jar"/>
-    <jar href="lib/diva.jar"/>
+  	<j2se version="1.2+"/>
+	<jar href="ptII.jar"/>
   </resources>
   <application-desc main-class="ptolemy.vergil.VergilApplication"/>
+  <!-- Need to deal with Java 3D -->
 </jnlp>
