@@ -182,81 +182,21 @@ public class ModelTransformer extends SceneTransformer {
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            Map portLocalMap = new HashMap();
-            // Now instantiate all the crap inside the model
-            // first external ports.
-            for(Iterator ports = _model.portList().iterator();
-                ports.hasNext();) {
-                Port port = (Port)ports.next();
-                String className = port.getClass().getName();
-                Local local = _createNamedObjAndLocal(body, className,
-                        thisLocal, port.getName());
-                portLocalMap.put(port, local);
-                _createAndSetFieldFromLocal(modelClass, portType,
-                        port.getName(), body, local);
-            }
+            // Now instantiate all the stuff inside the model.
 
-            // Then Entities
-            Map entityLocalMap = new HashMap();
-            for(Iterator entities = _model.entityList().iterator();
-                entities.hasNext();) {
-                Entity entity = (Entity)entities.next();
-		System.out.println("ModelTransformer: entity: " + entity);
-                String className;
-                if(Options.getBoolean(options, "deep")) {
-                    // If we are doing deep codegen, then use the actor
-                    // classes we created earlier.
-                    className = Options.getString(options, "targetPackage") +
-                        "." + entity.getName();
-                } else {
-                    // If we are doing shallow, then use the base actor
-                    // classes.
-                    className = entity.getClass().getName();
-                }
+	    _externalPorts(body, thisLocal, modelClass, portType);
 
-                // Create a new local variable.
-                Local local = _createNamedObjAndLocal(body, className,
-                        thisLocal, entity.getName());
-                entityLocalMap.put(entity, local);
-
-                if(Options.getBoolean(options, "deep")) {
-                    // If we are doing deep codegen, then we
-                    // include a field for each actor.
-                    _createAndSetFieldFromLocal(modelClass, actorType,
-                            entity.getName(), body, local);
-                } else {
-                    // If we are doing shallow code generation, then
-                    // include code to initialize the parameters of this
-                    // entity.
-                    _initializeParameters(body, _model,
-                            entity, thisLocal);
-                }
-            }
-
+	    _entities(body, thisLocal, modelClass, actorType, options);
 
             // now Attributes.
-            Local settableLocal = Jimple.v().newLocal("settable",
-                    settableType);
-            body.getLocals().add(settableLocal);
-
 	    _createAndSetAttributesFromLocal(_model,
 					     modelClass, 
 					     attributeType, settableType,
 					     setExpressionMethod,
-					     body,
-					     settableLocal);
+					     body);
+	    _relations(body, thisLocal);
 
-            // next relations.
-            Map relationLocalMap = new HashMap();
-            for(Iterator relations = _model.relationList().iterator();
-                relations.hasNext();) {
-                Relation relation = (Relation)relations.next();
-                String className = relation.getClass().getName();
-                // Create a new local variable.
-                Local local = _createNamedObjAndLocal(body, className,
-                        thisLocal, relation.getName());
-                relationLocalMap.put(relation, local);
-            }
+	    _links(body, insertLinkMethod);
 
             // This local is used to store the return from the getPort
             // method, before it is stored in a type-specific local variable.
@@ -264,39 +204,9 @@ public class ModelTransformer extends SceneTransformer {
                     RefType.v("ptolemy.kernel.Port"));
             body.getLocals().add(tempPortLocal);
 
-            // and finally links!
-            // To get the ordering right,
-            // we read the links from the ports, not from the relations.
-            // First, produce the inside links on contained ports.
-            CompositeEntity container = _model;
-            for(Iterator ports = container.portList().iterator();
-                ports.hasNext();) {
-                ComponentPort port = (ComponentPort)ports.next();
-                Iterator relations = port.insideRelationList().iterator();
-                int index = -1;
-                while (relations.hasNext()) {
-                    index++;
-                    ComponentRelation relation
-                        = (ComponentRelation)relations.next();
-                    if (relation == null) {
-                        // Gap in the links.  The next link has to use an
-                        // explicit index.
-                        continue;
-                    }
-                    Local portLocal = (Local)portLocalMap.get(port);
-                    Local relationLocal = (Local)relationLocalMap.get(relation);
-                    // call the insertLink method with the current index.
-                    units.add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    insertLinkMethod, IntConstant.v(index),
-                                    relationLocal)));
-
-                }
-            }
-
             // Next, produce the links on ports contained
             // by contained entities.
-            for(Iterator entities = container.entityList().iterator();
+            for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)entities.next();
                 Iterator ports = entity.portList().iterator();
@@ -305,16 +215,16 @@ public class ModelTransformer extends SceneTransformer {
 
                     Local portLocal;
                     // If we already have a local reference to the port
-                    if(portLocalMap.keySet().contains(port)) {
+                    if(_portLocalMap.keySet().contains(port)) {
                         // then just get the reference.
-                        portLocal = (Local)portLocalMap.get(port);
+                        portLocal = (Local)_portLocalMap.get(port);
                     } else {
                         // otherwise, create a new local for the given port.
-                        Local entityLocal = (Local)entityLocalMap.get(entity);
+                        Local entityLocal = (Local)_entityLocalMap.get(entity);
                         portLocal = Jimple.v().newLocal(port.getName(),
                                 portType);
                         body.getLocals().add(portLocal);
-                        portLocalMap.put(port, portLocal);
+                        _portLocalMap.put(port, portLocal);
                         // reference the port.
                         SootClass entityClass = Scene.v().getSootClass(
                                 entity.getClass().getName());
@@ -365,7 +275,7 @@ public class ModelTransformer extends SceneTransformer {
                             continue;
                         }
                         Local relationLocal = (Local)
-                            relationLocalMap.get(relation);
+                            _relationLocalMap.get(relation);
 
                         // call the insertLink method with the current index.
                         units.add(Jimple.v().newInvokeStmt(
@@ -498,9 +408,12 @@ public class ModelTransformer extends SceneTransformer {
 					 Type attributeType,
 					 Type settableType,
 					 SootMethod setExpressionMethod,
-					 JimpleBody body,
-					 Local settableLocal) {
-	// This is a separate method so we can use recursion
+					 JimpleBody body) {
+	Local settableLocal = Jimple.v().newLocal("settable",
+						  settableType);
+	body.getLocals().add(settableLocal);
+
+
 	Chain units = body.getUnits();
 	Local thisLocal = body.getThisLocal();
 	for(Iterator attributes = namedObj.attributeList().iterator();
@@ -530,6 +443,64 @@ public class ModelTransformer extends SceneTransformer {
 	    // the iterations of the SDFDirector.
 	    _initializeParameters(body, namedObj,
 				  attribute, thisLocal);
+	}
+    }
+
+    // Then Entities
+    private void _entities(JimpleBody body, Local thisLocal, 
+			   EntitySootClass modelClass, Type actorType,
+			   Map options) {
+	Map _entityLocalMap = new HashMap();
+	for(Iterator entities = _model.entityList().iterator();
+	    entities.hasNext();) {
+	    Entity entity = (Entity)entities.next();
+	    System.out.println("ModelTransformer: entity: " + entity);
+	    String className;
+	    if(Options.getBoolean(options, "deep")) {
+		// If we are doing deep codegen, then use the actor
+		// classes we created earlier.
+		className = Options.getString(options, "targetPackage") +
+		    "." + entity.getName();
+	    } else {
+		// If we are doing shallow, then use the base actor
+		// classes.
+		className = entity.getClass().getName();
+	    }
+
+	    // Create a new local variable.
+	    Local local = _createNamedObjAndLocal(body, className,
+						  thisLocal, entity.getName());
+	    _entityLocalMap.put(entity, local);
+
+	    if(Options.getBoolean(options, "deep")) {
+		// If we are doing deep codegen, then we
+		// include a field for each actor.
+		_createAndSetFieldFromLocal(modelClass, actorType,
+					    entity.getName(), body, local);
+	    } else {
+		// If we are doing shallow code generation, then
+		// include code to initialize the parameters of this
+		// entity.
+		_initializeParameters(body, _model,
+				      entity, thisLocal);
+	    }
+	}
+    }
+
+    // Instantiate external ports
+    private void _externalPorts(JimpleBody body, Local thisLocal,
+				EntitySootClass modelClass, Type portType) {
+	_portLocalMap = new HashMap();
+
+	for(Iterator ports = _model.portList().iterator();
+	    ports.hasNext();) {
+	    Port port = (Port)ports.next();
+	    String className = port.getClass().getName();
+	    Local local = _createNamedObjAndLocal(body, className,
+						  thisLocal, port.getName());
+	    _portLocalMap.put(port, local);
+	    _createAndSetFieldFromLocal(modelClass, portType,
+					port.getName(), body, local);
 	}
     }
 
@@ -592,6 +563,64 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
+    // initialize links
+    private void _links(JimpleBody body, SootMethod insertLinkMethod) {
+	// To get the ordering right,
+	// we read the links from the ports, not from the relations.
+	// First, produce the inside links on contained ports.
+	Chain units = body.getUnits();
+	for(Iterator ports = _model.portList().iterator();
+	    ports.hasNext();) {
+	    ComponentPort port = (ComponentPort)ports.next();
+	    Iterator relations = port.insideRelationList().iterator();
+	    int index = -1;
+	    while (relations.hasNext()) {
+		index++;
+		ComponentRelation relation
+		    = (ComponentRelation)relations.next();
+		if (relation == null) {
+		    // Gap in the links.  The next link has to use an
+		    // explicit index.
+		    continue;
+		}
+		Local portLocal = (Local)_portLocalMap.get(port);
+		Local relationLocal = (Local)_relationLocalMap.get(relation);
+		// call the insertLink method with the current index.
+		units.add(Jimple.v()
+			  .newInvokeStmt(Jimple.v()
+					 .newVirtualInvokeExpr(portLocal,
+							       insertLinkMethod,
+							       IntConstant.v(index),
+							       relationLocal)));
+
+	    }
+	}
+    }
+
+    private void _relations(JimpleBody body, Local thisLocal) {
+	// next relations.
+	Map _relationLocalMap = new HashMap();
+	for(Iterator relations = _model.relationList().iterator();
+	    relations.hasNext();) {
+	    Relation relation = (Relation)relations.next();
+	    String className = relation.getClass().getName();
+	    // Create a new local variable.
+	    Local local = _createNamedObjAndLocal(body, className,
+						  thisLocal,
+						  relation.getName());
+	    _relationLocalMap.put(relation, local);
+	}
+    }
     private CompositeActor _model;
+
+    // Map from Entitys to Locals.
+    Map _entityLocalMap;
+
+    // Map from Ports to Locals.
+    Map _portLocalMap;
+
+    // Map from Relations to Locals.
+    Map _relationLocalMap;
+
 }
 
