@@ -323,6 +323,7 @@ public class Expression extends TypedAtomicActor {
     }
 
     private Engine matlabEngine = null;
+    long[] engine = null;
     private Variable _iteration;
     private int _iterationCount = 1;
     private String _addPathCommand = null;
