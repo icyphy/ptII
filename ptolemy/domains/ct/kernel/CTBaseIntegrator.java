@@ -42,7 +42,7 @@ import java.util.Enumeration;
 Base class for integrators for continuous time simulation.
 An integrator has one input port and one output port. Conceptually,
 the input is the differential of the output. So an ordinary
-differential equation dx/dt = f(x,t) can be represented by:
+differential equation dx/dt = f(x, t) can be represented by:
 <P>
 <pre>
 <pre>               +---------------+
@@ -52,7 +52,7 @@ differential equation dx/dt = f(x,t) can be represented by:
 <pre>    |          +---------------+         |
 <pre>    |                                    |
 <pre>    |             |---------|            |
-<pre>    +-------------| f(x,t)  |<-----------+
+<pre>    +-------------| f(x, t) |<-----------+
 <pre>                  |---------|
 </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
 

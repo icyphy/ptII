@@ -383,7 +383,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                     NROLL ++;
                 }
                 _rollback();
-                fireAt(null,_outsideTime);
+                fireAt(null, _outsideTime);
                 _catchUp();
             }
             //runlength = Math.min(runlength, _runAheadLength);
