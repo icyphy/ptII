@@ -1,4 +1,5 @@
-/* An actor that outputs the sequence of sample values of a sound file.
+/* An SDF actor that outputs the sequence of sample values from an
+   audio source.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -42,41 +43,73 @@ import ptolemy.graph.Inequality;
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-//import collections.LinkedList;
+import javax.sound.sampled.*;
 
-import javax.media.sound.sampled.*;
-
+import ptolemy.media.javasound.*;
 import ptolemy.domains.sdf.kernel.*;
 
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 //// AudioSource
 /**
-Read a sound file and sequentially output the samples. The output
-is of type DoubleToken, and one output token is produced on
-each firing. This actor will periodically repeat the the sound
-file if the <i>isPeriodic</i> parameter is set to be true.
-Otherwise, this actor finishes after the last sample is output.
-The location of the sound file is given by the <i>pathName</i>
-parameter. This parameter contains the URL or filename of the sound file.
-Java applet security requires the file URL to be on the computer
-from which the applet was launched. If this actor is used in an application,
-there are no restrictions on the URL, and files can be read from the
-file system on the machine from which the applet is run.
+Sequentially output the samples from an audio source. Possible
+audio sources include microphone, line-in, a sound file, or
+a URL to a sound file. For the case where the audio source is
+a microphone or line-in, this actor should be fired often enough
+to prevent overflow of the internal audio buffer.
 <p>
-Note: For a list of allowable audio file formats, refer to the
-ptolemy.media package documentation.
-
+The output is of type DoubleToken, and semantically, one output
+token is produced on each firing. In the actual implementation,
+serveral tokens may be produced on each firing in order to
+improve performance. The number of tokens produced on each
+firing is set by parameter <i>tokenProductionRate</i>.
+<p>
+<h2>Notes on audio sources and required parameters</h2>
+<p>(1) Real-time capture from a microphone or line-in
+<p> Java cannot
+select between microphone and line-in sources. Use the OS
+to select whether audio capture is from the mic or line-in.
+The following parameters are relavent to audio capture from
+a mic or line-in, and should be set accordingly:
+<ul>
+<li><i>source</i> should be set to "mic".
+<li><i>sampleRate</i> should be set to desired sample rate.
+<li><i>sampleSizeInBits</i> should be set to desired bit 
+resolution.
+<li><i>channels</i> should be set to desired number of audio 
+channels.
+<li><i>bufferSize</i> should be set to optimize performance.
+<li><i>tokenProductionRate</i> should be set to optimize 
+performance.
+</ul>
+<p>(2) Capture from a sound file (local or URL).
+<p>The sound file is not periodically repeated. postfire()
+will return false when the end of the sound file is reached.
+<p>There are security issues involed with accessing files.
+Applications have no restrictions. Applets, however, are
+only allowed access to files specified by a URL and located
+on the machine from which the applet is loaded. The 
+.java.policy file may be modified to grant applets more
+privleges, if desired.
+<p>
+The following parameters are relavent to audio capture from
+a sound file, and should be set accordingly:
+<ul>
+<li><i>source</i> should be set to "URL" or "file".
+<li><i>pathName</i> should be set to the name of the file.
+<li><i>tokenProductionRate</i> should be set to optimize 
+performance.
+</ul>
 @author Brian K. Vogel
-@version
+@version $Id$
+@see ptolemy.media.javasound.SoundCapture
+@see ptolemy.domains.sdf.lib.javasound.AudioSink
 */
 
 public class AudioSource extends SDFAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>pathName</i> and <i>isURL</i> parameters Initialize <i>isURL</i>
-     *  to true and <i>pathName</i> to StringToken with value
-     *  "http://localhost/soundFile.au".
+     *  the parameters and initialize them to their default vaules.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -90,15 +123,29 @@ public class AudioSource extends SDFAtomicActor {
 
 	output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-	// FIXME: Allow this to be set as parameter.
-	productionRate = 512;
-	output.setTokenProductionRate(productionRate);
-	output.setMultiport(true); // ???
+	
 	pathName = new Parameter(this, "pathName",
                 new StringToken("http://localhost/soundFile.au"));
-	isURL = new Parameter(this, "isURL", new BooleanToken(true));
-	isURL.setTypeEquals(BaseType.BOOLEAN);
+	source = new Parameter(this, "source", new StringToken("mic"));
+	source.setTypeEquals(BaseType.STRING);
 
+	sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
+	sampleRate.setTypeEquals(BaseType.INT);
+	
+	sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
+					 new IntToken(16));
+	sampleSizeInBits.setTypeEquals(BaseType.INT);
+
+	channels = new Parameter(this, "channels",
+				 new IntToken(1));
+	channels.setTypeEquals(BaseType.INT);
+
+	bufferSize = new Parameter(this, "bufferSize",
+				   new IntToken(4096));
+	bufferSize.setTypeEquals(BaseType.INT);
+
+	tokenProductionRate = new Parameter(this, "tokenProductionRate",
+					    new IntToken(512));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,24 +154,96 @@ public class AudioSource extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    /** Specify whether <i>pathName</i> is a URL or a file.
-     * If <i>isURL</i> is true then <i>pathName</i> is a URL.
-     * Else if <i>isURL</i>  is false then <i>pathName</i> is a
-     * file. The default value of <i>isURL</i> is true.
-     * FIXME: This must be set false (no support for Url yet).
+    /** The sound source. Possible sound sources are:
+     *  <p>(1) The microphone or line in port. To capture from
+     *  this source, set <i>source</i> to "mic". This is the
+     *  default behavior.
+     *  <p>(2) A soundfile loaded from a URL. To capture from
+     *  this source, set <i>source</i> to "URL"
+     *  <p>(3) A soundfile loaded from the local filesystem. To
+     *  capture from this source, set <i>source</i> to "file"
+     *  <p>
+     *  For cases (1) and (2) above, parameter <i>pathName</i>
+     *  must be set to the sound file location.
      */
-    public Parameter isURL;
+    public Parameter source;
 
     /** The name of the file to read from. This can be a URL or a
-     *  file on the file system on which the code is run. This
-     *  parameter contains a StringToken. Note: When this actor is used in
-     *  an applet, a java.security.AccessControlException will
-     *  be thrown if an attempt is made to create a network connection
-     *  to any computer other than the one from which the code was
-     *  loaded.
+     *  file on the file system on which the code is run.
+     *  <p> If a URL
+     *  is given, parameter <i>source</i> must be set to "URL" and
+     *  <i>pathName</i> must be set a a fully qualified URL.
+     *  <p> If a filename is given, parameter <i>source</i> must
+     *  be set to "file".
+     *  <p>
+     *  This parameter does not need to be set if audio is captured from
+     *  a microphone or line-in.
+     *  <p>
+     *  Note: For a list of allowable audio file formats, refer to the
+     *  ptolemy.media package documentation.
      */
     public Parameter pathName;
 
+    /** The desired sample rate to use, in Hz.
+     *  The default value of the sample rate is 44100 Hz.
+     *  <p>
+     *  Note that it is only necessary to set this parameter for the
+     *  case where audio is captured in real-time from the microphone
+     *  or line-in. The sample rate is automatically determined when
+     *  capturing samples from a sound file.
+     */
+    public Parameter sampleRate;
+
+    /** The number desired number of bits per sample.
+     *  The default value is 16.
+     *  <p>
+     *  Note that it is only necessary to set this parameter for the
+     *  case where audio is captured in real-time from the microphone
+     *  or line-in. The sample size is automatically determined when
+     *  capturing samples from a sound file.
+     */
+    public Parameter sampleSizeInBits;
+
+    /** The number of audio channels to use. 1 for mono,
+     *  2 for stereo, etc.
+     *  The default vaule is 1 (mono).
+     *  <p>
+     *  Note that it is only necessary to set this parameter for the
+     *  case where audio is captured in real-time from the microphone
+     *  or line-in. The number of channels is automatically
+     *  determined when capturing samples from a sound file.
+     */
+    // FIXME: Currently, only single channel audio is allowed, so
+    // do not set this!
+    public Parameter channels;
+
+    /** Requested size of the internal audio input
+     *  buffer in samples. This controls the latency. Ideally, the
+     *  smallest value that gives acceptable performance (no overflow)
+     *  should be used. The value should be chosen larger than the
+     *  production rate of this actor.
+     *  The defulat value is 4096.
+     *  <p>
+     *  Note that it is only necessary to set this parameter for the
+     *  case where audio is captured in real-time from the microphone
+     *  or line-in.
+     */
+    public Parameter bufferSize;
+
+    /** The token production rate of this actor. The value of
+     *  the production rate affects performance only. It is
+     *  semantically meaningless. Semantically, only one token
+     *  is produced when this actor is fired. However, choosing
+     *  a large production rate value can improve performance,
+     *  since production rate many tokens are processed when
+     *  this actor is fired.
+     *  This parameter
+     *  also affects the latency, since production rate tokens
+     *  must be available before this actor can fire.
+     *  <p>
+     *  The default value is 512.
+     */
+    public Parameter tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -143,18 +262,29 @@ public class AudioSource extends SDFAtomicActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>isPeriodic</code> and <code>pathName</code>
-     *  public members to the parameters of the new actor.
+    /** Clone the actor into the specified workspace.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
         try {
             AudioSource newobj = (AudioSource)super.clone(ws);
-            newobj.isURL = (Parameter)newobj.getAttribute("isURL");
-            newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.source = 
+		(Parameter)newobj.getAttribute("source");
+            newobj.pathName = 
+		(Parameter)newobj.getAttribute("pathName");
+	    newobj.pathName = 
+		(Parameter)newobj.getAttribute("sampleRate");
+	    newobj.pathName =
+		(Parameter)newobj.getAttribute("sampleSizeInBits");
+	    newobj.pathName =
+		(Parameter)newobj.getAttribute("channels");
+	    newobj.pathName =
+		(Parameter)newobj.getAttribute("bufferSize");
+	    newobj.pathName =
+		(Parameter)newobj.getAttribute("tokenProductionRate");
+            newobj.output = 
+		(SDFIOPort)newobj.getPort("output");
             // set the type constraints.
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -164,215 +294,132 @@ public class AudioSource extends SDFAtomicActor {
         }
     }
 
-    /** Output the sample value of the sound file corresponding to the
-     *  current index.
+    /** Output sample values of the sound file. Semantically,
+     *  only one token (a DoubleToken) is output. In the actual
+     *  implementation, however, the number of tokens output is
+     *  equal to the token production rate.
+     *  @return True if there are samples available from the
+     *  audio source. False if there are no more samples (end
+     *  of sound file reached).
      */
     public boolean postfire() throws IllegalActionException {
-        try {
-	    int i;
-
-	    int numBytesRead;
-
-
-            // Read some audio into data[].
-            numBytesRead =
-                properFormatAudioInputStream.read(data);
-            if (numBytesRead == -1) {
-                // Ran out of samples to play. This generally means
-                // that the end of the sound file has been reached.
-                // Output productionRate many zeros.
-                audioTokenArray = new DoubleToken[productionRate];
-                // Convert to DoubleToken[].
-                // FIXME: I don't think this is very efficient. Currently
-                // creating a new token for each sample!
-                for (i = 0; i < productionRate; i++) {
-                    audioTokenArray[i] = new DoubleToken(0);
-                }
-
-                output.sendArray(0, audioTokenArray);
-                return false;
-            } else if (numBytesRead != data.length) {
-                // Read fewer samples than productionRate many samples.
-
-                // Ran out of samples to play. This generally means
-                // that the end of the sound file has been reached.
-                // Output productionRate many zeros.
-                audioTokenArray = new DoubleToken[productionRate];
-                // Convert to DoubleToken[].
-                // FIXME: I don't think this is very efficient. Currently
-                // creating a new token for each sample!
-                for (i = 0; i < productionRate; i++) {
-                    audioTokenArray[i] = new DoubleToken(0);
-                }
-
-                output.sendArray(0, audioTokenArray);
-                return false;
-            }
-
-
-            // Convert byte array to double array.
-            audioInDoubleArray = _byteArrayToDoubleArray(data, frameSizeInBytes);
-
-
-
-            audioTokenArray = new DoubleToken[productionRate];
-            // Convert to DoubleToken[].
-            // FIXME: I don't think this is very efficient. Currently
-            // creating a new token for each sample!
-            for (i = 0; i < productionRate; i++) {
-                audioTokenArray[i] = new DoubleToken(audioInDoubleArray[i]);
+	//System.out.println("AudioSource: postfire(): invoked");
+	// Read in audio data.
+	_audioInDoubleArray =_soundCapture.getSamples();
+	
+	// Check that the read was successful
+	if (_audioInDoubleArray != null) {
+	    _audioTokenArray = new DoubleToken[_productionRate];
+	    // Convert to DoubleToken[].
+	    for (int i = 0; i < _productionRate; i++) {
+		_audioTokenArray[i] =
+		    new DoubleToken(_audioInDoubleArray[i]);
 	    }
-
-
-            output.sendArray(0, audioTokenArray);
-
-
-
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
-        } catch (IOException ex) {
-
-            throw new InternalErrorException(ex.getMessage());
-        }
-	return true;
+	    
+	    output.sendArray(0, _audioTokenArray);
+	    return true;
+	} else {
+	    // Read was unsuccessfull.
+	    // Ouput array of zeros and return false.
+	    
+	    // This generally means
+	    // that the end of the sound file has been reached.
+	    // Output productionRate many zeros.
+	    _audioTokenArray = new DoubleToken[_productionRate];
+	    // Convert to DoubleToken[].
+	    for (int i = 0; i < _productionRate; i++) {
+		_audioTokenArray[i] = new DoubleToken(0);
+	    }
+	    
+	    output.sendArray(0, _audioTokenArray);
+	    return false;
+	}
     }
 
-    /** Read in the sound file specified by the <i>pathName</i> parameter
-     *  and initialize the current sample index to 0.
+    /** Set up the output port's production rate.
      *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+	super.preinitialize();
+
+	_productionRate =
+	    ((IntToken)tokenProductionRate.getToken()).intValue();
+	output.setTokenProductionRate(_productionRate);
+	output.setMultiport(true);
+    }
+
+    /** Check parameters and begin the sound capture process. If the
+     *  capture source is a sound file, the file is reopened and
+     *  caputre is reset to the begining of the file.
+     *  @exception IllegalActionException If the parameters
+     *             are out of range.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-
-
-	try {
-
-
-	    //Sound sound = new Sound();
-
-
-	    if (((BooleanToken)isURL.getToken()).booleanValue() == true) {
+	System.out.println("AudioSource: initialize(): invoked");
+	    if (((StringToken)source.getToken()).toString() == "URL") {
 		// Load audio from a URL.
-		// Create a URL corresponing to the sound file location.
-		URL soundURL =
-		    new URL(((StringToken)pathName.getToken()).toString());
-                //		sound.load(soundURL);
-	    } else {
+		String theURL = 
+		    ((StringToken)pathName.getToken()).toString();
+		_soundCapture = new SoundCapture(true,
+						  theURL,
+						  _productionRate);
+		
+	    } else if (((StringToken)source.getToken()).toString() == 
+		       "file") {
 		// Load audio from a file.
-		File soundFile =
-		    new File(((StringToken)pathName.getToken()).toString());
-		//sound.load(soundFile);
-		if (soundFile != null && soundFile.isFile()) {
+		String theFileName = 
+		    ((StringToken)pathName.getToken()).toString();
+		_soundCapture = new SoundCapture(false,
+						  theFileName,
+						  _productionRate);
+	    } else if (((StringToken)source.getToken()).toString() == 
+		       "mic") {
 
-		    try {
-			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-		    } catch (UnsupportedAudioFileException e) {
-			System.err.println("UnsupportedAudioFileException " + e);
-		    } catch (IOException e) {
-			System.err.println("IOException " + e);
-		    }
+		int sampleRateInt =
+		    ((IntToken)sampleRate.getToken()).intValue();
 
-		    String fileName = soundFile.getName();
-		}
-
-		// make sure we have something to play
-		if (audioInputStream == null) {
-		    System.err.println("No loaded audio to play back");
-		    return;
-		}
-
-		AudioFormat origFormat = audioInputStream.getFormat();
-		// Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
-		// representation of samples.
-		float sampleRate = origFormat.getSampleRate();
-		int sampleSizeInBits = origFormat.getSampleSizeInBits();
-		int channels = origFormat.getChannels();
-		boolean signed = true;
-		boolean bigEndian = true;
-		AudioFormat format = new AudioFormat(sampleRate,
-                        sampleSizeInBits, channels,
-                        signed, bigEndian);
-		//System.out.println("Converted format: " + format.toString());
-
-		properFormatAudioInputStream =
-		    AudioSystem.getAudioInputStream(format, audioInputStream);
-		frameSizeInBytes = format.getFrameSize();
-		// Array of audio samples in byte format.
-		data = new byte[productionRate*frameSizeInBytes];
-
+		int sampleSizeInBitsInt =
+		    ((IntToken)sampleSizeInBits.getToken()).intValue();
+		int channelsInt =
+		    ((IntToken)channels.getToken()).intValue();
+		int bufferSizeInt =
+		    ((IntToken)bufferSize.getToken()).intValue();
+		int getSamplesSizeInt = _productionRate;
+		_soundCapture = new SoundCapture((float)sampleRateInt,
+						 sampleSizeInBitsInt,
+						 channelsInt,
+						 bufferSizeInt,
+						 getSamplesSizeInt);
+	    } else {
+		throw new IllegalActionException("Parameter " +
+				  source.getFullName() +
+			          " is not set to a valid string.");
 	    }
 
-	    // Put all the samples in a double array.
-            //	    audioArray = sound.getDoubleArray();
-
-	    // Initialize the index to the first sample of the sound file.
-	    _index = 0;
-
-
-	} catch (MalformedURLException e) {
-	    System.err.println(e.toString());
-	} catch (IOException e) {
-	    System.err.println("AudioSource: error reading"+
-                    " input file: " +e);
-	}
-
+	    // Start capturing audio.
+	    _soundCapture.startCapture();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /* Convert a byte array of audio samples in linear signed pcm big endian
-     * format into a double array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
+    /** Stop capturing audio. Free up any system resources involved
+     *  in the capturing process and close any open sound files.
      */
-    private double[] _byteArrayToDoubleArray(byte[] byteArray, int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	//System.out.println("byteArray length = " + byteArray.length);
-	int lengthInSamples = byteArray.length / _bytesPerSample;
-	double[] doubleArray = new double[lengthInSamples];
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
-
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
-		// Assume we are dealing with big endian.
-		b[i] = byteArray[currSamp*_bytesPerSample + i];
-	    }
-	    long result = (b[0] >> 7) ;
-	    for (int i = 0; i < _bytesPerSample; i += 1)
-		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[currSamp] = ((double) result/
-                    (mathDotPow));
-        }
-	//System.out.println("a value " + doubleArray[34]);
-	return doubleArray;
+    public void wrapup() throws IllegalActionException {
+	//System.out.println("AudioSource: wrapup(): invoked");
+	// Stop capturing audio.
+	_soundCapture.stopCapture();
+	
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private AudioInputStream  properFormatAudioInputStream;
+    private SoundCapture _soundCapture;
 
-    private AudioInputStream audioInputStream;
+    private int _productionRate;
+    
 
-    private int productionRate;
+    private double[] _audioInDoubleArray;
 
-    private double[] audioArray;
-
-    // Array of audio samples in double format.
-    private double[] audioInDoubleArray;
-
-    private DoubleToken[] audioTokenArray;
-
-    private int _index;
-
-    // An array of length productionRate containing samples to output.
-    // private DoubleToken[] audioTokenArray;
-
-    byte[] data;
-    int frameSizeInBytes;
+    private DoubleToken[] _audioTokenArray;
 }
