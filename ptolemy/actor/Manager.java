@@ -277,9 +277,20 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the model is already running, or
      *   if there is no container.
      */
-    public synchronized void execute()
+    public void execute()
             throws KernelException, IllegalActionException {
 
+        // NOTE: This method used to be synchronized, but holding the
+        // lock on the Manager for the duration of an execution creates
+        // endless possibilities for deadlock.  So instead, we put
+        // a small barrier here and throw an exception if the model
+        // is already running.
+        synchronized(this) {
+            if (_state != IDLE) {
+                throw new IllegalActionException(this,
+                        "Model is already running.");
+            }
+        }
         // Make a record of the time execution starts.
         long startTime = (new Date()).getTime();
 
@@ -331,13 +342,14 @@ public class Manager extends NamedObj implements Runnable {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
                 setDeferringChangeRequests(false);
+                // Reset this for the next run.
+                _finishRequested = false;
+
                 // Wrapup may also throw an exception,
                 // So be sure to reset the state to idle!
                 if (_state != IDLE) {
                     _setState(IDLE);
                 }
-                // Reset this for the next run.
-                _finishRequested = false;
                 if (completedSuccessfully) {
                     _notifyListenersOfCompletion();
                 }
@@ -406,10 +418,12 @@ public class Manager extends NamedObj implements Runnable {
         
         Thread unpauser = new Thread() {
                 public void run() {
-                    // FIXME: During wrapup, the Manager is locked
+                    // NOTE: The execute() method used to be synchronized,
+                    // which would cause deadlock with this.
+                    // During wrapup, if the Manager is locked
                     // and the ProcessDirector is waiting for threads
-                    // to end.  Since Manager is locked, these unpausers
-                    // can run, and the processes can't end.
+                    // to end, then these unpausers
+                    // can't run, and the processes can't end.
                     synchronized(Manager.this) {
                         Manager.this.notifyAll();
                     }
@@ -1034,7 +1048,8 @@ public class Manager extends NamedObj implements Runnable {
                 // Ignore this and return.
             }
         } else {
-            // FIXME: This will almost certainly deadlock if called
+            // NOTE: Previously, execute() was a synchronized method.
+            // Result: This would almost certainly deadlock if called
             // from a thread apart from the executing thread because execute()
             // is synchronized, so the running thread holds the lock!
             synchronized(this) {
@@ -1056,18 +1071,24 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the model is idle or already
      *   wrapping up, or if there is no container.
      */
-    public synchronized void wrapup()
+    public void wrapup()
             throws KernelException, IllegalActionException {
-        if (_state == IDLE || _state == WRAPPING_UP) {
-            throw new IllegalActionException(this,
-                    "Cannot wrap up. The current state is: "
-                    + _state.getDescription());
+        // NOTE: This method used to be synchronized, but we cannot
+        // hold the lock on the director during wrapup because it
+        // will cause deadlock. Instead, we use a small barrier
+        // here to check and set the state.
+        synchronized(this) {
+            if (_state == IDLE || _state == WRAPPING_UP) {
+                throw new IllegalActionException(this,
+                        "Cannot wrap up. The current state is: "
+                        + _state.getDescription());
+            }
+            if (_container == null) {
+                throw new IllegalActionException(this,
+                        "No model to run!");
+            }
+            _setState(WRAPPING_UP);
         }
-        if (_container == null) {
-            throw new IllegalActionException(this,
-                    "No model to run!");
-        }
-        _setState(WRAPPING_UP);
 
         // Wrap up the topology
         _container.wrapup();
