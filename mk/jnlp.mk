@@ -71,6 +71,7 @@ CORE_JNLP_JARS = \
 	$(SIGNED_DIR)/lib/diva.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
+	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/actor/lib/javasound/javasound.jar \
@@ -100,8 +101,11 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
+	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
+	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
+	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/moml/demo/demo.jar
 
 PTINY_MAIN_JAR = \
@@ -139,10 +143,13 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/comm/comm.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/dt/demo/demo.jar \
+	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
-	ptolemy/domains/gr/doc/doc.jar \
+	ptolemy/domains/giotto/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
+	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/pn/demo/demo.jar \
+	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
