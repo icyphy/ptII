@@ -36,8 +36,9 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-# JREFACTORY_JAR is set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JREFACTORY_JAR)
+# PTBACKTRACK_JARS is set in $PTII/mk/ptII.mk
+# PTBACKTRACK_JARS always has a leading CLASSPATHSEPARATOR
+CLASSPATH =	$(ROOT)$(PTBACKTRACK_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -51,18 +52,21 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Don't use GNU make extensions here
 #    $(wildcard *.java)
 JSRCS = \
+	ASTBuilder.java \
 	ASTClassNotFoundException.java \
+	ASTDump.java \
 	ASTException.java \
-	ASTQuery.java \
+	ASTFormatter.java \
+	ASTIORuntimeException.java \
+	ASTMalformedException.java \
 	ASTResolutionException.java \
-	ASTRewrite.java \
-	ASTVisitor.java \
-	ExceptionPrinter.java \
+	ASTRuntimeException.java \
 	LocalClassLoader.java \
+	PathFinder.java \
 	Type.java \
 	TypeAnalyzer.java \
+	TypeAnalyzerState.java \
 	UnknownASTException.java
-
 
 OTHER_FILES_TO_BE_JARED = \
 	jrefactory-copyright.htm
