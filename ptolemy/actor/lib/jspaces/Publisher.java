@@ -51,13 +51,13 @@ import net.jini.core.lease.Lease;
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
-An actor that pulish TokenEntries to Java Spaces. The Java Space that the
+An actor that publish TokenEntries to Java Spaces. The Java Space that the
 entries are published to is identified by the <i>jspaceName</i>
 parameter. TokenEntries in Java Spaces has a name, a serial number, 
 and a Ptolemy token. This actor has a single input port.
 When the actor is fired, it consumes at most one token from the input
-port and publish the token to the Java Space with the name specifed by
-the <i>entyName</i> parameter. The serial number of the TokenEntry is
+port and publish the token to the Java Space with the name specified by
+the <i>entryName</i> parameter. The serial number of the TokenEntry is
 always set to 0. If there is already an entry in the
 Java Spaces with the entry name, The new token will override the existing
 one. The entry exists in the Java Space as long as the lease time is 
@@ -133,26 +133,26 @@ public class Publisher extends Sink {
 	_space = SpaceFinder.getSpace(name);
         _lookupThread = null;
 
-        String entryname = ((StringToken)entryName.getToken()).stringValue();
-        TokenEntry tokenTemplate = new TokenEntry(name, null, null);
+        String entry = ((StringToken)entryName.getToken()).stringValue();
+        TokenEntry tokenTemplate = new TokenEntry(entry, null, null);
         try {
             TokenEntry oldEntry;
             do {
                 oldEntry = (TokenEntry)_space.takeIfExists(
                         tokenTemplate, null, 1000);
             } while (oldEntry != null);
-        } catch (RemoteException re) {
+        } catch (RemoteException ex) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-                    "JavaSpace. " + re.getMessage());
-	} catch (TransactionException te) {
+                    "JavaSpace. " + ex.getMessage());
+	} catch (TransactionException ex) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-                    "JavaSpace. " + te.getMessage());
-	} catch (InterruptedException ie) {
+                    "JavaSpace. " + ex.getMessage());
+	} catch (InterruptedException ex) {
             throw new IllegalActionException(this, "Cannot write into " +
-                    "JavaSpace. " + ie.getMessage());
-        } catch (net.jini.core.entry.UnusableEntryException ue) {
+                    "JavaSpace. " + ex.getMessage());
+        } catch (net.jini.core.entry.UnusableEntryException ex) {
             throw new IllegalActionException(this, "Unusable Entry " +
-                    ue.getMessage());
+                    ex.getMessage());
         }
         if (_debugging) {
             _debug(getName(), "Finished preinitialization.");

@@ -62,7 +62,7 @@ When get notified, this actor starts another thread which reads the
 TokenEntry. In the execution thread, when the actor's fire method 
 is called, the actor outputs the last token read from the Java Space.
 That is if there are more than one notified entries, the old entry
-will be overriden by the new one. If there are no notifications
+will be overridden by the new one. If there are no notifications
 between to successive fires, the behavior of the actor depends on
 the <i>blocking</i> parameter. If this parameter is true, then
 the fire() call will block the execution thread, until there is
@@ -109,7 +109,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public Parameter jspaceName;
 
-    /** The name for the subcribed entry. The default value is
+    /** The name for the subscribed entry. The default value is
      *  an empty string of type StringToken.
      */
     public Parameter entryName;
@@ -201,9 +201,9 @@ public class Subscriber extends Source implements RemoteEventListener {
 
     /** Output the latest received token from last time the fire() 
      *  method is called.
-     *  If there's no token available, then the bahavior depends
+     *  If there's no token available, then the behavior depends
      *  on the "blocking" parameter. If blocking is true, the
-     *  exexution blocks until there's a token coming in.
+     *  execution blocks until there's a token coming in.
      *  Otherwise, the defaultToken is produced.
      */
     public void fire() throws IllegalActionException {
@@ -279,7 +279,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    /** The inner class that retrive token entries from the Java Spaces.
+    /** The inner class that retrieve token entries from the Java Spaces.
      *  This class is runnable, and when there is a notification 
      *  from the Java Space, a thread will be created associated
      *  with this class. The run() method will then read the TokenEntry
@@ -309,12 +309,12 @@ public class Subscriber extends Source implements RemoteEventListener {
                 // grab a lock and read all new entries.
                 synchronized(_lock) {
                     // make sure the actor is not producing outputs.
-                    TokenEntry entrytemp = new TokenEntry(_entryName,
+                    TokenEntry entryTemplate = new TokenEntry(_entryName,
                             null, null);
                     TokenEntry entry;
                     try{
                         entry = (TokenEntry)_space.readIfExists(
-                                entrytemp, null, Long.MAX_VALUE);
+                                entryTemplate, null, Long.MAX_VALUE);
                     } catch (Exception e) {
                         throw new InvalidStateException(_container,
                                 "error reading space." +

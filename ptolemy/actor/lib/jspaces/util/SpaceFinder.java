@@ -86,8 +86,8 @@ public class SpaceFinder {
                 if (finder != null) System.out.println("Found Lookup Finder.");
                 return (JavaSpace)finder.find(locator, name);
             } else {
-                RefHolder rh = (RefHolder)Naming.lookup(name);
-                return (JavaSpace)rh.proxy();
+                RefHolder ref = (RefHolder)Naming.lookup(name);
+                return (JavaSpace)ref.proxy();
             }
         } catch (Exception ex) {
             throw new IllegalActionException("Cannot find JavaSpace. " +
