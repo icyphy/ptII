@@ -222,10 +222,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	double time = getLastTime();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	    time = timeKeeper.getCurrentTime();
-	    if( time != INACTIVE ) {
-                time += timeKeeper.getDelayTime();
-	    }
+	    time = timeKeeper.getOutputTime();
 	}
 	put( token, time );
     }
@@ -279,7 +276,6 @@ public class DDEReceiver extends TimedQueueReceiver
 		_writePending = true;
 		director.addWriteBlock(this);
 		while( _writePending && !_terminate ) {
-		    // notifyAll();
 		    workspace.wait( this );
 		}
             }
@@ -329,14 +325,12 @@ public class DDEReceiver extends TimedQueueReceiver
     	_readPending = false;
     	_writePending = false;
     	_ignoreNotSeen = true;
-        // clearRcvr();
         Director director = 
                 ((Actor)getContainer().getContainer()).getDirector();
         String name =  
                 ((Nameable)getContainer().getContainer()).getName();
         System.out.println(name+":  Reset called with time = 0.0");
         setRcvrTime( 0.0 );
-        // setRcvrTime( director.getCurrentTime() );
     }
 
     /**
@@ -428,7 +422,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	    director.addReadBlock();
 	    while( _readPending && !_terminate ) {
 		new FooBar( calleeName, "DDEReceiver._hasToken()", "WAITING" );
-		// notifyAll();
 		workspace.wait( this );
 	    }
 	}
