@@ -95,6 +95,20 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing. Derived classes override this method to perform
+     *  actions that should occur once at the beginning of an execution,
+     *  but after the initialization phase. Since type resolution is done
+     *  in the initialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the begin()
+     *  method.  In effect, it can do anything that can be done in the
+     *  fire() method.
+     *
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void begin() throws IllegalActionException {
+    }
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
