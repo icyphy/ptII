@@ -53,7 +53,8 @@ public class DTDebug {
 
     public static final void prompt(String str) {
         if (_debugOn) {
-            JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, 
+                    str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
         }
     }
 

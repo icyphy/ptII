@@ -103,7 +103,7 @@ public class DTReceiver extends SDFReceiver {
      */
     public DTReceiver(IOPort container, int size)
             throws IllegalActionException {
-        super(container,size);
+        super(container, size);
         _init();
     }
 
@@ -141,7 +141,8 @@ public class DTReceiver extends SDFReceiver {
             if ((isCompositeContainer) && (_toPort.isOutput())) {
                 _inrate = 1;
             } else {
-                param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
+                param =
+                    (Parameter) _toPort.getAttribute("tokenConsumptionRate");
     	        if(param == null) {
                     _inrate = 1;
                 } else {
@@ -206,8 +207,8 @@ public class DTReceiver extends SDFReceiver {
                 Receiver[][] remoteReceivers = 
                                    connectedPort.getRemoteReceivers();
 
-                for(int i=0;i<connectedPort.getWidth();i++) {
-                    for(int j=0;j<remoteReceivers[i].length;j++) {
+                for(int i = 0; i < connectedPort.getWidth(); i++) {
+                    for(int j = 0; j < remoteReceivers[i].length; j++) {
                         if (remoteReceivers[i][j] == this) {
                             _from = (Actor) connectedPort.getContainer();
                             _fromPort = connectedPort;
@@ -353,26 +354,25 @@ public class DTReceiver extends SDFReceiver {
      *   this receiver.
      */
     void _debugViewReceiverInfo() {
-        String fromString;
-        String toString;
+        String fromString, toString;
 
         if (_from == null) {
-            fromString="0";
+            fromString = "0";
         } else {
-            fromString=((Nameable) _from).getName();
+            fromString = ((Nameable) _from).getName();
         }
 
         fromString += " (" + ((TypedIOPort)_fromPort).getType() + ")";
 
         if (_to == null) {
-            toString="0";
+            toString = "0";
         } else {
-            toString=((Nameable) _to).getName();
+            toString = ((Nameable) _to).getName();
         }
 
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
 
-        debug.println(fromString+" "+toString+" "+_deltaTime);
+        debug.println(fromString + " " + toString + " " + _deltaTime);
     }
 
 
