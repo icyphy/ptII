@@ -145,7 +145,7 @@ public class BaseType implements Type, Serializable {
      *  @return True if this type is NAT; false otherwise.
      */
     public boolean isSubstitutionInstance(Type type) {
-	return this == NAT;
+	return (this == NAT) || (this == type);
     }
 
     /** Return the string representation of this type.
