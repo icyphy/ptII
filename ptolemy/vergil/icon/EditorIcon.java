@@ -324,7 +324,7 @@ public class EditorIcon extends Attribute {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If this icon is not persistent, do nothing.
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         output.write(_getIndentPrefix(depth)

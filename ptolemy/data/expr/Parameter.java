@@ -189,7 +189,7 @@ public class Parameter extends Variable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();

@@ -188,7 +188,7 @@ public class Prototype extends NamedObj implements Instantiable {
         }
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
 

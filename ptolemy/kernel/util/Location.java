@@ -151,7 +151,7 @@ public class Location extends SingletonAttribute
             throws IOException {
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();

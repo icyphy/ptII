@@ -780,7 +780,7 @@ public class NamedObj implements
         // If the object is not persistent, or the MoML is
         // redundant with what would be propagated, then do
         // not generate any MoML.
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String className = getClassName();
@@ -2096,7 +2096,7 @@ public class NamedObj implements
         }
     }
 
-    /** Return false if this class should export a MoML description.
+    /** Return true if describing this class in MoML is redundant.
      *  This will return true if setPersistent() has been called
      *  with argument false, irrespective of other conditions.
      *  If setPersistent() has not been called, or has been called
@@ -2106,24 +2106,22 @@ public class NamedObj implements
      *  that MoML should be exported. Otherwise, whether to export
      *  MoML depends on whether the MoML specifies information
      *  that should be created by propagation rather than explicitly
-     *  represented.  If this is a derived object, then whether its
-     *  information can be created by propagation depends on whether
+     *  represented in MoML.  If this is a derived object, then whether
+     *  its information can be created by propagation depends on whether
      *  the object from which that propagation would occur is included
      *  in the MoML, which depends on the <i>depth</i> argument.
-     *  If the override depth of this object is 0, indicating that
-     *  its value has been directly set, then return false.  MoML
-     *  should always be exported if the value has been set directly.
-     *  If the value has been set indirectly, then we have to find the
-     *  closest object from which that value could propagate, and
-     *  determine whether it is included in the exported MoML. If
-     *  it is not, the return false.  Finally, if we haven't already
-     *  returned false, then check all the returned objects, and
-     *  if any of them returns false, then return false.
+     *  This method uses the <i>depth</i> argument to determine whether
+     *  the exported MoML both contains an object that implies the
+     *  existence of this object and contains an object that implies
+     *  the value of this object.  If both conditions are satisfied,
+     *  then it returns false.  Finally, if we haven't already
+     *  returned false, then check all the contained objects, and
+     *  if any of them requires a MoML description, then return false.
      *  Otherwise, return true.
      *  @param depth The depth of the requested MoML.
      *  @return Return true to suppress MoML export.
      */
-    protected boolean _suppressMoML(int depth) {
+    protected boolean _isMoMLSuppressed(int depth) {
         
         // Check whether suppression of MoML has been explicitly
         // requested.
@@ -2158,7 +2156,7 @@ public class NamedObj implements
         Iterator objects = containedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj object = (NamedObj)objects.next();
-            if (!object._suppressMoML(depth + 1)) {
+            if (!object._isMoMLSuppressed(depth + 1)) {
                 return false;
             }
         }

@@ -119,7 +119,7 @@ public class Documentation extends StringAttribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         if (name.equals("_doc")) {
