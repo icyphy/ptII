@@ -56,6 +56,7 @@ ptolemy/domains/dfm
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
 ptolemy/domains/gr/lib/Loader3D.java
+ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
 ptolemy/domains/odf
 ptolemy/domains/pbo
