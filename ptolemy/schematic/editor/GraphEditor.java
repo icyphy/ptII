@@ -154,6 +154,10 @@ public class GraphEditor extends MDIApplication {
         // Experimental -- doesn't work... open a file
         // getAction("open").actionPerformed(null);
         setCurrentDocument(null);
+        
+        // Swing is stupid and adds components with the cross-platform UI and
+        // not the system UI.
+        SwingUtilities.updateComponentTreeUI(frame);
     }
 
     /** Given a document, create a new view which displays that
@@ -174,6 +178,10 @@ public class GraphEditor extends MDIApplication {
 	
         // Set and draw the new graph
         controller.setGraph(graph);
+
+        //        ActionListener deletionListener = new DeletionListener();
+
+        //        jgraph.addKeyListener(keyListener);
 
         return jgraph;
 
@@ -411,12 +419,12 @@ public class GraphEditor extends MDIApplication {
         RelativeBundle resources = getResources();
 
         // Conventional new/open/save buttons
-        action = getAction("New");
+        action = getAction(DefaultActions.NEW);
         addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
 
-        action = getAction("Open");
+        action = getAction(DefaultActions.OPEN);
         addToolBarButton(tb, action, null, resources.getImageIcon("OpenImage"));
-        action = getAction("Save");
+        action = getAction(DefaultActions.SAVE);
         addToolBarButton(tb, action, null, resources.getImageIcon("SaveImage"));
         //tb.addSeparator();
 

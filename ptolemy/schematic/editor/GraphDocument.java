@@ -53,11 +53,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.net.URL;
 
 /**
  * A class representing graph-structured documents.
- * This class saves and loads graphs to a schematic ptml file.
+ * This class saves and loads Ptolemy models from MoML.
  *
  * @author John Reekie, Steve Neuendorffer
  * @version $Id$
@@ -125,12 +126,10 @@ public class GraphDocument extends AbstractDocument {
      * @throws Exception  If the I/O operation failed.
      */
     public void saveAs (File file) throws Exception {
-        // FIXME
-        //        String filename = file.getName();
-        //FileOutputStream fout = new FileOutputStream(filename);
-        //DataOutputStream out = new DataOutputStream(fout);
-        //GraphModel model = (GraphModel) getPage(0).getModel();
-        //new GraphWriter().write(model, out);
+        String filename = file.getName();
+        FileWriter writer = new FileWriter(file);
+        _graph.exportMoML(writer);
+        writer.flush();
     }
 
     /** Throw an exception, as save to URLs is not supported.
