@@ -125,7 +125,6 @@ public class LMSAdaptive extends FIR {
 	// set type constraints.
 	error.setTypeSameAs(input);
 
-        tapValues.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 	tapValues.setTypeSameAs(taps);
     }
 
