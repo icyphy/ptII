@@ -341,7 +341,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   with the specified name.
      */
     public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+            NameDuplicationException {
         try {
             workspace().getWriteAccess();
             IOPort port = new IOPort(this, name);
