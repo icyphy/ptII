@@ -31,7 +31,7 @@
 
 # doc directory should be last so we get files from version control before
 # updating the docs
-DIRS = corejava domains exceptions kernel pitcl doc
+DIRS = domains exceptions kernel pitcl doc
 
 # Root of Tycho directory
 ROOT =		../..
