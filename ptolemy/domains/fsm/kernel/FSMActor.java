@@ -326,7 +326,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  return The IODependence attribute.
      */
     public IODependence getIODependence() {
-        return (IODependence) getAttribute("_IODependence");
+        // FIXME: how to specifify the IODependence of a FSMActor?
+        return null;
     }
 
     /** Return the Manager responsible for execution of this actor,
