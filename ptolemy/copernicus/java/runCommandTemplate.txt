@@ -1,0 +1,3 @@
+@java@
+ -Xfuture -classpath "@classPath@"
+ @targetPackage@.Main 
