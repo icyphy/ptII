@@ -30,7 +30,7 @@
 ##########################################################################
 
 # Domains
-DIRS = 	#ct #de #sdf pn
+DIRS = 	de #ct #sdf #pn
 
 # Root of Tycho directory
 ROOT =		../..
