@@ -88,6 +88,7 @@ JSRCS = \
 	ExternalTextEffigy.java \
 	ExternalTextTableau.java \
 	GenerateCopyrights.java \
+	HTMLAbout.java \
 	HTMLEffigy.java \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
