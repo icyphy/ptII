@@ -31,7 +31,7 @@ You may also want to check the
 <H3><CODE>pxgraph</CODE> script fails with: Unable to initialize threads: cannot find class</H3>
 Below is an example:
 <PRE>
-ptplot> ./pxgraph
+ptplot&gt; ./pxgraph
 Unable to initialize threads: cannot find class
 java/lang/Thread
 </PRE>
@@ -121,9 +121,9 @@ See the Pxgraph
 <H3>I can't access the Plot class from a java interpreter</H3>
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
-ptplot> java Pxgraph
+ptplot&gt; java Pxgraph
 java.lang.NoClassDefFoundError: ptplot/Plot
-        at ptplot.Pxgraph.<init>(Pxgraph.java)
+        at ptplot.Pxgraph.&lt;init&gt;(Pxgraph.java)
         at ptplot.Pxgraph.main(Pxgraph.java)
 </PRE>
 The problem here is that the Ptplot java classes are in the Ptplot java
@@ -139,7 +139,7 @@ cxh@carson 32% setenv CLASSPATH ..:/opt/jdk1.1.4/lib/classes.zip
 cxh@carson 33% java ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
- -bd <color> (Unsupported)
+ -bd &lt;color&gt; (Unsupported)
 </PRE>
 
 <PRE>
@@ -147,7 +147,7 @@ cxh@carson 34% unsetenv CLASSPATH
 cxh@carson 35% java -classpath ..:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
- -bd <color> (Unsupported)
+ -bd &lt;color&gt; (Unsupported)
 </PRE>
 Note that you can also set the classpath to include the ptplot.zip
 file, rather than including the directory that the <CODE>ptplot</CODE>
@@ -157,7 +157,7 @@ cxh@carson 36% unsetenv CLASSPATH
 cxh@carson 57% java -classpath ptplot.zip:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
 Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
  options that take values as second args:
- -bd <color> (Unsupported)
+ -bd &lt;color&gt; (Unsupported)
 
 </PRE>
 
