@@ -63,6 +63,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
+	'GenerateVisitor$$ClassField.class' \
+	'GenerateVisitor$$MethodSignature.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -88,9 +88,13 @@ MISC_FILES =	alljtests.tcl
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'TestWorkspace2$$Notification.class'
+	'TestWorkspace2$$Notification.class' \
+	'ChangeRequestTest$$1.class' \
+	'ChangeRequestTest$$2.class' \
+	'TestDE$$1.class' \
+	'TestDE$$2.class'
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS=	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.

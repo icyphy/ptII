@@ -96,6 +96,8 @@ MISC_FILES =	$(DIRS) lib
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'FiringEvent$$1.class' \
+	'FiringEvent$$FiringEventType.class' \
 	'Manager$$1.class' \
 	'Manager$$2.class' \
 	'Manager$$State.class' \

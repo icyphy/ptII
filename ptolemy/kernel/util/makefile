@@ -89,6 +89,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CrossRefList$$1.class' \
 	'CrossRefList$$CrossRef.class' \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \

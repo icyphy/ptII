@@ -73,6 +73,7 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'ComponentDialog$$1.class' \
+	'ComponentDialog$$2.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \
 	'Query$$CheckBoxListener.class' \
@@ -80,7 +81,11 @@ OPTIONAL_FILES = \
 	'Query$$QueryActionListener.class' \
 	'Query$$QueryFocusListener.class' \
 	'Query$$QueryItemListener.class' \
-	'Query$$SliderListener.class
+	'Query$$SliderListener.class \
+	'Top$$1.class' \
+	'Top$$FileMenuListener.class' \
+	'Top$$HelpMenuListener.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
