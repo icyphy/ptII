@@ -486,7 +486,11 @@ public class CTScheduler extends Scheduler {
                 if (type.equals(UNKNOWN)) {
                     if (needManuallySetType) {
                         throw new NotSchedulableException("Cannot resolve "
-                                + "signal type for port " + port.getFullName());
+                                + "signal type for port " + port.getFullName()
+                                + ".\n To set the singal type manually, "
+                                + "add a parameter with name signalType " 
+                                + "and a string value \"CONTINUOUS\" "
+                                + "or \"DISCRETE\".");
                     } else {
                         signalTypes.setType(port, knownType);
                     }
@@ -825,23 +829,16 @@ public class CTScheduler extends Scheduler {
             // Iterate over all ports that can receive data from this one.
             // This includes input ports lower in the hierarchy or output
             // ports higher in the hierarchy.
-            int referenceDepth = port.depthInHierarchy();
-            Iterator connectedPorts =
-                   port.deepConnectedPortList().iterator();
+            Iterator connectedPorts = port.sinkPortList().iterator();
             while(connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort)connectedPorts.next();
-                if ((nextPort.isInput() && nextPort.depthInHierarchy()
-                        >= referenceDepth)
-                        || (nextPort.isOutput() && nextPort.depthInHierarchy()
-                        < referenceDepth)) {
-                    if (!_map.containsKey(nextPort)) {
-                        setType(nextPort, getType(port));
-                    } else if (!getType(port).equals(getType(nextPort))) {
-                        throw new NotSchedulableException(
-                                "Signal type conflict: "
-                                + port.getFullName() + " and "
-                                + nextPort.getFullName());
-                    }
+                if(!_map.containsKey(nextPort)) {
+                    setType(nextPort, getType(port));
+                } else if (!getType(port).equals(getType(nextPort))) {
+                    throw new NotSchedulableException(
+                            "Signal type conflict: "
+                            + port.getFullName() + " and "
+                            + nextPort.getFullName());
                 }
             }
         }
