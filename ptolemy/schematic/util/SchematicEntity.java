@@ -83,7 +83,8 @@ public class SchematicEntity extends PTMLTemplateObject
         _ports = new NamedList();
         _terminals = new NamedList();
 	_terminalstyle = null;
-  	//setIcon(DEFAULTICONNAME);
+        // In case our template has a terminalstyle.
+  	_createTerminals();        
     }
 
     /**
@@ -314,7 +315,16 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
-     * Set the TerminalMap that describes this entity. 
+     * Set the template entity for this entity.  In addition, create terminals
+     * for each terminal in the terminal style.
+     */
+    public void setTemplate(PTMLObject obj) {
+        super.setTemplate(obj);
+        _createTerminals();
+    }
+
+    /**
+     * Set the terminal map that describes this entity. 
      * Note that if this entity
      * has a template, this corresponds to overriding the value that is 
      * set in the template, but does not affect the template in any way.
@@ -326,37 +336,14 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
-     * Set the TerminalStyle that describes this entity.  If the terminal
+     * Set the terminal style that describes this entity.  If the terminal
      * style is already set, then do nothing.  If the terminal style changes
-     * and the new terminal style is not null, then create schematicTerminals
+     * and the new terminal style is not null, then create a schematicTerminal
      * for each terminal in the terminalstyle.
-     * FIXME Figure out what it should do to the 
-     * contained terminals.
      */
     public void setTerminalStyle (TerminalStyle style) {
-        //FIXME this is a bogus way to do this.
         _terminalstyle = style;
-
-	// Blow away the old terminals
-	_terminals.removeAll();
-
-	if(getTerminalStyle() != null) {
-	    Enumeration templateTerminals = getTerminalStyle().terminals();
-	    while(templateTerminals.hasMoreElements()) {
-		SchematicTerminal terminal = 
-		    (SchematicTerminal)templateTerminals.nextElement();
-		try {
-                    addTerminal(new SchematicTerminal(terminal.getName(), 
-						      terminal));
-                    
-		} catch (Exception ex) {
-		    throw new InternalErrorException(ex.getMessage());
-		    // This should never happen, because the terminals in the
-		    // template must follow the same rules as the schematic 
-		    // terminals.
-		}
-	    }
-	}
+        _createTerminals();
     }
     
    /**
@@ -548,6 +535,35 @@ public class SchematicEntity extends PTMLTemplateObject
         if (bracket == 2) result += "}";
 
         return result;
+    }
+
+    /** 
+     * Create terminals based on the terminalstyle of this entity.
+     * This method is called after the template or terminal style is set
+     * to create new terminals for this entity.
+     */
+    protected void _createTerminals() {
+	// Blow away the old terminals
+        // FIXME This may be bad if things are connected to the old terminals.
+	_terminals.removeAll();
+
+	if(getTerminalStyle() != null) {
+	    Enumeration templateTerminals = getTerminalStyle().terminals();
+	    while(templateTerminals.hasMoreElements()) {
+		SchematicTerminal terminal = 
+		    (SchematicTerminal)templateTerminals.nextElement();
+		try {
+                    addTerminal(new SchematicTerminal(terminal.getName(), 
+						      terminal));
+                    
+		} catch (Exception ex) {
+		    throw new InternalErrorException(ex.getMessage());
+		    // This should never happen, because the terminals in the
+		    // template must follow the same rules as the schematic 
+		    // terminals.
+		}
+	    }
+	}
     }
 
     public static final String DEFAULTICONNAME = "default";

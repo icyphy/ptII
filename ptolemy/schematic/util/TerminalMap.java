@@ -59,6 +59,8 @@ public class TerminalMap {
      * portnames at the end of the string will not be mapped.  Likewise if
      * there are more terminals than port names.
      */
+    // FIXME this is sortof a bogus way to create these, because ordering 
+    // is hard to preserve
     public TerminalMap(TerminalStyle terminalStyle, String portNames) {
         StringTokenizer tokens = new StringTokenizer(portNames);
         Enumeration terminals = terminalStyle.terminals();
