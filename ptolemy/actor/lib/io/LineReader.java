@@ -137,29 +137,6 @@ public class LineReader extends Source {
         }
     }
 
-    /** Open the file or URL and read the first line.
-     *  This is done in preinitialize() so
-     *  that derived classes can extract information from the file
-     *  that affects information used in type resolution or scheduling.
-     *  @exception IllegalActionException If the file or URL cannot be
-     *   opened, or if the first line cannot be read.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        _reachedEOF = false;
-        _reader = fileOrURL.openForReading();
-        _reachedEOF = false;
-        try {
-            _currentLine = _reader.readLine();
-            if (_currentLine == null) {
-                throw new IllegalActionException(this, "Empty file.");
-            }
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Preinitialize failed.");
-        }
-    }
-
     /** Read the next line from the file. If there is no next line,
      *  return false.  Otherwise, return whatever the superclass returns.
      *  @exception IllegalActionException If there is a problem reading
@@ -191,6 +168,31 @@ public class LineReader extends Source {
         if (_reachedEOF) return false;
         else return super.prefire();
     }
+
+    /** Open the file or URL and read the first line.
+     *  This is done in preinitialize() so
+     *  that derived classes can extract information from the file
+     *  that affects information used in type resolution or scheduling.
+     *  @exception IllegalActionException If the file or URL cannot be
+     *   opened, or if the first line cannot be read.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+
+        _reachedEOF = false;
+        _reader = fileOrURL.openForReading();
+        _reachedEOF = false;
+        try {
+            _currentLine = _reader.readLine();
+            if (_currentLine == null) {
+                throw new IllegalActionException(this, "Empty file.");
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Preinitialize failed.");
+        }
+    }
+
 
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
