@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ExtendedFSM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="NonStrictFSM" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=true}">
@@ -42,9 +42,9 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.ExtendedFSMDirector">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
         </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.ExtendedFSMDirector">
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>

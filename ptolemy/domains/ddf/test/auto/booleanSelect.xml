@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BooleanSelect" class="ptolemy.actor.TypedCompositeActor">
+<entity name="booleanSelect" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -21,15 +21,17 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.ExtendedFSMDirector">
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.ExtendedFSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 175.0]">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.NonStrictFSMDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <port name="T" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -183,6 +185,12 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+        <property name="BooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 90.0]">
         </property>
     </entity>
