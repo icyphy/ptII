@@ -41,7 +41,10 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
 /**
-A base class for Ptolemy applications. This class has a create() method, which is called to create the base model components typically used in Ptolemy applications. This class also provides methods for reporting errors and exceptions.
+A base class for Ptolemy applications. This class has a create() method,
+which is called to create the base model components typically used in
+Ptolemy applications. This class also provides methods for reporting
+errors and exceptions.
 
 actor; it provides a mechanism for reporting
 errors and exceptions. This class makes no use of any gui features.
