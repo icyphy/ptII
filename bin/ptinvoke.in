@@ -121,12 +121,7 @@ SOOT_JFLAG=
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
-if [ "$CLASSPATH" = "" ]; then
-    ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
-else
-    ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}${CLASSPATHSEPARATOR}${CLASSPATH}"
-fi
-
+ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 # Optional jar file
@@ -270,6 +265,12 @@ if [ "$jarfile" = "$PTJACL_JAR" ]; then
 	echo "    test suites."
     fi
 fi
+
+# Append the user classpath at the end
+if [ "$CLASSPATH" != "" ]; then
+    jarfile="$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
+fi
+
 
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
