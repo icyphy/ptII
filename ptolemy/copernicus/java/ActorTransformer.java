@@ -170,12 +170,14 @@ public class ActorTransformer extends SceneTransformer {
                 CompositeActor composite = (CompositeActor)entity;
                 createCompositeActor(composite, newClassName, options);
             } else if(entity instanceof Expression) {
-                _createExpressionActor((Expression)entity, newClassName, options);
+                _createExpressionActor((Expression)entity, 
+                        newClassName, options);
             } else if(entity instanceof FSMActor) {
                 _createFSMActor((FSMActor)entity, newClassName, options);
             } else {
                 // Must be an atomicActor.
-                _createAtomicActor(model, (AtomicActor)entity, newClassName, constAnalysis, options);
+                _createAtomicActor(model, (AtomicActor)entity, 
+                        newClassName, constAnalysis, options);
             }
         }
     }
@@ -1041,7 +1043,17 @@ public class ActorTransformer extends SceneTransformer {
                                             containerLocal,
                                             PtolemyUtilities.getEntityMethod,
                                             StringConstant.v(deepName))));
-      //               units.add(
+                    
+                    SootMethod rprefireMethod, rfireMethod, rpostfireMethod;
+                    if(refinement instanceof CompositeActor) {
+                        rprefireMethod = SootUtilities.searchForMethodByName(PtolemyUtilities.compositeActorClass, "prefire");
+                        rfireMethod = SootUtilities.searchForMethodByName(PtolemyUtilities.compositeActorClass, "fire");
+                        rpostfireMethod = SootUtilities.searchForMethodByName(PtolemyUtilities.compositeActorClass, "postfire");
+                    } else {
+                        throw new RuntimeException();
+                    }
+                        
+//                     units.add(
 //                             Jimple.v().newAssignStmt(entityLocal,
 //                                     Jimple.v().newCastExpr(entityLocal,
 //                                             RefType.v(PtolemyUtilities.executableInterface))));
@@ -1049,19 +1061,19 @@ public class ActorTransformer extends SceneTransformer {
 
                     units.add(
                             Jimple.v().newInvokeStmt(
-                                    Jimple.v().newInterfaceInvokeExpr(
+                                    Jimple.v().newVirtualInvokeExpr(
                                             entityLocal,
-                                            PtolemyUtilities.executablePrefireMethod)));
+                                            rprefireMethod)));
                     units.add(
                             Jimple.v().newInvokeStmt(
-                                    Jimple.v().newInterfaceInvokeExpr(
+                                    Jimple.v().newVirtualInvokeExpr(
                                             entityLocal,
-                                            PtolemyUtilities.executableFireMethod)));
+                                            rfireMethod)));
                     units.add(
                             Jimple.v().newInvokeStmt(
-                                    Jimple.v().newInterfaceInvokeExpr(
+                                    Jimple.v().newVirtualInvokeExpr(
                                             entityLocal,
-                                            PtolemyUtilities.executablePostfireMethod)));
+                                            rpostfireMethod)));
 
                 }
 
