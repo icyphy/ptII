@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -41,7 +41,7 @@ Base class for runtime exceptions.  This class extends the basic
 Java RuntimeException with a constructor that can take a Nameable as
 an argument.
 
-This exception supports all the constructor forms of KernelException,
+<p>This exception supports all the constructor forms of KernelException,
 but is implemented as a RuntimeException so that it does not have to
 be declared.
 
@@ -51,12 +51,11 @@ an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
 exception chaining.
 
-<p>JDK1.4 supports exception chaining.  We are implementing a version of
-exception chaining here ourselves so that we can use JVMs earlier
-than JDK1.4.
-See the {@link KernelException KernelException} documentation
-for differences between our exception chaining implementation and
-the JDK1.4 implementation.
+<p>JDK1.4 and later support exception chaining.  We are implementing
+a version of exception chaining here ourselves so that we can use JVMs
+earlier than JDK1.4.  See the {@link KernelException}
+documentation for differences between our exception chaining
+implementation and the JDK1.4 implementation.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
@@ -64,11 +63,8 @@ the JDK1.4 implementation.
 */
 public class KernelRuntimeException extends RuntimeException {
 
-    /** Construct an exception with a no specific detail message. */
+    /** Construct an exception with no specific detail message. */
     public KernelRuntimeException() {
-        // Note: this nullary exception is required.  If it is
-        // not present, then the subclasses of this class will not
-        // compile.
         this(null, null, null, null);
     }
 
@@ -88,7 +84,8 @@ public class KernelRuntimeException extends RuntimeException {
     }
 
     /** Construct an exception with a detail message that includes the
-     *  name of the first argument and the second argument string.
+     *  name of the first argument and the value of the second argument
+     *  string.
      *  @param object The object.
      *  @param detail The message.
      */
@@ -96,14 +93,14 @@ public class KernelRuntimeException extends RuntimeException {
         this(object, null, null, detail);
     }
 
-    /** Construct an exception with a detail message that includes
-     *  the names of the first two arguments plus the fourth argument
-     *  string.  If the cause argument is non-null, then the message
-     *  of this exception will include the message of the cause
-     *  argument.  The stack trace of the cause argument is used when
-     *  we print the stack trace of this exception.  If one or more of
-     *  the parameters are null, then the detail message is adjusted
-     *  accordingly.
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the value of the fourth
+     *  argument string.  If the cause argument is non-null, then the
+     *  message of this exception will include the message of the
+     *  cause argument.  The stack trace of the cause argument is used
+     *  when we print the stack trace of this exception.  If one or
+     *  more of the parameters are null, then the detail message is
+     *  adjusted accordingly.
      *
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -117,8 +114,8 @@ public class KernelRuntimeException extends RuntimeException {
         _setCause(cause);
     }
 
-    /** Constructs an exception with a detail message that includes the
-     *  names of a collection of nameable objects plus the argument string.
+    /** Construct an exception with a detail message that includes the
+     *  names of a collection of Nameable objects plus the argument string.
      *  @param objects The Collection of Nameable objects
      *  @param cause The cause of this exception.
      *  @param detail The message.
@@ -134,7 +131,7 @@ public class KernelRuntimeException extends RuntimeException {
 
     /** Get the cause of this exception.
      *  @return The cause that was passed in as an argument to the
-     *  constructor, or null of no cause was specified.
+     *  constructor, or null if no cause was specified.
      */
     public Throwable getCause() {
         return _cause;
@@ -151,7 +148,7 @@ public class KernelRuntimeException extends RuntimeException {
         return _message;
     }
 
-    /** Print the following to stderr:
+    /** Print a stack trace message to stderr including
      *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
@@ -171,18 +168,20 @@ public class KernelRuntimeException extends RuntimeException {
         printStackTrace(new PrintWriter(System.err));
     }
 
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
+    /** Print a stack trace message to printStream including this
+     *  exception, its stack trace and if the cause exception is
+     *  known, print the cause exception and the cause stacktrace.
+     *
      *  @param printStream The PrintStream to write to.
      */
     public void printStackTrace(PrintStream printStream) {
         printStackTrace(new PrintWriter(printStream));
     }
 
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
+    /** Print a stack trace message to printWriter including this
+     *  exception, its stack trace and if the cause exception is
+     *  known, print the cause exception and the cause stacktrace.
+     *
      *  @param printWriter The PrintWriter to write to.
      */
     public void printStackTrace(PrintWriter printWriter) {
@@ -207,7 +206,7 @@ public class KernelRuntimeException extends RuntimeException {
 
     /** Sets the error message to the specified string.
      *  If the message argument is null, then the error
-     *  message is sent to the empty string.
+     *  message is set to the empty string.
      *  @param message The message.
      */
     protected void _setMessage(String message) {
