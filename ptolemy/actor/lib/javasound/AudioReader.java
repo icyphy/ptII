@@ -38,7 +38,6 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.media.javasound.SoundCapture; // For javadoc
 import ptolemy.media.javasound.SoundReader; // For javadoc
 import ptolemy.media.javasound.SoundPlayback; // For javadoc
 import ptolemy.media.javasound.SoundWriter; // For javadoc
@@ -96,7 +95,6 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
 @see SoundWriter
-@see SoundCapture
 @see SoundPlayback
 */
 public class AudioReader extends URLReader {
