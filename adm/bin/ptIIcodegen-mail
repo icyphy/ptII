@@ -12,6 +12,11 @@
 mailto=$1
 
 ADMDIR=/users/ptII/adm
+if [ "$USER" = "cxh" ]; then
+    ADMDIR=/home/eecs/cxh/ptII/adm
+fi
+
+
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     ADMDIR=/home/bldmastr/ptII/adm
 fi
@@ -86,6 +91,15 @@ awk '
 			    modelName = modelName substr(f[nf], 1, length(f[nf])-1)
 	              }		    
 
+      sawTestGeneratedError == 4 {
+			    if ($0 ~ /ptolemy.copernicus.kernel.Copernicus/) {
+				# Skip "Test generated error" followed
+				# by the invocation of Copernicus and instead
+				# look for 
+				# "Exception occurred during processing"
+				sawTestGeneratedError = 0
+			    }
+                       }
       sawTestGeneratedError == 1 {
 			    sawTestGeneratedError--
 			    tmp = errorLine2 "\n" $0
@@ -132,16 +146,39 @@ awk '
 			    }
 			    modelName2 = modelName2 f[nf]
 	              }		    
+    $0  ~/Command failed/ {
+                           sawTestGeneratedError=2
+    			   errorLine2=""
+                      }
+    $0  ~/Exception occurred:/ {
+                           sawTestGeneratedError=2
+    			   errorLine2=$0
+                      }	
+    $0  ~/Exception occurred during parsing/ {
+                           sawTestGeneratedError=2
+    			   errorLine2=""
+                      }
     $0  ~/ Test generated error:/ {
-			    sawTestGeneratedError=4
-			    errorLine2=""
+    			    sawTestGeneratedError=4
+    			    errorLine2=""
                       }
     END               {
+			count = 1
 			for( error in errors) {
 			    files = errors[error]
 			    nf = split(files, f, " ")
 			    for(i = 1; i <= nf; i++) {
-				print f[i]
+				// Remove duplicates
+				sawItAlready = 0
+				for(j = 1; j < i; j++) {
+				    if ( f[i] == f[j]) {
+					sawItAlready = 1
+				    }
+				}
+				if (sawItAlready == 0) {
+				    print count ". " f[i]
+				    count++
+				}
 			    }
 			    print error
 			    printf("\n\n")
