@@ -142,7 +142,6 @@ JSRCS = \
 	SequenceSource.java \
 	SequentialClock.java \
 	Sink.java \
-        SignalMemory.java\
 	Sleep.java \
 	Source.java \
 	Stop.java \
