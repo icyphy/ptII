@@ -420,8 +420,11 @@ public class StringUtilities {
 
     /** Given a file or URL name, return as a URL.  If the file name
      *  is relative, then it is interpreted as being relative to the
-     *  specified base directory. If the name begins with "$CLASSPATH",
+     *  specified base directory. If the name begins with
+     *  "xxxxxxCLASSPATHxxxxxx",
      *  then search for the file relative to the classpath.
+     *  Note that this is the value of the globally defined constant
+     *  $CLASSPATH available in the expression language.
      *  If no file is found, then throw an exception.
      *  @param name The name of a file or URL.
      *  @param baseDirectory The base directory for relative file names,
@@ -483,8 +486,7 @@ public class StringUtilities {
                 }
             }
 
-            // As a last resort, try an absolute URL, without
-            // a specified protocol first, then with.
+            // As a last resort, try an absolute URL.
             return new URL(name);
         }
     }
