@@ -153,7 +153,9 @@ public class WatchDogTimer extends SceneTransformer {
             }
         };
 	if (_timer == null) {
-	    _timer = new Timer();
+            // Create the timer as a Daemon.. This way it won't prevent
+            // the compiler from exiting if an exception occurs.
+	    _timer = new Timer(true);
 	}
         _timer.schedule(doTimeToDie, timeToDie);
     }
