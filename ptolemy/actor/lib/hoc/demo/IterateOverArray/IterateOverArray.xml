@@ -137,7 +137,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 138, 1013, 603}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 0, 1013, 603}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[798, 487]">
     </property>
@@ -663,9 +663,9 @@
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {3, 3, 508, 442}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {628, 369, 391, 395}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 387]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[383, 340]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 330.0]">
         </property>
