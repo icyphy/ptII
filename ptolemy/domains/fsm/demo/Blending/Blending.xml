@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Blending" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 461]">
     </property>
@@ -10,6 +10,10 @@
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -55,7 +59,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 315.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 424]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
@@ -69,6 +73,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="STEP" class="ptolemy.data.expr.Parameter" value="10">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 136, 834, 540}}">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 119.0">
@@ -81,6 +87,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </port>
         <entity name="mode controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Mode A">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -362,12 +370,16 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <entity name="Controller_A" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 220.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -375,6 +387,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 151, 701, 466}}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -420,6 +434,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -464,21 +482,27 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <entity name="Blending_A_to_B" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 230.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 284.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 30.0">
                 </property>
             </property>
             <property name="STEP" class="ptolemy.data.expr.Parameter" value="STEP">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 295, 874, 466}}">
             </property>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -496,7 +520,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -505,7 +529,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </port>
             <port name="step" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 140.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -520,7 +544,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 100.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -536,7 +560,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 100.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -554,7 +578,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <entity name="Blend Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(step * inputB + (STEP - step) * inputA) / STEP">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 180.0">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -582,12 +606,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="340.0, 70.0">
+                <vertex name="vertex1" value="230.0, 140.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="195.0, 70.0">
-                </vertex>
             </relation>
             <link port="inputA" relation="relation4"/>
             <link port="inputB" relation="relation5"/>
@@ -610,6 +632,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -816,6 +842,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -872,6 +902,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
             </property>
             <doc>The phase, in radians.</doc>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 559}}">
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 315.0">

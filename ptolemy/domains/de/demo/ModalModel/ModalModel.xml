@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 383]">
     </property>
@@ -80,7 +80,7 @@ to see how it works.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 280.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 815, 492}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 815, 499}}">
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,19 +103,11 @@ to see how it works.</text></svg></configure>
         </property>
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
-                </property>
-                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="252.5, 222.5">
         </property>
@@ -247,10 +239,6 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="221.0, 189.17875737712632">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="noisy" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noisy">
@@ -261,10 +249,6 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="341.0, 189.17875737712632">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
@@ -282,8 +266,6 @@ to view the mode switching.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -305,8 +287,6 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -325,6 +305,8 @@ to view the mode switching.</text></svg></configure>
                 </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -332,7 +314,7 @@ to view the mode switching.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
                 </property>
             </property>
-            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4137.9278197235535">
+            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4211.7657190583595">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -398,34 +380,8 @@ of an increasing sequence.</text></svg></configure>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 220.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-                <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                    <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                        <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
-                        </property>
-                        <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
-                        </property>
-                        <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
-                        </property>
-                        <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
-                        </property>
-                        <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                        </property>
-                        <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
-                        </property>
-                    </property>
-                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                     </property>
@@ -434,12 +390,6 @@ of an increasing sequence.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 220.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -467,6 +417,8 @@ of an increasing sequence.</text></svg></configure>
                 </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -474,7 +426,7 @@ of an increasing sequence.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
                 </property>
             </property>
-            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4156.473688355229">
+            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="4207.388433294362">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -532,35 +484,8 @@ and then adds noise to it.</text></svg></configure>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 230.0">
                 </property>
-                <port name="plus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="minus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-                <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                    <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                        <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
-                        </property>
-                        <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
-                        </property>
-                        <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
-                        </property>
-                        <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
-                        </property>
-                        <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                        </property>
-                        <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
-                        </property>
-                    </property>
-                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                     </property>
@@ -569,12 +494,6 @@ and then adds noise to it.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 220.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
                 <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -586,16 +505,6 @@ and then adds noise to it.</text></svg></configure>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 220.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
                 <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -607,13 +516,6 @@ and then adds noise to it.</text></svg></configure>
                 <doc>Create a sequence of gaussian random variables</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 145.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="1:relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -675,13 +577,6 @@ and then adds noise to it.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="117.5, 192.5">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -692,25 +587,14 @@ and then adds noise to it.</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="117.5, 267.5">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 399, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 399, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -718,10 +602,6 @@ and then adds noise to it.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="387.5, 222.5">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
