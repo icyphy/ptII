@@ -24,7 +24,9 @@
 				(c-set-offset 'arglist-intro '++)
 				(c-set-offset 'func-decl-cont '++)
 				(c-set-offset 'case-label 0)
-				(c-set-offset 'c 'pt-c-lineup-C-comments)
+				(if (string-match "^20\." emacs-version) 
+				    ;; 
+				    (c-set-offset 'c 'pt-c-lineup-C-comments))
 				(c-set-offset 'topmost-intro-cont 0)
 
 				(setq tab-width 8
@@ -34,6 +36,7 @@
 				;;(font-lock-mode)
 				))
 
+;; Emacs 21.1 and later does not require pt-c-lineup-C-comments
 (defun pt-c-lineup-C-comments (langelem)
   ;; line up C block comment continuation lines
   (save-excursion
