@@ -842,9 +842,12 @@ public class PtolemyPlatform implements Platform {
             return ((ClassObject)((ObjectToken)o).getValue()).getClassObject();
         }
 
+        public Class getJavaClassOfObject(Object o) {
+            return (o instanceof ObjectToken) ? ObjectToken.class : o.getClass();
+        }
+
 
         ///////// Misc.
-
 
         public Object getLocation(Object structure, Object[] location) {
             // FIXME
