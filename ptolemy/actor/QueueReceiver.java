@@ -173,7 +173,7 @@ public class QueueReceiver extends AbstractReceiver {
     public boolean hasRoom(int tokens) throws IllegalActionException {
 	if(tokens < 1)
 	    throw new IllegalActionException("The number of " +
-					     "tokens must be greater than 0");
+                    "tokens must be greater than 0");
 	return (_queue.size() + tokens) < _queue.getCapacity();
     }
 
@@ -195,7 +195,7 @@ public class QueueReceiver extends AbstractReceiver {
     public boolean hasToken(int tokens) throws IllegalActionException {
 	if(tokens < 1)
 	    throw new IllegalActionException("The number of " +
-					     "tokens must be greater than 0");
+                    "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }
 

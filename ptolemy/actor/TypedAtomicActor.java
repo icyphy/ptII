@@ -148,8 +148,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         for(int i = 0; i < fields.length; i++) {
             try {
                 if (fields[i].get(newObject) instanceof TypedIOPort) {
-                        fields[i].set(newObject,
-                                newObject.getPort(fields[i].getName()));
+                    fields[i].set(newObject,
+                            newObject.getPort(fields[i].getName()));
                 } else {
                     if (fields[i].get(newObject) instanceof UserSettable) {
                         fields[i].set(newObject,

@@ -461,8 +461,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 _declaredType = (Type)type.clone();
             } catch (CloneNotSupportedException cloneNotSupported) {
                 throw new InternalErrorException(
-                    "TypedIOPort.setTypeEquals: Cannot clone type" +
-                    cloneNotSupported.getMessage());
+                        "TypedIOPort.setTypeEquals: Cannot clone type" +
+                        cloneNotSupported.getMessage());
             }
 
             if (!_resolvedType.isEqualTo(_declaredType)) {
@@ -686,9 +686,9 @@ public class TypedIOPort extends IOPort implements Typeable {
          */
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
-                    InequalityTerm[] variable = new InequalityTerm[1];
-                    variable[0] = this;
-                    return variable;
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = this;
+                return variable;
             }
             return (new InequalityTerm[0]);
         }
@@ -701,7 +701,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         public void initialize(Object e)
                 throws IllegalActionException {
             if ( !isSettable()) {
-                    throw new IllegalActionException("TypeTerm.initialize: " +
+                throw new IllegalActionException("TypeTerm.initialize: " +
                         "Cannot initialize a constant type.");
             }
 

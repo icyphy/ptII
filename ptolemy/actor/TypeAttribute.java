@@ -93,7 +93,7 @@ public class TypeAttribute extends StringAttribute {
         _type = BaseType.forName(expression);
         if (_type == null) {
             throw new IllegalActionException(this,
-            "Cannot find type class: " + expression);
+                    "Cannot find type class: " + expression);
         }
         super.setExpression(expression);
     }

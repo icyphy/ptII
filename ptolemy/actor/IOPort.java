@@ -283,7 +283,7 @@ public class IOPort extends ComponentPort {
                     // EAL 7/30/99.
                     if (_localReceiversTable.containsKey(relation)) {
                         List occurrences =
-                               (List)(_localReceiversTable.get(relation));
+                            (List)(_localReceiversTable.get(relation));
                         occurrences.add(result);
                     } else {
                         List occurrences = new LinkedList();
@@ -315,7 +315,7 @@ public class IOPort extends ComponentPort {
                 // EAL 7/30/99.
                 if (_localReceiversTable.containsKey(relation)) {
                     List occurrences =
-                            (List)(_localReceiversTable.get(relation));
+                        (List)(_localReceiversTable.get(relation));
                     occurrences.add(result);
                 } else {
                     List occurrences = new LinkedList();
@@ -820,8 +820,8 @@ public class IOPort extends ComponentPort {
                     }
                     if (result.length != width)  {
                         throw new InvalidStateException(this,
-                        "getReceivers(IORelation, int): Invalid receivers. "
-                        + "Need to call createReceivers().");
+                                "getReceivers(IORelation, int): Invalid receivers. "
+                                + "Need to call createReceivers().");
                     }
                 }
                 return result;
@@ -931,10 +931,10 @@ public class IOPort extends ComponentPort {
             }
             // No longer needed, davisj (3/29/99)
             /*
-            if (!foundRemoteInput) {
-                // No remote receivers
-                farReceivers = null;
-            }
+              if (!foundRemoteInput) {
+              // No remote receivers
+              farReceivers = null;
+              }
             */
             // For an opaque port, cache the result.
             if(isOpaque()) {
@@ -1115,7 +1115,7 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex, int tokens)
-             throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
@@ -1657,7 +1657,7 @@ public class IOPort extends ComponentPort {
      *   an acceptable class.
      */
     protected void _checkContainer(Entity container)
-             throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof Actor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "IOPort can only be contained by objects implementing " +
@@ -1987,8 +1987,8 @@ public class IOPort extends ComponentPort {
                     // Relation is a bus.
                     if(!isMultiport()) {
                         throw new IllegalActionException(this,  relation,
-                                 "Attempt to link a bus relation " +
-                                 "to a single port.");
+                                "Attempt to link a bus relation " +
+                                "to a single port.");
                     }
                     if (!relation.isWidthFixed()) {
                         // Make sure there are no other busses already
@@ -2028,9 +2028,9 @@ public class IOPort extends ComponentPort {
                         if (theRelation != null &&
                                 !theRelation.isWidthFixed()) {
                             throw new IllegalActionException(this, relation,
-                                     "Attempt to link a second bus relation " +
-                                     "with unspecified width to the outside " +
-                                     "of a port.");
+                                    "Attempt to link a second bus relation " +
+                                    "with unspecified width to the outside " +
+                                    "of a port.");
                         }
                     }
                 }

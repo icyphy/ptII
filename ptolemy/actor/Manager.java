@@ -854,7 +854,7 @@ public class Manager extends NamedObj implements Runnable {
                 request.execute();
                 if (_debugging) {
                     _debug("Manager executed change request with description: "
-                    + request.getDescription());
+                            + request.getDescription());
                 }
             }
         }
@@ -941,7 +941,7 @@ public class Manager extends NamedObj implements Runnable {
 	 */
 	public String toString() {
 	    return new String("Manager " + getManager() +
-			      " is in state " + getDescription());
+                    " is in state " + getDescription());
 	}
 
         private String _description;
