@@ -10,30 +10,24 @@ document.write("Included JS file not found");
 </script>
 </head>
 <body bgcolor="#faf0e6">
-<H1>JavaScript Interface to Ptplot</H1>
+<H1><A NAME="JavaScript Interface to Ptplot">JavaScript Interface to Ptplot</A></H1>
 <NOSCRIPT>
 This page uses JavaScript.  If you are reading this, then
 perhaps your browser does not have JavaScript turned on.
 </NOSCRIPT>
 
-This is a sample interface to Ptplot that allows the user
-to adjust various Ptplot parameters.  
-<H2>Limitations</H2>
-<MENU>
-<LI> Since this is an applet, you can only plot data from the
-server.
 
-<LI> Some of the datasets are binary datasets, so you must
-check the <CODE>binary</CODE> checkbox.
-
-<LI> Since the PlotApplet class does not inherit from
-the Plot class, we have to update the <CODE>pxgraphargs</CODE>
-parameter with the data from the form.  If we had more direct access 
-to the public methods of the Plot class, then we could have a
-Plot on this page and modify the format on the fly.
-</MENU>
-
-
+This is a sample
+<A HREF="http://developer.netscape.com/library/documentation/javascript.html">JavaScript</A>
+interface to Ptplot that allows the user to adjust various Ptplot parameters.  
+ <P>To bring up a sample plot, change the various settings and then click
+on the <CODE>Plot</CODE> button.  
+ <P>To get a description of the various fields, click on the name
+of field to get to the
+<A HREF="PtplotHelp.html">Help for the Ptplot</A> page.
+See also the <A HREF="#JavaScript Ptplot Limitations">Limitations</A>
+section below.
+ <HR>
 <FORM NAME="plotter" METHOD=post >
 <BR>
 <A HREF="PtplotHelp.html#Width">Width</A>
@@ -55,11 +49,11 @@ Plot on this page and modify the format on the fly.
 <A HREF="PtplotHelp.html#File to plot">File to plot</A>
 <BR>
  <SELECT NAME="fileSelection" SIZE=6>
- <OPTION SELECTED> bargraph.plt
- <OPTION> data.plt
- <OPTION> data/bin.plt
- <OPTION> data/integrator1.plt data/integrator1.plt
- <OPTION> data/butterfly.plt
+ <OPTION SELECTED>bargraph.plt
+ <OPTION>data.plt
+ <OPTION>data/bin.plt
+ <OPTION>data/integrator1.plt data/integrator2.plt
+ <OPTION>data/butterfly.plt
  <OPTION> (NONE)
  </SELECT>
 <BR>
@@ -148,6 +142,61 @@ Plot on this page and modify the format on the fly.
 <INPUT TYPE="button" VALUE="Plot"
 	ONCLICK="ptplot(this.form)">
  </FORM>
+ <HR>
+<H2>How it works</H2>
+
+<OL>
+
+<LI> The HTML file includes <A HREF="Ptplot.js"><CODE>Ptplot.js</CODE></A>,
+which contains JavaScript code.
+
+<LI> When the <CODE>Plot</CODE> button is clicked, 
+the JavaScript <CODE>ptplot()</CODE> function is passed the form.
+
+<LI> The <CODE>ptplot()</CODE> function generates HTML that reflects the
+settings in the form.  The generated HTML includes the <CODE>&lt;APPLET</CODE>
+tag.
+
+<LI> Since the PlotApplet class does not inherit from
+the Plot class, we have to update the <CODE>pxgraphargs</CODE>
+applet parameter with the data from the form.  If we had more direct access 
+to the public methods of the Plot class, then we could have a
+Plot on this page and modify the format on the fly.
+
+ <br>Note that the <CODE>About</CODE> button in the generated HTML
+implemented by having JavaScript call the <CODE>getAppletInfo()</CODE>
+public method.  
+
+</OL>
+
+
+<H2><A NAME="JavaScript Ptplot Limitations">Limitations</A></H2>
+<MENU>
+<LI> Since this is an applet, you can only plot data from the
+server.  It might be possible to use the <CODE>INPUT TYPE="FILE"</CODE>
+HTML FORM element to submit files to be plotted.
+
+<LI> Some of the datasets are binary datasets, so you must
+check the <CODE>binary</CODE> checkbox.  In the 
+<CODE>File to plot</CODE> select box below, all the files in the
+<CODE>data/</CODE> directory are binary files.
+
+<LI> The <CODE>File to plot</CODE> select box uses spaces as file separators. 
+This allows us to plot graphs that consist of more than one dataset.
+
+<LI> The <CODE>Title Font</CODE> and <CODE>Label Font</CODE> selectors
+should allow more than one style.  <CODE>Helvetica-BOLD-ITALIC-12</CODE>
+should be allowed.
+</MENU>
+
+<H2>Resources</H2>
+<MENU>
+<LI> <A HREF="http://developer.netscape.com/library/documentation/javascript.html">Netscape JavaScript Documentation</A>
+
+<LI> <A HREF="http://developer.netscape.com/library/documentation/htmlguid/index.htm">Netscape HTML Documentation</A>
+
+</MENU>
+
 <p>
 <HR>
 <A HREF="index.html">Up</A> to the Example index -
