@@ -594,9 +594,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
-     *  If the ojbect is not persistent, output null.
+     *  If the ojbect is not persistent, return null.
      *  @return A MoML description, or null if there is none.
      *  @see #exportMoML(Writer, int, String)
+     *  @see #isPersistent()
      */
     public final String exportMoML(String name) {
         try {
@@ -627,6 +628,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
+     *  @see #isPersistent()
      */
     public final void exportMoML(Writer output) throws IOException {
         // If the object is not persistent, do nothing.
@@ -647,6 +649,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
+     *  @see #isPersistent()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         // If the object is not persistent, do nothing.
@@ -716,6 +719,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @exception IOException If an I/O error occurs.
      *  @see #clone(Workspace)
      *  @see #getMoMLInfo()
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -1039,8 +1043,12 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         return false;
     }
 
-    /** Return true if the object is persistent.
+    /** Return true if this object is persistent.
+     *  A persistent object has a MoML description that can be stored
+     *  in a file and used to re-create the object. A non-persistent
+     *  object has an empty MoML description.
      *  @return True if the object is persistent.
+     *  @see #setPeristent(boolean)
      */
     public boolean isPersistent() {
         return _isPersistent;
@@ -1197,11 +1205,13 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
-    /** Set the persistence of the instance of NamedObj.
-     *  By default, the instances of NamedObj are persistent.
-     *  Subclasses may change their persistence using this 
-     *  method with a <i>false</i> parameter. 
-     *  @param persistent The persistence of the object. 
+    /** Set the persistence of this object.
+     *  By default, instances of NamedObj are persistent, meaning
+     *  that they have non-empty MoML descriptions that can be used
+     *  to re-create the object. To make an instance non-persistent,
+     *  call this method with the argument <i>false</i>. 
+     *  @param persistent False to make this object non-persistent.
+     *  @see #isPersistent()
      */
     public void setPersistent(boolean persistent) {
         _isPersistent = persistent;
@@ -1689,7 +1699,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     private long _fullNameVersion = -1;
 
     // Boolean variable to indicate the persistence of the object.
-    // By default, all instances of NamedObj are persistent.
+    // By default, instances of NamedObj are persistent.
     private boolean _isPersistent = true;
     
     // The model error handler, if there is one.
