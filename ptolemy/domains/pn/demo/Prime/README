@@ -1,0 +1,8 @@
+pn/demo/Prime/README
+Version: $Id$
+The only reason this directory is being shipped with
+Ptolemy 0.3 is so that 3 of the tests in domains/pn/test pass.
+
+This code has not been reviewed and probably does not
+follow the Ptolemy coding standards.
+-cxh 6/11/99
