@@ -188,18 +188,21 @@ run_codegen:
 		"$(JAVA)" -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 # Generate code for a trivial ramp demo - much faster for testing
+# To generate code in the current directory:
+#   rm -rf ~/ptII/cg; make CGROOT=. ramp
+CGROOT=$(ROOT)
 ramp: generate_ramp compile_ramp run_ramp
 generate_ramp:
-	CLASSPATH="$(CLASSPATH)" \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.RampSystem \
 	-iterations 50 \
-	-outdir $(ROOT) -outpkg cg.RampSystem
+	-outdir $(CGROOT) -outpkg cg.RampSystem
 
 compile_ramp:
-	(cd $(ROOT)/cg/RampSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+	(cd $(CGROOT)/cg/RampSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
 run_ramp:
-	(cd $(ROOT)/cg/RampSystem; \
+	(cd $(CGROOT)/cg/RampSystem; \
 		"$(JAVA)" -classpath ../.. cg.RampSystem.CG_Main)
 
 # Get the rest of the rules
