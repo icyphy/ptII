@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="test2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="test3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 72, 815, 518}, maximized=false}">
@@ -141,7 +141,9 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 75.0]">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\codegen\demo\test2\generatedCode.txt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 70.0]">
         </property>
     </property>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -163,19 +165,39 @@
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 235.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 285.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Scale.input" relation="relation"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[290.0, 195.0]">
+        </vertex>
+    </relation>
+    <link port="Scale.input" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.minus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation4"/>
+    <link port="AddSubtract.output" relation="relation5"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp2.output" relation="relation3"/>
+    <link port="Ramp3.output" relation="relation4"/>
+    <link port="Scale2.input" relation="relation5"/>
 </entity>

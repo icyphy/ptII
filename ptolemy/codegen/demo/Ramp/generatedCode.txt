@@ -1,0 +1,22 @@
+/* Initialize .test3 */
+/* Variable Declarations .test3 */
+int _test3_Scale_input;
+int _test3_Scale_output;
+int _test3_AddSubtract_plus[1];
+int _test3_AddSubtract_minus[2];
+int _test3_Ramp_init = 0;
+int _test3_Ramp2_init = 0;
+int _test3_Ramp3_init = 0;
+int _test3_Scale2_input;
+int _test3_Scale2_output;
+/* SDF schedule: */
+_test3_AddSubtract_minus[1] = _test3_Ramp3_init;
+_test3_Ramp3_init += 1;
+_test3_AddSubtract_minus[0] = _test3_Ramp2_init;
+_test3_Ramp2_init += 1;
+_test3_AddSubtract_plus[0] = _test3_Ramp_init;
+_test3_Ramp_init += 1;
+_test3_Scale_input = _test3_Scale2_input = _test3_AddSubtract_plus[0] - _test3_AddSubtract_minus[0] - _test3_AddSubtract_minus[1];
+_test3_Scale2_output = 1 * _test3_Scale2_input; 
+_test3_Scale_output = 1 * _test3_Scale_input; 
+/* Wrapup .test3 */
