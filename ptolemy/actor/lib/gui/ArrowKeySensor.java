@@ -51,7 +51,7 @@ import java.awt.event.KeyEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
-/** 
+/**
 Detect when the user presses or releases an arrow key and produce an
 integer on the corresponding output.
 
