@@ -133,6 +133,22 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         }
     }
 
+    /** clone() is not supported, call clone(Workspace workspace) 
+     *  instead.  Usually it is a mistake for an actor to have a
+     *  clone() method and call super.clone(), instead the actor
+     *  should have a clone(Workspace workspace) method and
+     *  call super.clone(workspace).
+     *  @exception CloneNotSupportedException Always thrown.
+     */
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException("clone() is not supported, "
+                + "in actors, call clone(Workspace workspace) instead. "
+                + "Sometimes actors are mistakenly written to have a "
+                + "clone() method instead of a "
+                + "clone(Workspace workspace) method.");
+    }
+
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
