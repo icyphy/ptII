@@ -212,8 +212,10 @@ public class TimeKeeper {
             return true;
         }
 
-        RcvrTimeTriple firstTriple = (RcvrTimeTriple)_rcvrTimeList.first();
-	RcvrTimeTriple secondTriple = (RcvrTimeTriple)_rcvrTimeList.at(1);
+        RcvrTimeTriple firstTriple = 
+	        (RcvrTimeTriple)_rcvrTimeList.first();
+	RcvrTimeTriple secondTriple = 
+	        (RcvrTimeTriple)_rcvrTimeList.at(1);
 
 	if( firstTriple.getTime() == secondTriple.getTime() ) {
 	    return false;
@@ -221,10 +223,10 @@ public class TimeKeeper {
 	return true;
     }
 
-    /** Resort the receivers that are controlled by this TimeKeeper. Use
-     *  this method in cases where the receiver times may have been 
-     *  modified without being reordered with respect to the other 
-     *  receivers.
+    /** Resort the receivers that are controlled by this TimeKeeper. 
+     *  Use this method in cases where the receiver times may have 
+     *  been modified without being reordered with respect to the 
+     *  other receivers.
      */
     public synchronized void resortRcvrList() {
 	int listSize = _rcvrTimeList.size();
@@ -254,7 +256,8 @@ public class TimeKeeper {
 	*/
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
-	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
+	    Receiver rcvrs[][] = 
+		    (Receiver[][])port.getRemoteReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
                     if( time >
@@ -283,7 +286,9 @@ public class TimeKeeper {
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
 	}
-        _currentTime = time;
+	if( time != TimedQueueReceiver.IGNORE ) {
+            _currentTime = time;
+	}
     }
 
     /** Set the priorities of the receivers contained in the input
@@ -352,6 +357,43 @@ public class TimeKeeper {
 	_delayTime = delay;
     }
 
+    /** Return true if a search for receivers with a receiver
+     *  time of TimedQueueReceiver.IGNORE is taking place. 
+     *  Return false otherwise.
+     * @return True if a search for ignored receivers is taking
+     *  place; otherwise return false.
+     */
+    public boolean searchingForIgnoredTokens() {
+	return _searchingForIgnoredTokens;
+    }
+
+    /** Update receivers controlled by this time keeper that have 
+     *  a receiver time equal to TimedQueueReceiver.IGNORE. For 
+     *  each such receiver, call DDEReceiver.clearIgnoredTokens().
+     */
+    public synchronized void updateIgnoredReceivers() {
+	if( _rcvrTimeList == null ) {
+	    return;
+	}
+	_searchingForIgnoredTokens = true;
+	if( _ignoredReceivers ) {
+	    // System.out.println("***Call to updateIgnoredReceivers()***");
+	    RcvrTimeTriple triple; 
+	    DDEReceiver rcvr; 
+	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
+	        triple = (RcvrTimeTriple)_rcvrTimeList.at(i); 
+		rcvr = (DDEReceiver)triple.getReceiver(); 
+		if( rcvr.getRcvrTime() == 
+			TimedQueueReceiver.IGNORE ) {
+		    System.out.println("***Ignore Token Found!!!***");
+		    rcvr.clearIgnoredTokens();
+		}
+	    }
+	    _ignoredReceivers = false;
+	} 
+	_searchingForIgnoredTokens = false;
+    }
+
     /** Update the list of TimedQueueReceivers. 
      *  RcvrTimeTriples by positioning the
      *  specified triple. If the specified triple is already
@@ -402,6 +444,14 @@ public class TimeKeeper {
         System.out.println("***End of printRcvrList()\n");
     }
 
+    /** Set a flag indicating whether a search for ignored
+     *  tokens is taking place as per the specified paramter.
+     * @param search The search flag.
+     */
+    synchronized void setSearchForIgnoredTokens(boolean search) {
+	_searchingForIgnoredTokens = search;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         methods			   ////
 
@@ -434,7 +484,6 @@ public class TimeKeeper {
 	// Add IGNORE receivers
 	else if( newTriple.getTime() == TimedQueueReceiver.IGNORE ) {
 	    int cnt = 0; 
-	    // boolean notAddedYet = true; 
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple = 
 		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
@@ -449,12 +498,12 @@ public class TimeKeeper {
 	        }
 	        cnt++;
 	    }
+	    _ignoredReceivers = true;
 	}
 
 	// Add regular receivers
 	else {
 	    int cnt = 0; 
-	    // boolean notAddedYet = true; 
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple = 
 		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
@@ -518,6 +567,14 @@ public class TimeKeeper {
 
     // The delay time associated with this actor. 
     private double _delayTime = 0.0;
+
+    // Flag set to true if any of the receivers have time of 
+    // TimedQueueReceiver.IGNORE
+    private boolean _ignoredReceivers = false;
+
+    // A flag to prevent infinite cycles while searching for
+    // receivers with receiver time = TimedQueueReceiver.IGNORE
+    private boolean _searchingForIgnoredTokens = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
