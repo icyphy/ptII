@@ -31,7 +31,6 @@ package ptolemy.kernel.attributes;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -275,7 +274,7 @@ public class FileAttribute extends StringAttribute {
      */
     public void close() throws IllegalActionException {
         if (_reader != null) {
-            if (_reader != _stdIn) {
+            if (_reader != FileUtilities.STD_IN) {
                 try {
                     _reader.close();
                 } catch (IOException ex) {
@@ -287,7 +286,7 @@ public class FileAttribute extends StringAttribute {
         if (_writer != null) {
             try {
                 _writer.flush();
-                if (_writer != _stdOut) {
+                if (_writer != FileUtilities.STD_OUT) {
                     _writer.close();
                 }
             } catch (IOException ex) {
@@ -440,10 +439,4 @@ public class FileAttribute extends StringAttribute {
 
     /** The current writer for the output file. */
     private Writer _writer;
-
-    /** Standard in as a reader. */
-    private static BufferedReader _stdIn = null;
-
-    /** Standard out as a writer. */
-    private static PrintWriter _stdOut = null;
 }
