@@ -819,7 +819,7 @@ public class SDFScheduler extends Scheduler {
             // the graph is screwed up, or somebody else is mucking
             // with it.
             throw new InternalErrorException("SDF Scheduler Failed " +
-                    "Internal consistancy check: " + iae.getMessage());
+                    "Internal consistency check: " + iae.getMessage());
         }
         finally {
             _debug("finishing loop" + "\n");
