@@ -59,6 +59,11 @@ This class can also handle locations with greater than two dimensions.
 public class Location extends SingletonAttribute
     implements Locatable {
 
+    // FIXME: Note hat this class does not extend from StringAttribute
+    // because it is a singleton.  Thus, there is a bunch of code
+    // duplication here.  The fix would be to modify StringAttribute
+    // so that we could have a singleton.
+
     /** Construct an attribute in the specified workspace with an empty
      *  string as a name.
      *  If the workspace argument is null, then use the default workspace.
