@@ -300,6 +300,45 @@ public class Transition extends ComponentRelation {
         return _guard.getExpression();
     }
 
+    /** Return a string describing this transition. The string has two lines.
+     *  The first line is the guard expression. The second line is the
+     *  concatenation of the expressions of <i>outputActions</i> and
+     *  <i>setActions</i>.
+     *  @return A label describing this transition.
+     */
+    public String getLabel() {
+        StringBuffer buffer = new StringBuffer();
+        boolean aLabel = false;
+        String guard = getGuardExpression();
+        if (guard != null) {
+            buffer.append(guard);
+            aLabel = true;
+        }
+        String action = null;
+        String expression = outputActions.getExpression();
+        if (expression != null && !expression.trim().equals("")) {
+            action = expression;
+        }
+        expression = setActions.getExpression();
+        if (expression != null && !expression.trim().equals("")) {
+            if (action != null) {
+                action = action + "; " + expression;
+            } else {
+                action = expression;
+            }
+        }
+        if (action != null) {
+            if(aLabel) buffer.append("\n");
+            buffer.append(action);
+            aLabel = true;
+        }
+        if (aLabel) {
+	    return buffer.toString();
+	} else {
+	    return "";
+	}
+    }
+
     /** Return the trigger expression. The trigger expression should evaluate
      *  to a boolean value.
      *  @return The trigger expression.
@@ -314,9 +353,6 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled() throws IllegalActionException {
         Token tok = _guard.getToken();
-if (tok == null) {
-    System.out.println("transition: " + getFullName() + " enable null");
-}
         return ((BooleanToken)tok).booleanValue();
     }
 

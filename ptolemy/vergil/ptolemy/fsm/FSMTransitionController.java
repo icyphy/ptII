@@ -148,34 +148,10 @@ public class FSMTransitionController extends BasicEdgeController {
             Transition transition = (Transition)arc.getRelation();
 	    if(transition != null) {
 		c.setToolTipText(transition.getName());
-                StringBuffer buffer = new StringBuffer();
-                boolean aLabel = false;
-                String guard = transition.guardExpression.getExpression();
-                if(guard != null) {
-                    buffer.append(guard);
-                    aLabel = true;
-                }
-                String action = null;
-		String expression = transition.outputActions.getExpression();
-                if (expression != null && !expression.trim().equals("")) {
-		    action = expression;
-		}
-		expression = transition.setActions.getExpression();
-		if (expression != null && !expression.trim().equals("")) {
-		    if (action != null) {
-			action = action + "; " + expression;
-		    } else {
-			action = expression;
-		    }
-		}
-		if (action != null) {
-                    if(aLabel) buffer.append("\n");
-                    buffer.append(action);
-                    aLabel = true;
-                }
-                if(aLabel) {
+                String labelStr = transition.getLabel();
+                if(!labelStr.equals("")) {
                     LabelFigure label = new LabelFigure(
-                            buffer.toString(), _labelFont);
+                            labelStr, _labelFont);
                     label.setFillPaint(Color.blue);
                     c.setLabelFigure(label);
                 }
