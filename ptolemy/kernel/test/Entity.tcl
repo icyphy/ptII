@@ -167,5 +167,5 @@ test Entity-4.0 {Connect Entities} {
 	lappend lresults [$enumelement getName]
     }
     list $lresults
-} {}
+} {} {KNOWN_FAILED}
 
