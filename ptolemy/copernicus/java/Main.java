@@ -264,7 +264,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(toplevel)));
-        /*
+        
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
@@ -304,12 +304,13 @@ public class Main extends KernelMain {
                                 CastAndInstanceofEliminator.v())));
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
 
-
-        // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
-        // so that we don't have to pick between multiple constructors, if
-        // there are more than one.  I'm lazy and instead of trying to pick
-        // one, lets use the only one that is reachable.
+        // Remove Unreachable methods.  This happens BEFORE
+        // NamedObjElimination so that we don't have to pick between
+        // multiple constructors, if there are more than one.  I'm
+        // lazy and instead of trying to pick one, lets use the only
+        // one that is reachable.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
@@ -366,17 +367,17 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));     
         /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", ClassWriter.v()));
-        
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel)));
-        
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr",
                         UnusedFieldRemover.v()));

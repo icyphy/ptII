@@ -98,11 +98,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return "";
+        return super.getDefaultOptions() + " level:0";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
+        return super.getDeclaredOptions() + " level";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -126,6 +126,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
         Set unsafeLocalSet = new HashSet();
 
         boolean debug = Options.getBoolean(options, "debug");
+        int level = Options.getInt(options, "level");
 
         entityFieldToTokenFieldToReplacementField = new HashMap();
         entityFieldToIsNotNullField = new HashMap();
@@ -134,7 +135,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         // FIXME: Compute max depth.
         int depth = 4;
-        while (depth > 0) {
+        while (depth > level) {
 
             // Inline all methods on types that have the given depth.
          //    for (Iterator classes =
@@ -635,35 +636,36 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     typeAnalysis.inlineTypeLatticeMethods(method,
                             unit, box, r, localDefs, localUses);
                 } catch (Exception ex) {
+                    System.out.println("Exception occured " + ex.getMessage());
                 }
-            }
-
-            if(debug) System.out.println("static invoking = " + r.getMethod());
-            SootMethod inlinee = (SootMethod)r.getMethod();
-            SootClass declaringClass = inlinee.getDeclaringClass();
-            // These methods contain a large amount of
-            // code, which greatly slows down further
-            // inlining.  The code should also contain
-            // little information, and is hard to get
-            // rid of any other way.
-            if (_mangleExceptionMessages && (inlinee.getName().equals("notSupportedMessage") ||
-                        inlinee.getName().equals("notSupportedConversionMessage") ||
-                        inlinee.getName().equals("notSupportedIncomparableMessage") ||
-                        inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
-                box.setValue(StringConstant.v("Token Exception"));
-
-            } else if (SootUtilities.derivesFrom(declaringClass,
-                               PtolemyUtilities.tokenClass)) {
-                declaringClass.setLibraryClass();
-                if (!inlinee.isAbstract() &&
-                        !inlinee.isNative()) {
-                    if(debug) System.out.println("inlining");
-                    inlinee.retrieveActiveBody();
-                    // Then we know exactly what method will
-                    // be called, so inline it.
-                    SiteInliner.inlineSite(
-                            inlinee, (Stmt)unit, method);
-                    doneSomething = true;
+            } else {
+                if(debug) System.out.println("static invoking = " + r.getMethod());
+                SootMethod inlinee = (SootMethod)r.getMethod();
+                SootClass declaringClass = inlinee.getDeclaringClass();
+                // These methods contain a large amount of
+                // code, which greatly slows down further
+                // inlining.  The code should also contain
+                // little information, and is hard to get
+                // rid of any other way.
+                if (_mangleExceptionMessages && (
+                            inlinee.getName().equals("notSupportedMessage") ||
+                            inlinee.getName().equals("notSupportedConversionMessage") ||
+                            inlinee.getName().equals("notSupportedIncomparableMessage") ||
+                            inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
+                    box.setValue(StringConstant.v("Token Exception"));
+                } else if (SootUtilities.derivesFrom(declaringClass,
+                                   PtolemyUtilities.tokenClass)) {
+                    declaringClass.setLibraryClass();
+                    if (!inlinee.isAbstract() &&
+                            !inlinee.isNative()) {
+                        if(debug) System.out.println("inlining");
+                        inlinee.retrieveActiveBody();
+                        // Then we know exactly what method will
+                        // be called, so inline it.
+                        SiteInliner.inlineSite(
+                                inlinee, (Stmt)unit, method);
+                        doneSomething = true;
+                    }
                 }
             }
         }

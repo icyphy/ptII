@@ -251,6 +251,9 @@ public class TypeSpecializerAnalysis {
         SootMethod typeTypeCompareMethod =
             PtolemyUtilities.typeLatticeClass.getMethod(
                     "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+        SootMethod leastUpperBoundMethod =
+            PtolemyUtilities.typeLatticeClass.getMethod(
+                    "ptolemy.data.type.Type leastUpperBound(ptolemy.data.type.Type,ptolemy.data.type.Type)");
 
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
@@ -278,6 +281,19 @@ public class TypeSpecializerAnalysis {
                     method, typeLocal1, unit, localDefs, localUses);
             type2 = PtolemyUtilities.getTypeValue(
                     method, typeLocal2, unit, localDefs, localUses);
+        } else if (expr.getMethod().equals(leastUpperBoundMethod)) {
+            System.out.println("Found LUB method!");
+            Local typeLocal1 = (Local)expr.getArg(0);
+            Local typeLocal2 = (Local)expr.getArg(1);
+            type1 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal1, unit, localDefs, localUses);
+            type2 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal2, unit, localDefs, localUses);
+            Local newTypeLocal = PtolemyUtilities.buildConstantTypeLocal(
+                    method.getActiveBody(), unit, 
+                    TypeLattice.leastUpperBound(type1, type2));
+            box.setValue(newTypeLocal);
+            return;
         } else {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);

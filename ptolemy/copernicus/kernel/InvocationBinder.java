@@ -137,9 +137,9 @@ public class InvocationBinder extends SceneTransformer
                         continue;
                     }
 
-                    System.out.println("considering " + ie);
+                    // System.out.println("considering " + ie);
                     List targets = graph.getTargetsOf(s);
-                    System.out.println("targets = " + targets);
+                    // System.out.println("targets = " + targets);
 
                     if (targets.size() != 1)
                         continue;
@@ -149,12 +149,12 @@ public class InvocationBinder extends SceneTransformer
                     SootMethod target = (SootMethod)targets.get(0);
 
                     if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
-                        System.out.println("skipping: no access");
+                        //    System.out.println("skipping: no access");
 
                         continue;
                     }
                     if (!target.isConcrete()) {
-                        System.out.println("skipping: not concrete");
+                        // System.out.println("skipping: not concrete");
 
                         continue;
                     }
