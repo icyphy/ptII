@@ -82,7 +82,7 @@ public class HelicopterApplet extends CTApplet {
         controlpanel.add("West", _query);
         _query.addLine("stopT", "Stop Time", "70.0");
         Panel runcontrols = new Panel();
-        runcontrols.setLayout(new GridLayout(1,3));
+        runcontrols.setLayout(new GridLayout(1, 3));
         controlpanel.add("East",runcontrols);
         runcontrols.add(_createRunControls(1));
         _actionButton = new Button("Climb");
@@ -189,12 +189,19 @@ public class HelicopterApplet extends CTApplet {
             cruise2State.setRefinement(linCruise2);
             FSMTransition tr1 = hsctrl.createTransition(hoverState, accelState);
             tr1.setTriggerCondition("inputAction");
-            FSMTransition tr2 = hsctrl.createTransition(accelState, cruise1State);
-            tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) && (inputPz < -1.95)");
-            FSMTransition tr3 = hsctrl.createTransition(cruise1State, climbState);
-            tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (outputR > -0.01) && (outputR < 0.01)");
-            FSMTransition tr4 = hsctrl.createTransition(climbState, cruise2State);
-            tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) && (inputPz > -10.05) && (inputPz < -9.95)");
+            FSMTransition tr2 =
+                hsctrl.createTransition(accelState, cruise1State);
+            tr2.setTriggerCondition("(outputV >= 5.0) && (inputPz > -2.05) " +
+                    "&& (inputPz < -1.95)");
+
+            FSMTransition tr3 =
+                hsctrl.createTransition(cruise1State, climbState);
+            tr3.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) " +
+                    "&& (outputR > -0.01) && (outputR < 0.01)");
+            FSMTransition tr4 = hsctrl.createTransition(climbState,
+                    cruise2State);
+            tr4.setTriggerCondition("(outputV > 4.9) && (outputV < 5.1) " +
+                    "&& (inputPz > -10.05) && (inputPz < -9.95)");
 
             TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
             TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
@@ -644,8 +651,10 @@ public class HelicopterApplet extends CTApplet {
         sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
         sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
 
-        Relation rV = sub.connect(suboutV, (ComponentPort)lin.getPort("outputV"));
-        Relation rR = sub.connect(suboutR, (ComponentPort)lin.getPort("outputR"));
+        Relation rV = sub.connect(suboutV,
+                (ComponentPort)lin.getPort("outputV"));
+        Relation rR = sub.connect(suboutR,
+                (ComponentPort)lin.getPort("outputR"));
 
         // connect and set the monitors
         Parameter p = null;
@@ -730,11 +739,11 @@ public class HelicopterApplet extends CTApplet {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-            // FIXME: Under jdk 1.2, the following can (and should) be private
-            private CTMultiSolverDirector _dir;
+    // FIXME: Under jdk 1.2, the following can (and should) be private
+    private CTMultiSolverDirector _dir;
     private HSDirector _hsdir;
     private int _currentState;
     private int[] _switchTime = new int[5];
