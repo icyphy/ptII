@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
@@ -73,6 +73,8 @@ public class ExpressionApplet extends SDFApplet {
         super.init();
         try {
             JPanel controlpanel = new JPanel();
+            controlpanel.setBackground(_getBackground());
+
             controlpanel.setLayout(new BorderLayout());
             getContentPane().add(controlpanel, BorderLayout.SOUTH);
 
@@ -84,9 +86,7 @@ public class ExpressionApplet extends SDFApplet {
             _query.setBackground(_getBackground());
 
             // Create a "Go" button.
-            JPanel runcontrols = new JPanel();
-            controlpanel.add(runcontrols, BorderLayout.WEST);
-            runcontrols.add(_createRunControls(1));
+            controlpanel.add(_createRunControls(1), BorderLayout.WEST);
 
             // Create and configure ramp1
             Ramp ramp1 = new Ramp(_toplevel, "ramp1");
@@ -104,16 +104,20 @@ public class ExpressionApplet extends SDFApplet {
             TypedIOPort fast = new TypedIOPort(_expr, "fast", true, false);
 
             // Create and configure plotter
-            SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
-            myplot.place(getContentPane());
-            myplot.plot.setGrid(false);
-            myplot.plot.setXRange(0.0, 200.0);
-            myplot.plot.setYRange(-2.0, 2.0);
-            myplot.plot.setSize(500, 300);
+            SequencePlotter plotter = new SequencePlotter(_toplevel, "plot");
+
+            // Place the plotter in the applet in such a way that it fills
+            // the available space.
+            plotter.place(getContentPane());
+
+            plotter.plot.setBackground(_getBackground());
+            plotter.plot.setGrid(false);
+            plotter.plot.setXRange(0.0, 200.0);
+            plotter.plot.setYRange(-2.0, 2.0);
 
             _toplevel.connect(ramp1.output, slow);
             _toplevel.connect(ramp2.output, fast);
-            _toplevel.connect(_expr.output, myplot.input);
+            _toplevel.connect(_expr.output, plotter.input);
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }

@@ -71,14 +71,6 @@ public class ButterflyApplication extends JFrame {
 
         setSize(400, 400);
 
-	JPanel panel = new JPanel();
-        // Despite Sun's documentation, the default is that a panel
-        // is opaque, so the background doesn't come through.  Change that...
-        panel.setOpaque(false);
-	getContentPane().add(panel, BorderLayout.CENTER);
-
-	show();
-
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -94,12 +86,16 @@ public class ButterflyApplication extends JFrame {
         toplevel.setManager(manager);
 
         try {
-	    Butterfly.init(toplevel, panel, panel.getSize());
+	    Butterfly.init(toplevel, getContentPane(),
+                    getContentPane().getSize());
 	    director.iterations.setToken(new IntToken(1200));
 	    manager.run();
         } catch (Exception ex) {
             System.err.println("Error constructing model." + ex);
         }
+
+        // Map to the screen.
+	show();
     }
 
     /** Create a new window with the Butterfly plot in it and map it

@@ -31,6 +31,9 @@
 package ptolemy.domains.sdf.demo.ComSystem;
 
 import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JPanel;
 import java.util.Enumeration;
 
 import ptolemy.kernel.*;
@@ -68,7 +71,7 @@ public class ComSystem extends SDFApplet {
     public void init() {
         super.init();
         // The 1 argument requests a go and a stop button.
-        getContentPane().add(_createRunControls(2));
+        getContentPane().add(_createRunControls(2), BorderLayout.SOUTH);
         try {
             // Create and configure data source
             Bernoulli data = new Bernoulli(_toplevel, "data");
@@ -94,23 +97,27 @@ public class ComSystem extends SDFApplet {
             matched.root.setToken(new BooleanToken(true));
 
             // Create and configure plotter
-            SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
-            myplot.place(getContentPane());
-            myplot.plot.setGrid(false);
-            myplot.plot.setTitle("Eye Diagram");
-            myplot.plot.setXRange(0.0, 32.0);
-            myplot.plot.setWrap(true);
-            myplot.plot.setYRange(-1.3, 1.3);
-            myplot.plot.setMarksStyle("none");
-            myplot.plot.setPointsPersistence(512);
-            myplot.plot.setSize(500, 300);
+            SequencePlotter plotter = new SequencePlotter(_toplevel, "plot");
+
+            // Place the plotter in the applet in such a way that it fills
+            // the available space.
+            plotter.place(getContentPane());
+
+            plotter.plot.setBackground(_getBackground());
+            plotter.plot.setGrid(false);
+            plotter.plot.setTitle("Eye Diagram");
+            plotter.plot.setXRange(0.0, 32.0);
+            plotter.plot.setWrap(true);
+            plotter.plot.setYRange(-1.3, 1.3);
+            plotter.plot.setMarksStyle("none");
+            plotter.plot.setPointsPersistence(512);
 
             _toplevel.connect(data.output, coder.input);
             _toplevel.connect(coder.output, shaper.input);
             _toplevel.connect(shaper.output, add.plus);
             _toplevel.connect(noise.output, add.plus);
             _toplevel.connect(add.output, matched.input);
-            _toplevel.connect(matched.output, myplot.input);
+            _toplevel.connect(matched.output, plotter.input);
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }

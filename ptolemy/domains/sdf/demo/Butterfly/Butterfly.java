@@ -105,7 +105,10 @@ public class Butterfly {
 
 	XYPlotter xyPlotter = new XYPlotter(toplevel, "xyPlotter");
 	xyPlotter.place(panel);
-	xyPlotter.plot.setSize(size.width, size.height - 50);
+
+        // Make the plot transparent so that the background shows through.
+	xyPlotter.plot.setOpaque(false);
+        xyPlotter.plot.setGrid(false);
 	xyPlotter.plot.setXRange(-3, 4);
 	xyPlotter.plot.setYRange(-4, 4);
 

@@ -192,8 +192,8 @@ import javax.swing.*;
  * All of the above commands can also be invoked directly by calling the
  * the corresponding public methods from some Java procedure.
  * <p>
- * This class uses features of JDK 1.1, and hence if used in an applet,
- * it can only be viewed by a browser that supports JDK 1.1.
+ * This class uses features of JDK 1.2, and hence if used in an applet,
+ * it can only be viewed by a browser that supports JDK 1.2, or a plugin.
  *
  * @author Edward A. Lee, Christopher Hylands
  * @contributor Jun Wu (jwu@inin.com.au)
@@ -206,8 +206,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Construct a plot box with a default configuration. */
     public PlotBox() {
-        // Can't trust the Java default, since its undocumented...
-        setOpaque(true);
+        // If we make this transparent, the background shows through.
+        // However, we assume that the user will set the background.
+        // setOpaque(false);
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
@@ -826,7 +827,14 @@ public class PlotBox extends JPanel implements Printable {
         _labelFontMetrics = getFontMetrics(_labelFont);
     }
 
-    /** Set the size of the plot.
+    /** Set the size of the plot.  This overrides the base class to make
+     *  it work.  In particular, it records the specified size so that
+     *  getMinimumSize() and getPreferredSize() return the specified value.
+     *  However, it only works if the plot is placed in its own JPanel.
+     *  This is because the JPanel asks the contained component for
+     *  its preferred size before determining the size of the panel.
+     *  If the plot is placed directly in the content pane of a JApplet,
+     *  then, mysteriously, this method has no effect.
      *  @param width The width, in pixels.
      *  @param height The height, in pixels.
      */

@@ -70,20 +70,12 @@ public class HTVQApplet extends SDFApplet {
     public void init() {
         super.init();
         try {
-	    getContentPane().setLayout(new BorderLayout());
-
-            JPanel controlpanel = new JPanel();
-            controlpanel.setLayout(new BorderLayout());
-            getContentPane().add(controlpanel, BorderLayout.SOUTH);
-
-            // Create a "Go" button.
-            JPanel runcontrols = new JPanel();
-            controlpanel.add(runcontrols, BorderLayout.CENTER);
-            runcontrols.add(_createRunControls(2));
+            getContentPane().add(_createRunControls(2), BorderLayout.SOUTH);
 
 	    JPanel displayPanel = new JPanel();
 	    getContentPane().add(displayPanel, BorderLayout.NORTH);
-	    displayPanel.setLayout(new BorderLayout());
+            // So that the background color comes through...
+            displayPanel.setOpaque(false);
 
 	    JPanel originalPanel = new JPanel();
             displayPanel.add(originalPanel, BorderLayout.WEST);
@@ -92,13 +84,10 @@ public class HTVQApplet extends SDFApplet {
 	    displayPanel.add(compressedPanel, BorderLayout.CENTER);
 
             JPanel prnPanel = new JPanel();
-            prnPanel.add(new JLabel("SNR (dB)"));
-            prnPanel.setLayout(new BorderLayout());
+            // So the background shows through.
+            prnPanel.setOpaque(false);
+            prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
             displayPanel.add(prnPanel, BorderLayout.EAST);
-
-            JPanel labelPanel = new JPanel();
-            labelPanel.add(new JLabel("SNR (dB)"));
-            prnPanel.add(labelPanel, BorderLayout.NORTH);
 
             Parameter blockWidth = new Parameter(_toplevel, "blockWidth", 
                     new IntToken(4));
@@ -139,14 +128,17 @@ public class HTVQApplet extends SDFApplet {
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.place(originalPanel);
 
-            //added Print actor and put the text area at the right of the
-            //applet window. Text Area size is set to be 7*10 (row* column)
-            //in order to fit well with the image size.
+            // Print actor puts the text at the right of the
+            // applet window. Text Area size is set to be 7*10 (row* column)
+            // in order to fit well with the image size.
             Print prn = new Print(_toplevel, "Print");
-            prn.place(prnPanel);
+            // To control the position, we put this in its own panel.
+            JPanel textPanel = new JPanel();
+            prnPanel.add(textPanel, BorderLayout.SOUTH);
+            prn.place(textPanel);
             prn.textArea.setColumns(10);
             prn.textArea.setRows(7);
-            prnPanel.validate();
+            // prnPanel.validate();
 
 	    TypedIORelation r;
             r = (TypedIORelation) _toplevel.connect(
