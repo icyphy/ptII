@@ -140,6 +140,7 @@ clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files"
 	@echo "#"
+	@echo "$@ `date`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
 
@@ -302,7 +303,7 @@ ptbuild:
 	@echo "#"
 	@echo "$@ `date`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" JDOCFLAGS="-author -version -J-Xmx132m" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
