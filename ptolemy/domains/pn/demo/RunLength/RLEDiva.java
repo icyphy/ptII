@@ -70,39 +70,6 @@ compatible browser or requires a jdk1.2 plugin.
 
 public class RLEDiva extends PNApplet implements Runnable {
 
-    /** The mapping from Ptolemy actors to graph nodes
-     */
-    private HashMap nodeMap = new HashMap();
-
-    /** Panel that display the diva graphs */
-    JPanel divapanel;
-
-    /** The JGraph where we display stuff
-     */
-    JGraph jgraph = new JGraph();
-
-    /** Listener for traces and graph layout */
-    StateListener listener;
-
-    GraphModel _gmodel;
-
-    /** The pane displaying the trace
-     */
-    private TracePane tracePane;
-
-    /* The actors
-     */
-    PNImageSource a1;
-    MatrixUnpacker a2;
-    RLEncoder a3;
-    RLDecoder a4;
-    MatrixPacker a5;
-    PNImageSink a6;
-    ImageDisplay a7;
-    ImageDisplay a8;
-
-    //Manager manager;
-
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
@@ -162,7 +129,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	//Display the graph
 	try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(jgraph, model);
 		}
 	    });
@@ -176,7 +143,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         // Display the trace
 	try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayTrace(traceModel);
 		}
 	    });
@@ -210,7 +177,7 @@ public class RLEDiva extends PNApplet implements Runnable {
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
      */
-    public GraphModel constructThreadGraph () {
+    public GraphModel constructThreadGraph() {
         GraphModel model = new GraphModel();
 
         // nodes, with user object set to the actor
@@ -232,31 +199,31 @@ public class RLEDiva extends PNApplet implements Runnable {
         model.addNode(n7);
         model.addNode(n8);
 
-        nodeMap.put(a1,n1);
-        nodeMap.put(a2,n2);
-        nodeMap.put(a3,n3);
-        nodeMap.put(a4,n4);
-        nodeMap.put(a5,n5);
-        nodeMap.put(a6,n6);
-        nodeMap.put(a7,n7);
-        nodeMap.put(a8,n8);
+        _nodeMap.put(a1, n1);
+        _nodeMap.put(a2, n2);
+        _nodeMap.put(a3, n3);
+        _nodeMap.put(a4, n4);
+        _nodeMap.put(a5, n5);
+        _nodeMap.put(a6, n6);
+        _nodeMap.put(a7, n7);
+        _nodeMap.put(a8, n8);
 
         // Edges
-        model.createEdge(n1,n2);
-        model.createEdge(n2,n3);
-        model.createEdge(n3,n4);
-        model.createEdge(n4,n5);
-        model.createEdge(n5,n6);
+        model.createEdge(n1, n2);
+        model.createEdge(n2, n3);
+        model.createEdge(n3, n4);
+        model.createEdge(n4, n5);
+        model.createEdge(n5, n6);
 
-        model.createEdge(n1,n7);
-        model.createEdge(n5,n8);
+        model.createEdge(n1, n7);
+        model.createEdge(n5, n8);
 
         return model;
     }
 
     /** Construct the Ptolemy system
      */
-    public void constructPtolemyModel () {
+    public void constructPtolemyModel() {
         try {
             a1 = new PNImageSource(_toplevel, "ImageReader");
             a2 = new MatrixUnpacker(_toplevel, "Unpacker");
@@ -352,7 +319,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	final GraphModel m = model;
 	try {
 	    SwingUtilities.invokeLater(new Runnable() {
-		public void run () {
+		public void run() {
 		    LevelLayout staticLayout = new LevelLayout();
 		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 		    staticLayout.layout(gv, m.getGraph());
@@ -409,13 +376,13 @@ public class RLEDiva extends PNApplet implements Runnable {
      *  Construct the trace display.
      */
     public void displayTrace(TraceModel traceModel) {
-        tracePane = new TracePane();
-        JCanvas traceWidget = new JCanvas(tracePane);
+        _tracePane = new TracePane();
+        JCanvas traceWidget = new JCanvas(_tracePane);
         divapanel.add(traceWidget, BorderLayout.CENTER);
 	traceWidget.setPreferredSize(new Dimension(800, 300));
 
         // Configure the view
-        TraceView traceView = tracePane.getTraceView();
+        TraceView traceView = _tracePane.getTraceView();
 	traceView.setTimeScale(0.02);
 	traceView.setLayout(10,10,500,20,15);
 	traceView.setTraceModel(traceModel);
@@ -500,11 +467,11 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         /* Create a listener on the given graph pane
          */
-        public StateListener (GraphPane pane) {
+        public StateListener(GraphPane pane) {
             _graphPane = pane;
 
             // Initial elements of all traces
-            TraceModel model = tracePane.getTraceModel();
+            TraceModel model = _tracePane.getTraceModel();
             _currentElement = new TraceModel.Element[model.size()];
 
             for (int i = 0; i < model.size(); i++ ) {
@@ -518,8 +485,8 @@ public class RLEDiva extends PNApplet implements Runnable {
 
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
-                        public void run () {
-                            tracePane.getTraceView().drawTraceElement(element);
+                        public void run() {
+                            _tracePane.getTraceView().drawTraceElement(element);
                         }
                     });
                 }
@@ -550,7 +517,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             Actor actor = event.getActor();
 
             // Get the corresponding graph node and its figure
-            Node node = (Node) nodeMap.get(actor);
+            Node node = (Node) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper)
                 _graphPane.getGraphView().getNodeFigure(node);
             final BasicFigure figure = (BasicFigure)
@@ -558,8 +525,8 @@ public class RLEDiva extends PNApplet implements Runnable {
 
             // Color it!
             try {
-                SwingUtilities.invokeAndWait(new Runnable () {
-                    public void run () {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
                         switch (state) {
                         case PNProcessEvent.PROCESS_BLOCKED:
 			    if (cause == PNProcessEvent.BLOCKED_ON_READ) {
@@ -594,10 +561,11 @@ public class RLEDiva extends PNApplet implements Runnable {
             // Get the trace and element figure
             ComponentEntity ce = (ComponentEntity) actor;
             String name = ce.getName();
-            TraceModel model = tracePane.getTraceView().getTraceModel();
+            TraceModel model = _tracePane.getTraceView().getTraceModel();
             TraceModel.Trace trace = model.getTrace(name);
             int id = trace.getID();
-            // OK, this is nasty, but get the color "state" from the process state
+            // OK, this is nasty, but get the color 
+            // "state" from the process state
             int colorState = 3;
             switch (state) {
             case PNProcessEvent.PROCESS_BLOCKED:
@@ -643,8 +611,8 @@ public class RLEDiva extends PNApplet implements Runnable {
 
             try {
 		SwingUtilities.invokeAndWait(new Runnable() {
-		    public void run () {
-			TraceView v = tracePane.getTraceView();
+		    public void run() {
+			TraceView v = _tracePane.getTraceView();
 			for (int i = 0; i < msize; i++) {
 			    v.updateTraceElement(temp[i]);
 			}
@@ -683,7 +651,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
@@ -731,7 +699,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 	    final GraphModel m = _gmodel;
 	    try {
 		SwingUtilities.invokeLater(new Runnable() {
-		    public void run () {
+		    public void run() {
 			LevelLayout staticLayout = new LevelLayout();
 			staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 			staticLayout.layout(gv, m.getGraph());
@@ -744,5 +712,41 @@ public class RLEDiva extends PNApplet implements Runnable {
 	}
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    /** The mapping from Ptolemy actors to graph nodes
+     */
+    private HashMap _nodeMap = new HashMap();
+
+    // FIXME: are these supposed to be private?  If so, they need _ 
+
+    /** Panel that display the diva graphs */
+    JPanel divapanel;
+
+    /** The JGraph where we display stuff
+     */
+    JGraph jgraph = new JGraph();
+
+    /** Listener for traces and graph layout */
+    StateListener listener;
+
+    GraphModel _gmodel;
+
+    /** The pane displaying the trace
+     */
+    private TracePane _tracePane;
+
+    /* The actors
+     */
+    PNImageSource a1;
+    MatrixUnpacker a2;
+    RLEncoder a3;
+    RLDecoder a4;
+    MatrixPacker a5;
+    PNImageSink a6;
+    ImageDisplay a7;
+    ImageDisplay a8;
+
+    //Manager manager;
 }
