@@ -8,8 +8,8 @@
     <entity name="Run Panel" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
   </entity>
-  <entity name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <entity name="Run Panel" class="ptolemy.actor.gui.RunTableau$Factory"/>
-    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory"/>
-  </entity>
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <property name="Run Panel" class="ptolemy.actor.gui.RunTableau$Factory"/>
+    <property name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory"/>
+  </property>
 </entity>
