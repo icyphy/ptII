@@ -70,7 +70,7 @@ The initialize() method of this actor sets _cipher to the
 value of javax.crypt.Cipher.getInstance() with an argument that is
 created from the values of the <i>algorithm</i>, <i>padding</i> and
 <i>keySize</i> parameters. Derived classes should call _cipher.init()
-with the value of the key in the fire() method.  The_process() method
+with the value of the key in their fire() method.  The_process() method
 in a derived class usually calls _cipher.doFinal().
 
 @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
@@ -239,12 +239,8 @@ abstract public class CipherActor extends CryptographyActor {
      *  if there is a problem processing the data.
      */
     public void fire() throws IllegalActionException {
+        _updateCipher();
         super.fire();
-        if (_updateCipherNeeded) {
-            // If the user changed a parameter, reinitialize _cipher.  
-            _updateCipher();
-            _updateCipherNeeded = false;
-        }
     }
 
     /** Retrieve the values of the parameters and set up
@@ -256,12 +252,10 @@ abstract public class CipherActor extends CryptographyActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_updateCipherNeeded) {
-            _updateCipher();
-            _updateCipherNeeded = false;
-        }
+        // We do this in initialize so that derived classes can
+        // access _cipher in their fire() methods.
+        _updateCipher();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                    Protected Methods                      ////
@@ -275,33 +269,36 @@ abstract public class CipherActor extends CryptographyActor {
         // This method may end up being called in fire() if
         // the user changed attributes while the model is running.
 
-        try {
-            // If the mode or padding parameters are the empty
-            // string, then we use the default for the algorithm
-            // If they are not empty
-            String modeArgument = (_mode.length() > 0) ?
-                "/" + _mode : "";
-            String paddingArgument = (_padding.length() > 0) ?
-                "/" + _padding : "";
-            if (_mode.length() == 0
-                    && _padding.length() > 0) {
-                modeArgument = "/";
-            }
+        if (_updateCipherNeeded) {
+            try {
+                // If the mode or padding parameters are the empty
+                // string, then we use the default for the algorithm
+                // If they are not empty
+                String modeArgument = (_mode.length() > 0) ?
+                    "/" + _mode : "";
+                String paddingArgument = (_padding.length() > 0) ?
+                    "/" + _padding : "";
+                if (_mode.length() == 0
+                        && _padding.length() > 0) {
+                    modeArgument = "/";
+                }
 
-            if (_provider.equalsIgnoreCase("SystemDefault")) {
-                _cipher = Cipher.getInstance(
-                        _algorithm + modeArgument + paddingArgument);
-            } else {
-                _cipher = Cipher.getInstance(
-                        _algorithm + modeArgument + paddingArgument,
-                        _provider);
+                if (_provider.equalsIgnoreCase("SystemDefault")) {
+                    _cipher = Cipher.getInstance(
+                            _algorithm + modeArgument + paddingArgument);
+                } else {
+                    _cipher = Cipher.getInstance(
+                            _algorithm + modeArgument + paddingArgument,
+                            _provider);
+                }
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to initialize Cipher with "
+                        + "algorithm: '"+ _algorithm
+                        + "', padding: '" + _padding
+                        + "', provider: '" + _provider + "'");
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to initialize Cipher with "
-                    + "algorithm: '"+ _algorithm
-                    + "', padding: '" + _padding
-                    + "', provider: '" + _provider + "'");
+            _updateCipherNeeded = false;
         }
     }
 
