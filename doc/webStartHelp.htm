@@ -35,8 +35,9 @@ If the Web Start detection suceeds, then you need not reinstall Web Start.
  <br>However, the Web Start detection can fail, especially under
 <a href="#Netscape6">Netscape 6</a>.  If the detection fails,
 the web page will contain text like:
- <br> You need to <a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?">Install Web Start from Sun</a> before installing . . .
-
+<pre>
+ You need to <a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?">Install Web Start from Sun</a> before installing . . .
+</pre>
 
 <li> You may already have Web Start installed, so you may
 want to try clicking on the Web Start enabled application download
@@ -72,7 +73,7 @@ the Web Start enabled application download page.
 <li> Note that the Ptolemy II Web Start applications may be
 signed with a certificate that is not registered with a certificate
 authority, so you may be prompted with a window stating
-that the certificate from <CODE>Claudius Ptolemaus</CODE>is unknown.
+that the certificate from <CODE>Claudius Ptolemaus</CODE> is unknown.
 You should hit the <CODE>OK</CODE> button to proceed with the download
 
 </ol>
@@ -133,23 +134,23 @@ Help while installing:
 Help while running:
 <menu>
 <li> <a href="#runTimeLimitations">Limitations while running</a>
-<li> Setting up <a href="$consoleOutput">Console Output</a>
-<li> <a href="driveNotReady">Drive not ready message</a>
+<li> Setting up <a href="#consoleOutput">Console Output</a>
+<li> <a href="#driveNotReady">Drive not ready message</a>
 </menu>
 
 Help for developers:
 
 <menu>
 <li> <a href="#remoteJavaWebStartResources">Remote Java Web Start Resources</a>
-<li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a></h4>
-<li> <a href="#fileNotFound">File not found</a>
+<li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a>
+<li> <a href="#fileNotFound>File not found</a>
 <li> <a href="#unsignedApplicationRequesting>"Unsigned application requesting unrestricted access to system"</a>
 <li> <a href="#badMimeType">Bad Mime Type</a>
 </menu>
 
 <h3>Help while installing</h3>
 
-<h4><a href="#installationTimeLimitations">Limitations while installing</a></h4>
+<h4><a name="installationTimeLimitations">Limitations while installing</a></h4>
 <menu>
 <li> Roughly half the size of the application download is consumed
 by the HTML documentation of the Ptolemy II Java classes.
@@ -191,14 +192,16 @@ This will be done automatically in a later version of the JavaTM Web Start insta
 </BLOCKQUOTE>
 
 
-<h4>Netscape 6 Java Web Start Set up Instructions</h4>
+<h5>Netscape 6 Java Web Start Set up Instructions</h5>
 
 <ol>
 
 <li> If necessary, download Java Web Start from
 <a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?"><CODE>http://java.sun.com/cgi-bin/javawebstart-platform.sh?</CODE></a>
+<li> Click on the Java Web Start download and install it.
 
-<li> Go to the preferences window: <CODE>Edit -&gt; Preferences</CODE>
+<li> In Netscape 6,
+go to the preferences window: <CODE>Edit -&gt; Preferences</CODE>
 
 <li> Click on <CODE>Navigator</CODE> in the left hand <CODE>Category</CODE> pane
 
@@ -238,8 +241,10 @@ to the <CODE>javaws.exe</CODE> binary, usually
 <h4><a name="runTimeLimitations">Limitations while running</a></h4>
 <menu>
 <li> If you start up Ptiny then the splash window mentions Ptiny, but if
-you then hit help-&gt; about, the splash window is the standard
-full window.  
+you then hit <code>Help</code> -&gt; <code>about</code>,
+the splash window is the standard full installation window which
+includes links to domains and demos that are not included in
+the Ptiny release.
 
 <li> Codegen does not work, there are path problems.  The codegen
 mechanism looks for the makefile by reading $PTII, and tries to run make.
@@ -252,7 +257,6 @@ that are not installed.
 
 <li> The GR domain is not likely to work because Java 3D is not installed.
  <br><a href="http://www.j3d.org/tutorials/quick_fix/auto_install.html"><code>http://www.j3d.org/tutorials/quick_fix/auto_install.html</code></a>
- <br><a href="http://www.jzone.de/java/webstart/java3d/"><code>http://www.jzone.de/java/webstart/java3d/</code></a>
 
 </menu>
 
@@ -369,10 +373,12 @@ file actually has data files in it
 <code>cd $PTII; make jnlp_clean jnlp_all</code>
 <li>Rebuild the jar files:
 <code>cd $PTII; make clean install</code>
+</ol>
+
 
 <h4><a name="badMimeType">Bad Mime Type</a></h4>
-On gigascale, when I go to
-<a href="http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp">http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp</a>, I get:
+When trying to fetch a .jnlp file from a server
+with cookie authentication, I sometimes have seen:
 <pre>
 Bad MIME type returned from server when accessing resource: http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp - text/html
 </pre>
@@ -382,6 +388,7 @@ I think the problem is with the second time the jnlp file is fetched.
 
 <br>The basic password authentication mechanism is a little funky,
 sometimes the app starts up without checking for updates.
+
 
 <menu>
 <li><a href="http://www.geocities.com/vamp201/jwsfaq.html#badmimetype">Unofficial FAQ about bad mime type</a>
