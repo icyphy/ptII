@@ -138,10 +138,41 @@ $NF ~ /);$/ {
 	-e 's/ARCHIVE/archive/' \
 	-e 's/WIDTH/width/' \
 	-e 's/HEIGHT/height/' \
-	-e 's/<PARAM NAME = /<PARAM NAME=/' \
-	-e 's/VALUE = /VALUE=/' \
-	> fixapplets2.htm
-
+	-e 's/VALUE  = /VALUE = /' \
+	-e 's/VALUE=[^ ]/VALUE = /' \
+	-e 's/<!--"CONVERTED_APPLET"-->//' \
+	-e 's/<!-- HTML CONVERTER -->//' \
+	-e 's/<!--"END_CONVERTED_APPLET"-->//' \
+	-e '# Split up lines that contain code ... codebase ...
+            s/ code = \("[^"]*"\) codebase = \("[^"]*"\) archive = \("[^"]*"\) width = \("[^"]*"\) height = \("[^"]*"\)/code = \1 \\\
+            codebase = \2 \\\
+            archive = \3 \\\
+            width = \4 \\\
+            height = \5/' \
+ 	-e 's/width = \("[^"]*"\) height = \("[^"]*"\)/width = \1 \\\
+            height = \2/' \
+	-e 's/<PARAM NAME = code /<PARAM NAME = "code" \\\
+                   /' \
+	-e 's/<PARAM NAME = codebase /<PARAM NAME = "codebase"   /' \
+	-e 's/<PARAM NAME = archive /<PARAM NAME = "archive" \\\
+                   /' \
+	-e 's/<PARAM NAME = background /<PARAM NAME = "background" /' \
+	 |
+grep -v '^ \\$' |
+awk ' $0 == "<!--" { sawCommentStart = NF; sawAppletStart = 0} 
+      { if (sawCommentStart == 0)  {
+           print $0
+        } else {
+           if ($1 == "<APPLET" && NF == sawCommentStart + 1) {
+              sawAppletStart = 1
+           } 
+           if (sawAppletStart != 0) {
+              print $0
+           }
+        }
+      }
+      $0 == "-->" { sawCommentStart = 0; sawAppletStart = 0}
+     ' > fixapplets2.htm
 diff $file fixapplets2.htm
 
 done

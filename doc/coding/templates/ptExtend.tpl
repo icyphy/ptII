@@ -7,7 +7,7 @@
 //--></SCRIPT>
     <COMMENT>
         <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0 && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0)));
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0 && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
         var _ns6 = ((_ns == true) && (_info.indexOf("Mozilla/5") >= 0));
 //--></SCRIPT>
     </COMMENT>
@@ -19,8 +19,9 @@
 	    $ObjectAttributes$ \
 	    codebase="$CabFileLocation$"> \
 	    $ObjectParams$ \
-	    <PARAM NAME="type" VALUE="$MimeType$"> \
-	    <PARAM NAME="scriptable" VALUE="false"> \
+	    <PARAM NAME = "type" \
+                   VALUE = "$MimeType$"> \
+	    <PARAM NAME = "scriptable" VALUE = "false"> \
 	    $AppletParams$ \
 	    $AlternateHTML$ \
 	</OBJECT> \
@@ -29,11 +30,11 @@
 	 document.writeln('\
 	<COMMENT>
 	  <EMBED \
-	    type="$MimeType$" \
+	    type = "$MimeType$" \
 	    $EmbedAttributes$ \
 	    $EmbedParams$ \
-	    scriptable=false \
-	    pluginspage="$NSFileLocation$"> \
+	    scriptable = "false" \
+	    pluginspage = "$NSFileLocation$"> \
 	      <NOEMBED> \
 	      $AlternateHTML$ \
 	      </NOEMBED> \
@@ -41,7 +42,8 @@
 	<COMMENT>
 	');
     else document.writeln('\
-	<APPLET $AppletAttributes$ \
+	<APPLET \
+	    $AppletAttributes$ \
 	    > \
 	    $AppletParams$ \
 	    $AlternateHTML$ \
