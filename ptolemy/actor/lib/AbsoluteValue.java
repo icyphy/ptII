@@ -71,7 +71,7 @@ public class AbsoluteValue extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	output.setTypeAtLeast(new FunctionTerm(input));
+        output.setTypeAtLeast(new FunctionTerm(input));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,9 +85,9 @@ public class AbsoluteValue extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue)super.clone(workspace);
-	newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
+        newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
     }
 
@@ -97,8 +97,8 @@ public class AbsoluteValue extends Transformer {
      *  @return A list of inequalities.
      */
     public List typeConstraintList() {
-	// type constraints are stored in the output port.
-	return output.typeConstraintList();
+        // type constraints are stored in the output port.
+        return output.typeConstraintList();
     }
 
     /** Compute the absolute value of the input.  If there is no input, then
@@ -123,45 +123,45 @@ public class AbsoluteValue extends Transformer {
     // if is not Complex; otherwise, the result is Double.
     private class FunctionTerm implements InequalityTerm {
 
-	// The constructor takes a port argument so that the clone()
-	// method can construct an instance of this class for the
-	// input port on the clone.
-	private FunctionTerm(TypedIOPort port) {
-	    _port = port;
-	}
+        // The constructor takes a port argument so that the clone()
+        // method can construct an instance of this class for the
+        // input port on the clone.
+        private FunctionTerm(TypedIOPort port) {
+            _port = port;
+        }
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return null.
-	 *  @return null.
-	 */
-	public Object getAssociatedObject() {
-	    return null;
-	}
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
 
-	/** Return the function result.
-	 *  @return A Type.
-	 */
-	public Object getValue() {
-	    Type inputType = _port.getType();
-	    if (inputType == BaseType.COMPLEX) {
-	        return BaseType.DOUBLE;
-	    } else if (inputType == BaseType.COMPLEX_MATRIX) {
-	        return BaseType.DOUBLE_MATRIX;
-	    } else {
-	        return inputType;
-	    }
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
+            Type inputType = _port.getType();
+            if (inputType == BaseType.COMPLEX) {
+                return BaseType.DOUBLE;
+            } else if (inputType == BaseType.COMPLEX_MATRIX) {
+                return BaseType.DOUBLE_MATRIX;
+            } else {
+                return inputType;
+            }
         }
 
         /** Return a one element array containing the InequalityTerm
-	 *  representing the type of the input port.
-	 *  @return An array of InequalityTerm.
+         *  representing the type of the input port.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    InequalityTerm[] variable = new InequalityTerm[1];
-	    variable[0] = _port.getTypeTerm();
-	    return variable;
+            InequalityTerm[] variable = new InequalityTerm[1];
+            variable[0] = _port.getTypeTerm();
+            return variable;
         }
 
         /** Throw an Exception.
@@ -169,8 +169,8 @@ public class AbsoluteValue extends Transformer {
          *  a function term.  Always thrown in this class.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException("AbsoluteValue$FunctionTerm." +
+                throws IllegalActionException {
+            throw new IllegalActionException("AbsoluteValue$FunctionTerm." +
                     "initialize: Cannot initialize a function term.");
         }
 
@@ -178,7 +178,7 @@ public class AbsoluteValue extends Transformer {
          *  @return false.
          */
         public boolean isSettable() {
-	    return false;
+            return false;
         }
 
         /** Return true.
@@ -193,8 +193,8 @@ public class AbsoluteValue extends Transformer {
          *  Always thrown in this class.
          */
         public void setValue(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException(
+                throws IllegalActionException {
+            throw new IllegalActionException(
                     "AbsolutionValue$FunctionTerm.setValue: The type is not " +
                     "settable.");
         }
@@ -209,6 +209,6 @@ public class AbsoluteValue extends Transformer {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
-	private TypedIOPort _port;
+        private TypedIOPort _port;
     }
 }
