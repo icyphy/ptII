@@ -313,12 +313,12 @@ htmlchek:
 # runs the ptIInightly-mail script.
 nightly: ptclean ptbuild \
 	clean all \
+	remote4 \
 	glimpse \
 	findchanges \
 	ChangeLog \
 	jnlp \
 	remote2 \
-	remote4 \
 	remote5 \
 	remote6
 
