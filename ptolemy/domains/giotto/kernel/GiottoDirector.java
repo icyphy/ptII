@@ -30,7 +30,6 @@
 package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringUtilities;
@@ -212,7 +212,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 while (outPorts.hasNext()) {
                     TypedIOPort port = (TypedIOPort)outPorts.next();
                     String sanitizedPortName = StringUtilities.sanitizeName(
-									    port.getName(container));
+                            port.getName(container));
                     pout.println("  "
 				 + port.getType()
 				 + " "
@@ -228,7 +228,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             while(actors.hasNext()) {
                 TypedActor actor = (TypedActor)actors.next();
                 String taskName = StringUtilities.sanitizeName(
-							       ((NamedObj)actor).getName(container));
+                        ((NamedObj)actor).getName(container));
                 pout.print("task " + taskName + " (");
 
                 inPorts = actor.inputPortList().iterator();
@@ -248,7 +248,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 while (outPorts.hasNext()) {
                     TypedIOPort port = (TypedIOPort)outPorts.next();
                     String sanitizedPortName = StringUtilities.sanitizeName(
-									    port.getName(container));
+                            port.getName(container));
                     outPortsNames += sanitizedPortName;
                     pout.print(sanitizedPortName);
                     if (outPorts.hasNext()) {
@@ -272,32 +272,30 @@ public class GiottoDirector extends StaticSchedulingDirector {
             actors = container.deepEntityList().iterator();
             String driverParas, outParas, typedOutParas;
             String actorName;
-            Director director = ((Actor)container).getDirector();
-
             while (actors.hasNext()) {
                 driverParas = "";
                 outParas = "";
                 typedOutParas = "";
                 actorName = "";
                 TypedActor actor = (TypedActor)actors.next();
-                actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(container));
+                actorName = StringUtilities.sanitizeName(((NamedObj) actor).
+                        getName(container));
                 pout.print("driver "
 			   + actorName
 			   + "_driver (");
 
-
-		//get the "source" ports(the driver's inputs) for each input port of this actor.
+		//get the "source" ports(the driver's inputs) for
+                //each input port of this actor.
                 inPorts = actor.inputPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort thisPort = (IOPort) inPorts.next();
-
-                    int directorDepth = ((IOPort) thisPort).depthOfDirector(director);
-                    String sanitizedPortName = StringUtilities.sanitizeName(thisPort.getName(container));
-                    //FIXME, replace "1" by "directorDepth"
-		    Iterator sourcePorts = thisPort.sourcePortList(directorDepth).iterator();
+                    String sanitizedPortName = StringUtilities.sanitizeName(
+                            thisPort.getName(container));
+		    Iterator sourcePorts = thisPort.sourcePortList().iterator();
 		    while(sourcePorts.hasNext()) {
 			IOPort port = (IOPort)sourcePorts.next();
-			sanitizedPortName = StringUtilities.sanitizeName(port.getName(container));
+			sanitizedPortName = StringUtilities.sanitizeName(
+                                port.getName(container));
                         if (driverParas.length()==0) {
                             driverParas += sanitizedPortName;
                         } else {
@@ -312,14 +310,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     TypedIOPort port = (TypedIOPort) inPorts.next();
                     if (outParas == "") {
                         typedOutParas += port.getType()
-			    + " "
-			    + port.getName();
+                                + " "
+			        + port.getName();
                         outParas += port.getName();
                     } else {
                         typedOutParas += ", "
-			    + port.getType()
-			    + " "
-			    + port.getName();
+			        + port.getType()
+			        + " "
+			        + port.getName();
                         outParas += ", " + port.getName();
                     }
                 }
@@ -346,11 +344,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 
             // generate driver functions for toplevel output ports.
-	    // which is 'motor' in test model.
-	    // FIXME: the giotto director should do some checking to avoid several outputs of actors connect to the same output port?
+	    // which is 'motor' in the test model.
+	    // FIXME: the giotto director should do some checking to
+            //avoid several outputs of actors connect to the same output port?
 	    Iterator topOutPorts = container.outputPortList().iterator();
-
-	    //String driverParas, outParas, typedOutParas;
 	    String outputName ="";
 	    String sanitizedPortName= "";
       	    while (topOutPorts.hasNext()) {
@@ -359,29 +356,23 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		typedOutParas = "";
 		outputName = "";
 		TypedIOPort port = (TypedIOPort)topOutPorts.next();
-		outputName = StringUtilities.sanitizeName(port.getName(container));
+		outputName = StringUtilities.sanitizeName(port.
+                        getName(container));
 		pout.print("driver "
 			   + outputName
 			   + "_driver (");
-		//System.out.println("we are handling " + outputName);
 		outParas += port.getName();
 		typedOutParas += port.getType() + " " + port.getName();
-
 		Iterator portConnected = port.deepInsidePortList().iterator();
-		//System.out.println("-----------" + port.deepInsidePortList().size());
-
-		// FIXME: there should be some situations that the inputPort has no connected ports.
+		// FIXME: there should be some situations that the
+                //outputPort has no connected ports.
 		if (port.deepInsidePortList().size() != 0) {
-
 		    while (portConnected.hasNext()) {
-			TypedIOPort outPort = (TypedIOPort) portConnected.next();
-			sanitizedPortName = StringUtilities.sanitizeName(outPort.getName(container));
-
-			//System.out.println("            We are handling " + sanitizedPortName);
+			TypedIOPort outPort = (TypedIOPort)
+                                portConnected.next();
+			sanitizedPortName = StringUtilities.sanitizeName(
+                                outPort.getName(container));
 			if (outPort.isOutput()) {
-			    //System.out.println("            We got one input: " + sanitizedPortName  + " from outPortsList");
-			    //System.out.println("                its container is " + ((NamedObj)outPort.getContainer()).getName());
-			    //pout.print(", " + sanitizedPortName);
 			    if (driverParas.length()==0) {
 				driverParas += sanitizedPortName;
 			    } else {
@@ -413,7 +404,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
             //generate mode code
             String containerName = container.getName();
 	    double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-	    // FIXME: this should be achieved from the GiottoScheduler.getFrequency(ACTOR)
+	    // FIXME: this should be achieved from the
+            //GiottoScheduler.getFrequency(ACTOR)
 	    int actorFreq = 0;
 	    int actFreq = 0;
 	    pout.println("start "
@@ -426,24 +418,28 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			 + " {");
 
             //generate mode code for toplevel outputs drivers
-	    //FIXME: if there are several OUTPUTs ... , we have multiple ACTFREQ?
+	    //FIXME: if there are several OUTPUTs..., we have multiple ACTFREQ?
 	    // find the lowest frequency
 	    // trace the output port updating frequency
             topOutPorts = container.outputPortList().iterator();
       	    while (topOutPorts.hasNext()) {
                 outputName = "";
 		TypedIOPort port = (TypedIOPort)topOutPorts.next();
-		outputName = StringUtilities.sanitizeName(port.getName(container));
+		outputName = StringUtilities.sanitizeName(port.
+                        getName(container));
 		Iterator portConnected = port.deepInsidePortList().iterator();
-		// FIXME: there should be some situations that the inputPort has no connected ports.
+		// FIXME: there should be some situations that the
+                // inputPort has no connected ports.
 		if (port.deepInsidePortList().size() != 0) {
 		    while (portConnected.hasNext()) {
 			TypedIOPort outPort = (TypedIOPort) portConnected.next();
-                        //FIXME: how to get a port's container?
-                        //TypedActor actor = (TypedActor) (TypedIOPort) outPort.getContainer();
-                        //System.out.println("its container is: " + actor);
-                        //Parameter actorFreqPara = (Parameter) ((NamedObj) actor).getAttribute("frequency");
-	                actorFreq = 1; //((IntToken) actorFreqPara.getToken()).intValue();
+                        Nameable actor = outPort.getContainer();
+                        if (actor instanceof Actor) {
+                            Parameter actorFreqPara = (Parameter) ((NamedObj)
+                                    actor).getAttribute("frequency");
+	                    actorFreq = ((IntToken) actorFreqPara.
+                                    getToken()).intValue();
+                        }
                         pout.println("    actfreq "
 			      + actorFreq
 			      + " do "
@@ -459,8 +455,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    actors = container.deepEntityList().iterator();
 	    while (actors.hasNext()) {
 	      TypedActor actor = (TypedActor) actors.next();
-              actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(container));
-	      Parameter actorFreqPara = (Parameter) ((NamedObj) actor).getAttribute("frequency");
+              actorName = StringUtilities.sanitizeName(((NamedObj)
+                      actor).getName(container));
+	      Parameter actorFreqPara = (Parameter) ((NamedObj)
+                      actor).getAttribute("frequency");
 	      actorFreq = ((IntToken) actorFreqPara.getToken()).intValue();
 	      pout.println("    taskfreq "
 			   + actorFreq
