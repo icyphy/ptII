@@ -141,19 +141,36 @@ public interface Executable {
      */
     public void preinitialize() throws IllegalActionException;
 
-    /** Request that execution of the current iteration stop.  If an
-     *  iteration is always a finite computation (the usual case), i.e.
-     *  the fire() method always returns in finite time, then nothing
-     *  needs to be done in this method, except possibly to pass on the
-     *  request to any contained executable objects.  This method is used
-     *  to request that an unbounded computation suspend, returning control
-     *  to the caller.  Thus, if the fire() method does not normally return
-     *  in finite time, the this method is used to request that it return.
-     *  It should suspend execution in such a way
-     *  that if the fire() method is called again, execution will
-     *  resume at the point where it was suspended.  However, it should
-     *  not assume the fire() method will be called again.  It is possible
-     *  that the wrapup() method will be called next.
+    /** Request that execution of the current iteration stop as soon
+     *  as possible.  If an iteration is always a finite computation
+     *  (the usual case), i.e.  the fire() method always returns in
+     *  finite time, then nothing needs to be done in this method,
+     *  except possibly to pass on the request to any contained
+     *  executable objects.  This method is used to request that an
+     *  unbounded computation suspend, returning control to the
+     *  caller.  Thus, if the fire() method does not normally return
+     *  in finite time, then this method is used to request that it
+     *  return.  It need not suspend execution in such a way that if
+     *  the fire() method is called again, execution will resume at
+     *  the point where it was suspended.  After this method is
+     *  called, the executable object will not be fired again.
+     */
+    public void stop();
+
+    /** Request that execution of the current iteration complete.  If
+     *  an iteration is always a finite computation (the usual case),
+     *  i.e.  the fire() method always returns in finite time, then
+     *  nothing needs to be done in this method, except possibly to
+     *  pass on the request to any contained executable objects.  This
+     *  method is used to request that an unbounded computation
+     *  suspend, returning control to the caller.  Thus, if the fire()
+     *  method does not normally return in finite time, then this
+     *  method is used to request that it return.  It should suspend
+     *  execution in such a way that if the fire() method is called
+     *  again, execution will resume at the point where it was
+     *  suspended.  However, it should not assume the fire() method
+     *  will be called again.  It is possible that the wrapup() method
+     *  will be called next.
      */
     public void stopFire();
 

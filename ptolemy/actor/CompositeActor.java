@@ -749,7 +749,24 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Request that execution of the current iteration stop.
+    /** Request that execution of the current iteration stop as soon
+     *  as possible.  If this actor is opaque, then invoke the
+     *  stopFire() method of the local director. Otherwise, do
+     *  nothing.  This method is read-synchronized on the workspace.
+     */
+    public void stop() {
+        try {
+            _workspace.getReadAccess();
+            if (!isOpaque()) {
+		return;
+            }
+            getDirector().stop();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
+    /** Request that execution of the current iteration complete.
      *  If this actor is opaque, then invoke the stopFire()
      *  method of the local director. Otherwise, do nothing.
      *  This method is read-synchronized on the workspace.

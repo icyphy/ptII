@@ -280,7 +280,9 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** If the state is not IDLE, set a flag to request that
-     *  execution stop and exit gracefully.
+     *  execution stop and exit in a completely deterministic fashion
+     *  at the end of the next toplevel iteration.  This method may
+     *  be called from within an actor to stop the execution of the model.
      *  This will result in finish() being called on the top level
      *  CompositeActor, although not necessarily immediately.
      *  This method sets the flag, then calls stopFire() on the
@@ -654,6 +656,32 @@ public class Manager extends NamedObj implements Runnable {
         _thread = new PtolemyThread(this);
         _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
+    }
+
+    /** If the state is not IDLE, set a flag to request that
+     *  execution stop and exit gracefully and immediately.  The 
+     *  result of this is non-deterministic and determining the
+     *  exact state of the model after this method is called is difficult.
+     *  However, it is guaraunteed that the model will be be in a 
+     *  state where it can be executed again.  Because of this, it
+     *  is not generally useful to call this method from within an actor.
+     *  This method will result in stop() being called on the top level
+     *  CompositeActor, although not necessarily immediately.
+     */
+    public void stop() {
+        // Set this regardless of whether the model is running to
+        // avoid race conditions.  The model may not have gotten around
+        // to starting when finish is requested.
+        _finishRequested = true;
+        if (_state == IDLE) return;
+
+        Nameable container = getContainer();
+        if (!(container instanceof CompositeActor)) {
+            throw new InternalErrorException(
+                    "Attempted to call step() on an executing manager " +
+                    "with no associated CompositeActor model");
+        }
+        ((CompositeActor)container).stop();
     }
 
     /** Terminate the currently executing model with extreme prejudice.

@@ -419,7 +419,17 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
     }
 
-    /** Request that execution of the current iteration stop.
+    /** Request that execution of the current iteration stop as soon
+     *  as possible.  Most atomic actors have bounded fire() methods,
+     *  so they can simply ignore this.  Atomic actors with unbounded
+     *  fire() methods should override this method to save their state
+     *  and return from the fire() method at the next convenient
+     *  point.  In this base class, do nothing.
+     */
+    public void stop() {
+    }
+
+    /** Request that execution of the current iteration complete.
      *  Most atomic actors have bounded fire() methods, so they
      *  can simply ignore this.  Atomic actors with unbounded fire()
      *  methods should override this method to save their state and
