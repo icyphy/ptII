@@ -31,6 +31,7 @@
 package ptolemy.schematic.editor;
 
 import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.schematic.util.*;
@@ -89,7 +90,7 @@ public class BasicContextMenu extends JPopupMenu {
 	    try {
 		// FIXME What if this implements the WidgetConfigurable
 		// interface?
-		query = new ParameterQuery(object);
+		query = new ParameterEditor(object);
 	    } catch (IllegalActionException ex) {
 		ex.printStackTrace();
 		throw new RuntimeException(ex.getMessage());

@@ -31,6 +31,7 @@
 package ptolemy.schematic.editor;
 
 import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.schematic.util.*;
@@ -509,7 +510,7 @@ public class EditorGraphController extends GraphController {
                     JPanel pane = (JPanel) frame.getContentPane();
 		    Query query;
 		    try {
-			query = new ParameterConfigurer(director);
+			query = new ParameterEditor(director);
 		    } catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());
