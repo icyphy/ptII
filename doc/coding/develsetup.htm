@@ -21,19 +21,101 @@ For more information about CVS, see
 
 Locally, the CVS Repository is in <CODE>~cvs/Repository</CODE>.
 
-To create a copy of the Ptolemy II tree, follow the steps below:
-<ol>
-<li> Verify that the <CODE>CVSROOT</CODE> environment variable is set
-to <CODE>~cvs/Repository</CODE>
+<h3>Remote users</h3>
 
-<li> The most common location for a Ptolemy II tree is in 
-<CODE>~/ptII</CODE>.  To create a copy of the tree in <CODE>~/ptII</CODE>:
+
+Remote users who do not have local accounts should follow these steps:
+
+<ol>
+
+<li> Get an account on our machines
+To do this, please send email to root@mho.eecs.berkeley.edu with
+the login you would like to use.
+The login must be 8 characters or less.  
+ <br> The cvs guest accounts run in a restricted shell, the only
+programs you can run are <CODE>passwd</CODE> and <CODE>cvs</CODE>.
+
+<li>  Install SSH
+Note that you will be using ssh to connect to our machines, so
+you will need to install SSH 1.2 as well.
+<a href="ftp://ftp.cs.hut.fi/pub/ssh/ssh-1.2.27.tar.gz"><CODE>ftp://ftp.cs.hut.fi/pub/ssh/ssh-1.2.27.tar.gz</CODE></a>
+To test ssh, try
 <pre>
-cd
-cvs checkout ptII
+ssh carson.eecs.berkeley.edu
 </pre>
 
 
+You should see something like:
+
+<pre>
+cxh@maury 57% ssh carson.eecs.berkeley.edu
+cxh@carson.eecs.berkeley.edu's password:
+
+Last login: Fri Mar 24 09:15:45 2000 from maury.eecs.berke
+No mail.
+$ 
+
+</pre>
+Then use the <CODE>passwd</CODE> command to change your password.
+
+ <p>If your login on our machines is different than the login on the
+account you are connecting on, then use:
+<pre>
+ssh -l <I>remotelogin</I> carson.eecs.berkeley.edu
+</pre>
+
+<li>  Install CVS.
+See:
+<a href="http://www.cyclic.com/cyclic-pages/howget.html"><CODE>http://www.cyclic.com/cyclic-pages/howget.html</CODE></a>
+
+ <p>For information about CVS, see
+<a href="http://www.gigascale.org/softdevel/faq/1/"><CODE>http://www.gigascale.org/softdevel/faq/1/</CODE></a>
+
+ <p>You also might want to look over John Reekie's notes at
+<a href="http://ptolemy.eecs.berkeley.edu/~johnr/info/cvs.html"><CODE>http://ptolemy.eecs.berkeley.edu/~johnr/info/cvs.html</CODE></a>
+
+You must use ssh to connect to carson.eecs.berkeley.edu (it is also
+possible to use kerberos, but it is easier for remote users to use ssh)
+
+ <br>Be sure to set <CODE>CVS_RSH</CODE> to the location of your 
+<CODE>ssh</CODE> binary.  
+
+
+<li> Verify that you are in the <CODE>ptolemy</CODE> Unix group
+<pre>
+cxh@maury 1% groups
+labstaff ptolemy eal sysadmin root majordomo colorpr messer tools
+</pre>
+If you are not in the <CODE>ptolemy</CODE> Unix group, send email
+to <a href="mailto:root@mho.eecs.berkeley.edu">&lt;root@mho.eecs.berkeley.edu&gt;</a>.
+(Note that cvs only users on the mho cluster will not be able to run
+the groups command)
+
+
+
+<li> Remote users can check out the tree with
+<pre>
+cvs -d :ext:carson.eecs.berkeley.edu:/users/cvs/Repository co ptII
+</pre>
+<ol>
+<h3>Local Users</h3>
+
+Users who have already have an account on the mho cluster can follow
+this procedure:
+
+<ol>
+<li> Local users should verify that the <CODE>CVSROOT</CODE> environment variable is set to <CODE>~cvs/Repository</CODE>
+
+ <p> The most common location for a Ptolemy II tree is in 
+<CODE>~/ptII</CODE>.  To create a copy of the tree in <CODE>~/ptII</CODE>:
+<pre>
+cd
+cvs co ptII
+</pre>
+
+<h3>Remote and Local users</h3>
+
+<ol>
 <li> Set the <CODE>PTII</CODE> environment variable to the location
 of your Ptolemy II tree.  In this case, under C shell:
 <pre>
