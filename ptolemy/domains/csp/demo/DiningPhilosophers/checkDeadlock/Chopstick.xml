@@ -13,49 +13,49 @@
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 585]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, -3]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[29, 33]">
     </property>
     <port name="c" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="199.0, 341.0">
+        <property name="_location" class="ptolemy.moml.Location" value="223.66527586574296, 369.2761067800149">
         </property>
     </port>
     <port name="c1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="279.0, 342.0">
+        <property name="_location" class="ptolemy.moml.Location" value="303.66527586574296, 370.2761067800149">
         </property>
     </port>
     <port name="c2" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="333.0, 343.0">
+        <property name="_location" class="ptolemy.moml.Location" value="357.66527586574296, 371.2761067800149">
         </property>
     </port>
     <port name="g1" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="17.0, 138.0">
+        <property name="_location" class="ptolemy.moml.Location" value="86.66527586574296, 165.27610678001489">
         </property>
     </port>
     <port name="g1R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="20.0, 221.0">
+        <property name="_location" class="ptolemy.moml.Location" value="89.66527586574296, 248.27610678001489">
         </property>
     </port>
     <port name="g2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="581.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="529.665275865743, 254.27610678001489">
         </property>
     </port>
     <port name="g2R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="581.0, 144.0">
+        <property name="_location" class="ptolemy.moml.Location" value="529.665275865743, 173.27610678001489">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="384.0, 271.0">
+        <property name="_location" class="ptolemy.moml.Location" value="294.66527586574296, 313.2761067800149">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -65,7 +65,7 @@
     <entity name="1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="254.0, 185.0">
+        <property name="_location" class="ptolemy.moml.Location" value="294.66527586574296, 218.27610678001489">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -75,7 +75,7 @@
     <entity name="2" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="181.0, 121.0">
+        <property name="_location" class="ptolemy.moml.Location" value="229.66527586574296, 123.27610678001489">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -85,7 +85,7 @@
     <entity name="4" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="132.0, 172.0">
+        <property name="_location" class="ptolemy.moml.Location" value="156.66527586574296, 200.27610678001489">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -95,7 +95,7 @@
     <entity name="3" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="320.0, 78.0">
+        <property name="_location" class="ptolemy.moml.Location" value="364.66527586574296, 123.27610678001489">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -105,7 +105,7 @@
     <entity name="5" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="441.0, 142.0">
+        <property name="_location" class="ptolemy.moml.Location" value="439.66527586574296, 193.27610678001489">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -119,9 +119,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.04761063763620433">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.503396294167651">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -139,9 +139,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.08254727510227855">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.1862487883025223">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -159,9 +159,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.1744128760488527">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.378295877507746">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -179,9 +179,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.40441221189083865">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.719410828210841">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -199,9 +199,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.13443406421119622">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9479078736649325">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -219,9 +219,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.1355326947840957">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.37931827638243243">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -239,9 +239,9 @@
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42172270038750725">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.4038904011117106">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
