@@ -44,11 +44,16 @@ CLASSPATH = ../../../..
 
 TCL_SRCS = \
 	ExpoBE.tcl \
+	ExpoBERK23.tcl \
 	ExpoFE.tcl \
+	ExpoMix.tcl \
 	ExpoRK23.tcl \
 	RampBE.tcl \
+	RampBERK23.tcl \
 	RampFE.tcl \
+	RampMix.tcl \
 	RampRK23.tcl \
+	RampSample.tcl \
 	WaveBE.tcl \
 	WaveFE.tcl \
 	WaveBERK23.tcl
