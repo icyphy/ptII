@@ -160,7 +160,7 @@ public class AudioWriter extends Sink {
      *  The default value of the sample rate is an IntToken equal
      *  to 8000.
      *  <p>
-      *  An exception will be thrown if an illegal value is used.
+     *  An exception will be thrown if an illegal value is used.
      */
     public Parameter sampleRate;
 
@@ -248,6 +248,7 @@ public class AudioWriter extends Sink {
      *   are not enough tokens on the input port, or throw an exception
      *   if there is a problem writing audio samples to the specified
      *   file.
+     *  @see ptolemy.actor.Executable
      *  @exception IllegalActionException If there is a problem
      *   writing the audio sample(s) to the specified file.
      */

@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -186,6 +186,7 @@ public class AudioReader extends Source {
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Return STOP_ITERATING if the
      *   end of the sound file is reached.
+     *  @see ptolemy.actor.Executable
      *  @exception IllegalActionException If there is a problem reading
      *   from the specified sound file.
      */
