@@ -213,8 +213,8 @@ public class Prototype extends NamedObj {
     }
 
     /** Get the list of prototypes that defer to this object.
-     *  @return An unmodifiable list of prototypes or null if no object defers
-     *   to this one.
+     *  @return An unmodifiable list of weak references to
+     *   prototypes or null if no object defers to this one.
      */
     public List getDeferredFrom() {
         if (_deferredFrom == null) {
