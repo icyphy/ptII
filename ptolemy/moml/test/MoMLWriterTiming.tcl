@@ -57,6 +57,11 @@ if {[info procs jdkRuntimeStatistics] == "" } then {
 # the times
 proc compareMoMLWriter {configuration {repeatCount 3}} {
     set parser [java::new ptolemy.moml.MoMLParser]
+
+
+    # Don't skip over errors
+    $parser setErrorHandler [java::null]
+
     set loader [[$parser getClass] getClassLoader]
     
     set URL [$loader getResource $configuration]
