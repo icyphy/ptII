@@ -239,7 +239,8 @@ public class LiveSound {
      */
     public static int getBufferSizeCapture() throws IllegalStateException {
         if (_targetLine != null) {
-            return _targetLine.getBufferSize() * _frameSizeInBytes;
+            // FIXME check this division operation 
+            return _targetLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: " + 
                     "getBufferSizeCapture(), capture is probably inactive." +
@@ -255,12 +256,13 @@ public class LiveSound {
      *  @exception IllegalStateException If audio playback is inactive.
      */
     public static int getBufferSizePlayback() {
-        if (_targetLine != null) {
-            return _sourceLine.getBufferSize() * _frameSizeInBytes;
+        if (_sourceLine != null) {
+            // FIXME check this division operation 
+            return _sourceLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: " + 
                     "getBufferSizePlayback(), playback is probably inactive." +
-                    "Try to startCapture().");
+                    "Try to startPlayback().");
         }
     }
 
