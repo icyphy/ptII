@@ -30,15 +30,18 @@ network semantics.
 */
 
 package ptolemy.domains.pn.kernel;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
 
-import java.util.Enumeration;
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.TimedEvent;
+import ptolemy.actor.util.TimedEvent.TimeComparator;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedPNDirector
@@ -73,7 +76,7 @@ no process can proceed until it receives new data. The execution can be
 terminated, if desired, in such a situation. If the container of this director
 does not have any input ports (as is in the case of a top-level composite
 actor), then the executive director or manager terminates the execution.
-If the container has input ports, then it is upto the
+If the container has input ports, then it is up to the
 executive director of the container to decide on the termination of the
 execution. To terminate the execution after detection of a real deadlock, the
 manager or the executive director calls wrapup() on the director.
@@ -199,8 +202,8 @@ public class TimedPNDirector extends BasePNDirector {
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
      public void fire() throws IllegalActionException {
-     boolean timedmut;
-     Workspace worksp = workspace();
+     boolean timedMutation;
+     Workspace workspace = workspace();
      synchronized (this) {
      if( _getActiveActorsCount() == 0 ) {
      _notDone = false;
@@ -209,7 +212,7 @@ public class TimedPNDirector extends BasePNDirector {
      // Loop until a real deadlock is detected.
      while( _readBlockCount != _getActiveActorsCount() ) {
      while( !_areActorsDeadlocked() ) {
-     worksp.wait(this);
+     workspace.wait(this);
      }
      _notDone = _resolveDeadlock();
      }
@@ -229,16 +232,16 @@ public class TimedPNDirector extends BasePNDirector {
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
-    public synchronized void fireAt(Actor actor, double newfiringtime)
+    public synchronized void fireAt(Actor actor, double newFiringTime)
             throws IllegalActionException {
-	if (newfiringtime < getCurrentTime()) {
+	if (newFiringTime < getCurrentTime()) {
 	    throw new IllegalActionException(this, "The process wants to "
 		    + " get fired in the past!");
 	}
-        _eventQueue.put(new TimedEvent(newfiringtime, actor));
+        _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
         try {
-            while (getCurrentTime() < newfiringtime) {
+            while (getCurrentTime() < newFiringTime) {
                 wait();
             }
         } catch (InterruptedException e) {
@@ -332,7 +335,7 @@ public class TimedPNDirector extends BasePNDirector {
 		}
 
 		//Remove any other process waiting to be resumed at the new
-		//advanced time (the new currenttime).
+		//advanced time (the new currentTime).
 		boolean sameTime = true;
 		while (sameTime) {
 		    //If queue is not empty, then determine the resumption
@@ -343,15 +346,15 @@ public class TimedPNDirector extends BasePNDirector {
                         Actor actor = (Actor)event.contents;
                         //Get the resumption time of the newly removed
                         //process.
-                        double newtime = event.timeStamp;
+                        double newTime = event.timeStamp;
                         //If the resumption time of the newly removed
                         //process is the same as the newly advanced time
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
-                        if (newtime == getCurrentTime()) {
+                        if (newTime == getCurrentTime()) {
                             _informOfDelayUnblock();
                         } else {
-                            _eventQueue.put(new TimedEvent(newtime, actor));
+                            _eventQueue.put(new TimedEvent(newTime, actor));
                             sameTime = false;
                         }
 		    } else {

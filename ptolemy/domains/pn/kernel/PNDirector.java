@@ -30,14 +30,12 @@ network semantics supporting non-deterministic mutations.
 */
 
 package ptolemy.domains.pn.kernel;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import java.util.Enumeration;
+
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector
@@ -71,7 +69,7 @@ no process can proceed until it receives new data. The execution can be
 terminated, if desired, in such a situation. If the container of this director
 does not have any input ports (as is in the case of a top-level composite
 actor), then the executive director or manager terminates the execution.
-If the container has input ports, then it is upto the
+If the container has input ports, then it is up to the
 executive director of the container to decide on the termination of the
 execution. To terminate the execution after detection of a real deadlock, the
 manager or the executive director calls wrapup() on the director.
@@ -187,7 +185,7 @@ public class PNDirector extends BasePNDirector {
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
      public void fire() throws IllegalActionException {
-     Workspace worksp = workspace();
+     Workspace workspace = workspace();
      synchronized (this) { //Reset this as mutations must be done by now
      if( _getActiveActorsCount() == 0 ) {
      _notDone = false;
@@ -199,7 +197,7 @@ public class PNDirector extends BasePNDirector {
      while( _readBlockCount != _getActiveActorsCount() ) {
      //Sleep until a deadlock is detected or mutations are requested
      while( !_areActorsDeadlocked() ) {
-     worksp.wait(this);
+     workspace.wait(this);
      }
      _notDone = _resolveDeadlock();
      }

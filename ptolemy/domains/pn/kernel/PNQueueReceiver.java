@@ -31,13 +31,19 @@
 
 package ptolemy.domains.pn.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-
-import java.util.Iterator;
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.QueueReceiver;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.Branch;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.Token;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
@@ -412,20 +418,20 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Set a state flag indicating that there is a process blocked while
      *  trying to read from this receiver.
-     *  @param readpending true if the calling process is blocking on a
+     *  @param readPending true if the calling process is blocking on a
      *  read, false otherwise.
      */
-    public synchronized void setReadPending(boolean readpending) {
-	_readBlocked = readpending;
+    public synchronized void setReadPending(boolean readPending) {
+	_readBlocked = readPending;
     }
 
     /** Set a state flag indicating that there is a process blocked
      *  (write-blocked) while trying to write to the receiver.
-     *  @param writepending true if the calling process is blocking on
+     *  @param writePending true if the calling process is blocking on
      *  a write, false otherwise.
      */
-    public synchronized void setWritePending(boolean writepending) {
-	_writeBlocked = writepending;
+    public synchronized void setWritePending(boolean writePending) {
+	_writeBlocked = writePending;
     }
 
     /** Set a flag in the receiver to indicate the onset of termination.

@@ -30,17 +30,28 @@ Kahn-MacQueen process network semantics.
 */
 
 package ptolemy.domains.pn.kernel;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.util.*;
-import ptolemy.domains.pn.kernel.event.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import java.util.Enumeration;
+
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.QueueReceiver;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.pn.kernel.event.PNProcessListener;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasePNDirector
@@ -78,7 +89,7 @@ no process can proceed until it receives new data. The execution can be
 terminated, if desired, in such a situation. If the container of this director
 does not have any input ports (as is in the case of a top-level composite
 actor), then the executive director or manager terminates the execution.
-If the container has input ports, then it is upto the
+If the container has input ports, then it is up to the
 executive director of the container to decide on the termination of the
 execution. To terminate the execution after detection of a real deadlock, the
 manager or the executive director calls wrapup() on the director.
@@ -119,11 +130,11 @@ public class BasePNDirector extends CompositeProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException ex) {
-            //As parameter is a valid parameter, this exception is not thrown
+            // As parameter is a valid parameter, this exception is not thrown.
             throw new InternalErrorException(this, ex, null);
         } catch (NameDuplicationException ex) {
-            //As this is being called from the constructor, we cannot have
-            //a parameter by the same name already existing in the object
+            // As this is being called from the constructor, we cannot have
+            // a parameter by the same name already existing in the object.
             throw new InvalidStateException(this, ex, null);
         }
     }
@@ -142,11 +153,11 @@ public class BasePNDirector extends CompositeProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException ex) {
-            //As parameter is a valid parameter, this exception is not thrown
+            // As parameter is a valid parameter, this exception is not thrown.
             throw new InternalErrorException(this, ex, null);
         } catch (NameDuplicationException ex) {
-            //As this is being called from the constructor, we cannot have
-            //a parameter by the same name already existing in the object
+            // As this is being called from the constructor, we cannot have
+            // a parameter by the same name already existing in the object.
             throw new InvalidStateException(this, ex, null);
         }
     }
@@ -174,11 +185,11 @@ public class BasePNDirector extends CompositeProcessDirector {
             Parameter param = new Parameter(this,"Initial_queue_capacity",
                     new IntToken(1));
         } catch (IllegalActionException ex) {
-            //As parameter is a valid parameter, this exception is not thrown
+            // As parameter is a valid parameter, this exception is not thrown.
             throw new InternalErrorException(this, ex, null);
         } catch (NameDuplicationException ex) {
-            //As this is being called from the constructor, we cannot have
-            //a parameter by the same name already existing in the object
+            // As this is being called from the constructor, we cannot have
+            // a parameter by the same name already existing in the object.
             throw new InvalidStateException(this, ex, null);
         }
     }
@@ -191,7 +202,7 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  @param listener The PNProcessListener to add.
      */
     public void addProcessListener(PNProcessListener listener) {
-        _processlisteners.add(listener);
+        _processListeners.add(listener);
     }
 
     /** Clone the director into the specified workspace. The new object is
@@ -212,7 +223,7 @@ public class BasePNDirector extends CompositeProcessDirector {
         BasePNDirector newObject = (BasePNDirector)super.clone(workspace);
         newObject._readBlockCount = 0;
 	newObject._writeBlockCount = 0;
-        newObject._writeblockedQueues = new LinkedList();
+        newObject._writeBlockedQueues = new LinkedList();
         return newObject;
     }
 
@@ -227,8 +238,8 @@ public class BasePNDirector extends CompositeProcessDirector {
 	super.initialize();
         _readBlockCount = 0;
 	_writeBlockCount = 0;
-	_writeblockedQueues = new LinkedList();
-        //processlisteners is not initialized as we might want to continue
+	_writeBlockedQueues = new LinkedList();
+        //processListeners is not initialized as we might want to continue
         //with the same listeners.
     }
 
@@ -240,17 +251,18 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  @return A new PNQueueReceiver.
      */
     public Receiver newReceiver() {
-        PNQueueReceiver rec =  new PNQueueReceiver();
+        PNQueueReceiver receiver =  new PNQueueReceiver();
         try {
-	    Parameter par = (Parameter)getAttribute("Initial_queue_capacity");
-	    int cap = ((IntToken)par.getToken()).intValue();
-	    rec.setCapacity(cap);
-        } catch (IllegalActionException e) {
-            //This exception should never be thrown, as size of queue should
-            //be 0, and capacity should be set to a non-negative number
-	    throw new InternalErrorException(e.toString());
+	    Parameter parameter =
+                (Parameter)getAttribute("Initial_queue_capacity");
+	    int capacity = ((IntToken)parameter.getToken()).intValue();
+	    receiver.setCapacity(capacity);
+        } catch (IllegalActionException ex) {
+	    throw new InternalErrorException(this, ex,
+                    "Size of queue should be 0, and capacity should be a "
+                    + "non-negative number");
 	}
-        return rec;
+        return receiver;
     }
 
     /** Return true if the containing composite actor contains active
@@ -286,7 +298,7 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  @param listener The PNProcessListener to be removed.
      */
     public void removeProcessListener(PNProcessListener listener) {
-        _processlisteners.remove(listener);
+        _processListeners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -307,7 +319,7 @@ public class BasePNDirector extends CompositeProcessDirector {
     protected void _incrementLowestWriteCapacityPort() {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
-	Iterator receivers = _writeblockedQueues.iterator();
+	Iterator receivers = _writeBlockedQueues.iterator();
         if( !receivers.hasNext() ) {
             return;
         }
@@ -333,10 +345,11 @@ public class BasePNDirector extends CompositeProcessDirector {
             synchronized(smallestCapacityQueue) {
                 smallestCapacityQueue.notifyAll();
             }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e.toString());
-	    //Should not be thrown as this exception is thrown
-            //only if port is not an input port, checked above
+        } catch (IllegalActionException ex) {
+	    // Should not be thrown as this exception is thrown
+            // only if port is not an input port, checked above.
+            throw new InternalErrorException(this, ex, "Perhaps port was not "
+                    + "an input port");
         }
         return;
     }
@@ -347,15 +360,15 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
      */
-    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
-        if( rcvr.isReadBlocked() ) {
+    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
+        if( receiver.isReadBlocked() ) {
 	    _readBlockCount++;
         }
-        if( rcvr.isWriteBlocked() ) {
-	    _writeblockedQueues.add(rcvr);
+        if( receiver.isWriteBlocked() ) {
+	    _writeBlockedQueues.add(receiver);
 	    _writeBlockCount++;
         }
-        super._actorBlocked(rcvr);
+        super._actorBlocked(receiver);
         notifyAll();
     }
 
@@ -364,15 +377,15 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  the process listeners that the relevant process has resumed its
      *  execution.
      */
-    protected synchronized void _actorUnBlocked(PNQueueReceiver rcvr) {
-        if( rcvr.isReadBlocked() ) {
+    protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
+        if( receiver.isReadBlocked() ) {
 	    _readBlockCount--;
         }
-        if( rcvr.isWriteBlocked() ) {
+        if( receiver.isWriteBlocked() ) {
 	    _writeBlockCount--;
-	    _writeblockedQueues.remove(rcvr);
+	    _writeBlockedQueues.remove(receiver);
         }
-        super._actorUnBlocked(rcvr);
+        super._actorUnBlocked(receiver);
 	return;
     }
 
@@ -432,7 +445,7 @@ public class BasePNDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    //The vriables are initialized at declaration, despite having an
+    //The variables are initialized at declaration, despite having an
     //initialize() method so that the tests can be run.
 
     /** The count of processes blocked on a read from a receiver. */
@@ -442,10 +455,10 @@ public class BasePNDirector extends CompositeProcessDirector {
     protected int _writeBlockCount = 0;
 
     /** The list of receivers blocked on a write to a receiver. */
-    protected LinkedList _writeblockedQueues = new LinkedList();
+    protected LinkedList _writeBlockedQueues = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _processlisteners = new LinkedList();
+    private LinkedList _processListeners = new LinkedList();
 }
