@@ -53,7 +53,7 @@ PTAUXALLJARS = \
 		toolbox/toolbox.jar
 
 # All the .class files necessary to run a Vergil applet
-PTAUXALLJAR =	vergilapplet.jar
+PTAUXALLJAR =	vergilApplet.jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
