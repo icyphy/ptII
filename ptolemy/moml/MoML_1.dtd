@@ -1,23 +1,35 @@
-<!-- MoML DTD Version 1, UC Berkeley -->
+<!-- MoML DTD Version 1.1, UC Berkeley -->
 <!-- $Id$ -->
-<!-- If you update this file, please also update ptweb/xml/dtd/MoML_1.dtd, -->
-<!-- and also the static field MoML_DTD_1 in MoMLParser.java. -->
+<!-- If you update this file, please also update:  -->
+<!--    ptweb/xml/dtd/MoML_1.dtd, -->
+<!--    ptII/doc/design/src/MoML.fm, -->
+<!--    the static field MoML_DTD_1 in MoMLParser.java. -->
 <!-- The top-level element can be either model or class. -->
 
-<!ELEMENT model (class | configure | director | doc |
-                entity | import | link |
-                property | relation | rendition)*>
+<!ELEMENT model (class | configure | deleteEntity | deletePort |
+		deleteRelation | director | doc | entity | import | link |
+                property | relation | rendition | unlink)*>
 <!ATTLIST model name CDATA #REQUIRED
                 class CDATA #IMPLIED>
 
-<!ELEMENT class (class | configure | director | doc |
+<!ELEMENT class (class | configure | deleteEntity | deletePort |
+		 deleteRelation | director | doc |
                  entity | import | link |
-                 property | relation | rendition)*>
+                 property | relation | rendition | unlink)*>
 <!ATTLIST class name CDATA #REQUIRED
                 extends CDATA #IMPLIED>
 
 <!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure source CDATA #IMPLIED>
+
+<!ELEMENT deleteEntity EMPTY>
+<!ATTLIST deleteEntity name CDATA #REQUIRED>
+
+<!ELEMENT deletePort EMPTY>
+<!ATTLIST deletePort name CDATA #REQUIRED>
+
+<!ELEMENT deleteRelation EMPTY>
+<!ATTLIST deleteRelation name CDATA #REQUIRED>
 
 <!ELEMENT director (configure | property)*>
 <!ATTLIST director name CDATA "director"
@@ -25,9 +37,10 @@
 
 <!ELEMENT doc (#PCDATA)>
 
-<!ELEMENT entity (class | configure | director | doc |
+<!ELEMENT entity (class | configure | deleteEntity | deletePort |
+		  deleteRelation | director | doc |
                   entity | import | link | port |
-                  property | relation | rendition)*>
+                  property | relation | rendition | unlink)*>
 <!ATTLIST entity name CDATA #REQUIRED
                  class CDATA #IMPLIED>
 
@@ -36,7 +49,8 @@
                  base CDATA #IMPLIED>
 
 <!ELEMENT link EMPTY>
-<!ATTLIST link port CDATA #REQUIRED
+<!ATTLIST link channel CDATA #IMPLIED
+               port CDATA #REQUIRED
                relation CDATA #REQUIRED
                vertex CDATA #IMPLIED>
 
@@ -58,6 +72,11 @@
 
 <!ELEMENT rendition (configure | location | property)*>
 <!ATTLIST rendition class CDATA #REQUIRED>
+
+<!ELEMENT unlink EMPTY>
+<!ATTLIST unlink channel CDATA #IMPLIED
+                 port CDATA #REQUIRED
+                 relation CDATA #REQUIRED>
 
 <!ELEMENT vertex (location | property)*>
 <!ATTLIST vertex name CDATA #REQUIRED

@@ -206,7 +206,6 @@ public class MoMLParser extends HandlerBase {
             byte[] bytes = _currentCharData.toString().getBytes();
             InputStream stream = new ByteArrayInputStream(bytes);
             ((Configurable)_current).configure(_base, stream);
-
         } else if (elementName.equals("doc")) {
             String name = _current.uniqueName("_doc_");
             Documentation doc = new Documentation(_current, name);
@@ -214,6 +213,9 @@ public class MoMLParser extends HandlerBase {
         } else if (
                 elementName.equals("property")
                 || elementName.equals("class")
+                || elementName.equals("deleteEntity")
+                || elementName.equals("deletePort")
+                || elementName.equals("deleteRelation")
                 || elementName.equals("director")
                 || elementName.equals("entity")
                 || elementName.equals("model")
@@ -426,6 +428,15 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /** Set the top-level entity.  This can be used to associate this
+     *  parser with a pre-existing model, which can then be modified
+     *  via incremental parsing.
+     */
+    public void setToplevel(NamedObj toplevel) {
+        reset();
+        _toplevel = toplevel;
+    }
+
     /** Start a document.  This method is called just before the parser
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
@@ -486,6 +497,58 @@ public class MoMLParser extends HandlerBase {
                 }
                 _currentCharData = new StringBuffer();
 
+            } else if (elementName.equals("deleteEntity")) {
+                String entityName = (String)_attributes.get("name");
+                _checkForNull(entityName,
+                        "No name for element \"deleteEntity\"");
+                NamedObj deletedEntity = _deleteEntity(entityName);
+                if (_panel != null && deletedEntity instanceof Placeable) {
+                    // FIXME: remove and revalidate graphical container.
+                    // This seems to require an extension to the Placeable
+                    // interface.
+                }
+                // NOTE: This could occur at a top level, although it's
+                // not clear what it means to delete a top-level entity.
+                if (_current != null) {
+                    // Although there is not supposed to be anything inside
+                    // this element, we nontheless change the environment so
+                    // that if by using a nonvalidating parser elements are
+                    // included, then they will be evaluated in the correct
+                    // context.
+                    _containers.push(_current);
+                }
+                _current = deletedEntity;
+
+            } else if (elementName.equals("deletePort")) {
+                String portName = (String)_attributes.get("name");
+                _checkForNull(portName,
+                        "No name for element \"deletePort\"");
+                NamedObj deletedPort = _deletePort(portName);
+                if (_current != null) {
+                    // Although there is not supposed to be anything inside
+                    // this element, we nontheless change the environment so
+                    // that if by using a nonvalidating parser elements are
+                    // included, then they will be evaluated in the correct
+                    // context.
+                    _containers.push(_current);
+                }
+                _current = deletedPort;
+
+            } else if (elementName.equals("deleteRelation")) {
+                String relationName = (String)_attributes.get("name");
+                _checkForNull(relationName,
+                        "No name for element \"deleteRelation\"");
+                NamedObj deletedRelation = _deleteRelation(relationName);
+                if (_current != null) {
+                    // Although there is not supposed to be anything inside
+                    // this element, we nontheless change the environment so
+                    // that if by using a nonvalidating parser elements are
+                    // included, then they will be evaluated in the correct
+                    // context.
+                    _containers.push(_current);
+                }
+                _current = deletedRelation;
+
             } else if (elementName.equals("director")) {
                 // NOTE: We do not check for a previously existing director.
                 // There is presumably no harm in just creating a new one.
@@ -523,7 +586,7 @@ public class MoMLParser extends HandlerBase {
                 if (_current != null) {
                     _containers.push(_current);
                 } else if (_toplevel == null) {
-                    // NOTE: Used to set _toplevel to newEntity, but
+                    // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
                     _toplevel = (NamedObj)getTopLevel(newEntity);
@@ -678,16 +741,27 @@ public class MoMLParser extends HandlerBase {
 
             } else if (elementName.equals("model")) {
                 String className = (String)_attributes.get("class");
-                _checkForNull(className, "No class for element \"model\"");
                 String modelName = (String)_attributes.get("name");
                 _checkForNull(modelName, "No name for element \"model\"");
 
-                Object[] arguments = new Object[1];
-                arguments[0] = _workspace;
-                Class newClass = Class.forName(className, true, _classLoader);
-                _toplevel = _createInstance(newClass, arguments);
-                _toplevel.setName(modelName);
-                _toplevel.setMoMLElementName("model");
+                if (className != null) {
+                    Object[] arguments = new Object[1];
+                    arguments[0] = _workspace;
+                    Class newClass = Class.forName(className, true, _classLoader);
+                    _toplevel = _createInstance(newClass, arguments);
+                    _toplevel.setName(modelName);
+                    _toplevel.setMoMLElementName("model");
+                } else {
+                    // Look for previously existing model.
+                    _toplevel = _searchForEntity(modelName, true);
+                    if (_toplevel == null) {
+                        throw new XmlException(
+                                "No class given for element \"model\".",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
+                    }
+                }
                 _current = _toplevel;
 
             } else if (elementName.equals("port")) {
@@ -883,6 +957,35 @@ public class MoMLParser extends HandlerBase {
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
 
+            } else if (elementName.equals("unlink")) {
+                String portName = (String)_attributes.get("port");
+                _checkForNull(portName, "No port for element \"link\"");
+                String relationName = (String)_attributes.get("relation");
+                // FIXME: allow channel instead of relation.
+                _checkForNull(relationName,
+                        "No relation for element \"link\"");
+
+                _checkClass(_current, CompositeEntity.class,
+                        "Element \"unlink\" found inside an element that "
+                        + "is not a CompositeEntity. It is: "
+                        + _current);
+                // If the container is cloned from something, break
+                // the link, since now the object has changed.
+                _current.deferMoMLDefinitionTo(null);
+
+                CompositeEntity context = (CompositeEntity)_current;
+
+                // Parse port
+                ComponentPort port = _getPort(portName, context);
+
+                // Get relation
+                Relation tmpRelation = context.getRelation(relationName);
+                _checkForNull(tmpRelation, "No relation named \"" +
+                        relationName + "\" in " + context.getFullName());
+                ComponentRelation relation = (ComponentRelation)tmpRelation;
+
+                port.unlink(relation);
+
             } else if (elementName.equals("vertex")) {
                 String vertexName = (String)_attributes.get("name");
                 _checkForNull(vertexName, "No name for element \"vertex\"");
@@ -960,7 +1063,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | director | doc | entity | import | link | property | relation | rendition)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | director | doc | entity | import | link | property | relation | rendition)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (class | configure | director | doc | entity | import | link | port | property | relation | rendition)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | import | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link channel CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink channel CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -1130,6 +1233,57 @@ public class MoMLParser extends HandlerBase {
                 _parser.getColumnNumber());
     }
 
+    // Delete the entity after verifying that it is contained (deeply)
+    // by the current environment.
+    private NamedObj _deleteEntity(String entityName) throws Exception {
+        ComponentEntity toDelete = _searchForEntity(entityName, true);
+        if (toDelete == null) {
+            throw new XmlException("No such entity to delete: " + entityName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        // If the container is cloned from something, break
+        // the link, since now the object has changed.
+        NamedObj container = (NamedObj)toDelete.getContainer();
+        if (container != null) {
+            container.deferMoMLDefinitionTo(null);
+        }
+
+        toDelete.setContainer(null);
+        return toDelete;
+    }
+
+    // Delete the port after verifying that it is contained (deeply)
+    // by the current environment.
+    private Port _deletePort(String portName) throws Exception {
+        Port toDelete = _searchForPort(portName);
+        if (toDelete == null) {
+            throw new XmlException("No such port to delete: "
+                    + portName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        toDelete.setContainer(null);
+        return toDelete;
+    }
+
+    // Delete the relation after verifying that it is contained (deeply)
+    // by the current environment.
+    private Relation _deleteRelation(String relationName) throws Exception {
+        ComponentRelation toDelete = _searchForRelation(relationName);
+        if (toDelete == null) {
+            throw new XmlException("No such relation to delete: "
+                    + relationName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        toDelete.setContainer(null);
+        return toDelete;
+    }
+
     // Return the port corresponding to the specified port name in the
     // specified composite entity.  If the port belongs directly to the
     // composite entity, then the argument is a simple name.  If the
@@ -1180,9 +1334,10 @@ public class MoMLParser extends HandlerBase {
                 if (nextPeriod < 1) {
                     if (_current != null && enforceContainment == true) {
                         throw new XmlException(
-                            "Multiple containment is not supported."
-                            + " Attempt to place " + _toplevel.getFullName()
-                            + " inside " + _current.getFullName(),
+                            "Reference to an existing entity: "
+                            + _toplevel.getFullName()
+                            + " in an inappropriate context: "
+                            + _current.getFullName(),
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
@@ -1196,10 +1351,10 @@ public class MoMLParser extends HandlerBase {
                         if (result != null) {
                             if (enforceContainment == true && _current != null                                      && !_current.deepContains(result)) {
                                 throw new XmlException(
-                                    "Multiple containment is not supported."
-                                    + " Attempt to place "
+                                    "Reference to an existing entity: "
                                     + result.getFullName()
-                                    + " inside " + _current.getFullName(),
+                                    + " in an inappropriate context: "
+                                    + _current.getFullName(),
                                     _currentExternalEntity(),
                                     _parser.getLineNumber(),
                                     _parser.getColumnNumber());
@@ -1247,9 +1402,10 @@ public class MoMLParser extends HandlerBase {
                 if (result != null && enforceContainment == true &&
                        !_current.deepContains(result)) {
                     throw new XmlException(
-                            "Multiple containment is not supported."
-                            + " Attempt to place " + result.getFullName()
-                            + " inside " + _current.getFullName(),
+                            "Reference to an existing entity: "
+                            + result.getFullName()
+                            + " in an inappropriate context: "
+                            + _current.getFullName(),
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
@@ -1258,6 +1414,72 @@ public class MoMLParser extends HandlerBase {
             }
             return null;
         }
+    }
+
+    // Given a name that is either absolute (with a leading period)
+    // or relative to _current, find a port with that name.
+    // Return null if it is not found.  The port is required to
+    // be contained (deeply) by the current environment, or an XmlException
+    // will be thrown.
+    private Port _searchForPort(String name)
+             throws XmlException {
+        Port result = null;
+        // If the name is absolute, strip the prefix.
+        String topLevelName = "(no top level)";
+        if (_toplevel != null) {
+            topLevelName = _toplevel.getFullName();
+        }
+        if (_toplevel != null && name.startsWith(topLevelName)) {
+            int prefix = topLevelName.length();
+            if (name.length() > prefix) {
+                name = name.substring(1, name.length());
+            }
+        }
+        // Now we are assured that name is relative.
+        if (_current instanceof CompositeEntity) {
+            result = ((CompositeEntity)_current).getPort(name);
+        }
+        if (result == null) {
+            throw new XmlException("No such port: " + name
+                    + " in " + topLevelName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        return result;
+    }
+
+    // Given a name that is either absolute (with a leading period)
+    // or relative to _current, find a relation with that name.
+    // Return null if it is not found.  The relation is required to
+    // be contained (deeply) by the current environment, or an XmlException
+    // will be thrown.
+    private ComponentRelation _searchForRelation(String name)
+             throws XmlException {
+        ComponentRelation result = null;
+        // If the name is absolute, strip the prefix.
+        String topLevelName = "(no top level)";
+        if (_toplevel != null) {
+            topLevelName = _toplevel.getFullName();
+        }
+        if (_toplevel != null && name.startsWith(topLevelName)) {
+            int prefix = topLevelName.length();
+            if (name.length() > prefix) {
+                name = name.substring(1, name.length());
+            }
+        }
+        // Now we are assured that name is relative.
+        if (_current instanceof CompositeEntity) {
+            result = ((CompositeEntity)_current).getRelation(name);
+        }
+        if (result == null) {
+            throw new XmlException("No such relation: " + name
+                    + " in " + topLevelName,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

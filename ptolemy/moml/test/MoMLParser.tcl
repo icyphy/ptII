@@ -962,6 +962,111 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
 }
 
 #----------------------------------------------------------------------
+test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
+    set incMoml_2_5 "<entity name=\".top\">
+    <deleteEntity name=\"a\"/>
+</entity>
+"
+    set toplevel [$parser parse $incMoml_2_5]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="inside.input" relation="r"/>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.5.1 {Test incremental parsing: remove an entity} {
+    set incMoml_2_5_1 {<entity name=".top">
+    <unlink port="inside.input" relation="r"/>
+</entity>}
+    set toplevel [$parser parse $incMoml_2_5_1]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+    </relation>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.6 {Test incremental parsing: remove nonexistent entity} {
+    set incMoml_2_6 "<entity name=\".top\">
+    <deleteEntity name=\"a\"/>
+</entity>
+"
+    catch {$parser parse $incMoml_2_6} msg
+    string range $msg 0 52
+} {com.microstar.xml.XmlException: No such entity to del}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
+    set incMoml_2_7 "<entity name=\".top\">
+    <deleteRelation name=\"r\"/>
+</entity>
+"
+    # Test using a new parser.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser setToplevel $toplevel
+    $parser parse $incMoml_2_7
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.8 {Test incremental parsing: remove a port} {
+    set incMoml_2_8 {<entity name=".top">
+    <deletePort name="inside.input"/>
+</entity>}
+    # Test using a new parser.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser setToplevel $toplevel
+    $parser parse $incMoml_2_8
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
 test MoMLParser-3.1 {Test invalid containment} {
     set incMoml_3_1 "$header
 <model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -976,7 +1081,7 @@ test MoMLParser-3.1 {Test invalid containment} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $incMoml_3_1} msg
     string range $msg 0 51
-} {com.microstar.xml.XmlException: Multiple containment}
+} {com.microstar.xml.XmlException: Reference to an exis}
 
 #----------------------------------------------------------------------
 test MoMLParser-3.2 {Test invalid containment} {
@@ -992,7 +1097,7 @@ test MoMLParser-3.2 {Test invalid containment} {
     $parser reset
     catch {$parser parse $incMoml_3_2} msg
     string range $msg 0 51
-} {com.microstar.xml.XmlException: Multiple containment}
+} {com.microstar.xml.XmlException: Reference to an exis}
 
 #----------------------------------------------------------------------
 test MoMLParser-3.3 {Test invalid containment} {
@@ -1008,7 +1113,7 @@ test MoMLParser-3.3 {Test invalid containment} {
     $parser reset
     catch {$parser parse $incMoml_3_3} msg
     string range $msg 0 51
-} {com.microstar.xml.XmlException: Multiple containment}
+} {com.microstar.xml.XmlException: Reference to an exis}
 
 #----------------------------------------------------------------------
 test MoMLParser-3.4 {Test invalid containment} {
@@ -1025,4 +1130,4 @@ test MoMLParser-3.4 {Test invalid containment} {
     $parser reset
     catch {$parser parse $incMoml_3_4} msg
     string range $msg 0 51
-} {com.microstar.xml.XmlException: Multiple containment}
+} {com.microstar.xml.XmlException: Reference to an exis}
