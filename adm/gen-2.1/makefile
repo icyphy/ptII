@@ -289,7 +289,7 @@ ptbuild:
 	@echo "#"
 	@echo "$@ `date`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -target 1.1" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -415,7 +415,7 @@ bldmastrcoverage:
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
-		JFLAGS="-deprecation -g" \
+		JFLAGS="-deprecation -g -target 1.1" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
@@ -776,7 +776,7 @@ remote2distjdk1.4:
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH ./configure; \
-	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k JFLAGS=)
+	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k)
 	@echo "$@ `date`"
 
 # Test with JDK1.4
@@ -790,7 +790,7 @@ $(REMOTE2PTJACL_JAR):
 		cd tcl;	\
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k JFLAGS= install)
+		$(MAKE) -k install)
 	ls -l $@
 	@echo "$@ `date`"
 
@@ -802,7 +802,7 @@ remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 	-(cd $(REMOTE2PTIIDIST); \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k JFLAGS= tests)
+		$(MAKE) -k tests)
 	@echo "$@ `date`"
 
 
@@ -872,7 +872,7 @@ remote3distbuild:
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE3PTIIDIST); rm -f config.status config.cache; \
-		PTII=$(REMOTE3PTIIDIST) ./configure; $(MAKE) -k JFLAGS=)
+		PTII=$(REMOTE3PTIIDIST) ./configure; $(MAKE) -k)
 	@echo "$@ `date`"
 
 # Build Jacl
@@ -883,7 +883,7 @@ $(REMOTE3PTJACL_JAR):
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE3PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
-		cd tcl; $(MAKE) JFLAGS= install)
+		cd tcl; $(MAKE) install)
 	ls -l $@
 	@echo "$@ `date`"
 
@@ -894,7 +894,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE3PTIIDIST); \
-		$(OTHERMAKE) JFLAGS= tests)
+		$(OTHERMAKE) tests)
 	@echo "$@ `date`"
 
 
