@@ -63,7 +63,11 @@ proc doSimpleParseTest {string} {
     set theBody [$jimple newBody $theMethod]
     $theBody insertIdentityStmts
     $theMethod setActiveBody $theBody
-    java::call ptolemy.copernicus.kernel.JavaFragmentParser add $theBody $string
+
+    set insertPoint [$jimple newNopStmt]
+    [$theBody getUnits] add $insertPoint
+
+    java::call ptolemy.copernicus.kernel.fragment.JavaFragmentParser insertBefore $theBody $insertPoint [java::new java.util.HashMap] $string
     [java::call soot.jimple.toolkits.scalar.NopEliminator v] transform $theBody "test"
     list [[$theBody getUnits] toString] [[java::cast java.lang.Object [$theBody getLocals]] toString] [[java::cast java.lang.Object [$theBody getTraps]] toString]
 }
@@ -252,3 +256,55 @@ test JavaFragmentParser-4.19 {static field} {
     doSimpleParseTest "{baz.bazs.baz.bar();}"
 } {{[this := @this: foo, $deref = this.<foo: foo baz>, $deref = <foo: foo bazs>, $deref = $deref.<foo: foo baz>, virtualinvoke $deref.<foo: void bar()>()]} {[this, $deref, $deref, $deref]} {[]}}
 
+
+test JavaFragmentParser-5.1 {passed in bindings} {
+    set voidType [java::call soot.VoidType v]
+    set intType [java::call soot.VoidType v]
+    set jimple [java::call soot.jimple.Jimple v]
+    set theClass [java::new soot.SootClass foo 0]
+    set theMethod [java::new soot.SootMethod bar [java::new java.util.LinkedList] $voidType 0]
+    $theClass addMethod $theMethod
+    set staticMethod [java::new soot.SootMethod bars [java::new java.util.LinkedList] $voidType [java::field soot.Modifier STATIC]]
+    $theClass addMethod $staticMethod
+
+    set theBody [$jimple newBody $theMethod]
+    $theBody insertIdentityStmts
+    $theMethod setActiveBody $theBody
+
+    set insertPoint [$jimple newNopStmt]
+    [$theBody getUnits] add $insertPoint
+
+    set parser [java::new ptolemy.copernicus.kernel.fragment.JavaFragmentParser $theBody $insertPoint]
+    $parser parse "int a = 5;"
+    $parser parse "int b = a;"
+    $parser put "INTTYPE" $intType
+    $parser parse "INTTYPE c = 5;"
+    
+    [java::call soot.jimple.toolkits.scalar.NopEliminator v] transform $theBody "test"
+    list [[$theBody getUnits] toString] [[java::cast java.lang.Object [$theBody getLocals]] toString] [[java::cast java.lang.Object [$theBody getTraps]] toString]} {{[this := @this: foo, a = 5, b = a, c = 5]} {[this, a, b, c]} {[]}}
+
+test JavaFragmentParser-5.1 {passed in bindings} {
+    set voidType [java::call soot.VoidType v]
+    set intType [java::call soot.VoidType v]
+    set jimple [java::call soot.jimple.Jimple v]
+    set theClass [java::new soot.SootClass foo 0]
+    set theMethod [java::new soot.SootMethod bar [java::new java.util.LinkedList] $voidType 0]
+    $theClass addMethod $theMethod
+    set staticMethod [java::new soot.SootMethod bars [java::new java.util.LinkedList] $voidType [java::field soot.Modifier STATIC]]
+    $theClass addMethod $staticMethod
+
+    set theBody [$jimple newBody $theMethod]
+    $theBody insertIdentityStmts
+    $theMethod setActiveBody $theBody
+
+    set insertPoint [$jimple newNopStmt]
+    [$theBody getUnits] add $insertPoint
+
+    set parser [java::new ptolemy.copernicus.kernel.fragment.JavaFragmentParser $theBody $insertPoint]
+    $parser parse "int a = 5;"
+    $parser parse "int b = a;"
+    $parser put "INTTYPE" $intType
+    $parser parse "INTTYPE c = 5;"
+    
+    [java::call soot.jimple.toolkits.scalar.NopEliminator v] transform $theBody "test"
+    list [[$theBody getUnits] toString] [[java::cast java.lang.Object [$theBody getLocals]] toString] [[java::cast java.lang.Object [$theBody getTraps]] toString]} {{[this := @this: foo, a = 5, b = a, c = 5]} {[this, a, b, c]} {[]}}

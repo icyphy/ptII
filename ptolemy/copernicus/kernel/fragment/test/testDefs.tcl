@@ -47,7 +47,7 @@ if [info exist env(PTII)] {
 if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set PTII [file join [pwd] .. .. .. .. ]
+    set PTII [file join [pwd] .. .. .. .. ..]
 }
 
 # Load up the test definitions.

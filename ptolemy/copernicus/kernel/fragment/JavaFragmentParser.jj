@@ -1,11 +1,12 @@
 options {
     JAVA_UNICODE_ESCAPE = true;
     STATIC = false;
+//    DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(JavaFragmentParser)
     
-package ptolemy.copernicus.kernel;
+package ptolemy.copernicus.kernel.fragment;
 
 import soot.*;
 import soot.util.*;
@@ -13,54 +14,58 @@ import soot.jimple.*;
 import java.io.*;
 import java.util.*;
 
+import ptolemy.copernicus.kernel.*;
+
 public class JavaFragmentParser {
     
-    public static void main(String args[]) {
-        JavaFragmentParser parser;
-        if (args.length == 0) {
-            System.out.println("Java Parser Version 1.1:  Reading from standard input . . .");
-            parser = new JavaFragmentParser(System.in);
-        } else if (args.length == 1) {
-            System.out.println("Java Parser Version 1.1:  Reading from file " + args[0] + " . . .");
-            try {
-                parser = new JavaFragmentParser(new java.io.FileInputStream(args[0]));
-            } catch (java.io.FileNotFoundException e) {
-                System.out.println("Java Parser Version 1.1:  File " + args[0] + " not found.");
-                return;
-            }
-        } else {
-            System.out.println("Java Parser Version 1.1:  Usage is one of:");
-            System.out.println("         java JavaFragmentParser < inputfile");
-            System.out.println("OR");
-            System.out.println("         java JavaFragmentParser inputfile");
-            return;
+    public JavaFragmentParser(JimpleBody body, Stmt insertPoint) {
+        this(body, insertPoint, null);
+    }
+
+    public JavaFragmentParser(JimpleBody body, Stmt insertPoint, Map idMap) {
+        this(System.in);
+        _body = body;
+        _insertPoint = insertPoint;
+        _idMap = idMap;
+    }
+
+    public void parse(String string) throws ParseException {
+        if(_idMap == null) {
+            _idMap = new HashMap();
         }
-        try {
-            parser.ExpressionEntry();
-            System.out.println("Java Parser Version 1.1:  Java program parsed successfully.");
-        } catch (ParseException e) {
-            System.out.println(e.getMessage());
-            System.out.println("Java Parser Version 1.1:  Encountered errors during parse.");
+        ReInit(new StringReader(string));
+        statementEntry();
+    }
+        
+    public void put(String string, Object object) {
+        if(_idMap == null) {
+            _idMap = new HashMap();
         }
-    }    
-    public static void add(
-        JimpleBody body, String string) {
-        Stmt insertPoint = Jimple.v().newNopStmt();
-        body.getUnits().add(insertPoint);
-        insertBefore(body, insertPoint, string);
+        _idMap.put(string, object);
     }        
+
+    public Object get(String string) {
+        if(_idMap == null) {
+            _idMap = new HashMap();
+        }
+        return _idMap.get(string);
+    }        
+
     public static void insertBefore(
-        JimpleBody body, Stmt insertPoint, String string) {
+        JimpleBody body, Stmt insertPoint, Map nameToLocal, String string) 
+        throws ParseException {
         Reader reader = new StringReader(string);
-        JavaFragmentParser parser = new JavaFragmentParser(reader);
-        parser.statementEntry(body, insertPoint);
+        JavaFragmentParser parser =
+        new JavaFragmentParser(body, insertPoint, nameToLocal);
+        parser.ReInit(reader);
+        parser.statementEntry();
     }     
     
     private void _bindNameToLocal(String name, Local local) {
-        if(_nameToLocal.get(name) != null) {
+        if(_idMap.get(name) != null) {
             throw new RuntimeException("multiply bound name = " + name);
         } else {
-            _nameToLocal.put(name, local);
+            _idMap.put(name, local);
         }
     }
         
@@ -76,8 +81,17 @@ public class JavaFragmentParser {
         return local;
     }
     
-    private RefType _findType(String name) {
+    private Type _findType(String name) {
+        if(_idMap.containsKey(name)) {
+            Object object = _idMap.get(name);
+            if(object instanceof Type) {
+                return (Type)object;
+            } else {
+                throw new RuntimeException("ID " + name + " is not a type!");
+            }
+        }
         // FIXME: This needs to be smarter... imports?
+        Scene.v().loadClassAndSupport(name);
         return RefType.v(name);
     }
     
@@ -145,7 +159,7 @@ public class JavaFragmentParser {
         int lastDotPosition = name.lastIndexOf(".");
         if(lastDotPosition == -1) {
             // See if there is a local with the right name.
-            Value value = (Value) _nameToLocal.get(name);
+            Value value = (Value) _idMap.get(name);
             if(value != null) {
                 return value;
             }
@@ -200,7 +214,7 @@ public class JavaFragmentParser {
     Stmt _insertPoint;
 
     // A map of local variable bindings for names.  Bindings
-    Map _nameToLocal;
+    Map _idMap;
 
     // List of Stmts corresponding to continue and break points for
     // loops.  The first element in the list is the innermost binding
@@ -475,11 +489,8 @@ void ExpressionEntry() :
 {
     Expression() <EOF>
 }
-void statementEntry(JimpleBody body, Stmt insertPoint) :
+void statementEntry():
 {
-    _body = body;
-    _insertPoint = insertPoint;
-    _nameToLocal = new HashMap();
     _continueStack = new LinkedList();
     _breakStack = new LinkedList();
 }
@@ -699,6 +710,22 @@ void Initializer() :
 }
 
 
+Type NamedType() :
+{
+    Type type;
+    String name;
+}
+{
+    type = PrimitiveType() {
+        return type;
+    }
+  | 
+    name = Name() {
+        type = _findType(name);
+        return type;
+    } 
+}
+
 /*
  * Type, name and expression syntax follows.
  */
@@ -706,17 +733,9 @@ void Initializer() :
 Type Type() :
 {
     Type type;
-    String name;
 }
 {
-    ( 
-        type = PrimitiveType()
-      | 
-        name = Name() {
-            type = _findType(name);
-        } 
-    ) 
-    ( 
+    type = NamedType() ( 
         "[" "]" { type = type.makeArrayType(); }
     )*
     {
@@ -1288,25 +1307,24 @@ Value AllocationExpression() :
     List argList;
 }
 {
-    "new" (
-        type = PrimitiveType() value = ArrayDimsAndInits(type) {return value;}
+    "new" type = NamedType() (
+        value = ArrayDimsAndInits(type) {return value;}
       |
-        name = Name() { type = _findType(name); } 
-        (
-            argList = Arguments() {
-                SootClass theClass = Scene.v().loadClassAndSupport(name);
-                SootMethod method = SootUtilities.getMatchingMethod(
-                    theClass, "<init>", argList);
-                Local local = _createLocal(
-                    "$new", Jimple.v().newNewExpr((RefType)type));
-                _insert(Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(
-                                local, method, argList)));
-                return local;
+        argList = Arguments() {
+            SootClass theClass;
+            if(!(type instanceof RefType)) {
+                throw new RuntimeException("Cannot instantiate primitive type");
             }
-          |
-            value = ArrayDimsAndInits(type) {return value;}
-        )
+            theClass = ((RefType)type).getSootClass();
+            SootMethod method = SootUtilities.getMatchingMethod(
+                theClass, "<init>", argList);
+            Local local = _createLocal(
+                "$new", Jimple.v().newNewExpr((RefType)type));
+            _insert(Jimple.v().newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(
+                            local, method, argList)));
+            return local;
+        }
     )
                 
             
@@ -1367,6 +1385,9 @@ void StatementOrBlock() :
     LOOKAHEAD(2)
     LabeledStatement()
   |
+    LOOKAHEAD([ "final" ] Type() <IDENTIFIER>)
+    LocalVariableDeclaration() ";"
+  |
     Block()
   |
     StatementExpression() ";"
@@ -1409,9 +1430,6 @@ void Block() :
 void BlockStatement() :
 {}
 {
-    LOOKAHEAD([ "final" ] Type() <IDENTIFIER>)
-    LocalVariableDeclaration() ";"
-  |
     StatementOrBlock()
   |
     UnmodifiedClassDeclaration()
