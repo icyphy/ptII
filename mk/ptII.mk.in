@@ -199,6 +199,11 @@ JXTA_DIR =	@JXTA_DIR@
 # Jar files used by JXTA
 JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/beepcore.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtasecurity.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix-asn1.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix32.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtaptls.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/minimalBC.jar
 
+# The major type of OS we are running under.
+# Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
+# Used in ptolemy/matlab/makefile
+MAJOR_OS_VERSION =	@MAJOR_OS_VERSION@
+
 # Location of the Matlab directory.  The matlab binary will be
 # found at $(MATLAB_DIR)/bin/matlab
 MATLAB_DIR = 	@MATLAB_DIR@
