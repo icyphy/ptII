@@ -44,7 +44,6 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
-	Block.java \
 	Entity.java \
 	NamedObj.java \
 	Node.java \
