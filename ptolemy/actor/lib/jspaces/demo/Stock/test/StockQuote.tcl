@@ -77,7 +77,7 @@ test StockQuote-2.1 {get price of YHOO} {
     	    [expr {$firstPrice - $lastPrice < 10}]
 } {1 1 1 1}
 
-test StockQuote-2.2 {get price of Lucent} {
+test StockQuote-2.2 {get price of AOL} {
     set symbol [getParameter $stock ticker]
     $symbol setExpression {"AOL"}
     [$e0 getManager] execute
