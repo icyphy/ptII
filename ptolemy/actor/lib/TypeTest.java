@@ -221,12 +221,12 @@ public class TypeTest extends Discard {
             if (actualPortTypes.length() > 0) {
                 portTypes.setToken(actualPortTypes);
             } else {
-                portTypes.setToken(null);
+                portTypes.setToken((Token)null);
             }
             if (actualParameterTypes.length() > 0) {
                 parameterTypes.setToken(actualParameterTypes);
             } else {
-                parameterTypes.setToken(null);
+                parameterTypes.setToken((Token)null);
             }
         } else {
             RecordToken correctPortTypes =
