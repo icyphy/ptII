@@ -168,7 +168,7 @@ public class FSMGraphFrame extends GraphFrame {
         //_executeMenu.setMnemonic(KeyEvent.VK_X);
 	//_menubar.add(_executeMenu);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newStateAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
+        //diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
     }
 
     /** Create a new graph pane.
