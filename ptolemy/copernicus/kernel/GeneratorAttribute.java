@@ -30,9 +30,13 @@
 
 package ptolemy.copernicus.kernel;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
@@ -102,14 +106,47 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
 
-	System.out.println("GeneratorAttribute(" + container + " " + name);
-	// Read in the initialParameters file.
         initialParametersURL =
 	    new Parameter(this, "initialParametersURL",
 			  new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
-        Documentation doc = new Documentation(initialParametersURL, "tooltip");
-        doc.setValue("MoML File that contains the initial parameter values.");
+    }	
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         Parameters                        ////
+
+
+    /** MoML file that contains other parameters.  The default value
+     *  is the string "ptolemy/copernicus/kernel/Generator.xml".
+     */
+    public Parameter initialParametersURL;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    public void changeExecuted(ChangeRequest change) {
+	System.out.println("changeExecuted: "/* + change*/);
+    }
+
+    public void changeFailed(ChangeRequest change, final Exception exception) {
+	System.out.println("changeFailed: "/* + change + " "*/ + exception);
+    }
+
+    /** If this GeneratorAttribute has not yet been initialized, the
+     *  initialized it by reading the moml file naemd by the
+     *  initialParametersURL and creating Parameters and Variables
+     *  accordingly.
+     */
+    public void initialize() throws IllegalActionException, NameDuplicationException {
+	if (_initialized) {
+	    return;
+	}
+
+	if (initialParametersURL == null) {
+	    throw new IllegalActionException(this, "initialParametersURL "
+					     + "parameter was null?");
+	}
+
+	// Read in the initialParameters file.
 	URL initialParameters = 
 	    getClass().getClassLoader()
 	    .getResource(((StringToken)initialParametersURL.getToken())
@@ -149,27 +186,116 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 					     .getExpression()
 					     + "'");
 	}
-	sanityCheckAndUpdateParameters();
+	// We sanity check after modelPath has had a chance to be
+	// set so that we avoid calling the parser on the initial default
+	// file that we are not going to use anyway.
+ 	//sanityCheckAndUpdateParameters();
+
+	_initialized = true;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         Parameters                        ////
 
-
-    /** MoML file that contains other parameters.  The default value
-     *  is the string "ptolemy/copernicus/kernel/Generator.xml".
+    /** If necessary, initialize this GeneratorAttribute and then 
+     *	sanity check the parameters and update them as necessary.
+     *  The moml file named by the modelPathOrURL method parameter
+     *  is read in and the Parameters that are determined by the 
+     *  model itself are checked.  Pathnames are also checked
+     *
+     *  @param modelPathOrURL The file pathname or URL to the model.
+     *  If modelPathOrURL is null, then the value of the modelPath
+     *  parameter is used.
      */
-    public Parameter initialParametersURL;
+    public void sanityCheckAndUpdateParameters(String modelPathOrURL)
+	throws IllegalActionException, NameDuplicationException {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	if (!_initialized) {
+	    initialize();
+	}
 
-    public void changeExecuted(ChangeRequest change) {
-	System.out.println("changeExecuted: "/* + change*/);
-    }
+	if (modelPathOrURL == null)
+	    // Get the modelPath and update modelPath and model.
+	    modelPathOrURL = 
+		((StringToken)
+		 ((Parameter)getAttribute("modelPath"))
+		 .getToken()).stringValue();
 
-    public void changeFailed(ChangeRequest change, final Exception exception) {
-	System.out.println("changeFailed: "/* + change + " "*/ + exception);
+	// Update the modelName and iterations Parameters.
+	updateModelAttributes(modelPathOrURL);
+
+
+	String ptIIUserDirectory =
+	    ((StringToken)
+	     ((Parameter)getAttribute("ptIIUserDirectory"))
+	     .getToken()).stringValue();
+
+	// Check that we will be able to write to the value of
+	// the ptIIUserDirectory Parameter
+	File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
+	if (!ptIIUserDirectoryFile.isDirectory() 
+	    || !ptIIUserDirectoryFile.canWrite()) {
+
+	    // It would be nice to tell the user we are changing the
+	    // ptIIUserDirectory directory of the build.  Usually
+	    // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
+
+	    // Get user.dir and create a ptII/cg subdir if necessary
+            String userDirectory = 
+		UtilityFunctions.getProperty("user.dir");
+	    if (userDirectory != null) {
+		ptIIUserDirectoryFile =
+		    new File(userDirectory + "/ptII/cg");
+		if (!ptIIUserDirectoryFile.isDirectory()) {
+		    // No need to check the return value here,
+		    // we do it later anyway
+		    ptIIUserDirectoryFile.mkdirs();
+		}
+		if (!ptIIUserDirectoryFile.isDirectory() 
+		    || !ptIIUserDirectoryFile.canWrite()) {
+		    throw new IllegalActionException("'" + ptIIUserDirectory
+						     + "' was not a "
+						     + "writable directory, "
+						     + "so we tried '"
+						     + ptIIUserDirectoryFile
+						     + "', but we failed to "
+						     + "make a writable"
+						     + "directory?");
+		} else {
+		    ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
+		    ((Parameter)getAttribute("ptIIUserDirectory"))
+			.setExpression("property(\"user.dir\") + "
+				       + "\"/ptII/cg\"");
+		}
+	    }
+	}
+
+	// targetPath depends on the value of targetPackage
+	// FIXME: Variables should be visible in the UI, but not editable.
+	String targetPackage =
+	    ((StringToken)
+	     ((Parameter)getAttribute("targetPackage"))
+	     .getToken()).stringValue();
+
+	String targetPath = StringUtilities.substitute(targetPackage,
+						       ".", "/");
+
+	((Variable)getAttribute("targetPath"))
+	     .setExpression("\"" + targetPath + "\"");
+
+	// Check that ptIIUserDirectory + targetPath is writable.
+	// targetPath depends on ptIIUserDirectory, so we should mess with ptIIUserDirectory first.
+
+	File targetPathFile = new File(ptIIUserDirectory, targetPath);
+	if (!targetPathFile.isDirectory() 
+	    || !targetPathFile.canWrite()) {
+	    // Make any directories
+	    if (!targetPathFile.mkdirs()) {
+		    throw new
+			IllegalActionException("'" + targetPathFile
+					       + "' was not a "
+					       + "writable directory, and "
+					       + "mkdirs() failed");
+	    }
+	}
     }
 
     /** Return a String representation of this object. */
@@ -214,104 +340,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	return results.toString();
     }
 
-    public void sanityCheckAndUpdateParameters()
-	throws IllegalActionException {
-	return;
-    }
-    /** Sanity check the parameters and update them as necessary */
-    public void foosanityCheckAndUpdateParameters()
-	throws IllegalActionException {
-
-	// Get the modelPath and update modelPath and model.
-	String modelPath = 
-	    ((StringToken)
-	     ((Parameter)getAttribute("modelPath"))
-	     .getToken()).stringValue();
-
-	// FIXME: This means we are always parsing the default model
-	// modelPath, every time we construct a GeneratorAttribute, 
-	// even if we then go and change it immeadiately.
-	updateAttributes(modelPath);
-
-	String root =
-	    ((StringToken)
-	     ((Parameter)getAttribute("root"))
-	     .getToken()).stringValue();
-
-	// Check that we will be able to write to the value of
-	// the root Parameter
-	File rootDirectory = new File(root);
-	if (!rootDirectory.isDirectory() 
-	    || !rootDirectory.canWrite()) {
-	    // It would be nice to tell the user we are changing the root
-	    // directory of the build.  Usually root is $PTII or
-	    // ptolemy.ptII.dir 
-
-	    // Get user.dir and create a ptII/cg subdir if necessary
-            String userDirectory = 
-		UtilityFunctions.getProperty("user.dir");
-	    if (userDirectory != null) {
-		rootDirectory =
-		    new File(userDirectory + "/ptII/cg");
-		if (!rootDirectory.isDirectory()) {
-		    // No need to check the return value here,
-		    // we do it later anyway
-		    rootDirectory.mkdirs();
-		}
-		if (!rootDirectory.isDirectory() 
-		    || !rootDirectory.canWrite()) {
-		    throw new IllegalActionException("'" + root
-						     + "' was not a "
-						     + "writable directory, "
-						     + "so we tried '"
-						     + rootDirectory
-						     + "', but we failed to "
-						     + "make a writable"
-						     + "directory?");
-		} else {
-		    root = rootDirectory.getPath();
-		    ((Parameter)getAttribute("root"))
-			.setExpression("property(\"user.dir\") + "
-				       + "\"/ptII/cg\"");
-		}
-	    }
-	}
-
-	// targetPath depends on the value of targetPackage
-	// FIXME: Variables should be visible in the UI, but not editable.
-	String targetPackage =
-	    ((StringToken)
-	     ((Parameter)getAttribute("targetPackage"))
-	     .getToken()).stringValue();
-
-	String targetPath = StringUtilities.substitute(targetPackage,
-						       ".", "/");
-
-	((Variable)getAttribute("targetPath"))
-	     .setExpression("\"" + targetPath + "\"");
-
-	// Check that root + targetPath is writable.
-	// targetPath depends on root, so we should mess with root first.
-
-	File targetPathFile = new File(root, targetPath);
-	if (!targetPathFile.isDirectory() 
-	    || !targetPathFile.canWrite()) {
-	    // Make any directories
-	    if (!targetPathFile.mkdirs()) {
-		    throw new
-			IllegalActionException("'" + targetPathFile
-					       + "' was not a "
-					       + "writable directory, and "
-					       + "mkdirs() failed");
-	    }
-	}
-    }
-
-    /** Update the modelPath and modelName parameters in the
-     *  GeneratorAttribute.
+    /** Update the modelPath, modelName and iterations parameters in
+     *  the GeneratorAttribute.  This method parses the model and
+     *  updates all GeneratorAttribute parameters that are determined
+     *  by the model itself.
+     *
      *  @param modelPathOrURL The file pathname or URL to the model.
      */
-    public void updateAttributes(String modelPathOrURL)
+    public void updateModelAttributes(String modelPathOrURL)
     throws IllegalActionException {
 	URL modelURL;
 	try {
@@ -332,17 +368,15 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 	// Parse the model and get the name of the model.
 	try {
-
-
             // Handle Backward Compatibility.
             parser.addMoMLFilter(new FilterBackwardCompatibility());
 
             // Filter out any graphical classes
             parser.addMoMLFilter(new FilterOutGraphicalClasses());
 
-	    NamedObj topLevel = null;
+	    NamedObj toplevel = null;
 	    try {
-		topLevel = parser.parse(null, modelURL);
+		toplevel = parser.parse(null, modelURL);
 		// FIXME: 1st arg of parse() could be $PTII as a URL.
 		modelPathOrURL = modelURL.toExternalForm();
 	    } catch (FileNotFoundException ex) {
@@ -351,7 +385,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		    URL anotherURL =
 			MoMLApplication.jarURLEntryResource(modelPathOrURL);
 		    if (anotherURL != null) {
-			topLevel = parser.parse(null, anotherURL);
+			toplevel = parser.parse(null, anotherURL);
 			modelPathOrURL = anotherURL.toExternalForm();
 		    } else {
 			throw new Exception("1. Failed to find '"
@@ -376,10 +410,26 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    // Strip off the leading '.' and then sanitize.
 	    String modelNameValue = 
 		StringUtilities
-		.sanitizeName(topLevel.getFullName().substring(1));
+		.sanitizeName(toplevel.getFullName().substring(1));
 
 	    Parameter modelName = (Parameter)getAttribute("modelName");
 	    modelName.setExpression("\"" + modelNameValue + "\"");
+
+	    // Set the iterations parameter.
+	    CompositeActor compositeActor = (CompositeActor)toplevel;
+	    Director director = compositeActor.getDirector();
+	    Attribute directorIterations =
+		director.getAttribute("iterations");
+	    Parameter iterations = (Parameter)getAttribute("iterations");
+	    if (directorIterations != null) {
+		Token iterationsToken = 
+		 ((Parameter)directorIterations)
+		    .getToken();
+		iterations.setExpression(iterationsToken.toString());
+	    } else {
+		iterations.setExpression("1000");
+	    }
+
 	} catch (Exception ex) {
 	    throw new IllegalActionException(this, ex,
 					     "Failed to parse '"
@@ -388,4 +438,11 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
             parser.setMoMLFilters(oldFilters);
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // True if initialized() was called.
+    private boolean _initialized = false;
 }

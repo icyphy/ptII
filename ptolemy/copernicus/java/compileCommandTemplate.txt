@@ -8,7 +8,7 @@
 @java@ @jvmSize@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
- ptolemy.copernicus.java.Main "@modelPath@" -d "@root@"
+ ptolemy.copernicus.java.Main "@modelPath@" -d "@ptIIUserDirectory@"
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.at targetPackage:@targetPackage@
  -p wjtp.mt targetPackage:@targetPackage@
@@ -25,12 +25,12 @@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@
  -p wjtp.cie targetPackage:@targetPackage@
- -p wjtp.snapshot1 outDir:@root@/@targetPath@/jimple1
- -p wjtp.snapshot2 outDir:@root@/@targetPath@/jimple2
- -p wjtp.snapshot3 outDir:@root@/@targetPath@/jimple3
- -p wjtp.snapshot4 outDir:@root@/@targetPath@/jimple4
- -p wjtp.snapshot5 outDir:@root@/@targetPath@/jimple5
- -p wjtp.snapshot6 outDir:@root@/@targetPath@/jimple6
- -p wjtp.finalSnapshot outDir:@root@/@targetPath@
+ -p wjtp.snapshot1 outDir:@ptIIUserDirectory@/@targetPath@/jimple1
+ -p wjtp.snapshot2 outDir:@ptIIUserDirectory@/@targetPath@/jimple2
+ -p wjtp.snapshot3 outDir:@ptIIUserDirectory@/@targetPath@/jimple3
+ -p wjtp.snapshot4 outDir:@ptIIUserDirectory@/@targetPath@/jimple4
+ -p wjtp.snapshot5 outDir:@ptIIUserDirectory@/@targetPath@/jimple5
+ -p wjtp.snapshot6 outDir:@ptIIUserDirectory@/@targetPath@/jimple6
+ -p wjtp.finalSnapshot outDir:@ptIIUserDirectory@/@targetPath@
  -p wjtp.iee enabled
  @compileOptions@

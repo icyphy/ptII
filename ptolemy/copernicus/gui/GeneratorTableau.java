@@ -160,6 +160,14 @@ public class GeneratorTableau extends Tableau {
 	public GeneratorFrame(final CompositeEntity model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
 	    super(model, tableau);
+
+	    // If the model has been modified, then save it.  When we
+	    // run codegen, we often run a separate java process and
+	    // read a .xml file so that xml file should be updated.
+	    if( isModified()) {
+		_save();
+	    }
+
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.X_AXIS));
 
@@ -168,7 +176,8 @@ public class GeneratorTableau extends Tableau {
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 0, 0, 0));
-            caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+            caveatsPanel.setLayout(new BoxLayout(caveatsPanel,
+						 BoxLayout.X_AXIS));
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
                     + "code generator facility, with many "
@@ -214,7 +223,8 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton
-		.setToolTipText("Display a summary of the Parameters");
+		.setToolTipText("Sanity check the Parameters and then "
+				+ "display a summary.");
             buttonPanel.add(parametersButton);
 
             //buttonPanel.add(Box.createVerticalStrut(5));
@@ -252,7 +262,9 @@ public class GeneratorTableau extends Tableau {
                         model, "_generator");
             }
 
-	    attribute.sanityCheckAndUpdateParameters();
+	    // Update the modelPath parameter with the path to the model
+	    attribute.sanityCheckAndUpdateParameters(getEffigy().url
+						     .getURL().toString());
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
@@ -278,6 +290,11 @@ public class GeneratorTableau extends Tableau {
 
             parametersButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
+			try {
+			    options.sanityCheckAndUpdateParameters(null);
+			} catch (Exception ex) {
+			    exec.appendJTextArea(ex.toString());
+			}
 			exec.appendJTextArea(options.toString());
 		    }
 		});
@@ -335,10 +352,10 @@ public class GeneratorTableau extends Tableau {
 				  .getAttribute("targetPath"))
 				 .getToken()).stringValue();
 
-			    String root =
+			    String ptIIUserDirectory =
 				((StringToken)
 				 ((Parameter)options
-				  .getAttribute("root"))
+				  .getAttribute("ptIIUserDirectory"))
 				 .getToken()).stringValue();
 
 			    //targetPath =
@@ -346,16 +363,16 @@ public class GeneratorTableau extends Tableau {
 			    // .length() - 1);
 
 			    // Check that we will be able to write
-			    File directory = new File(root, targetPath);
+			    File directory = new File(ptIIUserDirectory, targetPath);
 			    if (!directory.isDirectory()) {
 				throw new IllegalActionException(model,
 						 "Not a directory: "
-						 + root + "/" + targetPath);
+						 + ptIIUserDirectory + "/" + targetPath);
 			    }
 			    if (!directory.canWrite()) {
 				throw new IllegalActionException(model,
 						 "Can't write: "
-						 + root + "/" + targetPath);
+						 + ptIIUserDirectory + "/" + targetPath);
 			    }
 
 			    // Commands that we will eventually execute,
@@ -482,15 +499,10 @@ public class GeneratorTableau extends Tableau {
 			    }
 
                             if (run && commands != null) {
-				System.out.println("GeneratorTableau: run"
-					       + commands.get(1));
 				execCommands.add(commands.get(1));
                             }
 
                             if (execCommands.size() > 0) {
-				System.out.println("GeneratorTableau: execCommand"
-					       + execCommands.size());
-
 				exec.setCommands(execCommands);
 				exec.start();
                             }
@@ -566,35 +578,10 @@ public class GeneratorTableau extends Tableau {
     private List _generateCodeGeneratorCommands(CompositeEntity model,
 	    GeneratorAttribute generatorAttribute,
             String copernicusSubdirectory)
-            throws IllegalArgumentException, InternalErrorException {
-	// Create a temporary file in c:/temp or /tmp.
-	File temporaryMoMLFile = null;
+            throws IllegalArgumentException, IllegalActionException,
+		   InternalErrorException, NameDuplicationException {
 
-	try {
-	    temporaryMoMLFile = File.createTempFile("CGTmp", ".xml");
-	    temporaryMoMLFile.deleteOnExit();
-
-	    // We write out the model so that we can run the code generator
-	    // in a separate process.
-	    java.io.FileWriter fileWriter =
-		new java.io.FileWriter(temporaryMoMLFile);
-	    model.exportMoML(fileWriter);
-	    fileWriter.close();
-	} catch (IOException io) {
-	    throw new InternalErrorException(model, null,
-	            "Failed to write model to '"
-                    + temporaryMoMLFile + "': " + io);
-	}
-
-
-	try {
-	    generatorAttribute
-		.updateAttributes(temporaryMoMLFile.getPath());
-	} catch (Exception ex) {
-	    throw new InternalErrorException(model, ex,
-					     "Failed to update modelPath "
-					     + " or model");
-	}
+	generatorAttribute.sanityCheckAndUpdateParameters(null);
 
 	Parameter codeGenerator =
 	    (Parameter)generatorAttribute.getAttribute("codeGenerator");

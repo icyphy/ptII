@@ -131,19 +131,14 @@ public class Copernicus {
 	NamedObj namedObj = new NamedObj();
 	_generatorAttribute =
 	    new GeneratorAttribute(namedObj, "_helpGeneratorAttribute");
+	_generatorAttribute.initialize();
 
+	// _parseArgs() will set the modelPath Parameter
 	_parseArgs(args);
 
-	// Make sure that the modelPath is a URL
-	Parameter modelPath =
-	    (Parameter)_generatorAttribute.getAttribute("modelPath");
-	if (modelPath == null) {
-	    throw new IllegalActionException("modelPath attribute not found"
-					     + _generatorAttribute);
-	}
-	String modelPathValue =
-	    ((StringToken)(modelPath.getToken())).stringValue();
-        _generatorAttribute.updateAttributes(modelPathValue);
+	// Parse the file named by the modelPath Parameter and update
+	// parameters
+        _generatorAttribute.sanityCheckAndUpdateParameters(null);
 
 	if (_verbose) {
 	    System.out.println(_generatorAttribute.toString());
@@ -449,7 +444,7 @@ public class Copernicus {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
 	    // Assume the argument is a file name or URL.
-	    _generatorAttribute.updateAttributes(arg);
+	    _generatorAttribute.updateModelAttributes(arg);
 	} else {
 	    // Argument not recognized.
 	    return false;

@@ -69,19 +69,39 @@ $Id$
      </property>
 
 
+     <property name="ptII" 
+               class="ptolemy.data.expr.Parameter"
+	       value="property(&quot;ptolemy.ptII.dir&quot;)"
+	       >
+	       <doc>The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir java system property</doc>
+     </property>
+
+     <property name="ptIIUserDirectory" 
+               class="ptolemy.data.expr.Parameter"
+	       value="ptII"
+	       >
+	       <doc>The top level directory to write the code in. This directory must be writable by the user.  The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
+     </property>
+
      <property name="targetPackage" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy.copernicus.&quot; + codeGenerator
-	       + &quot;.cg.&quot; + modelName"
+	       value="&quot;ptolemy.copernicus.&quot; + codeGenerator + &quot;.cg.&quot; + modelName"
 	       >
 	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + modelName</doc>
      </property>
 
      <property name="targetPath" 
-               class="ptolemy.data.expr.Variable"
+               class="ptolemy.data.expr.Parameter"
 	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + modelName"
 	       >
-	       <doc>The path relative to 'root' directory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
+	       <doc>The path relative to the ptIIUserDirectory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
+     </property>
+
+     <property name="modelPath" 
+               class="ptolemy.data.expr.Parameter"
+	       value="ptIIUserDirectory + &quot;/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml&quot;"
+	       >
+	       <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
      </property>
 
 
@@ -92,13 +112,19 @@ $Id$
 	       <doc> The name of the model, read from the .xml file and sanitized.</doc>
      </property>
 
-     <property name="modelPath" 
+     <property name="iterations" 
                class="ptolemy.data.expr.Parameter"
-	       value="root + &quot;/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml&quot;"
+	       value="1000"
 	       >
-	       <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
+	       <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
      </property>
 
+     <property name="iterationsParameter" 
+               class="ptolemy.data.expr.Variable"
+	       value="&quot;,iterations:&quot; + iterations"
+	       >
+	       <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
+     </property>
 
      <property name="compileCommandTemplateFile" 
                class="ptolemy.data.expr.Parameter"
@@ -116,7 +142,7 @@ $Id$
 
      <property name="classPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="root + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
+	       value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
 	       >
 	       <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
      </property>
@@ -126,20 +152,6 @@ $Id$
 	       value="property(&quot;path.separator&quot;)"
 	       >
 	       <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
-     </property>
-
-     <property name="iterations" 
-               class="ptolemy.data.expr.Parameter"
-	       value="1000"
-	       >
-	       <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
-     </property>
-
-     <property name="iterationsParameter" 
-               class="ptolemy.data.expr.Variable"
-	       value="&quot;,iterations:&quot; + iterations"
-	       >
-	       <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
      </property>
 
      <property name="java" 
@@ -170,21 +182,6 @@ $Id$
 	       <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
      </property>
 
-
-     <property name="ptII" 
-               class="ptolemy.data.expr.Parameter"
-	       value="property(&quot;ptolemy.ptII.dir&quot;)"
-	       >
-	       <doc>The location of the Ptolemy II classes.</doc>
-     </property>
-
-     <property name="root" 
-               class="ptolemy.data.expr.Parameter"
-	       value="property(&quot;ptolemy.ptII.dir&quot;)"
-	       >
-	       <doc>The top level directory to write the code in. The code will appear in 'root/targetPath'.</doc>
-     </property>
-
      <property name="runCommandTemplateFile" 
                class="ptolemy.data.expr.Parameter"
 	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/runCommandTemplate.txt&quot;"
@@ -202,9 +199,9 @@ $Id$
 
      <property name="sootDir" 
                class="ptolemy.data.expr.Parameter"
-	       value="property(&quot;ptolemy.ptII.dir&quot;) + &quot;/lib&quot;"
+	       value="ptII + &quot;/lib&quot;"
 	       >
-	       <doc>Defaults to the value of the ptolemy.ptII.dir property + "/lib/"</doc>
+	       <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + "/lib"</doc>
      </property>
 
      <property name="sootClasses" 
