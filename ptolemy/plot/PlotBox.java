@@ -424,33 +424,34 @@ public class PlotBox extends JPanel implements Printable {
      */
     public Dimension getMaximumSize() {
         if (_sizeHasBeenSet) {
-            return new Dimension(_width, _height);
+            return new Dimension(_preferredWidth, _preferredHeight);
         } else {
             return super.getMaximumSize();
         }
     }
 
     /** Get the minimum size of this component.
-     *  This is simply the dimensions specified by setBounds() or setSize(),
-     *  if these have been called.  Otherwise, return whatever the base
+     *  This is simply the dimensions specified by setSize(),
+     *  if this has been called.  Otherwise, return whatever the base
      *  class returns, which is undocumented.
      *  @return The minimum size.
      */
     public Dimension getMinimumSize() {
         if (_sizeHasBeenSet) {
-            return new Dimension(_width, _height);
+            return new Dimension(_preferredWidth, _preferredHeight);
         } else {
             return super.getMinimumSize();
         }
     }
 
-
     /** Get the preferred size of this component.
-     *  This is simply the dimensions specified by setBounds() or setSize().
+     *  This is simply the dimensions specified by setSize(),
+     *  if this has been called, or the default width and height
+     *  otherwise (500 by 300).
      *  @return The preferred size.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(_width, _height);
+        return new Dimension(_preferredWidth, _preferredHeight);
     }
 
     /** Get the title of the graph, or an empty string if there is none.
@@ -861,6 +862,8 @@ public class PlotBox extends JPanel implements Printable {
     public void setSize(int width, int height) {
         _width = width;
         _height = height;
+        _preferredWidth = width;
+        _preferredHeight = height;
         _sizeHasBeenSet = true;
         super.setSize(width, height);
     }
@@ -1937,7 +1940,8 @@ public class PlotBox extends JPanel implements Printable {
     };
 
     /** @serial Width and height of component in pixels. */
-    protected int _width = 400, _height = 400;
+    protected int _width = 500, _height = 300,
+            _preferredWidth = 500, _preferredHeight = 300;
 
     /** @serial Indicator that size has been set. */
     protected boolean _sizeHasBeenSet = false;
