@@ -49,14 +49,15 @@ import java.awt.image.*;
 public final class ImageDisplay extends AtomicActor {
     public ImageDisplay(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         _port_image = new IOPort(this, "image", true, false);
 	new Parameter(this, "FrameName", new StringToken("ImageDisplay"));
     }
 
-    //     public ImageDisplay(CompositeActor container, String name, Picture pan)
+    //     public ImageDisplay(CompositeActor container,
+    //                         String name, Picture pan)
     //             throws IllegalActionException, NameDuplicationException {
-    //         super(container,name);
+    //         super(container, name);
     //         _port_image = new IOPort(this, "image", true, false);
     //         _panel = pan;
     //     }
