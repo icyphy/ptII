@@ -124,7 +124,17 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.lang.java.tree \
 			ptolemy.math \
 			ptolemy.media \
-			ptolemy.moml
+			ptolemy.moml \
+			ptolemy.vergil \
+			ptolemy.vergil.debugger \
+			ptolemy.vergil.graph \
+			ptolemy.vergil.icon \
+			ptolemy.vergil.ptolemy \
+			ptolemy.vergil.ptolemy.fsm \
+			ptolemy.vergil.ptolemy.kernel \
+			ptolemy.vergil.toolbox \
+			ptolemy.vergil.tree
+
 
 all: suball codeDoc/tree.html
 install: all
@@ -175,11 +185,20 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/lang/java/tree/*.java \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
-			../ptolemy/moml/*.java
+			../ptolemy/moml/*.java \
+			../ptolemy/vergil/*.java \
+			../ptolemy/vergil/debugger/*.java \
+			../ptolemy/vergil/graph/*.java \
+			../ptolemy/vergil/icon/*.java \
+			../ptolemy/vergil/ptolemy/*.java \
+			../ptolemy/vergil/ptolemy/fsm/*.java \
+			../ptolemy/vergil/ptolemy/kernel/*.java \
+			../ptolemy/vergil/toolbox/*.java \
+			../ptolemy/vergil/tree/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).." $(JAVADOC) "$(JDOCFLAGS)" -d doc/codeDoc $(ALLJSRCS) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 
 
 # We don't include common.mk since we don't use the compiler here
