@@ -235,7 +235,7 @@ public class NonStrictTest extends Transformer {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
                 .booleanValue();
-        if (training) {
+        if (training && _trainingTokens != null) {
             Object[] newValues = _trainingTokens.toArray();
             Token[] newTokens = new Token[newValues.length];
             for(int i = 0; i < newValues.length; i++) {
