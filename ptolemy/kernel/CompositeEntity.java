@@ -70,15 +70,13 @@ public class CompositeEntity extends HierEntity {
     }
 
 
-    /** Return true since CompositeEntities are not atomic.
-     */	
+    /** Return true since CompositeEntities are not atomic. */	
     public boolean isAtomic() {
 	return false;
     }
 
 
-    /** Set the contents of this CompositeEntity.
-     */	
+    /** Set the contents of this CompositeEntity. */	
     public void setContents(NamedObjList contents) {
 	_contents = contents;
     }
@@ -87,8 +85,8 @@ public class CompositeEntity extends HierEntity {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* The HierEntities contained by this CompositeEntity */
-    /* FIXME: Develop HierEntityList */
+    // The HierEntities contained by this CompositeEntity.
+    // FIXME: Develop HierEntityList.
     private NamedObjList _contents = null;
 
 }
