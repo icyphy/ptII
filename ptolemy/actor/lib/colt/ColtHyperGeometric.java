@@ -85,9 +85,9 @@ public class ColtHyperGeometric extends ColtRandomSource {
         coltn = new Parameter(this, "n", new IntToken(1));
         coltn.setTypeEquals(BaseType.INT);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new HyperGeometric(2, 1, 1, randomElement);
+        rng = new HyperGeometric(2, 1, 1, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,9 +127,9 @@ public class ColtHyperGeometric extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	int N = ((IntToken) coltN.getToken()).intValue();
-	int s = ((IntToken) colts.getToken()).intValue();
-	int n = ((IntToken) coltn.getToken()).intValue();
+        int N = ((IntToken) coltN.getToken()).intValue();
+        int s = ((IntToken) colts.getToken()).intValue();
+        int n = ((IntToken) coltn.getToken()).intValue();
 
         _current = ((HyperGeometric) rng).nextInt(N, s, n);
 

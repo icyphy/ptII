@@ -79,9 +79,9 @@ public class ColtLogarithmic extends ColtRandomSource {
         coltP = new Parameter(this, "p", new DoubleToken(0.5));
         coltP.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new Logarithmic(0.5, randomElement);
+        rng = new Logarithmic(0.5, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class ColtLogarithmic extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
         _current = ((Logarithmic) rng).nextDouble(p);
 

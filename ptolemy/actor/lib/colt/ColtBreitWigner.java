@@ -85,9 +85,9 @@ public class ColtBreitWigner extends ColtRandomSource {
         coltCut = new Parameter(this, "cut", new DoubleToken(1.0));
         coltCut.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new BreitWigner(1.0, 1.0, 1.0, randomElement);
+        rng = new BreitWigner(1.0, 1.0, 1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,9 +127,9 @@ public class ColtBreitWigner extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
-	double gamma = ((DoubleToken) coltGamma.getToken()).doubleValue();
-	double cut = ((DoubleToken) coltCut.getToken()).doubleValue();
+        double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+        double gamma = ((DoubleToken) coltGamma.getToken()).doubleValue();
+        double cut = ((DoubleToken) coltCut.getToken()).doubleValue();
 
         _current = ((BreitWigner) rng).nextDouble(mean, gamma, cut);
 

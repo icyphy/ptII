@@ -79,9 +79,9 @@ public class ColtExponential extends ColtRandomSource {
         coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         coltLambda.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new Exponential(1.0, randomElement);
+        rng = new Exponential(1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class ColtExponential extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
+        double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
 
         _current = ((Exponential) rng).nextDouble(lambda);
 

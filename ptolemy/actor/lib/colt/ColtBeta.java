@@ -81,9 +81,9 @@ public class ColtBeta extends ColtRandomSource {
         coltBeta = new Parameter(this, "beta", new DoubleToken(2.0));
         coltBeta.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new Beta(2.0, 2.0, randomElement);
+        rng = new Beta(2.0, 2.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,8 +118,8 @@ public class ColtBeta extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
-	double beta = ((DoubleToken) coltBeta.getToken()).doubleValue();
+        double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
+        double beta = ((DoubleToken) coltBeta.getToken()).doubleValue();
 
         _current = ((Beta) rng).nextDouble(alpha, beta);
 

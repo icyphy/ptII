@@ -79,9 +79,9 @@ public class ColtChiSquare extends ColtRandomSource {
         coltFreedom = new Parameter(this, "freedom", new DoubleToken(1.0));
         coltFreedom.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new ChiSquare(1.0, randomElement);
+        rng = new ChiSquare(1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class ColtChiSquare extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
+        double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
 
         _current = ((ChiSquare) rng).nextDouble(freedom);
 

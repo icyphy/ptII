@@ -81,9 +81,9 @@ public class ColtGamma extends ColtRandomSource {
         coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         coltLambda.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new Gamma(1.0, 1.0, randomElement);
+        rng = new Gamma(1.0, 1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,8 +120,8 @@ public class ColtGamma extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
-	double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
+        double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
+        double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
 
         _current = ((Gamma) rng).nextDouble(alpha, lambda);
 

@@ -79,9 +79,9 @@ public class ColtPoisson extends ColtRandomSource {
         coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
         coltMean.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new Poisson(1.0, randomElement);
+        rng = new Poisson(1.0, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@ public class ColtPoisson extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
+        double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
 
         _current = ((Poisson) rng).nextInt(mean);
 

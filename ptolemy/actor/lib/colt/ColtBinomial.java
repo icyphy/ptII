@@ -81,12 +81,12 @@ public class ColtBinomial extends ColtRandomSource {
         coltP = new Parameter(this, "p", new DoubleToken(0.5));
         coltP.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	if(randomElement == null)
-		System.err.println("randomElement is null!");
+        if(randomElement == null)
+                System.err.println("randomElement is null!");
 
-	rng = new Binomial(1, 0.5, randomElement);
+        rng = new Binomial(1, 0.5, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,8 +121,8 @@ public class ColtBinomial extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	int n = ((IntToken) coltN.getToken()).intValue();
-	double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        int n = ((IntToken) coltN.getToken()).intValue();
+        double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
         _current = ((Binomial) rng).nextInt(n, p);
 

@@ -42,15 +42,15 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-            			throws NameDuplicationException, IllegalActionException
+                                    throws NameDuplicationException, IllegalActionException
     {
-	super(container, name);
+        super(container, name);
 
-	index = 0;
-	_coltSeed = 1;
-	randomElement = new DRand((int)_coltSeed);
+        index = 0;
+        _coltSeed = 1;
+        randomElement = new DRand((int)_coltSeed);
 
-	_removeAttribute(super.seed);
+        _removeAttribute(super.seed);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -64,40 +64,40 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
      *  and adds it to the high level RNG actor.
      */
     public Parameter getRandomElementClass(CompositeEntity container)
-				throws IllegalActionException, NameDuplicationException
+                                throws IllegalActionException, NameDuplicationException
     {
-	randomElementClass = (Parameter) container.getAttribute("Random Number Generator");
-	coltSeed = (Parameter) container.getAttribute("coltSeed");
+        randomElementClass = (Parameter) container.getAttribute("Random Number Generator");
+        coltSeed = (Parameter) container.getAttribute("coltSeed");
 
-	if(randomElementClass == null)
-	{
-		randomElementClass = new Parameter(container, "Random Number Generator",
-				new StringToken(randomElementClassNames[index]));
+        if(randomElementClass == null)
+        {
+                randomElementClass = new Parameter(container, "Random Number Generator",
+                                new StringToken(randomElementClassNames[index]));
 
-		ChoiceStyle s = new ChoiceStyle(randomElementClass, "s");
-		for(int i = 0; i < randomElementClassNames.length; i++)
-		{
-			Parameter a =
-				new Parameter(s, "s"+i, new StringToken(randomElementClassNames[i]));
-		}
-	}
+                ChoiceStyle s = new ChoiceStyle(randomElementClass, "s");
+                for(int i = 0; i < randomElementClassNames.length; i++)
+                {
+                        Parameter a =
+                                new Parameter(s, "s"+i, new StringToken(randomElementClassNames[i]));
+                }
+        }
 
-	if(coltSeed == null)
-	{
-		coltSeed = new Parameter(container, "coltSeed", new LongToken(_coltSeed));
-		coltSeed.setTypeEquals(BaseType.LONG);
-	}
+        if(coltSeed == null)
+        {
+                coltSeed = new Parameter(container, "coltSeed", new LongToken(_coltSeed));
+                coltSeed.setTypeEquals(BaseType.LONG);
+        }
 
-	_addAttribute(randomElementClass);
-	_addAttribute(coltSeed);
+        _addAttribute(randomElementClass);
+        _addAttribute(coltSeed);
 
-	randomElementClass.addChangeListener(this);
-	coltSeed.addChangeListener(this);
+        randomElementClass.addChangeListener(this);
+        coltSeed.addChangeListener(this);
 
-	if(randomElement == null)
-		System.err.println("Unable to create randomElement!");
+        if(randomElement == null)
+                System.err.println("Unable to create randomElement!");
 
-	return randomElementClass;
+        return randomElementClass;
     }
 
     /** Send a random number to the output.
@@ -122,7 +122,7 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
      */
     public void changeFailed(ChangeRequest req, Exception e)
     {
-	//System.err.println("Changed failed");
+        //System.err.println("Changed failed");
     }
 
     /** Override the changeExecuted method in ChangeListener.
@@ -130,51 +130,51 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
      */
     public void changeExecuted(ChangeRequest req)
     {
-	//System.err.println("Request desc: " + req.getDescription());
+        //System.err.println("Request desc: " + req.getDescription());
 
-	if(-1 != req.getDescription().indexOf("coltSeed"))
-	{
-		try
-		{
-			_coltSeed = ((LongToken) (coltSeed.getToken())).longValue();
-		} catch(IllegalActionException e)
-		{
-			e.printStackTrace();
-		}
+        if(-1 != req.getDescription().indexOf("coltSeed"))
+        {
+                try
+                {
+                        _coltSeed = ((LongToken) (coltSeed.getToken())).longValue();
+                } catch(IllegalActionException e)
+                {
+                        e.printStackTrace();
+                }
 
-		//System.err.println("New _coltSeed: " + _coltSeed);
-		return;
-	}
+                //System.err.println("New _coltSeed: " + _coltSeed);
+                return;
+        }
 
-	if(-1 == req.getDescription().indexOf("Random Number Generator"))
-		return;
+        if(-1 == req.getDescription().indexOf("Random Number Generator"))
+                return;
 
-	String reClass = randomElementClass.getExpression();
+        String reClass = randomElementClass.getExpression();
 
-	if(-1 != reClass.indexOf(randomElementClassNames[0]) && index != 0)
-	{
-		randomElement = new DRand((int)_coltSeed);
-		index = 0;
-	} else if(-1 != reClass.indexOf(randomElementClassNames[1]) && index != 1)
-	{
-		randomElement = new MersenneTwister((int)_coltSeed);
-		index = 1;
-	} else if(-1 != reClass.indexOf(randomElementClassNames[2]) && index != 2)
-	{
-		randomElement = new Ranecu(_coltSeed);
-		index = 2;
-	} else if(-1 != reClass.indexOf(randomElementClassNames[3]) && index != 3)
-	{
-		randomElement = new Ranlux(_coltSeed);
-		index = 3;
-	} else if(-1 != reClass.indexOf(randomElementClassNames[4]) && index != 4)
-	{
-		randomElement = new Ranmar(_coltSeed);
-		index = 4;
-	}
+        if(-1 != reClass.indexOf(randomElementClassNames[0]) && index != 0)
+        {
+                randomElement = new DRand((int)_coltSeed);
+                index = 0;
+        } else if(-1 != reClass.indexOf(randomElementClassNames[1]) && index != 1)
+        {
+                randomElement = new MersenneTwister((int)_coltSeed);
+                index = 1;
+        } else if(-1 != reClass.indexOf(randomElementClassNames[2]) && index != 2)
+        {
+                randomElement = new Ranecu(_coltSeed);
+                index = 2;
+        } else if(-1 != reClass.indexOf(randomElementClassNames[3]) && index != 3)
+        {
+                randomElement = new Ranlux(_coltSeed);
+                index = 3;
+        } else if(-1 != reClass.indexOf(randomElementClassNames[4]) && index != 4)
+        {
+                randomElement = new Ranmar(_coltSeed);
+                index = 4;
+        }
 
-	//System.err.println("New randomElement: " + index);
-	//System.err.println("Changed executed");
+        //System.err.println("New randomElement: " + index);
+        //System.err.println("Changed executed");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -205,11 +205,11 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
      */
     protected String [] randomElementClassNames =
     {
-	"DRand",
-	"MersenneTwister (MT19937)",
-	"Ranecu",
-	"Ranlux",
-	"Ranmar"
+        "DRand",
+        "MersenneTwister (MT19937)",
+        "Ranecu",
+        "Ranlux",
+        "Ranmar"
     };
 
     ///////////////////////////////////////////////////////////////////

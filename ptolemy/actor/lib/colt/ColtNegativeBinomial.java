@@ -81,9 +81,9 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         coltP = new Parameter(this, "p", new DoubleToken(0.5));
         coltP.setTypeEquals(BaseType.DOUBLE);
 
-	randomElementClass = getRandomElementClass(container);
+        randomElementClass = getRandomElementClass(container);
 
-	rng = new NegativeBinomial(1, 0.5, randomElement);
+        rng = new NegativeBinomial(1, 0.5, randomElement);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,8 +120,8 @@ public class ColtNegativeBinomial extends ColtRandomSource {
      */
     public boolean prefire() throws IllegalActionException {
 
-	int n = ((IntToken) coltN.getToken()).intValue();
-	double p = ((DoubleToken) coltP.getToken()).doubleValue();
+        int n = ((IntToken) coltN.getToken()).intValue();
+        double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
         _current = ((NegativeBinomial) rng).nextInt(n, p);
 
