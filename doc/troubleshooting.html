@@ -18,6 +18,7 @@ Contents
 	<li> <a href="#jdk">Java version</a>
 	<li> <a href="#Diagnosing problems">Diagnosing problems</a>
 	<li> <a href="#CLASSPATH">CLASSPATH variable</a>
+	<li> <a href="#appletviewer">Appletviewer</a>
 	<li> <a href="#Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a>
 	<li> <a href="#Other Applet Resources">Other Applet Resources</a>
 	</menu>
@@ -84,6 +85,24 @@ on the Environment tab. If the CLASSPATH variable is set, we suggest clearing
 it (you may want to save its value, since it may be needed by some other
 program). You then probably have to restart your browser.
 
+<h3><a name="appletviewer">Appletviewer</a></h3>
+If you are having problems running an applet with a browser, and the
+applet is on the local machine and you have a JDK installed, you may
+want to try using the JDK <CODE>appletviewer</CODE> program instead
+of the browser. 
+ <p>For example, to view an applet contained in the file myapplet.html
+<pre>
+setenv CLASSPATH $PTII
+appletviewer myapplet.html
+</pre>
+ <p>The Solaris <CODE>appletviewer</CODE> can also take command line
+arguments that are passed to the underlying Java engine.  For example,
+to turn on verbose class messages:
+<pre>
+appletviewer -J-verbose:class myapplet.html
+</pre>
+
+
 <h3><a name="Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a></h3>
 If you have problems with applets, follow the checklist below
 <ol>
@@ -116,8 +135,8 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> Try a different browser
 
-<li> Try running the applets using the JDK <CODE>appletviewer</CODE>
-program.
+<li> Try running the applets using the JDK
+<a name="#appletviewer"><CODE>appletviewer</CODE></a> program.
 
 <li> If you are running under Microsoft Windows or NT, try rebooting.
 
