@@ -178,10 +178,10 @@ public class TimedQueueReceiver {
                 ((DDEThread)thread).getTimeKeeper();
 
 	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
-		timeKeeper.updateIgnoredReceivers();
+		timeKeeper.removeAllIgnoreTokens();
 	    	timeKeeper.updateRcvrList(this);
 	    } else if( !isInsideBoundary() ) {
-		timeKeeper.updateIgnoredReceivers();
+		timeKeeper.removeAllIgnoreTokens();
 		timeKeeper.updateRcvrList(this);
             }
         }

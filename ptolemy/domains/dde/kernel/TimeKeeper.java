@@ -572,9 +572,9 @@ public class TimeKeeper {
 
     /** Update receivers controlled by this time keeper that have
      *  a receiver time equal to TimedQueueReceiver.IGNORE. For
-     *  each such receiver, call DDEReceiver.clearIgnoredTokens().
+     *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
-    public synchronized void updateIgnoredReceivers() {
+    public synchronized void removeAllIgnoreTokens() {
 	if( _rcvrTimeList == null ) {
 	    return;
 	}

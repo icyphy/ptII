@@ -380,7 +380,7 @@ public class DDEReceiver extends TimedQueueReceiver
                 return -1;
 	    } else {
 		_ignoreNotSeen = true;
-		timeKeeper.updateIgnoredReceivers();
+		timeKeeper.removeAllIgnoreTokens();
 		timeKeeper.setIgnoredTokens(false);
 		return -1;
 	    }
@@ -508,7 +508,7 @@ public class DDEReceiver extends TimedQueueReceiver
                 return -1;
 	    } else {
 		_ignoreNotSeen = true;
-		timeKeeper.updateIgnoredReceivers();
+		timeKeeper.removeAllIgnoreTokens();
 		timeKeeper.setIgnoredTokens(false);
                 return -1;
 	    }

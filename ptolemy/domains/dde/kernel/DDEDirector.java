@@ -358,7 +358,7 @@ public class DDEDirector extends ProcessDirector {
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = 
 		    ((DDEThread)thread).getTimeKeeper();
-	    timeKeeper.updateIgnoredReceivers();
+	    timeKeeper.removeAllIgnoreTokens();
 	    timeKeeper._tokenConsumed = false;
 	}
 	return _notDone;
