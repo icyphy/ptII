@@ -122,7 +122,7 @@ test Minimum-2.5 {test long} {
     $value setExpression {0}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {-2 -1 0 0 0}
+} {-2L -1L 0L 0L 0L}
 
 ######################################################################
 #### Check types of above model

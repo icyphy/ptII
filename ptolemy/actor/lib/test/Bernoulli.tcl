@@ -50,14 +50,14 @@ test Bernoulli-1.1 {test constructor} {
     set trueProbabilityVal [[$trueProbability getToken] toString]
 
     list $seedVal $trueProbabilityVal
-} {0 0.5}
+} {0L 0.5}
 
 test Bernoulli-1.2 {test clone} {
     set g2 [java::cast ptolemy.actor.lib.Bernoulli [$g clone]]
     $seed setExpression {2l}
     set seed [getParameter $g2 seed]
     [$seed getToken] toString
-} {0}
+} {0L}
 
 ######################################################################
 #### Test Bernoulli in an SDF model

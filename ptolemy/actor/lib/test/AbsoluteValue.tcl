@@ -132,7 +132,7 @@ test AbsoluteValue-2.7 {test long type} {
     $step setExpression {3}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {6 3 0 3 6}
+} {6L 3L 0L 3L 6L}
 
 ######################################################################
 #### Check types of above model

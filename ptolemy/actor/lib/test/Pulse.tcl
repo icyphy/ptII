@@ -98,7 +98,7 @@ test Pulse-2.3 {test using setExpression} {
     $valuesParam setExpression {{5l, 6l, 7l}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {5 0 6 7 0}
+} {5L 0L 6L 7L 0L}
 
 test Pulse-2.4 {test with two-dimensional output values} {
     set valuesParam [getParameter $pulse values]
