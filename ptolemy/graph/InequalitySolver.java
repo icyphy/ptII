@@ -246,9 +246,10 @@ public class InequalitySolver {
 
         /*private*/ Inequality _ineq;
 
-	// If this ineq. is in Cvar, i.e., if looking for least solution
-	// and greaterTerm is settable, or looking for greatest solution
-	// and lesserTerm is settable.
+	// True if this ineq. is in the "Cvar" set of the Rehof paper,
+	// i.e., if looking for the least solution and the greaterTerm
+	// is settable, or looking for the greatest solution and the
+	// lesserTerm is settable.
 	/*private*/ boolean _inCvar = false;
 
 	// If this ineq. is in _NS
@@ -405,7 +406,9 @@ public class InequalitySolver {
             }
         }
 
-        // check if the inequalities in Ccnst are satisfied
+        // Check the inequalities not involved in the above iteration.
+	// These inequalities are the ones in the "Ccnst" set in the
+	// Rehof paper.
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
 	    if ( !info._inCvar) {
