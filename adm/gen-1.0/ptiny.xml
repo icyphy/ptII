@@ -456,13 +456,6 @@ Berkeley, CA 94706</property>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">2</property>
         </wizardBean>
-        <wizardBean class="com.installshield.product.wizardbeans.UninstallFeaturePanel" id="features">
-            <property name="displayName">Features</property>
-            <property name="active">True</property>
-            <property name="title"/>
-            <property name="description">$L(com.installshield.product.i18n.ProductResources, UninstallFeaturePanel.description, $P(displayName))</property>
-            <property name="navigationOptions">0</property>
-        </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.SummaryPanel" id="preview">
             <property name="displayName">Uninstall Preview</property>
             <property name="active">True</property>
