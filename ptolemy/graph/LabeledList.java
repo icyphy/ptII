@@ -524,12 +524,12 @@ public class LabeledList implements List {
                     size--;
                 }
 
-                public void set(Object o) {
-                    elements.set(o);
+                public void set(Object object) {
+                    elements.set(object);
                 }
 
-                public void add(Object o) {
-                    elements.add(o);
+                public void add(Object object) {
+                    elements.add(object);
                     size++;
                 }
             };
