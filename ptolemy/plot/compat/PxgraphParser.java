@@ -472,9 +472,9 @@ public class PxgraphParser {
                     // not include a comma.
                     double[] spec = _parseDoubles(args[i++]);
                     if (spec.length == 1) {
-                        _plot.setBars(spec[0],0);
+                        _plot.setBars(spec[0], 0);
                     } else {
-                        _plot.setBars(spec[0],spec[1]);
+                        _plot.setBars(spec[0], spec[1]);
                     }
                     continue;
                 } else if (arg.equals("-lf")) {
@@ -487,7 +487,7 @@ public class PxgraphParser {
                         throw new
                             CmdLineArgException("Failed to parse `"+arg+"'");
                     } else {
-                        _plot.setXRange(spec[0],spec[1]);
+                        _plot.setXRange(spec[0], spec[1]);
                     }
                     continue;
                 } else if (arg.equals("-ly")) {
@@ -496,7 +496,7 @@ public class PxgraphParser {
                         throw new
                             CmdLineArgException("Failed to parse `"+arg+"'");
                     } else {
-                        _plot.setYRange(spec[0],spec[1]);
+                        _plot.setYRange(spec[0], spec[1]);
                     }
                     continue;
                 } else if (arg.equals("-t")) {
@@ -961,7 +961,7 @@ public class PxgraphParser {
             return result;
         } else {
             double[] result = new double[2];
-            String spec1 = spec.substring(0,comma);
+            String spec1 = spec.substring(0, comma);
             result[0] = (Double.valueOf(spec1)).doubleValue();
             String spec2 = spec.substring(comma+1);
             result[1] = (Double.valueOf(spec2)).doubleValue();
