@@ -42,7 +42,6 @@ import java.util.List;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -596,12 +595,12 @@ public class CompositeEntity extends ComponentEntity {
      *  will export that link.  For this purpose, a port of a contained
      *  entity is deemed to be an inherited object if it is itself a class
      *  element <i>and</i> its container is an inherited object.
-     *  @param indentation The depth at which the output should be indented.
+     *  @param depth The depth below the MoML export in the hierarchy.
      *  @param filter A collection of ports, parameters, and entities, or
      *   null to apply no filtering.
      *  @exception IOException If an I/O error occurs.
      */
-    public String exportLinks(int indentation, Collection filter)
+    public String exportLinks(int depth, Collection filter)
             throws IOException {
         // To get the ordering right,
         // we read the links from the ports, not from the relations.
@@ -629,11 +628,11 @@ public class CompositeEntity extends ComponentEntity {
                     continue;
                 }
                 // If both ends of the link are inherited objects, then
-                // suppress the export.
-                // FIXME: This should depend on the level at which the
-                // export is occurring.
-                if (relation.getDerivedLevel() > 0
-                        && port.getDerivedLevel() > 0) {
+                // suppress the export. This depends on the level of export
+                // because if both ends of the link are implied, then the
+                // link is implied.
+                if (relation.getDerivedLevel() <= depth
+                        && port.getDerivedLevel() <= depth) {
                     continue;
                 }
                 // Apply filter.
@@ -651,7 +650,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                     if (useIndex) {
                         useIndex = false;
-                        result.append(_getIndentPrefix(indentation)
+                        result.append(_getIndentPrefix(depth)
                                 + "<link port=\""
                                 + port.getName()
                                 + "\" insertAt=\""
@@ -660,7 +659,7 @@ public class CompositeEntity extends ComponentEntity {
                                 + relationName
                                 + "\"/>\n");
                     } else {
-                        result.append(_getIndentPrefix(indentation)
+                        result.append(_getIndentPrefix(depth)
                                 + "<link port=\""
                                 + port.getName()
                                 + "\" relation=\""
@@ -695,21 +694,20 @@ public class CompositeEntity extends ComponentEntity {
                         continue;
                     }
                     // If both ends of the link are inherited objects, then
-                    // suppress the export.
-                    // FIXME: This should depend on the level at which the
-                    // export is occurring.
-                    if (relation.getDerivedLevel() > 0
-                            && port.getDerivedLevel() > 0
+                    // suppress the export.  This depends on the level of export
+                    // because if both ends of the link are implied, then the
+                    // link is implied.
+                    if (relation.getDerivedLevel() <= depth
+                            && port.getDerivedLevel() <= depth + 1
                             && ((NamedObj)port.getContainer())
-                            .getDerivedLevel() > 0) {
+                            .getDerivedLevel() <= depth) {
                         continue;
                     }
                     // Apply filter.
                     if (filter == null
                             || (filter.contains(relation)
-                                    && (filter.contains(port)
-                                            ||  filter
-                                            .contains(port.getContainer())))) {
+                            && (filter.contains(port)
+                            ||  filter.contains(port.getContainer())))) {
 
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
@@ -722,7 +720,7 @@ public class CompositeEntity extends ComponentEntity {
                         }
                         if (useIndex) {
                             useIndex = false;
-                            result.append(_getIndentPrefix(indentation)
+                            result.append(_getIndentPrefix(depth)
                                     + "<link port=\""
                                     + entity.getName()
                                     + "."
@@ -733,7 +731,7 @@ public class CompositeEntity extends ComponentEntity {
                                     + relationName
                                     + "\"/>\n");
                         } else {
-                            result.append(_getIndentPrefix(indentation)
+                            result.append(_getIndentPrefix(depth)
                                     + "<link port=\""
                                     + entity.getName()
                                     + "."
@@ -1208,6 +1206,34 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.append(relation);
     }
 
+    /** Adjust the deferrals in this object.
+     *  Specifically, if this object has a class name that refers
+     *  to a class in scope, then replace the current parent with
+     *  that object. Override the base class to also call the same method
+     *  on all contained class definitions and ordinary entities.
+     *  @exception IllegalActionException If the class found in scope
+     *   cannot be set.
+     */
+    protected void _adjustDeferrals() throws IllegalActionException {
+        super._adjustDeferrals();
+
+        Iterator containedClasses = classDefinitionList().iterator();
+        while (containedClasses.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedClasses.next();
+            if (containedObject instanceof ComponentEntity) {
+                ((ComponentEntity)containedObject)._adjustDeferrals();
+            }
+        }
+
+        Iterator containedEntities = entityList().iterator();
+        while (containedEntities.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedEntities.next();
+            if (containedObject instanceof ComponentEntity) {
+                ((ComponentEntity)containedObject)._adjustDeferrals();
+            }
+        }
+    }
+    
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  Lines are indented according to

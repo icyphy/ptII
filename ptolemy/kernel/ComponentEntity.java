@@ -173,8 +173,11 @@ public class ComponentEntity extends Entity {
                     + container.getFullName());
         }
         ComponentEntity clone = (ComponentEntity)
-            super.instantiate(container, name);
+                super.instantiate(container, name);
         clone.setContainer((CompositeEntity)container);
+        
+        clone._adjustDeferrals();
+
         return clone;
     }
 
@@ -224,6 +227,32 @@ public class ComponentEntity extends Entity {
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    /** Propagate the existence of this object.
+     *  If this object has a container, then ensure that all
+     *  objects derived from the container contain an object
+     *  with the same class and name as this one. Create that
+     *  object when needed. Return the list of objects that are created.
+     *  This overrides the base class to adjust deferrals within
+     *  the objects that are created by cloning this one.
+     *  @return A list of derived objects of the same class
+     *   as this object that are created.
+     *  @exception IllegalActionException If the object does
+     *   not exists and cannot be created.
+     */
+    public List propagateExistence() throws IllegalActionException {
+        // Otherwise, _override probably doesn't get set in the
+        // derived object that is created.
+        List result = super.propagateExistence();
+
+        // Adjust deferrals in all the newly created objects.
+        Iterator clones = result.iterator();
+        while (clones.hasNext()) {
+            ComponentEntity clone = (ComponentEntity)clones.next();
+            clone._adjustDeferrals();
+        }
+       return result;
     }
 
     /** Specify the container, adding the entity to the list
@@ -303,11 +332,6 @@ public class ComponentEntity extends Entity {
                 // checkContainer() above ensures that this cast is valid.
                 ((CompositeEntity)container)._finishedAddEntity(this);
 
-                // We have successfully set a new container for this
-                // object. Mark it modified to ensure MoML export.
-                // FIXME: Inappropriate?
-                // setOverrideDepth(0);
-                
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
                 // requests if this component is deferring change
@@ -381,6 +405,46 @@ public class ComponentEntity extends Entity {
                     "Incompatible port class for this entity.");
         }
         super._addPort(port);
+    }
+
+    /** Adjust the deferrals in this object.
+     *  Specifically, if this object has a class name that refers
+     *  to a class in scope, then replace the current parent with
+     *  that object.
+     *  @exception IllegalActionException If the class found in scope
+     *   cannot be set.
+     */
+    protected void _adjustDeferrals() throws IllegalActionException {
+        // Use the class name.
+        String className = getClassName();
+
+        // Search upwards in the hierarchy.
+        NamedObj context = this;
+        ComponentEntity candidate = null;        
+        // Make sure we get a real candidate, which is a
+        // class definition. The second term in the if will
+        // cause the search to continue up the hierarchy.
+        // NOTE: There is still an oddness, in that
+        // the class scoping results in a subtle (and
+        // maybe incomprehensible) identification of
+        // the base class, particularly when pasting
+        // an instance or subclass into a new context.
+        while ((candidate == null || !candidate.isClassDefinition())
+                && context != null) {
+            context = (NamedObj)context.getContainer();
+            if (context instanceof CompositeEntity) {
+                candidate = ((CompositeEntity)context).getEntity(className);
+            }
+        }
+        if (candidate != null) {
+            setParent(candidate);
+            _markContentsDerived(0);
+            // For every object contained by the new parent,
+            // we need to make sure its value is propagated
+            // to this new child and that the override field
+            // gets set to reflect that.
+            candidate.propagateValues();
+        }
     }
 
     /** Check the specified container.

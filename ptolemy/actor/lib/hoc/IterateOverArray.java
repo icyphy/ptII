@@ -322,7 +322,8 @@ public class IterateOverArray extends TypedCompositeActor
                         ComponentEntity prior = (ComponentEntity)priors.next();
                         // If there is at least one more contained object,
                         // then delete this one.
-                        if (priors.hasNext() && getDerivedLevel() > 0) {
+                        if (priors.hasNext()
+                                && getDerivedLevel() < Integer.MAX_VALUE) {
                             prior.setContainer(null);
                         } else {
                             // The last entity in the entityList is

@@ -425,7 +425,7 @@ public class NamedObj implements
             newObject._attributes = null;
 
             // Make sure the new object is not marked derived.
-            newObject._derivedLevel = -1;
+            newObject._derivedLevel = Integer.MAX_VALUE;
 
             if (workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
@@ -1151,11 +1151,10 @@ public class NamedObj implements
         return _deferChangeRequests;
     }
 
-    /** Get the level above this object in the hierarchy where a
+    /** Get the minimum level above this object in the hierarchy where a
      *  parent-child relationship defines the existence of this object.
-     *  A negative value (-1) is used to indicate that this object is
-     *  not a derived object. A value of 0 indicates that the object
-     *  is a child itself. A value of 1 indicates that the container
+     *  A value Integer.MAX_VALUE is used to indicate that this object is
+     *  not a derived object. A value of 1 indicates that the container
      *  of the object is a child, and that the this object is derived
      *  from a like object in the parent of the container. Etc.
      *  If an object is derived, then normally has no persistent
@@ -1200,15 +1199,16 @@ public class NamedObj implements
      *  If this object has a container, then ensure that all
      *  objects derived from the container contain an object
      *  with the same class and name as this one. Create that
-     *  object when needed. Return the list of objects that are created.
+     *  object when needed. The contents of each so created
+     *  object is marked as derived using setDerivedLevel().
+     *  Return the list of objects that are created.
      *  @return A list of derived objects of the same class
      *   as this object that are created.
      *  @exception IllegalActionException If the object does
      *   not exists and cannot be created.
+     *  @see #setDerivedLevel(int)
      */
     public List propagateExistence() throws IllegalActionException {
-        // Otherwise, _override probably doesn't get set in the
-        // derived object that is created.
         return _getDerivedList(null, false, true, this, 0, null, null);
     }
 
@@ -1227,6 +1227,30 @@ public class NamedObj implements
         // Mark this object as having been modified directly.
         _override = override;
         return _getDerivedList(null, true, false, this, 0, override, null);
+    }
+
+    /** If this object has a value that has been set directly,
+     *  or if it has a value that has propagated in, then
+     *  propagate that value to all derived objects, and
+     *  then repeat this for all objects this object contains.
+     *  Unlike propagateValue(), this does not assume this
+     *  object or any of its contained objects is having
+     *  its value set directly. Instead, it uses the current
+     *  state of override of this object as the starting point.
+     *  @throws IllegalActionException If propagation fails.
+     */
+    public void propagateValues() throws IllegalActionException {
+        // If this object has not had its value set directly or
+        // by propagation into it, then there is no need to do
+        // any propagation.
+        if (_override != null) {
+            _getDerivedList(null, true, false, this, 0, _override, null);
+        }
+        Iterator containedObjects = containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedObjects.next();
+            containedObject.propagateValues();
+        }
     }
 
     /** Remove a change listener. If there is a container, delegate the
@@ -1359,25 +1383,36 @@ public class NamedObj implements
     }
 
     /** Set the level above this object in the hierarchy where a
-     *  parent-child relationship defines the existence of this object.
-     *  A negative value (-1) is used to indicate that this object is
-     *  not a derived object. A value of 0 indicates that the object
-     *  is a child itself. A value of 1 indicates that the container
-     *  of the object is a child, and that the this object is derived
-     *  from a like object in the parent of the container. Etc.
-     *  If an object is derived, then normally has no persistent
+     *  parent-child relationship implies the existence of this object.
+     *  When this object is originally created by a constructor or
+     *  by the clone method, the level is set to the default Integer.MAX_VALUE,
+     *  which indicates that the object is not implied. When this
+     *  is called multiple times, the level will be the minimum of
+     *  all the levels specified. Thus, a value of 1 indicates that the
+     *  container of the object is a child, and that the this object is
+     *  implied by a like object in the parent of the container, for example.
+     *  If an object is implied, then normally has no persistent
      *  representation when it is exported to MoML (unless it
      *  is overridden), and normally it cannot have its name or
      *  container changed.  An exception, however, is that the object
      *  may appear in the MoML if the exported MoML does not include
      *  the level of the hierarchy above this with the parent-child
-     *  relationship.
-     *  @param level The level above this object in the containment
-     *   hierarchy where a parent-child relationship defines this object.
+     *  relationship that implies this object.
+     *  Calling this method also has the side effect of resetting the
+     *  flag used to determine whether the value of this object overrides
+     *  some inherited value. So this method should only be called when
+     *  object is first being constructed.  It also cancels any
+     *  previous calls to setPersistent() where a true argument was
+     *  given.
+     *  @param level The minimum level above this object in the containment
+     *   hierarchy where a parent-child relationship implies this object.
      *  @see #getDerivedLevel()
+     *  @see #setPersistent(boolean)
      */
     public final void setDerivedLevel(int level) {
-        _derivedLevel = level;
+        if (level < _derivedLevel) {
+            _derivedLevel = level;
+        }
 
         // Setting override to null indicates that no override has
         // occurred.
@@ -1922,6 +1957,25 @@ public class NamedObj implements
         return StringUtilities.getIndentPrefix(level);
     }
 
+    /** Mark the contents of this object as being derived objects.
+     *  Specifically, the derivation depth of the immediately contained
+     *  objects is set to one greater than the <i>depth</i> argument,
+     *  and then this method is called on that object with an argument
+     *  one greater than the <i>depth</i> argument.
+     *  @param depth The derivation depth for this object, which
+     *   should be 0 except on recursive calls.
+     *  @see #setDerivedLevel(int)
+     */
+    protected void _markContentsDerived(int depth) {
+        depth = depth + 1;
+        Iterator objects = containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj containedObject = (NamedObj)objects.next();
+            containedObject.setDerivedLevel(depth);
+            containedObject._markContentsDerived(depth);
+        }
+    }
+
     /** Propagate existence of this object to the
      *  specified object. The specified object is required
      *  to be an instance of the same class as the container
@@ -2082,21 +2136,9 @@ public class NamedObj implements
         // inheritance occurs above the level of the hierarchy
         // where we are doing the export, then we need to
         // give structure and values anyway. Otherwise, for
-        // example, copy and paste won't work properly.
-        
-        // Always export at the top level, even if it's
-        // a derived object.
-        if (depth == 0) {
-            return false;
-        }
-        // If the object is not derived, export MoML.
-        if (_derivedLevel <= 0) {
-            // Object is not derived, or is derived at
-            // this level.
-            return false;
-        }
+        // example, copy and paste won't work properly.        
         if (_derivedLevel > depth) {
-            // Object is derived, but the derivation occurs
+            // Object is either not derived or the derivation occurs
             // above in the hierarchy where we are exporting.
             return false;
         }
@@ -2316,7 +2358,11 @@ public class NamedObj implements
                                             containerName, other);                                 
                                 }
                                 candidate = _propagateExistence(remoteContainer);
-                                candidate._markDerived(depth);
+                                // Indicate that the existence of the candidate
+                                // is implied by a parent-child relationship at the
+                                // current depth.
+                                candidate.setDerivedLevel(depth);
+                                candidate._markContentsDerived(depth);
                             } else {
                                 // No candidate and no error.  In theory, we
                                 // should never reach this line.
@@ -2344,7 +2390,10 @@ public class NamedObj implements
                         // then apply the propagation change to it.
                         if (propagate) {
                             // Is it shadowed?
-                            if (_isShadowed(candidate._override, override)) {
+                            // Create a new override list to pass to the candidate.
+                            newOverride = new LinkedList(override);
+                            newOverride.set(depth, new Integer(myBreadth + 1));
+                            if (_isShadowed(candidate._override, newOverride)) {
                                 // Yes it is.
                                 continue;
                             }
@@ -2354,11 +2403,7 @@ public class NamedObj implements
                             _propagateValue(candidate);
                             
                             // Set the override.
-                            candidate._override = override;
-
-                            // Create a new override list to pass to the candidate.
-                            newOverride = new LinkedList(override);
-                            newOverride.set(depth, new Integer(myBreadth + 1));
+                            candidate._override = newOverride;
                         }
 
                         result.add(candidate);
@@ -2436,23 +2481,6 @@ public class NamedObj implements
         return false;
     }
 
-    /** Mark this object and its contents as being derived objects,
-     *  where this object has derivation depth given by the argument,
-     *  the immediate contents have derivation depth one greater
-     *  than that, etc.
-     *  @param depth The derivation depth for this object.
-     */
-    private void _markDerived(int depth) {
-        setDerivedLevel(depth);
-        // NOTE: It is necessary to mark objects deeply contained
-        // so that we can disable deletion and name changes.
-        Iterator objects = containedObjectsIterator();
-        while (objects.hasNext()) {
-            NamedObj containedObject = (NamedObj)objects.next();
-            containedObject._markDerived(depth + 1);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2479,8 +2507,8 @@ public class NamedObj implements
     private long _fullNameVersion = -1;
 
     // Variable indicating at what level above this object is derived.
-    // A negative number indicates that it is not derived.
-    private int _derivedLevel = -1;
+    // Integer.MAX_VALUE indicates that it is not derived.
+    private int _derivedLevel = Integer.MAX_VALUE;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;

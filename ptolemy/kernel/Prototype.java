@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -125,18 +124,20 @@ public class Prototype extends NamedObj implements Instantiable {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Prototype newObject = (Prototype)super.clone(workspace);
-
-        if (getParent() != null) {
-            try {
-                newObject.setParent(getParent());
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex);
-            }
-        }
         // The new object does not have any other objects deferring
         // their MoML definitions to it, so we have to reset this.
         newObject._children = null;
 
+        // Set the parent using setParent() rather than the default
+        // clone to get the side effects.
+        newObject._parent = null;
+        if (_parent != null) {
+            try {
+                newObject.setParent(_parent);
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+            }
+        }
         return newObject;
     }
 
@@ -313,7 +314,8 @@ public class Prototype extends NamedObj implements Instantiable {
         clone.setClassDefinition(false);
         clone.setClassName(getFullName());
         
-        clone._adjustDeferrals(this, clone, 0);
+        // Mark the contents of the instantiated object as being derived.
+        clone._markContentsDerived(0);
 
         return clone;
     }
@@ -353,7 +355,7 @@ public class Prototype extends NamedObj implements Instantiable {
         // No deferrals encountered while moving up the hierarchy.
         return result;
     }
-
+    
     /** Specify whether this object is a class definition.
      *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition.
@@ -422,87 +424,6 @@ public class Prototype extends NamedObj implements Instantiable {
             }
         } finally {
             _workspace.doneWriting();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Adjust the deferral relationships in the specified clone.
-     *  Specifically, if this object defers to something that is
-     *  deeply contained by the specified prototype, then find
-     *  the corresponding object in the specified clone and defer
-     *  to it instead. This method also calls the same method
-     *  on all contained class definitions and ordinary entities.
-     *  @param prototype The object that was cloned.
-     *  @param clone The clone.
-     *  @param depth The depth below the clone of this object.
-     *  @exception IllegalActionException If the clone does not contain
-     *   a corresponding object to defer to.
-     */
-    private void _adjustDeferrals(
-            Prototype prototype, Prototype clone, int depth) {
-        setDerivedLevel(depth);
-
-        Instantiable originalDefersTo = getParent();
-        if (originalDefersTo instanceof NamedObj) {
-            // defersTo was cloned from the original, presumably.
-            if (prototype.deepContains((NamedObj)originalDefersTo)) {
-                String relativeName = originalDefersTo.getName(prototype);
-                // The clone must be a CompositeEntity.
-                ComponentEntity revisedDefersTo
-                        = ((CompositeEntity)clone).getEntity(relativeName);
-                if (revisedDefersTo == null) {
-                    throw new InternalErrorException(
-                            "Clone is not identical to the prototype!");
-                }
-                try {
-                    setParent(revisedDefersTo);
-                    // Reset the depth to zero here because it
-                    // is at this level that the derivation occurs.
-                    // This will affect the derived depth of contained
-                    // objects, which we presume are derived from this
-                    // parent-child relation.
-                    depth = 0;
-                } catch (IllegalActionException e) {
-                    // This should not occur because the parent
-                    // relationship was acceptable to the source
-                    // of the clone.
-                    throw new InternalErrorException(e);
-                }
-            }
-        }
-        
-        // Adjust the contained objects.
-        Iterator containedObjects = containedObjectsIterator();
-        while (containedObjects.hasNext()) {
-            NamedObj containedObject = (NamedObj)containedObjects.next();
-            if (containedObject instanceof Prototype) {
-                ((Prototype)containedObject)
-                        ._adjustDeferrals(prototype, clone, depth + 1);
-            } else {
-                // If the contained object is not an instance of Prototype,
-                // then it can't have any internal parent-child relations,
-                // so we only have to mark it and its contents derived.
-                _markDerived(containedObject, depth + 1);
-            }
-        }
-    }
-
-    /** Mark the specified object and its contents as being derived objects,
-     *  where the specified object has derivation depth given by the argument,
-     *  the immediate contents have derivation depth one greater
-     *  than that, etc.
-     *  @param depth The derivation depth for this object.
-     */
-    private void _markDerived(NamedObj object, int depth) {
-        object.setDerivedLevel(depth);
-        // NOTE: It is necessary to mark objects deeply contained
-        // so that we can disable deletion and name changes.
-        Iterator objects = object.containedObjectsIterator();
-        while (objects.hasNext()) {
-            NamedObj containedObject = (NamedObj)objects.next();
-            _markDerived(containedObject, depth + 1);
         }
     }
 
