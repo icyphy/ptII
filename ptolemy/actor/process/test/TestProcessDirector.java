@@ -91,16 +91,26 @@ public class TestProcessDirector extends ProcessDirector {
     ////                         public methods                    ////
 
 
-    /** Record the firing and force postfire to return false.
-    public void fire() {
-    }
+    /** Wait until a deadlock is detected. Then handle the deadlock
+     *  (by calling the protected method _handleDeadlock()) and return.
+     *  This method is synchronized on the director.
+     *  @exception IllegalActionException If a derived class throws it.
      */
+    public void fire() throws IllegalActionException {
+	Workspace workspace = workspace();
+        synchronized (this) {
+            while( !_isInputControllerBlocked() ) {
+		workspace.wait(this);
+            }
+            _notDone = false;
+        }
+    }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
-    	_blockedInternalRcvrList.addFirst(rcvr);
+    	_blockedRcvrList.addFirst(rcvr);
         _actorsBlocked++;
         notifyAll();
     }
@@ -113,13 +123,9 @@ public class TestProcessDirector extends ProcessDirector {
         ProcessReceiver rcvr = null;
         while( rcvrs.hasNext() ) {
             rcvr = (ProcessReceiver)rcvrs.next();
-            _blockedInternalRcvrList.addFirst( rcvr ) ;
+            _blockedRcvrList.addFirst( rcvr ) ;
+            _actorsBlocked++;
     	}
-        /*
-    	_blockedInternalRcvrList.addAll(
-        	Collections.synchronizedCollection(rcvrs));
-        */
-        _actorsBlocked++;
         notifyAll();
     }
 
@@ -127,11 +133,12 @@ public class TestProcessDirector extends ProcessDirector {
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
-    	_blockedInternalRcvrList.remove(rcvr);
-        while( _blockedInternalRcvrList.contains(rcvr) ) {
-    	    _blockedInternalRcvrList.remove(rcvr);
+        while( _blockedRcvrList.contains(rcvr) ) {
+    	    _blockedRcvrList.remove(rcvr);
+            if( _actorsBlocked > 0 ) {
+                _actorsBlocked--;
+            }
         }
-        _actorsBlocked--;
         notifyAll();
     }
 
@@ -142,38 +149,47 @@ public class TestProcessDirector extends ProcessDirector {
         Iterator rcvrs = blockedRcvrs.iterator();
         ProcessReceiver rcvr = null;
         while( rcvrs.hasNext() ) {
-            _blockedInternalRcvrList.remove(rcvr);
-            while( _blockedInternalRcvrList.contains(rcvr) ) {
-    		_blockedInternalRcvrList.remove(rcvr);
+            while( _blockedRcvrList.contains(rcvr) ) {
+    		_blockedRcvrList.remove(rcvr);
+                if( _actorsBlocked > 0 ) {
+                    _actorsBlocked--;
+                }
             }
         }
-        _actorsBlocked--;
         notifyAll();
     }
 
+    /**
+     */
+    protected synchronized boolean _areActorsDeadlocked() {
+        long activeActors = _getActiveActorsCount();
+        if( _actorsBlocked >= activeActors ) {
+            return true;
+        }
+        return false;
+    }
+    
     /** 
      */
-    protected synchronized void _branchCntlrBlocked() {
+    protected synchronized boolean _areActorsStopped() {
+        long activeActors = _getActiveActorsCount();
+        long stoppedActors = _getStoppedProcessesCount();
+        
+        if( activeActors == 0 ) {
+            return true;
+        }
+        if( stoppedActors + _actorsBlocked >= activeActors ) {
+            if( stoppedActors > 0 ) {
+                return true;
+            }
+        }
+        return false;
     }
-
-    /** 
-     */
-    protected synchronized void _branchCntlrUnBlocked() {
-    }
-
-    /** Record the invocation, then return true if fire was never called.
-     *  Else return false.
-    public boolean postfire() {
-        super.postfire();
-        return _notdone;
-    }
-     */
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private LinkedList _blockedInternalRcvrList = new LinkedList();
-    private LinkedList _blockedExternalRcvrList = new LinkedList();
+    private LinkedList _blockedRcvrList = new LinkedList();
     
     private int _actorsBlocked = 0;
 
