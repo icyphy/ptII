@@ -33,8 +33,14 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 
-import collections.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,6 +52,14 @@ invoke Ptolemy models and wish to query the results after the model
 is run.  The input tokens are read in the postfire() method so that
 in domains with fixed-point semantics, only the final, settled value
 is recorded.  The current time is also recorded for each value.
+<p>
+The <i>capacity</i> parameter limits the size of the record.
+If the capacity is set to zero, then no tokens are recorded, but
+the total number of input tokens is counted.  You can access
+the count via the getCount() method.  If the capacity is 1,
+then only the most recently seen token on each channel is recorded.
+If the capacity is negative (the default), then the capacity
+is infinite.
 
 @author Edward A. Lee
 @version $Id$
@@ -67,7 +81,18 @@ public class Recorder extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(StringToken.class);
+
+        capacity = new Parameter(this, "capacity", new IntToken(-1));
+        capacity.setTypeEquals(IntToken.class);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The capacity of the record for each channel.
+     *  This parameter must contain an IntToken.
+     */
+    public Parameter capacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -81,20 +106,56 @@ public class Recorder extends Sink {
     public Object clone(Workspace ws) {
         Recorder newobj = (Recorder)super.clone(ws);
         newobj.input.setTypeEquals(StringToken.class);
+        newobj.capacity = (Parameter)newobj.getAttribute("capacity");
         return newobj;
+    }
+
+    /** Get the total number of events seen so far.
+     *  @return The total number of events seen so far.
+     */
+    public int getCount() {
+        return _count;
+    }
+
+    /** Get the history for the specified channel number.  If in any
+     *  firing there is no such channel, or no token was read on that
+     *  channel, then a string token with value "_" is returned in the
+     *  position of the list corresponding to that firing.
+     *  If nothing has been recorded (there have been no firings),
+     *  then return an empty list.
+     *  @param channel The input channel for which the history is desired.
+     *  @return A list of StringToken objects.
+     */
+    public List getHistory(int channel) {
+        ArrayList result = new ArrayList();
+        if (_records != null) {
+            result.ensureCapacity(_records.size());
+            Iterator firings = _records.iterator();
+            while (firings.hasNext()) {
+                StringToken[] record = (StringToken[])firings.next();
+                if (channel < record.length) {
+                    if (record[channel] != null) {
+                        result.add(record[channel]);
+                        continue;
+                    }
+                }
+                result.add(_bottom);
+            }
+        }
+        return result;
     }
 
     /** Get the latest input for the specified channel (as a string).
      *  If there has been no record yet for the specified channel,
      *  then return the string "_", representing "bottom".
      *  @param channel The input channel for the record is desired.
-     *  @return A string representation of the latest input.
+     *  @return A string token representation of the latest input.
      */
-    public String getLatest(int channel) {
+    public StringToken getLatest(int channel) {
         if (_latest == null || channel >= _latest.length) {
-            return(_bottom.stringValue());
+            return(_bottom);
         }
-        return (_latest[channel]).stringValue();
+        return (_latest[channel]);
     }
 
     /** Get the record for the specified channel number.  If in any
@@ -104,30 +165,25 @@ public class Recorder extends Sink {
      *  then return an empty enumeration.
      *  @param channel The input channel for the record is desired.
      *  @return An enumeration of StringToken objects.
+     *  @deprecated This method is deprecated. Use getHistory().
      */
     public Enumeration getRecord(int channel) {
-        LinkedList result = new LinkedList();
-        if (_records != null) {
-            Enumeration firings = _records.elements();
-            while (firings.hasMoreElements()) {
-                StringToken[] record = (StringToken[])firings.nextElement();
-                if (channel < record.length) {
-                    if (record[channel] != null) {
-                        result.insertLast(record[channel]);
-                        continue;
-                    }
-                }
-                result.insertLast(_bottom);
-            }
-        }
-        return result.elements();
+        return Collections.enumeration(getHistory(channel));
+    }
+
+    /** Get the history of the time of each invocation of postfire().
+     *  @return A list of Double objects.
+     */
+    public List getTimeHistory() {
+        return _timeRecord;
     }
 
     /** Get the record of the current time of each invocation of postfire().
      *  @return An enumeration of Double objects.
+     *  @deprecated This method is deprecated. Use getTimeHistory().
      */
     public Enumeration getTimeRecord() {
-        return _timeRecord.elements();
+        return Collections.enumeration(_timeRecord);
     }
 
     /** Initialize the lists used to record input data.
@@ -138,6 +194,7 @@ public class Recorder extends Sink {
         _records = new LinkedList();
         _timeRecord = new LinkedList();
         _latest = null;
+        _count = 0;
     }
 
     /** Read at most one token from each input channel and record its value.
@@ -150,25 +207,36 @@ public class Recorder extends Sink {
             if (input.hasToken(i)) {
                 StringToken token = (StringToken)input.get(i);
                 record[i] = token;
+                _count++;
             }
         }
-        _records.insertLast(record);
+        int capacityValue = ((IntToken)(capacity.getToken())).intValue();
+        if (capacityValue != 0) {
+            _records.add(record);
+            if (capacityValue > 0 && _records.size() > capacityValue) {
+                // Remove the first element.
+                _records.remove(0);
+            }
+        }
         _latest = record;
-        _timeRecord.insertLast(new Double(getDirector().getCurrentTime()));
+        _timeRecord.add(new Double(getDirector().getCurrentTime()));
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Count of events seen.
+    private int _count = 0;
+
     // A linked list of arrays.
-    private LinkedList _records;
+    private List _records;
 
     // The most recent set of inputs.
     StringToken[] _latest;
 
     // A linked list of Double objects, which are times.
-    private LinkedList _timeRecord;
+    private List _timeRecord;
 
     // A token to indicate absence.
     private static StringToken _bottom = new StringToken("_");
