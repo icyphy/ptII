@@ -270,13 +270,6 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(AUXCLASSPATH)" \
 	   "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
-	for x in doc/codeDoc/*.html; do \
-		echo "Fixing paths in $(ME)/$$x"; \
-		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
-		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \
-			$$x > $$x.bak; \
-		mv $$x.bak $$x; \
-	done; \
 	fi
 
 # Generate index.xml from all the Java classes in a lib directory
