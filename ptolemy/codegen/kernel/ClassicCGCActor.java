@@ -108,12 +108,4 @@ public class ClassicCGCActor extends CodeGenActor {
     public void addProcedure(String code, String streamName) {
         addCode(code, streamName);
     }
-
-    public String getCode(String streamName) {
-        if (streamName == null) {
-            return "FIXME: _myCode";
-        } else {
-            return "FIXME: return named stream " + streamName;
-        }
-    }
 }

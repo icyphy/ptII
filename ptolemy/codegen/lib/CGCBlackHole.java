@@ -8,11 +8,9 @@
 */
 package ptolemy.codegen.lib;
 
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.codegen.kernel.ClassicCGCActor;
 import ptolemy.codegen.kernel.ClassicPort;
+import ptolemy.codegen.kernel.CodeGeneratingActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -29,7 +27,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Version $Id$, based on version 1.13 of /users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl, from Ptolemy Classic 
    @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
-public class CGCBlackHole extends ClassicCGCActor {
+public class CGCBlackHole extends ClassicCGCActor implements CodeGeneratingActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -71,6 +69,6 @@ public class CGCBlackHole extends ClassicCGCActor {
      */
     public void  generateFireCode() {
         //# line 28 "/users/ptolemy/src/domains/cgc/stars/CGCBlackHole.pl"
-        addCode("/* This star generates no code */");
+        addCode("/* This actor generates only this comment. */");
     }
 }

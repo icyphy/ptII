@@ -48,8 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	CGCDirector.java \
 	ClassicCGCActor.java \
 	CodeGenActor.java \
+	CodeGeneratingActor.java \
 	ClassicPort.java
 
 EXTRA_SRCS =	$(JSRCS)
