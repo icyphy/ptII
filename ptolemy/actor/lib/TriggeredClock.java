@@ -130,17 +130,17 @@ public class TriggeredClock extends TimedSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
-	// set the values parameter
-	IntToken[] defaultValues = new IntToken[2];
-	defaultValues[0] = new IntToken(1);
-	defaultValues[1] = new IntToken(0);
-	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-	values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // set the values parameter
+        IntToken[] defaultValues = new IntToken[2];
+        defaultValues[0] = new IntToken(1);
+        defaultValues[1] = new IntToken(0);
+        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        values = new Parameter(this, "values", defaultValueToken);
+        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        ArrayType valuesArrayType = (ArrayType)values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         //set up trigger port
         trigger.setMultiport(false);
@@ -223,7 +223,7 @@ public class TriggeredClock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         TriggeredClock newObject = (TriggeredClock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
@@ -239,7 +239,7 @@ public class TriggeredClock extends TimedSource {
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-	//super.fire();
+        //super.fire();
         // Get the current time and period.
 
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
@@ -313,7 +313,7 @@ public class TriggeredClock extends TimedSource {
         System.out.println("next phase"+_tentativePhase);
         System.out.println("next firing time"+_tentativeNextFiringTime);
         output.send(0, _tentativeCurrentValue);
-	System.out.println( _tentativeCurrentValue);
+        System.out.println( _tentativeCurrentValue);
     }
 
     /** Initialize trigger
