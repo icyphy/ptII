@@ -138,6 +138,9 @@ public class TriggeredClock extends TimedSource {
 	ArrayType valuesArrayType = (ArrayType)values.getType();
 	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
 	output.setTypeAtLeast(elementTerm);
+        
+        //set up trigger port
+         trigger.setMultiport(false);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -162,6 +165,7 @@ public class TriggeredClock extends TimedSource {
      *  {1, 0}
      */
     public Parameter values;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -222,7 +226,31 @@ public class TriggeredClock extends TimedSource {
 
         return newObject;
     }
-
+      /** Fire on a rise in trigger, don't on a fall. Fire on equal
+       * consecutive values
+     * Perform initialization for clock cycle
+     */ 
+      public boolean  prefire() throws IllegalActionException {
+      //Check to see if trigger is true
+                     double currentTime = getDirector().getCurrentTime();
+	             System.out.println("currenttime in pf"+currentTime);
+         if(trigger.hasToken(0)){System.out.println("trigger has token");   
+	   _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
+                                }
+                 System.out.println("_trigger"+_trigger);            
+          if (!_oldTrigger&&_trigger){
+	                 _tentativeCycleStartTime = currentTime;
+                          _tentativePhase = 0;
+                          _tentativeCurrentValue =_getValue(_phase); 
+	                  System.out.println("trigger true");
+			  return super.prefire();
+	                             }
+	  else if (_oldTrigger&&!_trigger){_oldTrigger=_trigger;
+                    System.out.println("nf1");return false;
+			                   }         
+           else    { System.out.println("f1"); return  super.prefire();
+	            }                                                                 
+        }
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length, or if
@@ -230,40 +258,31 @@ public class TriggeredClock extends TimedSource {
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-          super.fire();
+	//super.fire();
         // Get the current time and period.
-        double currentTime = getDirector().getCurrentTime();
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-          //Check to see if trigger is true
-          BooleanToken yes=BooleanToken.TRUE;
-      
-      if(trigger.hasToken(0)){
-	  _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
-      }
-      
-      if (_trigger){
-          _tentativeCycleStartTime = currentTime;
-          _tentativePhase = 0;
-          _tentativeCurrentValue =_getValue(_tentativePhase); 
-	  
-	  System.out.println("trigger true");
         
-        // In case time has gone backwards since the last call to fire()
-        // (something that can occur within an iteration), reinitialize
-        // these from the last known good state.
-      } else { _tentativeCycleStartTime = _cycleStartTime;
-           _tentativePhase = _phase;
-          _tentativeCurrentValue =_currentValue;  
-         System.out.println("trigger false");
-      }
+             double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+             double currentTime = getDirector().getCurrentTime();
+	     System.out.println("current time"+currentTime);
+                 if(_trigger==false){//no current trigger
+	            
+                     // In case time has gone backwards since the last call to fire()
+                     // (something that can occur within an iteration), reinitialize
+                     // these from the last known good state.
+                     System.out.println("current time"+ currentTime);
+                     _tentativeCycleStartTime = _cycleStartTime;
+                     _tentativePhase = _phase;
+                    _tentativeCurrentValue =_currentValue;     
+	                              }     
+                       
         // In case current time has reached or crossed a boundary between
         // periods, update it.  Note that normally it will not
         // have advanced by more than one period
         // (unless, perhaps, the entire domain has been dormant
         // for some time, as might happen for example in a hybrid system).
-        while (_tentativeCycleStartTime + periodValue <= currentTime) {
-            _tentativeCycleStartTime += periodValue;
-        }
+	       while (_tentativeCycleStartTime + periodValue <= currentTime) {
+	       _tentativeCycleStartTime += periodValue;
+	              }
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
@@ -296,29 +315,21 @@ public class TriggeredClock extends TimedSource {
             // Schedule the next firing in this period.
             _tentativeNextFiringTime
                 = _tentativeCycleStartTime + _offsets[_tentativePhase];
-        
-
+           System.out.println("tentcycstarttime"+_tentativeCycleStartTime);
+             System.out.println("next phase"+_tentativePhase);
+	    System.out.println("next firing time"+_tentativeNextFiringTime);
         output.send(0, _tentativeCurrentValue);
-      
+	System.out.println( _tentativeCurrentValue);
     }
 
-    /** Schedule the first firing and initialize local variables.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
+    /** Initialize trigger and oldtriggger.
+    
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
-	  double currentTime = getDirector().getCurrentTime();
-	 _cycleStartTime = currentTime;
-	  _currentValue = _getValue(0).zero();
-	  //    output.send(0, _currentValue);
-	    _phase = 0;
-
-        // This needs to be the last line, because in threaded domains,
-        // it could execute immediately.
-       // getDirector().fireAt(this, _offsets[0] + currentTime);
-    }
+          _trigger = false;
+          _oldTrigger = false;
+       	  super.initialize(); 
+                          	     }
    
  
     /** Update the state of the actor and schedule the next firing,
@@ -330,8 +341,7 @@ public class TriggeredClock extends TimedSource {
         _cycleStartTime = _tentativeCycleStartTime;
         _currentValue = _tentativeCurrentValue;
         _phase = _tentativePhase;
-
-
+         _oldTrigger = _trigger;
         // Used to use any negative number here to indicate
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
@@ -362,13 +372,13 @@ public class TriggeredClock extends TimedSource {
 
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
-
+    private boolean _oldTrigger;
     // The current value of the clock output.
     private transient Token _currentValue;
-
+   
     // The most recent cycle start time.
     private transient double _cycleStartTime;
-
+   
     // Cache of offsets array value.
     private transient double[] _offsets;
 
