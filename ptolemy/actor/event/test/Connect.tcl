@@ -85,4 +85,4 @@ test Connect-1.0 {test adding a new entity and connecting it} {
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] \
             [enumToTokenValues [$rec getRecord 1]]
-} {{1 1 1 1} {_ 0.01 0.02 0.03}}
+} {{1 1.0 1.0 1.0} {_ 0.01 0.02 0.03}}
