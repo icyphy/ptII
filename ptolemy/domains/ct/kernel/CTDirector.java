@@ -530,7 +530,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @return A new CTReceiver.
      */
     public Receiver newReceiver() {
-        System.out.println(getName() + " return new CTReceiver.");
+        //System.out.println(getName() + " return new CTReceiver.");
         return new CTReceiver();
     }
 
@@ -550,7 +550,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), "preinitializing.");
-        System.out.println(getName() + "preinitializing.");
+        //System.out.println(getName() + "preinitializing.");
         //from here
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
@@ -593,8 +593,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Actor actor = (Actor)allactors.next();
             if(_debugging) _debug("Invoking preinitialize(): ",
                     ((NamedObj)actor).getFullName());
-            System.out.println("Invoking preinitialize(): " + 
-                    ((NamedObj)actor).getFullName());
+            //System.out.println("Invoking preinitialize(): " + 
+            //        ((NamedObj)actor).getFullName());
             actor.preinitialize();
         }
     }
