@@ -31,7 +31,6 @@
 
 package ptolemy.actor.gui;
 
-// Ptolemy imports
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
@@ -44,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-// Java imports
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -108,10 +106,10 @@ public class CompositeActorApplication {
         try {
             app.processArgs(args);
             app.waitForFinish();
-            System.exit(0);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
+            System.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -177,28 +175,59 @@ public class CompositeActorApplication {
 
     /** If the specified model has a manager and is not already running,
      *  then execute the model in a new thread.  Otherwise, do nothing.
-     *  To execute the model, we create an instance of ModelFrame,
-     *  and then start the model running.
+     *  If the model contains an atomic entity that implements Placeable,
+     *  we create create an instance of ModelFrame, if nothing implements
+     *  Placeable, then we do not create an instance of ModelFrame.  This
+     *  allows us to run non-graphical models on systems that do not have
+     *  a display.
+     *  <p>
+     *  We then start the model running.
+     * 
      *  @param model The model to execute.
+     *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized void startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
-        ModelFrame frame = new ModelFrame(model);
-        _openCount++;
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent event) {
-                synchronized(CompositeActorApplication.this) {
-                    _openCount--;
-                    CompositeActorApplication.this.notifyAll();
-                }
+
+        // NOTE: If you modify this method, please be sure that it
+        // will work for non-graphical models in the nightly test suite.
+        
+        // Iterate through the model, looking for something that is Placeable.
+        boolean hasPlaceable = false;
+        Iterator atomicEntities = model.allAtomicEntityList().iterator(); 
+        while (atomicEntities.hasNext()) {
+            Object object = atomicEntities.next();
+            if(object instanceof Placeable) {
+                hasPlaceable = true;
+                break;
             }
-        });
-        frame.setBackground(new Color(0xe5e5e5));
-        frame.pack();
-        frame.centerOnScreen();
-        frame.setVisible(true);
-        // FIXME: Use a JFrame listener to determine when all windows are closed.
+        }
+
+        if (hasPlaceable) {
+            // The model has an entity that is Placeable, so create a frame.
+            try {
+                ModelFrame frame = new ModelFrame(model);
+                _openCount++;
+                frame.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent event) {
+                        synchronized(CompositeActorApplication.this) {
+                            _openCount--;
+                            CompositeActorApplication.this.notifyAll();
+                        }
+                    }
+                });
+                frame.setBackground(new Color(0xe5e5e5));
+                frame.pack();
+                frame.centerOnScreen();
+                frame.setVisible(true);
+                // FIXME: Use a JFrame listener to determine when all windows
+                // are closed.
+            } catch (Exception ex) {
+                System.out.println("startRun: " + ex);
+            }
+        }
+
         Manager manager = model.getManager();
         if (manager != null) {
             try {
