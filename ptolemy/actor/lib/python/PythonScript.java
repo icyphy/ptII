@@ -529,7 +529,6 @@ public class PythonScript extends TypedAtomicActor {
         if (i >= 0) {
             message = message.substring(i);
         }
-        System.out.println(ex.toString());
         throw new IllegalActionException(this, ex, messagePrefix + message);
     }
 
