@@ -49,7 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	#$(PTPACKAGE).jar
 
 JSRCS = \
-
+	Query.java
 
 EXTRA_SRCS =	$(JSRCS)
 
