@@ -98,7 +98,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="XSLTTransformer" class="ptolemy.actor.lib.xslt.XSLTTransformer">
+    <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
         <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="XmlQueryToMoml.xsl">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 315.0">
@@ -127,6 +127,6 @@
     <link port="Display.input" relation="relation5"/>
     <link port="Display.input" relation="relation2"/>
     <link port="Clock.output" relation="relation3"/>
-    <link port="XSLTTransformer.input" relation="relation5"/>
-    <link port="XSLTTransformer.output" relation="relation2"/>
+    <link port="XSLTransformer.input" relation="relation5"/>
+    <link port="XSLTransformer.output" relation="relation2"/>
 </entity>

@@ -48,7 +48,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	XSLTTransformer.java
+	XSLTransformer.java
 	
 
 EXTRA_SRCS =	$(JSRCS)
