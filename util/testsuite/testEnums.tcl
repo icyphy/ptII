@@ -94,7 +94,7 @@ proc _testEnums {enummethod args} {
 # a list of lists of the links in each CrossRefList
 #
 proc _testCrossRefListGetLinks {args} {
-    eval _testEnums getLinks $args
+    eval _testEnums getContainers $args
 }
 
 ######################################################################
