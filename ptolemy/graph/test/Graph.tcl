@@ -678,3 +678,43 @@ test Graph-8.5 {relating mirror and original nodes, edges by labels} {
     list [$n1lbl equals $mn1] [$n2lbl equals $mn2] [$n3lbl equals $mn3] [$e1lbl equals $me1] [$e2lbl equals $me2]
 } {1 1 1 1 1}
 
+######################################################################
+####
+#
+test Graph-9.1 {testing the validateWeight(Node) method} {
+    set gr  [java::new ptolemy.graph.Graph]
+    set nw1 [java::new String "weight1"]
+    set nw2 [java::new String "weight2"]
+    set n1  [java::new ptolemy.graph.Node $nw1]
+    set n2  [java::new ptolemy.graph.Node $nw2]
+    set n3  [java::new ptolemy.graph.Node $nw1]
+    $gr addNode $n1
+    $gr addNode $n2
+    $gr addNode $n3
+    # There should be 2 elements in set1 and 1 element in set2
+    set set1 [[java::new java.util.Vector [$gr nodes $nw1]] toString]
+    set set2 [[java::new java.util.Vector [$gr nodes $nw2]] toString]
+    set counter1 [$gr changeCount]
+    $n1 setWeight $nw2
+    # Result should be 1 since weight has changed
+    set result [$gr validateWeight $n1]
+    # Now there should be 1 element in set1 and 2 elements in set2
+    set set3 [[java::new java.util.Vector [$gr nodes $nw1]] toString]
+    set set4 [[java::new java.util.Vector [$gr nodes $nw2]] toString]
+    set counter2 [$gr changeCount]
+    list $set1 $set2 $result $set3 $set4 $counter1 $counter2
+} {{[weight1, weight1]} {[weight2]} 1 {[weight1]} {[weight2, weight2]} 3 4}
+
+######################################################################
+####
+#
+test Graph-9.2 {testing validateWeight(Node) method's effect on the counter} {
+    set result1 [$gr validateWeight $n1]
+    #This shouldn't change the counter
+    set counter3 [$gr changeCount]
+    #Now the counter should change
+    $n1 setWeight $nw1
+    set result2 [$gr validateWeight $n1]
+    set counter4 [$gr changeCount]
+    list $result1 $counter3 $result2 $counter4
+} {0 4 1 5}
