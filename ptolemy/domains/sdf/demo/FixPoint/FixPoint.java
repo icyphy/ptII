@@ -129,7 +129,7 @@ public class FixPoint extends SDFApplet implements QueryListener {
             // Create and configure coder
             _fixToDouble = new FixToDouble(_toplevel, "todouble");
             _fixToDouble.precision.setToken(new StringToken("(2.16)"));
-            _fixToDouble.quantizer.setToken(new IntToken(0));
+            _fixToDouble.overflow.setToken(new IntToken(0));
 
             // Create and configure plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
