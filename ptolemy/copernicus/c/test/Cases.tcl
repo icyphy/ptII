@@ -57,6 +57,11 @@ test Cases-1.1 {Generate all required files for Cases.java} {
     # Solaris needs the -classpath .
     set template [exec java -classpath . $className]
     
+    # Turn newlines into spaces.
+    regsub -all "\n" $template " " template
+    regsub -all "
+" $template "" template
+
     string first $template $output
     
 } {0}

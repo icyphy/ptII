@@ -58,7 +58,12 @@ test RightShift-1.1 {Generate all required files for RightShift.java} {
     # Solaris needs the -classpath .
     set template [exec java -classpath . $className]
     
+    # Turn newlines into spaces.
+    regsub -all "\n" $template " " template
+    regsub -all "
+" $template "" template
+
     string first $template $output
-    
+
 } {0}
 
