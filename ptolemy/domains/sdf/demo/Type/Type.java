@@ -356,52 +356,52 @@ public class Type extends SDFApplet implements ChangeListener {
         Edge e;
 
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nObject);
-	impl.setEdgeTail(e, nNaT);
+	impl.setEdgeTail(e, nObject);
+	impl.setEdgeHead(e, nNaT);
 	
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, nGeneral);
-	impl.setEdgeTail(e, nObject);
+	impl.setEdgeTail(e, nGeneral);
+	impl.setEdgeHead(e, nObject);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nGeneral);
-	impl.setEdgeTail(e, nString);
+	impl.setEdgeTail(e, nGeneral);
+	impl.setEdgeHead(e, nString);
 
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nString);
-	impl.setEdgeTail(e, nBoolean);
+	impl.setEdgeTail(e, nString);
+	impl.setEdgeHead(e, nBoolean);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nBoolean);
-	impl.setEdgeTail(e, nNaT);
+	impl.setEdgeTail(e, nBoolean);
+	impl.setEdgeHead(e, nNaT);
 	    
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nString);
-	impl.setEdgeTail(e, nScalar);
+	impl.setEdgeTail(e, nString);
+	impl.setEdgeHead(e, nScalar);
 	
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, nScalar);
-	impl.setEdgeTail(e, nLong);
-
-        e = impl.createEdge(null);
+	impl.setEdgeTail(e, nScalar);
 	impl.setEdgeHead(e, nLong);
-	impl.setEdgeTail(e, nInt);
 
         e = impl.createEdge(null);
+	impl.setEdgeTail(e, nLong);
 	impl.setEdgeHead(e, nInt);
-	impl.setEdgeTail(e, nNaT);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, nDouble);
 	impl.setEdgeTail(e, nInt);
+	impl.setEdgeHead(e, nNaT);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, nComplex);
 	impl.setEdgeTail(e, nDouble);
+	impl.setEdgeHead(e, nInt);
+
+        e = impl.createEdge(null);
+	impl.setEdgeTail(e, nComplex);
+	impl.setEdgeHead(e, nDouble);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, nScalar);
-	impl.setEdgeTail(e, nComplex);
+	impl.setEdgeTail(e, nScalar);
+	impl.setEdgeHead(e, nComplex);
 	
         return graph;
     }
