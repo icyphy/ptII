@@ -39,6 +39,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
+
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
@@ -57,6 +58,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
 
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.JPopupMenu;
 import javax.swing.event.*;
 
@@ -147,15 +150,32 @@ public class FSMTransitionController extends EdgeController {
 		c.setToolTipText(transition.getName());
                 StringBuffer buffer = new StringBuffer();
                 if(transition.guardExpression != null &&
-                   transition.guardExpression.getExpression() != null) {
+                       transition.guardExpression.getExpression() != null) {
                     buffer.append(transition.guardExpression.getExpression());
                 }
-                // FIXME what about the trigger and actions?
-                c.setLabelFigure(new LabelFigure(buffer.toString()));
+                String action =  transition.actions.getExpression();
+                if (action != null && !action.trim().equals("")) {
+                    buffer.append("\n");
+                    buffer.append(action);
+                }
+                LabelFigure label = new LabelFigure(
+                        buffer.toString(), _labelFont);
+                label.setFillPaint(Color.blue);
+                c.setLabelFigure(label);
             }
             return c;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    private MenuCreator _menuCreator;
+
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        inner classes                      ////
 
     /** An inner class that handles interactive changes to connectivity.
      */
@@ -191,5 +211,4 @@ public class FSMTransitionController extends EdgeController {
             //  getController().rerenderEdge(edge);
         }
     }
-    private MenuCreator _menuCreator;
 }

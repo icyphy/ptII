@@ -212,7 +212,7 @@ public class FSMPortController extends LocatableNodeController {
             _child = f;
             f.setParent(this);
             
-            _label = new LabelFigure(label);
+            _label = new LabelFigure(label, _labelFont);
             _label.setPadding(0);
             _label.setAnchor(_anchor);
             Rectangle2D bounds = _child.getBounds();
@@ -275,6 +275,7 @@ public class FSMPortController extends LocatableNodeController {
     }
 
     private MenuCreator _menuCreator;
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }
 
 
