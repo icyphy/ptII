@@ -410,6 +410,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             _setCurrentODESolver(getBreakpointSolver());
         } else {
             _setCurrentODESolver(getNormalODESolver());
+            prefireClear();
         }
 
         return super.prefire();
