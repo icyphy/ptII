@@ -65,8 +65,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  the passed array may be reused.
      *  @param value An array of tokens.
      *  @exception IllegalActionException If the tokens in the array
-     *  do not have the same type, or the length of the given array is
-     *  zero.
+     *   do not have the same type, or the length of the given array is
+     *   zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
         // NOTE: This code is purposefully duplicated from
@@ -78,6 +78,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + "length of the specified array is zero.");
         }
 
+        _elementPrototype = value[0];
         Type elementType = value[0].getType();
         int length = value.length;
         // It would be nice to have this, but the Code generator cannot
@@ -85,14 +86,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         //    for (int i = 0; i < length; i++) {
         //             Type valueType = value[i].getType();
         //             if (!elementType.equals(valueType)) {
-        //                 elementType = TypeLattice.leastUpperBound(
+        //                 _elementType = TypeLattice.leastUpperBound(
         //                         elementType, valueType);
         //             }
         //         }
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
             if (elementType.equals(value[i].getType())) {
-                _value[i] = value[i];// elementType.convert(value[i]);
+                _value[i] = value[i];// _elementType.convert(value[i]);
             } else {
                 throw new IllegalActionException(
                         "Elements of the array do not have the same type:"
@@ -126,6 +127,15 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throw new IllegalActionException("An array token cannot be"
                     + " created from the expression '" + init + "'");
         }
+    }
+    
+    /** Construct an empty ArrayToken with the element type of the
+     *  specified token.
+     *  @param elementPrototype A token specifying the element type.
+     */
+    public ArrayToken(Token elementPrototype) {
+        _value = new Token[0];
+        _elementPrototype = elementPrototype;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,7 +173,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         //             java.lang.reflect.Array.newInstance(
         //                     getElementType().getTokenClass(),
         //                     _value.length);
-        System.arraycopy(_value, 0, result, 0, _value.length);
+        if (_value.length > 0) {
+            System.arraycopy(_value, 0, result, 0, _value.length);
+        } 
         return result;
     }
 
@@ -315,42 +327,41 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     /** Extract a non-contiguous subarray either by giving a boolean array
      *  of the same length of this array describing which elements to 
      *  include and which to include, or by giving an an array of an 
-     *  arbitrary length giving the indicies of elements from this array
+     *  arbitrary length giving the indices of elements from this array
      *  to include in the subarray.  An example of the first form is
      *  {"red","green","blue"}.extract({true,false,true}), which evaluates
      *  to {"red", "blue"}.  An example of the second form is
      *  {"red","green","blue"}.extract({2,0,1,1}), which evalues to 
      *  {"blue", "red", "green", "green"}.
      *  @param selection An ArrayToken describing the selection of elements
-     *      with which to form the subarray: either an array of integer 
-     *      indicies, or an array of boolean inclusion/exclusion choices.
+     *   with which to form the subarray: either an array of integer 
+     *   indices, or an array of boolean inclusion/exclusion choices.
      *  @return An ArrayToken containing the extracted subarray.
      *  @exception IllegalActionException If the argument type is invalid
-     *      or the result cannot be constructed.
+     *   or the result cannot be constructed.
      *  @exception ArrayOutOfBoundsException  If the argument is an array
-     *      of integers, and one or more of those integers is not a valid
-     *      index into this array.
+     *   of integers, and one or more of those integers is not a valid
+     *   index into this array.
      *  @since Ptolemy II 4.1
      */
-    //FIXME: This code has not been reviewed.
     public ArrayToken extract(ArrayToken selection)
           throws IllegalActionException {
       List result = new LinkedList();
       if (selection.getElementType() == BaseType.BOOLEAN) {
           if (selection.length() != length()) {
               throw new IllegalActionException(
-	          "When the argument is an array of booleans, it must be "+
-                  "the same length as this array.");
+	          "When the argument is an array of booleans, it must have "
+              +  "the same length as this array.");
           }
-          for (int i=0; i<selection.length(); i++) {
+          for (int i = 0; i < selection.length(); i++) {
               if (selection.getElement(i).equals(BooleanToken.TRUE)) {
                   result.add(getElement(i));
               }
           }
       } else if (selection.getElementType() == BaseType.INT) {
-          for (int i=0; i<selection.length(); i++) {
+          for (int i = 0; i < selection.length(); i++) {
               // We could check for out-of-bounds indicies and ignore them,
-              // if we wanted to. 
+              // if we wanted to.
               int index = ((IntToken)(selection.getElement(i))).intValue();
               result.add(getElement(index));
           } 
@@ -358,9 +369,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
           throw new IllegalActionException(
               "The argument must be {boolean} or {int}."); 
       }
-      Token[] resultArray = new Token[result.size()];
-      resultArray = (Token[])(result.toArray(resultArray));
-      return new ArrayToken(resultArray);
+      if (result.size() > 0) {
+          Token[] resultArray = new Token[result.size()];
+          resultArray = (Token[])(result.toArray(resultArray));
+          return new ArrayToken(resultArray);
+      } else {
+          return new ArrayToken(getElementPrototype());
+      }
     }
 
     /** Return the element at the specified index.
@@ -374,11 +389,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value[index];
     }
 
+    /** Return a token whose type matches the element type of this
+     *   array.
+     *  @return A token whose type matches the element type.
+     */
+    public Token getElementPrototype() {
+        return _elementPrototype;
+    }
+
     /** Return the type contained in this ArrayToken.
      *  @return A Type.
      */
     public Type getElementType() {
-        return _value[0].getType();
+        return _elementPrototype.getType();
     }
 
     /** Return the type of this ArrayToken.
@@ -389,11 +412,12 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Return a hash code value for this token. This method returns
-     *  the hash code of the first element.
+     *  the hash code of the first element, or of the prototype
+     *  if the array is empty.
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return _value[0].hashCode();
+        return _elementPrototype.hashCode();
     }
 
     /** Return the length of the contained token array.
@@ -425,16 +449,23 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @param index The index of the beginning of the subarray
      *  @param count The length of the subarray
      *  @return The extracted subarray.
-     *  @exception ArrayIndexOutOfBoundsException If the requested subarray
-     *      falls outside of the actual bounds of this array.
+     *  @exception IllegalActionException If the requested subarray
+     *   falls outside of the actual bounds of this array.
      *  @since Ptolemy II 4.1
      */
-    //FIXME: This code has not been reviewed.
     public ArrayToken subarray(int index, int count) 
             throws IllegalActionException {
-        Token result[] = new Token[count];
-        System.arraycopy(_value, index, result, 0, count);
-        return new ArrayToken(result);
+        if (count > 0) {
+            Token result[] = new Token[count];
+            try {
+                System.arraycopy(_value, index, result, 0, count);
+            } catch (IndexOutOfBoundsException e) {
+                throw new IllegalActionException("Subarray is out of bounds.");
+            }
+            return new ArrayToken(result);
+        } else {
+            return new ArrayToken(getElementPrototype());
+        }
     } 
 
     /** Return the value of this token as a string that can be parsed
@@ -706,4 +737,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ////                         private variables                 ////
 
     private Token[] _value;
+    
+    private Token _elementPrototype;
 }
