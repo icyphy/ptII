@@ -283,7 +283,7 @@ public class Manager extends NamedObj implements Runnable {
                 if (!iterate()) break;
                 if (_pauseRequested) {
                     _setState(PAUSED);
-                    while (_pauseRequested) {
+                    while (_pauseRequested && !_finishRequested) {
                         try {
                             wait();
                         } catch (InterruptedException e) {
@@ -360,6 +360,15 @@ public class Manager extends NamedObj implements Runnable {
         // threaded domains will not know that a stop has been requested
         // (vs. a pause).
         ((CompositeActor)container).stop();
+        
+        Thread unpauser = new Thread() {
+                public void run() {
+                    synchronized(Manager.this) {
+                        Manager.this.notifyAll();
+                    }
+                }
+            };
+        unpauser.start();
     }
 
     /** Get the analysis with the given name, or return null if no such
