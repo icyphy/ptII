@@ -1,4 +1,4 @@
-# Makefile for Ptolemy actors that use java.net classes
+# Makefile for Ptolemy communication actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -36,8 +36,7 @@ DIRS =		demo
 # Root of the Java directory
 ROOT =          ../../../..
 
-# COMMAPI_DIR is set in $PTII/mk/ptII.mk by running configure
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar
+CLASSPATH =     $(ROOT)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
@@ -49,7 +48,7 @@ PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = SerialComm.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	comm.xml
@@ -65,8 +64,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-        doc \
-	'TxDatagram$$UpdateThread.class'
+        doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

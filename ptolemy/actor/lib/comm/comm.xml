@@ -5,11 +5,11 @@
   <configure>
     <?moml
       <group>
-<doc>Javacomm Actors</doc>
+<doc>Communcation Actors</doc>
 
-<entity name="SerialComm"
-        class="ptolemy.actor.lib.comm.SerialComm">
-</entity>
+<!-- entity name="SerialComm"
+        class="ptolemy.actor.lib.comm.SerialComm" -->
+<!-- /entity -->
 
       </group>
     ?>

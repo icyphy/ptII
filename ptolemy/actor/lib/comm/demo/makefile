@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Serial port demos
+# Makefile for Ptolemy II Communciations demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/comm/demo
 
-DIRS =		SerialPort
+# If you add to DIRS, add the jar file to PTCLASSALLJARS
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -44,14 +45,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	SerialPort/SerialPort.jar
+#PTCLASSALLJARS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
