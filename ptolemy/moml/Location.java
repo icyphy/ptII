@@ -1,4 +1,4 @@
-/* An attribute that represents a location in the schematic.
+/* An attribute that represents a location of a node in a schematic.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -55,12 +55,7 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// Location
 /**
-This attribute represents a location in a schematic.  In some respects
-it can be thought of as a basic implementation of the Locatable interface.
-It is usually used to specify the location of objects that need
-a graphical location, and have no other way of specifying it (such as
-an external port).
-</pre>
+This attribute represents a location of a node in a schematic.
 By default, an instance of this class is not visible in a user interface.
 This is indicated to the user interface by returning NONE to the
 getVisibility() method.
@@ -68,8 +63,7 @@ getVisibility() method.
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class Location extends SingletonAttribute
-        implements Settable {
+public class Location extends SingletonAttribute implements Settable {
 
     /** Construct an attribute in the specified workspace with an empty
      *  string as a name.
@@ -131,7 +125,6 @@ public class Location extends SingletonAttribute
         newObject._valueListeners = null;
         return newObject;
     }
-
 
     /** Write a MoML description of this object.
      *  MoML is an XML modeling markup language.
