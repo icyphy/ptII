@@ -118,7 +118,7 @@ public class CTSaberSubsys extends CTActor
         _outtoken = new DoubleToken[_numout];
         // start saber
         try{
-            //System.out.println("Start saber with "+getToolName());
+            System.out.println("Start saber with "+getToolName());
             _tool = Runtime.getRuntime().exec(getToolName());
             _instream = _tool.getInputStream();    
             _errorstream = _tool.getErrorStream();    
@@ -128,21 +128,23 @@ public class CTSaberSubsys extends CTActor
         }
         // read in the netlist
         if ((_instream != null) && (_outstream != null)){
-            //System.out.println("tool start ok");
+            System.out.println("tool start ok");
             _ps = new PrintWriter(_outstream, true);
             if (_ps != null){
                 System.out.println("read netlist "+_netlist);
             }
             _reader = new BufferedReader(
-                new InputStreamReader(_instream));
+                new InputStreamReader(_instream), 1000);
             boolean show = false;
             if(_reader == null) {
                 throw new IllegalActionException(this, 
                     "instream reading error.");
             }
+            _ps.println();
             while (true){
                 try {
                     String line = _reader.readLine();
+                    System.out.println(line);
                     if (line.startsWith(new String(">"))){
                         break;
                     }
@@ -152,15 +154,16 @@ public class CTSaberSubsys extends CTActor
                 }
             } 
             // perform DC analysis 
-            //System.out.println("perform dc analysis");
+            System.out.println("perform dc analysis");
             _ps.println("dc (dcep " + _startpt);
             _ps.println("di "+_startpt);
+	    _ps.println();
             _ps.println("bye");
             while (true){
                 try {
                     //if(_reader.ready()) {
                         String line = _reader.readLine();
-                        //System.out.println(line);
+                        System.out.println(line);
                         if (line == null) continue;
                         if (line.startsWith(new String("bye"))){
                             break;
@@ -179,7 +182,7 @@ public class CTSaberSubsys extends CTActor
             while (true) {
                 try {
                     String line = _reader.readLine();
-                    //System.out.println(line);
+                    System.out.println(line);
                     if (line == null) continue;
                     if (line.startsWith(new String("bye"))){
                         break;
@@ -217,7 +220,7 @@ public class CTSaberSubsys extends CTActor
             TypedIOPort p = (TypedIOPort)outps.nextElement();
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
-            //System.out.println("Output token" + d.stringValue());
+            System.out.println("Output token" + d.stringValue());
         }
     }
         
