@@ -1,4 +1,4 @@
-/* An applet that uses Ptolemy II CT and FSM domains.
+/* A thermostat control demo that uses Ptolemy II CT and FSM domains.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -28,14 +28,13 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.ct.demo.thermo;
+package ptolemy.domains.ct.demo.Thermostat;
 
 import java.awt.*;
 import java.awt.event.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.kernel.*;
@@ -95,11 +94,8 @@ public class Thermostat extends CTApplet {
                     _toplevel, "CTTopLevelDirector");
             //topdir.addDebugListener(new StreamListener());
             // a CT ramp
-            CTRamp ramp = new CTRamp(_toplevel, "Ramp");
-            Parameter p = (Parameter)ramp.getAttribute("InitialValue");
-            p.setToken(new DoubleToken(1.0));
-            p = (Parameter)ramp.getAttribute("Slope");
-            p.setToken(new DoubleToken(0.0));
+            Const source = new Const(_toplevel, "Const");
+            source.value.setToken(new DoubleToken(1.0));
 
             // the plot
             TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
@@ -107,7 +103,7 @@ public class Thermostat extends CTApplet {
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Thermostat");
             myplot.plot.addLegend(0, "Temperature");
-            myplot.plot.addLegend(1, "Trigger");
+            //myplot.plot.addLegend(1, "Trigger");
 
             myplot.plot.setXRange(0.0, 5.0);
             myplot.plot.setYRange(-0.1, 0.3);
@@ -156,9 +152,11 @@ public class Thermostat extends CTApplet {
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
             CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
             CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
-            CTZeroCrossingDetector ctIncD = new CTZeroCrossingDetector(ctInc, "ZD");
-            GeneralFunctionActor ctIncGF = new GeneralFunctionActor(ctInc, "GF");
-            //CTPeriodicalSampler ctIncS = new CTPeriodicalSampler(ctInc, "Sample");
+            CTZeroCrossingDetector ctIncD = 
+                new CTZeroCrossingDetector(ctInc, "ZD");
+            GeneralFunctionActor ctIncGF = 
+                new GeneralFunctionActor(ctInc, "GF");
+
             TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
             ctIncGFi.setInput(true);
             ctIncGFi.setTypeEquals(DoubleToken.class);
@@ -202,7 +200,7 @@ public class Thermostat extends CTApplet {
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
             CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
             CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
-            CTGain ctGain = new CTGain(ctDec, "Gain");
+            Scale ctGain = new Scale(ctDec, "Gain");
             CTZeroCrossingDetector ctDecD = new CTZeroCrossingDetector(ctDec, "ZD");
             GeneralFunctionActor ctDecGF = new GeneralFunctionActor(ctDec, "GF");
             //CTPeriodicalSampler ctDecS = new CTPeriodicalSampler(ctDec, "Sample");
@@ -268,8 +266,7 @@ public class Thermostat extends CTApplet {
             ctDecTr.link(hsr4);
 
             // connect the top level system
-            //sys.connect(clk.output, ramp.input);
-            _toplevel.connect(ramp.output, hsin);
+            _toplevel.connect(source.output, hsin);
             //sys.connect(hsout, myplot.input);
             _toplevel.connect(hsst, myplot.input);
             //_toplevel.connect(hstr, myplot.input);
@@ -279,55 +276,41 @@ public class Thermostat extends CTApplet {
             // try to run the system
             topdir.setStopTime(5.0);
            
-            // CT director parameters
-            Parameter initStep = (Parameter)ctIncDir.getAttribute(
-                    "InitialStepSize");
-            initStep.setToken(new DoubleToken(0.01));
-            Parameter minStep = (Parameter)ctIncDir.getAttribute(
-                    "MinimumStepSize");
-            minStep.setToken(new DoubleToken(1e-3));
-            Parameter bpsol = (Parameter)ctIncDir.getAttribute(
-                    "BreakpointODESolver");
+            // CT embedded director 1 parameters
+            ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
+            
+            ctIncDir.MinStepSize.setToken(new DoubleToken(1e-3));
+            
             StringToken tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            bpsol.setToken(tok);
+            ctIncDir.BreakpointODESolver.setToken(tok);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-            dfsol.setToken(tok);
+            ctIncDir.ODESolver.setToken(tok);
 
-            // CT embedded director 1  parameters
-            initStep = (Parameter)ctDecDir.getAttribute("InitialStepSize");
-            initStep.setToken(new DoubleToken(0.01));
-            minStep = (Parameter)ctDecDir.getAttribute("MinimumStepSize");
-            minStep.setToken(new DoubleToken(1e-3));
-            bpsol = (Parameter)ctDecDir.getAttribute("BreakpointODESolver");
+            // CT embedded director 2  parameters
+            ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
+            ctDecDir.MinStepSize.setToken(new DoubleToken(1e-3));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            bpsol.setToken(tok);
-            dfsol = (Parameter)ctDecDir.getAttribute("ODESolver");
+            ctDecDir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-            dfsol.setToken(tok);
+            ctDecDir.ODESolver.setToken(tok);
 
-            Parameter gain = (Parameter)ctGain.getAttribute("Gain");
-            gain.setToken(new DoubleToken(-1.0));
+            ctGain.gain.setToken(new DoubleToken(-1.0));
 
-            // CT embedded director 2 parameters
-            initStep = (Parameter)topdir.getAttribute("InitialStepSize");
-            initStep.setToken(new DoubleToken(0.01));
-            minStep = (Parameter)topdir.getAttribute("MinimumStepSize");
-            minStep.setToken(new DoubleToken(1e-3));
-            minStep = (Parameter)topdir.getAttribute("MaximumStepSize");
-            minStep.setToken(new DoubleToken(0.05));
-            bpsol = (Parameter)topdir.getAttribute("BreakpointODESolver");
+            // CT director parameters
+            topdir.InitStepSize.setToken(new DoubleToken(0.01));
+            topdir.MinStepSize.setToken(new DoubleToken(1e-3));
+            topdir.MaxStepSize.setToken(new DoubleToken(0.05));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            bpsol.setToken(tok);
-            dfsol = (Parameter)topdir.getAttribute("ODESolver");
+            topdir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-            dfsol.setToken(tok);
+            topdir.ODESolver.setToken(tok);
         }catch (KernelException ex) {
             report("Setup failed:", ex);
         }
