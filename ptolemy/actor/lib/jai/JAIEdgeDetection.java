@@ -32,7 +32,7 @@ package ptolemy.actor.lib.jai;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -83,18 +83,10 @@ public class JAIEdgeDetection extends Transformer {
         
         specifiedFirstMask =
             new Parameter(this, "userSpecifiedFirstMask", 
-                    new ArrayToken(_doubleArrayToken));
-        specifiedFirstXDim = 
-            new Parameter(this, "userSpecifiedFirstXDim", new IntToken(3));
-        specifiedFirstYDim = 
-            new Parameter(this, "userSpecifiedFirstYDim", new IntToken(3));                         
+                    new DoubleMatrixToken(_initialMatrix));                   
         specifiedSecondMask =
             new Parameter(this, "userSpecifiedSecondMask", 
-                    new ArrayToken(_doubleArrayToken));
-        specifiedSecondXDim = 
-            new Parameter(this, "userSpecifiedSecondXDim", new IntToken(3));
-        specifiedSecondYDim = 
-            new Parameter(this, "userSpecifiedSecondYDim", new IntToken(3));                        
+                    new DoubleMatrixToken(_initialMatrix));                       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,16 +125,16 @@ public class JAIEdgeDetection extends Transformer {
      *  and the default x and y dimensions is 3.
      */
     public Parameter specifiedFirstMask;
-    public Parameter specifiedFirstXDim;
-    public Parameter specifiedFirstYDim;
+    //public Parameter specifiedFirstXDim;
+    //public Parameter specifiedFirstYDim;
 
     /** The second user specified mask, and its corresponding x and
      *  y dimensions.  The Default mask is the transparent mask,
      *  and the default x and y dimensions is 3.
      */
     public Parameter specifiedSecondMask;
-    public Parameter specifiedSecondXDim;
-    public Parameter specifiedSecondYDim;
+    //public Parameter specifiedSecondXDim;
+    //public Parameter specifiedSecondYDim;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -162,21 +154,9 @@ public class JAIEdgeDetection extends Transformer {
             String secondName = secondMask.getExpression();
             _secondMask = _maskNumberer(secondName);
         } else if (attribute == specifiedFirstMask) {
-            _firstMaskData = ((ArrayToken)specifiedFirstMask.getToken());            
-        } else if (attribute == specifiedFirstXDim){
-            _specifiedFirstXDim = 
-                ((IntToken)specifiedFirstXDim.getToken()).intValue();
-        } else if (attribute == specifiedFirstYDim) {
-            _specifiedFirstYDim = 
-                ((IntToken)specifiedFirstYDim.getToken()).intValue();            
+            _firstMaskData = ((DoubleMatrixToken)specifiedFirstMask.getToken());            
         } else if (attribute == specifiedSecondMask) {
-            _secondMaskData = ((ArrayToken)specifiedSecondMask.getToken());            
-        } else if (attribute == specifiedSecondXDim){
-            _specifiedSecondXDim = 
-                ((IntToken)specifiedSecondXDim.getToken()).intValue();
-        } else if (attribute == specifiedSecondYDim) {
-            _specifiedSecondYDim = 
-                ((IntToken)specifiedSecondYDim.getToken()).intValue();            
+            _secondMaskData = ((DoubleMatrixToken)specifiedSecondMask.getToken());            
         } else {
             super.attributeChanged(attribute);
         }
@@ -193,13 +173,13 @@ public class JAIEdgeDetection extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
         if (_firstMask == _USER_SPECIFIED) {
             _firstKernelJAI = 
-                _maskFiller(_firstMaskData, _specifiedFirstXDim, _specifiedFirstYDim);
+                _maskFiller(_firstMaskData);
         } else {
             _firstKernelJAI = _filterAssigner(_firstMask);
         }
         if (_secondMask == _USER_SPECIFIED) {
             _secondKernelJAI = 
-                _maskFiller(_secondMaskData, _specifiedSecondXDim, _specifiedSecondYDim);
+                _maskFiller(_secondMaskData);
         } else {
             _secondKernelJAI = _filterAssigner(_secondMask);
         } 
@@ -287,37 +267,28 @@ public class JAIEdgeDetection extends Transformer {
     
     /** If a user decides not to use a prespecified mask, this method
      *  will return a KernalJAI filled with user specified values.
-     *  @exception IllegalActionException If the dimensions of the mask
-     *  and the number of entries do not agree.
      */
-    private KernelJAI _maskFiller(ArrayToken array, int width, int height) 
-            throws IllegalActionException {
-        
-        if((array.arrayValue()).length != width*height) {
-            throw new IllegalActionException("Dimensions do not agree");
-        }
-        else {
-            Token tokenArray[] = array.arrayValue();
-            float floatArray[] = new float[tokenArray.length];
-            for (int i = 0; i < tokenArray.length; i = i+1) {
-                double _value = ((DoubleToken)(tokenArray[i])).doubleValue();
-                floatArray[i] = (float)_value;
+    private KernelJAI _maskFiller(DoubleMatrixToken matrix) {      
+        double[][] matrixValue = matrix.doubleMatrix();
+        int height = matrix.getRowCount();
+        int width = matrix.getColumnCount();
+        float[] floatArray = new float[width*height];
+        int count = 0;
+        for (int i = 0; i < height; i = i+1) {
+            for (int j = 0; j < width; j = j+1) {
+                floatArray[count] = (float)matrixValue[i][j];
+                count = count + 1;
             }
-            return new KernelJAI(width,height,floatArray);
         }
+        return new KernelJAI(width,height,floatArray);   
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /** The ArrayTokens contained the the User Specified Mask Fields */
-    private ArrayToken _firstMaskData;
-    private ArrayToken _secondMaskData;
-
-    /** The dimensions of the user specified masks.  */
-    private int _specifiedFirstXDim;
-    private int _specifiedFirstYDim;
-    private int _specifiedSecondXDim;
-    private int _specifiedSecondYDim;
+    private DoubleMatrixToken _firstMaskData;
+    private DoubleMatrixToken _secondMaskData;
 
     /** The KernalJAI's that contain the masks to be used in edge
      *  detection.
@@ -329,14 +300,9 @@ public class JAIEdgeDetection extends Transformer {
     private int _firstMask;
     private int _secondMask;
 
-    /** DoubleToken's representing zero and the square root of two */
-    private final DoubleToken _zero = new DoubleToken("0.0F");
-    private final DoubleToken _halfRootTwo = new DoubleToken("0.707F");
-
-    /** The default for a user specified mask */
-    private DoubleToken _doubleArrayToken[] = {_zero, _zero, _zero,
-                                               _zero, _halfRootTwo, _zero,
-                                               _zero, _zero, _zero};
+    private double[][] _initialMatrix = {{0.0F, 0.0F, 0.0F}, 
+                                         {0.0F, 0.707F, 0.0F},
+                                         {0.0F, 0.0F, 0.0F}};
 
     /** Prespecified masks that the user may use */
     private final float _sobelHorizontalFilter[] = {1.0F, 0.0F, -1.0F,
