@@ -236,7 +236,9 @@ public class Reader extends Source {
     public void setReader(java.io.BufferedReader reader)
             throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) _reader.close();
+            if (_reader != null && _reader != _stdIn) {
+                _reader.close();
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "setReader(" + reader + ") failed");
@@ -253,10 +255,12 @@ public class Reader extends Source {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_reader != null && _reader != _stdIn) _reader.close();
+            if (_reader != null && _reader != _stdIn) {
+                _reader.close();
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "wrapup(" + reader + ") failed");
+                    "wrapup(" + _reader + ") failed");
         }
     }
 
