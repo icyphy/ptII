@@ -325,11 +325,11 @@ fi
 # PTJNI_DIR is set to jni if configure found gcc or cc
 PTJNI_DIR=@PTJNI_DIR@
 PTJNI_PROPERTIES=""
-if [ "$PTJNI_DIR" = "jni" ]; then
+#if [ "$PTJNI_DIR" = "jni" ]; then
     # Properties for compiling
     # These properties are now set in $PTII/lib/ptII.properties
     #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
-fi
+#fi
 
 #### Joystick
 # PTJOYSTICK_DIR is set to joystick if configure found joystick
