@@ -281,10 +281,12 @@ public class Clock extends TimedSource {
                 Utilities.round(_tentativeCycleStartTime, 
                     getDirector().getTimeResolution());
             
+            double currentPhaseTime = 
+                _tentativeCycleStartTime + _offsets[_tentativePhase];
+            currentPhaseTime = Utilities.round(currentPhaseTime, 
+                getDirector().getTimeResolution());            
             // Adjust the phase if time has moved beyond the current phase.
-            // FIXME: why using while but not if?
-            while (currentTime
-                    >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+            if (currentTime == currentPhaseTime) {
 
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
