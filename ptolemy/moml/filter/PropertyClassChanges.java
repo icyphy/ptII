@@ -125,14 +125,6 @@ public class PropertyClassChanges implements MoMLFilter {
                     // class that had property class changes.
                     _newClass = (String) _propertyMap.get(attributeValue);
                     _foundChange = true;
-
-                    // Check if the found attribute will be removed by checking
-                    // the name of the _newClass
-                    if ((_newClass != null) && _newClass.endsWith("REMOVED!")) {
-                        _newClass = null;
-                        _foundChange = false;
-                        return null;
-                    }
                 } else {
                     // Saw a name that did not match.
                     // However, we might have other names that
@@ -345,22 +337,22 @@ public class PropertyClassChanges implements MoMLFilter {
         // to decide which director to choose. This attribugte will be
         // automatically created. This attribute will not appear in the MoML
         // output any more.
-        // NOTE: Remove a property by setting the new class to "REMOVED!".
-        modalModelClassChanges.put("_Director", "REMOVED!");
+        // NOTE: Remove a property by setting the new class to null.
+        modalModelClassChanges.put("_Director", null);
 
         _actorsWithPropertyClassChanges.put("ptolemy.domains.fsm.modal.ModalModel",
                 modalModelClassChanges);
 
         // LevelCrossingDetector
         HashMap levelCrossingDetectorClassChanges = new HashMap();
-        levelCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
-        levelCrossingDetectorClassChanges.put("useDefaultEventValue", "REMOVED!");
+        levelCrossingDetectorClassChanges.put("useEventValue", null);
+        levelCrossingDetectorClassChanges.put("useDefaultEventValue", null);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.ct.lib.LevelCrossingDetector",
                 levelCrossingDetectorClassChanges);
 
         // ZeroCrossingDetector
         HashMap zeroCrossingDetectorClassChanges = new HashMap();
-        zeroCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
+        zeroCrossingDetectorClassChanges.put("useEventValue", null);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.ct.lib.ZeroCrossingDetector",
                 zeroCrossingDetectorClassChanges);
 
