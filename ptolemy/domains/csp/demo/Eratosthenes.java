@@ -83,7 +83,8 @@ public class Eratosthenes {
 	//univ.connect(portin, portout, "plot_queue");
 
 
-        //System.out.println(univ.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
+        //System.out.println(
+        // univ.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
         manager.run();
         System.out.println(univ.getName() + "Finished\n");
