@@ -248,9 +248,23 @@ public class GeneratorTableau extends Tableau {
                         model, "_generator");
             }
 
-	    // Update the modelPath parameter with the path to the model
-	    attribute.sanityCheckAndUpdateParameters(getEffigy().url
+	    if (getEffigy().url != null 
+		&& getEffigy().url.getURL() != null) { 
+		// Update the modelPath parameter with the path to the model
+		attribute.sanityCheckAndUpdateParameters(getEffigy().url
 						     .getURL().toString());
+	    } else {
+		// FIXME: I'm not sure if this is what we want.
+		// The problem is that if the user opens a new model
+		// and then does View -> Codegenerator, then
+		// the URL of the effigy is null, so we cannot query
+		// the empty model for things like its name and the
+		// number of iterations.  So, we default to Orthocom
+		attribute.sanityCheckAndUpdateParameters(
+		    ptolemy.data.expr
+		    .UtilityFunctions.getProperty("ptolemy.ptII.dir")
+		    + "/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml");
+	    }
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
