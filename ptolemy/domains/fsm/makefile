@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/fsm
 
-DIRS =		kernel demo
+DIRS =		kernel demo lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
