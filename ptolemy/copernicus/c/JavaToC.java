@@ -97,6 +97,11 @@ public class JavaToC {
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
         InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
+
+        /** Generate a main function unconditionally. Even if the
+         *  class does not have a main method, such a file is useful
+         *  for debugging and testing purposes.
+         */
         MainFileGenerator mGenerator = new MainFileGenerator();
 
         if (generateSingleClass) {
