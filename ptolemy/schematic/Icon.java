@@ -30,8 +30,10 @@
 
 package ptolemy.schematic;
 
+import ptolemy.kernel.util.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.NoSuchElementException;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Icon 
@@ -49,50 +51,132 @@ public class Icon extends XMLElement {
 
     /**
      * Create a new Icon. By default, the icon contains no graphic
-     * representation.
+     * representations, no attributes, and has an entity type that 
+     * exists, but is not specified.
      */
     public Icon () {
-        ;
+        super("icon");
+        graphics = (HashedMap) new HashedMap();
+        entitytype = new EntityType();
+        addChildElement(entitytype);
     }
 
     /**
-     * Get an enumeration over the names of the graphics formats
-     * supported by this icon. Each element of the enumeration
-     * is a string.
+     * Create a new Icon, containing the specified attributes.
+     * By default, the icon contains no graphic
+     * representations, and has an entity type that exists, but
+     * is not specified.
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
      */
-    public Enumeration graphicsFormats() {
-        return null;
+    public Icon (HashedMap attributes) {
+        super("icon", attributes);
+        graphics = (HashedMap) new HashedMap();
+        entitytype = new EntityType();
+        addChildElement(entitytype);
+    }
+   
+
+    /**
+     * Create a new Icon, containing the specified attributes and the
+     * specified entity type. By default, the icon contains no graphic
+     * representations.
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     * @param et an EntityType object.
+     */
+    public Icon (HashedMap attributes, EntityType et) {
+        super("icon", attributes);
+        graphics = (HashedMap) new HashedMap();
+        entitytype = et;
+        addChildElement(entitytype);
     }
 
-    /** Add a new graphics element to the icon. The format
-     * specifies the graphics format. Throw an exception if
-     * a graphics element in this format already exists.
+    /** 
+     * Add a new graphic to the icon. The format
+     * is specified in the "format" attribute of the XMLElement.
+     * The XMLElement must be of element type "graphic".
+     *  
+     * @throw IllegalActionException if the element is not of element type 
+     * "graphic"
+     * @throw IllegalActionException if a graphic with the same type as 
+     * the element is already associated with this Icon. 
      */
-    public void addGraphicsElement (String format, XMLElement element) {
-        ;
+    public void addGraphic (XMLElement element) throws IllegalActionException {
+        String type = element.getElementType();
+        if(!type.equals("graphic")) 
+            throw new IllegalActionException("Element must be of " +
+                    " type graphic");
+        String format = element.getAttribute("format");
+        if(containsGraphic(format)) 
+            throw new IllegalActionException("Graphic of type " + format + 
+                    " already exists.");
+        graphics.putAt(format, element);
+        addChildElement(element);
     }
 
-     /** Test if this icon contains a graphics element in the
-     * given graphics format.
+    /** 
+     * Test if this icon contains a graphic in the
+     * given format.
      */
-    public boolean containsGraphicsElement (String format) {
-        return false;
+    public boolean containsGraphic (String format) {
+        return graphics.includesKey(format);
     }
 
-   /** Given the graphics format attribute, return the graphics
-     * element that has that format. If there isn't one, throw
-     * an exception.
+    /** 
+     * Given a graphic format attribute, return the graphic
+     * that has that format. 
+     * 
+     * @return an XMLElement with element type of "graphic"
+     * @throw IllegalActionException if no graphic exists in the given format
      */
-    public XMLElement getGraphicsElement (String format) {
-        return null;
+    public XMLElement getGraphic (String format) 
+    throws IllegalActionException {
+        try {            
+            XMLElement s = (XMLElement) graphics.at(format);
+            return s;
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Icon does not contain a " +
+                    "graphic of format " + format);
+        }
     }
 
-    /** Remove a graphics element from the icon. Throw an exception if
-     * a graphics element in this format does not exists.
+    /** 
+     * Return the EntityType of this Icon
      */
-    public void removeGraphicsElement (String format) {
-        ;
+    public EntityType getEntityType () {
+        return entitytype;
     }
+
+    /**
+     * Return an enumeration over the names of the graphics formats
+     * supported by this icon. 
+     *
+     * @return Enumeration of String.
+     */
+    public Enumeration graphicFormats() {
+        return graphics.elements();
+    }
+
+    /** 
+     * Remove a graphic from the icon. Throw an exception if
+     * a graphic in this format is not associated with the Icon.
+     */
+    public void removeGraphic (String format) throws IllegalActionException {
+        try {
+            XMLElement e = (XMLElement) graphics.at(format);
+            graphics.removeAt(format);
+            removeChildElement(e);
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Icon does not contain a " +
+                    "graphic of format " + format);
+        }
+    }
+
+    EntityType entitytype;
+    HashedMap graphics;
 
 }
 

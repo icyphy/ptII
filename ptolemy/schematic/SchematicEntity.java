@@ -31,7 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicEntity
@@ -43,10 +43,38 @@ import collections.LinkedList;
 public class SchematicEntity extends SchematicElement { 
 
     /** 
-     * Create a new SchematicEntity object.
+     * Create a new SchematicEntity object wtih no set attributes.
      */
     public SchematicEntity () {
-        ;
+        super("entity");
+        entitytype = new EntityType();
+        addChildElement(entitytype);
+    }
+
+    /**
+     * Create a new SchematicEntity object with the given attributes and an 
+     * unspecified entitytype.
+     *
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     */
+    public SchematicEntity (HashedMap attributes) {
+        super("entity", attributes);
+        entitytype = new EntityType();
+        addChildElement(entitytype);
+    }
+
+    /**
+     * Create a new SchematicEntity object with the given attributes and the
+     * specified entity type.
+     *
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     */
+    public SchematicEntity (HashedMap attributes, EntityType et) {
+        super("entity", attributes);
+        entitytype = et;
+        addChildElement(entitytype);
     }
 
     /**
@@ -56,7 +84,9 @@ public class SchematicEntity extends SchematicElement {
      * icons in an icon library.
      */
     public EntityType getEntityType () {
-        return null;
+        return entitytype;
     }
+
+    EntityType entitytype;
 }
 

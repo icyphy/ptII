@@ -32,7 +32,7 @@ and get them out of icon libraries
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntityType
@@ -50,10 +50,36 @@ element embedded in the <entity> element.
 */
 public class EntityType extends XMLElement {
     
-    /** Create an empty EntityType
+    /**
+     * Create an EntityType without any attributes.
      */
     public EntityType () {
-        ;
+        super("entitytype");
+    }
+
+    /**
+     * Create an EntityType with the given attributes
+     */
+    public EntityType (HashedMap attributes) {
+        super("entitytype", attributes);
+    }
+
+    public String getName() {
+        return getAttribute("name");
+    }
+
+    /** 
+     * Test if the give entity type is the same as this entity type.
+     */
+    public boolean equals (EntityType et) {
+        return getName().equals(et.getName());
+    }
+    
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 }
+
+
+
 

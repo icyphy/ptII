@@ -31,7 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicRelation 
@@ -39,6 +39,10 @@ import collections.LinkedList;
 
 A SchematicRelation represents a relation in a Ptolemy II schematic.
 It contains links, which specify the topology of the schematic.
+Every link has a name that specifies the unique port within a schematic that 
+it is connected to.   A link name is formed by period concatenating the
+entity name and the port name that the link is connected to, such as
+"entity.port".
 
 
 @author Steve Neuendorffer, John Reekie
@@ -50,31 +54,68 @@ public class SchematicRelation extends SchematicElement {
      * Create a new SchematicRelation object.
      */
     public SchematicRelation () {
-        ;
+        super("relation");
+        links = (HashedMap) new HashedMap();
+    }
+
+    /**
+     * Create a new SchematicRelation object with the given attributes
+     *
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     */
+    public SchematicRelation (HashedMap attributes) {
+        super("relation", attributes);
+        links = (HashedMap) new HashedMap();
     }
 
     /**
      * Add a new link to this relation. The name of the link
      * is the concatenation of the entity name and the port
      * name, separated by a period.
+     * 
+     * @return an XMLElement that represents the link.
      */
-    public void addLink (String name) {
-        ;
+    public void addLink (String entity, String port) {
+        XMLElement e = new XMLElement("link");
+        String name = entity + "." + port;
+        e.setAttribute("name", name);
+        e.setParent(this);
+        addChildElement(e);    
+        links.putAt(name, e);
     }
 
-   /**
+    /**
      * Test if this relation contains the given link.
      */
     public boolean containsLink (String name) {
-        return false;
+        return links.includesKey(name);
     }
 
-   /**
+    /**
      * Return an enumeration over the links in this relation.
      */
     public Enumeration links () {
-        return null;
+        return links.elements();
     }
+
+    /** 
+     * Remove the link with the given name from this relation
+     */
+    public void removeLink(String name) {
+        XMLElement e = (XMLElement) links.at(name);
+        e.setParent(null);
+        removeChildElement(e);
+        links.removeAt(name);
+    }
+
+    /** 
+     * Set the width of this relation.
+     */
+    public void setWidth(String width) {
+        setAttribute("width", width);
+    }
+    HashedMap links;
 
 }
 

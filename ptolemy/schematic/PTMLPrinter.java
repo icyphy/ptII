@@ -45,50 +45,55 @@ import com.microstar.xml.*;
 */
 public class PTMLPrinter {
 
-    PTMLPrinter(String url, XMLElement e) {
+    PTMLPrinter(String newurl,XMLElement e) {
         super();
-        url=newurl;
+        url = newurl;
         root=e;
     } 
 
     public void print() {
     }
     
-    public void print(OutputStream os) {
-        os.write(xmlheader.toCharArray());
-        printXMLElement(os, root);
+    public void print(OutputStream os) throws IOException {
+        Writer out
+            = new BufferedWriter(new OutputStreamWriter(os)); 
+        out.write(xmlheader);
+        printXMLElement(out, root);
+        out.flush();
     }
     
-    protected void printXMLElement(OutputStream os, e) {
-        os.write("<");
-        os.write(e.getElementName().toCharArray());
-        os.write("\n");
-        Enumeration attribs = e.attributes();
+    protected void printXMLElement(Writer out, XMLElement e) 
+    throws IOException {
+        out.write("<");
+        out.write(e.getElementType());
+        out.write("\n");
+        Enumeration attribs = e.attributeNames();
         while(attribs.hasMoreElements()) {
-            String name = attribs.nextElement();
-            String value = e.getAttributes(name);
-            os.write("\t");
-            os.write(name.toCharArray());
-            os.write("=\"");
-            os.write(value.toCharArray());
-            os.write("\"\n");
+            String name = (String) attribs.nextElement();
+            String value = e.getAttribute(name);
+            out.write("\t");
+            out.write(name);
+            out.write("=\"");
+            out.write(value);
+            out.write("\"\n");
         }
-        os.write(">");
-        Enumeration children = getChildElements(e);
+        out.write(">");
+        Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
-            PrintXMLElement(os,child);
+            printXMLElement(out,child);
         }
-        os.write("</");
-        os.write(e.getElementName().toCharArray());
-        os.write(">\n");
+        out.write("</");
+        out.write(e.getElementType());
+        out.write(">\n");
         
     }
 
-    static final String xmlheader(
+    static final String xmlheader = new String(
             "<?xml version=\"1.0\" standalone=\"no\"?>\n" + 
             "<!DOCTYPE ptolemyicon SYSTEM \"ptolemyicon.dtd\">\n");
     private XMLElement current;
     private XMLElement root;
+    private String url;
 
 }

@@ -115,7 +115,7 @@ public class SchematicParameter extends XMLElement{
      */      
     public void setType(String type) {
         setAttribute("type", type);
-    }
+    } 
 
     /**
      * set the value of this parameter

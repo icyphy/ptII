@@ -31,7 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicElement
@@ -46,11 +46,50 @@ appear in a Ptolemy II schematic.
 public abstract class SchematicElement extends XMLElement {
 
     /**
+     * Create a SchematicElement object with the specified element type.
+     * The object will have no attributes by default.
+     *
+     * @param type the element type of the SchematicElement
+     */
+    SchematicElement(String type) {
+        super(type);
+        parameters = (HashedMap) new HashedMap();
+    }
+
+    /**
+     * Create a SchematicElement object with the specified element type and 
+     * attributes
+     *
+     * @param type the element type of the new object
+     * @param attributes a HashedMap from a String specifying the name of
+     * an attribute to a String specifying the attribute's value.
+     */
+    SchematicElement(String type, HashedMap attributes) {
+        super(type, attributes);
+        parameters = (HashedMap) new HashedMap();
+    }
+
+    /**
      * Add a new parameter to this element. The name
      * of the parameter must be unique in this element.
      */
-    public void addParameter (String name, String value, Class type) {
-        ;
+    public void addParameter (SchematicParameter parameter) {
+        parameter.setParent(this);
+        addChildElement(parameter);
+        parameters.putAt(parameter.getName(), parameter);
+    }
+
+    /**
+     * Add a new parameter to this element. The name
+     * of the parameter must be unique in this element.
+     */
+    public void addParameter (String name, String type, 
+    String value) {
+        SchematicParameter parameter = 
+            new SchematicParameter(name, type, value);
+        parameter.setParent(this);
+        addChildElement(parameter);
+        parameters.putAt(name, parameter);
     }
 
    /**
@@ -58,7 +97,13 @@ public abstract class SchematicElement extends XMLElement {
      * element.
      */
     public boolean containsParameter (String name) {
-        return false;
+        return parameters.includesKey(name);
+    }
+
+   /** Return the name of this element.
+     */
+    public String getName() {
+        return getAttribute("name");
     }
 
    /**
@@ -66,8 +111,8 @@ public abstract class SchematicElement extends XMLElement {
      * Throw an exception if there is no parameter with the
      * given name in this element.
      */
-    public String getParameter (String name) {
-        return null;
+    public String getParameterValue (String name) {
+        return ((SchematicParameter) parameters.at(name)).getValue();
     }
 
    /**
@@ -75,17 +120,27 @@ public abstract class SchematicElement extends XMLElement {
      * Throw an exception if there is no parameter with the
      * given name in this element.
      */
-    public Class getParameterType (String name) {
-        return null;
+    public String getParameterType (String name) {
+        return ((SchematicParameter) parameters.at(name)).getType();
     }
 
    /**
      * Return an enumeration over the (top-level) parameters in this
      * element.
+     * @return an enumeration of SchematicParameters
      */
     public Enumeration parameters () {
-        return null;
+        return parameters.elements();
     }
+
+    /** 
+     * Set the short name of this element
+     */
+    public void setName(String s) {
+        setAttribute("name", s);
+    }
+
+    private HashedMap parameters;
 
 }
 

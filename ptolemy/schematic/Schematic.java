@@ -31,7 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schematic
@@ -55,7 +55,9 @@ public class Schematic extends SchematicElement {
      * Create a new Schematic object.
      */
     public Schematic () {
-        ;
+        super("schematic");
+        entities = (HashedMap) new HashedMap();
+        relations = (HashedMap) new HashedMap();
     }
 
     /**
@@ -63,7 +65,8 @@ public class Schematic extends SchematicElement {
      * of the entity must be unique in this schematic.
      */
     public void addEntity (SchematicEntity entity) {
-        ;
+        entities.putAt(entity.getName(),entity);
+        addChildElement(entity);
     }
 
     /**
@@ -71,7 +74,8 @@ public class Schematic extends SchematicElement {
      * of the relation must be unique in this schematic.
      */
     public void addRelation (SchematicRelation relation) {
-        ;
+        relations.putAt(relation.getName(),relation);
+        addChildElement(relation);
     }
 
     /**
@@ -79,7 +83,7 @@ public class Schematic extends SchematicElement {
      * schematic.
      */
     public boolean containsEntity (String name) {
-        return false;
+        return relations.includesKey(name);
     }
 
     /**
@@ -87,15 +91,15 @@ public class Schematic extends SchematicElement {
      * schematic.
      */
     public boolean containsRelation (String name) {
-        return false;
+        return relations.includesKey(name);
     }
 
      /**
      * Return an enumeration over the entities in this
      * schematic.
      */
-    public Enumeration entities () {
-        return null;
+    public Enumeration entityNames () {
+        return entities.keys();
     }
 
     /**
@@ -104,7 +108,7 @@ public class Schematic extends SchematicElement {
      * given name in this schematic.
      */
     public SchematicEntity getEntity (String name) {
-        return null;
+        return (SchematicEntity) entities.at(name);
     }
 
      /**
@@ -113,15 +117,15 @@ public class Schematic extends SchematicElement {
      * given name in this schematic.
      */
     public SchematicRelation getRelation (String name) {
-        return null;
+        return (SchematicRelation) relations.at(name);
     }
 
     /**
      * Return an enumeration over the relations in this
      * schematic.
      */
-    public Enumeration relations () {
-        return null;
+    public Enumeration relationNames () {
+        return relations.keys();
     }
 
      /**
@@ -130,7 +134,9 @@ public class Schematic extends SchematicElement {
      * in this schematic.
      */
     public void removeEntity(String name) {
-        ;
+        SchematicEntity e = (SchematicEntity) entities.at(name);
+        removeChildElement(e);
+        entities.removeAt(name);
     }
 
     /**
@@ -139,7 +145,13 @@ public class Schematic extends SchematicElement {
      * in this schematic.
      */
     public void removeRelation(String name) {
-        ;
+        SchematicRelation e = (SchematicRelation) relations.at(name);
+        removeChildElement(e);
+        entities.removeAt(name);
     }
+
+    HashedMap entities;
+    HashedMap relations;
+
 }
 

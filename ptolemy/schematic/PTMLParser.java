@@ -33,8 +33,11 @@ package ptolemy.schematic;
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 import collections.*;
-import java.io.*;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import com.microstar.xml.*;
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PTMLParser
@@ -45,94 +48,125 @@ import com.microstar.xml.*;
 */
 public class PTMLParser extends HandlerBase{
 
-    PTMLParser(String url) {
+    /** 
+     * Create a PTMLParser that will operate relative to the url in the given 
+     * string.
+     */
+    PTMLParser(String s) {
         super();
-        url=newurl;
+        url=s;
     } 
 
-    /** Implement com.microstar.xml.XMLHandler.attribute
+    /** 
+     * Implement com.microstar.xml.XMLHandler.attribute
+     * Accumulate all the attributes until the next startElement.
      */
     public void attribute(String name, String value, boolean specified) 
     throws Exception {
         attributes.putAt(name, value);
     }
         
-    /** Implement com.microstar.xml.XMLHandler.endDocument
+    /** 
+     * Implement com.microstar.xml.XMLHandler.endDocument
+     * If we've finished the parse and didn't get back to the root of the
+     * parse tree, then something is wrong, and throw an exception.
      */
     public void endDocument() throws Exception {
-        if(current!=document) 
+        if(current!=root) 
             throw new IllegalActionException("internal error in PTMLParser");
-        parsing=false;
     }
 
-    /** Implement com.microstar.xml.XMLHandler.endElement
+    /** 
+     * Implement com.microstar.xml.XMLHandler.endElement
+     * Move up one level in the parse tree and apply any semantic meaning 
+     * that the element that is ending might have within its parent.  For
+     * example, if the element is an Icon contained within an IconLibrary, 
+     * then the icon should be added to the library's list of icons.
      */
     public void endElement() throws Exception {
         XMLElement parent= current.getParent();
-        if(parent instanceof iconlibrary) {
-            if(current instanceof icon) {
-                ((IconLibrary) parent).icons.putAt(current);
-            } else if(current instanceof sublibrary) {
+        if(parent instanceof IconLibrary) {
+            if(current instanceof Icon) {
+                ((IconLibrary) parent).icons.putAt(
+                        ((Icon) current).getEntityType(),
+                        current);
+            } else if(current.getElementType().equals("sublibrary")) {
                 String file = current.getAttribute("file");
-                ((IconLibrary) parent).sublibraries.putAt(file);
+                ((IconLibrary) parent).sublibraries.include(file);
             }
         }
         current = parent;
     }
 
-    /** Implement com.microstar.xml.XMLHandler.error
+    /** 
+     * Implement com.microstar.xml.XMLHandler.error
+     * @throws XmlException if called.
      */
     public void error(String message, String sysid,
             int line, int column) throws Exception {
-                throw new XMLException(message, sysid, line, column);
+                throw new XmlException(message, sysid, line, column);
     }
 
-   /** Get the URL associated with this Parser.  If the URL has not
-     *  been set, return the Empty String.
+    /** 
+     * Get the URL associated with this Parser.  
      */
     public String getURL() {
         return url;
     }
 
-    /** Parse the URL associated with this library.  The URL should specify 
-     *  an XML file that is valid with IconLibrary.dtd.
+    /** 
+     * Parse the URL associated with this library.  The URL should specify 
+     * an XML file that is valid with IconLibrary.dtd.
      *
-     *  @throws IllegalActionException if the URL is not valid or the file
-     *  could not be retrieved.  
-     *  @throws IllegalActionException if the parser fails.
+     * @return the XMLElement that contains the root of the parse tree.  
+     * this element will have element type of "document". 
+     * @throws IllegalActionException if the URL is not valid or the file
+     * could not be retrieved.  
+     * @throws IllegalActionException if the parser fails.
      */
-    public void synchronized parse() throws IllegalActionException {
-        if(parsing == false) {
-            parsing = true;
-            XmlParser parser = new XmlParser();
-            parser.setHandler(this);
-            parser.parse(makeAbsoluteURL(url), null, null);       
-        } 
+    public XMLElement parse() throws Exception {
+        XmlParser parser = new XmlParser();
+        parser.setHandler(this);
+        parser.parse(url, null, (String)null); 
+        return root;      
     }
 
-    /** Parse the given stream for an IconLibrary element.  The stream should
-     *  be valid with IconLibrary.dtd.
-     *  @throws IllegalActionException if the parser fails.
+    /** 
+     * Parse the given stream, using the url associated with this library
+     * to expand any external references within the XML.  The stream should
+     * be valid with IconLibrary.dtd.  
+     *
+     * @return the XMLElement that contains the root of the parse tree.  
+     * this element will have element type of "document". 
+     * @throws IllegalActionException if the parser fails.
      */
-    public void parse(InputStream is) throws IllegalActionException {
-        if(parsing == false) {
-            parsing = true;
-            XmlParser parser = new XmlParser();
-            parser.setHandler(this);
-            parser.parse(makeAbsoluteURL(url), null, is, null);
-        }
+    public XMLElement parse(InputStream is) 
+    throws Exception {
+        XmlParser parser = new XmlParser();
+        parser.setHandler(this);
+        parser.parse(url, null, is, null);
+        return root;
     }
  
-    /** Implement com.microstar.xml.XMLHandler.startDocument
+    /** 
+     * Implement com.microstar.xml.XMLHandler.startDocument
+     * Initialize the parse tree to contain a single element of type 
+     * "document".
      */
     public void startDocument() {
         attributes = (HashedMap) new HashedMap();
-        current = new XMLElement();
-        document = current;
-        first = true;
+        current = new XMLElement("Document");
+        root = current;
     }
 
-     /** Implement com.microstar.xml.XMLHandler.startElement
+    /**
+     * Implement com.microstar.xml.XMLHandler.startElement
+     * Create a new XMLElement, or derived class of XMLElement, based on 
+     * the element type.   Set the attributes of the new XMLElement equal 
+     * to the attributes that have been accumulated since the last 
+     * call to this method.  Descend the parse tree into the new XMLElement
+     *
+     * @param name the element type of the element that is beginning.
      */
     public void startElement(String name) {
         XMLElement e;
@@ -147,37 +181,30 @@ public class PTMLParser extends HandlerBase{
             e=new IconLibrary(attributes);
         }
         if(name.equals("parameter")) {
-            e=new SchematicParameter(attributes);
+            //            e=new SchematicParameter(attributes);
         }
         if(name.equals("description")) {
             e=new XMLElement(name,attributes);
         }
         if(name.equals("port")) {
-            e=new SchematicPort(attributes);
+            //            e=new SchematicPort(attributes);
         }
         if(name.equals("graphic")) {
-            e=new SchematicPort(attributes);
+            e=new XMLElement(name,attributes);
         }
         else {
             e=new XMLElement(name,attributes);
         }
-        if(first) {
-            first = false;
-            root=e;
-            current=e;
-            e.setParent(null);
-        } else {
-            e.setParent(current);
-            current.addChild(e);
-            current=e;
-        }
+        e.setParent(current);
+        current.addChildElement(e);
+        current=e;
         attributes = (HashedMap) new HashedMap();
     }
 
-    private boolean parsing=false;
     private String url;
     private HashedMap attributes;
     private XMLElement current;
     private XMLElement root;
 
 }
+
