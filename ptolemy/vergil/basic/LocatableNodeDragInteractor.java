@@ -181,7 +181,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             if (newLoc.getLocation() != null) {
                 newLocation = newLoc.getLocation();
             }
-            // NOTE: we use the trasform worked out for the drag to
+            // NOTE: we use the transform worked out for the drag to
             // set the original MoML location
             double[] oldLocation = new double[2];
             oldLocation[0] = newLocation[0] + transform[0];
@@ -287,18 +287,14 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 Figure figure = (Figure) targets.next();
                 Object node = figure.getUserObject();
                 if (_controller.getController().getGraphModel().isNode(node)) {
-                    if (_controller.hasLocation(node)) {
-                        double[] location = _controller.getLocation(node);
-                        location[0] += snapTranslation[0];
-                        location[1] += snapTranslation[1];
-                        _controller.setLocation(node, location);
-
-                    } else {
-                        double[] location = new double[2];
-                        location[0] = figure.getOrigin().getX();
-                        location[1] = figure.getOrigin().getY();
-                        _controller.setLocation(node, location);
-                    }
+                    // NOTE: This used to get the location and then set it,
+                    // but since the returned value is the internal array,
+                    // then setLocation() believed there was no change,
+                    // so the change would not be persistent.
+                    double[] location = new double[2];
+                    location[0] = figure.getOrigin().getX();
+                    location[1] = figure.getOrigin().getY();
+                    _controller.setLocation(node, location);
                 }
             }
         } catch (IllegalActionException ex) {
