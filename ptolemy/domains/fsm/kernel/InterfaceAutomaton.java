@@ -145,6 +145,31 @@ public class InterfaceAutomaton extends FSMActor {
 	Set outputs = sets[1];
 	Set internals = sets[2];
 
+// step 1: compute product
+/* cases in frontier exploration at state p x q: for a transition from T from p:
+(1) T is input for p:
+    (1A) T is input of product: add to product
+    (1B) T is shared:
+        (1Ba) q has T ouput: add to product
+	(1Bb) q does not have T output: transition cannot happen in
+	                                product. ignore
+(2) T is output for p:
+    (2A) T is output of product: add to product
+    (2B) T is shared:
+        (2Ba) q has T input: add to product
+	(2Bb) q does not have T input: mark p x q as illegal. stop exploring
+	                               from p x q
+
+(3) T is internal for p: add to product
+
+The cases for q is symmetric, but be careful not to add shared transition
+twice.
+*/
+
+// step2: prune out illegal states.
+// need step1 to mark illegal states.
+
+// step3: eliminate states disconnected to initial state.
 
 
         // First computes the product automaton, then prunes the illegal
@@ -414,7 +439,7 @@ public class InterfaceAutomaton extends FSMActor {
     // Compute the product of this autmaton and the argument.
     // Use frontier exploration. The frontier is represented by a HashMap
     // frontier. The key is the name of the state in the product, the value
-    // is a Triple: procudeState, stateInThis, stateInArgument. The keys
+    // is a Triple: productState, stateInThis, stateInArgument. The keys
     // are used to easily check if a product state is in the frontier.
     //
     // init: set the product to empty
@@ -465,7 +490,6 @@ public class InterfaceAutomaton extends FSMActor {
                 while (transitions.hasNext()) {
                     InterfaceAutomatonTransition transition =
                             (InterfaceAutomatonTransition)transitions.next();
-//                    // check composability
 		    // process non-shared transitions
                     int transitionType = transition.getTransitionType();
                     if (transitionType ==
