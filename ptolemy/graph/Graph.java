@@ -43,7 +43,7 @@ by the user.
 
 public class Graph {
 
-    /** Contruct an empty graph.
+    /** Constructs an empty graph.
      */
     public Graph() {
         _graph = new Vector();
@@ -51,7 +51,7 @@ public class Graph {
         _nodeIdTable = new Hashtable();
     }
     
-    /** Construct an empty graph with enough storage allocated for the
+    /** Constructs an empty graph with enough storage allocated for the
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
@@ -86,7 +86,7 @@ public class Graph {
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
  
-    /** Adds an edge to connect twe nodes.  Multiple connections between
+    /** Adds an edge to connect two nodes.  Multiple connections between
      *  two nodes are allowed, but they are counted separately.  Self loop
      *  is also allowed.
      *

@@ -44,13 +44,13 @@ and Torben Mogensen.
 The algorithm in Rehof works for definite inequalities, which are
 inequalities that the greater term is a constant or a variable.  This
 solver doesn't enforce this requirement.  However, if the greater term
-of some inequalities is a funciton, this solver may not be able to find
+of some inequalities is a function, this solver may not be able to find
 the solution even when the set of inequalities is satisfiable.  See
 the paper for details.
 
 This solver assumes that the CPO passed to the constructor is a lattice,
 but it does not verify it.  If the least upper bound (LUB) of some
-elements doesn't exist during the excution of the algorithm, an exception
+elements doesn't exist during the execution of the algorithm, an exception
 is thrown.
 
 @author Yuhong Xiong
@@ -76,7 +76,7 @@ public class InequalitySolver {
 
     /** Adds an inequality to the set of constraints.
      *  @param ineq an <code>Inequality</code>.
-     *  @param varList an array of <code>InequalityTerm</code>s coresponding
+     *  @param varList an array of <code>InequalityTerm</code>s corresponding
      *   to variables in the specified inequality.
      */
     public void addInequality(Inequality ineq, InequalityTerm[] varList) {
@@ -130,7 +130,7 @@ public class InequalitySolver {
      *  variable, and the set of inequalities is not satisfiable, this
      *  method returns <code>false</code>; if the set of inequalities
      *  is not definite, a <code>false</code> return value doesn't
-     *  guaranttee the set of inequalities is not satisfiable.
+     *  guarantee the set of inequalities is not satisfiable.
      *  @return <code>true</code> if the set of inequalities is
      *   satisfiable; <code>false</code> if not satisfiable, or
      *   the set of inequalities is not definite.
@@ -228,14 +228,14 @@ public class InequalitySolver {
     private Object _bottom = null;    // local cache
     
     // Vector representation of Cvar.  Each entry is an instance of the
-    // inner class CvarRecord which constains an ineqaulity and the inserted
+    // inner class CvarRecord which contains an inequality and the inserted
     // flag.
     // These vectors effectively gives each inequality in Cvar an index,
     // and _ClistCvar and NS (below) use that index.
     private Vector _Cvar = new Vector();
     
     // inequalities in Ccnst.  This vector and _CvarIneq holds all the
-    // inequalities in the contraint set, which makes up Ilist in Rehof.
+    // inequalities in the constraint set, which makes up Ilist in Rehof.
     private Vector _Ccnst = new Vector();
     
     // In Rehof, each entry of Clist holds pointers to inequalities in

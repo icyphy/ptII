@@ -55,7 +55,7 @@ public interface CPO
 
     /** Computes the least upper bound (LUB) of two elements.
      *  @param e1 an object representing an element in this CPO.
-     *  @param e2 another object representing elemnet in this CPO.
+     *  @param e2 another object representing element in this CPO.
      *  @return an object representing the LUB of the two specified
      *   elements.  <code>null</code> if the LUB doesn't exist.
      *  @exception IllegalArgumentException at least one element
@@ -74,7 +74,7 @@ public interface CPO
     
     /** Computes the greatest lower bound (GLB) of two elements.
      *  @param e1 an object representing an element in this CPO.
-     *  @param e2 another object representing an elemnet in this CPO.
+     *  @param e2 another object representing an element in this CPO.
      *  @return An object representing the GLB of the two specified
      *   elements.  <code>null</code> if the GLB doesn't exist.
      *  @exception IllegalArgumentException at least one element

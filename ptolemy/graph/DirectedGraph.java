@@ -44,14 +44,14 @@ This class is evolved from Jie's static graph classes.
 */
 
 public class DirectedGraph extends Graph {
-    /** Contruct an empty directed graph.
+    /** Construct an empty directed graph.
      */
     public DirectedGraph() {
         super();
         _inDegree = new Vector();
     }
 
-    /** Construct an empty directed graph with enough storage allocated
+    /** Constructs an empty directed graph with enough storage allocated
      *  for the specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
@@ -83,7 +83,7 @@ public class DirectedGraph extends Graph {
         _inDegree.addElement(new Integer(0));
     }
         
-    /** Adds a directed edge to connect twe nodes.  Multiple connections
+    /** Adds a directed edge to connect two nodes.  Multiple connections
      *  between two nodes are allowed, but they are counted separately.
      *  Self loop is also allowed.
      *
@@ -124,14 +124,14 @@ public class DirectedGraph extends Graph {
         return _isAcyclic;
     }
 
-    /** Finds all the nodes reacheable from the specified one.
+    /** Finds all the nodes reachable from the specified one.
      *  @param o an object associated with a node in this graph.
-     *  @return an array of objects associated with the reacheable
+     *  @return an array of objects associated with the reachable
      *   nodes.
      *  @exception IllegalArgumentException the specified object is
      *   not associated with a node in this graph.
      */
-    public Object[] reacheableNodes(Object o) {
+    public Object[] reachableNodes(Object o) {
 	_compTranClosure();
 
 	int id = _getNodeId(o);
