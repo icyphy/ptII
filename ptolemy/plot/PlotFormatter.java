@@ -158,15 +158,15 @@ public class PlotFormatter extends JPanel {
         _wideQuery.addQueryListener(new QueryListener() {
                 public void changed(String name) {
                     if (name.equals("title")) {
-                        _plot.setTitle(_wideQuery.stringValue("title"));
+                        _plot.setTitle(_wideQuery.getStringValue("title"));
                     } else if (name.equals("xlabel")) {
-                        _plot.setXLabel(_wideQuery.stringValue("xlabel"));
+                        _plot.setXLabel(_wideQuery.getStringValue("xlabel"));
                     } else if (name.equals("ylabel")) {
-                        _plot.setYLabel(_wideQuery.stringValue("ylabel"));
+                        _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
                     } else if (name.equals("xrange")) {
-                        _plot.read("XRange: " + _wideQuery.stringValue("xrange"));
+                        _plot.read("XRange: " + _wideQuery.getStringValue("xrange"));
                     } else if (name.equals("xticks")) {
-                        String spec = _wideQuery.stringValue("xticks").trim();
+                        String spec = _wideQuery.getStringValue("xticks").trim();
                         _plot.read("XTicks: " + spec);
                         // FIXME: log axis format temporarily disable, see above.
                         // if (spec.equals("")) {
@@ -176,7 +176,7 @@ public class PlotFormatter extends JPanel {
                         //    _narrowQuery.setEnabled("xlog", false);
                         // }
                     } else if (name.equals("yticks")) {
-                        String spec = _wideQuery.stringValue("yticks").trim();
+                        String spec = _wideQuery.getStringValue("yticks").trim();
                         _plot.read("YTicks: " + spec);
                         // FIXME: log axis format temporarily disable, see above.
                         // if (spec.equals("")) {
@@ -186,9 +186,9 @@ public class PlotFormatter extends JPanel {
                         //    _narrowQuery.setEnabled("ylog", false);
                         // }
                     } else if (name.equals("yrange")) {
-                        _plot.read("YRange: " + _wideQuery.stringValue("yrange"));
+                        _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
                     } else if (name.equals("marks")) {
-                        ((Plot)_plot).setMarksStyle(_wideQuery.stringValue("marks"));
+                        ((Plot)_plot).setMarksStyle(_wideQuery.getStringValue("marks"));
                     }
                     _plot.repaint();
                 }
@@ -197,20 +197,20 @@ public class PlotFormatter extends JPanel {
         _narrowQuery.addQueryListener(new QueryListener() {
                 public void changed(String name) {
                     if (name.equals("grid")) {
-                        _plot.setGrid(_narrowQuery.booleanValue("grid"));
+                        _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
                     } else if (name.equals("stems")) {
                         ((Plot)_plot).setImpulses(
-                                _narrowQuery.booleanValue("stems"));
+                                _narrowQuery.getBooleanValue("stems"));
                         _plot.repaint();
                     } else if (name.equals("color")) {
-                        _plot.setColor(_narrowQuery.booleanValue("color"));
+                        _plot.setColor(_narrowQuery.getBooleanValue("color"));
                         // FIXME: log axis format temporarily disable, see above.
                         // } else if (name.equals("xlog")) {
-                        //    _plot.setXLog(_narrowQuery.booleanValue("xlog"));
+                        //    _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
                         // } else if (name.equals("ylog")) {
-                        //    _plot.setYLog(_narrowQuery.booleanValue("ylog"));
+                        //    _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
                     } else if (name.equals("connected")) {
-                        _setConnected(_narrowQuery.booleanValue("connected"));
+                        _setConnected(_narrowQuery.getBooleanValue("connected"));
                     }
                     _plot.repaint();
                 }
@@ -225,24 +225,24 @@ public class PlotFormatter extends JPanel {
      */
     public void apply() {
         // Apply current values.
-        _plot.setTitle(_wideQuery.stringValue("title"));
-        _plot.setXLabel(_wideQuery.stringValue("xlabel"));
-        _plot.setYLabel(_wideQuery.stringValue("ylabel"));
-        _plot.read("XRange: " + _wideQuery.stringValue("xrange"));
-        _plot.read("YRange: " + _wideQuery.stringValue("yrange"));
-        _plot.setGrid(_narrowQuery.booleanValue("grid"));
-        _plot.setColor(_narrowQuery.booleanValue("color"));
+        _plot.setTitle(_wideQuery.getStringValue("title"));
+        _plot.setXLabel(_wideQuery.getStringValue("xlabel"));
+        _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
+        _plot.read("XRange: " + _wideQuery.getStringValue("xrange"));
+        _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
+        _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
+        _plot.setColor(_narrowQuery.getBooleanValue("color"));
         // FIXME: log axis format temporarily disable, see above.
-        // _plot.setXLog(_narrowQuery.booleanValue("xlog"));
-        // _plot.setYLog(_narrowQuery.booleanValue("ylog"));
+        // _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
+        // _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
         if (_plot instanceof Plot) {
             Plot cplot = (Plot)_plot;
-            cplot.setMarksStyle(_wideQuery.stringValue("marks"));
-            cplot.setImpulses(_narrowQuery.booleanValue("stems"));
-            _setConnected(_narrowQuery.booleanValue("connected"));
+            cplot.setMarksStyle(_wideQuery.getStringValue("marks"));
+            cplot.setImpulses(_narrowQuery.getBooleanValue("stems"));
+            _setConnected(_narrowQuery.getBooleanValue("connected"));
         }
         // FIXME: log axis format temporarily disable, see above.
-        // String spec = _wideQuery.stringValue("xticks").trim();
+        // String spec = _wideQuery.getStringValue("xticks").trim();
         // _plot.read("XTicks: " + spec);
         // if (spec.equals("")) {
         //    _narrowQuery.setEnabled("xlog", true);
@@ -250,7 +250,7 @@ public class PlotFormatter extends JPanel {
         //    _narrowQuery.setBoolean("xlog", false);
         //    _narrowQuery.setEnabled("xlog", false);
         // }
-        // spec = _wideQuery.stringValue("yticks").trim();
+        // spec = _wideQuery.getStringValue("yticks").trim();
         // _plot.read("YTicks: " + spec);
         // if (spec.equals("")) {
         //    _narrowQuery.setEnabled("ylog", true);

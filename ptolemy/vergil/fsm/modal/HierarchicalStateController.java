@@ -143,14 +143,14 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            final String newName = query.stringValue("Name");
+            final String newName = query.getStringValue("Name");
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
                         + newName + ".");
                 return;
             }
 
-            String newClass = query.stringValue("Class");
+            String newClass = query.getStringValue("Class");
 
             String currentRefinements
                 = state.refinementName.getExpression();
@@ -301,7 +301,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            String refinementName = query.stringValue("Refinement");
+            String refinementName = query.getStringValue("Refinement");
             StringBuffer newRefinements = new StringBuffer();
             String currentRefinements
                 = state.refinementName.getExpression();

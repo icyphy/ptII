@@ -183,7 +183,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
             new ComponentDialog(this, "Select dataset", query);
         String buttonPressed = dialog.buttonPressed();
         if (buttonPressed.equals("OK")) {
-            int result = query.intValue("choice");
+            int result = query.getIntValue("choice");
             if (result > 0) {
                 ((EditablePlot)plot).setEditable(result - 1);
             } else {

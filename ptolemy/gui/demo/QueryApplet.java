@@ -72,7 +72,7 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
      *  @param name The name of the entry.
      */
     public void changed(String name) {
-        showStatus("Changed " + name + " to: " + _query.stringValue(name));
+        showStatus("Changed " + name + " to: " + _query.getStringValue(name));
     }
 
     /** Create a Query object and configure it.

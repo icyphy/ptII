@@ -215,7 +215,7 @@ public class ActorGraphFrame extends BasicGraphFrame {
                         if (dialog.buttonPressed().equals("OK")) {
                             try {
                                 _lastDelayTime = Long.parseLong(
-                                        query.stringValue("delay"));
+                                        query.getStringValue("delay"));
                                 _controller.setAnimationDelay(_lastDelayTime);
                                 Director director
                                         = ((Actor)model).getDirector();

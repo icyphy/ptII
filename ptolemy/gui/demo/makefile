@@ -44,6 +44,7 @@ TCL_SRCS = \
 
 
 JSRCS = \
+	FileChooserQuery.java \
 	QueryApplet.java \
 	ShowRawDocumentApplet.java
 
@@ -76,6 +77,7 @@ demos: demo
 demo:	all
 	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
 	CLASSPATH=$(CLASSPATH) java ptolemy.gui.demo.FileChooserQuery
+	CLASSPATH=$(CLASSPATH) appletviewer ShowRawDocumentApplet.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

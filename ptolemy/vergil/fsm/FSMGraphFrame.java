@@ -201,7 +201,7 @@ public class FSMGraphFrame extends BasicGraphFrame {
                     if (dialog.buttonPressed().equals("OK")) {
                         try {
                             _lastDelayTime = Long.parseLong(
-                                    query.stringValue("delay"));
+                                    query.getStringValue("delay"));
                             _controller.setAnimationDelay(_lastDelayTime);
                             NamedObj model = getModel();
                             if (model != null && _listeningTo != model) {

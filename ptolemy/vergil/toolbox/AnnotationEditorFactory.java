@@ -104,11 +104,11 @@ public class AnnotationEditorFactory extends EditorFactory {
         }
         String moml = "<configure><svg><text x=\"20\" y=\"20\" "
             + "style=\"font-size:"
-            + _fontProperties.stringValue("fontSize")
+            + _fontProperties.getStringValue("fontSize")
             + "; font-family:"
-            + _fontProperties.stringValue("fontFamily")
+            + _fontProperties.getStringValue("fontFamily")
             + "; fill:"
-            + _fontProperties.stringValue("fontColor")
+            + _fontProperties.getStringValue("fontColor")
             + "\">"
             + newText
             + "</text></svg></configure>";

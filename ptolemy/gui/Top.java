@@ -501,7 +501,7 @@ public abstract class Top extends JFrame {
         query.addLine("url", "URL", _lastURL);
         ComponentDialog dialog = new ComponentDialog(this, "Open URL", query);
         if (dialog.buttonPressed().equals("OK")) {
-            _lastURL = query.stringValue("url");
+            _lastURL = query.getStringValue("url");
 	    _lastOverallURL = _lastURL;
             try {
                 URL url = new URL(_lastURL);
