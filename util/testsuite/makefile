@@ -72,6 +72,7 @@ SCRIPTS = \
 	ptIIbuildtest \
 	ptIIdirs \
 	ptspell \
+	rmtabs \
 	rmtrailingline \
 	rmtrailingspace \
 	treeshake
