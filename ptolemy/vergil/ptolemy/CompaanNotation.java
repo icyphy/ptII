@@ -51,6 +51,8 @@ import diva.gui.*;
 import diva.graph.*;
 import diva.graph.model.*;
 
+import java.awt.Font;
+import javax.swing.SwingConstants;
 import java.util.*;
 
 /**
@@ -191,13 +193,28 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 
                         figure.setBackgroundFigure(new BasicRectangle(0, 0, 
                                 bounds.getWidth(), bounds.getHeight(), h ));
-                        return figure;
-                      } 
+                    } 
                 } catch (IllegalActionException e) { }                    
             }
             
-            figure.setBackgroundFigure(new BasicRectangle(0, 0, 
-                    bounds.getWidth(), bounds.getHeight(), Color.blue));
+            Variable p = (Variable)entity.getAttribute("ehrhart");
+            if (p != null) {
+                try {
+                    String s = p.getToken().toString();
+                    Figure background = figure.getBackgroundFigure();
+                    Rectangle2D backBounds = background.getBounds();
+                    LabelFigure label = new LabelFigure("erhart: " + s);
+                    label.setFont(new Font("SansSerif", Font.PLAIN, 12));
+                    label.setPadding(1);
+                    // Attach the label at the upper left corner.
+                    label.setAnchor(SwingConstants.NORTH_WEST);
+                    // Put the label's upper left corner at the lower right
+                    // corner of rht efigure.
+                    label.translateTo(backBounds.getX(), 
+                            backBounds.getY() + backBounds.getHeight());
+                    figure.add(label);
+                } catch (IllegalActionException e) { }  
+            }
 	    return figure;
 	}
     }
