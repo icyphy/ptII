@@ -17,8 +17,16 @@ one dim array arguments.
 There is a interface function for each instance.
 All of them are in the same interface library.
 
-See the Visual Project associated with jnitestdeux
-and jnitesttrois.</text></svg></configure>
+This model requires that the testDeux and testTrois
+shared libraries be in your path.
+
+To use GNU C, you will need to create the testDeux.dll
+and testTrois.dll with
+  gcc -shared -o testDeux.dll testDeux.c
+  gcc -shared -o testTrois.dll testTrois.c
+
+To use Visual C++, see the Visual Project associated 
+with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -31,7 +39,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 115.0">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -49,7 +57,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 160.0">
         </property>
     </property>
     <entity name="testDeuxItestDeux" class="jni.GenericJNIActor">
@@ -60,7 +68,7 @@ and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testDeux&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="710.0, 490.0">
         </property>
         <property name="in" class="jni.Argument" value="true,false,false,long" >
         </property>
@@ -93,7 +101,7 @@ and jnitesttrois.</text></svg></configure>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -186,7 +194,7 @@ and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testDeux&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="680.0, 295.0">
         </property>
         <property name="in" class="jni.Argument" value="true,false,false,long" >
         </property>
@@ -499,7 +507,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="930.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="835.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -515,7 +523,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="915.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="845.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -531,7 +539,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="920.0, 405.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="845.0, 435.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -547,7 +555,7 @@ and jnitesttrois.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="880.0, 515.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="850.0, 520.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
