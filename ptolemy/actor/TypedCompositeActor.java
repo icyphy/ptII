@@ -140,13 +140,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor.
+     *   if the argument is not a TypedCompositeActor or null.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedCompositeActor)) {
+        if (!(container instanceof TypedCompositeActor) &&
+	    (container != null)) {
             throw new IllegalActionException(container, this,
                     "CompositeActor can only be contained by instances of " +
                     "TypedCompositeActor.");
