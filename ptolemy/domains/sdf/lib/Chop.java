@@ -133,20 +133,20 @@ public class Chop extends SDFTransformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Chop(CompositeEntity container, String name)
+    public Chop(CompositeEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
-                super(container, name);
-
-                numberToRead = new Parameter(this, "numberToRead");
-                numberToRead.setExpression("128");
-                numberToWrite = new Parameter(this, "numberToWrite");
-                numberToWrite.setExpression("64");
-                offset = new Parameter(this, "offset");
-                offset.setExpression("0");
-                usePastInputs = new Parameter(this, "usePastInputs");
-                usePastInputs.setExpression("true");
-            }
-
+        super(container, name);
+                
+        numberToRead = new Parameter(this, "numberToRead");
+        numberToRead.setExpression("128");
+        numberToWrite = new Parameter(this, "numberToWrite");
+        numberToWrite.setExpression("64");
+        offset = new Parameter(this, "offset");
+        offset.setExpression("0");
+        usePastInputs = new Parameter(this, "usePastInputs");
+        usePastInputs.setExpression("true");
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -182,55 +182,63 @@ public class Chop extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == numberToRead
-                || attribute == numberToWrite
-                || attribute == offset) {
+        // Note: it is important that none of these sections depend on
+        // eachother.
+        if (attribute == numberToRead) {
             _numberToRead = ((IntToken)numberToRead.getToken()).intValue();
-            _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
-            offsetValue = ((IntToken)offset.getToken()).intValue();
-            usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
-
             if (_numberToRead <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid numberToRead: " + _numberToRead);
             }
+            input.setTokenConsumptionRate(_numberToRead);
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+            }
+        } else if(attribute == numberToWrite) {
+            _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
             if (_numberToWrite <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid numberToWrite: " + _numberToRead);
             }
-
-            input.setTokenConsumptionRate(_numberToRead);
+            _buffer = new Token[_numberToWrite];
             output.setTokenProductionRate(_numberToWrite);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
             }
+        } else if(attribute == offset) {
+            _offsetValue = ((IntToken)offset.getToken()).intValue();
+        } else if(attribute == usePastInputs) {
+            _usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
+        }
 
+        if (attribute == offset || attribute == usePastInputs) {
+            if (_offsetValue > 0) {
+                _pastBuffer = new Token[_offsetValue];
+                _pastNeedsInitializing = true;
+            }
+        }
+        
+        if (attribute == numberToRead ||
+                attribute == numberToWrite ||
+                attribute == offset ||
+                attribute == usePastInputs) {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
             // The variables _highLimit and _lowLimit indicate the range of
             // output indexes that come directly from the input block
             // that is read.
-            _highLimit = offsetValue + _numberToRead - 1;
+            _highLimit = _offsetValue + _numberToRead - 1;
             if (_highLimit >= _numberToWrite) _highLimit = _numberToWrite - 1;
 
-            if (offsetValue >= 0) {
-                _lowLimit = offsetValue;
+            if (_offsetValue >= 0) {
+                _lowLimit = _offsetValue;
                 _inputIndex = 0;
             } else {
                 _lowLimit = 0;
-                _inputIndex = -offsetValue;
-            }
-
-            if (attribute == numberToWrite) {
-                buffer = new Token[_numberToWrite];
-            }
-            if (attribute == offset || attribute == usePastInputs) {
-                if (offsetValue > 0) {
-                    pastBuffer = new Token[offsetValue];
-                    pastNeedsInitializing = true;
-                }
+                _inputIndex = -_offsetValue;
             }
         } else {
             super.attributeChanged(attribute);
@@ -248,52 +256,52 @@ public class Chop extends SDFTransformer {
         Token zero = inBuffer[0].zero();
         for (int i = 0; i < _numberToWrite; i++) {
             if (i > _highLimit) {
-                buffer[i] = zero;
+                _buffer[i] = zero;
             } else if (i < _lowLimit) {
-                if (usePast) {
-                    if (pastNeedsInitializing) {
+                if (_usePast) {
+                    if (_pastNeedsInitializing) {
                         // Fill past buffer with zeros.
-                        for (int j = 0; j < pastBuffer.length; j++) {
-                            pastBuffer[j] = zero;
+                        for (int j = 0; j < _pastBuffer.length; j++) {
+                            _pastBuffer[j] = zero;
                         }
-                        pastNeedsInitializing = false;
+                        _pastNeedsInitializing = false;
                     }
-                    buffer[i] = pastBuffer[pastBufferIndex++];
+                    _buffer[i] = _pastBuffer[pastBufferIndex++];
                 } else {
-                    buffer[i] = zero;
+                    _buffer[i] = zero;
                 }
             } else {
                 // FIXME: This will access past samples...
-                buffer[i] = inBuffer[inputIndex];
+                _buffer[i] = inBuffer[inputIndex];
                 inputIndex++;
             }
         }
-        if (usePast && offsetValue > 0) {
+        if (_usePast && _offsetValue > 0) {
             // Copy input buffer into past buffer.  Have to be careful
             // here because the buffer might be longer than the
             // input window.
-            int startCopy = _numberToRead - offsetValue;
-            int length = pastBuffer.length;
+            int startCopy = _numberToRead - _offsetValue;
+            int length = _pastBuffer.length;
             int destination = 0;
             if (startCopy < 0) {
                 // Shift older data.
-                destination = pastBuffer.length - _numberToRead;
-                System.arraycopy(pastBuffer, _numberToRead,
-                        pastBuffer, 0, destination);
+                destination = _pastBuffer.length - _numberToRead;
+                System.arraycopy(_pastBuffer, _numberToRead,
+                        _pastBuffer, 0, destination);
                 startCopy = 0;
                 length = _numberToRead;
             }
-            System.arraycopy(inBuffer, startCopy, pastBuffer,
+            System.arraycopy(inBuffer, startCopy, _pastBuffer,
                     destination, length);
         }
-        output.send(0, buffer, _numberToWrite);
+        output.send(0, _buffer, _numberToWrite);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     private int _highLimit, _inputIndex, _lowLimit;
-    private int _numberToRead, _numberToWrite, offsetValue;
-    private Token[] buffer, pastBuffer;
-    private boolean usePast, pastNeedsInitializing;
+    private int _numberToRead, _numberToWrite, _offsetValue;
+    private Token[] _buffer, _pastBuffer;
+    private boolean _usePast, _pastNeedsInitializing;
 }
