@@ -250,7 +250,7 @@ public class Engine {
             if (retval[0] == 0) {
                 throw new IllegalActionException("matlabEngine.open("
                         + startCmd
-                        + ") : can't find Matlab engine. Try starting ");
+                        + ") : can't find Matlab engine. Try starting "
                         + "Matlab by hand as an application to verify that "
                         + "Matlab is set up properly and the license is "
                         + "correct.");
