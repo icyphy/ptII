@@ -48,8 +48,7 @@ JSRCS = \
 	ExpressionApplet.java \
 	HTVQApplet.java \
 	Pulses.java \
-	SDFApplet.java \
-	VideoTest.java 
+	SDFApplet.java 
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
