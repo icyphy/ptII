@@ -752,6 +752,7 @@ public class ASTFormatter extends ASTVisitor {
             e.accept(this);
         }
         _output(") ");
+        _newLineAfterBlock = true;
         node.getBody().accept(this);
         return false;
     }
