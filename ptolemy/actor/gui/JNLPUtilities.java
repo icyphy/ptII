@@ -59,6 +59,14 @@ or <code>$PTII/doc/webStartHelp</code>
 */
 public class JNLPUtilities {
 
+    /** Instances of this class cannot be created.
+     */
+    private JNLPUtilities() {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return true if we are running under WebStart */
     public static boolean isRunningUnderWebStart() {
         try {
@@ -140,22 +148,8 @@ public class JNLPUtilities {
                                              File directory)
         throws IOException {
 
-        URL jarURL = jarURLEntryResource(jarURLName);
-        if (jarURL == null) {
-            jarURL = Thread.currentThread()
-                  .getContextClassLoader().getResource(jarURLName);
-        }
-
-        if (jarURL == null) {
-            throw new FileNotFoundException("Could not find '"
-                                            + jarURLName + "'");
-        }
-
-        // The resource pointed to might be a pdf file, which is binary,
-        // so we are careful to read it byte by byte and not do any
-        // conversions of the bytes.
-        BufferedInputStream input =
-            new BufferedInputStream(jarURL.openStream());
+        URL jarURL = _lookupJarURL(jarURLName);        
+        jarURLName = jarURL.toString();
 
         // File.createTempFile() does the bulk of the work for us,
         // we just check to see if suffix is null, and if it is,
@@ -169,22 +163,11 @@ public class JNLPUtilities {
             }
         }
 
-        // We delay creating the temporary file until we are sure
-        // that the jarURL exists and is openable.
         File temporaryFile = File.createTempFile(prefix, suffix, directory);
         temporaryFile.deleteOnExit();
 
+        _binaryCopyURLToFile(jarURL, temporaryFile);
 
-        //FileOutputStream output = new FileOutputStream(temporaryFile);
-        BufferedOutputStream output =
-            new BufferedOutputStream(new FileOutputStream(temporaryFile));
-
-        int c;
-        while (( c = input.read()) != -1) {
-            output.write(c);
-        }
-        input.close();
-        output.close();
         return temporaryFile.toString();
     }
 
@@ -204,22 +187,17 @@ public class JNLPUtilities {
      */
     public static String saveJarURLInClassPath(String jarURLName)
         throws IOException {
-        URL jarURL = jarURLEntryResource(jarURLName);
-        if (jarURL == null) {
-            jarURL = Thread.currentThread()
-                  .getContextClassLoader().getResource(jarURLName);
-        }
-
-        if (jarURL == null) {
-            throw new FileNotFoundException("Could not find '"
-                                            + jarURLName + "'");
-        }
+    
+        URL jarURL = _lookupJarURL(jarURLName);
+        jarURLName = jarURL.toString();
 
         int jarSeparatorIndex = jarURLName.indexOf("!/");
         if (jarSeparatorIndex == -1) {
             return null;
         }
 
+        // If the entry directory matches the jarURL directory, then
+        // write out the file in the proper location.
         String jarURLFileName = jarURLName.substring(0, jarSeparatorIndex);
         String entryFileName = jarURLName.substring(jarSeparatorIndex + 2);
 
@@ -246,28 +224,57 @@ public class JNLPUtilities {
             // If the file exists, we assume that it is the right one.
             // FIXME: we could do more here, like check for file sizes.
             if ( !temporaryFile.exists()) {
-                // The file does not exist, so we copy to it.
-                BufferedOutputStream output =
-                    new BufferedOutputStream(
-                            new FileOutputStream(temporaryFile));
-
-                // The resource pointed to might be a pdf file, which
-                // is binary, so we are careful to read it byte by
-                // byte and not do any conversions of the bytes.
-
-                BufferedInputStream input =
-                    new BufferedInputStream(jarURL.openStream());
-
-                int c;
-                while (( c = input.read()) != -1) {
-                    output.write(c);
-                }
-                input.close();
-                output.close();
+                _binaryCopyURLToFile(jarURL, temporaryFile);
             }
             return temporaryFile.toString();
         }
         return null;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
+    // Copy sourceURL to destinationFile without doing any byte conversion.
+    private static void _binaryCopyURLToFile(URL sourceURL,
+            File destinationFile) 
+            throws IOException {
+
+        BufferedInputStream input =
+            new BufferedInputStream(sourceURL.openStream());
+
+        BufferedOutputStream output =
+            new BufferedOutputStream(
+                    new FileOutputStream(destinationFile));
+
+        // The resource pointed to might be a pdf file, which
+        // is binary, so we are careful to read it byte by
+        // byte and not do any conversions of the bytes.
+
+        int c;
+        while (( c = input.read()) != -1) {
+            output.write(c);
+        }
+        input.close();
+        output.close();
+    }
+
+
+    // Lookup a jarURLName as a resource.  
+    private static URL _lookupJarURL(String jarURLName) throws IOException {
+        // We call jarURLEntryResource here so that we get a URL
+        // that has the right jar file associated with the right entry.
+        URL jarURL = jarURLEntryResource(jarURLName);
+        if (jarURL == null) {
+            jarURL = Thread.currentThread()
+                  .getContextClassLoader().getResource(jarURLName);
+        }
+
+        if (jarURL == null) {
+            throw new FileNotFoundException("Could not find '"
+                                            + jarURLName + "'");
+        }
+        return jarURL;
     }
 }
 
