@@ -478,6 +478,11 @@ public class IOPort extends ComponentPort {
      *  If there are not enough tokens to fill the array, then throw 
      *  an exception.
      *  <p>
+     *  It is important to note that the length of the
+     *  returned array can be greater than <i>vectorLength</i>. 
+     *  In this case, only the first <i>vectorLength</i> 
+     *  elements are guaranteed to be valid.
+     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a get,
      *  it is important that the thread does not hold read access on
@@ -485,21 +490,44 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling get.
      *
      *  @param channelIndex The channel index.
-     *  @param tokenArray A Token array that will contain the requested
+     *  @param vectorLength A Token array that will contain the requested
      *   tokens when this method returns.
-     *  @return A token from the specified channel.
+     *  @return A token array from the specified channel containing
+     *   <i>vectorLength</i> valid tokens.
      *  @exception NoTokenException If there is no token.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
      */
-    public void get(int channelIndex, Token[] tokenArray)
+    public Token[] get(int channelIndex, int vectorLength)
             throws NoTokenException, IllegalActionException {
-	// FIXME: This should be optimized to use the array token
-	// get() of the Receiver.
-	for (int i = 0; i < tokenArray.length; i++) {
-	    tokenArray[i] = get(channelIndex);
-	}
+        Receiver[][] localRec;
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getReceivers() method might throw an
+                // IllegalActionException if there's no director.
+                localRec = getReceivers();
+                if (localRec[channelIndex] == null) {
+                    throw new NoTokenException(this,
+                            "get: no receiver at index: " + channelIndex + ".");
+                }
+            } finally {
+                _workspace.doneReading();
+            }
+
+	    Token[] retArray = localRec[channelIndex][0].getArray(vectorLength);
+	    
+
+            if (retArray == null) {
+                throw new NoTokenException(this, "get: No token array to return.");
+            }
+            return retArray;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may be thrown if the port is not an input port.
+            throw new IllegalActionException(this,
+                    "get: channel index is out of range.");
+        }
     }
 
     /** If the port is an opaque output port, return the receivers that
@@ -1111,16 +1139,31 @@ public class IOPort extends ComponentPort {
      *
      *  @param channelIndex The index of the channel, from 0 to width-1
      *  @param tokenArray The token array to send
+     *  @param vectorLength The number of elements of of the token
+     *   array to send.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void send(int channelIndex, Token[] tokenArray)
+    public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-	// FIXME: This should be optimized to use the array token
-	// put() of the Receiver.
-	for (int i = 0; i < tokenArray.length; i++) {
-	    send(channelIndex, tokenArray[i]);
-	}
+        Receiver[][] farRec;
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farRec = getRemoteReceivers();
+                if (farRec == null || farRec[channelIndex] == null) return;
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farRec[channelIndex].length; j++) {
+                farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
     }
 
     /** Override the base class to ensure that the proposed container
