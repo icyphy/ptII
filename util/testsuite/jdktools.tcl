@@ -101,6 +101,42 @@ proc jdkCapture {script varName} {
     return $result
 }
 
+# Capture output to System.err
+proc jdkCaptureErr {script varName} {
+    upvar $varName output
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set stderr [java::field System err]
+    java::call System setErr $printStream
+    set result [uplevel $script]
+    java::call System setErr $stderr
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    return $output
+}
+
+# Capture output to System.err
+proc jdkCaptureErr {script varName} {
+    upvar $varName errorOutput
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set stderr [java::field System err]
+    java::call System setErr $printStream
+    set result [uplevel $script]
+    java::call System setErr $stderr
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" errorOutput
+    return $result
+}
+
+
+
 # Print the most recent Java stack trace
 # Here's an example:
 # Create a String
@@ -123,8 +159,8 @@ proc jdkStackTrace {} {
 
 	puts "    while executing"
 	set stack [$stream toString]
-	if { [string length $stack] > 1250 } {
-	    puts "[string range $stack 0 1250] . . ."
+	if { [string length $stack] > 12500 } {
+	    puts "[string range $stack 0 12500] . . ."
 	} else {
 	    puts "$stack"
 	}
