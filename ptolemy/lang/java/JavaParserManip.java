@@ -1,4 +1,4 @@
-/*          
+/*
 Methods to aid in parsing Java source code.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
@@ -53,39 +53,39 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
     private JavaParserManip() {}
 
     /** Parse the file, doing no static resolution whatsoever. The filename may be
-     *  relative or absolute. If a source file with the same canonical filename 
-     *  has already been parsed, return the previous node. 
+     *  relative or absolute. If a source file with the same canonical filename
+     *  has already been parsed, return the previous node.
      */
-    public static CompileUnitNode parse(String filename, boolean debug) {    
+    public static CompileUnitNode parse(String filename, boolean debug) {
         return parse(new File(filename), debug);
     }
 
-    /** Parse the file, doing no static resolution whatsoever. If a source file 
-     *  with the same canonical filename has already been parsed, return the 
-     *  previous node. 
+    /** Parse the file, doing no static resolution whatsoever. If a source file
+     *  with the same canonical filename has already been parsed, return the
+     *  previous node.
      */
-    public static CompileUnitNode parse(File file, boolean debug) {        
+    public static CompileUnitNode parse(File file, boolean debug) {
         try {
           return parseCanonical(file.getCanonicalPath(), debug);
         } catch (IOException ioe) {
           ApplicationUtility.error(ioe.toString());
-        } 
-        return null; 
+        }
+        return null;
     }
 
-    /** Parse the file with the given canonical filename, doing no static 
-     *  resolution whatsoever. If a source file with the same canonical 
-     *  filename has already been parsed, return the previous node. 
+    /** Parse the file with the given canonical filename, doing no static
+     *  resolution whatsoever. If a source file with the same canonical
+     *  filename has already been parsed, return the previous node.
      */
     public static CompileUnitNode parseCanonical(String filename, boolean debug) {
         CompileUnitNode loadedAST = null;
-    
-        loadedAST = (CompileUnitNode) allParsedMap.get(filename);           
-                                  
+
+        loadedAST = (CompileUnitNode) allParsedMap.get(filename);
+
         if (loadedAST != null) {
            return loadedAST;
         }
-        
+
         JavaParser p = new JavaParser();
 
         try {
@@ -96,22 +96,22 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
         p.yydebug = debug;
         p.yyparse();
-        
+
         loadedAST = p.getAST();
-        
+
         // get the part of the filename before the last '.'
         filename = StringManip.partBeforeLast(filename, '.');
-        
-        loadedAST.setProperty(IDENT_KEY, filename); 
-        
-        allParsedMap.put(filename, loadedAST);        
+
+        loadedAST.setProperty(IDENT_KEY, filename);
+
+        allParsedMap.put(filename, loadedAST);
 
         return loadedAST;
     }
-    
+
     /** A Map containing values of CompileUnitNodes that have been parsed,
      *  including nodes that have undergone later stages of static resolution,
      *  indexed by the canonical filename of the source file.
      */
-    public static final Map allParsedMap = new HashMap();    
+    public static final Map allParsedMap = new HashMap();
 }

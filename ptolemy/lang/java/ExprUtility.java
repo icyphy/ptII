@@ -54,56 +54,56 @@ public class ExprUtility implements JavaStaticSemanticConstants {
      */
     public ExprUtility() {}
 
-    /** Return a resolved node corresponding the object that the 
+    /** Return a resolved node corresponding the object that the
      *  FieldAccessNode accesses. The argument must be either an
-     *  ObjectFieldAccessNode, a ThisFieldAccessNode, or a 
+     *  ObjectFieldAccessNode, a ThisFieldAccessNode, or a
      *  SuperFieldAccessNode. Otherwise throw an IllegalArgumentException.
-     *  In particular, if node is a SuperFieldAccessNode or a ThisFieldAccessNode, 
+     *  In particular, if node is a SuperFieldAccessNode or a ThisFieldAccessNode,
      *  return a new instance of ThisNode. If the node is a TypeFieldAccessNode,
      *  return null. If the argument node has been name resolved,
      *  return a node that is also resolved.
      */
     public static TreeNode accessedObject(FieldAccessNode node) {
         TreeNode retval;
-        
+
         switch (node.classID()) {
           case OBJECTFIELDACCESSNODE_ID:
           return ((ObjectFieldAccessNode) node).getObject();
- 
+
           case THISFIELDACCESSNODE_ID:
           case SUPERFIELDACCESSNODE_ID:
           retval = new ThisNode();
           TypeNameNode typeNameNode = (TypeNameNode) node.getProperty(THIS_CLASS_KEY);
           if (typeNameNode != null) {
              retval.setProperty(THIS_CLASS_KEY, typeNameNode);
-          }          
+          }
           return retval;
-          
+
           case TYPEFIELDACCESSNODE_ID:
-          return null;          
+          return null;
         }
-    
-        ApplicationUtility.error("accessedObject() : node not supported " + node);             
+
+        ApplicationUtility.error("accessedObject() : node not supported " + node);
         return null;
     }
 
     /** Return the integer value given by the IntLitNode. */
     public static int intValue(IntLitNode litNode) {
         String literal = litNode.getLiteral();
-        
-        return Integer.decode(literal).intValue();             
-    } 
+
+        return Integer.decode(literal).intValue();
+    }
 
     public static boolean isIntConstant(ExprNode expr, int from, int to) {
         if (expr instanceof IntLitNode) {
            int value = intValue((IntLitNode) expr);
-             
-           return ((value >= from) && (value <= to));          
-        } 
-            
-        return false;    
+
+           return ((value >= from) && (value <= to));
+        }
+
+        return false;
     }
-    
+
     /** Return true iff the ExprNode is a statement expression, that is, it
      *  may appear as a legal statement if a semicolon is appended to the end.
      */
@@ -112,7 +112,7 @@ public class ExprUtility implements JavaStaticSemanticConstants {
           case ASSIGNNODE_ID:
           case MULTASSIGNNODE_ID:
           case DIVASSIGNNODE_ID:
-          case REMASSIGNNODE_ID:          
+          case REMASSIGNNODE_ID:
           case PLUSASSIGNNODE_ID:
           case MINUSASSIGNNODE_ID:
           case LEFTSHIFTLOGASSIGNNODE_ID:
@@ -129,10 +129,10 @@ public class ExprUtility implements JavaStaticSemanticConstants {
           case ALLOCATENODE_ID:
           case ALLOCATEANONYMOUSCLASSNODE_ID:
           return true;
-          
+
           default:
           return false;
-        }              
+        }
     }
-    
+
 }

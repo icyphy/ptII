@@ -38,7 +38,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameJavaVisitor
-/** A Java AST visitor that does renaming. The argument to each visitation 
+/** A Java AST visitor that does renaming. The argument to each visitation
  *  method should be a LinkedList containing a Map of old name strings to
  *  new name strings. The renaming is done in place, i.e. no new nodes
  *  are allocated. Renaming is only done on NameNodes that are unqualified.
@@ -53,25 +53,25 @@ public class RenameJavaVisitor extends ResolveVisitorBase {
 
     public Object visitNameNode(NameNode node, LinkedList args) {
         TreeNode qualifier = node.getQualifier();
-        
-        qualifier.accept(this, args);              
-                
-        if (qualifier == AbsentTreeNode.instance) {        
-           String ident = node.getIdent();  
-        
+
+        qualifier.accept(this, args);
+
+        if (qualifier == AbsentTreeNode.instance) {
+           String ident = node.getIdent();
+
            Map nameToNewNameMap = (Map) args.get(0);
-          
-           String newName = (String) nameToNewNameMap.get(ident);    
-        
+
+           String newName = (String) nameToNewNameMap.get(ident);
+
            if (newName != null) {
               node.setIdent(newName);
            }
         }
-            
-        return null;
-    }    
 
-    // make sure we override the following methods because they may (deeply) 
+        return null;
+    }
+
+    // make sure we override the following methods because they may (deeply)
     // contain NameNodes.
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
@@ -81,8 +81,7 @@ public class RenameJavaVisitor extends ResolveVisitorBase {
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
-            
+
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         return _defaultVisit(node, args);
-    }    
-}
+    }

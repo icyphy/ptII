@@ -4,8 +4,7 @@ class ExceptionTest {
   public ExceptionTest() {
     Exception e = new RuntimeException();
     e = new RuntimeException("yo");
-    
-    throw new RuntimeException("argh");    
+
+    throw new RuntimeException("argh");
   }
 
-}

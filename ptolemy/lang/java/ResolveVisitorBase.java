@@ -48,7 +48,7 @@ import ptolemy.lang.java.nodetypes.*;
  *
  *  @author ctsay@eecs.berkeley.edu
  */
-public abstract class ResolveVisitorBase extends JavaVisitor 
+public abstract class ResolveVisitorBase extends JavaVisitor
        implements JavaStaticSemanticConstants {
     public ResolveVisitorBase() {
         this(TM_CUSTOM);
@@ -125,7 +125,7 @@ public abstract class ResolveVisitorBase extends JavaVisitor
     public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
         return null;
     }
-    
+
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
         return null;
     }
@@ -152,7 +152,7 @@ public abstract class ResolveVisitorBase extends JavaVisitor
 
     // In general, classes cannot be resolved lazily because public classes
     // may inherit from them.
-    
+
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
         return null;
     }
@@ -183,7 +183,7 @@ public abstract class ResolveVisitorBase extends JavaVisitor
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_traversalMethod == TM_CUSTOM) {
            TNLManip.traverseList(this, node, args, node.children());
-        }                            
+        }
         return null;
     }
 }

@@ -38,7 +38,7 @@ import ptolemy.lang.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PackageDecl
-/** A declaration of a Java package. 
+/** A declaration of a Java package.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -58,7 +58,7 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
      *  does not equal another Decl named z for x.z.
      */
     public boolean equals(Object obj) {
-      return (this == obj);   
+      return (this == obj);
     }
 
     public final boolean hasContainer() {
@@ -123,14 +123,14 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
             File dir = new File(dirName);
 
             if (dir.isDirectory()) {
-  
+
                String[] nameList = dir.list();
 
                //ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
 
                for (int j = 0; j < nameList.length; j++) {
                    //ApplicationUtility.trace("iterating over names, j = " + j);
-                              
+
                    String name = nameList[j];
 	               int length = name.length();
       	           String className = null;
@@ -146,14 +146,14 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
                       // make sure we don't create 2 class decls if there are two files
                       // with the same base name, but with different extensions.
                       if (_environ.lookupProper(className, CG_USERTYPE) == null) {
-                      
+
                          //ApplicationUtility.trace("adding class/interface " +
                          // className + " from " + dirName);
 
                          _environ.add(new ClassDecl(className, this));
 
  	                     empty = false;
- 
+
                         //ApplicationUtility.trace(
                         // getName() + " : found source in " + dirName + name);
                       }

@@ -511,7 +511,7 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop"); 
+    if (yydebug) debug("loop");
     //#### NEXT ACTION (from reduction table)
     for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
       {
@@ -746,32 +746,32 @@ case 37:
 break;
 case 38:
 //#line 404 "jparser.y"
-{ 
+{
       /* add a default constructor if none is found*/
       NameNode name = (NameNode) val_peek(3).obj;
       List body = (List) val_peek(0).obj;
-       
+
       Iterator bodyItr = body.iterator();
-             
+
       boolean constructorFound = false;
-        
+
       while (!constructorFound && bodyItr.hasNext()) {
           Object member = bodyItr.next();
-           
+
           if (member instanceof ConstructorDeclNode) {
-             constructorFound = true;           
+             constructorFound = true;
           }
       }
-        
+
       if (!constructorFound) {
-         body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,         
+         body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,
                   new NameNode(name.getQualifier(), name.getIdent()),
                   new LinkedList(),                /* params*/
                   new LinkedList(),                /* throws */
                   new BlockNode(new LinkedList()), /* body*/
-                  new SuperConstructorCallNode(new LinkedList())));  
+                  new SuperConstructorCallNode(new LinkedList())));
       }
-                         
+
       yyval.obj = new ClassDeclNode(val_peek(5).ival, name, (List) val_peek(1).obj,
            (List) body, (TreeNode) val_peek(2).obj);
     }
@@ -782,9 +782,9 @@ case 39:
 break;
 case 40:
 //#line 447 "jparser.y"
-{ 
+{
       /* this will be fixed later by class resolution*/
-      yyval.obj = AbsentTreeNode.instance; 
+      yyval.obj = AbsentTreeNode.instance;
     }
 break;
 case 41:
@@ -979,7 +979,7 @@ break;
 case 84:
 //#line 659 "jparser.y"
 {
-      Modifier.checkParameterModifiers(val_peek(3).ival); 
+      Modifier.checkParameterModifiers(val_peek(3).ival);
       yyval.obj = new ParameterNode(val_peek(3).ival, TypeUtility.makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
                              (NameNode) val_peek(1).obj);
     }

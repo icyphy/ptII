@@ -44,8 +44,8 @@ import ptolemy.lang.java.nodetypes.*;
 //// ReplacementJavaVisitor
 /** ReplacementJavaVisitor attempts to collect the default behavior of visitors
  *  that replace children of a node with their return values after visitation.
- *  Therefore, the default behavior is to set the children to the list of 
- *  replacements, and return the same node. 
+ *  Therefore, the default behavior is to set the children to the list of
+ *  replacements, and return the same node.
  *
  *  @author ctsay@eecs.berkeley.edu
  */
@@ -55,12 +55,12 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
     }
 
     public ReplacementJavaVisitor(int traversalMethod) {
-        super(traversalMethod);  
-        
-        if ((_traversalMethod != TM_CUSTOM) && 
+        super(traversalMethod);
+
+        if ((_traversalMethod != TM_CUSTOM) &&
             (_traversalMethod != TM_CHILDREN_FIRST)) {
            ApplicationUtility.error("traversal method for replacement must be " +
-            "custom or children first."); 
+            "custom or children first.");
         }
     }
 
@@ -139,7 +139,7 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
         return node;
     }
-    
+
     public Object visitNullPntrNode(NullPntrNode node, LinkedList args) {
         return node;
     }
@@ -157,8 +157,8 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
         } else {
            // traversalMethod == TM_CHILDREN_FIRST
            node.setChildren((ArrayList) node.getDefinedProperty(
-            PropertyMap.CHILD_RETURN_VALUES_KEY));           
+            PropertyMap.CHILD_RETURN_VALUES_KEY));
         }
         return node;
-    }   
+    }
 }

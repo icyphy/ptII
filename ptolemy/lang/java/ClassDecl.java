@@ -58,7 +58,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _defType = _invalidType(this, name);
     }
 
-    public ClassDecl(String name, int category0, TypeNameNode defType, 
+    public ClassDecl(String name, int category0, TypeNameNode defType,
                      int modifiers, TreeNode source, JavaDecl container) {
         super(name, category0, defType);
         _modifiers = modifiers;
@@ -70,25 +70,25 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
      *  next time they are needed.
      */
     public void invalidate() {
-        removeVisitor(ResolveClassVisitor.visitorClass());        
-        removeVisitor(ResolveInheritanceVisitor.visitorClass());        
-        
+        removeVisitor(ResolveClassVisitor.visitorClass());
+        removeVisitor(ResolveInheritanceVisitor.visitorClass());
+
         _environ = null;
-         
-        _source = null;        
+
+        _source = null;
     }
 
     public final boolean hasEnviron() { return true; }
 
     public final Environ getEnviron() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-           // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment"); 
+           // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment");
            _buildEnviron();
         }
-        // ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");         
+        // ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");
         return _environ;
     }
-    
+
     public final Environ getTypeEnviron() {
         return _environ;
     }
@@ -151,14 +151,14 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
            ApplicationUtility.trace(">Reading in user type : " + fullName() +
             " from " + fileName);
-           
+
            StaticResolution.load(file, 0); // should set the source
-         
+
            if (_source == AbsentTreeNode.instance) {
 	          ApplicationUtility.error("file " + fileName +
                " doesn't contain class or interface " + fullName());
            }
-           
+
            ApplicationUtility.trace(">Done reading class " + fullName());
         }
     }
@@ -183,13 +183,13 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         if (_environ == null) {
            ApplicationUtility.error("class " + _name + " did not load, " +
             "using dummy environment.");
-                   
+
            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
            setSuperClass(StaticResolution.OBJECT_DECL);
-           
+
            addVisitor(ResolveClassVisitor.visitorClass());
-        }        
+        }
     }
 
     protected static TypeNameNode _invalidType(ClassDecl self, String name) {

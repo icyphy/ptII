@@ -56,7 +56,7 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ResolvePackageVisitor extends ResolveVisitorBase 
+public class ResolvePackageVisitor extends ResolveVisitorBase
        implements JavaStaticSemanticConstants {
 
     ResolvePackageVisitor() {
@@ -64,9 +64,9 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //System.out.println("resolve package visitor (CUN)" + 
+        //System.out.println("resolve package visitor (CUN)" +
         // node.getDefinedProperty(IDENT_KEY));
-    
+
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         Environ environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
@@ -86,7 +86,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         return null;
     }
 
-    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {               
+    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         return _visitUserTypeDeclNode(node, args, true);
     }
 
@@ -96,7 +96,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         // make a new environment for inner class declarations
-        
+
         Environ env = _makeEnviron(node, args);
 
         _visitList(node.getStmts(), env);
@@ -106,15 +106,15 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
         Environ env = _makeEnviron(node, args);
 
-        ClassDecl decl = new ClassDecl("<anon>", null);        
+        ClassDecl decl = new ClassDecl("<anon>", null);
         decl.setSource(node);
         decl.setEnviron(env);
-        
+
         // FIXME : will this name be resolved???
-        
+
         NameNode typeName = new NameNode(AbsentTreeNode.instance, "<anon>");
         typeName.setProperty(DECL_KEY, decl);
-                        
+
         node.setProperty(DECL_KEY, decl);
 
         LinkedList listArgs = new LinkedList();
@@ -122,7 +122,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, null, listArgs, node.getMembers());
-        
+
         return null;
     }
 
@@ -150,12 +150,12 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         }
 
         ClassDecl ocl;
-        
+
         if (isInner) {
            ocl = null;
         } else {
            // lookup in package
-           ocl = (ClassDecl) _pkgEnv.lookupProper(className);                      
+           ocl = (ClassDecl) _pkgEnv.lookupProper(className);
         }
 
         if ((ocl != null) &&
@@ -168,7 +168,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
            // fix category if this is an interface
            if (!isClass) {
               ocl.category = CG_INTERFACE;
-           }           
+           }
 
         } else {
            int modifiers = node.getModifiers();
@@ -176,7 +176,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
            // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
 
            //if (topLevel) {
-           
+
            // Set the enclosing declaration
            if (!isInner) {
               // For a top-level class, it's the package declaration
@@ -184,7 +184,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
            } else {
               // For an inner class, it's the enclosing class declaration
               Object encDeclObject = args.get(2);
-              
+
               // CHECKME
               if (encDeclObject == NullValue.instance) {
                  encDecl = null;
@@ -237,7 +237,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         return env;
     }
- 
+
     protected void _visitList(List nodeList, Environ env) {
         LinkedList listArgs = new LinkedList();
         listArgs.addLast(env);                  // last environment

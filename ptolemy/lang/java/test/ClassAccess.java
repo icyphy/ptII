@@ -10,7 +10,6 @@ class ClassAccess {
     c = ptolemy.lang.ApplicationUtility.class;
     int a = c.hashCode();
     boolean b = ClassAccess[].class.isArray();
-    
+
   }
 
-}

@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
-   
+
 package ptolemy.lang.java;
 
 import java.util.Iterator;
@@ -49,9 +49,9 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ResolveInheritanceVisitor extends ResolveVisitorBase 
+public class ResolveInheritanceVisitor extends ResolveVisitorBase
        implements JavaStaticSemanticConstants {
-       
+
     /** Create a new visitor that uses the default type policy. */
     public ResolveInheritanceVisitor() {
         this(new TypePolicy(new TypeIdentifier()));
@@ -64,12 +64,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         ApplicationUtility.trace("resolveInheritance for " +
          node.getProperty(IDENT_KEY));
-        
+
         TNLManip.traverseList(this, node, null, node.getDefTypes());
-        
+
         ApplicationUtility.trace("finished resolveInheritance for " +
          node.getProperty(IDENT_KEY));
-        
+
         return null;
     }
 
@@ -94,7 +94,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         } else {
            ApplicationUtility.assert(me == StaticResolution.OBJECT_DECL);
         }
-        
+
 
         Iterator iFaceItr = me.getInterfaces().iterator();
 
@@ -129,7 +129,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         return null;
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {        
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
         ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
 
         if (!me.addVisitor(_myClass)) {
@@ -144,23 +144,23 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         }
 
         _fillInInheritedMembers(me, superClass);
-        
+
         Object iFaceObj = node.getDefinedProperty(INTERFACE_KEY);
-        
+
         if (iFaceObj != NullValue.instance) {
            ClassDecl iFace = (ClassDecl) iFaceObj;
-           
-           _fillInInheritedMembers(me, iFace);        
+
+           _fillInInheritedMembers(me, iFace);
         }
-        
-        return null;                   
+
+        return null;
     }
-    
+
     /** Return the Class object of this visitor. */
     public static Class visitorClass() {
         return _myClass;
     }
-  
+
     /** Return true iff newThrows is a "subset" of oldThrows (j8.4.4) */
     protected static boolean _throwsSubset(Set newThrows,
      Set oldThrows) {
@@ -204,11 +204,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                  if (d == methodMember) {
                     return true; // seeing the same thing twice
                  }
- 
+
                  boolean isLocalDecl = (d.getContainer() == to);
  	             int dm = d.getModifiers();
 	             int mm = methodMember.getModifiers();
-	             
+
 	             // Note: if !isLocalDecl, then the method necessarily comes
         	     // from an interface (i.e. is abstract). If d is also abstract,
 	             // then all methods are inherited (j8.4.6.4).
@@ -271,9 +271,9 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 	       } // while methodItr.hasNext()
            return false;
 	    } else if (member.category == CG_CLASS) {
-           return true; // declared inner classes override those in outer scope 
+           return true; // declared inner classes override those in outer scope
         } else if (member.category == CG_INTERFACE) {
-           return true; // declared inner classes override those in outer scope 
+           return true; // declared inner classes override those in outer scope
         }
 
         return false;
@@ -320,7 +320,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
           JavaDecl member = (JavaDecl) memberItr.next();
 
           if ((member.category == CG_METHOD) &&
-              ((member.getModifiers() & ABSTRACT_MOD) != 0)) {              
+              ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
              ApplicationUtility.trace("found abstract method: " +  member);
              return true;
           }
@@ -334,10 +334,10 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, node, args, node.children());
         return null;
     }
-   
+
     /** The type policy used to do comparison of types. */
     protected TypePolicy _typePolicy = null;
-    
+
     /** The Class object of this visitor. */
-    private static Class _myClass = new ResolveInheritanceVisitor().getClass();           
+    private static Class _myClass = new ResolveInheritanceVisitor().getClass();
 }

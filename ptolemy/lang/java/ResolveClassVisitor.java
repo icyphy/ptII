@@ -1,4 +1,4 @@
-/* 
+/*
 Create declarations for fields, constructors, and methods, and add them to
 their enclosing class's environment.
 
@@ -45,7 +45,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ResolveClassVisitor
-/** 
+/**
 Create declarations for fields, constructors, and methods, and add them to
 their enclosing class's environment.
 <p>
@@ -56,7 +56,7 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ResolveClassVisitor extends ResolveVisitorBase 
+public class ResolveClassVisitor extends ResolveVisitorBase
        implements JavaStaticSemanticConstants  {
     public ResolveClassVisitor() {
         super();
@@ -72,34 +72,34 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.add(NullValue.instance); // enclosing class environ
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
-        
+
         ApplicationUtility.trace("finished resolveClass for " +
          node.getProperty(IDENT_KEY));
-        
+
         return null;
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        // find the outer class/interface, if applicable    
+        // find the outer class/interface, if applicable
         Object classDeclObj = args.get(0);
-        
-        if (classDeclObj instanceof ClassDecl) {                   
+
+        if (classDeclObj instanceof ClassDecl) {
            ClassDecl classDecl = (ClassDecl) classDeclObj;
-            
+
            if (classDecl.category == CG_INTERFACE) {
-              // classes of an interface are always static and final, and 
-              // public if the interface is public                
-           
+              // classes of an interface are always static and final, and
+              // public if the interface is public
+
              int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-             int modifiers = node.getModifiers();            
+             int modifiers = node.getModifiers();
              modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
              node.setModifiers(modifiers);
            }
         }
 
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
-        
+
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
@@ -109,12 +109,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         TreeNode superClass = node.getSuperClass();
 
         ClassDecl superDecl;
-        
+
         if (me == StaticResolution.OBJECT_DECL) {
            superDecl = null;
         } else if (superClass == AbsentTreeNode.instance) {
            superDecl = StaticResolution.OBJECT_DECL;
-        } else {          
+        } else {
            superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
         }
 
@@ -122,7 +122,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            ApplicationUtility.error("class " + node.getName().getIdent() +
             " cannot extend interface " + superDecl.getName());
         }
-        
+
         if (superDecl != null) {
            node.setSuperClass(superDecl.getDefType());
         }
@@ -159,21 +159,21 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         return null;
     }
 
-    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {        
+    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
         ClassDecl classDecl = (ClassDecl) args.get(0);
 
         int modifiers = node.getModifiers();
 
         if (classDecl.category == CG_INTERFACE) {
-           // fields of an interface are always static and final, and 
-           // public if the interface is public                
-           
+           // fields of an interface are always static and final, and
+           // public if the interface is public
+
            int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
-           
+
            modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
            node.setModifiers(modifiers);
         }
-     
+
         String nameString = node.getName().getIdent();
 
         // Leftover from Titanium. Why??
@@ -205,26 +205,26 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        // find the outer class/interface, if applicable    
+        // find the outer class/interface, if applicable
         Object classDeclObj = args.get(0);
-       
-        if (classDeclObj instanceof ClassDecl) {                   
+
+        if (classDeclObj instanceof ClassDecl) {
            ClassDecl classDecl = (ClassDecl) classDeclObj;
-            
+
            if (classDecl.category == CG_INTERFACE) {
-              // inner interfaces of an interface are always static, and 
-              // public if the interface is public                
-           
+              // inner interfaces of an interface are always static, and
+              // public if the interface is public
+
              int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-             int modifiers = node.getModifiers();            
+             int modifiers = node.getModifiers();
              modifiers |= classPublic | STATIC_MOD;
              node.setModifiers(modifiers);
            }
         }
-      
+
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
-        
+
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
@@ -257,7 +257,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me.getEnviron());
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
-        
+
         return null;
     }
 
@@ -283,7 +283,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
          _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
 
-        /* Do not do any checking that involves types. 
+        /* Do not do any checking that involves types.
 
         Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
          CG_CONSTRUCTOR);
@@ -324,9 +324,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         int modifiers = node.getModifiers();
 
         if (classDecl.category == CG_CLASS) {
-        
+
            // private methods or methods in private or final classes are final
-           if ((modifiers & PRIVATE_MOD) != 0) {              
+           if ((modifiers & PRIVATE_MOD) != 0) {
               modifiers |= FINAL_MOD;
            }
 
@@ -335,18 +335,18 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
               modifiers |= FINAL_MOD;
            }
-                      
+
         } else {
            // we are inside an interface, all methods are abstract,
-           // and public if the enclosing interface is public        
-           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;        
-           modifiers |= (classPublic | ABSTRACT_MOD);        
+           // and public if the enclosing interface is public
+           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+           modifiers |= (classPublic | ABSTRACT_MOD);
         }
-        node.setModifiers(modifiers);        
-        
+        node.setModifiers(modifiers);
+
         if (node.getBody() == AbsentTreeNode.instance) {
            if ((modifiers & ABSTRACT_MOD) != 0) {
-              if ((modifiers & 
+              if ((modifiers &
                    (PRIVATE_MOD | STATIC_MOD | FINAL_MOD | SYNCHRONIZED_MOD |
                     NATIVE_MOD)) != 0) {
                  ApplicationUtility.error("can't use private, static, final, " +
@@ -374,7 +374,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
          node.getReturnType(), modifiers, node, classDecl,
          _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
-        /* Do not do any checking that involves types. 
+        /* Do not do any checking that involves types.
         while (methodItr.hasNext()) {
 
            MethodDecl dd = (MethodDecl) methodItr.next();
@@ -405,22 +405,22 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
 
         node.getEnclosingInstance().accept(this, args);
-         
+
         ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
-        
+
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
            return null;
         }
-                                             
+
         TypeNameNode superType = node.getSuperType();
-        
+
         ClassDecl sdecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superType);
-        
+
         ClassDecl superClass = null;
         ClassDecl implIFace = null;
-        
+
         if (sdecl.category == CG_CLASS) {
            superClass = sdecl;
         } else if (sdecl.category == CG_INTERFACE) {
@@ -428,12 +428,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            implIFace = sdecl;
         }
 
-        node.setProperty(SUPERCLASS_KEY, superClass);     
+        node.setProperty(SUPERCLASS_KEY, superClass);
         node.setProperty(INTERFACE_KEY, implIFace);
-                         
+
         me.setSuperClass(superClass);
-        
-        if (implIFace != null) {        
+
+        if (implIFace != null) {
            me.setInterfaces(TNLManip.cons(implIFace));
         }
 
@@ -446,9 +446,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
-        return null;        
+        return null;
     }
-    
+
     /** Return the Class object of this visitor. */
     public static Class visitorClass() {
         return _myClass;
@@ -494,8 +494,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     /** The package this compile unit is in. */
-    protected PackageDecl _pkgDecl = null;    
-    
+    protected PackageDecl _pkgDecl = null;
+
     /** The Class object of this visitor. */
     private static Class _myClass = new ResolveClassVisitor().getClass();
 }

@@ -37,35 +37,35 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A Java AST visitor that changes the types of some variables.
- *  
+ *
  *  @author Jeff Tsay
  */
 //////////////////////////////////////////////////////////////////////////
 //// ChangeTypesVisitor
 public class ChangeTypesVisitor extends ReplacementJavaVisitor {
-    
+
     public ChangeTypesVisitor() {
         super(TM_CUSTOM);
     }
-                        
+
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _declToTypeMap = (Map) args.get(0);
         _declsLeft = _declToTypeMap.size();
-        
+
         return _defaultVisit(node, null);
     }
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
-        
+
         TypeNameNode typeNode = (TypeNameNode) _declToTypeMap.get(typedDecl);
-        
+
         if (typeNode != null) {
            node.setDefType(typeNode);
            // typedDecl.setType(typeNode);
            _declsLeft--;
         }
-        
+
         return node;
     }
 
@@ -73,41 +73,41 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         return _visitVarInitDeclNode(node);
     }
 
-    
+
     public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
         return _visitVarInitDeclNode(node);
     }
 
     protected Object _visitVarInitDeclNode(VarInitDeclNode node) {
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
-        
+
         TypeNameNode typeNode = (TypeNameNode) _declToTypeMap.get(typedDecl);
-        
+
         if (typeNode != null) {
            node.setDefType(typeNode);
-           // typedDecl.setType(typeNode);           
+           // typedDecl.setType(typeNode);
            _declsLeft--;
         }
-        
+
         if (_declsLeft > 0) {
            node.setInitExpr((TreeNode) node.getInitExpr().accept(this, null));
         }
-        
-        return node;    
-    }    
-    
+
+        return node;
+    }
+
     /** The default visit method. Replace all children with their return
      *  values, using the same arguments, and return the node. If there
      *  are no more declarations left to change, do not visit the children.
      */
-    protected Object _defaultVisit(TreeNode node, LinkedList args) {    
+    protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_declsLeft > 0) {
            node.setChildren(TNLManip.traverseList(this, node, null, node.children()));
         }
         return node;
-    }   
-    
-    
+    }
+
+
     protected Map _declToTypeMap = null;
     protected int _declsLeft;
 }

@@ -1,5 +1,5 @@
 /* Resolve names of local variables, formal parameters, field accesses,
-method calls, and statement labels. 
+method calls, and statement labels.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -40,11 +40,11 @@ import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that does name resolution.
 After this phase, all fields and methods are referred to via
-ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode. 
+ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode.
 ObjectNode is only used for local variables and parameters.
 
 The decl in methods may be wrong, because overloading resolution is
-done later (when types become available) 
+done later (when types become available)
 
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -53,7 +53,7 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ResolveNameVisitor extends ReplacementJavaVisitor 
+public class ResolveNameVisitor extends ReplacementJavaVisitor
        implements JavaStaticSemanticConstants {
     public ResolveNameVisitor() {
         super(TM_CUSTOM);
@@ -68,20 +68,20 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-    
-        ApplicationUtility.trace("resolve name on " + 
+
+        ApplicationUtility.trace("resolve name on " +
          node.getDefinedProperty(IDENT_KEY));
-        
+
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         NameContext c = new NameContext();
         c.environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
 
         LinkedList childArgs = TNLManip.cons(c);
-        
+
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
-        ApplicationUtility.trace("finished resolve name on " + 
+        ApplicationUtility.trace("finished resolve name on " +
          node.getDefinedProperty(IDENT_KEY));
 
         return node;
@@ -104,12 +104,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         if (other != null) {
            ApplicationUtility.error("declaration shadows " + varName);
-        } 
-        
+        }
+
         other = env.lookupProper(varName, CG_LOCALVAR);
 
         if (other != null) {
-           ApplicationUtility.error("redeclaration of " + varName);        
+           ApplicationUtility.error("redeclaration of " + varName);
         }
 
         LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
@@ -127,22 +127,22 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
-                 
-        Environ newEnv1 = new Environ(ctx.environ); 
+
+        Environ newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
-         
+
         LinkedList childArgs = TNLManip.cons(subCtx);
-         
-        node.setParams(TNLManip.traverseList(this, node, childArgs, 
+
+        node.setParams(TNLManip.traverseList(this, node, childArgs,
          node.getParams()));
-                           
+
         TreeNode body = node.getBody();
         subCtx.environ = new Environ(newEnv1);
-        
-        if (body != AbsentTreeNode.instance) {                         
-           node.setBody((BlockNode) body.accept(this, childArgs)); 
+
+        if (body != AbsentTreeNode.instance) {
+           node.setBody((BlockNode) body.accept(this, childArgs));
         }
-        
+
         return node;
     }
 
@@ -153,21 +153,21 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Environ newEnv1 = new Environ(ctx.environ); 
+        Environ newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
-                 
+
         LinkedList childArgs = TNLManip.cons(subCtx);
-         
-        node.setParams(TNLManip.traverseList(this, node, childArgs, 
+
+        node.setParams(TNLManip.traverseList(this, node, childArgs,
          node.getParams()));
-                  
-        subCtx.environ = new Environ(newEnv1);        
-                 
-        node.setConstructorCall((ConstructorCallNode) 
-         node.getConstructorCall().accept(this, childArgs)); 
-                          
-        node.setBody((BlockNode) node.getBody().accept(this, childArgs)); 
-        
+
+        subCtx.environ = new Environ(newEnv1);
+
+        node.setConstructorCall((ConstructorCallNode)
+         node.getConstructorCall().accept(this, childArgs));
+
+        node.setBody((BlockNode) node.getBody().accept(this, childArgs));
+
         return node;
     }
 
@@ -193,13 +193,13 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         name.setProperty(DECL_KEY, d);
         env.add(d);
-       
+
         return node;
     }
 
-    public Object visitBlockNode(BlockNode node, LinkedList args) {    
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-    
+
         NameContext subctx = (NameContext) ctx.clone();
         subctx.environ = new Environ(ctx.environ);
 
@@ -216,9 +216,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         String labelString = label.getIdent();
 
         Decl other = ctx.environ.lookup(labelString, CG_STMTLABEL);
-        
+
         Environ newEnv = new Environ(ctx.environ);
-        
+
         if (other != null) {
            ApplicationUtility.error("duplicate " + labelString);
         }
@@ -243,23 +243,23 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ctx.clone();
 
         node.setExpr((ExprNode) node.getExpr().accept(this, args));
-                
+
         subCtx.breakTarget = node;
         subCtx.environ = new Environ(ctx.environ);
-               
+
         node.setSwitchBlocks(
-         TNLManip.traverseList(this, node, TNLManip.cons(subCtx), 
+         TNLManip.traverseList(this, node, TNLManip.cons(subCtx),
           node.getSwitchBlocks()));
-         
-        return node;    
+
+        return node;
     }
 
     public Object visitLoopNode(LoopNode node, LinkedList args) {
         node.setTest((ExprNode) node.getTest().accept(this, args));
-        
+
         NameContext ctx = (NameContext) args.get(0);
         NameContext subCtx = (NameContext) ctx.clone();
-                       
+
         subCtx.breakTarget = node;
         subCtx.encLoop = node;
         subCtx.environ = new Environ(ctx.environ);
@@ -267,7 +267,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LinkedList childArgs = TNLManip.cons(subCtx);
         node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
         node.setAftStmt((TreeNode) node.getAftStmt().accept(this, childArgs));
-        
+
         return node;
     }
 
@@ -276,9 +276,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ctx.clone();
 
         subCtx.environ = new Environ(ctx.environ);
-        
+
         LinkedList childArgs = TNLManip.cons(subCtx);
-        
+
         node.setInit(TNLManip.traverseList(this, node, childArgs, node.getInit()));
         subCtx.breakTarget = node;
         subCtx.encLoop = node;
@@ -292,47 +292,47 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitBreakNode(BreakNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-    
-        if ((node.getLabel() == AbsentTreeNode.instance) && 
+
+        if ((node.getLabel() == AbsentTreeNode.instance) &&
             (ctx.breakTarget == null)) {
            ApplicationUtility.error("unlabeled break only allowed in loops or switches");
         }
 
         _resolveJump(node, ctx.breakTarget, ctx.environ);
-               
+
         return node;
     }
 
     public Object visitContinueNode(ContinueNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-    
+
         if (ctx.encLoop == null) {
            ApplicationUtility.error("unlabeled continue only allowed in loops");
         }
-        
+
         _resolveJump(node, ctx.encLoop, ctx.environ);
-     
+
         if (node.hasProperty(JUMP_DESTINATION_KEY)) {
-          
-           StatementNode dest = (StatementNode) 
-            node.getDefinedProperty(JUMP_DESTINATION_KEY);   
-           
+
+           StatementNode dest = (StatementNode)
+            node.getDefinedProperty(JUMP_DESTINATION_KEY);
+
            if (!(dest instanceof IterationNode)) {
               ApplicationUtility.error("continue's target is not a loop");
            }
         }
 
-        return node;    
+        return node;
     }
 
     public Object visitCatchNode(CatchNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        
+
         NameContext subCtx = (NameContext) ctx.clone();
         subCtx.environ = new Environ(ctx.environ);
-         
+
         LinkedList childArgs = TNLManip.cons(subCtx);
-         
+
         node.setParam((ParameterNode) node.getParam().accept(this, childArgs));
         node.setBlock((BlockNode) node.getBlock().accept(this, childArgs));
 
@@ -341,77 +341,77 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitThisNode(ThisNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        
-        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);   
-        
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
         return node;
     }
 
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
         NameNode name = node.getName();
-        
-        return StaticResolution.resolveAName(name, ctx.environ, 
-         ctx.currentClass, _currentPackage, 
+
+        return StaticResolution.resolveAName(name, ctx.environ,
+         ctx.currentClass, _currentPackage,
          ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
-        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();        
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
         subCtx.resolveAsObject = true;
-        
+
         node.setObject((ExprNode) (node.getObject().accept(this, TNLManip.cons(subCtx))));
-        
+
         return node;
     }
 
     public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        
-        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);   
-        
-        return node;    
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
     }
 
     public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
         NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
-                                
+
         subCtx.resolveAsObject = true;
-        
+
         LinkedList childArgs = TNLManip.cons(subCtx);
-        
+
         // CHECK ME : is this all that needs to be done?
-        
-        return node;    
+
+        return node;
     }
 
     public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        
-        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);   
-        
-        return node;    
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
 
         NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
-        subCtx.resolveAsObject = false;        
-        
+        subCtx.resolveAsObject = false;
+
         node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
-        
-        return node;    
+
+        return node;
     }
-    
+
     /* The default visit method comes from ReplacementJavaVisitor. */
-       
+
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
      LinkedList args) {
         NameContext  ctx = new NameContext();
 
         ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
-                
+
         ctx.environ = decl.getEnviron();
         ctx.currentClass = decl.getDefType();
 
@@ -423,7 +423,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         return node;
     }
 
-    protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel, 
+    protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
      Environ env) {
         TreeNode label = node.getLabel();
 
@@ -432,16 +432,16 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         } else {
           NameNode labelName = (NameNode) label;
           String labelString = labelName.getIdent();
-          
-          StmtLblDecl dest = (StmtLblDecl) 
+
+          StmtLblDecl dest = (StmtLblDecl)
            env.lookup(labelString, CG_STMTLABEL);
-          
+
           if (dest == null) {
              ApplicationUtility.error("label " + labelString + " not found");
-          } 
-          
+          }
+
           labelName.setProperty(DECL_KEY, dest);
-                    
+
           LabeledStmtNode labeledStmtNode = (LabeledStmtNode) dest.getSource();
           node.setProperty(JUMP_DESTINATION_KEY, labeledStmtNode.getStmt());
         }
@@ -458,10 +458,10 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
               throw new InternalError("clone of NameContext not supported");
             }
         }
-                
+
         /** The last environment. */
         public Environ environ = null;
-        
+
         /** The type of the current class. */
         public TypeNameNode currentClass = null;
 

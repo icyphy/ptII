@@ -1,5 +1,5 @@
-/* 
-Number the nodes in the AST uniquely, numbering ancestors before their 
+/*
+Number the nodes in the AST uniquely, numbering ancestors before their
 children, and numbering children from left to right.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -42,9 +42,9 @@ import java.util.HashMap;
 
 import ptolemy.lang.*;
 
-/** A visitor that numbers nodes in the AST uniquely, numbering ancestors before 
+/** A visitor that numbers nodes in the AST uniquely, numbering ancestors before
  *  their children, and numbering children from left to right.
- * 
+ *
  *  @author Jeff Tsay
  */
 public class NumberNodeVisitor extends JavaVisitor {
@@ -57,7 +57,7 @@ public class NumberNodeVisitor extends JavaVisitor {
      */
     public NumberNodeVisitor(Map nodeMap) {
         super(TM_SELF_FIRST);
-        
+
         _nodeMap = nodeMap;
     }
 
@@ -65,43 +65,43 @@ public class NumberNodeVisitor extends JavaVisitor {
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (!node.hasProperty(PropertyMap.NUMBER_KEY)) {
            Integer keyValue = new Integer(_nodeMap.size());
-           node.setProperty(PropertyMap.NUMBER_KEY, keyValue);        
+           node.setProperty(PropertyMap.NUMBER_KEY, keyValue);
            _nodeMap.put(keyValue, node);
         }
-        
+
         return null;
     }
-    
-    /** Given a collection of TreeNode's, number all TreeNode's in the collection 
-     *  uniquely, including descendents of individual TreeNode's. 
+
+    /** Given a collection of TreeNode's, number all TreeNode's in the collection
+     *  uniquely, including descendents of individual TreeNode's.
      *  Return a Map of all nodes, indexed by the corresponding numbers,
      *  wrapped in an instance of Integer.
      */
     public static Map numberNodes(Collection nodes) {
         HashMap map = new HashMap();
         NumberNodeVisitor v = new NumberNodeVisitor(map);
-        
+
         Iterator itr = nodes.iterator();
-        
+
         while (itr.hasNext()) {
             TreeNode node = (TreeNode) itr.next();
             node.accept(v, null); // modifies map
-        } 
-        
-        return map;                
+        }
+
+        return map;
     }
-     
+
     /** Retrieve the number of the node, which was previously numbered by a
      *  NumberNodeVisitor. Throw a RuntimeErrorException if the node
      *  was not previously numbered.
      */
     public static int getNumber(TreeNode node) {
-        Integer keyValue = (Integer) node.getProperty(PropertyMap.NUMBER_KEY);   
+        Integer keyValue = (Integer) node.getProperty(PropertyMap.NUMBER_KEY);
         return keyValue.intValue();
-    }         
-       
+    }
+
     /** The Map of all nodes, indexed by the corresponding numbers,
      *  wrapped in an instance of Integer.
-     */ 
+     */
     protected final Map _nodeMap;
 }

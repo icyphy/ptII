@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
-*/  
+*/
 
 package ptolemy.lang.java;
 
@@ -69,44 +69,44 @@ public class Main {
     }
 
     ApplicationUtility.enableTrace = debug;
-    
+
     LinkedList units = new LinkedList();
     for (int f = fileStart; f < numArgs; f++) {
         units.add(StaticResolution.load(args[f], 2));
     }
-    
+
     Map nodeMap = NumberNodeVisitor.numberNodes(units);
     NumberDeclVisitor.numberDecls(units);
-    
+
     Iterator unitItr = units.iterator();
 
     while (unitItr.hasNext()) {
         CompileUnitNode ast = (CompileUnitNode) unitItr.next();
         System.out.println(ast.toString());
-    }   
-    
+    }
+
     BufferedReader reader = null;
-    
-    reader = new BufferedReader(new InputStreamReader(System.in));    
-    
+
+    reader = new BufferedReader(new InputStreamReader(System.in));
+
     int nodeNumber;
-    String lineString;  
-      
+    String lineString;
+
     do {
-       System.out.print("Enter node number to inspect (-1 to quit) : ");          
-       
+       System.out.print("Enter node number to inspect (-1 to quit) : ");
+
        try {
          lineString = reader.readLine();
        } catch (IOException e) {
          throw new RuntimeException("io error");
        }
-         
-       nodeNumber = Integer.parseInt(lineString);         
-       
-       if (nodeNumber != -1) {                          
-          PropertyMap node = (PropertyMap) nodeMap.get(new Integer(nodeNumber));                    
-          Interrogator.interrogate(node, reader);          
-       }                           
-    } while (nodeNumber != -1);      
-  } 
+
+       nodeNumber = Integer.parseInt(lineString);
+
+       if (nodeNumber != -1) {
+          PropertyMap node = (PropertyMap) nodeMap.get(new Integer(nodeNumber));
+          Interrogator.interrogate(node, reader);
+       }
+    } while (nodeNumber != -1);
+  }
 }

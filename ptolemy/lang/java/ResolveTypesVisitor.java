@@ -45,7 +45,7 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ResolveTypesVisitor extends ResolveVisitorBase 
+public class ResolveTypesVisitor extends ResolveVisitorBase
        implements JavaStaticSemanticConstants {
 
     /** Create a ResolveTypesVisitor. */
@@ -67,19 +67,19 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
         return null;
     }
-    
+
     /** Resolve the possible TypeNameNode that is the base class. */
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
         node.getBaseType().accept(this, args);
-        
-        return null;       
+
+        return null;
     }
 
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        TNLManip.traverseList(this, node, 
+        TNLManip.traverseList(this, node,
          TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
 
         return null;
@@ -90,7 +90,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
         // resolve the super class with the same input environment
         node.getSuperClass().accept(this, args);
-           
+
         return null;
     }
 
@@ -99,10 +99,10 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);    
+        return _visitNodeWithEnviron(node);
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {        
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
         return _visitNodeWithEnviron(node);
     }
 
@@ -122,7 +122,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
-        
+
         TNLManip.traverseList(this, node, childArgs, node.children());
 
         // remove the ENVIRON_KEY property which is no longer needed
@@ -135,7 +135,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
-        
+
         TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 

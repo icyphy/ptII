@@ -52,7 +52,7 @@ and Army Research Office.
 public class SearchPath extends Vector {
 
     public SearchPath(String envar, String fallbacks) {
-         
+
         if (envar != null) {
            String envalue = System.getProperty(envar, ".");
 
@@ -64,16 +64,16 @@ public class SearchPath extends Vector {
               _addPaths(fallbacks);
            }
         } else {
-           _addPaths(fallbacks);        
+           _addPaths(fallbacks);
         }
     }
-    
-    /** Convert a Java qualified name into a partial pathname, without the file 
-     *  extension. For example, "ptolemy.lang.java.SearchPath" is converted to 
+
+    /** Convert a Java qualified name into a partial pathname, without the file
+     *  extension. For example, "ptolemy.lang.java.SearchPath" is converted to
      *  "ptolemy/lang/java/SearchPath" if the platform is UNIX.
      */
     public String javaNameToPath(String javaName) {
-        return javaName.replace('.', File.separatorChar);    
+        return javaName.replace('.', File.separatorChar);
     }
 
     public File openDirectory(String target) {
@@ -81,7 +81,7 @@ public class SearchPath extends Vector {
             String candidate = (String) get(i);
 
             String fullname = candidate + target;
- 
+
             File directory = new File(fullname);
             if (directory.isDirectory()) {
                // target = fullname
@@ -95,30 +95,30 @@ public class SearchPath extends Vector {
      *  either be qualified by the '.' character or by the value of
      *  File.pathSeparatorChar. Try to open a skeleton version of the source
      *  code before trying the ordinary version. Return an instance of File
-     *  associated with the path of the source code. If the source code 
-     *  cannot be found, return null. This method simply calls 
+     *  associated with the path of the source code. If the source code
+     *  cannot be found, return null. This method simply calls
      *  openSource(target, true)
      */
     public File openSource(String target) {
         return openSource(target, true);
-    } 
- 
+    }
+
 
     /** Open the Java source file with the qualified class name. The name may
      *  either be qualified by the '.' character or by the value of
      *  File.pathSeparatorChar. If favorSkeletons is true, try to open
      *  a skeleton version of the source code before trying the ordinary version.
-     *  Return an instance of File associated with the path of the source code. 
+     *  Return an instance of File associated with the path of the source code.
      *  If the source code cannot be found, return null.
      */
     public File openSource(String target, boolean favorSkeletons) {
         String targetPath = javaNameToPath(target);
-        
+
         for (int i = 0; i < size(); i++) {
             String candidate = (String) get(i);
 
             File file = null;
-            
+
             if (favorSkeletons) {
                // favor skeletons instead of full versions for performance
                file = tryOpen(candidate, targetPath, "jskel");
@@ -143,9 +143,9 @@ public class SearchPath extends Vector {
            try {
              return file.getCanonicalFile();
            } catch (IOException ioe) {
-             ApplicationUtility.error("cannot get canonical filename");           
+             ApplicationUtility.error("cannot get canonical filename");
            }
-        } 
+        }
         return null;
     }
 
@@ -158,11 +158,11 @@ public class SearchPath extends Vector {
           String path = null;
           if (end == -1) {
              path = paths.substring(begin);
-             if (path.length() > 0) {                          
+             if (path.length() > 0) {
                  _addPath(path);
               }
           } else {
-             path = paths.substring(begin, end);          
+             path = paths.substring(begin, end);
              if (path.length() > 0) {
                 _addPath(path);
              }

@@ -37,7 +37,7 @@ import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A declaration of a formal parameter of a method, constructor, or catch
-clause. 
+clause.
 
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class PackageResolutionVisitor extends JavaVisitor 
+public class PackageResolutionVisitor extends JavaVisitor
        implements JavaStaticSemanticConstants {
 
     public PackageResolutionVisitor() {

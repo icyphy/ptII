@@ -7,7 +7,6 @@ class OneFM {
 
   public int get() { return x; }
 
-  public void set(int y) { x = y; } 
+  public void set(int y) { x = y; }
 
   public int x;
-}

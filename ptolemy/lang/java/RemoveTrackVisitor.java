@@ -45,19 +45,19 @@ import ptolemy.lang.java.nodetypes.*;
  *  @author Jeff Tsay
  */
 public class RemoveTrackVisitor extends JavaVisitor {
-    
+
     public RemoveTrackVisitor() {
         super(TM_SELF_FIRST);
     }
 
     public Object _defaultVisit(TreeNode node, LinkedList args) {
         Iterator argsItr = args.iterator();
-        
+
         while (argsItr.hasNext()) {
            Class visitorClass = (Class) argsItr.next();
-           
+
            node.removeVisitor(visitorClass);
-        }        
-        return null;        
-    }    
+        }
+        return null;
+    }
 }

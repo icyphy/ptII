@@ -1,4 +1,4 @@
-/*          
+/*
 An object that encapsulates the type policy for Extended Java.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
@@ -40,7 +40,7 @@ import ptolemy.lang.java.nodetypes.*;
 /** An object that encapsulates the type policy for Extended Java.
  *
  *  @author Jeff Tsay
- */ 
+ */
 public class ExtendedJavaTypePolicy extends TypePolicy {
     public ExtendedJavaTypePolicy() {
         super(new ExtendedJavaTypeIdentifier());
@@ -49,23 +49,23 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
     public ExtendedJavaTypePolicy(TypeIdentifier typeID) {
         super(typeID);
     }
-    
+
     public TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
         int kind1 = _typeID.kind(type1);
         int kind2 = _typeID.kind(type2);
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX)) {
-           return TypeUtility.makeArrayType((TypeNode) 
+           return TypeUtility.makeArrayType((TypeNode)
             ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone(), 2);
         }
- 
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX)) {
-           return TypeUtility.makeArrayType((TypeNode) 
+           return TypeUtility.makeArrayType((TypeNode)
             ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(), 2);
         }
-  
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX)) {
            return TypeUtility.makeArrayType(DoubleTypeNode.instance, 2);
@@ -80,7 +80,7 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX)) {
            return TypeUtility.makeArrayType(IntTypeNode.instance, 2);
         }
-        
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX)) {
            return TypeUtility.makeArrayType(BoolTypeNode.instance, 2);
@@ -90,7 +90,7 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT)) {
            return (TypeNode) ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone();
         }
-                
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX) ||
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX)) {
            return (TypeNode) ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone();
@@ -100,12 +100,12 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN)) {
            return (TypeNode) ExtendedJavaTypeIdentifier.TOKEN_TYPE.clone();
         }
-        
+
         if ((kind1 == TypeIdentifier.TYPE_KIND_NULL) &&
             (kind2 == TypeIdentifier.TYPE_KIND_NULL)) {
            return NullTypeNode.instance;
         }
 
-        return super.arithPromoteType(type1, type2);        
-    }          
+        return super.arithPromoteType(type1, type2);
+    }
 }

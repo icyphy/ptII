@@ -37,79 +37,79 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// JavaDecl
 /**
- *  <p> 
+ *  <p>
  *  The class JavaDecl declares many members, most of which make sense only
  *  for certain types of JavaDecl.  Attempts to access nonsensical members
  *  will cause runtime errors.
- *  </p>  
- *  <p> 
+ *  </p>
+ *  <p>
  *  By convention, a JavaDecl member named "getFoo()" will return the "foo"
  *  attribute when called with no parameters, and a member "setFoo()"
- *  will set the "foo" attribute when called with one parameter.  
- *  Thus, decl.getType() is the type of the entity referred to by decl 
- *  (a JavaDecl, presumably), and decl.setFoo(aType) sets the type attribute 
- *  of decl to aType. Also, if member "foo" is not valid for all JavaDecls, 
- *  there is a member "hasFoo()" that returns true or false depending on whether 
- *  object on which it is called has a class for which "getFoo" and 
+ *  will set the "foo" attribute when called with one parameter.
+ *  Thus, decl.getType() is the type of the entity referred to by decl
+ *  (a JavaDecl, presumably), and decl.setFoo(aType) sets the type attribute
+ *  of decl to aType. Also, if member "foo" is not valid for all JavaDecls,
+ *  there is a member "hasFoo()" that returns true or false depending on whether
+ *  object on which it is called has a class for which "getFoo" and
  *  "setFoo()" may be called.
- *  </p>   
+ *  </p>
  *
  *  <p>
  *  Objects of type JavaDecl should not be allocated; the class is intended
  *  as a base class for others.
- *  </p>   
+ *  </p>
  *  <p>
  *   ATTRIBUTE name
- *  </p>   
- *  <p>  
+ *  </p>
+ *  <p>
  *     All Decls have a name, of type String.  These are
  *     the unique representative strings assigned by lexical analysis.
  *     The names of two Decls are considered the same iff they are the
  *     same pointer, ignoring contents: names that are different pointers
  *     to strings containing the same characters are considered distinct.
- *  </p>   
+ *  </p>
  *
- *  <p>  
+ *  <p>
  *   ATTRIBUTE container
- *  </p>   
- *  <p>  
+ *  </p>
+ *  <p>
  *     Members, classes, interfaces, and packages are all parts of some
  *     larger declared entity, which is their container.  Members are
  *     contained in classes and interfaces, which are themselves contained
  *     in packages, which are in turn contained in other packages. However,
  *     inner classes have their outer classes as their container. (CHECK THIS)
- *  </p>   
- *  <p>   
+ *  </p>
+ *  <p>
  *     Outer-level packages have as their container the special Decl
  *     StaticResolution.SYSTEM_PACKAGE
- *  </p>  
- *  <p>    
+ *  </p>
+ *  <p>
  *   ATTRIBUTE modifiers
  *     Classes, interfaces, and their members have modifiers, as defined
  *     by Modifier.
- *  </p>  
- *  <p>    
+ *  </p>
+ *  <p>
  *   ATTRIBUTE environ
  *     Classes, interfaces, and packages define environments:  mappings of
  *     names (of members, classes, interfaces, and subpackages) to
  *     JavaDecls of these entities.
- *  </p>  
- *  <p>    
+ *  </p>
+ *  <p>
  *   ATTRIBUTE source
  *     Decls that come from the current compilation have some piece of the
  *     AST associated with them.  For example, a JavaDecl for a local variable
- *     is created in response to a LocalVarDeclNode.  That LocalVarDeclNode 
- *     becomes thesource attribute of LocalVarDecl created to stand for that 
+ *     is created in response to a LocalVarDeclNode.  That LocalVarDeclNode
+ *     becomes thesource attribute of LocalVarDecl created to stand for that
  *     declaration.  ClassDecls have a a ClassDeclNode as their source,
  *     and so on.  Decls that arise as the result of importing a class
  *     have special dummy source nodes created for them.
- *  </p>  
- *  <p>    
+ *  </p>
+ *  <p>
  *   ATTRIBUTE defType
  *     For Decls for which isType() is true, a resolved
  *     TypeNameNode that stands for the type this class represents.  That
  *     is, it is a TypeNameNode whose decl() is THIS.
- *  </p>  
+ *  </p>
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -145,7 +145,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     public boolean hasContainer() { return false; }
 
 
-    /** Return the resolved TypeNameNode that stands for the type this class 
+    /** Return the resolved TypeNameNode that stands for the type this class
      *  represents.  That is, it is a TypeNameNode whose getDecl() is THIS.
      */
     public TypeNameNode getDefType() {
@@ -168,7 +168,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     public Environ getEnviron() {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
-    
+
     /** Get an environment of types associated with this declaration. This
      *  method is used instead of getEnviron() when looking up types contained
      *  in the environment. getEnviron() for ClassDecl needs to run pass 1 to
@@ -177,12 +177,12 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *
      *  This method is necessary to allow for inner classes, since the environment
      *  a class is necessary to lookup its inner classes.
-     * 
-     *  The default method just calls getEnviron().  
+     *
+     *  The default method just calls getEnviron().
      */
     public Environ getTypeEnviron() {
         return getEnviron();
-    } 
+    }
 
     /** Set the environment associated with this declaration. */
     public void setEnviron(Environ environ) {
@@ -246,7 +246,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         prefix.append(getName());
         return prefix.toString();
     }
-  
+
     /** Return true iff this declaration is contained by the container Decl.
      *  Search all super-containers of this declaration for the container.
      */
@@ -279,10 +279,10 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *  Decl is not found. This method figures out the type of node, and
      *  passes to the appropriate more specific getDecl() method.
      */
-    public static final JavaDecl getDecl(TreeNode node) {                 
+    public static final JavaDecl getDecl(TreeNode node) {
         if (node instanceof NamedNode) {
            return getDecl((NamedNode) node);
-        }     
+        }
         return (JavaDecl) node.getProperty(DECL_KEY);
     }
 
@@ -293,7 +293,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         return (JavaDecl) node.getName().getProperty(DECL_KEY);
     }
 
-    /** Set the Decl associated with the node. 
+    /** Set the Decl associated with the node.
      *  This method figures out the type of node, and
      *  passes to the appropriate more specific setDecl() method.
      */
@@ -301,7 +301,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         if (node instanceof NamedNode) {
            setDecl((NamedNode) node, decl);
            return;
-        }     
+        }
         node.setProperty(DECL_KEY, decl);
     }
 

@@ -96,7 +96,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
         int modifiers = node.getModifiers();
-        
+
         if ((modifiers & PRIVATE_MOD) != 0) {
            return null;
         }
@@ -117,14 +117,14 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
            node.setModifiers(modifiers | NATIVE_MOD);
            node.setBody(AbsentTreeNode.instance);
         }
-        
+
         return node;
     }
 
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {       
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         // constructor calls must not call private methods or access private variables
         // in the arguments to super() or this()
-        
+
         node.setBody(new BlockNode(new LinkedList()));
         return node;
     }

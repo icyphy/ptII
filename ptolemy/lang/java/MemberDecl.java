@@ -1,5 +1,5 @@
-/* 
-A member of a class or interface. 
+/*
+A member of a class or interface.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MemberDecl
-/** A member of a class or interface. 
+/** A member of a class or interface.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,

@@ -1,4 +1,4 @@
-/* 
+/*
 Number the declarations uniquely. Declarations are numbered from those contained
 in the root of the tree downwards. Declarations on sibling nodes are numbered
 from left to right.
@@ -46,7 +46,7 @@ import ptolemy.lang.*;
 /** A visitor that numbers declarations uniquely. Declarations are numbered from those contained
  *  in the root of the tree downwards. Declarations on sibling nodes are numbered
  *  from left to right.
- * 
+ *
  *  @author ctsay@eecs.berkeley.edu
  */
 public class NumberDeclVisitor extends JavaVisitor {
@@ -56,47 +56,47 @@ public class NumberDeclVisitor extends JavaVisitor {
 
     public NumberDeclVisitor(HashSet declSet) {
         super(TM_CHILDREN_FIRST);
-        
+
         _declSet = declSet;
     }
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        
+
         Iterator itr = node.values().iterator(); // iterate over all properties
-        
+
         while (itr.hasNext()) {
             Object obj = itr.next();
-            
+
             if (obj instanceof JavaDecl) {
                JavaDecl decl = (JavaDecl) obj;
                if (!decl.hasProperty(PropertyMap.NUMBER_KEY)) {
-                  decl.setProperty(PropertyMap.NUMBER_KEY, new Integer(_declSet.size()));               
+                  decl.setProperty(PropertyMap.NUMBER_KEY, new Integer(_declSet.size()));
                   _declSet.add(decl);
-               }            
-            }                     
-        }        
-        
+               }
+            }
+        }
+
         return _declSet;
     }
-    
+
     /** Given a list of TreeNode's, number all declarations in the list uniquely,
-     *  including descendents of individual TreeNode's. 
+     *  including descendents of individual TreeNode's.
      *  Return the set of all declarations.
      */
     public static Set numberDecls(Collection decls) {
         HashSet set = new HashSet();
         NumberDeclVisitor v = new NumberDeclVisitor(set);
-        
+
         Iterator itr = decls.iterator();
-        
+
         while (itr.hasNext()) {
             TreeNode node = (TreeNode) itr.next();
             node.accept(v, null); // modifies set
-        } 
-        
-        return set;                
+        }
+
+        return set;
     }
-             
+
     protected HashSet _declSet;
 }

@@ -48,7 +48,7 @@ public class Modifier implements JavaStaticSemanticConstants {
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | FINAL_MOD |
           ABSTRACT_MOD | STATIC_MOD | STRICTFP_MOD)) != 0) {
        throw new RuntimeException("Illegal class modifier: " +
-        toString(modifiers));       
+        toString(modifiers));
     }
   }
 

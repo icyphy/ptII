@@ -1,4 +1,4 @@
-/* A Java AST visitor that removes properties from nodes. 
+/* A Java AST visitor that removes properties from nodes.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -39,28 +39,28 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// RemovePropertyVisitor
 /** A Java AST visitor that removes properties from nodes. The argument to
- *  each node is a LinkedList consisting to Integers corresponding to 
+ *  each node is a LinkedList consisting to Integers corresponding to
  *  properties to be removed.
  *
  *  @author Jeff Tsay
  */
 public class RemovePropertyVisitor extends JavaVisitor {
-    
+
     public RemovePropertyVisitor() {
         super(TM_SELF_FIRST);
     }
 
     public Object _defaultVisit(TreeNode node, LinkedList args) {
         Iterator argsItr = args.iterator();
-        
+
         while (argsItr.hasNext()) {
            Integer property = (Integer) argsItr.next();
-           
+
            node.removeProperty(property);
-        }        
-        return null;        
-    }    
+        }
+        return null;
+    }
 }
- 
+
 
 
