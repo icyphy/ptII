@@ -49,7 +49,7 @@ Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
-@author Jeff Tsay
+@author Jeff Tsay, Shuvra S. Bhattacharyya 
 @version $Id$
  */
 public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
@@ -80,11 +80,18 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _source = null;
     }
 
+    /** Invalidate the scope so that it is re-built the next time it is needed */
+    public void invalidateScope() {
+        removeVisitor(ResolveClassVisitor.visitorClass());
+        _scope = null; 
+    }
+
     public final boolean hasScope() { return true; }
 
     public final Scope getScope() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-            //System.out.println("getScope() for " + _name + ": building scope");
+            if (StaticResolution.traceLoading)
+                System.out.println("getScope() for " + _name + ": building scope");
             try {
                 _buildScope();
             } catch (Exception e) {
@@ -147,7 +154,14 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _interfaces = interfaces;
     }
 
-    /** Ensure that the source code for this ClassDecl is loaded.
+    /** Ensure that the source code for this ClassDecl is loaded, and pass 0
+     *  resolution is completed on it.
+     *  If the source already has been loaded, do nothing.  Otherwise, if the
+     *  class is a JVM system class, or a Ptolemy class, or we can load 
+     *  the class file using a class loader, then attempt to perform shallow loading
+     *  of the AST (we must first ensure that the class file can be loaded
+     *  in case we need to perform shallow-to-deep conversion later).
+     *  If we cannot load the class file, parse the Java source to obtain a full AST.
      *  @exception IOException If we can't get the canonical
      *  name of the test library.
      *  @exception FileNotFoundException If we can't find the source file.
@@ -161,31 +175,81 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             if (SearchPath.systemClassSet.contains(fileName)
                     || SearchPath.ptolemyCoreClassSet.contains(fileName)){
                 // The class is either a JVM system class or Ptolemy core class
-                //System.out.println("ClassDecl: Reading in user type : " +
-                //        fileName + " by loadClassName");
+                if (StaticResolution.traceLoading) {
+                    System.out.println("ClassDecl.loadSource: Reading in Java/Ptolemy"
+                            + " type : '" + fileName + "' by loadClassName");
+                }
                 StaticResolution.loadClassName(fileName, 0);
                 if (_source == AbsentTreeNode.instance) {
-                    throw new RuntimeException("Could not load " +
-                            fullName());
+                    throw new RuntimeException("Could not load " + fullName());
                 }
             } else {
+                // We are dealing with a user-defined class. First, see if we
+                // can load it in shallowly. If not, load in a full AST
+                // by parsing the Java source.
+ 
+                if (StaticResolution.traceLoading) 
+                    System.out.println("ClassDecl.loadSource: Reading in user type : '" 
+                            + fullName()); 
 
-                // openSource() might throw IOException if we can't
-                // get the canonical name of fileName.
-                File file = _pickLibrary(_container).openSource(fileName);
-
-                //System.out.println("ClassDecl: Reading in user type : " +
-                //        fullName() + " from " + fileName);
-
-                StaticResolution.loadFile(file, 0); // should set the source
-
-                if (_source == AbsentTreeNode.instance) {
+                // First, make sure that the class is already loaded or that
+                // we can load the class. Otherwise,
+                // we will have problems if we later have to convert to a deep AST.
+                Class loadedClass = null;
+                try {
+                    loadedClass = Class.forName(fullName());
+                } catch (Exception exception) {}
+                if (loadedClass == null) {
+                    // Try to load the class.
+                    ClassLoader classLoader = new ClassLoader();
+                    if (StaticResolution.traceLoading) 
+                        System.out.println("loadSource: "
+                                + "trying to load class '" + fullName() + "'"
+                                + " with a ClassLoader");
+                    try {
+                        loadedClass = classLoader.loadClass(fullName());
+                    } catch (ClassNotFoundException exception) {
+                        System.out.println("loadSource: could not load class");
+                    }
+                }
+                if (loadedClass != null)  {
+                    // Generate a shallow AST
+                    CompileUnitNode loadedAST = 
+                            ASTReflect.ASTCompileUnitNode(loadedClass);
+                    _source = NodeUtil.getDefinedType(loadedAST);
+                    if (loadedAST == null)
+                        throw new NullPointerException("ClassDecl.loadSource: "
+                                + "loaded AST for " + fullName() + " is null even " 
+                                + "though the corresponding class (" 
+                                + loadedClass.getClass().getName() 
+                                + ")was successfully loaded.");
+                    else {
+                        // Register the loaded class, and perform pass 0 resolution.
+                        _source = NodeUtil.getDefinedType(loadedAST);
+                        loadedAST.setProperty(IDENT_KEY, fullName());
+                        JavaParserManip.allParsedMap.put(fullName(), loadedAST); 
+                        StaticResolution.loadCompileUnit(loadedAST, 0);
+                    }
+                }
+                else {
+                    // We cannot hope to use reflection, so parse the Java source.
+                    if (StaticResolution.traceLoading) 
+                        System.out.println("loadSource: calling loadFile "
+                                + "to perform a full AST load of " + fullName());
+                    // openSource() might throw IOException if we can't
+                    // get the canonical name of fileName.
+                    File file = _pickLibrary(_container).openSource(fileName);
+                    StaticResolution.loadFile(file, 0); // should set the source
+                }
+                if ((_source == null) || (_source == AbsentTreeNode.instance)) {
                     throw new RuntimeException("file " + fileName +
                             " doesn't contain class or interface " +
                             fullName());
                 }
             }
-            //System.out.println(">Done reading class " + fullName());
+            if (StaticResolution.traceLoading)
+                System.out.println("ClassDecl.loadSource: done reading in class " 
+                        + fullName());
         }
     }
 

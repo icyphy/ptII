@@ -164,6 +164,8 @@ public class JavaConverter implements JavaStaticSemanticConstants {
                             StaticResolution.allPass0ResolvedMap.size());
                     System.out.println("The allParsedMap size is" +
                             JavaParserManip.allParsedMap.size());
+                    System.out.println("AST Loading status:\n" + 
+                            ASTReflect.getLoadingStatus(false));
                 }
 
                 // Pre-process all instantiated abstract syntax trees prior 
@@ -176,8 +178,7 @@ public class JavaConverter implements JavaStaticSemanticConstants {
                                 "No compilation unit nodes were generated " +
                                 "through static resolution\n");
                     } else {
-                        Iterator compilationUnitIterator = 
-                                compilationUnits.iterator();
+                        Iterator compilationUnitIterator = compilationUnits.iterator();
                         int unitNumber = 0;
                         while (compilationUnitIterator.hasNext()) {
                             unitNumber++;
@@ -186,19 +187,13 @@ public class JavaConverter implements JavaStaticSemanticConstants {
                             if (_verbose) {
                                 System.out.println("Performing pre pass processing on " +
                                         ASTReflect.getFullyQualifiedName(unit));
-                                // FIXME: Remove AST printing when done debugging:
-                                System.out.println("Here is the AST:");
-                                System.out.println(unit.toString());
                             }
                             Iterator passes = _prePassList.iterator();
                             while(passes.hasNext()) 
                                 unit.accept((JavaVisitor)(passes.next())); 
                         }
-                        if (_verbose) {
-                            System.out.println("Total number of preprocessed " 
-                                    + "ASTs:  " + unitNumber);
-                                  
-                        }
+                        if (_verbose) System.out.println("Total number of preprocessed "
+                                    + "ASTs: " + unitNumber);
                   }
             } /* if (_performStaticResolution) */
         }
