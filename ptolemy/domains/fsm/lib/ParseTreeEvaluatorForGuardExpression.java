@@ -196,6 +196,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // Only increment the relation index but do not update
             // the relation node.
             _relationIndex ++;
+            if (_relationIndex >= _relationList.length()) {
+            	_relationIndex -= _relationList.length();
+            }
        
             return;
         }
@@ -234,6 +237,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
 
         _relationIndex ++;
+		if (_relationIndex >= _relationList.length()) {
+			_relationIndex -= _relationList.length();
+		}
     }
 
     /** Visit the logical node. This visitor does not use short-circuit
@@ -322,7 +328,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                     _relationList.addRelation(0, 0.0);
                 }
                 _relationIndex++;
-     
+				if (_relationIndex >= _relationList.length()) {
+					_relationIndex -= _relationList.length();
+				}     
                 return;
             }
         }
@@ -413,7 +421,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
 
         _relationIndex++;
-    
+		if (_relationIndex >= _relationList.length()) {
+			_relationIndex -= _relationList.length();
+		}    
         return;
     }
 

@@ -154,6 +154,13 @@ public class RelationList extends Attribute {
         return _relationList.size() == 0;
     }
 
+    /** Return the number of relations in the relation list.
+     *  @return the number of relations in the relation list.
+     */
+    public int length() {
+    	return _relationList.size();
+    }
+    
     /** Iterating the relation list and get the maximum current difference of
      *  all the relations.
      *  @return maximumDistance The maximum current distance.
