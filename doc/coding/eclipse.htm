@@ -358,7 +358,12 @@ Check 'InsertSpace for tabs (see Code Formatter preference page)
 </ol>
 
 <h2><a name="#assert">Proper Handling of Assert Statements</a></h2>
-
+<code>ptolemy/caltrop/util/IntegerList.java</code> may fail to compile
+with a message like:
+<pre>
+"Syntax error on token "<=", ";" expected
+</pre>
+The solution is to set Eclipse to use Java 1.4 source code compliance.
 <ol>
 <li> Window -&gt;Preferences-&gt;Java-&gt;Compiler-&gt;Compliance and Classfiles
 <li> Select 1.4
