@@ -260,15 +260,20 @@ public class Manager extends NamedObj implements Runnable {
 
             completedSuccessfully = true;
         } finally {
-            wrapup();
-            if (_state != IDLE) {
-                _setState(IDLE);
-            }
-            // Reset this for the next run.
-            _finishRequested = false;
-            if (completedSuccessfully) {
-                _notifyListenersOfCompletion();
-            }
+	    try {
+		wrapup();
+	    } finally {
+		// Wrapup may also throw an exception,
+		// So be sure to reset the state to idle!
+		if (_state != IDLE) {
+		    _setState(IDLE);
+		}
+		// Reset this for the next run.
+		_finishRequested = false;
+		if (completedSuccessfully) {
+		    _notifyListenersOfCompletion();
+		}
+	    }
         }
         // Report the execution time.
         long endTime = (new Date()).getTime();
