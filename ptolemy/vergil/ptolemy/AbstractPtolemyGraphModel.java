@@ -233,22 +233,13 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 return;
             }
 
-	    // This has to happen in the swing thread, because Diva assumes
-	    // that everything happens in the swing thread.  We invoke later
-	    // because the changeRequest that we are listening for often
-	    // occurs in the execution thread of the ptolemy model.
-	    // FIXME this causes a threading bug apparently.
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    // Otherwise notify any graph listeners
-		    // that the graph might have
-		    // completely changed.
-		    dispatchGraphEvent(new GraphEvent(
-                            AbstractPtolemyGraphModel.this,
-                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
-		}
-	    });
-	}
+            // Otherwise notify any graph listeners
+            // that the graph might have
+            // completely changed.
+            dispatchGraphEvent(new GraphEvent(
+                    AbstractPtolemyGraphModel.this,
+                    GraphEvent.STRUCTURE_CHANGED, getRoot()));
+        }
 
         /** Notify the listener that the change has failed with the
          *  specified exception.
@@ -264,8 +255,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 change.setErrorReported(true);
                 MessageHandler.error("Change failed", exception);
             }
-	    // Just in case something happened to the graph.
-	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this,
+            dispatchGraphEvent(new GraphEvent(
+                    AbstractPtolemyGraphModel.this,
                     GraphEvent.STRUCTURE_CHANGED,
                     getRoot()));
         }
