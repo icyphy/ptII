@@ -141,6 +141,37 @@ public class GeneratorTableau extends Tableau {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
+            // Caveats panel.
+            JPanel caveatsPanel = new JPanel();
+            caveatsPanel.setBorder(
+                    BorderFactory.createEmptyBorder(5, 0, 0, 0));
+            JTextArea messageArea = new JTextArea(
+                    "NOTE: This is a highly preliminary "
+                    + "code generator facility, with many\n"
+                    + "limitations.  It is best viewed as "
+                    + "a concept demonstration.", 2, 80);
+            messageArea.setEditable(false);
+            messageArea.setBorder(BorderFactory.createEtchedBorder());
+            caveatsPanel.add(messageArea);
+
+            JButton moreInfoButton = new JButton("More Info");
+            moreInfoButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    Configuration configuration = getConfiguration();
+                    URL infoURL = getClass().getResource("../caveats.htm");
+                    try {
+                        configuration.openModel(
+                                null, infoURL, infoURL.toExternalForm());
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(
+                                "Failed to open ptolemy/codegen/caveats.htm: "
+                                + ex);
+                    }
+                }
+            });
+            caveatsPanel.add(moreInfoButton);
+            component.add(caveatsPanel);
+
             JPanel controlPanel = new JPanel();
 
             // Panel for push buttons.
