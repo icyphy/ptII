@@ -1,4 +1,4 @@
-/* The receiver for CT actors
+/* The receiver for the CT domain.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,20 +29,21 @@
 */
 
 package ptolemy.domains.ct.kernel;
-import ptolemy.kernel.util.*;
+//import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Mailbox;
+import ptolemy.actor.NoRoomException;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
 /**
-The receiver for continuous time simulation. This is basically a mailbox
-receiver which has just one capacity. If a token is sent to the receiver
+The receiver for the continuous time domain. This is basically a mailbox
+receiver which has just one capacity. If a token is put into the receiver
 when the receiver is full, then the old token will be overwritten.
 @author  Jie Liu
 @version $Id$
-
 */
 public class CTReceiver extends Mailbox{
     /** Construct an empty CTReceiver with no container.
@@ -73,7 +74,7 @@ public class CTReceiver extends Mailbox{
      *  token will be lost, and the receiver only contains the new
      *  token.
      *  @param token The token to be put into the CTReceiver.
-     *  @exception NoRoomException Not thrown in this base class.
+     *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException{
         if(hasToken()) {

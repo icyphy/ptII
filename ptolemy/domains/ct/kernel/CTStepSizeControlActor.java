@@ -44,10 +44,12 @@ effect the integration step size should implement this interface.
 Three methods are defined in this interface, isThisStepSuccessful(),
 refinedStepSize(), and predictedStepSize(). At the end of each integration
 step, the CTStepSizeControlActors will be asked whether this step is
-successful. If one of the actor is not satisfied, then it will be asked
+successful. If one of the actor is not satisfied, then the actor 
+will be asked
 for a refined step size. The integration step will be restarted with
-this refined step size. If all the step-size-control actors are satisfied,
-they will be asked for the (predicted) next step size.
+the smallest refined step size. 
+If all the step size control actors are satisfied,
+they will be asked for a (predicted) next step size.
 @author  Jie Liu
 @version $Id$
 */
@@ -61,7 +63,7 @@ public interface CTStepSizeControlActor extends Actor{
      *  themselves. For example, for integrators, "successful" could
      *  mean that the local truncation error is small enough; for
      *  event detectors, "successful" could mean that there is not event
-     *  missed during the current integration step.
+     *  missed during the integration step.
      *  @return True if the current integration step is acceptable.
      */
     public boolean isThisStepSuccessful();
@@ -75,12 +77,13 @@ public interface CTStepSizeControlActor extends Actor{
      */
     public double predictedStepSize();
 
-    /** Return the refined step size for restarting current step. If the
-     *  current integration step size is not successful, the actor will
+    /** Return the refined step size for restarting the current step. If the
+     *  current integration is not successful, the actor will
      *  be asked for a refined step size. The current integration step
      *  will be restarted with the minimum of all returned values.
      *  If the actor does not want to restart the current integration
-     *  step, this method should return the current step size.
+     *  step, this method should return the current step size from the
+     *  director.
      *  @return The refined step size.
      */
     public double refinedStepSize();

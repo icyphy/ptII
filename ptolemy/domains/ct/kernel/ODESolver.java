@@ -1,4 +1,4 @@
-/* The abstract base class of the solvers for ODEs.
+/* The abstract base class of the ODE solvers.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.actor.*;
 /**
 Abstract base class for ODE solvers. The key method for the class is
 resolveState(), which executes the integration method for one
-step. This method does not consider any breakpoint affect. In general,
+step. This method does not consider any breakpoints. In general,
 resolveState() will resolve the integrators' new states.
 Step size control (including error control) is performed by the
 director, but solvers may provide support for it.
@@ -46,25 +46,27 @@ solver dependent.  Derived classes
 may implement these methods according to individual ODE
 solving algorithm.
 <P>
-The behavior of the integrators also changes
-when changing ODE solver, so this class provides the some methods
-for the integrators too, including the fire() method, and the step size
+The behavior of integrators also changes
+when changing ODE solver, so this class provides some methods
+for the integrators too, including the fire() method and the step size
 control related methods. CTBaseIntegrator delegated its corresponding
 methods to this class.
 <P>
 An integer called "round" is used to indicate the number of firing rounds
-within one iteration. For some integration method, (the so called explicit
-methods) the round of firings are fixed. For some others (called implicit
-methods), the round could be arbitrary integer.
+within one iteration. For some integration method, (i.e. the so called 
+explicit methods) the round of firings are fixed. 
+For some others (i.e. implicit methods), the round could be an arbitrary
+possitive integer.
 <P>
- Round counter is a counter
+A round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
-may behaves differently under different round. The round can be get by
+may behaves differently under different rounds. The round can be get by
 the getRound() method. The incrRound() method will increase the counter by one,
 and resetRound() will always reset the counter to 0.
 <P>
 Conceptually, ODE solvers do not maintain simulation parameters,
-they get these parameters from the director. So the same set of parameters
+like step sizes and error tolerance.
+They get these parameters from the director. So the same set of parameters
 are shared by all the solvers in a simulation.
 @author Jie Liu
 @version $Id$
@@ -103,7 +105,7 @@ public abstract class ODESolver extends NamedObj {
 
     /** Construct a solver in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+     *  The solver is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
@@ -119,15 +121,14 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the director contains this solver.
-     *  @return the director contains this solver.
+    /** Return the director that contains this solver.
+     *  @return the director that contains this solver.
      */
     public final Nameable getContainer() {
         return _container;
     }
 
-    /** Return the round counter record. Round counter will be increased
-     *  for each round the state transition schedule is fired.
+    /** Return the round counter record. 
      *
      *  @return The round of firing the state transition schedule.
      */
@@ -135,7 +136,9 @@ public abstract class ODESolver extends NamedObj {
         return _round;
     }
 
-    /** Increase the round counter by one.
+    /** Increase the round counter by one. In general, the round counter
+     *  will be increased
+     *  for each round the state transition schedule is fired.
      */
     public void incrRound() {
         _round ++ ;
@@ -197,9 +200,8 @@ public abstract class ODESolver extends NamedObj {
     ////                         protected methods                 ////
 
     /** Make this solver to be the solver of the given Director. This method
-     *  should not be called directly. Call the _instantiateODESolver()
-     *  or the setCurrentODESolver()
-     *  method of the director instead.
+     *  should not be called directly. The solvers will be instantiated
+     *  by the director according to the parameters.
      *
      *  @param dir The CT director
      */
@@ -217,5 +219,4 @@ public abstract class ODESolver extends NamedObj {
     private Director _container = null;
     // The round counter.
     private int _round = 0;
-
 }

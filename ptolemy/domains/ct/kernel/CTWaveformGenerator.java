@@ -1,4 +1,4 @@
-/* Interface for actors that generates discrete events.
+/* Interface for actors that generates continuou waveforms.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -54,9 +54,5 @@ public interface CTWaveformGenerator extends Actor{
      *  a problem.
      */
     public void consumeCurrentEvents() throws IllegalActionException;
-
-    /** FIXME: Consider a method that tells if there's unconsumed event
-     *  at current time.
-     */
 
 }
