@@ -311,11 +311,18 @@ public class TextEffigy extends Effigy {
                 return (Effigy) _newTextEffigyURL.invoke
                     (null, new Object[]{container, base, in});
             } catch (java.lang.reflect.InvocationTargetException ex) {
-                throw new java.lang.reflect.InvocationTargetException(ex,
-                        " Invocation of method failed!. Method was: "
-                        + _newTextEffigyURL
-                        + "\nwith arguments( container = " + container
-                        + " base = " + base + " in = " + in + ")");
+                if (ex instanceof Exception) {
+                    // Rethrow the initial cause
+                    throw (Exception)(ex.getCause());
+                } else {
+                    throw new Exception(ex.getCause());
+                }
+                // Uncomment this for debugging
+                // throw new java.lang.reflect.InvocationTargetException(ex,
+                // " Invocation of method failed!. Method was: "
+                // + _newTextEffigyURL
+                // + "\nwith arguments( container = " + container
+                // + " base = " + base + " in = " + in + ")");
             }
         }
 
