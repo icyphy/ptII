@@ -30,6 +30,8 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -112,7 +114,9 @@ public class Stop extends Sink {
 
     /** Read one token from each input channel that has a token,
      *  and if any token is true, call stop() on the director. 
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director or
+     *   if there is no manager, or if the container is not a
+     *   CompositeActor.
      *  @return False if a stop is requested, and true otherwise.
      */
     public boolean postfire() throws IllegalActionException {
@@ -125,7 +129,19 @@ public class Stop extends Sink {
             }
         }
         if (result) {
-            getDirector().stop();
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Manager manager = ((CompositeActor)container).getManager();
+                if (manager != null) {
+                    manager.finish();
+                } else {
+                    throw new IllegalActionException(this,
+                    "Cannot stop without a Manager.");
+                }
+            } else {
+                throw new IllegalActionException(this,
+                "Cannot stop without a container that is a CompositeActor.");
+            }
         }
         return !result;
     }
