@@ -7,7 +7,7 @@
 </HEAD>
 <BODY>
 
-<H1>Hysteresis demo</H1>
+<H1>Hysteresis demo with Hierarchical FSM's and SDF</H1>
 
 The following plot shows the noisy input signal (blue) and the output
 signal (red).
@@ -51,13 +51,21 @@ applet is displayed on a XGA screen-->
 The input signal consists of a sinusoid plus a noise source. One possible application is a heater control, where the noisy input signal (blue) could be the input from a temperature sensor. The output signal (red) would then correspond to the heater on/off, with +1 denoting the on state and -1 denoting the off state.
 
 <P>
-The topology of the model is shown below:
+The topology of the model is shown below (here, all SDF actors are homogeneous.):
 <P>
 <center>
 <img src="hysteresis_model.png" alt="topology">
 </center>
 <P>
-Here, all SDF actors are homogeneous.
+<H1>
+References</H1>
+
+<OL>
+<LI>
+A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
+1998.</LI>
+
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </BODY>
 </HTML>
