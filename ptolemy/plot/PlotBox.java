@@ -2136,7 +2136,7 @@ public class PlotBox extends Panel {
                 int maxx = Math.max(_zoomx, _zoomxn);
                 int miny = Math.min(_zoomy, _zoomyn);
                 int maxy = Math.max(_zoomy, _zoomyn);
-                graphics.setXORMode(_background);
+                graphics.setXORMode(_boxColor);
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
                 // constrain to be in range
@@ -2148,19 +2148,19 @@ public class PlotBox extends Panel {
                 if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
-                    if (a < b) _setXRange(a, b);
-                    else _setXRange(b, a);
+                    if (a < b) setXRange(a, b);
+                    else setXRange(b, a);
                     a = _yMax - (_zoomy - _uly)/_yscale;
                     b = _yMax - (y - _uly)/_yscale;
-                    if (a < b) _setYRange(a, b);
-                    else _setYRange(b, a);
+                    if (a < b) setYRange(a, b);
+                    else setYRange(b, a);
                 }
                 repaint();
                 handled = true;
             }
         } else if ((_zoomout == true) && (_drawn == true)){
             // Erase previous rectangle.
-            graphics.setXORMode(_background);
+            graphics.setXORMode(_boxColor);
             int x_diff = Math.abs(_zoomx-_zoomxn);
             int y_diff = Math.abs(_zoomy-_zoomyn);
             graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
@@ -2225,21 +2225,21 @@ public class PlotBox extends Panel {
                 if (y < _zoomy) {
                     _zoomout = true;
                     // Draw reference box.
+                    graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
-
                 } else if (y > _zoomy) {
                     _zoomin = true;
                 }
             }
 
             if (_zoomin == true){
-                graphics.setXORMode(_background);
                 // Erase the previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
                     int maxy = Math.max(_zoomy, _zoomyn);
+                    graphics.setXORMode(_boxColor);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 }
                 // Draw a new box if necessary.
@@ -2250,17 +2250,17 @@ public class PlotBox extends Panel {
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
                     int maxy = Math.max(_zoomy, _zoomyn);
+                    graphics.setXORMode(_boxColor);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                    graphics.setPaintMode();
                     _drawn = true;
                     return;
                 } else _drawn = false;
             } else if (_zoomout == true){
-                graphics.setXORMode(_background);
                 // Erase previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
                 }
@@ -2269,9 +2269,9 @@ public class PlotBox extends Panel {
                     _zoomyn = y;
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
-                    graphics.setPaintMode();
                     _drawn = true;
                     return;
                 } else _drawn = false;
@@ -2312,6 +2312,11 @@ public class PlotBox extends Panel {
      * @deprecated
      */
     private boolean _binary = false;
+
+    // Call setXORMode with a hardwired color because
+    // _background does not work in an application,
+    // and _foreground does not work in an applet
+    private static final Color _boxColor = Color.darkGray;
 
     /** @serial The range of the plot as labeled
      * (multiply by 10^exp for actual range.
