@@ -211,12 +211,12 @@ public class MoMLParser extends HandlerBase {
     ////                         public methods                    ////
 
     /**  Add a MoMLFilter to the end of the list of MoMLFilters used
-     *  to translate names.
+     *  to translate names.  
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
      *  @see #getMoMLFilters()
-     *  @see #setMoMLFilter
+     *  @see #setMoMLFilter(List filterList)
      */
     public void addMoMLFilter(MoMLFilter filter) {
 	if (_filterList == null) {
@@ -545,8 +545,8 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
-     *  @see #addMoMLFilter()
-     *  @see #setMoMLFilters()
+     *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #setMoMLFilter(List filterList)
      */
     public List getMoMLFilters() {
         return _filterList;
@@ -797,7 +797,7 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The specified MoMLFilters
      *  will filter all MoML for any instances of this class.
      *  @param filterList The List of MoMLFilters.
-     *  @see #addMoMLFilter()
+     *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #getMoMLFilters()
      */
     public void setMoMLFilters(List filterList) {
