@@ -1,4 +1,4 @@
- /* A library for mathematical operations on matrices of complex numbers.
+/* A library for mathematical operations on matrices of complex numbers.
 
 Some algorithms are from
 
