@@ -49,8 +49,8 @@ a Transition other than expressions in the Set Actions and Output Actions
 of that Transition. The expression actions are still executed but only
 after the Transition refinement has been fired.<p>
 
-This typed composite actor supports mirroring of its ports in its container
-(which is required to be a ModalModel), which in turn assures
+This typed composite actor supports mirroring of its ports in its
+container (which is required to be a ModalModel), which in turn assures
 mirroring of ports in each of the refinements and the controller.
 TransitionRefinement fulfills the CTStepSizeControlActor interface so that
 it can be used to construct hybrid systems using the CT domain.<p>
@@ -61,85 +61,85 @@ it can be used to construct hybrid systems using the CT domain.<p>
 @Pt.ProposedRating Red (eal)
 @Pt.AcceptedRating Red (reviewmoderator)
 */
-    public class TransitionRefinement extends Refinement {
+public class TransitionRefinement extends Refinement {
 
-        /** Construct a modal controller with a name and a container.
-         *  The container argument must not be null, or a
-         *  NullPointerException will be thrown.
-         *  @param container The container.
-         *  @param name The name of this actor.
-         *  @exception IllegalActionException If the container is incompatible
-         *   with this actor.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an actor already in the container.
-         */
-        public TransitionRefinement(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
+    /** Construct a modal controller with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public TransitionRefinement(CompositeEntity container, String name)
+	throws IllegalActionException, NameDuplicationException {
+	super(container, name);
 
-            // The base class identifies the class name as TypedCompositeActor
-            // irrespective of the actual class name.  We override that here.
-            setClassName("ptolemy.domains.fsm.modal.TransitionRefinement");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Create a new port with the specified name in the container of
-         *  this refinement, which in turn creates a port in this refinement
-         *  all other refinements, and the controller.
-         *  This method is write-synchronized on the workspace.
-         *  @param name The name to assign to the newly created port.
-         *  @return The new port.
-         *  @exception NameDuplicationException If the entity already has a port
-         *   with the specified name.
-         */
-        public Port newPort(String name) throws NameDuplicationException {
-            try {
-                _workspace.getWriteAccess();
-                if (_mirrorDisable || getContainer() == null) {
-                    // Have already called newPort() in the container.
-                    // This time, process the request.
-                    TransitionRefinementPort port =
-                        new TransitionRefinementPort(this, name);
-
-                    // NOTE: This is a total kludge, but when a port is created
-                    // this way, rather than by parsing MoML that specifies the
-                    // class, we assume that it is being created interactively,
-                    // rather than by reading a stored MoML file, so we enable
-                    // mirroring in the port.
-                    port._mirrorDisable = false;
-
-                    // Create the appropriate links.
-                    ModalModel container = (ModalModel)getContainer();
-                    if (container != null) {
-                        String relationName = name + "Relation";
-                        Relation relation = container.getRelation(relationName);
-                        if (relation == null) {
-                            relation = container.newRelation(relationName);
-                            Port containerPort = container.getPort(name);
-                            containerPort.link(relation);
-                        }
-                        port.link(relation);
-                    }
-                    return port;
-                } else {
-                    _mirrorDisable = true;
-                    ((ModalModel)getContainer()).newPort(name);
-                    return getPort(name);
-                }
-            } catch (IllegalActionException ex) {
-                // This exception should not occur, so we throw a runtime
-                // exception.
-                throw new InternalErrorException(
-                        "TransitionRefinement.newPort: Internal error: " +
-                        ex.getMessage());
-            } finally {
-                _mirrorDisable = false;
-                _workspace.doneWriting();
-            }
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         protected variables               ////
+	// The base class identifies the class name as TypedCompositeActor
+	// irrespective of the actual class name.  We override that here.
+	setClassName("ptolemy.domains.fsm.modal.TransitionRefinement");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a new port with the specified name in the container of
+     *  this refinement, which in turn creates a port in this refinement
+     *  all other refinements, and the controller.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The name to assign to the newly created port.
+     *  @return The new port.
+     *  @exception NameDuplicationException If the entity already has a port
+     *   with the specified name.
+     */
+    public Port newPort(String name) throws NameDuplicationException {
+	try {
+	    _workspace.getWriteAccess();
+	    if (_mirrorDisable || getContainer() == null) {
+		// Have already called newPort() in the container.
+		// This time, process the request.
+		TransitionRefinementPort port =
+		    new TransitionRefinementPort(this, name);
+
+		// NOTE: This is a total kludge, but when a port is created
+		// this way, rather than by parsing MoML that specifies the
+		// class, we assume that it is being created interactively,
+		// rather than by reading a stored MoML file, so we enable
+		// mirroring in the port.
+		port._mirrorDisable = false;
+
+		// Create the appropriate links.
+		ModalModel container = (ModalModel)getContainer();
+		if (container != null) {
+		    String relationName = name + "Relation";
+		    Relation relation = container.getRelation(relationName);
+		    if (relation == null) {
+			relation = container.newRelation(relationName);
+			Port containerPort = container.getPort(name);
+			containerPort.link(relation);
+		    }
+		    port.link(relation);
+		}
+		return port;
+	    } else {
+		_mirrorDisable = true;
+		((ModalModel)getContainer()).newPort(name);
+		return getPort(name);
+	    }
+	} catch (IllegalActionException ex) {
+	    // This exception should not occur, so we throw a runtime
+	    // exception.
+	    throw new InternalErrorException(this, ex,
+					     "TransitionRefinement.newPort: "
+					     + "Internal error");
+	} finally {
+	    _mirrorDisable = false;
+	    _workspace.doneWriting();
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+}
