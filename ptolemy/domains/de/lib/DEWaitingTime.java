@@ -38,17 +38,23 @@ import java.util.Vector;
 //// DESampler
 /**
 This actor measures the time that events at one input have to wait for
-events at another.  It outputs that time at the time of the arrival of
-the waited for event.
+events at another.  Specifically, there will be one output event for
+each <i>waiter</i> input event.  But the output event is delayed until the
+next arrival of an event at <i>waitee</i>.  When one or more events arrive
+at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
+the last <i>waitee</i> (or since the start of the execution) trigger an
+output.  The value of each output is the time that the <i>waiter</i> event
+waited for <i>waitee</i>.  The inputs can be of any type.  The output
+is always a DoubleToken.
 
-@author Edward A. Lee
+@author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
 public class DEWaitingTime extends DEActor {
 
-    /** Constructor.
-     *  @param container The composite actor that this actor belongs too.
-     *  @param name The name of this actor.
+    /** Construct an actor with the specified container and name.
+     *  @param container The container.
+     *  @param name The name.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -65,8 +71,7 @@ public class DEWaitingTime extends DEActor {
         waiter.setDeclaredType(Token.class);
         waitee = new DEIOPort(this, "waitee", true, false);
         waitee.setDeclaredType(Token.class);
-        // if a waiter and a waitee arrive at the same time, we don't want
-        // the waiter to have to wait.
+        // Ensure that waiters are seen before simultaneous waitees.
         waiter.before(waitee);
         waitee.triggers(output);
     }
@@ -74,27 +79,23 @@ public class DEWaitingTime extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If one or more events have arrived at waitee, then output the
-     *  waiting time for each prior event arrival at waiter since the
-     *  last arrival of waitee.
-     *  @exception IllegalActionException If get or broadcast throws it.
+    /** If this firing is triggered by an event at waitee, then output
+     *  the waiting time for each prior event arrival at waiter since the
+     *  last arrival of waitee.  If there is no event at waitee, then record
+     *  the time of arrival of the events at waiter, and produce no output.
+     *  @exception IllegalActionException If get() or broadcast() throws it.
      */
     public void fire() throws IllegalActionException {
 
-        boolean godot = false;
-        for (int i=0; i<waitee.getWidth(); i++) {
-            if (waitee.hasToken(i)) {
-                waitee.get(i);
-                godot = true;
-            }
-        }
-        // FIXME: Should be DEDirector, not DEDirector
         double currentTime = ((DEDirector)getDirector()).getCurrentTime();
-        for (int i=0; i<waitee.getWidth(); i++) {
-            if (waiter.hasToken(i)) {
-                waiter.get(i);
-                _waiting.addElement(new Double(currentTime));
-            }
+        while(waiter.hasToken(0)) {
+            waiter.get(0);
+            _waiting.addElement(new Double(currentTime));
+        }
+        boolean godot = false;
+        while(waitee.hasToken(0)) {
+            waitee.get(0);
+            godot = true;
         }
         if(godot) {
             for (int i=0; i<_waiting.size(); i++) {
@@ -108,15 +109,14 @@ public class DEWaitingTime extends DEActor {
         }
     }
 
-    /** Do nothing.  Derived classes override this method to define their
-     *  initialization code, which gets executed exactly once prior to
-     *  any other action methods. This method typically initializes
-     *  internal members of an actor and produces initial output data.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Clear the list of waiters.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void initialize() {
+        try{
+            super.initialize();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
         _waiting.removeAllElements();
     }
 
