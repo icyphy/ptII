@@ -41,14 +41,19 @@ if {[string compare test [info procs test]] == 1} then {
 #### Test BitsToInt in an SDF model
 #
 
-test BitsToInt-1.1 {test 1} {
+test BitsToInt-1.1 {test 1: using the pulse actor as source} {
     set e0 [sdfModel 1]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set conver [java::new ptolemy.domains.sdf.lib.BitsToInt $e0 conver]
 
-    set value [getParameter $pulse value]
-##    $value setToken [java::new ptolemy.data.IntToken 5]
+    set values [java::new {boolean[][]} {1 32} [list [list false false false false false false false false false false false false false false false false false false false false false false false false false false false false false true false true]]]
+    set valuesParam [getParameter $pulse values]
+    $valuesParam setToken [java::new ptolemy.data.BooleanMatrixToken $values]
+    
+    set indexes [java::new {int[][]} {1 32} [list [list 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31]]]
+    set indexesParam [getParameter $pulse indexes]
+    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
        
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
@@ -58,35 +63,45 @@ test BitsToInt-1.1 {test 1} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     [$e0 getManager] execute
-    [enumToTokenValues [$rec getRecord 0]
+    enumToTokenValues [$rec getRecord 0]
     
 } {5}
-
 
 
 ######################################################################
 #### Test BitsToInt in an SDF model
 #
 
-test BitsToInt-1.2 {test 2: testing both PolarToRec and RecToPolar} {
+test IntToBits-1.2 {test 2: using the IntTobits actor as source} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.domains.sdf.lib.BitsToInt \
-                    $e0 conver]    
+    set conver1 [java::new ptolemy.domains.sdf.lib.IntToBits \
+                    $e0 conver1]    
+    set conver2 [java::new ptolemy.domains.sdf.lib.BitsToInt \
+                    $e0 conver2]  
 
     set value [getParameter $const value]
-    $value setToken [java::new ptolemy.data.IntToken 225]    
+    $value setToken [java::new ptolemy.data.IntToken 5]
+    
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const] output]              [java::field $conver input]
+            [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+	    [java::field $conver1 input]
     $e0 connect \
-            [java::field $conver output] \
+            [java::field $conver1 output] \
+	    [java::field $conver2 input]
+    $e0 connect \
+            [java::field $conver2 output] \
 	    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-   
+
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {false false false false false false false false false false false false \
-	false false false false false false false false false false false \
-	false true true true false false false false true}
+} {5}
+
+
+
+
+
+
 
