@@ -161,7 +161,7 @@ public class IntToken extends ScalarToken {
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with IntToken in the type " +
+                    " is higher or incomparable with IntToken in the type " +
                     "hierarchy.");
         }
 
