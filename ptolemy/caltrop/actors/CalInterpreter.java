@@ -31,24 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.caltrop.actors;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.Import;
-import caltrop.interpreter.ast.PackageImport;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.SingleImport;
-import caltrop.interpreter.ast.TypeExpr;
-import caltrop.interpreter.environment.CacheEnvironment;
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.HashEnvironment;
-import caltrop.interpreter.environment.PackageEnvironment;
-import caltrop.interpreter.environment.SingleClassEnvironment;
-import caltrop.interpreter.util.ASTFactory;
-import caltrop.parser.Lexer;
-import caltrop.parser.Parser;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -65,14 +54,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ExprEvaluator;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.Decl;
+import caltrop.interpreter.ast.Expression;
+import caltrop.interpreter.ast.Import;
+import caltrop.interpreter.ast.PackageImport;
+import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.SingleImport;
+import caltrop.interpreter.ast.TypeExpr;
+import caltrop.interpreter.environment.CacheEnvironment;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.environment.HashEnvironment;
+import caltrop.interpreter.environment.PackageEnvironment;
+import caltrop.interpreter.environment.SingleClassEnvironment;
 
 //////////////////////////////////////////////////////////////////////////
 //// CalInterpreter
@@ -293,8 +289,11 @@ public class CalInterpreter extends TypedAtomicActor {
             this.attributeList(ptolemy.data.expr.Parameter.class);
         for (Iterator i = parameters.iterator(); i.hasNext();) {
             Parameter a = (Parameter) i.next();
-            if (!parNames.contains(a.getName()))
+            if (!parNames.contains(a.getName())) {
+                // So that we are allowed to delete this:
+                a.setClassElement(false);
                 a.setContainer(null);
+            }
         }
     }
 
@@ -314,6 +313,8 @@ public class CalInterpreter extends TypedAtomicActor {
                     ((port.isInput() != isInput)
                             || (port.isOutput() != isOutput) ||
                     (port.isMultiport() != ports[i].isMultiport()))) {
+                // So that we are allowed to delete this:
+                port.setClassElement(false);
                 port.setContainer(null);
                 port = null;
             }
@@ -328,8 +329,11 @@ public class CalInterpreter extends TypedAtomicActor {
                  : this.outputPortList().iterator();
              i.hasNext();) {
             IOPort p = (IOPort) i.next();
-            if (!portNames.contains(p.getName()))
+            if (!portNames.contains(p.getName())) {
+                // So that we are allowed to delete this:
+                p.setClassElement(false);
                 p.setContainer(null);
+            }
         }
         // now set the types.
         for (int i = 0; i < ports.length; i++) {
