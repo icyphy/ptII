@@ -314,6 +314,39 @@ public class CTMultiSolverDirector extends CTDirector {
         return _defaultSolver;
     }
 
+    /** Return true if there is an event at current time.
+     *  @return True if there is an event at current time.
+     */
+    public boolean hasCurrentEvent() {
+        try {
+            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+            Iterator eventGenerators =
+                schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
+            boolean hasDiscreteEvents = false;
+            while (eventGenerators.hasNext()) {
+                CTEventGenerator generator =
+                    (CTEventGenerator) eventGenerators.next();
+                // NOTE: We need to call hasCurrentEvent on all event generators,
+                // since some event generator may rely on it.
+                // NOTE: This is probably not right... actors should not be
+                // relying on this.
+                if (generator.hasCurrentEvent()) {
+                    hasDiscreteEvents = true;
+                }
+            }
+            // Also check breakpoint table for explicit requests from discrete
+            // actors.
+            if (getBreakPoints().contains(new Double(getCurrentTime()))) {
+                hasDiscreteEvents = true;
+            }
+            return hasDiscreteEvents;        
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException (
+                    "Can not get a valid schedule: " +
+                    ex.getMessage());
+        }
+    }
+
     /** Initialization after type resolution.
      *  It sets the step size and the suggested next step size
      *  to the initial step size. The ODE solver  and the
@@ -434,29 +467,12 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _discretePhaseExecution() throws IllegalActionException {
         if (_debugging) _debug(getName(), ": discrete phase execution at "
                 + getCurrentTime());
+        
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator eventGenerators =
-            schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
-        boolean hasDiscreteEvents = false;
-        while (eventGenerators.hasNext()) {
-            CTEventGenerator generator =
-                (CTEventGenerator) eventGenerators.next();
-            // NOTE: We need to call hasCurrentEvent on all event generators,
-            // since some event generator may rely on it.
-            // NOTE: This is probably not right... actors should not be
-            // relying on this.
-            if (generator.hasCurrentEvent()) {
-                hasDiscreteEvents = true;
-            }
-        }
-        // Also check breakpoint table for explicit requests from discrete
-        // actors.
-        if (getBreakPoints().contains(new Double(getCurrentTime()))) {
-            hasDiscreteEvents = true;
-        }
+        
         // Execute all discrete actors in their topological order only
         // if there are events happening.
-        if (hasDiscreteEvents) {
+        if (hasCurrentEvent()) {
             getBreakPoints().insert(new Double(getCurrentTime()));
             if (_debugging) _debug(getName(), "has discrete events at time "
                     + getCurrentTime());
