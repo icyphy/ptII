@@ -360,48 +360,9 @@ public class Manager extends NamedObj implements Runnable {
             throws KernelException, IllegalActionException {
         try {
             _workspace.getReadAccess();
-            if (_state != IDLE) {
-                throw new IllegalActionException(this,
-                        "The model is already running.");
-            }
-            if (_container == null) {
-                throw new IllegalActionException(this,
-                        "No model to run!");
-            }
-            _setState(PREINITIALIZING);
 
-            _pauseRequested = false;
-            _typesResolved = false;
-            _iterationCount = 0;
+            preinitializeAndResolveTypes();
 
-            _resumeNotifyWaiting = false;
-
-            // NOTE: This is needed because setExpression() on parameters
-            // does not necessarily trigger their evaluation. Thus,
-            // if one calls setExpression() without calling validate(),
-            // then the new value will never be seen.  Note that the
-            // MoML parser and Vergil's parameter editor both validate
-            // variables.  But if a model is created some other way,
-            // for example in a test suite using Tcl or in Java,
-            // then the user might not think to call validate(), and
-            // it would seem counterintuitive to have to do so.
-            // EAL 5/30/02
-            _container.validateSettables();
-
-            // Initialize the topology.
-            // NOTE: Some actors require that parameters be set prior
-            // to preinitialize().  Hence, this occurs after the call
-            // above to validateSettables(). This makes sense, since the
-            // preinitialize() method may depend on these parameters.
-            // E.g., in CT higher-order components, such as
-            // ContinuousTransferFunction, during preinitialize(),
-            // the inside of the higher-order components is constructed
-            // based on the parameter values.
-            // EAL 5/31/02.
-            _container.preinitialize();
-
-            resolveTypes();
-            _typesResolved = true;
             _setState(INITIALIZING);
             _container.initialize();
 
@@ -604,6 +565,70 @@ public class Manager extends NamedObj implements Runnable {
         }
     }
 
+    /** Preinitialize the model.  This calls the preinitialize()
+     *  method of the container, followed by the resolveTypes()
+     *  methods.  Set the Manager's state to PREINITIALIZING.  Note
+     *  that this method may be invoked without actually running the
+     *  method, but the calling code must make sure that the Manager's
+     *  state is reset to IDLE.  This method is read synchronized on
+     *  the workspace.
+     *  @exception KernelException If the model throws it.
+     *  @exception IllegalActionException If the model is already running, or
+     *   if there is no container.
+     */
+    public synchronized void preinitializeAndResolveTypes()
+            throws KernelException {
+        try {
+            _workspace.getReadAccess();
+            if (_state != IDLE) {
+                throw new IllegalActionException(this,
+                        "The model is already running.");
+            }
+            if (_container == null) {
+                throw new IllegalActionException(this,
+                        "No model to run!");
+            }
+            _setState(PREINITIALIZING);
+
+            _pauseRequested = false;
+            _typesResolved = false;
+            _iterationCount = 0;
+
+            _resumeNotifyWaiting = false;
+
+            // NOTE: This is needed because setExpression() on parameters
+            // does not necessarily trigger their evaluation. Thus,
+            // if one calls setExpression() without calling validate(),
+            // then the new value will never be seen.  Note that the
+            // MoML parser and Vergil's parameter editor both validate
+            // variables.  But if a model is created some other way,
+            // for example in a test suite using Tcl or in Java,
+            // then the user might not think to call validate(), and
+            // it would seem counterintuitive to have to do so.
+            // EAL 5/30/02
+            _container.validateSettables();
+
+            // Initialize the topology.
+            // NOTE: Some actors require that parameters be set prior
+            // to preinitialize().  Hence, this occurs after the call
+            // above to validateSettables(). This makes sense, since the
+            // preinitialize() method may depend on these parameters.
+            // E.g., in CT higher-order components, such as
+            // ContinuousTransferFunction, during preinitialize(),
+            // the inside of the higher-order components is constructed
+            // based on the parameter values.
+            // EAL 5/31/02.
+            _container.preinitialize();
+
+            _processChangeRequests();
+
+            resolveTypes();
+            _typesResolved = true;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
