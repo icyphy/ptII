@@ -75,10 +75,10 @@ OPTIONAL_FILES = \
 KRUFT = 
 
 all: ptIIlang
-	ptIIlang /users/ptolemy/src/domains/cgc/dsp/stars/CGCFastFIR.pl
+	ptIIlang CGCFastFIR.pl
 
 #	ptIIlang /users/ptolemy/src/domains/cgc/stars/CGCFix.pl
-
+#	ptIIlang /users/ptolemy/src/domains/cgc/dsp/stars/CGCFastFIR.pl
 
 
 jclass: $(PTLIB)
