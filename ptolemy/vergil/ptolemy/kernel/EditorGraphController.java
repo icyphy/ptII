@@ -82,23 +82,24 @@ the delete key on the keyboard.
  */
 public class EditorGraphController extends ViewerGraphController {
 
-    /**
-     * Create a new basic controller with default
-     * terminal and edge interactors.
+    /** Create a new basic controller with default
+     *  terminal and edge interactors.
      */
     public EditorGraphController() {
 	super();
     }
 
-    // FIXME remove this methods.
-    public Action getNewPortAction() {
-	return _newPortAction;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         package friendly                  ////
 
-    // FIXME remove this methods.
-    public Action getNewRelationAction() {
-	return _newRelationAction;
-    }
+    /** Actrion for creating a new port. */
+    Action _newPortAction = new NewPortAction();
+
+    /** Actrion for creating a new relation. */
+    Action _newRelationAction = new NewRelationAction();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Initialize all interaction on the graph pane. This method
@@ -119,25 +120,114 @@ public class EditorGraphController extends ViewerGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
-        ((CompositeInteractor)getEntityPortController().getNodeInteractor()).addInteractor(_linkCreator);
-	((CompositeInteractor)getRelationController().getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)getPortController().getNodeInteractor())
+                .addInteractor(_linkCreator);
+        ((CompositeInteractor)getEntityPortController().getNodeInteractor())
+                .addInteractor(_linkCreator);
+	((CompositeInteractor)getRelationController().getNodeInteractor())
+                .addInteractor(_linkCreator);
 
 	LinkCreator linkCreator2 = new LinkCreator();
 	linkCreator2.setMouseFilter(
                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
-	((CompositeInteractor)getEntityPortController().getNodeInteractor()).addInteractor(linkCreator2);
+	((CompositeInteractor)getEntityPortController().getNodeInteractor())
+                .addInteractor(linkCreator2);
+    }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-        /*        // Create the interactor that drags new edges.
-                  _connectedVertexCreator = new ConnectedVertexCreator();
-                  _connectedVertexCreator.setMouseFilter(_shiftFilter);
-                  getNodeInteractor().addInteractor(_connectedVertexCreator);
-        */
+    /** The interactor for creating new relations
+     */
+    private RelationCreator _relationCreator;
+
+    /** The interactor for creating context sensitive menus.
+     */
+    private MenuCreator _menuCreator;
+
+    /** The interactor that interactively creates edges
+     */
+    private LinkCreator _linkCreator;
+
+    /** The filter for control operations
+     */
+    private MouseFilter _controlFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK,
+            InputEvent.CTRL_MASK);
+
+    /** The filter for shift operations
+     */
+    private MouseFilter _shiftFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK,
+            InputEvent.SHIFT_MASK);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////
+    //// LinkCreator
+
+    /** This class is an interactor that interactively drags edges from
+     *  one terminal to another, creating a link to connect them.
+     */
+    protected class LinkCreator extends AbstractInteractor {
+
+        /** Create a new edge when the mouse is pressed. */
+        public void mousePressed(LayerEvent event) {
+	    Figure source = event.getFigureSource();
+            NamedObj sourceObject = (NamedObj) source.getUserObject();
+
+	    // Create the new edge.
+	    Link link = new Link();
+	    // Set the tail, going through the model so the link is added
+	    // to the list of links.
+            PtolemyGraphModel model = (PtolemyGraphModel)getGraphModel();
+            model.getLinkModel().setTail(link, sourceObject);
+
+            try {
+		// add it to the foreground layer.
+		FigureLayer layer =
+		    getGraphPane().getForegroundLayer();
+		Site headSite, tailSite;
+
+		// Temporary sites.  One of these will get blown away later.
+		headSite = new AutonomousSite(layer,
+                        event.getLayerX(),
+                        event.getLayerY());
+		tailSite = new AutonomousSite(layer,
+                        event.getLayerX(),
+                        event.getLayerY());
+		// Render the edge.
+		Connector c =
+		    getEdgeController(link).render(link, layer, tailSite, headSite);
+		// get the actual attach site.
+		tailSite =
+		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
+                            event.getLayerX(),
+                            event.getLayerY());
+		if(tailSite == null) {
+		    throw new RuntimeException("Invalid connector target: " +
+                            "no valid site found for tail of new connector.");
+		}
+
+		// And reattach the connector.
+		c.setTailSite(tailSite);
+
+                // Add it to the selection so it gets a manipulator, and
+                // make events go to the grab-handle under the mouse
+		getSelectionModel().addSelection(c);
+                ConnectorManipulator cm =
+                    (ConnectorManipulator) c.getParent();
+                GrabHandle gh = cm.getHeadHandle();
+                layer.grabPointer(event, gh);
+            } catch (Exception ex) {
+                MessageHandler.error("Drag connection failed:", ex);
+            }
+	}
     }
 
     ///////////////////////////////////////////////////////////////
-    //// PortCreator
+    //// NewPortAction
 
     // An action to create a new port.
     public class NewPortAction extends FigureAction {
@@ -223,6 +313,9 @@ public class EditorGraphController extends ViewerGraphController {
 	}
     }
 
+    ///////////////////////////////////////////////////////////////
+    //// NewRelationAction
+
     // An action to create a new relation.
     public class NewRelationAction extends FigureAction {
 	public NewRelationAction() {
@@ -307,7 +400,7 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
 
-    /** An interactor for creating ports.
+    /** An interactor for creating relations upon control clicking.
      */
     protected class RelationCreator extends ActionInteractor {
 	public RelationCreator() {
@@ -315,93 +408,4 @@ public class EditorGraphController extends ViewerGraphController {
             setAction(_newRelationAction);
 	}
     }
-
-    ///////////////////////////////////////////////////////////////
-    //// LinkCreator
-
-    /** This class is an interactor that interactively drags edges from
-     *  one terminal to another, creating a link to connect them.
-     */
-    protected class LinkCreator extends AbstractInteractor {
-
-        /** Create a new edge when the mouse is pressed. */
-        public void mousePressed(LayerEvent event) {
-	    Figure source = event.getFigureSource();
-            NamedObj sourceObject = (NamedObj) source.getUserObject();
-
-	    // Create the new edge.
-	    Link link = new Link();
-	    // Set the tail, going through the model so the link is added
-	    // to the list of links.
-            PtolemyGraphModel model = (PtolemyGraphModel)getGraphModel();
-            model.getLinkModel().setTail(link, sourceObject);
-
-            try {
-		// add it to the foreground layer.
-		FigureLayer layer =
-		    getGraphPane().getForegroundLayer();
-		Site headSite, tailSite;
-
-		// Temporary sites.  One of these will get blown away later.
-		headSite = new AutonomousSite(layer,
-                        event.getLayerX(),
-                        event.getLayerY());
-		tailSite = new AutonomousSite(layer,
-                        event.getLayerX(),
-                        event.getLayerY());
-		// Render the edge.
-		Connector c =
-		    getEdgeController(link).render(link, layer, tailSite, headSite);
-		// get the actual attach site.
-		tailSite =
-		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
-                            event.getLayerX(),
-                            event.getLayerY());
-		if(tailSite == null) {
-		    throw new RuntimeException("Invalid connector target: " +
-                            "no valid site found for tail of new connector.");
-		}
-
-		// And reattach the connector.
-		c.setTailSite(tailSite);
-
-                // Add it to the selection so it gets a manipulator, and
-                // make events go to the grab-handle under the mouse
-		getSelectionModel().addSelection(c);
-                ConnectorManipulator cm =
-                    (ConnectorManipulator) c.getParent();
-                GrabHandle gh = cm.getHeadHandle();
-                layer.grabPointer(event, gh);
-            } catch (Exception ex) {
-                MessageHandler.error("Drag connection failed:", ex);
-            }
-	}
-    }
-
-    /** The interactor for creating new relations
-     */
-    private RelationCreator _relationCreator;
-
-    /** The interactor for creating context sensitive menus.
-     */
-    private MenuCreator _menuCreator;
-
-    /** The interactor that interactively creates edges
-     */
-    private LinkCreator _linkCreator;
-
-    private Action _newPortAction = new NewPortAction();
-    private Action _newRelationAction = new NewRelationAction();
-
-    /** The filter for control operations
-     */
-    private MouseFilter _controlFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
-    /** The filter for shift operations
-     */
-    private MouseFilter _shiftFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.SHIFT_MASK);
 }
