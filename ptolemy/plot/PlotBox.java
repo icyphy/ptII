@@ -37,8 +37,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.text.*;
 import java.util.*;
-import java.lang.*;
 
 // TO DO:
 //   - create a write() method that writes ASCII or binary
@@ -265,8 +265,6 @@ public class PlotBox extends Panel {
     public static Color getColorByName(String name) {
         try {
             // Check to see if it is a hexadecimal
-            // Can't use Color decode here, it is not in 1.0.2
-            //Color col = Color.decode(name);
             Color col = new Color(Integer.parseInt(name, 16));
             return col;
         } catch (NumberFormatException e) {}
@@ -631,9 +629,6 @@ public class PlotBox extends Panel {
      *  @param name A font name.
      */
     public void setTitleFont (String name) {
-        // Can't use Font.decode() here, it is not present in jdk1.0.2
-        //_titlefont = Font.decode(name);
-
         _titlefont = Font.decode(name);
         _titleFontMetrics = getFontMetrics(_titlefont);
     }
@@ -782,6 +777,16 @@ public class PlotBox extends Panel {
         // NOTE: We assume a one-line title.
         int titley = 0;
         int titlefontheight = _titleFontMetrics.getHeight();
+
+        if (_title == null) {
+            // FIXME: If the _title is null, then set it to the empty
+            // string to solve the problem where the fill button overlaps
+            // the legend if there is no title.  The fix here would
+            // be to modify the legend printing text so that it takes
+            // into account the case where there is no title by offsetting
+            // just enough for the button.
+            _title = "";
+        }
         if (_title != null || _yExp != 0) {
             titley = titlefontheight + _topPadding;
         }
@@ -1209,7 +1214,7 @@ public class PlotBox extends Panel {
 
         if (_title != null) {
             graphics.setFont(_titlefont);
-            int titlex = _ulx +
+            int titlex = _ulx + 
                 (width - _titleFontMetrics.stringWidth(_title))/2;
             graphics.drawString(_title, titlex, titley);
         }
@@ -1564,51 +1569,18 @@ public class PlotBox extends Panel {
     /*
      * Return a string for displaying the specified number
      * using the specified number of digits after the decimal point.
-     * NOTE: This could be replaced by the NumberFormat class
-     * which is available in jdk 1.1.  We don't do this now so that
-     * it will run on today's browsers, which use jdk 1.0.2.
+     * NOTE: java.text,NumberFormat is only present in JDK1.1
+     * We use this method as a wrapper so that we can cache information.
      */
     private String _formatNum (double num, int numfracdigits) {
-        // First, round the number.
-        double fudge = 0.5;
-        if (num < 0.0) fudge = -0.5;
-        String numString = Double.toString(num +
-                fudge*Math.pow(10.0, -numfracdigits));
-        // Next, find the decimal point.
-        int dpt = numString.lastIndexOf(".");
-        StringBuffer result = new StringBuffer();
-        if (dpt < 0) {
-            // The number we are given is an integer.
-            if (numfracdigits <= 0) {
-                // The desired result is an integer.
-                result.append(numString);
-                return result.toString();
-            }
-            // Append a decimal point and some zeros.
-            result.append(".");
-            for (int i = 0; i < numfracdigits; i++) {
-                result.append("0");
-            }
-            return result.toString();
-        } else {
-            // There are two cases.  First, there may be enough digits.
-            int shortby = numfracdigits - (numString.length() - dpt -1);
-            if (shortby <= 0) {
-                int numtocopy = dpt + numfracdigits + 1;
-                if (numfracdigits == 0) {
-                    // Avoid copying over a trailing decimal point.
-                    numtocopy -= 1;
-                }
-                result.append(numString.substring(0, numtocopy));
-                return result.toString();
-            } else {
-                result.append(numString);
-                for (int i = 0; i < shortby; i++) {
-                    result.append("0");
-                }
-                return result.toString();
-            }
+        if (_numberFormat == null) {
+            // Cache the number format so that we don't have to get
+            // info about local language etc. from the OS each time.
+            NumberFormat _numberFormat = NumberFormat.getInstance();
         }
+        nf.setMinimumFractionDigits(numfracdigits);
+        nf.setMaximumFractionDigits(numfracdigits);
+        return nf.format(num);
     }
 
     /*
@@ -2159,6 +2131,9 @@ public class PlotBox extends Panel {
     private FontMetrics _labelFontMetrics = null,
         _superscriptFontMetrics = null,
         _titleFontMetrics = null;
+
+    // Number format cache used by _formatNum.
+    private transient NumberFormat _numberFormat = null;
 
     // Used for log axes. Index into vector of axis labels.
     private transient int _gridCurJuke = 0;
