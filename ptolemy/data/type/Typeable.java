@@ -49,7 +49,7 @@ represented as inequalities between Typeable objects.
 @see ptolemy.graph.InequalityTerm
 */
 
-public interface Typeable {
+public interface Typeable extends HasTypeConstraints {
     /** Return the type of this object. An exception is thrown if the type
      *  cannot be determined. This can happen if the type of this object
      *  is dependent on some other objects whose value is not available yet.
@@ -108,11 +108,4 @@ public interface Typeable {
      *  enforced if type resolution is not done.
      */
     public void setTypeSameAs(Typeable equal);
-
-    /** Return the type constraints of this object.
-     *  The constraints are a list of inequalities.
-     *  @return a list of instances of Inequality.
-     *  @see ptolemy.graph.Inequality
-     */
-    public List typeConstraintList();
 }
