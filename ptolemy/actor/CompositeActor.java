@@ -277,6 +277,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking fire");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
@@ -376,6 +379,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  actor is not opaque.
      */
     public void initialize() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking initialize");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
@@ -450,6 +456,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
     public int iterate(int count) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking iterate: " + count);
+        }
 	int n = 0;
 	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
@@ -583,6 +592,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   actor is not opaque.
      */
     public boolean postfire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking postfire");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
@@ -591,7 +603,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
-            return getDirector().postfire();
+            boolean result = getDirector().postfire();
+            if (_debugging) {
+                _debug("Postfire returns (from director) " + result);
+            }
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -608,13 +624,20 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public boolean prefire()
             throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking prefire");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot invoke prefire a non-opaque actor.");
             }
-            return getDirector().prefire();
+            boolean result = getDirector().prefire();
+            if (_debugging) {
+                _debug("Prefire returns (from director) " + result);
+            }
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -636,6 +659,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
+        if (_debugging) {
+            _debug("Invoking preinitialize");
+        }
         try {
             _workspace.getReadAccess();
             _createReceivers();
@@ -667,6 +693,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
+        if (_debugging) {
+            _debug("Requesting change: " + change.getDescription());
+        }
         Nameable container = getContainer();
         if (container instanceof NamedObj) {
 	    ((NamedObj)container).requestChange(change);
@@ -781,6 +810,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace.
      */
     public void stop() {
+        if (_debugging) {
+            _debug("Requesting stop");
+        }
         try {
             _workspace.getReadAccess();
             _stopRequested = true;
@@ -799,6 +831,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace.
      */
     public void stopFire() {
+        if (_debugging) {
+            _debug("Requesting stop of the current iteration");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
@@ -815,6 +850,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  called, so just ignore.
      */
     public void terminate() {
+        if (_debugging) {
+            _debug("Terminate");
+        }
         if (!isOpaque()) return;
         getDirector().terminate();
     }
@@ -827,6 +865,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   actor is not opaque.
      */
     public void wrapup() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Invoking wrapup");
+        }
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
