@@ -213,32 +213,34 @@ public class PNDirector extends BasePNDirector {
 	    throws IllegalActionException {
 	boolean urgentmut;
         Workspace worksp = workspace();
-	synchronized (this) {
-	    while (!_checkForDeadlock() && !_urgentMutations) {
-		worksp.wait(this);
-	    }
-	    urgentmut = _urgentMutations;
-	    //_urgentMutations = false;
-	}
-	if (urgentmut) {
-	    pause();
-            try {
-                _processTopologyRequests();
-		synchronized(this) {
-		    _mutationBlockCount = 0;
-		    _urgentMutations = false;
-		    notifyAll();
+	while (_readBlockCount != _getActiveActorsCount()) {
+	    synchronized (this) {
+		while (!_checkForDeadlock() && !_urgentMutations) {
+		    worksp.wait(this);
 		}
-                // FIXME: Should type resolution be done here?
-            } catch (TopologyChangeFailedException e) {
-                throw new IllegalActionException("Topology change error: " +
-                        e.getMessage());
-            }
-	    return;
-	} else {
-	    //_notdone = !_handleDeadlock();
-	    _handleDeadlock();
+		urgentmut = _urgentMutations;
+		//_urgentMutations = false;
+	    }
+	    if (urgentmut) {
+		pause();
+		try {
+		    _processTopologyRequests();
+		    synchronized(this) {
+			_mutationBlockCount = 0;
+			_urgentMutations = false;
+			notifyAll();
+		    }
+		    // FIXME: Should type resolution be done here?
+		} catch (TopologyChangeFailedException e) {
+		    throw new IllegalActionException(
+			    "Topology change error: " + e.getMessage());
+		}
+	    } else {
+		//_notdone = !_handleDeadlock();
+		_handleDeadlock();
+	    }
 	}
+	return;
     }
 
     /** Add a topology change request to the request queue and suspend the 

@@ -239,27 +239,30 @@ public class TimedPNDirector extends BasePNDirector {
 	    throws IllegalActionException {
         boolean timedmut;
         Workspace worksp = workspace();
-	synchronized (this) {
-	    while (!_checkForDeadlock()) {
-		worksp.wait(this);
+	while (_readBlockCount != _getActiveActorsCount()) {
+	    synchronized (this) {
+		while (!_checkForDeadlock()) {
+		    worksp.wait(this);
+		}
+		timedmut = _timedMutations;
+		//_timedMutations = false;
 	    }
-            timedmut = _timedMutations;
-            //_timedMutations = false;
+	    if (_writeBlockCount != 0) {
+		System.out.println("Artificial deadlock");
+		_incrementLowestWriteCapacityPort();
+	    } else if (timedmut) {
+		try {
+		    _processTopologyRequests();
+		    // FIXME: Should type resolution be done here?
+		} catch (TopologyChangeFailedException e) {
+		    throw new IllegalActionException("TopologyChangeFailed: " +
+			    e.getMessage());
+		}
+	    } else {
+		_notdone = !_handleDeadlock();
+	    }
 	}
-	if (_writeBlockCount != 0) {
-	    System.out.println("Artificial deadlock");
-	    _incrementLowestWriteCapacityPort();
-	} else if (timedmut) {
-            try {
-                _processTopologyRequests();
-                // FIXME: Should type resolution be done here?
-            } catch (TopologyChangeFailedException e) {
-                throw new IllegalActionException("TopologyChangeFailed: " +
-                        e.getMessage());
-            }
-	} else {
-	    _handleDeadlock();
-	}
+	return;
     }
 
     /** Suspend the calling process until the time has advanced to atleast the

@@ -202,6 +202,23 @@ public class BasePNDirector extends ProcessDirector {
         return newobj;
     }
 
+    /** Wait till the detection of a deadlock. Then handle the deadlock
+     *  and return.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void fire() throws IllegalActionException {
+	Workspace workspace = workspace();
+	while (_readBlockCount != _getActiveActorsCount()) {
+	    synchronized (this) {
+		while (!_checkForDeadlock()) {
+		    workspace.wait(this);
+		}
+		_notdone = !_handleDeadlock();
+	    }
+	}
+        return;
+    }
+
     /** Initialize and set the state variables to the their initial values
      */
     public void initialize() throws IllegalActionException {
@@ -258,15 +275,15 @@ public class BasePNDirector extends ProcessDirector {
      *  @exception IllegalActionException Not thrown in the PN domain.
      */
     public boolean postfire() throws IllegalActionException {
-	if (_readBlockCount == _getActiveActorsCount()) {
-	    if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
-		return true;
-	    } else {
-		return false;
-	    }
-	} else {
+	//if (_readBlockCount == _getActiveActorsCount()) {
+	if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
 	    return true;
+	} else {
+	    return false;
 	}
+	//} else {
+	//return true;
+	//}
     }
 
     /** Remove a process listener from this director.
