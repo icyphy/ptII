@@ -135,8 +135,6 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
             while (outputs.hasNext()) {
                 // connected the inputs and outputs
                 _directedGraph.addEdge(inputPort, outputs.next());
-//                _directedGraph.addEdge(inputPort, outputs.next(), 
-//                    new Integer(0));
             }
         }
         

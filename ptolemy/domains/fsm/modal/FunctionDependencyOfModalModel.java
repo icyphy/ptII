@@ -37,6 +37,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfModalModel
@@ -64,17 +65,15 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
         LinkedList entities = new LinkedList();
         try {
             Actor[] actors = 
-                ((ModalModel)_container).getController().currentState().getRefinement();
+                ((ModalModel)_container).getController().
+                    currentState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     entities.add(actors[i]);
                 }
             }
         } catch (IllegalActionException e) {
-           // dealing with the exception 
-           // FIXME: how? make this method throw the exception?
-           // Similiar things happen in FSMActor 
-           // getFunctionDependencies method.
+            MessageHandler.error("Invalid refinements.", e);
         }
         return entities;
     }

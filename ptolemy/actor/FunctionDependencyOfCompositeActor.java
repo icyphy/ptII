@@ -32,6 +32,7 @@ function dependency information of a composite actor.
 package ptolemy.actor;
 
 import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -106,7 +107,12 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                 embeddedActor.getFunctionDependencies();
             // merge the ports graph of the embedded actor into current one
             if (functionDependency != null) {
-                _directedGraph.addGraph(functionDependency.getAbstractPortsGraph());
+                _directedGraph.addGraph(
+                    functionDependency.getAbstractPortsGraph());
+            } else {
+                throw new InternalErrorException("FunctionDependency can "
+                    + "not be null. Check all four types of function " +
+                    "dependencies. There must be something wrong.");
             }
         }
            
