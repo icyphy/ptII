@@ -139,7 +139,8 @@ public class DEIOPort extends TypedIOPort {
     public void before(IOPort otherport) throws IllegalActionException {
         if (!isInput() || !otherport.isInput()) {
             throw new IllegalActionException(this,
-                    "Invalid before relationship.  Must be input before input.");
+                    "Invalid before relationship.  " + 
+                    "Must be input before input.");
         }
         _beforeList.insertLast(otherport);
     }
@@ -239,7 +240,8 @@ public class DEIOPort extends TypedIOPort {
     public void triggers(IOPort output) throws IllegalActionException {
         if (!isInput() || !output.isOutput()) {
             throw new IllegalActionException(this,
-                    "Invalid triggering relationship.  Must be input triggers output.");
+                    "Invalid triggering relationship.  " +
+                    Must be input triggers output.");
         }
         _triggerList.insertLast(output);
     }
