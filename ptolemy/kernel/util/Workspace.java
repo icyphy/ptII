@@ -651,6 +651,15 @@ public class Workspace implements Nameable, Serializable {
      *  workspace.
      */
     private synchronized void _reacquireReadPermissions(int count) {
+        // FIXME: this might introduce later, when you have the workspace
+        // write-protected and wanting to wait(obj). Right now, since
+        // only PN uses this method and PN doesn't permit the workspace
+        // to be write-protected, this case shouldn't happen at all.
+        // See also the _releaseAllReadPermissions() method
+        if (_writeProtected) {
+            return;
+        }
+
 
         // If the count argument is equal to zero, which means we would like
         // the current thread to has read depth equal to 0, i.e. not a reader,
@@ -699,7 +708,16 @@ public class Workspace implements Nameable, Serializable {
      *  workspace
      */
     private synchronized int _releaseAllReadPermissions() {
-	Thread current = Thread.currentThread();
+
+        // FIXME: this might introduce a bug later..
+        // Since, currently, only PN uses this code, and PN never let the
+        // workspace to be write protected, you don't have to worry about it.
+        if (_writeProtected) {
+            return 0;
+        }
+
+        // Find the current thread.
+        Thread current = Thread.currentThread();
         
         // First check whether current thread is an instance of PtolemyThread.
         
