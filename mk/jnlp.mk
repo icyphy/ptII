@@ -674,17 +674,17 @@ $(UNJAR_DIST_DIR):
 			   echo "  Copying jar to ptolemy/actor/gui/jnlp"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
-			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
 			ptolemy/hsif/hsif.jar) \
 			   echo "  Copying jar to ptolemy/hsif"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif; \
-			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
 			ptolemy/hsif/demo/demo.jar) \
 			   echo "  Copying jar to ptolemy/hsif/demo"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy/hsif/demo; \
-			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
 			ptolemy/ptsupport.jar) \
 			   echo "  Copying to ptolemy"; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy;; \
@@ -692,8 +692,8 @@ $(UNJAR_DIST_DIR):
 			   echo "Copying to domains specific jars for cg "; \
 			   mkdir -p $(UNJAR_DIST_DIR)/`dirname $$x`; \
 			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`; \
-			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
-			*)(cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+			  (cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
+			*)(cd $(UNJAR_DIST_DIR); "$(JAR)" -xf ../$$x);; \
 	        esac; \
 	done;
 	# Remove jars lie pn/demo/demo.jar, but leave pn/pn.jar
