@@ -94,7 +94,7 @@ precision then an IntToken or IntTokenMatrix is returned.
 <tr>
 <td>'struct'
 <td>RecordToken, if mxArray dimension 1x1, ArrayToken of ArrayTokens
-of RecordTokens {{RecordToken,...},{...}} ("two-dimensional" ArrayToken)
+of RecordTokens {{RecordToken,...}, {...}} ("two-dimensional" ArrayToken)
 otherwise.
 <tr>
 <td>'cell'
@@ -108,7 +108,7 @@ same type (not all matlab cell variables may be converted to PtolemyII
 ArrayTokens).
 <tr>
 <td>'char'
-<td>StringToken, if the mxArray is 1xn,ArrayToken of StringTokens
+<td>StringToken, if the mxArray is 1xn, ArrayToken of StringTokens
 otherwise.
 </table>
 <p>
@@ -211,7 +211,7 @@ public class Engine {
 
     /** Open a connection to the default matlab engine installed on
      * this host with its output buffered.
-     * @see #open(String,boolean)
+     * @see #open(String, boolean)
      */
     public long[] open() throws IllegalActionException {
         return open(null,true);         // Use default invocation, with
@@ -222,7 +222,7 @@ public class Engine {
      * this host with specified output buffering.
      * @param needOutput selects whether the output should be buffered
      * or not.
-     * @see #open(String,boolean)
+     * @see #open(String, boolean)
      */
     public long[] open(boolean needOutput) throws IllegalActionException {
         return open(null,needOutput);   // Use default invocation
@@ -534,7 +534,7 @@ public class Engine {
                                     + nCols);
                         }
                     }
-                    ta[m] = new RecordToken(fieldNames,fieldValues);
+                    ta[m] = new RecordToken(fieldNames, fieldValues);
                 }
                 tr[n] = new ArrayToken(ta);
             }

@@ -110,7 +110,7 @@ actor. The value of this parameter should evaluate to a StringToken,
 e.g.:
 
 <pre>
-    "path1,path2,..."
+    "path1, path2, ..."
 </pre>
 
 containing a comma-separated list of paths to be prepended to the matlab
