@@ -1,6 +1,6 @@
 /* Director for the synchronous dataflow model of computation.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -82,6 +82,7 @@ would be ruled out by the SDF checks are allowed.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 3.1
 */
 public class PSDFDirector extends SDFDirector {
 

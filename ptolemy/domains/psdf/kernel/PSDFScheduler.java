@@ -663,6 +663,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     // A map from relations into expressions that give symbolic buffer sizes 
     // of the relations. Keys are of type Relation and values are of type
     // String.
