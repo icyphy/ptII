@@ -51,9 +51,9 @@ public class PNPrimeExample {
             NameDuplicationException {
         CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");
-	PNDirector exec = new PNDirector("exec");
+	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
-	// myUniverse.setExecutiveDirector(exec);
+	myUniverse.setManager(exec);
 	PNDirector local = new PNDirector("Local");
 	myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
@@ -87,7 +87,7 @@ public class PNPrimeExample {
         // myUniverse.getDirector().addMutationListener(d);
         //myUniverse.getDirector().addMutationListener(view);
 
-        exec.go(-1);
+        exec.blockingGo(-1);
         System.out.println("Bye World\n");
         return;
     }
