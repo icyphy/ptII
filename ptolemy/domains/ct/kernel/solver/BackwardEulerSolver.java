@@ -45,7 +45,6 @@ Description of the class
 public class BackwardEulerSolver extends FixedStepSolver
         implements ImplicitMethodSolver{
 
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -140,9 +139,7 @@ public class BackwardEulerSolver extends FixedStepSolver
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {
-                throw new NumericalNonconvergeException(this,
-                    "Fixed point is not converge for maximum iterations "+
-                    dir.getMaxIterations() + " at time "+dir.getCurrentTime());
+               return false;
             }
         }
         return true;
