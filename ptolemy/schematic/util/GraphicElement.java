@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
+import diva.util.java2d.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement
@@ -83,6 +84,22 @@ public class GraphicElement extends Object {
         return (String) _attributes.at(name);
     }
 
+    /**
+     * Return a painted object that looks like this graphic element
+     * [FIXME: cache this]
+     * [FIXME: this is ugly..  is there a better way?]
+     * [FIXME: not many supported]
+     */
+    public PaintedObject getPaintedObject() {
+        PaintedObject paintedObject;
+        if(_type.equals("box")) {
+            Rectangle shape = new Rectangle();
+            paintedObject = new PaintedShape(shape);//, getFill(), getWidth());
+        } else if(_type.equals("string")) {
+            paintedObject = new PaintedString("test string");
+        }
+        return paintedObject();
+    }
     /**
      * Test if this schematic has the attribute wuth the given name.
      */

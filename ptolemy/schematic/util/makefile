@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Editor.java \
 	EditorGraphController.java \
+	EditorNodeRenderer.java \
 	EntityLibrary.java \
 	EntityTemplate.java \
 	EnumerationIterator.java \

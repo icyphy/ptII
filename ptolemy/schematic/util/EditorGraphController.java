@@ -99,6 +99,9 @@ public class EditorGraphController extends GraphController {
         setNodeInteractor(ni);
         setEdgeInteractor(ei);
 
+        NodeRenderer nr = new EditorNodeRenderer();
+        setNodeRenderer(nr);
+
         // Create and set up the target for connectors
         PerimeterTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {

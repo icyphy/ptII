@@ -92,6 +92,19 @@ public class Icon extends PTMLObject {
     }
 
     /**
+     * Get a figure from this icon.
+     */
+    public Figure getFigure() {
+        Enumeration graphics = graphicElements();
+        PaintedFigure figure = new PaintedFigure();
+        while(graphics.hasMoreElements()) {
+            GraphicElement element = graphics.nextElement();
+            figure.add(element.getPaintedObject());
+        }
+        return figure;
+    }
+
+    /**
      * Return an enumeration over the names of the graphics formats
      * supported by this icon.
      *
