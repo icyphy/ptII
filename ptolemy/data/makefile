@@ -72,7 +72,6 @@ JSRCS = \
 	NullToken.java \
 	ObjectToken.java \
 	ObservableParameter.java \
-	Param.java \
 	Parameter.java \
 	ScalarToken.java \
 	StringToken.java \
