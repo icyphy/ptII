@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+added public String getName(NamedObj parent);
 */
 
 package ptolemy.kernel.util;
@@ -764,6 +765,60 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public String getName() {
         return _name;
+    }
+
+    /** Get the name of this object, relative to the given container. 
+     *  A recursive structure, where this object is directly or indirectly
+     *  contained by itself, may result in a runtime exception of class
+     *  InvalidStateException if it is detected.  Note that it is
+     *  not possible to construct a recursive structure using this class alone,
+     *  since there is no container.
+     *  But derived classes might erroneously permit recursive structures,
+     *  so this error is caught here.
+     *  If the given container is not actually a container of this object,
+     *  or is null, then IllegalActionException is thrown.
+     *  This method is read-synchronized on the workspace.
+     *  @param parent An object that deeply contains this object.
+     *  @return A string of the form "name2...nameN".
+     */
+    public String getName(NamedObj parent) throws IllegalActionException {
+	if(parent == null) {
+	    throw new IllegalActionException(this, "Attempt to get the name" +
+					" with respect to a null parent.");
+	}
+        try {
+            _workspace.getReadAccess();
+	    String name = getName();
+            // Use a hash set to keep track of what we've seen already.
+            Set visited = new HashSet();
+            visited.add(this);
+            Nameable container = getContainer();
+
+            while (container != null && container != parent) {
+                if (visited.contains(container)) {
+                    // Cannot use "this" as a constructor argument to the
+                    // exception or we'll get stuck infinitely
+                    // calling getFullName(), 
+		    // since that method is used to report
+                    // exceptions.  InvalidStateException is a runtime
+                    // exception, so it need not be declared.
+                    throw new InvalidStateException(
+                            "Container contains itself!");
+                }
+                name = container.getName() + "." + name;
+                visited.add(container);
+                container = container.getContainer();
+            }
+	    if(container == null) {
+		throw new IllegalActionException(this, parent, 
+				        "Attempt to get the name" +
+					" with respect to an object that is" +
+					" not a parent.");
+	    }
+	    return name;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Remove a change listener. If there is a container, delegate the

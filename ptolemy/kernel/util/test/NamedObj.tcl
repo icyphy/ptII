@@ -125,6 +125,18 @@ test NamedObj-5.1 {Test getFullName} {
     list [$n getFullName] [$b getFullName]
 } {foo .bar}
 
+test NamedObj-5.2 {Test getName(parent)} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+    catch {$a2 getName $a2} msg1
+    catch {$a2 getName [java::null]} msg2
+    list $msg1 $msg2 [$a2 getName $a1] [$a2 getName $a]
+} {{ptolemy.kernel.util.IllegalActionException: .A.A1.A2 and .A.A1.A2:
+Attempt to get the name with respect to an object that is not a parent.} {ptolemy.kernel.util.IllegalActionException: .A.A1.A2:
+Attempt to get the name with respect to a null parent.} A2 A1.A2}
+
 ######################################################################
 ####
 #
