@@ -44,8 +44,10 @@ guarded communication statement is of the form
       <CENTER>guard; communication => statements </CENTER>
 <P>
 If the guard is true, or absent which implies true, then the branch
-is enabled. Guarded communication statements are the used to perform
-both forms of conditional communication constructs: CIF and CDO.  
+is enabled. Guarded communication statements are used to perform
+both forms of conditional communication constructs: "conditional if" (CIF)
+and "conditional do" (CDO). These constructs are analagous to, 
+but different from, the common <I>if</I> and <I>do</I> statements.
 Each guarded communication statement is one branch of a CIF or CDO.
 <p>
 A CDO has the form
@@ -58,6 +60,13 @@ A CDO has the form
 <br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       ...
 <br>&nbsp;&nbsp;&nbsp                          }
 <P>
+The G1, G2 etc. repersent the guards. The C1, C2 etc. represent the 
+communication associated with that branch, and may be either a send() 
+or a get(). The S1, S2 etc. represent the blocks of statements 
+asssociated with that branch. They are executed if that branch is 
+successful. The "[]" hints at the fact that the guards are all evaluated 
+in parallel (as opposed to sequentially in a common <I>if</I> statement). 
+<p>
 While at least one of the branches is enabled, the construct continues
 to evaluate and execute one of the enabled branches. If more than one
 branch is enabled, the first branch to be able to rendezvous succeeds
@@ -80,9 +89,10 @@ Conditional branches are designed to be used once. Upon instantiation,
 they are given the guard, the port and channel over which to communicate, 
 and the identification number of the branch according to the parent.
 The port and the channel together define the CSPReceiver with which to
-rendezvous. The CSPActor, that contains this branch, is
-assumed to be the container of the port argument.
+rendezvous. The CSPActor, executing a CIF or CDO that contains this branch, is
+assumed to be the container of the port.
 <p>
+FIXME: perhaps make the access methods protected?
 @author  Neil Smyth
 @version $Id$
 */
@@ -96,8 +106,8 @@ public abstract class ConditionalBranch {
      *  is subject to communication specific tests.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
-     *  @param port The IOPort to try and rendezvous with.
-     *   that this branch will try to rendezvous with.
+     *  @param port The IOPort that contains the channel to 
+     *   try an communicate through.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
      *  @exception IllegalActionException If the channel has more
@@ -120,8 +130,7 @@ public abstract class ConditionalBranch {
 
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
-     *  @return The guard for the guarded communication statement
-     *   represented by this object.
+     *  @return Is guard enabled.
      */
     public boolean getGuard() {
         return _guard;
@@ -135,7 +144,7 @@ public abstract class ConditionalBranch {
         return _branchID;
     }
 
-    /** Return the CSPActor that created this branchwhen perfroming 
+    /** Return the CSPActor that created this branch when performing 
      *  a CIF or CDO.
      *  @return The CSPActor that created this branch.
      */
@@ -150,7 +159,7 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
-    /** The token contianed by this branch. For a ConditionalSend
+    /** Return the token contained by this branch. For a ConditionalSend
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
@@ -162,9 +171,10 @@ public abstract class ConditionalBranch {
 
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
-     *  this branch. The branch should stop trying to rendezvous with
-     *  its receiver and terminate.
-     *  @return Boolean indicating if this branch is still alive(needed).
+     *  this branch, and this branch should stop trying to rendezvous with
+     *  its receiver and terminate. If it is true, the branch should 
+     *  continue trying to rendezvous.
+     *  @return Boolean indicating if this branch is still alive.
      */
     public boolean isAlive() {
         return _alive;
@@ -177,10 +187,30 @@ public abstract class ConditionalBranch {
         _alive = value;
     }
 
+    /** Set the CSPReceiver this branch is trying to rendezvous with. 
+     *  This method should only be called from derived classes.
+     *  @param rec The CSPReceiver this branch is trying to rendezvous with.
+     */
+    public void setReceiver(CSPReceiver rec) {
+         _receiver = rec;
+    }
+
+    /** Set the token contianed by this branch. For a ConditionalSend
+     *  it is set upon creation, and set to null after the rendezvous.
+     *  For a ConditionalReceive it is set after the rendezvous has
+     *  occurred, and is null before that.
+     *  @param token The Token to be contained by this branch.
+     */
+    public void setToken(Token token) {
+        _token = token;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Called by subclasses to wait. It takes care of registering
+    /** Called by subclasses to wait. It wraps a wait() call, on the 
+     *  receiver associated with this branch, with chacks on the state 
+     *  of the receiver. It also takes care of registering
      *  branches as blocked which is needed for deadlock detection.
      *  @exception InterruptedException If this method is interrupted
      *   while waiting.
@@ -190,16 +220,6 @@ public abstract class ConditionalBranch {
         getReceiver()._checkAndWait();
         getParent()._branchUnblocked();
     }
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    // The receiver this thread is trying to rendezvous with. It is immutable.
-    protected CSPReceiver _receiver;
-
-    // The Token transferred in a rendezvous.
-    protected Token _token;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
@@ -216,6 +236,12 @@ public abstract class ConditionalBranch {
     // The parent this thread is trying to perform a conditional
     // rendezvous for.
     private CSPActor _parent;
+
+    // The receiver this thread is trying to rendezvous with. It is immutable.
+    private CSPReceiver _receiver;
+
+    // The Token transferred in a rendezvous.
+    private Token _token;
 }
 
 
