@@ -106,7 +106,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
             _xvalue += 1.0;
         }
         int width = input.getWidth();
-        for (int i = 0; i<width; i++) {
+        for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
