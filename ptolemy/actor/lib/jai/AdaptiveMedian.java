@@ -25,6 +25,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 
 package ptolemy.actor.lib.jai;
@@ -127,14 +130,16 @@ public class AdaptiveMedian extends Transformer {
         int height = doubleMatrixToken.getColumnCount();
         double outputData[][] = new double[width][height];
         int windowSize = 3;
-        //Iterate over each pixel.
+        // Iterate over each pixel.
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 while (true) {
                     int dist = (windowSize - 1)/2;
-                    //check if we can create a region of interest or not.
-                    //If we can't (i.e. we are at or near the edge of an image)
-                    //then just keep the data.
+
+                    // Check if we can create a region of interest or
+                    // not.  If we can't (i.e. we are at or near the
+                    // edge of an image) then just keep the data.
+
                     if ((i - dist < 0) || (j - dist < 0)
                             || (i + dist >= width) || (j + dist >= height)) {
                         outputData[i][j] = data[i][j];
@@ -143,25 +148,29 @@ public class AdaptiveMedian extends Transformer {
                     }
                     else {
                         double temp[][] = new double[windowSize][windowSize];
-                        //create a local region of interest around the pixel.
+                        // Create a local region of interest around the pixel.
                         for (int k = (i - dist); k <= (i + dist); k++) {
                             for (int l = (j - dist); l <= (j + dist); l++) {
-                                temp[k - (i - dist)][l - (j - dist)] = data[k][l];
+                                temp[k - (i - dist)][l - (j - dist)] =
+                                    data[k][l];
                             }
                         }
                         double median = _getMedian(temp, windowSize);
                         double max = _getMax(temp, windowSize);
                         double min = _getMin(temp, windowSize);
-                        //If the median of the region of interest is
-                        //strictly less than the maximum value, and strictly
-                        //greater than the minimum value, we then have two
-                        //routes.  If the data in the center is strictly
-                        //greater than the minimum, and stricly less than
-                        //the maximum, then just keep the data point.
-                        //If it is either the minimum or the maximum, then
-                        //output the medium because there is a very good chance
-                        //that the pixel was noised.  After this, the window size
-                        //is reset.
+
+                        // If the median of the region of interest is
+                        // strictly less than the maximum value, and
+                        // strictly greater than the minimum value, we
+                        // then have two routes.  If the data in the
+                        // center is strictly greater than the
+                        // minimum, and stricly less than the maximum,
+                        // then just keep the data point.  If it is
+                        // either the minimum or the maximum, then
+                        // output the medium because there is a very
+                        // good chance that the pixel was noised.
+                        // After this, the window size is reset.
+
                         if ((median > min) && (median < max)) {
                             if ((data[i][j] > min) && (data[i][j] < max)) {
                                 outputData[i][j] = data[i][j];
@@ -174,16 +183,23 @@ public class AdaptiveMedian extends Transformer {
                                 break;
                             }
                         } else if (windowSize < _maxWindowSize) {
-                            //If this statement is reached, this means that
-                            //the median was equal to either the minimum or the
-                            //maximum (or quite possibly both if the region of
-                            //interest had constant intensity.  Increase the window
-                            //size, if it is less than the maximum window size.
+
+                            // If this statement is reached, this
+                            // means that the median was equal to
+                            // either the minimum or the maximum (or
+                            // quite possibly both if the region of
+                            // interest had constant intensity.
+                            // Increase the window size, if it is less
+                            // than the maximum window size.
+
                             windowSize = windowSize + 2;
                         } else {
-                            //If this statement is reached, we've already hit
-                            //the maximum window size, in which case, just output
-                            //the data and reset the window size.
+
+                            // If this statement is reached, we've
+                            // already hit the maximum window size, in
+                            // which case, just output the data and
+                            // reset the window size.
+
                             outputData[i][j] = data[i][j];
                             windowSize = 3;
                             break;
