@@ -23,7 +23,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red (mikele@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
+
 package ptolemy.domains.sdf.lib.vq;
 
 import ptolemy.kernel.*;
@@ -52,7 +55,7 @@ public final class ImageContrast extends SDFAtomicActor {
     public ImageContrast(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
 
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -143,7 +146,7 @@ public final class ImageContrast extends SDFAtomicActor {
             }
 
         //Construct the cdf of the color distribution histogram
-        //colorHistogram[0]= colorHistogram[0]
+        //colorHistogram[0] = colorHistogram[0]
 
         for(i = 1; i < 256; i ++)
             colorHistogram[i] = colorHistogram[i-1] + colorHistogram[i];
