@@ -93,11 +93,13 @@ test Distributor-3.1 {run with two outputs} {
 
 test Distributor-4.1 {run with mutations} {
     $m addChangeListener \
-            [java::new ptolemy.kernel.event.StreamChangeListener]
+            [java::new ptolemy.kernel.util.StreamChangeListener]
     $m initialize
     $m iterate
-    set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $rec2]
-    set c2 [java::new ptolemy.actor.event.RemoveRelation $e0 $r2]
+    set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
+            {<removeEntity name="ramp1">}]
+    set c2 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
+            {<removeRelation name="r1">}]
     $m requestChange $c1
     $m requestChange $c2
     $m iterate
@@ -105,6 +107,7 @@ test Distributor-4.1 {run with mutations} {
     $m wrapup
     list [enumToTokenValues [$rec1 getRecord 0]] \
             [enumToTokenValues [$rec2 getRecord 0]]
+# FIXME: is this right???
 } {{0 2 3} 1}
 
 test Distributor-5.1 {test under DE} {
