@@ -108,8 +108,10 @@ public class RenameConfigurer extends Query
             boolean showName = getBooleanValue("Show name");
             if (_object instanceof Port) {
                 if (showName) {
-                    moml.append("<property name=\"_showName\" "
-                            + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    if (_object.getAttribute("_showName") == null) {
+                        moml.append("<property name=\"_showName\" "
+                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    }
                 } else {
                     if (_object.getAttribute("_showName") != null) {
                         moml.append("<deleteProperty name=\"_showName\"/>");
@@ -121,8 +123,10 @@ public class RenameConfigurer extends Query
                         moml.append("<deleteProperty name=\"_hideName\"/>");
                     }
                 } else {
-                    moml.append("<property name=\"_hideName\" "
-                            + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    if (_object.getAttribute("_hideName") == null) {
+                        moml.append("<property name=\"_hideName\" "
+                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    }
                 }
             }
             moml.append("</");
