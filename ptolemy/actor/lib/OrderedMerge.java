@@ -36,6 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,6 +93,16 @@ public class OrderedMerge extends TypedAtomicActor {
 
         selectedA = new TypedIOPort(this, "selectedA", false, true);
         selectedA.setTypeEquals(BaseType.BOOLEAN);
+        
+        // Add an attribute to get the port placed on the bottom.
+        StringAttribute channelCardinal
+                = new StringAttribute(selectedA, "_cardinal");
+        channelCardinal.setExpression("SOUTH");
+
+        _attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:blue\"/>\n" +
+                "</svg>\n");
 }
 
     ///////////////////////////////////////////////////////////////////
