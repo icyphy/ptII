@@ -183,8 +183,8 @@ public class InterfaceAutomaton extends FSMActor {
                 List transitionList = inPort.linkedRelationList();
                 InterfaceAutomatonTransition incomingTransition = null;
                 if (transitionList.size() != 1) {
-		    continue;
-		}
+                    continue;
+                }
 
                 // just one incoming transition, check if it's internal
                 incomingTransition = 
@@ -192,14 +192,14 @@ public class InterfaceAutomaton extends FSMActor {
                 if (incomingTransition.getType() != 
                     InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                     continue;
-		}
+                }
 
                 ComponentPort outPort = state.outgoingPort;
                 transitionList = outPort.linkedRelationList();
                 InterfaceAutomatonTransition outgoingTransition = null;
                 if (transitionList.size() != 1) {
-		    continue;
-		}
+                    continue;
+                }
 
                 // just one outgoing transition, check if it's internal
                 outgoingTransition = 
@@ -207,7 +207,7 @@ public class InterfaceAutomaton extends FSMActor {
                 if (outgoingTransition.getType() != 
                     InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                     continue;
-		}
+                }
 
                 // only has one incoming and one outgoing internal transition,
                 // check if this state is initial.
@@ -280,6 +280,31 @@ public class InterfaceAutomaton extends FSMActor {
         _createPorts(composition);
 
         return composition;
+    }
+
+    /** Return the deadlock states in a Set. A state is a deadlock state if
+     *  it does not have any outgoing transitions.
+     *  @return A Set of deadlock states.
+     *  @exception IllegalActionException If this automaton is not closed.
+     */
+    public Set deadlockStates() throws IllegalActionException {
+        if ( !isClosed()) {
+            throw new IllegalActionException(
+                "InterfaceAutomaton.deadlockStates: "
+                + "Deadlock can only be checked on closed interface "
+                + "automaton.");
+        }
+
+        Set deadlockStates = new HashSet();
+        Iterator states = entityList().iterator();
+        while (states.hasNext()) {
+            State state = (State)states.next();
+            ComponentPort outPort = state.outgoingPort;
+            if (outPort.linkedRelationList().size() == 0) {
+                deadlockStates.add(state);
+            }
+        }
+        return deadlockStates;
     }
 
     /** Choose the enabled transition among the outgoing transitions of
@@ -383,6 +408,14 @@ public class InterfaceAutomaton extends FSMActor {
             }
         }
         return set;
+    }
+
+    /** Return true if this automaton does not have any input and output;
+     *  false otherwise.
+     *  @return True if this automaton does not have any input and output.
+     */
+    public boolean isClosed() {
+        return (portList().size()==0);
     }
 
     /** Create a new instance of InterfaceAutomatonTransition with the
