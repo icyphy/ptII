@@ -903,7 +903,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @throws NameDuplicationException If the name collides with
      *   an object already in the container.
      */
-    public Prototype instantiate(Prototype container, String name)
+    public Prototype instantiate(CompositeEntity container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
         CompositeEntity clone = (CompositeEntity)super.instantiate(container, name);

@@ -272,7 +272,7 @@ public class Prototype extends NamedObj {
      *  @throws NameDuplicationException If the name collides with
      *   an object already in the container.
      */
-    public Prototype instantiate(Prototype container, String name)
+    public Prototype instantiate(CompositeEntity container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
         if (!isClassDefinition()) {
@@ -345,8 +345,19 @@ public class Prototype extends NamedObj {
      *  @throws IllegalActionException Not thrown in this base class.
      *  @throws NameDuplicationException Not thrown in this base class.
      */
-    public void setContainer(Prototype container)
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        // NOTE: It may seem that making the argument a Prototype
+        // rather that a CompositeEntity makes more sense, but actually
+        // this creates problems. Derived classes override the method
+        // setContainer(CompositeEntity), and with a Prototype argument,
+        // it is actually a new method.  A symptom of the resulting bugs
+        // is that plot windows are no longer closed when a model is closed.
+        // Changing the derived classes to use a Prototype argument is
+        // risky because there are many derived classes, and there might
+        // be some in user code.  So we are stuck here with a method
+        // that, in effect, constrains classes to be contained by
+        // instances of CompositeEntity.
         _container = container;
     }
 
