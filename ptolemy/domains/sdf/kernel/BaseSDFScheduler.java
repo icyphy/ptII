@@ -245,7 +245,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     } else if (bufferSizeObject instanceof String) {
                         String bufferSizeExpression = (String)bufferSizeObject; 
                         SDFUtilities._setOrCreate(relation, "bufferSize", 
-                                bufferSizeExpression);
+                               "\"" + bufferSizeExpression + "\"");
                         if (_debugging) {
                             _debug("Adding bufferSize parameter to "
                                     + relation.getName() +
