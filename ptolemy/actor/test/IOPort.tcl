@@ -902,6 +902,44 @@ test IOPort-12.3 {deepConnectedIn(Out)Ports} {
             [enumToNames [$p5 deepConnectedOutPorts]]
 } {P5 P3 P1 {} {P1 P5} {} P5 {} P1 P3}
 
+###################################################################
+##  Opaque output port is not returned bu deepConnectedInports
+#
+test IOPOrt-12.4 {deepConnectedInPorts from a inside outputport} {
+    # Create objects
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    set exedir [java::new ptolemy.actor.Director "EXE"]
+    $e0 setDirector $exedir
+    $e0 setManager $manager
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 "E1"]
+    set e2 [java::new ptolemy.actor.AtomicActor $e1 "E2"]
+    set e3 [java::new ptolemy.actor.AtomicActor $e0 "E3"]
+    $e1 setDirector $director
+
+    set p1 [java::new ptolemy.actor.IOPort $e2 "P1"]
+    set p2 [java::new ptolemy.actor.IOPort $e1 "P2"]
+    set p3 [java::new ptolemy.actor.IOPort $e3 "P3"]
+
+    set r1 [java::new ptolemy.actor.IORelation $e1 "R1"]
+    set r2 [java::new ptolemy.actor.IORelation $e0 "R2"]
+
+    # Connect
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p3 link $r2
+    
+
+    # make P1, P3 output, P5 input
+    $p1 makeInput false
+    $p1 makeOutput true
+    $p3 makeInput true
+    $p3 makeOutput false
+
+    list [enumToNames [$p1 deepConnectedInPorts]] 
+} {{}}
+
 ######################################################################
 ####
 # Test getReceivers() on transparent ports.
