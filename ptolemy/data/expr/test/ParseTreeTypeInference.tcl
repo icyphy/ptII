@@ -610,7 +610,7 @@ test ParseTreeTypeInference-13.0 {Test array reference.} {
     set res2 [ [ $evaluator evaluateParseTree $root2 $scope] getType ]
     set type2 [inferTypesScope $root2 $scope]
     list [$res1 equals $type1] [$res2 equals $type2]
-} {1 1} {method calls are not properly typed yet}
+} {1 1}
 
 test ParseTreeTypeInference-13.1 {Test array method calls.} {
     set p1 [java::new ptolemy.data.expr.PtParser]    
@@ -624,7 +624,7 @@ test ParseTreeTypeInference-13.1 {Test array method calls.} {
 
 
 # Test record construction,
-test PtParser-13.2 {Test record construction.} {
+test ParseTreeTypeInference-13.2 {Test record construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "{a=1,b=2.4}" ]
     set res [[ $root evaluateParseTree ] getType]
@@ -632,6 +632,16 @@ test PtParser-13.2 {Test record construction.} {
     list [$res equals $type]
 } {1}
 
+######################################################################
+####
+# Test eval
+test ParseTreeTypeInference-14.0 {Test eval inference.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "eval(\"1+1\")" ]
+    set res [java::field ptolemy.data.type.BaseType GENERAL]
+    set type [inferTypes $root]
+    list [$res equals $type]
+} {1}
 
 
 ######################################################################
@@ -658,7 +668,7 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     set type4 [inferTypes $root]
 
     list [$res1 equals $type1] [$res2 equals $type2] [$res3 equals $type3] [$res4 equals $type4] 
-} {1 1 1 1} {method calls are not properly typed}
+} {1 1 1 1}
 
 test PtParser-16.2 {Test record indexing} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]

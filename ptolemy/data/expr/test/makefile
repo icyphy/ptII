@@ -51,6 +51,7 @@ JSRCS = AttributeChanged.java
 JSIMPLE_TESTS = \
 	Parameter.tcl \
 	ParseTreeTypeInference.tcl \
+	ParseTreeFreeVariableCollector.tcl \
 	PtParser.tcl \
 	ScopeExtendingAttribute.tcl \
 	UtilityFunctions.tcl \
