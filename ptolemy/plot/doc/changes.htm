@@ -16,8 +16,15 @@
 
 <H2>The changes between ptplot5.1p1 and ptplot5.1p2</H2>
 <menu>
-<li> Ross Beyer: When we print, ask the user for the page format.
 
+<li> Rob Kroeger: 4 new  PlotBox.exportImage() methods
+that create a BufferedImage to display the plot in.  This
+method can be used to plot data and write out images for
+use in servlets.
+PlotBox._drawPlot and Plot._drawPlot() now take a Rectangle argument
+to support this.
+
+<li> Ross Beyer: When we print, ask the user for the page format.
 
 <li> Paul H. Buckle:
 In class ptolemy.plot.Plot._fillPlot() the instances of -Double.MIN_VALUE
