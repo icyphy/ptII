@@ -52,8 +52,7 @@ public class MainFileGenerator extends CodeGenerator {
 
     /** Default constructor.
      */
-    public MainFileGenerator()
-    {
+    public MainFileGenerator() {
         super();
     }
     /////////////////////////////////////////////////////
