@@ -1835,12 +1835,13 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: The following error message is for
                     // the programmer, not for the user. EAL
                     StringBuffer errorMessage = new StringBuffer();
-                    errorMessage.append("\n-- "
-                            + className + ": Invalid Java Class? "
-                            + error.getMessage()
-                            + "\n   If there is an error in the code "
-                            + "generator, "
-                            + "then an Error might be thrown here.\n");
+
+                    // If there is a class format error in the 
+                    // code generator, then we may end up obscuring
+                    // that error, requiring debugging here. 
+
+                    errorMessage.append(className + ": \n "
+                            + error.getMessage() + "\n");
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (XmlException ex2) {
