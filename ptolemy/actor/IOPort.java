@@ -35,9 +35,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 
-import java.util.Iterator;
-
 import java.util.List;
+import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Collections;
