@@ -73,6 +73,8 @@ JSIMPLE_TESTS = \
 	FixPoint.tcl \
 	FixPointQuantization.tcl \
 	Fraction.tcl \
+	FractionArrayMath.tcl \
+	FractionMatrixMath.tcl \
 	IntegerMatrixMath.tcl \
 	Interpolation.tcl \
 	LongMatrixMath.tcl \
