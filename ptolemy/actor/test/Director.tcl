@@ -60,6 +60,12 @@ test Director-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
     set d3 [java::new ptolemy.actor.Director $e0 D3]
+
+    # These methods could be abstract, but are not for testing purposes
+    # so we call them here
+    $d1 fireAtCurrentTime $e0
+    $d1 fireAtRelativeTime $e0 1.0
+
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 .E0.D3}
 
@@ -92,7 +98,9 @@ test Director-5.1 {Test action methods} {
     $a1 clear
     set r1 [$d4 getNextIterationTime]
     $manager initialize
-    $manager iterate
+    #$manager iterate
+    $d3 iterate 1
+    $d3 stop
     $manager wrapup
     list $r1 [$a1 getRecord] [$d4 getNextIterationTime]
 } {0.0 {.E0.A1.initialize
