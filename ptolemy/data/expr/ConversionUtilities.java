@@ -107,7 +107,7 @@ public class ConversionUtilities {
      * returned.  If the argument is an array of array, then a matrix
      * token will be returned.  If the argument is a Java numeric
      * encapsulation object, e.g. java.lang.Double, then the number is
-     * extracted and re-encapsualted in a token.  If no other
+     * extracted and re-encapsulated in a token.  If no other
      * conversion is possible, then this method will simply return an
      * ObjectToken wrapping the object.
      * @throws IllegalActionException If the selected conversion fails.
