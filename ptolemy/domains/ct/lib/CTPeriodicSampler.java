@@ -119,8 +119,9 @@ public class CTPeriodicSampler extends TypedAtomicActor
         if(p <= 0) {
             throw new IllegalActionException(this,
                     " Sample period must be greater than 0.");
+        } else {
+            _samplePeriod = p;
         }
-        _samplePeriod = p;
     }
 
     /** Emit the current event, which has the token of the latest input
@@ -129,13 +130,17 @@ public class CTPeriodicSampler extends TypedAtomicActor
     public void emitCurrentEvents() {
         if(_hasCurrentEvent) {
             try {
-                for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
+                for (int i = 0; 
+                     i < Math.min(input.getWidth(), output.getWidth());
                      i++) {
                     if(input.hasToken(i)) {
                         output.send(i, input.get(i));
                     }
                 }
                 _hasCurrentEvent = false;
+                // register for the next event.
+                _nextSamplingTime += _samplePeriod;
+                getDirector().fireAt(this, _nextSamplingTime);
             }catch (IllegalActionException e) {
                 throw new InternalErrorException("Token mismatch.");
             }
@@ -171,8 +176,8 @@ public class CTPeriodicSampler extends TypedAtomicActor
         }
         _hasCurrentEvent = false;
         CTDirector dir = (CTDirector) getDirector();
-        _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
-        dir.fireAt(this, _nextSamplingTime);
+        _nextSamplingTime = dir.getCurrentTime();
+        dir.fireAt(this, dir.getCurrentTime());
         if(_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
@@ -183,7 +188,7 @@ public class CTPeriodicSampler extends TypedAtomicActor
      *  next sampling time.
      *  @return True always.
      *  @exception IllegalActionException If parameter update throws it.
-     */
+     *
     public boolean prefire() throws IllegalActionException {
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;
@@ -198,7 +203,7 @@ public class CTPeriodicSampler extends TypedAtomicActor
         _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
         return true;
-    }
+        }*/
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
