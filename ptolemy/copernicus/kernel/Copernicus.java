@@ -356,7 +356,7 @@ public class Copernicus {
 
     /** Read in the contents of inputFileName, and for each Parameter
      *  in namedObj, search for strings like
-     *  <code>@<i>ParameterName</i></code> in inputFileName, and 
+     *  <code>@<i>ParameterName</i>@</code> in inputFileName, and 
      *  substitute in the value of the Parameter and return the results.
      *
      *  @param inputFileName  The name of the file to read from.
