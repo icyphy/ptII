@@ -39,7 +39,7 @@ import collections.LinkedList;
 import java.util.Enumeration;
 
 // Deprecated -- will be deleted
-import ptolemy.kernel.mutation.*;
+//import ptolemy.kernel.mutation.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director
@@ -143,18 +143,6 @@ public class Director extends NamedObj implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a new mutation listener to the list of listeners to be informed
-     *  about any mutation that occurs in the container.
-     *
-     *  @param listener The new MutationListener.
-     *  @deprecated Use addTopologyListener() instead.
-     */
-    public void addMutationListener(MutationListener listener) {
-        if (_mutationListeners == null) {
-            _mutationListeners = new LinkedList();
-        }
-        _mutationListeners.insertLast(listener);
-    }
 
     /** Add a topology change listener to this director. The listener
      * will be notified of each change in the topology that
@@ -185,11 +173,8 @@ public class Director extends NamedObj implements Executable {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Director newobj = (Director)super.clone(ws);
         newobj._container = null;
-        newobj._pendingMutations = null;
-        newobj._mutationListeners = null;
         newobj._queuedTopologyRequests = null;
         newobj._topologyListeners = null;
-        newobj._actorListener = null;
         return newobj;
     }
 
@@ -362,25 +347,6 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Add a mutation object to the mutation queue. These mutations
-     *  are executed when the _performMutations() method is called,
-     *  which in this base class is in the prefire() method.  This method
-     *  also arranges that all additions of new actors are recorded.
-     *  The prefire() method then invokes the initialize() method of all
-     *  new actors after the mutations have been completed.
-     *
-     *  @param mutation A object with a perform() and update() method that
-     *   performs a mutation and informs any listeners about it.
-     *  @deprecated Use queueTopologyChangeRequest instead.
-     */
-    public void queueMutation(Mutation mutation) {
-        // The private member is created only if mutation is being used.
-        if (_pendingMutations == null) {
-            _pendingMutations = new LinkedList();
-        }
-        _pendingMutations.insertLast(mutation);
-    }
-
-    /** Add a mutation object to the mutation queue. These mutations
      *  are executed when the _performTopologyChanges() method is called,
      *  which in this base class is in the prefire() method.  This method
      *  also arranges that all additions of new actors are recorded.
@@ -405,18 +371,6 @@ public class Director extends NamedObj implements Executable {
     public void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
         // do nothing.
-    }
-
-
-    /** Remove a mutation listener that does not want to be informed
-     *  of any future mutations by this director. This does not do anything
-     *  if the listener is not listed with this director.
-     *
-     *  @param listener The MutationListener to be removed.
-     *  @deprecated Use removeTopologyListener() instead.
-     */
-    public void removeMutationListener(MutationListener listener) {
-        _mutationListeners.removeOneOf(listener);
     }
 
     /** Remove a topology listener from this director.
@@ -612,44 +566,6 @@ public class Director extends NamedObj implements Executable {
         return copy.elements();
     }
 
-    /** Perform all pending mutations and inform all registered listeners
-     *  of the mutations.  Return true if any mutations were performed,
-     *  and false otherwise.
-     *
-     *  @exception IllegalActionException If the mutation throws it.
-     *  @exception NameDuplicationException If the mutation throws it.
-     *  @deprecated Use _processTopologyChanges instead.
-     */
-    protected boolean _performMutations()
-            throws IllegalActionException, NameDuplicationException {
-
-        if (_pendingMutations == null) return false;
-
-        // The private member is created only if mutation is being used.
-        if (_actorListener == null) {
-            _actorListener = new ActorListener();
-            addMutationListener(_actorListener);
-        }
-        boolean result = false;
-        Enumeration mutations = _pendingMutations.elements();
-        while (mutations.hasMoreElements()) {
-            Mutation m = (Mutation)mutations.nextElement();
-
-            // perform the mutation
-            m.perform();
-
-            result = true;
-
-            // inform all listeners
-            Enumeration listeners = _mutationListeners.elements();
-            while (listeners.hasMoreElements()) {
-                m.update((MutationListener)listeners.nextElement());
-            }
-        }
-        // Clear the mutations
-        _pendingMutations.clear();
-        return result;
-    }
 
     /** Process the queued topology change requests. Registered topology
      * listeners are informed of each change in a series of calls
@@ -731,11 +647,7 @@ public class Director extends NamedObj implements Executable {
     // Support for mutations.
     private LinkedList _queuedTopologyRequests = null;
     private TopologyMulticaster _topologyListeners = null;
-    private ActorListener _actorListener = null;
     
     private LinkedList _newActors = new LinkedList();
    
-    // Deprecated -- will be deleted
-    private LinkedList _pendingMutations = null;
-    private LinkedList _mutationListeners = null;
 }
