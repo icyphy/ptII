@@ -47,7 +47,7 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo:
-	"@java@" -classpath "@ptIIUserDirectory@" "-Dptolemy.ptII.dir=@ptIIDirectory@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.@sanitizedModelName@
+	"$(JAVA)" -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(PTII)" "-Dptolemy.ptII.dir=@ptIIDirectory@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@sanitizedModelName@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
