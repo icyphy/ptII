@@ -133,6 +133,7 @@ COPERNICUS_JARS = \
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
+	doc/design/design.jar \
 	ptolemy/actor/lib/comm/comm.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/dt/demo/demo.jar \
