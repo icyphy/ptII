@@ -54,6 +54,8 @@ set a1 [java::new {double[]} 5 [list 3.7 -6.6 0.0003 -3829 -3.261]]
 set a2 [java::new {double[]} 5 [list 4826.2 236.1 -36.21 5 65.4]]
 set b1 [java::new {double[]} 3 [list -0.0000976 5832.61 -43.21]]
 
+set e1 [java::new {double[]} 4 [list -62.3 0.332 5.22 -0.03]]
+
 # ar is a double array used to store the results of tests
 
 ####################################################################
@@ -257,6 +259,50 @@ test DoubleArrayMath-11.2 {multiply with unequally sized arrays} {
 test DoubleArrayMath-12.3 {multiply with two empty arrays} {
     set ar [java::call ptolemy.math.DoubleArrayMath multiply $a0 $b0]
     jdkPrintArray $ar
+} {}
+
+####################################################################
+test DoubleArrayMath-13.1 {padMiddle of empty array} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $a0 5]
+    jdkPrintArray $ar
+} {0.0 0.0 0.0 0.0 0.0}
+
+####################################################################
+test DoubleArrayMath-13.2 {padMiddle to smaller size} {
+    catch {set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $a1 4]} \
+    errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.padMiddle() : newLength must be >= length of array.}}
+
+####################################################################
+test DoubleArrayMath-13.3 {padMiddle to same size} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $a1 5]
+    epsilonDiff [$ar getrange 0] {3.7 -6.6 0.0003 -3829 -3.261}
+} {}
+
+
+####################################################################
+test DoubleArrayMath-13.4 {padMiddle odd -> even} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $a1 8]
+    epsilonDiff [$ar getrange 0] {3.7 -6.6 0.0003 0.0 0.0 0.0003 -3829 -3.261}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.5 {padMiddle odd -> odd} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $a1 9]
+    epsilonDiff [$ar getrange 0] {3.7 -6.6 0.0003 0.0 0.0 0.0 0.0003 -3829 -3.261}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.6 {padMiddle even -> even} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $e1 8]
+    epsilonDiff [$ar getrange 0] {-62.3 0.332 0.0 0.0 0.0 0.0 5.22 -0.03}
+} {}
+
+####################################################################
+test DoubleArrayMath-13.7 {padMiddle even -> odd} {
+    set ar [java::call ptolemy.math.DoubleArrayMath padMiddle $e1 9]
+    epsilonDiff [$ar getrange 0] {-62.3 0.332 0.0 0.0 0.0 0.0 0.0 5.22 -0.03}
 } {}
 
 ####################################################################
