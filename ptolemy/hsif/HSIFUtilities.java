@@ -58,14 +58,18 @@ public class HSIFUtilities {
     private HSIFUtilities() {
     }
 
-    /**  Read in an HSIF file, transform it into MoML and generate an output
-     *	 file.  Note that if the output file exists, then it is overwritten.
-     *   @param input HSIF file to be read in
-     *   @param output MoML filename to be generated.
+    /**  Read in an HSIF file, transform it into MoML and write the output
+     *	 to a FileWriter.
+     *   @param input HSIF file to be read in.
+     *   @param fileWriter A FileWriter that will write to the MoML
+     *   file.
      *   @throws Exception if there is a problem with the transformation.
      */
-    public static void HSIFToMoML(String input, String output)
+    public static void HSIFToMoML(String input, FileWriter fileWriter)
 	throws Exception {
+	// This method takes a FileWriter so that the user can
+	// ensure that the FileWriter exists and is writable before going
+	// through the trouble of doing the conversion.
         Document inputDocument = XSLTUtilities.parse(input);
 
         List transforms = new LinkedList();
@@ -80,8 +84,44 @@ public class HSIFUtilities {
         Document outputDocument =
             XSLTUtilities.transform(inputDocument, transforms);
 
-	FileWriter fileWriter = new FileWriter(output);
 	fileWriter.write(XSLTUtilities.toString(outputDocument));
+
+	// Let the caller close the fileWriter.
+	//fileWriter.close();
+    }
+
+    /**  Read in an HSIF file, transform it into MoML and generate an output
+     *	 file.  Note that if the output file exists, then it is overwritten.
+     *   @param input HSIF file to be read in
+     *   @param output The MoMLFile to be generated.
+     *   @throws Exception if there is a problem with the transformation.
+     */
+    public static void HSIFToMoML(String input, String output)
+	throws Exception {
+	// This method makes it much easier to test the conversion,
+	FileWriter fileWriter = new FileWriter(output);
+	HSIFToMoML(input, fileWriter);
 	fileWriter.close();
+    }
+
+    /** Convert the first argument from a HSIF file into a MoML file
+     *  named by the second argument.
+     *  For example
+     *  <pre>
+     *  java -classpath $PTII ptolemy.hsif.HSIFUtilities \
+     *       $PTII/ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml \
+     *       /tmp/SwimmingPool_moml.xml
+     *  </pre>
+     *  will read in SwimmingPool.xml and create SwimmingPool_moml.xml
+     */
+    public static void main(String [] args) throws Exception {
+	if (args.length != 2) {
+	    System.err.println("Usage: java -classpath $PTII "
+			       + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
+			       + "MoMLOutputFile");
+	    System.exit(2);
+	} else {
+	    HSIFToMoML(args[0], args[1]);
+	}
     }
 }
