@@ -1353,7 +1353,7 @@ public class NamedObj implements
      *
      *  FIXME doc
      *
-     *  @param modified True to mark modified.
+     *  @param depth The depth in the hierarchy, to determine indenting.
      *  @see #setInherited(boolean)
      *  @see #isModifiedHeritage()
      */
