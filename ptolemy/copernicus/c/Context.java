@@ -30,15 +30,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.util.HashMap; 
-import java.util.HashSet; 
-import java.util.Iterator; 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
-/** A class that maintains context information for C code generation.
- *  
- *  @author Shuvra S. Bhattacharyya
- *  @version $Id$
- */
+/* A class that maintains context information for C code generation.
+ 
+   @author Shuvra S. Bhattacharyya
+   @version $Id$
+*/
 
 
 public class Context {
@@ -81,9 +81,9 @@ public class Context {
 
     /** Turn off (disable) single class mode translation
      *  (see {@link #getSingleClassMode()}).
-     */ 
-    public static void clearSingleClassMode() { 
-        _singleClassMode = false; 
+     */
+    public static void clearSingleClassMode() {
+        _singleClassMode = false;
     }
 
     /** Return true if and only if importing of referenced include files
@@ -104,16 +104,17 @@ public class Context {
     }
 
     /** Return an Iterator over the set of include files in the context.
-     *  Each element in the Iterator is a String representing an include file name.
-     *  Each such file name includes appropriate file name delimeters 
-     *  (double quotes or angle brackets), and the .h suffix. 
+     *  Each element in the Iterator is a String representing an include 
+     *  file name.
+     *  Each such file name includes appropriate file name delimeters
+     *  (double quotes or angle brackets), and the .h suffix.
      *  @return the Iterator.
      */
     public Iterator getIncludeFiles() {
         return _includeFileSet.iterator();
     }
 
-    /** Return true if and only if single class mode translation is 
+    /** Return true if and only if single class mode translation is
      *  presently enabled. In single class mode, inherited methods
      *  and fields are ignored, which can greatly reduce the number of
      *  references to other classes. Single class mode is used primarily
@@ -129,7 +130,7 @@ public class Context {
      */
     public Iterator getStringConstants() {
         return _stringConstantMap.keySet().iterator();
-    } 
+    }
 
     /** Add a new string constant to the pool of string constants if the
      *  string does not already exist in the pool. Return the C identifier
@@ -145,18 +146,18 @@ public class Context {
         }
         return name;
     }
-    
+
     /** Disable importing of referenced include files.
      */
     public void setDisableImports() {
         _disableImports = true;
     }
-    
+
     /** Turn on (enable) single class mode translation
      *  (see {@link #getSingleClassMode()}).
      */
-    public static void setSingleClassMode() { 
-        _singleClassMode = true; 
+    public static void setSingleClassMode() {
+        _singleClassMode = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +170,7 @@ public class Context {
     // The set of system and runtime include files that need to be included
     // in the generated code. The include files stored in this set must
     // be delimited with double quotes or angle brackets, and must contain
-    // the .h suffix. 
+    // the .h suffix.
     private HashSet _includeFileSet;
 
     // This variable indicates whether or not single class mode translation
@@ -179,9 +180,10 @@ public class Context {
     // Count of the number of string constants that are currently in the
     // pool of string constants.
     private int _stringConstantCount;
-    
+
     // The pool of string constants (literals) for the generated code.
-    // Keys in this map are the string constant values (the literals to be used),
+    // Keys in this map are the string constant values 
+    // (the literals to be used),
     // and the values in the map are the C identifiers to use when referencing
     // the strings in the generated code. For each string constant, a static
     // string object is created in the generated code.

@@ -1,4 +1,4 @@
-/* A class that generates a makefile for a given class.
+/* a class that generates a makefile for the given class
 
 Copyright (c) 2001 The University of Maryland.
 All rights reserved.
@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import soot.Scene;
 import soot.SootClass;
 
-/* A class that generates a makefile for a given class.
+/* A class that generates a makefile for the given class
 
    @author Ankush Varma
    @version $Id$
@@ -55,27 +55,41 @@ public class MakeFileGenerator
 
         code.append("#Standard variables\n");
         code.append("RUNTIME = ../runtime\n");
-        code.append("LIB = "+System.getProperty("j2c_lib")+"\n");
+        code.append("LIB = "+System.getProperty("j2c_lib","/j2c_lib")+"\n");
         code.append("CFLAGS = -Wall -pedantic\n");
         code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB)\n\n");
 
         code.append("THIS = "+className+".make\n");
-        code.append("SOURCES = "+className+".c\n");
-        code.append("OBJECTS = $(SOURCES:.c=.o)\n");
 
-        code.append("$(OBJECTS): $(SOURCES)\n");
-        code.append("\tgcc -c $(CFLAGS) -I$(RUNTIME) -I$(LIB) $(SOURCES)\n\n");
+        
+        //get names of all .c files in the transitive closure
+        Iterator i = _classNameList(classPath,className).iterator();
+        code.append("SOURCES = $(RUNTIME)/runtime.c $(RUNTIME)/array.c\\\n");
+        while (i.hasNext())
+        {
+            String name = _classNameToMakeFileName((String)i.next());
+            code.append("\t"+name+".c\\\n");            
+        }
+        code.append("\n");//takes care of blank line for last "\"
 
+        
+        code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
+        code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
+        code.append( "IHEADERS = $(SOURCES:.c=.i.h)\n");
+        
+        code.append(className+".exe : $(OBJECTS)\n");
+        code.append("\tgcc $(OBJECTS)\n");
+        
         code.append("makefile: $(THIS)\n");
         code.append("\tmake depend\n\n");
 
         code.append(".c.o:\n");
         code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $<\n\n");
 
-        code.append("depend: $(SOURCES) $(THIS)\n");
+        code.append("depend:\n");
         code.append("\t$(DEPEND) $(SOURCES)>makefile.tmp;\\\n");
         code.append("\tcat $(THIS) makefile.tmp>makefile;\\\n");
-        code.append("\trm makefile.tmp\n");
+        code.append("\trm makefile.tmp;\n");
         code.append("\n");
 
         code.append("clean:\n");
@@ -87,8 +101,6 @@ public class MakeFileGenerator
         FileHandler.write(className+".make",code.toString());
 
     }
-
-/*commented out because its not needed
 
 protected static LinkedList _classNameList(String classPath, String className)
     //returns a list of the names of all classses in the transitive closure
@@ -108,8 +120,27 @@ protected static LinkedList _classNameList(String classPath, String className)
         return names;
 
     }
-*/
 
+// finds filename corrseponding to class and replaces 
+// "$" with "$$" for compatibility
+protected static String _classNameToMakeFileName(String className)
+    {
+        StringBuffer name = new StringBuffer(
+            RequiredFileGenerator.classNameToFileName(className));
+    
+        for(int j=0;j<name.length();j++)
+        {
+            if (name.charAt(j)=='$') 
+            {
+                name.insert(j,"$");
+                j++;
+            }
+            //replace "$" with "$$"
+            //so that makefile interprets names correctly
+        }
+
+        return name.toString();
+    }
 }
 
 

@@ -195,9 +195,22 @@ public class CodeFileGenerator extends CodeGenerator {
                     stringClass.getMethod("void <init>(char[])"));
             code.append("\n" + _indent(1) +
                     _comment("Initialization of string constants"));
-            while (stringConstants.hasNext()) {
-                String value = (String)(stringConstants.next());
-                String identifier = _context.getIdentifier(value);
+            while (stringConstants.hasNext()) 
+            {
+                StringBuffer value = new StringBuffer(
+                                        stringConstants.next().toString());
+                //replace all incidences of " with \" to prevent bad characters
+                //between quotes
+                for(int i=0; i<value.length(); i++)
+                {
+                    if (value.charAt(i)=='"')
+                    {
+                        value.insert(i,"\\");
+                        i++;
+                    }
+                }
+                
+                String identifier = _context.getIdentifier(value.toString());
                 code.append(_indent(1) + identifier + " = (" + stringType +
                         ")(malloc(sizeof struct " + stringType + "));\n");
                 code.append(_indent(1) + stringStructure + "->"

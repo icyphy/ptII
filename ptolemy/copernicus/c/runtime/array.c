@@ -34,7 +34,7 @@ Run-time C code generation functionality for translation of arrays.
 #include "array.h"
 
 /* Allocate storage for a Java array. */
-PCCG_ARRAY_INSTANCE pccg_array_allocate(
+__PCCG_ARRAY_INSTANCE pccg_array_allocate(
         PCCG_CLASS element_class, int element_size,
         int dimensions_to_fill, int empty_dimensions, ...) {
 
@@ -44,7 +44,7 @@ PCCG_ARRAY_INSTANCE pccg_array_allocate(
     int total_dimensions,  first_dimension_size, next_dimension_size;
     void *new_array;
     va_list next_argument;
-    PCCG_ARRAY_INSTANCE result;
+    __PCCG_ARRAY_INSTANCE result;
 
     va_start(next_argument, empty_dimensions);    
 

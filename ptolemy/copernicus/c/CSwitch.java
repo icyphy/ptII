@@ -187,8 +187,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     public void caseCastExpr(CastExpr v) 
     {
-        _push("("+CNames.typeNameOf(v.getCastType())+")"
+        //FIXME: Does not handle null cast
+        if (!v.getOp().toString().equals("null"))
+        {
+            _push("("+CNames.typeNameOf(v.getCastType())+")"
                 +CNames.localNameOf((Local)v.getOp()));
+        }
+        else 
+        {
+            System.err.println("CSwitch.caseCastExpression does not"
+                +"handle null.");
+            
+            defaultCase(v);
+        }
     }
 
     /** Generate code for a CmpExpr expression.
@@ -527,7 +538,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         stmt.getInvokeExpr().apply(this);
     }
 
-    public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
+    public void caseLookupSwitchStmt(LookupSwitchStmt stmt) 
+    {
         defaultCase(stmt);
     }
 
@@ -543,9 +555,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     public void caseReturnStmt(ReturnStmt stmt) {
         stmt.getOp().apply(this);
-        _push("memcpy(env, caller_env, sizeof(jmp_buf));\n");
-        _push("        epc = caller_epc;\n");
-        _push("        return " + _pop());
+        _push("memcpy(env, caller_env, sizeof(jmp_buf));\n"
+            +"        epc = caller_epc;\n"
+            +"        return " + _pop());
     }
 
     public void caseReturnVoidStmt(ReturnVoidStmt stmt) {
@@ -569,7 +581,20 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     //// public methods for the default case                       ////
 
     public void defaultCase(Object obj) {
-        _push("<" + obj.getClass().getName() + ">");
+        if (obj instanceof Stmt)
+        {
+            _push("/*UNHANDLED STATEMENT: " + obj.getClass().getName() + "*/");
+        }
+        else if (obj instanceof Expr)
+        {
+            _push("0 /*UNHANDLED EXPRESSION HERE:"
+                +obj.getClass().getName() +"*/");
+        }
+        else //neither statement nor expression
+        {
+            _push("< UNHANDLED: "+obj.getClass().getName()+">");
+        }
+
         System.err.println("Unsupported visitation type: "
                 + obj.getClass().getName() + "(ignored).");
     }

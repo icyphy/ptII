@@ -1,6 +1,7 @@
-# Makefile for Ptolemy II C
+# Makefile for Ptolemy II C code generation back-end
 #
-# @Authors:  (makefile) Christopher Hylands- based on a file by Thomas M. Parks
+# @Authors:  Christopher Hylands, Ankush Varma, Shuvra S. Bhattacharyya --
+# based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -56,10 +57,14 @@ JSRCS = \
 	CodeGenerator.java \
 	Context.java \
 	CSwitch.java \
+    ExceptionTracker.java \
 	HeaderFileGenerator.java \
+    InterfaceFileGenerator.java \
 	JavaToC.java \
 	Main.java \
-	MethodListGenerator.java
+    MakeFileGenerator.java \
+	MethodListGenerator.java \
+    RequiredFileGenerator.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	README.txt
@@ -76,7 +81,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, cd to the 'test' directory, and run 'make Object'"
+	@echo "To run the demo, cd to the 'test/FIR' directory, and run 'runme'"
 
 install: all
 
