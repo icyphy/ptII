@@ -48,92 +48,84 @@ import java.util.List;
 //// TypeConflictException
 /**
 Thrown on detecting type conflicts.
-This class contains all the Typeable objects where type conflicts
-occurred.
+This class contains all the objects where type conflicts occurred.
+The objects are usually instances of Typeables or StructuredTypes.
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.data.type.Typeable
 */
 public class TypeConflictException extends KernelException {
 
-    /** Construct an Exception with a list of Typeables.
-     *  The Typeables are the places where type conflicts
-     *  occurred.  The detailed message of this Exception will be
-     *  the string "Type conflicts occurred on the following Typeables:",
-     *  followed by a list of Typeables and their types. The Typeables
-     *  are represented by their names if the Typeable object is a
-     *  NamedObj, otherwise, they are represented by the string
-     *  "Unnamed Typeable".
-     *  Each Typeable takes one line, and each line starts
+    /** Construct an Exception with a list of objects where type conflicts
+     *  occured.
+     *  The detailed message of this Exception will be the string
+     *  "Type conflicts occurred at the following places:",
+     *  followed by a list of objects and their types. The objects
+     *  are represented by their names if it is a NamedObj, otherwise,
+     *  they are represented by the result of the toString() method.
+     *  Each object takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param typeables a list of Typeables.
+     *  @param objects a list of objects containing types.
      */
-    public TypeConflictException(List typeables) {
-	this(typeables, "Type conflicts occurred on the following Typeables:");
+    public TypeConflictException(List objects) {
+	this(objects, "Type conflicts occurred at the following places:");
     }
 
-    /** Construct an Exception with a list of Typeables.
-     *  The Typeables are the places where type conflicts
-     *  occurred.  The detailed message of this Exception will be
-     *  the specified message,
-     *  followed by a list of Typeables and their types. The Typeables
-     *  are represented by their names if the Typeable object is a
-     *  NamedObj, otherwise, they are represented by the string
-     *  "Unnamed Typeable".
-     *  Each Typeable takes one line, and each line starts
+    /** Construct an Exception with a list of objects where type conflicts
+     *  occured.
+     *  The detailed message of this Exception will be the specified message,
+     *  followed by a list of objects and their types. The objects
+     *  are represented by their names if it is a NamedObj, otherwise,
+     *  they are represented by the result of the toString() method.
+     *  Each object takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param typeables a list of Typeables.
+     *  @param objects a list of objects containing types.
      *  @param detail a message.
      */
-    public TypeConflictException(List typeables, String detail) {
-	_typeables.addAll(typeables);
-	_setMessage(detail + "\n" + _getTypeablesAndTypes());
+    public TypeConflictException(List objects, String detail) {
+	_objects.addAll(objects);
+	_setMessage(detail + "\n" + _getObjectsAndTypes());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a list of Typeables where type conflicts occurred.
+    /** Return a list of objects where type conflicts occurred.
      *  @return A List.
      */
-    public List typeableList() {
-	return _typeables;
-    }
-
-    /** Return an Enumeration of Typeables where type conflicts occurred.
-     *  @return An Enumeration.
-     *  @deprecated Use typeableList() instead.
-     */
-    public Enumeration getTypeables() {
-	return Collections.enumeration(typeableList());
+    public List objectList() {
+	return _objects;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Create a string listing all the Typeables in _typeables and
-    // their types. Each Typeable takes one line, and each line starts
+    // Create a string listing all the objects in _objects and
+    // their types. Each object takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
-    private String _getTypeablesAndTypes() {
+    private String _getObjectsAndTypes() {
 	try {
 	    String result = "";
-	    Iterator typeables = typeableList().iterator();
-	    while(typeables.hasNext()) {
-	        Typeable typeable = (Typeable)typeables.next();
-	        if (typeable instanceof NamedObj) {
-	            result += "  " + ((NamedObj)typeable).getFullName() + ": ";
+	    Iterator objects = objectList().iterator();
+	    while(objects.hasNext()) {
+	        Object object = objects.next();
+	        if (object instanceof NamedObj) {
+	            result += "  " + ((NamedObj)object).getFullName() + ": ";
 	        } else {
-		    result += "Unnamed Typeable: ";
+		    result += "  " + object.toString();
 	        }
-	        Type type = typeable.getType();
-	        result += type.toString() + "\n";
+
+		if (object instanceof Typeable) {
+	            Type type = ((Typeable)object).getType();
+	            result += type.toString();
+		}
+		result += "\n";
 	    }
 
 	    return result;
         } catch (IllegalActionException ex) {
 	    throw new InternalErrorException("TypeConflictException." +
-                    "_getTypeablesAndTypes(): Cannot get type of Typeable. " +
+                    "_getObjectsAndTypes(): Cannot get type of Typeable. " +
                     ex.getMessage());
 	}
     }
@@ -141,5 +133,5 @@ public class TypeConflictException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private List _typeables = new LinkedList();
+    private List _objects = new LinkedList();
 }

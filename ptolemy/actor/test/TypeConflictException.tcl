@@ -66,11 +66,47 @@ test TypeConflictException-1.0 {Constructor that takes a List} {
     set ex2 [java::new ptolemy.actor.TypeConflictException $conflicts \
 	    "Detail Message"]
     list [$ex1 getMessage] [$ex2 getMessage] \
-	    [listToFullNames [$ex1 typeableList]]
-} {{Type conflicts occurred on the following Typeables:
+	    [listToFullNames [$ex1 objectList]]
+} {{Type conflicts occurred at the following places:
   ..E1.P1: double
   ..E1.P2: NaT
 } {Detail Message
   ..E1.P1: double
   ..E1.P2: NaT
 } {..E1.P1 ..E1.P2}}
+
+######################################################################
+####
+#
+test TypeConflictException-1.1 {Test with structured types} {
+    set port [java::new ptolemy.actor.TypedIOPort $e1 port]
+    set param [java::new ptolemy.data.expr.Parameter $e1 param]
+
+    # an ArrayType
+    set nat [java::field ptolemy.data.type.BaseType NAT]
+    set arrayT [java::new ptolemy.data.type.ArrayType $nat]
+
+    # a RecordType
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::field ptolemy.data.type.BaseType STRING]
+    set vt [java::field ptolemy.data.type.BaseType NAT]
+    set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
+
+    set recordT [java::new {ptolemy.data.type.RecordType} $l $v]
+
+    # construct the exception
+    set conflicts [java::new java.util.LinkedList]
+    $conflicts add $port
+    $conflicts add $param
+    $conflicts add $arrayT
+    $conflicts add $recordT
+
+    set ex [java::new ptolemy.actor.TypeConflictException $conflicts]
+    list [$ex getMessage] [listToFullNames [$ex objectList]]
+} {{Type conflicts occurred at the following places:
+  ..E1.port: NaT
+  ..E1.param: NaT
+  (NaT)array
+  {name:string, value:NaT}
+} {..E1.port ..E1.param NOT_NAMEABLE. NOT_NAMEABLE.}}
