@@ -525,7 +525,7 @@ $0 ~ /<entity/ {
 
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
-       if ($1 ~ /<OutputPort/ || $1 ~ /<CInPort/ ) {
+       if ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/ ) {
            if (name == "output") {
                # If we have 2 or more output ports, then declare it a multiport
                # we need this for composite actors in sbw.
@@ -535,7 +535,7 @@ $0 ~ /<entity/ {
                }
           }
            print indent "    <property name=\"output\"/>"
-       } else if ($1 ~ /<InputPort/ || $1 ~ /<COutPort/ ) {
+       } else if ($1 ~ /<InputPort/ || $1 ~ /<CInPort/ ) {
            if (name == "input") {
                # If we have 2 or more input ports, then declare it a multiport
                # we need this for composite actors in sbw.
@@ -600,11 +600,11 @@ $0 ~ /<entity/ {
 
        # Second, we handle the case where OutputPort 
        # has a dstLine field _and_ a srcLine field
-       if ($1 ~ /<OutputPort/ && length(srcLine) > 0) {
+       if ( ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/) && length(srcLine) > 0) {
            longName = containerStack[containerCount] "." name
            # FIXME: this needs to be linked in the container???
            #links[longName] = srcLine
-       } else if ($1 ~ /<InputPort/ && length(dstLine) > 0) {
+       } else if ( ($1 ~ /<InputPort/ || $1 ~ /<CInPort/) && length(dstLine) > 0) {
            longName = containerStack[containerCount] "." name
            # FIXME: this needs to be linked in the container???
            #links[longName] = dstLine
