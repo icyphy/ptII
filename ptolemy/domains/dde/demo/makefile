@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/dde/demo
 
-DIRS = 		helloWorld test #doc
+DIRS = 		helloWorld localZeno
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -60,7 +60,8 @@ JSIMPLE_TESTS = \
         dummy.tcl
 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	index.htm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
