@@ -122,17 +122,10 @@ public class DERealTimeSubscriber extends DEActor
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    DERealTimeSubscriber newobj = 
-                (DERealTimeSubscriber)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        DERealTimeSubscriber newobj = (DERealTimeSubscriber)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        return newobj;
     }
             
     /** Find the JavaSpaces and retrieve the first token. The type of

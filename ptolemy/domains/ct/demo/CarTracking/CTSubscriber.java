@@ -114,16 +114,10 @@ public class CTSubscriber extends Source
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    CTSubscriber newobj = (CTSubscriber)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        CTSubscriber newobj = (CTSubscriber)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        return newobj;
     }
             
     /** Find the JavaSpaces and retrieve the first token. The type of
