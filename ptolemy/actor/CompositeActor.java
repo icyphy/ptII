@@ -398,61 +398,36 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return _director != null;
     }
 
-    /** If this actor is opaque, transfer input data, invoke the 
-     *  iterate() method of its local director, and transfer output 
-     *  data. Specifically, transfer any data from the input ports of 
-     *  this composite to the ports connected on the inside. The transfer 
-     *  is accomplished by calling the transferInputs() method of the 
-     *  local director (the exact behavior of which depends on the
-     *  domain). Then invoke the iterate() method of its local director to
-     *  carry out the the specified number of iterations. Finally, 
-     *  transfer any data from the output ports of this composite
-     *  to the ports connected on the outside. The transfer is accomplished
-     *  by calling the transferOutputs() method of the executive director.
-     *  If this actor is not opaque, then throw an exception.
+    /** Invoke a specified number of iterations of the actor. An
+     *  iteration is equivalant to invoking prefire(), fire(), and 
+     *  postfire(), in that order. In an iteration, if prefire() 
+     *  returns true, then fire() will be called once, followed by 
+     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED.
      *  <p>
-     *  This method is read-synchronized on the workspace, so the
-     *  iterate() method of the director need not be (assuming it is only
-     *  called from here).
-     *  
+     *  This base class method actually invokes prefire(), fire(), 
+     *  and postfire(), as described above, but a derived class
+     *  may override the method to execute more efficient code.
+     *
      *  @param count The number of iterations to perform.
-     *  @return Null, if the specified number of iterations could not be
-     *   carried out. Return false if the specified number of iterations
-     *   were successfully executed, but no more iterations can be carried 
-     *   out. Otherwise, return true.
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's iterate() method throws it, or if the actor is not
-     *   opaque.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public boolean iterate(int count) throws IllegalActionException {
-        try {
-            _workspace.getReadAccess();
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-			    "Cannot iterate a non-opaque actor.");
-            }
-            // Use the local director to transfer inputs.
-            Iterator inports = inputPortList().iterator();
-            while(inports.hasNext()) {
-                IOPort p = (IOPort)inports.next();
-                _director.transferInputs(p);
-            }
-            // Note that this is assured of iterating the local director,
-            // not the executive director, because this is opaque.
-            boolean returnVal =  getDirector().iterate(count);
-            // Use the executive director to transfer outputs.
-            Director edir = getExecutiveDirector();
-            if (edir != null) {
-                Iterator outports = outputPortList().iterator();
-                while(outports.hasNext()) {
-                    IOPort p = (IOPort)outports.next();
-                    edir.transferOutputs(p);
-                }
-            }
-	    return  returnVal;
-        } finally {
-            _workspace.doneReading();
-        }
+    public int iterate(int count) throws IllegalActionException {
+	int n = 0;
+	while (n++ < count) {
+	    if (prefire()) {
+		fire();
+		if(!postfire()) return Executable.STOP_ITERATING;
+	    } else {
+                return Executable.NOT_READY;
+	    }
+	}
+	return Executable.COMPLETED;
     }
 
     /** Return a new receiver of a type compatible with the local director.

@@ -84,32 +84,31 @@ public interface Executable {
     public void initialize() throws IllegalActionException;
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration has the effect of invoking prefire(), fire(), and 
+     *  iteration is equivalant to invoking prefire(), fire(), and 
      *  postfire(), in that order. In an iteration, if prefire() 
      *  returns true, then fire() will be called once, followed by 
      *  postfire(). Otherwise, if prefire() returns false, fire() 
-     *  and postfire() are not invoked, and an exception will
-     *  be thrown. This method will return the value returned by the 
-     *  last invocation postfire(). 
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED.
      *  <p>
      *  An implementation of this method is not required to
      *  actually invoke prefire(), fire(), and postfire(). An
-     *  implementation of this method must, however,  contain code
-     *  that performs the equivalent operations (viewing this actor
-     *  as a black box).
+     *  implementation of this method must, however,
+     *  perform the equivalent operations.
      *  
      *  @param count The number of iterations to perform.
-     *  @return The value returned be the last invocation of
-     *   postfire().
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
      *  @exception IllegalActionException If iterating is not
-     *   permitted, or if prefire (or the equivalent code) returns 
-     *   false, or there is a problem iterating.
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public boolean iterate(int count) throws IllegalActionException;
+    public int iterate(int count) throws IllegalActionException;
 
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
-     *  It returns true if the execution can proceed into the next iteration.
+     *  It returns true if the execution can proceed into the next iteration,
+     *  false if the actor does not wish to be fired again.
      *  This method typically wraps up an iteration, which may involve
      *  updating local state. In an opaque, non-atomic entity, it may also
      *  transfer output data. The execution of this method is bounded.
@@ -184,4 +183,19 @@ public interface Executable {
      *  @exception IllegalActionException If wrapup is not permitted.
      */
     public void wrapup() throws IllegalActionException;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** An indicator that the iterate() method completed successfully. */
+    public static int COMPLETED = 0;
+
+    /** An indicator that the iterate() method did not complete because
+     *  the actor was not ready (prefire() returned false).
+     */
+    public static int NOT_READY = 1;
+
+    /** An indicator that the actor does not wish to be fired again.
+     */
+    public static int STOP_ITERATING = 2;
 }

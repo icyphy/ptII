@@ -218,41 +218,37 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return Collections.enumeration(inputPortList());
     }
 
-    /** Invoke a specified number of iterations of this actor. An
-     *  iteration has the effect of invoking prefire(), fire(), and 
+    /** Invoke a specified number of iterations of the actor. An
+     *  iteration is equivalant to invoking prefire(), fire(), and 
      *  postfire(), in that order. In an iteration, if prefire() 
      *  returns true, then fire() will be called once, followed by 
-     *  an invocation of postfire(). Otherwise, if prefire() returns 
-     *  false, fire() and postfire() are not invoked, and an exception 
-     *  will be thrown. This method will return the value returned by the 
-     *  last invocation postfire(). 
+     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED.
      *  <p>
      *  This base class method actually invokes prefire(), fire(), 
-     *  and postfire(), as described above. 
+     *  and postfire(), as described above, but a derived class
+     *  may override the method to execute more efficient code.
      *  
      *  @param count The number of iterations to perform.
-     *  @return True if the actor was successfully iterated the
-     *   specified number of times. Otherwise, return false.
-     *  @exception IllegalActionException If one of the Executable
-     *   methods throws it, or if prefire() returns false.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public boolean iterate(int count) throws IllegalActionException {
+    public int iterate(int count) throws IllegalActionException {
 	int n = 0;
-	boolean returnVal = false;
-	while (n < count) {
+	while (n++ < count) {
 	    if (prefire()) {
 		fire();
-		returnVal = postfire();
+		if(!postfire()) return Executable.STOP_ITERATING;
 	    } else {
-		throw new IllegalActionException("Prefire returned false. " +
-					 "Cannot complete the the " + count +
-						  " specified iterations.");
+                return Executable.NOT_READY;
 	    }
-	    n++;
 	}
-	return returnVal;
+	return Executable.COMPLETED;
     }
-
 
     /** Create a new IOPort with the specified name.
      *  The container of the port is set to this actor.

@@ -68,8 +68,8 @@ Whatever it returns is called simply the <i>director</i> (vs. local
 director or executive director).
 <p>
 A director implements the action methods (preinitialize(),
-initialize(), prefire(), fire(),
-postfire(), iterate(), and wrapup()).  In this base class, default implementations
+initialize(), prefire(), fire(), postfire(), iterate(),
+and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.   In general,
 these methods will perform domain-dependent actions, and then call the
 respective methods in all contained actors.
@@ -303,37 +303,36 @@ public class Director extends NamedObj implements Executable {
     public void invalidateSchedule() {
     }
 
-    /** Invoke a specified number of iterations on this director. Since
-     *  the definition of what constitutes an iteration is domain dependent,
-     *  derived classes will probably want to override this method. In 
-     *  this base class, invoke the specified number of iterations on all 
-     *  of the deeply contained actors of the container of this director. 
-     *  The actors are iterated in the order they were created. This 
-     *  method returns false if any of the iterated actors returns false. 
-     *  Otherwise, this method returns true.
+    /** Invoke a specified number of iterations of the actor. An
+     *  iteration is equivalant to invoking prefire(), fire(), and 
+     *  postfire(), in that order. In an iteration, if prefire() 
+     *  returns true, then fire() will be called once, followed by 
+     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED.
      *  <p>
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  This base class method actually invokes prefire(), fire(), 
+     *  and postfire(), as described above, but a derived class
+     *  may override the method to execute more efficient code.
      *  
      *  @param count The number of iterations to perform.
-     *  @return False if any of the iterated actors returns false. 
-     *   Otherwise, return true.
-     *  @exception IllegalActionException If an actor throws it while
-     *   iterating.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public boolean iterate(int count) throws IllegalActionException {
-	boolean returnVal = false;
-	CompositeActor container = ((CompositeActor)getContainer());
-	if (container!= null) {
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
-		// Note: Use "&" instead of "&&" to force all actors
-		// to be iterated.
-                returnVal = returnVal & actor.iterate(count);
-            }
-        }
-	return returnVal;
+    public int iterate(int count) throws IllegalActionException {
+	int n = 0;
+	while (n++ < count) {
+	    if (prefire()) {
+		fire();
+		if(!postfire()) return Executable.STOP_ITERATING;
+	    } else {
+                return Executable.NOT_READY;
+	    }
+	}
+	return Executable.COMPLETED;
     }
 
     /** Return true if this director, or any of its contained directors
@@ -401,35 +400,32 @@ public class Director extends NamedObj implements Executable {
 
     /** Return true if the director wishes to be scheduled for another
      *  iteration.  This method is called by the container of
-     *  this director to see if the director wishes to execute anymore, and
-     *  should <i>not</i>, in general, just take the logical AND of calling
-     *  postfire on all the contained actors.
+     *  this director to see whether the director wishes to execute anymore.
+     *  It should <i>not</i>, in general, call postfire() on the contained
+     *  actors.
      *  <p>
      *  In this base class, assume that the director only wants to get
-     *  fired once, so return false. Domain directors will probably want
+     *  fired once, and so return false. Domain directors will probably want
      *  to override this method.
      *
-     *  @return false
-     *  @exception IllegalActionException If the postfire()
-     *  method of one of the associated actors throws it.
+     *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         return false;
     }
 
     /** Return true if the director is ready to fire. This method is
-     *  called by the container of this director to determine if the
-     *  director is ready to execute, and
-     *  should <i>not</i>, in general, just take the logical AND of calling
-     *  prefire on all the contained actors.
+     *  called by the container of this director to determine whether the
+     *  director is ready to execute. It should <i>not</i>, in general,
+     *  call prefire() on the contained actors.
      *  <p>
      *  In this base class, assume that the director is always ready to
-     *  be fired, so return true. Domain directors should probably
+     *  be fired, and so return true. Domain directors should probably
      *  override this method.
      *
-     *  @return true
-     *  @exception IllegalActionException If the postfire()
-     *  method of one of the associated actors throws it.
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         return true;
@@ -437,14 +433,14 @@ public class Director extends NamedObj implements Executable {
 
     /** Create receivers and then invoke the preinitialize()
      *  methods of all its deeply contained actors.
-     *  Set the current time to be 0.0.
+     *  Set the current time to 0.0.
      *  This method is invoked once per execution, before any
      *  iteration, and before the initialize() method.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
      *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it.
+     *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
@@ -472,7 +468,10 @@ public class Director extends NamedObj implements Executable {
     /** Queue a change request with the manager.
      *  The indicated change will be executed at the next opportunity,
      *  typically between top-level iterations of the model.
-     *  If there is no container, or if it has no manager, do nothing.
+     *  In this base class, the request is delegated to the container
+     *  of the container, WHICH IS NOT RIGHT, and is inconsistent
+     *  with requestInitialization().  FIXME.
+     *  If there is no container, do nothing.
      *  @param change The requested change.
      *  @exception ChangeFailedException If the manager throws it.
      */
@@ -488,12 +487,12 @@ public class Director extends NamedObj implements Executable {
     /** Queue an initialization request with the manager.
      *  The specified actor will be initialized at an appropriate time,
      *  between iterations, by calling its preinitialize() and initialize()
-     *  methods. This method is called by CompositeActor when an actor an actor
+     *  methods. This method is called by CompositeActor when an actor
      *  sets its container to that composite actor.  Typically, that
      *  will occur when a model is first constructed, and during the
      *  execute() method of a ChangeRequest that is queued using
-     *  requestChange().
-     *  If there is no container, or if it has no manager, do nothing.
+     *  requestChange().  In this base class, the request is delegated
+     *  to the manager. If there is no manager, do nothing.
      *  @param actor The actor to initialize.
      */
     public void requestInitialization(Actor actor) {
