@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PoissonClock
@@ -232,6 +233,8 @@ public class PoissonClock extends TimedSource {
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getCurrentTime() + exp;
+            _nextFiringTime = Utilities.round(_nextFiringTime, 
+                director.getTimeResolution());
             director.fireAt(this, _nextFiringTime);
         }
     }
@@ -249,6 +252,8 @@ public class PoissonClock extends TimedSource {
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getCurrentTime() + exp;
+            _nextFiringTime = Utilities.round(_nextFiringTime, 
+                director.getTimeResolution());
             director.fireAt(this, _nextFiringTime);
         }
         return super.postfire();

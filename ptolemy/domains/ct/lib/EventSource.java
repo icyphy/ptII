@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EventSource
@@ -224,6 +225,8 @@ public class EventSource extends TypedAtomicActor
         _phase = 0;
 
         _nextOutputTime = _offsets[0] + _cycleStartTime;
+        _nextOutputTime = Utilities.round(_nextOutputTime,
+            getDirector().getTimeResolution());
         // Schedule the first firing.
         // The null argument prevents the triple firing that the
         // director would otherwise do.
@@ -247,6 +250,8 @@ public class EventSource extends TypedAtomicActor
             if (_phase >= _offsets.length) {
                 _phase = 0;
                 _cycleStartTime += periodValue;
+                _cycleStartTime = Utilities.round(_cycleStartTime, 
+                    director.getTimeResolution());
             }
             if (_offsets[_phase] >= periodValue) {
                 throw new IllegalActionException(this,
@@ -256,6 +261,8 @@ public class EventSource extends TypedAtomicActor
             }
             if (hasCurrentEvent()) {
                 _nextOutputTime = _cycleStartTime + _offsets[_phase];
+                _nextOutputTime = Utilities.round(_nextOutputTime, 
+                    director.getTimeResolution());
                 // The null argument prevents the triple firing that the
                 // director would otherwise do.
                 director.fireAt(null, _nextOutputTime);

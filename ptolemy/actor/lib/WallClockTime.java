@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 /**
    Upon firing, this actor outputs the elapsed real time in seconds
@@ -141,7 +142,9 @@ public class WallClockTime extends Source {
 
     protected double _getCurrentTime() {
         long elapsedTime = System.currentTimeMillis() - _startTime;
-        return (((double)elapsedTime)/1000.0);
+        double elapsedTimeDouble = elapsedTime/1000.0;
+        return Utilities.round(elapsedTimeDouble, 
+            getDirector().getTimeResolution());
     }
 
     ///////////////////////////////////////////////////////////////////

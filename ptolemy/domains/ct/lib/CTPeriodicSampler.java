@@ -39,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicSampler
@@ -186,6 +187,8 @@ public class CTPeriodicSampler extends Transformer
         if (director.isDiscretePhase() && _hasCurrentEvent) {
             // register for the next event.
             _nextSamplingTime += _samplePeriod;
+            _nextSamplingTime = Utilities.round(_nextSamplingTime,
+                director.getTimeResolution());
             if (_debugging) _debug(getFullName(), "request fire at"
                     + _nextSamplingTime);
             // The null argument prevents the triple firing that would
