@@ -380,6 +380,22 @@ sign_jar:
 		$(JARFILE) $(KEYALIAS)
 
 
+JAR_DIST_DIR = jar_dist
+
+$(JAR_DIST_DIR):
+	if [ ! -d $(JAR_DIST_DIR) ]; then \
+		mkdir -p $(JAR_DIST_DIR); \
+	fi
+	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	for x do \
+		if [ ! -f $(JAR_DIST_DIR)/$$x ]; then \
+			echo "#  Copying $$x to $(JAR_DIST_DIR)/"; \
+			mkdir -p $(JAR_DIST_DIR)/`dirname $$x`; \
+			cp -p $$x `dirname $(JAR_DIST_DIR)/$$x`; \
+		fi; \
+	done;
+
+
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
  
