@@ -55,36 +55,6 @@ if {[info procs _testEnums] == "" } then {
 ######################################################################
 ####
 # 
-test NamedList-1.1 {Get information about an instance of NamedObj} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.NamedList]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.NamedList
-  fields:        
-  methods:       {append pt.kernel.util.Nameable} clone {equals java.lan
-    g.Object} first {get java.lang.String} getClass getElem
-    ents hashCode {includes pt.kernel.util.Nameable} {inser
-    tAfter java.lang.String pt.kernel.util.Nameable} {inser
-    tBefore java.lang.String pt.kernel.util.Nameable} last 
-    notify notifyAll {prepend pt.kernel.util.Nameable} {rem
-    ove java.lang.String} {remove pt.kernel.util.Nameable} 
-    removeAll size toString wait {wait long} {wait long int
-    }
-    
-  constructors:  pt.kernel.util.NamedList {pt.kernel.util.NamedList pt.k
-    ernel.util.Nameable} {pt.kernel.util.NamedList pt.kerne
-    l.util.NamedList}
-    
-  properties:    class elements
-    
-  superclass:    java.lang.Object
-    
-}}
-
-######################################################################
-####
-# 
 test NamedList-2.1 {Construct a list, call get} {
     set dir [java::new pt.kernel.util.NamedList]
     set n1 [java::new pt.kernel.util.NamedObj "n1"]

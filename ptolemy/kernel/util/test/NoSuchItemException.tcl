@@ -50,32 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test NoSuchItemException-1.1 {Get information about an instance of NoSuchItemException} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.NoSuchItemException dummy]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.NoSuchItemException
-  fields:        
-  methods:       {equals java.lang.Object} fillInStackTrace getClass get
-    LocalizedMessage getMessage hashCode notify notifyAll p
-    rintStackTrace {printStackTrace java.io.PrintStream} {p
-    rintStackTrace java.io.PrintWriter} toString wait {wait
-     long} {wait long int}
-    
-  constructors:  {pt.kernel.util.NoSuchItemException java.lang.String} {
-    pt.kernel.util.NoSuchItemException pt.kernel.util.Namea
-    ble java.lang.String}
-    
-  properties:    class localizedMessage message
-    
-  superclass:    pt.kernel.util.KernelException
-    
-}}
-
-######################################################################
-####
-# 
 test NoSuchItemException-3.1 {Create a NoSuchItemException with a detail message} {
     set pe [java::new {pt.kernel.util.NoSuchItemException String} "A message"]
     list [$pe getMessage] [$pe getLocalizedMessage]

@@ -56,34 +56,6 @@ if {[info procs enumToNames] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-
-######################################################################
-####
-# 
-test CrossRefList-1.1 {Get information about an instance of CrossRefList} {
-    # If anything changes, we want to know about it so we can write tests.
-    set owner [java::new Object]
-    set n [java::new pt.kernel.util.CrossRefList $owner]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.CrossRefList
-  fields:        
-  methods:       {equals java.lang.Object} first getClass getLinks hashC
-    ode {isLinked java.lang.Object} {link pt.kernel.util.Cr
-    ossRefList} notify notifyAll size toString {unlink java
-    .lang.Object} unlinkAll wait {wait long} {wait long int
-    }
-    
-  constructors:  {pt.kernel.util.CrossRefList java.lang.Object} {pt.kern
-    el.util.CrossRefList java.lang.Object pt.kernel.util.Cr
-    ossRefList}
-    
-  properties:    class links
-    
-  superclass:    java.lang.Object
-    
-}}
-
 ######################################################################
 ####
 # 

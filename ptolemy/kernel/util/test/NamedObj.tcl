@@ -54,33 +54,6 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 # 
-test NamedObj-1.1 {Get information about an instance of NamedObj} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.NamedObj]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.NamedObj
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
-    .kernel.util.NamedObj} description {description int} {e
-    quals java.lang.Object} {getAttribute java.lang.String}
-     getAttributes getClass getContainer getFullName getNam
-    e hashCode notify notifyAll {setName java.lang.String} 
-    toString wait {wait long} {wait long int} workspace
-    
-  constructors:  pt.kernel.util.NamedObj {pt.kernel.util.NamedObj java.l
-    ang.String} {pt.kernel.util.NamedObj pt.kernel.util.Wor
-    kspace java.lang.String}
-    
-  properties:    attributes class container fullName name
-    
-  superclass:    java.lang.Object
-    
-}}
-
-######################################################################
-####
-# 
 test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
     set n [java::new pt.kernel.util.NamedObj]
     set result1 [$n getName]

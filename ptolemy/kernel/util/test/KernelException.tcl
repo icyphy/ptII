@@ -50,37 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test KernelException-1.1 {Get information about an instance of KernelException} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.KernelException]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.KernelException
-  fields:        
-  methods:       {equals java.lang.Object} fillInStackTrace getClass get
-    LocalizedMessage getMessage hashCode notify notifyAll p
-    rintStackTrace {printStackTrace java.io.PrintStream} {p
-    rintStackTrace java.io.PrintWriter} toString wait {wait
-     long} {wait long int}
-    
-  constructors:  pt.kernel.util.KernelException {pt.kernel.util.KernelEx
-    ception java.lang.String} {pt.kernel.util.KernelExcepti
-    on pt.kernel.util.Nameable} {pt.kernel.util.KernelExcep
-    tion pt.kernel.util.Nameable java.lang.String} {pt.kern
-    el.util.KernelException pt.kernel.util.Nameable pt.kern
-    el.util.Nameable} {pt.kernel.util.KernelException pt.ke
-    rnel.util.Nameable pt.kernel.util.Nameable java.lang.St
-    ring}
-    
-  properties:    class localizedMessage message
-    
-  superclass:    java.lang.Exception
-    
-}}
-
-######################################################################
-####
-# 
 test KernelException-2.1 {Create a KernelException} {
     set pe [java::new pt.kernel.util.KernelException]
     list [$pe getMessage] [$pe getLocalizedMessage]

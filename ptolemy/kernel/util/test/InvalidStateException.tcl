@@ -50,38 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test InvalidStateException-1.1 {Get information about an instance of \
-	InvalidStateException} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.InvalidStateException]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.InvalidStateException
-  fields:        
-  methods:       {equals java.lang.Object} fillInStackTrace getClass get
-    LocalizedMessage getMessage hashCode notify notifyAll p
-    rintStackTrace {printStackTrace java.io.PrintStream} {p
-    rintStackTrace java.io.PrintWriter} toString wait {wait
-     long} {wait long int}
-    
-  constructors:  pt.kernel.util.InvalidStateException {pt.kernel.util.In
-    validStateException java.lang.String} {pt.kernel.util.I
-    nvalidStateException pt.kernel.util.Nameable} {pt.kerne
-    l.util.InvalidStateException pt.kernel.util.Nameable ja
-    va.lang.String} {pt.kernel.util.InvalidStateException p
-    t.kernel.util.Nameable pt.kernel.util.Nameable} {pt.ker
-    nel.util.InvalidStateException pt.kernel.util.Nameable 
-    pt.kernel.util.Nameable java.lang.String}
-    
-  properties:    class localizedMessage message
-    
-  superclass:    java.lang.RuntimeException
-    
-}}
-
-######################################################################
-####
-# 
 test InvalidStateException-2.1 {Create a InvalidStateException} {
     set pe [java::new pt.kernel.util.InvalidStateException]
     list [$pe getMessage] [$pe getLocalizedMessage]

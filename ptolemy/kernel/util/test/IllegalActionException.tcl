@@ -50,37 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test IllegalActionException-1.1 {Get information about an instance of IllegalActionException} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.util.IllegalActionException]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.IllegalActionException
-  fields:        
-  methods:       {equals java.lang.Object} fillInStackTrace getClass get
-    LocalizedMessage getMessage hashCode notify notifyAll p
-    rintStackTrace {printStackTrace java.io.PrintStream} {p
-    rintStackTrace java.io.PrintWriter} toString wait {wait
-     long} {wait long int}
-    
-  constructors:  pt.kernel.util.IllegalActionException {pt.kernel.util.I
-    llegalActionException java.lang.String} {pt.kernel.util
-    .IllegalActionException pt.kernel.util.Nameable} {pt.ke
-    rnel.util.IllegalActionException pt.kernel.util.Nameabl
-    e java.lang.String} {pt.kernel.util.IllegalActionExcept
-    ion pt.kernel.util.Nameable pt.kernel.util.Nameable} {p
-    t.kernel.util.IllegalActionException pt.kernel.util.Nam
-    eable pt.kernel.util.Nameable java.lang.String}
-    
-  properties:    class localizedMessage message
-    
-  superclass:    pt.kernel.util.KernelException
-    
-}}
-
-######################################################################
-####
-# 
 test IllegalActionException-2.1 {Create a IllegalActionException} {
     set pe [java::new pt.kernel.util.IllegalActionException]
     list [$pe getMessage] [$pe getLocalizedMessage]

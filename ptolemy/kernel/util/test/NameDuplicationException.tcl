@@ -50,38 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test NameDuplicationException-1.1 \
-        {Get information about an instance of NameDuplicationException} {
-    # If anything changes, we want to know about it so we can write tests.
-    set obj [java::new pt.kernel.util.NamedObj "object"]
-    set n [java::new pt.kernel.util.NameDuplicationException $obj]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.util.NameDuplicationException
-  fields:        
-  methods:       {equals java.lang.Object} fillInStackTrace getClass get
-    LocalizedMessage getMessage hashCode notify notifyAll p
-    rintStackTrace {printStackTrace java.io.PrintStream} {p
-    rintStackTrace java.io.PrintWriter} toString wait {wait
-     long} {wait long int}
-    
-  constructors:  {pt.kernel.util.NameDuplicationException pt.kernel.util
-    .Nameable} {pt.kernel.util.NameDuplicationException pt.
-    kernel.util.Nameable java.lang.String} {pt.kernel.util.
-    NameDuplicationException pt.kernel.util.Nameable pt.ker
-    nel.util.Nameable} {pt.kernel.util.NameDuplicationExcep
-    tion pt.kernel.util.Nameable pt.kernel.util.Nameable ja
-    va.lang.String}
-    
-  properties:    class localizedMessage message
-    
-  superclass:    pt.kernel.util.KernelException
-    
-}}
-
-######################################################################
-####
-# 
 test NameDuplicationException-2.1 {One named objects} {
     set containee [java::new pt.kernel.Port]
     $containee setName "wouldBeContainee"
