@@ -89,6 +89,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // This must be done before the Java compiler classes are loaded so
         // that they can find the output package.
         // (this is a nasty hack)
+        System.out.println("packageDir = " + _packageDirectoryName);
         new File(_packageDirectoryName).mkdirs();
 
         // Assume exactly one model on the command line.
@@ -115,6 +116,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
             // are done
             _compositeActor.getManager().initialize();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("could not initialize composite actor");
         }
 
@@ -122,7 +124,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         _director = (SDFDirector) _compositeActor.getDirector();
         _scheduler = (SDFScheduler) _director.getScheduler();
 
-        Enumeration schedule = _scheduler.schedule();
+        Iterator schedule = _scheduler.getSchedule().actorIterator();
 
         // build a mapping between each actor and the firing count
 
@@ -132,9 +134,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // disjointAppearances is not actually used, but it may be in the
         // future.
 
-        while (schedule.hasMoreElements()) {
+        while (schedule.hasNext()) {
 
-            TypedAtomicActor actor = (TypedAtomicActor) schedule.nextElement();
+            TypedAtomicActor actor = (TypedAtomicActor) schedule.next();
 
             // see if this is the first appearance of this actor
             if (_actorSet.add(actor)) {
@@ -509,12 +511,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // generate the iteration loop
         LinkedList iterationStmtList = new LinkedList();
 
-        Enumeration schedule = null;
+        Iterator schedule = null;
 
         TypedAtomicActor lastActor = null;
         int contiguousAppearances = 0;
 
-        schedule = _scheduler.schedule();
+        schedule = _scheduler.getSchedule().actorIterator();
 
         // Iterate through the schedule. We generate the prefire(), fire(), and
         // postfire() sequence for the previous after the next different actor
@@ -522,13 +524,13 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // in the schedule, we need to go past the last actor when iterating.
 
         // make sure there is something in the schedule
-        boolean endLoop = !schedule.hasMoreElements();
+        boolean endLoop = !schedule.hasNext();
         while (!endLoop) {
 
             TypedAtomicActor actor = null;
 
-            if (schedule.hasMoreElements()) {
-                actor = (TypedAtomicActor) schedule.nextElement();
+            if (schedule.hasNext()) {
+                actor = (TypedAtomicActor) schedule.next();
             } else {
                 actor = null;
                 endLoop = true;
