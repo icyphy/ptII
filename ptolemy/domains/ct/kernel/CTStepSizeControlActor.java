@@ -56,32 +56,32 @@ public interface CTStepSizeControlActor extends Actor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Return true if the current integration step is acceptable. 
-     *  Actors that implement this interface will interprete "acceptable"
-     *  themselves. For example, for integrators, "acceptable" could 
+    /** Return true if the current integration step is successful. 
+     *  Actors that implement this interface will interprete "successful"
+     *  themselves. For example, for integrators, "successful" could 
      *  mean that the local truncation error is small enough; for 
-     *  event detectors, "acceptable" could mean that there is not event
+     *  event detectors, "successful" could mean that there is not event
      *  missed during the current integration step.
      *  @return True if the current integration step is acceptable.
      */
-    public boolean isThisStepAcceptable();
+    public boolean isThisStepSuccessful();
 
     /** Return the predicted next step size. If the current integration 
-     *  step is acceptable, the actor will be asked for the prediction 
+     *  step is successful, the actor will be asked for the prediction 
      *  of the next step size. If the actor that implement this interface
      *  does not know how to predict the next step size, it should 
      *  return java.lang.Double.MAX_VALUE.
      *  @return The predicted next step size.
      */
-    public double predictedNextStepSize();
+    public double predictedStepSize();
     
     /** Return the refined step size for restarting current step. If the 
-     *  current integration step size is not acceptable, the actor will
+     *  current integration step size is not successful, the actor will
      *  be asked for a refined step size. The current integation step 
      *  will be restarted with the minimum of all returned values.
      *  If the actor does not want to restart the current integration 
      *  step, this method should return the current step size.
-     *  @return The refined step size.
+     *  @return The refined current step size.
      */
     public double refinedStepSize();
 }

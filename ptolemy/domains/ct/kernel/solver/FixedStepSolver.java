@@ -86,7 +86,7 @@ public abstract class FixedStepSolver extends ODESolver{
      *  Always returns true, since not error control.
      *  @return True always.
      */
-    public final boolean integratorIsSuccess(CTBaseIntegrator integrator) {
+    public final boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         return true;
     }
 
@@ -94,9 +94,9 @@ public abstract class FixedStepSolver extends ODESolver{
      *  Always returns 0 since no error control functionality.
      *  @return 0 always.
      */
-    public final double integratorSuggestedNextStepSize(
+    public final double integratorPredictedStepSize(
          CTBaseIntegrator integrator){
-        return 0;
+        return java.lang.Double.MAX_VALUE;
     }
 
     /** Method for resolveing the next step size if the current

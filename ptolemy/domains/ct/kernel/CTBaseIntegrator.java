@@ -85,7 +85,7 @@ multistep methods.
 @see CTDiretor
 */
 public class CTBaseIntegrator extends CTActor
-        implements CTErrorControlActor, CTDynamicActor, CTMemarisActor {
+        implements CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
      *  A integrator has one single input port and one single
@@ -277,9 +277,10 @@ public class CTBaseIntegrator extends CTActor
      *  ODE solver.
      *  @return True if last integration step is successful.
      */
-    public boolean isSuccessful() {
+    public boolean isThisStepSuccessful() {
         ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        return solver.integratorIsSuccess(this);
+        _successful = solver.integratorIsSuccessful(this);
+        return _successful;
     }
 
     /** Postfire method in the execution sequence. It updates the 
@@ -294,6 +295,15 @@ public class CTBaseIntegrator extends CTActor
         _state = _potentialState;
         _pushHistory(_potentialState, _potentialDerivative);
         return true;
+    }
+
+    /** Return the predicted next step size. This method delegate to
+     *  the integratorPredictedStepSize() method of the current ODESolver.
+     *  @return The predicteded next step size.
+     */
+    public double predictedStepSize() {
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        return solver.integratorPredictedStepSize(this);
     }
 
     /** Prefire method in the execution sequence. This method checks
@@ -323,10 +333,22 @@ public class CTBaseIntegrator extends CTActor
         return true;
     }
 
+    /** Return the predicted next step size. This method delegate to
+     *  the integratorPredictedStepSize() method of the current ODESolver.
+     *  @return The predicteded next step size.
+     */
+    public double refinedStepSize() {
+        if(_successful) {
+            return ((CTDirector)getDirector()).getCurrentStepSize();
+        }else {
+            return 0.5*((CTDirector)getDirector()).getCurrentStepSize();
+        }
+    }
+
     /** Restore the saved state to current state. This method may be used
      *  for rollback the simulation from a previous time point.
      */
-    public void restoreStates() {
+    public void goToMarkedState() {
         _setState(_storedState);
         setPotentialState(_storedState);
     }
@@ -335,7 +357,7 @@ public class CTBaseIntegrator extends CTActor
      *  retrieved by the restoreState() method. The remembered state
      *  may be used for back up simulation from past.
      */
-    public void saveStates() {
+    public void markState() {
         _storedState = getState();
     }
 
@@ -387,28 +409,6 @@ public class CTBaseIntegrator extends CTActor
          _potentialDerivative = value;
      }
 
-    /** Return the suggested next step size. It in turn calls the 
-     *  integratorSuggestedNextStepSize() in the current ODE solver.
-     *  @return The suggested next step size.
-     */
-    public double suggestedNextStepSize() {
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        return solver.integratorSuggestedNextStepSize(this);
-    }
-
-    /** Wrapup method in the execution sequence. It cleans the 
-     *  unconsumed tokens at the input port.
-     *
-     *  @exception IllegalActionException Never thrown.
-     */
-    public void wrapup() throws IllegalActionException {
-        try {
-            input.get(0) ;
-        } catch(NoTokenException e) {
-            //ignore
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
     /** Input port. Finals means they are not changeable once created.
@@ -448,6 +448,7 @@ public class CTBaseIntegrator extends CTActor
     private Parameter _paramInitState;
     private double _initState;
 
+    private boolean _successful = false;
     // Temporary states array.
     private double[] _auxVariables;
     // State.

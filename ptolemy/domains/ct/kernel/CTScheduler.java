@@ -65,22 +65,19 @@ The state schedule is a list of dynamic actors (integrators or actors
 that can produce initial token) which are sorted backward.
 <P>
 The state transition schedule is the actors in f() function sorted
-in the topological order. It is acheived by sorting backward from the
-inputs of dynamic actors until a source or an output of a dynamic actor
-is found. Dynamic actors are not in this schedule.
+in the topological order, such that, after the integrators emit their
+state x, a chain of firings according to the schedule evaluates the
+f() function and returns a token corresponding to dx/dt to the 
+integrators.
 <P>
 The output schedule is the actors in g() function sorted in the topological
-order. It is acheived by sorting backward from the sinks, traces back until
-a dynamic actor or a source is reached. The dynamic actors is not in the
-schedule.
+order. 
 <P>
 The event generation schedule is the actors in the h() function sorted
-in the topological order. It is acheived by sorting bakward from the
-event detector's inputs, traces back to a dynamic actor or a source.
-dynamic actors are not in this list.
+in the topological order.
 
 If thers are loops of arithmatic actors or loops of integrators,
-then the subsystem is not schedulable, and a NotSchedulableException
+then the (sub)system is not schedulable, and a NotSchedulableException
 will be thrown.
 
 @author Jie Liu
@@ -123,9 +120,8 @@ public class CTScheduler extends Scheduler{
     /** Returns an enumeration of arithmetic actors. This enumeration is
      *  locally cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
-     *  the new version.
-     *  This method read-synchronize on the workspace.
+     *  Otherwise, it is reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
      *  @return An enumeration of arithmetic actors.
      */
     public Enumeration arithmaticActors() {
@@ -144,9 +140,8 @@ public class CTScheduler extends Scheduler{
     /** Returns an enumeration of dynamic actors. This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
-     *  the new version.
-     *  This method read-synchronize on the workspace.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
      *  @return An enumeration of dynamic actors.
      */
     public Enumeration dynamicActors() {
@@ -166,8 +161,7 @@ public class CTScheduler extends Scheduler{
      *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _schedule to reconstruct, and save
-     *  the new version.
+     *  Otherwise, it will be reconstructed and cached.
      *  The dynamic actor schedule lists all the integrators and 
      *  dynamic actors
      *  in the reverse topology order. This order is considered safe
@@ -176,7 +170,7 @@ public class CTScheduler extends Scheduler{
      *  For explicit method,
      *  it guarantees that the input of the integrator is
      *  one step earlier than the output.
-     *  This method read-synchronize on the workspace.
+     *  This method read-synchronizes on the workspace.
      *  @return An enumeration of the schedule of dynamic actors.
      *  @exception IllegalActionException If the scheduler has no container,
      *      or the container has no container.
@@ -199,10 +193,11 @@ public class CTScheduler extends Scheduler{
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
-     *  the new version.
+     *  Otherwise, it will be reconstructed and cached.
      *  This method read-synchronize on the workspace.
      *  @return An enumeration of error control actors.
+     *  FIXME: Deprecated!
+     *  @deprecated Use stepSizeControlActors instead.
      */
     public Enumeration errorControlActors() {
         try {
@@ -217,14 +212,38 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of event generators.
+    /** Return an enumeration of step size control actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it reconstructs the enumeration, and save
-     *  the new version.
+     *  Otherwise, it will be reconstructed and cached.
      *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of step size control actors.
+     * 
+     */
+    public Enumeration stepSizeControlActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _ssctrl.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of event generator.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  the new version.
+     *  This method read-synchronize on the workspace.
      *  @return An enumeration of event generator.
+     *  FIXME: deprecated.
+     *  @deprecated Use eventGenerators
      */
     public Enumeration eventGenerateActors() {
         try {
@@ -234,6 +253,28 @@ public class CTScheduler extends Scheduler{
                 _dynamicversion = workspace().getVersion();
             }
             return _evdct.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of event generators.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it reconstructs the enumeration, and save
+     *  the new version.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of event generator.
+     */
+    public Enumeration eventGenerators() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _evgen.elements();
         } finally {
             workspace().doneReading();
         }
@@ -252,8 +293,36 @@ public class CTScheduler extends Scheduler{
      *  @exception IllegalActionException If the scheduler has no container,
      *      or the container has no container.
      *  @exception NotSchedulableException If the system is not schedulable.
+     *  FIXME: Deprecated!
+     *  @deprecated Use eventGeneratingSchedule()
      */
     public Enumeration eventGenerationSchedule()
+            throws NotSchedulableException, IllegalActionException {
+        try {
+	    workspace().getReadAccess();
+            if(!valid()) {
+                schedule();
+            }
+            return _eventschedule.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of the actors in the event generation
+     *  path in the topological order.
+     *  This enumeration is locally cached.
+     *  If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of the actors in the event generation
+     *  path in the topological order.
+     *  @exception IllegalActionException If the scheduler has no container,
+     *      or the container has no container.
+     *  @exception NotSchedulableException If the system is not schedulable.
+     */
+    public Enumeration eventGeneratingSchedule()
             throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
@@ -270,10 +339,11 @@ public class CTScheduler extends Scheduler{
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
-     *  the new version.
-     *  This method read-synchronize on the workspace.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
      *  @return An enumeration of Memaris actors.
+     *  FIXME: Deprecated!
+     *  @deprecated Use statefulActors() in stead.
      */
     public Enumeration memarisActors() {
         try {
@@ -288,6 +358,27 @@ public class CTScheduler extends Scheduler{
         }
     }
  
+    /** Return an enumeration of stateful actors.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of Memaris actors.
+     */
+    public Enumeration statefulActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _memaris.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     /** Returns an enumeration of the schedule of the output path.
      *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
@@ -375,30 +466,45 @@ public class CTScheduler extends Scheduler{
             _sink = new LinkedList();
             _dynam = new LinkedList();
             _arith = new LinkedList();
-            _ectrl = new LinkedList();
+            _ectrl = new LinkedList();  //deprecated.
             _evdct = new LinkedList();
             _memaris = new LinkedList();
+            _ssctrl = new LinkedList(); 
+            _evgen = new LinkedList(); 
+            _stateful = new LinkedList(); 
         }else {
             _sink.clear();
             _dynam.clear();
             _arith.clear();
-            _ectrl.clear();
+            _ectrl.clear();  // deprecated.
             _evdct.clear();
             _memaris.clear();
+            _ssctrl.clear();
+            _evgen.clear();
+            _stateful.clear();
         }
 
         CompositeActor ca = (CompositeActor) getContainer().getContainer();
         Enumeration actors = ca.deepGetEntities();
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
-            if (a instanceof CTErrorControlActor) {
+            if (a instanceof CTErrorControlActor) {   //deprecated
                 _ectrl.insertLast(a);
             }
-            if (a instanceof CTEventGenerateActor) {
+            if (a instanceof CTEventGenerateActor) {   //deprecated
                 _evdct.insertLast(a);
             }
-            if (a instanceof CTMemarisActor) {
+            if (a instanceof CTMemarisActor) {  //deprecated.
                 _memaris.insertLast(a);
+            }
+            if (a instanceof CTStatefulActor) {
+                _stateful.insertLast(a);
+            }
+            if (a instanceof CTEventGenerator) {
+                _evgen.insertLast(a);
+            }
+            if (a instanceof CTStepSizeControlActor) {
+                _ssctrl.insertLast(a);
             }
             if (!((a.outputPorts()).hasMoreElements())) {
                 _sink.insertLast(a);
@@ -632,6 +738,12 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _evdct;
     // A linkedLost of memaris actors.
     private transient LinkedList _memaris;
+    // A linkedLost of step size control actors.
+    private transient LinkedList _ssctrl;
+    // A linkedLost of event generators.
+    private transient LinkedList _evgen;
+    // A linkedLost of stateful actors.
+    private transient LinkedList _stateful;
 
     // Version of the lists.
     private transient long _dynamicversion = -1;

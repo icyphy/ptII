@@ -218,6 +218,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Return the local trancation error tolerance, used by
      *  variable step size solvers.
      *  @return The local trancation error tolerance.
+     *  FIXME: change to getErrorTolerance
      */
     public final double getLTETolerance() {
         return _lteTolerance;
@@ -309,7 +310,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return new CTReceiver();
     }
 
-    /** If parameter changed, queue the event
+    /** If parameter changed, queue the event.
+     *  FIXME: Merge to mutation handling.
      */
     public void parameterChanged(ParameterEvent e) {
         if(VERBOSE) {
@@ -322,6 +324,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Throw a InvalidStateException if any of the parameters are deleted.
+     *  FIXME: Merge to mutation handling.
      */
     public void parameterRemoved(ParameterEvent e) {
         throw new InvalidStateException(this,
@@ -332,6 +335,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  will be processed in their happening order.
      *  @exception IllegalActionException If throw by creation of some
      *       parameters.
+     *  FIXME: Merge to mutation handling
      */
     public void updateParameters() throws IllegalActionException {
         LinkedList pEvents = _getParameterEvents();
@@ -354,6 +358,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the parameter name is not
      *     found.
+     *  FIXME: MERGE TO mutation handling
      */
     public void updateParameter(Parameter param)
             throws IllegalActionException {

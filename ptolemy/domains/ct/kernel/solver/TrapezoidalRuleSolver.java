@@ -203,7 +203,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
-    public boolean integratorIsSuccess(CTBaseIntegrator integrator){
+    public boolean integratorIsSuccessful(CTBaseIntegrator integrator){
         try {
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getLTETolerance();
@@ -239,7 +239,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
-    public double integratorSuggestedNextStepSize(CTBaseIntegrator integrator) {
+    public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
         double lte = (integrator.getAuxVariables())[1];
         double h = dir.getCurrentStepSize();

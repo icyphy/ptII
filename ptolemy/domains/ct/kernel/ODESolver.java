@@ -145,17 +145,18 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** Abstract isSuccess() method for integrators.
+    /** Abstract isSuccessful() method for integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
-    public abstract boolean integratorIsSuccess(CTBaseIntegrator integrator);
+    public abstract boolean integratorIsSuccessful(CTBaseIntegrator
+            integrator);
 
     /** Abstract suggestedNextStepSize() method for integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
-    public abstract double integratorSuggestedNextStepSize(
+    public abstract double integratorPredictedStepSize(
         CTBaseIntegrator integrator);
 
     /** Solver the ODE for one successful step. In this default 
