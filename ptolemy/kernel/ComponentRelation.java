@@ -196,8 +196,8 @@ public class ComponentRelation extends Relation {
      *  to a subclass of CompositeEntity. This method is write-synchronized
      *  on the workspace and increments its version number.
      *  @param container The proposed container.
-     *  @exception IllegalActionException
-     *   If this entity and the container are not in the same workspace.
+     *  @exception IllegalActionException If this entity and the container
+     *  are not in the same workspace.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
      */
