@@ -170,7 +170,7 @@ $(PTIIDIST):
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation with gr and javasound"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m -breakiterator" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
@@ -310,7 +310,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" JDOCFLAGS="-author -version -J-Xmx132m" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -745,7 +745,7 @@ remote1doc:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) JDOCFLAGS="-author -version -J-Xmx132m -breakiterator")
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE))
 
 # Remove the JavaScope instrumentation
 remote1build:
