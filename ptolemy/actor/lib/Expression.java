@@ -45,6 +45,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -355,17 +356,10 @@ public class Expression extends TypedAtomicActor {
     // the output port.
     // The function value is determined by type inference on the
     // expression, in the scope of this Expression actor.
-    private class OutputTypeFunction implements InequalityTerm {
+    private class OutputTypeFunction extends MonotonicFunction {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -373,36 +367,41 @@ public class Expression extends TypedAtomicActor {
          *  expression fails.
          */
         public Object getValue() throws IllegalActionException {
-            // Deal with the singularity at UNKNOWN..  Assume that if
-            // any variable that the expression depends on is UNKNOWN,
-            // then the type of the whole expression is unknown..
-            // This allows us to properly find functions that do exist
-            // (but not for UNKNOWN arguments), and to give good error
-            // messages when functions are not found.
-            InequalityTerm[] terms = getVariables();
-            for (int i = 0; i < terms.length; i++) {
-                InequalityTerm term = terms[i];
-                if (term != this && term.getValue() == BaseType.UNKNOWN) {
-                    return BaseType.UNKNOWN;
+            try {
+                // Deal with the singularity at UNKNOWN..  Assume that if
+                // any variable that the expression depends on is UNKNOWN,
+                // then the type of the whole expression is unknown..
+                // This allows us to properly find functions that do exist
+                // (but not for UNKNOWN arguments), and to give good error
+                // messages when functions are not found.
+                InequalityTerm[] terms = getVariables();
+                for (int i = 0; i < terms.length; i++) {
+                    InequalityTerm term = terms[i];
+                    if (term != this && term.getValue() == BaseType.UNKNOWN) {
+                        return BaseType.UNKNOWN;
+                    }
                 }
+                
+                // Note: This code is similar to the token evaluation
+                // code above.
+                if (_parseTree == null) {
+                    // Note that the parser is NOT retained, since in most
+                    // cases the expression doesn't change, and the parser
+                    // requires a large amount of memory.
+                    PtParser parser = new PtParser();
+                    _parseTree = parser.generateParseTree(
+                            expression.getExpression());
+                }
+                
+                if (_scope == null) {
+                    _scope = new VariableScope();
+                }
+                Type type = _typeInference.inferTypes(_parseTree, _scope);
+                return type;
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(Expression.this, ex, 
+                        "An error occured during expression type inference");
             }
-
-            // Note: This code is similar to the token evaluation
-            // code above.
-            if (_parseTree == null) {
-                // Note that the parser is NOT retained, since in most
-                // cases the expression doesn't change, and the parser
-                // requires a large amount of memory.
-                PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(
-                        expression.getExpression());
-            }
-
-            if (_scope == null) {
-                _scope = new VariableScope();
-            }
-            Type type = _typeInference.inferTypes(_parseTree, _scope);
-            return type;
         }
 
         /** Return the type variable in this inequality term. If the type
@@ -462,48 +461,11 @@ public class Expression extends TypedAtomicActor {
             }
         }
 
-        /** Throw an Exception. This method cannot be called on a function
-         *  term.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception. The value of a function term cannot be set.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": The type is not settable.");
-        }
-
         /** Override the base class to give a description of this term.
          *  @return A description of this term.
          */
-        public String toString() {
-            try {
-                return "(" + expression.getExpression() + ", " +
-                    getValue() + ")";
-            } catch (IllegalActionException ex) {
-                return "(" + expression.getExpression() + ", INVALID)";
-            }
+        public String getVerboseString() {
+            return expression.getExpression();
         }
 
         ///////////////////////////////////////////////////////////////
