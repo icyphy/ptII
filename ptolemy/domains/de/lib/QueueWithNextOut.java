@@ -51,12 +51,18 @@ When the <i>trigger</i> port receives a token, the oldest element in the
 queue is output.  If there is no element in the queue when a
 token is received on the <i>trigger</i> port, then no output is
 produced.  The inputs can be of any token type, and the output
-is constrained to be of a type at least that of the input.
-<p>
+is constrained to be of a type at least that of the <i>input</i>. <p>
+
+An additional output <i>nextOut</i> has been added which allows the
+model to know what's next to come out.  This new output produces a
+token whenever the queue has been empty and a new token is queued and
+whenever token is taken from the queue and at least one token remains.
+The token produced is the oldest token remaining in the queue.
+Otherwise, no output token is produced.  This output, also, is
+constrained to be at least that of <i>input</i> <p>
 
 @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
-@version $Id$
-*/
+@version $Id$ */
 
 //FIXME: make this consistent with the queue from ptolemy classic
 public class QueueWithNextOut extends DETransformer {
