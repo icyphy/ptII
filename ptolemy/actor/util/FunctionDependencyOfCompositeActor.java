@@ -49,14 +49,15 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /** An instance of FunctionDependencyOfCompositeActor describes the function
     dependency information a composite actor. It provides both the abstracted
-    view, which gives the function dependency that output ports of the actor
-    have on input ports, and a detailed view from which it constructs
+    view, which gives the function dependency the output ports of a composite 
+    actor have on input ports, and a detailed view from which it constructs
     this information. The detailed view is a graph where the nodes correspond
-    to the ports of this composite actor and to the ports of all deeply
+    to the ports of a composite actor and to the ports of all deeply
     contained opaque actors, and the edges represent either the communication
     dependencies implied by the connections within this composite actor or
     the function dependencies of the contained opaque actors.
-    The detailed view can be used by a director to construct a schedule.
+    The detailed view is typically used to by a director to construct a 
+    schedule while the abstracted view is abstracted from the detailed view.
     <p>
     The detailed view may reveal dependency loops, which in many domains
     means that the model cannot be executed.
@@ -99,7 +100,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Return a detailed dependency graph representing the function 
      *  dependency information. The graph includes both the ports of
      *  this composite actor and the ports of ports of its deeply
-     *  contained opaque actors (composite or atomic). 
+     *  contained opaque actors (both composite and atomic). 
      *  @return A detailed dependency graph reflecting the dependency
      *  information between the input and output ports. 
      */
@@ -112,7 +113,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     ////                       protected methods                   ////
 
     /** Construct a dependency graph from a detailed dependency graph by 
-     *  excluding the internal ports.
+     *  excluding the internal ports. The returned graph has an abstract
+     *  view.
      */
     protected void _constructDependencyGraph() {
 
