@@ -263,6 +263,9 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 # $PTII/makefile if gcc or cc was found
 PTJNI_DIR =	@PTJNI_DIR@
 
+# JNI shared library suffix, under Solaris this would be -fPIC
+PTJNI_SHAREDLIBRARY_CFLAG =	@PTJNI_SHAREDLIBRARY_CFLAG@
+
 # JNI shared library suffix
 PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 
