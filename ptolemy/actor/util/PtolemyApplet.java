@@ -49,8 +49,9 @@ public class PtolemyApplet extends Applet {
      *  @return A string giving minimal information about Ptolemy II.
      */
     public String getAppletInfo() {
-        return "Ptolemy II applet.\n"
-            + "Ptolemy II comes from UC Berkeley, Department of EECS.";
+        return "Ptolemy II applet.\n" +
+            "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
+            "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
     /** Describe the applet parameters.
