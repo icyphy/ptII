@@ -336,7 +336,7 @@ public class Copernicus {
         FileWriter writer = new FileWriter(temporaryFile);
         String header = "<class name=\"Temp\" extends=\"ptolemy.actor.TypedCompositeActor\">\n";
         writer.write(header, 0, header.length());
-        namedObj.exportMoML(writer, 1, "_generator");
+        namedObj.exportMoML(writer, 1, GENERATOR_NAME);
         String footer = "</class>\n";
         writer.write(footer, 0, footer.length());
         writer.close();
