@@ -46,9 +46,9 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
-# ptolemy/configs/*, ptolemy/configs/doc and
+# ptolemy/configs/*/*.htm, ptolemy/configs/docy and
 # ptolemy/kernel/attributes/VersionAttribute.java
-PTVERSION =	2.2-beta-2
+PTVERSION =	2.2-beta-3
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
