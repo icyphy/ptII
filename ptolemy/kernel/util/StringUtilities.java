@@ -65,22 +65,22 @@ public class StringUtilities {
         return string;
     }
 
-    /** Replace all occurrences of <i>oldsub</i> in the specified
-     *  string with <i>newsub</i>.
+    /** Replace all occurrences of <i>old</i> in the specified
+     *  string with <i>replacement</i>.
      *  @param string The string to edit.
-     *  @param oldsub The string to replace.
-     *  @param newsub The string to replace it with.
+     *  @param old The string to replace.
+     *  @param replacement The string to replace it with.
      *  @return A new string with the specified replacements.
      */
     public static String substitute(String string,
-            String oldsub, String newsub) {
-        int start = string.indexOf(oldsub);
+            String old, String replacement) {
+        int start = string.indexOf(old);
         while(start != -1) {
             StringBuffer buffer = new StringBuffer(string);
-            buffer.delete(start, start + oldsub.length());
-            buffer.insert(start, newsub);
+            buffer.delete(start, start + old.length());
+            buffer.insert(start, replacement);
             string = new String(buffer);
-            start = string.indexOf(oldsub, start + newsub.length());
+            start = string.indexOf(old, start + replacement.length());
         }
         return string;
     }
