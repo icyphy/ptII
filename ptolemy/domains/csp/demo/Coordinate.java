@@ -42,7 +42,7 @@ public class Coordinate {
     /** The Y coordinate. */
     public int Y = 0;
 
-    /** Constructs a new Coordinate initialised as the origin (0, 0). */
+    /** Constructs a new Coordinate initialized as the origin (0, 0). */
     public Coordinate() {}
 
     /** Constructs a new Coordinate with the specified values.
