@@ -39,6 +39,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
@@ -52,16 +53,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Execute
 /**
-   Execute a command as a separately running subprocess.
+   Execute a command as a separately running subprocess. A command
+   is a single executable.  To get the get the effect of executing
+   a command provided in a shell interpreter, you can set
+   <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
+   or Linux), and then provide commands at the <i>input</i> port.
+   Note that each command must be terminated with a newline.
+   For example, to open a model in vergil and run it, you can
+   set <i>command</i> to "sh" and use a Const actor to provide
+   on the <i>input</i> port the string:
+   <pre>
+      "vergil -run model.xml\n exit\n"
+   </pre>
 
    <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
-   named be the <i>command</i> parameter in a <i>directory</i> with an
+   named by the <i>command</i> parameter in a <i>directory</i> with an
    <i>environment</i>.  Data from the <i>input</i> port (if any) is
    passed to the input of the subprocess.  The subprocess is run until it
    exits and then contents of the output and error streams of the
@@ -105,7 +116,7 @@ public class Exec extends TypedAtomicActor {
     public Exec(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
+        
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
 
@@ -113,11 +124,10 @@ public class Exec extends TypedAtomicActor {
                 new StringToken("echo \"Hello, world.\""));
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
+        new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
 
         directory = new FileParameter(this, "directory");
         directory.setExpression("$CWD");
-        // Hide the directory parameter.
-        directory.setVisibility(Settable.EXPERT);
 
         environment = new Parameter(this, "environment");
         String [] labels = new String [] {"name", "value"};
@@ -130,17 +140,18 @@ public class Exec extends TypedAtomicActor {
         // Array with an empty name and value means
         // default environment of the calling process.
         environment.setExpression("{{name = \"\", value = \"\"}}");
-        // Hide the environment parameter.
-        environment.setVisibility(Settable.EXPERT);
 
         error = new TypedIOPort(this, "error", false, true);
         error.setTypeEquals(BaseType.STRING);
+        new Parameter(error, "_showName", BooleanToken.TRUE);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
+        new Parameter(input, "_showName", BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+        new Parameter(output, "_showName", BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,13 +170,7 @@ public class Exec extends TypedAtomicActor {
     public PortParameter command;
 
     /** The directory in which to execute the command.
-     *
-     *  <p> This parameter is an Expert mode parameter, so it is
-     *  usually hidden.  To edit it, right click on the actor, select
-     *  'Configure', then hit the 'Preferences' button and select
-     *  'Expert Mode'.
-     *
-     *  <p>This parameter is read each time the subprocess is started
+     *  This parameter is read each time the subprocess is started
      *  in fire(). Once the subprocess is running, this parameter is not
      *  read again until fire() is called again.
      *
@@ -180,13 +185,7 @@ public class Exec extends TypedAtomicActor {
     public FileParameter directory;
 
     /** The environment in which to execute the command.
-     *
-     *  <p> This parameter is an Expert mode parameter, so it is
-     *  usually hidden.  To edit it, right click on the actor, select
-     *  'Configure', then hit the 'Preferences' button and select
-     *  'Expert Mode'.
-     *
-     *  <p>This parameter is read each time the subprocess is started
+     *  This parameter is read each time the subprocess is started
      *  in fire(). Once the subprocess is running, this parameter is not
      *  read again until fire() is called again.
      *
@@ -219,15 +218,14 @@ public class Exec extends TypedAtomicActor {
      *  then the stored error data is sent to the <i>error</i> port.
      *  If the subprocess generates no data on standard error, then
      *  the empty string (a string of length zero) is generated.
-
-     *  <p>The port is an output port of type String.
+     *  This port is an output port of type String.
      */
     public TypedIOPort error;
 
     /** Strings to pass to the standard input of the subprocess.
      *  Note that a newline is not appended to the string.  If you
      *  require a newline, add one using the AddSubtract actor.
-     *  <p>This port is an input port of type String.
+     *  This port is an input port of type String.
      */
     public TypedIOPort input;
 
@@ -237,13 +235,12 @@ public class Exec extends TypedAtomicActor {
      *  then the stored output data is sent to the <i>output</i> port.
      *  If the subprocess generates no data on standard out, then
      *  the empty string (a string of length zero) is generated.
-     *  <p>The port is an output port of type String.
+     *  This port is an output port of type String.
      */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-
 
     /** Invoke a subprocess, read the <i>input</i> data (if any) and
      *  wait for the subprocess to terminate before sending any output
@@ -259,7 +256,10 @@ public class Exec extends TypedAtomicActor {
      *  if the subprocess gets interrupted, or if the return value
      *  of the process is non-zero.
      */
-    public synchronized void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
+        // NOTE: This used to be synchronized, but this causes a
+        // deadlock with the UI when parameters are edited while
+        // model is running.
         super.fire();
         String line = null;
 
@@ -316,10 +316,12 @@ public class Exec extends TypedAtomicActor {
         error.send(0, new StringToken(errorString));
         output.send(0, new StringToken(outputString));
     }
-
+    
     /** Override the base class and terminate the process.
      */
-    public synchronized void stop() {
+    public void stop() {
+        // NOTE: This method used to be synchronized, as
+        // was the fire() method, but this caused deadlocks.  EAL
         super.stop();
         try {
             _terminateProcess();
@@ -330,7 +332,9 @@ public class Exec extends TypedAtomicActor {
 
     /** Override the base class to stop waiting for input data.
      */
-    public synchronized void stopFire() {
+    public void stopFire() {
+        // NOTE: This method used to be synchronized, as
+        // was the fire() method, but this caused deadlocks.  EAL
         super.stopFire();
         _stopFireRequested = true;
         try {
@@ -453,10 +457,9 @@ public class Exec extends TypedAtomicActor {
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem setting up command '" + command + "'");
+                    "Problem executing the command '" + command.getExpression() + "'");
         }
     }
-
 
     // Terminate the process and close any associated streams.
     private void _terminateProcess() throws IllegalActionException {
@@ -522,6 +525,7 @@ public class Exec extends TypedAtomicActor {
             _stringBuffer = new StringBuffer();
             try {
                 _inputStreamReader.close();
+                _inputStreamReaderClosed = true;
             } catch (Exception ex) {
                 throw new InternalErrorException(null, ex, getName()
                         + " failed to close.");
@@ -532,12 +536,16 @@ public class Exec extends TypedAtomicActor {
         /** Read lines from the inputStream and append them to the
          *  stringBuffer.
          */
-        public void run() {
-            _read();
+        public synchronized void run() {
+            if (!_inputStreamReaderClosed) {
+                _read();
+            }
         }
 
         // Read from the stream until we get to the end of the stream
-        private void _read() {
+        // This is synchronized so that it is not called simultaneously
+        // from run() and getAndReset().
+        private synchronized void _read() {
             // We read the data as a char[] instead of using readline()
             // so that we can get strings that do not end in end of
             // line chars.
@@ -576,15 +584,17 @@ public class Exec extends TypedAtomicActor {
         // The actor associated with this stream reader.
         private Nameable _actor;
 
-        // StringBuffer to update.
-        private StringBuffer _stringBuffer;
-
         // Stream from which to read.
         private InputStream _inputStream;
 
         // Stream from which to read.
         private InputStreamReader _inputStreamReader;
+        
+        // Indicator that the stream has been closed.
+        private boolean _inputStreamReaderClosed = false;
 
+        // StringBuffer to update.
+        private StringBuffer _stringBuffer;
     }
 
     ///////////////////////////////////////////////////////////////////
