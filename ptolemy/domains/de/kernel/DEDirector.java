@@ -94,10 +94,9 @@ import ptolemy.kernel.util.Workspace;
    simulator is in the maintenance of the global event queue. By default, 
    this director uses the calendar queue as the global event queue. This is 
    an efficient algorithm with O(1) time complexity in both enqueue and dequeue 
-   operations. Sorting in the {@link #ptolemy.domains.de.kernel.CalendarQueue} 
-   class is done according to the order defined on the tags by the 
-   {@link #ptolemy.domains.de.kernel.DEEvent} class, which implements the 
-   java.lang.Comparable interface.  
+   operations. Sorting in the {@link ptolemy.actor.util.CalendarQueue} class 
+   is done according to the order defined on the tags by the {@link DEEvent} 
+   class, which implements the java.lang.Comparable interface.  
    <p> 
    The complexity of the calendar algorithm is sensitive to the length of the
    queue. When the size of the event queue becomes too long or changes quite
@@ -746,6 +745,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  because hierarchical models may change their structures during the
      *  preinitialize method. For example, a modal model does not specify its
      *  initial state till the end of its preinitialize method. 
+     *  See {@link ptolemy.domains.fsm.kernel.FSMActor}.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
