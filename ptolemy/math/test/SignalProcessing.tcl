@@ -846,30 +846,22 @@ test SignalProcessing-18.2 {sampleWave Sawtooth no holes} {
 
 ####################################################################
 test SignalProcessing-19.1 {sampleWave Sinc} {
-    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator \
-            3.14]
+    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator]
     set sincOut [java::call ptolemy.math.SignalProcessing sampleWave 20 -4.0 \
             0.5 $sincGen]
     epsilonDiff [$sincOut getrange 0] \
             {
-  -0.18943568720351  -0.10064755568875   0.04651421716791   0.23886115977000 \
-   0.45420702340276   0.66469520114496   0.84131819692457   0.95880984671039 \
-   1.00000000000000   0.95880984671039   0.84131819692457   0.66469520114496 \
-   0.45420702340276   0.23886115977000   0.04651421716791  -0.10064755568875 \
-  -0.18943568720351  -0.21722508807246  -0.19154320726457  -0.12785526285895 
+-0.189200623827 -0.10022377934 0.0470400026866 0.239388857642 0.454648713413 0.664996657736 0.841470984808 0.958851077208 1.0 0.958851077208 0.841470984808 0.664996657736 0.454648713413 0.239388857642 0.0470400026866 -0.10022377934 -0.189200623827 -0.217228915037 -0.191784854933 -0.128280059195 
     }
 } {}
 
 ####################################################################
 test SignalProcessing-19.2 {sampleWave Sinc zero crossing at 0} {
-    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator \
-            0]
+    set sincGen [java::new ptolemy.math.SignalProcessing\$SincSampleGenerator]
     set sincOut [java::call ptolemy.math.SignalProcessing sampleWave 20 -4.0 \
             0.5 $sincGen]
-    # FIX!!  SincSampleGenerator does not properly accept zero crossing at 0
-    # (divide by zero generates NaN!!!)
     $sincOut getrange 0
-} {} {KNOWN_ERROR}
+} {-0.189200623827 -0.10022377934 0.0470400026866 0.239388857642 0.454648713413 0.664996657736 0.841470984808 0.958851077208 1.0 0.958851077208 0.841470984808 0.664996657736 0.454648713413 0.239388857642 0.0470400026866 -0.10022377934 -0.189200623827 -0.217228915037 -0.191784854933 -0.128280059195}
 
 ####################################################################
 test SignalProcessing-20.1 {sampleWave Gaussian} {

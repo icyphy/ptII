@@ -1429,15 +1429,9 @@ public class SignalProcessing {
      *  first zero crossing.
      */
     public static class SincSampleGenerator implements DoubleUnaryOperation {
-        public SincSampleGenerator(double firstZeroCrossing) {
-            _piOverFZC = Math.PI / firstZeroCrossing;
-        }
-
         public final double operate(double time) {
-            return sinc(_piOverFZC * time);
+            return sinc(time);
         }
-
-        private final double _piOverFZC;
     }
 
     /** This class generates samples of a square-root raised cosine pulse.
