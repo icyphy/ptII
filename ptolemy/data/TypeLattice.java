@@ -170,6 +170,8 @@ public final class TypeLattice
 	Class tDouble = DoubleToken.class;
 	Class tInt = IntToken.class;
 
+        Class tFix = FixToken.class;
+        
 	Class tNaT = Void.TYPE;
 
         lattice.add(tGeneral);
@@ -190,6 +192,7 @@ public final class TypeLattice
 	lattice.add(tComplex);
 	lattice.add(tDouble);
 	lattice.add(tInt);
+        lattice.add(tFix);
 
 	lattice.add(tNaT);		// NaT
 
@@ -223,6 +226,9 @@ public final class TypeLattice
 	lattice.addEdge(tInt, tLong);
 	lattice.addEdge(tInt, tIntMatrix);
 	lattice.addEdge(tInt, tDouble);
+
+        lattice.addEdge(tFix, tGeneral);
+        lattice.addEdge(tNaT, tFix);
 
         lattice.addEdge(tNaT, tInt);
 
