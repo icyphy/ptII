@@ -135,6 +135,10 @@ public class BrowserLauncher {
                     + errorMessage);
 	}
 
+	// The return code returned by process.waitFor()
+	// 0 usually indicates normal execution.
+	int exitCode = 0;
+
 	switch (jvm) {
 	case MRJ_2_0:
 	    Object aeDesc = null;
@@ -213,7 +217,7 @@ public class BrowserLauncher {
             // That's hinted at in
             // <http://developer.java.sun.com/developer/qow/archive/68/>.
             try {
-                process.waitFor();
+                exitCode = process.waitFor();
                 process.exitValue();
             } catch (InterruptedException ie) {
                 throw new IOException("InterruptedException while "
@@ -234,7 +238,7 @@ public class BrowserLauncher {
                     url +
                     NETSCAPE_OPEN_PARAMETER_END });
             try {
-                int exitCode = process.waitFor();
+                exitCode = process.waitFor();
                 if (exitCode != 0) {	// if Netscape was not open
                     Runtime.getRuntime().exec(new String[] {
                         (String) browser, url });
@@ -250,6 +254,13 @@ public class BrowserLauncher {
             Runtime.getRuntime().exec(new String[] { (String) browser, url });
             break;
 	}
+
+	if (exitCode != 0) {
+	    throw new IOException("Process exec'd by BrowserLauncher returned "
+				  + exitCode + "."
+				  + "\n url was: " + url
+				  + "\n browser was: " + browser);
+	} 
     }
 
     /**
