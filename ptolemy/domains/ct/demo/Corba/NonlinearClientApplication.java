@@ -131,11 +131,11 @@ public class NonlinearClientApplication {
             sqwv.values.setToken(new DoubleMatrixToken(values));
 
 
-            gain1.gain.setToken(new DoubleToken(500.0));
+            gain1.factor.setToken(new DoubleToken(500.0));
 
-            gain2.gain.setToken(new DoubleToken(-10.0));
+            gain2.factor.setToken(new DoubleToken(-10.0));
 
-            gain3.gain.setToken(new DoubleToken(-1000.0));
+            gain3.factor.setToken(new DoubleToken(-1000.0));
             
             String orbinit = new String("");
             for(int i =0; i < args.length; i++) {
