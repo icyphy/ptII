@@ -712,6 +712,7 @@ The affected actors are:
 	ptolemy.actor.lib.Expression
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
 Below are original class names followed by the new class names:
+	ptolemy.kernel.attributes.FileAttribute	 -> ptolemy.data.expr.FileParameter
 	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
@@ -750,6 +751,8 @@ and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 	ptolemy.domains.sdf.lib.vq.ImagePartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.matlab.Expression
+		expression	 -> ptolemy.data.expr.StringParameter
 	ptolemy.domains.sdf.lib.vq.ImageUnpartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
@@ -798,6 +801,7 @@ The affected actors are:
 
 ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
 Below are original class names followed by the new class names:
+	ptolemy.kernel.attributes.FileAttribute	 -> ptolemy.data.expr.FileParameter
 	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
@@ -840,6 +844,8 @@ and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 	ptolemy.domains.sdf.lib.vq.ImagePartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
+	ptolemy.matlab.Expression
+		expression	 -> ptolemy.data.expr.StringParameter
 	ptolemy.domains.sdf.lib.vq.ImageUnpartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
