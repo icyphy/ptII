@@ -91,35 +91,45 @@ public class CodeGenActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public void addCode(String code) {
-       addCode(code, "default");
-   }
-   public void addCode(String code, String streamName) {
-       StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
-       if (buffer == null) {
-           buffer = new StringBuffer();
-           _codeBlocks.put(streamName, buffer);
-       }
-       buffer.append(processCode(code));
-   }
-   // NOTE: There is a three argument version
-   // of the addCode() method, but I don't really understand
-   // what the third argument means...
+    /** Add code from the code argument to the "default" stream.
+     *  @param code The code to be added.
+     */
+    public void addCode(String code) {
+        addCode(code, "default");
+    }
 
-   public String getCode(String streamName) {
-       StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
-       if (buffer == null) {
-           return "";
-       }
-       return buffer.toString();
-   }
+    /** Add code from the code argument to the "default" stream.
+     *  @param code StringBuffer containing the code to be added.
+     */
+    public void addCode(StringBuffer code) {
+        addCode(code.toString(), "default");
 
-   public String processCode(String code) {
-      // FIXME: This should transform the Pt Classic style
-      // macro references like $ref(input).
-      // For now, just leave the code unchanged.
-      return code;
-   }
+        public void addCode(String code, String streamName) {
+            StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
+            if (buffer == null) {
+                buffer = new StringBuffer();
+                _codeBlocks.put(streamName, buffer);
+            }
+            buffer.append(processCode(code));
+        }
+        // NOTE: There is a three argument version
+        // of the addCode() method, but I don't really understand
+        // what the third argument means...
 
-   private HashMap _codeBlocks = new HashMap();
-}
+        public String getCode(String streamName) {
+            StringBuffer buffer = (StringBuffer)_codeBlocks.get(streamName);
+            if (buffer == null) {
+                return "";
+            }
+            return buffer.toString();
+        }
+
+        public String processCode(String code) {
+            // FIXME: This should transform the Pt Classic style
+            // macro references like $ref(input).
+            // For now, just leave the code unchanged.
+            return code;
+        }
+
+        private HashMap _codeBlocks = new HashMap();
+    }

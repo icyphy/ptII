@@ -89,23 +89,23 @@ public class ClassicCGCActor extends CodeGenActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public void addInclude(String code) {
-       addCode(code, "include");
-   }
+    public void addInclude(String code) {
+        addCode(code, "include");
+    }
 
-   public void addGlobal(String code) {
-       addCode(code, "global");
-   }
+    public void addGlobal(String code) {
+        addCode(code, "global");
+    }
 
-   public void addProcedure(String code) {
-       addCode(code, "procedure");
-   }
+    public void addProcedure(String code) {
+        addCode(code, "procedure");
+    }
 
-   public String getCode(String streamName) {
-       if (streamName == null) {
-           return "FIXME: _myCode";
-       } else {
-           return "FIXME: return named stream " + streamName;
-       }
-   }
+    public String getCode(String streamName) {
+        if (streamName == null) {
+            return "FIXME: _myCode";
+        } else {
+            return "FIXME: return named stream " + streamName;
+        }
+    }
 }

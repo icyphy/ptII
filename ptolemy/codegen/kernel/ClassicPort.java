@@ -111,13 +111,13 @@ public class ClassicPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public int numberPorts() {
-         return getWidth();
-   }
-   public void setSDFParams(int consumptionProduction, int offset) {
-       //... create the contained parameter that declares sdf
-       //production consumption...
-       //... create a new parameter for the offset (which we don't use
-       //in PtII) if it is non-zero, or just ignore for now...
-   }
+    public int numberPorts() {
+        return getWidth();
+    }
+    public void setSDFParams(int consumptionProduction, int offset) {
+        //... create the contained parameter that declares sdf
+        //production consumption...
+        //... create a new parameter for the offset (which we don't use
+        //in PtII) if it is non-zero, or just ignore for now...
+    }
 }
