@@ -63,7 +63,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'DataflowActorInterpreter$$EnvironmentKey.class' \
+	'DataflowActorInterpreter$$MultipleTokenReaderThunk.class' \
+	'DataflowActorInterpreter$$SingleTokenReaderThunk.class' \
+	'DataMapEnvironment$$PortVarInfo.class' \
+	'DataMapEnvironment$$UnboundPortVarException.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
