@@ -92,6 +92,7 @@ public class TypeApplet extends SDFApplet {
 
     // The start time for the trace
     private long _startTime = 0;
+    private long _counter = 0;
 
         // The current element of each state;
         private TraceModel.Element _currentElement[];
@@ -138,8 +139,8 @@ public class TypeApplet extends SDFApplet {
 //            add(BorderLayout.SOUTH,visPanel);
 
             visPanel.add(jgraph, BorderLayout.WEST);
-            jgraph.setPreferredSize(new Dimension(400, 270));
-            jgraph.setSize(new Dimension(400, 270));
+            jgraph.setPreferredSize(new Dimension(400, 290));
+            jgraph.setSize(new Dimension(400, 290));
 
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = constructLattice();
@@ -152,7 +153,7 @@ public class TypeApplet extends SDFApplet {
 
             // Display the trace
             traceCanvas = displayTrace(traceModel);
-            traceCanvas.setPreferredSize(new Dimension(400,270));
+            traceCanvas.setPreferredSize(new Dimension(400,290));
             visPanel.add(traceCanvas, BorderLayout.EAST);
 
             _addListeners();
@@ -338,7 +339,10 @@ public class TypeApplet extends SDFApplet {
         
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
-        traceView.setTimeScale(0.5);
+//        traceView.setTimeScale(0.5);
+        traceView.setTimeScale(30);
+//        traceView.setTimeScale(_query.doubleValue("timescale"));
+
         traceView.setLayout(10,10,400,20,20);
         traceView.setTraceModel(traceModel);
 
@@ -390,7 +394,9 @@ public class TypeApplet extends SDFApplet {
             initTraceView();
 
             // Now set system "start" time
-            _startTime = System.currentTimeMillis();
+//            _startTime = System.currentTimeMillis();
+            _startTime = 0;
+	    _counter = 0;
 
             super._go();
         } catch (Exception ex) {
@@ -403,7 +409,8 @@ public class TypeApplet extends SDFApplet {
 
     private void _buildControlPanel(Panel controlPanel) {
 	Panel runControlPanel = _createRunControls(1);
-	controlPanel.add("North", runControlPanel);
+//	controlPanel.add("North", runControlPanel);
+	controlPanel.add("South", runControlPanel);
 
 //	Panel paramPanel = new Panel();
 //	paramPanel.setLayout(new GridLayout(6, 1));
@@ -421,6 +428,8 @@ public class TypeApplet extends SDFApplet {
 	_query.line("ramp2step", "Ramp2 Step Size", "1");
 	_query.line("expr", "Expression", "input1 + input2");
 
+//	_query.line("timescale", "TimeScale", "0.5");
+
 //	paramPanel.add(_ramp1InitQuery);
 //	paramPanel.add(_ramp1StepQuery);
 //	paramPanel.add(_ramp2InitQuery);
@@ -435,7 +444,8 @@ public class TypeApplet extends SDFApplet {
 	displayPanel.add(_plotterBox);
 	displayPanel.add(_printerBox);
 //	paramPanel.add(displayPanel);
-	controlPanel.add("South", displayPanel);
+//	controlPanel.add("South", displayPanel);
+	controlPanel.add("North", displayPanel);
     }
 
     private void _buildModel()
@@ -916,12 +926,16 @@ public class TypeApplet extends SDFApplet {
               TraceModel.Trace trace = model.getTrace(id);
 
               // Create the new element
-              double currentTime = (double) (System.currentTimeMillis() - _startTime);
+//              double currentTime = (double) (System.currentTimeMillis() - _startTime);
+              double currentTime = (double) (_counter);
+	      _counter++;
 
               // Make the elements look large in case they're the
               // last one
+//              final TraceModel.Element element = new TraceModel.Element(
+//                      currentTime, currentTime+50, color);
               final TraceModel.Element element = new TraceModel.Element(
-                      currentTime, currentTime+50, color);
+                      currentTime, currentTime+1, color);
               element.closure = TraceModel.Element.OPEN_END;
               trace.add(element);
             
@@ -933,7 +947,8 @@ public class TypeApplet extends SDFApplet {
               final int msize = model.size();
               final TraceModel.Element temp[] = new TraceModel.Element[msize];
               for (int i = 0; i < msize; i++) {
-                  _currentElement[i].stopTime = currentTime+50;
+//                  _currentElement[i].stopTime = currentTime+50;
+                  _currentElement[i].stopTime = currentTime+1;
                   temp[i] = _currentElement[i];
               }
 
