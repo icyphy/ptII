@@ -245,10 +245,8 @@ public class DoubleMatrixMath {
                 det *= a[pivot][pivot];
             }
 
-            // if almost singular matrix, give up now
-
-            // FIXME use epsilon instead of this ugly constant
-            if (Math.abs(det) <= 1E-50) {
+            // If almost singular matrix, give up now.
+            if (Math.abs(det) <= Complex.epsilon) {
                 return det;
             }
 
@@ -265,7 +263,7 @@ public class DoubleMatrixMath {
             }
         }
 
-        // last pivot, no reduction required
+        // Last pivot, no reduction required.
         det *= a[n-1][n-1];
 
         return det;
@@ -282,7 +280,7 @@ public class DoubleMatrixMath {
 
         double[][] returnValue = new double[n][n];
 
-        // assume the matrix is zero-filled
+        // Assume the matrix is zero-filled.
 
         for (int i = 0; i < n; i++) {
             returnValue[i][i] = array[i];
@@ -465,42 +463,46 @@ public class DoubleMatrixMath {
     }
 
 
-    /** Replace the first matrix argument elements with the values of
-     *  the second matrix argument. The second matrix argument must be
-     *  large enough to hold all the values of second matrix argument.
-     *  @param destMatrix A matrix of doubles, used as the destination.
-     *  @param srcMatrix A matrix of doubles, used as the source.
+    /** Replace the destinationMatrix argument elements with the values of
+     *  the sourceMatrix argument. The destinationMatrix argument must be
+     *  large enough to hold all the values of sourceMatrix argument.
+     *  @param destinationMatrix A matrix of doubles, used as the destination.
+     *  @param sourceMatrix A matrix of doubles, used as the source.
      */
-    public static final void matrixCopy(final double[][] srcMatrix,
-            final double[][] destMatrix) {
-        matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
-                _columns(srcMatrix));
+    public static final void matrixCopy(final double[][] sourceMatrix,
+            final double[][] destinationMatrix) {
+        matrixCopy(sourceMatrix, 0, 0, destinationMatrix, 0, 0, _rows(sourceMatrix),
+                _columns(sourceMatrix));
     }
 
-    /** Replace the first matrix argument's values, in the specified row
-     *  and column range, with the second matrix argument's values, starting
+
+    /** Replace the destinationMatrix argument's values, in the specified row
+     *  and column range, with the sourceMatrix argument's values, starting
      *  from specified row and column of the second matrix.
-     *  @param srcMatrix A matrix of doubles, used as the destination.
-     *  @param srcRowStart An int specifying the starting row of the source.
-     *  @param srcColStart An int specifying the starting column of the
+     *  @param sourceMatrix A matrix of doubles, used as the destination.
+     *  @param sourceRowStart An int specifying the starting row of the source.
+     *  @param sourceColStart An int specifying the starting column of the
      *  source.
-     *  @param destMatrix A matrix of doubles, used as the destination.
-     *  @param destRowStart An int specifying the starting row of the dest.
-     *  @param destColStart An int specifying the starting column of the
-     *         dest.
+     *  @param destinationMatrix A matrix of doubles, used as the destination.
+     *  @param destinationRowStart An int specifying the starting row of the
+     *  destination. 
+     *  @param destinationColumnStart An int specifying the starting column
+     *  of the destination.
      *  @param rowSpan An int specifying how many rows to copy.
-     *  @param colSpan An int specifying how many columns to copy.
+     *  @param columnSpan An int specifying how many columns to copy.
      */
-    public static final void matrixCopy(final double[][] srcMatrix,
-            final int srcRowStart, final int srcColStart,
-            final double[][] destMatrix,
-            final int destRowStart, final int destColStart,
-            final int rowSpan, final int colSpan) {
+    public static final void matrixCopy(final double[][] sourceMatrix,
+            final int sourceRowStart, final int sourceColStart,
+            final double[][] destinationMatrix,
+            final int destinationRowStart, final int destinationColumnStart,
+            final int rowSpan, final int columnSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
-            System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
-                    destMatrix[destRowStart + i], destColStart,
-                    colSpan);
+            System.arraycopy(sourceMatrix[sourceRowStart + i],
+                    sourceColStart,
+                    destinationMatrix[destinationRowStart + i],
+                    destinationColumnStart,
+                    columnSpan);
         }
     }
 

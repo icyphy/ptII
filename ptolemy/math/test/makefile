@@ -61,14 +61,18 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	Complex.tcl \
 	ComplexArrayMath.tcl \
+	ComplexMatrixMath.tcl \
         DoubleArrayMath.tcl \
         DoubleArrayStat.tcl \
         DoubleMatrixMath.tcl \
+	FloatMatrixMath.tcl \
 	ExtendedMath.tcl \
 	Quantizer.tcl \
 	FixPoint.tcl \
 	Fraction.tcl \
+	IntegerMatrixMath.tcl \
 	Interpolation.tcl \
+	LongMatrixMath.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.

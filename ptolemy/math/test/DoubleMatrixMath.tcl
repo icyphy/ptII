@@ -244,6 +244,44 @@ test DoubleMatrixMath-5.2 {inverse double[][]} {
     ptclose $stmp {{{0.00140871553556869 0.000223800435617599 0.00165558024009741} {-0.150761461342092 0.000125611616474079 0.000938499905222039} {-0.79297446471244 0.00325018981267364 0.228174953683435}}}
 } {1} 
 
+####################################################################
+test DoubleMatrixMath-5.8.0 {matrixCopy double[][] double[][]} {
+    set m3_tmp [java::new {double[][]} 3 [list [list 0.0 -1.0 2.0] \
+                                       [list 0.1 -1.1 -2.1] \
+                                       [list 0.2 -1.2 -1.2]]]
+
+    java::call ptolemy.math.DoubleMatrixMath \
+	    {matrixCopy double[][] double[][] } $m3 $m3_tmp
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $m3_tmp]
+
+    epsilonDiff $s {{{3.7, -6.6, 3.0E-4}, {4862.2, 236.1, -36.25}, {-56.4, -26.3, 4.9}}}
+} {}
+
+####################################################################
+test DoubleMatrixMath-5.8.1 {matrixCopy double[][] int int double[][] int int int int} {
+    set m3_src [java::new {double[][]} 3 [list [list 0.0 -1.0 2.0] \
+                                       [list 0.1 -1.1 -2.1] \
+                                       [list 0.2 -1.2 -2.2]]]
+    set m3_dest [java::new {double[][]} 3 [list [list 10.0 -11.0 12.0] \
+                                       [list 10.1 -11.1 -12.1] \
+                                       [list 10.2 -11.2 -12.2]]]
+
+    java::call ptolemy.math.DoubleMatrixMath \
+	    {matrixCopy} $m3_src 1 1 $m3_dest 0 1 1 2
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $m3_dest]
+
+    epsilonDiff $s {{{10.0, -1.1, -2.1}, {10.1, -11.1, -12.1}, {10.2, -11.2, -12.2}}}
+} {}
+
+
+####################################################################
+test DoubleMatrixMath-6.1 {multiply double[][] int} {
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {multiply double[][] double}  $m32 -2.0 ]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-7.4 13.2} {-9724.4 -472.2} {112.8 52.6}}} {}
+} {}
 
 ####################################################################
 test DoubleMatrixMath-6.1 {multiply double[][] double[][]} {
