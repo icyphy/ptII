@@ -69,7 +69,7 @@ proc sootShallowCodeGeneration {model} {
 	    ]]
     set main [java::new ptolemy.copernicus.java.Main $args]
     $main initialize
-    $main transform
+    $main addTransforms
     set toplevel [$main toplevel]
 
     # See KernelMain.generateCode for a description of why this is necessary
@@ -130,15 +130,16 @@ proc autoShallowCG {autoDirectory} {
 
 
 proc foo {} {
+    global relativePathToPTII
       sootShallowCodeGeneration \
-  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+  	 [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml]
 }
 test MoMLCompiler-1.1 {Compile and run the Orthocomm test} {
     set result [sootShallowCodeGeneration \
   	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
     lrange $result 0 9
 } {2 4 6 8 10 12 14 16 18 20}
-
+ 
 #  autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
 #  autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
 #  #autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
