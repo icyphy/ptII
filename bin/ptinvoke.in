@@ -484,6 +484,9 @@ javaflag="$ALL_JFLAG"
 # this sets the ptolemy.ptII.dir environment variable.
 ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 
+# Start up with the US Locale so as to avoid problems with , instead
+# of . in floating point numbers in German and Swedish locales
+localeflag="-Duser.language=en -Duser.region=US" 
 
 # See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
@@ -900,7 +903,7 @@ if [ "$error" = "none" ]; then
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-	str="\"$javac\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
     fi 
     if [ "$quiet" = "0" ]; then echo $str; fi
     
