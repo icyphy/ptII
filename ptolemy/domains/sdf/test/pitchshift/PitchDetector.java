@@ -77,6 +77,7 @@ public class PitchDetector {
     private double[] recentInputArray;
     private double[] logMagDFTWinInputArray;
     private double[] cepstrumArray;
+
     private int voiced; // == 1 for voiced, == 0, for unvoiced.
 
     // Initialize input pos
@@ -106,6 +107,9 @@ public class PitchDetector {
         this.outPitchArray = new double[vectorSize];
         this.windowedInput = new double[recentInputArraySize];
         this.logMagDFTWinInputArray = new double[recentInputArraySize];
+
+	this.cepstrumArray = new double[recentInputArraySize];
+
         this.recentInputArray = new double[recentInputArraySize];
         // Initialize the hamming window.
         this.hammingWindow = makeHamming(recentInputArraySize);
@@ -165,15 +169,20 @@ public class PitchDetector {
                 // Step 2. Take DFT of recent input.
                 dftInput = SignalProcessing.FFTComplexOut(windowedInput);
                 // Step 3. Take log of magnitude of dftInput.
+		// FIXME: or Mag^2 ?
                 for (int ind2 = 0; ind2 <
                          recentInputArray.length; ind2++) {
                     logMagDFTWinInputArray[ind2] =
-                        Math.log(dftInput[ind2].magnitude());
+                        Math.log(dftInput[ind2].magnitude()*dftInput[ind2].magnitude());
+		 
                 }
                 // Step 4. Take IDFT of logMagDFTWinInputArray.
                 // FIXME: Is real idft correct? or complex?
+		
+		
                 cepstrumArray =
                     SignalProcessing.IFFTRealOut(logMagDFTWinInputArray);
+		    
                 // Step 5. Find the peak in the high time part. This is
                 // the pitch. FIXME: clean this up.
                 voiced = 0;
