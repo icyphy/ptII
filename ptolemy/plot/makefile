@@ -132,6 +132,7 @@ OPTIONAL_FILES = \
 	'Histogram$$1.class' \
 	'Histogram$$2.class' \
 	'Histogram$$3.class' \
+	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
@@ -157,6 +158,7 @@ OPTIONAL_FILES = \
 	'PlotLive$$StopButtonListener.class' \
 	'Plot$$Format.class' \
 	'PlotApplication$$1.class' \
+	'PlotApplication$$2.class' \
 	'PlotFrame$$EPSFileFilter.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
@@ -241,8 +243,8 @@ COMPLEXCLASSFILES = \
 
 # Class files used in applications
 APPLICATIONCLASSFILES = \
-		$(COMPLEXCLASSFILES) \
 		'$(ME)/PlotApplication$$1.class' \
+		'$(ME)/PlotApplication$$2.class' \
 		$(ME)/PlotApplication.class
 
 # Render class files used by actor.lib.gui.MatrixVisualizer but
@@ -277,6 +279,7 @@ $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
+		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
