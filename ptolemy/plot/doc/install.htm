@@ -78,6 +78,12 @@ is in your path.
 
 <li> Untar or unzip the Ptplot distribution.
 
+ <br> Note that under Java 1.4.0_01, viewing local applets that have
+spaces in the path name may fail if the applet tries to download a
+data file.  The workaround is to place the Ptplot distribution in a
+directory that does not have space in the pathname.  For details, see
+the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
+
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
@@ -116,8 +122,13 @@ make
 
 <h2><a name="installanywhere">InstallAnywhere Installer</a></h2>
 Ptplot is also available in several self-extracting formats
-that were created with the InstallAnywhere Professional Multiplatform
-Edition
+that were created with InstallAnywhere.
+
+ <p> Note that under Java 1.4.0_01, viewing local applets that have
+spaces in the path name may fail if the applet tries to download a
+data file.  The workaround is to place the Ptplot distribution in a
+directory that does not have space in the pathname.  For details, see
+the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 
  <p>Note that when you run the installer under Windows, Ptplot is
 added to your Start menu under Ptolemy -&gt; Ptplot 5.2.
