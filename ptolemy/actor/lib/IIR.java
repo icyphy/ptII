@@ -182,7 +182,7 @@ public class IIR extends Transformer {
      *  on the last invocation in the iteration will affect the
      *  filter state.
      *
-     *  @exception IllegalActionException Not thrown here.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
 	// The current input sample.
