@@ -64,7 +64,8 @@ This class defines some useful things that help to create new visual notations
 for ptolemy models.  It handles the things that almost all such models need
 to handle.  It assumes that all the objects in the graph are ptolemy named
 objects.  It also assumes that the semantic object of a particular
-graph object is fixed.
+graph object is fixed.  Lastly, it makes sure that all the modifications to
+the ptolemy model that use this interface occur within a change request.
 <p>
 This model uses a ptolemy change listener to detect changes to the model that
 do not originate from this model.  These changes are propagated
@@ -101,10 +102,10 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 		    AbstractPtolemyGraphModel.super.
 		    addNode(eventSource, node, parent);
 		}
-	    };
+	    };	
 	_toplevel.requestChange(request);
     }
-
+    
     /**
      * Connect the given edge to the given tail and head nodes,
      * then dispatch events to the listeners.
