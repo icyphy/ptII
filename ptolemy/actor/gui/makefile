@@ -129,7 +129,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'BrowserEffigy$$Factory.class' \
 	'BrowserTableau$$Factory.class' \
-	'eActorApplication$$1.class' \
+	'ActorApplication$$1.class' \
 	'CompositeActorApplication$$1.class' \
 	'CompositeActorApplication$$StateReporter.class' \
 	'Configuration$$1.class' \
