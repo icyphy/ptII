@@ -794,6 +794,8 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _discretePhaseExecution() throws IllegalActionException {
         _setDiscretePhase(true);
 
+        prefireClear();
+
         // Continuous signals must have values at the very beginning of
         // simulation. The following block of code is just for this purpose.
         if (_firstIteration) {
@@ -1218,8 +1220,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Using breakpoint solver: " + solver.getName() +
                     " to propagate states.");
         }
-
-        prefireClear();
 
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
         prefireDynamicActors();

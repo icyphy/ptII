@@ -36,7 +36,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -220,12 +219,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** If this is a top-level director, behave exactly as a
-     *  CTMultiSolverDirector, otherwise always return true.
-     *  @return True if this is not a top-level director or the simulation
-     *  is not finished.
+    /** If this is not a top-level director, request a refiring at the current
+     *  model time. Otherwise, behave exactly as a CTMultiSolverDirector.
+     *  @return True if the simulation is not finished.
      *  @exception IllegalActionException If thrown in the postfire method
-     *  in the super class.
+     *  in the super class or the refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel()){
@@ -310,6 +308,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // FIXME: get a concrete example that illustrates how this 
                 // can happen.
                 // Outside time less than the local time. Rollback!
+                System.out.println("Whaaat on earth are UUUUUU doing");
                 if (_debugging) {
                     _debug(getName() + " rollback from: " +
                         localTime + " to: " +_knownGoodTime +
@@ -438,54 +437,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    // FIXME: this method is very confusing. Need a better way to
-    // handle events. The bottom line is that whenever an event is
-    // generated, requrest a refiring and let the upper level react
-    // to the event.
-    // FIXME: it will be removed.
-
-    /** Return true if the current iteration is stopped due to
-     *  the occurrence of events (predictable or unpredictable).
-     *  @return True if the current fire phase is stopped by an event.
-     *  @exception IllegalActionException If thrown by the scheduler.
-     */
-    protected boolean _isStoppedByEvent() throws IllegalActionException {
-        // predictable breakpoints
-        Time breakpoint;
-        TotallyOrderedSet table = getBreakPoints();
-        Time localTime = getModelTime();
-        if (table != null) {
-            while (!table.isEmpty()) {
-                breakpoint = (Time)table.first();
-                if (breakpoint.compareTo(localTime) < 0) {
-                    // The breakpoints in the past.
-                    // This should not happen.
-                    throw new InternalErrorException("The breakpoint " +
-                            breakpoint + " is in the past.");
-                } else if (breakpoint.equals(localTime) &&
-                        breakpoint.compareTo(getIterationEndTime()) < 0) {
-                    // FIXME: why the breakpoint needs to be smaller than
-                    // the iteration ending time?
-                    // break point now! stopped by event
-                    return true;
-                } else {
-                    break;
-                }
-            }
-        }
-        // unpredictable breakpoints. Detect current events.
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator generators = schedule.get(
-                CTSchedule.EVENT_GENERATORS).actorIterator();
-        while (generators.hasNext()) {
-            CTEventGenerator generator = (CTEventGenerator)generators.next();
-            if (generator.hasCurrentEvent()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**Return true if this is a top-level director.
      * @return True if this director is at the top level.
      */
@@ -536,6 +487,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  method of an actor, or the schedule does not exist.
      */
     protected void _rollback() throws IllegalActionException{
+        setModelTime(_knownGoodTime);
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(
                 CTSchedule.STATEFUL_ACTORS).actorIterator();
@@ -546,16 +498,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
             actor.goToMarkedState();
         }
-        setModelTime(_knownGoodTime);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The number of rollbacks. Used for statistics.
-     */
-    // FIXME: not used anywhere.
-    protected int _Nroll = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -137,36 +137,22 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Execute the subsystem for one iteration. An iteration includes
-     *  an event phase and a state-resolving phase.
-     *  If states cannot be accurately resolved, then subsystem
+     *  a discrete phase of execution and a continuous one.
+     *  If states cannot be resolved accurately, then this subsystem
      *  may produce a meaningless output. It is the outside system's
      *  responsibility to check whether this subsystem is accurate in
-     *  this iteration, by calling the isThisStepAccurate() method
-     *  of the CTCompositeActor that contains this director.
+     *  this iteration, by calling the isOutputAccurate() and isStateAccurate() 
+     *  methods of the CTCompositeActor that contains this director.
      *  @exception IllegalActionException If there does not exits a schedule,
      *  or ODE solver cannot be set, or any actor throws it during this 
      *  iteration. 
      */
     public void fire() throws IllegalActionException {
-        // Update the beginning time of this iteration 
-        // based on the time the upper level.
-        // This process can not be performed inside prefire method since 
-        // this reset is necessary if the current step size is not accurate.
-        
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         // The execution phase is the execution phase of the top-level director.
         // All directors at different levels of hierarchy must be synchronized
         // to that.
         CTExecutionPhase executionPhase = getExecutionPhase();
-        
-        // Use the correct solver. If the current phase of execution is a 
-        // discrete one, use a breakpoint solver. Otherwise, use a normal ODE 
-        // solver.
-        if (isDiscretePhase()) {
-            _setCurrentODESolver(getBreakpointSolver());
-        } else {
-            _setCurrentODESolver(getNormalODESolver());
-        }
         
         if (executionPhase 
             == CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE) {
@@ -189,28 +175,16 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             super._iterateEventGenerators(schedule);
         } else if (executionPhase 
             == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
-//            // NOTE: the time a discrete phase execution (waveform phase) 
-//            // starts is the same time the iteration time starts.
-//            // NOTE: A ct composite actor is also a waveform generator.
-//                
-//            // FIXME: why update here? should this go to the prefire method?
-//            // The time update only happens once!
-//            // FIXME: how to make prefire method more useful? do stuff 
-//            // as change ODE solver and update time.
-//            CompositeActor container = (CompositeActor)getContainer();
-//            Director exe = container.getExecutiveDirector();
-//            Time time = exe.getModelTime();
-//            setModelTime(exe.getModelTime());
-//            _setIterationBeginTime(exe.getModelTime());
-//                
             super._iterateWaveformGenerators(schedule);
-        } else if (executionPhase 
-            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
-            super.prefireDynamicActors();
-        }
+        } 
+//        else if (executionPhase 
+//            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
+//            super.prefireDynamicActors();
+//        }
     }
 
-    /** Return the current integration step size. 
+    /** Return the current integration step size, which is inherited from the
+     *  enclosing CT director.
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
@@ -242,8 +216,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Get the current execution phase of this director.
-     *  @return The current execution phase of this director.
+    /** Get the current execution phase, which is inherited from the enclosing
+     *  CT director.
+     *  @return The current execution phase.
      */
     public CTExecutionPhase getExecutionPhase() {
         CTGeneralDirector executiveDirector = 
@@ -290,13 +265,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } catch (IllegalActionException e) {
             throw new InternalErrorException (e);
         }
-    }
-    
-    /** Call initialize method of super class. Remove the first breakpoint, 
-     *  the model start time, from the break-point table. 
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
     }
     
     /** Return true if this is the discrete phase execution.
@@ -394,14 +362,21 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Call the prefire of the super class. Recompute the schedules 
-     *  if necessary. Synchronize time with the outer domain,
-     *  and adjust the contents of the breakpoint table with
-     *  respect to the current time.
-     *  @return True if the super.prefire returns true.
-     *  @exception IllegalActionException If schedule can not be achieved.
+    /** Call the prefire of the super class. Change the ODE solver based on 
+     *  the phase of execution.
+     *  @return True if the prefire() method of super class returns true.
+     *  @exception IllegalActionException If super class throws it or the ODE
+     *  solver can not be set.
      */
     public boolean prefire() throws IllegalActionException {
+        // Use the correct solver. If the current phase of execution is a 
+        // discrete one, use a breakpoint solver. Otherwise, use a normal ODE 
+        // solver.
+        if (isDiscretePhase()) {
+            _setCurrentODESolver(getBreakpointSolver());
+        } else {
+            _setCurrentODESolver(getNormalODESolver());
+        }
         return super.prefire();
     }
 
@@ -428,13 +403,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public double refinedStepSize() {
         try {
+            double refinedStepSize = Double.MAX_VALUE;
             if (!_stateAcceptable) {
-                return _refinedStepWRTState();
-            } else if (!_outputAcceptable) {
-                return _refinedStepWRTOutput();
-            } else {
-                return Double.MAX_VALUE;
+                refinedStepSize = _refinedStepWRTState();
+            } 
+            if (!_outputAcceptable) {
+                refinedStepSize = 
+                    Math.min(refinedStepSize, _refinedStepWRTOutput());
             }
+            return refinedStepSize;
         } catch ( IllegalActionException ex) {
             throw new InternalErrorException (
                     "Fail to refine step size. " + ex.getMessage());

@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
@@ -619,10 +618,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if (_debugging && _verbose) {
                 _debug("Prefire dynamic actor: " + ((Nameable)actor).getName());
             }
-            boolean ready = true;
-            if (actor instanceof AtomicActor) {
-                ready = ready && actor.prefire();
-            } else if (actor instanceof CTCompositeActor) {
+            boolean ready = actor.prefire();
+            if (actor instanceof CTCompositeActor) {
                 ready =
                     ready && ((CTCompositeActor)actor).prefireDynamicActors();
             }
