@@ -264,7 +264,7 @@ public class ComplexToken extends ScalarToken {
      *  @return The Compelx value contained by this token.
      */
     public Complex getValue() {
-        return _value;
+        return complexValue();
     }
 
     /** Return a new token whose value is the product of this token
