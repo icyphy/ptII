@@ -67,6 +67,7 @@ EXTRA_SRCS = $(JSRCS) \
 	Live.htm \
 	LogAxes.htm \
 	Marks.htm \
+	MarksSimple.htm \
 	TwoPlotExample.java \
 	Sinusoids.htm \
 	bargraph.plt \
