@@ -147,7 +147,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // End of gui stuff.
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 22050;
+	    int sampleRate = 11025;
 
 	    int channels = 1;
 
