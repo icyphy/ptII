@@ -53,7 +53,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -89,6 +88,12 @@ import ptolemy.kernel.util.Workspace;
 */
 public class GiottoDirector extends StaticSchedulingDirector 
     implements TimedDirector {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The static default Giotto period is 100ms.
+     */
+    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -96,16 +101,6 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public GiottoDirector() {
         super();
-        _init();
-    }
-
-    /** Construct a director in the given workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace for this object.
-     */
-    public GiottoDirector(Workspace workspace) {
-        super(workspace);
         _init();
     }
 
@@ -128,35 +123,16 @@ public class GiottoDirector extends StaticSchedulingDirector
         _init();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The number of times that postfire may be called before it
-     *  returns false. If the value is less than or equal to zero,
-     *  then the execution will never return false in postfire,
-     *  and thus the execution can continue forever.
-     *  The default value is an IntToken with the value zero.
+    /** Construct a director in the given workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace for this object.
      */
-    public Parameter iterations;
+    public GiottoDirector(Workspace workspace) {
+        super(workspace);
+        _init();
+    }
 
-    /** The period of an iteration. This is a double that defaults to
-     *  <I>0.1</I>.
-     */
-    public Parameter period;
-
-    /** Specify whether the execution should synchronize to the
-     *  real time. This parameter must contain a BooleanToken.
-     *  If this parameter is true, then do not process events until the
-     *  elapsed real time matches the time stamp of the events.
-     *  The value defaults to false.
-     */
-    public Parameter synchronizeToRealTime;
-
-    /** The resolution in comparing time.
-     *  The default value is 1e-10, of type DoubleToken.
-     */
-    public Parameter timeResolution;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -191,64 +167,6 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
     }
 
-    /** Return the next time that this director expects activity.
-     *  @return The time of the next iteration.
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
-    }
-
-    /** Return the next time that this director expects activity.
-     *  @return The time of the next iteration.
-     */
-    public Time getModelNextIterationTime() {
-        return getModelTime().add(_unitTimeIncrement);
-    }
-
-    /** Return true if the current time of the outside domain is greater than
-     *  or equal to the current time.
-     *  @return True if the director is ready to run for one iteration.
-     */
-
-    public boolean prefire () throws IllegalActionException{
-
-        if (_isEmbedded()) {
-            // whatever, the currentTime should be updated by the
-            // director of upper container.
-            setModelTime ((((CompositeActor) getContainer()).
-                getExecutiveDirector()).getModelTime());
-            _debug("Set current time as: " + getModelTime());
-        } 
-        
-        if (getModelTime().compareTo(_expectedNextIterationTime) < 0) { 
-            if (_debugging) {
-                _debug("*** Prefire returned false.");
-            }
-            return false;
-        } else {
-            if (_debugging) {
-                _debug("*** Prefire returned true.");
-            }
-            return true;
-        }
-    }
-
-
-    /** Put the actor that requests to refire into an actor list. The director
-     *  will iterate the actor list in its fire method.
-     */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        // The lower level keeps requesting refiring unless its firing
-        // counts are met. So, the upper level needs to check whetehr the
-        // firing can be granted. If the requested time is before the 
-        // scheduled next iteraton time, grant it. Otherwise, discard
-        // the request.
-        // This is particular useful in hierarchical Giotto models.
-        if (time.compareTo(getModelNextIterationTime()) < 0) {
-            _refireActors.add(new Firing(actor));
-        }
-    }
-
     /** Iterate the actors in the next minor cycle of the schedule.
      *  After iterating the actors, increment time by the minor cycle time.
      *  Also, update the receivers that are destinations of all actors that
@@ -272,6 +190,8 @@ public class GiottoDirector extends StaticSchedulingDirector
             _debug("Giotto director firing!");
         }
 
+        if (!_readyToFire) return;
+        
         // Grab the next schedule to execute.
         Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex);
 
@@ -365,6 +285,56 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
     }
 
+
+    /** Put the actor that requests to refire into an actor list. The director
+     *  will iterate the actor list in its fire method.
+     */
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+        // The lower level keeps requesting refiring unless its firing
+        // counts are met. So, the upper level needs to check whetehr the
+        // firing can be granted. If the requested time is before the 
+        // scheduled next iteraton time, grant it. Otherwise, discard
+        // the request.
+        // This is particular useful in hierarchical Giotto models.
+        if (time.compareTo(getModelNextIterationTime()) < 0) {
+            _refireActors.add(new Firing(actor));
+        }
+    }
+
+    /** Get the period of the giotto director in ms
+     *
+     *  @return int value of period in ms.
+     */
+    public int getIntPeriod() throws IllegalActionException {
+        //In ptolemy model, for simulation, time is double with unit Second
+        // however, for giotto code, we need integer and its unit is microSecond
+        return (new Double (_periodValue * 1000)).intValue();
+    }
+
+    /** Return the next time that this director expects activity.
+     *  @return The time of the next iteration.
+     */
+    public Time getModelNextIterationTime() {
+        return getModelTime().add(_unitTimeIncrement);
+    }
+
+    /** Return the next time that this director expects activity.
+     *  @return The time of the next iteration.
+     */
+    public double getNextIterationTime() {
+        return getModelNextIterationTime().getTimeValue();
+    }
+
+    /** Get the period of the giotto director in ms
+     *
+     *  @return double value of period in ms.
+     */
+    public double getPeriod() {
+        //In ptolemy model, for simulation, time is double with unit Second
+        // however, for giotto code, we need integer and its unit is milliSecond
+        return _periodValue;
+    }
+
     /** Initialize the actors associated with this director.
      *  The order in which the actors are initialized is arbitrary.
      *  @exception IllegalActionException If the initialize() method of
@@ -446,6 +416,9 @@ public class GiottoDirector extends StaticSchedulingDirector
         if (_debugging) {
             _debug("Giotto director postfiring!");
         }
+        
+        if (!_readyToFire) return true;
+        
         _unitIndex++;
         if (_unitIndex >= _schedule.size()) {
             _unitIndex = 0;
@@ -486,6 +459,44 @@ public class GiottoDirector extends StaticSchedulingDirector
                 _requestFiring();
             }
         }
+        return true;
+    }
+
+    /** This method always return true. 
+     *  If this director is at the top level, returning true means always 
+     *  ready to fire. 
+     *  If embedded, return true usually means that the current time of 
+     *  the outside domain is greater than or equal to the current time. 
+     *  However, when a giotto model is used inside a CT model, its inputs
+     *  may either be DISCRETE or CONTINUOUS. When the inputs are of type
+     *  CONTINUOUS, this method should always return true. To accomadate
+     *  this requirement, the prefire method still returns true but 
+     *  an internal flag will be set to false and the fire and postfire 
+     *  methods are forced to do nothing. 
+     *  
+     *  @return True if the director is ready to run for one iteration.
+     */
+
+    public boolean prefire() throws IllegalActionException{
+
+        if (_isEmbedded()) {
+            CompositeActor container = (CompositeActor)getContainer();
+            Time outsideCurrentTime = ((Actor)container).
+                getExecutiveDirector().getModelTime();
+            if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
+                // not the scheduled time to fire. 
+                _readyToFire = false;
+            } else if (outsideCurrentTime
+                .compareTo(_expectedNextIterationTime) > 0) {
+                // catch up with the outside time.
+                setModelTime(outsideCurrentTime);
+                _debug("Set current time as: " + getModelTime());
+                _readyToFire = true;       
+            }
+            // guaranteed to be synchronized to outside.
+        } else {
+           _readyToFire = true;       
+       }
         return true;
     }
 
@@ -608,31 +619,34 @@ public class GiottoDirector extends StaticSchedulingDirector
         return wasTransferred;
     }
 
-    /** Get the period of the giotto director in ms
-     *
-     *  @return double value of period in ms.
-     */
-    public double getPeriod() {
-        //In ptolemy model, for simulation, time is double with unit Second
-        // however, for giotto code, we need integer and its unit is milliSecond
-        return _periodValue;
-    }
-
-    /** Get the period of the giotto director in ms
-     *
-     *  @return int value of period in ms.
-     */
-    public int getIntPeriod() throws IllegalActionException {
-        //In ptolemy model, for simulation, time is double with unit Second
-        // however, for giotto code, we need integer and its unit is microSecond
-        return (new Double (_periodValue * 1000)).intValue();
-    }
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         parameters                        ////
 
-    /** The static default Giotto period is 100ms.
+    /** The number of times that postfire may be called before it
+     *  returns false. If the value is less than or equal to zero,
+     *  then the execution will never return false in postfire,
+     *  and thus the execution can continue forever.
+     *  The default value is an IntToken with the value zero.
      */
-    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
+    public Parameter iterations;
+
+    /** The period of an iteration. This is a double that defaults to
+     *  <I>0.1</I>.
+     */
+    public Parameter period;
+
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, then do not process events until the
+     *  elapsed real time matches the time stamp of the events.
+     *  The value defaults to false.
+     */
+    public Parameter synchronizeToRealTime;
+
+    /** The resolution in comparing time.
+     *  The default value is 1e-10, of type DoubleToken.
+     */
+    public Parameter timeResolution;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -644,7 +658,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     protected boolean _writeAccessRequired() {
         return false;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -680,7 +694,8 @@ public class GiottoDirector extends StaticSchedulingDirector
     // If the queue is empty, then throw an InvalidStateException
     private void _requestFiring() throws IllegalActionException {
 
-        if (_debugging) _debug("Request refiring of opaque composite actor at " + _expectedNextIterationTime);
+        if (_debugging) _debug("Request refiring of opaque composite actor at " 
+            + _expectedNextIterationTime);
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), _expectedNextIterationTime);
@@ -689,29 +704,29 @@ public class GiottoDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The count of iterations executed.
-    private int _iterationCount = 0;
-
-    // Minimum time step size (a Giotto "unit").
-    private double _unitTimeIncrement = 0.0;
-
     // The time for next iteration.
     private Time _expectedNextIterationTime;
 
+    // The count of iterations executed.
+    private int _iterationCount = 0;
+
     // Period of the director.
     private double _periodValue = 0.0;
+    
+    // Flag to indicate whether the current director is ready to fire.
+    private boolean _readyToFire = true;
 
     // The real time at which the initialize() method was invoked.
     private long _realStartTime = 0;
 
     // List of all receivers this director has created.
     private LinkedList _receivers;
-
-    // Schedule to be executed.
-    private Schedule _schedule;
     
     // Actors that request refire.
     private Schedule _refireActors;
+
+    // Schedule to be executed.
+    private Schedule _schedule;
 
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
@@ -719,5 +734,8 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     // Counter for minimum time steps.
     private int _unitIndex = 0;
+
+    // Minimum time step size (a Giotto "unit").
+    private double _unitTimeIncrement = 0.0;
 
 }
