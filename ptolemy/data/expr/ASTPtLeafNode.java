@@ -102,6 +102,13 @@ public class ASTPtLeafNode extends ASTPtRootNode {
             }
         }
     }
+    
+    /** Return true if the leaf is an identifier that must be
+     * evaluated in scope.
+     */
+    public boolean isIdentifier() {
+        return !isConstant();
+    }
 
     /** Return a string representation
      */

@@ -258,7 +258,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
-        if (_scope != null && functionName != null) {
+        if ( functionName != null && _scope != null) {
             value = _scope.get(node.getFunctionName());
         }
         
@@ -282,8 +282,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
                         
-            // Evaluate it.
-            value = _evaluateChild(node, 0);
+            // Evaluate it, if necessary.
+            if(value == null) {
+                value = _evaluateChild(node, 0);
+            }
 
             if (value instanceof ArrayToken) {
                 if (argCount == 1) {

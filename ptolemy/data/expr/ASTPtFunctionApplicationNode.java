@@ -72,8 +72,14 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
         Node n = jjtGetChild(0);
         if (!(n instanceof ASTPtLeafNode))
             return null;
-        else
-            return ((ASTPtLeafNode)n).getName();
+        else {
+            ASTPtLeafNode leaf = (ASTPtLeafNode)n;
+            if(leaf.isIdentifier()) {
+                return leaf.getName();
+            } else {
+                return null;
+            }
+        }
     }
 
     public void jjtClose() {
