@@ -51,11 +51,11 @@ capacity is zero.
 @author Edward A. Lee
 @version $Id$
 */
-public class FlowFifoQ extends NamedObj implements Receptionist {
+public class FlowFifoQ extends NamedObj implements Receiver {
 
     /** Construct an empty queue with the specified container.
      */	
-    public FlowFifoQ(AtomicIOPort container) {
+    public FlowFifoQ(IOPort container) {
         super();
 	_container = container;
 	_queue = new FIFOQueue(this);
@@ -118,7 +118,7 @@ public class FlowFifoQ extends NamedObj implements Receptionist {
 
 
     private FIFOQueue _queue;
-    private AtomicIOPort _container;
+    private IOPort _container;
 }
 
 

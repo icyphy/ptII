@@ -28,6 +28,7 @@ and/or produces data.
 
 package pt.actors;
 import pt.kernel.*;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
@@ -76,6 +77,53 @@ public abstract class Actor extends ComponentEntity implements Executable {
     public void initialize() {
     }
 
+    /** get an enumeration of the input ports
+     *  FIXME: Moved from AtomicActor.
+     */ 
+    public Enumeration inputPorts() {
+        synchronized(workspace()) {
+            if(_inputPortsVersion == workspace().getVersion()) {
+                return _cachedInputPorts.getElements();
+            }
+            NamedList inports = new NamedList();
+            Enumeration ports = getPorts();
+            while(ports.hasMoreElements()) {
+                IOPort p = (IOPort)ports.nextElement();
+                if( p.isInput()) {
+                    try {
+                        inports.append(p);
+                    }catch(KernelException e) {}
+                }
+            }
+            _cachedInputPorts = inports;
+            _inputPortsVersion = workspace().getVersion();
+            return _cachedInputPorts.getElements();
+        }
+    }
+
+    /** get an enumeration of the output ports
+     */
+    public Enumeration outputPorts() {
+        synchronized(workspace()) {
+            if(_outputPortsVersion == workspace().getVersion()) {
+                return _cachedOutputPorts.getElements();
+            }
+            NamedList outports = new NamedList();
+            Enumeration ports = getPorts();
+            while(ports.hasMoreElements()) {
+                IOPort p = (IOPort)ports.nextElement();
+                if( p.isOutput()) { 
+                    try {
+                        outports.append(p);
+                    }catch (KernelException e) {}
+                }
+            }
+            _cachedOutputPorts = outports;
+            _outputPortsVersion = workspace().getVersion();
+            return _cachedOutputPorts.getElements();
+        }
+    }
+
     /** This would define the actions that an actor should do at the end of
      *  every iteration of its execution
      */
@@ -97,6 +145,14 @@ public abstract class Actor extends ComponentEntity implements Executable {
         return;
     }
         
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    // FIXME: from AtomicPort
+    private long _inputPortsVersion = -1;
+    private transient NamedList _cachedInputPorts;
+    private long _outputPortsVersion = -1;
+    private transient NamedList _cachedOutputPorts;
 }
 
 
