@@ -37,6 +37,13 @@ bash-2.04$ cd "$PTII"
 bash-2.04$ ./configure
 bash-2.04$ make &gt;&amp; make.out
 </pre>
+If <CODE>configure</CODE> has problems, check to make sure your path
+includes your jdk1.3/bin directory.  To check, use the <CODE>echo</CODE> command.
+<pre>
+bash-2.04$ echo $PATH
+</pre>
+Configure and make usually generate a few errors.  Errors do not
+necessarily indicate failure of the process.
 
  <p>Below are the steps necessary to add an actor:
 <ol>
