@@ -35,13 +35,12 @@ import java.util.Comparator;
 //////////////////////////////////////////////////////////////////////////
 //// CQComparator
 /**
-This interface extends the Comparator interface, which defines
-the compare() method. The extension defines additional methods
-that specifically support the CalendarQueue class.  That class
-needs to associate an entry in the queue with a virtual bin
-number, and needs to be able to periodically recompute the width
-of its bins.  Thus, merely being able to compare entries is
-not sufficient.
+This interface extends the java.util.Comparator interface, which
+defines the compare() method. The extension defines additional methods
+that specifically support the CalendarQueue class.  That class needs
+to associate an entry in the queue with a virtual bin number, and
+needs to be able to periodically recompute the width of its bins.
+Thus, merely being able to compare entries is not sufficient.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
