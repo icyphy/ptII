@@ -37,13 +37,13 @@ import java.awt.Font;
 import java.awt.event.*;
 import java.util.Hashtable;
 
-import diva.graph.compat.*;
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
+import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
-import diva.util.gui.TutorialWindow;
 import diva.surfaces.trace.*;
 
 import javax.swing.*;
@@ -193,7 +193,7 @@ public class Type extends SDFApplet implements ChangeListener {
             _ioPanel.add(_plotPrint);
 
             // Construct the Ptolemy type lattice model
-            final GraphModel graphModel = _constructLattice();
+            final Graph graph = _constructLattice();
 
             // Construct a new trace model
             TraceModel traceModel = new TraceModel();
@@ -211,7 +211,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	    _addListeners();
 
             // Display the type lattice
-            _displayGraph(_jgraph, graphModel);
+            _displayGraph(_jgraph, graph);
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -314,31 +314,32 @@ public class Type extends SDFApplet implements ChangeListener {
     }
 
     // Construct the graph representing the Ptolemy type lattice
-    private GraphModel _constructLattice() {
-        GraphModel model = new GraphModel();
-
+    private Graph _constructLattice() {
+	GraphImpl impl = new BasicGraphImpl();
+	Graph graph = impl.createGraph(null);
+	
         // nodes, with user object set to the actor
-        Node n1 = model.createNode(Void.TYPE);
-        Node n2 = model.createNode(IntToken.class);
-        Node n3 = model.createNode(DoubleToken.class);
-        Node n4 = model.createNode(ComplexToken.class);
-        Node n5 = model.createNode(StringToken.class);
-        Node n6 = model.createNode(Token.class);
-        Node n7 = model.createNode(BooleanToken.class);
-        Node n8 = model.createNode(ObjectToken.class);
-        Node n9 = model.createNode(ScalarToken.class);
-        Node n10 = model.createNode(LongToken.class);
+        Node n1 = impl.createNode(Void.TYPE);
+        Node n2 = impl.createNode(IntToken.class);
+        Node n3 = impl.createNode(DoubleToken.class);
+        Node n4 = impl.createNode(ComplexToken.class);
+        Node n5 = impl.createNode(StringToken.class);
+        Node n6 = impl.createNode(Token.class);
+        Node n7 = impl.createNode(BooleanToken.class);
+        Node n8 = impl.createNode(ObjectToken.class);
+        Node n9 = impl.createNode(ScalarToken.class);
+        Node n10 = impl.createNode(LongToken.class);
 
-        model.addNode(n1);
-        model.addNode(n2);
-        model.addNode(n3);
-        model.addNode(n4);
-        model.addNode(n5);
-        model.addNode(n6);
-        model.addNode(n7);
-        model.addNode(n8);
-        model.addNode(n9);
-        model.addNode(n10);
+        impl.addNode(n1, graph);
+        impl.addNode(n2, graph);
+        impl.addNode(n3, graph);
+        impl.addNode(n4, graph);
+        impl.addNode(n5, graph);
+        impl.addNode(n6, graph);
+        impl.addNode(n7, graph);
+        impl.addNode(n8, graph);
+        impl.addNode(n9, graph);
+        impl.addNode(n10, graph);
 
         /*
            nodeMap.put(a1, n1);
@@ -352,47 +353,81 @@ public class Type extends SDFApplet implements ChangeListener {
         */
 
         // Edges
-        model.createEdge(n8, n1);
-        model.createEdge(n6, n8);
+        Edge e;
 
-        model.createEdge(n6, n5);
-        model.createEdge(n5, n7);
-        model.createEdge(n7, n1);
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n8);
+	impl.setEdgeTail(e, n1);
+	
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n6);
+	impl.setEdgeTail(e, n8);
+	
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n6);
+	impl.setEdgeTail(e, n5);
 
-        model.createEdge(n5, n9);
-        model.createEdge(n9, n10);
-        model.createEdge(n10, n2);
-        model.createEdge(n2, n1);
-        model.createEdge(n3, n2);
-        model.createEdge(n4, n3);
-        model.createEdge(n9, n4);
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n5);
+	impl.setEdgeTail(e, n7);
+	
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n7);
+	impl.setEdgeTail(e, n1);
+	    
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n5);
+	impl.setEdgeTail(e, n9);
+	
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n9);
+	impl.setEdgeTail(e, n10);
 
-        return model;
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n10);
+	impl.setEdgeTail(e, n2);
+
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n2);
+	impl.setEdgeTail(e, n1);
+
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n3);
+	impl.setEdgeTail(e, n2);
+
+        e = impl.createEdge(null);
+	impl.setEdgeHead(e, n4);
+	impl.setEdgeTail(e, n3);
+	
+	e = impl.createEdge(null);
+	impl.setEdgeHead(e, n9);
+	impl.setEdgeTail(e, n4);
+	
+        return graph;
     }
 
     // Construct the graph widget to display the type lattice with
     // the default constructor (giving it an empty graph),
     // and then set the model once the window is showing.
     //
-    private void _displayGraph(JGraph g, GraphModel model) {
+    private void _displayGraph(JGraph g, Graph graph) {
 
         // Make sure we have the right renderers and then
         // display the graph
-        final GraphPane gp = (GraphPane) g.getCanvasPane();
-        final GraphView gv = gp.getGraphView();
-        gv.setNodeRenderer(new TypeRenderer());
-        gv.setEdgeRenderer(new LineRenderer());
-        g.setGraphModel(model);
+        final GraphController gc = new TypeGraphController();
+	final GraphPane gp = new GraphPane(gc);
+	g.setCanvasPane(gp);
+	gc.setGraph(graph);
 
         // Do the layout
-        final GraphModel m = model;
-        SwingUtilities.invokeLater(new Runnable() {
+	final Graph layoutGraph = graph;
+	SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // Layout is a bit stupid
-                gv.setLayoutPercentage(0.7);
-                LevelLayout staticLayout = new LevelLayout();
-                staticLayout.setOrientation(LevelLayout.VERTICAL);
-                staticLayout.layout(gv, m.getGraph());
+		LevelLayout staticLayout = new LevelLayout();
+		staticLayout.setOrientation(LevelLayout.VERTICAL);
+		LayoutTarget target = new BasicLayoutTarget(gc);
+		staticLayout.layout(target, layoutGraph);
                 gp.repaint();
             }
         });
@@ -712,6 +747,59 @@ public class Type extends SDFApplet implements ChangeListener {
 		graphics.drawString(_printerType, PLOT_TYPE_X, PLOT_TYPE_Y);
 	    }
     	}
+    }
+
+    public class TypeGraphController extends GraphController {
+	
+	/** The selection interactor for drag-selecting nodes
+	 */
+	private SelectionDragger _selectionDragger;
+	
+	/** The node controller
+	 */
+	private NodeController _nodeController;
+
+	/** The edge controller
+	 */
+	private EdgeController _edgeController;
+	
+	/**
+	 * Create a new basic controller with default 
+	 * node and edge interactors.
+	 */
+	public TypeGraphController () {
+	    // The interactors attached to nodes and edges
+	    _nodeController = new NodeController(this);
+	    _edgeController = new EdgeController(this);
+	}
+	
+	public Figure drawEdge(Edge edge) {
+	    return _edgeController.drawEdge(edge);
+	}
+	
+	public Figure drawNode(Node node) {
+	    return _nodeController.drawNode(node);
+	}
+	
+	/**
+	 * Initialize all interaction on the graph pane. This method
+	 * is called by the setGraphPane() method of the superclass.
+	 * This initialization cannot be done in the constructor because
+	 * the controller does not yet have a reference to its pane
+	 * at that time.
+	 */
+	protected void initializeInteraction () {
+	    GraphPane pane = getGraphPane();
+	    
+	    // Create and set up the selection dragger
+	    _selectionDragger = new SelectionDragger(pane);
+	    _selectionDragger.addSelectionInteractor(
+		(SelectionInteractor)_edgeController.getEdgeInteractor());
+	    _selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_nodeController.getNodeInteractor());
+	    _nodeController.setNodeRenderer(new TypeRenderer());
+	    _edgeController.setEdgeRenderer(new LineRenderer());
+	} 
     }
 
     // TypeRenderer draws the nodes to represent types in a type lattice
