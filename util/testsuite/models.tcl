@@ -41,7 +41,9 @@ proc ctModel {{stopTime 1.0}} {
     $e0 setManager $manager
     set director \
             [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $e0 CTMultiSolverDirector]
-    $director setStopTime $stopTime
+    #$director setStopTime $stopTime
+    set stopparam [getParameter $director stopTime]
+    $stopparam setToken [java::new ptolemy.data.DoubleToken $stopTime];
     return $e0
 }
 
@@ -56,7 +58,9 @@ proc deModel {{stopTime 1.0}} {
     $e0 setManager $manager
     set director \
             [java::new ptolemy.domains.de.kernel.DEDirector $e0 DEDirector]
-    $director setStopTime $stopTime
+    #$director setStopTime $stopTime
+    set stopparam [getParameter $director stopTime]
+    $stopparam setToken [java::new ptolemy.data.DoubleToken $stopTime];
     return $e0
 }
 
