@@ -30,7 +30,10 @@
 # Date of creation: 7/31/96
 # Author: Christopher Hylands
 
-# This makefile should be included at the top of every Ptolemy II makefile.
+# NOTE: Don't edit this file if it is called ptII.mk, instead
+# edit ptII.mk.in, which is read by configure
+
+# Every Ptolemy II makefile should include ptII.mk
 
 
 # The home of the Java Developer's Kit (JDK)
