@@ -454,6 +454,10 @@ test ParseTreeEvaluator-17.1 {Test correct scoping in function definitions.} {
     list [evaluate "function(x) x + 3.0"] [evaluate "function(x:int) x + 3.0"]
 } {{(function(x) (x+3.0))} {(function(x:int) (x+3.0))}}
 
+test ParseTreeEvaluator-17.2 {Test function in function.} {
+    list [evaluate "function(x) min({x,3.0})"] [evaluate "function(x:int) min({x, 3.0})"]
+} {{(function(x) min({x, 3.0}))} {(function(x:int) min({x, 3.0}))}}
+
 ####################################################################
 
 test ParseTreeEvaluator-18.1 {Test Matrix Scalar Multiplication} {
