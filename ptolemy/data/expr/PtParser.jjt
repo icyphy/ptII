@@ -45,7 +45,7 @@ public class PtParser {
     pt.data.Param _param;
     
   public PtParser() {
-      this(System.in);
+      this(new ByteArrayInputStream("a hack!!".getBytes()));
   }
   
   public pt.data.Token parseFromInput(){   
@@ -55,7 +55,7 @@ public class PtParser {
       try {
 	ASTPtSimpleNode n = start();      	
 	_ptToken = n.resolve();
-        n.dump(" ");
+        //n.dump(" ");
         System.out.println("Thank you, result is " + _ptToken.toString());
       } catch (Exception x) {
           System.out.println("Exiting, parse failed");
@@ -73,7 +73,7 @@ public class PtParser {
      try {
      ASTPtSimpleNode n = start();  
      _ptToken = n.resolve();
-     n.dump(" ");
+     //n.dump(" ");
      System.out.println("Thank you, result is " + _ptToken.toString());
     } catch (Exception x) {
      System.out.println("Exiting, parse failed");
@@ -231,7 +231,7 @@ void element() #PtSimpleNode :
         int len = token.image.length();
         String tidied = token.image.substring(1, (len -1));
         jjtThis._ptToken = new pt.data.StringToken(tidied);
-        System.out.println("encountered a string \"" + tidied + "\"");    
+        //System.out.println("encountered a string \"" + tidied + "\"");    
     }
 }
 
