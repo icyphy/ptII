@@ -54,8 +54,6 @@ JSRCS = \
 	CompositeActorApplication.java \
 	Configurer.java \
 	EditorPaneFactory.java \
-	ExecEvent.java \
-	ExecEventListener.java \
 	ModelFrame.java \
 	ModelPane.java \
 	MoMLApplet.java \
