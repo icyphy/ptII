@@ -6,7 +6,9 @@
     <?moml
       <group>
 
-<entity name="DensityEstimator" class="ptolemy.actor.lib.comm.DensityEstimator"/>
+<!-- entity name="DensityEstimator"
+class="ptolemy.actor.lib.comm.DensityEstimator"/ -->
+
 <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder"/>
 <entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
 <entity name="FlipFlop" class="ptolemy.actor.lib.comm.FlipFlop"/>

@@ -30,6 +30,9 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Increase timeout from the default set in $PTII/util/testsuite/testDefs.tcl
+set timeOutSeconds 6000
+
 # Load the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
