@@ -22,6 +22,5 @@
     <classpathentry kind="lib" path="lib/mapss.jar"/>
     <classpathentry kind="lib" path="lib/sootclasses.jar"/>
     <classpathentry kind="lib" path="lib/jasminclasses.jar"/>
-    <classpathentry kind="lib" path="lib/jrefactory.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
