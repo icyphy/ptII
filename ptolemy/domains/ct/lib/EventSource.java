@@ -240,10 +240,8 @@ public class EventSource extends TypedAtomicActor
                         + _offsets[_phase] + " must be less than the "
                         + "period, which is " + periodValue);
             }
-            if (director.getCurrentTime() == _nextOutputTime) {
-                _nextOutputTime = _cycleStartTime + _offsets[_phase];
-                director.fireAt(this, _nextOutputTime);
-            }
+            _nextOutputTime = _cycleStartTime + _offsets[_phase];
+            director.fireAt(this, _nextOutputTime);
         }
         return true;
     }
