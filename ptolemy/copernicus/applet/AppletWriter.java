@@ -34,10 +34,10 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
-import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 import soot.Options;
@@ -388,7 +388,7 @@ public class AppletWriter extends SceneTransformer {
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
                 String classResource =
-                    GeneratorAttribute.lookupClassAsResource(className);
+                    ClassUtilities.lookupClassAsResource(className);
 
 
                 if (classResource == null) {
