@@ -134,15 +134,26 @@ public class KeyWriter extends KeyStoreActor {
                         + alias + "'");
             }
             try {
-                FileOutputStream keyStoreOutputStream =
-                    new FileOutputStream(fileOrURL.asFile());
-                _keyStore.store(keyStoreOutputStream,
-                        _storePassword.toCharArray());
-                keyStoreOutputStream.close();
+                FileOutputStream keyStoreOutputStream = null;
+                try {
+                    keyStoreOutputStream =
+                        new FileOutputStream(fileOrURL.asFile());
+                    _keyStore.store(keyStoreOutputStream,
+                            _storePassword.toCharArray());
+                    keyStoreOutputStream.close();
+                } finally {
+                    try {
+                        keyStoreOutputStream.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + fileOrURL.asFile());
+                        throwable.printStackTrace();
+                    }
+                }
                 output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to store keyStore or close '"
+                        "Failed to store keyStore '"
                         + fileOrURL + "'");
             }
         }

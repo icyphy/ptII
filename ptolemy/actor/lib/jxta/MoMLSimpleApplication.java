@@ -172,13 +172,26 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
 
             StringWriter buffer = new StringWriter();
             simpleApplication.toplevel.exportMoML(buffer) ;
-            FileOutputStream file = new FileOutputStream("c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml");
-            PrintStream out = new PrintStream( file);
-            out.println(buffer);
-            out.flush();
-            file.close();
-
-
+            // FIXME: hardwired path
+            String fileName = 
+                "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml";
+            FileOutputStream file = null;
+            try {
+                file = new FileOutputStream(fileName);
+                PrintStream out = new PrintStream(file);
+                out.println(buffer);
+                out.flush();
+            } finally {
+                if (file != null) {
+                    try {
+                        file.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + fileName);
+                        throwable.printStackTrace();
+                    }
+                }
+            }
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();

@@ -308,8 +308,19 @@ public class PlotFrame extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
             try {
-                FileOutputStream fout = new FileOutputStream(file);
-                plot.export(fout);
+                FileOutputStream fout = null;
+                try {
+                    fout = new FileOutputStream(file);
+                    plot.export(fout);
+                } finally {
+                    try {
+                        fout.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + file);
+                        throwable.printStackTrace();
+                    }
+                }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Error exporting plot: " + ex,

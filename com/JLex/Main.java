@@ -4706,8 +4706,8 @@ class CLexGen
     /***************************************************************
                                                                     Member Variables
     **************************************************************/
-    private InputStream m_instream; /* JLex specification file. */
-    private DataOutputStream m_outstream; /* Lexical analyzer source file. */
+    private InputStream m_instream = null;  /* JLex specification file. */
+    private DataOutputStream m_outstream = null; /* Lexical analyzer source file. */
 
     private CInput m_input; /* Input buffer class. */
 
@@ -4767,58 +4767,82 @@ class CLexGen
         /* Successful initialization flag. */
         m_init_flag = false;
 
-        /* Open input stream. */
-        m_instream = new FileInputStream(filename);
-        if (null == m_instream)
-            {
-                System.out.println("Error: Unable to open input file "
-                        + filename + ".");
-                return;
-            }
+        try {
+            /* Open input stream. */
+            m_instream = new FileInputStream(filename);
+            if (null == m_instream)
+                {
+                    System.out.println("Error: Unable to open input file "
+                            + filename + ".");
+                    return;
+                }
 
-        /* Open output stream. */
-        m_outstream
-            = new DataOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(filename + ".java")));
-        if (null == m_outstream)
+            /* Open output stream. */
+
+            m_outstream = new DataOutputStream(
+                    new BufferedOutputStream(new FileOutputStream(filename
+                                                     + ".java")));
+            if (null == m_outstream)
             {
                 System.out.println("Error: Unable to open output file "
                         + filename + ".java.");
                 return;
             }
 
-        /* Create input buffer class. */
-        m_input = new CInput(m_instream);
+            /* Create input buffer class. */
+            m_input = new CInput(m_instream);
 
-        /* Initialize character hash table. */
-        m_tokens = new Hashtable();
-        m_tokens.put(new Character('$'),new Integer(AT_EOL));
-        m_tokens.put(new Character('('),new Integer(OPEN_PAREN));
-        m_tokens.put(new Character(')'),new Integer(CLOSE_PAREN));
-        m_tokens.put(new Character('*'),new Integer(CLOSURE));
-        m_tokens.put(new Character('+'),new Integer(PLUS_CLOSE));
-        m_tokens.put(new Character('-'),new Integer(DASH));
-        m_tokens.put(new Character('.'),new Integer(ANY));
-        m_tokens.put(new Character('?'),new Integer(OPTIONAL));
-        m_tokens.put(new Character('['),new Integer(CCL_START));
-        m_tokens.put(new Character(']'),new Integer(CCL_END));
-        m_tokens.put(new Character('^'),new Integer(AT_BOL));
-        m_tokens.put(new Character('{'),new Integer(OPEN_CURLY));
-        m_tokens.put(new Character('|'),new Integer(OR));
-        m_tokens.put(new Character('}'),new Integer(CLOSE_CURLY));
+            /* Initialize character hash table. */
+            m_tokens = new Hashtable();
+            m_tokens.put(new Character('$'),new Integer(AT_EOL));
+            m_tokens.put(new Character('('),new Integer(OPEN_PAREN));
+            m_tokens.put(new Character(')'),new Integer(CLOSE_PAREN));
+            m_tokens.put(new Character('*'),new Integer(CLOSURE));
+            m_tokens.put(new Character('+'),new Integer(PLUS_CLOSE));
+            m_tokens.put(new Character('-'),new Integer(DASH));
+            m_tokens.put(new Character('.'),new Integer(ANY));
+            m_tokens.put(new Character('?'),new Integer(OPTIONAL));
+            m_tokens.put(new Character('['),new Integer(CCL_START));
+            m_tokens.put(new Character(']'),new Integer(CCL_END));
+            m_tokens.put(new Character('^'),new Integer(AT_BOL));
+            m_tokens.put(new Character('{'),new Integer(OPEN_CURLY));
+            m_tokens.put(new Character('|'),new Integer(OR));
+            m_tokens.put(new Character('}'),new Integer(CLOSE_CURLY));
 
-        /* Initialize spec structure. */
-        m_spec = new CSpec(this);
+            /* Initialize spec structure. */
+            m_spec = new CSpec(this);
+            
+            /* Nfa to dfa converter. */
+            m_nfa2dfa = new CNfa2Dfa();
+            m_minimize = new CMinimize();
+            m_makeNfa = new CMakeNfa();
 
-        /* Nfa to dfa converter. */
-        m_nfa2dfa = new CNfa2Dfa();
-        m_minimize = new CMinimize();
-        m_makeNfa = new CMakeNfa();
+            m_emit = new CEmit();
 
-        m_emit = new CEmit();
-
-        /* Successful initialization flag. */
-        m_init_flag = true;
+            /* Successful initialization flag. */
+            m_init_flag = true;
+        } finally { 
+            if (m_instream != null) {
+                    try {
+                        m_instream.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + filename);
+                        throwable.printStackTrace();
+                    }
+            }
+            m_instream = null;
+            if (m_outstream != null) {
+                    try {
+                        m_outstream.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + filename + ".java");
+                        throwable.printStackTrace();
+                    }
+            }
+            m_outstream = null;
+        }
     }
 
     /***************************************************************
