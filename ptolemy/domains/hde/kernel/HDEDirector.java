@@ -68,7 +68,8 @@ import java.util.Iterator;
 //// DEDirector
 
 /**
-This director implements the discrete-event model of computation (MoC).
+This director implements the discrete-event model of computation (MoC)
+with memoried signals. It extends the  DE Director.
 It should be used as the local director of a CompositeActor that is
 to be executed according to this MoC. This director maintain a notion
 of current time, and processes events chronologically in this time.
@@ -116,6 +117,9 @@ event to the director  by calling the _enqueueEvent() method of
 this director.
 This director sorts all such events in a global event queue
 (a priority queue).
+<p>The HDEDirector employs a special HDE receiver which stores
+the most recent values of an actor's inputs and reapplies
+them whenever an actor input changes.
 <p>
 An iteration, in the DE domain, is defined as processing all
 the events whose time stamp equals to the current time of the director.
@@ -186,7 +190,7 @@ if it has been removed from the topology by the time the execution
 reaches that future time.  This may not always be the expected behavior.
 The Delay actor in the DE library behaves this way.
 
-@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@author Lukito Muliadi, Edward A. Lee, Jie Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 @see DEReceiver
@@ -346,8 +350,8 @@ public class HDEDirector extends DEDirector {
         }
     }
 
-    /** Return a new receiver of a type DEReceiver.
-     *  @return A new DEReceiver.
+    /** Return a new receiver of a type HDEReceiver.
+     *  @return A new HDEReceiver.
      */
     public Receiver newReceiver() {
         if (_debugging) _debug("Creating new HDE receiver.");
