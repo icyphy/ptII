@@ -58,6 +58,37 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CTAssertion
 /**
+The CTAssertion actor evaluates an assertion that includes references
+to the inputs. The ports are referenced by the variables that have 
+the same name as the port. If the assertion is satisfied, nothing 
+happens. If not, an exception will be thrown.
+To use this class, instantiate it, then add ports (instances of TypedIOPort).
+In vergil, you can add ports by right clicking on the icon and selecting
+"Configure Ports".  In MoML you can add ports by just including ports
+of class TypedIOPort, set to be inputs, as in the following example:
+<p>
+<pre>
+   &lt;entity name="ctAssertion" class="ptolemy.domain.ct.lib.CTAssertion"&gt;
+      &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
+          &lt;property name="input"/&gt;
+      &lt;/port&gt;
+   &lt;/entity&gt;
+</pre>
+<p>
+The <i>assertion</i> parameter specifies an assertion that can
+refer to the inputs by name.  By default, the assertion
+is empty, and attempting
+to execute the actor without setting it triggers an exception.
+<p>
+The <i>errorTolerance</i> parameter specifies the accuracy of
+inputs referenced by the assertion. By default, the errorTolerance
+is 1e-4.
+<p>
+NOTE: There are a number of important things to be pointed out.
+First, the errorTolerance adds constraints on the accuracy of the
+inputs. An alternative way is to leave the evaluator to handle
+the errorTolerance. Which one is better is still under discussion.
+Second, the CTAssertion actor is also a CTStepSizeControlActor.
 
 @author Haiyang Zheng
 @version $Id$
@@ -104,20 +135,10 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *  or getToken() method of Variable throws it.
      */
     public void fire() throws IllegalActionException {
-
 	super.fire();
-	// consume the input.
-	// The assertion actor always has only one input port.
-	// FIXME: handle multiports.
-
-	TypedIOPort input = (TypedIOPort) inputPortList().get(0);
-	_input = ((DoubleToken) input.get(0)).doubleValue();
-		
-	if (_debugging)
-	    _debug(getFullName() + " consuming input Token" + _input);
     }
 
-    /** Initialize the iteration count to 1.
+    /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -132,12 +153,8 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      */
     public boolean isThisStepAccurate() {
 
-        if (_debugging) {
-            _debug(this.getFullName() + " This input " + _input);
-        }
-
 	try {
-	    BooleanToken result = (BooleanToken) assertion.getToken();
+	    BooleanToken result = (BooleanToken) evaluate();
 	    
 	    if (!result.booleanValue()) {
 		
@@ -147,10 +164,13 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 		
 		CTDirector dir = (CTDirector)getDirector();
 		_eventMissed = true;
+
 		// The refined step size is half of former one.
 		_refineStep = 0.5*dir.getCurrentStepSize();
+
 		if (_debugging) _debug(getFullName() +
-				       " Former stepsize as " + dir.getCurrentStepSize() + "\nRefined step at" +  _refineStep);
+				       " Former stepsize as " + dir.getCurrentStepSize() + 
+				       "\nRefined step at" +  _refineStep);
 		return false;
 	    }
 	    else {
@@ -195,8 +215,6 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private double _input;
 
     // flag indicating if the event detection is enable for this step
     private boolean _enabled;
