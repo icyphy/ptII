@@ -82,12 +82,13 @@
             <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter"/>
 
             <xsl:for-each select="IntegerVariable[@kind='Controlled']|IntegerVariable[@kind='Observable']">
-                <xsl:variable name="name" select="@name"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/Var[@name=$name])"/>
+                <xsl:variable name="id" select="@_id"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
                
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
                     <xsl:element name="IntegerParameter">
+                        <xsl:attribute name="_id" ><xsl:value-of select="$id"/></xsl:attribute>
                         <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                         <xsl:attribute name="value"><xsl:value-of select="0"/></xsl:attribute>
                     </xsl:element>
@@ -109,11 +110,12 @@
             </xsl:for-each>
             
             <xsl:for-each select="RealVariable[@kind='Controlled']|RealVariable[@kind='Observable']">
-                <xsl:variable name="name" select="@name"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/Var[@name=$name])"/>
+                <xsl:variable name="id" select="@_id"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
                     <xsl:element name="RealParameter">
+                        <xsl:attribute name="_id" ><xsl:value-of select="$id"/></xsl:attribute>
                         <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                         <xsl:attribute name="value"><xsl:value-of select="0.0"/></xsl:attribute>
                     </xsl:element>
@@ -135,12 +137,13 @@
             </xsl:for-each>
 
             <xsl:for-each select="BooleanVariable[@kind='Controlled']|BooleanVariable[@kind='Observable']">
-                <xsl:variable name="name" select="@name"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/Var[@name=$name])"/>
+                <xsl:variable name="id" select="@_id"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
                
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
                     <xsl:element name="BooleanParameter">
+                        <xsl:attribute name="_id" ><xsl:value-of select="$id"/></xsl:attribute>
                         <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                         <xsl:attribute name="value"><xsl:value-of select="false"/></xsl:attribute>
                     </xsl:element>
@@ -161,7 +164,7 @@
                 </xsl:if>
             </xsl:for-each>
             
-            <xsl:apply-templates select="Transition|DiscreteState|triggerInput|triggerOutput"/>
+            <xsl:apply-templates select="Transition|Location|triggerInput|triggerOutput"/>
 
         </xsl:copy>
     </xsl:template>

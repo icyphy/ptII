@@ -23,6 +23,9 @@
  version="1.0"
 >
 
+<!-- index every node via attribute _id -->
+<xsl:key name="nid" match="*" use="@_id"/>
+
     <xsl:output doctype-system="HSIF.dtd"/>
     <xsl:output method="xml" indent="yes"/>
 
@@ -84,7 +87,7 @@
 
     <!-- variables -->
     <xsl:template match="IntegerVariable|RealVariable|BooleanVariable">
-        <xsl:variable name="name" select="@name"/>
+        <xsl:variable name="name" select="key('nid',@var)/@name"/>
         <xsl:choose>
             <xsl:when test="@kind='Controlled'">
                 <xsl:comment>Controlled variables</xsl:comment>
@@ -122,8 +125,8 @@
             </xsl:for-each>
     
 
-            <xsl:for-each select="descendant::UpdateAction/Var|descendant::DiffEquation/Var">
-                <xsl:variable name="name" select="@name"/>
+            <xsl:for-each select="descendant::Action/VarRef|descendant::DiffEquation/VarRef">
+                <xsl:variable name="name" select="key('nid',@var)/@name"/>
                 <xsl:for-each select="//DNHA/IntegerVariable|//DNHA/RealVariable|//DNHA/BooleanVariable">
                     <xsl:if test="@name=$name">
                         <xsl:copy>
@@ -142,8 +145,8 @@
                 </xsl:for-each>
             </xsl:for-each>
             
-            <xsl:for-each select="descendant::Expr/descendant::Var|descendant::Expr/descendant::Var">
-                <xsl:variable name="name" select="@name"/>
+            <xsl:for-each select="descendant::Expr/descendant::VarRef">
+                <xsl:variable name="name" select="key('nid',@var)/@name"/>
                 <xsl:for-each select="//DNHA/IntegerVariable|//DNHA/RealVariable|//DNHA/BooleanVariable">
                     <xsl:if test="@name=$name">
                         <xsl:copy>
