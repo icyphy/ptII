@@ -5,49 +5,49 @@
 <doc>SDF actors</doc>
 
 <entity name="HTVQEncode" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="ImageContrast" class="ptolemy.domains.sdf.lib.vq.ImageContrast">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="ImageDisplay" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="ImagePartition" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="ImageSequence" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="ImageUnpartition" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="VQDecode" class="ptolemy.domains.sdf.lib.vq.VQDecode">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
