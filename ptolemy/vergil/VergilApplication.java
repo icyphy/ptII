@@ -235,8 +235,15 @@ public class VergilApplication extends MoMLApplication {
         //
         // Use StringUtilities.getProperty() so we get the proper
         // canonical path
+	// FIXME: If the name is something like
+	// "vergilUserLibrary.xml" then when we save an actor in the
+	// library and then save the window that comes up the name of
+	// entity gets set to vergilUserLibrary instead of the value
+	// of VERGIL_USER_LIBRARY_NAME.  This causes problems when we
+	// try to save another file.  The name of the entity gets
+	// changed by the saveAs code.
         String libraryName = StringUtilities.preferencesDirectory()
-            + "vergilUserLibrary.xml";
+	    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
         System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
         if(!file.isFile() || !file.exists()) {
