@@ -292,7 +292,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	    String className = (String)classNameItr.next();
 
 	    System.out.println("ActorCodeGenerator.pass3(): " + 
-			       " openSource(" +className +")");
+			       "openSource(" +className +")");
 
 	    File file = SearchPath.NAMED_PATH.openSource(className);
 
