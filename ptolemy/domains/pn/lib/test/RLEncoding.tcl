@@ -100,6 +100,8 @@ test RLEndocding-2.1 {Constructor tests} {
     $c1 setManager $manager
     set d1 [java::new ptolemy.domains.pn.kernel.BasePNDirector D1]
     $c1 setDirector $d1
+    set p1 [$d1 getAttribute Initial_queue_capacity]
+    $p1 setToken [java::new {ptolemy.data.IntToken int} 100]
     $manager run
 } {}
 
