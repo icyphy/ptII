@@ -86,12 +86,20 @@ public class BaseType implements Type, Serializable {
 	return this == t;
     }
 
+    /** Return an instance of this class that corresponds to tokens
+     *  of a class with the given name, or null if none exists.
+     *  @return An instance of BaseType.
+     */
+    public static Type forClassName(String className) {
+        return (Type)_classNameToType.get(className);
+    }
+
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
      *  @return An instance of BaseType.
      */
     public static Type forName(String name) {
-        return (Type)_types.get(name);
+        return (Type)_nameToType.get(name);
     }
 
     /** Return the class for tokens that this basetype represents.
@@ -351,11 +359,17 @@ public class BaseType implements Type, Serializable {
 	_tokenClass = c;
 	_name = name;
 	_convertOp = op;
-        // For some reason, it doesn't work to initialize this statically.
-        if (_types == null) {
-            _types = new HashMap();
+        // Because the private variables are below the public variables
+        // that call this initializer, 
+        // it doesn't work to initialize this statically.
+        if(_nameToType == null) {
+            _nameToType = new HashMap();
         }
-        _types.put(_name, this);
+        if(_classNameToType == null) {
+            _classNameToType = new HashMap();
+        }
+        _nameToType.put(_name, this);
+        _classNameToType.put(c.getName(), this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -365,8 +379,11 @@ public class BaseType implements Type, Serializable {
     private String _name;
     private ConvertOperator _convertOp;
 
-    // Table of types that have been created.
-    private static Map _types;
+    // A map from type name to the type for all base types.
+    private static Map _nameToType;
+
+    // A map from class name to the type for all base types.
+    private static Map _classNameToType;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private interface                    ////
