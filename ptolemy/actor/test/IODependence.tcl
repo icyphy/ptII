@@ -2,9 +2,9 @@
 #
 # @Author: Haiyang Zheng
 #
-# @Version: $Id: IODependence.tcl,v 1.1 2003-08-22 21:44:00 hyzheng Exp $
+# @Version: $Id: IODependence.tcl,v 1.2 2003-08-23 19:22:10 cxh Exp $
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
