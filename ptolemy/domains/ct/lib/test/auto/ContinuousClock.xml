@@ -81,8 +81,6 @@ Caution: the test results depend on the step size...</text></svg></configure>
         </property>
     </property>
     <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.7">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.33}">
