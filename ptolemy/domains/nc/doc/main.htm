@@ -11,30 +11,32 @@
 <ol>
 <li> The ptiny
 <pre>
-mkdir -p $PTII/vendors/ptinyos/src
+mkdir -p $PTII/vendors/ptinyos
 </pre>
 
 <li> Get the TinyOS CVS tree:
 <a href="http://sourceforge.net/cvs/?group_id=28656"><CODE>http://sourceforge.net/cvs/?group_id=28656</CODE></a>
 <pre>
-$PTII/vendors/ptinyos/src
+$PTII/vendors/ptinyos
 cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos login
+<i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
 </pre>
 
 <li> Set TOSROOT to the location of the TinyOS source tree
 Under bash:
 <pre>
-export TOSROOT=$PTII/vendors/ptinyos/src/tinyos-1.x
+export TOSROOT=$PTII/vendors/ptinyos/tinyos-1.x
 export TOSDIR=$TOSROOT/tos
 </pre>
 Under Windows with Cygwin, you can permanently set environment variables from
 the System control panel.  For details, see 
-<a href="../../../doc/install.htm#settingptII">Set the value of the PTII environment variable</a>.  
+<a href="../../../doc/install.htm#settingptII">Set the value of the PTII environment variable</a>.  While you are setting environment variables in Windows, you
+may want to set <a href="NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>.
 
-Under csh or tcsh:
+<p>Under csh or tcsh:
 <pre>
-setenv TOSROOT $PTII/vendors/ptinyos/src/tinyos-1.x
+setenv TOSROOT $PTII/vendors/ptinyos/tinyos-1.x
 setenv TOSDIR $TOSROOT/tos
 </pre>
 
@@ -42,8 +44,9 @@ setenv TOSDIR $TOSROOT/tos
 <li> Get the nesC CVS Tree, see
 <a href="http://sourceforge.net/cvs/?group_id=56288"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
 <pre>
-cd $PTII/vendors/ptinyos/src
+cd $PTII/vendors/ptinyos
 cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc login
+<i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc co -r nc2momllib nesc
 </pre>
 
@@ -68,7 +71,7 @@ want to exit any running bash shells
 
 <li> Boostrap nesC
 <pre>
-cd $PTII/vendors/ptinyos/src/nesc
+cd $PTII/vendors/ptinyos/nesc
 ./Bootstrap
 </pre>
 
@@ -84,8 +87,9 @@ make
 make install
 </pre>
 
-<li> Set another variable that points to the nesc installation
-Under csh or tcsh
+<li> <a name="NCSMOMLLIB_NESC">Set another variable</a>
+that points to the nesc installation. 
+<br>Under csh or tcsh
 <pre>
 setenv NC2MOMLLIB_NESC $PTII/vendors/ptinyos
 </pre>
