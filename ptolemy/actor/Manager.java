@@ -485,6 +485,49 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Make this Manager the Manager of the specified composite
+     *  actor.  This method should not be called directly.  Instead, call
+     *  setManager of the CompositeActor class (or a derived class).
+     *  If the argument is not the toplevel CompositeActor, then we throw
+     *  an InvalidStateException.
+     */
+    protected void _makeManagerOf (CompositeActor ca) {
+        if (ca != null) {
+            if(ca.getContainer() != null)
+                throw new InvalidStateException("Manager's container must " +
+                        "be the toplevel CompositeActor!");
+            workspace().remove(this);
+        }
+        _toplevel = ca;
+    }
+
+    /** Check if write access in the workspace will be needed during an
+     *  iteration.
+     *  An iteration is defined to be one invocation of prefire(), fire(), and
+     *  postfire() methods of the top level composite actor.
+     *  <p>
+     *  This method recursively call the needWriteAccess() method of all lower
+     *  level directors. Intuitively, the workspace will only be made write-
+     *  protected, if all the directors permit it.
+     */
+    // FIXME: What's the appropriate protection level for this method ?
+    // FIXME: public ? private ?
+    protected boolean _checkIfWriteAccessNeededDuringIteration() {
+        // Get the top level composite actor.
+        CompositeActor toplevel = (CompositeActor)getToplevel();
+        if (toplevel == null) {
+            throw new InvalidStateException("Manager "+ getName() +
+                    " attempted execution with no topology to execute!");
+        }
+        // Call the needWriteAccess() method of the local director of the
+        // top level composite actor.
+        return toplevel.getDirector().needWriteAccess();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Invoke one iteration.  An iteration consists of
      *  invocations of prefire(), fire(), and postfire(), in that
      *  order.  Prefire() will be called multiple times until it returns true.
@@ -547,45 +590,6 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /** Make this Manager the Manager of the specified composite
-     *  actor.  This method should not be called directly.  Instead, call
-     *  setManager of the CompositeActor class (or a derived class).
-     *  If the argument is not the toplevel CompositeActor, then we throw
-     *  an InvalidStateException.
-     */
-    protected void _makeManagerOf (CompositeActor ca) {
-        if (ca != null) {
-            if(ca.getContainer() != null)
-                throw new InvalidStateException("Manager's container must " +
-                        "be the toplevel CompositeActor!");
-            workspace().remove(this);
-        }
-        _toplevel = ca;
-    }
-
-    /** Check if write access in the workspace will be needed during an
-     *  iteration.
-     *  An iteration is defined to be one invocation of prefire(), fire(), and
-     *  postfire() methods of the top level composite actor.
-     *  <p>
-     *  This method recursively call the needWriteAccess() method of all lower
-     *  level directors. Intuitively, the workspace will only be made write-
-     *  protected, if all the directors permit it.
-     */
-    // FIXME: What's the appropriate protection level for this method ?
-    // FIXME: public ? private ?
-    protected boolean _checkIfWriteAccessNeededDuringIteration() {
-        // Get the top level composite actor.
-        CompositeActor toplevel = (CompositeActor)getToplevel();
-        if (toplevel == null) {
-            throw new InvalidStateException("Manager "+ getName() +
-                    " attempted execution with no topology to execute!");
-        }
-        // Call the needWriteAccess() method of the local director of the
-        // top level composite actor.
-        return toplevel.getDirector().needWriteAccess();
-    }
-
     /**
      * Propagate the execution event to all the execution listeners.
      */
@@ -615,7 +619,7 @@ public final class Manager extends NamedObj implements Runnable {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         Inner Class                       ////
 
     private static final class ExecutionEventType {
 
@@ -640,6 +644,9 @@ public final class Manager extends NamedObj implements Runnable {
 
         private String _name;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The toplevel CompositeActor that contains this Manager
     private CompositeActor _toplevel = null;
