@@ -163,7 +163,6 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     /** Open a dialog to select a dataset to edit.
      */
     protected void _selectDataset() {
-        // new Message("Sorry, not supported yet.");
         Query query = new Query();
         int numSets = ((EditablePlot)plot).getNumDataSets();
         String[] choices = new String[numSets + 1];
@@ -176,7 +175,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         choices[numSets] = "none";
         query.addChoice("choice", "Choice", choices, choices[0]);
         PanelDialog dialog = new PanelDialog(this, "Select dataset", query);
-        if (dialog.changesAccepted()) {
+        String buttonPressed = dialog.buttonPressed();
+        if (buttonPressed.equals("OK")) {
             int result = query.intValue("choice");
             if (result < numSets) {
                 ((EditablePlot)plot).setEditable(result);

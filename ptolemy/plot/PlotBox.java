@@ -325,6 +325,13 @@ public class PlotBox extends Panel {
         requestFocus();
     }
 
+    /** Return whether the plot uses color.
+     *  @returns True if the plot uses color.
+     */
+    public boolean getColor() {
+        return _usecolor;
+    }
+
     /** Convert a color name into a Color. Currently, only a very limited
      *  set of color names is supported: black, white, red, green, and blue.
      *  @param name A color name, or null if not found.
@@ -373,6 +380,13 @@ public class PlotBox extends Panel {
         return _documentBase;
     }
 
+    /** Return whether the grid is drawn.
+     *  @return True if a grid is drawn.
+     */
+    public boolean getGrid() {
+        return _grid;
+    }
+
     /** Get the legend for a dataset, or null if there is none.
      *  The legend would have been set by addLegend().
      *  @param dataset The dataset index.
@@ -402,6 +416,78 @@ public class PlotBox extends Panel {
      */
     public Dimension getPreferredSize() {
         return new Dimension(_width, _height);
+    }
+
+    /** Get the title of the graph, or an empty string if there is none.
+     *  @returns The title.
+     */
+    public String getTitle() {
+        if (_title == null) return "";
+        return _title;
+    }
+
+    /** Get the label for the X (horizontal) axis, or null if none has
+     *  been set.
+     *  @returns The X label.
+     */
+    public String getXLabel() {
+        return _xlabel;
+    }
+
+    /** Return whether the X axis is drawn with a logarithmic scale.
+     *  @returns True if the X axis is logarithmic.
+     */
+    public boolean getXLog() {
+        return _xlog;
+    }
+
+    /** Get the X range.  The returned value is an array where the first
+     *  element is the minimum and the second element is the maximum.
+     *  return The current X range.
+     */
+    public double[] getXRange() {
+        double[] result = new double[2];
+        if (_xRangeGiven) {
+            result[0] = _xlowgiven;
+            result[1] = _xhighgiven;
+        } else {
+            // Have to first correct for the padding.
+            result[0] = _xMin + ((_xMax - _xMin) * _PADDING);
+            result[1] = _xMax - ((_xMax - _xMin) * _PADDING);;
+        }
+        return result;
+    }
+
+    /** Get the label for the Y (vertical) axis, or null if none has
+     *  been set.
+     *  @returns The Y label.
+     */
+    public String getYLabel() {
+        return _ylabel;
+    }
+
+    /** Return whether the Y axis is drawn with a logarithmic scale.
+     *  @returns True if the Y axis is logarithmic.
+     */
+    public boolean getYLog() {
+        return _ylog;
+    }
+
+    /** Get the Y range.  The returned value is an array where the first
+     *  element is the minimum and the second element is the maximum.
+     *  return The current Y range.
+     */
+    public double[] getYRange() {
+        double[] result = new double[2];
+        if (_yRangeGiven) {
+            result[0] = _ylowgiven;
+            result[1] = _yhighgiven;
+        } else {
+            // Have to first correct for the padding.
+            result[0] = _yMin + ((_yMax - _yMin) * _PADDING);
+            result[1] = _yMax - ((_yMax - _yMin) * _PADDING);;
+        }
+        return result;
     }
 
     /** Initialize the component, creating the fill button and parsing

@@ -28,7 +28,11 @@
 */
 
 package ptolemy.plot;
+
+import ptolemy.gui.*;
+
 import java.awt.*;
+import javax.swing.JPanel;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
@@ -37,7 +41,6 @@ import java.util.StringTokenizer;
 // TO DO:
 //   - Add a mechanism for combining two plots into one
 //   - Convert to use swing, especially for the menu.
-//   - Add a swing-based dialog for setting the plot format
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFrame
@@ -222,10 +225,118 @@ public class PlotFrame extends Frame {
     }
 
     /** Interactively edit the file format.
-     *  NOTE: Not supported yet.
      */
     protected void _editFormat() {
-        new Message("Sorry, not supported yet.");
+        JPanel panel = new JPanel(new BorderLayout());
+        final Query wideQuery = new Query();
+        panel.add(wideQuery, BorderLayout.WEST);
+        final Query narrowQuery = new Query();
+        panel.add(narrowQuery, BorderLayout.EAST);
+
+        // Populate the wide query.
+        wideQuery.setTextWidth(20);
+        String originalTitle = plot.getTitle();
+        wideQuery.addLine("title", "Title", originalTitle);
+        String originalXLabel = plot.getXLabel();
+        wideQuery.addLine("xlabel", "X Label", originalXLabel);
+        String originalYLabel = plot.getYLabel();
+        wideQuery.addLine("ylabel", "Y Label", originalYLabel);
+        double[] originalXRange = plot.getXRange();
+        wideQuery.addLine("xrange", "X Range",
+                "" + originalXRange[0] + ", " + originalXRange[1]);
+        double[] originalYRange = plot.getYRange();
+        wideQuery.addLine("yrange", "Y Range",
+                "" + originalYRange[0] + ", " + originalYRange[1]);
+
+        // FIXME: Do XTicks and YTicks
+
+        // Populate the narrow query.
+        boolean originalGrid = plot.getGrid();
+        narrowQuery.addCheckBox("grid", "Grid", originalGrid);
+        boolean originalStems = ((Plot)plot).getImpulses();
+        if (plot instanceof Plot) {
+            narrowQuery.addCheckBox("stems", "Stems", originalStems);
+        }
+        boolean originalColor = plot.getColor();
+        narrowQuery.addCheckBox("color", "Use Color", originalColor);
+        boolean originalXLog = plot.getXLog();
+        narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
+        boolean originalYLog = plot.getYLog();
+        narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
+
+        // Attach listeners.
+        wideQuery.addQueryListener(new QueryListener() {
+            public void changed(String name) {
+                if (name.equals("title")) {
+                    plot.setTitle(wideQuery.stringValue("title"));
+                } else if (name.equals("xlabel")) {
+                    plot.setXLabel(wideQuery.stringValue("xlabel"));
+                } else if (name.equals("ylabel")) {
+                    plot.setYLabel(wideQuery.stringValue("ylabel"));
+                } else if (name.equals("xrange")) {
+                    plot.read("XRange: " + wideQuery.stringValue("xrange"));
+                } else if (name.equals("yrange")) {
+                    plot.read("YRange: " + wideQuery.stringValue("yrange"));
+                }
+                plot.repaint();
+            }
+        });
+
+        narrowQuery.addQueryListener(new QueryListener() {
+            public void changed(String name) {
+                if (name.equals("grid")) {
+                    plot.setGrid(narrowQuery.booleanValue("grid"));
+                } else if (name.equals("stems")) {
+                    ((Plot)plot).setImpulses(narrowQuery.booleanValue("stems"));
+                    plot.repaint();
+                } else if (name.equals("color")) {
+                    plot.setColor(narrowQuery.booleanValue("color"));
+                } else if (name.equals("xlog")) {
+                    plot.setXLog(narrowQuery.booleanValue("xlog"));
+                } else if (name.equals("ylog")) {
+                    plot.setYLog(narrowQuery.booleanValue("ylog"));
+                }
+                plot.repaint();
+            }
+        });
+
+        // Open the dialog.
+        String[] buttons = {"Apply", "Cancel"};
+        PanelDialog dialog =
+                new PanelDialog(this, "Set plot format", panel, buttons);
+
+        if (dialog.buttonPressed().equals("Cancel")) {
+            // Restore original values.
+            plot.setTitle(originalTitle);
+            plot.setXLabel(originalXLabel);
+            plot.setYLabel(originalYLabel);
+            plot.setXRange(originalXRange[0], originalXRange[1]);
+            plot.setYRange(originalYRange[0], originalYRange[1]);
+            plot.setGrid(originalGrid);
+            plot.setColor(originalColor);
+            plot.setXLog(originalXLog);
+            plot.setYLog(originalYLog);
+            if (plot instanceof Plot) {
+                Plot cplot = (Plot)plot;
+                cplot.setImpulses(originalStems);
+            }
+        } else {
+            // Apply current values.
+            plot.setTitle(wideQuery.stringValue("title"));
+            plot.setXLabel(wideQuery.stringValue("xlabel"));
+            plot.setYLabel(wideQuery.stringValue("ylabel"));
+            plot.read("XRange: " + wideQuery.stringValue("xrange"));
+            plot.read("YRange: " + wideQuery.stringValue("yrange"));
+            plot.setGrid(narrowQuery.booleanValue("grid"));
+            plot.setColor(narrowQuery.booleanValue("color"));
+            plot.setXLog(narrowQuery.booleanValue("xlog"));
+            plot.setYLog(narrowQuery.booleanValue("ylog"));
+            if (plot instanceof Plot) {
+                Plot cplot = (Plot)plot;
+                cplot.setImpulses(narrowQuery.booleanValue("stems"));
+            }
+        }
+        plot.repaint();
     }
 
     /** Query the user for a filename and export the plot to that file.

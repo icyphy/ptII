@@ -401,6 +401,15 @@ public class Plot extends PlotBox {
         super.fillPlot();
     }
 
+    /** Return whether a line will be drawn from any
+     *  plotted point down to the x axis.
+     *  A plot with such lines is also known as a stem plot.
+     *  @param on If true, draw a stem plot.
+     */
+    public boolean getImpulses() {
+        return _impulses;
+    }
+
     /** Return the maximum number of data sets.
      *  This method is deprecated, since there is no longer an upper bound.
      *  @deprecated

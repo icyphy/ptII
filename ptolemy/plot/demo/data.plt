@@ -6,9 +6,8 @@
 # limitation of liability, and disclaimer of warranty provisions.
 
 TitleText: My Plot
-# test auto ranging
-# XRange: 0,4
-# YRange: -4,4
+XRange: 0,4
+YRange: -4,4
 # Manually specify X ticks
 XTicks: zero 0, "one" 1, two 2, three 3, four 4, five 5
 Grid: off
