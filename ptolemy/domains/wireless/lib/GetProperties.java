@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green(cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -50,7 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 This actor retrieves the properties most recently received by
-an input port that is connected to its trigger port. That port
+an input port that is connected on the inside to the trigger 
+port of this actor. That port
 must be an instance of WirelessIOPort, and must be contained
 by the container of this actor, or an exception will be thrown.
 A typical usage pattern is inside an instance of WirelessComposite,
@@ -59,7 +60,7 @@ the properties.
 <p>
 NOTE: The type of the properties port is inferred from the
 <i>defaultProperties</i> field of the channel used by the connected
-port at preinitialize() time. If the channel is changed during
+port at preinitialize() time. If the connection is changed during
 execution, or the connectivity is changed, then the type of the
 port will not be updated, and a run-time type error could occur.
 Thus, this actor assumes that these types do not change.
@@ -87,10 +88,6 @@ public class GetProperties extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        // NOTE: This is lame: disable default type inference.
-        // Without this line, the output type will be inferred
-        // from the type of the trigger input.
-        output.setTypeEquals(BaseType.UNKNOWN);
 
         // Create and configure the ports.
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -116,9 +113,9 @@ public class GetProperties extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the properties from the specified input port and produce
-     *  them at the output. If there are no properties, then produce
-     *  no output.
+    /** Read the properties from the port connected to the trigger 
+     *  port and produce them at the output. If there are no properties, 
+     *  then produce no output.
      *  @exception IllegalActionException If the specified port is not
      *   an instance of WirelessIOPort, or if there is no such port.
      */
@@ -157,7 +154,8 @@ public class GetProperties extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
+        // Disable default type inference.
+        output.setTypeEquals(BaseType.UNKNOWN);
         Iterator connectedPorts = trigger.sourcePortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();

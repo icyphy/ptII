@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -77,7 +77,7 @@ The power and duration are typically delivered by the channel
 in the "properties" field of the transmission. The power
 is usually given as a power density (per unit area) so that
 a receiver can multiply it by its antenna area to determine
-the received power. It is in a linear scale, typically with
+the received power. It is in a linear scale (vs. DB), typically with
 units such as watts per square meter.  The duration is a
 non-negative double, and the message is an arbitrary token.
 <p>
@@ -99,8 +99,8 @@ The outputs are:
 This actor is typically used with a channel that delivers a properties
 record token that contains <i>power</i> and <i>duration</i> fields.
 These fields can be extracted by using a GetProperties actor followed
-by a RecordDisassembler. The PowerLossChannel, for example.
-In order for the type constraints to be satisfied, however, the
+by a RecordDisassembler. The PowerLossChannel, for example, can be used.
+However, in order for the type constraints to be satisfied, the
 PowerLossChannel's <i>defaultProperties</i> parameter must be
 augmented with a default value for the <i>duration</i>.
 Each transmitter can override that default with its own message
@@ -111,8 +111,9 @@ is less than the value of the <i>powerThreshold</i> parameter
 is ignored. It will not cause collisions and is not produced
 at the <i>collided</i> output.  The <i>powerThreshold</i> parameter
 thus specifies the power level at which the receiver simply fails
-to detect the signal.  It is given in a linear scale with the same
-units as the <i>power</i> input.
+to detect the signal.  It is given in a linear scale (vs. DB) with
+the same units as the <i>power</i> input. The default value is zero, 
+i.e. by default it won't ignore any received signal.
 <p>
 Any message whose power exceeds <i>powerThreshold</i> has the
 potential of being successfully received, of failing to be
@@ -137,7 +138,7 @@ where
 <quote>
 <i>P</i> = 10^(<i>SNRThresholdInDB</i>/10)
 </quote>
-which is the signal to interference ration in a linear scale.
+which is the signal to interference ratio in a linear scale.
 <p>
 The way this actor works is that each input that has sufficient power
 is recorded in a hash table indexed by the time at which its duration
@@ -152,6 +153,7 @@ NOTE: This actor assumes that the duration of messages is short
 relative to the rate at which the actors move. That is, the received
 power (and whether a receiver is in range) is determined once, at the
 time the message starts, and remains constant throughout the transmission.
+It also requires that all three inputs have tokens when fired.
 
 @author Yang Zhao, Xiaojun Liu, Edward Lee
 @version $Id$
@@ -210,7 +212,7 @@ public class CollisionDetector extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The input port for message.  This has undeclared type.
+    /** The input port for the message.  This has undeclared type.
      */
     public TypedIOPort message;
 
@@ -219,12 +221,13 @@ public class CollisionDetector extends TypedAtomicActor {
      */
     public TypedIOPort power;
 
-    /** The time that a message transmission takes.
+    /** The input port for the time that a message transmission takes. 
+     *  This has type double.
      */
     public TypedIOPort duration;
 
-    /** The output port that produces messages that do not
-     *  encounter a collision. This has the same type as the message input.
+    /** The output port that produces messages that are successfully 
+     *  received. This has the same type as the message input.
      */
     public TypedIOPort received;
 
@@ -245,8 +248,8 @@ public class CollisionDetector extends TypedAtomicActor {
     /** The power threshold above which the signal can be
      *  detected at the receiver. Any message with a received power
      *  below this number is ignored.  This has type double
-     *  and defaults to 0.0, which indicates that no message
-     *  (with nonzero power) is ignored.
+     *  and defaults to 0.0, which indicates that all messages
+     *  (with nonzero power) will be received.
      */
     public Parameter powerThreshold;
 
@@ -255,7 +258,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
     /** If the specified attribute is <i>SNRThresholdInDB</i>,
      *  or <i>powerThreshold</i> then
-     *  check that a positive number is given. Otherwise,
+     *  check that a non-negtive number is given. Otherwise,
      *  defer to the base class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
@@ -310,8 +313,8 @@ public class CollisionDetector extends TypedAtomicActor {
     }
 
     /** If a new message is available at the inputs, record it in the
-     *  hashtable indexed with the time that the message shall be completed,
-     *  and loop through the hashtable to check whether there is collision.
+     *  list indexed with the time that the message shall be completed,
+     *  and loop through the list to check whether there is collision.
      *  If the current time matches one of the times that we have previously
      *  recorded as the completion time for a transmission, then output the
      *  received message to the <i>received</i> output port if it is not

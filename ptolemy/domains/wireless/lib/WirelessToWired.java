@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -50,9 +50,9 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 On each firing, this actor reads at most one token from the input
-port and output the data on the <i>data</i> port and the properties
+port and output the payload on the <i>payload</i> port and the properties
 on the <i>properties</i> port.  If there are no properties, then
-output a token only on the <i>data</i> port.
+output a token only on the <i>payload</i> port.
 <p>
 NOTE: The type of the properties port is inferred from the
 <i>defaultProperties</i> field of the channel at preinitialize()
@@ -94,9 +94,9 @@ public class WirelessToWired extends TypedAtomicActor {
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$inputChannelName");
 
-        data = new TypedIOPort(this, "data", false, true);
-        data.setTypeSameAs(input);
-        new Attribute(data, "_showName");
+        payload = new TypedIOPort(this, "payload", false, true);
+        payload.setTypeSameAs(input);
+        new Attribute(payload, "_showName");
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -107,12 +107,12 @@ public class WirelessToWired extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Port that transmits the data received on the <i>input</i>
-     *  port.
+    /** Output port that transmits the payload received on the <i>input</i>
+     *  port. This has the same type as the <i>input</i> port.
      */
-    public TypedIOPort data;
+    public TypedIOPort payload;
 
-    /** Port that receives a wireless input.
+    /** Input port that receives a wireless input.
      */
     public WirelessIOPort input;
 
@@ -121,8 +121,8 @@ public class WirelessToWired extends TypedAtomicActor {
      */
     public StringParameter inputChannelName;
 
-    /** Port that transmits the properties received on the <i>input</i>
-     *  port.
+    /** Output port that transmits the properties received on the <i>input</i>
+     *  port. The type of this port is a record type.
      */
     public TypedIOPort properties;
 
@@ -141,14 +141,14 @@ public class WirelessToWired extends TypedAtomicActor {
         WirelessToWired newObject = (WirelessToWired)(super.clone(workspace));
 
         // set the type constraints
-        newObject.data.setTypeSameAs(newObject.input);
+        newObject.payload.setTypeSameAs(newObject.input);
         return newObject;
     }
 
-    /** Read at most one token from the input port and output the data
-     *  on the <i>data</i> port and the properties on the <i>properties</i>
+    /** Read at most one token from the input port and output the payload
+     *  on the <i>payload</i> port and the properties on the <i>properties</i>
      *  port.  If there are no properties, then output a token only
-     *  on the <i>data</i> port.
+     *  on the <i>payload</i> port.
      */
     public void fire() throws IllegalActionException {
 
@@ -159,7 +159,7 @@ public class WirelessToWired extends TypedAtomicActor {
             if (_debugging) {
                 _debug("Input signal received: " + inputValue.toString());
             }
-            data.send(0, inputValue);
+            payload.send(0, inputValue);
 
             // Do not send properties if the port has no destinations.
             // This prevents run-time type errors from occurring.

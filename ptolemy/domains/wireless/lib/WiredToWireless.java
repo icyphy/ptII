@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Workspace;
 //// WiredToWireless
 
 /**
-On each firing, this actor reads at most one token from the <i>data</i>
-and <i>properties</i> input ports, and outputs the data on the wireless
+On each firing, this actor reads at most one token from the <i>payload</i>
+and <i>properties</i> input ports, and outputs the payload on the wireless
 <i>output</i> port with the specified transmit properties.
 If there are no properties, then the output is sent without properties.
 
@@ -68,8 +68,8 @@ public class WiredToWireless extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        data = new TypedIOPort(this, "data", true, false);
-        new Attribute(data, "_showName");
+        payload = new TypedIOPort(this, "payload", true, false);
+        new Attribute(payload, "_showName");
 
         properties = new TypedIOPort(this, "properties", true, false);
         new Attribute(properties, "_showName");
@@ -83,7 +83,7 @@ public class WiredToWireless extends TypedAtomicActor {
         // Create and configure the ports.
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
-        output.setTypeSameAs(data);
+        output.setTypeSameAs(payload);
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -94,12 +94,13 @@ public class WiredToWireless extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Port that receives the data to be transmitted on the <i>output</i>
-     *  port.
+    /** Input port that receives the payload to be transmitted on the 
+     *  <i>output</i> port.
      */
-    public TypedIOPort data;
+    public TypedIOPort payload;
 
-    /** Port that sends a wireless output.
+    /** Port that sends a wireless output. This has the same type as
+     *  the <i>payload</i> port.
      */
     public WirelessIOPort output;
 
@@ -108,8 +109,8 @@ public class WiredToWireless extends TypedAtomicActor {
      */
     public StringParameter outputChannelName;
 
-    /** Port that receives the properties to be used for transmission
-     *  on the <i>output</i> port.
+    /** input port that receives the properties to be used for transmission
+     *  on the <i>output</i> port. The type of this port is a record type.
      */
     public TypedIOPort properties;
 
@@ -128,12 +129,12 @@ public class WiredToWireless extends TypedAtomicActor {
         WiredToWireless newObject = (WiredToWireless)(super.clone(workspace));
 
         // set the type constraints
-        newObject.output.setTypeSameAs(newObject.data);
+        newObject.output.setTypeSameAs(newObject.payload);
         return newObject;
     }
 
-    /** Read at most one token from the <i>data</i> and <i>properties</i>
-     *  ports and transmit the data on the <i>output</i> port with the
+    /** Read at most one token from the <i>payload</i> and <i>properties</i>
+     *  ports and transmit the payload on the <i>output</i> port with the
      *  specified properties.  If there are no properties, then send with
      *  no properties.
      */
@@ -141,8 +142,8 @@ public class WiredToWireless extends TypedAtomicActor {
 
         super.fire();
 
-        if (data.hasToken(0)) {
-            Token inputValue = data.get(0);
+        if (payload.hasToken(0)) {
+            Token inputValue = payload.get(0);
             if (_debugging) {
                 _debug("Input data received: " + inputValue.toString());
             }

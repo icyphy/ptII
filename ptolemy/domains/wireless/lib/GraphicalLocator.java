@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -56,6 +56,7 @@ will define the range of transmission.
 
 @author Philip Baldwin, Xiaojun Liu, and Edward A. Lee
 @version $Id$
+@see LimitedRangeChannel
 */
 public class GraphicalLocator extends Locator {
 

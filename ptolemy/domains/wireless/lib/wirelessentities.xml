@@ -47,7 +47,11 @@
     <entity name="MAC" class="ptolemy.moml.EntityLibrary">
         <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.mac.IEEE80211MAC">
         </entity>
+        <entity name="Backoff" class="ptolemy.domains.wireless.lib.network.mac.Backoff">
+        </entity>
         <entity name="ChannelState" class="ptolemy.domains.wireless.lib.network.mac.ChannelState">
+        </entity>
+        <entity name="DataPump" class="ptolemy.domains.wireless.lib.network.mac.DataPump">
         </entity>
         <entity name="FilterMpdu" class="ptolemy.domains.wireless.lib.network.mac.FilterMpdu">
         </entity>
