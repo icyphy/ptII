@@ -955,3 +955,166 @@ test MoMLChangeRequest-9.2 {test propagation of change from master class} {
 	[$iicpD getExpression] \
 	[$iiipD getExpression] \
 } {2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
+
+test MoMLChangeRequest-9.2.2 {test second propagation of change from master class} {
+    set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="0"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}
+
+
+test MoMLChangeRequest-9.3 {test changed from class of instance} {
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "iA.iAB.iABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="3"/>
+    }]
+    $context requestChange $change
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="4"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 4 4 4 4 4 4 4 4 4 4 3 4 4 4 4}
+
+test MoMLChangeRequest-9.4 {test propagation from instance in class} {
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.iABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="5"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 4 5 4 5 4 5 4 5 4 3 4 5 4 5}
+
+test MoMLChangeRequest-9.5 {test propagation from inner subclass} {
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.iAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="6"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 6 6 4 5 6 6 4 5 6 3 4 5 6 6}
+
+test MoMLChangeRequest-9.6 {test propagation from deeper inner subclass} {
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cD.iAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="7"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 6 6 4 5 7 7 4 5 6 3 4 5 7 7}
+
+test MoMLChangeRequest-9.7 {test shadowing on deeper inner subclass} {
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cD.cAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="8"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}

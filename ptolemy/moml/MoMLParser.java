@@ -649,7 +649,7 @@ public class MoMLParser extends HandlerBase {
                             // The property may have been modified from class
                             // in an intermediate subclass, and this will not
                             // show up as a false from isModifiedFromClass().
-                            if (!_propagator._isShadowed(previous)) {
+                            if (!_propagator._isShadowed(previous, _propagatingContext)) {
                                 // Propagating, and value has not been modified.
                                 previous.setExpression(_currentCharData.toString());
                                 // The above will mark it modified, which we don't
@@ -2302,11 +2302,17 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         package friendly variables        ////
 
-    // If this is non-null, then it specifies that an instance of
-    // MoMLChangeRequest triggered the current parse action by
-    // propagating its own change request to objects that defer
-    // their definition to it, directly or indirectly.
+    /** If this is non-null, then it specifies that an instance of
+     *  MoMLChangeRequest triggered the current parse action by
+     *  propagating its own change request to objects that defer
+     *  their definition to it, directly or indirectly.
+     */
     MoMLChangeRequest _propagator = null;
+    
+    /** In conjuction with the above, the context in which propagation
+     *  is occurring.
+     */
+    NamedObj _propagatingContext = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -3395,7 +3401,7 @@ public class MoMLParser extends HandlerBase {
                         // The property may have been modified from class
                         // in an intermediate subclass, and this will not
                         // show up as a false from isModifiedFromClass().
-                        if (!_propagator._isShadowed((Attribute)property)) {
+                        if (!_propagator._isShadowed(property, _propagatingContext)) {
                             // Propagating, and value has not been modified.
                             settable.setExpression(value);
                             // The above will mark it modified, which we don't
