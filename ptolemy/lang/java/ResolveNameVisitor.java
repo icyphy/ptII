@@ -338,17 +338,11 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        Environ env = ctx.environ;
         NameNode name = node.getName();
-        TypeNode currentClass = ctx.currentClass;
-
-        if (ctx.resolveAsObject) {
-           return StaticResolution.resolveAName(name, env, ctx.currentClass, _currentPackage,
-            (CG_FIELD | CG_LOCALVAR | CG_FORMAL));
-        } else {
-           return StaticResolution.resolveAName(name, env, ctx.currentClass, _currentPackage, 
-            CG_METHOD);
-        }
+        
+        return StaticResolution.resolveAName(name, ctx.environ, 
+         ctx.currentClass, _currentPackage, 
+         ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);        
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {

@@ -562,14 +562,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final ClassDecl OBJECT_DECL;
     public static final ClassDecl STRING_DECL;
     public static final ClassDecl CLASS_DECL; 
+    public static final ClassDecl CLONEABLE_DECL;
   
     public static final TypeNameNode OBJECT_TYPE;
     public static final TypeNameNode STRING_TYPE;
     public static final TypeNameNode CLASS_TYPE;
+    public static final TypeNameNode CLONEABLE_TYPE;
      
-    public static final Environ ARRAY_ENVIRON;
-    public static final ClassDecl ARRAY_CLASS_DECL;
-    public static final FieldDecl ARRAY_LENGTH_DECL;
+    public static final Environ    ARRAY_ENVIRON;
+    public static final ClassDecl  ARRAY_CLASS_DECL;
+    public static final FieldDecl  ARRAY_LENGTH_DECL;
+    public static final MethodDecl ARRAY_CLONE_DECL;
       
     public static final LinkedList allFiles = new LinkedList();
     public static final LinkedList recentFiles = new LinkedList();
@@ -593,14 +596,27 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         OBJECT_DECL = _requireClass(env, "Object");
         OBJECT_TYPE = OBJECT_DECL.getDefType();
         
+        CLONEABLE_DECL = _requireClass(env, "Cloneable");
+        CLONEABLE_TYPE = CLONEABLE_DECL.getDefType();        
+        
         // virtual class for arrays
+        
+        List arrayClassMembers = new LinkedList();
+        
         FieldDeclNode arrayLengthNode = new FieldDeclNode(PUBLIC_MOD | FINAL_MOD,
          IntTypeNode.instance, new NameNode(AbsentTreeNode.instance, "length"),
          AbsentTreeNode.instance);
-    
+         
+        MethodDeclNode arrayCloneNode = new MethodDeclNode(PUBLIC_MOD | FINAL_MOD,
+         new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(), 
+         new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
+              
+        arrayClassMembers.add(arrayLengthNode);
+        arrayClassMembers.add(arrayCloneNode);      
+              
         ClassDeclNode arrayClassNode = new ClassDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "<array>"),
-         new LinkedList(), TNLManip.cons(arrayLengthNode), OBJECT_TYPE);
+         TNLManip.cons(CLONEABLE_TYPE), arrayClassMembers, OBJECT_TYPE);
          
         CompileUnitNode arrayCompileUnitNode = new CompileUnitNode(
          javaLangName, new LinkedList(), TNLManip.cons(arrayClassNode));
@@ -611,6 +627,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
         ARRAY_ENVIRON = ARRAY_CLASS_DECL.getEnviron();        
         ARRAY_LENGTH_DECL = (FieldDecl) JavaDecl.getDecl((NamedNode) arrayLengthNode);
+        ARRAY_CLONE_DECL  = (MethodDecl) JavaDecl.getDecl((NamedNode) arrayCloneNode);
         
         STRING_DECL = _requireClass(env, "String");    
         STRING_TYPE = STRING_DECL.getDefType();

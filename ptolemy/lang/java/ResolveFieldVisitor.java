@@ -339,9 +339,20 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-    
-        // FIXME NOW!!
-        node.setEnclosingInstance((ExprNode) node.getEnclosingInstance().accept(this, args));    
+        FieldContext ctx = (FieldContext) args.get(0);        
+          
+        if (!ctx.inStatic && 
+            (node.getEnclosingInstance() == AbsentTreeNode.instance)) {
+           ThisNode thisNode = new ThisNode();
+           
+           // duplicates what's done by ResolveNameVisitor
+           thisNode.setProperty(THIS_CLASS_KEY, ctx.currentClass);              
+           node.setEnclosingInstance((TreeNode) thisNode.accept(this, args));           
+        } else {                        
+           node.setEnclosingInstance((TreeNode) 
+            node.getEnclosingInstance().accept(this, args));            
+        }
+        
         node.setSuperArgs(TNLManip.traverseList(this, node, args, node.getSuperArgs()));
     
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
