@@ -218,7 +218,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  entity will fire in a single iteration of the system.
      *  @param entity The entity that is being fired.
      *  @return The number of times that the given entity will fire
-     *  @exceptio IllegalActionException If thrown by getSchedule(). 
+     *  @exception IllegalActionException If thrown by getSchedule(). 
 
      */
     public int getFiringCount(Entity entity) throws IllegalActionException {
