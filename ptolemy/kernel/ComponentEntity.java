@@ -379,7 +379,8 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
-                    "Component entity can only be contained by a CompositeEntity");
+                    "Component entity can only be contained by "
+                    + "a CompositeEntity");
         }
         // NOTE: If we don't enforce this, then undo could fail,
         // since deletions occur in the opposite order of the re-additions
