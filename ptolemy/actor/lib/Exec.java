@@ -390,7 +390,7 @@ public class Exec extends TypedAtomicActor {
             _errorGobbler.start();
             _outputGobbler.start();
 
-            if (_streamReaderThreadCount++ > 1000) {
+            if (_streamReaderThreadCount > 1000) {
                 // Avoid overflow. 
                 _streamReaderThreadCount = 0;
             }
