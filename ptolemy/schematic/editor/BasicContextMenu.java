@@ -69,7 +69,7 @@ import javax.swing.event.*;
  * Edges can connect to Terminals, but not entities.
  *
  * This is a base class for context menus for most objects in the Ptolemy
- * Editor.  It contains a single action, for getting Parameters.
+ * Editor.  It contains a single action, for getting parameters.
  * @author Steve Neuendorffer 
  * @version $Id$
  */   
@@ -78,12 +78,11 @@ public class BasicContextMenu extends JPopupMenu {
 	super(target.getFullName());
 	
 	Action action;
-	action = new AbstractAction ("Get Parameters") {
+	action = new AbstractAction ("Edit Parameters") {
 	    public void actionPerformed(ActionEvent e) {
 		// Create a dialog and attach the dialog values 
 		// to the parameters of the object                    
 	    NamedObj object = (NamedObj) getValue("target");
-	    System.out.println(object);
 	    JFrame frame = new JFrame("Parameters for " + object.getName());
 	    JPanel pane = (JPanel) frame.getContentPane();
 	    Query query;
@@ -103,9 +102,39 @@ public class BasicContextMenu extends JPopupMenu {
 	};
 	
 	action.putValue("target", target);
-	action.putValue("tooltip", "Get Parameters");
-	JMenuItem item = add(action);
-	item.setToolTipText("Get Parameters");
-	action.putValue("menuItem", item);
+	add(action, "Edit Parameters");
+    }
+
+    /** Add an action to this menu and return the menu item created.  If
+     * the tool tip is null, use the "tooltip" property already in the
+     * action, otherwise add the property to the action. 
+     * The new menu item is added to the action as the
+     * "menuItem" property.  The menu item's text is set using the
+     * action's name and is enabled by default.
+     */
+    public JMenuItem add (Action action, String tooltip) {
+        String label = (String)action.getValue(action.NAME);
+        return add(action, tooltip, label, true);
+    }
+
+    /** Add an action to this menu and return the menu item created.  If
+     * the tool tip is null, use the "tooltip" property already in the
+     * action, otherwise add the property to the action. 
+     * The new menu item is added to the action as the
+     * "menuItem" property.  The menu item's text is set to be "label",
+     * and is disabled or enabled according to "isEnabled."
+     */
+    public JMenuItem add (Action action,
+            String tooltip, String label, boolean isEnabled) {
+        if (tooltip == null) {
+            tooltip = (String) action.getValue("tooltip");
+        } 
+        action.putValue("tooltip", tooltip);
+        JMenuItem item = add(action);
+        item.setText(label);
+        item.setEnabled(isEnabled);
+	item.setToolTipText(tooltip);
+        action.putValue("menuItem", item);
+        return item;
     }
 }

@@ -104,6 +104,8 @@ public class EditorGraphController extends CompositeGraphController {
      */
     private LinkCreator _linkCreator;
 
+    /** The controllers
+     */
     private PortController _portController;
     private RelationController _relationController;
     private EntityController _entityController;
@@ -187,13 +189,13 @@ public class EditorGraphController extends CompositeGraphController {
 
         // Create a listener that creates new relations
         _relationCreator = new RelationCreator();
-        _relationCreator.setMouseFilter(_shiftFilter);
+        _relationCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         
         // Create a listener that creates new terminals
-	_portCreator = new PortCreator();
-        _portCreator.setMouseFilter(_controlFilter);
-        pane.getBackgroundEventLayer().addInteractor(_portCreator);
+	//_portCreator = new PortCreator();
+        //_portCreator.setMouseFilter(_controlFilter);
+        //pane.getBackgroundEventLayer().addInteractor(_portCreator);
         
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
@@ -201,18 +203,22 @@ public class EditorGraphController extends CompositeGraphController {
 	((CompositeInteractor)_portController.getNodeInteractor()).addInteractor(_linkCreator);
         ((CompositeInteractor)_entityController.getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 	((CompositeInteractor)_relationController.getNodeInteractor()).addInteractor(_linkCreator);
+
+	//LinkCreator linkCreator2 = new LinkCreator();
+	//linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK,0));
+	//((CompositeInteractor)_entityController.getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+
 	
-        /*
-        // Create the interactor that drags new edges.
+        /*        // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
         */
         // MenuCreator 	
-        _menuCreator = new MenuCreator();
+        _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-	pane.getBackgroundEventLayer().setConsuming(true);
-         
+
+	pane.getBackgroundEventLayer().setConsuming(false);         
     }
     
     public NodeController getNodeController(Node node) {
@@ -220,8 +226,8 @@ public class EditorGraphController extends CompositeGraphController {
         if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof Entity) {
-            return _entityController;
-        } else if(object instanceof Port) {
+            return _entityController;  
+	} else if(object instanceof Port) {
             return _portController;
         } else 
             throw new RuntimeException(
@@ -386,71 +392,55 @@ public class EditorGraphController extends CompositeGraphController {
 	}
     }
 	
-    /** An interactor that creates context-sensitive menus.
-     */
-    public class MenuCreator extends AbstractInteractor {
-	public MenuCreator() {
-	    setMouseFilter(new MouseFilter(3));
+    public class SchematicContextMenuFactory extends MenuFactory {
+	public JPopupMenu create(Figure figure) {
+	    Graph graph = getGraph();
+	    CompositeEntity object = 
+		(CompositeEntity) graph.getSemanticObject();
+	    return new Menu(object);		
 	}
-	
-	public void mousePressed(LayerEvent e) {
-	    Figure source = e.getFigureSource();
-	    if(source == null) {
-		Graph graph = getGraph();
-		CompositeEntity object = 
-		    (CompositeEntity) graph.getSemanticObject();
-		JPopupMenu menu = 
-		    new SchematicContextMenu(object);
-		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-		e.consume();
+
+        public class Menu extends BasicContextMenu {
+	    public Menu(CompositeEntity target) {
+		super(target);
+		
+		// FIXME this action is similar to one in the application.
+		// Merge them (GUIActions?)
+		Action action;
+		action = new AbstractAction ("Edit Director Parameters") {
+		    public void actionPerformed(ActionEvent e) {
+			// Create a dialog and attach the dialog values 
+			// to the parameters of the schematic's director
+			CompositeActor object = 
+			(CompositeActor) getValue("target");
+			Director director = object.getDirector();
+			JFrame frame =
+			new JFrame("Parameters for " + director.getName());
+			JPanel pane = (JPanel) frame.getContentPane();
+			Query query;
+			try {
+			    query = new ParameterEditor(director);
+			} catch (Exception ex) {
+			    ex.printStackTrace();
+			    throw new RuntimeException(ex.getMessage());
+			}
+			
+			pane.add(query);
+			frame.setVisible(true);
+			frame.pack();
+		    }
+		};
+
+		add(action, "Edit Director Parameters");
+		
+		//FIXME
+		JLabel domain = new JLabel("Domain");
+		add(domain);
+		JLabel director = new JLabel("Director");
+		add(director);
+		
 	    }
 	}
-    }
-        
-    public class SchematicContextMenu extends BasicContextMenu {
-	public SchematicContextMenu(CompositeEntity target) {
-	    super(target);
-	    
-            // FIXME this action is similar to one in the application.
-            // Merge them (GUIActions?)
-	    Action action;
-	    action = new AbstractAction ("Get Director Parameters") {
-		public void actionPerformed(ActionEvent e) {
-		    // Create a dialog and attach the dialog values 
-		    // to the parameters of the schematic's director
-		    CompositeActor object = 
-		    (CompositeActor) getValue("target");
-		    Director director = object.getDirector();
-		    JFrame frame =
-		    new JFrame("Parameters for " + director.getName());
-                    JPanel pane = (JPanel) frame.getContentPane();
-		    Query query;
-		    try {
-			query = new ParameterEditor(director);
-		    } catch (Exception ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage());
-		    }
-			
-		    pane.add(query);
-                    frame.setVisible(true);
-                    frame.pack();
-                }
-            };
-            action.putValue("target", target);
-            action.putValue("tooltip", "Get Director Parameters");
-            
-            JMenuItem item = add(action);
-            item.setToolTipText("Get Director Parameters");
-            action.putValue("menuItem", item);  
-                        
-	    //FIXME
-	    JLabel domain = new JLabel("Domain");
-	    add(domain);
-	    JLabel director = new JLabel("Director");
-	    add(director);
-
-        }
     }
 
     public String createUniqueName(String root) {

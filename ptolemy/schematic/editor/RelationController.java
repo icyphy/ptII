@@ -75,34 +75,27 @@ public class RelationController extends LocatableNodeController {
 	SelectionModel sm = controller.getSelectionModel();
 	NodeInteractor interactor = new NodeInteractor(sm);
 	setNodeInteractor(interactor);	
-	new MenuCreator(interactor);
+	_menuCreator = new MenuCreator(new RelationContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
-    
-    /** An interactor that creates context-sensitive menus.
+
+    /**
+     * The factory for creating context menus on relations.
      */
-    protected class MenuCreator extends AbstractInteractor {
-	public MenuCreator(CompositeInteractor interactor) {
-	    interactor.addInteractor(this);
-	    setMouseFilter(new MouseFilter(3));
-	}
-	
-	public void mousePressed(LayerEvent e) {
-	    Figure source = e.getFigureSource();
+    public class RelationContextMenuFactory extends MenuFactory {
+	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    JPopupMenu menu = 
-		new RelationContextMenu(object);
-	    menu.show(getController().getGraphPane().getCanvas(),
-		      e.getX(), e.getY());
+	    return new Menu(object);
+	}    
+	
+	public class Menu extends BasicContextMenu {
+	    public Menu(NamedObj target) {
+		super(target);
+	    }
 	}
     }
-    
-    public static class RelationContextMenu extends BasicContextMenu {
-	public RelationContextMenu(NamedObj target) {
-	    super(target);
-	}
-    }
-    
+   
     public class RelationRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    double h = 12.0;            
@@ -114,9 +107,10 @@ public class RelationController extends LocatableNodeController {
 	    polygon.lineTo(-w/2, 0);
 	    polygon.lineTo(0, -h/2);
 	    polygon.closePath();
-	    //	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
 	    Figure figure = new BasicFigure(polygon, Color.black);
 	    return figure;
 	}
     }
+
+    MenuCreator _menuCreator;
 }

@@ -76,7 +76,8 @@ public class EntityPortController extends NodeController {
 	NodeInteractor interactor = new NodeInteractor(sm);
         interactor.setDragInteractor(null);
 	setNodeInteractor(interactor);
-	_menuCreator = new MenuCreator(interactor);
+	_menuCreator = new MenuCreator(new PortContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
     
 
@@ -137,47 +138,32 @@ public class EntityPortController extends NodeController {
         // Add to the graph
 	//getController().getGraphImpl().addNode(node, parentNode);
     }
-
-    /** An interactor that creates context-sensitive menus.
-     */
-    protected class MenuCreator extends AbstractInteractor {
-	public MenuCreator(CompositeInteractor interactor) {
-	    interactor.addInteractor(this);
-	    setMouseFilter(new MouseFilter(3));
-	}
-
-	public void mousePressed(LayerEvent e) {
-	    Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    JPopupMenu menu = 
-		new PortContextMenu(object);
-	    menu.show(getController().getGraphPane().getCanvas(),
-		      e.getX(), e.getY());
-	}
-    }
     
     /**
-     * This is a base class for popup menus used to manipulate various
-     * PTMLObjects within the editor.  It contains an entry for parameter
-     * editing that opens a dialog box in a new frame for 
-     * editing the parameters
-     * of an object.  
+     * The factory for creating context menus on entities.
      */
-    public class PortContextMenu extends BasicContextMenu {
-        public PortContextMenu(NamedObj target) {	    
-            super(target);
-	    if(target instanceof IOPort) {
-		IOPort port = (IOPort)target;
-		JCheckBox checkBox;
-		checkBox = new JCheckBox("Input", port.isInput());
-		add(checkBox);
-		checkBox = new JCheckBox("Output", port.isOutput());
-		add(checkBox);
-		checkBox = new JCheckBox("Multiport", port.isMultiport());
-		add(checkBox);		
+    public class PortContextMenuFactory extends MenuFactory {
+	public JPopupMenu create(Figure source) {
+	    Node sourcenode = (Node) source.getUserObject();
+	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+	    return new Menu(object);
+	}    
+	
+	public class Menu extends BasicContextMenu {
+	    public Menu(NamedObj target) {	    
+		super(target);
+		if(target instanceof IOPort) {
+		    IOPort port = (IOPort)target;
+		    JCheckBox checkBox;
+		    checkBox = new JCheckBox("Input", port.isInput());
+		    add(checkBox);
+		    checkBox = new JCheckBox("Output", port.isOutput());
+		    add(checkBox);
+		    checkBox = new JCheckBox("Multiport", port.isMultiport());
+		    add(checkBox);		
+		}
 	    }
-        }
+	}
     }
 
     MenuCreator _menuCreator;

@@ -70,11 +70,7 @@ import javax.swing.filechooser.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// GraphEditor
 /**
- * A graph editor for non-hierarchical graphs. This is a complete
- * graph-editing application that includes automatic layout, load from
- * and save to XML, editable properties, and so on. It is intended as
- * an example application that you can use as a basis for building a
- * customized graph editor for your own application.
+ * Vergil is the user interface for Ptolemy II
  *
  * @author Steve Neuendorffer, John Reekie 
  * @version $Id$
@@ -166,7 +162,8 @@ public class GraphEditor extends MDIApplication {
 	// This is kindof
 	// bogus, but it is not easy to fire the action manually.
 	Action action = getAction(DefaultActions.NEW);
-	javax.swing.Timer timer = new javax.swing.Timer(0, action);
+	// FIXME this is really a horrible horrible hack.
+	javax.swing.Timer timer = new javax.swing.Timer(100, action);
 	timer.setRepeats(false);
 	timer.start();
     }
@@ -190,11 +187,10 @@ public class GraphEditor extends MDIApplication {
         // Set and draw the new graph
         controller.setGraph(graph);
 
-        ActionListener deletionListener = new DeletionListener();
+	ActionListener deletionListener = new DeletionListener();
         jgraph.registerKeyboardAction(deletionListener, "Delete", 
-                KeyStroke.getKeyStroke('d'),
-                        //KeyEvent.VK_DELETE, 15), 
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+	    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), 
+	    JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
         jgraph.addMouseListener(new MouseFocusMover());
         return jgraph;
@@ -205,26 +201,21 @@ public class GraphEditor extends MDIApplication {
      */
     public class DeletionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("delete");
-         
             JGraph jgraph = (JGraph) e.getSource();
             GraphPane graphPane = jgraph.getGraphPane();
             EditorGraphController controller = 
                 (EditorGraphController)graphPane.getGraphController();
             GraphImpl impl = controller.getGraphImpl();
             SelectionModel model = controller.getSelectionModel();
-            Iterator selection = model.getSelection();
-            while(selection.hasNext()) {
-                Object object = selection.next();
-                System.out.println("object = " + object);
-                if(object instanceof Figure) {
-                    Object userObject = 
-                        ((Figure)object).getUserObject();
-                    System.out.println("userObject = " + userObject);
-                    if(userObject instanceof Node) {
+            Object selection[] = model.getSelectionAsArray();
+            for(int i = 0; i < selection.length; i++) {
+		if(selection[i] instanceof Figure) {
+		    model.removeSelection(selection[i]);
+		    Object userObject = 
+                        ((Figure)selection[i]).getUserObject();
+		    if(userObject instanceof Node) {
                         Node node = (Node) userObject;
-                        //  controller.removeNode(node);
-                        controller.clearNode(node);
+			controller.clearNode(node);
                         impl.removeNode(node);
                         jgraph.repaint();
                     } else if(userObject instanceof Edge) {
@@ -239,24 +230,18 @@ public class GraphEditor extends MDIApplication {
         }
     }
 
-    /** Move the keyboard focus around so that we can grab keyboard events.
+    /** Grab the keyboard focus when the component that this listener is
+     *  attached to is clicked on.
      */
     public class MouseFocusMover extends MouseAdapter {        
-        public void mouseEntered(
+        public void mouseClicked(
                 MouseEvent mouseEvent) {
-            System.out.println("Entered");
-            Component component = 
+	    Component component = 
                 mouseEvent.getComponent();
                        
             if (!component.hasFocus()) {
                 component.requestFocus();
             }
-        }        
-
-        public void mouseExited(
-                MouseEvent mouseEvent) {            
-            System.out.println("Exited");
-            ((DesktopFrame) getApplicationFrame()).getContentPane().requestFocus();
         }        
     }
 
@@ -501,9 +486,10 @@ public class GraphEditor extends MDIApplication {
         addToolBarButton(tb, action, null, resources.getImageIcon("SaveImage"));
         //tb.addSeparator();
 
+	String dflt = "";
         // Layout combobox
-        _layoutComboBox = new JComboBox();
-        String dflt = "Random layout";
+	/*        _layoutComboBox = new JComboBox();
+        dflt = "Random layout";
         _layoutComboBox.addItem(dflt);
         _layoutComboBox.addItem("Levelized layout");
         _layoutComboBox.setSelectedItem(dflt);
@@ -518,7 +504,7 @@ public class GraphEditor extends MDIApplication {
             }
         });
         tb.add(_layoutComboBox);
-
+	*/
         //tb.addSeparator();
 
 	//FIXME find these names somehow.

@@ -78,10 +78,13 @@ public class EntityController extends LocatableNodeController {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
 	setPortController(new EntityPortController(controller));
+	
 	SelectionModel sm = controller.getSelectionModel();
 	NodeInteractor interactor = new NodeInteractor(sm);
 	setNodeInteractor(interactor);
-	_menuCreator = new MenuCreator(interactor);
+
+	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
     
     /** Create a new node with the given semantic object and
@@ -131,20 +134,19 @@ public class EntityController extends LocatableNodeController {
 		}
 	    }
 	}
-	//System.out.println("incount = "+ inCount);
-	//System.out.println("outcount = "+ outCount);
-	//System.out.println("inoutcount = "+ inOutCount);
+
 	int nodeNumber = 0;
         
-	_createPortFigures((CompositeNode)n, inputs, inCount, SwingConstants.WEST);
-	_createPortFigures((CompositeNode)n, outputs, outCount, SwingConstants.EAST);
-	_createPortFigures((CompositeNode)n, inouts, inOutCount, SwingConstants.SOUTH);
+	_createPortFigures((CompositeNode)n, inputs, inCount, 
+			   SwingConstants.WEST);
+	_createPortFigures((CompositeNode)n, outputs, outCount, 
+			   SwingConstants.EAST);
+	_createPortFigures((CompositeNode)n, inouts, inOutCount,
+			   SwingConstants.SOUTH);
         return nf;
     }
 
     /** Return true if the node is associated with a desired location.
-     *  In this base class, return true if the the node's semantic object is
-     *  an instance of Locatable.
      */
     public boolean hasLocation(Node n) {
         NamedObj object = (NamedObj)n.getSemanticObject();
@@ -152,8 +154,7 @@ public class EntityController extends LocatableNodeController {
         return (icon != null) && (icon.getLocation() != null);
     }
 
-    /** Return the desired location of this node.  Throw an exception if the
-     *  node does not have a desired location.
+    /** Return the desired location of this node. 
      */
     public int[] getLocation(Node n) {
         NamedObj object = (NamedObj)n.getSemanticObject();
@@ -204,47 +205,31 @@ public class EntityController extends LocatableNodeController {
 	    		    100.0*nodeNumber/(count+1));
 	}
     }  
-
-    /** An interactor that creates context-sensitive menus.
-     */
-    // FIXME this could be commonalized with a factory.
-    protected class MenuCreator extends AbstractInteractor {
-	public MenuCreator(CompositeInteractor interactor) {
-	    interactor.addInteractor(this);
-	    setMouseFilter(new MouseFilter(3));
-	}
-
-       	public void mousePressed(LayerEvent e) {
-	    Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    JPopupMenu menu = 
-		new EntityContextMenu(object);
-	    menu.show(getController().getGraphPane().getCanvas(),
-		      e.getX(), e.getY());
-	}
-    }
     
     /**
-     * This is a base class for popup menus used to manipulate various
-     * PTMLObjects within the editor.  It contains an entry for parameter
-     * editing that opens a dialog box in a new frame for 
-     * editing the parameters
-     * of an object.  
+     * The factory for creating context menus on entities.
      */
-    public class EntityContextMenu extends BasicContextMenu {
-        public EntityContextMenu(NamedObj target) {
-            super(target);
-        }
+    public class EntityContextMenuFactory extends MenuFactory {
+	public JPopupMenu create(Figure source) {
+	    Node sourcenode = (Node) source.getUserObject();
+	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+	    return new Menu(object);
+	}    
+	
+	public class Menu extends BasicContextMenu {
+	    public Menu(NamedObj target) {
+		super(target);
+	    }
+	}
     }
-
+	
     public class EntityRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure;
 	    NamedObj object = (NamedObj)n.getSemanticObject();
 	    BasicCompositeNode node = (BasicCompositeNode) n;
 	    Entity entity = (Entity)object;
-            EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
+	    EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
             //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
             //icon.createFigure();
             // Figure background = icon.createFigure(); 
