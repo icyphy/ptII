@@ -13,6 +13,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -61,11 +63,11 @@ deprecated, but shipped for backward compatiblity.</text></svg></configure>
         </port>
     </entity>
     <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dirAsURL&quot;) + &quot;ptolemy/actor/lib/test/auto/FileWriter1Output.txt&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="asURL(property(&quot;java.io.tmpdir&quot;)) + &quot;FileWriter1Output.txt&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
