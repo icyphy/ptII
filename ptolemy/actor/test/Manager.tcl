@@ -284,9 +284,11 @@ test Manager-10.1 {Test execution listener with one arg} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
     jdkCapture {
 	set listener [java::new ptolemy.actor.StreamExecutionListener \
 		[java::field System out]]
+
 	$manager addExecutionListener $listener
 	$manager run
 	set exception [java::new ptolemy.actor.NoRoomException \
@@ -302,6 +304,7 @@ test Manager-10.1 {Test execution listener with one arg} {
     # Strip out the stack frames
     regsub -all {	at .*$\n} $stdoutResultsWithoutTime "" \
 	    stdoutResultsWithoutStackTrace	   
+	puts $stdoutResults
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
     list $stdoutResultsWithoutStackTrace
 } {{preinitializing
@@ -314,7 +317,6 @@ idle
 Completed execution with 2 iterations
 xxx ms
 Execution error.
-This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
 }}
 
