@@ -131,7 +131,7 @@ EXTRA_SRCS = \
 	PtolemyII.jpg \
 	PtolemyIIIcon.gif \
 	PtolemyIISmallIcon.gif \
-        PtolemyIISplash.gif
+        PtolemyIISplash.gif \
 	banner.gif \
 	banner.psd \
 	next.gif \
