@@ -1,4 +1,4 @@
-# Tests for the FBDelay class
+# Tests for the FeedBackDelay class
 #
 # @Author: John S. Davis II
 #
@@ -50,9 +50,9 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # Global Variables 
-set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
-set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalIgnoreTime -1.0
 # set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
 set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
@@ -60,7 +60,7 @@ set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 ######################################################################
 ####
 #
-test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
+test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -87,7 +87,7 @@ test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
-    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
+    set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
 
     $fBack setDelay 4.0
 
@@ -120,7 +120,7 @@ test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
 ######################################################################
 ####
 #
-test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
+test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -147,7 +147,7 @@ test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
-    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
+    set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
     set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "sink" 1]
 
     $fBack setDelay 4.0
@@ -185,7 +185,7 @@ test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
 ######################################################################
 ####
 #
-test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
+test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -210,11 +210,11 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
-    set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
+    set fBack1 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack1"]
     set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
     set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join2"]
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
-    set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
+    set fBack2 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack2"]
 
     $fBack1 setDelay 4.0
     $fBack2 setDelay 0.0
@@ -267,7 +267,7 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
 ######################################################################
 ####
 #
-test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib/clock} {
+test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -291,11 +291,11 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
-    set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
+    set fBack1 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack1"]
     set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
     set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join2"]
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
-    set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
+    set fBack2 [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack2"]
 
     $fBack1 setDelay 4.0
     $fBack2 setDelay 4.0
