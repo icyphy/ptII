@@ -114,7 +114,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.err.println(KernelException.stackTraceToString(e));
                 }
             }
         }
@@ -142,7 +142,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.err.println(KernelException.stackTraceToString(e));
                 }
             }
         }
@@ -198,8 +198,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                         port.get(channel);
                     }
                 } catch (IllegalActionException e) {
-                    e.printStackTrace();
-                    throw new InternalErrorException(e.getMessage());
+                    throw new InternalErrorException(KernelException.stackTraceToString(e));
                 }
             }
         }
