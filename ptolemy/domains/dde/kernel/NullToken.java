@@ -1,4 +1,5 @@
-/*
+/* A NullToken is a marker class used to break deadlock in certain
+DDE topologies.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,43 +31,38 @@
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.actor.*;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// NullToken
 /**
+A NullToken is a marker class used to break deadlock in certain
+topologies of DDE models. A NullToken object does not represent 
+modelled computation but serves as an indicator that an actor in 
+an DDE model can safely advance time to be equal to the time stamp
+associated with the NullToken.
+
+NullTokens are not part of the Ptolemy II type lattice. As such,
+a NullToken will violate type resolution if passed through a 
+typed IO port. For this reason, Null Tokens are placed directly
+into receivers without using the send() method of IOPort. This
+tactic circumvents type resolution constraints and affirms the
+notion that NullTokens do not represent computation and hence 
+should never be incorporated into actor code. Note further, that
+the get() method of DDEReceiver does not return NullTokens but
+instead consumes them and then proceeds until a "real" token 
+becomes available.
 
 @author John S. Davis II
 @version $Id$
 @see ptolemy.data.Token
+@see ptolemy.domains.dde.kernel.DDEReceiver
 */
 
 public class NullToken extends Token {
 
-    /** Construct an NullToken with a token and time stamp.
-    public NullToken(double time) {
-        super( new NullToken(), time );
-    }
-     */
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the time stamp of this event.
-     *  @return double The time stamp of this event.
-    public double getTime() {
-        return _timeStamp;
-    }
-     */
-
-    /** Return the token of this event.
-     *  @return Token The token of this event.
-    public Token getToken() {
-        return _token;
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
