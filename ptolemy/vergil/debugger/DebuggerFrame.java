@@ -576,12 +576,14 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
 
-    ////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Method that gets the selected actor on the vergil interface
-    ////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     private NamedObj getSelectedActor() {
 	NamedObj selectedActor = null;
 	/* FIXME FIXME FIXME
+           The below code should be rewritten to access the graph model
+
            try {
            View v = VergilApplication.getInstance().getCurrentView();
            PtolemyDocument d = (PtolemyDocument) v.getDocument();
