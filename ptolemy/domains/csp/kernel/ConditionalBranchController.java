@@ -218,11 +218,11 @@ public class ConditionalBranchController {
                 // Actor was registered as blocked when the
                 // construct was terminated.
                 if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._informOfReadUnBlock( new CSPReceiver(), false);
+                    _getDirector()._actorReadUnBlocked(false);
 		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._informOfWriteUnBlock( new CSPReceiver());
+                    _getDirector()._actorWriteUnBlocked( new CSPReceiver());
 		} else {
-                    _getDirector()._informOfReadUnBlock( new CSPReceiver(), true);
+                    _getDirector()._actorReadUnBlocked(true);
                 }
 		// _getDirector()._actorUnblocked();
             }
@@ -301,11 +301,11 @@ public class ConditionalBranchController {
           	    _writeBranchesBlocked == _branchesStarted) {
                 // Note: acquiring a second lock, need to be careful.
                 if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._informOfReadBlock( new CSPReceiver(), false);
+                    _getDirector()._actorReadBlocked(false);
 		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._informOfWriteBlock( new CSPReceiver());
+                    _getDirector()._actorWriteBlocked( new CSPReceiver());
 		} else {
-                    _getDirector()._informOfReadBlock( new CSPReceiver(), true);
+                    _getDirector()._actorReadBlocked(true);
                 }
 		// _getDirector()._actorBlocked();
                 _blocked = true;
@@ -325,11 +325,11 @@ public class ConditionalBranchController {
             	     _writeBranchesBlocked == _branchesStarted) {
                 // Note: acquiring a second lock, need to be careful.
                 if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._informOfReadBlock( new CSPReceiver(), false);
+                    _getDirector()._actorReadBlocked(false);
 		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._informOfWriteBlock( new CSPReceiver());
+                    _getDirector()._actorWriteBlocked( new CSPReceiver());
 		} else {
-                    _getDirector()._informOfReadBlock( new CSPReceiver(), true);
+                    _getDirector()._actorReadBlocked(true);
                 }
 		// _getDirector()._actorBlocked();
                 _blocked = true;
@@ -433,8 +433,7 @@ public class ConditionalBranchController {
                             "blocked.");
 		}
                 // Note: acquiring a second lock, need to be careful.
-                _getDirector()._informOfReadUnBlock( new CSPReceiver(),
-                !externalReadBlock );
+                _getDirector()._actorReadUnBlocked(!externalReadBlock );
 		// _getDirector()._actorUnblocked();
                 _blocked = false;
             }
@@ -462,7 +461,7 @@ public class ConditionalBranchController {
                             "blocked.");
 		}
                 // Note: acquiring a second lock, need to be careful.
-                _getDirector()._informOfWriteUnBlock( new CSPReceiver() );
+                _getDirector()._actorWriteUnBlocked( new CSPReceiver() );
 		// _getDirector()._actorUnblocked();
                 _blocked = false;
             }

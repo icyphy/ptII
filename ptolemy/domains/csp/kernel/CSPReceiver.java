@@ -117,13 +117,13 @@ public class CSPReceiver implements ProcessReceiver {
                 }
 
                 
-                _getDirector()._informOfReadBlock(this, true);
+                _getDirector()._actorReadBlocked(true);
                 // _registerBlocked();
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
-                _getDirector()._informOfReadUnBlock(this, true);
+                _getDirector()._actorReadUnBlocked(true);
                 // _registerUnblocked();
                 blocked = false;
                 tmp = _token;
@@ -137,7 +137,7 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
-                _getDirector()._informOfReadUnBlock(this, true);
+                _getDirector()._actorReadUnBlocked(true);
                 // _getDirector()._actorUnblocked();
             }
         }
@@ -357,13 +357,13 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
 
-                _getDirector()._informOfWriteBlock(this);
+                _getDirector()._actorWriteBlocked(this);
                 // _registerBlocked();
                 blocked = true;
                 while(_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
-                _getDirector()._informOfWriteUnBlock(this);
+                _getDirector()._actorWriteUnBlocked(this);
                 // _registerUnblocked();
                 blocked = false;
                 _setRendezvousComplete(true);
@@ -377,7 +377,7 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
-                _getDirector()._informOfWriteUnBlock(this);
+                _getDirector()._actorWriteUnBlocked(this);
                 // _getDirector()._actorUnblocked();
             }
         }

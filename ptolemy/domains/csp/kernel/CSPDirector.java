@@ -257,8 +257,7 @@ public class CSPDirector extends ProcessDirector {
 
     /** Increase the count of blocked processes and check for deadlock.
      */
-    protected synchronized void _informOfReadBlock(CSPReceiver rcvr,
-    	    boolean internal) {
+    protected synchronized void _actorReadBlocked(boolean internal) {
         if( internal ) {
             _intReadBlockCount++;
         } else {
@@ -271,7 +270,7 @@ public class CSPDirector extends ProcessDirector {
  
     /** Increase the count of blocked processes and check for deadlock.
      */
-    protected synchronized void _informOfWriteBlock(CSPReceiver rcvr) {
+    protected synchronized void _actorWriteBlocked(CSPReceiver rcvr) {
         _writeBlockCount++;
         if (_isDeadlocked()) {
 	    notifyAll();
@@ -319,8 +318,7 @@ public class CSPDirector extends ProcessDirector {
 
     /** An actor has unblocked, decrease the count of blocked actors.
      */
-    protected synchronized void _informOfReadUnBlock( ProcessReceiver rcvr,
-    boolean internal) {
+    protected synchronized void _actorReadUnBlocked(boolean internal) {
         if( internal ) {
             _intReadBlockCount--;
         } else {
@@ -330,7 +328,7 @@ public class CSPDirector extends ProcessDirector {
 
     /** An actor has unblocked, decrease the count of blocked actors.
      */
-    protected synchronized void _informOfWriteUnBlock(ProcessReceiver rcvr) {
+    protected synchronized void _actorWriteUnBlocked(ProcessReceiver rcvr) {
         _writeBlockCount--;
     }
 
