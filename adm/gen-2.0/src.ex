@@ -9,6 +9,7 @@
 *.epsi
 .netscape
 *.o
+*.obj
 *.so
 *.snapshot
 */#auto#*
@@ -95,6 +96,7 @@ ptolemy/domains/sdf/test/pitchshift
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
+ptolemy/matlab/ptmatlab.h
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
