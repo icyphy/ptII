@@ -218,37 +218,23 @@ public class PNDirector extends BasePNDirector {
      *  @exception IllegalActionException If any of the called methods throw
      *  it. 
      */
-    public void fire()
-	    throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 	boolean mutreq;
         Workspace worksp = workspace();
-	//Loop until a real deadlock is detected.
-	while (_readBlockCount != _getActiveActorsCount()) {
-	    synchronized (this) {
+        synchronized (this) { //Reset this as mutations must be done by now
+            _mutationBlockCount = 0;
+            _mutationsRequested = false;
+            //Loop until a deadlock other than an artificial deadlock is 
+            //detected.
+            while ((_readBlockCount != _getActiveActorsCount()) && 
+                      !_areAllThreadsStopped()) {
                 //Sleep until a deadlock is detected or mutations are requested
-		while (!_isDeadlocked() && !_mutationsRequested) {
+		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
 		    worksp.wait(this);
 		}
-		mutreq = _mutationsRequested;
-	    }
-	    if (mutreq) {
-                //Pause all processes before performing mutations
-		pause();
-		try {
-                    //Perform mutations
-		    _processTopologyRequests();
-		    synchronized(this) {
-                        //Clear the state that indicates mutations are pending
-			_mutationBlockCount = 0;
-			_mutationsRequested = false;
-			notifyAll();
-		    }
-		} catch (TopologyChangeFailedException e) {
-		    throw new IllegalActionException(
-			    "Topology change error: " + e.getMessage());
-		}
-	    } else { //If deadlock, then handle it.
-		_notdone = !_handleDeadlock();
+                if (!_areAllThreadsStopped()) {
+                    _notdone = !_handleDeadlock();
+                }
 	    }
 	}
 	return;
@@ -276,13 +262,13 @@ public class PNDirector extends BasePNDirector {
      *  @see ptolemy.kernel.event.ChangeListener
      *  @see #fire
      */
-    public void queueTopologyChangeRequest(TopologyChangeRequest request) {
-	super.queueTopologyChangeRequest(request);
+    public void requestChange(ChangeRequest request) {
 	synchronized(this) {
 	    _mutationsRequested = true;
 	    _informOfMutationBlock();
+            super.requestChange(request);
             //Wake up the director to inform it that mutation is requested
-	    notifyAll();
+            //notifyAll();
 	    while(_mutationsRequested) {
 		try {
 		    wait();
@@ -296,6 +282,20 @@ public class PNDirector extends BasePNDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or are 
+     *  blocked on a read or while waiting for mutations to be processed.
+     *  @returns True if all active threads containing actors controlled
+     *  by this thread have stopped or are blocked; otherwise return false.
+     */ 
+    protected synchronized boolean _areAllThreadsStopped() {
+ 	if(_getStoppedProcessesCount() + _readBlockCount + 
+                _mutationBlockCount == _getActiveActorsCount()) {
+ 	    return (_getStoppedProcessesCount() != 0);
+ 	}
+ 	return false;
+    }
+
     /** Return true if a deadlock is detected. Return false otherwise.
      *  A detected deadlock is when all the active processes in the container
      *  are either blocked on a read, write or are waiting after requesting
@@ -303,12 +303,8 @@ public class PNDirector extends BasePNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _isDeadlocked() {
-	if (_readBlockCount + _writeBlockCount + _mutationBlockCount
-		>= _getActiveActorsCount()) {
-	    return true;
-	} else {
-	    return false;
-	}
+	return (_readBlockCount + _writeBlockCount + _mutationBlockCount
+		== _getActiveActorsCount());
     }
 
     /** Return true if the execution has paused or deadlocked. 
@@ -321,12 +317,8 @@ public class PNDirector extends BasePNDirector {
      *  @return true if the execution has paused or deadlocked.
      */
     protected synchronized boolean _isPaused() {
-	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount()
-		+ _mutationBlockCount >= _getActiveActorsCount()) {
-	    return true;
-	} else {
-	    return false;
-	}
+	return (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
+                _mutationBlockCount >= _getActiveActorsCount());
     }
 
     /** Process the queued topology change requests after pausing the 
@@ -348,34 +340,34 @@ public class PNDirector extends BasePNDirector {
      *  after performing the requested mutations.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
-    protected void _processTopologyRequests()
-            throws IllegalActionException, TopologyChangeFailedException {
-	Workspace worksp = workspace();
-	super._processTopologyRequests();
-	//Perform the type resolution.
-	try {
-	    ((CompositeActor)getContainer()).getManager().resolveTypes();
-	} catch (TypeConflictException e) {
-	    throw new IllegalActionException (this, e.toString());
-	}
-	LinkedList threadlist = new LinkedList();
-	Enumeration newactors = _newActors();
-	while (newactors.hasMoreElements()) {
-	    Actor actor = (Actor)newactors.nextElement();
-	    actor.initialize();
-	    ProcessThread pnt = new ProcessThread(actor, this);
-	    threadlist.insertFirst(pnt);
-	    _addNewThread(pnt);
-	}
-	//Resume the paused actors
-	resume();
-	Enumeration threads = threadlist.elements();
-	//Starting threads;
-	while (threads.hasMoreElements()) {
-	    ProcessThread pnt = (ProcessThread)threads.nextElement();
-	    pnt.start();
-	}
-    }
+    // protected void _processTopologyRequests()
+//             throws IllegalActionException, TopologyChangeFailedException {
+// 	Workspace worksp = workspace();
+// 	super._processTopologyRequests();
+// 	//Perform the type resolution.
+// 	try {
+// 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+// 	} catch (TypeConflictException e) {
+// 	    throw new IllegalActionException (this, e.toString());
+// 	}
+// 	LinkedList threadlist = new LinkedList();
+// 	Enumeration newactors = _newActors();
+// 	while (newactors.hasMoreElements()) {
+// 	    Actor actor = (Actor)newactors.nextElement();
+// 	    actor.initialize();
+// 	    ProcessThread pnt = new ProcessThread(actor, this);
+// 	    threadlist.insertFirst(pnt);
+// 	    _addNewThread(pnt);
+// 	}
+// 	//Resume the paused actors
+// 	resume();
+// 	Enumeration threads = threadlist.elements();
+// 	//Starting threads;
+// 	while (threads.hasMoreElements()) {
+// 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
+// 	    pnt.start();
+// 	}
+//     }
 
 
     ///////////////////////////////////////////////////////////////////

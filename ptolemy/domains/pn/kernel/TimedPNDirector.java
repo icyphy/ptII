@@ -239,29 +239,18 @@ public class TimedPNDirector extends BasePNDirector {
 	    throws IllegalActionException {
         boolean timedmut;
         Workspace worksp = workspace();
-	//Loop until a real deadlock is detected.
-	while (_readBlockCount != _getActiveActorsCount()) {
-	    synchronized (this) {
-		while (!_isDeadlocked()) {
+        synchronized (this) {
+            _mutationBlockCount = 0;
+            _mutationsRequested = false;
+            //Loop until a real deadlock is detected.
+            while (_readBlockCount != _getActiveActorsCount() && 
+                      !_areAllThreadsStopped()) {
+		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
 		    worksp.wait(this);
 		}
-		// A deadlock is detected.
-		timedmut = _mutationsRequested;
-	    }
-	    //If artificial deadlock, then resolve it.
-	    if (_writeBlockCount != 0) {
-		_incrementLowestWriteCapacityPort();
-	    } else if (timedmut) { 
-		//If some process has requested mutations
-		// then process them.
-		try {
-		    _processTopologyRequests();
-		} catch (TopologyChangeFailedException e) {
-		    throw new IllegalActionException("TopologyChangeFailed: " +
-			    e.getMessage());
-		}
-	    } else {
-		_notdone = !_handleDeadlock();
+                if (!_areAllThreadsStopped()) {
+                    _notdone = !_handleDeadlock();
+                }
 	    }
 	}
 	return;
@@ -331,11 +320,11 @@ public class TimedPNDirector extends BasePNDirector {
      *  @see ptolemy.kernel.event.ChangeListener
      *  @see #fire
      */
-    public void queueTopologyChangeRequest(TopologyChangeRequest request) {
-	super.queueTopologyChangeRequest(request);
+    public void requestChange(ChangeRequest request) {
 	synchronized(this) {
 	    _mutationsRequested = true;
 	    _informOfMutationBlock();
+            super.requestChange(request);
 	    while(_mutationsRequested) {
 		try {
 		    wait();
@@ -349,6 +338,20 @@ public class TimedPNDirector extends BasePNDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
+
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or are 
+     *  blocked.
+     *  @returns True if all active threads containing actors controlled
+     *  by this thread have stopped or are blocked; otherwise return false.
+     */ 
+    protected synchronized boolean _areAllThreadsStopped() {
+ 	if(_getStoppedProcessesCount() + _readBlockCount + _delayBlockCount +
+                _mutationBlockCount == _getActiveActorsCount()) {
+ 	    return (_getStoppedProcessesCount() != 0);
+ 	}
+ 	return false;
+    }
 
     /** Return true if a deadlock is detected. Return false otherwise.
      *  Return true if all the active processes in the container are either
@@ -419,7 +422,10 @@ public class TimedPNDirector extends BasePNDirector {
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
         //Return true if there are no time-blocked processes.
-	if (_delayBlockCount == 0) {
+	if (_writeBlockCount != 0) {
+            _incrementLowestWriteCapacityPort();
+	    return false;
+        } else if (_delayBlockCount == 0) {
 	    return true;
 	} else {
 	    //Advance time to next possible time.
@@ -495,38 +501,38 @@ public class TimedPNDirector extends BasePNDirector {
      *  after performing the mutations.
      *  @exception TopologyChangeFailedException If any of the requests fails.
      */
-    protected void _processTopologyRequests()
-            throws IllegalActionException, TopologyChangeFailedException {
-	Workspace worksp = workspace();
-	super._processTopologyRequests();
-	//Perform type resolution.
-	try {
-	    ((CompositeActor)getContainer()).getManager().resolveTypes();
-	} catch (TypeConflictException e) {
-	    throw new IllegalActionException(this, e.toString());
-	}
-	LinkedList threadlist = new LinkedList();
-	Enumeration newactors = _newActors();
-	while (newactors.hasMoreElements()) {
-	    Actor actor = (Actor)newactors.nextElement();
-	    actor.initialize();
-	    ProcessThread pnt = new ProcessThread(actor, this);
-	    threadlist.insertFirst(pnt);
-	    _addNewThread(pnt);
-	}
-	synchronized (this) {
-	    _mutationsRequested = false;
-	    _mutationBlockCount = 0;
-	    //Tell all the processes that requested mutations that their
-	    //requests have been processed.
-	    notifyAll();
-	}
-	Enumeration threads = threadlist.elements();
-	//Starting threads;
-	while (threads.hasMoreElements()) {
-	    ((ProcessThread)threads.nextElement()).start();
-	}
-    }
+//     protected void _processTopologyRequests()
+//             throws IllegalActionException, TopologyChangeFailedException {
+// 	Workspace worksp = workspace();
+// 	super._processTopologyRequests();
+// 	//Perform type resolution.
+// 	try {
+// 	    ((CompositeActor)getContainer()).getManager().resolveTypes();
+// 	} catch (TypeConflictException e) {
+// 	    throw new IllegalActionException(this, e.toString());
+// 	}
+// 	LinkedList threadlist = new LinkedList();
+// 	Enumeration newactors = _newActors();
+// 	while (newactors.hasMoreElements()) {
+// 	    Actor actor = (Actor)newactors.nextElement();
+// 	    actor.initialize();
+// 	    ProcessThread pnt = new ProcessThread(actor, this);
+// 	    threadlist.insertFirst(pnt);
+// 	    _addNewThread(pnt);
+// 	}
+// 	synchronized (this) {
+// 	    _mutationsRequested = false;
+// 	    _mutationBlockCount = 0;
+// 	    //Tell all the processes that requested mutations that their
+// 	    //requests have been processed.
+// 	    notifyAll();
+// 	}
+// 	Enumeration threads = threadlist.elements();
+// 	//Starting threads;
+// 	while (threads.hasMoreElements()) {
+// 	    ((ProcessThread)threads.nextElement()).start();
+// 	}
+//     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
