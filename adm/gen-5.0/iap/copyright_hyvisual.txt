@@ -1,6 +1,6 @@
 Copyright agreement for HyVisual
 
-Copyright (c) 1995-2004 The Regents of the
+Copyright (c) 1995-2005 The Regents of the
 University of California.  All rights reserved.
 
 Permission is hereby granted, without written
