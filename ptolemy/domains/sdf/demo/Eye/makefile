@@ -70,10 +70,10 @@ demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer Eye.htm
 
 demo_ptolemy:
-	$(PTII)/bin/ptolemy Eye.xml
+	"$(PTII)/bin/ptolemy" Eye.xml
 
 demo_vergil:
-	$(PTII)/bin/vergil Eye.xml
+	"$(PTII)/bin/vergil" Eye.xml
 
 depend:
 	@echo "no dependencies in this directory"
