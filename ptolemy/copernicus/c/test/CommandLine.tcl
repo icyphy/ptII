@@ -126,7 +126,7 @@ test CommandLine-1.1 {Generate all required files for CommandLine.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
-    set output [exec $className "a b c d"]
+    set output [exec ./$exeFile "a b c d"]
     
     # Check if the output is correct.
     set template [exec java $className "a b c d"]

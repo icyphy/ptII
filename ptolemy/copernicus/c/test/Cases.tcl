@@ -126,7 +126,7 @@ test Cases-1.1 {Generate all required files for Cases.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
-    set output [exec $className]
+    set output [exec ./$exeFile]
     
     # Check if the output is correct.
     set template [exec java $className]

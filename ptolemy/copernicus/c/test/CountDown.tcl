@@ -127,7 +127,7 @@ test Countdown-1.1 {Generate all required files for Terp.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
-    set output [exec $className]
+    set output [exec ./$exeFile]
     
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output

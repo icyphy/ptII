@@ -128,7 +128,7 @@ test NestedExceptions-1.1 {Generate all required files for NestedExceptions.java
     
     # Run the automatically generated executible.
     cd $outputDir
-    set output [exec $className]
+    set output [exec ./$exeFile]
     regsub -all "\n" $output " " output
     regsub -all "
 " $output "" output
