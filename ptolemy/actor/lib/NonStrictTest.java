@@ -198,13 +198,14 @@ public class NonStrictTest extends Sink {
     }
 
     /** If the trainingMode parameter is true and the
-     *  model is being run as part of the test suite, then throw an exception.
+     *  model is being run as part of the test suite, then return true.
      *  This method merely checks to see if
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
      *  To run the test suite in the Nightly Build mode, use
      *  <pre>
      *  make nightly
      *  </pre>
+     *  @return True if the nightly build is running.
      */
     public static boolean isRunningNightlyBuild() {
         if (StringUtilities
