@@ -761,7 +761,7 @@ public class SignalProcessing {
      *  @return A new array of Complex's.
      */
     public static final Complex[] FFTComplexOut(double[] x, int order) {
-        // Argmument checking is done inside FFTRealOut() and FFTImagOut()
+        // Argument checking is done inside FFTRealOut() and FFTImagOut()
 
         double[] realPart = FFTRealOut(x, order);
         double[] imagPart = FFTImagOut(x, order);
