@@ -70,14 +70,6 @@ public class Relation extends NamedObj {
     public Relation() {
 	super();
         getMoMLInfo().elementName = "relation";
-        try {
-            _portList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Relation constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a relation in the default workspace with the given name.
@@ -90,14 +82,6 @@ public class Relation extends NamedObj {
     public Relation(String name) throws IllegalActionException {
 	super(name);
         getMoMLInfo().elementName = "relation";
-        try {
-            _portList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Relation constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a relation in the given workspace with an empty string
@@ -110,13 +94,6 @@ public class Relation extends NamedObj {
     public Relation(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().elementName = "relation";
-        try {
-            _portList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Relation constructor!");
-        }
     }
 
     /** Construct a relation in the given workspace with the given name.
@@ -132,13 +109,6 @@ public class Relation extends NamedObj {
             throws IllegalActionException {
 	super(workspace, name);
         getMoMLInfo().elementName = "relation";
-        try {
-            _portList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Relation constructor!");
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,14 +126,7 @@ public class Relation extends NamedObj {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Relation newObject = (Relation)super.clone(workspace);
-        try {
-            newObject._portList = new CrossRefList(newObject);
-        } catch (IllegalActionException ex) {
-            // This should not be thrown because newObject is not null.
-            throw new InternalErrorException(
-                    "Internal error in Port clone() method!"
-                    + ex.getMessage());
-        }
+        newObject._portList = new CrossRefList(newObject);
         return newObject;
     }
 
@@ -357,5 +320,5 @@ public class Relation extends NamedObj {
     /** @serial The CrossRefList of Ports which are connected
      *  to this Relation.
      */
-    private CrossRefList _portList;
+    private CrossRefList _portList = new CrossRefList(this);
 }

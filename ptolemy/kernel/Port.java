@@ -79,14 +79,6 @@ public class Port extends NamedObj {
     public Port() {
 	super();
         getMoMLInfo().elementName = "port";
-        try {
-            _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Port constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -100,14 +92,6 @@ public class Port extends NamedObj {
     public Port(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().elementName = "port";
-        try {
-            _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Port constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a port with the given name contained by the specified
@@ -130,14 +114,6 @@ public class Port extends NamedObj {
         super(container.workspace(), name);
         getMoMLInfo().elementName = "port";
         setContainer(container);
-        try {
-            _relationsList = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because "this" cannot be null.
-            throw new InternalErrorException(
-                    "Internal error in Port constructor!"
-                    + ex.getMessage());
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,14 +131,7 @@ public class Port extends NamedObj {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Port newObject = (Port)super.clone(workspace);
-        try {
-            newObject._relationsList = new CrossRefList(newObject);
-        } catch (IllegalActionException ex) {
-            // This exception should not occur because newObject is not null.
-            throw new InternalErrorException(
-                    "Internal error in Port clone() method!"
-                    + ex.getMessage());
-        }
+        newObject._relationsList = new CrossRefList(newObject);
         newObject._container = null;
         return newObject;
     }
@@ -400,16 +369,24 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _checkContainer(entity);
-            Entity previousContainer = (Entity)getContainer();
+            Entity previousContainer = _container;
             if (previousContainer == entity) return;
+            _container = entity;
             // Do this first, because it may throw an exception.
             if (entity != null) {
-                entity._addPort(this);
+                try {
+                    entity._addPort(this);
+                } catch (IllegalActionException ex) {
+                    _container = previousContainer;
+                    throw (IllegalActionException)ex.fillInStackTrace();
+                } catch (NameDuplicationException ex) {
+                    _container = previousContainer;
+                    throw (NameDuplicationException)ex.fillInStackTrace();
+                }
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
-            _container = entity;
             if (previousContainer != null) {
                 previousContainer._removePort(this);
             }
@@ -598,8 +575,16 @@ public class Port extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    // NOTE: This is defined here in the base class rather than in
+    // ComponentPort even though it is not used until ComponentPort
+    // so that derived classes can safely create links to ports in
+    // the _addPort() method.  This is a bit of a kludge, but I see
+    // no other way to make this possible. EAL
+    /** @serial The list of inside relations for this port. */
+    protected CrossRefList _insideLinks = new CrossRefList(this);
+
     /** @serial The list of relations for this port. */
-    protected CrossRefList _relationsList;
+    protected CrossRefList _relationsList = new CrossRefList(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

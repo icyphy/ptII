@@ -236,6 +236,7 @@ public class Entity extends NamedObj {
      *  been altered.  The default implementation in this base class
      *  is to do nothing, but derived classes may want to react to new
      *  connections.
+     *  @param port The port to which connections have changed.
      */
     public void connectionsChanged(Port port) {
     }
