@@ -41,6 +41,7 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -199,6 +200,9 @@ public class PtolemyApplet extends BasicJApplet
         _workspace = new Workspace(getClass().getName());
         try {
             _toplevel = _createModel(_workspace);
+
+            _toplevel.setModelErrorHandler(new BasicModelErrorHandler());
+
             // This might not actually be a top level, because we might
             // be looking inside.  So we check before creating a manager.
             if (_toplevel.getContainer() == null
