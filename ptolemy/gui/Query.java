@@ -297,7 +297,36 @@ public class Query extends JPanel {
         _addPair(name, lbl, colorChooser, colorChooser);
     }
 
-    /** Create a FileChooser
+    /** Create a FileChooser that selects files only, not directories, and
+     *  has the default colors (white in the background, black in the
+     *  foreground).
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     */
+    public void addFileChooser(
+            String name,
+            String label,
+            String defaultName,
+            URI base,
+            File startingDirectory) {
+        addFileChooser(
+                name,
+                label,
+                defaultName,
+                base,
+                startingDirectory,
+                true,
+                false,
+                Color.white,
+                Color.black);
+    }
+
+    /** Create a FileChooser with default colors (white in the foreground,
+     *  black in the background).
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultName The default file name to use.
@@ -325,6 +354,36 @@ public class Query extends JPanel {
                 allowDirectories,
                 Color.white,
                 Color.black);
+    }
+
+    /** Create a FileChooser that selects files only, not directories.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     *  @param background The background color for the text entry box.
+     *  @param foreground The foreground color for the text entry box.
+     */
+    public void addFileChooser(
+            String name,
+            String label,
+            String defaultName,
+            URI base,
+            File startingDirectory,
+            Color background,
+            Color foreground) {
+        addFileChooser(
+                name,
+                label,
+                defaultName,
+                base,
+                startingDirectory,
+                true,
+                false,
+                background,
+                foreground);
     }
 
     /** Create a FileChooser
