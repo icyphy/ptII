@@ -31,6 +31,8 @@
 
 package ptolemy.kernel.util;
 
+import ptolemy.util.StringUtilities;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -704,7 +706,7 @@ public class NamedObj implements Nameable, Debuggable,
             }
         }
 
-        output.write(getIndentPrefix(depth)
+        output.write(StringUtilities.getIndentPrefix(depth)
                 + "<"
                 + momlElement
                 + " name=\""
@@ -729,7 +731,7 @@ public class NamedObj implements Nameable, Debuggable,
                 }
             }
         }
-        output.write(getIndentPrefix(depth) + "</"
+        output.write(StringUtilities.getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
     }
 
@@ -1415,7 +1417,7 @@ public class NamedObj implements Nameable, Debuggable,
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in this class (NamedObj).  Lines are indented according to
-     *  to the level argument using the static method getIndentPrefix().
+     *  to the level argument using the static method StringUtilities.getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
      *  description.  If one is specified it is the the leading bracket.
      *  This is used by derived classes that will append to the description.
@@ -1430,7 +1432,7 @@ public class NamedObj implements Nameable, Debuggable,
     protected String _description(int detail, int indent, int bracket) {
         try {
             _workspace.getReadAccess();
-            String result = getIndentPrefix(indent);
+            String result = StringUtilities.getIndentPrefix(indent);
             if (bracket == 1 || bracket == 2) result += "{";
             if ((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
@@ -1459,7 +1461,7 @@ public class NamedObj implements Nameable, Debuggable,
                             "\n";
                     }
                 }
-                result += getIndentPrefix(indent) + "}";
+                result += StringUtilities.getIndentPrefix(indent) + "}";
             }
             if (bracket == 2) result += "}";
             return result;
@@ -1487,6 +1489,17 @@ public class NamedObj implements Nameable, Debuggable,
                 attribute.exportMoML(output, depth);
             }
         }
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @deprecated Call ptolemy.util.StringUtilities.getIndentPrefix()
+     *  directly.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+	return StringUtilities.getIndentPrefix(level);
     }
 
     /** Remove the given attribute.
