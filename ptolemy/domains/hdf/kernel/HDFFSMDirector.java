@@ -261,7 +261,6 @@ public class HDFFSMDirector extends FSMDirector {
         State currentState = controller.currentState();
         _lastIntransientState = currentState;
         Actor[] actors = currentState.getRefinement();
-        _fireRefinement = false;
 
         //if (actors != null) {
             for (int i = 0; i < actors.length; ++ i) {
