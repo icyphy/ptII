@@ -266,13 +266,14 @@ public class MoMLParser extends HandlerBase {
      */
     public NamedObj parse(URL base, URL input)
             throws Exception {
+        // FIXME URL under jdk1.2 does not support the commented out fields
 System.out.println(input.toExternalForm());
 System.out.println("toString(): " + input.toExternalForm());
 System.out.println("getRef() (anchor): " + input.getRef());
-System.out.println("getQuery(): " + input.getQuery());
-System.out.println("getUserInfo(): " + input.getUserInfo());
+//System.out.println("getQuery(): " + input.getQuery());
+//System.out.println("getUserInfo(): " + input.getUserInfo());
 System.out.println("getProtocol(): " + input.getProtocol());
-System.out.println("getPath(): " + input.getPath());
+//System.out.println("getPath(): " + input.getPath());
 System.out.println("getFile(): " + input.getFile());
 
         return parse(base, input.openStream());
