@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -193,7 +194,8 @@ public class PtolemyQuery extends Query
                             attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
-                } else if (attribute instanceof FileParameter) {
+                } else if (attribute instanceof FileParameter
+                        || attribute instanceof FilePortParameter) {
                     // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.
@@ -210,14 +212,30 @@ public class PtolemyQuery extends Query
                     if (directory != null) {
                         base = directory.toURI();
                     }
+                    // Check to see whether the attribute being configured
+                    // specifies whether files or directories should be listed.
+                    // By default, only files are selectable.
                     boolean allowFiles = true;
                     boolean allowDirectories = false;
                     if (attribute instanceof NamedObj) {
-                        if (((NamedObj)attribute).getAttribute("noFiles") != null) {
-                            allowFiles = false;
+                        Parameter marker = (Parameter)((NamedObj)attribute)
+                                .getAttribute("allowFiles", Parameter.class);
+                        if (marker != null) {
+                            Token value = marker.getToken();
+                            if (value instanceof BooleanToken) {
+                            	allowFiles = ((BooleanToken)value)
+                                        .booleanValue();
+                            }
                         }
-                        if (((NamedObj)attribute).getAttribute("allowDirectories") != null) {
-                            allowDirectories = true;
+                        marker = (Parameter)((NamedObj)attribute)
+                                .getAttribute("allowDirectories",
+                                Parameter.class);
+                        if (marker != null) {
+                            Token value = marker.getToken();
+                            if (value instanceof BooleanToken) {
+                                allowDirectories = ((BooleanToken)value)
+                                        .booleanValue();
+                            }
                         }
                     }
                     // FIXME: What to do when neither files nor directories are allowed?
