@@ -44,7 +44,7 @@ public class IntToken extends ScalarToken {
     /** Construct a token with integer 0.
      */
     public IntToken() {
-	_value = 0;
+        _value = 0;
     }
 
     /** Construct a token with the specified value.
@@ -67,7 +67,6 @@ public class IntToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
