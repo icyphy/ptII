@@ -337,18 +337,25 @@ public class DatagramWriter extends TypedAtomicActor {
 		int dataLengthInBytes =
 		        _encodedBytesPerInteger * dataIntArrayToken.length();
 		dataBytes = new byte[dataLengthInBytes];
-                for (int j = 0; j < dataLengthInBytes;
-                        j += _encodedBytesPerInteger) {
+                for (int j = 0; j < dataIntArrayToken.length(); j++) {
+		    if (false) {
+			System.out.println("array token null? "
+			        + (null==dataIntArrayToken));
+			System.out.println("array token length "
+			        + dataIntArrayToken.length());
+			System.out.println("j " + j);
+		    }
                     IntToken dataIntOneToken =
                             (IntToken)dataIntArrayToken.getElement(j);
 		    int oneIntValue = dataIntOneToken.intValue();
 		    if (_encodedBytesPerInteger/*(N)*/ == 1) {
 			dataBytes[j] = (byte)oneIntValue;
 		    } else if (_encodedBytesPerInteger/*(N)*/ == 4) {
-			dataBytes[j] = (byte)(oneIntValue);
-			dataBytes[j] = (byte)(oneIntValue>>8);
-			dataBytes[j] = (byte)(oneIntValue>>16);
-			dataBytes[j] = (byte)(oneIntValue>>24);
+			int j4 = j * _encodedBytesPerInteger;
+			dataBytes[j4] = (byte)(oneIntValue);
+			dataBytes[j4+1] = (byte)(oneIntValue>>8);
+			dataBytes[j4+2] = (byte)(oneIntValue>>16);
+			dataBytes[j4+3] = (byte)(oneIntValue>>24);
 		    } else {
 			// No other cases of (N) implemented.
 		    }

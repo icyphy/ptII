@@ -831,11 +831,16 @@ public class DatagramReader extends TypedAtomicActor {
 			    }
 			} else if (_decodedBytesPerInteger/*(N)*/ == 4) {
 			    for (int j = 0; j < bytesAvailable/4; j++) {
+				if (false) System.out.println(
+				        dataBytes[4*j] + ".." +
+                                        dataBytes[4*j+1] + ".." +
+					dataBytes[4*j+2] + ".." +
+					dataBytes[4*j+3]);
 				dataIntTokens[j] = new IntToken(
-				        dataBytes[4*j] +
-                                        256 * dataBytes[4*j+1] +
-					65536 * dataBytes[4*j+2] +
-					16777216 * dataBytes[4*j+3]);
+				        (255 & dataBytes[4*j]) |
+                                        (255 & dataBytes[4*j+1])<<8 |
+					(255 & dataBytes[4*j+2])<<16 |
+					(255 & dataBytes[4*j+3])<<24);
 			    }
 			} else {
 			    // No other cases of (N) implemented.
