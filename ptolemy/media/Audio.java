@@ -31,10 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.media;
 
-import java.lang.*;
-import java.util.*;
-import java.io.*;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Audio

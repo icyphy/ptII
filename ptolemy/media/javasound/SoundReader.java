@@ -31,11 +31,13 @@ file specified as a URL.
 
 package ptolemy.media.javasound;
 
-import java.io.*;
-import java.net.*;
-import java.util.Enumeration;
-
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+import java.net.URL;
 
 /////////////////////////////////////////////////////////////////
 //// SoundReader

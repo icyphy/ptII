@@ -30,21 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.media;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.lang.*;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 
 //////////////////////////////////////////////////////////////////////////
 //// Picture
 
 /** A component that displays an image.  The image can be updated
- *  in real time to create videos.  It can be monochrome or color.
- *  To use it, simply create it, populate it with pixels using one or more
- *  of the set methods, and call displayImage().
- *
- *  @author Edward A. Lee
- *  @version $Id$
+in real time to create videos.  It can be monochrome or color.
+To use it, simply create it, populate it with pixels using one or more
+of the set methods, and call displayImage().
+
+@author Edward A. Lee
+@version $Id$
  */
 public class Picture extends Canvas {
 
@@ -55,7 +57,7 @@ public class Picture extends Canvas {
     public Picture(int width, int height) {
         _width = width;
         _height = height;
-        _pix = new int[_width * _height];
+        _pixels = new int[_width * _height];
         setSize(width, height);
     }
 
@@ -84,20 +86,21 @@ public class Picture extends Canvas {
      *  now OK to display the new image.
      */
     public void displayImage() {
-        if(_imagesource == null) {
-            _imagesource = new MemoryImageSource(_width, _height,
-                    ColorModel.getRGBdefault(), _pix, 0, _width);
-            _imagesource.setAnimated(true);
-            _image = createImage(_imagesource);
+        if(_imageSource == null) {
+            _imageSource = new MemoryImageSource(_width, _height,
+                    ColorModel.getRGBdefault(), _pixels, 0, _width);
+            _imageSource.setAnimated(true);
+            _image = createImage(_imageSource);
         }
-        _imagesource.newPixels();
+        _imageSource.newPixels();
     }
 
     /** Paint this component.  If no pixels have been set, do nothing.
+     *  @param graphics The graphics context.
      */
-    public synchronized void paint(Graphics g) {
+    public synchronized void paint(Graphics graphics) {
         if (_image != null) {
-            g.drawImage(_image, 0, 0, this);
+            graphics.drawImage(_image, 0, 0, this);
         }
     }
 
@@ -114,19 +117,20 @@ public class Picture extends Canvas {
      *    pix[row*col] = (alpha << 24) | (red << 16) | (green << 8) | blue;
      *  </pre>
      *
-     *  @param pix The packed ARGB representation of the image.
+     *  @param pixels The packed ARGB representation of the image.
      *  @exception IllegalArgumentException If the image size does not
      *   match.
      */
-    public void setImage(int[] pix) throws IllegalArgumentException {
-        if (pix.length != _width*_height) {
+    public void setImage(int[] pixels) throws IllegalArgumentException {
+        if (pixels.length != _width*_height) {
             throw new IllegalArgumentException(
                     "setImage: Specified image size does not"
                     + "match that of the component.");
         }
-        _pix = pix;
-        if(_imagesource != null) {
-            _imagesource.newPixels(pix, ColorModel.getRGBdefault(), 0, _width);
+        _pixels = pixels;
+        if(_imageSource != null) {
+            _imageSource.newPixels(pixels,
+				   ColorModel.getRGBdefault(), 0, _width);
         }
     }
 
@@ -146,7 +150,7 @@ public class Picture extends Canvas {
         if (intensity < 0) intensity = 0;
         else if (intensity > 255) intensity = 255;
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pix[(row*_width) + col] = (255 << 24) |
+        _pixels[(row*_width) + col] = (255 << 24) |
             (intensity << 16) | (intensity << 8) | intensity;
     }
 
@@ -176,23 +180,23 @@ public class Picture extends Canvas {
         else if (blue > 255) blue = 255;
 
         // Alpha, red, green, blue, where alpha controls transparency.
-        _pix[(row*_width) + col]
+        _pixels[(row*_width) + col]
             = (255 << 24) | (red << 16) | (green << 8) | blue;
     }
 
     /** Override the base class to prevent blanking, which causes flashing
      *  of the display.
-     *  @param g The graphics context.
+     *  @param graphics The graphics context.
      */
-    public void update(Graphics g) {
-        paint(g);
+    public void update(Graphics graphics) {
+        paint(graphics);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private int _width, _height;
-    private int[] _pix;
+    private int[] _pixels;
     private Image _image;
-    private MemoryImageSource _imagesource;
+    private MemoryImageSource _imageSource;
 }

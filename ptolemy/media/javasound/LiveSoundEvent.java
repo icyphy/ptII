@@ -30,8 +30,6 @@
 
 package ptolemy.media.javasound;
 
-import ptolemy.data.type.Type;
-import ptolemy.actor.TypedIOPort;
 
 ////////////////////////////////////////////////////////////////
 //// LiveSoundEvent
