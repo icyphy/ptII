@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -46,7 +46,7 @@ import collections.HashedSet;
 //////////////////////////////////////////////////////////////////////////
 //// SDFScheduler
 /**
-A scheduler than implements basic scheduling of SDF networks.
+A scheduler that implements basic scheduling of SDF graphs.
 This class calculates the SDF schedule in two phases.  
 First, the balance equations for the rates between actors are solved to 
 determine the <i>firing vector</i> (also known as the repetitions vector).
@@ -66,7 +66,7 @@ creating tokens during initialization that will prevent deadlock.  Delay actors
 must set their "TokenInitProduction" parameters to represent the number
 of tokens they will create during initialization.
 The SDFScheduler uses the TokenInitProduction parameter to break the
-dependancy in a cyclic graph.
+dependency in a cyclic graph.
 <p>
 Note that this scheduler only ensures that the number of
 firings is minimal.  Most notably, it does not attempt to minimize the
@@ -74,8 +74,8 @@ size of the buffers that are associated with each relation.  The resulting
 schedule is a linear schedule (as opposed to a looped schedule) and 
 is not suitable for Multiprocessing environments.
 <p>
-Any actors may be scheduled by this scheduler, which will assume
-homogenous behavior by default for each actor.  
+Any actors may be scheduled by this scheduler, which will, by default, assume
+homogeneous behavior for each actor.  
 (i.e. each output port produces one 
 token for each firing, and each input port consumes one token on each firing,
 and no tokens are created during initialization.)  If this is not the case
@@ -84,7 +84,7 @@ then the parameters "TokenConsumptionRate", "TokenProductionRate", and
 class provides easier access to these parameters.
 <p>
 Note that reconstructing the schedule is expensive, so the schedule is 
-locally cached for as long as possible, andmutations under SDF
+locally cached for as long as possible, and mutations under SDF
 should be avoided.  
 
 @see ptolemy.actor.Scheduler
@@ -113,7 +113,7 @@ public class SDFScheduler extends Scheduler {
      *  The scheduler is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *
-     *  @param workspace Object for synchronization and version tracking
+     *  @param workspace Object for synchronization and version tracking.
      *  @exception InternalErrorException If an object with name "SDFScheduler"
      *  already exists.
      */
@@ -202,7 +202,7 @@ public class SDFScheduler extends Scheduler {
 
     /** Return the firing vector, which is a LLMap associating an Actor
      *  with the number of times that it will fire during an SDF iteration.
-     *  The firing vector is only guaraunteed to be valid if the schedule 
+     *  The firing vector is only guaranteed to be valid if the schedule 
      *  is valid.
      *
      *  @return A LLMap from ComponentEntity to Integer.
@@ -214,7 +214,7 @@ public class SDFScheduler extends Scheduler {
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
      *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogenous and return a
+     *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
      */
     protected int _getTokenConsumptionRate(IOPort p) {
@@ -246,7 +246,7 @@ public class SDFScheduler extends Scheduler {
      *  on the designated port of this Actor during each firing,
      *  as supplied by
      *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogenous and return a
+     *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
      */
     protected int _getTokenProductionRate(IOPort p) {
@@ -273,7 +273,7 @@ public class SDFScheduler extends Scheduler {
      *
      *  @param Firings LLMap of firing ratios to be normalized
      *  @return The normalized firing vector.
-     *  @exception ArithmeticException If the calculated GCD does not
+     *  @exception InternalErrorException If the calculated GCD does not
      *  normalize all of the fractions.
      */
     private LLMap _normalizeFirings(LLMap firings) {
@@ -302,7 +302,8 @@ public class SDFScheduler extends Scheduler {
             Fraction reps = (Fraction) firings.at(actor);
             reps = reps.multiply(lcmFraction);
             if(reps.getDenominator() != 1)
-                throw new ArithmeticException("Failed to properly perform " +
+                throw new InternalErrorException(
+                        "Failed to properly perform " +
                         "fraction normalization");
             firings = (LLMap) 
                 firings.puttingAt(actor, new Integer(reps.getNumerator()));
@@ -310,7 +311,7 @@ public class SDFScheduler extends Scheduler {
         return firings;
     }
 
-    /** Propagate the number of fractional firing decided for this actor
+    /** Propagate the number of fractional firings decided for this actor
      *  through the specified input port.   Set and verify the fractional
      *  firing for each Actor that is connected through this input port.
      *  Any actors that we calculate their firing vector for the first time
@@ -386,11 +387,13 @@ public class SDFScheduler extends Scheduler {
                         }
 
                         else if(!presentFiring.equals(desiredFiring))
-                            throw new NotSchedulableException("Graph is not" +
+                            throw new NotSchedulableException("No solution " +
+                                    "exists for the balance equations.\n" + 
+                                    "Graph is not" +
                                     "consistent under the SDF domain");
                     }
                     catch (NoSuchElementException e) {
-                        throw new InvalidStateException("SDFScheduler: " +
+                        throw new InternalErrorException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
                                 "does not appear in the firings LLMap");
@@ -475,11 +478,13 @@ public class SDFScheduler extends Scheduler {
                             pendingActors.insertLast(connectedActor);
                         }
                         else if(!presentFiring.equals(desiredFiring))
-                            throw new NotSchedulableException("Graph is not" +
+                            throw new NotSchedulableException(("No solution " +
+                                    "exists for the balance equations.\n" +
+                                    "Graph is not" +
                                     "consistent under the SDF domain");
                     }
                     catch (NoSuchElementException e) {
-                        throw new InvalidStateException("SDFScheduler: " +
+                        throw new InternalErrorException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
                                 "does not appear in the firings LLMap");
@@ -491,7 +496,15 @@ public class SDFScheduler extends Scheduler {
             }
     }
 
-    /** Return the scheduling sequence. 
+    /** Return the scheduling sequence.  An exception will be thrown if the
+     *  graph is not schedulable.  This occurs in the following circumstances:
+     *  <ul>
+     *  <li>The graph is not a connected graph.
+     *  <li>No integer solution exists for the balance equations.
+     *  <li>The graph contains cycles without delays (deadlock).
+     *  <li>Multiple output ports are connected to the same broadcast 
+     *  relation. (equivalent to a non-deterministic merge)
+     *  </ul>
      *
      * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
@@ -568,8 +581,8 @@ public class SDFScheduler extends Scheduler {
      *  @param UnscheduledActors The Actors that need to be scheduled.
      *  @return A CircularList of the Actors in the order they should fire.
      *  @exception InvalidStateException If the algorithm encounters an SDF
-     *  graph that is not consistant with the firing vector, or detects an
-     *  inconsistant internal state.
+     *  graph that is not consistent with the firing vector, or detects an
+     *  inconsistent internal state.
      */
 
     private CircularList _scheduleConnectedActors(
@@ -783,7 +796,7 @@ public class SDFScheduler extends Scheduler {
             // port that isn't a part of the actor.   This probably means
             // the graph is screwed up, or somebody else is mucking
             // with it.
-            throw new InvalidStateException("SDF Scheduler Failed " +
+            throw new InternalErrorException("SDF Scheduler Failed " +
                     "Internal consistancy check: " + iae.getMessage());
         }
         finally {
@@ -1109,7 +1122,7 @@ public class SDFScheduler extends Scheduler {
      *  @param Actors The actors that we are interested in.
      *  @return A LLMap that associates each actor with its fractional
      *  firing.
-     *  @exception NotSchedulableException If the graph is not consistant
+     *  @exception NotSchedulableException If the graph is not consistent
      *  under the synchronous dataflow model.
      *  @exception NotSchedulableException If the graph is not connected.
      */

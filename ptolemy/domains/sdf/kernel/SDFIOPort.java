@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red
-@AcceptedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
 
@@ -45,11 +45,28 @@ import collections.LinkedList;
 //// SDFIOPort
 /**
 This class extends IOPort to allow the transmission of arrays of tokens.
-This is better then sending the tokens individually, because it amortizes
-the overhead in send and get over a large number of tokens.
+There is no added expressive power in allowing this, and sending an array of
+tokens is exactly equivalent to sending each token individually.  Tokens
+that are sent using sendArray can be received using get and vice versa.
+<p>
+This class exists solely as an optimization.  There are two large pieces
+of overhead in sending a large number of tokens using the standard IOPort 
+implementation.  We list them below, and the steps that this class takes to 
+reduce them.
+<ol>
+<li>Finding the remote receivers. <br>
+getArray() and sendArray() only have to get the receivers once.
+<li>Inserting each element into the QueueReceiver.<br>
+SDFIOPort creates SDFReceivers, which are based on ArrayFIFOQueue, instead
+of FIFOQueue.  ArrayFIFOQueue uses a circular array instead of a linkedlist to
+represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of 
+arrays of objects using the java.lang.System.arraycopy() method.
+</ol>
 
 @authors Stephen Neuendorffer
 @version $Id$
+@see SDFReceiver
+@see ArrayFIFOQueue
 */
 public final class SDFIOPort extends TypedIOPort {
 

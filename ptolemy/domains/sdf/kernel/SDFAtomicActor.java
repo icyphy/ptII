@@ -43,14 +43,26 @@ import collections.HashedMap;
 //// SDFAtomicActor
 /**
 An SDFAtomicActor is an atomic actor that is valid in the SDF domain.  This
-implies that is supports a static notion of the "Rate" of a port. 
+implies that it supports a static notion of the "Rate" of a port. 
 i.e. a number of tokens are created or
-destroyed on a port at during any firing, and the scheduler can ask the
-Actor what this number is.   Furthermore, for SDF actors, this number is
-constant for all firings and it is known before execution begins.
+destroyed on a port during any firing.//   This information is contained in
+parameters on each of the Actors ports.
+<ul>
+<li> TokenConsumptionRate: The number of tokens consumed on an input port 
+during each firing.
+<li> TokenProductionRate: The number of tokens produced on an output port 
+during each firing.
+<li> TokenInitProduction: The number of tokens produced on an output port 
+during initialization.
+</ul>
+The SDF director uses these parameters to calculate a static schedule based 
+on these parameters.  The static schedule allows more efficient execution,
+when it can be constructed.  Creating the schedule is costly, but only 
+needs to be done when execution starts, or when the topology changes.   
 
 @author Stephen Neuendorffer
 @version $Id$
+@see ptolemy.domains.sdf.kernel.SDFDirector
 @see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.IOPort
 */
@@ -261,8 +273,8 @@ public class SDFAtomicActor extends TypedAtomicActor {
      */
     public void setTokenInitProduction(IOPort p, int r)
         throws IllegalActionException {
-        if(r <= 0) throw new IllegalActionException(
-                "Rate must be > 0");
+        if(r < 0) throw new IllegalActionException(
+                "Rate must be >= 0");
         Port pp = getPort(p.getName());
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");

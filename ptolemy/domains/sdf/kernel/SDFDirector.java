@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -70,10 +70,10 @@ class.  Furthermore, the newReceiver method creates Receivers of type
 SDFReceiver, which extends QueueReceiver to support optimized gets 
 and puts of arrays of tokens.
 <p>
-The SDF director has a single parameter, "iterations" corresponding to a
+The SDF director has a single parameter, "iterations", corresponding to a
 limit on the number of times the director will fire its hierarchy
 before it returns false in postfire.  If this number is not greater
-than zero, then no limit is set and postfire will always return false.
+than zero, then no limit is set and postfire will always return true.
 The default value of the iterations parameter is an IntToken with value zero.
 @see ptolemy.domains.sdf.SDFScheduler
 @see ptolemy.domains.sdf.SDFReceiver
@@ -125,7 +125,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         public methods                    ////
 
 
-    /** Return a new receiver consistant with the SDF domain.
+    /** Return a new receiver consistent with the SDF domain.
      *  @return A new SDFReceiver.
      */
     public Receiver newReceiver() {
@@ -133,7 +133,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Intialize the actors associated with this director and 
+    /** Initialize the actors associated with this director and 
      *  initialize the number of iterations to zero.  The order in which
      *  the actors are initialized is arbitrary.
      *  @exception IllegalActionException If the initialize() method of
@@ -181,7 +181,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
-    /** Calculate the current schedule, and iterate the contained actors
+    /** Calculate the current schedule, if necessary, 
+     *  and iterate the contained actors
      *  in the order given by the schedule.  No internal state of the 
      *  director is updated during fire, so it may be used with domains that
      *  require this property, such as CT.
