@@ -849,7 +849,7 @@ public class Variable extends Attribute implements Typeable {
                 value = token.toString();
             }
         }
-        if (value != null) {
+        if (value == null) {
             value = "";
         }
         return value;
