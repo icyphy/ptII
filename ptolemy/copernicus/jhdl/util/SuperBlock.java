@@ -230,6 +230,7 @@ public class SuperBlock implements GraphNode {
 	return _block.toString();
     }
 
+    /** Combine Labels that have same parent label. **/
     protected void _shrinkLabels(DirectedGraph graph){
 
 	if (_labels == null){
@@ -324,6 +325,7 @@ public class SuperBlock implements GraphNode {
 	
     } //Method _shrinkLabels
 
+    /** Put muxes on wires that cannot be shrunk. **/
     protected void _combineNonShrinkable(DirectedGraph graph){
 
 	while (true){

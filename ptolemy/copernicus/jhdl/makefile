@@ -53,7 +53,8 @@ JSRCS = \
 	JHDLTransformer.java \
 	Main.java \
 	Predefined.java \
-	RegisterDelay.java
+	RegisterDelay.java \
+	BlockDataFlowGraph.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

@@ -15,6 +15,8 @@ Convert a Soot BlockGraph to dotty notation.
 */
 public class BlockGraphToDotty {
 
+    public static final String MYEOL = "\n";
+
     /**
      * Return a string which contains the BlockGraph in dotty form
      */
@@ -50,7 +52,7 @@ public class BlockGraphToDotty {
 	    String name="v" + count++;
 	    sb.append("\t\""+name+"\" [label=\""
 		      +convertSpecialsToEscapes(source.toString(m))
-		      +"\"];\r\n");
+		      +"\"];"+MYEOL);
 	    hm.put(source, name);
 	}
 	sb.append("\t// Edges\r\n");
@@ -72,7 +74,7 @@ public class BlockGraphToDotty {
 		    }
 		    sb.append("]");
 		}
-		sb.append(";\r\n");
+		sb.append(";"+MYEOL);
 	    }
 	}
 	sb.append("}\r\n");
@@ -96,9 +98,11 @@ public class BlockGraphToDotty {
 	    case '\t':
 		strBuf.append("\\t");
 		break;
-	    case '\r':
-		strBuf.append("\\r");
-		break;
+  	    case '\r':
+		// determine use of \r based on current MYEOL value
+		if (MYEOL.equals("\r\n"))
+		    strBuf.append("\\r");
+  		break;
 	    case '\"':
 		strBuf.append("\\\"");
 		break;

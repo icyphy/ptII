@@ -34,6 +34,8 @@ import ptolemy.graph.*;
 import java.util.Iterator;
 import java.util.HashMap;
 import soot.toolkits.graph.Block;
+import java.io.FileWriter;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SynthesisToDotty
@@ -241,4 +243,15 @@ public class SynthesisToDotty {
 	return strBuf.toString();
     }
 
+    public static void writeDotFile(String basename, DirectedGraph g) {
+	String filename = basename + ".dot";
+	System.out.println("Writing "+filename);
+	try {
+	    FileWriter dotFile=new FileWriter(filename);
+	    dotFile.write(convert(g,basename));
+	    dotFile.close();
+	} catch (IOException e){
+	    System.out.println(e);
+	}
+    }
 }

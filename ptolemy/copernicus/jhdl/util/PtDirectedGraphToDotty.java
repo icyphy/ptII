@@ -33,6 +33,8 @@ package ptolemy.copernicus.jhdl.util;
 import ptolemy.graph.*;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.io.FileWriter;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtDirectedGraphToDotty
@@ -136,4 +138,15 @@ public class PtDirectedGraphToDotty {
 	return strBuf.toString();
     }
 
+    public static void writeDotFile(String basename, DirectedGraph g) {
+	String filename = basename + ".dot";
+	System.out.println("Writing "+filename);
+	try {
+	    FileWriter dotFile=new FileWriter(filename);
+	    dotFile.write(convert(g,basename));
+	    dotFile.close();
+	} catch (IOException e){
+	    System.out.println(e);
+	}
+    }
 }

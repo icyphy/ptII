@@ -31,7 +31,8 @@
 
 ME =		ptolemy/copernicus/jhdl/demo
 
-DIRS =		SimpleAdd
+#DIRS =		SimpleAdd
+DIRS =		FIR2
 
 # Root of the Java directory
 ROOT =		../../../..

@@ -76,6 +76,7 @@ SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.FIR2
 MODEL = FIR2
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 SOURCECLASS = FIR.xml
+#SOURCECLASS = ${SOURCEPACKAGE}.FIR
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h

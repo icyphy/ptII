@@ -67,7 +67,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.java.ActorTransformer;
-import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitTransformer
@@ -101,25 +101,41 @@ public class CircuitTransformer extends SceneTransformer {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
+    /**
+     * 1. Create a DAG that matches topology of model
+     * 2. 
+     **/
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("CircuitTransformer.internalTransform("
-			   + phaseName + ", " + options + ")");
-
-        DirectedGraph combinedGraph = new DirectedGraph();
+        System.out.println("\nCircuitTransformer.internalTransform("
+			   + phaseName + ", " + options + ")\n");
 	
+	//////////////////////////////////////////////
+	// Step 1. Create a DirectedGraph that matches
+	//         the topology of the model
+	//////////////////////////////////////////////
+
+        DirectedGraph combinedGraph = new DirectedGraph();	
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.entityList().iterator();
-            i.hasNext();) {
+        for(Iterator i = _model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity)i.next();
 
+	    // add Node to graph corresponding to entity
 	    combinedGraph.addNodeWeight(entity);
-	    for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator();
+
+	    // iterate over all outPorts and add Node corresponding
+	    // to port. Also add edge between entity and port
+	    for (Iterator outPorts = 
+		   ((TypedAtomicActor)entity).outputPortList().iterator();
 		 outPorts.hasNext();){
 		Object port=outPorts.next();
 		combinedGraph.addNodeWeight(port);
 		combinedGraph.addEdge(entity, port);
 	    }
-	    for (Iterator inPorts = ((TypedAtomicActor)entity).inputPortList().iterator();
+
+	    // iterate over all inPorts and add Node corresponding
+	    // to port. Also add edge between entity and port
+	    for (Iterator inPorts = 
+		   ((TypedAtomicActor)entity).inputPortList().iterator();
 		 inPorts.hasNext();){
 		Object port=inPorts.next();
 		combinedGraph.addNodeWeight(port);
@@ -150,9 +166,8 @@ public class CircuitTransformer extends SceneTransformer {
         
 	//          Set removeSet = new HashSet();
 
-        // Connect the combined graph.
-
-	//Connect top-level ports
+	// Connect top-level inputPorts to the ports of the connected
+	// actors
 	for (Iterator inputPorts=_model.inputPortList().iterator();
 	     inputPorts.hasNext();){
 	    IOPort port = (IOPort)inputPorts.next();
@@ -160,12 +175,16 @@ public class CircuitTransformer extends SceneTransformer {
 	    for(Iterator remoteports = port.connectedPortList().iterator();
 		remoteports.hasNext();) {
 		IOPort remotePort = (IOPort)remoteports.next();
+		// TODO: this looks like a bug - port has
+		// not been added to the graph?
 		combinedGraph.addEdge(port, remotePort);
 		//  	    removeSet.add(port);
 		//  	    removeSet.add(remotePort);
 	    }	  
 	}
-	//Connect ports of each actor
+
+	// Add edges to the DAG to match the topology of the
+	// connections between individual actors
         for(Iterator entities = _model.entityList().iterator();
             entities.hasNext();) {
             TypedAtomicActor actor = (TypedAtomicActor)entities.next();
@@ -184,14 +203,8 @@ public class CircuitTransformer extends SceneTransformer {
             }
         }
 
-//  	System.out.println("Writing "+_model.getName()+".dot");
-//  	try {
-//  	    FileWriter dotFile=new FileWriter(_model.getName()+".dot");
-//  	    dotFile.write(PtDirectedGraphToDotty.convert(combinedGraph,_model.getName()));
-//  	    dotFile.close();
-//  	} catch (IOException e){
-//  	    System.out.println(e);
-//  	}
+	// Write out model
+	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph); 
 
 	//          // remove the extra nodes for ports.
 	//          for(Iterator nodes = removeSet.iterator();
@@ -209,11 +222,17 @@ public class CircuitTransformer extends SceneTransformer {
 	//              }
 	//          }
             
+	//////////////////////////////////////////////
+	// Step 2. Call 'CircuitAnalysis' on each actor
+	// in the model. CircuitAnalysis will create a DAG
+	// for each node - hash this graph with the node.
+	//////////////////////////////////////////////
         Set removeSet = new HashSet();
 	Map replaceMap = new HashMap();
 	
-	//Flatten the actors
-	for(Iterator cnodes=combinedGraph.nodes().iterator(); cnodes.hasNext();){
+	for(Iterator cnodes=combinedGraph.nodes().iterator(); 
+	    cnodes.hasNext();) {
+
 	    Node cnode=(Node)cnodes.next();
 
 	    //Skip ports; only Entity's are expanded
@@ -232,10 +251,16 @@ public class CircuitTransformer extends SceneTransformer {
 	    DirectedGraph operatorGraph = analysis.getOperatorGraph();
 
 	    replaceMap.put(cnode, operatorGraph);
+
 	}
 
 
-	for (Iterator removeNodes = replaceMap.keySet().iterator(); removeNodes.hasNext();){
+	//////////////////////////////////////////////
+	// Step 3. Replace node in DAG with the DAG
+	// that was created by CircuitAnalysis
+	//////////////////////////////////////////////
+	for (Iterator removeNodes = replaceMap.keySet().iterator(); 
+	     removeNodes.hasNext();){
 
 	    Node removeNode = (Node)removeNodes.next();
 
@@ -310,14 +335,10 @@ public class CircuitTransformer extends SceneTransformer {
 //          }
 
 
-	System.out.println("Writing "+_model.getName()+".dot");
-	try {
-	    FileWriter dotFile=new FileWriter(_model.getName()+".dot");
-	    dotFile.write(PtDirectedGraphToDotty.convert(combinedGraph,_model.getName()));
-	    dotFile.close();
-	} catch (IOException e){
-	    System.out.println(e);
-	}
+	//////////////////////////////////////////////
+	// Step 4. Spit out the graph
+	//////////////////////////////////////////////
+	PtDirectedGraphToDotty.writeDotFile(_model.getName(),combinedGraph);
 
 	//          // Write as a circuit.
 	//          try {
@@ -333,5 +354,5 @@ public class CircuitTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
-
+  
 }
