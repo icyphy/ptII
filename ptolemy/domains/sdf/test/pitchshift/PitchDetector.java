@@ -43,7 +43,7 @@ import ptolemy.math.SignalProcessing;
     pitches between 70 and 300 Hz. The latency of the pitch detector is 2048
     samples.
 @author Brian K. Vogel
-@version 1.0
+@version $Id$
 */
 public class PitchDetector {
 
