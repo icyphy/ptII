@@ -185,7 +185,11 @@ public class InlineParameterTransformer extends SceneTransformer {
                     // if(debug) System.out.println("invoking = " + r.getMethod());
                     if(r.getBase().getType() instanceof RefType) {
                         RefType type = (RefType)r.getBase().getType();
-                        // inline calls to attribute changed.
+                        // Remove calls to validate().
+                        if(r.getMethod().equals(PtolemyUtilities.validateMethod)) {
+                            body.getUnits().remove(stmt);
+                        }
+                        // Inline calls to attribute changed.
                         if(r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
                             // If we are calling attribute changed on one of the classes
                             // we are generating code for, then inline it.

@@ -119,9 +119,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
         
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
-                JimpleWriter.v()));
-
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
@@ -240,11 +237,11 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
                 new TransformerAdapter(DeadObjectEliminator.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.dae",
-                new TransformerAdapter(DeadAssignmentEliminator.v())));
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
                 new TransformerAdapter(DeadObjectEliminator.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.dae",
-                new TransformerAdapter(DeadAssignmentEliminator.v())));
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.doe",
                 new TransformerAdapter(DeadObjectEliminator.v())));
 
@@ -277,7 +274,7 @@ public class Main extends KernelMain {
         pack.add(new Transform("jop.cbf",
                 new TransformerAdapter(ConditionalBranchFolder.v())));
         pack.add(new Transform("jop.dae",
-                new TransformerAdapter(DeadAssignmentEliminator.v())));
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         pack.add(new Transform("jop.uce1",
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
