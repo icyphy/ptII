@@ -89,6 +89,7 @@ OPTIONAL_FILES = \
 	demo \
 	test \
 	$(PTCLASSJAR) \
+	'Documentation$$1.class' \
 	'MoMLParser$$1.class' \
 	'MoMLParser$$DeleteRequest.class' \
 	'MoMLParser$$LinkRequest.class' \
