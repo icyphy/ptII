@@ -369,6 +369,8 @@ public class Query extends JPanel {
     /** Set the value in the entry with the given name.
      *  The second argument must be a string that can be parsed to the
      *  proper type for the given entry, or an exception is thrown.
+     *  Note that this does NOT trigger the notification of listeners, and
+     *  intended to allow a way to set the query to reflect the current state.
      *  @param name The name used to identify the entry (when calling get).
      *  @param value The value to set the entry to.
      *  @exception NoSuchElementException If there is no item with the
@@ -562,7 +564,6 @@ public class Query extends JPanel {
             + "setSlider().");
         }
     }
-
 
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
