@@ -88,6 +88,10 @@ public class BinarySwitch extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    // FIXME: What is the description of these ports
+    // FIXME: ptk_in should be packet or packetIn
+    // FIXME: q1_len should be q1Length, ditto with q2_len
+    // FIXME: None of these should have underscores in them
     public TypedIOPort q1_len, q2_len, pkt_in, q1_out, q2_out;
 
     ///////////////////////////////////////////////////////////////////
