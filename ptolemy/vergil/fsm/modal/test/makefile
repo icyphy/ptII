@@ -33,7 +33,7 @@
 ME =		ptolemy/vergil/ptolemy/fsm/modal/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
