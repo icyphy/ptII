@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.util;
 
 import java.util.Iterator;
-import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldRecord
@@ -39,12 +38,30 @@ import java.util.Vector;
    backtracking, every change on a field by means of assignment is recorded.
    The old value of the field is stored in a <tt>FieldRecord</tt>. Every
    entry in the record includes the information of the timestamp (see {@link
-   ptolemy.backtrack.Checkpoint}) denoting the time when the entry was created, 
-   as well as the old value of the field.
+   ptolemy.backtrack.Checkpoint}) denoting the time when the value was
+   recorded, as well as that old value of the field.
    <p>
-   It is possible the records of a field have multiple dimensions, when the
+   It is possible the records of a field have more than one dimension, when the
    field is an array. In that case, records of different dimensions are stored
-   in different tables.
+   in different tables. E.g., an <tt>int</tt> is considered one dimensional, 
+   and only one list is used to store its change history. an <tt>int[]</tt> is
+   considered two dimensional (with one possible index). Two lists are used in
+   order to record assignments to the array itself, and the assignment to one
+   of its element. In the latter case, the index of the changed element is also
+   recorded. Similarly, a field of type <tt>int[][]</tt> requires three lists.
+   <p>
+   Lists of records are added with different <tt>add</tt> functions, which take
+   a timestamp and record the old value taken at that timestamp at the head
+   position of the corresponding list. Timestamps must be increasing. A value
+   with larger timestamp means it is taken later in time.
+   <p>
+   To access the lists, iterators must be used to iterate from the most recent
+   recorded value to the earliest ones. Records in the lists may also be removed
+   with <tt>remove</tt> functions of the iterators. As with many other
+   iterators, modifications cannot be made simultaneously with two different
+   iterators. <tt>add</tt> functions cannot be called while accessing any list
+   with an iterator, either. If changes are made simultaneously, the effect is
+   unpredictable.
  
    @author Thomas Feng
    @version $Id$
@@ -53,6 +70,21 @@ import java.util.Vector;
    @Pt.AcceptedRating Red (tfeng)
 */
 public final class FieldRecord {
+    
+    /** Construct a one-dimensional (scalar) field record.
+     */
+    public FieldRecord() {
+        this(1);
+    }
+    
+    /** Construct a multi-dimensional field record.
+     * 
+     *  @param dimensions Number of dimensions; can be omitted
+     *   when it is 1.
+     */
+    public FieldRecord(int dimensions) {
+        _records = new RecordList[dimensions];
+    }
     
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
@@ -360,9 +392,9 @@ public final class FieldRecord {
                 new Record(indices, value, timestamp));
     }
     
-    /** Return the iterator of all the records. If the field is an array,
+    /** Return the iterator of all the records. If the field is an array, 
      *  the records with different indices are stored in separate lists.
-     *  The iterator returned by this function combines all those lists,
+     *  The iterator returned by this function combines all those lists, 
      *  and the records that it returns are sorted with their timestamps.
      *  Records created more recently are returned earlier with {@link
      *  Iterator#next()}.
@@ -375,54 +407,94 @@ public final class FieldRecord {
     }
     
     /** Return the iterator of the records with the specified index.
+     *  E.g., for a field <tt>f</tt> of type <tt>int[][]</tt>
+     *  (3-dimensional):
+     *  <ol>
+     *    <li>When <tt>index</tt> is 0, it returns the iterator of
+     *      records saved for assignments to the field itself.</li>
+     *    <li>When <tt>index</tt> is 1, it returns the iterator of
+     *      records saved for assignments to the field with one
+     *      index (e.g., <tt>f[1] = new int[10]</tt>).</li>
+     *    <li>When <tt>index</tt> is 2, it returns the iterator of
+     *      records saved for assignments to the field with two
+     *      indices (e.g., <tt>f[1][2] = 3</tt>).</li>
+     *  </ol>
      *  
+     *  @param index The index.
      *  @return The iterator.
      *  @see #iterator()
      */
     public Iterator iterator(int index) {
-        if (index >= _records.size())
-            _records.setSize(index + 1);
         return new IndividualIterator(index);
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    //// CombinedIterator
+    /**
+       Combinated iterator of all the dimensions. It returns records in their
+       reversed timestamp order.
+       
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+       @see {@link FieldRecord#iterator()}
+    */
     public class CombinedIterator implements Iterator {
 
+        /** Test if there are more elements.
+         * 
+         *  @return <tt>true</tt> if there are more elements.
+         */
         public boolean hasNext() {
             return _currentNum < _totalNum;
         }
         
+        /** Return the next element.
+         * 
+         *  @return The next element.
+         */
         public Object next() {
             _currentNum++;
             _lastIndex = _maxTimestampIndex();
             _lastRecord = _currentRecords[_lastIndex];
             _currentRecords[_lastIndex] = 
-                _currentRecords[_lastIndex].getNext();
-            return _lastRecord.getRecord();
+                _currentRecords[_lastIndex]._getNext();
+            return _lastRecord._getRecord();
         }
         
+        /** Remove the last element returned by {@link #next()}.
+         *  This function must be called after {@link #next()}.
+         */
         public void remove() {
-            RecordList previous = _lastRecord.getPrevious();
+            RecordList previous = _lastRecord._getPrevious();
             if (previous == null) {  // The first one.
-                RecordList first = _lastRecord.getNext();
+                RecordList first = _lastRecord._getNext();
                 if (first != null)
-                    first.setPrevious(null);
-                _records.set(_lastIndex, first);
+                    first._setPrevious(null);
+                _records[_lastIndex] = first;
             } else
-                previous.setNext(_lastRecord.getNext());
+                previous._setNext(_lastRecord._getNext());
             _lastRecord = null;
             _totalNum--;
             _currentNum--;
         }
         
-        protected CombinedIterator() {
-            int indices = _records.size();
+        /** Construct an iterator.
+         */
+        CombinedIterator() {
+            int indices = _records.length;
             _currentRecords = new RecordList[indices];
-            for (int i = 0; i < indices; i++) {
-                RecordList list = (RecordList)_records.get(i);
-                _currentRecords[i] = list;
-            }
+            for (int i = 0; i < indices; i++)
+                _currentRecords[i] = _records[i];
         }
         
+        /** Get the index of the maximum timestamp in the current
+         *  records.
+         *  
+         *  @return The index.
+         */
         private int _maxTimestampIndex() {
             int max = -1;
             int maxIndex = -1;
@@ -430,7 +502,7 @@ public final class FieldRecord {
                 RecordList list = _currentRecords[i];
                 int timestamp;
                 if (list != null && 
-                        (timestamp = list.getRecord().getTimestamp()) > max) {
+                        (timestamp = list._getRecord().getTimestamp()) > max) {
                     max = timestamp;
                     maxIndex = i;
                 }
@@ -438,64 +510,138 @@ public final class FieldRecord {
             return maxIndex;
         }
         
+        /** The current record for each dimension. Each current record is the
+         *  next record to be returned by {@link #next()} for that index, or
+         *  <tt>null</tt> if no more record for that dimension.
+         */
         private RecordList[] _currentRecords;
         
+        /** The number of records that have been returned by {@link #next()}.
+         */
         private int _currentNum = 0;
         
+        /** The dimension of the last returned record.
+         */
         private int _lastIndex;
         
+        /** The last returned record.
+         */
         private RecordList _lastRecord;
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    //// IndividualIterator
+    /**
+       Iterator of the records for the given dimension.
+       
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+       @see FieldRecord#iterator(int)
+    */
     public class IndividualIterator implements Iterator {
         
+        /** Test if there are more elements.
+         * 
+         *  @return <tt>true</tt> if there are more elements.
+         */
         public boolean hasNext() {
             return _currentList != null;
         }
         
+        /** Return the next element.
+         * 
+         *  @return The next element.
+         */
         public Object next() {
             _lastRecord = _currentList;
-            _currentList = _currentList.getNext();
-            return _lastRecord.getRecord();
+            _currentList = _currentList._getNext();
+            return _lastRecord._getRecord();
         }
         
+        /** Remove the last element returned by {@link #next()}.
+         *  This function must be called after {@link #next()}.
+         */
         public void remove() {
-            RecordList previous = _lastRecord.getPrevious();
+            RecordList previous = _lastRecord._getPrevious();
             if (previous == null) {
                 if (_currentList != null)
-                    _currentList.setPrevious(null);
-                _records.set(_index, _currentList);
+                    _currentList._setPrevious(null);
+                _records[_index] = _currentList;
             } else
-                previous.setNext(_currentList);
+                previous._setNext(_currentList);
             _totalNum--;
         }
         
-        protected IndividualIterator(int index) {
+        /** Construct an iterator for the given index of dimensions.
+         * 
+         *  @param index The index.
+         *  @see FieldRecord#iterator(int)
+         */
+        IndividualIterator(int index) {
             _index = index;
-            _currentList = (RecordList)_records.get(index);
+            _currentList = _records[index];
         }
         
+        /** The index.
+         */
         private int _index;
         
+        /** The current record for that dimension.
+         */
         private RecordList _currentList;
         
+        /** The last record returned by {@link #next()}.
+         */
         private RecordList _lastRecord;
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    //// Record
+    /**
+       Record for the old value of an assignment.
+       
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     public class Record {
         
+        /** Get the indices on the left-hand side of the assignment.
+         * 
+         *  @return The indices, or <tt>null</tt> if no index is used.
+         */
         public int[] getIndices() {
             return _indices;
         }
         
+        /** Get the timestamp taken at the time when the record is
+         *  created.
+         * 
+         *  @return The timestamp.
+         */
         public int getTimestamp() {
             return _timestamp;
         }
         
+        /** Get the old value of this record. If the old value is
+         *  of a primitive type, it is boxed with the corresponding
+         *  object type.
+         * 
+         *  @return The old value.
+         */
         public Object getValue() {
             return _value;
         }
         
+        /** Convert this record to a readable string.
+         * 
+         *  @return The string.
+         */
         public String toString() {
             StringBuffer buffer = new StringBuffer();
             buffer.append("FieldRecord: indices(");
@@ -515,68 +661,136 @@ public final class FieldRecord {
             return buffer.toString();
         }
         
-        protected Record(int[] indices, Object value, int timestamp) {
+        /** Construct a record and store an old value in it.
+         * 
+         *  @param indices The indices on the left-hand side of the
+         *   assignment.
+         *  @param value The old value. If the old value is of a
+         *   primitive type, it should be boxed with the corresponding
+         *   object type.
+         *  @param timestamp The current timestamp.
+         */
+        Record(int[] indices, Object value, int timestamp) {
             _indices = indices;
             _value = value;
             _timestamp = timestamp;
         }
         
+        /** The indices.
+         */
         private int[] _indices;
         
+        /** The old value.
+         */
         private Object _value;
         
+        /** The timestamp.
+         */
         private int _timestamp;
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    //// RecordList
+    /**
+       Double linked list of records.
+       
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private class RecordList {
         
-        protected RecordList(Record record) {
+        /** Construct a record list object with a record stored in it.
+         * 
+         *  @param record
+         */
+        RecordList(Record record) {
             _record = record;
         }
         
-        protected RecordList getNext() {
+        /** Get the record list next to this one.
+         * 
+         *  @return The next record list.
+         *  @see #_getPrevious()
+         */
+        protected RecordList _getNext() {
             return _next;
         }
         
-        protected RecordList getPrevious() {
+        /** Get the record list previous to this one.
+         * 
+         *  @return The previous record list.
+         *  @see #_getNext()
+         */
+        protected RecordList _getPrevious() {
             return _previous;
         }
         
-        protected Record getRecord() {
+        /** Get the record.
+         * 
+         *  @return The record.
+         */
+        protected Record _getRecord() {
             return _record;
         }
         
-        protected void setNext(RecordList next) {
+        /** Set the record list next to this one. Its previous
+         *  record list is also set to this one.
+         * 
+         *  @param next The next record list.
+         *  @see #_setPrevious(RecordList)
+         */
+        protected void _setNext(RecordList next) {
             _next = next;
             if (next != null)
                 next._previous = this;
         }
         
-        protected void setPrevious(RecordList previous) {
+        /** Set the record list previous to this one. Its
+         *  next record list is also set to this one.
+         *  
+         *  @param previous The previous record list.
+         *  @see #_setNext(RecordList)
+         */
+        protected void _setPrevious(RecordList previous) {
             _previous = previous;
             if (previous != null)
                 previous._next = this;
         }
         
+        /** The record.
+         */
         private Record _record;
         
+        /** The record list previous to this one.
+         */
         private RecordList _previous = null;
         
+        /** The record list next to this one.
+         */
         private RecordList _next = null;
-        
-        private RecordList _end = null;
     }
 
-    private void _addRecord(int indices, Record record) {
-        if (_records.size() < indices + 1)
-            _records.setSize(indices + 1);
+    /** Add a record to the list at the given index.
+     * 
+     *  @param indices The index.
+     *  @param record The record.
+     */
+    private void _addRecord(int index, Record record) {
         RecordList list = new RecordList(record);
-        list.setNext((RecordList)_records.get(indices));
-        _records.set(indices, list);
+        list._setNext(_records[index]);
+        _records[index] = list;
         _totalNum++;
     }
     
-    private Vector _records = new Vector();
+    /** The record lists for all the dimensions.
+     */
+    private RecordList[] _records;
     
+    /** The total number of records in all the dimensions. Must be
+     *  explicitly managed when records are added or removed.
+     */
     private int _totalNum = 0;
 }
