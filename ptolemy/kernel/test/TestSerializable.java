@@ -75,6 +75,7 @@ public class TestSerializable {
                 s.writeObject(exampleSystem);
             } catch (IOException e) {
                 System.err.println("Exception while writing: "+ e);
+                e.printStackTrace();
             } finally {
                 if (f != null) {
                     try {
@@ -120,6 +121,7 @@ public class TestSerializable {
                 }
             } catch (IOException e) {
                 System.err.println("IOException while reading: "+ e);
+                e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 System.err.println("ClassNotFoundException while reading: "
                         + e);
