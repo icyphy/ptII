@@ -479,7 +479,7 @@ public class DTDirector extends SDFDirector {
                         // user to be able to put their own initial tokens;
                         // however some specific SDF actors may have their
                         // own buffers parameters that actually keep this
-                        // initial tokens (similar to Delay)
+                        // initial tokens (similar to SampleDelay)
                         if (fromType.isEqualTo(BaseType.BOOLEAN)) {
                             currentReceiver.put(new BooleanToken(false));
                         } else if (fromType.isEqualTo(BaseType.DOUBLE)) {
@@ -978,8 +978,8 @@ public class DTDirector extends SDFDirector {
             debug.print(actorName+" repeats:"+currentActor._repeats);
             debug.print(" initial_tokens? "+currentActor._shouldGenerateInitialTokens);
 
-            if (currentActor._actor instanceof Delay) {
-                Delay delay = (Delay) currentActor._actor;
+            if (currentActor._actor instanceof SampleDelay) {
+                SampleDelay delay = (SampleDelay) currentActor._actor;
                 ArrayToken initialTokens = (ArrayToken) delay.initialOutputs.getToken();
                 int delayCount = initialTokens.length();
 
