@@ -127,7 +127,7 @@ public class CTRateLimiter extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _newToken = input.get(0);
-            Time currentTime = getDirector().getCurrentTimeObject();
+            Time currentTime = getDirector().getModelTime();
             if (currentTime.compareTo(_lastTime) == 0) {
                 // If the current time is the same as the last time,
                 // output the last token, because any change of the
@@ -177,7 +177,7 @@ public class CTRateLimiter extends Transformer {
      *   scheduling the next firing.
      */
     public boolean postfire() throws IllegalActionException {
-        _lastTime = getDirector().getCurrentTimeObject();
+        _lastTime = getDirector().getModelTime();
         _lastToken = _newToken;
         return super.postfire();
     }

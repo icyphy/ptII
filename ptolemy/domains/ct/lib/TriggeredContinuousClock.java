@@ -138,7 +138,7 @@ public class TriggeredContinuousClock extends ContinuousClock
                 start.get(0);
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
-                Time currentTime = getDirector().getCurrentTimeObject();
+                Time currentTime = getDirector().getModelTime();
                 _tentativeCycleStartTime = currentTime;
                 _tentativeStartTime = currentTime;
                 _tentativePhase = 0;

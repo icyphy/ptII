@@ -134,8 +134,8 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
          
         if (getRoundCount() == 0) {
-            dir.setCurrentTimeObject(
-                dir.getCurrentTimeObject().add(dir.getCurrentStepSize()));
+            dir.setModelTime(
+                dir.getModelTime().add(dir.getCurrentStepSize()));
         }
     }
 

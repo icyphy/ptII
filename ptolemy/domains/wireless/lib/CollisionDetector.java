@@ -334,7 +334,7 @@ public class CollisionDetector extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         if (_debugging) {
             _debug("---------------------------------");
             _debug("Current time is: " + currentTime);

@@ -95,7 +95,7 @@ public class StreamLoader extends Source {
     }
 
     public boolean postfire() throws IllegalActionException {
-        if (getDirector().getCurrentTimeObject().getTimeValue() == 0.0) {
+        if (getDirector().getModelTime().getTimeValue() == 0.0) {
             output.send(0, new ObjectToken(_dataSource));
         }
         return super.postfire();

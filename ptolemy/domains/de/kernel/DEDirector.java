@@ -516,18 +516,18 @@ public class DEDirector extends Director implements TimedDirector {
             synchronized(_eventQueue) {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    if (next.timeStamp().compareTo(getCurrentTimeObject()) > 0) {
+                    if (next.timeStamp().compareTo(getModelTime()) > 0) {
                         // If the next event is in the future,
                         // proceed to postfire().
                         break;
                     } else if (
                         next.timeStamp().compareTo(
                             timeConstants.NEGATIVE_INFINITY) != 0
-                        && next.timeStamp().compareTo(getCurrentTimeObject()) < 0) {
+                        && next.timeStamp().compareTo(getModelTime()) < 0) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
-                                + "current time " + getCurrentTimeObject() + " !");
+                                + "current time " + getModelTime() + " !");
                     }
                 } else {
                     // The queue is empty, proceed to postfire().
@@ -619,7 +619,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void fireAtRelativeTime(Actor actor, Time time)
             throws IllegalActionException {
-          fireAt(actor, time.add(getCurrentTimeObject()));
+          fireAt(actor, time.add(getModelTime()));
     }
 
     /** Return the event queue.
@@ -647,7 +647,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  time composite actor is embedded in the DE domain.
      *  @return The next larger time on the event queue.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         return _eventQueue.get().timeStamp();
     }
 
@@ -674,7 +674,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  for performance reason.
      *  @return the start time.
      */
-    public final Time getStartTimeObject() {
+    public final Time getModelStartTime() {
         return _startTime;
     }
 
@@ -690,7 +690,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  for performance reason.
      *  @return the stop time.
      */
-    public final Time getStopTimeObject() {
+    public final Time getModelStopTime() {
         return _stopTime;
     }
 
@@ -761,7 +761,7 @@ public class DEDirector extends Director implements TimedDirector {
         // If more actors will be fired, but the current time exceeds 
         // the stop time, stop the model.
         if (_noMoreActorsToFire && (stop || 
-        getCurrentTimeObject().compareTo(getStopTimeObject()) == 0 )) {
+        getModelTime().compareTo(getModelStopTime()) == 0 )) {
             _exceedStopTime = true;
             return false;
         } else if (_exceedStopTime) {
@@ -811,7 +811,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         CompositeActor container = (CompositeActor)getContainer();
         Time outsideCurrentTime = ((Actor)container).
-            getExecutiveDirector().getCurrentTimeObject();
+            getExecutiveDirector().getModelTime();
         Time nextEventTime = timeConstants.MAX_VALUE;
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
@@ -850,14 +850,14 @@ public class DEDirector extends Director implements TimedDirector {
         }
         if (hasInput) {
             // If there is at least one external input
-            setCurrentTimeObject(outsideCurrentTime);
+            setModelTime(outsideCurrentTime);
             return true;
         } else {
             // If there is no external input
             if (nextEventTime.equalTo(outsideCurrentTime)) {
                 // If there is an internal event scheduled to happen 
                 // at the current time, it is the right time to fire.
-                setCurrentTimeObject(nextEventTime);
+                setModelTime(nextEventTime);
                 return true;
             } else {
                 // If there is no internal event, it is not the correct time to fire.
@@ -1055,16 +1055,16 @@ public class DEDirector extends Director implements TimedDirector {
                     if (!nextEvent.timeStamp().equalTo(
                         timeConstants.NEGATIVE_INFINITY) 
                         &&
-                        nextEvent.timeStamp().compareTo(getCurrentTimeObject()) < 0){
+                        nextEvent.timeStamp().compareTo(getModelTime()) < 0){
                         //missed an event
                         throw new InternalErrorException(
                             "Fire: Missed an event: the next event time "
                             + nextEvent.timeStamp() + " is earlier than the"
-                            + " current time " + getCurrentTimeObject() + " !");
+                            + " current time " + getModelTime() + " !");
                     }
                     // If the event is in the future, it is ignored
                     // and will be processed later.
-                    if (nextEvent.timeStamp().compareTo(getCurrentTimeObject()) > 0) {
+                    if (nextEvent.timeStamp().compareTo(getModelTime()) > 0) {
                         //reset the next event
                         nextEvent = null;
                         // jump out of the loop: LOOPLABEL::GetNextEvent
@@ -1085,7 +1085,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // 2. There are no more events in the event queue,
                     // and the current time is the stop time. 
                     if (actorToFire != null || 
-                        (getCurrentTimeObject() == getStopTimeObject())) {
+                        (getModelTime() == getModelStopTime())) {
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
                     }
@@ -1205,7 +1205,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // necessary?
                     // Deal with a fireAtCurrentTime event.
                     if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
-                        currentTime = getCurrentTimeObject();
+                        currentTime = getModelTime();
                     }
 
                     // FIXME: The _enqueEvent method might be trained to
@@ -1226,7 +1226,7 @@ public class DEDirector extends Director implements TimedDirector {
 
                     // Advance current time to event time.
                     try {
-                        setCurrentTimeObject(currentTime);
+                        setModelTime(currentTime);
                     } catch (IllegalActionException ex) {
                         // Thrown if time moves backwards.
                         throw new InternalErrorException(this, ex, null);
@@ -1235,7 +1235,7 @@ public class DEDirector extends Director implements TimedDirector {
 
                 _microstep = currentEvent.microstep();
 
-                if (currentTime.compareTo(getStopTimeObject()) > 0) {
+                if (currentTime.compareTo(getModelStopTime()) > 0) {
                     if (_debugging) {
                         _debug("Current time has passed the stop time.");
                     }
@@ -1341,13 +1341,13 @@ public class DEDirector extends Director implements TimedDirector {
         
         // Adjust the microdept
         int microstep = 0;
-        if (time.compareTo(getCurrentTimeObject()) == 0) {
+        if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
         } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
-                time.compareTo(getCurrentTimeObject()) < 0) {
+                time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
-                    + " Current time is " + getCurrentTimeObject()
+                    + " Current time is " + getModelTime()
                     + " while event time is " + time);
         }
         // Calculate the depth of the pure event
@@ -1424,14 +1424,14 @@ public class DEDirector extends Director implements TimedDirector {
             return;
 
         int microstep = 0;
-        if (time == getCurrentTimeObject()) {
+        if (time == getModelTime()) {
             microstep = _microstep;
         } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
-                time.compareTo(getCurrentTimeObject()) < 0) {
+                time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
-                    + " Current time is " + getCurrentTimeObject()
+                    + " Current time is " + getModelTime()
                     + " while event time is " + time);
         }
 
@@ -1471,10 +1471,10 @@ public class DEDirector extends Director implements TimedDirector {
 
         if (_debugging) _debug("enqueue event: to",
                 receiver.getContainer().getFullName() + " ("+token.toString()+") ",
-                "time = "+ getCurrentTimeObject() + " microstep = "+ (_microstep + 1) + " depth = "
+                "time = "+ getModelTime() + " microstep = "+ (_microstep + 1) + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(receiver, token,
-        getCurrentTimeObject(), _microstep + 1, depth));
+        getModelTime(), _microstep + 1, depth));
     }
 
     /** Return the depth of the actor.

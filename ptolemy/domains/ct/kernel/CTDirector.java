@@ -372,7 +372,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException{
-        Time currentTime = getCurrentTimeObject();
+        Time currentTime = getModelTime();
 
         // Check if the request time is earlier than the current time.
         if (time.compareTo(currentTime) < 0 ) {
@@ -492,14 +492,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The iteration begin time plus the current step size.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return the current iteration begin time plus the current
      *  step size.
      *  @return The iteration begin time plus the current step size.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         return getIterationBeginTime().add(getCurrentStepSize());
     }
 
@@ -513,14 +513,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return the start time.
      */
     public final double getStartTime() {
-        return getStartTimeObject().getTimeValue();
+        return getModelStartTime().getTimeValue();
     }
 
     /** Return the start time parameter value. This method is final
      *  for performance reason.
      *  @return the start time.
      */
-    public final Time getStartTimeObject() {
+    public final Time getModelStartTime() {
         return _startTime;
     }
 
@@ -529,14 +529,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return the stop time.
      */
     public final double getStopTime() {
-        return getStopTimeObject().getTimeValue();
+        return getModelStopTime().getTimeValue();
     }
 
     /** Return the stop time. This method is final
      *  for performance reason.
      *  @return the stop time.
      */
-    public final Time getStopTimeObject() {
+    public final Time getModelStopTime() {
         return _stopTime;
     }
 
@@ -640,7 +640,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
         if (_debugging) {
             _debug("Postfire returns " + (_postfireReturns && !_stopRequested) 
-                + " at: " + getCurrentTimeObject());
+                + " at: " + getModelTime());
         }
         return _postfireReturns && !_stopRequested;
     }
@@ -736,7 +736,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  actors are not supposed to call it.
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTimeObject(Time newTime) {
+    public void setModelTime(Time newTime) {
         // FIXME: we must be very careful about this...
         // If this feature is only necessary for the CTMixedSignalDirector,
         // but not the others... put the following code into there only...

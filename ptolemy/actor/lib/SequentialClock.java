@@ -249,7 +249,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         // All calls to getCurrentTime will return the global time of
         // the system.
         // Schedule the first firing.
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         Time nextFiringTime = currentTime.add(_offsets[0]);
 
         // NOTE: This must be the last line, because it could result
@@ -270,7 +270,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         // Set the cycle start time here rather than in initialize
         // so that we at least start out well aligned.
         if (_firstFiring) {
-            _cycleStartTime = getDirector().getCurrentTimeObject();
+            _cycleStartTime = getDirector().getModelTime();
             _firstFiring = false;
         }
 

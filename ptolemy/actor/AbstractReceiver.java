@@ -153,7 +153,7 @@ public abstract class AbstractReceiver implements Receiver {
         IOPort containerPort = getContainer();
         Actor containerActor = (Actor) containerPort.getContainer();
         Director containerDirector = containerActor.getDirector();
-        return containerDirector.getCurrentTimeObject();
+        return containerDirector.getModelTime();
     }
 
     /** Return true if the receiver has room to put a token into it

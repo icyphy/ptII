@@ -166,7 +166,7 @@ public class PBOThreadDirector extends Director {
     }
 
     private synchronized void _scheduleNew() throws IllegalActionException {
-        Time currentTime = getCurrentTimeObject();
+        Time currentTime = getModelTime();
 
         // process new activations.
         PBOEvent event = (PBOEvent)_requestQueue.get();
@@ -342,7 +342,7 @@ public class PBOThreadDirector extends Director {
      *  @return The current time.
      */
     public double getCurrentTime() {
-        return getCurrentTimeObject().getTimeValue();
+        return getModelTime().getTimeValue();
     }
 
     /** Return the current time of the model being executed by this director.
@@ -352,7 +352,7 @@ public class PBOThreadDirector extends Director {
      *
      *  @return The current time.
      */
-    public Time getCurrentTimeObject() {
+    public Time getModelTime() {
         if (_startTime.getTimeValue() > 0.0)
             return new Time(this, (double)
                 System.currentTimeMillis() - _startTime.getTimeValue());
@@ -371,7 +371,7 @@ public class PBOThreadDirector extends Director {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
     
     /** Return the next time of interest in the model being executed by
@@ -384,7 +384,7 @@ public class PBOThreadDirector extends Director {
      *  time should always be greater than or equal to the current time.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
@@ -463,7 +463,7 @@ public class PBOThreadDirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        double curtimeValue = getCurrentTimeObject().getTimeValue();
+        double curtimeValue = getModelTime().getTimeValue();
         _debug("CurrentTime = " + curtimeValue);
         if (curtimeValue > stoptime)
             return false;

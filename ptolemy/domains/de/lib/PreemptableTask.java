@@ -151,7 +151,7 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Time currentTime = ((DEDirector)getDirector()).getCurrentTimeObject();
+        Time currentTime = ((DEDirector)getDirector()).getModelTime();
         DEDirector director = (DEDirector)getDirector();
 
         // If the task receives a token on the <i>input</i> port, queue
@@ -211,7 +211,7 @@ public class PreemptableTask extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         // FIXME: can not be used in SR, dealing with time
         DEDirector director = (DEDirector)getDirector();
-        Time currentTime = director.getCurrentTimeObject();
+        Time currentTime = director.getModelTime();
 
         if (_executing && !_interrupted) {
             if (currentTime.compareTo(_outputTime) >= 0){

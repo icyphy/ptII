@@ -132,7 +132,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
         Director director = getDirector();
         //If there is a timer component, we handel the timer interupt here.
         if (_hasTimer && 
-            director.getCurrentTimeObject().compareTo(_scheduledTime) >= 0) {
+            director.getModelTime().compareTo(_scheduledTime) >= 0) {
 
             if (_debugging) {
                 _debug("Called native method to trigger the time event");
@@ -149,7 +149,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             // Change the color of the icon to red.
             _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
             _hasLed = false;
-            director.fireAt(this, director.getCurrentTimeObject().add(0.5));
+            director.fireAt(this, director.getModelTime().add(0.5));
         } else {
             // Set color back to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
@@ -164,7 +164,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
         if (director != null) {
             try {
                 _hasLed = true;
-                Time currentTime = director.getCurrentTimeObject();
+                Time currentTime = director.getModelTime();
                 director.fireAt(this, currentTime);
                 //then change the color of the node in fire();
             } catch (IllegalActionException e) {
@@ -184,7 +184,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
     // A callback method for the application to notify this of the timer settings.
     // FIXME: should be able to handle muti-timers...
     public void setupTimer(int period) throws IllegalActionException {
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         if (period >=0) {
             try {
                 getDirector().fireAt(this, currentTime);

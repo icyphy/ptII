@@ -246,20 +246,20 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The current time.
      */
     public double getCurrentTime() {
-        return getCurrentTimeObject().getTimeValue();
+        return getModelTime().getTimeValue();
     }
 
     /** Return the current time obtained from the executive director, if
      *  there is one, and otherwise return the local view of current time.
      *  @return The current time.
      */
-    public Time getCurrentTimeObject() {
+    public Time getModelTime() {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
         if (execDir != null) {
-            return execDir.getCurrentTimeObject();
+            return execDir.getModelTime();
         } else {
-            return super.getCurrentTimeObject();
+            return super.getModelTime();
         }
     }
 
@@ -267,16 +267,16 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The next iteration time.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return the next iteration time obtained from the executive director.
      *  @return The next iteration time.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
-        return execDir.getNextIterationTimeObject();
+        return execDir.getModelNextIterationTime();
     }
 
     /** Return true if the current refinement produces events.
@@ -476,9 +476,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // hierarchy will do that.
             if (dir != null) {
                 if (_debugging) {
-                    _debug("HSDirector requests refiring at " + getCurrentTimeObject());
+                    _debug("HSDirector requests refiring at " + getModelTime());
                 }
-                dir.fireAt(container, getCurrentTimeObject());
+                dir.fireAt(container, getModelTime());
             }
         }
         // clear the cached enabled transition

@@ -148,7 +148,7 @@ public class Locator extends TypedAtomicActor {
                 locationArray[i] = new DoubleToken(location[i]);
             }
 
-            double timeValue = getDirector().getCurrentTimeObject().getTimeValue();
+            double timeValue = getDirector().getModelTime().getTimeValue();
             Token[] values = {
                 new ArrayToken(locationArray),
                 new DoubleToken(timeValue)

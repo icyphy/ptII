@@ -86,7 +86,7 @@ public class TestSource extends TypedAtomicActor {
         output.broadcast(new DoubleToken(value + increment));
         value += 1.0;
         Director director = getDirector();
-        Time time = director.getCurrentTimeObject();
+        Time time = director.getModelTime();
         count++;
         if (count >= 5) {
             director.fireAt(this, time.add(1.0));
@@ -100,7 +100,7 @@ public class TestSource extends TypedAtomicActor {
         value = 0.0;
         count = 0;
         Director director = getDirector();
-        director.fireAt(this, director.getCurrentTimeObject());
+        director.fireAt(this, director.getModelTime());
     }
 
     private double value = 0.0;

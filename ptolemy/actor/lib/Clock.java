@@ -227,7 +227,7 @@ public class Clock extends TimedSource {
         super.fire();
 
         // Get the current time and period.
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
         if (_debugging)_debug("--- Firing at time " + currentTime + ".");
@@ -324,7 +324,7 @@ public class Clock extends TimedSource {
         super.initialize();
         if (_debugging)_debug("Initializing " + getFullName() + ".");
 
-        Time timeToStart = getDirector().getCurrentTimeObject();
+        Time timeToStart = getDirector().getModelTime();
         _cycleStartTime = timeToStart;
         _startTime = timeToStart.add(_offsets[0]);
         _currentValue = _getValue(0).zero();

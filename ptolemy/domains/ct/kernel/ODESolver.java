@@ -194,7 +194,7 @@ public abstract class ODESolver extends NamedObj {
      *  step size is not accurate to resolve states and outputs.
      */
     public void resetIterationBeginTime() {
-        _container.setCurrentTimeObject(
+        _container.setModelTime(
             _container.getIterationBeginTime());
     }
     /** Return true if the state of the system is resolved successfully.

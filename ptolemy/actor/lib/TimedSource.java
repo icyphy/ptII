@@ -123,7 +123,7 @@ public class TimedSource extends Source implements TimedActor {
                 Time newStopTime = new Time(this, newStopTimeValue);
                 Director director = getDirector();
                 if (director != null) {
-                    Time currentTime = director.getCurrentTimeObject();
+                    Time currentTime = director.getModelTime();
                     if (newStopTime.compareTo(currentTime) > 0) {
                         director.fireAt(this, newStopTime);
                     } else {
@@ -159,7 +159,7 @@ public class TimedSource extends Source implements TimedActor {
         double stopTimeValue = 
             ((DoubleToken)stopTime.getToken()).doubleValue();
         _stopTime = new Time(this, stopTimeValue); 
-        Time currentTime = director.getCurrentTimeObject();
+        Time currentTime = director.getModelTime();
         if (_stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             _executing = true;
@@ -174,7 +174,7 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
         }

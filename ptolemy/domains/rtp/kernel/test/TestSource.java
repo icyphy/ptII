@@ -87,7 +87,7 @@ public class TestSource extends Source {
         output.broadcast(new DoubleToken(value));
         value += 1.0;
         Director director = getDirector();
-        Time time = director.getCurrentTimeObject();
+        Time time = director.getModelTime();
         System.out.println("Firing round " + value);
         director.fireAt(this, time.add(_period));
     }

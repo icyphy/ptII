@@ -155,9 +155,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 // The time update only happen once!
                 CompositeActor container = (CompositeActor)getContainer();
                 Director exe = container.getExecutiveDirector();
-                Time time = exe.getCurrentTimeObject();
-                setCurrentTimeObject(exe.getCurrentTimeObject());
-                _setIterationBeginTime(exe.getCurrentTimeObject());
+                Time time = exe.getModelTime();
+                setModelTime(exe.getModelTime());
+                _setIterationBeginTime(exe.getModelTime());
                 
                 super._iterateWaveformGenerators(schedule);
             }
@@ -172,7 +172,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             
             // FIXME: the embedded director needs to update its current time to
             // the time iteration begins.
-            // setCurrentTimeObject(getIterationBeginTime());
+            // setModelTime(getIterationBeginTime());
             
             // The following statement is decomposed into a set of actions with
             // conditions.
@@ -378,7 +378,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public double predictedStepSize() {
         try {
-            if (_debugging) _debug(getName(), "at " + getCurrentTimeObject(),
+            if (_debugging) _debug(getName(), "at " + getModelTime(),
                     " predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
@@ -470,7 +470,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void markState() {
         try {
-            _savedIterationBeginTime = getCurrentTimeObject();
+            _savedIterationBeginTime = getModelTime();
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {
@@ -505,7 +505,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void goToMarkedState() {
         try {
-            setCurrentTimeObject(_savedIterationBeginTime);
+            setModelTime(_savedIterationBeginTime);
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {

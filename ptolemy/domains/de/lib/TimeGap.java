@@ -79,7 +79,7 @@ public class TimeGap extends DETransformer {
         if (input.hasToken(0)) {
             input.get(0);
         }
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         if (_previousTime.compareTo(
             getDirector().timeConstants.NEGATIVE_INFINITY) != 0) {
             DoubleToken outToken =
@@ -94,7 +94,7 @@ public class TimeGap extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        _previousTime = getDirector().getCurrentTimeObject();
+        _previousTime = getDirector().getModelTime();
         return super.postfire();
     }
 

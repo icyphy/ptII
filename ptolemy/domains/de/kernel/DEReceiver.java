@@ -169,10 +169,10 @@ public class DEReceiver extends AbstractReceiver {
                     dir._enqueueEvent(this, token);
                 } else {
                     dir._enqueueEvent(this, token,
-                            dir.getCurrentTimeObject().add(_delay));
+                            dir.getModelTime().add(_delay));
                 }
             } else {
-                dir._enqueueEvent(this, token, dir.getCurrentTimeObject());
+                dir._enqueueEvent(this, token, dir.getModelTime());
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
@@ -194,7 +194,7 @@ public class DEReceiver extends AbstractReceiver {
     public synchronized void put(Token token, Time time)
             throws IllegalActionException{
         DEDirector dir = _getDirector();
-        Time now = dir.getCurrentTimeObject();
+        Time now = dir.getModelTime();
         if (time.compareTo(now) < 0) {
             throw new IllegalActionException(getContainer(),
                     "Cannot enqueue a token in the past.");

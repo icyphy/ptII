@@ -354,7 +354,7 @@ public class DTDirector extends SDFDirector {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
 
@@ -362,14 +362,14 @@ public class DTDirector extends SDFDirector {
      *
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         double period = 0.0;
         try {
             period = getPeriod();
         } catch (IllegalActionException exception) {
             // FIXME: handle this
         }
-        return getCurrentTimeObject().add(period);
+        return getModelTime().add(period);
     }
 
 
@@ -565,8 +565,8 @@ public class DTDirector extends SDFDirector {
     public boolean postfire() throws IllegalActionException {
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
-        setCurrentTimeObject(_formerValidTimeFired.add(timeIncrement));
-        _requestRefireAt(getCurrentTimeObject());
+        setModelTime(_formerValidTimeFired.add(timeIncrement));
+        _requestRefireAt(getModelTime());
         if (! _isFiringAllowed) {
             return true;
         }
@@ -608,7 +608,7 @@ public class DTDirector extends SDFDirector {
      *
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTimeObject(Time newTime) {
+    public void setModelTime(Time newTime) {
         // _currentTime is inherited from base Director
         _currentTime = newTime;
     }
@@ -853,18 +853,18 @@ public class DTDirector extends SDFDirector {
 
         // No need to check if this director is in the top level.
         if (outsideDirector == null) {
-            _formerValidTimeFired = getCurrentTimeObject();
+            _formerValidTimeFired = getModelTime();
             return;
         }
 
         // No need to check if the executive director is also a DTDirector
         if (outsideDirector instanceof DTDirector) {
-            _formerValidTimeFired = getCurrentTimeObject();
+            _formerValidTimeFired = getModelTime();
             return;
         }
 
 
-        Time currentTime = outsideDirector.getCurrentTimeObject();
+        Time currentTime = outsideDirector.getModelTime();
         Time currentPeriod = new Time(this, getPeriod());
         Time timeElapsed = currentTime.subtract(_formerValidTimeFired);
 
@@ -1163,7 +1163,7 @@ public class DTDirector extends SDFDirector {
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
-        setCurrentTimeObject(new Time(this));
+        setModelTime(new Time(this));
         _formerTimeFired = new Time(this);
         _formerValidTimeFired = new Time(this);
         _isFiringAllowed = true;

@@ -260,7 +260,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
-        setCurrentTimeObject(time);
+        setModelTime(time);
     }
 
     /** Return the current "time". The GR domain is not a timed domain,
@@ -272,7 +272,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The current "time"
      */
     public double getCurrentTime() {
-        return getCurrentTimeObject().getTimeValue();
+        return getModelTime().getTimeValue();
     }
 
     /** Return the current "time". The GR domain is not a timed domain,
@@ -283,11 +283,11 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The current "time"
      */
-    public Time getCurrentTimeObject() {
+    public Time getModelTime() {
         if (_pseudoTimeEnabled == true) {
-            return _insideDirector.getCurrentTimeObject();
+            return _insideDirector.getModelTime();
         } else {
-            return super.getCurrentTimeObject();
+            return super.getModelTime();
         }
     }
 
@@ -299,7 +299,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return The maximum value for type double.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return maximum value for type double. Since the GR domain is not a
@@ -309,7 +309,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The maximum value for type double.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         return new Time(this, Double.MAX_VALUE);
     }
 

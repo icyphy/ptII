@@ -310,7 +310,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 //Call fireAt to set the color back to white after the delay time.
                 Director director = getDirector();
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
-                Time time = director.getCurrentTimeObject().add(delayTime);
+                Time time = director.getModelTime().add(delayTime);
                 director.fireAt(this, time);
             } else if (getName().equals(routeTo) || hops == 0) {
                 // Change the color of the icon to green.
@@ -372,7 +372,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                                   new StringToken(to),
                                   new IntToken(hops+1)};
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
-                Time time = director.getCurrentTimeObject().add(delayTime);
+                Time time = director.getModelTime().add(delayTime);
                 if (_receptions == null) {
                     _receptions = new HashMap();
                 }
@@ -401,7 +401,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
                 double currentTimeValue = 
-                    getDirector().getCurrentTimeObject().getTimeValue();
+                    getDirector().getModelTime().getTimeValue();
                 Double timeDouble = new Double(currentTimeValue);
                 RecordToken reception = (RecordToken)_receptions.get(timeDouble);
                 if (reception != null) {

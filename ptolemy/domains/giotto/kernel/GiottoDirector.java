@@ -195,14 +195,14 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return the next time that this director expects activity.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTimeObject() {
-        return getCurrentTimeObject().add(_unitTimeIncrement);
+    public Time getModelNextIterationTime() {
+        return getModelTime().add(_unitTimeIncrement);
     }
 
     /** Return true if the current time of the outside domain is greater than
@@ -215,12 +215,12 @@ public class GiottoDirector extends StaticSchedulingDirector
         if (_isEmbedded()) {
             // whatever, the currentTime should be updated by the
             // director of upper container.
-            setCurrentTimeObject ((((CompositeActor) getContainer()).
-                getExecutiveDirector()).getCurrentTimeObject());
-            _debug("Set current time as: " + getCurrentTimeObject());
+            setModelTime ((((CompositeActor) getContainer()).
+                getExecutiveDirector()).getModelTime());
+            _debug("Set current time as: " + getModelTime());
         } 
         
-        if (getCurrentTimeObject().compareTo(_expectedNextIterationTime) < 0) { 
+        if (getModelTime().compareTo(_expectedNextIterationTime) < 0) { 
             if (_debugging) {
                 _debug("*** Prefire returned false.");
             }
@@ -244,7 +244,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         // scheduled next iteraton time, grant it. Otherwise, discard
         // the request.
         // This is particular useful in hierarchical Giotto models.
-        if (time.compareTo(getNextIterationTimeObject()) < 0) {
+        if (time.compareTo(getModelNextIterationTime()) < 0) {
             _refireActors.add(new Firing(actor));
         }
     }
@@ -373,7 +373,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     public void initialize() throws IllegalActionException {
         _iterationCount = 0;
         _unitIndex = 0;
-        _expectedNextIterationTime = getCurrentTimeObject();;
+        _expectedNextIterationTime = getModelTime();;
         
         // The receivers should be reset before their initialization.
         Iterator receivers = _receivers.iterator();
@@ -420,7 +420,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
 
         // Or set the initial time.
-        setCurrentTimeObject (_expectedNextIterationTime);
+        setModelTime (_expectedNextIterationTime);
 
         _realStartTime = System.currentTimeMillis();
     }
@@ -478,7 +478,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 return false;
             }
         } else {
-            setCurrentTimeObject (_expectedNextIterationTime);
+            setModelTime (_expectedNextIterationTime);
             // continue iterations
             if (_isEmbedded()) {
                 // unless the iteration counts are met, 

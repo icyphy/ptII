@@ -145,7 +145,7 @@ public class CTPeriodicSampler extends Transformer
                     if (_debugging) 
                         _debug(getFullName(), " sends event: " + token
                             + " to channel " + i  
-                            + ", at: " + getDirector().getCurrentTimeObject());
+                            + ", at: " + getDirector().getModelTime());
                 }
             }
         }
@@ -156,13 +156,13 @@ public class CTPeriodicSampler extends Transformer
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
-        if (director.getCurrentTimeObject().compareTo(_nextSamplingTime) == 0) {
+        if (director.getModelTime().compareTo(_nextSamplingTime) == 0) {
             _hasCurrentEvent = true;
         } else {
             _hasCurrentEvent = false;
         }
         if (_debugging) _debug(getFullName(), " has event at: "
-                + director.getCurrentTimeObject() + " is " + _hasCurrentEvent );
+                + director.getModelTime() + " is " + _hasCurrentEvent );
         return _hasCurrentEvent;
     }
 
@@ -174,7 +174,7 @@ public class CTPeriodicSampler extends Transformer
     public void initialize() throws IllegalActionException {
         super.initialize();
         CTDirector dir = (CTDirector) getDirector();
-        _nextSamplingTime = dir.getCurrentTimeObject();
+        _nextSamplingTime = dir.getModelTime();
         if (_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
@@ -190,7 +190,7 @@ public class CTPeriodicSampler extends Transformer
             // discrete events are generated; schedule another
             // discrete phase execution at the current time
             // such that other discrete actors react to the events.
-            director.fireAt(this, director.getCurrentTimeObject());
+            director.fireAt(this, director.getModelTime());
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
             if (_debugging) _debug(getFullName(), "request fire at "

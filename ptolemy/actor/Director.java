@@ -369,7 +369,7 @@ public class Director extends Attribute implements Executable {
      *
      *  @return The current time value.
      *  @deprecated As of Ptolemy II 4.1, replaced by 
-     *  {@link #getCurrentTimeObject()}
+     *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
         return _currentTime.getTimeValue();
@@ -377,13 +377,13 @@ public class Director extends Attribute implements Executable {
 
     /** Return the current time object of the model being executed by this 
      *  director.
-     *  This time can be set with the setCurrentTime method. In this base
+     *  This time can be set with the setModelTime method. In this base
      *  class, time never passes, and there are no restrictions on valid
      *  times.
      *
      *  @return The current time.
      */
-    public Time getCurrentTimeObject() {
+    public Time getModelTime() {
         return _currentTime;
     }
 
@@ -401,10 +401,10 @@ public class Director extends Attribute implements Executable {
      *  of the test suite.
      *  @return The time of the next iteration.
      *  @deprecated As of Ptolemy II 4.1, replaced by 
-     *  {@link #getNextIterationTimeObject}
+     *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
-        return _currentTime.getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -421,7 +421,7 @@ public class Director extends Attribute implements Executable {
      *  of the test suite.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         return _currentTime;
     }
 
@@ -454,7 +454,8 @@ public class Director extends Attribute implements Executable {
      *  For example, CT director and DE director use the value of 
      *  the startTime parameter to specify the real start time. 
      *  @return The start time of the model.
-     *  @deprecated As of Ptolemy II 4.1, replaced by {@link #getStartTimeObject}
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelStartTime}
      */
     public double getStartTime() {
         return 0.0;
@@ -468,7 +469,7 @@ public class Director extends Attribute implements Executable {
      *  the startTime parameter to specify the real start time. 
      *  @return The start time of the model.
      */
-    public Time getStartTimeObject() {
+    public Time getModelStartTime() {
         return new Time(this);
     }
 
@@ -480,7 +481,8 @@ public class Director extends Attribute implements Executable {
      *  For example, CT director and DE director use the value of 
      *  the stopTime parameter to specify the real stop time. 
      *  @return The stop time of the model.
-     *  @deprecated As of Ptolemy II 4.1, replaced by {@link #getStopTimeObject}
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelStopTime}
      */
     public double getStopTime() {
         return new Time(this, Double.MAX_VALUE).getTimeValue();
@@ -495,7 +497,7 @@ public class Director extends Attribute implements Executable {
      *  the stopTime parameter to specify the real stop time. 
      *  @return The stop time of the model.
      */
-    public Time getStopTimeObject() {
+    public Time getModelStopTime() {
         return new Time(this, Double.MAX_VALUE);
     }
 
@@ -531,14 +533,14 @@ public class Director extends Attribute implements Executable {
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor)containersContainer)
-                    .getDirector().getCurrentTimeObject();
+                    .getDirector().getModelTime();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
                 // There is no reason to set the current time to 0.0.
                 // Instead, it has to be set to start time of a model. 
                 // FIXME: simplify the initilize method of DE director
-                _currentTime = getStartTimeObject();
+                _currentTime = getModelStartTime();
             }
             // Initialize the contained actors.
             Iterator actors = ((CompositeActor)container)
@@ -743,9 +745,9 @@ public class Director extends Attribute implements Executable {
             Director executiveDirector =
                 ((Actor)container).getExecutiveDirector();
             if (executiveDirector != null) {
-                Time outTime = executiveDirector.getCurrentTimeObject();
+                Time outTime = executiveDirector.getModelTime();
                 if (_currentTime.compareTo(outTime) < 0) {
-                    setCurrentTimeObject(outTime);
+                    setModelTime(outTime);
                 }
             }
         }
@@ -772,7 +774,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging && _verbose) _debug("Preinitializing ...");
         // preinitialize protected variables. 
         // FIXME: a duplicate operation also appears in the initialize method.
-        _currentTime = getStartTimeObject();
+        _currentTime = getModelStartTime();
         _stopRequested = false;
         _timeResolution = 1.0e-10;
                 
@@ -900,10 +902,11 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
-     *  @deprecated As of Ptolemy 4.1, replaced by {@link #setCurrentTimeObject}
+     *  @deprecated As of Ptolemy 4.1, replaced by 
+     *  {@link #setModelTime}
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
-        setCurrentTimeObject(new Time(this, newTime));
+        setModelTime(new Time(this, newTime));
     }
 
     /** Set a new value to the current time of the model, where 
@@ -915,12 +918,12 @@ public class Director extends Attribute implements Executable {
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTimeObject(Time newTime) throws IllegalActionException {
+    public void setModelTime(Time newTime) throws IllegalActionException {
         int comparisonResult = _currentTime.compareTo(newTime);
         if (comparisonResult > 0) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
-                    + ") < (getCurrentTime() = " + getCurrentTimeObject() + ")");
+                    + ") < (getCurrentTime() = " + getModelTime() + ")");
         } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);

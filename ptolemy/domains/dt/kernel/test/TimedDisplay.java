@@ -66,7 +66,7 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
                 String value = " ";
 
                 if (director != null) {
-                    value = ""+director.getCurrentTimeObject();
+                    value = ""+director.getModelTime();
                 }
 
                 //String value = (director.getCurrentTime()).toString();

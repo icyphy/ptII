@@ -147,7 +147,7 @@ public class Backoff extends MACActorBase {
         super.fire();
         int ct = 0;
         Director director = getDirector();
-        _currentTime = director.getCurrentTimeObject();
+        _currentTime = director.getModelTime();
         int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.

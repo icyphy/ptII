@@ -166,7 +166,7 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         // produce output
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
             _currentOutput = (Token)_delayedTokens.get(
@@ -205,7 +205,7 @@ public class TimedDelay extends DETransformer {
      *  be performed or the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-       Time currentTime = getDirector().getCurrentTimeObject();
+       Time currentTime = getDirector().getModelTime();
        Time delayToTime = currentTime.add(_delay);
        // Remove the token that is scheduled to be sent 
        // at the current time.

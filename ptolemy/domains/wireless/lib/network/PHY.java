@@ -202,7 +202,7 @@ public class PHY extends NetworkActorBase {
         super.fire();
         int oldnum=_numBusyTimers;
         int kind=whoTimeout2();        // check if a timer times out and which
-        Time currentTime=getDirector().getCurrentTimeObject();
+        Time currentTime=getDirector().getModelTime();
         if ( oldnum>0 && _numBusyTimers==0 )
           {
              // update channel status
@@ -485,7 +485,7 @@ public class PHY extends NetworkActorBase {
         Iterator timers = _timersSet.iterator();
         while (timers.hasNext()) {
             ExtendedTimer timer = (ExtendedTimer) timers.next();
-            if (timer.expirationTime==getDirector().getCurrentTimeObject())
+            if (timer.expirationTime==getDirector().getModelTime())
                 {
                     // update interference
                     if (timer.kind == InterferenceDone)
@@ -528,7 +528,7 @@ public class PHY extends NetworkActorBase {
              }
          }
            
-            Time currentTime=getDirector().getCurrentTimeObject();
+            Time currentTime=getDirector().getModelTime();
             // add every conversation in the network to this giant table
             setTimer2(InterferenceDone, currentTime.add(duration), power);
 

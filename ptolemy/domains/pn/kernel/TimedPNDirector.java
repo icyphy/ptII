@@ -186,14 +186,14 @@ public class TimedPNDirector extends PNDirector
      */
     public synchronized void fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
-        if (newFiringTime.compareTo(getCurrentTimeObject()) < 0) {
+        if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "
                     + " get fired in the past!");
         }
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
         try {
-            while (getCurrentTimeObject().compareTo(newFiringTime) < 0) {
+            while (getModelTime().compareTo(newFiringTime) < 0) {
                 wait();
             }
         } catch (InterruptedException e) {
@@ -207,13 +207,13 @@ public class TimedPNDirector extends PNDirector
      *  time to less than the current time.
      *  @param newTime The new time of the model.
      */
-    public void setCurrentTimeObject(Time newTime)
+    public void setModelTime(Time newTime)
             throws IllegalActionException {
-        if (newTime.compareTo(getCurrentTimeObject()) < 0) {
+        if (newTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "Attempt to set the "+
                     "time to past.");
         } else {
-            super.setCurrentTimeObject(newTime);
+            super.setModelTime(newTime);
         }
     }
 
@@ -278,7 +278,7 @@ public class TimedPNDirector extends PNDirector
                     //Take the first time-blocked process from the queue.
                     TimedEvent event = (TimedEvent)_eventQueue.take();
                     //Advance time to the resumption time of this process.
-                    setCurrentTimeObject(event.timeStamp);
+                    setModelTime(event.timeStamp);
                     _informOfDelayUnblock();
                 } else {
                     throw new InternalErrorException("Inconsistency"+
@@ -303,7 +303,7 @@ public class TimedPNDirector extends PNDirector
                         //process is the same as the newly advanced time
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
-                        if (newTime.equalTo(getCurrentTimeObject())) {
+                        if (newTime.equalTo(getModelTime())) {
                             _informOfDelayUnblock();
                         } else {
                             _eventQueue.put(new TimedEvent(newTime, actor));

@@ -187,19 +187,19 @@ public class PBODirector extends Director {
                 _getExecutionTime(actor).add(requestTime);
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-            setCurrentTimeObject(requestTime);
+            setModelTime(requestTime);
             return;
         }
 
-        _debug("Starting iteration at " + getCurrentTimeObject());
+        _debug("Starting iteration at " + getModelTime());
         PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
         Actor executingActor = deadlineEvent.actor();
         // The time the actor expected to finish by.
         Time executingTime = deadlineEvent.time();
         // The time the actor actually started executing.
-        Time firingTime = getCurrentTimeObject();
+        Time firingTime = getModelTime();
         // The time the actor actually finished.
-        Time endFiringTime = getCurrentTimeObject().add(
+        Time endFiringTime = getModelTime().add(
             _getExecutionTime(executingActor));
 
         // first process any new activations that will
@@ -228,8 +228,8 @@ public class PBODirector extends Director {
             executingActor.fire();
 
             // This is the time when the actor finishes.
-            setCurrentTimeObject(endFiringTime);
-            _debug("Postfiring actor at " + getCurrentTimeObject());
+            setModelTime(endFiringTime);
+            _debug("Postfiring actor at " + getModelTime());
             postfireReturns = executingActor.postfire();
             _debug("done firing");
 
@@ -279,7 +279,7 @@ public class PBODirector extends Director {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getNextIterationTimeObject().getTimeValue();
+        return getModelNextIterationTime().getTimeValue();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -292,7 +292,7 @@ public class PBODirector extends Director {
      *  time should always be greater than or equal to the current time.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTimeObject() {
+    public Time getModelNextIterationTime() {
         if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
@@ -365,7 +365,7 @@ public class PBODirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        Time curtime = getCurrentTimeObject();
+        Time curtime = getModelTime();
         _debug("CurrentTime = " + curtime);
         if (curtime.getTimeValue() > stoptime)
             return false;

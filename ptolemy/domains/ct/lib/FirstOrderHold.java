@@ -128,14 +128,14 @@ public class FirstOrderHold extends Transformer
             if (input.hasToken(0) && derivative.hasToken(0)) {
                 _value = ((DoubleToken)input.get(0)).doubleValue();
                 _derivative = ((DoubleToken)derivative.get(0)).doubleValue();
-                _time = director.getCurrentTimeObject();
+                _time = director.getModelTime();
                 if (_debugging) _debug(getFullName(),
                         " get inputs: (" + _value,
                         ", " + _derivative + ").");
             }
         }
         double timeInterval = 
-            director.getCurrentTimeObject().subtract(_time).getTimeValue(); 
+            director.getModelTime().subtract(_time).getTimeValue(); 
         output.send(0, new DoubleToken(_value + timeInterval * _derivative));
     }
 
@@ -148,7 +148,7 @@ public class FirstOrderHold extends Transformer
         _value = ((DoubleToken)defaultValue.getToken()).doubleValue();
         _derivative =
             ((DoubleToken)defaultDerivative.getToken()).doubleValue();
-        _time = getDirector().getCurrentTimeObject();
+        _time = getDirector().getModelTime();
 
     }
 

@@ -82,7 +82,7 @@ public class PrintString extends DDEActor {
 
         while ( true ) {
             token = (StringToken)getNextToken();
-            time = getDirector().getCurrentTimeObject();
+            time = getDirector().getModelTime();
             if ( token == null ) {
                 System.out.println("Null token in PrintString");
             }

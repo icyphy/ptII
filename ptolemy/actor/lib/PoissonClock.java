@@ -195,7 +195,7 @@ public class PoissonClock extends TimedSource {
         super.fire();
 
         // Get the current time and period.
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
 
         // Indicator whether we've reached the next event.
         _boundaryCrossed = false;
@@ -223,7 +223,7 @@ public class PoissonClock extends TimedSource {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
         _currentOutputIndex = 0;
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         _nextFiringTime = currentTime;
         if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
             getDirector().fireAt(this, currentTime);
@@ -232,7 +232,7 @@ public class PoissonClock extends TimedSource {
                 ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
-            _nextFiringTime = director.getCurrentTimeObject().add(exp);
+            _nextFiringTime = director.getModelTime().add(exp);
             director.fireAt(this, _nextFiringTime);
         }
     }
@@ -249,7 +249,7 @@ public class PoissonClock extends TimedSource {
                 ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
             Director director = getDirector();
-            _nextFiringTime = director.getCurrentTimeObject().add(exp);
+            _nextFiringTime = director.getModelTime().add(exp);
             director.fireAt(this, _nextFiringTime);
         }
         return super.postfire();

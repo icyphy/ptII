@@ -52,7 +52,7 @@ public interface TimedDirector {
      *  @return A new object as the copy of the current time object of 
      *  this director.
      */
-    public Time getCurrentTimeObject();
+    public Time getModelTime();
     
     /** Return the time resolution used by this director. 
      *  @return The time resolution specified used by this director.

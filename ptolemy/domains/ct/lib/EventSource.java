@@ -208,7 +208,7 @@ public class EventSource extends TypedAtomicActor
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
-        return (director.getCurrentTimeObject().compareTo(_nextOutputTime) == 0);
+        return (director.getModelTime().compareTo(_nextOutputTime) == 0);
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -220,7 +220,7 @@ public class EventSource extends TypedAtomicActor
         super.initialize();
 
         //_firstFiring = true;
-        _cycleStartTime = getDirector().getCurrentTimeObject();
+        _cycleStartTime = getDirector().getModelTime();
         _phase = 0;
 
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);

@@ -426,7 +426,7 @@ public class LevelCrossingDetector extends Transformer
                 _eventNow = true;
                 if (_debugging)
                     _debug("Event is detected at "
-                            + getDirector().getCurrentTimeObject());
+                            + getDirector().getModelTime());
                 _enabled = false;
             }
             _eventMissed = false;

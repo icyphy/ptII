@@ -189,7 +189,7 @@ public class DDEDirector extends CompositeProcessDirector
      *  method.
      */
     public double getCurrentTime() {
-        return getCurrentTimeObject().getTimeValue();
+        return getModelTime().getTimeValue();
     }
 
     /** Return the current time of the DDEThread that calls this
@@ -199,13 +199,13 @@ public class DDEDirector extends CompositeProcessDirector
      *  @return The current time of the DDEThread that calls this
      *  method.
      */
-    public Time getCurrentTimeObject() {
+    public Time getModelTime() {
         Thread thread = Thread.currentThread();
         if (thread instanceof DDEThread) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             return timeKeeper.getCurrentTime();
         } else {
-            return super.getCurrentTimeObject();
+            return super.getModelTime();
         }
     }
 

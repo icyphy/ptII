@@ -161,7 +161,7 @@ public class TxCoordination extends MACActorBase {
     public void fire() throws IllegalActionException {
         super.fire();
         int kind=whoTimeout();        // check if a timer times out and which
-        Time currentTime =getDirector().getCurrentTimeObject();
+        Time currentTime =getDirector().getModelTime();
 
         boolean isNetData=false;
 

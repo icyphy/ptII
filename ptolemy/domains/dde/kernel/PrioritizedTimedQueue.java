@@ -414,7 +414,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void reset() {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
-        Time time = director.getCurrentTimeObject();
+        Time time = director.getModelTime();
         _receiverTime = time;
         _lastTime = time;
         // I believe this is not needed anymore, because receivers are

@@ -112,7 +112,7 @@ public class Server extends VariableDelay {
         delay.update();
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
         
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
         // consume input and put it into the task queue: _delayedTokensList
         // NOTE: it is different from the _delayedTokens defined in the 
         // TimedDelay class. 
@@ -150,7 +150,7 @@ public class Server extends VariableDelay {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getCurrentTimeObject();
+        Time currentTime = getDirector().getModelTime();
 
         // Remove the curent output token from _delayedTokens.
         // NOTE: In this server class, the _delayedTokens can have

@@ -708,7 +708,7 @@ public class SRDirector extends StaticSchedulingDirector {
         CompositeActor container = (CompositeActor) getContainer();
         Director outsideDirector = container.getExecutiveDirector();
         if (outsideDirector != null) {
-            setCurrentTimeObject(outsideDirector.getCurrentTimeObject());
+            setModelTime(outsideDirector.getModelTime());
         }
 
     }
