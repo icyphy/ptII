@@ -407,8 +407,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                         newParameter.setContainer(newObject);
                     } catch (KernelException exception) {
                         throw new CloneNotSupportedException(
-                                "Failed to clone an Attribute of " +
-                                getFullName() + ": " + exception.getMessage());
+                                "Failed to clone attribute "
+                                + parameter.getFullName()
+                                + ": "
+                                + exception);
                     }
                 }
             }
