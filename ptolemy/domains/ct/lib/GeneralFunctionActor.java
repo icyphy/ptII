@@ -30,7 +30,8 @@
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.automata.util.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.VariableList;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
