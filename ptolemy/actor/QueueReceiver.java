@@ -100,7 +100,7 @@ public class QueueReceiver implements Receiver {
 
     /** Return a token on the queue.  If the offset argument is
      *  zero, return the most recent token that was put on the queue.
-     *  If the offset is 1, return second most recent the token, etc.
+     *  If the offset is 1, return the second most recent token, etc.
      *  Do not remove the token from the queue.
      *  If there is no such token on the queue (the offset is greater
      *  than or equal to the size, or is negative), throw an exception.
@@ -164,7 +164,7 @@ public class QueueReceiver implements Receiver {
 
     /** Return an element from the history.  If the offset argument is
      *  zero, return the most recent token in the history, which is
-     *  token most recently taken from the queue.
+     *  the token most recently taken from the queue.
      *  If the offset is 1, return the second most recent token, etc.
      *  If there is no such token in the history (the offset is greater
      *  than or equal to the number of objects in the history, or is
