@@ -134,35 +134,6 @@ public class PrintThreads {
         return results;
     }
 
-    public static void dumpAllThreadsStacks() {
-        ThreadGroup rootGroup = null;
-        try {
-            rootGroup = rootThreadGroup();
-        } catch (Exception e) {
-            // If we are in an applet, then rootThreadGroup() might
-            // throw a security exception
-            rootGroup = Thread.currentThread().getThreadGroup();
-        }
-
-        Thread threads[] = new Thread[rootGroup.activeCount()];
-        rootGroup.enumerate(threads);
-
-        System.out.println("Calling Thread.dumpStack() on " + threads.length
-                + threads);
-
-        for (int i = 0; i < threads.length; i++ ) {
-            Thread thread = threads[i];
-            // Dump the stack to stdout
-            System.out.println(toThreadDescription(thread));
-            threads[i].dumpStack();
-        }
-        System.out.println("To get a stack trace for each thread:");
-        System.out.println(" Under Unix, try 'kill -3 pid', "
-                + "where pid is the process id from ps");
-        System.out.println(" Under Windows, try Control-Break");
-    }
-
-
     /* Return a user friendly description of the thread.
      * We could use Thread.toString(), but that is hard to read.
      */
