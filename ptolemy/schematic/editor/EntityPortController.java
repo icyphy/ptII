@@ -61,11 +61,7 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// EntityPortController
 /**
- * A Graph Controller for the Ptolemy II schematic editor.  
- * Terminal creation: Ctrl-button 1
- * Edge creation: Ctrl-Button 1 Drag
- * Entity creation: Shift-Button 1
- * Edges can connect to Terminals, but not entities.
+ * A controller for ports of entities.  These ports cannot be dragged
  *
  * @author Steve Neuendorffer 
  * @version $Id$
@@ -77,6 +73,7 @@ public class EntityPortController extends NodeController {
 	setNodeRenderer(new EntityPortRenderer());
 	SelectionModel sm = controller.getSelectionModel();
 	NodeInteractor interactor = new NodeInteractor(sm);
+        interactor.setDragInteractor(null);
 	setNodeInteractor(interactor);
 	_menuCreator = new MenuCreator(interactor);
     }
