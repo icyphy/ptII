@@ -49,7 +49,6 @@ TCL_SRCS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) \
 	chkjava \
-	chkrating \
 	rmtrailingspace
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -62,7 +61,7 @@ OPTIONAL_FILES =	doc
 
 # Do make sources so that we ensure that the subdirectories are checked out
 all:  sources $(MISC_SRCS)
-	-chmod a+x chkjava chkrating rmtrailingspace
+	-chmod a+x chkjava rmtrailingspace
 
 install: all
 
