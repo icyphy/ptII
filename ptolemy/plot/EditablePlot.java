@@ -34,6 +34,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 import java.util.Stack;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlot
@@ -79,13 +80,28 @@ public class EditablePlot extends Plot {
      */	
     public EditablePlot() {
         super();
-        addMouseListener(new EditListener());
+        addMouseListener(new EditMouseListener());
         addMouseMotionListener(new ModifyListener());
         addKeyListener(new UndoListener());   
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a listener to be informed when the user modifies a data set.
+     *  @param listener The listener.
+     *  @see EditListener
+     */
+    public void addEditListener(EditListener listener) {
+        if (_editListeners == null) {
+            _editListeners = new Vector();
+        } else {
+            if (_editListeners.contains(listener)) {
+                return;
+            }
+        }
+        _editListeners.addElement(listener);
+    }
 
     /** Get the data in the specified dataset. This is returned as
      *  a two-dimensional array, where the first index specifies
@@ -118,6 +134,19 @@ public class EditablePlot extends Plot {
         Object[] saved = (Object[])_redoStack.pop();
         _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
         repaint();
+        _notifyListeners(_dataset);
+    }
+
+    /** Unregister a edit listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which edit events are sent.
+     */
+    public void removeEditListener(EditListener listener) {
+        if (_editListeners == null) {
+            return;
+        }
+        _editListeners.removeElement(listener);
     }
 
     /** Create a sample plot.
@@ -163,6 +192,7 @@ public class EditablePlot extends Plot {
         Object[] saved = (Object[])_undoStack.pop();
         _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
         repaint();
+        _notifyListeners(_dataset);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -218,7 +248,9 @@ public class EditablePlot extends Plot {
                         _editSpecX[i], _editSpecY[i]+1);
             }
         }
-        graphics.setPaintMode();            
+        graphics.setPaintMode();
+
+        _notifyListeners(_dataset);
     }
 
     // Make a record of a new edit point.
@@ -237,20 +269,22 @@ public class EditablePlot extends Plot {
             // ignore
             return;
         }
-        int step = _currentEditX + 1;
+        int step = _currentEditX;
         while (step <= x) {
             int index = step-(_lrx-_editSpecX.length);
             double proportion =
                 (step - _currentEditX)/(double)(x - _currentEditX);
             int newY = (int)(_currentEditY + proportion*(y-_currentEditY));
-            _editSpecX[index] = step;
-            _editSpecY[index] = newY;
-            _editSpecSet[index] = true;
-
-            // Draw point, linearly interpolated from previous point
-            graphics.setXORMode(_editColor);
-            graphics.drawLine(step, newY-1, step, newY+1);
-            graphics.setPaintMode();
+            if (!_editSpecSet[index]) {
+                _editSpecX[index] = step;
+                _editSpecY[index] = newY;
+                _editSpecSet[index] = true;
+                
+                // Draw point, linearly interpolated from previous point
+                graphics.setXORMode(_editColor);
+                graphics.drawLine(step, newY-1, step, newY+1);
+                graphics.setPaintMode();
+            }
             step++;
         }
         _currentEditX = x;
@@ -277,6 +311,7 @@ public class EditablePlot extends Plot {
         _editSpecX[0] = x;
         _editSpecY[0] = y;
         _editSpecSet[0] = true;
+
         _currentEditX = x;
         _currentEditY = y;
 
@@ -285,6 +320,19 @@ public class EditablePlot extends Plot {
         graphics.setXORMode(_editColor);
         graphics.drawLine(x, y-1, x, y+1);
         graphics.setPaintMode();
+    }
+
+    // Notify all edit listeners that have registered.
+    private void _notifyListeners(int dataset) {
+        if (_editListeners == null) {
+            return;
+        } else {
+            Enumeration listeners = _editListeners.elements();
+            while (listeners.hasMoreElements()) {
+                ((EditListener)listeners.nextElement()).
+                        editDataModified(this,dataset);
+            }
+        }
     }
 
     // Set the data in the specified dataset. The argument is of the
@@ -318,10 +366,13 @@ public class EditablePlot extends Plot {
     private Stack _undoStack = new Stack();
     private Stack _redoStack = new Stack();
 
+    // Edit listeners.
+    private Vector _editListeners = null;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    public class EditListener implements MouseListener {
+    public class EditMouseListener implements MouseListener {
         public void mouseClicked(MouseEvent event) {
         }
         public void mouseEntered(MouseEvent event) {
