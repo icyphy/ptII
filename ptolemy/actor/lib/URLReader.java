@@ -142,13 +142,14 @@ public abstract class URLReader extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == sourceURL) {
+            StringToken urlToken = null;
             try {
-                StringToken URLToken = (StringToken)sourceURL.getToken();
-                if (URLToken == null) {
+                urlToken = (StringToken)sourceURL.getToken();
+                if (urlToken == null) {
                     _source = null;
                     _setURLReader(null);
                 } else {
-                    _source = URLToken.stringValue();
+                    _source = urlToken.stringValue();
                     if (_source.equals("")) {
                         _setURLReader(null);
                     } else {
@@ -159,7 +160,9 @@ public abstract class URLReader extends Source {
                     }
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex.getMessage());
+                throw new IllegalActionException(this, ex,
+                        "Failed to evaluate sourceURL '"
+                        + urlToken + "'");
             }
         } else if (attribute == refresh) {
             _refreshFlag = ((BooleanToken)refresh.getToken()).booleanValue();
@@ -198,7 +201,7 @@ public abstract class URLReader extends Source {
 		_reader.close();
 	    }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex, "Failed to close");
         }
     }
 
@@ -217,7 +220,7 @@ public abstract class URLReader extends Source {
 		_reader.close();
 	    }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex, "Failed to close");
         }
         if (reader != null) {
             _reader = reader;
