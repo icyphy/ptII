@@ -127,10 +127,6 @@ public class EditorDropTarget extends DropTarget {
                             ((EditorGraphController)gc).createUniqueID()); 
 		    ((EditorGraphController) gc).getEntityController()
                          .addNode(icon, p.x, p.y);
-		    int[] coords = new int[2];
-		    coords[0] = p.x;
-		    coords[1] = p.y;
-		    icon.setLocation(coords);
 		}
                 catch (Exception ex) {
                     ex.printStackTrace();

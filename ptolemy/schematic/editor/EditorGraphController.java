@@ -291,10 +291,6 @@ public class EditorGraphController extends CompositeGraphController {
                     toplevel.newRelation(createUniqueName("relation"));
                 vertex = new Vertex(relation, 
                         createUniqueName("vertex"));
-                int[] coords = new int[2];
-                coords[0] = e.getX();
-                coords[1] = e.getY();
-                vertex.setLocation(coords);
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -362,11 +358,7 @@ public class EditorGraphController extends CompositeGraphController {
 		try {
 		    vertex = new Vertex(relation, 
                             createUniqueName("vertex"));
-                    int[] coords = new int[2];
-                    coords[0] = e.getX();
-                    coords[1] = e.getY();
-                    vertex.setLocation(coords);
-		}
+                }
 		catch (Exception ex) {
 		    ex.printStackTrace();
 		    throw new RuntimeException(ex.getMessage());

@@ -93,14 +93,18 @@ public class EntityController extends LocatableNodeController {
      */
     public Node addNode(Object semanticObject, double x, double y) {
         GraphController controller = getController();
-        Node n = controller.getGraphImpl().createCompositeNode(
+        Node node = controller.getGraphImpl().createCompositeNode(
                 semanticObject);
 
         // Add to the graph
-        controller.getGraphImpl().addNode(n, controller.getGraph());
-        Figure nf = drawNode(n);
-	CanvasUtilities.translateTo(nf, x, y);        
-        return n;             
+        controller.getGraphImpl().addNode(node, controller.getGraph());
+        Figure nf = drawNode(node);
+	CanvasUtilities.translateTo(nf, x, y);     
+        double location[] = new double[2];
+        location[0] = x;
+        location[1] = y; 
+        setLocation(node, location);
+        return node;             
     }
 	
     /** Draw the node and all the ports contained within the node.

@@ -73,7 +73,19 @@ public class LocatableNodeController extends NodeController {
     public LocatableNodeController(GraphController controller) {
 	super(controller);
         NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
-        nodeInteractor.setDragInteractor(new LocatableNodeDragInteractor());
+        nodeInteractor.setDragInteractor(new LocatableNodeDragInteractor(this));
+    }
+
+    /** Add a node to this graph editor and render it
+     * at the given location.
+     */
+    public Node addNode(Object semanticObject, double x, double y) {
+        Node node = super.addNode(semanticObject, x, y);
+        double location[] = new double[2];
+        location[0] = x;
+        location[1] = y; 
+        setLocation(node, location);
+        return node;
     }
 
     /** Draw the node at it's location.
@@ -95,7 +107,7 @@ public class LocatableNodeController extends NodeController {
     /** Return the desired location of this node.  Throw an exception if the
      *  node does not have a desired location.
      */
-    public int[] getLocation(Node n) {
+    public double[] getLocation(Node n) {
         Object object = n.getSemanticObject();
         if(object instanceof Locatable) {
             return ((Locatable) object).getLocation();         
@@ -106,7 +118,7 @@ public class LocatableNodeController extends NodeController {
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
      */
-    public void setLocation(Node n, int[] location) {
+    public void setLocation(Node n, double[] location) {
         Object object = n.getSemanticObject();
         if(object instanceof Locatable) {
             ((Locatable)object).setLocation(location);
@@ -121,24 +133,10 @@ public class LocatableNodeController extends NodeController {
     public void locateFigure(Node n) {
         Figure nf = (Figure)n.getVisualObject();
         if(hasLocation(n)) {
-            int[] location = getLocation(n);
+            double[] location = getLocation(n);
             CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
     }           
-
-    /** Set the location of the node's semantic object, 
-     *  if that object is an instance of Locatable, to the current location
-     *  of the figure.
-     *  If the semantic object is not locatable, then do nothing.
-     */
-    public void locateNode(Node n) {
-        Figure nf = (Figure)n.getVisualObject();
-        int[] location = new int[2];
-        Rectangle2D bounds = nf.getBounds();
-        location[0] = (int)bounds.getX();
-        location[1] = (int)bounds.getY();
-        setLocation(n, location);        
-    }
 }
 
 

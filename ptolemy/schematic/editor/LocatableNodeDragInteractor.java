@@ -60,6 +60,12 @@ updates the location in the locatable object.
 @version $Id$
  */
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
+    /** Create a new interactor contained within the given controller.
+     */
+    public LocatableNodeDragInteractor(LocatableNodeController controller) {
+        _controller = controller;
+    }
+
     /** Drag all selected nodes and move any attached edges.
      *  Update the locatable with the current location.
      */
@@ -71,16 +77,14 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             Object object = figure.getUserObject();
             if(object instanceof Node) {
                 Node node = (Node) figure.getUserObject();            
-                Locatable locatable = (Locatable) node.getSemanticObject();
-                if(locatable != null) {
-                    Rectangle2D bounds = figure.getBounds();
-                    int[] location = new int[2];
-                    location[0] = (int)bounds.getCenterX();
-                    location[1] = (int)bounds.getCenterY();
-                    locatable.setLocation(location);
-                }
+                double[] location = _controller.getLocation(node);
+                location[0] += x;
+                location[1] += y;
+                _controller.setLocation(node, location);
             }
         }
     }
+
+    LocatableNodeController _controller;
 }
 
