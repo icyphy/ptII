@@ -178,7 +178,7 @@
     <entity name="MoveDisks" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 45.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {14, 150, 921, 466}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 150, 921, 485}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 350]">
         </property>
@@ -378,7 +378,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {34, 187, 905, 533}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 187, 905, 552}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 417]">
             </property>
@@ -933,7 +933,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -35.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {12, 56, 996, 584}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 56, 996, 603}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 468]">
         </property>
@@ -970,7 +970,7 @@
         <entity name="GetDisksOnTowers" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 150.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {96, 185, 845, 516}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 185, 845, 535}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 400]">
             </property>
@@ -1218,7 +1218,7 @@
         <entity name="GetTowersIndexes" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 240.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {55, 163, 815, 516}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 163, 815, 535}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1309,7 +1309,7 @@
         <entity name="SimulateMoving" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 150.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {113, 184, 864, 520}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 184, 864, 539}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 404]">
             </property>
@@ -1890,7 +1890,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 111, 1072, 752}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 109, 1072, 752}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 617]">
         </property>
@@ -2105,31 +2105,37 @@
             <link port="Translate3D.yTranslate" relation="relation4"/>
         </entity>
         <entity name="Axis0" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 420.0]">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="roundToInt(radius * 60*10)">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 420.0]">
             </property>
         </entity>
         <entity name="Axis1" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
+            </property>
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="roundToInt(radius * 60*10)">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 485.0]">
             </property>
         </entity>
         <entity name="Axis2" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.015">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="(numberOfDisks+1)*diskHeight">
+            </property>
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="roundToInt(radius * 60*10)">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 555.0]">
             </property>
