@@ -119,7 +119,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public SDFDirector(TypedCompositeActor container, String name)
+    public SDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
