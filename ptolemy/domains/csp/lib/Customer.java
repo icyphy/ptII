@@ -60,7 +60,7 @@ public class Customer extends CSPActor {
     public Customer() throws IllegalActionException, NameDuplicationException {
         super();
         _rate = new Parameter(this, "arrivalRate", (new DoubleToken(1)) );
-        output = new IOPort(this, "output", false, true);
+        _output = new IOPort(this, "output", false, true);
     }
 
     public Customer(CompositeActor cont, String name)
@@ -72,7 +72,7 @@ public class Customer extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
-         output = new IOPort(this, "output", false, true);
+         _output = new IOPort(this, "output", false, true);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ public class Customer extends CSPActor {
                 interval = (int)(interval*1000);
                 delay(interval/1000);
                 Token t = new IntToken(count);
-                output.send(0,t);
+                _output.send(0,t);
                 System.out.println(getName() + " sent: " +
                         t.toString());
                 count++;
@@ -110,12 +110,12 @@ public class Customer extends CSPActor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
-
-    public IOPort output;
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    // The rate at which customers arrive. It parameterizes an 
+    // exponenetial distrtibution.
     private Parameter _rate;
+
+    // The ouput port for this actor.
+    private IOPort _output;
 }
