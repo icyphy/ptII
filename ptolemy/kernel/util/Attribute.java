@@ -97,7 +97,7 @@ public class Attribute extends NamedObj {
      *  yourself if you want it there).
      *  The result is an attribute with no container.
      *  @param ws The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
