@@ -891,7 +891,7 @@
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
             <xsl:if test="$temp=''">invariant</xsl:if>
         </xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.ct.lib.CTAssertion</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.actor.lib.Assertion</xsl:attribute>
         <xsl:element name="property">
             <xsl:attribute name="name">assertion</xsl:attribute>
             <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
