@@ -38,7 +38,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -101,20 +100,9 @@ indicates that by default, there is no range limit.
 Any receiver that is within the specified range when transmit()
 is called will receive the transmission, unless the <i>lossProbability</i>
 parameter is set to greater than zero. 
-<p>
-The received power is decided by the formula:
-<pre>
- transmitPower*powerLossFactor*senderGain*receiverGain
-<pre>
-where the senderGain and receiverGain is decided by the specified
-anttena pattern. If their is PropertyTransformer that provides the
-anttena gain registered for the sender and receiver port, 
-the channel will call the getProperty() method of the PropertyTansformer
-to get the gain respecting to the position of the sender 
-and receiver. If no PropertyTransformer is registered, use 1.0 as
-the default value for senderGain or receiverGain.
+
 <p> 
-@author Edward A. Lee, Yang Zhao
+@author Edward A. Lee
 @version $Id$
 */
 public class PowerLossChannel extends LimitedRangeChannel {
