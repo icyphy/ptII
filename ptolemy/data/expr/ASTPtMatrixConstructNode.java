@@ -121,9 +121,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             } else {
                 /* The resolved type does not have a corresponding
                    matrix type. */
-                throw new IllegalActionException("The LUB of the types "
-                        + "of the terms of matrix construction does not "
-                        + "have a corresponding matrix type.");
+                throw new IllegalActionException("Cannot find a matrix type "
+		                   + "that matches the specified elements.");
             }
         } else if (_form == 2) {
             if (mtype == BaseType.INT) {
