@@ -63,6 +63,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
 
     /** Report that an execution error occurred.  This is
      *  called by the manager.
+     *  @param manager The manager in charge of the execution.
+     *  @param ex The exception that triggered the error.
      */
     public void executionError(Manager manager, Exception ex) {
         report(ex);
@@ -70,6 +72,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
 
     /** Report that execution of the model has finished.  This is
      *  called by the manager.
+     *  @param manager The manager in charge of the execution.
      */
     public void executionFinished(Manager manager) {
         showStatus("Execution finished.");
