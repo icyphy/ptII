@@ -184,10 +184,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
-        Enumeration inputPorts = inputPorts();
-        while (inputPorts.hasMoreElements()) {
-            IOPort inport = (IOPort)inputPorts.nextElement();
-            inport.createReceivers();
+        Enumeration ports = getPorts();
+        while (ports.hasMoreElements()) {
+            IOPort oneport = (IOPort)ports.nextElement();
+            oneport.createReceivers();
         }
     }
 
