@@ -68,7 +68,6 @@ remainder, and loses the input when the function is changed back.
 @version $Id$
 @see AbsoluteValue
 @see Scale
-@see RectangularToPolar
 @see Round
 @see TrigFunction
 */
