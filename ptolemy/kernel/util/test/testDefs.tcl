@@ -100,6 +100,12 @@ proc _description2TclBlend {descriptionString} {
 	# Use this list to get the name and the parentName
 	set nameList [split [lindex $line 1] .]
 
+	# FIXME: Here, we assume that each object has a unique
+	# short name.  That is, if the fullname of an object
+	# is e0.e1.e2, then there is no e0.e3.e2
+	# To fix this we could use the fullname everywhere, but
+	# that would be sort of ugly.
+
 	# Name of the object
 	set name [lindex $nameList [expr {[llength $nameList] - 1}]]
 
