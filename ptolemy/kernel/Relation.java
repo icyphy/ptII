@@ -32,10 +32,10 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
-/** A Relation is an arc in a flat graph. A Relation connects n links such 
-that each link has access to the other n-1 links. In our case, a "link" is 
-a Port. We assume Ports may attach themselves to Relations, but the other 
-direction does not hold.
+/** A Relation is an arc in a flat graph. A Relation connects n links such
+that each link has access to the other n-1 links. Relations interface to 
+Entities, the vertices of a graph, via Ports.  Ports may attach themselves 
+to Relations, but the other direction does not hold.
 @author Neil Smyth
 @version $Id$
 */
