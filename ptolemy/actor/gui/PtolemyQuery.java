@@ -398,6 +398,10 @@ public class PtolemyQuery extends Query
                 request.addChangeListener(this);
                 request.execute();
             } else {
+                if (request instanceof MoMLChangeRequest) {
+                    ((MoMLChangeRequest)request).setUndoable(true);
+                }
+
                 // Remove the error handler so that this class handles
                 // the error through the notification.  Save the previous
                 // error handler to restore after this request has been
