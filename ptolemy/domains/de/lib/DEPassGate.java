@@ -95,7 +95,7 @@ public class DEPassGate extends DEActor {
             if (gate.hasToken(0)) {
 		DoubleToken gateToken = null;
                 // The following code might throw a NoTokenException.
-                gateToken=(DoubleToken)(gate.get(0));
+                gateToken = (DoubleToken)(gate.get(0));
 
 		if (gateToken.doubleValue() == 0.0) {
 		    // gate is closing (or closed)
