@@ -33,7 +33,7 @@ import java.io.Serializable;
  *
 **/
 
-abstract class UpdatableImpl implements UpdatableCollection, Serializable { 
+public abstract class UpdatableImpl implements UpdatableCollection, Serializable { 
 
 // instance variables
 
