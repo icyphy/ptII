@@ -1,6 +1,6 @@
-# Makefile for moml/demo directory
+# Makefile for Ptolemy II Network Integration demo
 #
-# @Authors: Edward A. Lee
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,12 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/moml/demo
-
-DIRS =		Networked	
-
+ME =		ptolemy/moml/demo/Networked/
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,46 +39,40 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = \
-
-
 JSRCS =
 
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-	index.htm \
-	example.xml \
-	modulation.htm \
-	modulation.xml \
-	modulationShow.htm \
-	moml.dtd \
-	networked.xml \
-	plotConfigure.xml \
-	sinewaveShow.htm \
-	test.xml
+EXTRA_SRCS =	$(JSRCS) \
+	Networked.htm \
+	Networked.xml \
+	NetworkedVergil.xml \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: $(JCLASS)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demos: demo
-demo:	subdemo all
-	CLASSPATH=$(CLASSPATH) appletviewer modulation.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Networked.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Networked.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Networked.xml
 
 depend:
 	@echo "no dependencies in this directory"
