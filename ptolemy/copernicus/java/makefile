@@ -62,6 +62,7 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
+	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
@@ -152,6 +153,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
 		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
 		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
+		-p wjtp.snapshot6 outDir:$(ROOT)/$(TARGETPATH)/jimple6 \
 		-p wjtp.iee enabled \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"

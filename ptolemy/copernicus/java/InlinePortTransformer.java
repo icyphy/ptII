@@ -375,7 +375,28 @@ public class InlinePortTransformer extends SceneTransformer {
                                 continue;
                             }
                                                                             
-                            if(r.getMethod().getName().equals("hasToken")) {
+                            if(r.getMethod().getName().equals("isInput")) {
+                                // return true.
+                                if(port.isInput()) {
+                                    box.setValue(IntConstant.v(1));
+                                } else {
+                                    box.setValue(IntConstant.v(0));
+                                }
+                            } else if(r.getMethod().getName().equals("isOutput")) {
+                                // return true.
+                                if(port.isOutput()) {
+                                    box.setValue(IntConstant.v(1));
+                                } else {
+                                    box.setValue(IntConstant.v(0));
+                                }
+                            } else if(r.getMethod().getName().equals("isMultiport")) {
+                                // return true.
+                                if(port.isMultiport()) {
+                                    box.setValue(IntConstant.v(1));
+                                } else {
+                                    box.setValue(IntConstant.v(0));
+                                }
+                            } else if(r.getMethod().getName().equals("hasToken")) {
                                 // return true.
                                 box.setValue(IntConstant.v(1));
                             } else if(r.getMethod().getName().equals("hasRoom")) {

@@ -52,7 +52,8 @@ import ptolemy.data.type.Typeable;
 import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
-
+//////////////////////////////////////////////////////////////////////////
+//// UnreachableMethodRemover
 /**
 A transformer that removes methods that are not reachable.  Note that
 this is a fairly braindead implementation.  Specifically, 
@@ -62,7 +63,13 @@ for the purposes of code generation, we will have already done most
 of the interesting type analysis by the time this runs, so it is not
 really a big deal.
 
+@author Stephen Neuendorffer
+@version $Id$
 */
+// FIXME: This is currently unsafe, because method bodies
+// for context classes don't exist in the metho call graph.
+// We need a lightweight way of getting the method call graph for
+// these methods without creating a JimpleBody which is expensive.
 public class UnreachableMethodRemover extends SceneTransformer {
     /** Construct a new transformer
      */

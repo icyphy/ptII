@@ -184,7 +184,7 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
                 InlineParameterTransformer.v(_toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
                 JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
@@ -208,10 +208,18 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ipt",
                 InlinePortTransformer.v(_toplevel)));
 
+        // This appears again because Inlining the parameters
+        // also inlines calls to connectionsChanged, which by default
+        // calls getDirector...  This transformer removes 
+        // these method calls.
+        // FIXME: This should be done in a better way...
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
+               FieldsForAttributesTransformer.v(_toplevel)));
+ 
         // Deal with any more statically analyzeable token
         // references that were created.
-        //        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
-        //        InlineTokenTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
+                InlineTokenTransformer.v(_toplevel)));
      
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
@@ -271,8 +279,8 @@ public class Main extends KernelMain {
                 new TransformerAdapter(AliasAssignmentEliminator.v())));
         
         // Remove other useless getFoo() methods.
-        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
-        //         SideEffectFreeInvocationRemover.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
+                SideEffectFreeInvocationRemover.v()));
         
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can

@@ -399,64 +399,6 @@ public class ActorTransformer extends SceneTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Create and set attributes.
-    /*
-    public static void _createFieldsForExistingAttributes(
-            JimpleBody body, NamedObjConstructorAnalysis analysis, 
-            NamedObj context, Local contextLocal, 
-            NamedObj namedObj, Local namedObjLocal, 
-            SootClass theClass) {
-        // A local that we will use to set the value of our
-        // settable attributes.
-        Local attributeLocal = Jimple.v().newLocal("attribute",
-                PtolemyUtilities.attributeType);
-        body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
-                PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
-
-        //NamedObj classObject = _findDeferredInstance(namedObj);
-        //System.out.println("Class object for " + namedObj.getFullName());
-        //System.out.println(classObject.exportMoML());
-        
-
-        for(Iterator attributes = namedObj.attributeList().iterator();
-	    attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
- 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistance? 
-            //            if(attribute instanceof Variable &&
-            //        !(attribute instanceof Parameter)) {
-            //    continue;
-            // }
-
-            String className = attribute.getClass().getName();
-            Type attributeType = RefType.v(className);
-            String attributeName = attribute.getName(context);
-            String fieldName = 
-                ModelTransformer.getFieldNameForAttribute(attribute, context);
-           
-            AssignStmt constructor = (AssignStmt)analysis.getConstructor(attributeName);
-            System.out.println("attribute = " + attributeName);
-            System.out.println("constructor = " + constructor); 
-            if(constructor != null) {
-                Local local = (Local)constructor.getLeftOp();
-                
-                
-                // Create a new field for the attribute, and initialize
-                // it to the the attribute above.
-                SootUtilities.createAndSetFieldFromLocal(body, local, 
-                        theClass, attributeType, fieldName, constructor);
-                
-                // FIXME: configurable??
-                // recurse so that we get all parameters deeply.
-                //  createFieldsForAttributes(body, context, contextLocal, 
-                //         attribute, local, theClass, createdSet);
-            }
-	}
-    }
-    */
     private static void _implementExecutableInterface(SootClass theClass) {
         // Loop through all the methods and remove calls to super.
         for(Iterator methods = theClass.getMethods().iterator();
