@@ -2686,12 +2686,24 @@ public class PlotBox extends Panel {
         public void mouseExited(MouseEvent event) {
         }
         public void mousePressed(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+            // http://developer.java.sun.com/developer/bugParade/bugs/4072703.html
+            // BUTTON1_MASK still not set for MOUSE_PRESSED events
+            // suggests:
+            // Workaround
+            //   Assume that a press event with no modifiers must be button 1.
+            //   This has the serious drawback that it is impossible to be sure
+            //   that button 1 hasn't been pressed along with one of the other
+            //   buttons.
+            // This problem affects Netscape 4.61 under Digital Unix and
+            // 4.51 under Solaris
+            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 || 
+                    event.getModifiers() == 0) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
         }
         public void mouseReleased(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 || 
+                    event.getModifiers() == 0) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }
         }
