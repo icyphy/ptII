@@ -117,8 +117,8 @@ to see the modal behavior.</text></svg></configure>
 <title>Displacement of Masses</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.01" max="50.0"/>
-<yRange min="-0.13549033016777562" max="3.0"/>
+<xRange min="3.0093999999999994" max="6.590079069767442"/>
+<yRange min="1.7067819788452774" max="2.332577394661565"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -440,13 +440,13 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                 </property>
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.8499908823263">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5937000523076">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="0.0924291378999">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2533423288482">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.8499908823263">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5937000523076">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="0.0924291378999">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2533423288482">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -713,9 +713,9 @@ of the two masses.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.4693237468082">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.84873934502">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.0203668578176">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1498798337667">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -810,6 +810,8 @@ stickiness.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 0.0">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+            </property>
             <port name="V1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 215.0">
@@ -870,7 +872,7 @@ stickiness.</text></svg></configure>
                 </port>
             </entity>
             <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0236287">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="v">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 160.0">
                 </property>
