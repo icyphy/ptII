@@ -207,15 +207,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return _cachedInputPorts;
     }
 
-    /** Return an enumeration of the input ports.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use inputPortList() instead.
-     *  @return An enumeration of input IOPort objects.
-     */
-    public Enumeration inputPorts() {
-        return Collections.enumeration(inputPortList());
-    }
-
     /** Invoke a specified number of iterations of the actor. An
      *  iteration is equivalant to invoking prefire(), fire(), and 
      *  postfire(), in that order. In an iteration, if prefire() 
@@ -313,15 +304,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
             }
         }
         return _cachedOutputPorts;
-    }
-
-    /** Return an enumeration of the output ports.
-     *  This method is read-synchronized on the workspace
-     *  @deprecated Use outputPortList() instead.
-     *  @return An enumeration of output IOPort objects.
-     */
-    public Enumeration outputPorts() {
-        return Collections.enumeration(outputPortList());
     }
 
     /** Return true.  Derived classes override this method to define

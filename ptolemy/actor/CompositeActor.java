@@ -384,17 +384,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Return an enumeration of the input ports of this actor.
-     *  Note that this method returns the ports directly
-     *  contained by this actor, whether they are transparent or not.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use inputPortList() instead.
-     *  @return An enumeration of IOPort objects.
-     */
-    public Enumeration inputPorts() {
-        return Collections.enumeration(inputPortList());
-    }
-
     /** Return true if this actor contains a local director.
      *  Otherwise, return false.  This method is <i>not</i>
      *  synchronized on the workspace, so the caller should be.
@@ -538,17 +527,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Return an enumeration of the output ports.
-     *  Note that this method returns the ports directly
-     *  contained by this actor, whether they are transparent or not.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use outputPortList() instead.
-     *  @return An enumeration of IOPort objects.
-     */
-    public Enumeration outputPorts() {
-        return Collections.enumeration(outputPortList());
     }
 
     /** If this actor is opaque, invoke the postfire() method of its
