@@ -76,7 +76,7 @@ public class ViewerGraphController extends CompositeGraphController {
      * Create a new basic controller with default
      * terminal and edge interactors.
      */
-    public ViewerGraphController () {
+    public ViewerGraphController() {
 	_entityController = new EntityController(this);
 	_portController = new PortController(this);
 	_relationController = new RelationController(this);
@@ -118,7 +118,7 @@ public class ViewerGraphController extends CompositeGraphController {
      * the controller does not yet have a reference to its pane
      * at that time.
      */
-    protected void initializeInteraction () {
+    protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
