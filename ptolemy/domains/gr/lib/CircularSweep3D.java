@@ -73,14 +73,14 @@ public class CircularSweep3D extends GRShadedShape {
         super(container, name);
 
         polyline = new Parameter(this, "polyline",
-                    new DoubleMatrixToken(
-                    new double[][] {{0.5, 0.25,
-                                     0.5, -0.25,
-                                     0.25, -0.25,
-                                     0.25, 0.25,
-                                     0.5, 0.25}}));
+                new DoubleMatrixToken(
+                        new double[][] {{0.5, 0.25,
+                                         0.5, -0.25,
+                                         0.25, -0.25,
+                                         0.25, 0.25,
+                                         0.5, 0.25}}));
         angleSpan = new Parameter(this,
-                                "angleSpan", new DoubleToken(2*Math.PI));
+                "angleSpan", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));
     }
 
@@ -201,7 +201,7 @@ public class CircularSweep3D extends GRShadedShape {
      */
     private float[] _getPolyline() throws IllegalActionException {
         DoubleMatrixToken matrixToken =
-                                   ((DoubleMatrixToken) polyline.getToken());
+            ((DoubleMatrixToken) polyline.getToken());
         int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*2];
 
@@ -218,7 +218,7 @@ public class CircularSweep3D extends GRShadedShape {
      */
     private int _getVertexCount() throws IllegalActionException {
         DoubleMatrixToken matrixToken =
-                                   ((DoubleMatrixToken) polyline.getToken());
+            ((DoubleMatrixToken) polyline.getToken());
         int numberOfElements = matrixToken.getColumnCount()/2;
 
         return numberOfElements;

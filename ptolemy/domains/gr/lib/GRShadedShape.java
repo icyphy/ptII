@@ -73,7 +73,7 @@ abstract public class GRShadedShape extends GRActor {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         rgbColor = new Parameter(this,"RGB color",
-                   new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+                new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
         shininess = new Parameter(this,"shininess", new DoubleToken(0.0));
         _color = new Color3f(1.0f, 1.0f, 1.0f);
