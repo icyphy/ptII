@@ -135,21 +135,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <!-- Custom utilities library. -->
-    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="ptolemy/configs/annotation.xml"/>
-            <input source="ptolemy/configs/utilityParameter.xml"/>
-            <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
-            <input source="ptolemy/configs/utilityPortParameter.xml"/>
-            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-            <input source="ptolemy/configs/utilityModalModel.xml"/>
-          </group>
-        ?>
-      </configure>
-    </entity>
+    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
@@ -162,33 +148,47 @@ to another. Then delete this annotation.</text></svg></configure></property>
 <!-- Sinks list is custom. -->
 <input source="ptolemy/configs/hyvisual/sinks.xml"/>
 
-<!-- Math list is custom. -->
-<input source="ptolemy/configs/hyvisual/math.xml"/>
-
-<!---------------------------------------------------------------------------->
-<!-- Standard libraries. -->
-  <input source="ptolemy/actor/lib/logic/logic.xml"/>
-  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
-
 <!---------------------------------------------------------------------------->
 <!-- Continuous-time actors. -->
 <input source="ptolemy/domains/ct/lib/dynamics.xml"/>
 <input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
 <input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
-
-<!---------------------------------------------------------------------------->
-<!-- Modified libraries -->
-<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
-<input source="ptolemy/configs/hyvisual/io.xml"/>
-<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
-<input source="ptolemy/configs/hyvisual/array.xml"/>
-<input source="ptolemy/configs/hyvisual/random.xml"/>
-
 <!-- Discrete library is added to include a few useful actors. -->
 <input source="ptolemy/configs/hyvisual/discrete.xml"/>
 
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/array.xml"/>
+
+  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
+
+  <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/io.xml"/>
+
+  <input source="ptolemy/actor/lib/logic/logic.xml"/>
+
+<!-- Math list is custom. -->
+<input source="ptolemy/configs/hyvisual/math.xml"/>
+
 <!-- Matlab depends on Matlab being present -->
 <input source="ptolemy/matlab/matlab.xml"/>
+
+  <input source="ptolemy/actor/lib/matrix.xml"/>
+
+<!-- Modified library -->
+<input source="ptolemy/configs/hyvisual/random.xml"/>
+  
+<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
+
+<!-- OMIT: selected actors included in the discrete library."/-->
+  <!-- input source="ptolemy/actor/lib/signalprocessing.xml"/-->
+  
+  <input source="ptolemy/actor/lib/string/string.xml"/>
+  <!-- omit: input source="ptolemy/domains/ptinyDomains.xml"/-->
 
           </group>
         ?>
