@@ -77,6 +77,7 @@ public class PNInterleave extends PNStar{
             }
             _myExecutive.processStopped();
         } catch(TerminationException e) {
+	    System.out.println("Terminating "+ this.getName());
             return;
         }
     }

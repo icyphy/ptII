@@ -76,6 +76,7 @@ public class PNRedirect extends PNStar{
                 System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
             }
         } catch (TerminationException e) {
+	    System.out.println("Terminating "+this.getName());
             return;
         }
     }

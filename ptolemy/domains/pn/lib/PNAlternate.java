@@ -74,6 +74,7 @@ public class PNAlternate extends PNStar {
                 System.out.println(this.getName()+" writes "+data+" to "+_output2.getName());
             }
         } catch (TerminationException e) {
+	    System.out.println("Terminating "+ this.getName());
             return;
         }
     }
