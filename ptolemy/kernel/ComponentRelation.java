@@ -96,23 +96,23 @@ public class ComponentRelation extends Relation {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPorts.
      */	
-    public Enumeration deepGetLinkedPorts() {
+    public Enumeration deepLinkedPorts() {
         synchronized(workspace()) {
             if (_deeplinkedportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
             }
-            Enumeration nearports = getLinkedPorts();
+            Enumeration nearports = linkedPorts();
             LinkedList result = new LinkedList();
             
             while( nearports.hasMoreElements() ) {
                 ComponentPort port = (ComponentPort)nearports.nextElement();
                 if (port._outside(this.getContainer())) {
                     // Transparent port above me.
-                    result.appendElements(port.deepGetConnectedPorts());
+                    result.appendElements(port.deepConnectedPorts());
                 } else {
                     // Port below me, may be transparent.
-                    result.appendElements(port.deepGetInsidePorts());
+                    result.appendElements(port.deepInsidePorts());
                 }
             }
             _deeplinkedports = result;
