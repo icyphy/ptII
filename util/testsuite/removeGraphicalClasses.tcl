@@ -39,11 +39,12 @@
 #
 proc removeGraphicalClasses {parser} {
     puts "If you get a 'X connection to xxx:11.0 broken' message, then"
-    puts {see \$PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java}
-	puts {Or run java -verbose -classpath "$PTII/lib/ptjacl.jar:$PTII/lib/diva.jar:$PTII" tcl.lang.Shell xxx.tcl}
+    puts {see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java}
+    puts {Or run java -verbose -classpath "$PTII/lib/ptjacl.jar:$PTII/lib/diva.jar:$PTII" tcl.lang.Shell xxx.tcl}
 
 
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $filter put "ptolemy.actor.lib.gui.PlotterBase" [java::null]
     $filter put "ptolemy.actor.lib.gui.Plotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.BarGraph" [java::null]
     $filter put "ptolemy.actor.lib.gui.Display" [java::null]
@@ -58,6 +59,8 @@ proc removeGraphicalClasses {parser} {
     $filter put "ptolemy.actor.lib.gui.MatrixVisualizer" [java::null]
     $filter put "ptolemy.actor.lib.gui.MatrixViewer" [java::null]
     $filter put "ptolemy.domains.tm.kernel.TMDirector" [java::null]
+
+    $filter put "ptolemy.actor.lib.gui.HistogramPlotter" [java::null]
 
     $parser addMoMLFilter $filter
 }
