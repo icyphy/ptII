@@ -35,12 +35,16 @@ package ptolemy.gui;
 /**
 An interface for interpreters that work with the ShellTextArea.
 
+@see ShellTextArea
 @author Edward A. Lee
 @version $Id$
 */
 public interface ShellInterpreter {
 
-    /** Evaluate the specified command.
+    /** Evaluate the specified command. If this method returns null, then
+     *  the associated ShellTextArea will not display a prompt until
+     *  returnResult() is called.
+     *  @see ShellTextArea.returnResult(String)
      *  @param command The command.
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.

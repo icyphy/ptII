@@ -51,11 +51,20 @@ A text area supporting shell-style interactions.
 */
 public class ShellTextArea extends JPanel {
 
-    /** Create a new instance.
+    /** Create a new instance with no initial message.
      */
     public ShellTextArea () {
+        this(null);
+    }
+    
+    /** Create a new instance with the specified initial message.
+     *  @param initialMessage The initial message.
+     */
+    public ShellTextArea (String initialMessage) {
         // Graphics
         super(new BorderLayout());
+        _initialMessage = initialMessage;
+        // FIXME: Size needs to be configurable.
         _jTextArea = new JTextArea("", 20, 80);
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
@@ -76,11 +85,13 @@ public class ShellTextArea extends JPanel {
      */
     public void addNotify () {
         super.addNotify();
-        appendJTextArea(mainPrompt);
+        initialize(_initialMessage);
     }
 
     /** Append the specified text to the JTextArea and
-     *  update the prompt cursor.
+     *  update the prompt cursor.  The text will actually be appended
+     *  in the swing thread, not immediately.  This method immediately
+     *  returns.
      *  @param text The text to append to the text area.
      */
     public void appendJTextArea(final String text) {
@@ -89,21 +100,55 @@ public class ShellTextArea extends JPanel {
                     _jTextArea.append(text);
                     // Scroll down as we generate text.
                     _jTextArea.setCaretPosition(_jTextArea.getText().length());
+                    // To prevent _promptCursor from being
+                    // updated before the JTextArea is actually updated,
+                    // this needs to be inside the Runnable.
+                    _promptCursor += text.length();
                 }
             };
         SwingUtilities.invokeLater(doAppendJTextArea);
-        // FIXME: There could be problems here with _promptCursor being
-        // updated before the JTextArea is actually updated.
-        // Should this be inside the Runnable?
-        _promptCursor += text.length();
     }
-
+    
     /** Get the interpreter that has been registered with setInterpreter().
      *  @return The interpreter, or null if none has been set.
      *  @see #setInterpreter(ShellInterpreter)
      */
     public ShellInterpreter getInterpreter() {
         return _interpreter;
+    }
+
+    /** Clear the JTextArea and reset the prompt cursor.
+     *  The clearing is done in the swing thread, not immediately.
+     *  This method immediately returns.
+     */
+    public void clearJTextArea() {
+        Runnable doClearJTextArea = new Runnable() {
+                public void run() {
+                    _jTextArea.setText("");
+                    _jTextArea.setCaretPosition(0);
+                    _promptCursor = 0;
+                }
+            };
+        SwingUtilities.invokeLater(doClearJTextArea);
+    }
+    
+    /** Initialize the text area with the given starting message,
+     *  followed by a prompt. If the argument is null or the empty
+     *  string, then only a prompt is shown.
+     *  @param initialMessage The initial message.
+     */
+    public void initialize(String initialMessage) {
+        if (_jTextArea == null) {
+            _initialMessage = initialMessage;
+        } else {
+            _initialMessage = null;
+            clearJTextArea();
+            if (initialMessage != null && !initialMessage.equals("")) {
+                appendJTextArea(initialMessage + "\n" + mainPrompt);
+            } else {
+                appendJTextArea(mainPrompt);
+            }
+        }
     }
 
     /** Main method used for testing. To run a simple test, use:
@@ -136,6 +181,34 @@ public class ShellTextArea extends JPanel {
             };
         SwingUtilities.invokeLater(doReplaceRangeJTextArea);
     }
+    
+    /** Return the result of a command evaluation.  This method is used
+     *  when it is impractical to insist on the result being returned by
+     *  evaluateCommand() of a ShellInterpreter.  For example, computing
+     *  the result may take a while.
+     *  @param result The result to return.
+     */
+    public void returnResult(final String result) {
+        // Make the text area editable again.
+        Runnable doMakeEditable = new Runnable() {
+                public void run() {
+                    setEditable(true);
+                    String toPrint = result + "\n" + mainPrompt;
+                    appendJTextArea(toPrint);
+                }
+            };
+        SwingUtilities.invokeLater(doMakeEditable);
+    }
+    
+    /** Set the associated text area editable (with a true argument)
+     *  or not editable (with a false argument).  This should be called
+     *  in the swing event thread.
+     *  @param editable True to make the text area editable, false to
+     *   make it uneditable.
+     */
+    public void setEditable(boolean editable) {
+        _jTextArea.setEditable(editable);
+    }
 
     /** Set the interpreter.
      *  @param interpreter The interpreter.
@@ -162,6 +235,7 @@ public class ShellTextArea extends JPanel {
 
     // Evaluate the command so far, if possible, printing
     // a continuation prompt if not.
+    // NOTE: This must be called in the swing event thread.
     private void _evalCommand () {
         String newtext = _jTextArea.getText().substring(_promptCursor);
         _promptCursor += newtext.length();
@@ -195,10 +269,14 @@ public class ShellTextArea extends JPanel {
                     // debugging hard.
                     // e.printStackTrace();
                 }
-                if (result != null && result.length() > 0) {
+                if (result != null) {
                     appendJTextArea(result + "\n" + mainPrompt);
                 } else {
-                    appendJTextArea(mainPrompt);
+                    // Result is incomplete.
+                    // Make the text uneditable to prevent further input
+                    // until returnResult() is called.
+                    // NOTE: We are assuming this called in the swing thread.
+                    setEditable(false);
                 }
                 _commandBuffer.setLength(0);
                 _commandCursor = _promptCursor;
@@ -250,6 +328,9 @@ public class ShellTextArea extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The command input
+    private StringBuffer _commandBuffer = new StringBuffer();
+    
     // The TextArea widget for displaying commands and results
     private JTextArea _jTextArea;
 
@@ -261,9 +342,9 @@ public class ShellTextArea extends JPanel {
     private int _historyCursor = 0;
     private Vector _historyCommands = new Vector();
 
-    // The command input
-    private StringBuffer _commandBuffer = new StringBuffer();
-
+    // The initial message, if there is one.
+    private String _initialMessage = null;
+    
     // The interpreter.
     private ShellInterpreter _interpreter;
 
@@ -303,6 +384,11 @@ public class ShellTextArea extends JPanel {
         }
 
         public void keyPressed (KeyEvent keyEvent) {
+            if (!_jTextArea.isEditable()) {
+                // NOTE: This doesn't seem to always work.
+                Toolkit.getDefaultToolkit().beep();
+                return;
+            }
             // Process keys
             switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_ENTER:
@@ -310,7 +396,9 @@ public class ShellTextArea extends JPanel {
                 _evalCommand();
                 break;
             case KeyEvent.VK_BACK_SPACE:
-                if (_jTextArea.getCaretPosition() == _promptCursor) {
+                if (_jTextArea.getCaretPosition() <= _promptCursor) {
+                    // FIXME: Consuming the event is useless...
+                    // The backspace still occurs.  Why?  Java bug?
                     keyEvent.consume(); // don't backspace over prompt!
                 }
                 break;
@@ -325,6 +413,10 @@ public class ShellTextArea extends JPanel {
                 break;
             case KeyEvent.VK_DOWN:
                 _nextCommand();
+                keyEvent.consume();
+                break;
+            case KeyEvent.VK_HOME:
+                _jTextArea.setCaretPosition(_promptCursor);
                 keyEvent.consume();
                 break;
             default:

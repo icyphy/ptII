@@ -36,11 +36,7 @@ import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.*;
 
-import java.awt.BorderLayout;
-import java.net.URL;
 import java.util.Set;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionShellTableau
@@ -70,7 +66,7 @@ public class ExpressionShellTableau extends Tableau
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        ExpressionShellFrame frame = new ExpressionShellFrame(this);
+        frame = newFrame();
         setFrame(frame);
         _evaluator = new ParseTreeEvaluator();
     }
@@ -155,6 +151,22 @@ public class ExpressionShellTableau extends Tableau
         return true;
     }
 
+    /** Return an instance of ExpressionShellFrame.
+     */
+    public ExpressionShellFrame newFrame()
+           throws IllegalActionException, NameDuplicationException {
+        return new ExpressionShellFrame(this);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The associated frame. */
+    public ExpressionShellFrame frame;
+    
+    /** The contained shell. */
+    public ShellTextArea shell;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -163,48 +175,6 @@ public class ExpressionShellTableau extends Tableau
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    /** The frame that is created by an instance of ExpressionShellTableau.
-     */
-    public class ExpressionShellFrame extends TableauFrame {
-
-        /** Construct a frame to display the ExpressionShell window.
-         *  After constructing this, it is necessary
-         *  to call setVisible(true) to make the frame appear.
-         *  This is typically accomplished by calling show() on
-         *  enclosing tableau.
-         *  @param tableau The tableau responsible for this frame.
-         *  @exception IllegalActionException If the model rejects the
-         *   configuration attribute.
-         *  @exception NameDuplicationException If a name collision occurs.
-         */
-        public ExpressionShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
-            super(tableau);
-
-            JPanel component = new JPanel();
-            component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
-
-            ShellTextArea shellPanel = new ShellTextArea();
-            shellPanel.setInterpreter(ExpressionShellTableau.this);
-            component.add(shellPanel);
-            getContentPane().add(component, BorderLayout.CENTER);
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         protected methods                 ////
-
-        protected void _help() {
-            try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "doc/expressions.htm");
-                getConfiguration().openModel(null, doc, doc.toExternalForm());
-            } catch (Exception ex) {
-                System.out.println("ExpressionShellTableau._help(): " + ex);
-                _about();
-            }
-        }
-    }
 
     /** A factory that creates a control panel to display a Tcl Shell
      */

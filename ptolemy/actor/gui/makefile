@@ -83,6 +83,7 @@ JSRCS = \
 	Effigy.java \
 	EffigyFactory.java \
 	ExpressionShellEffigy.java \
+	ExpressionShellFrame.java \
 	ExpressionShellTableau.java \
 	ExternalTextEffigy.java \
 	ExternalTextTableau.java \
