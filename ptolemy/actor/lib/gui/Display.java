@@ -270,7 +270,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 String value = token.toString();
                 // If the value is a pure string, strip the quotation marks.
                 if(value.startsWith("\"") && value.endsWith("\"")) {
-                    value = value.substring(1, value.length()-2);
+                    value = value.substring(1, value.length()-1);
                 }
                 textArea.append(value);
 
