@@ -179,6 +179,7 @@ JSRCS = \
 	Sleep.java \
 	Source.java \
 	Stop.java \
+	StringConst.java \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
