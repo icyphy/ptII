@@ -100,6 +100,7 @@ test Delay-2.4 {test with type change} {
 test Delay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {[true, false]}
     catch { [$e0 getManager] execute } msg
+    # Note, this order of the error message might be platform dependent
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
   .top.rec.input: matrix
