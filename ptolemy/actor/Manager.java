@@ -417,7 +417,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  toplevel iterations.   This will normally be stopped by
      *  calling finish(), terminate(), or returning false in a postfire method.
      *  This method is non-blocking, i.e. it runs on 'background'
-     *  @see Manager.run()
+     *  @see Manager#run()
      */
     public synchronized void startRun() {
 
