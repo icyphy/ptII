@@ -314,7 +314,9 @@ public class AppletWriter extends SceneTransformer {
 
 
 
-    // Copy jar files into _outputDirectory
+    // find jar necessary jar files and optionally copy jar files into
+    // _outputDirectory.  Note that we need look for jar files to find
+    // diva.jar if we are using the FSM domain.
     // Return the jar files that have been copied
     private Set _findJarFiles(Director director)
             throws IOException {
@@ -413,15 +415,26 @@ public class AppletWriter extends SceneTransformer {
                 String canonicalPtIIDirectory =
                     UtilityFunctions.findFile(_ptIIDirectory);
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
-		    if (_codeBase.equals(".")) {
-			// We only need print an error message if
-			// we are actually trying to copy the file
-			throw new IOException("Looking up '" + className
+		    String warning = "Looking up '" + className
                             + "' returned the $PTII directory '"
                             + _ptIIDirectory + "' instead of a jar file. "
                             + " Perhaps you need to run 'make install'"
-                            + "to create the jar files?");
+                            + "to create the jar files?";
+		    if (_codeBase.equals(".")) {
+			// We only need print an error message if
+			// we are actually trying to copy the file
+			throw new IOException(warning 
+					      + "\nIf the jar files are not "
+					      + "present, then we cannot copy "
+					      + "them to the new location.");
 		    } else {
+			// Print it so that the user knows that running
+			// make install would be a good job
+			System.out.println("Warning: " + warning
+					   + "\nIf the jar files are not "
+					   + "present, then the archive "
+					   + "applet parameter will not "
+					   + "include all of the jar files.");
 			fixJarFiles = true;
 			continue;
 		    }
