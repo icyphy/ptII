@@ -26,16 +26,15 @@
 */
 
 package ptolemy.domains.ct.lib;
+
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
-//import ptolemy.data.expr.*;
-
 
 //////////////////////////////////////////////////////////////////////////
-//// CTZeroOrderHold
+//// ZeroOrderHold
 /**
 An actor that converts event into continuous signal. This class act
 as the zero order hold. It consume the token when the consumeCurrentEvent()
@@ -50,8 +49,8 @@ DoubleToken, and no parameter.
 
 //FIXME: Consider make it type polymorphic.
 
-public class CTZeroOrderHold extends TypedAtomicActor
-    implements CTEventInterpreter{
+public class ZeroOrderHold extends TypedAtomicActor
+    implements CTWaveformGenerator{
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -65,7 +64,7 @@ public class CTZeroOrderHold extends TypedAtomicActor
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */
-    public CTZeroOrderHold(TypedCompositeActor container, String name)
+    public ZeroOrderHold(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");

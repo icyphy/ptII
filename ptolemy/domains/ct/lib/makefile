@@ -52,7 +52,7 @@ JSRCS = \
 	CTPeriodicSampler.java \
 	CTThresholdMonitor.java \
 	CTZeroCrossingDetector.java \
-	CTZeroOrderHold.java \
+	ZeroOrderHold.java \
 	Integrator.java \
 	IPCInterface.java 
 
