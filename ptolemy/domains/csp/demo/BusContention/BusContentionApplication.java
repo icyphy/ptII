@@ -581,7 +581,7 @@ public class BusContentionApplication implements ActionListener {
 
             // Create an arrow at the tail
             Arrowhead tailArrow = new Arrowhead(
-                    tailSite.getX(), tailSite.getY()
+                    tailSite.getX(), tailSite.getY(),
                     tailSite.getNormal());
             c.setTailEnd(tailArrow);
 
