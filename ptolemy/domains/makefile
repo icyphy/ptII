@@ -56,7 +56,6 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		dde/dde.jar \
 		de/de.jar \
-        dt/dt.jar \
 		fsm/fsm.jar \
 		pn/pn.jar \
 		sdf/sdf.jar
