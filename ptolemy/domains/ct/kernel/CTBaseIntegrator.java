@@ -330,6 +330,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
+    /** Always return true because an integrator's output is always accurate
+     *  no matter what step size is chosen.
+     *  @return True always.
+     */
+    public boolean isOutputAccurate() {
+        return true;
+    }
+
     /** Return true if the state is resolved successfully.
      *  If the input is not available, or the input is a result of
      *  divide by zero, a NumericalNonconvergeException is thrown.
@@ -361,14 +369,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public boolean isThisStepAccurate() {
         return isStateAccurate() && isOutputAccurate();
-    }
-
-    /** Always return true because an integrator's output is always accurate
-     *  no matter what step size is chosen.
-     *  @return True always.
-     */
-    public boolean isOutputAccurate() {
-        return true;
     }
 
     /** Mark and remember the current state. This remembered state can be
