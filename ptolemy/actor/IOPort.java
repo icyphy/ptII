@@ -203,21 +203,21 @@ public class IOPort extends ComponentPort {
      *  @return A new IOPort.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        IOPort newobj = (IOPort)super.clone(ws);
-        newobj._insideinputversion = -1;
-        newobj._insideoutputversion = -1;
-        newobj._width = 0;
-        newobj._widthVersion = -1;
-        newobj._farReceivers = null;
-        newobj._farReceiversVersion = -1;
-        newobj._localReceivers = null;
-        newobj._localReceiversVersion = -1;
-        newobj._localInsideReceivers = null;
-        newobj._localInsideReceiversVersion = -1;
-        newobj._localReceiversTable = null;
-        newobj._insideReceivers = null;
-        newobj._insideReceiversVersion = -1;
-        return newobj;
+        IOPort newObject = (IOPort)super.clone(ws);
+        newObject._insideinputversion = -1;
+        newObject._insideoutputversion = -1;
+        newObject._width = 0;
+        newObject._widthVersion = -1;
+        newObject._farReceivers = null;
+        newObject._farReceiversVersion = -1;
+        newObject._localReceivers = null;
+        newObject._localReceiversVersion = -1;
+        newObject._localInsideReceivers = null;
+        newObject._localInsideReceiversVersion = -1;
+        newObject._localReceiversTable = null;
+        newObject._insideReceivers = null;
+        newObject._insideReceiversVersion = -1;
+        return newObject;
     }
 
     /** Create new receivers for this port, replacing any that may

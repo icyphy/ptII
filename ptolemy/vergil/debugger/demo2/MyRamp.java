@@ -119,11 +119,11 @@ public class MyRamp extends SequenceSource {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        MyRamp newobj = (MyRamp)super.clone(ws);
+        MyRamp newObject = (MyRamp)super.clone(ws);
 	// set the type constraints.
-	newobj.output.setTypeAtLeast(newobj.init);
-	newobj.output.setTypeAtLeast(newobj.step);
-        return newobj;
+	newObject.output.setTypeAtLeast(newobj.init);
+	newObject.output.setTypeAtLeast(newobj.step);
+        return newObject;
     }
 
     /** Send the current value of the state of this actor to the output.

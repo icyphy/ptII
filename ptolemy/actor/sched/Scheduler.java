@@ -120,11 +120,11 @@ public class Scheduler extends NamedObj {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Scheduler newobj = (Scheduler) super.clone(workspace);
-        newobj._container = null;
-        newobj._valid = false;
-        newobj._cachedSchedule = null;
-        return newobj;
+        Scheduler newObject = (Scheduler) super.clone(workspace);
+        newObject._container = null;
+        newObject._valid = false;
+        newObject._cachedSchedule = null;
+        return newObject;
     }
 
     /** Return the container, which is the StaticSchedulingDirector

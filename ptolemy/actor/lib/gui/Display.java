@@ -171,9 +171,9 @@ public class Display extends Sink implements Placeable, SequenceActor {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Display newobj = (Display)super.clone(workspace);
-        newobj.textArea = null;
-        return newobj;
+        Display newObject = (Display)super.clone(workspace);
+        newObject.textArea = null;
+        return newObject;
     }
 
     /** Create a text area on the screen, if necessary, or clear the

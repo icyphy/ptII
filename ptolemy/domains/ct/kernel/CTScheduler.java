@@ -198,9 +198,9 @@ public class CTScheduler extends Scheduler{
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        CTScheduler newobj = (CTScheduler) super.clone(workspace);
-        newobj._wsversion = -1;
-        return newobj;
+        CTScheduler newObject = (CTScheduler) super.clone(workspace);
+        newObject._wsversion = -1;
+        return newObject;
     }
 
     /** Returns a list of dynamic actors. This list is locally

@@ -220,11 +220,11 @@ public class LookUpTable extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        LookUpTable newobj = (LookUpTable)super.clone(ws);
-        newobj.indexes = (Parameter)newobj.getAttribute("indexes");
-        newobj.values = (Parameter)newobj.getAttribute("values");
-        newobj.order = (Parameter)newobj.getAttribute("order");
-        return newobj;
+        LookUpTable newObject = (LookUpTable)super.clone(ws);
+        newObject.indexes = (Parameter)newobj.getAttribute("indexes");
+        newObject.values = (Parameter)newobj.getAttribute("values");
+        newObject.order = (Parameter)newobj.getAttribute("order");
+        return newObject;
     }
 
     /** Output the value at the current iteration count. The output is

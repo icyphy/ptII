@@ -108,10 +108,10 @@ public class Distributor extends Transformer implements SequenceActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Distributor newobj = (Distributor)super.clone(ws);
-        newobj.tokenConsumptionRate = (Parameter)
-            (newobj.input.getAttribute("tokenConsumptionRate"));
-        return newobj;
+        Distributor newObject = (Distributor)super.clone(ws);
+        newObject.tokenConsumptionRate = (Parameter)
+            (newObject.input.getAttribute("tokenConsumptionRate"));
+        return newObject;
     }
 
     /** Notify this entity that the links to the specified port have

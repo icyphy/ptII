@@ -128,9 +128,9 @@ public class ProduceOutput extends BroadcastOutput {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        ProduceOutput newobj = (ProduceOutput)super.clone(ws);
-        newobj.channel = (Parameter)newobj.getAttribute("channel");
-        return newobj;
+        ProduceOutput newObject = (ProduceOutput)super.clone(ws);
+        newObject.channel = (Parameter)newobj.getAttribute("channel");
+        return newObject;
     }
 
     /** Take the token from evaluating the expression specified by the

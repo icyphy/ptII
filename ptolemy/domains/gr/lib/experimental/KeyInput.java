@@ -64,11 +64,11 @@ public class KeyInput extends GRActor {
     
    
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        KeyInput newobj = (KeyInput) super.clone(workspace);
+        KeyInput newObject = (KeyInput) super.clone(workspace);
         
-        newobj.output = (TypedIOPort) newobj.getPort("output");
-        newobj.keycode = (TypedIOPort) newobj.getPort("keycode");
-        return newobj;
+        newObject.output = (TypedIOPort) newobj.getPort("output");
+        newObject.keycode = (TypedIOPort) newobj.getPort("keycode");
+        return newObject;
     }
     
     public void initialize() throws IllegalActionException {

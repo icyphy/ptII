@@ -104,11 +104,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        PtolemyEffigy newobj = (PtolemyEffigy)super.clone(ws);
+        PtolemyEffigy newObject = (PtolemyEffigy)super.clone(ws);
         if (_model != null) {
-            newobj._model = (NamedObj)_model.clone(new Workspace());
+            newObject._model = (NamedObj)_model.clone(new Workspace());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Return the ptolemy model that this is an effigy of.

@@ -122,12 +122,12 @@ public class ProcessDirector extends Director {
      *  @return The new ProcessDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ProcessDirector newobj = (ProcessDirector)super.clone(ws);
-        newobj._actorsActive = 0;
-        newobj._actorThreadList = new LinkedList();
-        newobj._blockedActorCount = 0;
-        newobj._notDone = true;
-        return newobj;
+        ProcessDirector newObject = (ProcessDirector)super.clone(ws);
+        newObject._actorsActive = 0;
+        newObject._actorThreadList = new LinkedList();
+        newObject._blockedActorCount = 0;
+        newObject._notDone = true;
+        return newObject;
     }
 
     /** Wait until a deadlock is detected. Then deal with the deadlock

@@ -114,10 +114,10 @@ public class PolyCylinder3D extends GRShadedShape {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PolyCylinder3D newobj = (PolyCylinder3D)super.clone(workspace);
-        newobj.polygon = (Parameter) newobj.getAttribute("polygon");
-        newobj.thickness = (Parameter) newobj.getAttribute("thickness");
-        return newobj;
+        PolyCylinder3D newObject = (PolyCylinder3D)super.clone(workspace);
+        newObject.polygon = (Parameter) newobj.getAttribute("polygon");
+        newObject.thickness = (Parameter) newobj.getAttribute("thickness");
+        return newObject;
     }
     
 

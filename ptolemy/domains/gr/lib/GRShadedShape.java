@@ -113,12 +113,12 @@ public class GRShadedShape extends GRActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRShadedShape newobj = (GRShadedShape)super.clone(workspace);
+        GRShadedShape newObject = (GRShadedShape)super.clone(workspace);
         
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.rgbColor = (Parameter)newobj.getAttribute("rgbColor");
-        newobj.shininess = (Parameter) newobj.getAttribute("shininess");
-        return newobj;
+        newObject.output = (TypedIOPort)newobj.getPort("output");
+        newObject.rgbColor = (Parameter)newobj.getAttribute("rgbColor");
+        newObject.shininess = (Parameter) newobj.getAttribute("shininess");
+        return newObject;
     }
     
     ///////////////////////////////////////////////////////////////////

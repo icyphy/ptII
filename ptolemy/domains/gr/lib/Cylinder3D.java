@@ -96,10 +96,10 @@ public class Cylinder3D extends GRShadedShape {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Cylinder3D newobj = (Cylinder3D)super.clone(workspace);
-        newobj.radius = (Parameter)newobj.getAttribute("radius");
-        newobj.height = (Parameter)newobj.getAttribute("height");
-        return newobj;
+        Cylinder3D newObject = (Cylinder3D)super.clone(workspace);
+        newObject.radius = (Parameter)newobj.getAttribute("radius");
+        newObject.height = (Parameter)newobj.getAttribute("height");
+        return newObject;
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

@@ -221,9 +221,9 @@ public class DTDirector extends SDFDirector {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         _reset();
-        DTDirector newobj = (DTDirector)(super.clone(ws));
-        newobj.period = (Parameter)newobj.getAttribute("period");
-        return newobj;
+        DTDirector newObject = (DTDirector)(super.clone(ws));
+        newObject.period = (Parameter)newobj.getAttribute("period");
+        return newObject;
     }
     
     

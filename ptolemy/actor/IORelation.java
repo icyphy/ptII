@@ -128,9 +128,9 @@ public class IORelation extends ComponentRelation {
      *  @return A new ComponentRelation.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        IORelation newobj = (IORelation)super.clone(ws);
-        newobj._inferredWidthVersion = -1;
-        return newobj;
+        IORelation newObject = (IORelation)super.clone(ws);
+        newObject._inferredWidthVersion = -1;
+        return newObject;
     }
 
     /** Return the receivers of all input ports linked to this

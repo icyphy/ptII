@@ -327,22 +327,22 @@ public class DEDirector extends Director {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        DEDirector newobj = (DEDirector)(super.clone(ws));
-        newobj.startTime = 
-            (Parameter)newobj.getAttribute("startTime");
-        newobj.stopTime = 
-            (Parameter)newobj.getAttribute("stopTime");
-        newobj.stopWhenQueueIsEmpty =
-            (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
-        newobj.synchronizeToRealTime =
-            (Parameter)newobj.getAttribute("synchronizeToRealTime");
-        newobj.isCQAdaptive =
-            (Parameter)newobj.getAttribute("isCQAdaptive");
-        newobj.minBinCount =
-            (Parameter)newobj.getAttribute("minBinCount");
-        newobj.binCountFactor =
-            (Parameter)newobj.getAttribute("binCountFactor");
-        return newobj;
+        DEDirector newObject = (DEDirector)(super.clone(ws));
+        newObject.startTime = 
+            (Parameter)newObject.getAttribute("startTime");
+        newObject.stopTime = 
+            (Parameter)newObject.getAttribute("stopTime");
+        newObject.stopWhenQueueIsEmpty =
+            (Parameter)newObject.getAttribute("stopWhenQueueIsEmpty");
+        newObject.synchronizeToRealTime =
+            (Parameter)newObject.getAttribute("synchronizeToRealTime");
+        newObject.isCQAdaptive =
+            (Parameter)newObject.getAttribute("isCQAdaptive");
+        newObject.minBinCount =
+            (Parameter)newObject.getAttribute("minBinCount");
+        newObject.binCountFactor =
+            (Parameter)newObject.getAttribute("binCountFactor");
+        return newObject;
     }
 
     /** Advance current time to the next event in the event queue,

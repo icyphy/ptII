@@ -161,14 +161,14 @@ public class Reader extends Source {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Reader newobj = (Reader)super.clone(workspace);
-        newobj.output.setMultiport(true);
+        Reader newObject = (Reader)super.clone(workspace);
+        newObject.output.setMultiport(true);
         try {
-            newobj.attributeChanged(newobj.sourceURL);
+            newObject.attributeChanged(newobj.sourceURL);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Read one row from the input and prepare for output them.

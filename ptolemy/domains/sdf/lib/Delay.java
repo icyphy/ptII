@@ -101,13 +101,13 @@ public class Delay extends Transformer {
      *  @exception CloneNotSupportedException If the base class throws it.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Delay newobj = (Delay)(super.clone(ws));
+        Delay newObject = (Delay)(super.clone(ws));
         // This is private Variable, so it is ok.
-        newobj._dummy =
-            (Variable)newobj.getAttribute("_dummy");
-	newobj.output.setTypeAtLeast(newobj._dummy);
-        newobj.output.setTypeAtLeast(newobj.input);
-        return newobj;
+        newObject._dummy =
+            (Variable)newObject.getAttribute("_dummy");
+	newObject.output.setTypeAtLeast(newobj._dummy);
+        newObject.output.setTypeAtLeast(newobj.input);
+        return newObject;
     }
 
     /** Read exactly one input token and send it to the output.

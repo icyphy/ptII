@@ -113,14 +113,14 @@ public class StaticSchedulingDirector extends Director {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
 	try {
-	    StaticSchedulingDirector newobj = (StaticSchedulingDirector)
+	    StaticSchedulingDirector newObject = (StaticSchedulingDirector)
 		super.clone(ws);
 	    if(_scheduler != null) {
-		newobj.setScheduler((Scheduler)_scheduler.clone(ws));
+		newObject.setScheduler((Scheduler)_scheduler.clone(ws));
 	    } else {
-		newobj._scheduler = null;
+		newObject._scheduler = null;
 	    }
-	    return newobj;
+	    return newObject;
 	} catch (Exception ex) {
 	    throw new CloneNotSupportedException("Clone failed:" + 
 						 ex.getMessage());

@@ -93,9 +93,9 @@ public class Switch extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Switch newobj = (Switch) super.clone(ws);
-        newobj.select = (TypedIOPort) newobj.getPort("select");
-        return newobj;
+        Switch newObject = (Switch) super.clone(ws);
+        newObject.select = (TypedIOPort) newobj.getPort("select");
+        return newObject;
     }
 
     /** Read a token from the select port and each channel of the input port,

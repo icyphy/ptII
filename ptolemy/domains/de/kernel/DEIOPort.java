@@ -183,9 +183,9 @@ public class DEIOPort extends TypedIOPort {
      *  @return A new TypedIOPort.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DEIOPort newobj = (DEIOPort)super.clone(ws);
-        newobj._delayToSet = new HashSet();
-	return newobj;
+        DEIOPort newObject = (DEIOPort)super.clone(ws);
+        newObject._delayToSet = new HashSet();
+	return newObject;
     }
 
     /** Add the specified port to the set of output ports that

@@ -41,21 +41,21 @@
 # the use of java::cast
 # 
 # In Tcl Blend 1.0, the following code worked
-#  set newobj [$ramp clone]
-#  set initVal [[[$newobj getAttribute init] getToken] doubleValue]
-#  set stepVal [[[$newobj getAttribute step] getToken] doubleValue]
+#  set newObject [$ramp clone]
+#  set initVal [[[$newObject getAttribute init] getToken] doubleValue]
+#  set stepVal [[[$newObject getAttribute step] getToken] doubleValue]
 #
 # In Tcl Blend 1.1, the following code is necessary:
-#    set newobj [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
+#    set newObject [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
 #
 #    set initVal [[java::cast ptolemy.data.DoubleToken \
 #	    [[java::cast ptolemy.data.expr.Parameter \
-#	    [$newobj getAttribute init]] \
+#	    [$newObject getAttribute init]] \
 #            getToken]] doubleValue]
 #
 #    set stepVal [[java::cast ptolemy.data.DoubleToken \
 #	    [[java::cast ptolemy.data.expr.Parameter \
-#	    [$newobj getAttribute step]] \
+#	    [$newObject getAttribute step]] \
 #            getToken]] doubleValue]
 #
 # As a result, we created a few helper procs which are shorthand

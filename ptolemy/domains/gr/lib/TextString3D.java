@@ -85,9 +85,9 @@ public class TextString3D extends GRShadedShape {
 
     
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TextString3D newobj = (TextString3D) super.clone(workspace);
-        newobj.text = (Parameter) newobj.getAttribute("text");
-        return newobj;
+        TextString3D newObject = (TextString3D) super.clone(workspace);
+        newObject.text = (Parameter) newobj.getAttribute("text");
+        return newObject;
     }
     
     

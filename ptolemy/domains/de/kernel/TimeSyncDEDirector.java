@@ -168,19 +168,19 @@ public class TimeSyncDEDirector extends DEDirector {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        TimeSyncDEDirector newobj = (TimeSyncDEDirector)(super.clone(ws));
-        newobj.timeBaseHost =
-            (Parameter)newobj.getAttribute("timeBaseHost");
-        //newobj.delayTolerance =
-        //    (Parameter)newobj.getAttribute("delayTolerance");
+        TimeSyncDEDirector newObject = (TimeSyncDEDirector)(super.clone(ws));
+        newObject.timeBaseHost =
+            (Parameter)newObject.getAttribute("timeBaseHost");
+        //newObject.delayTolerance =
+        //    (Parameter)newObject.getAttribute("delayTolerance");
         try {
-            newobj.timeBaseHost.setTypeEquals(BaseType.STRING);
-            //newobj.delayTolerance.setTypeEquals(BaseType.DOUBLE);
+            newObject.timeBaseHost.setTypeEquals(BaseType.STRING);
+            //newObject.delayTolerance.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Set type error."
                     + ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** In addition to do the initialization work specified in the

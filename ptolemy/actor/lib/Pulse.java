@@ -215,19 +215,19 @@ public class Pulse extends SequenceSource {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Pulse newobj = (Pulse)super.clone(ws);
+        Pulse newObject = (Pulse)super.clone(ws);
         try {
-            newobj.attributeChanged(newobj.indexes);
-            newobj.attributeChanged(newobj.values);
-            newobj.attributeChanged(newobj.repeat);
+            newObject.attributeChanged(newobj.indexes);
+            newObject.attributeChanged(newobj.values);
+            newObject.attributeChanged(newobj.repeat);
             // set the type constraints
-	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
+	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	    newobj.output.setTypeAtLeast(elemTerm);
+	    newObject.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Output a value if the count of iterations matches one of the entries

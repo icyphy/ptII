@@ -125,13 +125,13 @@ public class Delay extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Delay newobj = (Delay)super.clone(ws);
+        Delay newObject = (Delay)super.clone(ws);
         try {
-            newobj.input.delayTo(newobj.output);
+            newObject.input.delayTo(newobj.output);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Clone failed.");
         }
-        return newobj;
+        return newObject;
     }
 
     /** Read one token from the input and save it so that the

@@ -60,9 +60,9 @@ test Const-1.0 {test constructor and initial value} {
 test Const-1.1 {test clone and initial value} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
-    set newobj [java::cast ptolemy.actor.lib.Const [$const clone]]
-    $newobj setName new
-    [$newobj getAttribute value] toString
+    set newObject [java::cast ptolemy.actor.lib.Const [$const clone]]
+    $newObject setName new
+    [$newObject getAttribute value] toString
 } {ptolemy.data.expr.Parameter {.new.value} 1}
 
 test Const-1.2 {change the original value and verify that the new remains} {
@@ -70,13 +70,13 @@ test Const-1.2 {change the original value and verify that the new remains} {
             [$const getAttribute value]]
     $orgvalue setToken [java::new {ptolemy.data.DoubleToken double} 3.1]
 
-    list [[$newobj getAttribute value] toString]  \
+    list [[$newObject getAttribute value] toString]  \
             [[$const getAttribute value] toString]
 } {{ptolemy.data.expr.Parameter {.new.value} 1} {ptolemy.data.expr.Parameter {.top.const.value} 3.1}}
 
 test Const-1.3 {Test clone of Source base class} {
     expr 0 != \ [string compare [$const getPort output] \
-            [$newobj getPort output]]
+            [$newObject getPort output]]
 } {1}
 
 ######################################################################

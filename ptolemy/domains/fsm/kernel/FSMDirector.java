@@ -173,13 +173,13 @@ public class FSMDirector extends Director {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        FSMDirector newobj = (FSMDirector)super.clone(ws);
-        newobj.controllerName =
-                (Parameter)newobj.getAttribute("controllerName");
-        newobj._controllerVersion = -1;
-	newobj._localReceiverMaps = new HashMap();
-        newobj._localReceiverMapsVersion = -1;
-        return newobj;
+        FSMDirector newObject = (FSMDirector)super.clone(ws);
+        newObject.controllerName =
+                (Parameter)newObject.getAttribute("controllerName");
+        newObject._controllerVersion = -1;
+	newObject._localReceiverMaps = new HashMap();
+        newObject._localReceiverMapsVersion = -1;
+        return newObject;
     }
 
     /** Set the values of input variables in the mode controller. Examine

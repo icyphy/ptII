@@ -117,9 +117,9 @@ public class Tableau extends ComponentEntity {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Tableau newobj = (Tableau)super.clone(ws);
-        newobj._frame = null;
-        return newobj;
+        Tableau newObject = (Tableau)super.clone(ws);
+        newObject._frame = null;
+        return newObject;
     }
 
     /** Close this tableau visible by calling dispose() on the associated

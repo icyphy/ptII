@@ -238,19 +238,19 @@ public class Clock extends TimedSource {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Clock newobj = (Clock)super.clone(ws);
+        Clock newObject = (Clock)super.clone(ws);
         try {
-            newobj.attributeChanged(newobj.offsets);
-            newobj.attributeChanged(values);
+            newObject.attributeChanged(newobj.offsets);
+            newObject.attributeChanged(values);
 
 	    // Set the type constraints.
-	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
+	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	    newobj.output.setTypeAtLeast(elemTerm);
+	    newObject.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Output the current value of the clock.

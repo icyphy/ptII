@@ -166,11 +166,11 @@ public class TimedPNDirector extends BasePNDirector {
      *  @return The new TimedPNDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TimedPNDirector newobj = (TimedPNDirector)super.clone(ws);
-	newobj._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator());
-	newobj._delayBlockCount = 0;
-	newobj._mutationsRequested = false;
-        return newobj;
+        TimedPNDirector newObject = (TimedPNDirector)super.clone(ws);
+	newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator());
+	newObject._delayBlockCount = 0;
+	newObject._mutationsRequested = false;
+        return newObject;
     }
     /** Suspend the calling thread until a deadlock
      *  is detected. On resuming, handle the various deadlocks appropriately.

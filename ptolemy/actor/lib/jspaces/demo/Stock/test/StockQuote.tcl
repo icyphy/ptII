@@ -46,8 +46,8 @@ test StockQuote-1.1 {test clone} {
 
     set stock [java::new ptolemy.actor.lib.jspaces.demo.Stock.StockQuote $e0 stock]
 
-    set newobj [java::cast ptolemy.actor.lib.jspaces.demo.Stock.StockQuote [$stock clone]]
-    set newTicker [getParameter $newobj ticker]
+    set newObject [java::cast ptolemy.actor.lib.jspaces.demo.Stock.StockQuote [$stock clone]]
+    set newTicker [getParameter $newObject ticker]
     set tickerVal [[$newTicker getToken] toString]
 
     list $tickerVal

@@ -83,13 +83,13 @@ public class PeriodicTrigger extends TypedAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        PeriodicTrigger newobj = (PeriodicTrigger)super.clone(ws);
+        PeriodicTrigger newObject = (PeriodicTrigger)super.clone(ws);
         try {
-            newobj.frequency.setTypeEquals(BaseType.DOUBLE);
+            newObject.frequency.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + ": clone failed.");
         }
-        return newobj;
+        return newObject;
     }
 
     /** Once the frequency is updated, calculate the execution period.

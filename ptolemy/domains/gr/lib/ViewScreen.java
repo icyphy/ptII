@@ -96,16 +96,16 @@ public class ViewScreen extends GRActor implements Placeable {
     public Parameter showAxes;
     
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ViewScreen newobj = (ViewScreen) super.clone(workspace);
-        newobj.input = (TypedIOPort) newobj.getPort("input");
-        newobj.scale = (Parameter) newobj.getAttribute("horizontalResolution");
-        newobj.scale = (Parameter) newobj.getAttribute("verticalResolution");
-        newobj.scale = (Parameter) newobj.getAttribute("scale");
-        newobj.rotatable = (Parameter) newobj.getAttribute("rotatable");
-        newobj.scalable = (Parameter) newobj.getAttribute("scalable");
-        newobj.translatable = (Parameter) newobj.getAttribute("translatable");
+        ViewScreen newObject = (ViewScreen) super.clone(workspace);
+        newObject.input = (TypedIOPort) newobj.getPort("input");
+        newObject.scale = (Parameter) newobj.getAttribute("horizontalResolution");
+        newObject.scale = (Parameter) newobj.getAttribute("verticalResolution");
+        newObject.scale = (Parameter) newobj.getAttribute("scale");
+        newObject.rotatable = (Parameter) newobj.getAttribute("rotatable");
+        newObject.scalable = (Parameter) newobj.getAttribute("scalable");
+        newObject.translatable = (Parameter) newobj.getAttribute("translatable");
         
-        return newobj;
+        return newObject;
     }
     
  

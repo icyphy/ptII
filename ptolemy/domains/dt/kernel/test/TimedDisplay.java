@@ -35,8 +35,8 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
 
     
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TimedDisplay newobj = (TimedDisplay)super.clone(workspace);
-        return newobj;
+        TimedDisplay newObject = (TimedDisplay)super.clone(workspace);
+        return newObject;
     }
     
  

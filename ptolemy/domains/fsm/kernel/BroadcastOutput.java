@@ -137,13 +137,13 @@ public class BroadcastOutput extends Action implements ChoiceAction {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        BroadcastOutput newobj = (BroadcastOutput)super.clone(ws);
+        BroadcastOutput newObject = (BroadcastOutput)super.clone(ws);
         // FIXME: is this necessary?  This extends Attribute, will
         // cloning an attribute do the right thing?
-        newobj.expression = (Parameter)newobj.getAttribute("expression");
-        newobj.portName = (Parameter)newobj.getAttribute("portName");
-        newobj._portVersion = -1;
-        return newobj;
+        newObject.expression = (Parameter)newobj.getAttribute("expression");
+        newObject.portName = (Parameter)newobj.getAttribute("portName");
+        newObject._portVersion = -1;
+        return newObject;
     }
 
     /** Take the token from evaluating the expression specified by the

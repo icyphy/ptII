@@ -81,8 +81,8 @@ public class FIRDouble extends FIR {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        FIRDouble newobj = (FIRDouble)(super.clone(ws));
-        return newobj;
+        FIRDouble newObject = (FIRDouble)(super.clone(ws));
+        return newObject;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.

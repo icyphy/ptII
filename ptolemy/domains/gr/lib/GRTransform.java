@@ -113,10 +113,10 @@ public class GRTransform extends GRActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRTransform newobj = (GRTransform)super.clone(workspace);
-        newobj.input  = (TypedIOPort) newobj.getPort("input");
-        newobj.output = (TypedIOPort) newobj.getPort("output");
-        return newobj;
+        GRTransform newObject = (GRTransform)super.clone(workspace);
+        newObject.input  = (TypedIOPort) newobj.getPort("input");
+        newObject.output = (TypedIOPort) newobj.getPort("output");
+        return newObject;
     }
     
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

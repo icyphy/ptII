@@ -166,12 +166,12 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        SDFDirector newobj = (SDFDirector)(super.clone(ws));
-        newobj.iterations =
-            (Parameter)newobj.getAttribute("iterations");
-	newobj.vectorizationFactor =
-            (Parameter)newobj.getAttribute("vectorizationFactor");
-        return newobj;
+        SDFDirector newObject = (SDFDirector)(super.clone(ws));
+        newObject.iterations =
+            (Parameter)newObject.getAttribute("iterations");
+	newObject.vectorizationFactor =
+            (Parameter)newObject.getAttribute("vectorizationFactor");
+        return newObject;
     }
 
     /** Calculate the current schedule, if necessary,

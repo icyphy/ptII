@@ -87,10 +87,10 @@ public class WaitingTime1 extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        WaitingTime1 newobj = (WaitingTime1)super.clone(ws);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
-        newobj.input.setTypeEquals(BaseType.GENERAL);
-        return newobj;
+        WaitingTime1 newObject = (WaitingTime1)super.clone(ws);
+        newObject.output.setTypeEquals(BaseType.DOUBLE);
+        newObject.input.setTypeEquals(BaseType.GENERAL);
+        return newObject;
     }
 
 

@@ -144,13 +144,13 @@ public class Quantizer extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Quantizer newobj = (Quantizer)super.clone(ws);
+        Quantizer newObject = (Quantizer)super.clone(ws);
         try {
-            newobj.attributeChanged(newobj.levels);
+            newObject.attributeChanged(newobj.levels);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Output the quantization of the input.

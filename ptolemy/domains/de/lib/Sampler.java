@@ -108,9 +108,9 @@ public class Sampler extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Sampler newobj = (Sampler)super.clone(ws);
-        newobj.output.setTypeAtLeast(newobj.input);
-        return newobj;
+        Sampler newObject = (Sampler)super.clone(ws);
+        newObject.output.setTypeAtLeast(newobj.input);
+        return newObject;
     }
 
     /** If there is a token in the <i>trigger</i> port,

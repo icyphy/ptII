@@ -119,11 +119,11 @@ public class CircularSweep3D extends GRShadedShape {
      */
     
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CircularSweep3D newobj = (CircularSweep3D)super.clone(workspace);
-        newobj.polyline = (Parameter) newobj.getAttribute("polyline");
-        newobj.angleSpan = (Parameter) newobj.getAttribute("angleSpan");
-        newobj.slices = (Parameter) newobj.getAttribute("slices");
-        return newobj;
+        CircularSweep3D newObject = (CircularSweep3D)super.clone(workspace);
+        newObject.polyline = (Parameter) newobj.getAttribute("polyline");
+        newObject.angleSpan = (Parameter) newobj.getAttribute("angleSpan");
+        newObject.slices = (Parameter) newobj.getAttribute("slices");
+        return newObject;
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

@@ -79,18 +79,18 @@ public class TwoPort extends SDFAtomicActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TwoPort newobj = (TwoPort)(super.clone(ws));
-        newobj.input1 = (SDFIOPort)newobj.getPort("input1");
-        newobj.input2 = (SDFIOPort)newobj.getPort("input2");
-        newobj.output1 = (SDFIOPort)newobj.getPort("output1");
-        newobj.output2 = (SDFIOPort)newobj.getPort("output2");
-        newobj.inrate1 = (Parameter) newobj.getAttribute("inrate1");
-        newobj.inrate2 = (Parameter) newobj.getAttribute("inrate2");
-        newobj.outrate1 = (Parameter) newobj.getAttribute("outrate1");
-        newobj.outrate2 = (Parameter) newobj.getAttribute("outrate2");
+        TwoPort newObject = (TwoPort)(super.clone(ws));
+        newObject.input1 = (SDFIOPort)newobj.getPort("input1");
+        newObject.input2 = (SDFIOPort)newobj.getPort("input2");
+        newObject.output1 = (SDFIOPort)newobj.getPort("output1");
+        newObject.output2 = (SDFIOPort)newobj.getPort("output2");
+        newObject.inrate1 = (Parameter) newobj.getAttribute("inrate1");
+        newObject.inrate2 = (Parameter) newobj.getAttribute("inrate2");
+        newObject.outrate1 = (Parameter) newobj.getAttribute("outrate1");
+        newObject.outrate2 = (Parameter) newobj.getAttribute("outrate2");
 
         
-        return newobj;
+        return newObject;
     }
     
     public void attributeChanged(Attribute attribute) throws IllegalActionException {

@@ -178,11 +178,11 @@ public class CSPActor extends TypedAtomicActor
      *  @return A new CSPActor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CSPActor newobj = (CSPActor)super.clone(ws);
-        newobj._delayed = false;
-        newobj._conditionalBranchController =
-	    new ConditionalBranchController(newobj);
-	return newobj;
+        CSPActor newObject = (CSPActor)super.clone(ws);
+        newObject._delayed = false;
+        newObject._conditionalBranchController =
+	    new ConditionalBranchController(newObject);
+	return newObject;
     }
 
     /** Delay this actor. The actor resumes executing when the

@@ -144,16 +144,16 @@ public class State extends ComponentEntity {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        State newobj = (State)super.clone(ws);
-        newobj.incomingPort = (ComponentPort)newobj.getPort("incomingPort");
-        newobj.outgoingPort = (ComponentPort)newobj.getPort("outgoingPort");
-        newobj.refinementName =
-                (Parameter)newobj.getAttribute("refinementName");
-        newobj._refinementVersion = -1;
-        newobj._transitionListVersion = -1;
-	newobj._nonpreemptiveTransitionList = new LinkedList();
-	newobj._preemptiveTransitionList = new LinkedList();
-        return newobj;
+        State newObject = (State)super.clone(ws);
+        newObject.incomingPort = (ComponentPort)newobj.getPort("incomingPort");
+        newObject.outgoingPort = (ComponentPort)newobj.getPort("outgoingPort");
+        newObject.refinementName =
+                (Parameter)newObject.getAttribute("refinementName");
+        newObject._refinementVersion = -1;
+        newObject._transitionListVersion = -1;
+	newObject._nonpreemptiveTransitionList = new LinkedList();
+	newObject._preemptiveTransitionList = new LinkedList();
+        return newObject;
     }
 
     /** Return the refinement of this state. The name of the refinement

@@ -104,11 +104,11 @@ public class GRDirector extends StaticSchedulingDirector {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         _reset();
-        GRDirector newobj = (GRDirector)(super.clone(ws));
-        newobj.iterations = (Parameter) newobj.getAttribute("iterations");
-        newobj.iterationTimeUpperBound = (Parameter) 
-                          newobj.getAttribute("iteration time upper bound");
-        return newobj;
+        GRDirector newObject = (GRDirector)(super.clone(ws));
+        newObject.iterations = (Parameter) newobj.getAttribute("iterations");
+        newObject.iterationTimeUpperBound = (Parameter) 
+                          newObject.getAttribute("iteration time upper bound");
+        return newObject;
     }
     
     

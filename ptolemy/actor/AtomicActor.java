@@ -111,11 +111,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        AtomicActor newobj = (AtomicActor)super.clone(ws);
+        AtomicActor newObject = (AtomicActor)super.clone(ws);
 	// Reset to force reinitialization of cache.
-        newobj._inputPortsVersion = -1;
-        newobj._outputPortsVersion = -1;
-        return newobj;
+        newObject._inputPortsVersion = -1;
+        newObject._outputPortsVersion = -1;
+        return newObject;
     }
 
     /** Do nothing.  Derived classes override this method to define their

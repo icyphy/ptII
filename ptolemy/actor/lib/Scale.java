@@ -107,10 +107,10 @@ public class Scale extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Scale newobj = (Scale)super.clone(ws);
-	newobj.output.setTypeAtLeast(newobj.input);
-	newobj.output.setTypeAtLeast(newobj.factor);
-        return newobj;
+        Scale newObject = (Scale)super.clone(ws);
+	newObject.output.setTypeAtLeast(newobj.input);
+	newObject.output.setTypeAtLeast(newobj.factor);
+        return newObject;
     }
 
     /** Compute the product of the input and the <i>factor</i>.

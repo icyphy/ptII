@@ -92,15 +92,15 @@ public class TimeBomb extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TimeBomb newobj = (TimeBomb)super.clone(ws);
-        newobj.input.setTypeEquals(BaseType.COMPLEX);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        TimeBomb newObject = (TimeBomb)super.clone(ws);
+        newObject.input.setTypeEquals(BaseType.COMPLEX);
+        newObject.output.setTypeEquals(BaseType.DOUBLE);
         try {
-            newobj.input.delayTo(newobj.output);
+            newObject.input.delayTo(newobj.output);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Clone failed.");
         }
-        return newobj;
+        return newObject;
     }
 
     /** Read one token from the input and register for future firing.

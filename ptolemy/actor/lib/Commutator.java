@@ -108,10 +108,10 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Commutator newobj = (Commutator)super.clone(ws);
-        newobj.tokenProductionRate = (Parameter)
-            (newobj.output.getAttribute("tokenProductionRate"));
-        return newobj;
+        Commutator newObject = (Commutator)super.clone(ws);
+        newObject.tokenProductionRate = (Parameter)
+            (newObject.output.getAttribute("tokenProductionRate"));
+        return newObject;
     }
 
     /** Notify this entity that the links to the specified port have

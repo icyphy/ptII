@@ -162,10 +162,10 @@ public class Effigy extends CompositeEntity {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Effigy newobj = (Effigy)super.clone(ws);
-        newobj.identifier = (StringAttribute)newobj.getAttribute("identifier");
-        newobj.url = (URLAttribute)newobj.getAttribute("url");
-        return newobj;
+        Effigy newObject = (Effigy)super.clone(ws);
+        newObject.identifier = (StringAttribute)newobj.getAttribute("identifier");
+        newObject.url = (URLAttribute)newobj.getAttribute("url");
+        return newObject;
     }
 
     /** Close all tableaux contained by this effigy, and by any effigies

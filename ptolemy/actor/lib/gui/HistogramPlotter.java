@@ -101,10 +101,10 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *   attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        HistogramPlotter newobj = (HistogramPlotter)super.clone(ws);
-        newobj.histogram = null;
-        newobj._container = null;
-        return newobj;
+        HistogramPlotter newObject = (HistogramPlotter)super.clone(ws);
+        newObject.histogram = null;
+        newObject._container = null;
+        return newObject;
     }
 
     /** Configure the histogram with data from the specified input source

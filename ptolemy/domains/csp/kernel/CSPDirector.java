@@ -156,15 +156,15 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @return The new CSPDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CSPDirector newobj = (CSPDirector)super.clone(ws);
-        // newobj._actorsBlocked = 0;
+        CSPDirector newObject = (CSPDirector)super.clone(ws);
+        // newObject._actorsBlocked = 0;
         /*
-        newobj._extReadBlockCount= 0;
-        newobj._writeBlockCount= 0;
+        newObject._extReadBlockCount= 0;
+        newObject._writeBlockCount= 0;
         */
-	newobj._actorsDelayed = 0;
-        newobj._delayedActorList = new LinkedList();
-        return newobj;
+	newObject._actorsDelayed = 0;
+        newObject._delayedActorList = new LinkedList();
+        return newObject;
     }
 
     /** Reset flags to initialize values.

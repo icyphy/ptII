@@ -137,11 +137,11 @@ public class SetVariable extends Action implements CommitAction {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        SetVariable newobj = (SetVariable)super.clone(ws);
-        newobj.expression = (Parameter)newobj.getAttribute("expression");
-        newobj.variableName = (Parameter)newobj.getAttribute("variableName");
-        newobj._variableVersion = -1;
-        return newobj;
+        SetVariable newObject = (SetVariable)super.clone(ws);
+        newObject.expression = (Parameter)newobj.getAttribute("expression");
+        newObject.variableName = (Parameter)newobj.getAttribute("variableName");
+        newObject._variableVersion = -1;
+        return newObject;
     }
 
     /** Take the token from evaluating the expression specified by the

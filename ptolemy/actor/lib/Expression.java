@@ -165,11 +165,11 @@ public class Expression extends TypedAtomicActor {
 
     public Object clone(Workspace ws)
  	    throws CloneNotSupportedException {
-        Expression newobj = (Expression)super.clone(ws);
-        newobj._iterationCount = 1;
-        newobj._time = (Variable)newobj.getAttribute("time");
-        newobj._iteration = (Variable)newobj.getAttribute("iteration");
-        return newobj;
+        Expression newObject = (Expression)super.clone(ws);
+        newObject._iterationCount = 1;
+        newObject._time = (Variable)newobj.getAttribute("time");
+        newObject._iteration = (Variable)newobj.getAttribute("iteration");
+        return newObject;
     }
 
     /** Evaluate the expression and send its result to the output.

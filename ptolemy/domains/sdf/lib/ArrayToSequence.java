@@ -113,13 +113,13 @@ public class ArrayToSequence extends SDFAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        ArrayToSequence newobj = (ArrayToSequence)(super.clone(ws));
+        ArrayToSequence newObject = (ArrayToSequence)(super.clone(ws));
 
         // set the type constraints
-        ArrayType inputType = (ArrayType)newobj.input.getType();
+        ArrayType inputType = (ArrayType)newObject.input.getType();
         InequalityTerm elemTerm = inputType.getElementTypeTerm();
-        newobj.output.setTypeAtLeast(elemTerm);
-        return newobj;
+        newObject.output.setTypeAtLeast(elemTerm);
+        return newObject;
     }
 
     /** Consume the input ArrayToken and produce the outputs.

@@ -144,11 +144,11 @@ public class DocumentationViewerTableau extends Tableau {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DocumentationViewerTableau newobj =
+        DocumentationViewerTableau newObject =
                  (DocumentationViewerTableau)super.clone(ws);
-        newobj.dottedClass = 
-	    (StringAttribute)newobj.getAttribute("dottedClass");
-        return newobj;
+        newObject.dottedClass = 
+	    (StringAttribute)newObject.getAttribute("dottedClass");
+        return newObject;
     }
 
     /** Make this tableau visible by raising or deiconifying its window, or

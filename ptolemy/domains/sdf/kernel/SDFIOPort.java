@@ -146,14 +146,14 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        SDFIOPort newobj = (SDFIOPort)(super.clone(ws));
-        newobj.tokenConsumptionRate =
-            (Parameter)newobj.getAttribute("tokenConsumptionRate");
-        newobj.tokenInitProduction =
-            (Parameter)newobj.getAttribute("tokenInitProduction");
-        newobj.tokenProductionRate =
-            (Parameter)newobj.getAttribute("tokenProductionRate");
-        return newobj;
+        SDFIOPort newObject = (SDFIOPort)(super.clone(ws));
+        newObject.tokenConsumptionRate =
+            (Parameter)newObject.getAttribute("tokenConsumptionRate");
+        newObject.tokenInitProduction =
+            (Parameter)newObject.getAttribute("tokenInitProduction");
+        newObject.tokenProductionRate =
+            (Parameter)newObject.getAttribute("tokenProductionRate");
+        return newObject;
     }
 
     /** Get the number of tokens that are consumed

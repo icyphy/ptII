@@ -173,19 +173,19 @@ public class Transition extends ComponentRelation {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        Transition newobj = (Transition)super.clone(ws);
-        newobj.guardExpression =
-                (Parameter)newobj.getAttribute("guardExpression");
-        newobj.preemptive = (Parameter)newobj.getAttribute("preemptive");
-        newobj.triggerExpression =
-                (Parameter)newobj.getAttribute("triggerExpression");
-        newobj._guard = (Variable)newobj.getAttribute("_guard");
-        newobj._trigger = (Variable)newobj.getAttribute("_trigger");
-        newobj._actionListsVersion = -1;
-	newobj._choiceActionList = new LinkedList();
-	newobj._commitActionList = new LinkedList();
-        newobj._stateVersion = -1;
-        return newobj;
+        Transition newObject = (Transition)super.clone(ws);
+        newObject.guardExpression =
+                (Parameter)newObject.getAttribute("guardExpression");
+        newObject.preemptive = (Parameter)newobj.getAttribute("preemptive");
+        newObject.triggerExpression =
+                (Parameter)newObject.getAttribute("triggerExpression");
+        newObject._guard = (Variable)newobj.getAttribute("_guard");
+        newObject._trigger = (Variable)newobj.getAttribute("_trigger");
+        newObject._actionListsVersion = -1;
+	newObject._choiceActionList = new LinkedList();
+	newObject._commitActionList = new LinkedList();
+        newObject._stateVersion = -1;
+        return newObject;
     }
 
     /** Return the list of commit actions contained by this transition.

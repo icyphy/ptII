@@ -173,10 +173,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @return A new CompositeActor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CompositeActor newobj = (CompositeActor)super.clone(ws);
-        newobj._inputPortsVersion = -1;
-        newobj._outputPortsVersion = -1;
-        return newobj;
+        CompositeActor newObject = (CompositeActor)super.clone(ws);
+        newObject._inputPortsVersion = -1;
+        newObject._outputPortsVersion = -1;
+        return newObject;
     }
 
     /** If this actor is opaque, invoke the fire() method of its local

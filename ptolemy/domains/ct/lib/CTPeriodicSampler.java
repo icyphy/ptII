@@ -118,11 +118,11 @@ public class CTPeriodicSampler extends Transformer
      */
      public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        CTPeriodicSampler newobj = (CTPeriodicSampler)super.clone(ws);
-        newobj.input.setMultiport(true);
-        newobj.output.setMultiport(true);
-        newobj.output.setTypeAtLeast(newobj.input);
-        return newobj;
+        CTPeriodicSampler newObject = (CTPeriodicSampler)super.clone(ws);
+        newObject.input.setMultiport(true);
+        newObject.output.setMultiport(true);
+        newObject.output.setTypeAtLeast(newobj.input);
+        return newObject;
     }
 
     /** Emit the current event, which has the token of the latest input

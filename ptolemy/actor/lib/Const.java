@@ -106,10 +106,10 @@ public class Const extends Source {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Const newobj = (Const)super.clone(ws);
+        Const newObject = (Const)super.clone(ws);
 	// Set the type constraint.
-	newobj.output.setTypeAtLeast(newobj.value);
-        return newobj;
+	newObject.output.setTypeAtLeast(newobj.value);
+        return newObject;
     }
 
     /** Send the token in the <i>value</i> parameter to the output.

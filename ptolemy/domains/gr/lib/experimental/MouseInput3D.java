@@ -71,11 +71,11 @@ public class MouseInput3D extends GRActor {
     
    
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MouseInput3D newobj = (MouseInput3D)super.clone(workspace);
-        newobj.output = (TypedIOPort) newobj.getPort("output");
-        newobj.x = (TypedIOPort) newobj.getPort("x");
-        newobj.y = (TypedIOPort) newobj.getPort("y");
-        return newobj;
+        MouseInput3D newObject = (MouseInput3D)super.clone(workspace);
+        newObject.output = (TypedIOPort) newobj.getPort("output");
+        newObject.x = (TypedIOPort) newobj.getPort("x");
+        newObject.y = (TypedIOPort) newobj.getPort("y");
+        return newObject;
     }
     
     public void initialize() throws IllegalActionException {

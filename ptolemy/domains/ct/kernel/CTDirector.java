@@ -328,26 +328,26 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        CTDirector newobj = (CTDirector)(super.clone(ws));
-        newobj.startTime =
-            (Parameter)newobj.getAttribute("startTime");
-        newobj.stopTime =
-            (Parameter)newobj.getAttribute("stopTime");
-        newobj.initStepSize =
-            (Parameter)newobj.getAttribute("initStepSize");
-        newobj.minStepSize =
-            (Parameter)newobj.getAttribute("minStepSize");
-        newobj.maxStepSize =
-            (Parameter)newobj.getAttribute("maxStepSize");
-        newobj.maxIterations =
-            (Parameter)newobj.getAttribute("maxIterations");
-        newobj.errorTolerance =
-            (Parameter)newobj.getAttribute("errorTolerance");
-        newobj.valueResolution =
-            (Parameter)newobj.getAttribute("valueResolution");
-        newobj.timeResolution =
-            (Parameter)newobj.getAttribute("timeResolution");
-        return newobj;
+        CTDirector newObject = (CTDirector)(super.clone(ws));
+        newObject.startTime =
+            (Parameter)newObject.getAttribute("startTime");
+        newObject.stopTime =
+            (Parameter)newObject.getAttribute("stopTime");
+        newObject.initStepSize =
+            (Parameter)newObject.getAttribute("initStepSize");
+        newObject.minStepSize =
+            (Parameter)newObject.getAttribute("minStepSize");
+        newObject.maxStepSize =
+            (Parameter)newObject.getAttribute("maxStepSize");
+        newObject.maxIterations =
+            (Parameter)newObject.getAttribute("maxIterations");
+        newObject.errorTolerance =
+            (Parameter)newObject.getAttribute("errorTolerance");
+        newObject.valueResolution =
+            (Parameter)newObject.getAttribute("valueResolution");
+        newObject.timeResolution =
+            (Parameter)newObject.getAttribute("timeResolution");
+        return newObject;
     }
 
     /** Return the break point table.

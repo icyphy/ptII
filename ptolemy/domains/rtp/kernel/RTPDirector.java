@@ -130,10 +130,10 @@ public class RTPDirector extends ProcessDirector {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        RTPDirector newobj = (RTPDirector)(super.clone(ws));
-        newobj.executionDuration = (Parameter)newobj.getAttribute
+        RTPDirector newObject = (RTPDirector)(super.clone(ws));
+        newObject.executionDuration = (Parameter)newobj.getAttribute
             ("executionDuration");
-        return newobj;
+        return newObject;
     }
 
     /** Return the time count of the computer in the number of milliseconds,

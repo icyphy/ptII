@@ -131,10 +131,10 @@ public class Plotter extends TypedAtomicActor
      *   attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Plotter newobj = (Plotter)super.clone(ws);
-        newobj.plot = null;
-        newobj._frame = null;
-        return newobj;
+        Plotter newObject = (Plotter)super.clone(ws);
+        newObject.plot = null;
+        newObject._frame = null;
+        return newObject;
     }
 
     /** Configure the object with data from the specified input source

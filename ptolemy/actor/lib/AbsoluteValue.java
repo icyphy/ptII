@@ -85,10 +85,10 @@ public class AbsoluteValue extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        AbsoluteValue newobj = (AbsoluteValue)super.clone(ws);
-	newobj.output.setTypeAtLeast(new FunctionTerm(newobj.input));
-	newobj.output.setTypeAtMost(BaseType.SCALAR);
-        return newobj;
+        AbsoluteValue newObject = (AbsoluteValue)super.clone(ws);
+	newObject.output.setTypeAtLeast(new FunctionTerm(newobj.input));
+	newObject.output.setTypeAtMost(BaseType.SCALAR);
+        return newObject;
     }
 
     /** Return the following type constraints: If the input type is Complex,

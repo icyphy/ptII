@@ -208,11 +208,11 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  @return The new BasePNDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        BasePNDirector newobj = (BasePNDirector)super.clone(ws);
-        newobj._readBlockCount = 0;
-	newobj._writeBlockCount = 0;
-        newobj._writeblockedQueues = new LinkedList();
-        return newobj;
+        BasePNDirector newObject = (BasePNDirector)super.clone(ws);
+        newObject._readBlockCount = 0;
+	newObject._writeBlockCount = 0;
+        newObject._writeblockedQueues = new LinkedList();
+        return newObject;
     }
 
     /** Wait until the detection of a deadlock. If the deadlock is real, then

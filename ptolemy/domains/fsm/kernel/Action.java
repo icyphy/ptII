@@ -111,9 +111,9 @@ public abstract class Action extends Attribute {
      */
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
-        Action newobj = (Action)super.clone(ws);
-        newobj._evalVar = null;
-        return newobj;
+        Action newObject = (Action)super.clone(ws);
+        newObject._evalVar = null;
+        return newObject;
     }
 
     /** Execute the action.
