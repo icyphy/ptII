@@ -87,7 +87,7 @@ public class EditIconFrame extends BasicGraphFrame {
      *  in the configuration.
      *  FIXME: Check whether the above is right.
      *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
+     *  @param icon The icon to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
     public EditIconFrame(EditorIcon icon, Tableau tableau) {
