@@ -393,15 +393,16 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.lur",
                LibraryUsageReporter.v(),
                "outFile:" + _outputDirectory + "/jarClassList.txt " + 
-               "analyzeAllReachables:true");
+               "analyzeAllReachables:false");
+       // Note: We want to analyze all reachables here!
        
-       addTransform(pack, "wjtp.umr4", 
-               UnreachableMethodRemover.v());
-       addTransform(pack, "wjtp.ufr2",
-               UnusedFieldRemover.v());
-       addStandardOptimizations(pack, 9);
-       addTransform(pack, "wjtp.umr5", 
-               UnreachableMethodRemover.v());
+//        addTransform(pack, "wjtp.umr4", 
+//                UnreachableMethodRemover.v());
+//        addTransform(pack, "wjtp.ufr2",
+//                UnusedFieldRemover.v());
+//        addStandardOptimizations(pack, 9);
+//        addTransform(pack, "wjtp.umr5", 
+//                UnreachableMethodRemover.v());
        /* */   
        
        // Convert to grimp.
