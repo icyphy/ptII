@@ -208,6 +208,20 @@ Discard the rest.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 40.0">
         </property>
     </property>
+    <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+        </property>
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Dec 18, 2003 9:04:52 PM">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 495.0">
+        </property>
+    </property>
     <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
         <property name="input"/>
         <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="Channel">
