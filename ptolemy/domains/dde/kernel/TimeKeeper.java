@@ -398,9 +398,8 @@ public class TimeKeeper {
     ////                   package friendly methods		   ////
 
     /** Print the contents of the receiver list contained by
-     *  this actor. Use this method for testing purposes only.
-     * @deprecated
-     */
+     *  this actor. 
+     * @deprecated Use for testing purposes only.
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
         System.out.println("\n###Print "+name+"'s RcvrList.");
@@ -431,6 +430,7 @@ public class TimeKeeper {
         }
         System.out.println("###End of printRcvrList()\n");
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods		   ////
