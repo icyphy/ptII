@@ -469,6 +469,25 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Get a MoML description of this object with its name replaced by
+     *  the specified name.  The description might be an empty string
+     *  if there is no MoML description of the object.  This uses the three
+     *  argument version of this method.  It is final to ensure that
+     *  derived classes only override that method to change
+     *  the MoML description.
+     *  @return A MoML description, or null if there is none.
+     */
+    public final String exportMoML(String name) {
+        try {
+            StringWriter buffer = new StringWriter();
+            exportMoML(buffer, 0, name);
+            return buffer.toString();
+        } catch (IOException ex) {
+            // This should not occur.
+            throw new InternalErrorException(ex.toString());
+        }
+    }
+
     /** Write a MoML description of this object using the specified
      *  Writer.  If there is no MoML description, then nothing is written.
      *  To write to standard out, do
@@ -487,7 +506,24 @@ public class NamedObj implements Nameable, Debuggable,
     }
 
     /** Write a MoML description of this entity with the specified
-     *  indentation depth.  The description has one of two forms, depending
+     *  indentation depth.  This calls the three-argument version of
+     *  this method with getName() as the third argument.
+     *  This method is final to ensure that
+     *  derived classes only override the three-argument method to change
+     *  the MoML description.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     *  @see #deferMoMLDefinitionTo(NamedObj)
+     */
+    public final void exportMoML(Writer output, int depth) throws IOException {
+        exportMoML(output, depth, getName());
+    }
+
+    /** Write a MoML description of this entity with the specified
+     *  indentation depth and with the specified name substituting
+     *  for the name of this entity.
+     *  The description has one of two forms, depending
      *  on whether this is a class or an entity (determined by
      *  getMoMLElement()).  If getMoMLElement() returns "class", then
      *  the exported MoML looks like this:
@@ -533,10 +569,12 @@ public class NamedObj implements Nameable, Debuggable,
      *  contents are described.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
      *  @see #deferMoMLDefinitionTo(NamedObj)
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
         String className = null;
         if (_deferTo != null) {
             className = _deferTo.getFullName();
@@ -572,7 +610,7 @@ public class NamedObj implements Nameable, Debuggable,
                 + "<"
                 + momlElement
                 + " name=\""
-                + getName()
+                + name
                 + template
                 + className
                 + "\">\n");
