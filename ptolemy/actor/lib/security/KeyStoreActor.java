@@ -85,9 +85,11 @@ be created with the type from the <i>keyStoreType</i> parameter.
 <p>The <code>keytool</code> creates keystores that have a type of
 "JKS".  To view the keystore type, run
 <code>keytool -keystore <i>keystoreFile</i>-list</code>.
-<p>The {@link SecretKey} actor outputs a key that must read in with
-a keystore type of "JCEKS", so if this actor is being used with
-a SecretKey actor, then the type should be set to "JCEKS".
+
+<p>The {@link ptolemy.actor.lib.security.SecretKey} actor outputs a
+key that must read in with a keystore type of "JCEKS", so if this
+actor is being used with a SecretKey actor, then the type should be
+set to "JCEKS".
 
 <p>Derived classes should add input or output ports as necessary.
 Derived classes should call _loadKeyStore() so that _keyStore is properly
