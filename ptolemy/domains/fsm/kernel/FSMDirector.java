@@ -174,6 +174,7 @@ public class FSMDirector extends Director {
         newobj.controllerName =
                 (Parameter)newobj.getAttribute("controllerName");
         newobj._controllerVersion = -1;
+	newobj._localReceiverMaps = new HashMap();
         newobj._localReceiverMapsVersion = -1;
         return newobj;
     }
@@ -316,7 +317,7 @@ public class FSMDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
-        
+
         boolean result = true;
         if (_fireRefinement) {
             result = ctrl.currentState().getRefinement().postfire();

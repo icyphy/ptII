@@ -216,7 +216,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         newobj._inputPortsVersion = -1;
         newobj._outputPortsVersion = -1;
         newobj._connectionMapsVersion = -1;
+	newobj._connectionMaps = null;
         newobj._initialStateVersion = -1;
+	newobj._inputVariableMap = new HashMap();
         return newobj;
     }
 

@@ -182,6 +182,8 @@ public class Transition extends ComponentRelation {
         newobj._guard = (Variable)newobj.getAttribute("_guard");
         newobj._trigger = (Variable)newobj.getAttribute("_trigger");
         newobj._actionListsVersion = -1;
+	newobj._choiceActionList = new LinkedList();
+	newobj._commitActionList = new LinkedList();
         newobj._stateVersion = -1;
         return newobj;
     }

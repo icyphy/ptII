@@ -150,6 +150,8 @@ public class State extends ComponentEntity {
                 (Parameter)newobj.getAttribute("refinementName");
         newobj._refinementVersion = -1;
         newobj._transitionListVersion = -1;
+	newobj._nonpreemptiveTransitionList = new LinkedList();
+	newobj._preemptiveTransitionList = new LinkedList();
         return newobj;
     }
 
