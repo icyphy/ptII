@@ -1,6 +1,6 @@
 # Tests for the ComponentEntity class
 #
-# @Author: Edward A. Lee, Jie Liu
+# @Author: Edward A. Lee, Jie Liu, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -134,7 +134,7 @@ test ComponentEntity-7.1 {Reparent entities, attempting a circular structure} {
     set e3 [java::new ptolemy.kernel.CompositeEntity $e2 C]
     catch {$e2 setContainer $e3} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .B and .B.C:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .B and .B.C:
 Attempt to construct recursive containment.}}
 
 ######################################################################
@@ -155,8 +155,9 @@ test ComponentEntity-8.2 {Test for NameDuplicationException on setName} {
     set b2 [java::new ptolemy.kernel.ComponentEntity $a B2]
     catch {$b2 setName B1} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: .A:
+} {{ptolemy.kernel.util.NameDuplicationException: Object name: .A:
 already contains an entity with the name B1.}}
+
 ########################################################################
 ####
 #

@@ -1,6 +1,6 @@
 # Tests for the ComponentRelation class
 #
-# @Author: Jie Liu
+# @Author: Jie Liu, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -89,8 +89,9 @@ test ComponentRelation-3.2 {Test for NameDuplicationException on setName} {
     set b2 [java::new ptolemy.kernel.ComponentRelation $a B2]
     catch {$b2 setName B1} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: .A:
+} {{ptolemy.kernel.util.NameDuplicationException: Object name: .A:
 already contains a relation with the name B1.}}
+
 ######################################################################
 ####
 #

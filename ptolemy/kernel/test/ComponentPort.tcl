@@ -1,6 +1,6 @@
 # Tests for the ComponentPort class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -223,7 +223,7 @@ test ComponentPort-3.4 {Level-crossing link error} {
     set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E1.P1 and .E1.E2.A1:
 Link crosses levels of the hierarchy}}
 
 ######################################################################
@@ -405,14 +405,14 @@ test ComponentPort-7.0 {transparent ports in a loop} {
     $p2 link $rout
     catch {$p1 deepConnectedPorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1:
+} {{ptolemy.kernel.util.InvalidStateException: Object names: .<Unnamed Object>.A.P2, .<Unnamed Object>.A.P1:
 loop in topology!}}
 
 test ComponentPort-7.1 { deepInsidePorts in a loop} {
     # Use configuration in 7.0
     catch {$p1 deepInsidePorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1:
+} {{ptolemy.kernel.util.InvalidStateException: Object names: .<Unnamed Object>.A.P2, .<Unnamed Object>.A.P1:
 loop in topology!}}
 
 test ComponentPort-7.2 {transaprent ports in another loop} {
@@ -433,7 +433,7 @@ test ComponentPort-7.2 {transaprent ports in another loop} {
     $p3 link $rb_a
     catch {$p3 deepConnectedPorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1, ..B.P3:
+} {{ptolemy.kernel.util.InvalidStateException: Object names: .<Unnamed Object>.A.P2, .<Unnamed Object>.A.P1, .<Unnamed Object>.B.P3:
 loop in topology!}}
 
 test ComponentPort-7.3 { deepInsidePorts in another loop} {
