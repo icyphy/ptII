@@ -186,7 +186,7 @@ public class StateController extends AttributeController {
      */
     public static class StateRenderer implements NodeRenderer {
         /** Construct a state renderer.
-         *  @param GraphModel The GraphModel.
+         *  @param model The GraphModel.
          */
         public StateRenderer(GraphModel model) {
             super();
