@@ -55,7 +55,10 @@ JSRCS = \
 	SampleTarget.java \
 	SampleSDFExecutive.java
 
-EXTRA_SRCS =	$(JSRCS) RampApplet.html ptjdriver
+JSIMPLE_TESTS = \
+	NamedObj.tcl
+
+EXTRA_SRCS =	$(JSRCS) $(JSIMPLE_TESTS) RampApplet.html ptjdriver
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,8 +76,15 @@ all: $(EXTRA_SRCS) jclass
 install: $(EXTRA_SRCS) jclass javadocs
 	chmod a+x ptjdriver
 
-test: jclass
+tests:: test_java test_jsimple
+
+test_java: jclass
 	$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
+
+# These tests do not require a graphics terminal, but do use TclBlend and Java
+test_jsimple: $(TCL_SRCS) $(ITCL_SRCS)
+	echo "foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; source \$$i}" | \
+		$(JTCLSH)
 
 docs: javadocs
 
