@@ -36,7 +36,9 @@ DIRS =
 # Root of the Java directory
 ROOT =		..
 
-CLASSPATH =	$(ROOT)
+# Be careful about setting the CLASSPATH here, since if CLASSPATH=$(ROOT),
+# then when we run configure we might miss the location of JMF
+#CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
