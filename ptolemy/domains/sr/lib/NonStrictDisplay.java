@@ -87,6 +87,11 @@ public class NonStrictDisplay extends Display {
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
+
+                    // If the window has been deleted, read the
+                    // rest of the inputs.
+                    if (textArea == null) continue;
+
                     value = token.toString();
                     // If it is a pure string, strip the quotation marks.
                     if ((value.length() > 1) && value.startsWith("\"") &&
@@ -120,7 +125,9 @@ public class NonStrictDisplay extends Display {
                 // doesn't move.
             }
         }
-        textArea.append("\n");
+        if (textArea != null) {
+            textArea.append("\n");
+        }
         return true;
     }
 
