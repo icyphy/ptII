@@ -1,4 +1,4 @@
-/* The class to create eclipse ASTs from Java source files.
+/* The class to create Eclipse ASTs from Java source files.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
