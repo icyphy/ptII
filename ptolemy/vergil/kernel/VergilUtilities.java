@@ -1,4 +1,4 @@
-/* Utilities used by Vergil
+/* Utilities used by Vergil.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -33,6 +33,7 @@ import javax.swing.UIManager;
 //////////////////////////////////////////////////////////////////////////
 //// VergilUtilities
 /**
+   Utilities used by Vergil.
 
    @author Christopher Hylands Brooks
    @version $Id$
