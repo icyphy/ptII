@@ -155,13 +155,14 @@ public class Scheduler extends Attribute {
      *  method.  This method is read-synchronized on the workspace.
      *  @return The Schedule returned by the _getSchedule() method.
      *  @exception IllegalActionException If the scheduler has no container
-     *  (a director), or the director has no container (a CompositeActor).
+     *  (a director), or the director has no container (a CompositeActor),
+     *  or the scheduling alorithm throws it.
      *  @exception NotSchedulableException If the _getSchedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
      */
-    public Schedule getSchedule() throws
-            IllegalActionException, NotSchedulableException {
+    public Schedule getSchedule()
+            throws IllegalActionException, NotSchedulableException {
         try {
             workspace().getReadAccess();
             StaticSchedulingDirector director =
@@ -347,12 +348,12 @@ public class Scheduler extends Attribute {
      *  schedulable. Not thrown in this base class, but may be thrown
      *  by derived classes.
      *  @exception IllegalActionException If the scheduling algorithm
-     *  throws it. Not thrown un this base class, but may be thrown 
+     *  throws it. Not thrown in this base class, but may be thrown 
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
-    protected Schedule _getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    protected Schedule _getSchedule() 
+            throws IllegalActionException, NotSchedulableException {
 	StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
         CompositeActor compositeActor =
@@ -383,10 +384,14 @@ public class Scheduler extends Attribute {
      *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
+     *  @exception IllegalActionException If the scheduling algorithm
+     *  throws it. Not thrown in this base class, but may be thrown 
+     *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      *  @deprecated Use the getSchedule method instead.
      */
-    protected Enumeration _schedule() throws NotSchedulableException {
+    protected Enumeration _schedule()
+            throws NotSchedulableException, IllegalActionException {
         StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
         CompositeActor compositeActor =
