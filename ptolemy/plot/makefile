@@ -38,8 +38,8 @@ include $(CONFIG)
 
 CLASSPATH =	../..
 
-# Note that this package has the the name 'ptplot', not
-# tycho.java.ptplot.  The Itcl and java package have different root
+# Note that this package has the the name 'pt.plot', not
+# tycho.java.pt.plot.  The Itcl and java package have different root
 # directories.
 
 TYPACKAGE = 	pt.plot

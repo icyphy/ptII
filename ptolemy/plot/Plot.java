@@ -161,7 +161,7 @@ import java.util.*;
  *      the <code>_gridInit()</code> method in the PlotBox class.
  * <li> The compatibility issues of the <code>pxgraph</code> script are
  *      list in the
- *<a href="ptplot.Pxgraph.html#pxgraph script compatibility issues">Pxgraph</a> 
+ *<a href="pt.plot.Pxgraph.html#pxgraph script compatibility issues">Pxgraph</a> 
  *      class. 
  * </ul>
  *
@@ -322,7 +322,7 @@ public class Plot extends PlotBox {
      * This method exists only for backward compatibility with the X11 pxgraph
      * program.
      * @return The number of arguments read.
-     * @exception ptplot.CmdLineArgException if there is a problem parsing
+     * @exception pt.plot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
      */ 
     public int parseArgs(String args[]) throws CmdLineArgException {
@@ -628,7 +628,7 @@ public class Plot extends PlotBox {
 
     /* Split pxgraphargs up into an array and call _parseArgs
      * @return The number of arguments read.
-     * @exception ptplot.CmdLineArgException if there is a problem parsing
+     * @exception pt.plot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
      */       
     public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {

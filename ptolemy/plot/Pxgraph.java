@@ -416,10 +416,10 @@ the file to point to your JDK.
 </MENU>
 To find the Ptplot <CODE>.class</CODE> files, the script reads the
 <CODE>TYCHO</CODE> and <CODE>PTOLEMY</CODE> variables and looks in
-<CODE>PTOLEMY/tycho/java/ptplot</CODE>.  If you do not have Ptolemy
+<CODE>PTOLEMY/tycho/java/pt.plot</CODE>.  If you do not have Ptolemy
 or Tycho installed, you can edit the <CODE>pxgraph</CODE> script
 and change <CODE>TYDEFAULT</CODE> so that the <CODE>Pxgraph.class</CODE>
-file will be found at <CODE>$TYDEFAULT/java/ptplot/Pxgraph.class</CODE>
+file will be found at <CODE>$TYDEFAULT/java/pt.plot/Pxgraph.class</CODE>
 
 <LI> Move the old <CODE>pxgraph</CODE> binary to a safe place and
 create a link to the Java Ptplot <CODE>pxgraph</CODE> script.
@@ -688,10 +688,10 @@ public class Pxgraph extends Frame {
                     "     http://ptolemy.eecs.berkeley.edu/java\n"+
                     "-->\n"+
                     "<applet name =\""+getTitle()+"\""+
-                    " code=\"ptplot.PlotApplet\""+
+                    " code=\"pt.plot.PlotApplet\""+
                     " width="+dim.width+" height="+dim.height+"\n"+
                     "    codebase=\""+plotclassdir+"\"\n"+
-                    "    archive=\"ptplot/ptplot.jar\"\n"+
+                    "    archive=\"pt/plot/pt.plot.jar\"\n"+
                     "    alt=\"If you had a java-enabled "+
                     "browser, you would see an applet here.\"\n>\n"+
                     "<param name=\"pxgraphargs\" value=\"");
