@@ -59,4 +59,4 @@ if {[string compare test [info procs test]] == 1} then {
 # Get the soot specific codegen procs
 if {[info procs sootCodeGeneration] == "" } then { 
     source [file join $PTII util testsuite codegen.tcl]
-}
+} {}
