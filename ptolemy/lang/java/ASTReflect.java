@@ -108,9 +108,18 @@ public class ASTReflect {
 	// Get the AST for all the inner classes.
 	//memberList.addAll(innerClassesASTList(myClass));
 
-	// FIXME: If this is java.lang.Object, should we use AbsentTreeNode?
-	TreeNode superClass =
-	    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
+	TreeNode superClass = null;
+        if (myClass.getPackage() == null ) {
+            // JDK1.2.2 getSuperclass can return null
+            superClass =
+                (TreeNode) _makeNameNode("Object");
+
+        } else {
+            // FIXME: If this is java.lang.Object, should we
+            // use AbsentTreeNode?
+            superClass =
+                (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
+        }
 
 	ClassDeclNode classDeclNode =
 	    new ClassDeclNode(modifiers,
@@ -128,27 +137,6 @@ public class ASTReflect {
      *  about the package.
      */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
-            if (myClass.getPackage() == null ) {
-                // JDK1.2.2 getPackage returns null
-                System.out.println("// package null;");
-            } else {
-                System.out.println("package " +
-                        myClass.getPackage().getName() + ";");
-            }
-	    System.out.println(Modifier.toString(myClass.getModifiers()) +
-                    " " + myClass.toString());
-	    String superClass = myClass.getSuperclass().getName();
-	    if (superClass.length() > 0 ) {
-		System.out.println("extends " + superClass);
-	    }
-
-	    Class interfaces[] = myClass.getInterfaces();
-	    for(int i = 0; i < interfaces.length; i++) {
-		System.out.println("implements " + interfaces[i].toString());
-	    }
-	    System.out.println("{");
-	}
-
 	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
         NameNode packageName = null;
         if (myClass.getPackage() == null ) {
@@ -430,10 +418,4 @@ public class ASTReflect {
 	}
 	return defType;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // String to indent printed output with.
-    private final static String _indent = new String("    ");
 }
