@@ -218,7 +218,7 @@ public class Variable extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Stores the VariableLists whose contained variables have been
+    // Stores the list of lists of variables that have been
     // added to the scope of this variable.
     private LinkedList _addedVarLists = null;
 }
