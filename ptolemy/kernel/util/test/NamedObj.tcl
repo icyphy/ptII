@@ -53,13 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test NamedObj-1.1 {Get information about an instance of NamedObj} {
     # If anything changes, we want to know about it so we can write tests.
     set n [java::new pt.kernel.NamedObj]
-    list "\n \
-    class:         [java::info class $n]\n \
-    fields:        [java::info fields $n]\n \
-    methods:       [java::info methods $n]\n \
-    constructors:  [java::info constructors $n]\n \
-    properties:    [java::info properties $n]\n \
-    superclass:    [java::info superclass $n]\n"
+    list [getJavaInfo $n]
 } {{
   class:         pt.kernel.NamedObj
   fields:        
