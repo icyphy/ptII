@@ -69,7 +69,7 @@ is at the top level. Default value is 0.0.</LI><BR>
 <LI> <code>stopTime</code>: The stop time of the simulation.
  The parameter is effective only if the director
 is at the top level. Default value is 1.0.</LI><BR>
-<LI> <code>initStepSize</code>: The suggested integration step size 
+<LI> <code>initStepSize</code>: The suggested integration step size
 from the user. This will be the step size for fixed step
 size ODE solvers. However, it is just a guide for variable step size
 ODE solvers. Default value is 0.1</LI><Br>
@@ -99,12 +99,12 @@ Default value is 1e-6.<LI><Br>
 of time. If two time values differ less than this value,
 they are considered equivalent. Default value is 1e-10. </LI><Br>
 <P>
-This director also maintains a breakpoint table to record all 
+This director also maintains a breakpoint table to record all
 predictable breakpoints in the future.
 The breakpoints are sorted in their chronological order in the table.
 Breakpoints at the "same" time (controlled by time resolution) are
 considered to be one. A breakpoint can be inserted into the table by
-calling the fireAt() method. How to deal with these breakpoints 
+calling the fireAt() method. How to deal with these breakpoints
 could be director dependent.
 @author Jie Liu
 @version $Id$
@@ -184,7 +184,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public Parameter errorTolerance;
 
     /** User's guide for the initial integration step size.
-     *  The default value is 0.1, of 
+     *  The default value is 0.1, of
      *  type DoubleToken.
      */
     public Parameter initStepSize;
@@ -195,23 +195,23 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public Parameter maxIterations;
 
     /** User's guide for the maximum integration step size.
-     *  The default value is 1.0, of 
+     *  The default value is 1.0, of
      *  type DoubleToken.
      */
     public Parameter maxStepSize;
 
     /** User's guide for the minimum integration step size.
-     *  The default value is 1e-5, of 
+     *  The default value is 1e-5, of
      *  type DoubleToken.
      */
     public Parameter minStepSize;
 
-    /** Starting time of the simulation. The default value is 0.0, of 
+    /** Starting time of the simulation. The default value is 0.0, of
      *  type DoubleToken.
      */
     public Parameter startTime;
 
-    /** Stop time of the simulation. The default value is 1.0, of 
+    /** Stop time of the simulation. The default value is 1.0, of
      *  type DoubleToken.
      */
     public Parameter stopTime;
@@ -357,7 +357,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _currentSolver;
     }
 
-    /** Return the current integration step size. 
+    /** Return the current integration step size.
      *  @return the current step size.
      */
     public final double getCurrentStepSize() {
@@ -523,7 +523,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Prepare for an execution.
      *  Check whether the director has a container and a scheduler.
-     *  Check whether the director fits this level of hirarchy, 
+     *  Check whether the director fits this level of hirarchy,
      *  by checking canBeInsideDirector() and canBeTopLevelDirector().
      *  Invalidate the schedule. Clear statistic variables.
      *  Clear the break point table.
@@ -572,7 +572,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else {
             _breakPoints = new TotallyOrderedSet(
                     new FuzzyDoubleComparator(_timeResolution));
-        }       
+        }
         if(_debugging) _debug(getName(), " preinitialize actors");
         Iterator allactors = ca.deepEntityList().iterator();
         while (allactors.hasNext()) {
@@ -614,7 +614,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _stopTime = tstop;
     }
 
-    /** Set the suggested next step size, upper bounded by the 
+    /** Set the suggested next step size, upper bounded by the
      *  maximum step size.
      *  @param nextstep The suggested next step size.
      */
@@ -711,9 +711,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return newsolver;
     }
 
-    /** set the given solver to be the current ODE Solver. 
+    /** set the given solver to be the current ODE Solver.
      *  Derived class may throw an exception if the argument
-     *  cannot serve as the current ODE solver 
+     *  cannot serve as the current ODE solver
      *  @param solver The solver to be set.
      *  @exception  IllegalActionException Not thrown in this base class.
      *     It may be thrown by the derived classes if the solver is not

@@ -53,7 +53,7 @@ if the breakpoint is a new starting point.
 <P>
 This director handles both predictable breakpoints, which are breakpoints
 that are registered in the breakpoint table, and unpredictable breakpoints,
-which are breakpoints that are not know before hand. 
+which are breakpoints that are not know before hand.
 <P>
 This director can only be a top-level director. For a CT domain inside
 an opaque composite actor, use CTMixedSignalDirector (if the outter
@@ -63,15 +63,15 @@ a CT domain or a HS domain.)
 This director has two more parameters than the CTDirector base
 class.<BR>
 <UL>
-<LI><I>ODESolver</I>: This is the name of the normal ODE solver 
-used in nonbreakpoint iterations. The default is a String 
+<LI><I>ODESolver</I>: This is the name of the normal ODE solver
+used in nonbreakpoint iterations. The default is a String
 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"
 <LI><I>breakpointODESolver</I>: This is the name of the ODE solver that
 is used in the iterations just after the breakpoint. The breakpoint
 ODE solvers should not require history information (this property
-is called self-start). The default is 
+is called self-start). The default is
 "ptolemy.domains.ct.kernel.solver.DerivaticeResolver"
-If there are Dirac impulses in the system, the 
+If there are Dirac impulses in the system, the
 "ptolemy.domains.ct.kernel.solver.ImpulseBESolver" may give
 a better result.
 <LI>All other parameters are maintained by the CTDirector base class. And the
@@ -179,7 +179,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        CTMultiSolverDirector newobj = 
+        CTMultiSolverDirector newobj =
             (CTMultiSolverDirector)(super.clone(ws));
         newobj.ODESolver =
             (Parameter)newobj.getAttribute("ODESolver");
@@ -190,11 +190,11 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
-     *   processing discrete events, resolving states, 
+     *   processing discrete events, resolving states,
      *   and producing outputs.
      *   <P>
      *   An iteration begins with processing events, which includes
-     *   that all waveform generators consume current input events 
+     *   that all waveform generators consume current input events
      *   and all event generators produce current output events.
      *   Then the new values of the state variables are resolved.
      *   If the state is resolved successfully, the outputs are produced.
@@ -206,7 +206,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *   time. The result of such a step is the left limit of the states
      *   at the breakpoint.
      *   <PP
-     *   The new state is resolved by the resolveStates() method of the 
+     *   The new state is resolved by the resolveStates() method of the
      *   current ODE solver. After that, the step size control actors
      *   in the dynamic actor schedule and the state transition schedule
      *   are checked for the success
@@ -215,7 +215,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *   will be restarted with a refined step size, which is the minimum
      *   of the refinedStepSize() from all step size control actors in
      *   the dynamic actor schedule and the state transition schedule.
-     *   If all the actors in the dynamic actor and the state transition 
+     *   If all the actors in the dynamic actor and the state transition
      *   schedules think the current step is succeeded, then the actors
      *   in the output path will be fired according to the output
      *   schedule. Then the step size control actors in the output
@@ -257,9 +257,9 @@ public class CTMultiSolverDirector extends CTDirector {
         return _breakpointsolver;
     }
 
-    /** Initialization after type resolution. 
+    /** Initialization after type resolution.
      *  It sets the step size and the suggested next step size
-     *  to the initial step size. The ODE solver  and the 
+     *  to the initial step size. The ODE solver  and the
      *  breakpoint ODE solver are instantiated.
      *  Set the current time to be the start time of the simulation.
      *  Both the current time and the stop time are registered
@@ -292,7 +292,7 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getFullName(), " set the stop time as a break point: " +
                     getStopTime());
         fireAt(null, getStopTime());
-        
+
         if(_debugging) _debug(getFullName() + " End of Initialization.");
     }
 
@@ -358,7 +358,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if(_debugging)
             _debug(getFullName(), "The current ODE solver is",
                     getCurrentODESolver().getName());
-        
+
         if(_debugging) _debug(getFullName(), "instantiating the " +
                 " breakpoint solver ", _bpsolverclassname);
         _breakpointsolver =
@@ -372,7 +372,7 @@ public class CTMultiSolverDirector extends CTDirector {
     public void produceOutput() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler) getScheduler();
         // Integrators emit output.
-        Iterator integrators = 
+        Iterator integrators =
             scheduler.scheduledDynamicActorList().iterator();
         while(integrators.hasNext()) {
             CTDynamicActor dyn = (CTDynamicActor)integrators.next();
@@ -380,7 +380,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     ((Nameable)dyn).getName());
             dyn.emitTentativeOutputs();
         }
-        Iterator outputactors = 
+        Iterator outputactors =
             scheduler.scheduledOutputActorList().iterator();
         while(outputactors.hasNext()) {
             Actor nextoutputactor = (Actor)outputactors.next();

@@ -53,8 +53,8 @@ control related methods. CTBaseIntegrator delegated its corresponding
 methods to this class.
 <P>
 An integer called "round" is used to indicate the number of firing rounds
-within one iteration. For some integration method, (i.e. the so called 
-explicit methods) the round of firings are fixed. 
+within one iteration. For some integration method, (i.e. the so called
+explicit methods) the round of firings are fixed.
 For some others (i.e. implicit methods), the round could be an arbitrary
 possitive integer.
 <P>
@@ -128,7 +128,7 @@ public abstract class ODESolver extends NamedObj {
         return _container;
     }
 
-    /** Return the round counter record. 
+    /** Return the round counter record.
      *
      *  @return The round of firing the state transition schedule.
      */

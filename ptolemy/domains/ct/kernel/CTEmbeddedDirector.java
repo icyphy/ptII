@@ -40,7 +40,7 @@ import ptolemy.actor.Director;
 //// CTEmbeddedDirector
 /**
 An embedded director for CT inside CT/FSM. Conceptually, this director
-interacts with a continuous outter domain. As a consequence, this 
+interacts with a continuous outter domain. As a consequence, this
 director exposes its step size control information. If the container
 of this director is a CTCompositeActor, then this information is
 further exposed to the outter domain.
@@ -49,7 +49,7 @@ Unlike the CTMixedSignalDirector, this director does not run ahead
 of the global time and rollback, simply because the step size control
 information is accessible from a outter domain which has a continuous
 time and understands the meaning of step size.
- 
+
 @author  Jie Liu
 @version $Id$
 @see CTMultiSolverDirector
@@ -116,7 +116,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      *  responsibility to check if this subsystem is satisfied in
      *  this iteration.
      *  @exception IllegalActionException If one of the actors throw
-     *  it during one iteration. 
+     *  it during one iteration.
      */
     public void fire() throws IllegalActionException {
         _eventPhaseExecution();
@@ -209,7 +209,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     }
 
     /** Return true always. Recompute the schedules if there
-     *  was a mutation. Synchronize time with the outter domain, 
+     *  was a mutation. Synchronize time with the outter domain,
      *  and adjust the contents of the breakpoint table w.r.t.
      *  the current time.
      *  @return True always.

@@ -123,7 +123,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
-   
+
     /** The number of rollbacks. Used for statistics.
      */
     public int NROLL = 0;
@@ -243,14 +243,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     exe.fireAt(ca, getIterationEndTime());
                     _setEventPhase(false);
                     return;
-                } 
+                }
             }
         }
     }
 
     /** In addition to initialize the execution as in CTMultiSolverDirector,
      *  register a fire-at-current-time to the executive director,
-     *  if this director is not at the top-level. 
+     *  if this director is not at the top-level.
      *  @see CTMultiSolverDirector#initialize()
      *  @exception IllegalActionException If this director has no container or
      *       no scheduler, or thrown by a contained actor.
@@ -265,8 +265,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** If this is a top-level director, behave exactly as a 
-     *  CTMultiSolverDirector, otherwise return true always. 
+    /** If this is a top-level director, behave exactly as a
+     *  CTMultiSolverDirector, otherwise return true always.
      *  @return True if this is not a top-level director or the simulation
      *     is not finished.
      *  @exception IllegalActionException Not thrown in this base class.

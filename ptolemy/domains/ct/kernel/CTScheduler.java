@@ -59,7 +59,7 @@ where x is the state of the system, u is the input, y is the output,
 f() is the state transition map and g() is the output map.
 <P>
 The system is built by actors. That is, all the functions, f() and g(),
-are built up by chains of actors.  For high order systems, 
+are built up by chains of actors.  For high order systems,
 x is a vector, which is built up by more than one integrators.
 In general, actors have the functionality of integration
 from their inputs to their outputs are called <I>dynamic actors</I>.
@@ -67,26 +67,26 @@ Other actors are called <I>arithmetic actors</I>.
 <P>
 In order to interact with discrete domains, some actors in the
 CT domain are able to conver continuous waveforms to discrete events,
-and vice versa. An actor that has continuous input and discrete 
+and vice versa. An actor that has continuous input and discrete
 output is call an <I>event generator</I>; an actor that has
-discrete input and continuous output is called a 
-<I>waveform generator</I>. 
+discrete input and continuous output is called a
+<I>waveform generator</I>.
 <P>
 The interaction with some discrete domains requires that the
-CT simulation be able to remember its state and roll back 
+CT simulation be able to remember its state and roll back
 to the remembered state when needed. This in turn require
 that all actors which have internal states should be able
-to remember and restore their states. These actors are called 
-<I>stateful actors</I>.  
+to remember and restore their states. These actors are called
+<I>stateful actors</I>.
 <P>
 In the continuous time simulation, time progresses in a discrete way.
 The distance between consecutive simulation time points are called
 <I>integration step size</I> or step size, in short. Some actors
 require specific step sizes of the simulation. These actors are
-called <I>step size control actor</I>. Examples of step size 
-control actors include integrators, which control the 
-accuracy and speed of numerical ODE solutions, and some event 
-generators, which detect events. 
+called <I>step size control actor</I>. Examples of step size
+control actors include integrators, which control the
+accuracy and speed of numerical ODE solutions, and some event
+generators, which detect events.
 <P>
 To help the scheduling, a system topology is partitioned into
 several clusters:
@@ -94,12 +94,12 @@ the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
 the <I>step size control actors</I>, the <I>sink actors</I>,
 the <I>stateful actors</I>, the <I> event generator</I>,
 and the <I> waveform generators</I>.
-This scheduler use the clustered information and the system topology, 
+This scheduler use the clustered information and the system topology,
 to provide the firing sequences for evaluating f() and g().
 It also provides a firing order for all the dynamic actors.
 The firing sequence for evaluating f() is
-called the <I> state transition schedule</I>; the firing 
-sequence for evaluating g() is called the <I> output schedule</I>; 
+called the <I> state transition schedule</I>; the firing
+sequence for evaluating g() is called the <I> output schedule</I>;
 and the firing sequence for dynamic actors is called the
 <I>dynamic actor schedule</I>.
 <P>
@@ -181,7 +181,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Returns an enumeration of arithmetic actors. 
+    /** Returns an enumeration of arithmetic actors.
      *  @return An enumeration of arithmetic actors.
      *  @deprecated Use arithmaticActorList() instead.
      */
@@ -206,7 +206,7 @@ public class CTScheduler extends Scheduler{
     /** Returns a list of dynamic actors. This list is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache and return the 
+     *  Otherwise, it will reconstruct, cache and return the
      *  updated list.
      *  This method read-synchronizes on the workspace.
      *  @return A list of dynamic actors.
@@ -224,7 +224,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Returns an enumeration of dynamic actors. 
+    /** Returns an enumeration of dynamic actors.
      *  @return An enumeration of dynamic actors.
      *  @deprecated Use dynamicActorList() in stead.
      */
@@ -300,7 +300,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached version.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  version.
      *  This method read-synchronizes on the workspace.
      *  @return A list of step size control actors.
@@ -320,7 +320,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Return an enumeration of step size control (SSC) actors in the output
-     *  schedule. 
+     *  schedule.
      *  @return An enumeration of step size control actors.
      *  @exception IllegalActionException If thrown by the schedule() method.
      *  @deprecated Use outputSSCActorList() instead.
@@ -373,7 +373,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  list.
      *  This method read-synchronize on the workspace.
      *  @return A list of the schedule of the output path.
@@ -399,7 +399,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  list.
      *  This method read-synchronize on the workspace.
      *  @return A list of the scheduled actors of the state transition path.
@@ -424,7 +424,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached list.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  list.
      *  This method read-synchronize on the workspace.
      *  @return A list of sinks.
@@ -455,7 +455,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  version.
      *  This method read-synchronizes on the workspace.
      *  @return A list of stateful actors.
@@ -487,7 +487,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  version.
      *  This method read-synchronizes on the workspace.
      *  @return A list of step size control actors in the dynamic-actor and
@@ -510,7 +510,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Return an enumeration of step size control (SSC) actors in the
-     *  state and state transition schedule. 
+     *  state and state transition schedule.
      *  @return An enumeration of step size control actors.
      *  @exception IllegalActionException If thrown by the schedule() method.
      *  @deprecated Use stateTransitionSSCActorList()instead.
@@ -630,7 +630,7 @@ public class CTScheduler extends Scheduler{
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it will reconstruct, cache, and return the new 
+     *  Otherwise, it will reconstruct, cache, and return the new
      *  version.
      *  This method read-synchronizes on the workspace.
      *  @return An list of event interpreters.
@@ -656,7 +656,7 @@ public class CTScheduler extends Scheduler{
      *  event generators, waveform generators
      *  and stateful actors in the
      *  CompositeActor.
-     *  @exception  NotSchedulableException If the system is not 
+     *  @exception  NotSchedulableException If the system is not
      *  schedulable.
      */
     protected void _classifyActors() throws NotSchedulableException {

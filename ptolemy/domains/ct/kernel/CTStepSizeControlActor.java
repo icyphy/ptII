@@ -44,10 +44,10 @@ effect the integration step size should implement this interface.
 Three methods are defined in this interface, isThisStepSuccessful(),
 refinedStepSize(), and predictedStepSize(). At the end of each integration
 step, the CTStepSizeControlActors will be asked whether this step is
-successful. If one of the actor is not satisfied, then the actor 
+successful. If one of the actor is not satisfied, then the actor
 will be asked
 for a refined step size. The integration step will be restarted with
-the smallest refined step size. 
+the smallest refined step size.
 If all the step size control actors are satisfied,
 they will be asked for a (predicted) next step size.
 @author  Jie Liu
