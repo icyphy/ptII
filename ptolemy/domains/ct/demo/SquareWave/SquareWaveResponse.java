@@ -52,7 +52,7 @@ The square wave response of a second order CT system. This simple
 CT system demonstrate the use of ODE solvers and domain polymorephic
 actors in the CT domain.
 The solvers are not allowed to change during the execution.
-It is also useful for correctness and performancs testing.
+It is also useful for correctness and performance testing.
 @author  Jie Liu
 @version $Id$
 */
