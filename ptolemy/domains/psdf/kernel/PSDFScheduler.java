@@ -78,11 +78,11 @@ import ptolemy.graph.*;
 /**
 
 A scheduler that implements basic scheduling of PSDF graphs.  PSDF
-scheduling is similar to SDF scheduling, EXCEPT: 
+scheduling is similar to SDF scheduling, EXCEPT:
 
 <p> 1) Because parameter values may change, the solution to the
 balance equation is computed symbolically.  i.e. the repetitions
-vector is a function of the parameter values. 
+vector is a function of the parameter values.
 
 <p> 2) Because the firing vector may change, the schedule determined
 by this class can only be a quasi-static, or parameterized schedule.
@@ -108,12 +108,12 @@ change context of those rate variables and may refuse to schedule the
 composite actor if those rates imply that this model is not locally
 synchronous.
 
-<p> This scheduler uses a version of the P-APGAN scheduling algorithm 
+<p> This scheduler uses a version of the P-APGAN scheduling algorithm
 described in [1].
 
 <p> [1] B. Bhattacharya and S. S. Bhattacharyya. Quasi-static scheduling of
 reconfigurable dataflow graphs for DSP systems. In <em> Proceedings of the
-International Workshop on Rapid System Prototyping </em>, 
+International Workshop on Rapid System Prototyping </em>,
 pages 84-89, Paris, France, June 2000.
 
 @see ptolemy.actor.sched.Scheduler
@@ -129,7 +129,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
      */
-    public PSDFScheduler() 
+    public PSDFScheduler()
             throws IllegalActionException, NameDuplicationException {
         super();
         _init();
@@ -143,7 +143,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *
      *  @param workspace Object for synchronization and version tracking.
      */
-    public PSDFScheduler(Workspace workspace) 
+    public PSDFScheduler(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
@@ -189,60 +189,60 @@ public class PSDFScheduler extends BaseSDFScheduler {
         while (relations.hasNext()) {
             Relation relation = (Relation)relations.next();
             Variable variable = (Variable)relation.getAttribute("bufferSize");
-            result += (relation.getName() + ": "); 
+            result += (relation.getName() + ": ");
             if (variable == null) {
-                result+=("null"); 
+                result+=("null");
             } else {
-                result += variable.getExpression(); 
+                result += variable.getExpression();
             }
             result += "\n";
         }
         return result;
     }
 
-    /** Return the parameterized scheduling sequence.  
-     *  An exception will be thrown if the graph is not schedulable.  
+    /** Return the parameterized scheduling sequence.
+     *  An exception will be thrown if the graph is not schedulable.
      *
      *  @return A schedule of the deeply contained opaque entities
      *  in the firing order.
-     *  @exception NotSchedulableException If a parameterized schedule 
+     *  @exception NotSchedulableException If a parameterized schedule
      *  cannot be derived for the model.
      *  @exception IllegalActionException If the rate parameters
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
 
-    protected Schedule _getSchedule() 
+    protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
-        _debug("Starting PSDFScheduler._getSchedule()\n"); 
+        _debug("Starting PSDFScheduler._getSchedule()\n");
         PSDFDirector director = (PSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph psdfGraph = (PSDFGraph) (graphReader.convert(model));
-        _debug("Finished converting to a PSDF graph\n"); 
-        _debug(psdfGraph.toString() + "\n"); 
+        _debug("Finished converting to a PSDF graph\n");
+        _debug(psdfGraph.toString() + "\n");
         psdfGraph.printEdgeRateExpressions();
-        _debug("Invoking the P-APGAN algorithm\n"); 
+        _debug("Invoking the P-APGAN algorithm\n");
         PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
         ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
-        _debug("Returned from P-APGAN; the schedule follows.\n"); 
-        _debug(schedule.toString() + "\n"); 
+        _debug("Returned from P-APGAN; the schedule follows.\n");
+        _debug(schedule.toString() + "\n");
 
-        SymbolicScheduleElement result = 
-                 _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
+        SymbolicScheduleElement result =
+                 _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(),
                  scheduler);
         _debug("Completed PSDFScheduler._getSchedule().\n The "
                 + "schedule follows.\n" + result.toString() + "\n");
         _debug("Saving buffer sizes\n");
         _saveBufferSizes(_bufferSizeMap);
-        _debug("Printing buffer sizes\n"); 
-        _debug(displayBufferSizes() + "\n"); 
+        _debug("Printing buffer sizes\n");
+        _debug(displayBufferSizes() + "\n");
         if (_debugging) {
-            _debug("The buffer size map:\n"); 
+            _debug("The buffer size map:\n");
             Iterator relations = _bufferSizeMap.keySet().iterator();
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
-                _debug(relation.getName() + ": " 
+                _debug(relation.getName() + ": "
                         + _bufferSizeMap.get(relation) + "\n");
             }
         }
@@ -257,10 +257,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
             throws IllegalActionException {
         if (_parseTreeEvaluator == null) {
             _parseTreeEvaluator = new ParseTreeEvaluator();
-        }      
+        }
         if (_parserScope == null) {
             _parserScope = new ScheduleScope();
-        } 
+        }
         Token result = _parseTreeEvaluator.evaluateParseTree(
                 node, _parserScope);
         return result;
@@ -274,7 +274,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     // @param node The super node to expand.
     // @param apgan The scheduler that was used to build the cluster hierarchy.
     // @return The schedule saving the expansion result.
-    private SymbolicScheduleElement _expandAPGAN(PSDFGraph graph, 
+    private SymbolicScheduleElement _expandAPGAN(PSDFGraph graph,
             ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
         PSDFGraph childGraph = (PSDFGraph)apgan.getSubgraph(node);
 
@@ -289,14 +289,14 @@ public class PSDFScheduler extends BaseSDFScheduler {
             } else {
                 Schedule schedule = new Schedule();
 
-                // Expand the super node with adjacent nodes contained 
+                // Expand the super node with adjacent nodes contained
                 // within it.
                 Edge edge = (Edge)childGraph.edges().iterator().next();
                 ptolemy.graph.Node source = edge.source();
                 ptolemy.graph.Node sink   = edge.sink();
-                SymbolicScheduleElement first  = 
+                SymbolicScheduleElement first  =
                         _expandAPGAN(childGraph, source, apgan);
-                SymbolicScheduleElement second = 
+                SymbolicScheduleElement second =
                         _expandAPGAN(childGraph, sink, apgan);
 
                 // Determine the iteration counts of the source and
@@ -317,7 +317,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
                 String denominator = PSDFGraphs.gcdExpression(
                         producedExpression, consumedExpression);
-                String firstIterations = "(" + consumedExpression + ") / (" 
+                String firstIterations = "(" + consumedExpression + ") / ("
                         + denominator + ")";
                 String secondIterations = "(" + producedExpression + ") / ("
                         + denominator + ")";
@@ -329,12 +329,12 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 symbolicSchedule.add((ScheduleElement)first);
                 symbolicSchedule.add((ScheduleElement)second);
 
-                // Compute buffer sizes and associate them with the 
+                // Compute buffer sizes and associate them with the
                 // corresponding relations.
                 Iterator edges = childGraph.edges().iterator();
                 while (edges.hasNext()) {
                     Edge nextEdge = (Edge)edges.next();
-                    PSDFEdgeWeight weight = 
+                    PSDFEdgeWeight weight =
                             (PSDFEdgeWeight)nextEdge.getWeight();
                     IOPort sourcePort = weight.getSourcePort();
                     List relationList = sourcePort.linkedRelationList();
@@ -351,8 +351,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     Relation relation = (Relation)relations.next();
                     String produced = apgan.producedExpression(nextEdge);
                     String consumed = apgan.consumedExpression(nextEdge);
-                    String bufferSizeExpression = "((" 
-                            + produced 
+                    String bufferSizeExpression = "(("
+                            + produced
                             + ") * ("
                             + consumed
                             + ")) / "
@@ -364,12 +364,12 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     // progressively replaced by those of outer
                     // clusterings, and will end up with the buffer
                     // size determined by the outermost clustering.
-                    _debug("Associating buffer size expression '" 
+                    _debug("Associating buffer size expression '"
                             + bufferSizeExpression
                             + "' with relation '"
                             + relation.getName()
-                            + "'\n"); 
-                    _bufferSizeMap.put(relation, bufferSizeExpression); 
+                            + "'\n");
+                    _bufferSizeMap.put(relation, bufferSizeExpression);
                 }
                 return symbolicSchedule;
             }
@@ -390,18 +390,18 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.
      */
-    private class SymbolicFiring extends Firing implements 
+    private class SymbolicFiring extends Firing implements
             SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor
          *  is assumed to fire the number of times determined by
-         *  evaluating the given expression.  
+         *  evaluating the given expression.
          *  @param actor The actor in the firing.
          *  @param expression The expression associated with the firing.
          */
         public SymbolicFiring(Actor actor, String expression)
                 throws IllegalActionException {
-            super(actor); 
+            super(actor);
             setIterationCount(expression);
         }
 
@@ -431,7 +431,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         }
 
-        /** Get the parse tree of the iteration expression. 
+        /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
         public ASTPtRootNode parseTree() {
@@ -478,12 +478,12 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** A schedule whose iteration count is given by an expression.
      */
-    private class SymbolicSchedule extends Schedule  implements 
+    private class SymbolicSchedule extends Schedule  implements
             SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
-         *  @param expression The expression associated with the schedule. 
+         *  @param expression The expression associated with the schedule.
          */
         public SymbolicSchedule(String expression)
                 throws IllegalActionException {
@@ -512,7 +512,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         }
 
-        /** Get the parse tree of the iteration expression. 
+        /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
         public ASTPtRootNode parseTree() {
@@ -550,8 +550,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 result += element + "\n";
             }
             result += "}";
-            result += "[" + expression() + "] times"; 
-            return result; 
+            result += "[" + expression() + "] times";
+            return result;
         }
 
         // The iteration expression. This is stored separately for
@@ -564,11 +564,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** An interface for schedule elements whose iteration counts are
      *  in terms of symbolic expressions.
-     */ 
+     */
     private interface SymbolicScheduleElement {
         // FIXME: populate with more methods as appropriate.
 
-        /** Get the parse tree of the iteration expression. 
+        /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
         public ASTPtRootNode parseTree();
@@ -586,7 +586,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** Scope implementation with local caching. */
     private class ScheduleScope extends ModelScope {
-        
+
         /** Construct a scope consisting of the variables
          *  of the container of the the enclosing instance of
          *  Variable and its containers and their scope-extending
@@ -616,7 +616,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         reference,
                         name);
             }
-            
+
             if (result != null) {
                 return result.getToken();
             } else {
@@ -666,7 +666,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // A map from relations into expressions that give symbolic buffer sizes 
+    // A map from relations into expressions that give symbolic buffer sizes
     // of the relations. Keys are of type Relation and values are of type
     // String.
     private HashMap _bufferSizeMap;

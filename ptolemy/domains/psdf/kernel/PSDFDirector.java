@@ -57,7 +57,7 @@ parameters may change.  By default, SDF disallows reconfiguration of
 all rate parameters.  If rate parameters are allowed to change, then
 SDF checks that rate parameters do not change during execution of the
 schedule, and declares that inferred rate parameters for external
-ports change as often as the internal rate parameters.  
+ports change as often as the internal rate parameters.
 
 This domain offers two key extensions:
 
@@ -92,7 +92,7 @@ public class PSDFDirector extends SDFDirector {
      *
      *  The PSDFDirector will have a default scheduler of type PDFScheduler.
      */
-    public PSDFDirector() 
+    public PSDFDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
         _init();
@@ -142,7 +142,7 @@ public class PSDFDirector extends SDFDirector {
     /** Initialize the object.   In this case, we give the PSDFDirector a
      *  default scheduler of the class PSDFScheduler.
      */
-    private void _init() 
+    private void _init()
             throws IllegalActionException, NameDuplicationException {
         PSDFScheduler scheduler =
             new PSDFScheduler(this, uniqueName("Scheduler"));
