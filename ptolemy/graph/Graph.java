@@ -1417,7 +1417,7 @@ public class Graph implements Cloneable {
             // Note that the weight can change without the weight value,
             // as referenced here, changing if the change does not affect
             // comparison under the equals method. 
-            weightValueHasChanged = weight.equals(node.getWeight());
+            weightValueHasChanged = !weight.equals(node.getWeight());
             if (nodes.size() == 0) {
                 _nodeWeightMap.remove(weight);
             }
