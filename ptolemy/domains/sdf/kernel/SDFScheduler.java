@@ -716,12 +716,12 @@ public class SDFScheduler extends Scheduler {
                     UnscheduledActors.removeOneOf(currentActor);
                 // Otherwise the actor still has firings left
                 else
-                    // We've already removed currentActor from ReadytoSchedule
+                    // We've already removed currentActor from ReadyToSchedule
                     // so if it can be fired again right away, put it back on
                     // the list.
                     if(stillReadyToSchedule)
                         // if the actor can still be scheduled, then put it
-                        //at the END of ReadytoScheduleActors.
+                        //at the END of ReadyToScheduleActors.
                         ReadyToScheduleActors.insertLast(currentActor);
 
                 // add it to the schedule
