@@ -36,9 +36,13 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.FiringEvent.FiringEventType;
 import ptolemy.gui.Query;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.BasicGraphController;
 
 import javax.swing.BoxLayout;
@@ -57,7 +61,7 @@ postfire, iterate.
 @version $Id$
 */
 
-public class BreakpointConfigurer extends Query {
+public class BreakpointConfigurer extends Query implements ChangeListener{
 
     /** Construct a breakpoint configurer for the specified entity.
      *  @param object The entity to configure.
@@ -103,7 +107,7 @@ public class BreakpointConfigurer extends Query {
             // exist.
             _actorProfile = null;
             if (debugController != null) {
-                _actorProfile = debugController.getDebug(_actor);
+                _actorProfile = debugController.getDebugProfile(_actor);
             }
             if (_actorProfile == null) {
                 _actorProfile = new DebugProfile(_graphController);
@@ -131,50 +135,84 @@ public class BreakpointConfigurer extends Query {
         boolean breakpointsSelected = false;
 
         // Make a new DebugProfile.
-        DebugProfile profile = new DebugProfile(_graphController);
+        _actorProfile = new DebugProfile(_graphController);
         for (int i = 0; i < _firingEventTypes.length; i++) {
             // Configure the DebugProfile with the selected FiringEventTypes.
             if (getBooleanValue(_firingEventTypeLabels[i])) {
-                profile.listenForEvent(_firingEventTypes[i]);
+                _actorProfile.listenForEvent(_firingEventTypes[i]);
                 breakpointsSelected = true;
             } else {
-                profile.unlistenForEvent(_firingEventTypes[i]);
+                _actorProfile.unlistenForEvent(_firingEventTypes[i]);
             }
         }
 
-        Director director = ((Actor)_actor).getExecutiveDirector();
         // The director should not be null because we already checked
         // in the constructor.
+        Director director = ((Actor)_actor).getExecutiveDirector();
         DebugController debugController =
             (DebugController) director.getAttribute(_DEBUGCONTROLLER);
 
         // If some breakpoints were selected
         if (breakpointsSelected) {
-            // If the director does not already have a
-            // DebugController, create one.
-            if (debugController == null) {
-                try {
-                    debugController =
-                        new DebugController(director, _DEBUGCONTROLLER);
-                } catch (NameDuplicationException exception) {
-                    throw new RuntimeException(
-                            "Could not create debug controller.");
-                } catch (IllegalActionException exception) {
-                    throw new RuntimeException(
-                            "Could not create debug controller.");
-                }
-                // Register a new DebugController with the director.
-                director.addDebugListener(debugController);
-
-                // FIXME: when do we removeDebugListener?
+            if (debugController != null) {
+                // Add this actor to the set of objects being debugged.
+                debugController.putDebugProfile(_actor, _actorProfile);
+            } else {
+                // If the director does not already have a
+                // DebugController, create one.
+                String moml = "<property name=\"" 
+                    + _DEBUGCONTROLLER 
+                    + "\" class=\"ptolemy.vergil.debugger.DebugController\"/>";
+                ChangeRequest request = new MoMLChangeRequest(
+                        this,            // originator
+                        director,       // context
+                        moml.toString()  // MoML code
+                        );
+                director.addChangeListener(this);
+                director.requestChange(request);
             }
-            // Add this actor to the set of objects being debugged.
-            debugController.setDebug(_actor, profile);
         } else {
             // Remove profile if there are no longer any
-            // breakpoints for this _actor.
-            debugController.unsetDebug(_actor);
+            // breakpoints selected for this _actor.
+            debugController.removeDebugProfile(_actor);
+
+            // FIXME: removeDebugListener if no more actors have breakpoints.
         }
+    }
+
+    /** React to a change request has been successfully executed.
+     *  This method is called after a change request
+     *  has been executed successfully.
+     *  @param change The change that has been executed, or null if
+     *   the change was not done via a ChangeRequest.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        Director director = ((Actor)_actor).getExecutiveDirector();
+
+        // The DebugController should not be null since the change
+        // request should have added the DebugController to the
+        // director.
+        DebugController debugController = 
+            (DebugController) director.getAttribute(_DEBUGCONTROLLER);
+
+        // Register a new DebugController with the director.
+        director.addDebugListener(debugController);
+        // Add this actor to the set of objects being debugged.
+        debugController.putDebugProfile(_actor, _actorProfile);
+
+        director.removeChangeListener(this);
+    }
+
+    /** React to a change request has resulted in an exception.
+     *  This method is called after a change request was executed,
+     *  but during the execution an exception was thrown.
+     *  @param change The change that was attempted or null if
+     *   the change was not done via a ChangeRequest.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        throw new InternalErrorException(
+                "Could not add DebugController to the director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,8 +255,6 @@ public class BreakpointConfigurer extends Query {
 
     // DebugProfile associated with _actor.
     private DebugProfile _actorProfile;
-
-
 
     // The GraphController associated with _actor.
     private BasicGraphController _graphController;

@@ -178,6 +178,11 @@ public class Manager extends NamedObj implements Runnable {
      */
     public final static State PAUSED = new State("pausing execution");
 
+    /** Indicator that the execution is paused on a breakpoint.
+     */
+    public final static State PAUSED_ON_BREAKPOINT = new State(
+            "pausing execution on a breakpoint");
+
     /** Indicator that the execution is in the preinitialize phase.
      */
     public final static State PREINITIALIZING = new State("preinitializing");
@@ -521,6 +526,62 @@ public class Manager extends NamedObj implements Runnable {
         ((CompositeActor)container).stopFire();
     }
 
+
+    /** The thread that calls this method will wait until resume() has
+     *  been called.
+     *
+     *  Note: This method will block.  Should only be called from the
+     *  executing thread (the thread that is executing the model).  Do
+     *  not call this method from the same thread that will call
+     *  resume().
+     *
+     *  FIXME: Added by celaine.  Review this.  Works with
+     *  DebugController to resume execution after a breakpoint.
+     *  FIXME: in PN this could be called multiple times.  make sure
+     *  this still works with multiple threads.
+     */
+    public void pauseOnBreakpoint(String breakpointMessage) {
+        try {
+            if (_state == ITERATING) {
+                synchronized(this) {
+                    if (_state == ITERATING) {
+                        // Set the new state to show that execution is paused
+                        // on a breakpoint.
+                        _setState(PAUSED_ON_BREAKPOINT);
+
+                        // FIXME: I want to show a different message
+                        // in the Run window (not just "pausing
+                        // execution on a breakpoint").
+
+                        //_setState(new State("pausing on breakpoint: "
+                        //                  + breakpointMessage
+                        //                  + ".  Select Resume to continue."));
+                        
+                        _resumeNotifyWaiting = true;
+                        
+                        // Wait until resume() is called.
+                        while (_resumeNotifyWaiting) {
+                            wait();
+                        }
+
+                        // resume() has been called, so reset the state of the
+                        // execution.
+                        _setState(ITERATING);
+                    } else { //if (_state == ITERATING) {
+                        throw new InternalErrorException("State was changed " 
+                                + "while pauseOnBreakpoint was called.");
+                    }
+                } //synchronized(this) {
+            } else { //if (_state == ITERATING) {
+                throw new InternalErrorException("pauseOnBreakpoint occurred "
+                        + "while not iterating the model.");
+            }
+        } catch (InterruptedException error) {
+            throw new InternalErrorException("Interrupted while trying to "
+                    + "wait for resume() method to be called.");
+        }
+    }
+
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
@@ -595,26 +656,31 @@ public class Manager extends NamedObj implements Runnable {
      *  suspended.
      */
     public void resume() {
-
-        // Notify all threads waiting to know whether resume() has
-        // been called (threads that called waitForResume()).
-        //
-        // Works with DebugController to resume execution after a
-        // breakpoint.
-        synchronized(_resumeNotify) {
-            if (_resumeNotifyWaiting) {
-                _resumeNotify.notifyAll();
-                _resumeNotifyWaiting = false;
-            }
-        }
-
         // Avoid the case when the director is not actually paused causing the
         // swing thread to block.
         if (_state == PAUSED) {
             synchronized(this) {
-                if(_state == PAUSED) {
+                if (_state == PAUSED) {
                     _pauseRequested = false;
                     notifyAll();
+                } else {
+                    throw new InternalErrorException("resume() should be the "
+                            + "only method that goes from "
+                            + "PAUSED to not paused");
+                }
+            }
+        } else if (_state == PAUSED_ON_BREAKPOINT) {
+            synchronized(this) {
+                if (_state == PAUSED_ON_BREAKPOINT) {
+                    // Notify all threads waiting to know whether resume() has
+                    // been called (threads that called waitForResume()).
+                    //
+                    // Works with DebugController to resume execution after a
+                    // breakpoint.
+                    if (_resumeNotifyWaiting) {
+                        _resumeNotifyWaiting = false;
+                        notifyAll();
+                    }
                 }
             }
         }
@@ -758,43 +824,6 @@ public class Manager extends NamedObj implements Runnable {
             + Math.round( (((double)freeMemory)/((double)totalMemory))
                     * 100.0)
             + "%)";
-    }
-
-    /** The thread that calls this method will wait until resume() has
-     *  been called.
-     *
-     *  Note: This method will block.  Do not call this method from
-     *  the same thread that will call resume().
-     *
-     *  FIXME: Added by celaine.  Review this.  Works with
-     *  DebugController to resume execution after a breakpoint.
-     */
-    public void waitForResume(String breakpointMessage) {
-        try {
-            synchronized(_resumeNotify) {
-                // State of execution before synchronizing on resume().
-                State savedState = getState();
-
-                // Set the new state to show that execution is paused
-                // on a breakpoint.
-                //_setState(PAUSED_ON_BREAKPOINT);
-                _setState(new State("pausing on breakpoint: "
-                                  + breakpointMessage
-                                  + ".  Select Resume to continue."));
-
-                _resumeNotifyWaiting = true;
-
-                // Wait until resume() is called.
-                _resumeNotify.wait();
-
-                // resume() has been called, so reset the state of the
-                // execution.
-                _setState(savedState);
-            }
-        } catch (InterruptedException error) {
-            throw new InternalErrorException("Interrupted while trying to "
-                    + "wait for resume() method to be called.");
-        }
     }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel

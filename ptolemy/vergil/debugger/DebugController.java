@@ -46,14 +46,15 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
 
 import java.util.Hashtable;
+import javax.swing.SwingUtilities;
 
 ////////////////////////////////////////////////////////////////////////
 //// DebugController
 /**
 An execution listener that suspends execution based on breakpoints.
-This class should be associated with a director.  This class keeps a
-DebugProfile for each actor that belongs to that director and are
-being debugged.
+Instances of this class should be contained by a director.  This class
+keeps a DebugProfile for each actor that belongs to that director and
+is being debugged.
 
 @see DebugProfile
 
@@ -86,10 +87,16 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         _toDebug.clear();
     }
 
-    /** Respond to debug events of type FiringEvent by highlighting
-     *  the actor that we are breaking on.
-     *  @param debugEvent The debug event.
+    /** Respond to all FiringEvents.  If the DebugController has a
+     *  DebugProfile containing a matching FiringEvent, then this
+     *  method highlights the actor and invokes pauseOnBreakpoint() on the
+     *  manager.  
+     *  @see ptolemy.actor.Manager#pauseOnBreakpoint
+     *  
+     *  This is similar to doing animation.
      *  @see ptolemy.vergil.actor.ActorViewerGraphController#event
+     *
+     *  @param debugEvent The debug event.
      */
     public void event(DebugEvent debugEvent) {
         // FIXME: this method is called every time the director gets a
@@ -109,7 +116,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 // composite, then find an object above it in the hierarchy
                 // that is.
                 DebugProfile debugProfile =
-                    getDebug((Executable)objToHighlight);
+                    getDebugProfile((Executable)objToHighlight);
                 BasicGraphController graphController =
                     debugProfile.getGraphController();
                 AbstractBasicGraphModel graphModel =
@@ -129,7 +136,8 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                     if (figure != null) {
                         // If the user has chosen to break on one of
                         // the firing events, highlight the actor and
-                        // wait for keyboard input.
+                        // wait for the user to press the Resume
+                        // button.
                         if (debugProfile.isListening(event.getType())) {
                             String message =
                                 new String(objToHighlight.getName()
@@ -145,23 +153,25 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         }
     }
 
-    /** Determine whether debugging is enabled on the set of actors.
-     *  @return True if debugging is enabled.
-     */
-    public boolean getEnabled() {
-        // FIXME: not implemented yet
-        return false;
-    }
-
     /** Get the profile for an actor that is being debugged.
      *  @param actor The actor for which to retrieve the profile.
      *  @return The profile for the actor.
      */
-    public DebugProfile getDebug(Executable actor) {
+    public DebugProfile getDebugProfile(Executable actor) {
         return (DebugProfile)_toDebug.get(actor);
     }
 
-    /** Ignore string messages.
+    /** Determine whether debugging is enabled on the set of actors.
+     *  @return True if debugging is enabled.
+     */
+    public boolean isEnabled() {
+        // FIXME: not implemented yet
+        return false;
+    }
+
+    /** React to a debug message from the director that we are
+     *  listening to by ignoring the message.
+     *  @param string Debug message.
      */
     public void message(String string) {
     }
@@ -170,8 +180,16 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      *  @param actor The actor to debug.
      *  @param profile The breakpoint configuration for this actor.
      */
-    public void setDebug(Executable actor, DebugProfile profile) {
+    public void putDebugProfile(Executable actor, DebugProfile profile) {
         _toDebug.put(actor, profile);
+    }
+
+    /** Remove an actor from the set of actors that are being debugged.
+     *  @param actor The actor to remove.
+     */
+    public void removeDebugProfile(Executable actor) {
+        // delete the debug profile from the hashtable
+        _toDebug.remove(actor);
     }
 
     /** Enable/disable debugging on the set of actors.
@@ -181,35 +199,46 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         // FIXME: not implemented yet
     }
 
-    /** Remove an actor from the set of actors that are being debugged.
-     *  @param actor The actor to remove.
-     */
-    public void unsetDebug(Executable actor) {
-        // delete the debug profile from the hashtable
-        _toDebug.remove(actor);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Highlight the actor.
+    /** Highlight the actor and wait for the user to select the Resume
+     *  button before unhighlighting the actor.  This calls
+     *  pauseOnBreakpoint() on the manager.
+     *
      *  @param figure The figure that we are highlighting.
      *  @param manager The manager for the figure.
+     *  @param message The message to display in the Run window while
+     *  pausing on the breakpoint.
      *  @see ptolemy.vergil.kernel.DebugRenderer
      */
-    private void render(Figure figure, Manager manager, String message) {
+    private void render(final Figure figure, Manager manager, String message) {
         if (_debugRenderer == null) {
             _debugRenderer = new DebugRenderer();
         }
 
-        _debugRenderer.renderSelected(figure);
-        Figure debugRendered = figure;
+        // We don't want to call swing stuff in the execution thread,
+        // so we make an anonymous inner class to handle it in a
+        // different thread.
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run() {
+                        _debugRenderer.renderSelected(figure);
+                    }
+                });
+
+        final Figure debugRendered = figure;
 
         // Wait for user to select Resume.
-        manager.waitForResume(message);
+        manager.pauseOnBreakpoint(message);
         if (debugRendered != null) {
             // Unhighlight the actor after resuming execution.
-            _debugRenderer.renderDeselected(debugRendered);
+            SwingUtilities.invokeLater(
+                    new Runnable() {
+                        public void run() {
+                            _debugRenderer.renderDeselected(debugRendered);
+                        }
+                    });
         }
     }
 
