@@ -39,25 +39,29 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.ErrorHandler;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame; // VERGIL_USER_LIBRARY_NAME
 
+import javax.swing.SwingUtilities;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,7 +125,7 @@ public class VergilApplication extends MoMLApplication {
         // to work, you should invoke it in event thread.  Otherwise,
         // weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
-        try {
+	try {
             // NOTE: This is unfortunate... It would be nice
             // if this could be run inside a PtolemyThread, since
             // getting read access the workspace is much more efficient
@@ -260,31 +264,42 @@ public class VergilApplication extends MoMLApplication {
         // try to save another file.  The name of the entity gets
         // changed by the saveAs code.
 
-        String libraryName = StringUtilities.preferencesDirectory()
-            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
-        System.out.print("Opening user library " + libraryName + "...");
-        File file = new File(libraryName);
-        if (!file.isFile() || !file.exists()) {
-            try {
-                file.createNewFile();
-                FileWriter writer = new FileWriter(file);
-                writer.write("<entity name=\""
-                        + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
-                        + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
-                writer.close();
-            } catch (Exception ex) {
-                MessageHandler.error("Failed to create an empty user library:"
-                        + libraryName, ex);
+        String libraryName = null;
+        try {
+            libraryName = StringUtilities.preferencesDirectory()
+                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
+        } catch (Exception ex) {
+            System.out.println("Warning: Failed to get the preferences "
+                    + "directory (-sandbox always causes this): " + ex);
+        }
+        if (libraryName != null) {
+            System.out.print("Opening user library " + libraryName + "...");
+            File file = new File(libraryName);
+            if (!file.isFile() || !file.exists()) {
+                try {
+                    file.createNewFile();
+                    FileWriter writer = new FileWriter(file);
+                    writer.write("<entity name=\""
+                            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
+                            + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
+                    writer.close();
+                } catch (Exception ex) {
+                    MessageHandler.error("Failed to create an empty user "
+                            + "library: "
+                            + libraryName, ex);
+                }
+
+                // Load the user library.
+                try {
+                    openLibrary(configuration, file);
+                    System.out.println(" Done");
+                } catch (Exception ex) {
+                    MessageHandler.error("Failed to display user library.",
+                            ex);
+                }
             }
         }
 
-        // Load the user library.
-        try {
-            openLibrary(configuration, file);
-            System.out.println(" Done");
-        } catch (Exception ex) {
-            MessageHandler.error("Failed to display user library.", ex);
-        }
         return configuration;
     }
 
