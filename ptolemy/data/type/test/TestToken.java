@@ -68,7 +68,7 @@ public class TestToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return the type of this token.
+     *  @return {@link #TYPE}, the type of this token.
      */
     public Type getType() {
         return TYPE;
@@ -105,11 +105,21 @@ public class TestToken extends Token {
 
     public static class TestType implements Type, Serializable {
 
+        // FIXME: should this extend BaseType?
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         constructors                      ////
+
+        // The constructor is private to make a type safe enumeration.
+        private TestType() {
+            super();
+        }
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
         /** Return this, that is, return the reference to this object.
-         *  @return A BaseType.
+         *  @return A KeyType
          */
         public Object clone() {
             return this;
@@ -158,16 +168,6 @@ public class TestToken extends Token {
             return true;
         }
 
-        /** Determine if the argument represents the same BaseType as this
-         *  object.
-         *  @param t A Type.
-         *  @return True if the argument represents the same BaseType as
-         *   this object; false otherwise.
-         */
-        public boolean equals(Type t) {
-            return this == t;
-        }
-
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
@@ -202,6 +202,7 @@ public class TestToken extends Token {
         }
     }
 
+    /** The type of this token. */
     public static final Type TYPE = new TestType();
 
     ///////////////////////////////////////////////////////////////////
