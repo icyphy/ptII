@@ -82,7 +82,7 @@ all: jclass
 install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 demo:
-	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.od.demo.ODStringDemo
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.od.demo.ODStringDemo
 
 depend:
 	@echo "no dependencies in this directory"
