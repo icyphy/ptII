@@ -172,21 +172,18 @@ public class BranchController implements Runnable {
                 try {
                     producerReceiver =
                         (ProcessReceiver)producerReceivers[i][0];
+                    consumerReceiver =
+                        (ProcessReceiver)consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
-                    // pn/test/auto/decspbug.xml is a DE model with
-                    // a PN composite that fails with a ClassCastException
-                    // error, so we give a better message.
-                    throw new ClassCastException("Failed to cast '"
-                            + producerReceivers[i][0] + "', which is a '"
-                            + producerReceivers[i][0].getClass().getName()
-                            + "' to a ProcessReceiver. Note that currently, "
-                            + "process domains like PN and CSP do not work "
-                            + "inside non process domains." );
-
+                    // See [Bug 5] and pn/test/PNInsideDE.xml
+                    throw new IllegalActionException(port, ex,
+                            "At the current time, process-oriented domains "
+                            + "(PN and CSP) cannot be nested inside "
+                            + "firing-based domains (SDF, DE, CT, etc.).");
                 }
-                consumerReceiver = (ProcessReceiver)consumerReceivers[i][0];
 
-                branch = new Branch( producerReceiver, consumerReceiver, this );
+                branch =
+                    new Branch( producerReceiver, consumerReceiver, this );
                 _branches.add(branch);                
             }
         }
