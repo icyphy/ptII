@@ -62,9 +62,9 @@ public class Add extends TypedAtomicActor {
     public Add(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_input = new TypedIOPort(this, "Input", true, false);
-	_input.setMultiport(true);
-	_output = new TypedIOPort(this, "Output", false, true);
+	input = new TypedIOPort(this, "Input", true, false);
+	input.setMultiport(true);
+	output = new TypedIOPort(this, "Output", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,15 +79,15 @@ public class Add extends TypedAtomicActor {
     public void fire()
 	    throws IllegalActionException {
 	Token sum = null;
-	for (int i = 0; i < _input.getWidth(); i++) {
+	for (int i = 0; i < input.getWidth(); i++) {
 	    if (i == 0) {
-		sum = _input.get(i);
+		sum = input.get(i);
 	    } else {
-		sum = sum.add(_input.get(i));
+		sum = sum.add(input.get(i));
 	    }
 	}
 
-	_output.broadcast(sum);
+	output.broadcast(sum);
     }
 
     /** Return the type constraints: Input <= Output; Output <= Scalar.
@@ -97,7 +97,7 @@ public class Add extends TypedAtomicActor {
 	result.appendElements(super.typeConstraints());
 
 	TypeTerm scalar = new TypeTerm(ScalarToken.class);
-	Inequality ineq = new Inequality(_output.getTypeTerm(), scalar);
+	Inequality ineq = new Inequality(output.getTypeTerm(), scalar);
 	result.insertLast(ineq);
 
 	return result.elements();
@@ -110,7 +110,7 @@ public class Add extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private TypedIOPort _input = null;
-    private TypedIOPort _output = null;
+    public TypedIOPort input = null;
+    public TypedIOPort output = null;
 }
 
