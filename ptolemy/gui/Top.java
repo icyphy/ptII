@@ -227,7 +227,7 @@ public abstract class Top extends JFrame {
 
     /** Set the value of the last overall URL.  
      *  @param lastOverallURL The last overall URL
-     *  @see getLastOverallURL
+     *  @see #getLastOverallURL()
      */
     public static void setLastOverallURL(String lastOverallURL) {
 	// This method is static so that we can get at it from
