@@ -52,34 +52,112 @@ The testing infrastructure will automatically run any MoML models
 located in <CODE>test/auto</CODE> directories.  (Nowhere do the names
 of these MoML files need to be listed in order for them to be run.)
  <p>However, said infrastructure has to be re-built in each new
-directory containing tests.  To create the infrastructure for a new 
-test directory, do the following:
+directory containing tests. 
+
+ To create the infrastructure for a new test directory, do the following:
  <MENU>
- <LI> Choose an existing test/auto directory in the tree.  Use this as
-an example.
- <LI> Create your test/ and test/auto/ directories as in the chosen example.
- <LI> cd to your test/ directory.
- <LI> Copy over the makefile and the testDefs.tcl file from the example.
- <LI> <i>Modify these two files to fit your situation, which may differ from
-the example situation.</i>
- <LI> Use the command <CODE>touch dummy.tcl</CODE> to create a zero length
-file named dummy.tcl.
- <LI> Use the <CODE>make</CODE> command to generate the alljtests.tcl file.
- <LI> Now go up one directory (cd ..).  There needs to be a makefile here
-too.  It needs to name the test/ directory you created.  If there already
-is a makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between
-the <CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
-line to include the new test directory.  The result might look like:
-<CODE>DIRS = 		test</CODE>
+ <LI> Choose an existing <code>test/</code> directory
+      that contains an <code>auto/</code> directory.
+      <br>Use this as an example when creating the new test directory.
+      <br>A good example is
+      <a href="../../ptolemy/actor/lib"><code>$PTII/ptolemy/actor/lib/test</code></a>
+ <LI> Create your <code>test/</code> and
+      <code>test/auto/</code> directories.
+<pre>
+mkdir test test/auto
+</pre>
+ <LI> cd to your <code>test/</code> directory.
+<pre>
+cd test
+</pre>
+ <LI> Copy over the <code>testDefs.tcl</code> and the <code>makefile</code>
+      file from the example directory chosen in step 1 above.
+<pre>
+cp $PTII/ptolemy/actor/lib/test/testDefs.tcl
+cp $PTII/ptolemy/actor/lib/test/makefile .
+</pre>
+ <LI> Modify these two files to fit your situation, which may differ from
+      the example situation.  In particular:
+      <dl>
+      <dt> <code>testDefs.tcl</code>
+      <dd> Adjust the value of <code>PTII</code>.  
+<pre>
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] <b>.. .. .. ..</b> ]
+}
+</pre>
+      The <code><b>.. .. .. ..</b></code> is the relative path
+      to the top of the Ptolemy II tree.
+
+      <dt> <code>makefile</code>
+      <dd> Adjust <code>ME =</code> and <code>ROOT =</code>
+      <br> The <code>auto</code> directory is listed in the
+      <code>MISC_FILES</code> section:
+<pre>
+MISC_FILES =	alljtests.tcl \
+		<b>auto</b>
+</pre>
+      <br> The <code>test/makefile</code> should include a line that
+      invokes <code>test_auto</code> when the <code>test_jsimple</code> rule
+      is invoked:
+<pre>
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl <b>test_auto</b>
+</pre>
+      <br>Note: <code>dummy.tcl</code> may appear in the <code>makefile</code>,
+      which some people find confusing.  The test makefile structure supports
+      running graphical and non-graphical Tcl tests.  If a particular directory
+      does not have graphical or non-graphical Tcl tests, then we 
+      set the value of <code>JGRAPHICAL_TESTS</code> or
+      <code>JSIMPLE_TESTS</code> to include <code>dummy.tcl</code> so
+      that when the makefile expands <code>JGRAPHICAL_TESTS</code>
+      or <code>JSIMPLE_TESTS</code> there will be a value there instead
+      of an empty value.  However, if either <code>JGRAPHICAL_TESTS</code>
+      or <code>JSIMPLE_TESTS</code> are set to <code>dummy.tcl</code>
+      and not referred to as a dependency, then you need not have
+      a <code>dummy.tcl</code> file.  
+      <br>For example, we have no graphical tests, so the makefile might
+      look like:
+<pre>
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+</pre>
+
+
+      </dl>
+ <LI> Now go up one directory:
+<pre>
+cd ..
+</pre>
+      There needs to be a makefile here too.  It needs to name the
+      <code>test/</code> directory you created.  If there already is a
+      makefile, edit it.  If there is not a makefile, then
+      copy the makefile from a similar directory elsewhere in the tree.
+
+      <br>If the <code>test</code> directory was
+      added, the add <code>test</code> to the <code>DIRS</code> and
+      <code>MISC_FILES</code> lines:
+<pre>
+DIRS =		kernel lib demo doc <b>test</b>
+...
+MISC_FILES =	kernel lib doc <b>test</b>
+</pre>
+
  <LI> If no makefile exists in the directory above test/, you will need
-to create one and repeat this procedure in the next directory up until
-you find an existing makefile.
+      to create one and repeat this procedure in the next directory up until
+      you find an existing makefile.
  <LI> If you are a member of the UC Berkeley Ptolemy group, and would
 like to add your directory to the nightly build, see the instructions
-in <a href="http://www.gigascale.org/ptolemy/nightly">http://www.gigascale.org/ptolemy/nightly</a>
+in <a href="http://www.gigascale.org/ptolemy/nightly" target="_top">http://www.gigascale.org/ptolemy/nightly</a>
 
  </MENU>
-
 
  <p>When you have done all this, the tests in your new test/auto directory ought to run in the nightly build.
  <p>The test passes if it does not throw an exception
