@@ -44,7 +44,9 @@ include $(CONFIG)
 PTPACKAGE = 	PowerVariability
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	BluetoothChannel.java \
+	BluetoothNode.java
 
 OTHER_FILES_TO_BE_JARED = \
 	PowerVariability.xml
@@ -72,18 +74,10 @@ install: all
 
 # Run the demo in all its different formats
 # Run demo_application first so that we generate PowerVariability.xml
-demo: demo_ptolemy demo_vergil
+demo: demo_vergil
 
 #demo_applet: $(PTCLASSJAR)
 #	CLASSPATH="$(CLASSPATH)" appletviewer PowerVariability.htm
-
-#demo_application: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" \
-#	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.domains.sdf.demo.PowerVariability.PowerVariability
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" PowerVariability.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" PowerVariability.xml

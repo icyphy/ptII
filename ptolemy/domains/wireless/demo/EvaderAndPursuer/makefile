@@ -44,7 +44,9 @@ include $(CONFIG)
 PTPACKAGE = 	EvaderAndPursuer
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	Pursuer.java \
+	Sensor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	EvaderAndPursuer.xml
@@ -65,19 +67,19 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all $(PTCLASSJAR)
 
 # Run the demo in all its different formats
-demo: demo_ptolemy demo_vergil
+demo: demo_vergil
 
 #demo_applet: $(PTCLASSJAR)
 #	CLASSPATH="$(CLASSPATH)" appletviewer EvaderAndPursuer.htm
 
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" EvaderAndPursuer.xml
+#demo_ptolemy:
+#	"$(PTII)/bin/ptolemy" EvaderAndPursuer.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" EvaderAndPursuer.xml

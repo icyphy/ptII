@@ -44,7 +44,9 @@ include $(CONFIG)
 PTPACKAGE = 	SmallWorld
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	ModelTopology.java \
+	SmallWorldRouter.java
 
 OTHER_FILES_TO_BE_JARED = \
 	SmallWorld.xml
@@ -71,13 +73,10 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-demo: demo_ptolemy demo_vergil
+demo: demo_vergil
 
 #demo_applet: $(PTCLASSJAR)
 #	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" SmallWorld.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" SmallWorld.xml
