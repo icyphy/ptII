@@ -63,6 +63,14 @@ public class StickyBallApplet extends CTApplet {
     public void init() {
 
         super.init();
+        Panel controlpanel = new Panel();
+        controlpanel.setLayout(new BorderLayout());
+        add(controlpanel);
+
+        _query = new Query();
+        _query.addQueryListener(new ParameterListener());
+        controlpanel.add("West", _query);
+        _query.line("sticky", "Stickiness Decay", "-1.0", 10);
 
         try {
             // The 1 argument requests only a go button.
@@ -87,13 +95,13 @@ public class StickyBallApplet extends CTApplet {
             TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(true);
-            myplot.plot.setTitle("Sticky Ball");
-            myplot.plot.addLegend(0, "Ball 1 Position");
-            myplot.plot.addLegend(1, "Ball 2 Position");
+            myplot.plot.setTitle("Sticky Masses");
+            myplot.plot.addLegend(0, "Mass 1 Position");
+            myplot.plot.addLegend(1, "Mass 2 Position");
             //myplot.plot.setWrap(true);
             //myplot.plot.setPointsPersistence(1024);
             //myplot.plot.setConnected(true);
-            myplot.plot.setXRange(0.0, 25.0);
+            myplot.plot.setXRange(0.0, 100.0);
             myplot.plot.setYRange(0, 3.0);
             myplot.plot.setSize(500, 300);
 
@@ -130,7 +138,7 @@ public class StickyBallApplet extends CTApplet {
             HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
             HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
             // FIXME: the initial sticking force.
-            HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "5.0");
+            HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
             FSMTransition ctrlTr2 = 
                     ctrl.createTransition(ctrlDec, ctrlInc);            
             ctrlTr2.setTriggerCondition("F > STI || F < -STI");
@@ -253,8 +261,8 @@ public class StickyBallApplet extends CTApplet {
             CTIntegrator ctDecV1 = new CTIntegrator(ctDec, "V1");
             CTIntegrator ctDecP1 = new CTIntegrator(ctDec, "P1");
             CTIntegrator ctDecSTI = new CTIntegrator(ctDec, "STI");
-            Scale ctGain = new Scale(ctDec, "Gain");
-            ctGain.gain.setToken(new DoubleToken(-1.0));
+            _ctGain = new Scale(ctDec, "Gain");
+            _ctGain.gain.setToken(new DoubleToken(-1.0));
 
             Expression ctDecE1 = new Expression(ctDec, "E1");
             TypedIOPort ctDecE1P1 = (TypedIOPort)ctDecE1.newPort("P1");
@@ -294,8 +302,8 @@ public class StickyBallApplet extends CTApplet {
             ctDecOV1.setTypeEquals(DoubleToken.class);
 
             // connect
-            ctDec.connect(ctDecSTI.input, ctGain.output);
-            Relation ctDecR1 = ctDec.connect(ctDecSTI.output, ctGain.input);
+            ctDec.connect(ctDecSTI.input, _ctGain.output);
+            Relation ctDecR1 = ctDec.connect(ctDecSTI.output, _ctGain.input);
             ctDecOSTI.link(ctDecR1);
             
             ctDec.connect(ctDecE1.output, ctDecV1.input);
@@ -349,7 +357,7 @@ public class StickyBallApplet extends CTApplet {
             ctIncDir.MinStepSize.setToken(new DoubleToken(1e-5));
             
             StringToken tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             ctIncDir.BreakpointODESolver.setToken(tok);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken(
@@ -360,7 +368,7 @@ public class StickyBallApplet extends CTApplet {
             ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
             ctDecDir.MinStepSize.setToken(new DoubleToken(1e-5));
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             ctDecDir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
@@ -371,16 +379,59 @@ public class StickyBallApplet extends CTApplet {
             topdir.MinStepSize.setToken(new DoubleToken(1e-5));
             topdir.MaxStepSize.setToken(new DoubleToken(0.3));
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             topdir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             topdir.ODESolver.setToken(tok);
             
         }catch (KernelException ex) {
             report("Setup failed:", ex);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first.
+     *  @exception IllegalActionException Not thrown.
+     */
+    protected void _go() throws IllegalActionException {
+        try {
+            _ctGain.gain.setToken(new DoubleToken(
+                    _query.doubleValue("sticky")));
+            super._go();
+        } catch (Exception ex) {
+            report(ex);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    // Query box.
+    private Query _query;
+
+    // The gain for the stickiness decay.
+    private Scale _ctGain;
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                       inner classes                              ////
+
+    /** Listener update the parameter change of stop time.
+     */
+    private class ParameterListener implements QueryListener {
+        public void changed(String name) {
+            try {
+                _ctGain.gain.setToken(new DoubleToken(
+                        _query.doubleValue("sticky")));
+            } catch (Exception ex) {
+                report(ex);
+            }
+        }
+    }
+
 }
 
          
