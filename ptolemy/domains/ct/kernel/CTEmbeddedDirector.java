@@ -43,9 +43,8 @@ import ptolemy.kernel.util.Workspace;
 /**
    An embedded director for CT inside CT or FSM. Conceptually, this director
    interacts with a continuous outside domain. As a consequence, this
-   director exposes its step size control information. If the container
-   of this director is a CTCompositeActor, then this information is
-   further exposed to the outer domain.
+   director exposes its step size control information to the outer domain 
+   through its container, which must be a CTCompositeActor.
    <P>
    Unlike the CTMixedSignalDirector, this director does not run ahead
    of the global time and rollback, simply because the step size control
@@ -63,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
 public class CTEmbeddedDirector extends CTMultiSolverDirector
     implements CTTransparentDirector {
     
-    // FIXME: constraint that this director inherit the parameters of
+    // FIXME: constrain this director to inherit the parameters of
     // the top-level CT director.
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -213,7 +212,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             super._iterateWaveformGenerators(schedule);
         } else if (executionPhase 
             == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
-            super._prefireDynamicActors();
+            super.prefireDynamicActors();
         }
     }
 
@@ -304,10 +303,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // FIXME: why?
-        // FIXME: this is not necessary. The start time need not be registered
-        // as a breakpoint.
-        getBreakPoints().removeFirst();
     }
     
     /** Return true if this is the discrete phase execution.
@@ -409,11 +404,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  if necessary. Synchronize time with the outer domain,
      *  and adjust the contents of the breakpoint table with
      *  respect to the current time.
-     *  @exception If schedule can not be achieved.
      *  @return True if the super.prefire returns true.
+     *  @exception IllegalActionException If schedule can not be achieved.
      */
     public boolean prefire() throws IllegalActionException {
-        getScheduler().getSchedule();
         return super.prefire();
     }
 
@@ -484,7 +478,5 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     // Indicates whether actors in the dynamic actor schedule and the
     // state transition schedule are satisfied with the current step size.
     private boolean _stateAcceptable;
-
-
 }
 
