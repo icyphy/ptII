@@ -35,6 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
@@ -86,8 +87,10 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      */
     public void managerStateChanged(Manager manager) {
         super.managerStateChanged(manager);
-
-        if (manager.getState() == Manager.PREINITIALIZING) {
+        // FIXME this is a workaround for a bug in the type system where 
+        // type listeners are not properly notified when the type is 
+        // a structured type.
+        if (manager.getState() == Manager.INITIALIZING) {
             _updateAllTypeDisplays();
         }
     }
@@ -161,7 +164,6 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
                         + "fill:red\" y=\"20\">"
                         + port.getType()
                         + "</text></svg></configure></property>";
-
                 label.requestChange(new MoMLChangeRequest(
                            this, label, moml));
             }
