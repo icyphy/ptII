@@ -31,7 +31,7 @@
 #  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
 #  and ptolemy/web/nightly/toc.htm on the website
 MAJOR_VERSION = 	3.0
-MINOR_VERSION =		1
+MINOR_VERSION =		2
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
