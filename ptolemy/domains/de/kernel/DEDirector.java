@@ -323,6 +323,10 @@ public class DEDirector extends Director {
                                 _currentTime);
                     }
                     _actorToFire.fire();
+                    if (!_actorToFire.postfire()) {
+                        // If one actor is dead, then stop the simulation.
+                        _shouldPostfireReturnFalse = true;
+                    }
                     // check _filledReceivers to see if there are any 
                     // receivers left that are not emptied.
                     refire = false;
@@ -335,10 +339,6 @@ public class DEDirector extends Director {
                         }
                     }
                 } while (refire);
-                if (!_actorToFire.postfire()) {
-                    // If one actor is dead, then stop the simulation.
-                    _shouldPostfireReturnFalse = true;
-                }
             } else {
                 if (DEBUG) {
                     System.out.println(">>>");
@@ -410,6 +410,9 @@ public class DEDirector extends Director {
         // responsibility. This could however be an expensive operation. So,
         // leave it out for now, and see if this will turn out to be an issue.
 
+        _debug("Requesting firing of " + ((Nameable)actor).getFullName()
+                 + " at time " + time);
+
         // Check the special case, when the delay is equal to zero
         if (time == getCurrentTime() && _isInitialized) {
             this._enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
@@ -425,7 +428,8 @@ public class DEDirector extends Director {
         while (iports.hasMoreElements()) {
             IOPort p = (IOPort) iports.nextElement();
             Receiver[][] r = p.getReceivers();
-            if (r == null) continue;
+            if (r == null || r.length == 0
+                   || r[0] == null || r[0].length == 0) continue;
             DEReceiver rr = (DEReceiver) r[0][0];
             if (rr._depth > maxdepth) {
                 maxdepth = rr._depth;
@@ -770,6 +774,8 @@ public class DEDirector extends Director {
     // If there are no events on the event queue, and _stopWhenQueueIsEmpty
     // flag is true (which is set to true by default) then return false,
     // which will have the effect of stopping the simulation.
+
+    // FIXME: This should return the actor, not use a private variable.
     private boolean _prepareActorToFire() {
         // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
@@ -935,6 +941,7 @@ public class DEDirector extends Director {
         }
 
         if (_actorToFire == null) {
+            // FIXME: No std out!
             System.out.println("No actor to fire anymore");
             _shouldPostfireReturnFalse = true;
         } else {
