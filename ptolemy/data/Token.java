@@ -35,17 +35,17 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
-Base class for data capsules. Tokens are immutable.
-<p>
-Operator overloading between tokens is supported with methods
-for each operator. The operators that are overloaded
-are +, -, *, / == and %. These methods carry out the operation
-if it can be performed in a lossless manner.
+Token is the base class for data capsules.
+Tokens are immutable, meaning that their
+value cannot change after construction.
+They have a set of polymorphic methods providing a set of basic
+arithmetic and logical operations.
 Not all derived classes are required to implement these methods,
-so the default implementation in this base class triggers an exception.
+so the default implementation in this base class throws an exception.
 <p>
-This base class can be used to represent a pure event, i.e., to
-indicate that an event is present. For this purpose, the stringValue()
+Instances of this
+base class can be used to represent pure events, i.e., to
+indicate that an event is present. To support this use, the stringValue()
 method returns the String "present".
 <p>
 
@@ -54,6 +54,7 @@ method returns the String "present".
 
 */
 public class Token {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
