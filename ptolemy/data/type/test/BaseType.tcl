@@ -55,4 +55,4 @@ test BaseType-1.0 {toString} {
     set double [java::field ptolemy.data.type.BaseType DOUBLE]
     set double_matrix [java::field ptolemy.data.type.BaseType DOUBLE_MATRIX]
     list [$int toString] [$double toString] [$double_matrix toString]
-} {int double doubleMatrix}
+} {int double {[double]}}

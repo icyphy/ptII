@@ -182,7 +182,7 @@ public class BaseType implements Type, Serializable {
     /** The boolean matrix data type */
     public static final BaseType BOOLEAN_MATRIX = new BaseType(
             BooleanMatrixToken.class,
-            "booleanMatrix",
+            "[boolean]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return BooleanMatrixToken.convert(t);
@@ -201,7 +201,7 @@ public class BaseType implements Type, Serializable {
     /** The complex matrix data type */
     public static final BaseType COMPLEX_MATRIX = new BaseType(
             ComplexMatrixToken.class,
-            "complexMatrix",
+            "[complex]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return ComplexMatrixToken.convert(t);
@@ -220,7 +220,7 @@ public class BaseType implements Type, Serializable {
     /** The double matrix data type */
     public static final BaseType DOUBLE_MATRIX = new BaseType(
             DoubleMatrixToken.class,
-            "doubleMatrix",
+            "[double]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return DoubleMatrixToken.convert(t);
@@ -238,7 +238,7 @@ public class BaseType implements Type, Serializable {
     /** The fix matrix data type */
     public static final BaseType FIX_MATRIX = new BaseType(
             FixMatrixToken.class,
-            "fixMatrix",
+            "[fixedpoint]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return FixMatrixToken.convert(t);
@@ -256,7 +256,7 @@ public class BaseType implements Type, Serializable {
     /** The integer matrix data type */
     public static final BaseType INT_MATRIX = new BaseType(
             IntMatrixToken.class,
-            "intMatrix",
+            "[int]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return IntMatrixToken.convert(t);
@@ -274,7 +274,7 @@ public class BaseType implements Type, Serializable {
     /** The long matrix data type */
     public static final BaseType LONG_MATRIX = new BaseType(
             LongMatrixToken.class,
-            "longMatrix",
+            "[long]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return LongMatrixToken.convert(t);
@@ -284,7 +284,7 @@ public class BaseType implements Type, Serializable {
     /** The matrix data type */
     public static final BaseType MATRIX = new BaseType(
             MatrixToken.class,
-            "matrix",
+            "[]",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return MatrixToken.convert(t);
