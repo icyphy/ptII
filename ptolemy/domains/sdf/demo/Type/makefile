@@ -48,7 +48,8 @@ JSRCS = \
 	Type.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	Type.htm
+	Type.htm \
+	Type.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
