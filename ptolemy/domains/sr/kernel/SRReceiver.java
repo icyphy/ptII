@@ -51,7 +51,19 @@ has a token.  If the receiver has unknown status, the hasToken() method
 always returns false.
 <p>
 In the course of an iteration in SR, receivers can change from unknown status 
-to known status, but never the other way around.  The status is automatically 
+to known status, but never the other way around.
+<p>
+<pre>
+known values:     absent     value (present)
+                     ^         ^
+                     |         |
+                      \       /
+                       \     /
+                        |   |
+                       unknown
+</pre>
+<p>
+The status is automatically 
 set to known when the put() method or setAbsent() method is called.  Once a 
 receiver becomes known, its value (or lack of a value if it is absent) can not
 change.  The hasRoom() method always returns true, but attempting to change 
@@ -63,21 +75,23 @@ the same outputs given the same inputs (in a given iteration).
 <p>
 Since the value of a receiver can not change (once it is known) in the course 
 of an iteration, tokens need not be consumed.  A receiver retains its token 
-until the director calls the reset() method.
+until the director calls the reset() method at the beginning of the next 
+iteration, which resets the receiver to have unknown status.  There is no way 
+for an actor to reset a receiver to have unknown status.
 
 @author Paul Whitaker
 @version $Id$
 */
 public class SRReceiver extends Mailbox {
 
-    /** Construct an empty SRReceiver with no container.
+    /** Construct an SRReceiver with unknown state and no container.
      */
     public SRReceiver() {
         super();
         reset();
     }
 
-    /** Construct an empty SRReceiver with the specified container.
+    /** Construct an SRReceiver with unknown state and the specified container.
      *  @param container The port that contains the receiver.
      *  @exception IllegalActionException If this receiver cannot be
      *   contained by the proposed container.
@@ -90,13 +104,14 @@ public class SRReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the contained Token.  If there is none, throw an exception.
-     *  The token is removed.
+    /** Get the contained Token without modifying or removing it.  If there 
+     *  is none, throw an exception.
      *  @return The token contained in the receiver.
      *  @exception NoTokenException If the state of this receiver
      *   is unknown.
      */
     public Token get() throws NoTokenException {
+        // FIXME: throw a runtime exception UnknownTokenException.
         if (isKnown()) {
             return _getToken();
         } else {
@@ -117,6 +132,7 @@ public class SRReceiver extends Mailbox {
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
+        // FIXME: throw a runtime exception UnknownTokenException.
         if (isKnown()) {
             return super.hasToken();
         } else {
@@ -146,6 +162,7 @@ public class SRReceiver extends Mailbox {
      *   different token, or if this receiver is in an absent state.
      */
     public void put(Token token) throws NoRoomException {
+        // FIXME: throw a runtime exception NonMonotonicActionException.
         if (token == null) {
             throw new InternalErrorException("SRReceiver.put(null) is " +
                     "invalid.");
@@ -177,19 +194,12 @@ public class SRReceiver extends Mailbox {
         }
     }
 
-    /** Reset the receiver by removing any contained token and setting
-     *  the state of this receiver to be unknown.
-     */
-    public void reset() {
-        if (hasToken()) super.get();
-        _known = false;
-    }
-
     /** Set the state of this receiver to be known and to contain no token.
      *  @exception NoRoomException If this receiver already contains 
      *   a token.
      */
     public void setAbsent() throws NoRoomException {
+        // FIXME: throw a runtime exception NonMonotonicActionException.
         if (isKnown()) {
             if (hasToken()) {
                 throw new NoRoomException(getContainer(),
@@ -200,6 +210,20 @@ public class SRReceiver extends Mailbox {
             }
         } else {
             _putToken(null);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Reset the receiver by removing any contained token and setting
+     *  the state of this receiver to be unknown.  Should be called
+     *  only by the director.
+     */
+    protected void reset() {
+        if isKnown() {
+            if (hasToken()) super.get();
+            _known = false;
         }
     }
 

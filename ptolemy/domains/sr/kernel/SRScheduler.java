@@ -54,8 +54,11 @@ A scheduler the Synchronous Reactive (SR) domain.  The schedule is simply
 an ordering of all the actors.  The director should cycle through this 
 schedule repeatedly, deciding which actors to fire, until it determines 
 that the given iteration has converged.  The ordering of the schedule has 
-no effect on the results of an iteration.  This scheduler exists only to 
-reduce the computation time required for a given iteration to converge.
+no effect on the results of an iteration.  The ordering returned by the 
+scheduler is preferable only in the sense that it is intended to reduce the 
+computation time required for a given iteration to converge.
+<p>
+FIXME: Add more comments after more code is written.
 
 @author Paul Whitaker
 @version $Id$
@@ -86,8 +89,8 @@ public class SRScheduler extends Scheduler {
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
+     *  @param name The name of this scheduler.
+     *  @exception IllegalActionException If the scheduler is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
@@ -107,7 +110,7 @@ public class SRScheduler extends Scheduler {
      *  method will call it when the schedule is invalid.  So it is not
      *  synchronized on the workspace.
      *
-     *  @return An enumeration of the scheduling sequence.
+     *  @return A schedule representing the scheduling sequence.
      *  @exception NotSchedulableException If the CompositeActor is not
      *   schedulable.
      */
@@ -120,9 +123,9 @@ public class SRScheduler extends Scheduler {
 
         List actorList = compositeActor.deepEntityList();
 
-        // FIXMELATER: This shouldn't happen.  Need to actually sort the list.
-        // Probably want to do different things depending on whether the
-        // graph has cycles.
+        // FIXME: want a randomized scheduler, a topological sort scheduler,
+        // and a Stephen A. Edwards optimized scheduler.
+
         Collections.shuffle(actorList);
 
         Schedule schedule = new Schedule();

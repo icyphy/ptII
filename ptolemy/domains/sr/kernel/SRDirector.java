@@ -76,26 +76,37 @@ way around.  Once a value is known (or known to be absent), it must not
 change again in the course of the iteration.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
-available.  Unless an actor implements the NonStrictActor interface, it is
-assumed to be a strict actor, meaning that it requires all of its inputs
-to be known before it is fired.  This is very important since once an actor
-defines a particular output, it is not allowed to change that value in a 
-subsequent firing in the course of the iteration.  An actor <i>has completed 
-firing</i> if it has defined all of its outputs.
+available.  In a sense, an actor firing is triggered by these known inputs, 
+because the director only fires an actor if it is ready to fire.  Unless an 
+actor implements the NonStrictActor interface, it is assumed to be a strict 
+actor, meaning that it requires all of its inputs to be known before it is 
+fired.  This is very important since once an actor defines a particular 
+output, it is not allowed to change that value in a subsequent firing in the 
+course of the iteration.  An actor <i>has completed firing</i> if it has 
+defined all of its outputs.
 <p>
 An actor is considered <i>allowed to fire</i> if its prefire()
 method has returned true.  An actor is considered <i>allowed to iterate</i>
 if its postfire() method has not returned false.
 <p>
 The SRScheduler returns an ordering of the actors.  SR semantics do not
-require any particular ordering of actor firings, so the ordering exists only
+require any specific ordering of actor firings, so the ordering exists only
 to attempt to reduce the computation time required for a given iteration to
 converge.  In the course of an iteration, the director cycles through the 
 schedule repeatedly, firing those actors that are allowed to fire and ready 
 to fire.
 <p>
-An iteration <i>has converged</i> if both the number of known receivers and
-the number of actors that are allowed to fire have converged.
+For an actor to be valid in the SR domain, its prefire() method must be 
+monotonic.  In other words, once the prefire() method of an actor returns 
+true in a given iteration, this method must not return false if it were to be 
+called again in the same iteration.  It is only possible for the number of 
+known inputs of an actor to increase in a given iteration, so, for example, 
+if the prefire() method of an actor returns true and then more inputs become 
+known, the method must return true if it were to be called again.  If this
+were not the case, the behavior of the model would be nondeterministic.
+<p>
+An iteration <i>has converged</i> if both the total number of known outputs 
+and the number of actors that are allowed to fire have converged.
 
 @author Paul Whitaker
 @version $Id$
@@ -153,7 +164,10 @@ public class SRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire contained actors until the iteration converges.
+    /** Fire contained actors until the iteration converges.  This method
+     *  also calls the prefire() method of an actor before it is fired for
+     *  the first time, and at the end, calls the postfire() methods of all 
+     *  actors that were fired.
      *  @exception IllegalActionException If an actor attempts to modify
      *   a known value.
      */
@@ -209,7 +223,8 @@ public class SRDirector extends StaticSchedulingDirector {
 
     }
 
-    /** Return the number of iterations.
+    /** Return the number of iterations to be executed by the director, which 
+     *  is specified by a parameter of the director.
      *  @return The number of iterations.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
@@ -218,9 +233,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return ((IntToken) iterations.getToken()).intValue();
     }
 
-    /** Initialize the director by initializing state variables and invoke
-     *  the initialize() methods of all actors deeply contained by the
-     *  container.
+    /** Initialize the director and invoke the initialize() methods of all 
+     *  actors deeply contained by the container.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -242,7 +256,7 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit, or having no actors in the model
+     *  reaching the iteration limit, or if no actors in the model
      *  return true in postfire.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
@@ -265,8 +279,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return _postfireReturns;
     }
 
-    /** Initialize the internal receiver list, enable all actors, and invoke 
-     *  the preinitialize() methods of all deeply contained actors.
+    /** Initialize the internal receiver list and invoke the preinitialize() 
+     *  methods of all deeply contained actors.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -550,6 +564,9 @@ public class SRDirector extends StaticSchedulingDirector {
         if (_receivers == null) {
            return 0;
         }
+
+        // FIXME: optimize by having receivers notify the director, which will
+        // increment a counter.
 
         int count = 0;
         Iterator i = _receivers.iterator();
