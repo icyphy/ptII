@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -91,12 +92,13 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
         _method = method;
-        _localDefs = new SimpleLocalDefs(g);
-        _localUses = new SimpleLocalUses(g, _localDefs);
+        NamedObj thisBinding = 
+            ModelTransformer.getObjectForClass(method.getDeclaringClass());
+        _namedObjAnalysis = 
+            new NamedObjAnalysis(method, thisBinding);
         doAnalysis();
         // Ensure that the analysis can get collected.
-        _localDefs = null;
-        _localUses = null;
+        _namedObjAnalysis = null;
     }
 
     /** Return the set of other fields and locals that must reference
@@ -343,12 +345,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                    PtolemyUtilities.componentPortClass)) {
                     // If we are invoking a method on a port.
                     TypedIOPort port = (TypedIOPort)
-                        InlinePortTransformer.getPortValue(
-                                _method,
-                                (Local)r.getBase(),
-                                stmt,
-                                _localDefs,
-                                _localUses);
+                        _namedObjAnalysis.getObject((Local)r.getBase());
                     //System.out.println("port for " + r.getBase() + " = " + port);
                     if (methodName.equals("broadcast")) {
                         // The type of the argument must be less than the
@@ -377,12 +374,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                    PtolemyUtilities.attributeClass)) {
                     // If we are invoking a method on a parameter.
                     Attribute attribute = (Attribute)
-                        InlineParameterTransformer.getAttributeValue(
-                                _method,
-                                (Local)r.getBase(),
-                                stmt,
-                                _localDefs,
-                                _localUses);
+                        _namedObjAnalysis.getObject((Local)r.getBase());
                     if (attribute == null) {
                         // A method invocation with a null base is bogus,
                         // so don't create a type constraint.
@@ -522,6 +514,5 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     }
 
     private SootMethod _method;
-    private SimpleLocalDefs _localDefs;
-    private SimpleLocalUses _localUses;
+    private NamedObjAnalysis _namedObjAnalysis;
 }

@@ -83,9 +83,9 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 //////////////////////////////////////////////////////////////////////////
 //// InlinePortTransformer
 /**
-   A Transformer that is responsible for inlining the communication between ports.
-   The connections between the ports are taken from the model specified in the
-   constructor of this transformer.
+   A Transformer that is responsible for inlining the communication
+   between ports.  The connections between the ports are taken from
+   the model specified in the constructor of this transformer.
 
    FIXME: currently we try to speed things up if the buffersize is only
    one by removing the index update overhead.  Note that there are other
@@ -161,13 +161,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
         _phaseName = phaseName;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
-        _inlineAllPortsIn(ModelTransformer.getModelClass(), _model);
+        _inlineAllPortCallsIn(ModelTransformer.getModelClass(), _model);
 
     }
 
     // Inline methods in all classes, starting at the bottom of the
-    // hierarchy...
-    private void _inlineAllPortsIn(
+    // hierarchy.
+    private void _inlineAllPortCallsIn(
             SootClass modelClass, CompositeActor model) {
         Director director = model.getDirector();
 
@@ -181,7 +181,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
 
             // recurse.
             if (entity instanceof CompositeActor) {
-                _inlineAllPortsIn(entityClass, (CompositeActor)entity);
+                _inlineAllPortCallsIn(entityClass, (CompositeActor)entity);
             }
         }
 
@@ -196,7 +196,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
         _inlinePortCalls(modelClass, model, inliner);
     }
 
-    // inline inside port calls at for the given model, and
+    // Inline inside port calls at for the given model, and
     // outside port calls for the entities of the given model.
     private void _inlinePortCalls(
             SootClass modelClass, CompositeActor model,
@@ -215,7 +215,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             boolean moreToDo = true;
             while (moreToDo) {
                 moreToDo = _inlineInsideMethodCalls(
-                        modelClass, method, body,
+                        modelClass, model, method, body,
                         inliner, _debug);
                 LocalNameStandardizer.v().transform(body,
                         _phaseName + ".lns");
@@ -242,7 +242,8 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                 boolean moreToDo = true;
                 while (moreToDo) {
                     moreToDo = _inlineMethodCalls(
-                            modelClass, entityClass, method, body,
+                            entityClass, entity, 
+                            method, body,
                             inliner, _debug);
                     LocalNameStandardizer.v().transform(body,
                             _phaseName + ".lns");
@@ -250,9 +251,10 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             }
         }
     }
-
-    private boolean _inlineMethodCalls(SootClass modelClass,
-            SootClass theClass, SootMethod method, JimpleBody body,
+    
+    private boolean _inlineMethodCalls(
+            SootClass entityClass, ComponentEntity entity,
+            SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
         if (debug) System.out.println("Inlining method calls in method " + method);
 
@@ -260,11 +262,12 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
 
-        CompleteUnitGraph unitGraph =
-            new CompleteUnitGraph(body);
-        // This will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        NamedObjAnalysis analysis = new NamedObjAnalysis(method, entity);
+    //     CompleteUnitGraph unitGraph =
+//             new CompleteUnitGraph(body);
+//         // This will help us figure out where locals are defined.
+//         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+//         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
@@ -349,8 +352,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         // class, then attempt to get the constant
                         // value of the port.
                         TypedIOPort port = (TypedIOPort)
-                            getPortValue(method, (Local)r.getBase(),
-                                    stmt, localDefs, localUses);
+                            analysis.getObject((Local)r.getBase());
                         //     System.out.println("reference to port = " + port);
 
                         if (port == null) {
@@ -528,7 +530,8 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
     }
 
     private boolean _inlineInsideMethodCalls(
-            SootClass theClass, SootMethod method, JimpleBody body,
+            SootClass modelClass, CompositeActor model,
+            SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
         if (debug) System.out.println("Inlining inside method calls in method " + method);
 
@@ -536,12 +539,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
+        NamedObjAnalysis analysis = new NamedObjAnalysis(method, model); 
 
-        CompleteUnitGraph unitGraph =
-            new CompleteUnitGraph(body);
-        // This will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+//         CompleteUnitGraph unitGraph =
+//             new CompleteUnitGraph(body);
+//         // This will help us figure out where locals are defined.
+//         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+//         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
@@ -626,8 +630,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         // class, then attempt to get the constant
                         // value of the port.
                         TypedIOPort port = (TypedIOPort)
-                            getPortValue(method, (Local)r.getBase(),
-                                    stmt, localDefs, localUses);
+                            analysis.getObject((Local)r.getBase());
                         //     System.out.println("reference to port = " + port);
 
                         if (port == null) {

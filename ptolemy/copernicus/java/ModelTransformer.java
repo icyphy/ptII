@@ -1026,9 +1026,9 @@ public class ModelTransformer extends SceneTransformer
      *  given attribute.
      */
     public static Attribute getAttributeForClass(SootClass theClass) {
-        Attribute attribute = (Attribute) _classToObjectMap.get(theClass);
-        if (attribute != null) {
-            return attribute;
+        Object object = _classToObjectMap.get(theClass);
+        if (object instanceof Attribute) {
+            return (Attribute)object;
         } else {
             throw new RuntimeException(
                     "Failed to find attribute for class " + theClass);

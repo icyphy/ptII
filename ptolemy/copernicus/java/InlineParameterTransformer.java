@@ -276,30 +276,13 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             // code for, then inline it.
                             if (type.getSootClass().isApplicationClass()) {
                                 SootMethod inlinee = null;
-                                if (r instanceof VirtualInvokeExpr) {
-                                    // Now inline the resulting call.
-                                    List methodList =
-                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                                type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
-                                    if (methodList.size() == 1) {
-                                        // inline the method.
-                                        inlinee = (SootMethod)methodList.get(0);
-                                    } else {
-                                        String string = "Can't inline " + stmt +
-                                            " in method " + method + "\n";
-                                        for (int i = 0; i < methodList.size(); i++) {
-                                            string += "target = " + methodList.get(i) + "\n";
-                                        }
-                                        System.out.println(string);
-                                    }
-                                } else if (r instanceof SpecialInvokeExpr) {
-                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
-                                            (SpecialInvokeExpr)r, method);
+                                if(r instanceof VirtualInvokeExpr) {
+                                    inlinee = SootUtilities.resolveVirtualInvokationForInlining(
+                                            type.getSootClass(), 
+                                            PtolemyUtilities.attributeChangedMethod);
+                                } else if(r instanceof SpecialInvokeExpr) {
+                                    inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);
                                 }
-                                if (!inlinee.getDeclaringClass().isApplicationClass()) {
-                                    inlinee.getDeclaringClass().setLibraryClass();
-                                }
-                                inlinee.retrieveActiveBody();
                                 if (inlinee.equals(method)) {
                                     System.out.println("Skipping inline at " + r
                                             + " because we can't inline methods into themselves.");
@@ -346,8 +329,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         // constant value of the variable.
                         Attribute attribute = (Attribute)
                             namedObjAnalysis.getObject((Local)r.getBase());
-                        //   getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
-
+                  
                         if (debug) System.out.println("Settable base = " + attribute);
 
                         // If the attribute resolves to null, then
@@ -605,23 +587,14 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 // FIXME: for PortParameters.
                                 // Now inline the resulting call.
                                 SootMethod inlinee = null;
-                                List methodList =
-                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                            type.getSootClass(), PtolemyUtilities.portParameterUpdateMethod);
-                                if (methodList.size() == 1) {
-                                    // inline the method.
-                                    inlinee = (SootMethod)methodList.get(0);
-                                } else {
-                                    String string = "Can't inline " + stmt +
-                                        " in method " + method + "\n";
-                                    for (int i = 0; i < methodList.size(); i++) {
-                                        string += "target = " + methodList.get(i) + "\n";
-                                    }
-                                    System.out.println(string);
+                                if(r instanceof VirtualInvokeExpr) {
+                                    inlinee = SootUtilities.resolveVirtualInvokationForInlining(
+                                            type.getSootClass(), 
+                                            PtolemyUtilities.portParameterUpdateMethod);
+                                } else if(r instanceof SpecialInvokeExpr) {
+                                    inlinee = SootUtilities.resolveSpecialInvokationForInlining((SpecialInvokeExpr)r, method);
                                 }
-                                inlinee.retrieveActiveBody();
                                 SiteInliner.inlineSite(inlinee, stmt, method);
-                                //   body.getUnits().remove(stmt);
                             } else if (r.getMethod().getName().equals("setUnknown")) {
                                 // FIXME: for PortParameters.
                                 body.getUnits().remove(stmt);
@@ -949,7 +922,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         }
                         field.addTag(new TypeTag(type));
                     }
-                } else {// if (false) { //FIXME
+                } else {
                     field = new SootField(
                             fieldName + "_CGExpression",
                             stringType,
@@ -958,9 +931,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                     theClass.addField(field);
                     String expression = settable.getExpression();
                     field.addTag(new ValueTag(expression));
-                }//  else {
-                //                     field = null;
-                //                 }
+                }
                 attributeToValueFieldMap.put(attribute, field);
             }
             _createTokenAndExpressionFields(theClass, context, attribute,

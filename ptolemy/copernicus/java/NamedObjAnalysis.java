@@ -51,7 +51,7 @@ import soot.jimple.JimpleBody;
    An analysis that establishes a correspondence between each local
    variable that refers to a named obj in a method an the named object
    that it refers to.  This information is used to inline methods on
-   named obj locals.
+   named object locals.
 
    @author Stephen Neuendorffer
    @version $Id$

@@ -2105,7 +2105,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         }
         return false;
     }
-    // Return true if the givne local is a token, and its specialized type
+    // Return true if the given local is a token, and its specialized type
     // according to the given analysis is a type with the given depth.
     private static boolean _isLocalTokenTypeWithDepth(
             Local local, TypeSpecializerAnalysis typeAnalysis,

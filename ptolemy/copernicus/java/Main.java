@@ -79,13 +79,13 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
                 "time:" + _watchDogTimeout);
 
-        // Create a class for the composite actor of the model, and
+        // Create a class for composite actor of a model, and
         // additional classes for all actors (both composite and
         // atomic) used by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
         
-        // Inline the director into the composite actor.
+        // Inline director into composite actors.
         addTransform(pack, "wjtp.idt",
                 InlineDirectorTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage +
