@@ -154,16 +154,14 @@ public void init() {
         CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
         CTZeroCrossingDetector ctIncD =
             new CTZeroCrossingDetector(ctInc, "ZD");
-        GeneralFunctionActor ctIncGF =
-            new GeneralFunctionActor(ctInc, "GF");
+        Expression ctIncGF =
+            new Expression(ctInc, "EXPRESSION");
 
         TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
         ctIncGFi.setInput(true);
         ctIncGFi.setTypeEquals(DoubleToken.class);
-        TypedIOPort ctIncGFo = (TypedIOPort)ctIncGF.newPort("out");
-        ctIncGFo.setOutput(true);
-        ctIncGFo.setTypeEquals(DoubleToken.class);
-        ctIncGF.setOutputExpression("out", "in - 0.2");
+        ctIncGF.output.setTypeEquals(DoubleToken.class);
+        ctIncGF.expression.setExpression("in - 0.2");
         // the ports
         TypedIOPort ctIncIn = (TypedIOPort)ctInc.newPort("input");
         ctIncIn.setInput(true);
@@ -180,9 +178,8 @@ public void init() {
         // connect ctInc
         ctInc.connect(ctIncIn, ctIncH.input);
         ctInc.connect(ctIncH.output, ctIncI.input);
-        //ctInc.connect(ctIncGFo, ctIncD.trigger);
         Relation ctIncR2 = ctInc.newRelation("R2");
-        ctIncGFo.link(ctIncR2);
+        ctIncGF.output.link(ctIncR2);
         ctIncD.trigger.link(ctIncR2);
         ctIncTr.link(ctIncR2);
         ctInc.connect(ctIncD.output, ctIncOut);
@@ -204,17 +201,13 @@ public void init() {
         Scale ctGain = new Scale(ctDec, "Gain");
         CTZeroCrossingDetector ctDecD =
             new CTZeroCrossingDetector(ctDec, "ZD");
-        GeneralFunctionActor ctDecGF =
-            new GeneralFunctionActor(ctDec, "GF");
-        //CTPeriodicalSampler ctDecS =
-        //  new CTPeriodicalSampler(ctDec, "Sample");
+        Expression ctDecGF =
+            new Expression(ctDec, "EXPRESSION");
         TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
         ctDecGFi.setInput(true);
         ctDecGFi.setTypeEquals(DoubleToken.class);
-        TypedIOPort ctDecGFo = (TypedIOPort)ctDecGF.newPort("out");
-        ctDecGFo.setOutput(true);
-        ctDecGFo.setTypeEquals(DoubleToken.class);
-        ctDecGF.setOutputExpression("out", "in + 0.0");
+        ctDecGF.output.setTypeEquals(DoubleToken.class);
+        ctDecGF.expression.setExpression("in + 0.0");
         // the ports
         TypedIOPort ctDecIn = (TypedIOPort)ctDec.newPort("input");
         ctDecIn.setInput(true);
@@ -232,9 +225,8 @@ public void init() {
         ctDec.connect(ctDecIn, ctDecH.input);
         ctDec.connect(ctDecH.output, ctGain.input);
         ctDec.connect(ctGain.output, ctDecI.input);
-        //ctDec.connect(ctDecGFo, ctDecD.trigger);
         Relation ctDecR2 = ctDec.newRelation("R2");
-        ctDecGFo.link(ctDecR2);
+        ctDecGF.output.link(ctDecR2);
         ctDecD.trigger.link(ctDecR2);
         ctDecTr.link(ctDecR2);
         ctDec.connect(ctDecD.output, ctDecOut);
