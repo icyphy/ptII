@@ -230,11 +230,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
+                NamedObj newModel;
                 if (entity != null) {
-                    effigy.setModel((NamedObj)entity.clone(new Workspace()));
+                    newModel = (NamedObj)entity.clone(new Workspace());
                 } else {
-                    effigy.setModel(new TypedCompositeActor(new Workspace()));
+                    newModel = new TypedCompositeActor(new Workspace());
                 }
+                newModel.setName("Unnamed");
+                effigy.setModel(newModel);
                 return effigy;
             } else {
                 String extension = getExtension(in);

@@ -654,7 +654,7 @@ ptolemy.actor.IOPort {..E3.P3} receivers {
 } remotereceivers {
 }}}
 
-test IOPort-10.6 {Check description use the example in design doc} {
+test IOPort-10.6 {Check description use the example (that used to be) in design doc} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -748,11 +748,9 @@ test IOPort-10.6 {Check description use the example in design doc} {
 ptolemy.actor.IOPort {..E7.P10} receivers {
 } remotereceivers {
     {
-        {ptolemy.actor.Mailbox in ..E3.E4.P8}
         {ptolemy.actor.Mailbox in ..E6.P7}
     }
     {
-        {ptolemy.actor.Mailbox in ..E3.E4.P8}
         {ptolemy.actor.Mailbox in ..E6.P7}
     }
 }}}

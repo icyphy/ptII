@@ -1144,6 +1144,10 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an input.
      */
     public boolean isInput() {
+        if (_isInputOutputStatusSet) {
+            return _isInput;
+        }
+        // Status has not been set.  Try to infer it.
         long version = _workspace.getVersion();
         if (_insideinputversion != version) {
             try {
@@ -1185,6 +1189,10 @@ public class IOPort extends ComponentPort {
      *  @return True if the port is an output.
      */
     public boolean isOutput() {
+        if (_isInputOutputStatusSet) {
+            return _isOutput;
+        }
+        // Status has not been set.  Try to infer it.
         long version = _workspace.getVersion();
         if (_insideoutputversion != version) {
             try {
@@ -1368,12 +1376,13 @@ public class IOPort extends ComponentPort {
 
     /** If the argument is true, make the port an input port.
      *  If the argument is false, make the port not an input port.
-     *  This has no effect if the port is a transparent port.
-     *  In that case, the port
-     *  is an input port regardless of whether and how this method is called.
-     *  Invalidate the schedule and resolved types of the director of the
-     *  container, if there is one.
-     *  This method is write-synchronized on the workspace.
+     *  If this is never called, and setOutput() is never called,
+     *  and the port is a transparent port of a composite actor,
+     *  then the input/output status will be inferred from the connection.
+     *  This method invalidates the schedule and resolved types of the
+     *  director of the container, if there is one.
+     *  It is write-synchronized on the workspace, and increments
+     *  the version of the workspace.
      *
      *  @param isInput True to make the port an input.
      */
@@ -1385,6 +1394,9 @@ public class IOPort extends ComponentPort {
         // thread.
         _workspace.getWriteAccess();
         _isInput = isInput;
+        // Flag that the input status has been set,
+        // and therefore should not be inferred.
+        _isInputOutputStatusSet = true;
         _invalidate();
         _workspace.doneWriting();
     }
@@ -1394,12 +1406,9 @@ public class IOPort extends ComponentPort {
      *  or with IORelations that have width greater than one.
      *  If the argument is false, allow only links with a single
      *  IORelation of width one.
-     *  This has no effect if the port is a transparent port that is
-     *  linked on the inside to a multiport.  In that case, the port
-     *  is a multiport regardless of whether and how this method is called.
-     *  Invalidate the schedule and resolved types of the director of the
-     *  container, if there is one.
-     *  This method is write-synchronized on the workspace.
+     *  This method invalidates the schedule and resolved types of the
+     *  director of the container, if there is one.
+     *  It is write-synchronized on the workspace.
      *
      *  @param isMulitport True to make the port a multiport.
      */
@@ -1417,12 +1426,13 @@ public class IOPort extends ComponentPort {
 
     /** If the argument is true, make the port an output port.
      *  If the argument is false, make the port not an output port.
-     *  This has no effect if the port is a transparent port that is
-     *  linked on the inside to output ports.  In that case, the port
-     *  is an output port regardless of whether and how this method is called.
-     *  Invalidate the schedule and resolved types of the director of the
-     *  container, if there is one.
-     *  This method is write-synchronized on the workspace.
+     *  If this is never called, and setInput() is never called,
+     *  and the port is a transparent port of a composite actor,
+     *  then the input/output status will be inferred from the connection.
+     *  This method invalidates the schedule and resolved types of the
+     *  director of the container, if there is one.
+     *  It is write-synchronized on the workspace, and increments
+     *  the version of the workspace.
      *
      *  @param isOutput True to make the port an output.
      */
@@ -1434,6 +1444,9 @@ public class IOPort extends ComponentPort {
         // thread.
         _workspace.getWriteAccess();
         _isOutput = isOutput;
+        // Flag that the output status has been set,
+        // and therefore should not be inferred.
+        _isInputOutputStatusSet = true;
         _invalidate();
         _workspace.doneWriting();
     }
@@ -2033,6 +2046,9 @@ public class IOPort extends ComponentPort {
     private boolean _isInput, _isOutput;
     private transient long _insideinputversion = -1;
     private transient long _insideoutputversion = -1;
+
+    // Flag that the input/output status has been set.
+    private boolean _isInputOutputStatusSet = false;
 
     // Indicate whether the port is a multiport. Default false.
     private boolean _isMulitport = false;
