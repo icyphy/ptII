@@ -221,7 +221,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @param token The token with which to test equality.
      *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not a matrix token; or lossless conversion between this and the
+     *   not a matrix token, or lossless conversion between this and the
      *   specified tokens is not possible.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
