@@ -111,7 +111,7 @@ public class ASTReflect {
 	memberList.addAll(fieldsASTList(myClass));
 
 	// Get the AST for all the inner classes.
-	//memberList.addAll(innerClassesASTList(myClass));
+	memberList.addAll(innerClassesASTList(myClass));
 
 	TreeNode superClass = null;
         if (myClass.getSuperclass() == null ) {
