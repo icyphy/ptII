@@ -75,11 +75,37 @@ all: jclass ptKeystore
 
 install: all $(PTCLASSJAR)
 
-ptKeystore: $(ROOT)/ptKeystore
-	cp $(ROOT)/ptKeystore .
 
-$(ROOT)/ptKeystore:
-	(cd $(ROOT); $(MAKE) ptKeystore)
+# Makefile variables used to set up keys for jar signing.
+# To use Web Start, we have to sign the jars.
+KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
+KEYSTORE = ptKeystore
+KEYALIAS = claudius
+# The password should not be stored in a makefile, for production
+# purposes, run something like:
+#
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
+#
+STOREPASSWORD = -storepass this.is.the.storePassword,change.it
+KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
+
+KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+
+$(KEYSTORE): 
+	"$(KEYTOOL)" -genkey \
+		-dname $(KEYDNAME) \
+		-keystore $(KEYSTORE) \
+		-alias $(KEYALIAS) \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD)
+	"$(KEYTOOL)" -selfcert \
+		-keystore $(KEYSTORE) \
+		-alias $(KEYALIAS) \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD)
+	"$(KEYTOOL)" -list \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD)
 
 demo: demo_ptolemy demo_vergil
 
