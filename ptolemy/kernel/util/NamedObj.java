@@ -335,7 +335,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     public Attribute getAttribute(String name) {
         try {
             workspace().getReadAccess();
-            return (Attribute) _attributes.get(name);
+            if (_attributes == null) {
+                // No attribute has been added to this NamedObj yet.
+                return null;
+            } else {
+                return (Attribute) _attributes.get(name);
+            }
         } finally {
             workspace().doneReading();
         }
