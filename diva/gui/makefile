@@ -30,7 +30,7 @@
 
 ME =		diva/gui
 
-DIRS = 		toolbox
+DIRS = 		toolbox tutorial
 
 # Root of the Ptolemy II directory
 ROOT =		../..

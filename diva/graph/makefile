@@ -30,7 +30,7 @@
 
 ME =		diva/graph
 
-DIRS = 		basic layout modular toolbox test
+DIRS = 		basic layout modular toolbox test tutorial
 
 # Root of the Ptolemy II directory
 ROOT =		../..
