@@ -131,8 +131,8 @@ public abstract class Source extends TypedAtomicActor {
         }
     }
         
-    /** If the trigger input is connected and it has no input,
-     *  then return false. Otherwise, return true.
+    /** If the trigger input is connected and it has no input or an unknown
+     *  state, then return false. Otherwise, return true.
      *  @return True, unless the trigger input is connected
      *   and has no input.
      *  @exception IllegalActionException If checking the trigger for
@@ -141,7 +141,7 @@ public abstract class Source extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         if (trigger.numberOfSources() > 0) {
             for (int i = 0; i < trigger.getWidth(); i++) {
-                if (trigger.hasToken(i)) {
+                if (trigger.isKnown(i) && trigger.hasToken(i)) {
                     return super.prefire();
                 }
             }
