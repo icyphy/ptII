@@ -72,6 +72,12 @@ public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
      public void emitCurrentEvents(){
     }
 
+    /** Dummy method. Return false always.
+     */
+    public boolean hasCurrentEvent(){
+        return false;
+    }
+
     /** The single-input port.
      */
     public TypedIOPort input;
