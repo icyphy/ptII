@@ -129,7 +129,6 @@ public class Copernicus {
 
     /** Parse the specified command-line arguments and then execute
      *  any specified commands.
-     *  @param
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
