@@ -336,9 +336,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     ////                         private methods                   ////
 
     // FIXME: this should go away
-    private void _debug(String printString) {
+    //private void _debug(String printString) {
 	//System.out.println(printString);
-    }
+    //}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Set of all actors that require updating.
     private static Set _actorsThatRequireUpdating;
