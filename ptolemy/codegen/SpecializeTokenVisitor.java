@@ -137,17 +137,17 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
                 System.err.println("Warning: SpecializeTokenVisitor"
-				   + ".specializeTokens(): "
-				   + "could not solve for specific "
-                                   + "token type for declaration '"
-				   + typedDecl.getName()
-				   + "' in "
-				   + actorInfo.actor.getName()
-				   + ".\n term = " + value
-				   + " which is unsupported. \n"
-				   + "Try setting the type with something like"
-				   + "\n'fileWriter.input.setTypeEquals"
-				   + "(BaseType.INT);'");
+                        + ".specializeTokens(): "
+                        + "could not solve for specific "
+                        + "token type for declaration '"
+                        + typedDecl.getName()
+                        + "' in "
+                        + actorInfo.actor.getName()
+                        + ".\n term = " + value
+                        + " which is unsupported. \n"
+                        + "Try setting the type with something like"
+                        + "\n'fileWriter.input.setTypeEquals"
+                        + "(BaseType.INT);'");
 
                 // Replace the declaration type with "Token" as an indication
                 // for later passes.
