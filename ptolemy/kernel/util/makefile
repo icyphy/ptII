@@ -97,6 +97,7 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
 	'NamedObj$$MoMLInfo.class' \
+	'Settable$$Visibility.class' \
 	'Workspace$$ReadDepth.class' \
 	$(PTCLASSJAR)
 
