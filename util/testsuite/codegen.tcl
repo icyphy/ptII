@@ -386,7 +386,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 		      "-codeGenerator" $codeGenerator \
 		      "-compile" "true"]
 	set separator [java::field java.io.File pathSeparator]
-	set javaCommand [list java -classpath "$PTII$separator$PTII/lib/soot.jar$separator$PTII/lib/jasmin.jar" -Dptolemy.ptII.dir=$PTII ptolemy.copernicus.kernel.Copernicus]
+	set javaCommand [list sh $PTII/bin/copernicus]
+#	set javaCommand [list java -classpath "$PTII$separator$PTII/lib/soot.jar$separator$PTII/lib/jasmin.jar" -Dptolemy.ptII.dir=$PTII ptolemy.copernicus.kernel.Copernicus]
 
 	set execCommand [concat $javaCommand $args]
         puts "Running Copernicus: $execCommand"
