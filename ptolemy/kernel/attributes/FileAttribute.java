@@ -150,13 +150,13 @@ public class FileAttribute extends StringAttribute {
         if (file.exists()) {
             if (!file.canRead()) {
                 throw new IllegalActionException(this,
-                "Cannot read file: " + name);
+                        "Cannot read file: " + name);
             }
             try {
                 return file.toURL();
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this,
-                "Cannot open file: " + ex.toString());
+                        "Cannot open file: " + ex.toString());
             }
         } else {
             // Try relative to the URIAttribute.
@@ -168,7 +168,7 @@ public class FileAttribute extends StringAttribute {
                     return newURI.toURL();
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
-                    "Unable to open as a file or URL: " + name);
+                            "Unable to open as a file or URL: " + name);
                 }
             }
 
@@ -191,7 +191,7 @@ public class FileAttribute extends StringAttribute {
                     return new URL(name);
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
-                    "Unable to open as a file or URL: " + name);
+                            "Unable to open as a file or URL: " + name);
                 }
             }
         }
@@ -310,7 +310,7 @@ public class FileAttribute extends StringAttribute {
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-            "Cannot open file for writing: " + name);
+                    "Cannot open file for writing: " + name);
         }
     }
 

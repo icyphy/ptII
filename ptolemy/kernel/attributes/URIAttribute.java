@@ -109,7 +109,7 @@ public class URIAttribute extends SingletonAttribute {
         while (container != null && modelURI == null) {
             try {
                 modelURI = (URIAttribute)container.getAttribute(
-                       "_uri", URIAttribute.class);
+                        "_uri", URIAttribute.class);
             } catch (IllegalActionException ex) {
                 // An attribute was found with name "_uri", but it is not
                 // an instance of URIAttribute.  Continue the search.
@@ -169,7 +169,7 @@ public class URIAttribute extends SingletonAttribute {
         } catch (URISyntaxException ex) {
             // Should not occur because a URL is a valid URI.
             throw new InternalErrorException(this, ex,
-            "Error constructing URI!");
+                    "Error constructing URI!");
         }
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
