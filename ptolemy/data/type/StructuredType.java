@@ -60,30 +60,12 @@ public abstract class StructuredType implements Type {
 
     /** Return a deep copy of this StructuredType.
      *  @return A StructuredType.
-     *  @exception CloneNotSupportedException Not thrown.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
      */
     abstract public Object clone() throws CloneNotSupportedException;
 
-    /** Set the elements that have declared type BaseType.UNKNOWN to the
-     *  specified type.
-     *  @param type A Type.
-     */
-    public abstract void initialize(Type type);
-
-    /** Update this StructuredType to the specified Structured Type.
-     ** The specified type must have the same structure as this type.
-     *  This method will only update the component type that is
-     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
-     *  @param newType A StructuredType.
-     *  @exception IllegalActionException If the specified type has a
-     *   different structure.
-     */
-    public abstract void updateType(StructuredType newType)
-            throws IllegalActionException;
-
-
     /** Return the cached type comparison result:
-     * TypeLattice.compare(this,type(index)).
+     * TypeLattice.compare(this, type(index)).
      * @param index Other type's node index in the type lattice.
      * @return Cached type comparison result.
      */
@@ -97,6 +79,12 @@ public abstract class StructuredType implements Type {
     public int getNodeIndex() {
         return _nodeIndex;
     }
+
+    /** Set the elements that have declared type BaseType.UNKNOWN to the
+     *  specified type.
+     *  @param type A Type.
+     */
+    public abstract void initialize(Type type);
 
     /** Set the cached TypeLattice.compare(this, type) value.
      * @param index The other type's node index.
@@ -116,6 +104,17 @@ public abstract class StructuredType implements Type {
         for (int i = 0; i < nodeCount; i++)
             _cachedTypeComparisonResults[i] = Type.CACHE_INVALID;
     }
+
+    /** Update this StructuredType to the specified Structured Type.
+     ** The specified type must have the same structure as this type.
+     *  This method will only update the component type that is
+     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
+     *  @param newType A StructuredType.
+     *  @exception IllegalActionException If the specified type has a
+     *   different structure.
+     */
+    public abstract void updateType(StructuredType newType)
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
