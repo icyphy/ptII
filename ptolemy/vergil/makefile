@@ -48,9 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	MoMLViewerApplet.java \
+	DeletionListener.java \
 	JModelViewer.java \
-	Package.java \
+	MoMLViewerApplet.java \
+	Module.java \
 	PtolemyDocument.java \
 	PtolemyFSMNotation.java \
 	PtolemyNotation.java \
