@@ -33,7 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.c;
 
-import ptolemy.lang.java.RegenerateCode; 
+import ptolemy.lang.java.JavaConverter; 
 import ptolemy.lang.NullValue;
 import ptolemy.lang.java.ResolveNameVisitor;
 import java.util.LinkedList;
@@ -78,14 +78,14 @@ public class JavaToC {
         passList.add(new IndentationVisitor());
         passList.add(new HeaderFileGenerator());
         passList.add(new CCodeGenerator()); 
-        RegenerateCode regenerator = new RegenerateCode(passList);
+        JavaConverter converter = new JavaConverter(passList);
 
         // Configure the code generator to display verbose output,
         // and perform static resolution.
-        regenerator.configure(true, true);
+        converter.configure(true, true);
 
         // Generate C code from the Java files specified on the command line.
-        LinkedList passResultList = regenerator.regenerate(args);
+        LinkedList passResultList = converter.convert(args);
 
 
         // Write out the generated .c file.
