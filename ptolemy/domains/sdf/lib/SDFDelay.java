@@ -138,7 +138,7 @@ public class SDFDelay extends SDFAtomicActor {
          */
         TypedIOPort inputport = (TypedIOPort)getPort("input");
         inputport.setDeclaredType(IntToken.class);
-        
+
         TypedIOPort outputport = (TypedIOPort)getPort("output");
         outputport.setDeclaredType(IntToken.class);
 

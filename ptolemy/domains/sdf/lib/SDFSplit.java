@@ -55,7 +55,7 @@ public class SDFSplit extends SDFAtomicActor {
             outputport1.setOutput(true);
             setTokenProductionRate(outputport1, 1);
             outputport1.setDeclaredType(IntToken.class);
-            
+
             TypedIOPort outputport2 = (TypedIOPort)newPort("output2");
             outputport2.setOutput(true);
             setTokenProductionRate(outputport2, 1);

@@ -59,7 +59,7 @@ public class SDFJoin extends SDFAtomicActor {
             inputport2.setInput(true);
             setTokenConsumptionRate(inputport2, 1);
             inputport2.setDeclaredType(IntToken.class);
-         
+
             TypedIOPort outputport = (TypedIOPort)newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 2);

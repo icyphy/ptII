@@ -193,11 +193,11 @@ public class FIR extends SDFAtomicActor {
     /** Consume the inputs and produce the outputs of the FIR filter.
      */
     public void fire() throws IllegalActionException {
-	
+
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
-        int phase = _dec - _decPhase - 1;   
-	
+        int phase = _dec - _decPhase - 1;
+
         // FIXME: consume just one input for now.
         if (--_mostrecent < 0) _mostrecent = _data.length - 1;
         _data[_mostrecent] = ((DoubleToken)(input.get(0))).doubleValue();
