@@ -435,3 +435,9 @@ test DoubleArrayMath-14.3.2 {sum} {
     set r [java::call ptolemy.math.DoubleArrayMath sum $a3]
     list $r
 } 5096.49
+
+####################################################################
+test DoubleArrayMath-14.4 {toComplexArray} {
+    set r [java::call ptolemy.math.DoubleArrayMath toComplexArray $a2]
+    jdkPrintArray $r
+} {{4826.2 + 0.0i} {236.1 + 0.0i} {-36.21 + 0.0i} {5.0 + 0.0i} {65.4 + 0.0i}}
