@@ -159,6 +159,7 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
+			ptolemy.actor.lib.python \
 			ptolemy.actor.parameters \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.solver \
@@ -337,6 +338,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
+			../ptolemy/actor/lib/python/*.java \
 			../ptolemy/actor/parameters/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
