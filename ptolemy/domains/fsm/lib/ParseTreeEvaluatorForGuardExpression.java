@@ -136,6 +136,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _construction = mode;
         if (mode) {
             _relationNumber = 0;
+            _relationIndex = 0;
         }
     }
 
