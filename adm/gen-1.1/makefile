@@ -364,7 +364,7 @@ remote1configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo `date`
-	(cd $(REMOTE1PTIIDIST);	rm -f config.cache; PTII=$(REMOTE1PTIIDIST) configure)
+	(cd $(REMOTE1PTIIDIST);	rm -f config.cache; PTII=$(REMOTE1PTIIDIST) ./configure)
 
 # Clean the remote1 tree
 remote1distclean:
@@ -813,7 +813,7 @@ remote4configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo `date`
-	(cd $(REMOTE4PTIIDIST);	rm -f config.cache; PTII=$(REMOTE4PTIIDIST) configure)
+	(cd $(REMOTE4PTIIDIST);	rm -f config.cache; PTII=$(REMOTE4PTIIDIST) ./configure)
 
 # Clean the remote4 tree
 remote4distclean:
