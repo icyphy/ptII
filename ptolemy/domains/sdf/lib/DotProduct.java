@@ -70,15 +70,15 @@ public class DotProduct extends SDFAtomicActor {
       	input1 = new SDFIOPort(this, "input1", true, false);
 	    input1.setTypeAtMost(BaseType.DOUBLE_MATRIX);
 	    input1.setTokenConsumptionRate(1);
-	      	    
+
 	    input2 = new SDFIOPort(this, "input2", true, false);
 	    input2.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-	    input2.setTokenConsumptionRate(1);	    
-	    
+	    input2.setTokenConsumptionRate(1);
+
 	    output = new SDFIOPort(this, "output", false, true);
 	    output.setTypeEquals(BaseType.DOUBLE);
 	    output.setTokenProductionRate(1);
-	    
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class DotProduct extends SDFAtomicActor {
     }
 
     /** Read a token each of the input ports, converting them into
-     *  DoubleMatrixTokens, and output a DoubleToken representing the 
+     *  DoubleMatrixTokens, and output a DoubleToken representing the
      *  dot product. The input matrix tokens are assumed to have only one
      *  row, representing vector operands.
      *
@@ -124,14 +124,14 @@ public class DotProduct extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         MatrixToken token1 = (MatrixToken) input1.get(0);
         MatrixToken token2 = (MatrixToken) input2.get(0);
-        
+
         double[][] doubleMatrix1 = token1.doubleMatrix();
         double[][] doubleMatrix2 = token2.doubleMatrix();
-        
+
         if ((doubleMatrix1.length != 1) || (doubleMatrix2.length != 1)) {
            throw new IllegalActionException("Input to DotProduct is not a matrix with one row.");
         }
-        
+
         output.send(0, new DoubleToken(DoubleArrayMath.dotProduct(
                                        doubleMatrix1[0], doubleMatrix2[0])));
     }

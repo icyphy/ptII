@@ -134,7 +134,7 @@ public class SDFConst extends SDFSource {
 	//System.out.println("sdfConst: fire: " + this.getFullName() + " ");
 	//System.out.println(curVal.toString());
 	for (int i = 0; i < _rate; i++) {
-	    _resultTokenArray[i] = 
+	    _resultTokenArray[i] =
 		curVal;
 	}
 	output.sendArray(0, _resultTokenArray);

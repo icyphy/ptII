@@ -40,9 +40,9 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// FIRDouble
 /**
-This actor implements a finite-impulse response filter with multirate 
-capability.  It differs from the standard FIR filter in that its input, 
-output and taps are restricted to be doubles, which allows faster 
+This actor implements a finite-impulse response filter with multirate
+capability.  It differs from the standard FIR filter in that its input,
+output and taps are restricted to be doubles, which allows faster
 computation.
 
 @author Edward A. Lee

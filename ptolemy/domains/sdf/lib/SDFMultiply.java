@@ -68,7 +68,7 @@ public class SDFMultiply extends SDFTransformer {
     public SDFMultiply(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	
+
 	// Ports
 	input2 = new SDFIOPort(this, "input2", true, false);
 	input2.setTypeEquals(BaseType.DOUBLE);
@@ -97,11 +97,11 @@ public class SDFMultiply extends SDFTransformer {
 	    throws CloneNotSupportedException {
         SDFMultiply newobj = (SDFMultiply)super.clone(ws);
 	newobj.input2 = (SDFIOPort)newobj.getPort("input2");
-	
+
         return newobj;
     }
 
-    /** Output the product of the two input port's values. Process 
+    /** Output the product of the two input port's values. Process
      *  <i>rate</i> tokens.
      *  @exception IllegalActionException If there is no director.
      */
@@ -112,7 +112,7 @@ public class SDFMultiply extends SDFTransformer {
 
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
-	    _resultTokenArray[i] = 
+	    _resultTokenArray[i] =
 		(DoubleToken)_tokenArray1[i].multiply(_tokenArray2[i]);
 	}
 
@@ -127,7 +127,7 @@ public class SDFMultiply extends SDFTransformer {
         _tokenArray1 = new DoubleToken[_rate];
 	_tokenArray2 = new DoubleToken[_rate];
 	_resultTokenArray = new DoubleToken[_rate];
-    }  
+    }
 
     /** Set up the port's consumption rates.
      *  @exception IllegalActionException If the parent class throws it.
@@ -136,7 +136,7 @@ public class SDFMultiply extends SDFTransformer {
 	super.preinitialize();
 	input2.setTokenConsumptionRate(_rate);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

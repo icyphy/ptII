@@ -197,7 +197,7 @@ public class RaisedCosine extends FIR {
         DoubleUnaryOperation rcSg = sqrt ?
             (DoubleUnaryOperation)
             new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
-            (DoubleUnaryOperation)            
+            (DoubleUnaryOperation)
             new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
 
         tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);

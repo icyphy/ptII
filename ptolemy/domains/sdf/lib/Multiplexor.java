@@ -41,10 +41,10 @@ import ptolemy.kernel.util.*;
 //// Multiplexor
 /**
 A polymorphic multiplexor.
-This actor has two input ports. One is a multiport, from which the available 
+This actor has two input ports. One is a multiport, from which the available
 Tokens to be chosen are received. The other input port receives IntTokens
 representing the channel containing the the Token to send to the output.
-Because Tokens are immutable, the same Token is sent without additional creation 
+Because Tokens are immutable, the same Token is sent without additional creation
 of another Token.
 <p>
 The input port may receive Tokens of any type.
@@ -66,15 +66,15 @@ public class Multiplexor extends SDFAtomicActor {
     public Multiplexor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        input = new SDFIOPort(this, "input", true, false); 
+
+        input = new SDFIOPort(this, "input", true, false);
     	input.setMultiport(true);
 	    input.setTokenConsumptionRate(1);
-	   
+
 	    select = new SDFIOPort(this, "select", true, false);
-	    select.setTypeEquals(BaseType.INT);	    
+	    select.setTypeEquals(BaseType.INT);
 	    select.setTokenConsumptionRate(1);
-	    
+
 	    output = new SDFIOPort(this, "output", false, true);
 	    output.setTypeSameAs(input);
 	    output.setTokenProductionRate(1);
@@ -88,7 +88,7 @@ public class Multiplexor extends SDFAtomicActor {
 
     /** Input for index of port to select. The type is IntToken. */
     public SDFIOPort select;
-    
+
     /** Output for sending the selected token. */
     public SDFIOPort output;
 
@@ -117,15 +117,15 @@ public class Multiplexor extends SDFAtomicActor {
      *  @exception IllegalActionException If there is no director, or if
      *  an input port does not have a token.
      */
-    public void fire() throws IllegalActionException {        
+    public void fire() throws IllegalActionException {
         int index = ((IntToken) select.get(0)).intValue();
-                
+
         for (int i = 0; i < input.getWidth(); i++) {
             Token token = input.get(i);
 	        if (i == index) {
 	           output.send(0, token);
 	        }
-	    }	    
+	    }
     }
 }
 

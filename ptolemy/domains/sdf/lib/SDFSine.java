@@ -80,7 +80,7 @@ public class SDFSine extends SDFTransformer {
     public SDFSine(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	
+
 	// parameters
         amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
 	amplitude.setTypeEquals(BaseType.DOUBLE);
@@ -143,13 +143,13 @@ public class SDFSine extends SDFTransformer {
 	double w = ((DoubleToken)omega.getToken()).doubleValue();
 	double p = ((DoubleToken)phase.getToken()).doubleValue();
 
-	
+
 	input.getArray(0, _tokenArray);
 	double result;
 	// For each samples in the current channel:
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
-	    _resultTokenArray[i] = 
+	    _resultTokenArray[i] =
 		new DoubleToken(A*Math.sin(w*(_tokenArray[i].doubleValue())+p));
 	}
 
@@ -163,7 +163,7 @@ public class SDFSine extends SDFTransformer {
         super.initialize();
         _tokenArray = new DoubleToken[_rate];
 	_resultTokenArray = new DoubleToken[_rate];
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

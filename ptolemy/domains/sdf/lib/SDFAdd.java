@@ -67,7 +67,7 @@ public class SDFAdd extends SDFTransformer {
     public SDFAdd(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	
+
 	// Ports
 	input2 = new SDFIOPort(this, "input2", true, false);
 	input2.setTypeEquals(BaseType.DOUBLE);
@@ -96,7 +96,7 @@ public class SDFAdd extends SDFTransformer {
 	    throws CloneNotSupportedException {
         SDFAdd newobj = (SDFAdd)super.clone(ws);
 	newobj.input2 = (SDFIOPort)newobj.getPort("input2");
-	
+
         return newobj;
     }
 
@@ -105,14 +105,14 @@ public class SDFAdd extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
 	// Check parameter values.
-	
+
 
 	input2.getArray(0, _tokenArray2);
 	input.getArray(0, _tokenArray1);
-	
+
 
 	for (int i = 0; i < _rate; i++) {
-	    _resultTokenArray[i] = 
+	    _resultTokenArray[i] =
 		(DoubleToken)_tokenArray1[i].add(_tokenArray2[i]);
 		//  *******  OR *********** code below seems slightly faster.
 		//new DoubleToken((_tokenArray1[i].doubleValue())*(_tokenArray2[i].doubleValue()));
@@ -128,7 +128,7 @@ public class SDFAdd extends SDFTransformer {
         _tokenArray1 = new DoubleToken[_rate];
 	_tokenArray2 = new DoubleToken[_rate];
 	_resultTokenArray = new DoubleToken[_rate];
-    }  
+    }
 
     /** Set up the port's consumption rates.
      *  @exception IllegalActionException If the parent class throws it.

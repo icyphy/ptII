@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
 <p>
 This actor bundles a certain number of input tokens into an DoubleMatrixToken.
 The number of tokens to be bundled into an DoubleMatrixToken is determined
-by the product of the parameters <i>rows</i> and <i>columns</i>. 
+by the product of the parameters <i>rows</i> and <i>columns</i>.
 </p>
 <p>
 The output matrix is read by filling up row 0 with columns 0 .. n-1
@@ -76,24 +76,24 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     public SequenceToDoubleMatrix(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
-        input = new SDFIOPort(this, "input", true, false); 
+
+        input = new SDFIOPort(this, "input", true, false);
         input.setTypeAtMost(BaseType.DOUBLE);
 
         output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-    
+
         // the number of rows is defaulted to 1
         rows = new Parameter(this, "rows", new IntToken(1));
 
         attributeChanged(rows);
-        
-        // the number of columns is defaulted to 1        
+
+        // the number of columns is defaulted to 1
         columns = new Parameter(this, "columns", new IntToken(1));
 
         // set the token consumption rate one final time in this constructor
         attributeChanged(columns);
-        
+
         output.setTokenProductionRate(1);
     }
 
@@ -103,18 +103,18 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
 
     /** Input receiving the tokens to bundle. */
     public SDFIOPort input;
-    
+
     /** Output for sending the DoubleMatrixToken. */
     public SDFIOPort output;
-    
-    
-    /** The number of rows of the output matrix. This parameter must 
-     *  evaluate to an IntToken. 
+
+
+    /** The number of rows of the output matrix. This parameter must
+     *  evaluate to an IntToken.
      */
     public Parameter rows;
-    
-    /** The number of columns of the output matrix. This parameter must 
-     *  evaluate to an IntToken. 
+
+    /** The number of columns of the output matrix. This parameter must
+     *  evaluate to an IntToken.
      */
     public Parameter columns;
 
@@ -125,28 +125,28 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
             throws IllegalActionException {
         if (attribute == rows) {
            _iRows = ((IntToken) rows.getToken()).intValue();
-           
+
            input.setTokenConsumptionRate(_iRows * _iColumns);
-        
+
            Director dir = getDirector();
-           
+
            if (dir != null) {
               dir.invalidateSchedule();
-           }        
-        
+           }
+
         } else if (attribute == columns) {
            _iColumns = ((IntToken) columns.getToken()).intValue();
-           
+
            input.setTokenConsumptionRate(_iRows * _iColumns);
 
            _tokenArray = new Token[_iColumns];
 
            Director dir = getDirector();
-           
+
            if (dir != null) {
               dir.invalidateSchedule();
-           }        
-        
+           }
+
         } else {
            super.attributeChanged(attribute);
         }
@@ -165,9 +165,9 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
             SequenceToDoubleMatrix newobj = (SequenceToDoubleMatrix) (super.clone(ws));
             newobj.input = (SDFIOPort) newobj.getPort("input");
             newobj.output = (SDFIOPort) newobj.getPort("output");
-           
+
             newobj.rows = (Parameter) newobj.getAttribute("rows");
-            newobj.columns = (Parameter) newobj.getAttribute("columns");                                    
+            newobj.columns = (Parameter) newobj.getAttribute("columns");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -179,17 +179,17 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     /** Consume the inputs and produce the output DoubleMatrixToken.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void fire() throws IllegalActionException {    
+    public void fire() throws IllegalActionException {
         double[][] matrix = new double[_iRows][_iColumns];
 
         for (int i = 0; i < _iRows; i++) {
             input.getArray(0, _tokenArray);
-        
-            for (int j = 0; j < _iColumns; j++) { 
+
+            for (int j = 0; j < _iColumns; j++) {
                 matrix[i][j] = ((ScalarToken) _tokenArray[j]).doubleValue();
             }
         }
-    
+
         // could be optimized not to copy matrix on token construction
         output.send(0, new DoubleMatrixToken(matrix));
     }
@@ -197,19 +197,19 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The cached number of rows of the output matrix. */    
-    protected int _iRows = 1; // must be initialized for attributeChanged() 
+    /** The cached number of rows of the output matrix. */
+    protected int _iRows = 1; // must be initialized for attributeChanged()
                               // call in constructor
 
-    
-    /** The cached number of columns of the output matrix. */        
-    protected int _iColumns = 1; // must be initialized for attributeChanged() 
+
+    /** The cached number of columns of the output matrix. */
+    protected int _iColumns = 1; // must be initialized for attributeChanged()
                                  // call in constructor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-       
-    // An array to place tokens in the same row, used to take advantage of 
+
+    // An array to place tokens in the same row, used to take advantage of
     // the optimization possible with SDFIOPort.getArray().
     private Token[] _tokenArray = null;
 }

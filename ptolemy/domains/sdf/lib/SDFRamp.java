@@ -45,7 +45,7 @@ This actor is similar to the actor.lib.Ramp actor, but provides
 better performance in the SDF domain.
 <p
 Produce <i>rate</i> output tokens on each firing where each
-sucessive token has a value that is incremented by the specified 
+sucessive token has a value that is incremented by the specified
 step. This actor is similar in function to actor.lib.Ramp, but this
 actorr is optimized to provide better performance in the SDF
 domain. In order to get improved performance, the <i>rate</i>
@@ -138,10 +138,10 @@ public class SDFRamp extends SDFSource {
      */
     public void fire() {
 	try {
-	    
+
 	    for (int i = 0; i < _rate; i++) {
 		// Convert to double[].
-		_resultTokenArray[i] = 
+		_resultTokenArray[i] =
 		    new DoubleToken(_stateToken);
 		_stateToken = _stateToken + _stepSize;
 	    }

@@ -43,13 +43,13 @@ import ptolemy.domains.sdf.kernel.*;
 //// SineFM
 /**
 This actor computes the sine of the input signal. This actor,
-unlike SDFSine, reads the frequency value from the input port. 
-This allows the frequency value to be updated at the sample rate, 
+unlike SDFSine, reads the frequency value from the input port.
+This allows the frequency value to be updated at the sample rate,
 making this actor useful for FM applications, such as FM synthesis.
 <p>
 Produce an output token on each firing with a value that is
 equal to the sine of the input, scaled and shifted according to the
-parameters and the current <i>omega</i> input port value. 
+parameters and the current <i>omega</i> input port value.
 In the actual implementation, <i>rate</i> tokens are
 consumed and produced by the input and output ports, respectively,
 on each call to fire(). The parameter values are reread on each
@@ -86,7 +86,7 @@ public class SineFM extends SDFTransformer {
     public SineFM(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	
+
 	// parameters
 	omega = new SDFIOPort(this, "omega", true, false);
 	omega.setTypeEquals(BaseType.DOUBLE);
@@ -140,7 +140,7 @@ public class SineFM extends SDFTransformer {
     }
 
     /** Compute the sine of the input, using the current parameter
-     *  and input port values. <i>rate</i> tokens are consumed 
+     *  and input port values. <i>rate</i> tokens are consumed
      *  and produced on each call to this method.
      *  @exception IllegalActionException If there is no director.
      */
@@ -155,7 +155,7 @@ public class SineFM extends SDFTransformer {
 	// For each samples in the current channel:
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
-	    _resultTokenArray[i] = 
+	    _resultTokenArray[i] =
 		new DoubleToken(A*Math.sin((_omegaTokenArray[i].doubleValue())*(_tokenArray[i].doubleValue())+p));
 	}
 
@@ -170,7 +170,7 @@ public class SineFM extends SDFTransformer {
         _tokenArray = new DoubleToken[_rate];
 	_omegaTokenArray = new DoubleToken[_rate];
 	_resultTokenArray = new DoubleToken[_rate];
-    }  
+    }
 
     /** Set up the port's consumption rates.
      *  @exception IllegalActionException If the parent class throws it.
@@ -179,7 +179,7 @@ public class SineFM extends SDFTransformer {
 	super.preinitialize();
 	omega.setTokenConsumptionRate(_rate);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

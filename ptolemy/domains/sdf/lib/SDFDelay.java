@@ -50,7 +50,7 @@ import ptolemy.actor.TypedCompositeActor;
  *  single integer token with value zero to be produced in
  *  initialize().
  *
- *  @author Brian K. Vogel. Based on Delay, by Steve Neuendorffer and 
+ *  @author Brian K. Vogel. Based on Delay, by Steve Neuendorffer and
  *  Edward A. Lee
  *  @version $Id$
  */
@@ -143,11 +143,11 @@ public class SDFDelay extends Transformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 	// FIXME: Actually check that delayVal is valid.
-       
+
         Parameter production =
             (Parameter)output.getAttribute("tokenInitProduction");
         production.setToken(delayVal.getToken());
 
-        
+
     }
 }

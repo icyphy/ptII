@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Repeat
 /**
 An actor that repeats each input token the specified number of times
-(<i>numberOfTimes</i>) on the output. Note that this is a sample rate 
+(<i>numberOfTimes</i>) on the output. Note that this is a sample rate
 change, and hence affects the number of invocations of downstream actors.
 
 @author Shankar Rao
@@ -70,11 +70,11 @@ public class Repeat extends SDFAtomicActor {
     public Repeat(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-      	
+
 	input = new SDFIOPort(this, "input", true, false);
 	output = new SDFIOPort(this, "output", false, true);
 	output.setTypeSameAs(input);
-	
+
 	// parameters
 	numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
 	numberOfTimes.setTypeEquals(BaseType.INT);
@@ -86,7 +86,7 @@ public class Repeat extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. This class imposes no type constraints on the 
+    /** The input port. This class imposes no type constraints on the
      *  type of the input.
      */
     public SDFIOPort input;
@@ -122,9 +122,9 @@ public class Repeat extends SDFAtomicActor {
 	return newobj;
     }
 
-    /** Repeat a block of <i>blockSize</i> input tokens <i>numberOfTimes</i> 
-     *  times on the output. For example, if <i>blockSize</i> = 3 and 
-     *  <i>numberOfTimes</i> = 2, then on the following input:<br> 
+    /** Repeat a block of <i>blockSize</i> input tokens <i>numberOfTimes</i>
+     *  times on the output. For example, if <i>blockSize</i> = 3 and
+     *  <i>numberOfTimes</i> = 2, then on the following input:<br>
      *  <pre>  1 2 3 4 5 6</pre><br>
      *  this method will send the following output:<br>
      *  <pre>  1 2 3 1 2 3 4 5 6 4 5 6</pre><br>
@@ -136,10 +136,10 @@ public class Repeat extends SDFAtomicActor {
 	Token[] inputBlock = new Token[bs];
 	for (int j = 0; j < bs; j += 1)
 	    inputBlock[j] = input.get(0);
-	for (int i = 0; i < nt; i += 1) 
+	for (int i = 0; i < nt; i += 1)
 	    for (int j = 0; j < bs; j += 1)
-		output.send(0, inputBlock[j]);	
-	
+		output.send(0, inputBlock[j]);
+
     }
     /** Calculate the token production rate and the token consumption
      *  rate based on the parameters <i>blockSize</i> and <i>numberOfTimes</i>.

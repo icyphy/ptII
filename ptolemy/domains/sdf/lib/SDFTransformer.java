@@ -1,4 +1,4 @@
-/* A base class for SDF actors that transform an input stream 
+/* A base class for SDF actors that transform an input stream
    into an output stream.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 
 package ptolemy.domains.sdf.lib;
@@ -41,12 +41,12 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// SDFTransformer
 /**
-A base class for SDF actors that transform an input stream 
+A base class for SDF actors that transform an input stream
 into an output stream. It provides
 improved performance over actor.lib.Transformer in the SDF domain.
 <p>
-It provides an input port, an output port, and a rate parameter 
-and manages the cloning of these ports and parameter. 
+It provides an input port, an output port, and a rate parameter
+and manages the cloning of these ports and parameter.
 The <i>rate</i> parameter that can be used to
 adjust the token production/consumption rate. The default
 value of <i>rate</i> is 256.

@@ -111,7 +111,7 @@ public class FIR extends SDFAtomicActor {
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
         decimation = new Parameter(this, "decimation", new IntToken(1));
-        decimationPhase = new Parameter(this, "decimationPhase", 
+        decimationPhase = new Parameter(this, "decimationPhase",
 					new IntToken(0));
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
         attributeTypeChanged( taps );
@@ -153,7 +153,7 @@ public class FIR extends SDFAtomicActor {
     /** Set the type constraints on the input and output port.
      * @exception IllegalActionException by derived classes.
      */
-    public void attributeTypeChanged(Attribute attribute) 
+    public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == taps) {
 
@@ -251,7 +251,7 @@ public class FIR extends SDFAtomicActor {
         _dec = token.intValue();
 	token = (IntToken)(decimationPhase.getToken());
 	_decPhase = token.intValue();
-        
+
         input.setTokenConsumptionRate(_dec);
         output.setTokenProductionRate(_interp);
         if (_decPhase >= _dec) {
