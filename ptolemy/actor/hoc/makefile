@@ -53,7 +53,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	MultiInstanceComposite.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	hoc.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -65,6 +66,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
