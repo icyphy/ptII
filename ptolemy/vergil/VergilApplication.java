@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
@@ -174,30 +173,6 @@ public class VergilApplication extends MoMLApplication {
         }
     }
 
-    /** Merge the properties in lib/ptII.properties with the current
-     *  properties.  lib/ptII.properties is searched for in the
-     *  classpath.  The value of properties listed in
-     *  lib/ptII.properties overrides properties with the same name
-     *  in the current properties.
-     */
-    public static void mergePropertiesFile() throws IOException {
-        Properties systemProperties = System.getProperties();
-        Properties newProperties = new Properties();
-        String propertyFileName = "$CLASSPATH/lib/ptII.properties";
-        // FIXME: xxxxxxCLASSPATHxxxxxx is an ugly hack
-        URL propertyFileURL =
-            FileUtilities.nameToURL(
-                    "xxxxxxCLASSPATHxxxxxx/lib/ptII.properties", null, null);
-        if (propertyFileURL == null) {
-            throw new IOException("Could not find " + propertyFileName);
-        }
-        newProperties.load(propertyFileURL.openStream());
-        // systemProperties is a HashSet, so we merge in the new properties.
-        systemProperties.putAll(newProperties);
-        System.setProperties(systemProperties);
-        System.out.println("Loaded " + propertyFileURL);
-    }
-
     /**
      *  Open the MoML file at the given location as a new library in the
      *  actor library for this application.
@@ -309,16 +284,6 @@ public class VergilApplication extends MoMLApplication {
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
                     + _configurationURL + "'", ex);
-        }
-
-        // Load the properties file
-        try {
-            mergePropertiesFile();
-        } catch (Exception ex) {
-            System.out.println("Failed to load properties pile, try "
-                    + "rerunning configure with:\n  cd $PTII; ./configure\n"
-                    + " Exception was:\n  "
-                    + ex);
         }
 
         Parameter hideUserLibraryAttribute =
