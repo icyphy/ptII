@@ -122,7 +122,7 @@ test Ramp-2.3 {check types of the above model} {
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{name:string, value:double}} {{name:string, value:double}}}
+} {{{name=string, value=double}} {{name=string, value=double}}}
 
 
 test Ramp-2.4 {test with record containing array} {
@@ -169,7 +169,7 @@ test Ramp-2.4 {test with record containing array} {
 
 test Ramp-2.5 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray:(double)array, name:string, value:double}} {{anArray:(double)array, name:string, value:double}}}
+} {{{anArray={double}, name=string, value=double}} {{anArray={double}, name=string, value=double}}}
 
 test Ramp-2.6 {test an array of record} {
     # init is [{name="a", value=1}, {name="b", value=2}]
@@ -212,7 +212,7 @@ test Ramp-2.6 {test an array of record} {
 
 test Ramp-2.7 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{({name:string, value:double})array} {({name:string, value:double})array}}
+} {{{{name=string, value=double}}} {{{name=string, value=double}}}}
 
 
 test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {

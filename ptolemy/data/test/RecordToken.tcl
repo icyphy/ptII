@@ -173,7 +173,7 @@ test RecordToken-4.1 {Test getType} {
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
     [$r getType] toString
-} {{name:string, value:int}}
+} {{name=string, value=int}}
 
 ######################################################################
 ####

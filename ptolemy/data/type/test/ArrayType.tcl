@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test ArrayType-1.0 {Create a (unknown)array} {
+test ArrayType-1.0 {Create a {unknown}} {
     set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
     set natArrayTypeMaster [java::new ptolemy.data.type.ArrayType $nat]
 
@@ -60,12 +60,12 @@ test ArrayType-1.0 {Create a (unknown)array} {
     list [$natArrayTypeMaster toString] [$natArrayType toString] \
          [[$natArrayTypeMaster getElementType] toString] \
          [[$natArrayType getElementType] toString]
-} {(unknown)array (unknown)array unknown unknown}
+} {{{unknown}} {{unknown}} unknown unknown}
 
 ######################################################################
 ####
 # 
-test ArrayType-1.1 {Create a (string)array} {
+test ArrayType-1.1 {Create a {string}} {
     set str [java::field ptolemy.data.type.BaseType STRING]
     set strArrayTypeMaster [java::new ptolemy.data.type.ArrayType $str]
 
@@ -75,7 +75,7 @@ test ArrayType-1.1 {Create a (string)array} {
     list [$strArrayTypeMaster toString] [$strArrayType toString] \
          [[$strArrayTypeMaster getElementType] toString] \
          [[$strArrayType getElementType] toString]
-} {(string)array (string)array string string}
+} {{{string}} {{string}} string string}
 
 ######################################################################
 ####
@@ -104,7 +104,7 @@ test ArrayType-2.1 {Test convert} {
 
     list [[$c1 getType] toString] [$c1 toString] \
          [[$c2 getType] toString] [$c2 toString]
-} {(int)array {{0, 1}} (string)array {{"0", "1"}}}
+} {{{int}} {{0, 1}} {{string}} {{"0", "1"}}}
 
 ######################################################################
 ####
@@ -112,7 +112,7 @@ test ArrayType-2.1 {Test convert} {
 test ArrayType-3.0 {Test update} {
     $natArrayType updateType $strArrayType
     $natArrayType toString
-} {(string)array}
+} {{string}}
 
 ######################################################################
 ####
@@ -121,7 +121,7 @@ test ArrayType-3.1 {Test initialize} {
     # continue from above test
     $natArrayType initialize $nat
     $natArrayType toString
-} {(unknown)array}
+} {{unknown}}
 
 ######################################################################
 ####

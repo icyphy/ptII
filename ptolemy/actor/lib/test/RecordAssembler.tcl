@@ -84,7 +84,7 @@ test RecordAssembler-2.2 {run with one input port, use above model} {
 test RecordAssembler-2.3 {check types} {
     list [[$rampOut getType] toString] [[$fromRamp getType] toString] \
          [[$output getType] toString] [[$recIn getType] toString]
-} {int int {{fromRamp:int}} {{fromRamp:int}}}
+} {int int {{fromRamp=int}} {{fromRamp=int}}}
 
 test RecordAssembler-2.4 {run with two input port} {
     set fromConst [java::new ptolemy.actor.TypedIOPort $assembler fromConst \
@@ -104,5 +104,5 @@ test RecordAssembler-2.5 {check types} {
     list [[$rampOut getType] toString] [[$constOut getType] toString] \
     	[[$fromRamp getType] toString] [[$fromConst getType] toString] \
 	[[$output getType] toString] [[$recIn getType] toString]
-} {int int int int {{fromConst:int, fromRamp:int}} {{fromConst:int, fromRamp:int}}}
+} {int int int int {{fromConst=int, fromRamp=int}} {{fromConst=int, fromRamp=int}}}
 

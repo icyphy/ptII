@@ -61,7 +61,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
 #
 test Pulse-1.2 {check type} {
     list [[$values getType] toString] [[$newValues getType] toString]
-} {(int)array (int)array}
+} {{{int}} {{int}}}
 
 ######################################################################
 #### Test Pulse in an SDF model

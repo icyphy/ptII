@@ -96,7 +96,7 @@ test SequenceToArray-2.2 {test double array, use above model} {
 test SequenceToArray-2.3 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {double double (double)array (double)array}
+} {double double {{double}} {{double}}}
 
 ######################################################################
 #### Test string array
@@ -114,7 +114,7 @@ test SequenceToArray-2.4 {test string array} {
 test SequenceToArray-2.5 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {string string (string)array (string)array}
+} {string string {{string}} {{string}}}
 
 ######################################################################
 #### Test cascading SequenceToArray
@@ -147,7 +147,7 @@ test SequenceToArray-2.7 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {int int (int)array (int)array ((int)array)array ((int)array)array}
+} {int int {{int}} {{int}} {{{int}}} {{{int}}}}
 
 ######################################################################
 #### Test array of array of string
@@ -167,5 +167,5 @@ test SequenceToArray-2.9 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {string string (string)array (string)array ((string)array)array ((string)array)array}
+} {string string {{string}} {{string}} {{{string}}} {{{string}}}}
 

@@ -107,6 +107,6 @@ test TypeConflictException-1.1 {Test with structured types} {
 } {{Type conflicts occurred at the following places:
   ..E1.port: unknown
   ..E1.param: unknown
-  (unknown)array
-  {name:string, value:unknown}
+  {unknown}
+  {name=string, value=unknown}
 } {..E1.port ..E1.param NOT_NAMEABLE. NOT_NAMEABLE.}}

@@ -122,7 +122,7 @@ test Const-2.4 {check types of the above model} {
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{name:string, value:int}} {{name:string, value:int}}}
+} {{{name=string, value=int}} {{name=string, value=int}}}
 
 test Const-2.5 {test RecordToken containing ArrayToken} {
     # RecordToken is {name="foo", value=5, anArray=[1.5, 2.5]}
@@ -149,7 +149,7 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray:(double)array, name:string, value:int}} {{anArray:(double)array, name:string, value:int}}}
+} {{{anArray={double}, name=string, value=int}} {{anArray={double}, name=string, value=int}}}
 
 test Const-2.7 {test an array of record} {
     # first record is {name="foo", value=5}
@@ -181,9 +181,9 @@ test Const-2.7 {test an array of record} {
     enumToTokenValues [$rec getRecord 0]
 } {{{{name="foo", value=5}, {name="bar", value=3}}}}
 
-test Const-2.6 {check types of the above model} {
+test Const-2.8 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{({name:string, value:int})array} {({name:string, value:int})array}}
+} {{{{name=string, value=int}}} {{{name=string, value=int}}}}
 
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
