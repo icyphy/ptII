@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (celaine@eecs.berkeley.edu)
-@AcceptedRating Red (celaine@eecs.berkeley.edu)
+@ProposedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
@@ -37,6 +37,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.List;
@@ -44,16 +45,27 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
 /**
-This actor implements a token delay.  It has one input port and
-one output port, both of which are single ports.  A token that is received
-on the input port is sent on the output port on the next iteration.  If more
-than one token is received on the input port in a given iteration, only
-the final token is output on the next iteration.  If no tokens are received
-in a given iteration, no token is output on the next iteration.
-
+This actor implements a token delay.  It has one input port and one
+output port, both of which are single ports.  A token that is received
+on the input port is sent on the output port on the next iteration.
+If more than one token is received on the input port in a given
+iteration, only the final token is output on the next iteration.  If
+no tokens are received on the input port in a given iteration
+(regardless of whether the <i>initialValue</i> parameter is set), no
+token is output on the next iteration.
+<p>
 You can specify the value of the token to be emitted in the first
-iteration by setting the <i>initialValue</i> parameter.  If the
-parameter is left empty, then no initial token is emitted.
+iteration by setting the <i>initialValue</i> parameter.  The token is
+emitted in the first iteration, regardless of whether any tokens are
+received on the input port.  If the parameter is left empty, then no
+token is emitted in the first iteration.
+<p>
+This actor does not work entirely correctly in the SDF domain, since
+SDF does not recognize the "absent" token.
+
+Compare this actor to other single token delay actors:
+@see ptolemy.domains.sdf.lib.SampleDelay
+@see ptolemy.domains.de.lib.TimedDelay
 
 @author Paul Whitaker and Elaine Cheong
 @version $Id$
@@ -83,7 +95,8 @@ public class NonStrictDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Initial token value.
+    /** Initial token value.  Can be of any type.
+     *  @see #typeConstraintList()
      */
     public Parameter initialValue;
 
@@ -98,7 +111,6 @@ public class NonStrictDelay extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
         if (input.isKnown(0)) {
             if (input.hasToken(0)) {
                 _currentToken = input.get(0);
@@ -116,7 +128,7 @@ public class NonStrictDelay extends Transformer {
         }
     }
 
-    /** Initialize the buffer variables.
+    /** Initialize the state of the actor.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
@@ -126,8 +138,7 @@ public class NonStrictDelay extends Transformer {
         super.initialize();
     }
 
-    /** Update the buffer variables to allow the inputs received to be
-     *  sent as outputs.
+    /** Update the state of the actor.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
@@ -153,9 +164,10 @@ public class NonStrictDelay extends Transformer {
                 typeConstraints.add(ineq);
             }
         } catch (IllegalActionException ex) {
-            // Do nothing.  Errors in the initialValue parameter should
-            // already have been caught in getAttribute() method
-            // of the base class.
+            // Errors in the initialValue parameter should already
+            // have been caught in getAttribute() method of the base
+            // class.
+            throw new InternalErrorException("Bad initialValue value!");
         }
 
         return typeConstraints;
