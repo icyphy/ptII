@@ -95,7 +95,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    // existing styles).
             // Don't ship with the FileChooser enabled.
 	    // parameterStyles = new ParameterEditorStyle[5];
-	    // parameterStyles = new ParameterEditorStyle[4];
+	    parameterStyles = new ParameterEditorStyle[4];
 	    parameterStyles[0] = new LineStyle();
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
