@@ -186,9 +186,9 @@ public class RelationList extends Attribute {
 
     /** Update the relation in the relation list referred by the relation index
      *  argument with the given type and difference information.
-     *  @parame relationIndex The position of the relation in the relation list.
-     *  @parame type The current type of the relation.
-     *  @parame difference The current difference of the relation.
+     *  @param relationIndex The position of the relation in the relation list.
+     *  @param type The current type of the relation.
+     *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
         RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
