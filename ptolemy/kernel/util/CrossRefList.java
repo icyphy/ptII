@@ -25,8 +25,8 @@
                                         COPYRIGHTENDKEY
 */
 
-import java.util.Enumeration;
 package pt.kernel;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
@@ -38,7 +38,6 @@ Description of the class
 public final class CrossRefList {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
-    // FIXME: should we allow redundant links?
     // FIXME: add clone method(s).
 
     /** Constructor
@@ -56,7 +55,7 @@ public final class CrossRefList {
 
     /** Link to an CrossRefList.
      * Instantiate a new CrossRefList in the specified (far) list and
-     * link that to the the new one here. 
+     * link that to the the new one here.  Redundant links are allowed.
      */
     public synchronized void associate(CrossRefList farList) {
         synchronized(farList) {
@@ -181,15 +180,8 @@ public final class CrossRefList {
         }
 
         private synchronized void _dissociate() {
-            // Removes *this and _far from enclosing CrossRefList.
-            if(_next != null) _next._previous = _previous; // Modify next.
-            else _lastNode = _previous;
-            if(_previous != null) _previous._next = _next; // Modify previous.
-            else _headNode = _next;
-            _dimen--; // Modify list.
-      
-            // Remove far (_far is non-null via CrossRefList::associate()).
-            _far._unlink();
+            _unlink(); // Remove *this.
+            if(_far != null) _far._unlink(); // Remove far 
         }
 
         private synchronized void _unlink() {
