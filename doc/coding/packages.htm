@@ -41,5 +41,54 @@ cannot always be followed, but if it is followed, it makes it much
 easier to reuse a package since the tests will not require extra
 packages.
 </menu>
+
+<menu>
+<li> compile time dependencies
+
+<menu>
+<li> A class explicitly imports a class from another package
+
+<li> A class explicitly uses a class from another package by
+    using the fully qualified dot separated name
+
+</menu>
+
+
+<li> run time dependencies
+<menu>
+<li> A class uses reflection at runtime.
+     <br>ptolemy.data.expr.MatlabUtilities is an example of how
+    we use reflection to use the ptolemy.matlab classes at
+    runtime so that we can compile ptolemy.data.expr and not
+    necessary have ptolemy.matlab present
+
+<li> A class parses MoML at runtime that invokes other classes.
+
+</menu>
+
+
+<li> test time dependencies
+<menu>
+<li> It is better to write Unit tests before writing System tests.
+
+<li> Unit tests will usually get you better coverage and test
+      the code more thourougly.  
+<li> System tests are useful, but they are more like browsing
+      the code than actually reading it.  For example, 
+think of a System test
+      as something like running through a library, looking at
+      the title of the books and and opening up an occasional book
+      to a random page.  Unit tests are more like opening up
+      each book and reading it.
+
+<li> A good unit test will only use other packages compile time
+    dependencies of the package under test.  
+
+    <br> This is important if someone else wants to use the package
+      and not include all of Ptolemy
+</menu>
+
+</menu>
+
 </body>
 </html>
