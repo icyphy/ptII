@@ -37,6 +37,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.NamedObj; // For javadoc
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
