@@ -34,6 +34,10 @@ import ptolemy.math.Complex;
 //// MatrixToken
 /**
 Abstract base class for tokens that contain a 2-D array.
+This class defines methods for type conversion among different matrix
+tokens. The implementation in this base class just throws an exception.
+Derived class should override the methods that the corresponding
+conversion can be achieved without loss of information.
 
 @author Yuhong Xiong
 $Id$
@@ -43,28 +47,15 @@ public abstract class MatrixToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the number of rows of the containted matrix.
+    /** Return the content of this token as a 2-D Complex array.
      *  In this base class, we just throw an exception.
-     *  @return An integer.
+     *  @return A 2-D Complex array
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      */
-    public int numRows()
+    public Complex[][] complexMatrix()
 	    throws IllegalActionException {
-	String str = "numRows method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
-    }
-
-    /** Return the number of columns of the containt matrix.
-     *  In this base class, we just throw an exception.
-     *  @return An integer.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     */
-    public int numColumns()
-	    throws IllegalActionException {
-	String str = "numColumns method not supported on "
+	String str = "complexMatrix method not supported on "
 		+ this.getClass().getName() + " objects.";
 	throw new IllegalActionException(str);
     }
@@ -78,19 +69,6 @@ public abstract class MatrixToken extends Token {
     public double[][] doubleMatrix()
 	    throws IllegalActionException {
 	String str = "doubleMatrix method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
-    }
-
-    /** Return the content of this token as a 2-D Complex array.
-     *  In this base class, we just throw an exception.
-     *  @return A 2-D Complex array
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     */
-    public Complex[][] complexMatrix()
-	    throws IllegalActionException {
-	String str = "complexMatrix method not supported on "
 		+ this.getClass().getName() + " objects.";
 	throw new IllegalActionException(str);
     }
@@ -124,5 +102,32 @@ public abstract class MatrixToken extends Token {
 		+ this.getClass().getName() + " objects.";
 	throw new IllegalActionException(str);
     }
+
+    /** Return the number of columns of the containt matrix.
+     *  In this base class, we just throw an exception.
+     *  @return An integer.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     */
+    public int numColumns()
+	    throws IllegalActionException {
+	String str = "numColumns method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
+    }
+
+    /** Return the number of rows of the containted matrix.
+     *  In this base class, we just throw an exception.
+     *  @return An integer.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     */
+    public int numRows()
+	    throws IllegalActionException {
+	String str = "numRows method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
+    }
+
 }
 
