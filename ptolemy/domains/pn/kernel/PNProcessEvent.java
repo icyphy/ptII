@@ -33,10 +33,10 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ProcessStateEvent
+//// PNProcessEvent
 /**
 An event passed from a process executing under the PN semantics to a 
-ProcessStateListener. This is used to
+PNProcessListener. This is used to
 represent an event that happened during the execution of a topology.
 This event contains two pieces of information:  the actor under the control
 of the process and an exception that might be thrown. 
@@ -46,22 +46,30 @@ The exception might not be a valid reference.
 @version $Id$
 */
 
-public class ProcessStateEvent {
+public class PNProcessEvent {
 
     /** Create a new event 
      *  @param The actor 
      */
-    public ProcessStateEvent(Actor a) {
-        _actor = a;
-        _exception = null;
+    public PNProcessEvent(Actor actor, int state) {
+        _actor = actor;
+        _state = state;
     }
 
     /** Create a new event that corresponds to an exception
      *  caught by the process.
      */
-    public ProcessStateEvent(Actor a, Exception e) {
-        _actor = a;
-        _exception = e;
+    public PNProcessEvent(Actor actor, int state, int cause) {
+        _actor = actor;
+        _state = state;
+        _cause = cause;
+    }
+
+    public PNProcessEvent(Actor actor, Exception excep) {
+        _actor = actor;
+        _state = PROCESS_FINISHED;
+        _cause = FINISHED_WITH_EXCEPTION;
+        _excep = excep;
     }
 
     //////////////////////////////////////////////////////////////
@@ -73,17 +81,49 @@ public class ProcessStateEvent {
         return _actor;
     }
 
+    public int getBlockingCause() {
+        return _cause;
+    }
+
+    public int getCurrentState() {
+        return _state;
+    }
+
     /** Return the exception associated with the event.
      */
     public Exception getException() {
-        return _exception;
+        return _excep;
     }
+
+    public int getFinishingCause() {
+        return _cause;
+    }
+
+    
+    //////////////////////////////////////////////////////////////
+    ////                   public variables                  /////
+    public int BLOCKED_ON_DELAY = 111;
+    public int BLOCKED_ON_MUTATION = 112;
+    public int BLOCKED_ON_READ = 113;
+    public int BLOCKED_ON_WRITE = 114;
+    
+    public int FINISHED_ABRUPTLY = 734;
+    public int FINISHED_PROPERLY = 735;
+    public int FINISHED_WITH_EXCEPTION = 736;
+
+    public int PROCESS_BLOCKED = 367;
+    public int PROCESS_FINISHED = 368;
+    public int PROCESS_PAUSED = 369;
+    public int PROCESS_RUNNING = 370;
+
 
     //////////////////////////////////////////////////////////////
     ////                   private variables                 /////
 
-    private Actor _actor;
-    private Exception _exception;
+    private Actor _actor = null;
+    private int _cause = 0;
+    private Exception _excep = null;
+    private int _state = 0;
 }
 
 

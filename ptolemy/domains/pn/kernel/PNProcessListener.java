@@ -1,4 +1,4 @@
-/* A ProcessStateListener is able to receive ProcessStateEvents from the Processes.
+/* A PNProcessListener is able to receive PNProcessEvents from the Processes.
 
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
@@ -31,9 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.pn.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// ProcessStateListener
+//// PNProcessListener
 /**
-An ProcessStateListener is able to receive ProcessStateEvents that are issued
+An PNProcessListener is able to receive PNProcessEvents that are issued
 during the execution of a process by a ProcessThread or director in PN.   
 In general, an object that implements this interface will probably be a front 
 end such as a execution visualization tool for
@@ -48,100 +48,27 @@ thread is suspended.
 @version $Id$
 */
 
-public interface ProcessStateListener {
+public interface PNProcessListener {
 
-    /** Called to report an execution failure. This method will be called
-     *  when an Exception is caught by a ProcessThread which calls the 
-     *  execution methods of an actor repeatedly.  Instead
-     *  of allowing the exception to propagate out the user interface,
-     *  it is caught and encapsulated within an event. The reference
-     *  to the actor corresponding to the process is encapsulated in the 
-     *  processStateEvent. 
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor and a valid exception.
-     */
-    public void processExecutionError(ProcessStateEvent event);
-
-    /** Called to report that the execution of a process finished and
-     *  the wrapup sequence completed normally.   The execution event will
-     *  contain a reference to the actor corresponding to the process that 
-     *  finished. 
+    /** Called to report that the execution of a process finished. The 
+     *  wrapup sequence may or may not have completed normally.   The 
+     *  execution event will contain a reference to the actor corresponding 
+     *  to the process that finished and the reason for finishing.
      *
-     *  @param event A processStateEvent that contains a reference to an
+     *  @param event A PNProcessEvent that contains a reference to an
      *  actor.
      */
-    public void processFinished(ProcessStateEvent event);
+    public void processFinished(PNProcessEvent event);
 
-    /** Called to report the pausing of a process. The processStateEvent 
-     *  will contain a reference to the actor corresponding to the process.
-     * 
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor.
-     */
-    public void processPaused(ProcessStateEvent event);
-
-    /** Called to report a resumption of a process. This can be a resumption
-     *  after either a pausing or blocking of the process. The 
-     *  processStateEvent will contain a reference to the actor corresponding 
-     *  to the process. 
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor.
-     */
-    public void processResumed(ProcessStateEvent event);
-
-    /** Called to report that a process has been started. The processStateEvent
+    /** Called to report that a process has changed its state (i.e. started, 
+     *  or blocked or unblocked, etc.). The PNProcessEvent
      *  will contain a reference to the actor corresponding to the process. 
+     *  The event will also indicate the new state and blocking cause, etc.
      *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor.
+     *  @param event A PNProcessEvent that contains a reference to an actor.
      */
-    public void processStarted(ProcessStateEvent event);
+    public void processStateChanged(PNProcessEvent event);
 
-    /** Called to report the blocking of a process on a read. 
-     *  The event also contains a reference to the actor corresponding to 
-     *  the blocking process. 
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor. 
-     */
-    public void processBlockedOnRead(ProcessStateEvent event);
-
-    /** Called to report the blocking of a process on a write. 
-     *  The event also contains a reference to the actor corresponding to 
-     *  the blocking process. 
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor. 
-     */
-    public void processBlockedOnWrite(ProcessStateEvent event);
-
-    /** Called to report the blocking of a process on a delay. 
-     *  The event also contains a reference to the actor corresponding to 
-     *  the blocking process. 
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor. 
-     */
-    public void processBlockedOnDelay(ProcessStateEvent event);
-
-    /** Called to report the blocking of a process on a mutation. 
-     *  The event also contains a reference to the actor corresponding to 
-     *  the blocking process. 
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor. 
-     */
-    public void processBlockedOnMutation(ProcessStateEvent event);
-   
-    /** Called to report an abrupt termination of a process. This method is 
-     *  called when the process was terminated because of an urgent request
-     *  from the director.
-     *
-     *  @param event A processStateEvent that contains a reference to an
-     *  actor.
-     */
-    public void processTerminated(ProcessStateEvent event);
 }
 
 
