@@ -33,6 +33,7 @@ import java.awt.Paint;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.apps.superb.actor.lib.FigureInteractor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -121,6 +122,8 @@ abstract public class GRShape2D extends GRActor2D {
         super.initialize();
         _figure = _createFigure();
         _setAppearance(_figure);
+        interactor = new FigureInteractor();
+        _figure.setInteractor(interactor);
     }
 
 
@@ -170,10 +173,12 @@ abstract public class GRShape2D extends GRActor2D {
         _figure.setFillPaint(fillPaint);
         _figure.setStrokePaint(strokePaint);
         _figure.setLineWidth(lineWidth);
+        
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
     protected BasicFigure _figure;
+    protected FigureInteractor interactor;
 }

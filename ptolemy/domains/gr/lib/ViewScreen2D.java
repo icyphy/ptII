@@ -332,7 +332,7 @@ public class ViewScreen2D extends GRActor2D
         _overlayLayer.add(_crosshairY.getShape());
         pane.setOverlayLayer(_overlayLayer);
         pane.setForegroundEventLayer(_eventLayer);
-        
+        _frame.addKeyListener(_eventHandler);
         Graphics2D graphics = (Graphics2D)_container.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
     }
@@ -393,7 +393,9 @@ public class ViewScreen2D extends GRActor2D
     private MouseInputAdapter mouseAdapter;
     
     private BasicFigure _crosshairX;
+    
     private BasicFigure _crosshairY;
+    
     private ViewScreen2DListener _eventHandler;
 }
 
