@@ -562,3 +562,13 @@ proc diffText {texta textb} {
 # that classes like actor.lib.NonStrictTest will check to see if
 # the training flag is set
 #java::call System setProperty ptolemy.ptII.isRunningNightlyBuild true
+
+set isRunningNightlyBuild \
+   [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
+
+if {"$isRunningNightlyBuild" == "true"} {
+   set timeOutSeconds 600
+   puts "testDefs.tcl: nightly build, so setting time out to $timeOutSeconds"
+   java::new util.testsuite.WatchDog [expr timeOutSeconds * 1000]
+}
+
