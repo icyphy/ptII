@@ -663,7 +663,7 @@ public class RecordType extends StructuredType {
          *  @return True if the element type is acceptable.
          */
         public boolean isValueAcceptable() {
-            return isInstantiable();
+            return _resolvedType.isInstantiable();
         }
 
         /** Set the element type to the specified type.
