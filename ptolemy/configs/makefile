@@ -56,14 +56,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	dspConfiguration.xml \
-	dspIntro.htm \
 	intro.htm \
+	introDSP.htm
 	introPtiny.htm \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
 	vergilConfiguration.xml \
+	vergilConfigurationDSP.xml \
 	vergilConfigurationPtiny.xml \
 	vergilWelcomeWindow.xml
 
