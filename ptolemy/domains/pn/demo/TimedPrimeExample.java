@@ -49,7 +49,8 @@ public class TimedPrimeExample {
     public static void main(String args[]) throws
             IllegalStateException, IllegalActionException,
             NameDuplicationException {
-        CompositeActor myUniverse = new CompositeActor();
+        Workspace ws = new Workspace("ws");
+        CompositeActor myUniverse = new CompositeActor(ws);
         myUniverse.setName("Prime_example");
 	Manager exec = new Manager("exec");
 	myUniverse.setManager(exec);
