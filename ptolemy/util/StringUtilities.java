@@ -84,6 +84,21 @@ public class StringUtilities {
     }
 
 
+    /** Return a string with a maximum line length of <i>length</i>
+     *   characters, limited to the given number of characters. 
+     *   If the string is truncated, an ellipsis will be appended to
+     *   the end  of the string.
+     *  @param string The string to truncate.
+     *  @param length The length to which to truncate the string.
+     */
+    public static String ellipsis(String string, int length) {
+        string = StringUtilities.split(string);
+        if (string.length() > length) {
+            return string.substring(0, length-3) + "...";
+        }
+        return string;
+    }
+
     /** Given a string, replace all the instances of XML special characters
      *  with their corresponding XML entities.  This is necessary to
      *  allow arbitrary strings to be encoded within XML.  This method
@@ -532,8 +547,25 @@ public class StringUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    // If you change these, be sure to try running vergil on
+    // a HSIF moml file
+    // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml 
+    /** Maximum length in characters of a long string before 
+     *  {@link #ellipse(String, int)} truncates and add a
+     *  trailing . . .
+     */ 
+    public static final int ELLIPSIS_LENGTH_LONG = 2000;
+
+    /** Maximum length in characters of a short string before 
+     *  {@link #ellipse(String, int)} truncates and add a
+     *  trailing . . .
+     */ 
+    public static final int ELLIPSIS_LENGTH_SHORT = 400;
+
     /** Location of Application preferences such as the user library.
      *  @see #preferencesDirectory()
      */
     public static String PREFERENCES_DIRECTORY = ".ptolemyII";
+
+
 }
