@@ -7,12 +7,13 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-<h2>How to install Ptplot</h2>
+<h2>Ptplot Installation under Unix or Windows with Cygwin</h2>
 
 Ptplot is shipped with the java files precompiled, so you need not
 recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
+
 
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
@@ -20,7 +21,8 @@ Cygwin toolkit from
 <a href="http://sourceware.cygnus.com/cygwin/"><CODE>http://sourceware.cygnus.com/cygwin/</CODE></a>
 so that you can run <CODE>/bin/sh</CODE> and <CODE>make</CODE>.
 
- <p>Below are the installation instructions
+ <p>Below are the installation instructions for Unix and Windows
+with Cygwin
 <ol>
 <li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE> 
 is in your path.
@@ -54,7 +56,10 @@ make
 
 </ol>
 
-<h2>configure</h2>
+<h3>How does configure work?</h3>
+<CODE>configure</CODE> is a <CODE>/bin/sh</CODE> script
+that determines some information about your environment and
+then modifies a few files.
 
 When the <a href="../../../configure"><CODE>configure</CODE></a>
  script is run, it reads in 
@@ -88,6 +93,49 @@ becomes
 PTII_DEFAULT=/users/cxh/ptII
 PTJAVA_DIR=/usr/java1.1
 </pre>
+
+<h2>Rebuilding under Windows without Cygwin</h2>
+Below are the instructions for recompiling the Java files
+if you are under Windows and you do not have the Cygwin.
+
+<ol>
+
+<li> Set the <CODE>PTII</CODE> variable to the top-level
+directory of the Ptplot tree.
+<pre>
+C:\ptplot3.1&gt; PTII=c:\ptplot3.1
+</pre>
+<CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
+script and other scripts
+
+<li> To compile the Ptplot Java classes, they must be in the directory
+ptolemy\plot.
+<CODE></CODE>
+<pre>
+C:\ptplot3.1&gt; cd ptolemy\plot
+</pre>
+
+
+<li> set your CLASSPATH to ..\..
+<pre>
+C:\ptplot3.1\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptplot3.1\ptolemy\plot&gt;echo %CLASSPATH%
+..\..
+</pre>
+
+<li> Remove the old Java files and compile them
+<pre>
+C:\ptplot3.1\ptolemy\plot&gt;del  *.java *\*.java
+C:\ptplot3.1\ptolemy\plot&gt;javac *.java
+</pre>
+
+<li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
+<pre>
+C:\ptplot3.1\ptolemy\plot&gt;ptplot.bat
+</pre>
+
+</ol>
+
 
 <h2>Installing Ptplot as an applet</h2>
 Ptplot includes several jar files, which are collections of 
