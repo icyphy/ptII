@@ -264,11 +264,28 @@ test ParseTreeEvaluator-7.4 {Test many levels of parenthesis nesting} {
 ######################################################################
 ####
 # 
-test ParseTreeEvaluator-8.1 {Test bitwise operators} {
-    list [theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"] \
+test ParseTreeEvaluator-8.1.1 {Test bitwise operators} {
+    list "[theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]\n \
 	[theTest "5ub&2ub"] [theTest "5ub|2ub"] [theTest "5ub\#4ub"] \
-	[theTest "~5ub"]
-} {0 7 1 -6 0ub 7ub 1ub 250ub}
+	[theTest "~5ub"]\n\
+	[theTest "5L&2L"] [theTest "5L|2L"] [theTest "5L\#4L"] \
+	[theTest "~5L"]"
+} {{0 7 1 -6
+  0ub 7ub 1ub  250ub
+ 0L 7L 1L  -6L}}
+
+test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
+    catch {theTest "5.0&2.0"} errMsg1
+    catch {theTest "5.0|2.0"} errMsg2
+    catch {theTest "5.0\#4.0"} errMsg3
+    catch {theTest "~5.0"} errMsg4
+    list " $errMsg1\n $errMsg2\n $errMsg\n $errMsg4" 
+	
+} {{ ptolemy.kernel.util.IllegalActionException: bitwiseAnd operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '2.0'
+ ptolemy.kernel.util.IllegalActionException: bitwiseOr operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '2.0'
+ ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.IntMatrixToken '[1, 0; 0, 1]' and ptolemy.data.IntMatrixToken '[1, 2; 3, 4]'
+ ptolemy.kernel.util.IllegalActionException: bitwiseNot operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '5.0'}}
+
 
 ######################################################################
 ####
