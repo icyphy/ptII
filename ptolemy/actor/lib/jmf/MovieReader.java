@@ -134,15 +134,18 @@ public class MovieReader extends Source implements ControllerListener {
                 event instanceof RealizeCompleteEvent ||
                 event instanceof PrefetchCompleteEvent) {
             synchronized (_waitSync) {
+                _stateTransitionEvent = event;
                 _stateTransitionOK = true;
                 _waitSync.notifyAll();
             }
         } else if (event instanceof ResourceUnavailableEvent) {
             synchronized (_waitSync) {
+                _stateTransitionEvent = event;
                 _stateTransitionOK = false;
                 _waitSync.notifyAll();
             }
         } else if (event instanceof EndOfMediaEvent) {
+            _stateTransitionEvent = event;
             _player.close();
             _playerOpen = false;
         }
@@ -167,8 +170,8 @@ public class MovieReader extends Source implements ControllerListener {
         super.initialize();
         try {
             _player = Manager.createPlayer(_dataSource);
-        } catch (Exception e) {
-            throw new IllegalActionException(null, e,
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
                     "Failed to create a player for the data source. "
                     + "Note that you may need to run jmfinit, which is found "
                     + "in the JMF directory, for example c:/Program Files/"
@@ -182,7 +185,8 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (!_waitForState(Controller.Realized)) {
             throw new IllegalActionException(null,
-                    "Failed to realize player");
+                    "Failed to realize player, last controller event was: "
+                    + _stateTransitionEvent);
         }
 
         _framePositioningControl =
@@ -207,7 +211,8 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(null,
-                    "Failed to prefetch player");
+                    "Failed to prefetch player, last controller event was: "
+                    + _stateTransitionEvent);
         }
 
         //load first frame
@@ -245,8 +250,8 @@ public class MovieReader extends Source implements ControllerListener {
             try {
                 while (_player.getState() != state && _stateTransitionOK)
                     _waitSync.wait();
-            } catch (Exception e) {
-                throw new IllegalActionException(null, e,
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
                         "Failed block the processor until it state"
                         + " transition completed.");
             }
@@ -276,6 +281,10 @@ public class MovieReader extends Source implements ControllerListener {
 
     // Boolean that keeps track of whether the player is open or not.
     private boolean _playerOpen = true;
+
+    // The ControllerEvent that was present when _stateTransitionOK
+    // was last set;
+    private ControllerEvent _stateTransitionEvent;
 
     // Boolean that keeps track of whether the player initialization
     // has gone through smoothly.
