@@ -67,25 +67,20 @@ public class FiringEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Return the actor that is being activated.
-     */
+    /** Return the actor that is being activated. */
     public Actor getActor() {
 	return _actor;
     }
 
-    /**
-     * Return the source of the event.  This class returns the director
-     * that activated the actor.
-     * @return An instance of Director.
+    /** Return the source of the event.  This class returns the director
+     *  that activated the actor.
+     *  @return An instance of Director.
      */
     public NamedObj getSource() {
 	return _director;
     }
 
-    /**
-     * Return the type of activation that this event represents.
-     */
+    /** Return the type of activation that this event represents. */
     public FiringEventType getType() {
 	return _type;
     }
