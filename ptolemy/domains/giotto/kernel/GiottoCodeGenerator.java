@@ -70,7 +70,7 @@ import ptolemy.util.StringUtilities;
    the Giotto code in an appropriate file, if necessary.
 
    <p>The Giotto Code Generator has been changed from the earlier generator
-  implemented by Haiyang and Steve in the following respect :-
+   implemented by Haiyang and Steve in the following respect :-
 
    <p>Any and all unconnected ports are ignored. This includes :
    <ol>
@@ -79,7 +79,7 @@ import ptolemy.util.StringUtilities;
    <li> Removal of driver code for tasks without inputs
    </ol>
 
-   @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng
+   @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng, Christopher Brooks
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (eal)
@@ -129,6 +129,7 @@ public class GiottoCodeGenerator extends Attribute {
             if (_initialize(model)) {
                 String containerName = model.getName();
                 
+                generatedCode += _headerCode(model);
                 generatedCode += _sensorCode(model);
                 generatedCode += _actuatorCode(model);
                 generatedCode += _outputCode(model);
@@ -137,13 +138,11 @@ public class GiottoCodeGenerator extends Attribute {
                 
                 generatedCode += "start "
                     + containerName
-                    + " {"
-                    + _endLine;
+                    + " {\n";
                 
                 generatedCode += _modeCode(model);
                 
-                generatedCode +=  "}"
-                    + _endLine;
+                generatedCode +=  "}\n";
             }
             model.wrapup();
         } catch (KernelException ex) {
@@ -166,7 +165,7 @@ public class GiottoCodeGenerator extends Attribute {
      *  factory with the same name. 
      */
     protected void _instantiateEditorFactoryClass()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         new GiottoEditorFactory(this, "_editorFactory");
     }
     
@@ -209,9 +208,10 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _sensorCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
-
-        codeString += "sensor" + _endLine;
+        StringBuffer code = new StringBuffer(
+                "//////////////////////////////////////////////////////\n"
+                + "////                    sensors                   ////\n"
+                + "sensor\n");
 
         Iterator inPorts = model.inputPortList().iterator();
         while (inPorts.hasNext()) {
@@ -226,19 +226,13 @@ public class GiottoCodeGenerator extends Attribute {
             	String portID = port.getName();
             	String portTypeID = _getTypeString(port);
             	String actuatorDriverName = port.getName() + "_device_driver";
-           		_checkGiottoID(portID);
-            	codeString +=  "  "
-                	+ portTypeID
-                	+ " "
-                	+ portID
-                	+ " uses "
-                	+ actuatorDriverName
-                	+ ";"
-                	+ _endLine;
+                _checkGiottoID(portID);
+            	code.append("  " + portTypeID + " " + portID
+                	+ " uses " + actuatorDriverName	+ ";\n");
             }
         }
 
-        return codeString;
+        return code.toString();
 
     }
 
@@ -249,36 +243,46 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _actuatorCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
-
-        codeString += "actuator" + _endLine;
+        StringBuffer code = new StringBuffer("actuator\n");
 
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)outPorts.next();
             // Ignore unconnected ports
             if (port.getWidthInside() > 0) {
-	            // FIXME: Assuming ports are either
+                // FIXME: Assuming ports are either
     	        // input or output and not both.
-        	    // FIXME: May want the driver name
+                // FIXME: May want the driver name
             	// specified by a port parameter.
-	            // FIXME: Use a real type.
+                // FIXME: Use a real type.
     	        String portID = port.getName();
-        	    String portTypeID = _getTypeString(port);
+                String portTypeID = _getTypeString(port);
             	String actuatorDriverName = port.getName() + "_device_driver";
             	_checkGiottoID(portID);
-	            codeString +=  "  "
-    	            + portTypeID
-        	        + " "
-            	    + portID
-                	+ " uses "
-	                + actuatorDriverName
-    	            + ";"
-        	        + _endLine;
+                code.append("  " + portTypeID + " " + portID
+                        + " uses " + actuatorDriverName + ";\n");
             }
         }
 
-        return codeString;
+        return code.toString();
+    }
+
+    /** Generate header code for the file.
+     *  Usually, there is only one header.
+     *  @return The header code.
+     */
+    protected String _headerCode(TypedCompositeActor model)
+            throws IllegalActionException {
+        return "/* Giotto code for " +  model.getName() + "\n"
+            + "   Generated by Ptolemy II Giotto Code Generator.\n"
+            + " */\n\n"
+            + "//////////////////////////////////////////////////////\n"
+            + "//// " + model.getName() + "\n"
+            + "/**\n"
+            + model.getName() + "\n"
+            + "@author\n"
+            + "@version $Id$\n"
+            + "*/\n";
     }
 
     /** Generate code for the output ports.
@@ -290,9 +294,7 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _outputCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString =  "";
-
-        codeString += "output" + _endLine;
+        StringBuffer code = new StringBuffer("output\n");
 
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
@@ -302,23 +304,18 @@ public class GiottoCodeGenerator extends Attribute {
                 TypedIOPort port = (TypedIOPort)outPorts.next();
                 // Ignore unconnected ports
                 if (port.getWidth()>0) {
-                	String portID = StringUtilities.sanitizeName(
-                        	port.getName(model));
-	                String portTypeID = _getTypeString(port);
+                    String portID = StringUtilities.sanitizeName(
+                            port.getName(model));
+                    String portTypeID = _getTypeString(port);
     	            String portInitialValue = "CGinit_" + portID;
-        	        _checkGiottoID(portID);
-            	    codeString +=  "  "
-                	    + portTypeID
-                    	+ " "
-	                    + portID
-    	                + " := " + portInitialValue
-        	            + ";"
-            	        + _endLine;
+                    _checkGiottoID(portID);
+            	    code.append("  " + portTypeID + " " + portID
+                            + " := " + portInitialValue + ";\n");
                 }
             }
         }
 
-        return codeString;
+        return code.toString();
     }
 
     /** Generate code for the task.
@@ -326,14 +323,11 @@ public class GiottoCodeGenerator extends Attribute {
      */
     protected String _taskCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
-        String codeString = "";
         boolean first;
         String taskName = StringUtilities.sanitizeName(
                 ((NamedObj)actor).getName());
 
-        codeString += "task "
-            + taskName
-            + " (";
+        StringBuffer code = new StringBuffer("task " + taskName + " (");
 
         String stateParas = ""; //taskName.toUpperCase() +
         //  "_PARAM param := init_" + taskName + "_param";
@@ -346,23 +340,23 @@ public class GiottoCodeGenerator extends Attribute {
             TypedIOPort port = (TypedIOPort)inPorts.next();
             // Ignore unconnected ports
             if (port.getWidth()>0) {
-	            if (first) {
-    	            first = false;
-        	    } else {
-            	    inputPorts += ",";
-                	codeString += ",";
+                if (first) {
+                    first = false;
+                } else {
+                    inputPorts += ",";
+                    code.append(",");
             	}
-	            String portID = StringUtilities.sanitizeName(
+                String portID = StringUtilities.sanitizeName(
     	                port.getName(model));
-        	    String portTypeID = _getTypeString(port);
+                String portTypeID = _getTypeString(port);
 	
-    	        codeString += portTypeID + " " + portID;
-        	    inputPorts += portID;
-        	}
+                code.append(portTypeID + " " + portID);
+                inputPorts += portID;
+            }
         }
 
-        codeString += ")" + _endLine;
-        codeString +=  "        output (";
+        code.append(")\n"
+                + "        output (");
 
         // write the output port specification of the task.
         first = true;
@@ -372,37 +366,30 @@ public class GiottoCodeGenerator extends Attribute {
             TypedIOPort port = (TypedIOPort)outPorts.next();
             // Ignore unconnected ports
             if (port.getWidth()>0) {
-	            if (first) {
-    	            first = false;
-        	    } else {
-            	    codeString += ",";
-                	outputPorts += ",";
+                if (first) {
+                    first = false;
+                } else {
+                    code.append(",");
+                    outputPorts += ",";
             	}
     	        String portID = StringUtilities.sanitizeName(
-        	            port.getName(model));
-            	codeString += portID;
-	            outputPorts += portID;
+                        port.getName(model));
+            	code.append(portID);
+                outputPorts += portID;
     	    }
         }
-        codeString += ")" + _endLine;
-        codeString +=  "        state ("
-            + stateParas
-            + ")"
-            + _endLine;
-        codeString +=  "{"
-            + _endLine;
+        code.append(")\n"
+                + "        state (" + stateParas + ")\n"
+                + "{\n");
         String portSeparator = ",";
         if (inputPorts.equals("") || outputPorts.equals("")) {
             portSeparator = "";
         }
-        codeString +=  "        schedule CG"
-            + taskName
-            + "_Task(" + inputPorts + portSeparator + outputPorts + ")"
-            + _endLine;
-        codeString +=  "}"
-            + _endLine;
+        code.append("        schedule CG" + taskName
+                + "_Task(" + inputPorts + portSeparator + outputPorts + ")\n"
+                + "}\n");
 
-        return codeString;
+        return code.toString();
     }
 
     /** Generate code for the tasks.
@@ -411,7 +398,7 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _tasksCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
+        StringBuffer code = new StringBuffer();
         Actor actor;
 
         // Generate task code for common actors.
@@ -419,10 +406,10 @@ public class GiottoCodeGenerator extends Attribute {
 
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
-            codeString += _taskCode(model, actor);
+            code.append(_taskCode(model, actor));
         }
 
-        return codeString;
+        return code.toString();
     }
 
     /** Generate code for the driver.
@@ -434,19 +421,12 @@ public class GiottoCodeGenerator extends Attribute {
             return "";
         }
 
-        String codeString = "";
+        String driverParas = "";
+        String actorName = 
+            StringUtilities.sanitizeName(((NamedObj) actor).getName());
 
-        String driverParas;
-        String actorName;
-
-        driverParas = "";
-        actorName = "";
-
-        actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
-
-        codeString += "driver "
-            + actorName
-            + "_driver (";
+        StringBuffer code =
+            new StringBuffer("driver " + actorName + "_driver (");
 
         Map driverIOMap = new LinkedHashMap();
         for (Iterator inPorts = actor.inputPortList().iterator();
@@ -474,10 +454,8 @@ public class GiottoCodeGenerator extends Attribute {
             }
         }
 
-        codeString += driverParas
-            + ")"
-            + _endLine;
-        codeString +=  "        output (";
+        code.append(driverParas + ")\n"
+                + "        output (");
         // Write the input port specification of the task
         boolean first = true;
         for (Iterator inPorts = actor.inputPortList().iterator();
@@ -485,42 +463,37 @@ public class GiottoCodeGenerator extends Attribute {
             TypedIOPort port = (TypedIOPort)inPorts.next();
             // Ignore unconnected ports
             if (port.getWidth()>0) {
-	            if (first) {
+                if (first) {
     	            first = false;
-        	    } else {
-            	    codeString += ",";
-	            }
-        	    String portID = StringUtilities.sanitizeName(
-            	        port.getName(model));
-	            String portTypeID = _getTypeString(port);
-    	        codeString += portTypeID + " " + portID;
-        	}
-        }
-        codeString += ")" + _endLine;
-        codeString +=  "{"
-            + _endLine;
-            codeString +=
-                "          if constant_true() then " + actorName + "_inputdriver( ";
-   
-                first = true;
-                for (Iterator sourceNames = driverIOMap.keySet().iterator();
-                     sourceNames.hasNext();) {
-                    if(first) {
-                        first = false;
-                    }
-                    else {
-                        codeString += ", ";
+                } else {
+            	    code.append(",");
                 }
-                String sourceName = (String) sourceNames.next();
-                String destName = (String) driverIOMap.get(sourceName);
-                codeString += sourceName + ", " + destName;
+                String portID = StringUtilities.sanitizeName(
+            	        port.getName(model));
+                String portTypeID = _getTypeString(port);
+                code.append(portTypeID + " " + portID);
             }
-            codeString += ")"
-            + _endLine
-            +  "}"
-            + _endLine;
-
-        return codeString;
+        }
+        code.append(")\n"
+                + "{\n"
+                + "          if constant_true() then " + actorName
+                + "_inputdriver( ");
+   
+        first = true;
+        for (Iterator sourceNames = driverIOMap.keySet().iterator();
+             sourceNames.hasNext();) {
+            if(first) {
+                first = false;
+            } else {
+                code.append(", ");
+            }
+            String sourceName = (String) sourceNames.next();
+            String destName = (String) driverIOMap.get(sourceName);
+            code.append(sourceName + ", " + destName);
+        }
+        code.append(")\n"
+                +  "}\n");
+        return code.toString();
     }
 
     /** Generate code for the drivers.
@@ -531,14 +504,14 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _driversCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
+        StringBuffer code = new StringBuffer();
         Actor actor;
 
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
-            codeString += _driverCode(model, actor);
+            code.append(_driverCode(model, actor));
         }
 
         // Generate driver functions for toplevel output ports.
@@ -550,51 +523,36 @@ public class GiottoCodeGenerator extends Attribute {
             TypedIOPort port = (TypedIOPort)outPorts.next();
             // Ignore unconnected ports
             if (port.getWidth()>0) {
-	            String portTypeID = _getTypeString(port);
+                String portTypeID = _getTypeString(port);
     	        String portID = StringUtilities.sanitizeName(port.
-        	            getName());
-            	codeString += "driver "
-                	+ portID
-                	+ "_driver (";
+                        getName());
+            	code.append("driver " + portID + "_driver (");
 
-	            Iterator portConnected = port.insidePortList().iterator();
+                Iterator portConnected = port.insidePortList().iterator();
     	        while (portConnected.hasNext()) {
-        	        IOPort outPort = (IOPort)portConnected.next();
+                    IOPort outPort = (IOPort)portConnected.next();
             	    String sanitizedPortName = StringUtilities.sanitizeName(
-                	        outPort.getName(model));
-	                if (outPort.isOutput()) {
+                            outPort.getName(model));
+                    if (outPort.isOutput()) {
     	                if (driverParas.length()==0) {
-        	                driverParas +=  sanitizedPortName;
+                            driverParas +=  sanitizedPortName;
             	        } else {
-                	        driverParas += ", " + sanitizedPortName;
-	                    }
+                            driverParas += ", " + sanitizedPortName;
+                        }
     	            }
-        	    }
-            	codeString += driverParas
-                	+ ")"
-	                + _endLine;
-    	        codeString +=  "        output ("
-        	        + portTypeID
-            	    + " "
-                	+ portID
-	                + "_output)"
-    	            + _endLine;
-        	    codeString +=  "{"
-            	    + _endLine;
-	            codeString +=  "  if c_true() then "
-    	            + portID
-        	        + "_input_driver( "
-            	    + driverParas
-                	+ ", "
-	                + portID
-    	            + "_output)"
-        	        + _endLine;
-            	codeString +=  "}"
-                	+ _endLine;
-	        }
+                }
+                code.append(driverParas	+ ")\n"
+                        + "        output ("
+        	        + portTypeID + " " + portID + "_output)\n"
+                        + "{\n"
+                        + "  if c_true() then " + portID + "_input_driver( "
+                        + driverParas + ", " + portID
+                        + "_output)\n"
+                        + "}\n");
+            }
         }
 
-        return codeString;
+        return code.toString();
     }
 
     /** Generate code for the modes.
@@ -603,22 +561,17 @@ public class GiottoCodeGenerator extends Attribute {
     protected String _modeCode(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
-
         int actorFreq = 0;
 
         String outputName, actorName, modeName;
 
         modeName = StringUtilities.sanitizeName(model.getName());
 
-        int periodValue = ((GiottoDirector) model.getDirector()).getIntPeriod();
+        int periodValue =
+            ((GiottoDirector) model.getDirector()).getIntPeriod();
 
-        codeString +=  "  mode "
-            + modeName
-            + " () period "
-            + periodValue
-            + " {"
-            + _endLine;
+        StringBuffer code = new StringBuffer(
+                "  mode " + modeName + " () period " + periodValue + " {\n");
 
         //FIXME how to deal with several outputs of Giotto director
 
@@ -628,41 +581,35 @@ public class GiottoCodeGenerator extends Attribute {
             TypedIOPort port = (TypedIOPort)outPorts.next();
             // Ignore unconnected ports
             if (port.getWidth()>0) {
-	            outputName = StringUtilities.sanitizeName(port.
+                outputName = StringUtilities.sanitizeName(port.
     	                getName(model));
-        	    if (port.insidePortList().size() != 0) {
+                if (port.insidePortList().size() != 0) {
             	    Iterator portConnected = port.
-                	    insidePortList().iterator();
-	                while (portConnected.hasNext()) {
+                        insidePortList().iterator();
+                    while (portConnected.hasNext()) {
     	                TypedIOPort outPort =
-        	                (TypedIOPort) portConnected.next();
+                            (TypedIOPort) portConnected.next();
             	        if (!outPort.isOutput()) {
-                	        continue;
+                            continue;
                     	}
-	                    Nameable actor = outPort.getContainer();
+                        Nameable actor = outPort.getContainer();
     	                if (actor instanceof Actor) {
-        	                Parameter actorFreqPara = (Parameter)
+                            Parameter actorFreqPara = (Parameter)
             	                ((NamedObj)actor).
-                	            getAttribute("frequency");
+                                getAttribute("frequency");
                     	    if (actorFreqPara == null) {
-                        	    actorFreq = 1;
-	                        } else {
+                                actorFreq = 1;
+                            } else {
     	                        actorFreq = ((IntToken) actorFreqPara.
-        	                            getToken()).intValue();
+                                        getToken()).intValue();
             	            }
-                	    }
-
-	                    codeString +=  "    actfreq "
-    	                    + actorFreq
-        	                + " do "
-            	            + outputName
-                	        + " ("
-                    	    + outputName
-                        	+ "_driver);"
-	                        + _endLine;
-    	            }
-        	    }
-        	}
+                        }
+                        code.append( "    actfreq " + actorFreq
+                                + " do " + outputName + " ("
+                                + outputName + "_driver);\n");
+                    }
+                }
+            }
         }
 
         //generate mode code for each actor driver
@@ -683,25 +630,18 @@ public class GiottoCodeGenerator extends Attribute {
             if (_needsInputDriver(actor)) {
                 driverName = actorName + "_driver";
             }
-            codeString += "    taskfreq "
-                + actorFreq
-                + " do "
-                + actorName
-                + "("
-                + driverName
-                + ");"
-                + _endLine;
+            code.append("    taskfreq " + actorFreq + " do "
+                    + actorName + "(" + driverName + ");\n");
 
         }
-        codeString += "  }"
-            + _endLine;
+        code.append("  }\n");
 
-        return codeString;
+        return code.toString();
 
     }
 
-    /** Return true if the given actor has at least one connected input port, which
-     *  requires it to have an input driver.
+    /** Return true if the given actor has at least one connected
+     *  input port, which requires it to have an input driver.
      */
     protected boolean _needsInputDriver(Actor actor) {
         boolean retVal = false;
@@ -719,7 +659,7 @@ public class GiottoCodeGenerator extends Attribute {
     ////                       private methods                     ////
 
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>"
@@ -733,11 +673,6 @@ public class GiottoCodeGenerator extends Attribute {
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
-
-    private String _endLine = "\n";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
