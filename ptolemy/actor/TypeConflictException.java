@@ -57,7 +57,7 @@ The objects are usually instances of Typeables or StructuredTypes.
 public class TypeConflictException extends KernelException {
 
     /** Construct an Exception with a list of objects where type conflicts
-     *  occured.
+     *  occurred.
      *  The detailed message of this Exception will be the string
      *  "Type conflicts occurred at the following places:",
      *  followed by a list of objects and their types. The objects
@@ -72,7 +72,7 @@ public class TypeConflictException extends KernelException {
     }
 
     /** Construct an Exception with a list of objects where type conflicts
-     *  occured.
+     *  occurred.
      *  The detailed message of this Exception will be the specified message,
      *  followed by a list of objects and their types. The objects
      *  are represented by their names if it is a NamedObj, otherwise,
