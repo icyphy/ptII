@@ -292,7 +292,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    // This should not happen. The exception means that
 	    // _checkDeclaredType or typeConstraintList is called on a
 	    // transparent actor.
-	    throw new InternalErrorException(this, ex, null);
+	    throw new InternalErrorException(topLevel, ex, null);
 	}
     }
 
