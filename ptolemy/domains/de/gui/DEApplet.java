@@ -122,7 +122,7 @@ public class DEApplet extends PtolemyApplet {
             // in a new panel.
             JPanel stopTimePanel = new JPanel();
             stopTimePanel.add(new JLabel("Stop time:"));
-            stopTimePanel.setBackground(_getBackground());
+            stopTimePanel.setBackground(getBackground());
 
             // Process the defaultiterations parameter.
             String defaultStopSpec = getParameter("defaultStopTime");

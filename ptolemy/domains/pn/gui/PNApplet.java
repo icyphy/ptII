@@ -126,7 +126,7 @@ public class PNApplet extends PtolemyApplet {
             // in a new panel.
             JPanel queuepanel = new JPanel();
             queuepanel.add(new JLabel("Initial capacity of FIFO channels:"));
-	    queuepanel.setBackground(_getBackground());
+	    queuepanel.setBackground(getBackground());
 
             // Process the defaultiterations parameter.
             String defqueuespec = getParameter("defaultcapacity");
