@@ -193,16 +193,18 @@ public class SoundPlayback {
 	this._productionRate = putSamplesSize;
 
 	// For debug only:
+	//System.out.println("SoundPlayback: constructor 1: fileName = "
+	//    + fileName);
 	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-	//      + sampleSizeInBits);
+	//    + sampleSizeInBits);
 	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
-	//      + sampleRate);
+	//    + sampleRate);
 	//System.out.println("SoundPlayback: constructor 1: channels = "
-	//      + channels);
+	//    + channels);
 	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
-	//      + bufferSize);
+	//    + bufferSize);
 	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-	//      + putSamplesSize);
+	//    + putSamplesSize);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -425,21 +427,24 @@ public class SoundPlayback {
      *   unsupported format.
      */
     public void stopPlayback() throws IOException {
-	_isAudioPlaybackActive = false;
-	if (_playbackMode == "speaker") {
-	    // Stop real-time playback to speaker.
-	    if (_sourceLine != null) {
-		_sourceLine.drain();
-		_sourceLine.stop();
-		_sourceLine.close();
+	//System.out.println("SoundPlayback: stopPlayback(): invoked");
+	if (_isAudioPlaybackActive == true) {
+	    if (_playbackMode == "speaker") {
+		// Stop real-time playback to speaker.
+		if (_sourceLine != null) {
+		    _sourceLine.drain();
+		    _sourceLine.stop();
+		    _sourceLine.close();
+		}
+		_sourceLine = null;
+	    } else if (_playbackMode == "file") {
+		// Record data to sound file.
+		_stopPlaybackToFile();
+	    } else  {
+		// Should not happen.
 	    }
-	    _sourceLine = null;
-	} else if (_playbackMode == "file") {
-	    // Record data to sound file.
-	    _stopPlaybackToFile();
-	} else  {
-	    // Should not happen.
 	}
+	_isAudioPlaybackActive = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -456,7 +461,7 @@ public class SoundPlayback {
         _frameSizeInBytes = format.getFrameSize();
 
 	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-	//      "sampling rate = " + _sampleRate);
+			   //      "sampling rate = " + _sampleRate);
 	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
 	//      "sample size in bits = " + _sampleSizeInBits);
 
@@ -492,6 +497,7 @@ public class SoundPlayback {
     }
 
     private void _startPlaybackToFile() {
+	//System.out.println("SoundPlayback: _startPlaybackToFile() invoked");
 	// FIXME: Performance is not great when the incoming audio
 	// samples are being captured in real-time, possibly
 	// due to resizing of the ArrayList.
@@ -513,7 +519,7 @@ public class SoundPlayback {
 
 
     private void _stopPlaybackToFile() throws IOException {
-
+	//System.out.println("SoundPlayback: _stopPlaybackToFile() invoked.");
 	int size =  _toFileBuffer.size();
 	byte[] audioBytes = new byte[size];
 	for (int i = 0; i < size; i++) {
@@ -528,7 +534,10 @@ public class SoundPlayback {
                     _playToFileFormat,
                     audioBytes.length /  _frameSizeInBytes);
 
+	//System.out.println("SoundPlayback: _stopPlaybackToFile() geting new file");
 	File outFile = new File(_fileName);
+	//System.out.println("SoundPlayback: _stopPlaybackToFile() done geting new file");
+
 
 	try {
 	    StringTokenizer st = new StringTokenizer(_fileName, ".");
@@ -555,9 +564,11 @@ public class SoundPlayback {
 		AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("wav")) {
+		//System.out.println("SoundPlayback: _stopPlaybackToFile() saving the file");
 		// Save the file.
 		AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
+		//System.out.println("SoundPlayback: _stopPlaybackToFile(): done saving the file");
 	    } else if (fileExtension.equalsIgnoreCase("aifc")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
