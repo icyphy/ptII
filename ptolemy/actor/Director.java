@@ -475,7 +475,7 @@ public class Director extends NamedObj implements Executable {
      *  @param change The requested change.
      *  @exception ChangeFailedException If the manager throws it.
      *  @deprecated Use the method in CompositeActor instead.
-     
+     */
     public void requestChange(ChangeRequest change)
 	throws ChangeFailedException {
         CompositeActor container = ((CompositeActor)getContainer());
