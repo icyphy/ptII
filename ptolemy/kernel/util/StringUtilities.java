@@ -64,6 +64,7 @@ public class StringUtilities {
      *  " becomes &amp;quot;
      *  < becomes &amp;lt;
      *  > becomes &amp;gt;
+     *  newline becomes &#10;
      *  </pre>
      *
      *  @param string The string to escape.
@@ -74,6 +75,7 @@ public class StringUtilities {
         string = substitute(string, "\"", "&quot;");
         string = substitute(string, "<", "&lt;");
         string = substitute(string, ">", "&gt;");
+        string = substitute(string, "\n", "&#10;");
         return string;
     }
 
