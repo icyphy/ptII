@@ -421,6 +421,12 @@ proc testMatrixInt {op types {matrixSize 2_2} {intValue 1}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" int]} {[subst $$matrix]} [list $intValue]
 }
 
+# Test an operation that takes a matrix and a double
+# like xxx[][] shiftArithmetic(xxx[][], double)
+proc testMatrixDouble {op types {matrixSize 2_2} {doubleValue 2.0}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" double]} {[subst $$matrix]} [list $doubleValue]
+}
+
 # Test an operation that takes a matrix and an int
 # like xxx[] fromMatrixToArray(xxx[][], int, int)
 proc testMatrixIntInt {op types {matrixSize 2_2} {intValue1 1} {intValue2 2}} {
@@ -1093,6 +1099,15 @@ set types [list \
 
 testMatrixScalar multiply $types
 
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] multiply(xxx[][], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{4.0 - 4.0i 2.0 + 2.0i} {-2.0 - 2.0i 0.0 + 0.0i}}}]]
+
+testMatrixDouble multiply $types
 
 ######################################################################
 ####
