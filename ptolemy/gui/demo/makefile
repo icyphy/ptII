@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/gui/doc
+ME =		ptolemy/gui/demo
 
 # Root of the Java directory
 ROOT =		../../..
