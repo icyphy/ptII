@@ -186,6 +186,8 @@ public class VergilApplication extends MDIApplication {
 	panner.setMaximumSize(new Dimension(200, 150));
 	panner.setSize(200, 150);
 	panner.setBorder(BorderFactory.createEtchedBorder());
+	// FIXME the below view listener never gets notified when no
+	// views are selected.
 	context.addViewListener(new ViewAdapter() {
 	    public void viewSelected(ViewEvent e) {
 		JComponent view = e.getView();
@@ -196,6 +198,26 @@ public class VergilApplication extends MDIApplication {
 		}
 	    }
 	});
+	/*
+	addDocumentListener(new ListDataListener() {
+	    public void contentsChanged(ListDataEvent e) {
+		updatePanner();
+	    }
+	    public void intervalAdded(ListDataEvent e) {
+		updatePanner();
+	    }
+	    public void intervalRemoved(ListDataEvent e) {
+		updatePanner();
+	    }
+	    public void updatePanner() {
+		JComponent view = getView(getCurrentDocument());
+		if(view instanceof JScrollPane) {
+		    panner.setViewport(((JScrollPane)view).getViewport());
+		} else {
+		    panner.setViewport(null);
+		}
+	    }
+	    });*/
 	palettePane.add(panner);
 	
 	context.setVisible(true);
@@ -617,6 +639,7 @@ public class VergilApplication extends MDIApplication {
             }
         }
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         package variables                 ////
