@@ -268,6 +268,16 @@ public class BaseType implements Type {
 	    }
 	});
 
+    /** The matrix data type */
+    public static final BaseType MATRIX = new BaseType(
+	MatrixToken.class,
+	"matrix",
+	new ConvertOperator() {
+	    public Token convert(Token t) throws IllegalActionException {
+		return MatrixToken.convert(t);
+	    }
+	});
+
     /** The bottom element of the data type lattice */
     public static final BaseType NAT = new BaseType(Void.TYPE, "NaT",
 	new ConvertOperator() {

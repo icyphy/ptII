@@ -375,6 +375,7 @@ public class TypeLattice {
 	    _basicLattice.add(BaseType.INT_MATRIX);
 	    _basicLattice.add(BaseType.LONG);
 	    _basicLattice.add(BaseType.LONG_MATRIX);
+	    _basicLattice.add(BaseType.MATRIX);
 	    _basicLattice.add(BaseType.NAT);
 	    _basicLattice.add(BaseType.NUMERICAL);
 	    _basicLattice.add(BaseType.OBJECT);
@@ -387,11 +388,12 @@ public class TypeLattice {
 	    _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.OBJECT);
 	    _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
-	    _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
 	    _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.BOOLEAN);
 
-	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
 	    _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);

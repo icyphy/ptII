@@ -63,17 +63,20 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to a complex matrix.");
     }
 
-    /** Throw an exception, since conversion to this class is not supported
-     *  (the class is abstract).  This method overrides that in Token,
-     *  which simply returns the argument.
+    /** Return the argument token if it is an instance of MatrixToken,
+     *  otherwise, throw an exception.
      *  @param token A Token to be converted.
-     *  @return nothing
-     *  @exception IllegalActionException Always thrown.
+     *  @return A MatrixToken.
+     *  @exception IllegalActionException If the argument is not an instance
+     *   of MatrixToken.
      */
     public static Token convert(Token token) throws IllegalActionException {
+	if (token instanceof MatrixToken) {
+	    return token;
+	}
+
         throw new IllegalActionException(token.getClass().getName() +
-                " cannot convert to a MatrixToken since that " +
-                "class is abstract.");
+                " cannot convert to a MatrixToken.");
     }
 
     /** In derived classes that can be represented as a 2-D double array,
