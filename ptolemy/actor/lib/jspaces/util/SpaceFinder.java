@@ -79,14 +79,14 @@ public class SpaceFinder {
 
 
             if (System.getProperty("com.sun.jini.use.registry") == null) {
-                 /**Locator locator =
+                Locator locator =
                     new com.sun.jini.outrigger.DiscoveryLocator();
                 if (locator != null) System.out.println("Found Discovery.");
                 Finder finder =
                     new com.sun.jini.outrigger.LookupFinder();
                 if (finder != null) System.out.println("Found Lookup Finder.");
                 return (JavaSpace)finder.find(locator, name);
-                */
+                /**
                 ServiceFinder finder = new ServiceFinder(JavaSpace.class);
                 while (true) {
                     JavaSpace space =  (JavaSpace)finder.getObjects()[0];
@@ -101,6 +101,7 @@ public class SpaceFinder {
                         return space;
                     }
                 }
+                */
             } else {
                 RefHolder rh = (RefHolder)Naming.lookup(name);
                 return (JavaSpace)rh.proxy();
