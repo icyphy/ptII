@@ -177,80 +177,8 @@ javaflag="$ALL_JFLAG"
 case `basename "$0"` in
     copernicus)
 	# Do deep codegen
-
-        if [ $# -eq 0 ]; then
-	    SOURCECLASS=../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
-	else     
-	    echo $1
-	    case $1 in
-		-h|-help)
-		echo "$0: Run deep codegen on an xml file"
-		echo " Usage: "
-		echo "  $0: [relativePathToXMLFile] [packageRelativeToPtolemy]"
-		echo "   relativePathToXMLFile can also be a url"
-		echo "   packageRelativeToPtolemy should be a dot separated path"
-		echo "  For example: "
-		echo "  $0 ../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml ptolemy.copernicus.java.cg"
-		exit 42
-		;;
-	    esac	
-
-	    SOURCECLASS=$1
-	    shift
-	fi
-
-	MODEL=`basename $SOURCECLASS .xml`
-
-        if [ $# -lt 1 ]; then
-	    # Location where we create code that we are generating
-	    TARGETPACKAGE=ptolemy.copernicus.java.cg.$MODEL
-	    TARGETPATH=ptolemy/copernicus/java/cg/$MODEL
-        else
-	    TARGETPACKAGE=$1.$MODEL
-	    shift
-	    TARGETPATH=`echo $TARGETPACKAGE | sed 's@/@.@g' `
-	fi
-
-	echo "$0: Running deep codegen:"
-	echo "   SOURCECLASS   = $SOURCECLASS"
-	echo "   MODEL         = $MODEL"  
-	echo "   TARGETPACKAGE = $TARGETPACKAGE"
-	echo "   TARGETPATH    = $TARGETPATH"
-	echo "   Output will appear in '$PTII/$TARGETPATH'"
-
-	JVM_SIZE=-Xmx256m
-
-	javastartupclass=ptolemy.copernicus.java.Main
+	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
-	jarfile="$SOOT_JAR"
-	# -Dptolemy.ptII.dir=${PTII} is already built in
-	javaflag="$JVM_SIZE $SOOT_JFLAG"
-	applicationflags="
-		${SOURCECLASS} -d "${PTII}"  \
-		-p wjtp.watchDog time:${WATCH_DOG_TIMEOUT} \
-		-p wjtp.at targetPackage:${TARGETPACKAGE} \
-		-p wjtp.mt targetPackage:${TARGETPACKAGE} \
-		-p wjtp.clt \
-		targetPackage:${TARGETPACKAGE}${ITERATIONS_PARAMETER} \
-		-p wjtp.fot targetPackage:${TARGETPACKAGE} \
-		-p wjtp.ffat targetPackage:${TARGETPACKAGE} \
-		-p wjtp.ffpt targetPackage:${TARGETPACKAGE} \
-		-p wjtp.idt targetPackage:${TARGETPACKAGE} \
-		-p wjtp.iat targetPackage:${TARGETPACKAGE} \
-		-p wjtp.ipt targetPackage:${TARGETPACKAGE} \
-		-p wjtp.itt targetPackage:${TARGETPACKAGE} \
-		-p wjtp.ttn disabled,debug,targetPackage:${TARGETPACKAGE} \
-		-p wjtp.ts debug,targetPackage:${TARGETPACKAGE} \
-		-p wjtp.noe targetPackage:${TARGETPACKAGE} \
-		-p wjtp.snapshot1 outDir:${PTII}/${TARGETPATH}/jimple1 \
-		-p wjtp.snapshot2 outDir:${PTII}/${TARGETPATH}/jimple2 \
-		-p wjtp.snapshot3 outDir:${PTII}/${TARGETPATH}/jimple3 \
-		-p wjtp.snapshot4 outDir:${PTII}/${TARGETPATH}/jimple4 \
-		-p wjtp.snapshot5 outDir:${PTII}/${TARGETPATH}/jimple5 \
-		-p wjtp.snapshot6 outDir:${PTII}/${TARGETPATH}/jimple6 \
-		-p wjtp.finalSnapshot outDir:${PTII}/${TARGETPATH} \
-		-p wjtp.iee enabled \
-		${SOOT_USER_ARGS}"
         ;;
     decompile)
         # Call either jode or javap
@@ -292,8 +220,8 @@ case `basename "$0"` in
         # Mescal UI
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar"
-	javaflag="$ALL_JFLAG"
+	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar$CLASSPATHSEPARATOR$PTII/mescal/lib/mescal_java_cup.jar"
+	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
 	;;	
     moml)
 	# Moml application
@@ -494,9 +422,3 @@ else
 fi 
 echo $str
 eval exec $str
-
-if [ "`basename $0`" = "copernicus" ]; then
-    str="\"$JAVAHOME/bin/java\" $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" ${TARGETPACKAGE}.Main"
-    echo $str
-    eval exec $str
-fi
