@@ -45,7 +45,7 @@ building, and hence doesn't require the following nightmare.</p>
     <ul>
       <li>Running simple code generation demos using built-in demo nesC libraries.</li>
       <li>Installing TinyOS and making its nesC libraries visible in Ptolemy II.</li>
-      <li>Installing nc2momllib source code and compiling that source code.</li>
+      <li><a href="#nc2momllib">Installing nc2momllib source code and compiling that source code.</a></li>
     </ul>
 
 <h2>Running simple code generation demos</h2>
@@ -56,31 +56,32 @@ building, and hence doesn't require the following nightmare.</p>
 
 <p>FIXME</p>
 
-<h2>How to install nc2momllib and build from source</h2>
+<h2><a name="nc2momllib">How to install nc2momllib and build from source</a></h2>
     
     <p>You can also download the nc2momllib source code and build
     it. It is based on the nesC compiler, which requires an impressive
-    suite of tools. Under Linux or Cygwin, you need the following
-    programs:</p>
-
-    <menu> 
-      <li> autoconf 2.50 or later 
-      <li> bison 
-      <li> emacs 
-      <li> emacs-el 
-      <li> gperf 
-      <li> perl 
-      <li> rpm 
-    </menu>
-
-    <p>For help with how to install these in Cygwin, see the <a
-    href="../../../../doc/install.htm#cygwin">Ptolemy II Cygwin
-    Instructions</a>. Note that most installations will not have gperf
-    on them, at least, so you will likely need to install at least
-    that. These instructions assume you have installed TinyOS as
-    described above.</p>
+    suite of tools. 
 
     <ol>
+      <li> Under Linux or Cygwin, you must have the following programs
+      installed on your system:
+
+        <ul> 
+          <li> autoconf 2.50 or later 
+          <li> bison 
+          <li> emacs 
+          <li> emacs-el 
+          <li> gperf 
+          <li> perl 
+          <li> rpm 
+        </ul>
+        
+        <p>For help with how to install these in Cygwin, see the <a
+        href="../../../../doc/install.htm#cygwin">Ptolemy II Cygwin
+        Instructions</a>. Note that most installations will not have
+        gperf on them, at least, so you will likely need to install at
+        least that.</p>
+
       <li>You must install the following AVR tools:
         <ul>
           <li> avarice
@@ -89,6 +90,7 @@ building, and hence doesn't require the following nightmare.</p>
           <li> avr-insight
           <li> avr-libc
         </ul>
+        <p>
         Choose and follow the appropriate directions for your operating system:
         <ul>
           <li> If you are running Windows XP or Windows 2000, you can either:
@@ -98,13 +100,13 @@ building, and hence doesn't require the following nightmare.</p>
               href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tinyos/windows/tinyos-1.1.0-1is.exe">TinyOS
               Installshield Wizard</a>.  Run the wizard, and choose
               "Custom" install.  Install only the AVR tools.  <b>Do
-              not choose the cygwin install option (it will overwrite
+              not choose the "cygwin" install option (it will overwrite
               and corrupt your current cygwin installation) or the
-              TinyOS install option (you will install this later from
+              "TinyOS" install option (you will install this later from
               CVS as a separate step).</b> This will install all of
               the above rpms for you.
 
-              <li> Or download the rpms separately from <a
+              <li> Or you can download the rpms separately from <a
               href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/">here</a>.  More convenient links are included here:
                 <ul>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm</a>
@@ -204,6 +206,7 @@ cd $PTII/vendors/ptinyos/nesc
 make
 make install
         </pre>
+        This will create directories in <code>$PTII/vendors/ptinyos</code>
 
       <li> <a name="NC2MOMLLIB_NESC">Set another environment variable</a> (NC2MOMLLIB_NESC) that
       points to the nesc installation.
