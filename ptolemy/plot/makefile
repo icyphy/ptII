@@ -322,9 +322,9 @@ fixtmpdist:
 	@echo "Create bin/makefile"
 	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "CONFIG =	$(ROOT)/mk/ptII.mk" >> \
+	echo "CONFIG =	\$(ROOT)/mk/ptII.mk" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include $(CONFIG)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "include \$(CONFIG)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "SHELL_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	histogram \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptplot \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -335,7 +335,7 @@ fixtmpdist:
 	echo "	ptplot.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	pxgraph.bat " >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptinvoke.in \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	$(BAT_FILES)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "all: ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -349,7 +349,7 @@ fixtmpdist:
 	echo "	ln -s ptinvoke pxgraph" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	-chmod a+x $(SHELL_FILES) $(BAT_FILES)" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -365,7 +365,7 @@ fixtmpdist:
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include $(ROOT)/mk/ptcommon.mk" >> \
+	echo "include \$(ROOT)/mk/ptcommon.mk" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
