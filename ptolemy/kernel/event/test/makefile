@@ -52,6 +52,7 @@ JSIMPLE_TESTS = \
 	Connect.tcl \
 	Link.tcl \
 	RemoveActor.tcl \
+	RemovePort.tcl \
 	RemoveRelation.tcl \
 	SetParameter.tcl
 
