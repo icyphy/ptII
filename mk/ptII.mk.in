@@ -256,6 +256,16 @@ PTJHDL_DIR =    @PTJHDL_DIR@
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 
+# JNI architecture, used to compile C files
+PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
+
+# Set to jni and used in 
+# $PTII/makefile if gcc or cc was found
+PTJNI_DIR =	@PTJNI_DIR@
+
+# JNI shared library suffix
+PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
+
 # Set to joystick if Joystick.jar was found.
 PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 
