@@ -72,6 +72,7 @@ public class PNRamp extends AtomicActor {
             //while(true) {
             IntToken data = new IntToken(_seed);
 	    _output.broadcast(data);
+            getDirector().fireAfterDelay(this, _delay);
 	    _seed++;
 	    //System.out.println("Ramp printed "+_seed);
         }
@@ -92,5 +93,6 @@ public class PNRamp extends AtomicActor {
     private int _seed;
     /* Output port */
     private IOPort _output;
+    private double _delay = 1.0;
 }
 
