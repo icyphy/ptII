@@ -226,9 +226,9 @@ PTINYPACKAGES = \
 
 # Packages used in code from Thales.
 THALESPACKAGES = \
-	thales/actor/gui \
-	thales/vergil \
-	thales/vergil/navigable
+	thales.actor.gui \
+	thales.vergil \
+	thales.vergil.navigable
 
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
