@@ -164,18 +164,4 @@ public class TriggeredClock extends Clock {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /* Get the specified value, checking the form of the values parameter.
-     */
-    private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= index) {
-            throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
-        }
-        return val.getElement(index);
-    }
 }
