@@ -44,9 +44,9 @@ import ptolemy.kernel.util.Settable;
 /**
  * Base class for code generator helper.
  * 
- * @author Gang Zhou
+ * @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  * @version $Id$
- * @since Ptolemy II 4.1
+ * @since Ptolemy II 5.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (eal)
  */
