@@ -419,6 +419,8 @@ public class PNDirector extends ProcessDirector {
         //System.out.println("Incrementing capacity");
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
+        //FIXME: Should I traverse the topology and get receivers blocked on 
+        // a write or should I stick with this strategy?
 	Enumeration receps = _writeblockedQs.elements();
 	//System.out.println("Enumeration receos done");
 	while (receps.hasMoreElements()) {

@@ -1,4 +1,4 @@
-/* Base class of directors for the process orientated domains.
+/* Base class of directors for the process oriented domains.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (mudit@eecs.berkeley.edu)
+@AcceptedRating Yellow
 
 */
 
@@ -43,21 +43,21 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessDirector
 /**
-Base class of directors for the process orientated domains. It provides
+Base class of directors for the process oriented domains. It provides
 default implementations for methods that are common across such domains.
 <p>
-In the process orientated domains, the director controllong a model 
+In the process orientated domains, the director controlling a model 
 needs to keep track of the state of the model. In particular it needs 
 to maintain an accurate count of the number of active processes under 
 its control, any processes that are blocked for whatever reason (trying 
-to read from an empty channel) and the number of processes have been 
-paused. These counts, and perhaps other counts, are needed by the 
+to read from an empty channel as in PN) and the number of processes that have 
+been paused. These counts, and perhaps other counts, are needed by the 
 director to control and respond when deadlock is detected (no processes 
 can make progress), or to respond to requests from higher in the hierarchy.
 <p>
 The methods that control how the director detects and responds to deadlocks
 are _checkForDeadlock() and _handleDeadlock(). These methods should be
-overridden in derived classes to get domain specific behaviour. The 
+overridden in derived classes to get domain-specific behaviour. The 
 implementations given here are trivial and suffice only to illustrate 
 the approach that should be followed.
 <p>
@@ -79,7 +79,7 @@ public class ProcessDirector extends Director {
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  @param name Name of this object.
+     *  @param name Name of this director.
      */
     public ProcessDirector(String name) {
         super(name);
@@ -105,7 +105,7 @@ public class ProcessDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no mutation listeners. The count of active proceses is zero 
+     *  and no topology listeners. The count of active proceses is zero 
      *  and it is not paused.
      *
      *  @param ws The workspace for the cloned object.
@@ -116,19 +116,23 @@ public class ProcessDirector extends Director {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
+        newobj._actorsPaused = 0;
         newobj._deadlock = false;
         newobj._notdone = true;
+        newobj._paused = false;
         newobj._pausedReceivers = new LinkedList();
         newobj._pauseRequested = false;
         newobj._threadList = new LinkedList();
         return newobj;
     }
 
-    /** Decrease the number of active processes under the control of 
-     *  this director by 1. Also checks if the model is now paused
+    /** Decrease by one the count of active processes under the control of 
+     *  this director. Also check whether the model is now paused
      *  if a pause was requested.
      *  This method shall be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
+     *
+     *  @deprecated use _decreaseActiveCount instead
      */
     public synchronized void decreaseActiveCount() {
 	_actorsActive--;
