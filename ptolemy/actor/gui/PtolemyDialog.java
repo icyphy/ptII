@@ -29,7 +29,13 @@ COPYRIGHTENDKEY
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -59,11 +65,11 @@ import ptolemy.util.MessageHandler;
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     public PtolemyDialog(
-            String title,
-            DialogTableau dialogTableau,
-            Frame owner,
-            Entity target,
-            Configuration configuration) {
+        String title,
+        DialogTableau dialogTableau,
+        Frame owner,
+        Entity target,
+        Configuration configuration) {
 
         super(title);
         _owner = owner;
@@ -80,20 +86,45 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         JPanel _buttons = _createButtonsPanel();
         getContentPane().add(_buttons, BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    _cancel();
-                }
-            });
+            public void windowClosing(WindowEvent e) {
+                _cancel();
+            }
+        });
 
         _owner.addWindowListener(new WindowAdapter() {
-                public void windowIconified(WindowEvent e) {
-                    _iconify();
-                }
-                public void windowDeiconified(WindowEvent e) {
-                    _deiconify();
-                }
-            });
-        setLocationRelativeTo(_owner);
+            public void windowIconified(WindowEvent e) {
+                _iconify();
+            }
+            public void windowDeiconified(WindowEvent e) {
+                _deiconify();
+            }
+        });
+        GraphicsEnvironment ge =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] SCREENS = ge.getScreenDevices();
+        Point ownerLoc = owner.getLocation();
+        Rectangle screenBounds = null;
+        for (int screen = 0; screen < SCREENS.length; screen++) {
+            GraphicsConfiguration gc =
+                SCREENS[screen].getDefaultConfiguration();
+            Rectangle bounds = gc.getBounds();
+            if (bounds.contains(ownerLoc)) {
+                screenBounds = bounds;
+                break;
+            }
+        }
+        if (screenBounds != null) {
+            Dimension size = getPreferredSize();
+            int relX = (screenBounds.width / 2) - (size.width / 2);
+            int relY = (screenBounds.height / 2) - (size.height / 2);
+            int x =
+                screenBounds.x + (screenBounds.width / 2) - (size.width / 2);
+            int y =
+                screenBounds.y + (screenBounds.height / 2) - (size.height / 2);
+            setLocation(x, y);
+        } else {
+            setLocationRelativeTo(_owner);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,6 +155,9 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         return _target;
     }
 
+    public void saveIfRequired() {
+    }
+
     public void setContents(JComponent contents) {
         _contents = contents;
         getContentPane().add(_contents, BorderLayout.CENTER);
@@ -146,6 +180,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ////                         protected methods                   ////
 
     protected void _cancel() {
+        saveIfRequired();
         dispose();
     }
 

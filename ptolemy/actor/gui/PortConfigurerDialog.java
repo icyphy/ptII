@@ -35,6 +35,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -143,11 +145,7 @@ public class PortConfigurerDialog
         _portLocationComboBox.addItem("WEST");
         _portTable = new JTable();
         _portTable.setPreferredScrollableViewportSize(new Dimension(600, 70));
-        // Listen for selections on the table. There can only be one row
-        // selected. When a row is selected, the Remove button will show the
-        // port name associated with the row.
-        ListSelectionModel rowSM = _portTable.getSelectionModel();
-        rowSM.addListSelectionListener(_rowSelectionListener);
+
         _portTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 if (me.getButton() == MouseEvent.BUTTON3) {
@@ -157,6 +155,16 @@ public class PortConfigurerDialog
                 }
             }
         });
+
+        _portTable.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent ke) {
+                if (ke.getKeyChar() == '\n') {
+                    _apply();
+                    _cancel();
+                }
+            }
+        });
+
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
         _initColumnSizes();
@@ -622,6 +630,25 @@ public class PortConfigurerDialog
         return true;
     }
 
+    public void saveIfRequired() {
+        if (_isDirty()) {
+            int option =
+                JOptionPane.showConfirmDialog(
+                    getOwner(),
+                    "Save port modifications on "
+                        + getTarget().getFullName()
+                        + "?",
+                    "Unsaved Port Modifications",
+                    JOptionPane.YES_NO_OPTION);
+            switch (option) {
+                case (JOptionPane.YES_OPTION) :
+                    {
+                        _apply();
+                    }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     //// protected methods ////
     /**
@@ -1057,29 +1084,6 @@ public class PortConfigurerDialog
             "Hide",
             "Units" };
 
-    // The Listener that is sensitive to selection changes in the table.
-    // When a row is selected change the label in the Remove button to
-    // show that the associated port is the one that will be removed when
-    // the Remove button is pressed.
-    private ListSelectionListener _rowSelectionListener =
-        new ListSelectionListener() {
-
-            ///////////////////////////////////////////////////////////////////
-        //// inner class ////
-    public void valueChanged(ListSelectionEvent e) {
-            if (e.getValueIsAdjusting())
-                return;
-            //Ignore extra messages.
-            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-            if (lsm.isSelectionEmpty()) {
-                _setSelectedRow(-1);
-            } else {
-                _selectedRow = lsm.getMinSelectionIndex();
-                _setSelectedRow(_selectedRow);
-            }
-        }
-    };
-
     private void _initColumnSizes() {
         TableColumn column = null;
         column =
@@ -1198,6 +1202,8 @@ public class PortConfigurerDialog
         final StringCellEditor portNameEditor = new StringCellEditor();
         _portNameColumn.setCellEditor(portNameEditor);
         portNameEditor.setValidator(new CellValidator() {
+            /////////////////////////////////////////
+            //////////// inner class/////////////////
             public boolean isValid(String cellValue) {
                 int index = cellValue.indexOf(".");
                 if (index >= 0) {
@@ -1222,6 +1228,8 @@ public class PortConfigurerDialog
         final StringCellEditor portTypeEditor = new StringCellEditor();
         _portTypeColumn.setCellEditor(portTypeEditor);
         portTypeEditor.setValidator(new CellValidator() {
+             /////////////////////////////////////////
+             //////////// inner class/////////////////
             public boolean isValid(String cellValue) {
                 try {
                     if (cellValue.equals(""))
@@ -1246,6 +1254,8 @@ public class PortConfigurerDialog
         _portUnitColumn.setCellEditor(portUnitEditor);
 
         portUnitEditor.setValidator(new CellValidator() {
+            /////////////////////////////////////////
+            //////////// inner class/////////////////
             public boolean isValid(String cellValue) {
                 UnitExpr uExpr;
                 try {
