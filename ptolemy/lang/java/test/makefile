@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/lang/java
+ME =		ptolemy/lang/java/test
 
 DIRS =
 
@@ -71,7 +71,6 @@ JSRCS = \
 	Switch.java \
 	Super.java \
 	SuperChild.java \
-	TestTypeSafeEnumeration.java \
 	UseTypeSafeEnumeration.java \
 	UseFields.java \
 	UseMethods.java \
