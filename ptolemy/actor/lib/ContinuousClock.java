@@ -47,7 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Clock
+//// ContinuousClock
 /**
 This actor produces a periodic signal, a generalized square wave
 that sequences through <i>N</i> output values with arbitrary duty cycles
@@ -233,7 +233,7 @@ public class ContinuousClock extends TimedSource {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Clock newObject = (Clock)super.clone(workspace);
+        ContinuousClock newObject = (ContinuousClock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
