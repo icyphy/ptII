@@ -60,6 +60,7 @@ JSRCS = \
 	CmdLineArgException.java \
 	EditablePlot.java \
 	EditablePlotApplication.java \
+	EditListener.java \
 	EPSGraphics.java \
 	Histogram.java \
 	HistogramApplet.java \
