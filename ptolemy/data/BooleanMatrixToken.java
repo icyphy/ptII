@@ -59,10 +59,15 @@ public class BooleanMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified matrix
+     *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public BooleanMatrixToken(boolean[][] value) {
+    public BooleanMatrixToken(boolean[][] value)
+            throws IllegalActionException {
+	if (value == null) {
+	    throw new IllegalActionException("BooleanMatrixToken: The "
+	            + "specified matrix is null.");
+        }
         _initialize(value);
     }
 
