@@ -93,16 +93,9 @@ public class IDAttribute extends SingletonAttribute {
         }
         
         String className = container.getMoMLInfo().className;
-        String superclass = container.getMoMLInfo().superclass;
-        String baseClassValue = null;
-        if (isClass) {
-            baseClassValue = superclass;
-        } else {
-            baseClassValue = className;
-        }
 
         baseClass = new StringAttribute(this, "baseClass");
-        baseClass.setExpression(baseClassValue);
+        baseClass.setExpression(className);
         // This should not be persistent, because the base class
         // is set already, generally.
         baseClass.setPersistent(false);

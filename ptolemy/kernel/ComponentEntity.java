@@ -30,11 +30,14 @@
 
 package ptolemy.kernel;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -354,13 +357,44 @@ public class ComponentEntity extends Entity {
     /** Check the specified container.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not an
-     *   instnance of CompositeEntity.
+     *   instance of CompositeEntity, or if the proposed container is
+     *   null and there are other objects that defer their definitions
+     *   to this one.
      */
     protected void _checkContainer(Prototype container)
             throws IllegalActionException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
             "Component entity can only be contained by a CompositeEntity");
+        }
+        if (container == null) {
+            // If the class has objects that defer to it, then
+            // refuse to convert.
+            boolean hasDeferrals = false;
+            List deferred = getDeferredFrom();
+            StringBuffer names = new StringBuffer();
+            if (deferred != null) {
+                // List contains weak references, so it's not
+                // sufficient to just check the length.
+                Iterator deferrers = deferred.iterator();
+                while (deferrers.hasNext()) {
+                    WeakReference deferrer = (WeakReference)deferrers.next();
+                    NamedObj deferrerObject = (NamedObj)deferrer.get();
+                    if (deferrerObject != null) {
+                        hasDeferrals = true;
+                        if (names.length() > 0) {
+                            names.append(", ");
+                        }
+                        names.append(deferrerObject.getFullName());
+                    }
+                }
+            }
+            if (hasDeferrals) {
+                throw new IllegalActionException(this,
+                        "Cannot delete because " +
+                        "there are instances and/or subclasses:\n" +
+                        names.toString());
+            }
         }
     }
     

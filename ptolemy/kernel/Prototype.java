@@ -198,7 +198,7 @@ public class Prototype extends NamedObj {
                 + "<class name=\""
                 + name
                 + "\" extends=\""
-                + getMoMLInfo().superclass
+                + getMoMLInfo().className
                 + "\"");
 
         if (getMoMLInfo().source != null) {

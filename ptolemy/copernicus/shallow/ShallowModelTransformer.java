@@ -690,12 +690,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             try {
                 // First try to find the local moml class that
                 // we extend
-                String deferredClass;
-                if (isClass) {
-                    deferredClass = info.superclass;
-                } else {
-                    deferredClass = info.className;
-                }
+                String deferredClass = info.className;
 
                 // No moml class..  must have been a java class.
                 // FIXME: This sucks.  We should integrate with
