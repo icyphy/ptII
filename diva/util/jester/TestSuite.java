@@ -1,28 +1,28 @@
 /*
- Copyright (c) 1998-2004 The Regents of the University of California
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+  Copyright (c) 1998-2004 The Regents of the University of California
+  All rights reserved.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
- */
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
+*/
 package diva.util.jester;
 
 
@@ -77,99 +77,99 @@ package diva.util.jester;
  */
 public abstract class TestSuite {
 
-  /**
-   * The test harness.
-   */
-  private TestHarness _testHarness;
+    /**
+     * The test harness.
+     */
+    private TestHarness _testHarness;
 
-  /**
-   * The factory.
-   */
-  private Object _factory;
+    /**
+     * The factory.
+     */
+    private Object _factory;
 
-  /**
-   * Initialize the test harness and run all the tests that can be
-   * run by this class. This final method calls runAll(), in between
-   * calling the test harness to tell it that the test suite is
-   * starting and stopping.
-   */
-  public final void run () {
-    _testHarness.readyTestSuite(this);
-    runAll();
-    _testHarness.doneTestSuite();
-  }
+    /**
+     * Initialize the test harness and run all the tests that can be
+     * run by this class. This final method calls runAll(), in between
+     * calling the test harness to tell it that the test suite is
+     * starting and stopping.
+     */
+    public final void run () {
+        _testHarness.readyTestSuite(this);
+        runAll();
+        _testHarness.doneTestSuite();
+    }
 
-  /**
-   * Run all the tests that can be run by this class. By default, this
-   * method calls runSuite(), and needs to be overridden if additional
-   * test suites are to be created -- for example, to exercise methods
-   * defined in superclasses or implemented interfaces. In the case
-   * of unit tests of classes that have superclasses or implemented
-   * interfaces, the overriding method should:
-   * <ul>
-   * <li>Create an instance of the unit test suite of each superclass
-   * and implemented interface, and call its runSuite() method.
-   * <li>Call its own runSuite() method.
-   * </ul>
-   *
-   * (Note that for this to work properly, runAll() must not call
-   * runAll() of its superclass, but must enumerate each of the test
-   * suites to be run on this object. This allows subclasses to
-   * exclude certain tests.)
-   */
-  public void runAll () {
-    runSuite();
-  }
+    /**
+     * Run all the tests that can be run by this class. By default, this
+     * method calls runSuite(), and needs to be overridden if additional
+     * test suites are to be created -- for example, to exercise methods
+     * defined in superclasses or implemented interfaces. In the case
+     * of unit tests of classes that have superclasses or implemented
+     * interfaces, the overriding method should:
+     * <ul>
+     * <li>Create an instance of the unit test suite of each superclass
+     * and implemented interface, and call its runSuite() method.
+     * <li>Call its own runSuite() method.
+     * </ul>
+     *
+     * (Note that for this to work properly, runAll() must not call
+     * runAll() of its superclass, but must enumerate each of the test
+     * suites to be run on this object. This allows subclasses to
+     * exclude certain tests.)
+     */
+    public void runAll () {
+        runSuite();
+    }
 
-  /**
-   * Run the tests defined by this test suite. This is an abstract
-   * method, and must be overridden to execute the test methods.
-   */
-  public abstract void runSuite ();
+    /**
+     * Run the tests defined by this test suite. This is an abstract
+     * method, and must be overridden to execute the test methods.
+     */
+    public abstract void runSuite ();
 
-  /**
-   * Run a single test case by passing it to the harness used by this
-   * test suite. This is a convenient access method, mainly intended
-   * for use by subclasses, and it equivalent to
-   * <pre>
-   *   getTestHarness().runTestCase(testCase)
-   * </pre>
-   */
-  public void runTestCase (TestCase testCase) {
-    _testHarness.runTestCase(testCase);
-  }
+    /**
+     * Run a single test case by passing it to the harness used by this
+     * test suite. This is a convenient access method, mainly intended
+     * for use by subclasses, and it equivalent to
+     * <pre>
+     *   getTestHarness().runTestCase(testCase)
+     * </pre>
+     */
+    public void runTestCase (TestCase testCase) {
+        _testHarness.runTestCase(testCase);
+    }
 
-  /**
-   * Set the test harness used by this test suite.
-   */
-  public void setTestHarness (TestHarness h) {
-      _testHarness = h;
-  }
+    /**
+     * Set the test harness used by this test suite.
+     */
+    public void setTestHarness (TestHarness h) {
+        _testHarness = h;
+    }
 
-  /**
-   * Get the test harness used by this test suite.
-   */
-  public TestHarness getTestHarness () {
-      return _testHarness;
-  }
+    /**
+     * Get the test harness used by this test suite.
+     */
+    public TestHarness getTestHarness () {
+        return _testHarness;
+    }
 
-  /**
-   * Set the factory used by this test suite. This can be
-   * any object, but the test output will make most sense if
-   * it is an object used to produce the object or objects
-   * being tested, and that has a descriptive toString()
-   * method.
-   */
-  public void setFactory (Object f) {
-      _factory = f;
-  }
+    /**
+     * Set the factory used by this test suite. This can be
+     * any object, but the test output will make most sense if
+     * it is an object used to produce the object or objects
+     * being tested, and that has a descriptive toString()
+     * method.
+     */
+    public void setFactory (Object f) {
+        _factory = f;
+    }
 
-  /**
-   * Get the factory used by this test suite.
-   */
-  public Object getFactory () {
-      return _factory;
-  }
+    /**
+     * Get the factory used by this test suite.
+     */
+    public Object getFactory () {
+        return _factory;
+    }
 }
 
 

@@ -1,29 +1,29 @@
 /*
- Copyright (c) 1998-2004 The Regents of the University of California
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+  Copyright (c) 1998-2004 The Regents of the University of California
+  All rights reserved.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
- *
- */
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
+  *
+  */
 
 package diva.canvas.toolbox;
 
@@ -107,7 +107,7 @@ public class SVGParser {
             height = _getDouble(attributes, "height");
 
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                    x, y, width, height));
+                                                       x, y, width, height));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
 
@@ -118,7 +118,7 @@ public class SVGParser {
             r = _getDouble(attributes, "r");
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
-                    cx - r, cy - r, 2 * r, 2 * r));
+                                                       cx - r, cy - r, 2 * r, 2 * r));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
 
@@ -130,7 +130,7 @@ public class SVGParser {
             ry = _getDouble(attributes, "ry");
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
-                    cx - rx, cy - ry, 2 * rx, 2 * ry));
+                                                       cx - rx, cy - ry, 2 * rx, 2 * ry));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
 
@@ -219,7 +219,7 @@ public class SVGParser {
                     }
                     int bitflags = tk.checkImage(img, -1, -1, image);
                     if ((bitflags &
-                            (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
+                                (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
                         // There was an error if either flag is set,
                         // so return null.
                         return null;

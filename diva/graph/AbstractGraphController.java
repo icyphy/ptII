@@ -1,31 +1,31 @@
 /*
-@Copyright (c) 1998-2004 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 1998-2004 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
 
- */
+*/
 package diva.graph;
 
 import java.util.HashMap;
@@ -294,8 +294,8 @@ public abstract class AbstractGraphController implements GraphController {
 
             if (_model.isEdge(object)) {
                 if (!GraphUtilities.isPartiallyContainedEdge(object,
-                        _model.getRoot(),
-                        _model)) {
+                            _model.getRoot(),
+                            _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -310,8 +310,8 @@ public abstract class AbstractGraphController implements GraphController {
 
             if (_model.isNode(object)) {
                 if (!GraphUtilities.isContainedNode(object,
-                        _model.getRoot(),
-                        _model)) {
+                            _model.getRoot(),
+                            _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -599,17 +599,17 @@ public abstract class AbstractGraphController implements GraphController {
                 rerender();
                 /* Object root = e.getTarget();
 
-                   //FIXME - this could be optimized--
-                   //        we may not need to rerender every
-                   //        node.
+                //FIXME - this could be optimized--
+                //        we may not need to rerender every
+                //        node.
 
-                   for (Iterator i = _model.nodes(root); i.hasNext(); ) {
-                   rerenderNode(i.next());
-                   }
-                   for (Iterator i = GraphUtilities.localEdges(root, _model);
-                   i.hasNext(); ) {
-                   rerenderEdge(i.next());
-                   }
+                for (Iterator i = _model.nodes(root); i.hasNext(); ) {
+                rerenderNode(i.next());
+                }
+                for (Iterator i = GraphUtilities.localEdges(root, _model);
+                i.hasNext(); ) {
+                rerenderEdge(i.next());
+                }
                 */
             }
         }

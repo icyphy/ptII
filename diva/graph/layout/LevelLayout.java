@@ -1,28 +1,28 @@
 /*
- Copyright (c) 1998-2004 The Regents of the University of California
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+  Copyright (c) 1998-2004 The Regents of the University of California
+  All rights reserved.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
- */
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
+*/
 package diva.graph.layout;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -282,7 +282,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             //POST all nodes have level greater than
             //     their incoming nodes
             for (Iterator i = _local.nodes(levelData._copyGraph);
-                i.hasNext(); ) {
+                 i.hasNext(); ) {
                 Object node = i.next();
                 int lvl = getLevel(node);
                 for (Iterator j = GraphUtilities.inNodes(node, _local); j.hasNext(); ) {
@@ -303,18 +303,18 @@ public class LevelLayout extends AbstractGlobalLayout {
             //POST all dummy nodes have one in-edge and
             //     one out-edge
             for (Iterator i = _local.nodes(levelData._copyGraph);
-                i.hasNext(); ) {
+                 i.hasNext(); ) {
                 Object node = i.next();
                 int lvl = getLevel(node);
                 for (Iterator j = GraphUtilities.inNodes(node, _local);
-                    j.hasNext(); ) {
+                     j.hasNext(); ) {
                     Object n2 = j.next();
                     int lvl2 = getLevel(n2);
                     ASSERT((lvl2 == lvl-1), "Level equality error " + node + ", " + n2);
                 }
             }
             for (Iterator i = _local.nodes(levelData._copyGraph);
-                i.hasNext(); ) {
+                 i.hasNext(); ) {
                 Object node = i.next();
                 if (isDummy(node)) {
                     Iterator outs = _local.outEdges(node);
@@ -704,7 +704,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void addDummies(LevelData levelData) {
         ArrayList dummies = new ArrayList();
         for (Iterator nodes = _local.nodes(levelData._copyGraph);
-            nodes.hasNext();) {
+             nodes.hasNext();) {
             Object to = nodes.next();
             if (isDummy(to)) { continue; }
             LevelInfo nlinfo = getLevelInfo(to);
@@ -1168,208 +1168,208 @@ public class LevelLayout extends AbstractGlobalLayout {
 
 
 /*
-  ///////////////////////////////////////////////////////////////////////
-  // Under construction
-  ///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+// Under construction
+///////////////////////////////////////////////////////////////////////
 
 
 
-  /**
-   * Do insertion sort on the level based on the barycenters,
-   * then reorder
-   *
-   private final void sortLevel(ArrayList nodes) {
-   Object []ns = nodes.toArray();
-   Arrays.sort(ns, new BarycentricComparator());
-   nodes.clear();
-   for (Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
-   nodes.add(i.next());
-   }
+/**
+* Do insertion sort on the level based on the barycenters,
+* then reorder
+*
+private final void sortLevel(ArrayList nodes) {
+Object []ns = nodes.toArray();
+Arrays.sort(ns, new BarycentricComparator());
+nodes.clear();
+for (Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
+nodes.add(i.next());
+}
 
-   /*
-     int len = nodes.size();
-     for (int i = 1; i < len; i++) {
-     Node n1 = (Node) nodes.get(i);
-     double bc = barycenter(n1);
-     int j;
-     for (j = i; j > 0; j--) {
-     Node n2 = (Node)nodes.get(j-1);
-     if (bc >= getBarycenter(n2)) break;
-     nodes.add(j, n2);
-     }
-     nodes.add(j, n1);
-     }*
-     }
-
-
-     private final void orderLevel( ArrayList nodes, double l, double y,
-     boolean doin, boolean doout ) {
-     int levelcnt = nodes.size();
-     for (Iterator e = nodes.iterator(); e.hasNext();) {
-     Node n = (Node) e.next();
-     computeBarycenter(n, doin, doout);
-     }
-     sortLevel( nodes );
-     //XXX placeLevel( l, y, nodes );
-     }
-
-     // Do downwards barycentering on first pass, upwards on second, then average
-     private final void orderNodes( double l, int op ) {
-     boolean doup = ((op & 0x1) == 1);
-     boolean doin = (op > 5 || !doup);
-     boolean doout = (op > 5 || doup);
-     double ystep = (_maxLevel>0) ? (_target.getViewport(_origGraph).getHeight()/_maxLevel) : 0.0;
-     if (doup ) {
-     double y = 0.0;
-     for ( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
-     ArrayList nodes = _levels[i];
-     orderLevel( nodes, l, y, doin, doout );
-     y += ystep;
-     }
-     }
-     else {
-     double y = l;
-     for ( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
-     ArrayList nodes = _levels[i];
-     orderLevel( nodes, l, y, doin, doout );
-     y -= ystep;
-     }
-     }
-     }
-
-     protected final void straightenDummy(Node n) {
-     Node tail = n.getInNode(0);
-     Node head = n.getOutNode(0);
-     double avg = (n.getX() + tail.getX() + head.getX()) / 3;
-     n.setX(avg);
-     }
-
-     private final int xmarginSize = 10;
-     protected synchronized final void straightenLayout( double l ) {
-     double ystep = l/(_maxLevel+1);
-     double y = 0.0;
-     for (int i = 0; i <= _maxLevel; i++) {
-     ArrayList nodes = _levels[i];
-     for (Iterator e = nodes.iterator(); e.hasNext(); ) {
-     Node n = (Node)e.next();
-     if (n instanceof DummyNode) {
-     straightenDummy(n);
-     }
-     }
-
-     for (int j = 1; j < nodes.size(); j++) {
-     Node n = (Node)nodes.get(j);
-     Node prev = (Node)nodes.get( j-1 );
-     double prevright = prev.getX() + prev.getW()/2 + xmarginSize;
-     double thisleft =  n.getX() - n.getW()/2 - xmarginSize;
-     double overlap = prevright - thisleft;
-     if (overlap > 0 ) {
-     prev.setX(prev.getX() - overlap/2);
-     n.setX(n.getX() + overlap/2);
-     }
-     n.setY(y);
-     }
-     y += ystep;
-     }
-     }
+/*
+int len = nodes.size();
+for (int i = 1; i < len; i++) {
+Node n1 = (Node) nodes.get(i);
+double bc = barycenter(n1);
+int j;
+for (j = i; j > 0; j--) {
+Node n2 = (Node)nodes.get(j-1);
+if (bc >= getBarycenter(n2)) break;
+nodes.add(j, n2);
+}
+nodes.add(j, n1);
+}*
+}
 
 
+private final void orderLevel( ArrayList nodes, double l, double y,
+boolean doin, boolean doout ) {
+int levelcnt = nodes.size();
+for (Iterator e = nodes.iterator(); e.hasNext();) {
+Node n = (Node) e.next();
+computeBarycenter(n, doin, doout);
+}
+sortLevel( nodes );
+//XXX placeLevel( l, y, nodes );
+}
 
-     protected int _operation = 0;
-     protected final int _Order = 100;
-     private final void Embed() {
-     double L = _bb.globals.L();
-     _bb.setArea( 0, 0, L, L );
-     if (_operation < _Order ) {
-     orderNodes( L, _operation );
-     }
-     else {
-     straightenLayout( L );
-     }
-     _bb.Update();
-     ++_operation;
-     _bb.globals.Temp( (double)_operation );
-     }
+// Do downwards barycentering on first pass, upwards on second, then average
+private final void orderNodes( double l, int op ) {
+boolean doup = ((op & 0x1) == 1);
+boolean doin = (op > 5 || !doup);
+boolean doout = (op > 5 || doup);
+double ystep = (_maxLevel>0) ? (_target.getViewport(_origGraph).getHeight()/_maxLevel) : 0.0;
+if (doup ) {
+double y = 0.0;
+for ( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
+ArrayList nodes = _levels[i];
+orderLevel( nodes, l, y, doin, doout );
+y += ystep;
+}
+}
+else {
+double y = l;
+for ( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
+ArrayList nodes = _levels[i];
+orderLevel( nodes, l, y, doin, doout );
+y -= ystep;
+}
+}
+}
 
-     private void computeBarycenter(Node n, boolean doin, boolean doout) {
-     double insum = 0.0;
-     double outsum = 0.0;
-     int insize = 0;
-     int outsize = 0;
+protected final void straightenDummy(Node n) {
+Node tail = n.getInNode(0);
+Node head = n.getOutNode(0);
+double avg = (n.getX() + tail.getX() + head.getX()) / 3;
+n.setX(avg);
+}
 
-     if (doin) {
-     for (Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
-     insize++;
-     insum += getX((Node)e.next());
-     }
-     if (insize == 0) {
-     insize = 1;
-     insum = getX(n);
-     }
-     }
+private final int xmarginSize = 10;
+protected synchronized final void straightenLayout( double l ) {
+double ystep = l/(_maxLevel+1);
+double y = 0.0;
+for (int i = 0; i <= _maxLevel; i++) {
+ArrayList nodes = _levels[i];
+for (Iterator e = nodes.iterator(); e.hasNext(); ) {
+Node n = (Node)e.next();
+if (n instanceof DummyNode) {
+straightenDummy(n);
+}
+}
 
-     if (doout ) {
-     for (Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
-     outsize++;
-     outsum += getX(n);
-     }
-     if (outsize == 0) {
-     outsize = 1;
-     outsum = getX(n);
-     }
-     }
-
-     double barycenter;
-     if (doin && doout ) {
-     barycenter = (insum+outsum)/(insize+outsize);
-     }
-     else if (doin) {
-     barycenter = insum/insize;
-     }
-     else if (doout) {
-     barycenter = outsum/outsize;
-     }
-     else {
-     barycenter = getX(n);
-     }
-
-     LevelInfo info = getLevelInfo(n);
-     info.barycenter = barycenter;
-     }
-
-
-     private double getBarycenter(Node n) {
-     return getLevelInfo(n).barycenter;
-     }
+for (int j = 1; j < nodes.size(); j++) {
+Node n = (Node)nodes.get(j);
+Node prev = (Node)nodes.get( j-1 );
+double prevright = prev.getX() + prev.getW()/2 + xmarginSize;
+double thisleft =  n.getX() - n.getW()/2 - xmarginSize;
+double overlap = prevright - thisleft;
+if (overlap > 0 ) {
+prev.setX(prev.getX() - overlap/2);
+n.setX(n.getX() + overlap/2);
+}
+n.setY(y);
+}
+y += ystep;
+}
+}
 
 
 
-     private Filter _defaultIgnoreFilter = new Filter() {
-     public boolean accept(Object o) {
-     if (o instanceof Node) {
-     Node n = (Node)o;
-     return (n == null) || !_target.isNodeVisible(n);
-     }
-     return false;
-     }
-     };
+protected int _operation = 0;
+protected final int _Order = 100;
+private final void Embed() {
+double L = _bb.globals.L();
+_bb.setArea( 0, 0, L, L );
+if (_operation < _Order ) {
+orderNodes( L, _operation );
+}
+else {
+straightenLayout( L );
+}
+_bb.Update();
+++_operation;
+_bb.globals.Temp( (double)_operation );
+}
 
-     private Filter _ignoreFilter = _defaultIgnoreFilter;
+private void computeBarycenter(Node n, boolean doin, boolean doout) {
+double insum = 0.0;
+double outsum = 0.0;
+int insize = 0;
+int outsize = 0;
 
-     public void setIgnoreFilter(Filter f) {
-     if (f == null) {
-     _ignoreFilter = _defaultIgnoreFilter;
-     }
-     _ignoreFilter = new OrFilter(f, _defaultIgnoreFilter);
-     }
+if (doin) {
+for (Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
+insize++;
+insum += getX((Node)e.next());
+}
+if (insize == 0) {
+insize = 1;
+insum = getX(n);
+}
+}
 
-     private boolean ignoreNode(Node n) {
-     return _ignoreFilter.accept(n);
-     }
+if (doout ) {
+for (Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
+outsize++;
+outsum += getX(n);
+}
+if (outsize == 0) {
+outsize = 1;
+outsum = getX(n);
+}
+}
 
-     private boolean ignoreEdge(Edge e) {
-     return (ignoreNode(e.getHead()) || ignoreNode(e.getTail()));
-     }
+double barycenter;
+if (doin && doout ) {
+barycenter = (insum+outsum)/(insize+outsize);
+}
+else if (doin) {
+barycenter = insum/insize;
+}
+else if (doout) {
+barycenter = outsum/outsize;
+}
+else {
+barycenter = getX(n);
+}
+
+LevelInfo info = getLevelInfo(n);
+info.barycenter = barycenter;
+}
+
+
+private double getBarycenter(Node n) {
+return getLevelInfo(n).barycenter;
+}
+
+
+
+private Filter _defaultIgnoreFilter = new Filter() {
+public boolean accept(Object o) {
+if (o instanceof Node) {
+Node n = (Node)o;
+return (n == null) || !_target.isNodeVisible(n);
+}
+return false;
+}
+};
+
+private Filter _ignoreFilter = _defaultIgnoreFilter;
+
+public void setIgnoreFilter(Filter f) {
+if (f == null) {
+_ignoreFilter = _defaultIgnoreFilter;
+}
+_ignoreFilter = new OrFilter(f, _defaultIgnoreFilter);
+}
+
+private boolean ignoreNode(Node n) {
+return _ignoreFilter.accept(n);
+}
+
+private boolean ignoreEdge(Edge e) {
+return (ignoreNode(e.getHead()) || ignoreNode(e.getTail()));
+}
 */
 
 
