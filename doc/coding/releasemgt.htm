@@ -54,6 +54,65 @@ and adding files as appropriate to the makefiles
 
 <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
 
+<li> Run Jalopy to add curly brackets around single statement if,
+while and other statements:
+
+<br>Wrong:
+<pre>
+if (foo == bar) 
+    return; 
+</pre>
+
+Right:
+<pre>
+if (foo == bar) {
+    return; 
+}
+</pre>
+
+The reason this is important is because if one does
+<pre>
+if (foo == bar) 
+    System.out.println("About to return");
+    return; 
+</pre>
+then the return is not part of the if statement.
+
+<p>We indent using Jalopy to add braces and then reindent using
+jindent or Eclipse 
+<p>
+To set up Jalopy: 
+ <ol>
+ <li> Download the console version from
+<a href="http://jalopy.sourceforge.net/download.html"><code>http://jalopy.sourceforge.net/download.html</code></a>
+
+ <li> Create a directory to unzip the download into and unzip it.
+ <br>Note: the zip file will create directories like
+ <code>bin</code>, <code>docs</code> and <code>lib</code> in the current
+ directory, so be sure to unzip it inside an empty directory.
+ <br> See also <a href="http://jalopy.sourceforge.net/plugin-console.html"><code>http://jalopy.sourceforge.net/plugin-console.html</code></a>
+ 
+ <li> Run <code>bin/preferences.sh</code>
+   <br>If you get
+   <pre>
+c:/Program: not found
+   </pre>
+   You may need to edit <code>bin/preferences.sh</code> and put double
+   quotes around <code>JAVACMD</code> in the last line:
+   <pre>
+"$JAVACMD" -classpath "$LOCALCLASSPATH" de.hunsicker.jalopy.swing.SettingsDialog
+   </pre>
+ <li> Note that under Windows, the settings are stored in
+   <code>c:/Documents and Settings/<i>username</i>/.jalopy
+   <br>If things get confusing, you may want to remove that directory
+   and start <code>bin/preferences.sh</code> over again
+ <li> In the "Jalopy Settings" window, under Printer -&gt; Braces
+   -&gt Misc, click all the boxes in the Insert braces section
+ <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations.
+   uncheck "Sort class elements"
+ <li>Close the Jalopy Settings window, you are now ready to indent
+ </ol>
+
 <li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
 coding standard.
 
@@ -69,6 +128,7 @@ sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v cod
 </pre>
 
 <li> Use Eclipse to fix the imports of the entire tree.
+
 
 <li> Consider fixing other Eclipse warnings.
 
