@@ -60,7 +60,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   is not an instance of Parameter.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public ParameterEditorStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

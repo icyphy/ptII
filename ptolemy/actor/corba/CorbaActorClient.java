@@ -65,10 +65,10 @@ will be sent to the remote actor at the initilization phase
 of the execution. Parameters are binded by their names.
 <P>
 At the initialize() phase of the execution, the actor will
-try to create the ORB, and connect to the name server. 
+try to create the ORB, and connect to the name server.
 If succeed, it will find the remote actor by looking for its
 name. If this succeeds also, the remote actor is called to be
-located. Then at each firing phase (prefire(), fire() and 
+located. Then at each firing phase (prefire(), fire() and
 postfire()), this actor will first transfer all the current
 input tokens to the remote actor, and call the corresponding
 methods of the remote actor, then transfer the output
@@ -77,7 +77,7 @@ will be thrown.
 <P>
 FIXME: In the current implementation, all the values are
 transfered in the form of a string. This is not type save.
-Further improvement is needed. 
+Further improvement is needed.
 
 @author Jie Liu
 @version $Id$
@@ -107,12 +107,12 @@ public class CorbaActorClient extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The initialization properties of the ORB. The following 
+    /** The initialization properties of the ORB. The following
      *  system properties are copied from JDK documents.
      *  <P>
      *  "Currently, the following configuration properties are defined
      *  for all ORB implementations:<BR>
-     *  <code>org.omg.CORBA.ORBClass</code> 
+     *  <code>org.omg.CORBA.ORBClass</code>
      *  The name of a Java class that implements the org.omg.CORBA.ORB
      *  interface. Applets and applications do not need to
      *  supply this property unless they must have a particular ORB
@@ -123,19 +123,19 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  interface. This is the object returned by a call to
      *  orb.init() with no arguments. It is used primarily to create
      *  typecode instances than can be shared across untrusted code
-     *  (such as unsigned applets) in a secured environment. 
+     *  (such as unsigned applets) in a secured environment.
      *  <P>
      *  In addition to the standard properties listed above, Java IDL
      *  also supports the following properties:
      *  <P>
      *  <code>org.omg.CORBA.ORBInitialHost </code>
-     *  The host name of a machine running a server or daemon that 
+     *  The host name of a machine running a server or daemon that
      *  provides initial bootstrap services, such as a name service.
-     *  The default value for this property is localhost for applications. 
+     *  The default value for this property is localhost for applications.
      *  For applets it is the applet host, equivalent to
      *  getCodeBase().getHost(). <BR>
      *  <code>org.omg.CORBA.ORBInitialPort </code>
-     *  The port the initial naming service listens to. The default 
+     *  The port the initial naming service listens to. The default
      *  value is 900."
      *  <P>
      *  The parameters should be constructed in one line of String.
@@ -167,7 +167,7 @@ public class CorbaActorClient extends TypedAtomicActor {
     public java.lang.Object clone(Workspace ws) {
         try {
             CorbaActorClient newobj = (CorbaActorClient)super.clone(ws);
-            newobj.ORBInitProperties = 
+            newobj.ORBInitProperties =
                 (Parameter)newobj.getAttribute("ORBInitProperties");
             newobj.remoteActorName = (Parameter)newobj.getAttribute(
                     "remoteActorName");
@@ -179,7 +179,7 @@ public class CorbaActorClient extends TypedAtomicActor {
         }
     }
 
-    /** Setup the link to the remote actor. This includes creating 
+    /** Setup the link to the remote actor. This includes creating
      *  the ORB, initializing the naming service, and locating the
      *  remote actor.
      *  @exception IllegalActionException If any of the above actions
@@ -209,11 +209,11 @@ public class CorbaActorClient extends TypedAtomicActor {
             //resolve the remote actor reference in Naming
             NameComponent namecomp = new NameComponent(
                     (remoteActorName.getToken()).toString(), "");
-            _debug(getName(), " looking for name: ", 
+            _debug(getName(), " looking for name: ",
                     (remoteActorName.getToken()).toString());
             NameComponent path[] = {namecomp};
             // locate the remote actor
-            _remoteActor = 
+            _remoteActor =
                 ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                         ncRef.resolve(path));
             } catch (UserException ex) {
@@ -226,7 +226,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             while (attributes.hasNext()) {
                 Attribute att = (Attribute)attributes.next();
                 if((att != ORBInitProperties) && (att != remoteActorName)) {
-                    _debug(getName(), 
+                    _debug(getName(),
                             " check remote parameter: ", att.getName());
                     if (!_remoteActor.hasParameter(att.getName())) {
                         throw new IllegalActionException(this,
@@ -247,15 +247,15 @@ public class CorbaActorClient extends TypedAtomicActor {
                             " or has wrong type.");
                 }
                 try {
-                    _remoteActor.setPortWidth(p.getName(), 
+                    _remoteActor.setPortWidth(p.getName(),
                             (short)p.getWidth());
                 } catch (UserException ex) {
                     throw new IllegalActionException(this,
                             "Port: " + p.getName() +
                             " does not support width " + p.getWidth());
                 }
-                    
-            }         
+
+            }
         } catch (SystemException ex) {
             _debug(getName(), " CORBA init failed ", ex.getMessage());
             throw new IllegalActionException(this,
@@ -403,14 +403,14 @@ public class CorbaActorClient extends TypedAtomicActor {
                                 "contains illegal token value. "
                                 + ex4.getMessage());
                     }
-                } 
+                }
             }
         }
     }
 
     /** Transfer the output data from the remote actor.
-     *  The remote output data is transfered in the form of 
-     *  String. This method converts the String back to 
+     *  The remote output data is transfered in the form of
+     *  String. This method converts the String back to
      *  Token and sends them.
      *  FIXME: This operation is not type-save. Consider better
      *         ways to do it.

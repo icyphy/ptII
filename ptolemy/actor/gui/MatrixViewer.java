@@ -47,7 +47,7 @@ import ptolemy.actor.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer
-/** 
+/**
 
 A graphical component that displays the contents of a Matrix. This
 actor has a single input port, which only accepts MatrixTokens. One
@@ -117,7 +117,7 @@ public class MatrixViewer extends Sink implements Placeable {
 
     /** Create a new JTable on the screen.  If a panel has not been
      *  specified, place the JTable into its own frame.  Otherwise,
-     *  place it in the specified panel.  
+     *  place it in the specified panel.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -230,9 +230,9 @@ public class MatrixViewer extends Sink implements Placeable {
 
         /** The Matrix for which a Table Model is created. */
         private MatrixToken _matrix = null;
-        
+
     }
-   
+
 }
 
 

@@ -67,7 +67,7 @@ This assumes that the model given in file "model.xml" has a director
 named "director" with a parameter named "iterations".
 If more than one model is given on the command line, then the
 parameter values will be set for all models that have such
-a parameter. 
+a parameter.
 
 @author Edward A. Lee and Brian K. Vogel
 @version $Id$

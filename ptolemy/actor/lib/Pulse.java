@@ -69,7 +69,7 @@ The type of the output can be any token type. This type is inferred
 from the element type of the <i>values</i> parameter.
 <p>
 NOTE: A reset input for this actor would be useful.  This would reset
-the iterations count, to cause the pulse to emerge again. 
+the iterations count, to cause the pulse to emerge again.
 @author Edward A. Lee
 @version $Id$
 */
@@ -100,7 +100,7 @@ public class Pulse extends SequenceSource {
 	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
 	values.setTypeEquals(new ArrayType(BaseType.NAT));
-                
+
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
         attributeChanged(repeat);
@@ -129,7 +129,7 @@ public class Pulse extends SequenceSource {
     public Parameter values;
 
     /** The flag that indicates whether the pulse sequence needs to be
-     *  repeated. 
+     *  repeated.
      */
     public Parameter repeat;
 
@@ -255,13 +255,13 @@ public class Pulse extends SequenceSource {
                 _match = true;
                 return;
             }
-        } else {           
-            if ( _repeatFlag ) { 
+        } else {
+            if ( _repeatFlag ) {
 
                 // Repeat the pulse sequence again.
                 _iterationCount = 0;
-                _indexColCount = 0; 
-                
+                _indexColCount = 0;
+
                 currentIndex = idx[0][_indexColCount];
                 if (_iterationCount == currentIndex) {
                     output.send(0, val.getElement(_indexColCount));
@@ -272,7 +272,7 @@ public class Pulse extends SequenceSource {
         }
         output.send(0, _zero);
         _match = false;
-        
+
     }
 
     /** Set the iteration count to zero.

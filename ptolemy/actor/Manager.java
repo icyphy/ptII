@@ -60,18 +60,18 @@ There are three methods that can be used to start execution of a system
 attached to the manager.  The execute() method is the most basic way to
 execute a model.  The model will be executed <i>synchronously</i>,
 meaning that the execute()
-method will return when execution has completed.  Any exceptions that 
-occur will be thrown by the execute method to the calling thread, and will 
-not be reported to any execution listeners.  The run() method also 
+method will return when execution has completed.  Any exceptions that
+occur will be thrown by the execute method to the calling thread, and will
+not be reported to any execution listeners.  The run() method also
 initiates synchronous execution of a model, but additionally catches all
 exceptions and passes them to the notifyListenersOfException method
-<i>without throwing them to the calling thread</i>.  
+<i>without throwing them to the calling thread</i>.
 The startRun() method, unlike the previous two
 techniques, begins <i>asynchronous</i> execution of a model.   This method
 starts a new thread for execution of the model and then returns immediately.
 Exceptions are reported using the notifyListenersOfException method.
 <p>
-In addition, execution can be manually driven, one phase at a time, using the 
+In addition, execution can be manually driven, one phase at a time, using the
 methods initialize(), iterate() and wrapup().  This is most useful for
 testing purposes.  For example, a type system check only needs to get the
 resolved types, which are found during initialize, so the test can avoid
@@ -363,14 +363,14 @@ public class Manager extends NamedObj implements Runnable {
                 "No model to run!");
             }
             _setState(PREINITIALIZING);
-            
+
             _pauseRequested = false;
             _typesResolved = false;
             _iterationCount = 0;
-            
+
             // Initialize the topology
             _container.preinitialize();
-            
+
             resolveTypes();
             _typesResolved = true;
             _setState(INITIALIZING);
@@ -473,7 +473,7 @@ public class Manager extends NamedObj implements Runnable {
      *  If there are no listeners, then print the exception information
      *  to the standard error stream. This is intended to be used by threads
      *  that are involved in an execution as a mechanism for reporting
-     *  errors.  As an example, in a threaded domain, each thread 
+     *  errors.  As an example, in a threaded domain, each thread
      *  should catch all exceptions and report them using this method.
      *  @param ex The exception.
      */
@@ -582,7 +582,7 @@ public class Manager extends NamedObj implements Runnable {
             if (_debugging) _debug("Resolving types.");
 
 	    List conflicts = new LinkedList();
-            List typeConflicts = 
+            List typeConflicts =
                     ((TypedCompositeActor)_container).checkTypes();
             conflicts.addAll(typeConflicts);
 
@@ -645,8 +645,8 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** If the model is paused, resume execution.  This method must
-     *  be called from a different thread than that controlling the 
-     *  execution, since the thread controlling the execution is 
+     *  be called from a different thread than that controlling the
+     *  execution, since the thread controlling the execution is
      *  suspended.
      */
     public synchronized void resume() {
@@ -676,7 +676,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Start an execution in another thread and return.  Any exceptions
      *  that occur during the execution of the model are handled by
-     *  the <code>notifyListenersOfException</code> method.  
+     *  the <code>notifyListenersOfException</code> method.
      *  @exception IllegalActionException If the model is already running,
      *  e.g. the state is not IDLE.
      */
@@ -736,7 +736,7 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
-     *  composite actor.  The state of the manager will be set to 
+     *  composite actor.  The state of the manager will be set to
      *  WRAPPING_UP.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is idle or already
@@ -879,7 +879,7 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
     }
-     
+
    /** Set the state of execution and notify listeners if the state
     *  actually changes.
     *  @param newstate The new state.
@@ -888,7 +888,7 @@ public class Manager extends NamedObj implements Runnable {
         if (_state != newstate) {
             _state = newstate;
             _notifyListenersOfStateChange();
-        }     
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

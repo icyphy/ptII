@@ -43,10 +43,10 @@ import ptolemy.moml.Documentation;
 //// PtolemyQuery
 /**
 This class provides a method to create a mapping from a Query entry to
-a Variable. The Variable will be automatically set each time the 
+a Variable. The Variable will be automatically set each time the
 corresponding Query entity changes. To use this class, first add an entry to
-the query, and then use the attachParameter method in this class 
-to associate that variable with a 
+the query, and then use the attachParameter method in this class
+to associate that variable with a
 
 @author Brian K. Vogel
 @version $Id$
@@ -78,7 +78,7 @@ public class PtolemyQuery extends Query
     }
 
     /** Set the Variable to the value of the Query entry. This
-     *  method is called whenever an entry changes. 
+     *  method is called whenever an entry changes.
      */
     public void changed(String name)  {
 	// Check if the entry that changed is in the mapping.

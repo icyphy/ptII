@@ -63,7 +63,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *   is not an instance of Parameter.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public CheckBoxStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

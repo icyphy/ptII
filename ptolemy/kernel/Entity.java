@@ -383,7 +383,7 @@ public class Entity extends NamedObj {
      */
     public String uniqueName(String prefix) {
         String candidate = prefix + _uniqueNameIndex++;
-        while(getAttribute(candidate) != null 
+        while(getAttribute(candidate) != null
                 || getPort(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;
         }

@@ -60,7 +60,7 @@ public class TypeConflictException extends KernelException {
      *  followed by a list of Typeables and their types. The Typeables
      *  are represented by their names if the Typeable object is a
      *  NamedObj, otherwise, they are represented by the string
-     *  "Unnamed Typeable". 
+     *  "Unnamed Typeable".
      *  Each Typeable takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
      *  @param typeables a list of Typeables.

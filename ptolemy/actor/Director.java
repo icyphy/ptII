@@ -562,7 +562,7 @@ public class Director extends NamedObj implements Executable {
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
-        boolean trans = false; 
+        boolean trans = false;
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
 	    if (port.hasToken(i)) {
@@ -599,7 +599,7 @@ public class Director extends NamedObj implements Executable {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transfered.
      */
-    public boolean transferOutputs(IOPort port) 
+    public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,

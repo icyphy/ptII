@@ -140,7 +140,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return. 
+     *  (by calling the protected method _handleDeadlock()) and return.
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -231,7 +231,7 @@ public class ProcessDirector extends Director {
                 }
             }
         }
-                
+
         // Initialize threads
         ProcessThread processThread = _getProcessThread(actor, this);
         _threadList.addFirst(processThread);
@@ -501,7 +501,7 @@ public class ProcessDirector extends Director {
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire().
      *  Override this method in subclasses to account for possible
-     *  deadlock situations due to additional flags that are not 
+     *  deadlock situations due to additional flags that are not
      *  present in this base class.
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
@@ -509,8 +509,8 @@ public class ProcessDirector extends Director {
     protected synchronized boolean _areAllThreadsStopped() {
 	// All threads are stopped due to stopFire()
 	if( _threadsStopped > 0 && _threadsStopped >= _actorsActive ) {
-	    return true; 
-	} 
+	    return true;
+	}
 	return false;
     }
 

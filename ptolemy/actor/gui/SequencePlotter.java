@@ -95,11 +95,11 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.          
+    /** Notification that an attribute has changed.
         @exception IllegalActionException If the expression of the
         attribute cannot be parsed or cannot be evaluated.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xInit) {
             _xInit = ((DoubleToken)xInit.getToken()).doubleValue();
@@ -143,7 +143,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *  <i>xUnit</i> value. The input data are plotted in postfire() to
      *  ensure that the data have settled.
      *  @exception IllegalActionException If there is no director,
-     *   or if the base class throws it.  
+     *   or if the base class throws it.
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {

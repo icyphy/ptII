@@ -55,7 +55,7 @@ import javax.swing.text.BadLocationException;
 /**
 Display the values of the tokens arriving on the input channels
 in a text area on the screen.  The input on each firing is written
-on a separate line.  If there is more than one input channel, 
+on a separate line.  If there is more than one input channel,
 then the displays are separated by tabs.
 The input type is GENERAL, meaning that any token is acceptable.
 Tokens are read from the input only in the postfire() method, to
@@ -139,7 +139,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
         }
         */
     }
-  
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the textArea public variable to null.
      *  @param workspace The workspace for the new object.

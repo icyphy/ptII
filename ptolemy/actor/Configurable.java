@@ -40,10 +40,10 @@ Objects that can be configured by reading a file, typically an
 XML file, should implement this interface.  This enables a
 user interface to recognize that such file-based configuration is possible.
 For example, a plotter actor implements this interface to
-allow the visual appearance of the plot to be set using PlotML.  
+allow the visual appearance of the plot to be set using PlotML.
 An icon for an actor implements this interface to allow
 the actor-specific visual features of the icon to be
-specified using graphics markup. 
+specified using graphics markup.
 Additionally, a filter actor could implement this interface to allow
 the filter specification to be given using markup.
 <p>

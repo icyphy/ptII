@@ -135,7 +135,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         histogram.repaint();
     }
 
-    /** Specify the graphical container into which this histogram should be 
+    /** Specify the graphical container into which this histogram should be
      *  placed. This method needs to be called before the first call to
      *  initialize(). Otherwise, the histogram will be placed in its own frame.
      *  The histogram is also placed in its own frame if this method

@@ -294,8 +294,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the input ports connected to this port on the
-     *  outside.  This method is deprecated and calls 
-     *  deepConnectedInPortList(). It is read-synchronized on the 
+     *  outside.  This method is deprecated and calls
+     *  deepConnectedInPortList(). It is read-synchronized on the
      *  workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
@@ -307,8 +307,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the input ports connected to this port on the
-     *  outside and return a list of these ports.  This method calls 
-     *  deepConnectedPortList() of the super class to get all the deeply 
+     *  outside and return a list of these ports.  This method calls
+     *  deepConnectedPortList() of the super class to get all the deeply
      *  connected ports and returns only the input ports among them.
      *  It is read-synchronized on the workspace.
      *
@@ -334,8 +334,8 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the output ports connected to this port on the
-     *  outside.  This method is deprecated and calls 
-     *  deepConnectedOutPortList(). 
+     *  outside.  This method is deprecated and calls
+     *  deepConnectedOutPortList().
      *  It is read-synchronized on the workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
@@ -347,9 +347,9 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the output ports connected to this port on the
-     *  outside and a return a list of these ports.  This method calls 
-     *  deepConnectedPortList() of the super *  class to get all the 
-     *  deeply connected ports and returns only the output ports among 
+     *  outside and a return a list of these ports.  This method calls
+     *  deepConnectedPortList() of the super *  class to get all the
+     *  deeply connected ports and returns only the output ports among
      *  them. It is read-synchronized on the workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
@@ -1400,7 +1400,7 @@ public class IOPort extends ComponentPort {
                 }
                 Iterator relations = linkedRelationList().iterator();
                 while (relations.hasNext()) {
-                    IORelation theRelation = 
+                    IORelation theRelation =
                             (IORelation)relations.next();
                     if (!theRelation.isWidthFixed()) {
                         throw new IllegalActionException(this, rel,

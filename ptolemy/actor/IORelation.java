@@ -170,7 +170,7 @@ public class IORelation extends ComponentRelation {
         try {
             _workspace.getReadAccess();
             Receiver[][] result = new Receiver[0][0];
-            Iterator inputs = 
+            Iterator inputs =
                     linkedDestinationPortList(except).iterator();
             Receiver[][] recvrs = new Receiver[0][0];
             while(inputs.hasNext()) {
@@ -235,7 +235,7 @@ public class IORelation extends ComponentRelation {
         return (_width != 0);
     }
 
-    /** Enumerate the input ports that we are linked to from the outside, 
+    /** Enumerate the input ports that we are linked to from the outside,
      *  and the output ports that we are linked to from the inside.
      *  I.e., enumerate the ports through or to which we could send data.
      *  This method is deprecated and calls linkedDestinationPortList().
@@ -250,8 +250,8 @@ public class IORelation extends ComponentRelation {
     }
 
     /** List the input ports that we are linked to from the
-     *  outside, and the output ports that we are linked to from 
-     *  the inside. I.e., list the ports through or to which we 
+     *  outside, and the output ports that we are linked to from
+     *  the inside. I.e., list the ports through or to which we
      *  could send data. This method read-synchronizes on the workspace.
      *
      *  @see ptolemy.kernel.Relation#linkedPorts
@@ -260,12 +260,12 @@ public class IORelation extends ComponentRelation {
     public List linkedDestinationPortList() {
         return linkedDestinationPortList(null);
     }
- 
+
     /** Enumerate the input ports that we are linked to from the
      *  outside, and the output ports that we are linked to from
      *  the inside, except the port given as an argument.
      *  I.e., enumerate the ports through or to which we could send data.
-     *  This method is deprecated and calls 
+     *  This method is deprecated and calls
      *  linkedDestinationPortList(IOPort).
      *  This method read-synchronizes on the workspace.
      *
@@ -346,7 +346,7 @@ public class IORelation extends ComponentRelation {
     /** Enumerate the output ports that we are linked to from the outside
      *  and the input ports that we are linked to from the inside.
      *  I.e. enumerate the ports from or through which we might receive
-     *  This method is deprecated and calls 
+     *  This method is deprecated and calls
      *  linkedSourcePortList(IOPort).
      *  This method read-synchronizes on the workspace.
      *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)

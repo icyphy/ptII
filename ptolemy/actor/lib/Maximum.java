@@ -84,7 +84,7 @@ public class Maximum extends Transformer {
         return newobj;
     }
 
-    /** Read at most one token from each input channel and send the one 
+    /** Read at most one token from each input channel and send the one
      *  with the largest value to the output.  If there is no input,
      *  then produce no output.
      *  @exception IllegalActionException If there is no director.

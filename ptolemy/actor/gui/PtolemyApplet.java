@@ -208,7 +208,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
         // Only try to start if there is no execution currently running.
         if(_manager.getState() == _manager.IDLE)
             _manager.startRun();
-            
+
     }
 
     /** Stop the execution.

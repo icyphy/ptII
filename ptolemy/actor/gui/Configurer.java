@@ -71,7 +71,7 @@ public class Configurer extends JPanel {
      *  @exception IllegalActionException If the specified object has
      *   no editor factories, and refuses to accept as an attribute
      *   an instance of EditorPaneFactory.
-     */	
+     */
     public Configurer(NamedObj object) throws IllegalActionException {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -133,7 +133,7 @@ public class Configurer extends JPanel {
             }
         });
     }
-            
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

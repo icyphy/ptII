@@ -94,7 +94,7 @@ public class StreamExecutionListener implements ExecutionListener {
         }
         _output.println(msg);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -53,7 +53,7 @@ the interpolation.
 The <i>values</i> parameter specifies a sequence of values
 to produce at the output.  The <i>indexes</i> parameter specifies
 when those values should be produced.
-The values and indexes parameters must both contain one dimensional 
+The values and indexes parameters must both contain one dimensional
 arrays, and have equal lengths or an exception will be thrown.
 The <i>indexes</i> array must be increasing and non-negative.
 The values are periodic if the <i>period</i> parameter contains a
@@ -61,22 +61,22 @@ positive value. In this case, the period must be greater than the
 largest index, and values within the index range 0 to (period-1) are
 repeated indefinitely.  If the period is zero, the values are not
 periodic, and the values outside the range of the indexes are
-considered to be 0.0.  The <i>order</i> parameter 
-specifies which order of interpolation to apply  whenever the 
-iteration count does not match an index in <i>indexes</i>. 
+considered to be 0.0.  The <i>order</i> parameter
+specifies which order of interpolation to apply  whenever the
+iteration count does not match an index in <i>indexes</i>.
 The Interpolation class currently supports zero, first, and third
 order interpolations. The default parameter are those set in the
 Interpolation class.
 <p>
-This actor counts iterations.  Whenever the iteration count matches an entry 
+This actor counts iterations.  Whenever the iteration count matches an entry
 in the <i>indexes</i> array, the corresponding entry (at the same position)
-in the <i>values</i> array is produced at the output.  Whenever the iteration 
-dount does not match a value in the <i>indexes</i> array, an interpolation 
+in the <i>values</i> array is produced at the output.  Whenever the iteration
+dount does not match a value in the <i>indexes</i> array, an interpolation
 of the values is produced at the output.
 <p>
 Output type is DoubleToken.
 
-@author Sarah Packman, Yuhong Xiong 
+@author Sarah Packman, Yuhong Xiong
 @version $Id$
 @see ptolemy.math.Interpolation
 */
@@ -126,7 +126,7 @@ public class Interpolator extends SequenceSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -149,10 +149,10 @@ public class Interpolator extends SequenceSource {
      *  This parameter must contain an IntToken.
      */
     public Parameter period;
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Check the validity of the parameter.
      *  @exception IllegalActionException If the argument is the
      *   <i>values</i> parameter and it does not contain an one dimensional
@@ -210,24 +210,24 @@ public class Interpolator extends SequenceSource {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         // try {
-            Interpolator newobj = (Interpolator)super.clone(ws);  
+            Interpolator newobj = (Interpolator)super.clone(ws);
             newobj.indexes = (Parameter)newobj.getAttribute("indexes");
             newobj.values = (Parameter)newobj.getAttribute("values");
-            newobj.order = (Parameter)newobj.getAttribute("order"); 
-            newobj.period = (Parameter)newobj.getAttribute("period"); 
+            newobj.order = (Parameter)newobj.getAttribute("order");
+            newobj.period = (Parameter)newobj.getAttribute("period");
         // } catch (IllegalActionException ex) {
           //   throw new InternalErrorException(ex.getMessage());
         // }
         return newobj;
-    } 
-    
+    }
+
     /** Output the value at the current iteration count. The output is
      *  one of the reference values if the iteration count matches one
      *  of the indexes, or is interpolated otherwise.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>indexes</i> parameters do not contain arrays of the same length,
      *   or the period is not 0 and not greater than the largest index.
-     */  
+     */
     public void fire() throws IllegalActionException {
 	try {
 	    // If some parameters are changed by setExpression(), they are not
@@ -245,7 +245,7 @@ public class Interpolator extends SequenceSource {
 		ex.getMessage());
 	}
     }
-    
+
     /** Set the iteration count to zero.
      *  @exception IllegalActionException If the super class throws it.
      */

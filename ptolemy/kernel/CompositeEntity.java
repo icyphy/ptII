@@ -401,7 +401,7 @@ public class CompositeEntity extends ComponentEntity {
      *  relation, or entity.
      *  If the name contains one or more periods, then it is assumed
      *  to be the relative name of an attribute contained by one of
-     *  the contained attributes, ports, entities or relations. 
+     *  the contained attributes, ports, entities or relations.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
@@ -694,7 +694,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public String uniqueName(String prefix) {
         String candidate = prefix + _uniqueNameIndex++;
-        while(getAttribute(candidate) != null 
+        while(getAttribute(candidate) != null
                 || getPort(candidate) != null
                 || getEntity(candidate) != null
                 || getRelation(candidate) != null) {

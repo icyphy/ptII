@@ -80,7 +80,7 @@ public class Broadcast extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param ws The workspace for the new object.
@@ -93,7 +93,7 @@ public class Broadcast extends Transformer {
                 Broadcast newobj = (Broadcast)super.clone(ws);
                 return newobj;
     }
-    
+
     /** Output the quantization of the input.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.

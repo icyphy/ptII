@@ -40,7 +40,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// RemoteCompositeActor
 /**
-A RemoteCompositeActor is a CompositeActor that catches CORBA 
+A RemoteCompositeActor is a CompositeActor that catches CORBA
 exceptions. The purpose of a RemoteCompositeActor (RCA) is to
 facilitate CORBA remote object invocation of actors and composite
 actors during the execution of a Ptolemy II model.
@@ -48,11 +48,11 @@ actors during the execution of a Ptolemy II model.
 The remote object invocation infrastructure incorporated into
 Ptolemy II allows dynamic, remote access to actors (atomic or
 composite). The purpose of an RCA is to isolate the Ptolemy II
-manager from CORBA-related, network errors that can occur when 
-invoking remote objects. This is necessary to prevent the simulation 
-environment from shutting down if there is a CORBA exception. To 
-accomplish this task, RCA overrides several methods of CompositeActor 
-to catch org.omg.CORBA.SystemException. 
+manager from CORBA-related, network errors that can occur when
+invoking remote objects. This is necessary to prevent the simulation
+environment from shutting down if there is a CORBA exception. To
+accomplish this task, RCA overrides several methods of CompositeActor
+to catch org.omg.CORBA.SystemException.
 <P>
 CORBA, as with most remote object invocation systems (e.g., Java
 RMI and Microsoft's DCOM), uses a client side stub and a server
@@ -64,7 +64,7 @@ on the remote server.
 <P>
 All stubs contained in a model must be contained either directly or
 indirectly by an RCA. The RCA will catch any CORBA exceptions thrown
-on behalf of the stub. Note that while stubs must be contained by an 
+on behalf of the stub. Note that while stubs must be contained by an
 RCA, it is not necessary that an RCA contain stubs. An RCA can be
 chosen to be a top level composite actor or it can be located must
 lower in a model's hierarchy. Since an RCA is opaque, it must contain
@@ -75,9 +75,9 @@ a local director and hence it must self contain a model of computation.
 */
 public class RemoteCompositeActor extends CompositeActor {
 
-    /** Construct a RemoteCompositeActor in the default workspace with no 
-     *  container and an empty string as its name. Add the actor to the 
-     *  workspace directory. A RemoteCompositeActor must be opaque so you 
+    /** Construct a RemoteCompositeActor in the default workspace with no
+     *  container and an empty string as its name. Add the actor to the
+     *  workspace directory. A RemoteCompositeActor must be opaque so you
      *  must set the director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
@@ -86,10 +86,10 @@ public class RemoteCompositeActor extends CompositeActor {
         super();
     }
 
-    /** Construct a RemoteCompositeActor in the specified workspace with 
-     *  no container and an empty string as a name. You can then change 
-     *  the name with setName(). If the workspace argument is null, then 
-     *  use the default workspace. A RemoteCompositeActor must be opaque 
+    /** Construct a RemoteCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace. A RemoteCompositeActor must be opaque
      *  so you must set the director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
@@ -99,14 +99,14 @@ public class RemoteCompositeActor extends CompositeActor {
 	super(workspace);
     }
 
-    /** Create a RemoteCompositeActor with a name and a container. The 
-     *  container argument must not be null, or a NullPointerException 
-     *  will be thrown. This actor will use the workspace of the container 
-     *  for synchronization and version counts. If the name argument is 
-     *  null, then the name is set to the empty string. Increment the 
-     *  version of the workspace. This actor will have no local director 
-     *  initially, and its executive director will be simply the director 
-     *  of the container. RemoteCompositeActors must be opaque so a 
+    /** Create a RemoteCompositeActor with a name and a container. The
+     *  container argument must not be null, or a NullPointerException
+     *  will be thrown. This actor will use the workspace of the container
+     *  for synchronization and version counts. If the name argument is
+     *  null, then the name is set to the empty string. Increment the
+     *  version of the workspace. This actor will have no local director
+     *  initially, and its executive director will be simply the director
+     *  of the container. RemoteCompositeActors must be opaque so a
      *  local director must set for this actor prior to execution.
      *
      * @param container The container actor.
@@ -127,23 +127,23 @@ public class RemoteCompositeActor extends CompositeActor {
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  The result is a remote composite actor with clones of the ports 
-     *  of the original actor, the contained actors, and the contained 
-     *  relations. The ports of the returned actor are not connected to 
-     *  anything. The connections of the relations are duplicated in the 
-     *  new composite, unless they cross levels, in which case an exception 
+     *  The result is a remote composite actor with clones of the ports
+     *  of the original actor, the contained actors, and the contained
+     *  relations. The ports of the returned actor are not connected to
+     *  anything. The connections of the relations are duplicated in the
+     *  new composite, unless they cross levels, in which case an exception
      *  is thrown. The local director is cloned, if there is one.
-     *  The executive director is not cloned. 
+     *  The executive director is not cloned.
      *  NOTE: This will not work if there are level-crossing transitions.
      *
      * @param ws The workspace for the cloned object.
      * @exception CloneNotSupportedException If the actor contains
-     *  level crossing transitions so that its connections cannot be 
+     *  level crossing transitions so that its connections cannot be
      *  cloned, or if one of the attributes cannot be cloned.
      * @return A new RemoteCompositeActor.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        RemoteCompositeActor newobj = 
+        RemoteCompositeActor newobj =
 	        (RemoteCompositeActor)super.clone(ws);
 	if( getDirector() != getExecutiveDirector() ) {
 	    if( getDirector() != null ) {
@@ -156,12 +156,12 @@ public class RemoteCompositeActor extends CompositeActor {
 
     /** Invoke the fire() method on this actor's local director. If
      *  this actor is not opaque and does not contain a local director
-     *  then throw an IllegalActionException. If any CORBA 
-     *  SystemExceptions are thrown, then throw an 
+     *  then throw an IllegalActionException. If any CORBA
+     *  SystemExceptions are thrown, then throw an
      *  IllegalActionException with a corresonding message.
      *
-     * @exception IllegalActionException If there is no director, or 
-     *  if the director's fire() method throws it, or if the actor is 
+     * @exception IllegalActionException If there is no director, or
+     *  if the director's fire() method throws it, or if the actor is
      *  not opaque, or if a CORBA SystemException has been caught.
      */
     public void fire() throws IllegalActionException {
@@ -179,7 +179,7 @@ public class RemoteCompositeActor extends CompositeActor {
     /** If this actor is opaque, create receivers, and then
      *  invoke the initialize() method of its local
      *  director. Otherwise, throw an exception.
-     *  If any CORBA SystemExceptions are thrown, then throw an 
+     *  If any CORBA SystemExceptions are thrown, then throw an
      *  IllegalActionException with a corresonding message.
      *
      * @exception IllegalActionException If there is no director, or if
@@ -266,8 +266,8 @@ public class RemoteCompositeActor extends CompositeActor {
      *
      * @param director The Director responsible for execution.
      * @exception IllegalActionException If the director is not in
-     *  the same workspace as this actor or if the director is null. It 
-     *  may also be thrown in derived classes if the director is not 
+     *  the same workspace as this actor or if the director is null. It
+     *  may also be thrown in derived classes if the director is not
      *  compatible.
      */
     public void setDirector(Director director) throws IllegalActionException {
@@ -300,14 +300,14 @@ public class RemoteCompositeActor extends CompositeActor {
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  implements the Actor interface and to invalidate the schedule
-     *  and type resolution. This method does not alter the actor in 
-     *  any way. It is <i>not</i> synchronized on the workspace, so 
+     *  and type resolution. This method does not alter the actor in
+     *  any way. It is <i>not</i> synchronized on the workspace, so
      *  the caller should be.
      *
      * @param entity Actor to contain.
      * @exception IllegalActionException If the actor has no name, or the
      *  action would result in a recursive containment structure, or the
-     *  argument does not implement the Actor interface, or if a CORBA 
+     *  argument does not implement the Actor interface, or if a CORBA
      *  SystemException is caught.
      * @exception NameDuplicationException If the name collides with a name
      *  already on the actor contents list.
@@ -354,8 +354,8 @@ public class RemoteCompositeActor extends CompositeActor {
      *  workspace, so the caller should be.
      *
      * @param relation Relation to contain.
-     * @exception IllegalActionException If the relation has no name, or 
-     *  is not an instance of IORelation, or if a CORBA SystemException is 
+     * @exception IllegalActionException If the relation has no name, or
+     *  is not an instance of IORelation, or if a CORBA SystemException is
      *  caught.
      * @exception NameDuplicationException If the name collides with a name
      *  already on the contained relations list.

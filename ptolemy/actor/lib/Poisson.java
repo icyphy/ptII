@@ -66,7 +66,7 @@ It may in addition fire at any time in response to a trigger
 input.  On such firings, it simply repeats the most recent output
 (or generate a new output if the time is suitable.)
 Thus, the trigger, in effect, asks the actor what its current
-output value is. Some directors, such as those in CT, may also fire the 
+output value is. Some directors, such as those in CT, may also fire the
 actor at other times, without requiring a trigger input.  Again, the actor
 simply repeats the previous output.
 Thus, the output can be viewed as samples of the piecewise

@@ -72,7 +72,7 @@ public class EditorPaneFactory extends Attribute {
      *   acceptable attribute for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public EditorPaneFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

@@ -243,7 +243,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (result == null) {
                 // Check director.
                 String[] subnames = _splitName(name);
-                if (_director != null && 
+                if (_director != null &&
                         _director.getName().equals(subnames[0])) {
                     // Director name matches.
                     if (subnames[1] != null) {

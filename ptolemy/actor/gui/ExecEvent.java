@@ -39,12 +39,12 @@ An event that indicates that an actor is in a particular state.
 The event contains two pieces of information:  the actor that
 generated the event and the (integer) state of the actor when
 the event was generated. A class that listens for ExecEvents
-must implement the ExecEventListener interface. 
+must implement the ExecEventListener interface.
 
-The interpretation of state is determined by the actors and 
+The interpretation of state is determined by the actors and
 listeners that use the ExecEvent class and ExecEventListener
 interface. The author of code that takes advantage of these
-facilities should write the actors and listeners so that they 
+facilities should write the actors and listeners so that they
 utilize a common meaning for the integer states.
 
 @author Mudit Goel, John S. Davis II

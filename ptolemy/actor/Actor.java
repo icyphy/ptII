@@ -90,14 +90,14 @@ public interface Actor extends Executable {
 
     /** Return a list of the output ports of this actor.
      *  Note that implementations should return ports directly
-     *  contained by this actor, whether they are transparent or not.     
+     *  contained by this actor, whether they are transparent or not.
      *  @return A list of output IOPort objects.
      */
     public List outputPortList();
 
     /** Return an enumeration of the output ports of this actor.
      *  Note that implementations should return ports directly
-     *  contained by this actor, whether they are transparent or not.     
+     *  contained by this actor, whether they are transparent or not.
      *  @deprecated Use outputPortList() instead.
      *  @return An enumeration of output IOPort objects.
      */
