@@ -49,13 +49,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractActionsAttribute.java \
 	Action.java \
 	BroadcastOutput.java \
 	ChoiceAction.java \
 	CommitAction.java \
+	CommitActionsAttribute.java \
 	FSMActor.java \
 	FSMDirector.java \
 	HSDirector.java \
+	OutputActionsAttribute.java \
 	ProduceOutput.java \
 	ResetRefinement.java \
 	SetVariable.java \

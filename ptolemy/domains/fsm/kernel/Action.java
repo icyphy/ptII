@@ -31,12 +31,7 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.Attribute;
 
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,7 +66,7 @@ in the FSMActor containing the transition that contains the action.
 @see FSMActor
 @see ptolemy.data.expr.Variable
 */
-public abstract class Action extends Attribute {
+public abstract class Action extends StringAttribute {
 
     /** Construct an action with the given name contained by the
      *  specified transition. The transition argument must not be
