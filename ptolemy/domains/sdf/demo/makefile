@@ -48,8 +48,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
 all: jclass
 install: jclass jars
 docs: javadocs
