@@ -55,3 +55,7 @@ if {![info exist PTII]} {
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
+
+if {[info procs generateC] == "" } then {
+    source [file join $PTII ptolemy copernicus c test generateC.tcl]
+}

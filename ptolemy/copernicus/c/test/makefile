@@ -58,7 +58,7 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl. List these in alphabetical order
 # ONLY.
 JSIMPLE_TESTS = \
-	_cleanLib.tcl \
+	_cleanLib.tcl 
         Array2DInt.tcl \
         Array3DInt.tcl \
         ArrayOfObjects.tcl \
