@@ -202,8 +202,9 @@ PtolemyGraphics.java: PtolemyGraphics1_1.java.in PtolemyGraphics1_2.java.in \
 
 ptplot: ptplot.in ../../config.status
 	(cd ../..; ./config.status)
+# zip might not get the permissions of configure right, so we run /bin/sh
 ../../config.status: ../../configure
-	(cd ../..; ./configure)
+	(cd ../..; /bin/sh ./configure)
 
 $(PTAUXJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
