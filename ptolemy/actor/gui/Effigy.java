@@ -34,7 +34,7 @@ import ptolemy.gui.CancelException;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.moml.URLAttribute;
+import ptolemy.kernel.attributes.URLAttribute;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

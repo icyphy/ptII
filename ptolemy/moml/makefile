@@ -63,7 +63,6 @@ JSRCS =	Documentation.java \
 	MoMLParser.java \
 	ParserAttribute.java \
 	StreamErrorHandler.java \
-	URLAttribute.java \
 	Vertex.java
 
 EXTRA_SRCS =	$(JSRCS) \

@@ -31,7 +31,7 @@
 package ptolemy.kernel.attributes;
 
 import ptolemy.kernel.util.*;
-import ptolemy.moml.URLAttribute;
+import ptolemy.kernel.attributes.URLAttribute;
 
 import java.io.File;
 import java.net.MalformedURLException;

@@ -58,7 +58,6 @@ JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
 	StreamErrorHandler.tcl \
-	URLAttribute.tcl \
 	Vertex.tcl
 
 # Graphical Java tests that use Tcl.

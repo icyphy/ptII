@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.URLAttribute;
+import ptolemy.kernel.attributes.URLAttribute;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

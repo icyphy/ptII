@@ -30,8 +30,8 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.attributes.URLAttribute;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.URLAttribute;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;

@@ -32,10 +32,10 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.attributes.URLAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.URLAttribute;
 
 import java.awt.Dimension;
 import java.io.File;

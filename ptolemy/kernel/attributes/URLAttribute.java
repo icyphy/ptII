@@ -27,7 +27,7 @@
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
-package ptolemy.moml;
+package ptolemy.kernel.attributes;
 
 import ptolemy.kernel.util.*;
 
