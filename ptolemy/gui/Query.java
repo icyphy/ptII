@@ -342,6 +342,7 @@ public class Query extends JPanel {
     /** Get the current value in the entry with the given name
      *  and return as a boolean.  If the entry is not a checkbox,
      *  then throw an exception.
+     *  @deprecated Use getBooleanValue(String name) instead.
      *  @return The state of the checkbox.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -351,6 +352,66 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public boolean booleanValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + "\" in the query box.");
+        }
+        if (result instanceof JRadioButton) {
+            return ((JRadioButton)result).isSelected();
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+                    name + "\" is not a radio button, and hence does not have "
+                    + "a boolean value.");
+        }
+    }
+
+    /** Get the current value in the entry with the given name
+     *  and return as a double value.  If the entry is not a line,
+     *  then throw an exception.  If the value of the entry is not
+     *  a double, then throw an exception.
+     *  @deprecated Use getDoubleValue(String name) instead.
+     *  @return The value currently in the entry as a double.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception NumberFormatException If the value of the entry cannot
+     *   be converted to a double.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   line.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public double doubleValue(String name)
+            throws IllegalArgumentException, NoSuchElementException,
+            NumberFormatException {
+        Object result = _entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
+        }
+        if (result instanceof JTextField) {
+            return (new Double(((JTextField)result).getText())).doubleValue();
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+                    name + "\" is not a text line, and hence cannot be converted to "
+                    + "a double value.");
+        }
+    }
+
+    /** Get the current value in the entry with the given name
+     *  and return as a boolean.  If the entry is not a checkbox,
+     *  then throw an exception.
+     *  @return The state of the checkbox.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   checkbox.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public boolean getBooleanValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if (result == null) {
@@ -381,7 +442,7 @@ public class Query extends JPanel {
      *   line.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public double doubleValue(String name)
+    public double getDoubleValue(String name)
             throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         Object result = _entries.get(name);
@@ -395,6 +456,56 @@ public class Query extends JPanel {
             throw new IllegalArgumentException("Item named \"" +
                     name + "\" is not a text line, and hence cannot be converted to "
                     + "a double value.");
+        }
+    }
+
+    /** Get the current value in the entry with the given name
+     *  and return as an integer.  If the entry is not a line,
+     *  choice, or slider, then throw an exception.
+     *  If it is a choice or radio button, then return the
+     *  index of the first selected item.
+     *  @return The value currently in the entry as an integer.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception NumberFormatException If the value of the entry cannot
+     *   be converted to an integer.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   choice, line, or slider.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public int getIntValue(String name)
+            throws IllegalArgumentException, NoSuchElementException,
+            NumberFormatException {
+        Object result = _entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
+        }
+        if (result instanceof JTextField) {
+            return (new Integer(((JTextField)result).getText())).intValue();
+        } else if (result instanceof JSlider) {
+            return ((JSlider)result).getValue();
+        } else if (result instanceof JComboBox) {
+            return ((JComboBox)result).getSelectedIndex();
+        } else if (result instanceof JRadioButton[]) {
+            // Regrettably, ButtonGroup gives no way to determine
+            // which button is selected, so we have to search...
+            JRadioButton[] buttons = (JRadioButton[])result;
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    return i;
+                }
+            }
+            // In theory, we shouldn't get here, but the compiler
+            // is unhappy without a return.
+            return -1;
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+                    name + "\" is not a text line or slider, and hence "
+                    + "cannot be converted to "
+                    + "an integer value.");
         }
     }
 
@@ -416,11 +527,114 @@ public class Query extends JPanel {
         return _width;
     }
 
+    /** Get the current value in the entry with the given name,
+     *  and return as a String.  All entry types support this.
+     *  Note that this method should be called from the event dispatch
+     *  thread, since it needs to query to UI widgets for their current
+     *  values.  If it is called from another thread, there is no
+     *  assurance that the value returned will be the current value.
+     *  @return The value currently in the entry as a String.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry type does not
+     *   have a string representation (this should not be thrown).
+     */
+    public String getStringValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
+        }
+        // FIXME: Surely there is a better way to do this...
+        // We should define a set of inner classes, one for each entry type.
+        // Currently, this has to be updated each time a new entry type
+        // is added.
+        if (result instanceof JTextField) {
+            return ((JTextField)result).getText();
+        } else if (result instanceof JFileChooser) {
+	    if (((JFileChooser)result).getSelectedFile() == null) {
+		return "";
+	    } else {
+		File files[] = ((JFileChooser)result).getSelectedFiles();
+		// FIXME: How do we handle multiple files being returned
+		// 1. We could return "file:/c:/foo/bar" if only one file
+		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
+		// if two files were selected
+		// 2. We could return "{file:/c:/foo/bar}" if only one file
+		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
+		// if two files were selected
+		// 3. We could have various FileChoosers, one for single
+		// files, one for multiple files, one for urls, one for
+		// files.  This would point to some sort of configuration
+		// mechanism being used in the style.
+		StringBuffer urls = new StringBuffer();
+		// If only one file is chosen, then return
+		// "file:/c:/foor/bar"
+		// If there was more than one file chosen, then return
+		// an array of strings of the format
+		// {"file:/c:/foo/bar", "file:c:/foo/bar"}
+		for ( int i = 0; i < files.length; i++ ) {
+		    if (i == 0 && files.length > 1) {
+			urls.append("{");
+		    }
+		    if (i > 0) {
+			// If we throw an exception below, then
+			// urls will have a trailing comma.
+			urls.append(", ");
+		    }
+		    try {
+			urls.append("\"" + files[i].toURL().toString() + "\"");
+		    } catch (MalformedURLException malformed) {
+			// FIXME: this can't be right
+			throw new IllegalArgumentException(malformed.toString());
+		    }
+		}
+		if (files.length > 1) {
+		    urls.append("}");
+		}
+		return urls.toString();
+	    }
+        } else if (result instanceof JTextArea) {
+            return ((JTextArea)result).getText();
+        } else if (result instanceof JRadioButton) {
+            JRadioButton radioButton = (JRadioButton)result;
+            if (radioButton.isSelected()) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else if (result instanceof JSlider) {
+            return "" + ((JSlider)result).getValue();
+        } else if (result instanceof JComboBox) {
+            return (String)(((JComboBox)result).getSelectedItem());
+        } else if (result instanceof JRadioButton[]) {
+            // Regrettably, ButtonGroup gives no way to determine
+            // which button is selected, so we have to search...
+            JRadioButton[] buttons = (JRadioButton[])result;
+            String toReturn = null;
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i].isSelected()) {
+                    if (toReturn == null) toReturn = buttons[i].getText();
+                    else toReturn = toReturn + ", " + buttons[i].getText();
+                }
+            }
+            if (toReturn == null) toReturn = "";
+            return toReturn;
+        } else {
+            throw new IllegalArgumentException("Query class cannot generate"
+                    + " a string representation for entries of type "
+                    + result.getClass());
+        }
+    }
+
     /** Get the current value in the entry with the given name
      *  and return as an integer.  If the entry is not a line,
      *  choice, or slider, then throw an exception.
      *  If it is a choice or radio button, then return the
      *  index of the first selected item.
+     *  @deprecated Use getIntValue(String name) instead.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -810,6 +1024,7 @@ public class Query extends JPanel {
      *  thread, since it needs to query to UI widgets for their current
      *  values.  If it is called from another thread, there is no
      *  assurance that the value returned will be the current value.
+     *  @deprecated Use getStringValue(String name) instead.
      *  @return The value currently in the entry as a String.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
