@@ -1454,7 +1454,7 @@ public class MoMLParser extends HandlerBase {
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
-                        _current.getAttribute(propertyName);
+                            _current.getAttribute(propertyName);
                     Class newClass = null;
                     if (className != null) {
 			try {
@@ -1470,17 +1470,29 @@ public class MoMLParser extends HandlerBase {
 			}
                     }
 
+                    boolean createdNew = false;
+
                     // If there is a previous property with this name
                     // (property is not null), then we check that the
-                    // class name of the previous property exactly
-                    // matches the new.  If it does, then we set the
-                    // value of the property.  Otherwise, we try to
-                    // replace it, something that will only work if
-                    // it is a singleton (it might throw
+                    // property is an instance of the specified class.
+                    // If it is, then we set the value of the property.
+                    // Otherwise, we try to replace it, something that
+                    // will only work if it is a singleton (it might throw
                     // NameDuplicationException).
-                    boolean createdNew = false;
-                    if (property == null || (className != null &&
-                            !property.getClass().getName().equals(className))) {
+
+                    // NOTE: This used to use the following code to
+                    // match _exactly_ the specified class, rather
+                    // than checking that it be an instance of it.
+                    // The new behavior is more flexible, because, for
+                    // example, it allows actors to replace parameters
+                    // with a derived class of Parameter.  This was done,
+                    // for example, to replace some instances of Parameter
+                    // with ParameterPort.
+                    // if (property == null || (className != null &&
+                    //      !property.getClass().getName().equals(className))) {
+
+                    if (property == null || (newClass != null
+                            && !newClass.isInstance(property))) {
                         // The following will result in a
                         // NameDuplicationException if there is a previous
                         // property and it is not a singleton.
