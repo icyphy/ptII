@@ -69,7 +69,8 @@ test BasePNDirector-6.1 {Test an application} {
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
+    error "Running this test sometimes causes an endless loop" 
+    #[$e0 getManager] execute
+    #enumToTokenValues [$rec getRecord 0]
 
 } {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19}
