@@ -498,10 +498,8 @@ public class IORelation extends ComponentRelation {
 
         for (int i = 0; i < width; i++) {
             if(array1[i].length <= 0) {
-System.out.println("array1 empty");
                 result[i] = array2[i];
             } else if(array2[i].length <= 0) {
-System.out.println("array2 empty");
                 result[i] = array1[i];
             } else {
 
