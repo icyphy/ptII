@@ -895,12 +895,12 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     $container connect $output $input edge0
     $container description
 } {ptolemy.actor.TypedCompositeActor {.} attributes {
-    {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.._iconDescription} attributes {
+    {ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
     }}
 } ports {
 } entities {
     {ptolemy.actor.TypedAtomicActor {..source} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {..source._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
@@ -915,7 +915,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         } type {declared unknown resolved unknown}}
     }}
     {ptolemy.actor.TypedAtomicActor {..dest} attributes {
-        {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {..dest._iconDescription} attributes {
+        {ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
