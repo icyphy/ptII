@@ -43,16 +43,4 @@ import ptolemy.actor.Actor;
    @Pt.ProposedRating Green (liuj)
    @Pt.AcceptedRating Green (yuhong)
 */
-public interface CTWaveformGenerator extends Actor{
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Implementations of this method should consume the discrete
-     *  event that happens at the current time.
-     *  If there are no such events, do nothing.
-     *  @exception IllegalActionException If the action failed.
-     *
-     public void consumeCurrentEvents() throws IllegalActionException;
-    */
-}
+public interface CTWaveformGenerator extends Actor{}
