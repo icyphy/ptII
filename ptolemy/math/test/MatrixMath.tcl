@@ -87,6 +87,10 @@ set int2_2 [java::new {int[][]} {2 2} [list [list 2 -1] \
 set int2_2nonzero [java::new {int[][]} {2 2} [list [list 2 -1] \
                                        [list 1 3]]]
 
+# 2x2 matrix with power of two elements
+set int2_2powerof2 [java::new {int[][]} {2 2} [list [list 32 16] \
+                                       [list 8 4]]]
+
 set long1 2
 set long1_1 [java::new {long[][]} 1 [list 2]]
 set long2_2 [java::new {long[][]} {2 2} [list [list 2 -1] \
@@ -96,9 +100,16 @@ set long2_2 [java::new {long[][]} {2 2} [list [list 2 -1] \
 set long2_2nonzero [java::new {long[][]} {2 2} [list [list 2 -1] \
                                        [list 1 3]]]
 
+# 2x2 matrix with power of two elements
+set long2_2powerof2 [java::new {long[][]} {2 2} [list [list 32 16] \
+                                       [list 8 4]]]
 
-# Test an operation that takes a matrix and a scalar,
-# like add(long[][], long)
+
+
+# Test an operation that takes two arguments
+# This proc is rather complex because it is fairly flexible, we usually
+# call this proc from other wrapper procs below
+#
 # Arguments:
 #    op - The operation to be tested, for example "add"
 #    types - a list of lists of types, where each element of the list
@@ -114,8 +125,6 @@ set long2_2nonzero [java::new {long[][]} {2 2} [list [list 2 -1] \
 #    opSignature - the signature of the op, usually something like
 #                  {[list $op "$t\[\]\[\]" $t]}
 #    arg1 - The first argument to pass to $op, for example: {[subst $$matrix]}
-# 
-# This proc is rather complex because it is fairly flexible.
 #
 proc testMatrixMath {op types arraySize opSignature arg1 arg2} {
     foreach typeList $types {
@@ -164,16 +173,23 @@ proc testMatrix {op types {arraySize 2_2}} {
     testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
 }
 
-# Test an operation that takes a matrix and a scalar,
-# like add(long[][], long)
-proc testMatrixScalar {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" $t]} {[subst $$matrix]} {[subst $${v}1]}
+# Test an operation that takes a matrix and an int
+# like xxx[][] shiftArithmetic(xxx[][], int)
+proc testMatrixInt {op types {arraySize 2_2} {intValue 1}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" int]} {[subst $$matrix]} [list $intValue]
 }
+
 
 # Test an operation that takes a matrix and a matrix
 # like add(long[][], long[][])
 proc testMatrixMatrix {op types {arraySize 2_2}} {
     testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" "$t\[\]\[\]"]} {[subst $$matrix]} {[subst $${v}${arraySize}]}
+}
+
+# Test an operation that takes a matrix and a scalar,
+# like add(long[][], long)
+proc testMatrixScalar {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" $t]} {[subst $$matrix]} {[subst $${v}1]}
 }
 
 
@@ -445,11 +461,65 @@ testMatrix negative $types
 
 ######################################################################
 ####
-##  FIXME: xxx[][] shiftArithmetic(xxx[][], int)
+##  Test out: xxx[][] shiftArithmetic(xxx[][], int)
+
+set types [list \
+	[list Integer int int {{{4 -2} {2 0}}}] \
+	[list Long long long {{{4 -2} {2 0}}}]]
+
+testMatrixInt shiftArithmetic $types 2_2 1
+
+set types [list \
+	[list Integer int int {{{8 -4} {4 0}}}] \
+	[list Long long long {{{8 -4} {4 0}}}]]
+
+testMatrixInt shiftArithmetic $types 2_2 2
+
+set types [list \
+	[list Integer int int {{{2 -1} {1 0}}}] \
+	[list Long long long {{{2 -1} {1 0}}}]]
+
+testMatrixInt shiftArithmetic $types 2_2 0
+
+set types [list \
+	[list Integer int int {{{1 2147483647} {0 0}}}]]
+
+testMatrixInt shiftArithmetic $types 2_2 -1
+
+set types [list \
+	[list Integer int int {{{8 4} {2 1}}}] \
+	[list Long long long {{{8 4} {2 1}}}]] 
+
+testMatrixInt shiftArithmetic $types 2_2powerof2 -2
 
 ######################################################################
 ####
 ##  FIXME: xxx[][] shiftLogical(xxx[][], int)
+
+set types [list \
+	[list Integer int int {{{4 -2} {2 0}}}] \
+	[list Long long long {{{4 -2} {2 0}}}]]
+testMatrixInt shiftLogical $types
+
+set types [list \
+	[list Integer int int {{{8 -4} {4 0}}}] \
+	[list Long long long {{{8 -4} {4 0}}}]]
+testMatrixInt shiftLogical $types 2_2 2
+
+set types [list \
+	[list Integer int int {{{2 -1} {1 0}}}] \
+	[list Long long long {{{2 -1} {1 0}}}]]
+testMatrixInt shiftLogical $types 2_2 0
+
+set types [list \
+	[list Integer int int {{{1 -1} {0 0}}}] \
+	[list Long long long {{{1 -1} {0 0}}}]]
+testMatrixInt shiftLogical $types 2_2 -1
+
+set types [list \
+	[list Integer int int {{{0 -1} {0 0}}}] \
+	[list Long long long {{{0 -1} {0 0}}}]]
+testMatrixInt shiftLogical $types 2_2 -2
 
 ######################################################################
 ####
@@ -510,9 +580,9 @@ testMatrix transpose $types
 
 ######################################################################
 ####
-##  FIXME: within(xxx[][], xxx[][], xxx)
+##  FIXME: boolean within(xxx[][], xxx[][], xxx)
 
 
 ######################################################################
 ####
-##  FIXME: within(xxx[][], xxx[][], xxx[][])
+##  FIXME: boolean within(xxx[][], xxx[][], xxx[][])
