@@ -156,7 +156,7 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
 
 test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
     #Note: use above setup. reset parameters.
-    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR23]
     set solver [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken\

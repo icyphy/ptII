@@ -150,7 +150,7 @@ test CTExpoSystem-4.2 {Expo with BackwardEulerSolver} {
 
 test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     #Note: Use above setup.
-    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR23]
     $sys setDirector $dir
     set starttime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute startTime]]
@@ -222,7 +222,7 @@ test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
 
 test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     #Note: Use above setup.
-    set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIR]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIRMX]
     $sys setDirector $dir
     #set printflag [java::cast ptolemy.data.expr.Parameter \
 	    #	    [$testV getAttribute "Print"]]
