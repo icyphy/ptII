@@ -465,6 +465,10 @@ test ParseTreeEvaluator-17.2 {Test function in function.} {
     list [evaluate "function(x) min({x,3.0})"] [evaluate "function(x:int) min({x, 3.0})"]
 } {{(function(x) min({x, 3.0}))} {(function(x:int) min({x, 3.0}))}}
 
+test ParseTreeEvaluator-17.3 {Test record in function.} {
+    list [evaluate "function(x:{a=int,b=int}) x.a+x.b"] [evaluate "function(x:{a=int,b=int}) x.a"]
+} {{(function(x:{a=int, b=int}) (x.a()+x.b()))} {(function(x:{a=int, b=int}) x.a())}}
+
 ####################################################################
 
 test ParseTreeEvaluator-18.1 {Test Matrix Scalar Multiplication} {
