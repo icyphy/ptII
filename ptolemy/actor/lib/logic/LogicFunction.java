@@ -30,9 +30,6 @@
 
 package ptolemy.actor.lib.logic;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
@@ -46,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 // NOTE: If you update the list of functions, then you will want
-// to update the list in actor/lib/logic.xml.
+// to update the list in actor/lib/logic/logic.xml.
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicFunction
@@ -80,8 +77,8 @@ all, then no output is produced.  Except for the nop and not operators, these
 operators will consume as many tokens as are available in each channel.  The
 nop and not operators consume only a single token from the input port.
 
-@author John Li (johnli@eecs.berkeley.edu)
 @author Paul Whitaker (pwhitake@eecs.berkeley.edu)
+@version $Id$
 */
 public class LogicFunction extends Transformer {
 
