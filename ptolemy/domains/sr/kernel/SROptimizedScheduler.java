@@ -142,11 +142,17 @@ public class SROptimizedScheduler extends Scheduler {
         while (actorIterator.hasNext()) {
             Actor actor = (Actor) actorIterator.next();
             List outputList = actor.outputPortList();
-            Iterator outputIterator = outputList.iterator();
-            while (outputIterator.hasNext()) {
-                IOPort outputPort = (IOPort) outputIterator.next();
-                outputPortToActor.put(outputPort, actor);
-                dependencyGraph.add(outputPort);
+            if (outputList.isEmpty()) {
+                // The actor must still fire even though it has no output
+                // ports, so we add the actor itself to the dependency graph.
+                dependencyGraph.add(actor);
+            } else {
+                Iterator outputIterator = outputList.iterator();
+                while (outputIterator.hasNext()) {
+                    IOPort outputPort = (IOPort) outputIterator.next();
+                    outputPortToActor.put(outputPort, actor);
+                    dependencyGraph.add(outputPort);
+                }
             }
             List inputList = actor.inputPortList();
             Iterator inputIterator = inputList.iterator();
@@ -172,35 +178,48 @@ public class SROptimizedScheduler extends Scheduler {
                     Actor dependentActor =
                         (Actor) inputPortToActor.get(inputPort);
                     List dependentOutputList = dependentActor.outputPortList();
-                    Iterator dependentOutputIterator = 
-                        dependentOutputList.iterator();
-                    while (dependentOutputIterator.hasNext()) {
-                        IOPort dependentOutput =
-                            (IOPort) dependentOutputIterator.next();
-                        IOPort[] successors = (IOPort[])
-                            dependencyGraph.successorSet(outputPort);
-                        boolean alreadySuccessor = false;
-                        for (int i = 0; i < successors.length; i++) {
-                            if (successors[i] == dependentOutput)
-                                alreadySuccessor = true;
-                        }
-                        if (!alreadySuccessor) {
+                    if (dependentOutputList.isEmpty()) {
+                        if (!dependencyGraph.edgeExists(outputPort,
+                                dependentActor)) {
                             dependencyGraph.addEdge(outputPort,
-                                    dependentOutput);
+                                    dependentActor);
+                        }
+                    } else {
+                        Iterator dependentOutputIterator = 
+                            dependentOutputList.iterator();
+                        while (dependentOutputIterator.hasNext()) {
+                            Object dependentOutput =
+                                dependentOutputIterator.next();
+                            Object[] successors =
+                                dependencyGraph.successorSet(outputPort);
+                            boolean alreadySuccessor = false;
+                            for (int i = 0; i < successors.length; i++) {
+                                if (successors[i] == dependentOutput)
+                                    alreadySuccessor = true;
+                            }
+                            if (!alreadySuccessor) {
+                                dependencyGraph.addEdge(outputPort,
+                                        dependentOutput);
+                            }
                         }
                     }
                 }
             }
         }
 
-        List outputPortSchedule = _scheduleDependencyGraph(dependencyGraph);
+        List scheduleList = _scheduleDependencyGraph(dependencyGraph);
 
         Schedule schedule = new Schedule();
-        Iterator outputPortScheduleIterator = outputPortSchedule.iterator();
+        Iterator scheduleIterator = scheduleList.iterator();
 
-        while (outputPortScheduleIterator.hasNext()) {
-            IOPort outputPort = (IOPort) outputPortScheduleIterator.next();
-            Actor actor = (Actor) outputPortToActor.get(outputPort);
+        while (scheduleIterator.hasNext()) {
+            Object element = scheduleIterator.next();
+            Actor actor;
+            if (element instanceof Actor) {
+                actor = (Actor) element;
+            } else {
+                actor = (Actor) outputPortToActor.get(element);
+            }
             Firing firing = new Firing();
             firing.setActor(actor);
             schedule.add(firing);
