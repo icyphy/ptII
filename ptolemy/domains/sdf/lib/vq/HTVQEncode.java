@@ -32,9 +32,9 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
-import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.math.IntegerMatrixMath;
 import java.io.*;
 import java.net.*;
@@ -109,7 +109,7 @@ vol. 3, pp. 275-279, Nov. 1994. <br>
 @version $Id$
 */
 
-public class HTVQEncode extends SDFTransformer {
+public class HTVQEncode extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -131,17 +131,29 @@ public class HTVQEncode extends SDFTransformer {
                 new StringToken("/ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
+        
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        output.setTokenProductionRate(_blockCount);
-        input.setTokenConsumptionRate(_blockCount);
+        
         blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
         blockWidth.setTypeEquals(BaseType.INT);
+        
         blockHeight =
             new Parameter(this, "blockHeight", new IntToken("2"));
         blockHeight.setTypeEquals(BaseType.INT);
+        
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setExpression("blockCount");
+
+        output_tokenProductionRate =
+            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setTypeEquals(BaseType.INT);
+        output_tokenProductionRate.setExpression("blockCount");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,6 +176,12 @@ public class HTVQEncode extends SDFTransformer {
     /** The width, in pixels, of the block to encode. */
     public Parameter blockHeight;
 
+    /** The input rate */
+    public Parameter input_tokenConsumptionRate;
+    
+    /** The output rate */
+    public Parameter output_tokenProductionRate;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -201,9 +219,6 @@ public class HTVQEncode extends SDFTransformer {
         InputStream source = null;
 
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        input.setTokenConsumptionRate(_blockCount);
-        output.setTokenProductionRate(_blockCount);
-
         _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
         _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
@@ -450,7 +465,7 @@ public class HTVQEncode extends SDFTransformer {
     private int _codeBook[][][] = new int[6][256][];
     private int _lookupTable[][] = new int[6][65536];
     private IntToken _codewords[];
-    private ptolemy.data.Token _blocks[];
+    private Token _blocks[];
 
     private int _blockCount;
     private int _blockWidth;

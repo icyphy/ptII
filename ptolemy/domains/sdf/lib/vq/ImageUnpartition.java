@@ -32,10 +32,10 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
 import java.io.*;
 import ptolemy.actor.*;
-import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageUnpartition
@@ -49,7 +49,7 @@ will be placed in row-scanned order from top to bottom into the output image.
 @version $Id$
 */
 
-public class ImageUnpartition extends SDFTransformer {
+public class ImageUnpartition extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -77,8 +77,14 @@ public class ImageUnpartition extends SDFTransformer {
             new Parameter(this, "partitionRows", new IntToken("2"));
         partitionRows.setTypeEquals(BaseType.INT);
 
+        input_tokenConsumptionRate = 
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setExpression(
+                "imageColums * imageRows / partitionColumns / partitionRows");
+ 
+        input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
-        output.setTokenProductionRate(1);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,6 +102,9 @@ public class ImageUnpartition extends SDFTransformer {
     /** The height of the input partitions */
     public Parameter partitionRows;
 
+    /** The input rate */
+    public Parameter input_tokenConsumptionRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -106,6 +115,7 @@ public class ImageUnpartition extends SDFTransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         _imageColumns = ((IntToken)imageColumns.getToken()).intValue();
         _imageRows = ((IntToken)imageRows.getToken()).intValue();
         _partitionColumns = ((IntToken)partitionColumns.getToken()).intValue();
@@ -120,11 +130,9 @@ public class ImageUnpartition extends SDFTransformer {
                     "Partition size must evenly divide image size");
         }
 
-        image = new int[_imageRows][_imageColumns];
+        _image = new int[_imageRows][_imageColumns];
         _partitionCount = _imageColumns * _imageRows
             / _partitionColumns / _partitionRows;
-        partitions = new IntMatrixToken[_partitionCount];
-        input.setTokenConsumptionRate(_partitionCount);
     }
 
     /**
@@ -140,35 +148,35 @@ public class ImageUnpartition extends SDFTransformer {
 	int x, y;
         int partitionNumber;
 
-        partitions = input.get(0, _partitionCount);
+        Token _partitions[] = input.get(0, _partitionCount);
 
-        for(j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows)
-            for(i = 0; i < _imageColumns; i += _partitionColumns,
-                    partitionNumber++) {
-                IntMatrixToken partition = (IntMatrixToken)partitions[partitionNumber];
+        for(j = 0, partitionNumber = 0; 
+            j < _imageRows; 
+            j += _partitionRows)
+            for(i = 0; 
+                i < _imageColumns; 
+                i += _partitionColumns, partitionNumber++) {
+                IntMatrixToken partition = (IntMatrixToken)
+                    _partitions[partitionNumber];
                 if((partition.getRowCount() != _partitionRows) ||
                         (partition.getColumnCount() != _partitionColumns)) {
                     throw new IllegalActionException(
                             "input data must be partitionRows " +
                             "by partitionColumns");
                 }
-                part = partition.intMatrix();
+                int part[][] = partition.intMatrix();
                 for(y = 0; y < _partitionRows; y++)
                     System.arraycopy(part[y], 0,
-                            image[j + y], i, _partitionColumns);
+                            _image[j + y], i, _partitionColumns);
             }
 
-        output.send(0,
-                new IntMatrixToken(image));
+        output.send(0, new IntMatrixToken(_image));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private ptolemy.data.Token partitions[];
-
-    private int part[][];
-    private int image[][];
+    private int _image[][];
     private int _imageColumns;
     private int _imageRows;
     private int _partitionColumns;

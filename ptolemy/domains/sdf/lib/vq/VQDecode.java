@@ -34,7 +34,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.math.IntegerMatrixMath;
 import java.io.*;
 import java.net.*;
@@ -51,7 +51,7 @@ a table lookup into the codebook.
 @version $Id$
 */
 // FIXME This should be generalized to a Table-lookup actor.
-public class VQDecode extends SDFTransformer {
+public class VQDecode extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -74,18 +74,28 @@ public class VQDecode extends SDFTransformer {
                 new StringToken("/ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
+        
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
-
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        output.setTokenProductionRate(_blockCount);
-        input.setTokenConsumptionRate(_blockCount);
+
         blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
         blockWidth.setTypeEquals(BaseType.INT);
+
         blockHeight =
             new Parameter(this, "blockHeight", new IntToken("2"));
         blockHeight.setTypeEquals(BaseType.INT);
+
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setExpression("blockCount");
+
+        output_tokenProductionRate =
+            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setTypeEquals(BaseType.INT);
+        output_tokenProductionRate.setExpression("blockCount");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +118,12 @@ public class VQDecode extends SDFTransformer {
 
     /** The width, in integer pixels, of the block to decode. */
     public Parameter blockHeight;
+
+    /** The input rate */
+    public Parameter input_tokenConsumptionRate;
+    
+    /** The output rate */
+    public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -151,9 +167,6 @@ public class VQDecode extends SDFTransformer {
         InputStream source = null;
 
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
-        input.setTokenConsumptionRate(_blockCount);
-        output.setTokenProductionRate(_blockCount);
-
         _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
         _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
