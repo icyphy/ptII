@@ -209,6 +209,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
         //record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
 
+        // FIXME: This basically disables the event detection in the
+        // first discrete phase of execution.
         if (_levelCrossingDetectionDisabled) {
             _lastTrigger = _thisTrigger;
         }
@@ -269,7 +271,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _eventMissed = false;
         _eventNow = false;
         _level = ((DoubleToken) level.getToken()).doubleValue();
-        ;
         _levelCrossingDetectionDisabled = true;
 
         // Note that _lastTrigger and _thisTrigger are not initialized.
@@ -280,6 +281,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
      *  @return true if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
+        // FIXME: This basically disables the event detection in the
+        // first continuous phase of execution.
         if (_levelCrossingDetectionDisabled) {
             if (_debugging && _verbose) {
                 _debug("First firing of this actor, "
@@ -304,6 +307,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
         // If the current trigger is equal to the level threshold, the current
         // step size is accurate.
         // Otherwise, the current step size is too big.
+        // NOTE that the level crossing must happen to avoid the possibility
+        // of detecting duplicate level crossings.
         if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0) {
             // Preinitialize method ensures the cast to be safe.
             CTDirector director = (CTDirector) getDirector();
@@ -322,9 +327,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 _eventMissed = true;
             }
         } else if (_thisTrigger == _level) {
-            _eventNow = true;
-            _eventMissed = false;
-        } else if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
             _eventNow = true;
             _eventMissed = false;
         } else {
