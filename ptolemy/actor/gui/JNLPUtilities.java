@@ -193,7 +193,8 @@ public class JNLPUtilities {
 
         int jarSeparatorIndex = jarURLName.indexOf("!/");
         if (jarSeparatorIndex == -1) {
-            return null;
+            // Could be that we found a copy of the file in the classpath.
+            return jarURLName;
         }
 
         // If the entry directory matches the jarURL directory, then
