@@ -1,9 +1,12 @@
 
 To Do:
 
-fix tests to handle moved and renamed actors
-move sr tests around
-cvs checkout
+make
+make tests in pal and sr
+check manual tests
+look over the vergil library
+
+respond to review
 talk to xiaojun - monday
 verify that sr tests are passing in the nightly build
 
@@ -41,7 +44,7 @@ PulseOr.xml - kernel
 
 Absent - lib
 InstantaneousDialog - lib
-Latch - kernel (need to move)
+Latch - kernel (moved)
 NonStrictDelay - lib
 NonStrictOrCyclic - lib
 NonStrictThreeBitAdder - lib
