@@ -65,7 +65,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -83,7 +83,7 @@
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="in*2.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
