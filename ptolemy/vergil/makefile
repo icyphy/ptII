@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	MoMLViewerApplet.java \
 	JModelViewer.java \
-	Vergil.java \
+	VergilApplication.java \
 	VergilDocument.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -68,7 +68,7 @@ import javax.swing.tree.*;
 import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
-//// Vergil
+//// VergilApplication
 /**
 Vergil is the user interface for Ptolemy II.
 
@@ -76,11 +76,11 @@ Vergil is the user interface for Ptolemy II.
 @contributor John Reekie 
 @version $Id$
 */
-public class Vergil extends MDIApplication {
+public class VergilApplication extends MDIApplication {
     /** 
      * Construct a new graph editing application. 
      */
-    public Vergil () {
+    public VergilApplication () {
         super();
 
         // Create local objects
@@ -560,7 +560,7 @@ public class Vergil extends MDIApplication {
     /** Create and run a new graph application
      */
     public static void main (String argv[]) {
-        Vergil ge = new Vergil();
+        VergilApplication ge = new VergilApplication();
         ge.setVisible(true);
     }
 
