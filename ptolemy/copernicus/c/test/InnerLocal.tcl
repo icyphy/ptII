@@ -52,9 +52,9 @@ test InnerLocal-1.1 {Generate all required files for InnerLocal.java} {
     cd ../..
     # Move generated files for inner classes to the output directory too.
     # $outputDir is defined in generateCExec. 
-    file rename -force InnerLocal_1_Inner.c  InnerLocal_1_Inner.h  \
-        InnerLocal_1_Inner.o  InnerLocal_1_Inner_i.h \
-        {InnerLocal$1$Inner.class} \
+    file rename -force InnerLocal_1Inner.c  InnerLocal_1Inner.h  \
+        InnerLocal_1Inner.o  InnerLocal_1Inner_i.h \
+        {InnerLocal$1Inner.class} \
         testOutput/InnerLocal
         
     set template "0 1 2 3"
