@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = tinyOS	
+PTPACKAGE = tinyOS
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
