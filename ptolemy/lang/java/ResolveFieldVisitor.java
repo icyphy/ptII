@@ -173,6 +173,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             return AbsentTreeNode.instance;
         }
 
+        // Make sure the super class has a deeply- or fully-loaded AST.
+        ASTReflect.ensureDeepLoading(superDecl.getSource());
+
         Scope superScope = superDecl.getScope();
 
         ScopeIterator methods = superScope.lookupFirstLocal(superDecl.getName(),
@@ -482,13 +485,6 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             typeDecl = StaticResolution.ARRAY_CLASS_DECL;
         } else {
             typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
-        }
-
-        // FIXME: Implement streamlining of AST loading here.
-        // Load the source for oType if it has not already been loaded.
-        // Ideally, this would be the only place where class sources are
-        // implicitly loaded.
-        if (!ASTReflect.isDeep((ClassDeclNode)(typeDecl.getSource()))) {
         }
 
         JavaDecl d = null;
