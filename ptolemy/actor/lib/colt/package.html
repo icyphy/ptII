@@ -13,8 +13,17 @@ Scientific and Technical Computing in Java"
 <br>These classes use the Colt library from
 <a href="http://hoschek.home.cern.ch/hoschek/colt/#in_browser" target="_top"><CODE>http://hoschek.home.cern.ch/hoschek/colt/</CODE></a>
 
-<p>To use these classes, download Colt and unjar so 
-that $PTII/vendors/misc/colt/colt.jar is created:
+<p><code>$PTII/lib/ptcolt.jar</code> is a subset of the Colt classes necessary
+to compile these classes.  Usually, you need only add 
+<code>$PTII/lib/ptcolt.jar</code> to your classpath by running
+<pre>
+cd $PTII
+rm config.*; ./configure
+</pre>
+
+<p>If you want to work with the full version of Colt, download Colt
+and unjar so that $PTII/vendors/misc/colt/colt.jar is created:
+
 <pre>
 cd $PTII/vendors/misc
 mkdir colt
