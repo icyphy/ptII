@@ -313,4 +313,15 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
 hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
 hasToken: channel index is out of range.} 1 {"foo"}}
 
+######################################################################
+#### 
+#
+test CompositeActor-10.1 {Test all actor list} {
+    # use above set up.
+
+    # add one more inside actor which connects to nothing
+    set e5 [java::new ptolemy.actor.test.IdentityActor $e2 E5]
+    
+    list [listToFullNames [$e0 allAtomicEntityList]]
+} {{.E0.E1 .E0.E3 .E0.E2.IDEN .E0.E2.E5}}
 #FIXME: test _removeEntity (using setContainer null).
