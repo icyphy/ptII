@@ -27,7 +27,8 @@
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 execute catches Exceptions and rethrows them as runtime exceptions. why?
-requestInitialization is pickier about what actors are initialized
+requestInitialization is pickier about what actors are initialized.
+added preinitialization analyses (i.e. constVariableModelAnalysis)
 */
 
 package ptolemy.actor;
