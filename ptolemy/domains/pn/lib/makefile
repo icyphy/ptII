@@ -53,6 +53,7 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	PNAlternate.java \
+	PNAudioSource.java \
 	PNCirConvFilter.java \
 	PNInterleave.java \
 	PNQuantizer.java \
