@@ -32,7 +32,7 @@
 ME =		ptolemy/domains
 
 # Domains, in alphabetical order
-DIRS =		csp ct de od pn sc sdf
+DIRS =		csp ct de odf pn sc sdf
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -51,7 +51,7 @@ PTCLASSALLJARS = \
 		csp/csp.jar \
 		ct/ct.jar \
 		de/de.jar \
-		od/od.jar \
+		odf/odf.jar \
 		pn/pn.jar \
 		sc/sc.jar \
 		sdf/sdf.jar
