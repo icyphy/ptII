@@ -109,7 +109,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
      * since such constructs can cause deadlock.)
      * <P>
      * Guarantees about the nature of the elements returned by  nextElement of the
-     * returned Enumeration may vary accross sub-interfaces.
+     * returned Enumeration may vary across sub-interfaces.
      * In all cases, the enumerations provided by elements() are guaranteed to
      * step through (via nextElement) ALL elements in the collection.
      * Unless guaranteed otherwise (for example in Seq), elements() enumerations
