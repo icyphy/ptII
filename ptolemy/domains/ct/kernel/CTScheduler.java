@@ -786,14 +786,18 @@ public class CTScheduler extends Scheduler{
                 Actor a = (Actor)gxsort[i];
                 _outputschedule.addLast(a);
                 if (a instanceof CTStepSizeControlActor) {
-                    // Note: they are not ordered, but addFirst() is
-                    // considered more efficient.
-                    _outputssc.addFirst(a);
+                    _outputssc.addLast(a);
                 }
             }
             // add sinks to the output schedule
-            _outputschedule.addAll(_sink);
-
+            for (int i = 0; i < sinkactors.length; i++) {
+                Actor a = (Actor)sinkactors[i];
+                _outputschedule.addLast(a);
+                if (a instanceof CTStepSizeControlActor) {
+                    _outputssc.addLast(a);
+                }
+            }
+            
             _scheList.addLast(_outputschedule);
         }
 

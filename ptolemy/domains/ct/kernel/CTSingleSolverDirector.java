@@ -445,8 +445,11 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Iterator sscs = sched.outputSSCActorList().iterator();
         while (sscs.hasNext()) {
+            System.out.println("********************************");
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
+            if(_debugging) _debug("Checking Output Step Size Control Actor: "
+                    + ((NamedObj)a).getName());
             successful = successful && a.isThisStepSuccessful();
         }
         return successful;
@@ -466,6 +469,8 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         while (sscs.hasNext()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
+            if(_debugging) _debug("Checking State Step Size Control Actor: " + 
+                    ((NamedObj)a).getName());
             successful = successful && a.isThisStepSuccessful();
         }
         return successful;

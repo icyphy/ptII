@@ -169,6 +169,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      */
     public boolean isThisStepSuccessful() {
         try {
+            _debug(getName() + ": Checking local actors for success."); 
             if (!_isStateAcceptable()) {
                 //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of STATE.");
