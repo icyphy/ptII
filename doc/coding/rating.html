@@ -1,12 +1,12 @@
 <html>
 <head>
-<title>Change control</title>
+<title>Code Rating</title>
 </head>
 
 <body bgcolor="#faf0e6">
 
 
-<h1>Change control</h1>
+<h1>Code Rating</h1>
 
 <p><B>Contents</B>
 <ul>
@@ -156,11 +156,14 @@ work needed but it's usable by "early-access" developers.
 the following items:
 	<menu>
 	<li> <CODE>make javadocs</CODE> does not produce
-	any warnings
+	any warnings.
 
 	<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.  
 
-	<li> Review the output of <CODE>spell *.java</CODE>
+	<li> Review the output of <CODE>spell *.java</CODE>.
+
+	<li> Run <CODE>jindent delget *.java</CODE> to
+	reformat to Ptolemy group <a href="style.html">style standards</a>
 	</menu>
 
  <P> <dt><b>Blue</b>
