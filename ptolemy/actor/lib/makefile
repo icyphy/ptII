@@ -96,18 +96,18 @@ JSRCS = \
 	Ramp.java \
 	RandomSource.java \
 	Reader.java \
-	RealTimeDelay.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \
 	Recorder.java \
 	Remainder.java \
+	Scale.java \
+	Select.java \
 	SequenceActor.java \
 	Sequencer.java \
 	SequenceSource.java \
 	SequentialClock.java \
-	Scale.java \
-	Select.java \
 	Sink.java \
+	Sleep.java \
 	Source.java \
 	Switch.java \
 	Synchronizer.java \
