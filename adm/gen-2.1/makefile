@@ -319,6 +319,7 @@ jnlp:
 	(cd $(PTIIHOME);	PTII=$(PTIIHOME) \
 		$(MAKE) -k jnlp_clean jnlp_all PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree)
 
+ptolemy/copernicus/java
 # Run tests outside of Javascope
 nonjsall:
 	@echo "#"
@@ -328,6 +329,20 @@ nonjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "# Run make in the non javascope core directories"
+	@echo "# that need to be built before we build the other non javascope"
+	@-if [ "x$(NONJSALLCOREDIRS)" != "x" ]; then \
+		set $(NONJSALLCOREDIRS); \
+		for x do \
+		    if [ -w $(PTIIHOME)/$$x ] ; then \
+			( cd $(PTIIHOME)/$$x ; \
+			echo making all  in $(PTIIHOME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				all \
+			);  \
+		    fi ; \
+		done ; \
+	fi
 	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
@@ -557,6 +572,10 @@ NONJSALLDIRS = \
 
 #	ptolemy/copernicus/java
 #	ptolemy/copernicus/shallow
+
+NONJSALLCOREDIRS = \
+	ptolemy/copernicus/kernel \
+	ptolemy/copernicus/java \
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
