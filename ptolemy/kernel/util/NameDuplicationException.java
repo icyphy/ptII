@@ -26,7 +26,7 @@ objects with identical names in the same container object.
                                         COPYRIGHTENDKEY
 */
 
-package pt.exceptions;
+package pt.kernel;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameDuplicationException
@@ -61,15 +61,6 @@ public class NameDuplicationException extends GraphException {
     public String getDuplicateName() {
         return _duplicateName;
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
