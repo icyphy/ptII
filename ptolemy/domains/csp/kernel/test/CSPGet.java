@@ -51,38 +51,19 @@ public class CSPGet extends CSPActor {
 
     /**
      */
-    public CSPGet(CompositeActor cont, String name, int count)
+    public CSPGet(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
          inputPort = new IOPort(this, "input", true, false);
-	 _count = count;
-	 _tokens = new Token[_count];
+	 inputPort.setMultiport(true);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /**
-     */
-    public Token getToken(int cntr) {
-	return _tokens[cntr];
-    }
-
-    /**
-     */
-    public void fire() throws IllegalActionException {
-	int cnt = 0; 
-	while(cnt < _count) {
-	    _tokens[cnt] = inputPort.get(0);
-	    cnt++;
-	}
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
     public IOPort inputPort;
-    private int _count;
-    private Token[] _tokens = null;
 }
