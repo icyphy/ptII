@@ -223,10 +223,13 @@ cd $startdir
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
 #	So much for write once, run everywhere.
+#       Find NT4 and Windows 2000 (CYGWIN_NT-4.0 and
+#       CYGWIN_NT-5.0 respectively)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([for the proper CLASSPATH separator])
+
 case "`uname -s`" in
-    CYGWIN_NT-4.0) CLASSPATHSEPARATOR=";";;
+    CYGWIN_NT-) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
@@ -250,7 +253,8 @@ else
                            defaults to \$PTII/vendors/sun/JavaCC],
 	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/JavaCC)
 
-    if test "`uname -s`" = "CYGWIN_NT-4.0"; then
+    if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
+		"`uname -s`" = "CYGWIN_NT-5.0" ; then
 	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
 	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
 	AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
