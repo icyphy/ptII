@@ -8,7 +8,7 @@
 	     contains this file. -->
             <input source="ptolemy/actor/lib/sources.xml"/>
             <input source="ptolemy/actor/lib/sinks.xml"/>
-            <input source="ptolemy/actor/lib/io.xml"/>
+            <input source="ptolemy/actor/lib/io/io.xml"/>
             <input source="ptolemy/actor/lib/random.xml"/>
             <input source="ptolemy/actor/lib/math.xml"/>
             <input source="ptolemy/actor/lib/flowcontrol.xml"/>
