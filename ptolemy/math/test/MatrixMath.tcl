@@ -1816,27 +1816,14 @@ testArrayMathArrayArrayArray within $types
 ####
 ##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx[][])
 
+# The matrices contain negative elements, which will cause
+# this to return within(xxx[][], xxx[][], xxx[][]) to return false
+
 set types [list \
-	[list Complex ptolemy.math.Complex complex {1}] \
-	[list Double double double {1}] \
-	[list Float float float {1}] \
-	[list Integer int int {1}] \
-	[list Long long long {1}]]
+	[list Complex ptolemy.math.Complex complex {0}] \
+	[list Double double double {0}] \
+	[list Float float float {0}] \
+	[list Integer int int {0}] \
+	[list Long long long {0}]]
 
 testMatrixMatrixMatrix within $types
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
