@@ -458,7 +458,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  methods are forced to do nothing.
      *
      *  @return True if the director is ready to run for one iteration.
-     *  @throws IllegalActionException If time is set backwards.
+     *  @exception IllegalActionException If time is set backwards.
      */
 
     public boolean prefire() throws IllegalActionException{

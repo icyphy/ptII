@@ -100,7 +100,7 @@ public class GiottoCodeGeneratorUtilities {
     /** Generate Giotto code for the given Giotto model.
      *  @param model The given Giotto model.
      *  @return The Giotto code.
-     *  @throws IllegalActionException If code can not be generated.
+     *  @exception IllegalActionException If code can not be generated.
      */
     public static String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -175,7 +175,7 @@ public class GiottoCodeGeneratorUtilities {
     /** Throw an exception if the given string is a valid giotto
      *  reserved word, which prevents it from being used as an identifier.
      *  @param string A string to be used in Giotto program.
-     *  @throws IllegalActionException If the string can not be used.
+     *  @exception IllegalActionException If the string can not be used.
      */
     protected static void _checkGiottoID(String string)
             throws IllegalActionException {
