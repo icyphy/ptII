@@ -1,0 +1,114 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Installing Ptplot</title>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Installing Ptplot</h1>
+<h2>How to install Ptplot</h2>
+<ol>
+<li> Be sure that JDK1.1 is installed, and that <CODE>javac</CODE> 
+is in your path
+
+<li> Set the <CODE>PTII</CODE> environment variable to point
+to the top of the Ptplot tree.  Under C-shell, one would do:
+<pre>
+setenv PTII ~/src/ptolemy.plot1.0
+</pre>
+
+<li> cd into the <CODE>PTII</CODE> directory:
+<pre>
+cd $PTII
+</pre>
+
+<li> Run <CODE>configure</CODE>
+<pre>
+./configure
+</pre>
+
+
+<li> Run make
+<pre>
+make
+</pre>
+
+
+<li> View the applets by going to
+<a href="index.html">ptolemy/plot/doc/index.html</a>
+
+
+</ol>
+
+<h2>configure</h2>
+
+When the <a href="../../../configure"><CODE>configure</CODE></a>
+ script is run, it reads in 
+<a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk.in</CODE></a>
+and
+<a href="../ptplot.in"><CODE>ptolemy/plot/ptplot.in</CODE></a>
+
+generates 
+<a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk</CODE></a>
+and
+<a href="../ptplot">ptolemy/plot/ptplot</a>
+
+ <p>To get help with <CODE>configure</CODE>, try
+<pre>
+./configure --help
+</pre>
+
+
+ <p> <CODE>configure</CODE> reads in the <CODE>.in</CODE> files
+and substitutes strings inside the <CODE>@</CODE>
+ <p>For example, <CODE>configure</CODE> reads in
+<a href="../ptplot.in"><CODE>ptolemy/plot/ptplot.in</CODE></a>
+and
+<pre>
+PTII_DEFAULT=@PTII_DEFAULT@
+PTJAVA_DIR=@PTJAVA_DIR@
+</pre>
+
+becomes
+<pre>
+PTII_DEFAULT=/users/cxh/ptII
+PTJAVA_DIR=/usr/java1.1
+</pre>
+
+<h2>Installing Ptplot as an applet</h2>
+The best way to use Ptplot as an applet is to copy the
+plotapplet.jar file to the same directory as your applet, and
+then to use the <CODE>archive</CODE> applet directive.
+For examples of applet html code, see the demonstrations.
+
+
+<h2>Installing Ptplot as an application</h2>
+Ptplot can be run as two standalone applications:
+<menu>
+<li> <CODE>ptplot</CODE> - A modern plot application that
+with a menubar and such
+
+<li> <CODE>pxgraph</CODE> - A plot application that 
+is mostly backward compatible with the older X11 <CODE>pxgraph</CODE>
+program
+</menu>
+
+
+The ptplot script uses the PlotApplication class.  If the ptplot
+script is copied and renamed 'pxgraph':
+<pre>
+cp ptplot pxgraph
+</pre>
+
+then the Pxgraph class is used.
+
+ <p>Under Unix, you can use a hard link to create the pxgraph script:
+<pre>
+ln ptplot pxgraph
+</pre>
+
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
