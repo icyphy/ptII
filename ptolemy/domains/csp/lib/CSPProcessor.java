@@ -88,13 +88,12 @@ public class CSPProcessor extends CSPActor {
 
         // State 1
         {
-            generateEvents( new ExecEvent( this, 1 ) );
-
+	    // generateEvents( new ExecEvent( this, 1 ) );
             if( _topGraphic != null ) {
-                System.out.println("YO MOMMA");
                 _topGraphic.receiveEvent(this, 1);
             }
         }
+	/*
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 1: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -102,7 +101,12 @@ public class CSPProcessor extends CSPActor {
         } else {
 	    System.out.println("\t\tSTATE 1: " +getName());
         }
+	*/
         double delayTime = java.lang.Math.random();
+	try {
+	    Thread.sleep(500);
+	} catch( InterruptedException e ) {
+	}
         if( delayTime < 0.25 ) {
             delayTime = 2.5;
         } else if ( delayTime >= 0.25 && delayTime < 0.5 ) {
@@ -118,7 +122,8 @@ public class CSPProcessor extends CSPActor {
         _requestOut.broadcast(iToken);
 
         // State 2
-        generateEvents( new ExecEvent( this, 2 ) );
+        generateEvents( new ExecEvent( this, 1 ) );
+	/*
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 2: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -126,10 +131,12 @@ public class CSPProcessor extends CSPActor {
         } else {
 	    System.out.println("\t\tSTATE 2: " +getName());
         }
+	*/
         BooleanToken bToken = (BooleanToken)_requestIn.get(0);
 
         // State 3
-        generateEvents( new ExecEvent( this, 3 ) );
+        // generateEvents( new ExecEvent( this, 3 ) );
+	/*
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 3: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -137,9 +144,11 @@ public class CSPProcessor extends CSPActor {
         } else {
 	    System.out.println("\t\tSTATE 3: " +getName());
         }
+	*/
         if( bToken.booleanValue() ) {
             // State 4
-            generateEvents( new ExecEvent( this, 4 ) );
+	    generateEvents( new ExecEvent( this, 2 ) );
+	    /*
             if( getName().equals("proc1") ) {
 	        System.out.println("STATE 4: " +getName());
             } else if( getName().equals("proc2") ) {
@@ -147,6 +156,7 @@ public class CSPProcessor extends CSPActor {
             } else {
                 System.out.println("\t\tSTATE 4: " +getName());
             }
+	    */
             if( read ) {
                 _memoryIn.get(0);
             }
@@ -155,7 +165,9 @@ public class CSPProcessor extends CSPActor {
                 _memoryOut.broadcast(strToken);
             }
             return;
-        }
+        } else {
+	    generateEvents( new ExecEvent( this, 3 ) );
+	}
 
         // System.out.println(getName()+ ": Negative Ack!!!");
         accessMemory(read);
