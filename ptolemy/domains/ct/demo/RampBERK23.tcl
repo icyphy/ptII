@@ -69,7 +69,7 @@ set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.B
 $solver1 setToken $token
 $solver1 parameterChanged [java::null]
 
-set solver2 [$dir getAttribute DefaultODESolver]
+set solver2 [$dir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
 $solver2 parameterChanged [java::null]
@@ -79,4 +79,6 @@ $constval setExpression 1.0
 $constval parameterChanged [java::null]
 set sch [$dir getScheduler]
 
+#$dir setVERBOSE 1
+#$dir setDEBUG 1
 $man run

@@ -77,6 +77,8 @@ $solver parameterChanged [java::null]
 set constval [$const getAttribute Value]
 $constval setExpression 1.0
 $constval parameterChanged [java::null]
-set sch [$dir getScheduler]
+
+$dir setVERBOSE 1
+$dir setDEBUG 1
 
 $man run

@@ -39,7 +39,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dedir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
+set dedir [java::new ptolemy.domains.de.kernel.DEDirector DELocalDirector]
 $sys setDirector $dedir
 
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
@@ -49,7 +49,8 @@ $subout setOutput 1
 #$subout setDeclaredType $ptype
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
 $ctsub setDirector $ctdir
-
+$ctdir setVERBOSE 1
+$ctdir setDEBUG 1
 # construct the sub system
 set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]
@@ -87,7 +88,7 @@ set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.B
 $solver1 setToken $token
 $solver1 parameterChanged [java::null]
 
-set solver2 [$ctdir getAttribute DefaultODESolver]
+set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
 $solver2 parameterChanged [java::null]

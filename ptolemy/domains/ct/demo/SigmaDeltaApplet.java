@@ -258,7 +258,7 @@ public class SigmaDeltaApplet extends Applet {
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);
-            String[] deLegends = {"Accumulator", "Quantizer"};
+            String[] deLegends = {"Accum", "Quantizer"};
             deplot.setLegend(deLegends);
             DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
@@ -270,7 +270,7 @@ public class SigmaDeltaApplet extends Applet {
             IOPort firout = (IOPort)fir.getPort("output");
             IOPort quanin = (IOPort)quan.getPort("input");
             IOPort quanout = (IOPort)quan.getPort("output");
-            IOPort accin = (IOPort)accu.getPort("data input");
+            IOPort accin = (IOPort)accu.getPort("input");
             IOPort accout = (IOPort)accu.getPort("average");
             IOPort demand = (IOPort)accu.getPort("demand");
             IOPort reset = (IOPort)accu.getPort("reset");
@@ -308,7 +308,7 @@ public class SigmaDeltaApplet extends Applet {
             solver1.parameterChanged(null);
 
             Parameter solver2 =
-                (Parameter)ctdir.getAttribute("DefaultODESolver");
+                (Parameter)ctdir.getAttribute("ODESolver");
             StringToken token2 = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
             solver2.parameterChanged(null);

@@ -75,7 +75,7 @@ set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.B
 $solver1 setToken $token
 $solver1 parameterChanged [java::null]
 
-set solver2 [$dir getAttribute DefaultODESolver]
+set solver2 [$dir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
 $solver2 parameterChanged [java::null]

@@ -85,7 +85,7 @@ $solver parameterChanged [java::null]
 #$initstate parameterChanged [java::null]
 
 set constval [$const getAttribute Value]
-$constval setExpression -1.0
+$constval setExpression 1.0
 $constval parameterChanged [java::null]
 
 $man startRun

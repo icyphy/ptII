@@ -42,7 +42,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dedir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
+set dedir [java::new ptolemy.domains.de.kernel.DEDirector DELocalDirector]
 $sys setDirector $dedir
 
 ############################################################
@@ -188,7 +188,7 @@ set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.B
 $solver1 setToken $token
 $solver1 parameterChanged [java::null]
 
-set solver2 [$ctdir getAttribute DefaultODESolver]
+set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
 $solver2 parameterChanged [java::null]
