@@ -824,6 +824,12 @@ public class SDFScheduler extends Scheduler {
 		    Entity e = (Entity)actorsLeft.next();
 		    if (_debugging) _debug(e.getFullName());
 		}
+		if (_debugging) _debug("Actors with firings left:");
+		actorsLeft = unscheduledActorList.iterator();
+		while(actorsLeft.hasNext()) {
+		    Entity e = (Entity)actorsLeft.next();
+		    if (_debugging) _debug(e.getFullName());
+		}
 
 		// pick an actor that is ready to fire.
 		ComponentEntity currentActor
@@ -852,7 +858,7 @@ public class SDFScheduler extends Scheduler {
 
 		    _simulateTokensCreated(aOutputPort,
 					   count,
-					   actorList,
+					   unscheduledActorList,
 					   readyToScheduleActorList,
 					   waitingTokens);
 		}
@@ -885,7 +891,20 @@ public class SDFScheduler extends Scheduler {
 		// we get rid of it entirely.
 		else {
 		    if(firingsRemaining == 0) {
+			_debug("Current Actor = " + currentActor);
+			// remove the actor from the readyToScheduleActorList
+			// so that it does not gt scheduled
+			while(readyToScheduleActorList.remove(currentActor));
+			// remove the actor from the unscheduledActorList
+			// so that it does not get added back to the
+			// readyToScheduleActorList
 			while(unscheduledActorList.remove(currentActor));
+			_debug("Remaining actors");
+			actorsLeft = readyToScheduleActorList.iterator();
+			while(actorsLeft.hasNext()) {
+			    Entity e = (Entity)actorsLeft.next();
+			    if (_debugging) _debug(e.getFullName());
+			}			
 		    }
 		    // Otherwise the actor still has firings left
 		    else {
@@ -898,9 +917,13 @@ public class SDFScheduler extends Scheduler {
 			// ReadytoSchedule actors
 			// so if it can be fired again right away,
 			// put it back on the list.
-			if(inputCount < 1)
-			    // if the actor can still be scheduled, then put it
-			    // at the END of readyToScheduleActorList.
+			// if the actor can still be scheduled
+			// i.e. all its inputs are satisfied, and it
+			// appears in the unscheduled actors list
+			// then put it
+			// at the END of readyToScheduleActorList.
+			if(inputCount < 1 && 
+			   unscheduledActorList.contains(currentActor)) 
 			    readyToScheduleActorList.addLast(currentActor);
 		    }
 		}
