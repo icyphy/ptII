@@ -116,6 +116,7 @@ public class DESampler extends DEActor {
      *  @return an Enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
      */
+    /*
     public Enumeration typeConstraints()  {
 	try {
 	    workspace().getReadAccess();
@@ -129,6 +130,7 @@ public class DESampler extends DEActor {
 	    workspace().doneReading();
 	}
     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

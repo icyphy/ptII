@@ -77,11 +77,6 @@ public class DEPlot extends DEActor {
         input.makeMultiport(true);
 
         _plot = plot;
-        _plot.setButtons(true);
-        _plot.setMarksStyle("dots");
-        _plot.setImpulses(true);
-        _plot.setConnected(false);
-        _plot.setTitle(name);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -97,7 +92,12 @@ public class DEPlot extends DEActor {
     public void initialize() throws IllegalActionException {
         
         // Call clear with 'true' argument, so it'll reset the legend...
-        _plot.clear(false);
+        _plot.clear(true);
+        _plot.setButtons(true);
+        _plot.setMarksStyle("dots");
+        _plot.setImpulses(true);
+        _plot.setConnected(false);
+        _plot.setTitle(getName());
 	
 	for (int i = 0; i < input.getWidth(); i++) {
 	  _plot.addLegend(i, "Data " + i);
