@@ -181,7 +181,7 @@ Right click and select "Edit Parameters" to see the expression.</text>
 <xLabel>frequency</xLabel>
 <yLabel>dB</yLabel>
 <xRange min="-4000.0" max="3968.75"/>
-<yRange min="-21.208318390214906" max="36.538209132222235"/>
+<yRange min="-44.02672277057453" max="12.057949358994495"/>
 <noGrid/>
 </plot>?>
         </configure>
