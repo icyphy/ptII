@@ -50,19 +50,30 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and \
-_lastTime} {
-    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
-    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
-	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
-	    $actorRcvr]
-    $odr setReceivingTimeKeeper $rcvrkeeper
+test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor $toplevel "actorRcvr"]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor $toplevel "actorSend"]
+    set ioprcvr [java::new ptolemy.actor.TypedIOPort $actorRcvr  "port"]
+    set iopsend [java::new ptolemy.actor.TypedIOPort $actorSend "port"]
+    $ioprcvr setInput true
+    $iopsend setOutput true
+    set rel [$toplevel connect $ioprcvr $iopsend "rel"]
+    $actorRcvr createReceivers
+    $actorSend createReceivers
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actorSend]
 
-    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
-	    $actorSend]
+    set rcvrs [$ioprcvr getReceivers]
+    set odr [java::cast ptolemy.domains.odf.kernel.ODFReceiver [$rcvrs get {0 0}]]
+
+    $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
 
     set token0 [java::new ptolemy.data.Token]
