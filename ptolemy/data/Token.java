@@ -39,13 +39,11 @@ so the default implementation here triggers an exception.
 @author Neil Smyth, Edward A. Lee
 @version $Id$
 @see java.lang.Object
-@see pt.data.parser.PtParser
 */
 
 package pt.data;
 
 import pt.kernel.*;
-// import pt.data.parser.*;
 
 public abstract class Token implements Cloneable {
 
@@ -157,16 +155,8 @@ public abstract class Token implements Cloneable {
                 + myclass.getName() + " cannot be initialized from a string.");
     }
     
-    /** Return the Parser object associated with this Token. 
-     */
-    /* FIXME
-    public PtParser getParser() {
-        if (_parser == null) {
-            _parser = new PtParser();
-        }
-        return _parser;
-    }
-    */
+
+
     /** Return the Publisher object associated with this Token. 
      */
     public TokenPublisher getPublisher() {
@@ -184,6 +174,7 @@ public abstract class Token implements Cloneable {
 
     /** Used to notify any objects that may depend on the value of
      *  this Token. It is basically just syntactic sugar :)
+     *  FIXME: setChanged()?
      */
     public void notifySubscribers() {
         if (_publisher != null) {
@@ -205,29 +196,6 @@ public abstract class Token implements Cloneable {
          return old;
      }
 
-      /* This method is used to set the value of the token from a 
-      * String. It relies on each derived class having an appropriate 
-      * definition of fromString(). 
-      * FIXME: This method is not final, but perhaps should be?
-      * @param value The string to be parsed to get the tokens value
-      * @param params The params that this tokens value can depend on
-      */
-    /* FIXME
-      public void setValue(String value, NamedList params) throws IllegalArgumentException {
-          try {
-              Token result;
-              if (params == null) {
-                  result = getParser().parseExpression(value);
-              } else {
-                  result = getParser().parseExpression(value, params);
-              }
-              this.fromString(result.toString());
-          } catch (Exception ex) {
-              throw new IllegalArgumentException("Cannot parse argument "+value);
-          }     
-          notifySubscribers();
-      }         
-      */
 
      /** This method should be overridden where appropriate in subclasses
      */
@@ -247,6 +215,12 @@ public abstract class Token implements Cloneable {
 
     // the associated TokenPublisher
     private TokenPublisher _publisher;
-    // the associated Parser
-    // private PtParser _parser;
 }
+
+
+
+
+
+
+
+
