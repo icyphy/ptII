@@ -31,22 +31,17 @@
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.lib.URLReader;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.graph.Inequality;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.media.javasound.SoundReader;
 
-import java.io.*;
-import java.net.*;
-import java.util.Enumeration;
-import javax.sound.sampled.*;
+import java.io.IOException;
 
-import ptolemy.media.javasound.*;
 
 /////////////////////////////////////////////////////////////////
 //// AudioReader
@@ -71,10 +66,13 @@ directory contains a file called "test.wav", then <i>sourceURL</i>
 should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
 should be set to "file:///tmp/test.wav" The default value is
-"file:///tmp/test.wav".
+<code>"file:///" + property("ptolemy.ptII.dir") + "/ptolemy/actor/lib/javasound/test/voice.wav"</code>
 Under Windows, to reference a file ":\WINNT\Media\chord.wav, use
 "file:///c:/WINNT/Media/chord.wav".  Note that URLS by definition
 have forward slashes, not backward slashes.
+<p>
+Supported file formats are  WAV, AU, and AIFF. The sound
+file format is determined from the file extension.
 <p>
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
@@ -87,14 +85,14 @@ applet is loaded. The .java.policy file may be modified to grant
 applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
-@author Brian K. Vogel
+@author Brian K. Vogel, Christopher Hylands
 @version $Id$
 @see ptolemy.media.javasound.LiveSound
 @see SoundWriter
 @see SoundCapture
 @see SoundPlayback
 */
-public class AudioReader extends Source {
+public class AudioReader extends URLReader {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -109,53 +107,14 @@ public class AudioReader extends Source {
     public AudioReader(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output.setTypeEquals(BaseType.DOUBLE);
-	output.setMultiport(true);
-	sourceURL = new Parameter(this, "sourceURL");
-	sourceURL.setExpression("&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;");
+	sourceURL.setExpression("&quot;file:///&quot; "
+				+ "+ property(&quot;ptolemy.ptII.dir&quot;) "
+				+ "+ &quot;/ptolemy/actor/lib/javasound/"
+				+ "test/voice.wav&quot;");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
-
-    /** The URL of the file to read from. The default value of this
-     *  parameter is the URL 
-     *  "&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;"
-     *  Supported file formats are  WAV, AU, and AIFF. The sound
-     *  file format is determined from the file extension.
-     *  <p>
-     *  An exception will occur if the path references a
-     *  non-existent or unsupported sound file.
-     */
-    public Parameter sourceURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Handle change requests for all parameters. An exception is
-     *  thrown if the requested change is not allowed.
-     *  @exception IllegalActionException If the change is not
-     *   allowed.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-	if(_debugging) _debug("AudioReader: attributeChanged() invoked on: " +
-                attribute.getName());
-	if (attribute == sourceURL) {
-	    if (_safeToInitialize == true) {
-		try {
-		    _initializeReader();
-		} catch (IOException ex) {
-		    throw new IllegalActionException(this,
-                            "Cannot read audio:\n" +
-                            ex);
-		}
-	    }
-	} else {
-	    super.attributeChanged(attribute);
-	    return;
-	}
-    }
 
     /** Open the sound file specified by the URL for reading.
      *  @exception IllegalActionException If there is a problem opening
@@ -164,15 +123,8 @@ public class AudioReader extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioReader: initialize(): invoked");
-	try {
-	    _initializeReader();
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this,
-                    "Cannot open the specified URL: " +
-                    ex);
-	}
 	_safeToInitialize = true;
+	_setURLReader(null);
 	_haveASample = false;
     }
 
@@ -229,7 +181,8 @@ public class AudioReader extends Source {
 		}
 		_getSamplesArrayPointer++;
 		// Check if we still have at least one sample left.
-		if ((_audioInDoubleArray[0].length - _getSamplesArrayPointer) <= 0) {
+		if ((_audioInDoubleArray[0].length
+		     - _getSamplesArrayPointer) <= 0) {
 		    // We just ran out of samples.
 		    _haveASample = false;
 		}
@@ -289,15 +242,14 @@ public class AudioReader extends Source {
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
-	if(_debugging) _debug("AudioReader: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundReader != null) {
 	    try {
 		_soundReader.closeFile();
 	    } catch (IOException ex) {
 		throw new IllegalActionException(this,
-                        "Problem closing sound file: \n" +
-                        ex.getMessage());
+						 "Problem closing SoundReader:"
+						 + ex);
 	    }
 	}
     }
@@ -314,23 +266,41 @@ public class AudioReader extends Source {
      *  @exception IllegalActionException If there is a problem initializing
      *   the audio reader.
      */
-    private synchronized void _initializeReader()
-            throws IOException, IllegalActionException {
-	if (_soundReader != null) {
-            _soundReader.closeFile();
+    protected void _setURLReader(java.io.BufferedReader reader)
+            throws IllegalActionException {
+	if (_safeToInitialize) {
+	    synchronized (this) {
+		if (_soundReader != null) {
+		    try {
+			_soundReader.closeFile();
+		    } catch (IOException ex) {
+			throw new IllegalActionException(this,
+							 "Cannot close "
+							 + "SoundReader: "
+							 + ex);
+		    }
+		}
+		// Load audio from a URL.
+		StringToken urlToken = (StringToken)sourceURL.getToken();
+		String theURL = urlToken.stringValue();
+		// Each read this many samples per channel when
+		// _soundReader.getSamples() is called.
+		// This value was chosen somewhat arbitrarily.
+		int getSamplesArraySize = 64;
+		try {
+		    _soundReader = new SoundReader(theURL,
+					       getSamplesArraySize);
+		} catch (IOException ex) {
+		    throw new IllegalActionException(this,
+						     "Cannot open URL '"
+						     + theURL + "':" 
+						     + ex);
+		}
+		// Read the number of audio channels and set
+		// parameter accordingly.
+		_channels = _soundReader.getChannels();
+	    }
 	}
-	// Load audio from a URL.
-	StringToken urlToken = (StringToken)sourceURL.getToken();
-	String theURL = urlToken.stringValue();
-	// Each read this many samples per channel when
-	// _soundReader.getSamples() is called.
-	// This value was chosen somewhat arbitrarily.
-	int getSamplesArraySize = 64;
-	_soundReader = new SoundReader(theURL,
-                getSamplesArraySize);
-	// Read the number of audio channels and set
-	// parameter accordingly.
-	_channels = _soundReader.getChannels();
     }
 
     ///////////////////////////////////////////////////////////////////
