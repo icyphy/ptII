@@ -211,6 +211,55 @@ case "`uname -s`" in
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
+#####################################################################
+#####################################################################
+#       Below here we look for various packages.
+#       Not all Ptolemy software products need all packages, so
+#       we usually look for a directory that uses the package first
+#
+#       Please try to keep the packages vaguely alphabetical
+#####################################################################
+#####################################################################
+
+#--------------------------------------------------------------------
+#       commapi is the Java serial interface, see
+#	http://java.sun.com/products/javacomm/
+#	See if there was a command-line option for commapi is
+#       If not, check to see if $PTII/vendors/sun/commapi
+#--------------------------------------------------------------------
+
+# We only need to look for kvm if $PTII/ptolemy/apps/lego
+COMMAPI_USER_DIR="$PTII/ptolemy/apps/lego"
+COMMAPI_PRESENT=no
+if test ! -d "$COMMAPI_USER_DIR"; then
+    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
+find commapi])
+    COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+else
+    AC_MSG_CHECKING([for commapi directory])
+    AC_ARG_WITH(COMMAPI, [  --with-commapi=DIR       use Java commapi from DIR,
+                          defaults to \$PTII/vendors/sun/commapi],
+	COMMAPI_DIR=$withval,
+	COMMAPI_DIR=$PTII/vendors/sun/commapi)
+
+    if test -f "$COMMAPI_DIR/comm.jar"; then
+	AC_MSG_RESULT([$COMMAPI_DIR])
+	COMMAPI_PRESENT=yes
+    else    
+        AC_MSG_WARN(['Failed to find $COMMAPI_DIR/comm.jar'])
+	COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+    fi    
+
+    if test "$COMMAPI_PRESENT" = "no"; then
+        AC_MSG_WARN(['Perhaps commapi is not installed?
+  You need not download commapi unless you plan on use the Lego Mindstorm
+  demos in \$PTII/ptolemy\apps. commapi can be downloaded from
+  http://java.sun.com/products/javacomm/
+  and placed  in \$PTII/vendors/sun/commapi'])
+    fi	
+fi
+
+
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where javacc is;  if
 #	not, check to see if $PTII/vendors/sun/JavaCC exists
@@ -323,9 +372,8 @@ fi
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
-#	See if there was a command-line option for where
-#       kvm/tools/classes.zip is;  if not,
-#       check to see if $PTII/vendors/sun/kvm exists
+#       See if there was a command-line option for where Jini is
+#       If not, look in $PTII/vendors/sun/jini/jini1_0_1
 #--------------------------------------------------------------------
 
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
@@ -355,9 +403,10 @@ else
         AC_MSG_WARN(['Failed to find $JINI_DIR/lib/jini-core.jar
   Perhaps Jini is not installed?
   You need not download Jini unless you plan on use Jini and JavaSpaces
-  Jini can be downloaded from http://java.sun.com/jini'] and placed
-  in \$PTII/vendors/sun/jini/$JINI_VERSION)
+  Jini can be downloaded from http://java.sun.com/jini' and placed
+  in \$PTII/vendors/sun/jini/$JINI_VERSION'])
     fi	
+
 fi
 
 
@@ -410,6 +459,12 @@ fi
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
+
+# Directory that contains the Java Serial Comm API
+AC_SUBST(COMMAPI_DIR)
+
+# If Commapi is present, then set to yes, otherwise set to no
+AC_SUBST(COMMAPI_PRESENT)
 
 # javacc binary
 AC_SUBST(JAVACC)
