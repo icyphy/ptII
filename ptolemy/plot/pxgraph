@@ -84,9 +84,6 @@ if [ ! -f $TYCHO/java/ptplot/ptplot.jar ]; then
 fi
 
 windows=no
-if [  "`uname`" =  "CYGWIN32/NT"  ]; then 
-    windows=yes
-fi	
 
 case "${OSTYPE-no}" in
     [Ll]inux)
@@ -94,6 +91,8 @@ case "${OSTYPE-no}" in
 	JAVAHOME="$JAVA_HOME"
 	export JAVAHOME
     fi;; 
+    cygwin32*)
+	windows=yes;;
 esac
 
 if [ -z "$JAVAHOME" ]; then
@@ -134,7 +133,9 @@ if [ -z "$JAVAHOME" ]; then
 fi
 
 if [ "$windows" = "yes" ]; then 
-    $JAVAHOME/bin/java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip ptplot.Pxgraph ${1+"$@"}
+    CLASSPATH=$TYCHO/java
+    export CLASSPATH
+    $JAVAHOME/bin/java ptplot.Pxgraph ${1+"$@"}
 else
     $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip ptplot.Pxgraph ${1+"$@"}
 fi
