@@ -183,8 +183,8 @@ public class SignatureActor extends TypedAtomicActor {
      *  if there is a problem processing the data.
      */
     public void fire() throws IllegalActionException {
+        super.fire(); // Print debugging messages etc.
         _updateSignature();
-        super.fire();
     }
 
     /** Use the values of the <i>signatureAlgorithm</i> and
