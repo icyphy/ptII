@@ -249,11 +249,11 @@ public class FIR extends SDFTransformer {
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
 
-        if (--_mostRecent < 0) _mostRecent = _data.length - 1;
-        _data[_mostRecent] = input.get(0);
-
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
+
+            if (--_mostRecent < 0) _mostRecent = _data.length - 1;
+            _data[_mostRecent] = input.get(0);
 
             // Produce however many outputs are required
             // for each input consumed
