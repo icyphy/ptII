@@ -249,7 +249,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             portout = (IOPort)a3.getPort("input");
             _toplevel.connect(portin, portout);
 
-            portin =(IOPort) a2.getPort("dimensions");
+            portin = (IOPort) a2.getPort("dimensions");
             portout = (IOPort)a3.getPort("dimensionsIn");
             _toplevel.connect(portin, portout);
 
@@ -384,7 +384,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         // Configure the view
         TraceView traceView = _tracePane.getTraceView();
 	traceView.setTimeScale(0.02);
-	traceView.setLayout(10,10,500,20,15);
+	traceView.setLayout(10, 10, 500, 20, 15);
 	traceView.setTraceModel(traceModel);
     }
 
@@ -443,6 +443,9 @@ public class RLEDiva extends PNApplet implements Runnable {
         _manager.terminate();
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
     //// StateListener
@@ -564,7 +567,7 @@ public class RLEDiva extends PNApplet implements Runnable {
             TraceModel model = _tracePane.getTraceView().getTraceModel();
             TraceModel.Trace trace = model.getTrace(name);
             int id = trace.getID();
-            // OK, this is nasty, but get the color 
+            // OK, this is nasty, but get the color
             // "state" from the process state
             int colorState = 3;
             switch (state) {
