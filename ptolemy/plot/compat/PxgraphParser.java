@@ -978,7 +978,7 @@ public class PxgraphParser {
     // Data is in big-endian
     private static final int _BIG_ENDIAN = 1;
 
-    /// Data is in little-endian
+    // Data is in little-endian
     private static final int _LITTLE_ENDIAN = 2;
 
     // Flag indicating whether the command specified that the format
@@ -986,4 +986,8 @@ public class PxgraphParser {
 
     /** @serial Format to read data in. */
     private int _endian = _NATIVE_ENDIAN;
+
+    // For debugging, call with -db or -debug.
+    private static int _debug = 0;
+
 }
