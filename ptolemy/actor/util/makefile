@@ -78,7 +78,12 @@ MISC_FILES =	doc #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES = \
+	'SortedQueue$$CQComparator.class' \
+	'SortedQueue$$CQEntry.class' \
+	'SortedQueue$$SortedLinkedList.class' \
+	'TimeStamp$$DoubleWidth.class' \
+	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
