@@ -29,7 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.domains.pn.kernel.event;
-import ptolemy.domains.pn.kernel.*;
+
+import ptolemy.domains.pn.kernel.PNQueueReceiver;
 
 
 //////////////////////////////////////////////////////////////////////////
