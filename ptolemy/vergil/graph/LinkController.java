@@ -98,7 +98,7 @@ public class LinkController extends EdgeController {
     }
 
     public class LinkTarget extends PerimeterTarget {
-        public boolean accept (Figure f) {
+        public boolean accept(Figure f) {
             Object object = f.getUserObject();
             if(object instanceof Node) {
                 Node node = (Node) object;
@@ -109,7 +109,7 @@ public class LinkController extends EdgeController {
             return false;
         }
 
-        public Site getHeadSite (Figure f, double x, double y) {
+        public Site getHeadSite(Figure f, double x, double y) {
             if(f instanceof StraightTerminal) {
 		return ((Terminal)f).getConnectSite();
             } else {
