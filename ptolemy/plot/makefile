@@ -55,7 +55,7 @@ JSRCS = \
 	PlotPoint.java \
 	Pxgraph.java
 
-EXTRA_SRCS = $(JSRCS) pxgraph
+EXTRA_SRCS = $(JSRCS) pxgraph testpxgraph
 
 MISC_FILES = demo doc #test 
 
@@ -70,9 +70,9 @@ JCLASS = \
 	Pxgraph.class
 
 all: jclass
-	chmod a+x pxgraph
+	chmod a+x pxgraph testpxgraph
 install: jclass javadocs $(JZIP)
-	chmod a+x pxgraph
+	chmod a+x pxgraph testpxgraph
 docs: javadocs
 
 depend:
