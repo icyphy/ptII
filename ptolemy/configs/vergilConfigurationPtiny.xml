@@ -24,6 +24,7 @@
       <!-- This will appear in the View menu of an entity tableau. -->
       <property name="Source" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     </property>
+    <property name="Web Browser" class="ptolemy.actor.gui.BrowserTableau$Factory"/>
     <property name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     <!-- FIXME: plot data tableau, etc. -->
   </property>

@@ -21,6 +21,9 @@
         </property>
       </entity>
     </entity>
+    <!-- Web Browser should be before HTML Viewer,
+     see HTMLEffigyFactory.java. -->    
+    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
@@ -49,6 +52,7 @@
       <!-- This will appear in the View menu of an entity tableau. -->
       <property name="Source" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     </property>
+    <property name="Web Browser" class="ptolemy.actor.gui.BrowserTableau$Factory"/>
     <property name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     <!-- FIXME: plot data tableau, etc. -->
   </property>
