@@ -6,6 +6,7 @@ We are using Visio 5, not Visio 2000.
 Visio 2000 is not backward compatible, it is possible to view
 Visio 5 uml diagrams, but not update them.
 
+Note that one exception is that the giotto chapter uses Visio 2000.
 
 The contents of this directory are not shipped with the release.
 
@@ -18,11 +19,13 @@ The easiest way to update the Visio files is to:
    In this way, we also proof the javadoc output
 
    * Don't show overridden methods.  If a child class overrides foo(),
-     then foo() need not be included in the child class 
+     then foo() need not be included in the child class.
  
    * If you use a different package, then you need not include all the
      methods in that package.  The package should be have dotted lines.
- 
+     Consider specifying the full package name of classes in different
+     packages.
+
    * Private variables: Don't include implementation details.  Include
      only important functional details.  NamedObj has a private string
      that is the name, it should be included.
@@ -39,6 +42,10 @@ The easiest way to update the Visio files is to:
      so the line between a class and an interface should be dashed,
      not solid.  If an interface extends another interface, the
      line is usually solid?
+
+   * Inner classes should have a dot separated notation: "Outer.Inner",
+     not "Outer$Inner".  "Outer.Inner" is how inner classes are
+     specified in the javadoc output.
 
 3. Mark up the printed copy
 4. Run Visio and update the file
@@ -84,6 +91,7 @@ Figure	UML file		Page within that file
 
 9.1	data.vsd		token
 9.3	data.expr.vsd		data.expr
+9.4	data.expr.vsd		Parser
 9.6	fixpoint.vsd		Logical View
 
 10.1	graph.vsd		graph
@@ -106,6 +114,7 @@ Figure	UML file		Page within that file
 17.10	???					"FSM kernel classes that
 						 support modal models"
 
+18.?    visio2000/giotto.vsd
 18.5    ct.vsd			Logical View
 
 19.5	ddeLocalTime.vsd	Logical View
