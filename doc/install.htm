@@ -8,24 +8,11 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Ptolemy II Installation</h1>
-See the <a href="ptII2.0.release.htm">Ptolemy II 2.0 release notes</a>
+See the <a href="ptII3.0.release.htm">Ptolemy II 3.0 release notes</a>
 for details about this release.
-<h2>Ptiny</h2>
-<p>Ptolemy II is available in two versions:
-   <menu>
-   <li> Ptiny - which can be used to build models in 
-   CT, DE, FSM, PN and SDF using built-in actors. 
-   <li> Full - which includes other domains and 
-   support for developing custom actors.
-   </menu>
-The Ptiny version is primarily for the Windows platform, it does not include
-a <a href="troubleshooting.htm#startVergil">start up script for Vergil</a>
-for non-Windows platforms.  Installation instructions for the Ptiny
-version can be found online at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII</code></a>.
 
-<p>The Full version is for Windows and Unix platforms.  The instructions
-on this page concern installing the Full version.
+The instructions on this page concern installing rebuilding Ptolemy II
+from sources.
 
 <h2>Instructions for the impatient</h2>
 
@@ -60,9 +47,9 @@ rm -f config.*
 
 <li> Ptolemy is shipped with .class and .jar files, but the
 $PTII/bin/scripts needs to be updated.  The safest thing to do is 
-to run make install on the entire tree:
+to run make fast install on the entire tree:
 <pre>
-make install
+make fast install
 </pre>
 
 
@@ -84,7 +71,7 @@ the <a href="#Unix">Unix</a> and <a href="#Windows">Windows</a>
 sections below.
 
 <h3><a name="java">Java</a></h3>
-Ptolemy II has been developed under JDK1.4.1_01, which is available from
+Ptolemy II has been developed under JDK1.4.1_02, which is available from
 <a href="http://java.sun.com/j2se/1.4/" target="_top"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
 
 
@@ -106,14 +93,14 @@ the <CODE>javac</CODE> and <CODE>java</CODE> commands are available.
 <h3><a name="Plugin">Java Plug-in</a></h3>
  <!-- Note: the plug-in is called "The Java Plug-in", not "The JDK Plugin"-->
 The applet tags have been configured to require JDK1.4, so to run the applets
-in Netscape 4.7 or Internet Explorer 5.0 under Windows, you will need to use
+in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will need to use
 the Java Plug-in from
 <a href="http://java.sun.com/products/plugin/" target="_top"><CODE>http://java.sun.com/products/plugin/</CODE></a>
 <a href="http://www.javasoft.com/products/plugin/" target="_top">JavaSoft</a>.
 
  <p>Currently, the Java Plug-in 1.4 is included in the JDK1.4 download for
 Windows.
- <p>If you are running under Solaris 2.6 or 2.7, you can
+ <p>If you are running under Solaris, you can
 <a href="http://www.sun.com/solaris/netscape/" target="_top">download</a>
 a separate plug-in or a complete Netscape installation.
  <p>If your platform is not supported by the plug-in, you can run
@@ -149,7 +136,9 @@ is shipped with Ptolemy II.
 
 
 <h3><a name="Diva">Diva</a></h3>
-Diva is a visualization package used by some of the demos.
+Diva is a visualization package used by some of the demos and by
+vergil, the Ptolemy II user interface.
+
  <p>The Ptolemy II distribution include <CODE>$PTII/lib/diva.jar</CODE>.
  <p>The Diva sources and documentation are available at
 <a href="http://www.gigascale.org/diva" target="_top"><CODE>http://www.gigascale.org/diva</CODE></a>.
@@ -159,7 +148,7 @@ Diva is a visualization package used by some of the demos.
 
 <h3>make</h3>
 Ptolemy II has been built with GNU make 3.77, but does not use GNU make extensions, so GNU make is not requires.  Ptolemy II has also been built
-with Solaris 2.5.1 <CODE>/usr/ccs/bin/make</CODE>.
+with Solaris 8 <CODE>/usr/ccs/bin/make</CODE>.
  <p>It seems that the make that is included with SGI Irix 6.5 may have
 problems, the workaround is to installed GNU make.
  
@@ -340,13 +329,20 @@ Windows '98 we recommend upgrading Windows 2000.
 <li>Install JDK 1.4 from
 <a href="http://java.sun.com/j2se/1.4/"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
 
- <p>Note that the code generation facility will not work with JDK1
  <p>Be sure to add the <CODE>bin</CODE> directory
 to your path so that <CODE>javac</CODE> and <CODE>java</CODE>
 are available.
 
 <li> Install the <a name="cygwin">Cygwin</a> toolkit from
 <a href="http://sources.redhat.com/cygwin/" target="_top"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
+ <p> See the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/index.htm#in_browser">Ptolemy II 3.0 Website</a> for Cygwin downloads that
+include the tools necessary to build Ptolemy II.
+
+
+ <p>An alternative to using the Cygwin downloads we provide
+is to download directly from the Cygwin website.
+
  <p>Complete installation instructions can be found at
 <a href="http://sources.redhat.com/cygwin/faq" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>,
 <p>The Cygwin installer tends to change
