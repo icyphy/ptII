@@ -36,13 +36,13 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.lib.NonStrictTest;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringUtilities;
 import soot.HasPhaseOptions;
 import soot.Pack;
 import soot.PackManager;
@@ -185,7 +185,18 @@ public abstract class KernelMain {
 
     /** Read in a MoML class, sanitize the top level name,
      *  initialize the model.  Usually initialize() is called after
-     *  calling readInModel().
+     *  calling readInModel().  
+     *   
+     *  <p>If the director is an SDF director, then the number of
+     *  iterations is handled specially.  If the director is an SDF
+     *  director and a parameter called "copernicus_iterations" is
+     *  present, then the value of that parameter is used as the
+     *  number of iterations.  If the director is an SDF director, and
+     *  there is is no "copernicus_iterations" parameter but the
+     *  "ptolemy.ptII.copernicusIterations" Java property is set, then
+     *  the value of that property is used as the number of
+     *  iterations.
+     *
      *  @param toplevel The model we are generating code for.
      */
     public void initialize(CompositeActor toplevel)
@@ -208,10 +219,13 @@ public abstract class KernelMain {
             if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
-                if (NonStrictTest.isRunningNightlyBuild()) {
+                String copernicusIterations = StringUtilities
+                    .getProperty("ptolemy.ptII.copernicusIterations");
+                if (copernicusIterations.length() > 0) {
                     System.out.println("KernelMain: "
-                            + "Setting number of iterations to 100000");
-                    iterations.setToken(new IntToken(100000));
+                            + "Setting number of iterations to " 
+                            + copernicusIterations);
+                    iterations.setToken(new IntToken(copernicusIterations));
                 }
             }
         }
