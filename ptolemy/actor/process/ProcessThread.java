@@ -143,14 +143,7 @@ public class ProcessThread extends PtolemyThread {
 
             // While postfire() returns true and stop() is not called.
 	    while (iterate) {
-                // If a stop has been requested, then either
-                // pause execution (if the director does not report
-                // that a stop has been requested) or stop
-                // execution altogether and run wrapup().
-                if (_director.isStopRequested()) {
-                    _debug("-- Thread stop requested, so cancel iteration.");
-                    break;
-                }
+
                 // NOTE: Possible race condition... actor.stop()
                 // might be called before we get to this.
                 // This will cause postfire() on the actor
@@ -162,13 +155,21 @@ public class ProcessThread extends PtolemyThread {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
                         _director._actorHasStopped();
-                        while(_threadStopRequested) {
-                            _debug("-- Thread waiting for canceled stop request.");
+                        while(_threadStopRequested && !_director.isStopRequested()) {
+                            _debug("-- Thread waiting for canceled pause request.");
                             workspace.wait(_director);
                         }
                         // NOTE: Do we need to indicate that actor has
                         // restarted, with something like
                         // _director._actorHasRestarted();
+                    }
+                    // If a stop has been requested, then either
+                    // pause execution (if the director does not report
+                    // that a stop has been requested) or stop
+                    // execution altogether and run wrapup().
+                    if (_director.isStopRequested()) {
+                        _debug("-- Thread stop requested, so cancel iteration.");
+                        break;
                     }
                     _debug("-- Thread resuming.");
                 }
