@@ -384,7 +384,8 @@ public final class Manager extends NamedObj implements Runnable {
         boolean result = true;
         try {
             workspace().getReadAccess();
-            _debug("Process change requests.");
+            if(_debugging)
+                _debug("Process change requests.");
             _processChangeRequests();
 
             // Initialize actors that have been added.
@@ -408,7 +409,8 @@ public final class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 workspace().setReadOnly(true);
             }
-            _debug("Prefire container.");
+            if(_debugging)
+                _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
                 if (_actorsToInitialize.size() > 0) {
@@ -419,13 +421,16 @@ public final class Manager extends NamedObj implements Runnable {
                     }
                     _actorsToInitialize.clear();
                 }
-                _debug("Fire container.");
+                if(_debugging)
+                    _debug("Fire container.");
                 _container.fire();
-		_debug("Postfire container.");
+                if(_debugging)
+                    _debug("Postfire container.");
                 result = _container.postfire();
             }
-            if (result) _debug("Finish one iteration, returning true.");
-            else _debug("Finish one iteration, returning false.");
+            if(_debugging)
+                if (result) _debug("Finish one iteration, returning true.");
+                else _debug("Finish one iteration, returning false.");
         } finally {
             workspace().setReadOnly(false);
             workspace().doneReading();
