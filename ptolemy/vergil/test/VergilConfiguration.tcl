@@ -1,6 +1,6 @@
-# Tests for the TypedAtomicActor class
+# Tests for the Vergil Configuration
 #
-# @Author: Edward A. Lee, Yuhong Xiong
+# @Author: Steve Nuendorffer, Christopher Hylands
 #
 # $Id$
 #
@@ -127,6 +127,15 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
 
     puts "file name vergilConfiguration.xml: $inFile"
 
+    # See if jxta is present
+    set jxta 1
+    if [catch {java::info superclass net.jxta.resolver.QueryHandler} \
+	    err] { 
+	puts "net.jxta.resolver.QueryHandler not found, skipping jxta"
+	set jxta 0
+    }
+
+
     set infd [open $inFile]
     set outfd [open vergilConfigurationNoMatlabNoSerialNoAppsNoJMF.xml "w"]
     while {![eof $infd]} {
@@ -141,7 +150,15 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
 	regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
 	# Filter out interactive icons
 	regsub -all {.*lib/interactive.xml.*} $lineout4 {} lineout5
-	puts $outfd $lineout5    }
+	# Filter out jxta
+	if {$jxta == 1} {
+	    set lineout6 $lineout5
+	} else {
+	    # Filter out jxta
+	    regsub -all {.*jxta/jxta.xml.*} $lineout5 {} lineout6
+	}
+	puts $outfd $lineout6
+    }
     close $infd
     close $outfd
 
