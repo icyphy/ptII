@@ -1,5 +1,5 @@
 /*
-A JavaVisitor that generates C code from a Java abstract syntax tree.
+A code generator that generates C code from a Java abstract syntax tree.
 
 Copyright (c) 2001 The University of Maryland.
 All rights reserved.
@@ -44,7 +44,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 
-/** A JavaVisitor that generates C code from a Java abstract syntax tree.
+/** A code generator that generates C code from a Java abstract syntax tree.
  *  This code generator requires that static resolution has been
  *  performed beforehand, and it also requires that indentation
  *  levels (i.e., INDENTATION_KEY property settings) have been set.
