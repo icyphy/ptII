@@ -139,13 +139,15 @@ public class MoMLApplication {
 
         // We set the list of MoMLFilters to handle Backward Compatibility.
         _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+	
+	// 2/03: Moved the setMessageHandler() to before parseArgs() so
+	// that if we get an error in parseArgs() we will get a graphical
+	// stack trace.   Such an error could be caused by specifying a model
+	// as a command line argument and the model has an invalid parameter.
 
-        _parseArgs(args);
+	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
-        // Our applications want to display errors graphically.  We do
-        // this after parsing all the args in case we get an error above,
-        // which may cause the exception to not get reported.
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+	_parseArgs(args);
 
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression
