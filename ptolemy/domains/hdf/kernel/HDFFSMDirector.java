@@ -47,6 +47,7 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -98,44 +99,17 @@ model. That is, all refinement actors must be opaque and must
 externally have HDF or SDF semantics. There is no constraint on
 the number of levels in the hierarchy.
 <p>
-Currently, constructing the FSM is somewhat awkward. To construct
-an FSM, first create a TypedCompositeActor in the HDF model to contain
-the FSM. This TypedCompositeActor will henceforth be referred to as
-"the opaque HDF actor." Create an HDFFSMDirector with the opaque
-HDF actor as its container. Create an HDFFSMActor actor with the
-opaque HDF actor as its container. Create one TypedComposite actor
-for each state in the FSM, with the opaque HDF actor as its container.
-This TypedComposite actor is henceforth referred to as "the refinement."
-Create the necessary ports on each refinement such that each
-refining state actor contains the same number and type of ports
-(typically input or output TypedIOPort) with the same name as the
-corresponding ports of the opaque HDF actor. Create a relation for
-each port of the HDF actor. For each relation, link all ports with
-the same name to the relation. If a port of the opaque
-HDF actor has zero-rate when in a certain refinement, then the
-refinement does not need to explicitely contain the port.
+To use this director, create a ModalModel and specify this director
+as its director.  Then look inside to populate the controller
+with states. Create one TypedComposite actor as a refinement
+for each state in the FSM.
 <p>
-The FSM diagram itself is constructed inside the HDFFSMActor.
-To construct the FSM diagram, create an instance of State for
-each state in the FSM, with the HDFFSMActor as its
-container. The parameter <i>refinementName</i> of each State should
-be set to the name of the refinement.
-<p>
-Use the <i>initialStateName</i> parameter of HDFFSMActor to
-set the initial state. Create an instance of Transition for
-each transition in the FSM, with the HDFFSMActor as its container.
-The guard expression of a transition is represented by the
-<i>guardExpression</i> parameter of Transition.
-<p>
-The guard expression is evaluated only after a "Type B firing" [1],
-which is the last firing of the HDF actor in the current iteration
-of the current HDF schedule. A state transition will occur
-if the guard expression evaluates to true after a "Type B firing."
-<p>
-The state transition guard expressions use the Ptolemy II
-expression language. The expression may include references to
-variables contained by HDF controller. See the HDFFSMActor
-documentation more more details.
+You must explicitly specify the initial state of the controller FSM.
+The guard expression on each transition is evaluated only after a
+"Type B firing" [1], which is the last firing of the HDF actor
+in the current iteration of the current HDF schedule. A state
+transition will occur if the guard expression evaluates to true
+after a "Type B firing."
 <p>
 <b>References</b>
 <p>
@@ -148,7 +122,6 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 
 @author Brian K. Vogel
 @version $Id$
-@see HDFFSMActor
 @see HDFDirector
 */
 public class HDFFSMDirector extends FSMDirector {
@@ -201,8 +174,10 @@ public class HDFFSMDirector extends FSMDirector {
     public void fire() throws IllegalActionException {
         if (_debug_info) System.out.println(getName() +
                                            " fire() invoked.");
-        HDFFSMActor ctrl = (HDFFSMActor)getController();
-        ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
+        _setInputVariables();
+
+        FSMActor ctrl = getController();
+
         State st = ctrl.currentState();
         // FIXME
         //Actor ref = ctrl.currentState().getRefinement();
@@ -234,9 +209,9 @@ public class HDFFSMDirector extends FSMDirector {
             // FIXME
             //ref.fire();
             ref[0].fire();
-            ctrl._setInputsFromRefinement();
+            _setInputsFromRefinement();
         }
-        ctrl.chooseTransition(st.nonpreemptiveTransitionList());
+        _chooseTransition(st.nonpreemptiveTransitionList());
         return;
     }
 
@@ -301,7 +276,7 @@ public class HDFFSMDirector extends FSMDirector {
      *   rates is detected between refinement actors.
      */
     public boolean postfire() throws IllegalActionException {
-        HDFFSMActor ctrl = (HDFFSMActor)getController();
+        FSMActor ctrl = getController();
         State curState = ctrl.currentState();
         // Get the current refinement actor.
         // FIXME
@@ -350,7 +325,7 @@ public class HDFFSMDirector extends FSMDirector {
             // A state transition can now occur.
             // Set firing count back to zero for next iteration.
             _firingsSoFar = 0;
-            Transition lastChosenTr = ctrl._getLastChosenTransition();
+            Transition lastChosenTr = _getLastChosenTransition();
             if (lastChosenTr  == null) {
                 // There is no enabled transition, so remain in the
                 // current state.
@@ -367,7 +342,7 @@ public class HDFFSMDirector extends FSMDirector {
                 // state of the (enabled) transition.
                 // FIXME:
                 State newState = lastChosenTr.destinationState();
-                ctrl.setCurrentState(newState);
+                _setCurrentState(newState);
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
                                            newState.getFullName());
@@ -376,7 +351,7 @@ public class HDFFSMDirector extends FSMDirector {
                 // Mapping from input ports of the modal model to
                 // their corresponding receivers of the new current
                 // state and the mode controller.
-                ctrl.setCurrentConnectionMap();
+                _setCurrentConnectionMap();
                 // Update the map from an input port of the modal model
                 // to the receivers of the current state.
                 _currentLocalReceiverMap =
@@ -439,7 +414,7 @@ public class HDFFSMDirector extends FSMDirector {
         // of the container of this director.
         // Update port consumption/production rates and invalidate
         // current SDF schedule.
-        HDFFSMActor ctrl = (HDFFSMActor)getController();
+        FSMActor ctrl = getController();
         // Attempt to get the initial state from the mode controller.
         State initialState = ctrl.getInitialState();
         if (_debug_info) {
@@ -495,6 +470,19 @@ public class HDFFSMDirector extends FSMDirector {
         } else {
             throw new IllegalActionException(this,
                     "current refinement is null.");
+        }
+    }
+
+    /** Override the base class to create array variables if the controller
+     *  is an instance of FSMActor.
+     *  @see ptolemy.domains.fsm.kernel.FSMDirector#setInputVariables()
+     */
+    protected void _setInputVariables() throws IllegalActionException {
+        FSMActor ctrl = getController();
+        if (ctrl instanceof HDFFSMActor) {
+            ((HDFFSMActor)ctrl)._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
+        } else {
+           super._setInputVariables();
         }
     }
 
@@ -1071,5 +1059,4 @@ public class HDFFSMDirector extends FSMDirector {
     // of this director) in the current schedule.
     private int _firingsPerScheduleIteration = -1;
     private int _cachedFiringCount = -1;
-
 }

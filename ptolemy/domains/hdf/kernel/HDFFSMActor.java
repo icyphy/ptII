@@ -156,46 +156,12 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the enabled transition among the given list of transitions.
-     *  Throw an exception if there is more than one transition enabled.
-     *  This method is called by HDFFSMDirector.
-     *
-     *  @param transitionList A list of transitions.
-     *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled, or if thrown by any choice action contained
-     *   by the enabled transition.
-     */
-    public Transition chooseTransition(List transitionList)
-            throws IllegalActionException {
-        return _chooseTransition(transitionList);
-    }
-
     /** Return the current state of this actor.
      *
      *  @return The current state of this actor.
      */
     public State getCurrentState() {
         return _currentState;
-    }
-
-    /** Set the current state of this actor.
-     *
-     *  @param state The state to set.
-     */
-    public void setCurrentState(State state) {
-        _currentState = state;
-    }
-
-    /** Set the map from input ports to boolean flags indicating whether a
-     *  channel is connected to an output port of the refinement of the
-     *  current state. This method is called by HDFFSMDirector.
-     *
-     *  @exception IllegalActionException If the refinement specified
-     *   for one of the states is not valid.
-     */
-    public void setCurrentConnectionMap() throws IllegalActionException {
-        _setCurrentConnectionMap();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -328,15 +294,6 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
         _inputVariableMap.put(port, pVars);
         // The map is for HDF-specifc variables.
         _hdfInputVariableMap.put(port, recentlyReadVariables);
-    }
-
-
-    /** Return the last chosen transition.
-     *
-     *  @return The last chosen transition.
-     */
-    protected Transition _getLastChosenTransition() {
-        return _lastChosenTransition;
     }
 
     /** Remove the input variables created for the port.
