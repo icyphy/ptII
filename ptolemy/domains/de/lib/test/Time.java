@@ -64,7 +64,7 @@ public class Time {
         for (int i = 1; i < 20; i++) {
             Clock clock = new Clock(toplevel, "clock" + i);
             clock.period.setExpression("" + (i*2));
-            clock.values.setExpression("[" + i + ", " + i + "]");
+            clock.values.setExpression("{" + i + ", " + i + "}");
             toplevel.connect(clock.output, merge.input);
         }
 

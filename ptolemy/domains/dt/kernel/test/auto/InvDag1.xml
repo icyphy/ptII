@@ -143,7 +143,7 @@
         </port>
     </entity>
     <entity name="Test14" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -155,7 +155,7 @@
         </port>
     </entity>
     <entity name="Test16" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0,0.3333333,0.6666667,1.0,1.3333333,1.6666667,2.0,2.3333333,2.6666667,3.0,3.3333333,3.6666667,4.0,4.3333333,4.6666667,5.0,5.3333333,5.6666667,6.0,6.3333333,6.6666667,7.0,7.3333333,7.6666667,8.0,8.3333333,8.6666667,9.0,9.3333333,9.6666667]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.3333333,0.6666667,1.0,1.3333333,1.6666667,2.0,2.3333333,2.6666667,3.0,3.3333333,3.6666667,4.0,4.3333333,4.6666667,5.0,5.3333333,5.6666667,6.0,6.3333333,6.6666667,7.0,7.3333333,7.6666667,8.0,8.3333333,8.6666667,9.0,9.3333333,9.6666667}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>

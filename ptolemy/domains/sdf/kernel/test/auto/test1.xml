@@ -105,7 +105,7 @@ output port.
         <link port="0:Ramp0.output" relation="0:relation2"/>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0,0.0; 1,0.841471; 2,0.909297; 3,0.14112; 4,-0.7568025; 5,-0.9589243; 6,-0.2794155; 7,0.6569866; 8,0.9893582; 9,0.4121185]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0,0.0}, {1.0,0.841471}, {2.0,0.909297}, {3.0,0.14112}, {4.0,-0.7568025}, {5.0,-0.9589243}, {6.0,-0.2794155}, {7.0,0.6569866}, {8.0,0.9893582}, {9.0,0.4121185}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>

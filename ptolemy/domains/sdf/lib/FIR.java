@@ -126,7 +126,7 @@ public class FIR extends SDFTransformer {
 
         taps = new Parameter(this, "taps");
         taps.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        taps.setExpression("[1.0]");
+        taps.setExpression("{1.0}");
 
 	// set type constraints.
 	ArrayType paramType = (ArrayType)taps.getType();

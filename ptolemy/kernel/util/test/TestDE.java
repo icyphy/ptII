@@ -64,7 +64,7 @@ public class TestDE {
         _top.setManager(_manager);
 
         _clock = new Clock(_top, "clock");
-        _clock.values.setExpression("[1.0]");
+        _clock.values.setExpression("{1.0}");
         _clock.offsets.setExpression("[0.0]");
         _clock.period.setExpression("1.0");
         _rec = new Recorder(_top, "rec");
@@ -107,7 +107,7 @@ public class TestDE {
                 _clock.output.unlinkAll();
                 _rec.input.unlinkAll();
                 Clock clock2 = new Clock(_top, "clock2");
-                clock2.values.setExpression("[2.0]");
+                clock2.values.setExpression("{2.0}");
                 clock2.offsets.setExpression("[0.5]");
                 clock2.period.setExpression("2.0");
                 Merge merge = new Merge(_top, "merge");

@@ -78,7 +78,7 @@ public class Delay extends SDFTransformer {
         // FIXME: this parameter should be an array type.
         initialOutputs = new Parameter(this, "initialOutputs");
         initialOutputs.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        initialOutputs.setExpression("[0]");
+        initialOutputs.setExpression("{0}");
 
         output.setTokenInitProduction(1);
 

@@ -64,7 +64,7 @@ test FIRDouble-1.1 {Test FIRDouble} {
 
     # Set the taps for the FIRDouble
     set tapParam [getParameter $clone taps]
-    $tapParam setExpression {[-0.040609,-0.001628,0.17853,0.37665,0.37665,0.17853,-0.001628,-0.040609]}
+    $tapParam setExpression {{-0.040609,-0.001628,0.17853,0.37665,0.37665,0.17853,-0.001628,-0.040609}}
 
     [$e0 getManager] execute
     epsilonDiff \

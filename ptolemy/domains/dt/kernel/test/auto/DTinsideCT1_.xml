@@ -118,7 +118,7 @@
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
             </property>
             <doc>Create a generalized square wave</doc>
             <property name="_location" class="ptolemy.moml.Location" value="108.0, 225.0">

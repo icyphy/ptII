@@ -96,16 +96,15 @@ test Pulse-2.2 {test with the non-default output values} {
 } {0.1 0.0 0.2 0.3 0.0}
 
 test Pulse-2.3 {test using setExpression} {
-    $valuesParam setExpression {[5l, 6, 7]}
+    $valuesParam setExpression {{5l, 6l, 7l}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {5 0 6 7 0}
 
 test Pulse-2.4 {test with two-dimensional output values} {
-    set values [java::new {int[][]} {3 2} \
-            [list [list 1 2] [list 3 4] [list 5 6]]]
     set valuesParam [getParameter $pulse values]
-    $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
+    $valuesParam setExpression {{{1, 2}, {3, 4}, {5, 6}}}
+
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {{[1, 2]} {[0, 0]} {[3, 4]} {[5, 6]} {[0, 0]}}
@@ -150,9 +149,8 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
     set indexes [java::new {int[][]} {1 3} [list [list 1 2 3]]]
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
-    set values [java::new {int[][]} {1 2} [list [list 0 3]]]
     set valuesParam [getParameter $pulse values]
-    $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
+    $valuesParam setExpression {{{0, 3}}}
     catch {
         [$e0 getManager] execute
     } msg

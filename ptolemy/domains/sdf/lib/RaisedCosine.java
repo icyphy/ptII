@@ -184,7 +184,6 @@ public class RaisedCosine extends FIR {
                         len + " which is not greater than zero.");
             }
 
-            double [][] tps = new double[1][];
             double center = len * 0.5;
 
             DoubleUnaryOperation rcSg = sqrt ?
@@ -195,9 +194,13 @@ public class RaisedCosine extends FIR {
                    new SignalProcessing.RaisedCosineSampleGenerator(
                        inter, ebw);
 
-            tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
+            double[] tps = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
+	    Token[] tpsToken = new Token[tps.length];
+	    for (int i=0; i<tps.length; i++) {
+	        tpsToken[i] = new DoubleToken(tps[i]);
+	    }
 
-            taps.setToken(new DoubleMatrixToken(tps));
+            taps.setToken(new ArrayToken(tpsToken));
         } else {
             super.attributeChanged(attribute);
         }

@@ -15,7 +15,7 @@
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -36,7 +36,7 @@
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="[-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609]">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="359.4143009730748, 322.5">
         </property>
@@ -92,7 +92,7 @@
             </property>
             <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="[1, -1]">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>

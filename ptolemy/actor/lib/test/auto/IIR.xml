@@ -28,7 +28,7 @@
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -41,7 +41,7 @@
         </port>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[1.0, 0.9, 0.81, 0.729, 0.6561]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9, 0.81, 0.729, 0.6561}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

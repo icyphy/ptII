@@ -86,19 +86,19 @@ test Delay-2.2 {test with the default parameter values} {
 } {0 0 1 2 3}
 
 test Delay-2.3 {test with more than one output token} {
-    $initialOutputs setExpression {[5, 5]}
+    $initialOutputs setExpression {{5, 5}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {5 5 0 1 2}
 
 test Delay-2.4 {test with type change} {
-    $initialOutputs setExpression {[7.0, 4.0]}
+    $initialOutputs setExpression {{7.0, 4.0}}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {7.0 4.0 0.0 1.0 2.0}
 
 test Delay-2.5 {test with type change to error condition} {
-    $initialOutputs setExpression {[true, false]}
+    $initialOutputs setExpression {{true, false}}
     catch { [$e0 getManager] execute } msg
     # Note, this order of the error message might be platform dependent
     set containsException [regexp \

@@ -92,7 +92,7 @@ test Server-4.0 {Test with service time input} {
     # examined in preinitialize.
     $serviceTime setExpression "1.0"
     set values [java::field $clock2 values]
-    $values setExpression {[1.5, 0.5]}
+    $values setExpression {{1.5, 0.5}}
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
        [java::field $server newServiceTime]

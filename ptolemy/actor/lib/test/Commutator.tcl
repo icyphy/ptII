@@ -123,7 +123,7 @@ test Commutator-5.1 {test under DE} {
     set p [getParameter $clock1 period]
     $p setExpression {3.0}
     set p [getParameter $clock1 values]
-    $p setExpression {[-1, -2]}
+    $p setExpression {{-1, -2}}
     set commutator [java::new ptolemy.actor.lib.Commutator $e0 commutator]
     set in1 [java::field [java::cast ptolemy.actor.lib.Transformer \
             $commutator] input]

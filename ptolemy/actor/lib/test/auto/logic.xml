@@ -26,7 +26,7 @@
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[true, true, true]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -45,7 +45,7 @@
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[false, true, false]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -64,7 +64,7 @@
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[false, true, true]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true, true}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -79,7 +79,7 @@
         </port>
     </entity>
     <entity name="Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[false, true, false]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -101,7 +101,7 @@
         </port>
     </entity>
     <entity name="12:Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[true, false, true]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -140,7 +140,7 @@
         </port>
     </entity>
     <entity name="1:12:Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[false, false, true]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -179,7 +179,7 @@
         </port>
     </entity>
     <entity name="6:1:12:Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[false, true, false]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

@@ -58,7 +58,7 @@ test Maximum-2.1 {test maximum} {
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
     set values [getParameter $pulse values]
     set indexes [getParameter $pulse indexes]
-    $values setExpression {[-2, -1, 0, 1, 2]}
+    $values setExpression {{-2, -1, 0, 1, 2}}
     $indexes setExpression {[0, 1, 2, 3, 4]}
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set value [getParameter $const value]
@@ -99,7 +99,7 @@ test Maximum-2.2 {check types} {
 #### Test integer input
 #
 test Maximum-2.3 {test integer} {
-    $values setExpression {[-2, -1, 0, 1, 2]}
+    $values setExpression {{-2, -1, 0, 1, 2}}
     $value setExpression {0}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -118,7 +118,7 @@ test Maximum-2.4 {check types} {
 #### Test long input
 #
 test Maximum-2.5 {test long} {
-    $values setExpression {[-2l, -1, 0, 1, 2]}
+    $values setExpression {{-2l, -1l, 0l, 1l, 2l}}
     $value setExpression {0}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -137,7 +137,7 @@ test Maximum-2.6 {check types} {
 #### Test complex input
 #
 test Maximum-2.7 {test complex} {
-    $values setExpression {[-2+i, -1-i, 0, 3+3i, 5+4i]}
+    $values setExpression {{-2+i, -1-i, 0+0i, 3+3i, 5+4i}}
     $value setExpression {4}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]

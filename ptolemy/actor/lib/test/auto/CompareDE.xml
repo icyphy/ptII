@@ -27,7 +27,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.moml.Location" value="81.0, 161.0">
@@ -47,7 +47,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.5]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.moml.Location" value="82.0, 246.0">
@@ -124,7 +124,7 @@
         </port>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[false, false, false, false, false, false, false]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -180,7 +180,7 @@
         </port>
     </entity>
     <entity name="Test16" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[true, true, true, false, false, false]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, false, false, false}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

@@ -75,7 +75,7 @@ test Clock-2.2 {check times} {
 
 test Clock-2.3 {change output value and type and rerun} {
     set p [getParameter $clock values]
-    $p setExpression {[0.5, -0.5]}
+    $p setExpression {{0.5, -0.5}}
     set mt [java::cast ptolemy.data.ArrayToken [$p getToken]]
     $mt length
     $mt toString

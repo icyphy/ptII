@@ -91,7 +91,7 @@ public class ChangeRequestTest {
                 _rec.input.unlinkAll();
                 AddSubtract add = new AddSubtract(_top, "add");
                 Delay delay = new Delay(_top, "delay");
-                delay.initialOutputs.setExpression("[4, 5]");
+                delay.initialOutputs.setExpression("{4, 5}");
                 _top.connect(_const.output, add.plus);
                 ComponentRelation relation =
                     _top.connect(add.output, delay.input);

@@ -74,7 +74,7 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
-    $values setExpression {[1, 1]}
+    $values setExpression {{1, 1}}
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
@@ -134,7 +134,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
-    $values setExpression {[1, 1]}
+    $values setExpression {{1, 1}}
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
@@ -199,7 +199,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
-    $values setExpression {[1, 1]}
+    $values setExpression {{1, 1}}
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
@@ -281,7 +281,7 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
     set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
-    $values setExpression {[1, 1]}
+    $values setExpression {{1, 1}}
     set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
     $period setToken [java::new ptolemy.data.DoubleToken 20.0]
     set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]

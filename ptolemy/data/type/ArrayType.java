@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.graph.*;
 import ptolemy.data.Token;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.Variable;
 
@@ -93,11 +92,7 @@ public class ArrayType extends StructuredType {
 
     /** Convert the argument token into an ArrayToken having this type,
      *  if losslessly conversion can be done.
-     *  The argument can be an ArrayToken or a MatrixToken. If the argument
-     *  is a MatrixToken, it will be converted to an ArrayToken containing
-     *  a one dimensional token array if the MatrixToken has only one row,
-     *  or it will be converted to an ArrayToken containing another ArrayToken
-     *  (an array of arrays) if the MatrixToken has more than one row.
+     *  The argument must be an ArrayToken.
      *  @param token A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
@@ -109,12 +104,7 @@ public class ArrayType extends StructuredType {
                     "Cannot convert the argument token to this type.");
         }
 
-        ArrayToken argumentArrayToken;
-        if (token instanceof MatrixToken) {
-            argumentArrayToken = fromMatrixToken((MatrixToken)token);
-        } else {
-            argumentArrayToken = (ArrayToken)token;
-        }
+        ArrayToken argumentArrayToken = (ArrayToken)token;
 
         Token[] argumentArray = argumentArrayToken.arrayValue();
         Token[] resultArray = new Token[argumentArray.length];
@@ -122,25 +112,6 @@ public class ArrayType extends StructuredType {
             resultArray[i] = _elementType.convert(argumentArray[i]);
         }
         return new ArrayToken(resultArray);
-    }
-
-    /** Convert the argument MatrixToken to an ArrayToken. If the argument
-     *  has more than one row, convert it to an ArrayToken containing an
-     *  ArrayToken (an array of array).
-     *  @param token A MatrixToken.
-     *  @return An ArrayToken.
-     */
-    public static ArrayToken fromMatrixToken(MatrixToken token) {
-        int rows = token.getRowCount();
-        if (rows == 1) {
-            return _fromMatrixToken(token, 0);
-        } else {
-            Token[] tokenArray = new Token[rows];
-            for (int i = 0; i < rows; i++) {
-                tokenArray[i] = _fromMatrixToken(token, i);
-            }
-            return new ArrayToken(tokenArray);
-        }
     }
 
     /** Return the type of the array elements.
@@ -183,10 +154,7 @@ public class ArrayType extends StructuredType {
      *  converted losslessly to a token of this type; If this type is a
      *  variable, the argument is compatible if its type is a substitution
      *  instance of this type, or if it can be converted losslessly to a
-     *  substitution instance of this type. For ArrayTypes, in addition to
-     *  the lossless conversion relation defined by the type lattice,
-     *  MatrixTokens can also be losslessly converted to ArrayTokens of the
-     *  same type.
+     *  substitution instance of this type.
      *  @param token A Token.
      *  @return True if the argument is compatible with this type.
      *  @see ptolemy.data.type.ArrayType#convert
@@ -195,8 +163,6 @@ public class ArrayType extends StructuredType {
         ArrayToken arrayToken;
 	if (token instanceof ArrayToken) {
 	    arrayToken = (ArrayToken)token;
-	} else if (token instanceof MatrixToken) {
-	    arrayToken = fromMatrixToken((MatrixToken)token);
 	} else {
 	    return false;
 	}
@@ -378,19 +344,6 @@ public class ArrayType extends StructuredType {
         Type elementLUB = (Type)TypeLattice.lattice().leastUpperBound(
                 _elementType, ((ArrayType)type).getElementType());
         return new ArrayType(elementLUB);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-
-    // convert a row of a MatrixToken into an ArrayToken.
-    private static ArrayToken _fromMatrixToken(MatrixToken token, int row) {
-        int cols = token.getColumnCount();
-        Token[] tokenArray = new Token[cols];
-        for (int i = 0; i < cols; i++) {
-            tokenArray[i] = token.getElementAsToken(row, i);
-        }
-        return new ArrayToken(tokenArray);
     }
 
     ///////////////////////////////////////////////////////////////////

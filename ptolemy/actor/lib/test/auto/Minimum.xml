@@ -63,7 +63,7 @@
         </port>
     </entity>
     <entity name="Test12" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0, 0, 2]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -75,7 +75,7 @@
         </port>
     </entity>
     <entity name="Test16" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-1, 0, -1]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1, 0, -1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

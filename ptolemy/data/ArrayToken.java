@@ -66,7 +66,9 @@ public class ArrayToken extends Token {
 	    	_value[i] = value[i];
 	    } else {
 		throw new IllegalArgumentException("ArrayToken: " +
-                        "Elements of the array do not have the same type.");
+                        "Elements of the array do not have the same type:"
+			+ "value[0]=" + value[0].toString()
+			+ " value[" + i + "]=" + value[i]);
 	    }
 	}
     }

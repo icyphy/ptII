@@ -63,11 +63,12 @@ test FIR-1.1 {Test FIR for double FIR} {
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     # Set the taps for the FIR
-    set taps [java::new {double[][]} 1 [list [list -0.040609 -0.001628 \
-	0.17853 0.37665 0.37665 0.17853 -0.001628 -0.040609]] ]
-    set tapMatrix [java::new {ptolemy.data.DoubleMatrixToken} $taps ]
+#    set taps [java::new {double[][]} 1 [list [list -0.040609 -0.001628 \
+#	0.17853 0.37665 0.37665 0.17853 -0.001628 -0.040609]] ]
+#    set tapMatrix [java::new {ptolemy.data.DoubleMatrixToken} $taps ]
     set tapParam [getParameter $clone taps]
-    $tapParam setToken $tapMatrix
+#    $tapParam setToken $tapMatrix
+    $tapParam setExpression {{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}}
 
     [$e0 getManager] execute
     epsilonDiff \
@@ -79,14 +80,27 @@ test FIR-1.1 {Test FIR for double FIR} {
 
 test FIR-2.1 {Test FIR type exeception} {
 
-    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
+#    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
+
+    set p [java::new ptolemy.math.Precision "(6/2)" ]
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -0.040609 $p ]
+    set t1 [java::new ptolemy.data.FixToken $q ]
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -0.001628 $p ]
+    set t2 [java::new ptolemy.data.FixToken $q ]
+
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $t1 $t2]]
+    set fixArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    $tapParam setToken $fixArrayToken
 
     catch { [$e0 getManager] execute } msg
 	list $msg
 
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.FIRclone.output: scalar
   .top.rec.input: scalar
+  .top.FIRclone.output: scalar
 }}
 
 
@@ -119,8 +133,27 @@ test FIR-3.1 {Test FIR for FIX datatype} {
 
     # Set the taps for the FIR
     set tapParam [getParameter $fir taps]
-    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
+#    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
 
+    set p [java::new ptolemy.math.Precision "(6/2)" ]
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -0.040609 $p ]
+    set t1 [java::new ptolemy.data.FixToken $q ]
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -0.001628 $p ]
+    set t2 [java::new ptolemy.data.FixToken $q ]
+
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 0.17853 $p ]
+    set t3 [java::new ptolemy.data.FixToken $q ]
+    set q [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 0.37665 $p ]
+    set t4 [java::new ptolemy.data.FixToken $q ]
+
+    set valArray [java::new {ptolemy.data.Token[]} 8 [list $t1 $t2 $t3 $t4 $t4 $t3 $t2 $t1]]
+    set fixArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    $tapParam setToken $fixArrayToken
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 

@@ -94,7 +94,7 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0,0.3333333,0.6666667,1.0,1.3333333,1.6666667,2.0,2.3333333,2.6666667,3.0,3.3333333,3.6666667,4.0,4.3333333,4.6666667]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.3333333,0.6666667,1.0,1.3333333,1.6666667,2.0,2.3333333,2.6666667,3.0,3.3333333,3.6666667,4.0,4.3333333,4.6666667}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>

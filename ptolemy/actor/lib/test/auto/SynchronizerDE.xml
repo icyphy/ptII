@@ -27,7 +27,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.moml.Location" value="65.94999999999997, 41.5">
@@ -136,7 +136,7 @@
         </port>
     </entity>
     <entity name="Test0" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.0, 7.0, 11.0, 15.0, 19.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -148,7 +148,7 @@
         </port>
     </entity>
     <entity name="Test1" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.0, 7.0, 11.0, 15.0, 19.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -160,7 +160,7 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.0, 7.0, 11.0, 15.0, 19.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -172,7 +172,7 @@
         </port>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.0, 7.0, 11.0, 15.0, 19.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -184,7 +184,7 @@
         </port>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0, 4.0, 8.0, 12.0, 16.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 4.0, 8.0, 12.0, 16.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -196,7 +196,7 @@
         </port>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[1.0, 5.0, 9.0, 13.0, 17.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 5.0, 9.0, 13.0, 17.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -208,7 +208,7 @@
         </port>
     </entity>
     <entity name="Test8" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[2.0, 6.0, 10.0, 14.0, 18.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 6.0, 10.0, 14.0, 18.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -220,7 +220,7 @@
         </port>
     </entity>
     <entity name="Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[3.0, 7.0, 11.0, 15.0, 19.0]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 7.0, 11.0, 15.0, 19.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
