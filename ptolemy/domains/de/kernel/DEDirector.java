@@ -26,9 +26,7 @@
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
-Review synchronization of _enqueueEvent() and _dequeueEvent() methods.
-Do this together with re-review of Director base class.
-TransferOutputs: transfers all available tokens.
+Review transferOutputs().
 */
 
 package ptolemy.domains.de.kernel;
@@ -404,25 +402,20 @@ public class DEDirector extends Director {
             } while (refire);
 
             // Check whether the next time stamp is equal to current time.
-            // This is synchronized to prevent equeueing or dequeueing events
-            // or manipulating current time while we are checking the queue.
-            synchronized(this) {
-                if(!_eventQueue.isEmpty()) {
-                    DEEvent next = _eventQueue.get();
-                    // If the next event is in the future,
-                    // proceed to postfire().
-                    if (next.timeStamp() > getCurrentTime()) {
-                        break;
-                    } else if (next.timeStamp() < getCurrentTime()) {
-                        throw new InternalErrorException(
-                                "fire(): the time stamp of the next event " 
-                                + next.timeStamp() + " is smaller than the "
-                                + "current time " + getCurrentTime() + " !");
-                    }
-                } else {
-                    // The queue is empty, proceed to postfire().
+            if(!_eventQueue.isEmpty()) {
+                DEEvent next = _eventQueue.get();
+                // If the next event is in the future, proceed to postfire().
+                if (next.timeStamp() > getCurrentTime()) {
                     break;
+                } else if (next.timeStamp() < getCurrentTime()) {
+                    throw new InternalErrorException(
+                            "fire(): the time stamp of the next event " 
+                            + next.timeStamp() + " is smaller than the "
+                            + "current time " + getCurrentTime() + " !");
                 }
+            } else {
+                // The queue is empty, proceed to postfire().
+                break;
             }
         }
     }
@@ -696,7 +689,7 @@ public class DEDirector extends Director {
             
             // Otherwise it is a proper timing relation.
             // We set the current time.
-            if (Math.abs(nextEventTime - outsideCurrentTime) < 1e-10) {
+            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
                 // Round up the error in double number calculation.
                 setCurrentTime(nextEventTime);
             } else {
@@ -802,14 +795,14 @@ public class DEDirector extends Director {
      *  @return True if data are transferred.
      */
     public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
+           throws IllegalActionException {
         boolean anyWereTransferred = false;
         boolean moreTransfersRemaining = true;
         while(moreTransfersRemaining) {
-	    moreTransfersRemaining = super.transferOutputs(port);
+            moreTransfersRemaining = super.transferOutputs(port);
             anyWereTransferred |= moreTransfersRemaining;
-	}
-	return anyWereTransferred;
+        }
+        return anyWereTransferred;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -828,15 +821,9 @@ public class DEDirector extends Director {
      *  is true, then this method may suspend the calling thread using
      *  Object.wait(long) to let elapsed real time catch up with the
      *  current event.
-     *  <p>
-     *  This method is synchronized on the director to ensure that
-     *  current time does not advance between the dequeueing of an
-     *  event and the setting of current time, and to ensure that
-     *  an event does not get enqueued while we are in the middle
-     *  of dequeueing.
      *  @return The next actor to fire.
      */
-    protected synchronized Actor _dequeueEvents() {
+    protected Actor _dequeueEvents() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
         int currentDepth = 0;
@@ -865,10 +852,6 @@ public class DEDirector extends Director {
                         _debug("Queue is empty. Waiting for input events.");
                     }
                     Thread.currentThread().yield();
-                    // NOTE: Potential deadlock here.
-                    // Always grab a lock on the director before grabbing
-                    // a lock on the _eventQueue, and deadlock will be
-                    // avoided.
                     synchronized(_eventQueue) {
                         try {
                             // FIXME: If the manager gets a change request
@@ -1042,7 +1025,7 @@ public class DEDirector extends Director {
      *  @param time The time stamp of the "pure event".
      *  @exception IllegalActionException If the time argument is in the past.
      */
-    protected synchronized void _enqueueEvent(Actor actor, double time)
+    protected void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
 
         if (_eventQueue == null) return;
@@ -1079,7 +1062,7 @@ public class DEDirector extends Director {
      *  @param time The time stamp of the event.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected synchronized void _enqueueEvent(DEReceiver receiver, Token token,
+    protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
         if (_eventQueue == null) return;
@@ -1118,7 +1101,7 @@ public class DEDirector extends Director {
      *  @param token The token destined for that receiver.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected synchronized void _enqueueEvent(DEReceiver receiver, Token token)
+    protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
 
         if (_eventQueue == null) return;
