@@ -337,9 +337,19 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 	    }
 	    continue
 	}
+	# The numbers might be complex numbers with trailing ','
+	# See the ParseTreeEvaluator.tcl tests for examples of this.
+	set newelement [string trimright $newelement ","]
+	set oldelement [string trimright $oldelement ","]
+
 	# The numbers might be complex numbers with trailing 'i'
 	set newelement [string trimright $newelement "i"]
 	set oldelement [string trimright $oldelement "i"]
+
+	# The numbers might be complex numbers with preceding '['
+	# See the ParseTreeEvaluator.tcl tests for examples of this.
+	set newelement [string trimleft $newelement {[}]
+	set oldelement [string trimleft $oldelement {[}]
 
 	if { $zeroCheck == 1 } {
 	    set zeroCheck 0
