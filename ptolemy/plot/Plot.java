@@ -1386,8 +1386,8 @@ public class Plot extends PlotBox {
                 if (lcLine.length() > 0) {
                     String legend = (line.substring(8)).trim();
                     addLegend(_currentdataset, legend);
+                    _pxgraphBlankLineMode = false;
                 }
-                _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
                 if (lcLine.indexOf("off",6) >= 0) {
