@@ -356,7 +356,7 @@ public class DebuggerFrame extends PtolemyFrame
 	quit.setEnabled(false);
     }
 
-    /** Enable allbuutons
+    /** Enable all buttons
      * @see ptolemy.vergil.debugger.DebuggerFrame#enableAllButtons()
      */
     public void enableAllButtons() {
