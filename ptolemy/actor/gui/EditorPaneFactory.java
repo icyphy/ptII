@@ -96,7 +96,7 @@ public class EditorPaneFactory extends Attribute {
             Iterator styles
                 = param.attributeList(ParameterEditorStyle.class).iterator();
             boolean foundStyle = false;
-            while (styles.hasNext()) {
+            while (styles.hasNext() && !foundStyle) {
                 ParameterEditorStyle style
                     = (ParameterEditorStyle)styles.next();
                 try {

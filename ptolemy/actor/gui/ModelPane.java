@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -209,10 +210,29 @@ public class ModelPane extends JPanel {
                 Iterator params = paramList.iterator();
                 while (params.hasNext()) {
                     Parameter param = (Parameter)params.next();
-                    String name = param.getName();
-                    _paramQuery.addLine(name, name,
-                            param.stringRepresentation());
-                    _paramQuery.attachParameter(param, name);
+                    // Check for ParameterEditorStyle.
+                    Iterator styles = 
+                        param.attributeList(ParameterEditorStyle.class)
+                        .iterator();
+                    boolean foundStyle = false;
+                    while (styles.hasNext() && !foundStyle) {
+                        ParameterEditorStyle style
+                            = (ParameterEditorStyle)styles.next();
+                        try {
+                            style.addEntry(_paramQuery);
+                            foundStyle = true;
+                        } catch (IllegalActionException ex) {
+                            // Ignore failures here, 
+                            // and just present the default
+                            // dialog.
+                        }
+                    }
+                    if (!(foundStyle)) {
+                        _paramQuery.addLine(param.getName(),
+                                param.getName(),
+                                param.stringRepresentation());
+                        _paramQuery.attachParameter(param, param.getName());
+                    }
                 }
                 _controlPanel.add(_paramQuery);
                 _controlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
