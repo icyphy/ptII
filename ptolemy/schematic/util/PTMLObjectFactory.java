@@ -35,7 +35,7 @@ import java.util.Enumeration;
 import collections.*;
 import java.io.*;
 import ptolemy.schematic.xml.*;
-import java.net.URL;
+import java.net.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLObjectFactory
@@ -48,6 +48,66 @@ of the correspinding PTML file.
 @version $Id$
 */
 public class PTMLObjectFactory {
+
+    /** 
+     * Create the root EntityLibrary from an XMLElement that was parsed from 
+     * the root EntityLibrary.  
+     * @exception If the XML element does not have a type of "entitylibrary"
+     */
+    public static EntityLibrary createEntityLibrary(XMLElement e, 
+            IconLibrary iconroot) 
+            throws IllegalActionException {
+
+        _checkElement(e, "entitylibrary");
+
+        EntityLibrary entitylibrary = new EntityLibrary();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement) children.nextElement();
+            String etype = child.getElementType();
+            if(etype.equals("entity")) {
+                // if it's an Entity, then create it, 
+                // and add it to the list of entitys.
+                entitylibrary.addEntity(
+                        _createEntityTemplate(child, iconroot));
+            } else if(etype.equals("sublibrary")) {
+                // if it's a sublibrary, then add it to the 
+                // list of sublibraries.
+
+                String url = "";
+                try {
+                    String offset = child.getAttribute("url");
+                    XMLElement sublibtree = _parseSubURL(e, offset);
+                    EntityLibrary sublib = 
+                        createEntityLibrary(sublibtree, iconroot); 
+                    entitylibrary.addSubLibrary(sublib);
+                }
+                catch (Exception ex) {
+                    System.out.println("Couldn't parse entitylibrary " +
+                            "from url " + url);
+                    System.out.println(ex.getMessage());
+                }
+
+            } else if(etype.equals("description")) {
+                entitylibrary.setDescription(child.getPCData());
+            } else {
+                _unknownElementType(child, "entitylibrary");
+            }
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                try {
+                    entitylibrary.setName(_getString(e, n));
+                } catch (Exception ex) {};
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return entitylibrary;
+            
+    }
 
     /** 
      * Create the root IconLibrary from an XMLElement that was parsed from 
@@ -75,15 +135,8 @@ public class PTMLObjectFactory {
 
                 String url = "";
                 try {
-                    URL baseurl = new URL(e.getXMLFileLocation());
                     String offset = child.getAttribute("url");
-
-                    URL newurl = new URL(baseurl,offset);
-                    url = newurl.toString();
-
-                    if(parser == null) parser = new PTMLParser();
-                    
-                    XMLElement sublibtree = parser.parse(url);
+                    XMLElement sublibtree = _parseSubURL(e, offset);
                     IconLibrary sublib = createIconLibrary(sublibtree); 
                     iconlibrary.addSubLibrary(sublib);
                 }
@@ -107,6 +160,8 @@ public class PTMLObjectFactory {
                 try {
                     iconlibrary.setName(_getString(e, n));
                 } catch (Exception ex) {};
+            } else {
+                _unknownAttribute(e, n);
             }
         }
 
@@ -143,6 +198,41 @@ public class PTMLObjectFactory {
                     "Element type " + e.getElementType() + 
                     "differs from expected " + elementtype + ".");
         }
+    }
+
+    private static EntityTemplate _createEntityTemplate(XMLElement e, 
+            IconLibrary iconroot)
+        throws IllegalActionException {
+
+        _verifyElement(e, "entity");
+
+        EntityTemplate entity = new EntityTemplate();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            String etype = child.getElementType();
+            if(etype.equals("description")) {
+                entity.setDescription(child.getPCData());
+            } else {
+                _unknownElementType(child, "entity");
+            }    
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                try {
+                    entity.setName(_getString(e, n));
+                } catch (Exception ex) {};
+            } else if (n.equals("icon")) {
+                //  _findIcon(iconroot, _getString(e, n));
+            } else if (n.equals("terminalstyle")) {
+                // _findTerminalStyle(iconroot, _getString(e, n));
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return entity;
     }
 
     private static GraphicElement _createGraphicElement(XMLElement e)
@@ -200,6 +290,8 @@ public class PTMLObjectFactory {
                 try {
                     icon.setName(_getString(e, n));
                 } catch (Exception ex) {};
+            } else {
+                _unknownAttribute(e, n);
             }
         }
         return icon;
@@ -234,6 +326,8 @@ public class PTMLObjectFactory {
                 terminal.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
                 terminal.setY(_getDouble(e, n));
+            } else {
+                _unknownAttribute(e, n);
             }
         }
         return terminal;
@@ -274,12 +368,27 @@ public class PTMLObjectFactory {
         }
     }
 
-    /** Return a boolean corresponding to the value of the attribute with
+    /** Return a string corresponding to the value of the attribute with
      * the given name in the given XMLElement.
      */
     private static String _getString(XMLElement el, String name) {
         String v = el.getAttribute(name);
         return v;
+    }
+
+    /** Parse the xml file that is at a relative location to the location 
+     * of the given XMLElement given by the urloffset.
+     */
+    private static XMLElement _parseSubURL(XMLElement e, String urloffset) 
+            throws Exception {
+        URL baseurl = new URL(e.getXMLFileLocation());        
+        URL newurl = new URL(baseurl, urloffset);
+        String url = newurl.toString();
+        
+        if(_parser == null) _parser = new PTMLParser();
+        
+        XMLElement sublibtree = _parser.parse(url);
+        return sublibtree;
     }
 
     /** 
@@ -291,7 +400,15 @@ public class PTMLObjectFactory {
                     etype + " found in " + parent);
     }
         
-        /**
+    /** 
+     * Print a message about the unknown element
+     */
+    private static void _unknownAttribute(XMLElement el, String name) {
+        System.out.println("Unrecognized attribute (" + name + "=" +
+                _getString(el, name) + ") found in " + el.getElementType());
+    }
+        
+    /**
      * Check the validity of the XML element.   This method is very similar 
      * to _checkElement, except that it is used internally to check state
      * that should already be true, unless the code is broken.
@@ -311,6 +428,6 @@ public class PTMLObjectFactory {
         }
      }
 
-                   
+    private static PTMLParser _parser = null;
 }
 
