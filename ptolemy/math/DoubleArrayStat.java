@@ -433,10 +433,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
               // prevent division by zero later in very rare cases
 
             r = Math.sqrt((-2.0 * Math.log(r)) / r);        
-            retval[i] = mean + v1 * r * stdDev;
+            retval[i] = mean + v1 * r * standardDeviation;
  
             if ((i + 1) < N) {
-               retval[i + 1] = mean + v2 * r * stdDev;
+               retval[i + 1] = mean + v2 * r * standardDeviation;
             }
         }
   

@@ -51,7 +51,7 @@ public class SignalProcessing {
     private SignalProcessing() {}
 
     /** This class generates samples of a Gaussian function with the 
-     *  mean and standard deviation.  
+     *  specified mean and standard deviation.  
      *  The function computed is :
      *  <p>
      *  h(t) = exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
@@ -1416,8 +1416,8 @@ public class SignalProcessing {
 
     /** To select the Bartlett (triangular) window,
      *  <p>
-     *   w[n] = 2n/M        0 <= n <= M/2 <br>
-     *   w[n] = 2 - 2n/M    M/2 < n <= M
+     *   w[n] = 2n/M      for 0 <= n <= M/2 <br>
+     *   w[n] = 2 - 2n/M  for M/2 < n <= M
      *  </p>
      *  use this window type.
      */
@@ -1425,7 +1425,8 @@ public class SignalProcessing {
 
     /** To select the Hanning window,
      *  <p>
-     *   w[n] = 0.5 - 0.5 cos(2 * PI * n / M)    0 <= n <= M
+     *   w[n] = 0.5 - 0.5 cos(2 * PI * n / M)  <br>
+     *   for 0 <= n <= M
      *  </p>
      *  use this window type.
      */
@@ -1433,7 +1434,8 @@ public class SignalProcessing {
 
     /** To select the Hamming window,
      *  <p>
-     *   w[n] = 0.54 - 0.46 cos(2 * PI * n / M)  0 <= n <= M
+     *   w[n] = 0.54 - 0.46 cos(2 * PI * n / M) <br>
+     *   for 0 <= n <= M
      *  </p>
      *  use this window type.
      */
@@ -1442,7 +1444,8 @@ public class SignalProcessing {
     /** To select the Blackman window,
      *  <p>
      *   w[n] = 0.42 - 0.5 cos(2 * PI * n /M)  + <br>
-     *          0.08 cos (4 * PI * n / M)        0 <= n <= M
+     *          0.08 cos (4 * PI * n / M) <br>
+     *   for 0 <= n <= M
      *  </p>
      *  use this window type.
      */
@@ -1452,7 +1455,7 @@ public class SignalProcessing {
      *  <p>
      *   w[n] = 0.35875 - 0.48829 cos(2 * PI * n /M)  + <br>
      *          0.14128 cos (4 * PI * n / M) - 0.01168 cos(6 * PI / M) <br>
-     *   0 <= n <= M
+     *   for 0 <= n <= M
      *  </p>
      *  use this window type.
      */
