@@ -59,7 +59,7 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-            <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+            <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
                     </property>
@@ -69,7 +69,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
             </property>
-            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
+            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -120,7 +120,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610, 220}">
         </property>
