@@ -187,6 +187,15 @@ public class UtilityFunctions {
     public static RecordToken constants() {
         return Constants.constants();
     }
+    
+    /** Return an empty array with its element type matching
+     *  the specified token.
+     *  @param prototype A token specifying the element type.
+     *  @return An empty array.
+     */
+    public static ArrayToken emptyArray(Token prototype) {
+        return new ArrayToken(prototype);
+    }
 
     /** Extract a sub-array consisting of all of the elements of an
      *  array for which the given predicate function returns true.
@@ -194,60 +203,88 @@ public class UtilityFunctions {
      *  have type function(x:X)(boolean).  Example usage:
      *  <p><code>even = function(x:int)(x%2==0)<br/>
      *  filter(even,[1:1:20].toArray)</code></p>
-     *  @param f A function that takes exactly one parameter (of the
-     *       same type as the elements of the given array) and returns
-     *       a boolean value.
-     *  @param array  An array, on whose elements the given function
-     *       will operate.
-     *  @return  The subarray of this array containing exactly those
-     *       elements, in order, for which the given function returns
-     *       true.
-     *  @exception IllegalActionException
+     *  @param predicate A function that takes exactly one parameter (of the
+     *   same type as the elements of the given array) and returns
+     *   a boolean value.
+     *  @param array An array, on whose elements the given function
+     *   will operate.
+     *  @return The subarray of this array containing exactly those
+     *   elements, in order, for which the given function returns
+     *   a BooleanToken with value true.  Any other return value
+     *   results in the element being ommitted.
+     *  @exception IllegalActionException If applying the function
+     *   triggers an exception.
      *  @since Ptolemy II 4.1 
      */
-    // FIXME: This function has not been reviewed.
-    public static ArrayToken filter(FunctionToken f, ArrayToken array)
+    public static ArrayToken filter(FunctionToken predicate, ArrayToken array)
             throws IllegalActionException {
         List result = new LinkedList();
-        for (int i=0; i<array.length(); i++) {
+        for (int i = 0; i < array.length(); i++) {
             Token element = array.getElement(i);
             Token[] elementList = { element } ;
-            // FIXME: Should we check that the function actually
-            // returns a boolean value?
-            if (f.apply(elementList) != BooleanToken.FALSE) {
-                result.add(element);
+            Token include = predicate.apply(elementList);
+            if ((include instanceof BooleanToken)
+                    && ((BooleanToken)include).booleanValue()) {
+                 result.add(element);
             }
         }
-        Token[] resultArray = new Token[result.size()];
-        resultArray = (Token[])(result.toArray(resultArray));
-        return new ArrayToken(resultArray);
+        if (result.size() > 0) {
+            Token[] resultArray = new Token[result.size()];
+            resultArray = (Token[])(result.toArray(resultArray));
+            return new ArrayToken(resultArray);
+        } else {
+            Token prototype = array.getElementPrototype();
+            return new ArrayToken(prototype);
+        }
     }
 
     /** Find all true-valued elements in an array of boolean values,
-     *  returning an array containing the indicies (in ascending order)
+     *  returning an array containing the indices (in ascending order)
      *  of all occurances of the value 'true'.
-     *  @param token An array of boolean tokens
-     *  @return An array of integers giving the indicies of 'true' elements
-     *    in the array given as an argument.
+     *  @param array An array of boolean tokens.
+     *  @return An array of integers giving the indices of 'true' elements
+     *   in the array given as an argument.
      *  @since Ptolemy II 4.1
+     *  @see find(ArrayToken, Token)
+     *  @throws IllegalActionException If the specified array is not
+     *   a boolean array.
      */
-    // FIXME: This function has not been reviewed.
-    // Also, maybe it should be 'arrayFind' or some other name.
-    public static ArrayToken find(ArrayToken token)
+    public static ArrayToken find(ArrayToken array)
             throws IllegalActionException {
-        if (!(token.getElementType() == BaseType.BOOLEAN)) {
+        if (!(array.getElementType() == BaseType.BOOLEAN)) {
             throw new IllegalActionException(
                 "The argument must be an array of boolean tokens.");
         }
+        return find(array, BooleanToken.TRUE);
+    }
+
+    /** Find all elements in an array that match the specified token
+     *  and return an array containing their indices (in ascending order).
+     *  @param array An array.
+     *  @return An array of integers giving the indices of elements
+     *   in the specified array that match the specified token.
+     *  @since Ptolemy II 4.1
+     *  @see find(ArrayToken)
+     */
+    public static ArrayToken find(ArrayToken array, Token match) {
         List result = new LinkedList();
-        for (int i=0; i<token.length(); i++) {
-            if (token.getElement(i).equals(BooleanToken.TRUE)) {
+        for (int i = 0; i < array.length(); i++) {
+            if (array.getElement(i).equals(match)) {
                 result.add(new IntToken(i));
             }
         }
-        Token[] resultArray = new Token[result.size()];
-        resultArray = (Token[])(result.toArray(resultArray));
-        return new ArrayToken(resultArray);
+        if (result.size() > 0) {
+            Token[] resultArray = new Token[result.size()];
+            resultArray = (Token[])(result.toArray(resultArray));
+            try {
+                return new ArrayToken(resultArray);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        } else {
+            Token prototype = array.getElementPrototype();
+            return new ArrayToken(prototype);
+        }
     }
 
     /** Find a file or directory. If the file does not exist as is, then
