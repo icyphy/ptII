@@ -119,14 +119,19 @@ public class MoMLAttribute extends Attribute {
      *  whatever has been specified by the setMoMLDescription() method.
      *  If that method has not been called, then nothing is written.
      *  The written MoML is indented to the specified depth and terminated
-     *  with a newline.
+     *  with a newline. If this object is not persistent, then nothing
+     *  is written.
      *  @param name The name to use instead of the name of this object.
      *   This argument is ignored.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @see isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         writeMoMLDescription(output, depth);
     }
 

@@ -127,14 +127,19 @@ public class Location extends SingletonAttribute
      *  of this object are described.
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
-     *  terminated with a newline.
+     *  terminated with a newline. If this object is non-persistent,
+     *  then nothing is written.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         String value = getExpression();
         String valueTerm = "";
         if (value != null && !value.equals("")) {

@@ -129,7 +129,8 @@ public class AttributeValueIcon extends XMLIcon {
         return result;
     }
 
-    /** Write a MoML description of this object.
+    /** Write a MoML description of this object, unless this object is
+     *  non-persistent.
      *  MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"
      *  element, with "name" and "class" (XML) attributes.
@@ -147,10 +148,14 @@ public class AttributeValueIcon extends XMLIcon {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
+        if (!isPersistent()) {
+            return;
+        }
         output.write(_getIndentPrefix(depth)
                 + "<"
                 + getMoMLInfo().elementName

@@ -174,6 +174,7 @@ public class StateController extends AttributeController {
                     // FIXME: This should not be done in this thread!
                     // Need to queue a change request.
                     icon = new XMLIcon(object, "_icon");
+                    icon.setPersistent(false);
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException("could not create icon " +

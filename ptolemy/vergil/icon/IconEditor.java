@@ -116,6 +116,7 @@ public class IconEditor {
      * Create a new icon editor acting on the given icon.
      */
     public IconEditor(AppContext context, XMLIcon icon) {
+        icon.setPersistent(false);
         // First point the local context and icon to the ones being
         // passed in.
         _context = context;

@@ -52,9 +52,6 @@ import diva.canvas.toolbox.ImageFigure;
 
 /**
 An icon that displays a specified java.awt.Image.
-Note that this icon is not persistent, so an actor that uses
-this icon should create it in its constructor.  It will not be
-represented in the MoML file.
 
 @author Edward A. Lee
 @version $Id$

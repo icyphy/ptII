@@ -46,11 +46,11 @@ import java.net.URL;
 //// URIAttribute
 /**
 An attribute that identifies the URI from which the container was read.
-This attribute is not persistent.  That is, it exports no MoML description.
-This makes sense because it should be set by the code that reads the
-container's specification.  It is also a singleton, meaning that it will
-replace any previous attribute that has the same name and is an
-instance of the base class, SingletonAttribute.
+This attribute is not persistent by default.  That is, it exports no
+MoML description. This makes sense because it should be set by the
+code that reads the container's specification.  It is also a singleton,
+meaning that it will replace any previous attribute that has the same
+name and is an instance of the base class, SingletonAttribute.
 <p>
 In most cases, this URI will specify a URL.  The difference between
 a URL and a URI is that a URI is unevaluated. That is, it is a string
@@ -86,21 +86,11 @@ public class URIAttribute extends SingletonAttribute {
     public URIAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  MoML is an XML modeling markup language.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-    }
 
     /** Return the URI from which the specified model was read,
      *  or null if there is no such URI.

@@ -567,12 +567,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     }
 
     /** Get a MoML description of this object.  This might be an empty string
-     *  if there is no MoML description of the object.  This uses the
+     *  if there is no MoML description of this object or if this object is
+     *  not persistent.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
-     *  @return A MoML description, or null if there is none.
+     *  @return A MoML description, or an empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
+     *  @see #isPersistent()
      */
     public final String exportMoML() {
         try {
@@ -590,12 +592,12 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** Get a MoML description of this object with its name replaced by
      *  the specified name.  The description might be an empty string
-     *  if there is no MoML description of the object.  This uses the
+     *  if there is no MoML description of this object or if this object
+     *  is not persistent.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
-     *  If the ojbect is not persistent, return null.
-     *  @return A MoML description, or null if there is none.
+     *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
      */
@@ -603,7 +605,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         try {
             // If the object is not persistent, return null.
             if (!isPersistent()) {
-                return null;
+                return "";
             }
             StringWriter buffer = new StringWriter();
             exportMoML(buffer, 0, name);
@@ -615,7 +617,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     }
 
     /** Write a MoML description of this object using the specified
-     *  Writer.  If there is no MoML description, then nothing is written.
+     *  Writer.  If there is no MoML description, or if the object
+     *  is not persistent, then nothing is written.
      *  To write to standard out, do
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
@@ -624,7 +627,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
-     *  If the ojbect is not persistent, output nothing.
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
@@ -644,7 +646,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  This method is final to ensure that
      *  derived classes only override the three-argument method to change
      *  the MoML description.
-     *  If the ojbect is not persistent, output nothing.
+     *  If the ojbect is not persistent or if there is no MoML description,
+     *  write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
@@ -712,7 +715,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  description of an object.  They can override the protected
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
-     *  If the ojbect is not persistent, output nothing.
+     *  <p>
+     *  If this ojbect is not persistent or if there is no MoML description
+     *  of this object, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -1390,8 +1395,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     protected void _attachText(String name, String text) {
         try {
-            TransientSingletonConfigurableAttribute icon
-                = new TransientSingletonConfigurableAttribute(this, name);
+            SingletonConfigurableAttribute icon
+                = new SingletonConfigurableAttribute(this, name);
+            icon.setPersistent(false);
             // The first argument below is the base w.r.t. which to open
             // relative references within the text, which doesn't make
             // sense in this case, so it's null. The second argument is

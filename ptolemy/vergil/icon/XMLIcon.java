@@ -86,10 +86,6 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         super(container, name);
         _paintedList = null;
         _description = null;
-        //Instances of XMLIcon are created in Java code when
-        //an _iconDescription attribute is found in the object.
-        //The code that creates this could make it non-persistent.
-        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////

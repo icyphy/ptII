@@ -29,17 +29,15 @@
 
 package ptolemy.moml;
 
+import java.util.EmptyStackException;
+import java.util.List;
+import java.util.Stack;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NotPersistent;
 import ptolemy.kernel.util.SingletonAttribute;
-
-import java.io.Writer;
-import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoInfoAttribute
@@ -63,12 +61,14 @@ and redo operations, and then performs some normal undoable action. At this
 point the information in the redo stack is not relevant to the state of
 the model and so must be cleared.
 
+<p>By default, this attribute is not persistent, so it will not be present
+in a MoML description of its container.
+
 @author     Neil Smyth
 @version    $Id$
 @since Ptolemy II 2.1
 */
-public class UndoInfoAttribute extends SingletonAttribute
-    implements NotPersistent {
+public class UndoInfoAttribute extends SingletonAttribute {
 
     /**
      *  Construct an attribute with the given name contained by the
@@ -93,23 +93,11 @@ public class UndoInfoAttribute extends SingletonAttribute
         super(container, name);
         // Flag that indicates if the redo information should be cleared
         _clearRedoInfo = true;
+        setPersistent(false);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**
-     *  Write a MoML description of this object, which in this case is empty.
-     *  Nothing is written. MoML is an XML modeling markup language.
-     *
-     * @param  output           The output stream to write to.
-     * @param  depth            The depth in the hierarchy, to determine
-     *      indenting.
-     * @param  name             The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name) {
-    }
 
     /** Merge the top two undo entries into a single entry if they are
      *  both using the same context. This is used primarily to

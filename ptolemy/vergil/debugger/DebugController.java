@@ -40,7 +40,7 @@ import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
+import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
@@ -55,14 +55,14 @@ import javax.swing.SwingUtilities;
 An execution listener that suspends execution based on breakpoints.
 Instances of this class should be contained by a director.  This class
 keeps a DebugProfile for each actor that belongs to that director and
-is being debugged.
+is being debugged. This attribute is not persistent by default.
 
 @see DebugProfile
 
 @author Elaine Cheong
 @version $Id$
 */
-public class DebugController extends TransientSingletonConfigurableAttribute
+public class DebugController extends SingletonConfigurableAttribute
     implements DebugListener {
 
     /** Construct a debug listener with the given container and name.
@@ -77,6 +77,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////

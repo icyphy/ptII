@@ -67,6 +67,7 @@ public class MonitorImage extends Sink {
         input.setTypeEquals(BaseType.OBJECT);
 
         _icon = new ImageIcon(this, "_icon");
+        _icon.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////

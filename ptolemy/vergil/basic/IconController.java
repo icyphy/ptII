@@ -87,6 +87,7 @@ public class IconController extends ParameterizedNodeController {
                 List iconList = object.attributeList(EditorIcon.class);
                 if (iconList.size() == 0) {
                     EditorIcon icon = new XMLIcon(object, "_icon");
+                    icon.setPersistent(false);
                     result = icon.createFigure();
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();

@@ -79,6 +79,7 @@ public abstract class ShapeAttribute extends Attribute {
         new Attribute(this, "_hideName");
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
+        _icon.setPersistent(false);
 
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);

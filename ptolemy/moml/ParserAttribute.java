@@ -33,7 +33,6 @@ package ptolemy.moml;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NotPersistent;
 import ptolemy.kernel.util.SingletonAttribute;
 
 import java.io.IOException;
@@ -49,14 +48,16 @@ It is not a persistent attribute (exportMoML() writes nothing).
 It is a singleton, meaning that if it is inserted into a container
 that already contains a singleton attribute with the same name,
 then it will replace the previous attribute.
+<p>
+By default, this attribute is not persistent, so it will not
+be present in a MoML representation of its container.
 
 @see MoMLChangeRequest
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class ParserAttribute extends SingletonAttribute
-    implements NotPersistent {
+public class ParserAttribute extends SingletonAttribute {
 
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
@@ -69,6 +70,7 @@ public class ParserAttribute extends SingletonAttribute
     public ParserAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,16 +92,6 @@ public class ParserAttribute extends SingletonAttribute
     public void setParser(MoMLParser parser) {
         _parser = parser;
     }
-
-    /** Write a MoML description of this object, which in this case is
-     *  nothing.
-     *  @param name The name to use instead of the name of this object.
-     *   This argument is ignored.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

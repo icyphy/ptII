@@ -215,7 +215,7 @@ public class EditorIcon extends Attribute {
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
      *  terminated with a newline.
-     *  TODO: Update comment. Changed to make this attribute persistent.
+     *  If this object is not persistent, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.

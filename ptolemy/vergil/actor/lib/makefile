@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ModelReference.java \
 	MonitorImage.java
 
 OTHER_FILES_TO_BE_JARED = \

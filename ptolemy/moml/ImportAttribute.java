@@ -75,7 +75,8 @@ public class ImportAttribute extends Attribute {
     }
 
     /** Write a MoML description of this object, which in this case is
-     *  an "import" element.
+     *  an "import" element. If this object is not persistent, then
+     *  write nothing.
      *  @param name The name to use instead of the name of this object.
      *   This argument is ignored.
      *  @param output The output stream to write to.
@@ -83,6 +84,9 @@ public class ImportAttribute extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         String moml = "<import source=\""
             + _source
             + "\"/>";

@@ -43,6 +43,7 @@ description.  An icon description is XML code in the SVG
 (scalable vector graphics) schema, set in a configure element
 in MoML.
 
+@deprecated Use SingletonConfigurableAttribute instead with setPersistent(false).
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
@@ -73,6 +74,7 @@ public class TransientSingletonConfigurableAttribute
      */
     public TransientSingletonConfigurableAttribute() {
         super();
+        setPersistent(false);
     }
 
     /** Construct a new attribute with
@@ -85,6 +87,7 @@ public class TransientSingletonConfigurableAttribute
      */
     public TransientSingletonConfigurableAttribute(Workspace workspace) {
         super(workspace);
+        setPersistent(false);
     }
 
     /** Construct an attribute with the given container and name.
@@ -103,20 +106,11 @@ public class TransientSingletonConfigurableAttribute
             NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-    }
 
     /** Remove any previous attribute in the container that has the same
      *  name as this attribute, and then call the base class method to set

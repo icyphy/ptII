@@ -78,6 +78,7 @@ public class ImageAttribute extends Attribute {
         new Attribute(this, "_hideName");
 
         _icon = new ImageIcon(this, "_icon");
+        _icon.setPersistent(false);
         
         source = new FileAttribute(this, "source");
         source.setExpression("$CLASSPATH/doc/img/ptIIplanetIcon.gif");

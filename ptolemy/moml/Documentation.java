@@ -106,15 +106,19 @@ public class Documentation extends SingletonAttribute {
      *  "doc" element, so we generate MoML of the form
      *  "&lt;doc&gt;<i>documentation</i>&lt;/doc&gt;", where
      *  <i>documentation</i> is replaced by the string value of this
-     *  attribute.
+     *  attribute. If this object is not persistent, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
      *  @see NamedObj#_exportMoMLContents
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         if (name.equals("_doc")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
