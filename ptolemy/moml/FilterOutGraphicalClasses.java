@@ -50,6 +50,19 @@ run tests when there is no graphical display present.
 
 public class FilterOutGraphicalClasses implements MoMLFilter {
 
+    /** Add a class to be filtered for and its replacement if the class
+     *  is found.  If the replacement is null, then the rest of the
+     *  attribute is skipped
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @param replacement The name of the class to be used if
+     *  className is found.  If this argument is null then the
+     *  rest of the attribute is skipped.
+     */
+    public void put(String className, String replacement) {
+	_graphicalClasses.put(className, replacement);
+    }
+
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
      *  or "ptolemy.vergil.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
