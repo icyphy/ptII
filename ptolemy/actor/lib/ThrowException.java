@@ -82,7 +82,7 @@ public class ThrowException extends Sink {
      *  @exception IllegalActionException If there is no director.
      *  @return Whatever the base class returns (probably true).
      */
-    public boolean  throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
         boolean result = false;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
