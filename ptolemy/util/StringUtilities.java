@@ -40,6 +40,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringUtilities
@@ -320,8 +321,9 @@ public class StringUtilities {
         }
     }
 
-    /**  If the string is longer than 80 characters, split it up by
-     *  displaying adding newlines every 80 characters.
+    /**  If the string is longer than 79 characters, split it up by
+     *  displaying adding newlines in all newline delimited substrings
+     *  that are longer than 79 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
      *  @see #abbreviate(String longName)
@@ -338,12 +340,18 @@ public class StringUtilities {
 	}
 
 	StringBuffer results = new StringBuffer();
-	int i;
-	for(i = 0; i < longName.length() - 80; i+=80) {
-	    results.append(longName.substring(i, i+79) + "\n");
-	}
-	results.append(longName.substring(i));
 
+        // The third argument is true, which means return the delimiters
+        // as part of the tokens.
+        StringTokenizer tokenizer = new StringTokenizer(longName, "\r\n", true);
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            int i;
+            for (i = 0; i < token.length() - 79; i += 79) {
+                results.append(token.substring(i, i + 79) + "\n");
+            }
+            results.append(token.substring(i));
+        }
 	return results.toString();
     }
 
