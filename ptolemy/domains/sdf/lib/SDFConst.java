@@ -111,7 +111,7 @@ public class SDFConst extends SDFSource {
      *  object to equal the cloned parameter in that new object.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)
