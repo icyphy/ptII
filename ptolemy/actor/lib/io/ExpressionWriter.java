@@ -47,7 +47,7 @@ example, include the enclosing quotation marks in the output.
 If you do not want the enclosing quotation marks, use LineWriter.
 <p>
 The file is specified  by the <i>fileName</i> attribute
-using any form acceptable to FileAttribute.
+using any form acceptable to FileParameter.
 <p>
 If the <i>append</i> attribute has value <i>true</i>,
 then the file will be appended to. If it has value <i>false</i>,
@@ -60,7 +60,7 @@ without asking.  If <i>true</i> (the default), then if the file
 exists, then this actor will ask for confirmation before overwriting.
 
 @see ExpressionReader
-@see ptolemy.kernel.attributes.FileAttribute
+@see ptolemy.kernel.attributes.FileParameter
 @see LineWriter
 
 @author Edward A. Lee
