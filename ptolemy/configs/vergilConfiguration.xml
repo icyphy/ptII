@@ -38,6 +38,67 @@
     <!-- FIXME: text editor, plot data tableau, HTML viewer, etc. -->
   </entity>
 
+  <!-- Default director library to appear in the library browser. -->
+  <entity name="directorLibrary" class="ptolemy.kernel.CompositeEntity">
+    <doc>default director library</doc>
+    <entity name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+    <entity name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
+    <entity name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
+    <entity name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
+    <entity name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
+    <entity name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+    <entity name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+       <property name="ODESolver">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
+             <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
+	  </property>
+       </property>
+       <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
+	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
+	  </property>
+       </property>
+    </entity>
+    <entity name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+       <property name="ODESolver">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
+             <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
+	  </property>
+       </property>
+       <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
+	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
+	  </property>
+       </property>
+    </entity>
+    <entity name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+       <property name="ODESolver">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
+             <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
+	  </property>
+       </property>
+       <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+          <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+             <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
+	     <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
+	     <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
+	  </property>
+       </property>
+    </entity>
+    <entity name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+    <entity name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+  </entity>
+
   <!-- Default entity library to appear in the library browser. -->
   <entity name="library" class="ptolemy.moml.EntityLibrary">
     <doc>default entity library</doc>
@@ -49,11 +110,11 @@
           <input source="../actor/lib/math.xml"/>
           <input source="../actor/lib/flowcontrol.xml"/>
           <input source="../actor/lib/conversions/conversions.xml"/>
-          <input source="../actor/lib/signalprocessing.xml"/>
           <input source="../domains/sdf/lib/sdfentities.xml"/>
           <input source="../domains/ct/lib/ctentities.xml"/>
           <input source="../domains/de/lib/deentities.xml"/>
 <!--
+          <input source="../actor/lib/signalprocessing.xml"/>
           <input source="../domains/fsm/lib/fsmentities.xml"/>
           <input source="../apps/lego/legoentities.xml"/>
           <input source="../apps/agilent/agilententities.xml"/>
