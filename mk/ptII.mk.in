@@ -305,7 +305,7 @@ PTCOLT_DIR =    @PTCOLT_DIR@
 
 # Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
 # of $PTII/vendors/misc/colt.jar
-PTCOLT_JARS =	    @PTCOLT_JARS@		
+PTCOLT_JARS =	    @PTCOLT_JARS@
 
 # Ptolemy II packages that use COLT
 # PTCOLT_PACKAGES is used in ptII/doc/makefile
