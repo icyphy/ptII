@@ -141,10 +141,9 @@ public class CommandLineTemplate {
      *  @param ex The exception to report.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown.\n" + message + "\n"
-            + ex.toString();
-            System.err.println(msg);
-            ex.printStackTrace();
+        System.err.println("Exception thrown.\n" + message + "\n"
+                + ex.toString());
+        ex.printStackTrace();
     }
 
     /** If the specified model has a manager and is not already running,
