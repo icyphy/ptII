@@ -555,21 +555,13 @@ public class GeneratorTableau extends Tableau {
 //    	    throw internalError;
 //  	}
 
-	if (generateShallowJavaCode) {
-	    return "make -C \"" + makefileDirectory
+        return "make -C \"" + makefileDirectory
 		+ "\" MODEL=\"" + model.getName()
 		+ "\" SOURCECLASS=\"" + temporaryMoMLURL
 		//	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
-		+ "\" SHALLOWTARGETPACKAGE=\"" + targetPackage
-		+ "\" compileShallowDemo";
-	} else {
-	    return "make -C \"" + makefileDirectory
-		+ "\" MODEL=\"" + model.getName()
-		+ "\" DEEPSOURCECLASS=\"" + temporaryMoMLURL
-		//	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
-		+ "\" DEEPTARGETPACKAGE=\"" + targetPackage
-		+ "\" compileDeepDemo";
-	}
+		+ "\" TARGETPACKAGE=\"" + targetPackage
+		+ "\" compileDemo";
+
     }
 }
 
