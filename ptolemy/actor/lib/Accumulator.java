@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -134,7 +134,7 @@ public class Accumulator extends Transformer {
                 }
             }
         }
-        for (int i=0; i<input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
                 _latestSum = _latestSum.add(in);
