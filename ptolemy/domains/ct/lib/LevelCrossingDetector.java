@@ -306,7 +306,7 @@ public class LevelCrossingDetector extends Transformer
         }
 
         if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
-            if (_enabled && _eventMissed) {
+            if (_enabled) {
                 _eventNow = true;
                 if (_debugging)
                     _debug("Event is detected at "
@@ -316,7 +316,11 @@ public class LevelCrossingDetector extends Transformer
             _eventMissed = false;
             return true;
         } else {
-            if (!_enabled) {  // if last step is a level, always accurate.
+            // FIXME: if last step is a level, this step may still not be accurate
+            // because of other actors's accuracy requirements. 
+            if (!_enabled) {  
+                // FIXME: The statement below has some questions. Hyzheng 07/25/2003
+                // if last step is a level, always accurate.
                 _enabled = true;
             } else {
                 if ((_lastTrigger - _level) * (_thisTrigger - _level)
