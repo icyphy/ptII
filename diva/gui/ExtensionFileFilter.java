@@ -114,7 +114,8 @@ public class ExtensionFileFilter extends FileFilter {
      * Creates a file filter from the given string array and description.
      * Example: new ExtensionFileFilter(String {"gif", "jpg"}, "Gif and JPG Images");
      *
-     * Note that the "." before the extension is not needed and will be ignored.
+     * Note that the "." before the extension is not needed and will be
+     * ignored.
      *
      * @see #addExtension(String)
      */
@@ -204,9 +205,9 @@ public class ExtensionFileFilter extends FileFilter {
      * example: "JPEG and GIF Image Files (*.jpg, *.gif)"
      *
      * @see #setDescription(String)
-     * @see #setExtensionListInDescription
-     * @see #isExtensionListInDescription
-     * @see FileFilter#getDescription
+     * @see #setExtensionListInDescription(boolean)
+     * @see #isExtensionListInDescription()
+     * @see FileFilter#getDescription()
      */
     public String getDescription() {
         if (fullDescription == null) {
@@ -235,9 +236,9 @@ public class ExtensionFileFilter extends FileFilter {
      * Sets the human readable description of this filter. For
      * example: filter.setDescription("Gif and JPG Images");
      *
-     * @see setDescription
-     * @see setExtensionListInDescription
-     * @see isExtensionListInDescription
+     * @see setDescription(String)
+     * @see setExtensionListInDescription(boolean)
+     * @see isExtensionListInDescription()
      */
     public void setDescription(String description) {
         this.description = description;
