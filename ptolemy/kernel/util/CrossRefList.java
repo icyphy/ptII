@@ -1,6 +1,6 @@
 /* List of cross-references.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -103,10 +103,13 @@ public final class CrossRefList implements Serializable  {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the first remote object referenced by this list, or null if the
-     *  list is empty.
-     *  Time complexity: O(1).
-     *  @return The first entry, or null if there is none.
+    /** Return the first remote Object referenced by this list, or
+     *  null if the list is empty.  That is, return the
+     *  owner/parent/container of the first member referenced in this
+     *  list (if there is one).  This member is a different
+     *  CrossRefList instance that always has an owner/container.  
+     *  Time complexity: O(1).  
+     *  @return The first entry, or null if there is none.  
      */
     public synchronized Object first() {
         if (_headNode != null) {
@@ -116,11 +119,13 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
-    /** Enumerate the objects referenced by this list. Note that
-     *  an object may be enumerated more than once if more than one
-     *  link to it has been established.
+    /** Enumerate the objects referenced by this list.  The
+     *  enumeration returns the object itself and not the CrossRefList
+     *  instance in *this list that the object owns or contains.  Note
+     *  that an object may be enumerated more than once if more than
+     *  one link to it has been established.  
      *  Time complexity: O(1).
-     *  @return An enumeration of remote referenced objects.
+     *  @return An enumeration of remote referenced objects.  
      */
     public synchronized Enumeration getLinks() {
         return new CrossRefEnumeration();
@@ -141,7 +146,9 @@ public final class CrossRefList implements Serializable  {
         return false;
     }
 
-    /** Link to a remote object. Redundant links are allowed.
+    /** Register *this as a member of a different CrossRefList (farList).
+     *  This action additionally registers farList as a member of *this.
+     *  Redundant entries are allowed.
      *  Note that this method does not synchronize on the remote object.
      *  Thus, this method should be called within a write-synchronization of
      *  the common workspace.
@@ -173,9 +180,12 @@ public final class CrossRefList implements Serializable  {
         return _size;
     }
 
-    /** Delete a link to the specified object.   If there is no such
-     *  link, ignore.
-     *  Time complexity: O(n).
+    /** Delete a link to the specified object.  If there is no such
+     *  link, ignore.  That is, delete the entry in this list that
+     *  points to a different CrossRefList owned/contained by the
+     *  specified object.  That object's CrossRefList list is
+     *  similarly updated to remove *this from its members.
+     *  Time complexity: O(n).  
      *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
@@ -245,6 +255,7 @@ public final class CrossRefList implements Serializable  {
     // Class CrossRef.
     // Objects of this type form the elements of the list.
     // They occur in pairs, one in each list at each end of a link.
+    // A CrossRef is similar to a "link" in a doubly-linked list.
     protected class CrossRef implements Serializable{
 
         protected CrossRef _far;
