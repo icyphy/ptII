@@ -97,7 +97,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
 time: Time.class
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.de.lib.test.Time
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.domains.de.lib.test.Time
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
