@@ -952,7 +952,7 @@ For more help, choose Help from the upper menu bar.</text>
     <!-- integrator(s) -->
     <xsl:for-each select="VarRef">
         <xsl:element name="entity">
-            <xsl:variable name="initialValue"><xsl:value-of select="@initialValue"/></xsl:variable>
+            <xsl:variable name="initialValue"><xsl:value-of select="key('nid',@var)/@initialMinValue"/></xsl:variable>
             <xsl:attribute name="name"><xsl:value-of select="key('nid',@var)/@name"/></xsl:attribute>
             <xsl:attribute name="class">ptolemy.domains.ct.lib.Integrator</xsl:attribute>
             <property name="initialState" class="ptolemy.data.expr.Parameter">
