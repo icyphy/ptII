@@ -63,6 +63,8 @@ import ptolemy.vergil.toolbox.FigureAction.SourceType;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -366,8 +368,21 @@ public abstract class BasicGraphController extends AbstractGraphController
                     y = center.getY()/2;
                 }
 	    } else {
-		x = getX();
-		y = getY();
+                // Transform
+                AffineTransform current = 
+                    getGraphPane().getTransformContext().getTransform();
+                AffineTransform inverse;
+                try {
+                    inverse = current.createInverse();
+                }
+                catch(NoninvertibleTransformException ex) {
+                    throw new RuntimeException(ex.toString());
+                }
+                Point2D point = new Point2D.Double(getX(), getY());
+                
+                inverse.transform(point, point);
+		x = point.getX();
+		y = point.getY();
 	    }
 
 	    AbstractBasicGraphModel graphModel =

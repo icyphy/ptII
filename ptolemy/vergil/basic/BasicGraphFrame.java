@@ -152,7 +152,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	getContentPane().setLayout(new BorderLayout());
 
 	GraphPane pane = _createGraphPane();
-	pane.getForegroundLayer().setPickHalo(4);
+	pane.getForegroundLayer().setPickHalo(2);
 
 	_jgraph = new JGraph(pane);
 

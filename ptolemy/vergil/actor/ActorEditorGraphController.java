@@ -79,6 +79,8 @@ import javax.swing.JToolBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 //////////////////////////////////////////////////////////////////////////
@@ -398,8 +400,21 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     y = center.getY()/2;
                 }
 	    } else {
-		x = getX();
-		y = getY();
+                // Transform
+                AffineTransform current = 
+                    getGraphPane().getTransformContext().getTransform();
+                AffineTransform inverse;
+                try {
+                    inverse = current.createInverse();
+                }
+                catch(NoninvertibleTransformException ex) {
+                    throw new RuntimeException(ex.toString());
+                }
+                Point2D point = new Point2D.Double(getX(), getY());
+                
+                inverse.transform(point, point);
+		x = point.getX();
+		y = point.getY();
 	    }
 
 	    ActorGraphModel graphModel = (ActorGraphModel)getGraphModel();
