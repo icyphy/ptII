@@ -113,6 +113,11 @@ public class WatchDogTimer extends SceneTransformer {
                     rootGroup.enumerate(threads);
                     for (int i = 0; i < threads.length; i++) {
                         System.err.println(i + ". " + threads[i]);
+                        // It would be nice to display the stack traces,
+                        // but this is hard to do.  Thread.dumpStack()
+                        // only dumps the stack trace for the current thread.
+                        // For an idea using Thread.stop(), see
+                        // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
                     }
 
                 } catch (Exception e) {
