@@ -59,7 +59,6 @@ public class ProcessThread extends PtolemyThread {
         super();
 	_actor = actor;
         _director = director;
-        _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
     /** Construct a thread to be used for the execution of the
@@ -73,7 +72,6 @@ public class ProcessThread extends PtolemyThread {
         super(name);
 	_actor = actor;
         _director = director;
-        _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,12 +103,14 @@ public class ProcessThread extends PtolemyThread {
         } catch (TerminateProcessException t) {
             // Process was terminated.
         } catch (IllegalActionException e) {
-            _manager.fireExecutionError(e);
+            Nameable a = ((NamedObj)_actor).getContainer();
+            ((CompositeActor)a).getManager().fireExecutionError(e);
         } finally {
             try {
                 _actor.wrapup();
             } catch (IllegalActionException e) {
-                _manager.fireExecutionError(e);
+                Nameable a = ((NamedObj)_actor).getContainer();
+                ((CompositeActor)a).getManager().fireExecutionError(e);
             }
             _director.decreaseActiveCount();
         }
@@ -121,7 +121,6 @@ public class ProcessThread extends PtolemyThread {
 
     private Actor _actor;
     private ProcessDirector _director;
-    private Manager _manager;
 }
 
 
