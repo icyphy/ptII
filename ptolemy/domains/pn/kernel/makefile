@@ -1,8 +1,8 @@
-# Makefile for the Java classes used to implement the Ptolemy PN domain
+# Makefile for the Java classes used to implement the Ptolemy PN domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.4 04/06/97
+# @Version: $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -29,28 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-ME =		java/pt/domains/pn
+ME =		java/pt/domains/pn/kernel
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
+DIRS = 		#test doc
+
+# Used to build zip files
+JPACKAGE = 	pt.domains.pn.kernel
+JPACKAGE_DIR = 	pt/domains/pn/kernel
+JVERSION =	1.0
+JDIST =		$(JPACKAGE)$(JVERSION)
+JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
+JARFILE = 	$(JPACKAGE).jar
+
+CLASSPATH = ../../../..
 
 JSRCS = \
-	PNStar.java
+	PNAlternate.java \
+	PNExample.java \
+	PNExecutive.java \
+	PNFifoRelation.java \
+	PNInPort.java \
+	PNInterleave.java \
+	PNOutPort.java \
+	PNPort.java \
+	PNQueueLink.java \
+	PNRedirect.java \
+	PNStar.java \
+	PNUniverse.java \
+	TerminationException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
-MISC_FILES =	doc
+MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
