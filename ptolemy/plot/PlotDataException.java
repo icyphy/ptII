@@ -31,7 +31,7 @@ package ptplot;
  * Exception thrown by plot classes if there are format
  * problems with the data to be plotted.
  *
- * @author: Christopher Hylands
+ * @author Christopher Hylands
  * @version: $Id$
  */
 class PlotDataException extends Throwable {

@@ -35,7 +35,7 @@ import java.applet.Applet;
 /** 
  * Plot a variety of test signals.
  *
- * @author: Edward A. Lee
+ * @author Edward A. Lee
  * @version: $Id$
  */
 public class PlotDemo extends Plot {

@@ -36,7 +36,7 @@ import java.applet.Applet;
  * Plot a Fourier series approximation to a square wave.
  * This is a demonstration of the use of the Plot class.
  *
- * @author: Edward A. Lee
+ * @author Edward A. Lee
  * @version: $Id$
  */
 public class PlotFourierSeries extends Plot {

@@ -61,7 +61,7 @@ import java.applet.Applet;
  * applet parameter is specified.  Thus, the initial configuration can
  * be specified in a separate file rather than in Java code.
  *
- * @author: Edward A. Lee
+ * @author Edward A. Lee
  * @version: $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {

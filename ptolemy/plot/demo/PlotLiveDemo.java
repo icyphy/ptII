@@ -36,7 +36,7 @@ import java.applet.Applet;
  * Dynamically plot a test signal, illustrating how to use the
  * <code>PlotLive</code> class.
  *
- * @author: Edward A. Lee
+ * @author Edward A. Lee
  * @version: $Id$
  */
 public class PlotLiveDemo extends PlotLive {

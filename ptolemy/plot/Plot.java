@@ -154,7 +154,7 @@ import java.applet.Applet;
  *      Note that 2<sup>32</sup> is over 4 billion.
  * </ul>
  *
- * @author: Edward A. Lee, Christopher Hylands
+ * @author Edward A. Lee, Christopher Hylands
  * @version: $Id$
  */
 public class Plot extends PlotBox {
