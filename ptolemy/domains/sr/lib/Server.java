@@ -102,7 +102,7 @@ public class Server extends Transformer {
         Server newObject = (Server)(super.clone(workspace));
 
         // set the type constraints
-        ArrayType dataType = (ArrayType)newObject.data.getType();
+        ArrayType dataType = (ArrayType)data.getType();
         InequalityTerm elemTerm = dataType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
 
