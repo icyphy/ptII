@@ -328,9 +328,9 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
-                System.err.println("Error evaluating parse tree for expression"
-                        + ": " + expression()); 
-                throw new RuntimeException(ex.getMessage());
+                throw new RuntimeException(
+                        "Error evaluating parse tree for expression"
+                        + ": " + expression(), ex);
             }
         }
 
@@ -506,11 +506,12 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          */
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
-            NamedObj reference = (CompositeActor)
-                    PSDFScheduler.this.getContainer();
+            PSDFDirector director = (PSDFDirector)getContainer();
+            CompositeActor reference = (CompositeActor)director.getContainer();
             Variable result;
             if(name.indexOf("::") != -1) {
                 String insideName = name.replaceAll("::", ".");
+                System.out.println("insideName = " + insideName);
                 result = (Variable)reference.getAttribute(insideName);
             } else {
                 result = getScopedVariable(
@@ -518,6 +519,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                         reference,
                         name);
             }
+            System.out.println("reference = " + reference);
+            System.out.println("result = " + result);
 
             if (result != null) {
                 return result.getToken();
@@ -535,8 +538,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            NamedObj reference = (CompositeActor)
-                    PSDFScheduler.this.getContainer();
+            PSDFDirector director = (PSDFDirector)getContainer();
+            CompositeActor reference = (CompositeActor)director.getContainer();
             Variable result;
             if(name.indexOf("::") != -1) {
                 String insideName = name.replaceAll("::", ".");
