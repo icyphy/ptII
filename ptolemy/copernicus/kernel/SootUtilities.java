@@ -1386,19 +1386,11 @@ public class SootUtilities {
      *  cannot be in a Java name.
      *  @returns A String that follows the Java identifier rules
      *  with the same length as the initial input String.
+     *  @deprecated Use ptolemy.kernel.util.StringUtilities.sanitizeName
+     *  instead.
      */
     public static String sanitizeName(String name) {
-	char [] nameArray = name.toCharArray();
-       	for(int i = 0; i < nameArray.length; i++) {
-	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
-		nameArray[i] = '_';
-	    }
-	}
-      	if (!Character.isJavaIdentifierStart(nameArray[0])) {
-            return "_" + new String(nameArray);
-	} else {
-            return new String(nameArray);
-        }
+        return ptolemy.kernel.utilities.StringUtilities.sanitizeName(name);
     }
 
     /** Get the method with the given name in the given class
