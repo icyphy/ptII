@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Tycho system, java/doc
 #
-# Version: @(#)makefile	1.4 09/18/97
+# Version: $Id$
 # Makefile Author: Christopher Hylands
 #
 # Copyright (c) 1997 The Regents of the University of California.
@@ -38,23 +38,24 @@ VPATH =		$(ROOT)/java/pt/doc
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-EXTRA_SRCS =
+EXTRA_SRCS = \
+	index.html
 
-MISC_FILES =	#usersGuides #codeDoc #internals
+MISC_FILES =	internals #usersGuides #codeDoc
 
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
 # Sub directories to run make in.
-DIRS =		#usersGuides #internals
+DIRS =		internals #usersGuides
 
 ALLJSRCS = 	pt/kernel/*.java
 
 all: codeDoc/tree.html
 
-codeDoc/tree.html: ../kernel/*.java
+codeDoc/tree.html: ../*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
-	(cd ../..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d pt/doc/codeDoc $(ALLJSRCS) )
+	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d pt/doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
 		echo "Fixing paths in $$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
@@ -69,7 +70,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc javahtml
+OPTIONAL_FILES =	codeDoc
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
