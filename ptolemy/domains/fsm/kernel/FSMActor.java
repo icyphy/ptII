@@ -305,13 +305,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	}
     }
 
-    /** Perform domain-specific initialization by calling the
-     *  initialize(Actor) method of the director.
+    /** Initialize this actor.  Derived classes override this method
+     *  to perform actions that should occur once at the beginning of
+     *  an execution, but after type resolution.  Derived classes can
+     *  produce output data and schedule events.
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        getDirector().initialize(this);
     }
 
     /** Return a list of the input ports.
