@@ -115,16 +115,16 @@ test Commutator-4.1 {run with mutations} {
 	    [enumToTokenValues [$rec getRecord 0]]
 } {{StreamChangeRequest.changeExecuted(): <group>
 <entity name="commutator">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 <entity name="ramp1">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 <entity name="ramp2">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 <entity name="rec">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="2"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2"/>
 </entity>
 </group> succeeded
 StreamChangeRequest.changeExecuted(): <group>
@@ -142,13 +142,13 @@ StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
 StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
 StreamChangeRequest.changeExecuted(): <group>
 <entity name="commutator">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 <entity name="ramp2">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 <entity name="rec">
-<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </entity>
 </group> succeeded
 StreamChangeRequest.changeExecuted(): <group>
@@ -159,7 +159,7 @@ StreamChangeRequest.changeExecuted(): <group>
 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </relation>
 </group> succeeded
-} {0 0 1}}
+}} {0 0 1}
 
 test Commutator-5.1 {test under DE} {
     set e0 [deModel 6.0]
