@@ -92,3 +92,37 @@ test SingletonConfigurableAttribute-1.2 {test replacement of setContainer()} {
     </property>
 </entity>
 }
+
+
+test SingletonConfigurableAttribute1.1 {Create SingletonConfigurableAttributes} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj] 
+    set sa1 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute] 
+    set sa2 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $w] 
+    set sa3 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $n1 "foo"] 
+    list [$sa1 toString] [$sa2 toString ] [$sa3 toString]
+} {{ptolemy.kernel.util.SingletonConfigurableAttribute {.}} {ptolemy.kernel.util.SingletonConfigurableAttribute {.}} {ptolemy.kernel.util.SingletonConfigurableAttribute {..foo}}}
+
+
+test SingletonConfigurableAttribute2.1 {setContainer with the same name} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "N1"] 
+    set n2 [java::new ptolemy.kernel.util.NamedObj "N2"] 
+    set sa3 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $n1 "foo"] 
+    set sa4 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $n2 "foo"] 
+    $sa4 setContainer $n1
+    list [$sa3 toString] [$sa4 toString]
+} {{ptolemy.kernel.util.SingletonConfigurableAttribute {.foo}} {ptolemy.kernel.util.SingletonConfigurableAttribute {.N1.foo}}}
+
+
+test SingletonConfigurableAttribute-2.1 {setContainer with different workspaces} {
+    set w1 [java::new ptolemy.kernel.util.Workspace W1]
+    set w2 [java::new ptolemy.kernel.util.Workspace W2]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w1 N1] 
+    set n2 [java::new ptolemy.kernel.util.NamedObj $w2 N2] 
+    set sa5 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $n1 foo] 
+    set sa6 [java::new ptolemy.kernel.util.SingletonConfigurableAttribute $n2 foo] 
+    # Cover the catch block in setContainer
+    catch {$sa5 setContainer $n2} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot set container because workspaces are different.
+  in .N1.foo and .N2}}
