@@ -59,16 +59,17 @@ ready to do so yet. A process is delayed if it is waiting for
 time to advance. It the simulation is untimed this cannot happen. 
 <p>
 The director is responsible for handling deadlocks, both real 
-and artificial. It maintains counts of the number of active 
+and timed.  It is also responsible for carrying out any requests for 
+changes to the topology that have been made when a deadlock occurs. 
+It maintains counts of the number of active 
 processes, the number of blocked processes, and the number of 
-delayed processes. A deadlock is when the number of blocked processes 
+delayed processes. <i>Deadlock</i> is when the number of blocked processes 
 plus the number delayed processes equals the number of active processes. 
-The deadlock is artificial if at least one of the active processes 
-is delayed or mutations are waiting to be performed. Otherwise the 
-deadlock is real in that all actors under the control of this 
-director are blocked trying to communicate. The fire method 
-controls and responds to artificial deadlocks and returns when a 
-real deadlock occurs.
+<i>Time deadlock</i> occurs if at least one of the active processes 
+is delayed. <i>Real deadlock</i> occurs if all of the active processes
+ under the control of this director are blocked trying to communicate. 
+The fire method controls and responds to deadlocks and carries out 
+changes to the topology when it is appropriate.
 <p>
 If real deadlock occurs, the fire method returns and is the end 
 of one iteration one level up in the hierarchy. If there are no 
@@ -79,16 +80,10 @@ process tries to send or receive from a receiver with the terminated
 flag set, a TerminateProcessException is thrown which causes the 
 actors execution thread to terminate.
 <p>
-If artificial deadlock occurs and mutations are waiting to be 
-perfromed, then the changes are made to the topology of the simulation 
-and it is allowed to proceed(if it can). If no mutations are pending, 
-then at least one process must be delayed, so time is advanced and 
-one or more of the delayed processes will continue.
-<p>
 Time is controlled by the director. Each process can delay for some 
 delta time, and it will continue when the director has sufficently 
-advanced time. The director <i>advances</i> time each occasion an 
-artificial deadlock occurs and no mutations are pending. Processes 
+advanced time. The director <i>advances</i> time each occasion a time
+deadlock occurs and no changes to the topology  are pending. Processes 
 may specify zero delay, in which case they 
 delay until the next occasion time is advanced. Note that time can 
 be advanced to the current time. This happens if one of the 
@@ -104,10 +99,12 @@ immediately or even at all(if there are no communications taking
 place).To resume a paused simulation call setResumeRequested(). The 
 simulation may also be terminated abruptly by calling the 
 terminate() method directly. This may led to inconsistant state 
-so any results outputted after it should be ignored. <p>
+so any results outputed after it should be ignored. 
 <p>
-<p>
-mutations...
+Changes to the toplogy can occur each time deadlock, real or time, is 
+reached. The director carries out any changes that have been queued 
+with it. Note that the result of the topology changes may remove the 
+deadlock that caused the changes to be carried out.
 <p>
 more compositionality discussion...
 <p>
@@ -152,12 +149,13 @@ public class CSPDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new director with no container, no pending mutations,
-     *  current time is 0.0, and no actors are delayed or blocked.
-     *
+    /** Clone the director into the specified workspace. The new 
+     *  object is <i>not</i> added to the directory of that 
+     *  workspace (you must do this yourself if you want it there).
+     *  The result is a new director with no container, no pending 
+     *  changes to the topology, current time is 0.0, and no actors 
+     *  are delayed or blocked.
+     *  <p>
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
@@ -174,14 +172,14 @@ public class CSPDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Handles artificial deadlocks and mutations. Returns when a 
-     *  real deadlock(all processes blocked trying to communicate) 
-     *  occurs.
+    /** Handles deadlocks, both real and timed, and changes to the 
+     *  topology. It returns when a real deadlock(all processes blocked 
+     *  trying to communicate) occurs.
      */
     public synchronized void fire() {
-        // FIXME: should call checkFordeadlock here to see if still 
-        // deadlocked after transfering tokens from ports of composite 
-        // actor to internal actors.
+        // Check if still deadlocked after transferring tokens 
+        // from ports of composite actor to internal actors.
+        _checkForDeadlock();
         // This method will not return until real deadlock occurs.
         while(!_handleDeadlock()) {
             // siomething may go here e.g. notify GUI
@@ -205,6 +203,7 @@ public class CSPDirector extends ProcessDirector {
 
     /** Return false to indicate that the iteration is over. Real
      *   deadlock must have occured.
+     *  FIXME: should we control this better? - iteration lock?
      *  @return false indicating the iteration is over.
      */
     public boolean postfire() {
@@ -212,17 +211,14 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Queue a topology change request. This sets a flag so that 
-     *  the next time artificial deadlock is reached the changes 
+     *  the next time deadlock is reached the changes 
      *  to the topology are made.
-     *  @param req the topology change being queued.
+     *  @param req The topology change being queued.
      */
-    public void queueTopologyChangeRequest(TopologyChangeRequest req) {
-        System.out.println("queuning topology change in CSPDirector.");
-        synchronized(this) {
-            _topologyChangesPending = true;
-            super.queueTopologyChangeRequest(req);
-            System.out.println("queuedtopology change in CSPDirector.");
-        }
+    public synchronized void 
+            queueTopologyChangeRequest(TopologyChangeRequest req) {
+        _topologyChangesPending = true;
+        super.queueTopologyChangeRequest(req);
     }
             
     /** Set the current simulation time. This method should only be 
@@ -273,7 +269,7 @@ public class CSPDirector extends ProcessDirector {
         if ((_actorsDelayed !=0) || _topologyChangesPending 
                 || (_actorsPaused != 0)){
             throw new InvalidStateException( "CSPDirector wrapping up " +
-                    "when there are actors delayeed or paused, or when " +
+                    "when there are actors delayed or paused, or when " +
                     "topology changes are pending.");
         }
         super.wrapup();      
@@ -294,8 +290,8 @@ public class CSPDirector extends ProcessDirector {
      *  corresponding to the actor will continue.
      *  Note that actors can only deal with delta time.
      *  <p>
-     *  If delta is negative treat as delaying until next time 
-     *  artificial deadlock is reached.
+     *  If delta is negative, treat as delaying until next time 
+     *  deadlock is reached.
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
      */
@@ -341,49 +337,53 @@ public class CSPDirector extends ProcessDirector {
 
     /** Check if all active processes are either blocked, delayed or
      *  paused. If so, then none of the processes are running so the 
-     *  simulation has been paused. This allows urgent mutations to occur.
+     *  simulation has been paused. 
      */
     protected synchronized void _checkForPause() {
         if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
             _paused = true;
             System.out.println("CSPDirector: simulation successfully paused!");
-            notifyAll();
+            // FIXME should throw a pauseEvent here
+
         }
         return;
     }
   
-    /** The heart of the director that responds
-     *  when a deadlock is detected. It is where nearly all the control for 
-     *  the simulation at this level in the hierarchy is located.
+    /** The heart of the director that responds when a deadlock is 
+     *  detected. It is where nearly all the control for the 
+     *  simulation at this level in the hierarchy is located.
      *  <p>
      *  Deadlock occurs if the number of blocked and delayed process 
-     *  equals the number of active processes. If the number of delayed 
-     *  processes is greater than zero, or there are mutations waiting 
-     *  to happen, then the deadlock is artificial. In this case this
-     *  method determines what needs to be done, does it and waits 
-     *  until the next deadlock. Otherwaise the 
-     *  deadlock is real and this method returns.
-     *  If this director is not controlling the top level 
-     *  composite actor, then real deadlock marks the end of one 
-     *  iteration one level up in the hierarchy. If there is no level 
-     *  above this one, then real deadlock marks the end of the simulation.
+     *  equals the number of active processes. The method looks for 
+     *  three cases in the following order: are there topology changes 
+     *  waiting to happen, are there any process delayed, are all the 
+     *  processses blocked trying to rendezvous. 
      *  <p>
-     *  When artificial deadlock occurs and there are no pending 
-     *  mutations, then time is advanced and at least one of the 
-     *  delayed actors will wake up and continue. Note that time can 
-     *  be advanced to the current time. This happens if one of the 
+     *  If there are changes to the topology waiting to happen, they are 
+     *  performed and the simulation continues. Note that the result of 
+     *  performing the topology changes may be to remove the deadlock 
+     *  that had occured.
+     *  <p>
+     *  If the number of delayed processes is greater than zero, then 
+     *  <i> time deadlock</i> has occured. Time is advanced and at least 
+     *  one of the delayed actors will wake up and continue. Note that 
+     *  time can be advanced to the current time. This happens if one of the 
      *  delayed actors delayed with a delta delay of zero. Otherwise the 
      *  simulation time is increased as well as being advanced.
-     *  <p>
      *  Current time is defined as the double value returned by 
      *  getCurrentTime plus/minus 10e-10.
-     *  @param True if real deadlock occured, false otherwise.
+     *  <p>
+     *  If all the processes are blocked, then <i>real deadlock</i> has 
+     *  occured. This method returns true, indicating the end of one 
+     *  iteration one level up in the hierarchy. If there is no level 
+     *  above this one, then real deadlock marks the end of the simulation.
+     *  @return True if real deadlock occured, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
         try {          
             if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
                 if (_topologyChangesPending) {
-                    System.out.println("ARTIFICIAL MUTATION DEADLOCK!!");
+                    System.out.println("TOPOLOGY CHANGES PENDING!!");
                     _processTopologyRequests();
                     LinkedList newThreads = new LinkedList();
                     Enumeration newActors = _newActors();
@@ -391,12 +391,6 @@ public class CSPDirector extends ProcessDirector {
                         Actor actor = (Actor)newActors.nextElement(); 
                         System.out.println("Adding and starting new actor; " +
                                 ((Nameable)actor).getName() + "\n");
-                        // increaseActiveCount should be called before 
-                        // createReceivers as that might increase the 
-                        // count of processes blocked and deadlocks 
-                        // might get detected even if there are no 
-                        // deadlocks
-                        // FIXME: ask mudit about this.
                         increaseActiveCount();
                         actor.createReceivers();
                         actor.initialize();
@@ -412,16 +406,15 @@ public class CSPDirector extends ProcessDirector {
                             ProcessThread p = 
                                 (ProcessThread)allThreads.nextElement(); 
                             p.start();
-                           
                             _threadList.insertFirst(p);
                     }
                     _topologyChangesPending = false;
                     _checkForDeadlock();
                     System.out.println("Finished dealing with " +
-                            "mutation deadlock.");
+                            "changes to the topology.");
                 } else if (_actorsDelayed > 0) {
-                    // Artificial deadlock.
-                    System.out.println("ARTIFICIAL TIME DEADLOCK!!");
+                    // Time deadlock.
+                    System.out.println("TIME DEADLOCK!!");
                     double nextTime = _getNextTime();
                     System.out.println("\nCSPDirector: advancing time " + 
                             "to: " + nextTime);
@@ -458,8 +451,8 @@ public class CSPDirector extends ProcessDirector {
             return false;
         } catch (InterruptedException ex ) {
             throw new InvalidStateException("CSPDirector: interruped " +
-                    "while waiting for deadlock to occur or " +
-                    "resolving an artificial deadlock.");
+                    "while waiting for a real deadlock to occur or " +
+                    "resolving a time deadlock.");
         } catch (TopologyChangeFailedException ex ) {
             throw new InvalidStateException("CSPDirector: failed to " +
                     "complete topology change requests.");
