@@ -42,6 +42,12 @@ import ptolemy.lang.java.PackageResolutionVisitor;
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import ptolemy.lang.java.StaticResolution;
+import ptolemy.lang.java.ASTReflect;
+import java.util.Collection;
+import java.util.List;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
+import ptolemy.lang.java.nodetypes.UserTypeDeclNode;
 
 
 
@@ -62,6 +68,10 @@ import java.io.IOException;
 public class JavaToC {
     public static void main(String[] args) throws Exception {
 
+        // Print all abstract syntax trees that have been processed 
+        // during static resolution. For diagnostic purposes.
+        boolean printAllASTs = false;
+
         // Check validity of the application's argument.
         if (args.length != 1) {
             throw new Exception("JavaToC expects exactly one argument");
@@ -81,8 +91,9 @@ public class JavaToC {
         JavaConverter converter = new JavaConverter(passList);
 
         // Configure the code generator to display verbose output,
-        // and perform static resolution.
-        converter.configure(true, true);
+        // perform static resolution, and suppress debugging output
+        // in the parser.
+        converter.configure(true, true, false);
 
         // Generate C code from the Java files specified on the command line.
         LinkedList passResultList = converter.convert(args);
@@ -113,6 +124,31 @@ public class JavaToC {
         }
         out.println(generatedCode.toString());
         out.close();
+
+        // Write out information about all class files that were parsed
+        // during processing of this compilation unit.
+        Collection compilationUnits = 
+                StaticResolution.allPass0ResolvedMap.values();
+        if (compilationUnits == null) 
+            System.out.println("No compilation unit nodes were generated " +
+                    "through static resolution\n");
+        Iterator compilationUnitIterator = compilationUnits.iterator();
+        System.out.println("Beginning of compilation unit dump.\n"); 
+        int unitNumber = 1;
+        while (compilationUnitIterator.hasNext()) {
+           CompileUnitNode unit = 
+                   (CompileUnitNode) compilationUnitIterator.next();
+           if (printAllASTs) {
+               System.out.println("Compilation unit #" + unitNumber++ + ":\n\n"); 
+               System.out.println(unit.toString() + "\n\n");
+           }
+           else {
+               System.out.println("Unit #" + unitNumber++ +
+                   ASTReflect.getFullyQualifiedName(unit)); 
+           }
+        } 
+        System.out.println("End of compilation unit dump. Total = "
+                + (unitNumber - 1) + ".\n");
 
     }
 }
