@@ -281,12 +281,14 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Create the second port needed by modulo function
      */
     private void _createSecondPort()
             throws NameDuplicationException, IllegalActionException {
-
+        // Go looking for the port in case somebody else created the port
+        // already.  For example, this might
+        // happen in shallow code generation.
+        secondOperand = (TypedIOPort)getPort("secondOperand");
         if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
         } else if (secondOperand.getContainer() == null) {
@@ -294,7 +296,6 @@ public class MathFunction extends TypedAtomicActor {
         }
         secondOperand.setTypeEquals(BaseType.DOUBLE);
     }
-
 
     /** Calculate the function on the given argument.
      *  @param input1 The first input value.
