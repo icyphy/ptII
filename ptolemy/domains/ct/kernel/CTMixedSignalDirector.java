@@ -294,7 +294,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 }
             }
             //Refine step size and set ODE Solvers.
-            setCurrentODESolver(_getDefaultSolver());
+            setCurrentODESolver(getDefaultSolver());
             setCurrentStepSize(getSuggestedNextStepSize());
             double tnow = getCurrentTime();
             double bp;
@@ -326,7 +326,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     // break point now!
                     breakPoints.removeFirst();
                     setCurrentTime(bp);
-                    setCurrentODESolver(_getBreakpointSolver());
+                    setCurrentODESolver(getBreakpointSolver());
                     setCurrentStepSize(getMinStepSize());
                     if(DEBUG) {
                         System.out.println("Change to BP solver with stepsize"
