@@ -195,7 +195,7 @@ runDemoTest: treeShakeAll
 # Treeshake everything and run it
 treeShakeAll: treeShakeWithoutCodegen runTreeShakeWithoutCodegen \
 		treeShakeAndRunSnapshots \
-		treeShakeCodgen runTreeShakeCodgen \
+		treeShakeCodegen runTreeShakeCodegen \
 		compareTreeShakeJars
 
 treeShakeWithoutCodegen:
@@ -243,7 +243,7 @@ treeShakeAndRunSnapshots:
 		$(ROOT)/util/testsuite/memorystats "$(MODEL) $$snapshot" < $(STATSFILE); \
 	done
 
-treeShakeCodgen:
+treeShakeCodegen:
 	@echo "Treeshake the final codegen version"
 	@$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX)_codegen.jar \
 		$(JAVA) \
@@ -251,7 +251,7 @@ treeShakeCodgen:
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
 
-runTreeShakeCodgen:
+runTreeShakeCodegen:
 	@echo "Run the final codegen version"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
@@ -274,6 +274,86 @@ compareTreeShakeJars:
 	@comm -23 /tmp/treeshake_toc /tmp/treeshake_codegen_toc
 	@rm -f /tmp/treeshake_toc /tmp/treeshake_codegen_toc	
 	ls -l ${TREESHAKE_PREFIX}*
+
+gcjsetup:	demo treeShakeCodegen runTreeShakeCodegen
+
+
+gcjFix: $(TARGETPATH)/CGoutputBitDisplay.java
+$(TARGETPATH)/CGoutputBitDisplay.java:
+	@echo "gcj fails with stack underflow on CGoutputBitDisplay,"
+	@echo " so we regenerate"
+	cd $(ROOT)/$(TARGETPATH); \
+		$(PTII)/bin/jode -classpath $(PTII) ptolemy.copernicus.java.cg.OrthogonalCom.CGoutputBitDisplay | awk '{if ($$0 ~ /^package /) {printit=1}; if (printit == 1) { print $$0}} ' | sed 's@final@/* final */@g' > CGoutputBitDisplay.java
+	@echo "Now edit $(ROOT)/$(TARGETPATH)/CGoutputBitDisplay.java"
+	@echo "and run make gcjFixCompile"
+
+gcjFixCompile:
+	cd $(ROOT)/$(TARGETPATH); \
+		$(JAVAC) -classpath "$(PTII)" CGoutputBitDisplay.java
+
+gcj1:
+	@echo "---- This will crap out with 'stack underflow' unless"
+	@echo "     We regenerate CGoutputBitDisplay.java by running"
+	@echo "     'make gcjFix'"
+	cd $(ROOT)/$(TARGETPATH); \
+		CLASSPATH=$(PTII) \
+		gcj --main=ptolemy.copernicus.java.cg.Orthogonal.Main -o ortho *.class
+	@echo "Even so, this fails when linking"
+
+gcj2: $(ROOT)/$(TARGETPATH)/gcj gcj2_1 gcj2_2
+gcj2_1:
+	@echo "--- Run gcj on all the .class files in the jar file dir"
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		dirs=`find . -type d -print`; \
+		echo "dirs=$$dirs"; \
+		for dir in $$dirs; \
+		do \
+			echo "---Running gcj in $$dir"; \
+			(cd $$dir; CLASSPATH="$(PTII)"; gcj -c --CLASSPATH=$(PTII) --encoding=UTF-8 *.class); \
+		done;
+gcj2_2:
+	@echo "--- Run gcj on all the .o files in the jar file dir"
+	@echo "    Note that here, we end up needing .class files other"
+	@echo "    than the ones in the jar file"
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
+		gcj --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
+			-o ortho $$objs;
+
+gcj3_1:
+	@echo "--- Determine what directories are in the jar file"
+	@echo "    then run gcj on the .class files with the "
+	@echo "    same directories in $PTII."
+	@echo "    Expect errors, so run with -k"
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		dirs=`find . -type d -print`; \
+		echo "dirs=$$dirs"; \
+		for dir in $$dirs; \
+		do \
+			echo "---Running gcj in $$dir"; \
+			(cd $(PTII)/$$dir; CLASSPATH="$(PTII)"; gcj -c --CLASSPATH=$(PTII) --encoding=UTF-8 *.class); \
+		done;
+gcj3_2:
+	@echo "--- Determine what directories are in the jar file"
+	@echo "    then run gcj on the .o files in the same directories in $PTII."
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
+		(cd $(PTII); gcj --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
+			-o ortho $$objs);
+	@echo "Unfortunately, this still does not work because we need"
+	@echo "yet more methods in other packages"
+
+
+# Unjar the treeshake_codegen jar file for use with gcj
+# Use $(PTII)/$(TARGETPATH)/treeshake_codegen.jar insetead of
+# $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
+$(ROOT)/$(TARGETPATH)/gcj: $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
+	rm -rf $@
+	mkdir $@
+	cd $@; jar -xf $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
+
+
+
 
 
 timeOrthoCommDemo:
