@@ -43,6 +43,7 @@ public abstract class Filter {
     ////                         public methods                    ////
 
     // Constants describe the various types of digital filter
+    public final static int BLANK = 0;
     public final static int IIR = 1;
     public final static int FIRWIN = 2;
     public final static int FIROPT = 3;
