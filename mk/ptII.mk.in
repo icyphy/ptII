@@ -62,12 +62,6 @@ JVERSION =	@JVERSION@
 # For Cygwin, this would be ;
 CLASSPATHSEPARATOR = @CLASSPATHSEPARATOR@
 
-# Location of the Java html documentation.
-# The file java.lang.Object.html should
-# be at $JAVAHTMLDIR/java.lang.Object.html
-# JAVAHTMLDIR = 	/opt/SUNWjws/JWS/lib/html/java/api
-JAVAHTMLDIR = 	$(PTJAVA_DIR)/docs/api
-
 # The home of the Java Foundation Classes (JFC) aka Swing
 JFCHOME = 	/opt/swing
 
