@@ -313,6 +313,20 @@ public final class IntMatrixToken extends MatrixToken {
 	}
     }
 
+    /** Return the element of the matrix at the specified
+     *  row and column wrapped in a token.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return An IntToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the corresponding range
+     *   of the index of the contained array.
+     */
+    public Token getElementAsToken(int row, int column)
+            throws ArrayIndexOutOfBoundsException {
+	return new IntToken(_value[row * _columnCount + column]);
+    }
+
     /** Return the element of the contained array at the specified
      *  row and column.
      *  @param row The row index of the desired element.

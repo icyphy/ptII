@@ -71,7 +71,8 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException Always thrown.
      */
     public static Token convert(Token token) throws IllegalActionException {
-	return token;
+        throw new IllegalActionException(token.getClass().getName() +
+        " cannot connvert to a MatrixToken since that class is abstract.");
     }
 
     /** In derived classes that can be represented as a 2-D double array,
@@ -96,6 +97,7 @@ public abstract class MatrixToken extends Token {
      *  @return A 2-D integer array.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
+     */
     public int[][] intMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
         " cannot be converted to an integer matrix.");
@@ -117,6 +119,18 @@ public abstract class MatrixToken extends Token {
      *  @return An integer representing the number of columns.
      */
     public abstract int getColumnCount();
+
+    /** Return the element of the matrix at the specified
+     *  row and column wrapped in a token.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return A token containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the corresponding range
+     *   of the index of the contained array.
+     */
+    public abstract Token getElementAsToken(int row, int column)
+            throws ArrayIndexOutOfBoundsException;
 
     /** Return the number of rows of the contained matrix.
      *  @return An integer representing the number of rows.
