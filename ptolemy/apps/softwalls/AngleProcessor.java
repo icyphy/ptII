@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Limits angles to the appropriate range.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -29,10 +29,18 @@
 
 package ptolemy.apps.softwalls;
 
+import java.util.List;
+
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.expr.Parameter;
@@ -41,7 +49,13 @@ import ptolemy.data.expr.Parameter;
 //// AngleProcessor
 /**
 
-Given an input angle, it computes the equivalent angle in the range [0, 2*Pi).
+Given an input angle, it computes the equivalent angle in the range
+[minAngle, maxAngle).  Typically, maxAngle - minAngle = 2 * pi
+(radians) or 360 (degrees) or 2 (normalized angle).
+
+minAngle and maxAngle are parameters.
+
+The inputAngle, minAngle, and maxAngle must be DoubleTokens.
 
 @author Adam Cataldo
 @version $Id$
@@ -62,9 +76,17 @@ public class AngleProcessor extends TypedAtomicActor {
 
         super(container, name);
 
-        // Create and configure ports
+        // Create and configure ports and parameters
         inputAngle = new TypedIOPort(this, "inputAngle", true, false);
         outputAngle = new TypedIOPort(this, "outputAngle", false, true);
+        minAngle = new PortParameter(this, 
+                "minAngle", new DoubleToken(0.0));
+        maxAngle = new PortParameter(this, 
+                "maxAngle", new DoubleToken(2 * Math.PI));
+        inputAngle.setTypeEquals(BaseType.DOUBLE);
+        outputAngle.setTypeEquals(BaseType.DOUBLE);
+        minAngle.setTypeEquals(BaseType.DOUBLE);
+        maxAngle.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,29 +98,117 @@ public class AngleProcessor extends TypedAtomicActor {
     /** Output angle */
     public TypedIOPort outputAngle;
 
+    /** Max and min angle parameters */
+    public PortParameter minAngle;
+    public PortParameter maxAngle;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Overrides the base class to update the minAngle and maxAngle values.
+     *  @exception IllegalActionException Thrown if exception is
+     *  thrown from reading the parameters.
+     *  @param attribute The attribute that has changed.
+     */
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        try {
+            if (attribute == minAngle) {
+                _minAngle = 
+                    ((DoubleToken)(minAngle.getToken())).doubleValue();
+            }
+            else if (attribute == maxAngle) {
+                _maxAngle = 
+                    ((DoubleToken)(maxAngle.getToken())).doubleValue();
+            }
+        }
+        catch (IllegalActionException e) {
+            throw new IllegalActionException(getContainer(),
+                    e.getCause(), e.getMessage());
+        }                    
+    }
+
+    /** Overrides the base class to initialize the minAngle and
+     *  maxAngle values.
+     *  @exception IllegalActionException Thrown if exception is
+     *  thrown from reading the parameters.
+     */
+    public void initialize() throws IllegalActionException {
+        try {
+            _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
+            _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
+         }
+        catch (IllegalActionException e) {
+            throw new IllegalActionException(getContainer(),
+                    e.getCause(), e.getMessage());
+        }
+    }
+
     /** Overrides the base class to output the correct angle.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Thrown if exception is
+     *  thrown from the input port.
      */
 
     public void fire() throws IllegalActionException {
-        double angle;
-        /** Get current function and gradient information.
-         */
+        try {
+            double angle;
+            double range;
+ 
+            angle = ((DoubleToken)(inputAngle.get(0))).doubleValue();
+            
+            minAngle.update();
+            maxAngle.update();
+            _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
+            _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
 
-        angle = ((DoubleToken)inputAngle.get(0)).doubleValue();
+            if (_minAngle >= _maxAngle) {
+                throw new IllegalActionException(getContainer(), 
+                        "minAngle >= maxAngle");
+            }
 
-        while (angle < 0) {
-            angle = angle + 2 * Math.PI;
+            range = _maxAngle - _minAngle;
+
+            while (angle < _minAngle) {
+                angle = angle + range;
+            }
+            while (angle >= _maxAngle) {
+                angle = angle - range;
+            }
+
+            outputAngle.send(0, new DoubleToken(angle));
         }
-        while (angle >= 2 * Math.PI) {
-            angle = angle - 2 * Math.PI;
+        catch (IllegalActionException e) {
+            throw new IllegalActionException(getContainer(), 
+                    e.getCause(), e.getMessage());
         }
-
-        outputAngle.send(0, new DoubleToken(angle));
+        catch (NoTokenException e) {
+            throw new IllegalActionException(getContainer(),
+                    e.getCause(), e.getMessage());
+        }
     }
-}
 
+    /** Overrides the base class to ensure input is available before firing.
+     *  @exception IllegalActionException Thrown if hasToken method
+     *  throws excepction.
+     */
+    public boolean prefire() throws IllegalActionException {
+        try {
+            if (inputAngle.hasToken(0)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (IllegalActionException e) {
+            throw new IllegalActionException(getContainer(), 
+                    e.getCause(), e.getMessage());
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+    
+    private double _minAngle, _maxAngle;
+}
 
