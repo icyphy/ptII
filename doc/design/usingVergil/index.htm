@@ -5,15 +5,12 @@
 <META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
 <LINK REL="STYLESHEET" HREF="index.css" CHARSET="ISO-8859-1" TYPE="text/css">
 <TITLE>
- Authors:		Steve Neuendorffer
+ Author:		Steve Neuendorffer
 </TITLE>
 
 </HEAD>
 <BODY BGCOLOR="#ffffff">
-<OL>
-<LI CLASS="FM1Heading">
-<A NAME="pgfId-158262"></A><A NAME="87959"></A>Using Vergil</LI>
-</OL>
+<h1>Using Vergil</h1>
 <DIV>
 <H3 CLASS="Author">
 <A NAME="pgfId-162678"></A>Authors:		Steve Neuendorffer</H3>
@@ -127,7 +124,7 @@
 <P CLASS="Body">
 <A NAME="pgfId-166684"></A>It turns out that the <A NAME="marker-166687"></A>SDF scheduler is actually much more sophisticated. It is capable of scheduling the execution of actors with arbitrary prespecified data rates. Not all actors produce and consume just a single sample each time they are invoked (<A NAME="marker-166692"></A>fired). Some require several input samples (<A NAME="marker-166693"></A>tokens) before they can be fired, and produce several tokens when they are fired.</P>
 <P CLASS="Body">
-<A NAME="pgfId-166688"></A>One such actor is a spectral estimation actor. Figure <A HREF="usingVergil.htm#46190" CLASS="XRef">See A multirate SDF model.</A> shows a system that computes the <A NAME="marker-166700"></A>spectrum of a sine wave. The spectrum actor has a single parameter, which gives the order of the <A NAME="marker-166701"></A>FFT used to calculate the spectrum. Figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> shows the output of the model with order set to 8 and the number of iterations set to 1. Note that there are 256 output samples. This is because the Spectrum actor requires 28, or 256 input samples to fire, and produces 28, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples.</P>
+<A NAME="pgfId-166688"></A>One such actor is a spectral estimation actor. Figure <A HREF="usingVergil.htm#46190" CLASS="XRef">See A multirate SDF model.</A> shows a system that computes the <A NAME="marker-166700"></A>spectrum of a sine wave. The spectrum actor has a single parameter, which gives the order of the <A NAME="marker-166701"></A>FFT used to calculate the spectrum. Figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> shows the output of the model with order set to 8 and the number of iterations set to 1. Note that there are 256 output samples. This is because the Spectrum actor requires 2<sup>8</sup>, or 256 input samples to fire, and produces 2<sup>8</sup>, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples.</P>
 <DIV>
 <MAP NAME="index-12">
 </MAP>
