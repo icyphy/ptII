@@ -194,6 +194,8 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public void place(Container container) {
         _container = container;
+        // FIXME: Need support for toolbar run.
+        if (_container == null) return;
 	Container c = _container.getParent();
 	while (c.getParent() != null) {
 	    c = c.getParent();
