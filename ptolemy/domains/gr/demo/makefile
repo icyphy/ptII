@@ -50,6 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	FurutaPendulum/FurutaPendulum.jar \
 	Pendulum/Pendulum.jar \
+	StickyMasses/StickyMasses.jar \
 	Universe/Universe.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
