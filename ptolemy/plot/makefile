@@ -36,7 +36,7 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		#doc test
+DIRS = 	demo #doc test
 
 CLASSPATH =	.
 # Order matters here.
@@ -50,7 +50,7 @@ JSRCS = \
 
 EXTRA_SRCS = $(JSRCS)
 
-MISC_FILES = doc test
+MISC_FILES = demo doc test 
 
 JCLASS = \
 	PlotBox.class \
