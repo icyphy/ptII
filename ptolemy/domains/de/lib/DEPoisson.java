@@ -72,6 +72,20 @@ public class DEPoisson extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         Ports and Parameters              ////
+
+    /** The output port, which has type at least that of the value
+     *  parameter.
+     */
+    public TypedIOPort output;
+
+    /** The mean inter-arrival time.  The value is a DoubleToken. */
+    public Parameter meantime;
+
+    /** The output value, which can contain any type of token. */
+    public Parameter outputvalue;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in a parameter.  This method is called by
@@ -150,15 +164,6 @@ public class DEPoisson extends DEActor {
 	result.insertLast(ineq);
 	return result.elements();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    public TypedIOPort output;
-
-    // the mean inter-arrival time and value
-    public Parameter meantime;
-    public Parameter outputvalue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
