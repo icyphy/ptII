@@ -46,12 +46,15 @@ package ptolemy.plot;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import java.awt.Rectangle;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
