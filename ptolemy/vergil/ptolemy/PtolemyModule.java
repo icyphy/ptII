@@ -191,32 +191,22 @@ public class PtolemyModule implements Module {
         application.addDocumentFactory(new PtolemyDocument.Factory());
 	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
-	/*
-	try {
-	    String ptII = System.getProperty("ptolemy.PTII");
-	    System.setProperty("java.security.policy",
-			       ptII + "/bin/policy.all");
-	    System.setProperty("outrigger.spacename",
-			       "JavaSpaces");
-	    System.setProperty("com.sun.jini.lookup.groups",
-			       "public");
-	    System.setProperty("java.rmi.server.codebase",
-			       "file:" + ptII + "/");
-	    URL url;
-	    url = new URL("file:" + ptII + 
-			  "/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar");
-	    application.classLoadingService.addToClassPath(url);
-	    url = new URL("file:" + ptII + 
-			  "/vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar");
-	    application.classLoadingService.addToClassPath(url);
+	// parse the icon library
+	URL iconlibURL = null;
+        try {
+            iconlibURL = 
+		getModuleResources().getResource("rootIconLibrary");
 
-	} catch (Exception ex2) {
-	    ex2.printStackTrace();
-	}
-	*/
-
-        // Create the library browser.
-        JTree pTree = LibraryTreeModel.createTree(application);
+	    MoMLParser parser = new MoMLParser();
+	    _iconLibrary = (CompositeEntity) parser.parse(
+                    iconlibURL, iconlibURL.openStream());
+            LibraryIcon.setIconLibrary(_iconLibrary);
+        } catch (Exception e) {
+           getApplication().showError("Failed to parse icon library", e);
+        }
+   
+	// Create the library browser.
+	JTree pTree = LibraryTreeModel.createTree(application);
         pTree.setBackground(BACKGROUND_COLOR);
         JScrollPane scrollPane = new JScrollPane(pTree);
         scrollPane.setMinimumSize(new Dimension(200, 200));
@@ -229,8 +219,6 @@ public class PtolemyModule implements Module {
         splitPane.resetToPreferredSizes();
         splitPane.validate();
         splitPane.repaint();
-        
-	SwingUtilities.invokeLater(new PaletteInitializer());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -568,26 +556,6 @@ public class PtolemyModule implements Module {
 	    });
 	}
     }
-    
-    // A Runnable object that is responsible for initializing the 
-    // design palette.  This is done in a separate
-    // thread, because loading the libraries can take quite a while.
-    // FIXME: I don't think this needs to be a separate thread anymore
-    // (now that we are using library objects).
-    private class PaletteInitializer implements Runnable {
-	/** 
-	 * Parse the icon and entity libraries and populate the 
-	 * design palette.
-	 */
-	public void run() {
-	    DesktopContext frame = getApplication().getDesktopContext();
-	    JPanel pane = (JPanel)frame.getPalettePane();
-	    
-	    _parseLibraries();
-
-	    //System.out.println("Icons = " + _iconLibrary.description());
-	} 
-    }
 
     // An execution listener that displays the status of the current
     // document.
@@ -775,23 +743,6 @@ public class PtolemyModule implements Module {
 	}
     }
     
-    // Parse the entity and icon XML libraries.  Set the entity and icon
-    // libraries for this application.
-    private void _parseLibraries() {
-        URL iconlibURL = null;
-        try {
-            iconlibURL = 
-		getModuleResources().getResource("rootIconLibrary");
-
-	    MoMLParser parser = new MoMLParser();
-	    _iconLibrary = (CompositeEntity) parser.parse(
-                    iconlibURL, iconlibURL.openStream());
-            LibraryIcon.setIconLibrary(_iconLibrary);
-        } catch (Exception e) {
-           getApplication().showError("Failed to parse icon library", e);
-        }
-    }
-
     // Redo the layout of the given JGraph.
     private void _redoLayout(JGraph jgraph) {
 	GraphController controller = 
