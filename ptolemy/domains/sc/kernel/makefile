@@ -42,13 +42,13 @@ DIRS = 		#test #demo #doc
 CLASSPATH =	../../../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.domains.sc.kernel
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/domains/sc/kernel
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.domains.sc.kernel
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/domains/sc/kernel
+PTERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	SCState.java \
