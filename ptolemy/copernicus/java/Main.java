@@ -81,7 +81,7 @@ Read in a MoML model and generate Java classes for that model.
 public class Main extends KernelMain {
 
     /** Read in a MoML model.
-     *  @params args The first element of the array is the MoML class
+     *  @param args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options, see the superclass documentation for details.
      *  @exception IllegalActionException If the model cannot be parsed.

@@ -314,7 +314,7 @@ public class Expression extends TypedAtomicActor {
     }
 
     /** Increment the iteration count.
-     *  @IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
