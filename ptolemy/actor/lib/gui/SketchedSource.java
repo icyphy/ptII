@@ -170,18 +170,18 @@ public class SketchedSource extends Source
     public void fire() throws IllegalActionException {
         // Read the trigger input, if there is one.
         super.fire();
-        int prd = ((IntToken)period.getToken()).intValue();
+        int periodValue = ((IntToken)period.getToken()).intValue();
         if (_count < _data[1].length) {
             // NOTE: X value ignored.
             output.send(0, new DoubleToken(_data[1][_count]));
             _count++;
         } else {
             output.send(0, _zero);
-            if (_count < prd) {
+            if (_count < periodValue) {
                 _count++;
             }
         }
-        if (prd > 0 && _count >= prd) {
+        if (periodValue > 0 && _count >= periodValue) {
             // Reread the data in case it has changed.
             _count = 0;
             int set = ((IntToken)dataset.getToken()).intValue();
