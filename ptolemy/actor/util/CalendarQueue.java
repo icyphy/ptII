@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
+
 */
 
 package ptolemy.actor.util;
