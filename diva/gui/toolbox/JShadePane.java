@@ -203,7 +203,7 @@ public class JShadePane extends JPanel {
     }
 
     /**
-     * Insert a shade with the given title/icon/comnponent/tip
+     * Insert a shade with the given title/icon/component/tip
      * at the specified index.  Either the title or the icon can
      * be null, but not both.
      */
