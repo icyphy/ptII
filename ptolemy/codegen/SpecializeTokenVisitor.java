@@ -395,17 +395,20 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 return null; // return type is void
             } else if (methodName.equals("get")) {
                 return _makeConstantTerm(portTypeNode, null);
-            } else if (methodName.equals("send") && argTerms.size() == 2) {
-                // Handle a two arg send().
-                // FIXME: iterate() uses a three arg send(), we should
-                // consider dealing with that.
-                //
-                // Second argument is a token, constrain it.
-                InequalityTerm secondArgTerm =
-                    (InequalityTerm) argTerms.get(1);
-                _solver.addInequality(new Inequality(secondArgTerm,
-                        _makeConstantTerm(portTypeNode, null)));
-                return null; // return type is void
+            } else if (methodName.equals("send")) {
+                if (argTerms.size() == 3) {
+                    // FIXME: iterate() uses a three arg send(), we should
+                    // consider dealing with that.
+                    System.err.println("SpecializeTokenVisitor: warning " +
+                            "found 3 argument send call in " + node);
+                } else {
+                    // Second argument is a token, constrain it.
+                    InequalityTerm secondArgTerm =
+                        (InequalityTerm) argTerms.get(1);
+                    _solver.addInequality(new Inequality(secondArgTerm,
+                            _makeConstantTerm(portTypeNode, null)));
+                    return null; // return type is void
+                }
             } // support getArray ...
 
         } else if (accessedObjKind ==
