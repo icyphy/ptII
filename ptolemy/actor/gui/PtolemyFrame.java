@@ -72,7 +72,14 @@ public abstract class PtolemyFrame extends TableauFrame {
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
         setModel(model);
-	setIconImage(_getDefaultIconImage());
+	// _getDefaultIconImage() could return null if we can't find the
+	// image file, so we need to check.  This could happen if
+	// we were running from a jar file and the image file was not
+	// in jar.
+	Image defaultIconImage = _getDefaultIconImage();
+	if (defaultIconImage != null) {
+	    setIconImage(defaultIconImage);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,13 +102,19 @@ public abstract class PtolemyFrame extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     *
-     */
+    // Return the default icon image, or null if there is none.
+    // Note that Frame.setIconImage(null) will set the image to the
+    // default platform dependent image for us.
     protected Image _getDefaultIconImage() {
 	if(_defaultIconImage == null) {
+	    // Note that PtolemyIISmallIcon.gif is also in doc/img.
+	    // We place a duplicate copy here to make it easy to ship
+	    // jar files that contain all the appropriate images.
 	    URL url =
-		getClass().getResource("/doc/img/PtolemyIISmallIcon.gif");
+		getClass().getResource("/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+	    if (url == null) {
+		return null;
+	    }
 	    Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
 	}
