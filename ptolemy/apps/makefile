@@ -42,7 +42,7 @@ ME =		ptolemy/apps
 # PTSOOT_DIR is set to soot if Soot was fount.
 # PTWABA_DIR is set to waba if waba was found
 DIRS =		agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTLEJOS) \
-		tini $(PTSOOT_DIR) $(PTWABA_DIR)
+		tini saveasjava $(PTSOOT_DIR) $(PTWABA_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
