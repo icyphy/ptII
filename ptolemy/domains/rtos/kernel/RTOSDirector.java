@@ -381,7 +381,7 @@ public class RTOSDirector extends Director {
                 _nextIterationTime = finishTime;
             }
         }
-        if(_isEmbedded()) {
+        if(_isEmbedded() && _nextIterationTime < Double.MAX_VALUE) {
             _requestFiringAt(_nextIterationTime);
         }
     }
