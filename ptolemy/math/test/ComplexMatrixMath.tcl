@@ -177,6 +177,53 @@ test ComplexMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
     epsilonDiff $stmp {{{1.0 + 2.0i 3.0 - 4.0i -4.9 - 6.0i} {-7.0 + 8.0i -0.25 + 0.4i -4.9 - 6.0i} {3.0 - 4.0i 1.0 + 2.0i -0.25 + 0.4i}}}
 } {}
 
+####################################################################
+test ComplexMatrixMath-5.8.1 {matrixCopy([][], [][]) } {
+    set m23_tmp [java::new {ptolemy.math.Complex[][]} 2 \
+	    [list \
+	    [list $c1 $c1 $c1] \
+	    [list $c1 $c1 $c1]]]
+
+    java::call ptolemy.math.ComplexMatrixMath \
+	    matrixCopy $m23 $m23_tmp
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $m23_tmp]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 - 6.0i 1.0 + 2.0i 3.0 - 4.0i} {-0.25 + 0.4i -7.0 + 8.0i 3.0 - 4.0i}}}
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.8.2 {matrixCopy([][], [][]) } {
+    set m32_tmp [java::new {ptolemy.math.Complex[][]} 3 \
+	    [list \
+	    [list $c1 $c1] \
+	    [list $c1 $c1] \
+            [list $c1 $c1]]]
+
+    java::call ptolemy.math.ComplexMatrixMath \
+	    matrixCopy $m32 $m32_tmp
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $m32_tmp]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 - 6.0i 1.0 + 2.0i} {-0.25 + 0.4i -7.0 + 8.0i} {3.0 - 4.0i -0.25 + 0.4i}}}
+} {}
+
+
+####################################################################
+test ComplexMatrixMath-5.8.3 {matrixCopy Complex[][] int int Complex[][] int int int int} {
+    set m3_src [java::new {ptolemy.math.Complex[][]} 3 \
+	    [list \
+	    [list $c1 $c2] \
+	    [list $c3 $c4] \
+            [list $c5 $c1]]]
+    set m3_dest [java::new {ptolemy.math.Complex[][]} 3 [list [list $c3 $c1] \
+                                       [list $c5 $c4] \
+                                       [list $c2 $c5]]]
+
+    java::call ptolemy.math.ComplexMatrixMath \
+	    {matrixCopy} $m3_src 0 0 $m3_dest 1 0 2 2
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $m3_dest]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 - 6.0i 1.0 + 2.0i} {1.0 + 2.0i 3.0 - 4.0i} {-4.9 - 6.0i -7.0 + 8.0i}}}
+} {}
 
 ####################################################################
 test ComplexMatrixMath-5.9.0 {conjugate } {
@@ -195,3 +242,14 @@ test ComplexMatrixMath-5.9.1 {conjugate with 0x0 matrix} {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{-4.9 + 6.0i 1.0 - 2.0i 3.0 + 4.0i} {-0.25 - 0.4i -7.0 - 8.0i 3.0 + 4.0i}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.9.2 {conjugate } {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+		    conjugate $m32]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 + 6.0i 1.0 - 2.0i} {-0.25 - 0.4i -7.0 - 8.0i} {3.0 + 4.0i -0.25 - 0.4i}}}
+} {}
+
+

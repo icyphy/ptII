@@ -51,6 +51,9 @@ set complex2 [java::new ptolemy.math.Complex 1.0 1.0]
 set complex3 [java::new ptolemy.math.Complex -1.0 -1.0]
 set complex4 [java::new ptolemy.math.Complex 0.0 0.0]
 set complex5 [java::new ptolemy.math.Complex 3.0 -3.0]
+set complex6 0
+set complex7 1
+set complex8 2
 
 set complex0array [java::new {ptolemy.math.Complex[]} {0}]
 set complex2array [java::new {ptolemy.math.Complex[]} {2} \
@@ -77,6 +80,10 @@ set complexUnaryOperation \
 
 set double0 0.0 
 set double1 2.0
+set double2 4.0
+set double6 0
+set double7 1
+set double8 2
 
 set double0array [java::new {double[]} {0}]
 set double2array [java::new {double[]} {2} [list 2.0 -1.0]]
@@ -98,6 +105,10 @@ set doubleUnaryOperation \
 
 set float0 0.0
 set float1 2.0
+set float2 4.0
+set float6 0
+set float7 1
+set float8 2
 
 set float0array [java::new {float[]} {0}]
 set float2array [java::new {float[]} {2} [list 2.0 -1.0]]
@@ -116,6 +127,11 @@ set floatUnaryOperation \
 
 set int0 0
 set int1 2
+set int2 4
+set int6 0
+set int7 1
+set int8 2
+
 set int0array [java::new {int[]} {0}]
 set int2array [java::new {int[]} {2} [list 2 -1]]
 set int4array [java::new {int[]} {4} [list 2 -1 1 0]]
@@ -140,6 +156,11 @@ set intUnaryOperation \
 
 set long0 0
 set long1 2
+set long2 4
+set long6 0
+set long7 1
+set long8 2
+
 set long0array [java::new {long[]} {0}]
 set long2array [java::new {long[]} {2} [list 2 -1]]
 set long4array [java::new {long[]} {4} [list 2 -1 1 0]]
@@ -306,8 +327,8 @@ proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
 	    {[subst $$array]} {[subst $$array]} {} ArrayMath
 }
 
-# Test a *ArrayMath  operation that takes an array, an array and a scalar
-# like boolean within(xxx[], xxx[], xxx[][])
+# Test a *ArrayMath  operation that takes an array, an array and an array
+# like boolean within(xxx[], xxx[], xxx[])
 proc testArrayMathArrayArrayArray {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize \
 	    {[list $op "$t\[\]" "$t\[\]" "$t\[\]"]} \
@@ -341,7 +362,6 @@ proc testArrayMathArrayScalarScalar {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t $t} \
 	    {[subst $$array]} {[subst $${v}0]} {[subst $${v}1]} ArrayMath
 }
-
 
 ######################################################################
 ####
@@ -535,22 +555,25 @@ testArrayMathArrayArray append $types
 
 ######################################################################
 ####
-#  FIXME: *ArrayMath xxx[] append(xxx[], int, int, xxx[], int, int )
+#  FIXED (FIXME): *ArrayMath Test out: xxx[] append(xxx[], int, int, xxx[], int, int) - See append tests in ComplexArrayMath.tcl, DoubleArrayMath.tcl, FloatArrayMath.tcl, IntegerArrayMath.tcl, and LongArrayMath.tcl because the function takes 5 arguments
+
 
 ######################################################################
 ####
 #  Test out *ArrayMath applyBinaryOperation(XXXBinaryOperation, xxx[], xxx)
 
-# FIXME	No applyBinaryOperation(Complex[], Complex)
+# FIXED (FIXME)	No applyBinaryOperation(Complex[], Complex)
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{0.0 + 0.0i -1.0 + 3.0i}}] \
 	[list Double double double {{0.0 -3.0}}] \
 	[list Float float float {{0.0 -3.0}}] \
 	[list Integer int int {{0 -3}}] \
 	[list Long long long {{0 -3}}]]
 
 testMatrixMath applyBinaryOperation $types 2_2 \
-	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t\[\] $t} \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t\[\] $t]} \
 	{[subst $$binaryOperation]} \
 	{[subst $$array]} {[subst $${v}1]} ArrayMath
 
@@ -567,7 +590,7 @@ set types [list \
 	[list Long long long {{0 -3}}]]
 
 testMatrixMath applyBinaryOperation $types 2_2 \
-	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]} \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]]} \
 	{[subst $$binaryOperation]} \
 	{[subst $${v}1]} {[subst $$array]} ArrayMath
 
@@ -607,19 +630,71 @@ testMatrixMath applyUnaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXME: Test out applyBinaryOperation(XXXBinaryOperation, xxx, xxx[][])
+#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx, xxx[][])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{0.0 + 0.0i 1.0 - 3.0i} {3.0 - 1.0i 2.0 - 2.0i}}}] \
+	[list Double double double {{{0.0 3.0} {1.0 2.0}}}] \
+	[list Float float float {{{0.0 3.0} {1.0 2.0}}}] \
+	[list Integer int int {{{0 3} {1 2}}}] \
+	[list Long long long {{{0 3} {1 2}}}]]
+
+testMatrixMath applyBinaryOperation $types 2_2 \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]\[\]} \
+	{[subst $$binaryOperation]} \
+	{[subst $${v}1]} {[subst $$matrix]} MatrixMath
 
 ######################################################################
 ####
-#  FIXME: Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx)
+#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{0.0 + 0.0i -1.0 + 3.0i} {-3.0 + 1.0i -2.0 + 2.0i}}}] \
+	[list Double double double {{{0.0 -3.0} {-1.0 -2.0}}}] \
+	[list Float float float {{{0.0 -3.0} {-1.0 -2.0}}}] \
+	[list Integer int int {{{0 -3} {-1 -2}}}] \
+	[list Long long long {{{0 -3} {-1 -2}}}]]
+
+testMatrixMath applyBinaryOperation $types 2_2 \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t\[\]\[\] $t} \
+	{[subst $$binaryOperation]} \
+        {[subst $$matrix]} {[subst $${v}1]} MatrixMath
 
 ######################################################################
 ####
-#  FIXME: Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx[][])
+#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx[][])
+
+set types [list \
+        [list Complex ptolemy.math.Complex complex \
+	{{{0.0 + 0.0i 1.0 - 3.0i} {3.0 - 1.0i 2.0 - 2.0i}}}] \
+	[list Double double double {{{0.0 3.0} {1.0 2.0}}}] \
+	[list Float float float {{{0.0 3.0} {1.0 2.0}}}] \
+	[list Integer int int {{{0 3} {1 2}}}] \
+	[list Long long long {{{0 3} {1 2}}}]]
+
+testMatrixMath applyBinaryOperation $types 2_2 \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]\[\]} \
+	{[subst $$binaryOperation]} \
+	{[subst $${v}1]} {[subst $$matrix]} MatrixMath
 
 ######################################################################
 ####
-#  FIXME: Test out applyUnaryOperation(XXXUnaryOperation, xxx[][])
+#  FIXED (FIXME): Test out applyUnaryOperation(XXXUnaryOperation, xxx[][])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{-2.0 + 2.0i -1.0 - 1.0i} {1.0 + 1.0i 0.0 + 0.0i}}}] \
+	[list Double double double {{{-2.0 1.0} {-1.0 0.0}}}] \
+	[list Float float float {{{-2.0 1.0} {-1.0 0.0}}}] \
+	[list Integer int int {{{-2 1} {-1 0}}}] \
+	[list Long long long {{{-2 1} {-1 0}}}]]
+
+testMatrixMath applyUnaryOperation $types 2_2 \
+	{[list applyUnaryOperation ptolemy.math.${m}UnaryOperation $t\[\]\[\]} \
+	{[subst $$unaryOperation]} \
+	{[subst $$matrix]} {} MatrixMath
 
 ######################################################################
 ####
@@ -773,11 +848,15 @@ testMatrixMatrix bitwiseXor $types
 ####
 #  *ArrayMath Test out: xxx[] divide(xxx[], xxx)
 
-# FIXME: Missing Complex[] divide(Complex[], Complex)
-# FIXME: Missing double[] divide(double[], double)
-# FIXME: Missing float[] divide(float[], float)
+# FIXED (FIXME): Missing Complex[] divide(Complex[], Complex)
+# FIXED (FIXME): Missing double[] divide(double[], double)
+# FIXED (FIXME): Missing float[] divide(float[], float)
 
 set types [list \
+        [list Complex ptolemy.math.Complex complex \
+	{{1.0 + 0.0i 0.0 + 0.5i}}] \
+	[list Double double double {{1.0 -0.5}}] \
+	[list Float float float {{1.0 -0.5}}] \
 	[list Integer int int {{1 0}}] \
 	[list Long long long {{1 0}}]]
 
@@ -910,10 +989,13 @@ testInt identity $types 2_2 3
 
 ######################################################################
 ####
-#  FIXME: *ArrayMath Test out: xxx[] limit(xxx[], int int)
+#  FIXED (FIXME): *ArrayMath Test out: xxx[] limit(xxx[], int int)
 
-# FIXME: Missing: Complex[] limit(Complex[], Complex, Complex)
+# FIXED (FIXME): Missing: Complex[] limit(Complex[], Complex, Complex)
+
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i 0.0 + 0.0i 0.0 + 0.0i}}] \
 	[list Double double double {{2.0 0.0 1.0 0.0}}] \
 	[list Float float float {{2.0 0.0 1.0 0.0}}] \
 	[list Integer int int {{2 0 1 0}}] \
@@ -923,12 +1005,13 @@ testArrayMathArrayScalarScalar limit $types 4_4
 
 ######################################################################
 ####
-#  FIXME: void matrixCopy(xxx[][], xxx[][])
-
+#  FIXED (FIXME): void matrixCopy(xxx[][], xxx[][]); Tests are written in the
+#  5 test files for each data type.
 
 ######################################################################
 ####
-#  FIXME: void matrixCopy(xxx[][], xxx[][], ...)
+#  FIXED (FIXME): void matrixCopy(xxx[][], xxx[][], ...); Tests are written in the
+#  5 test files for each data type.
 
 ######################################################################
 ####
@@ -978,16 +1061,15 @@ testMatrixMatrix modulo $types 2_2nonzero
 ####
 #  *ArrayMath Test out: xxx[] multiply(xxx[], xxx)
 
+# FIXED (FIXME): Missing methods xxx[] multiply(xxx[], xxx)
+
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
-	{{0.0 - 8.0i 4.0 + 0.0i}}]]
-
-# FIXME: Missing methods xxx[] multiply(xxx[], xxx)
-#	[list Double double double {{4.0 -2.0}}] \
-#	[list Float float float {{4.0 -2.0}}] \
-#	[list Integer int int {{4 -2}}] \
-#	[list Long long long {{4 -2}}]]
-
+	{{0.0 - 8.0i 4.0 + 0.0i}}] \
+	[list Double double double {{4.0 -2.0}}] \
+	[list Float float float {{4.0 -2.0}}] \
+	[list Integer int int {{4 -2}}] \
+	[list Long long long {{4 -2}}]]
 
 testArrayMathArrayScalar multiply $types
 
@@ -1081,11 +1163,13 @@ testMatrixMatrix multiplyElements $types
 ####
 ##  *ArrayMath Test out: xxx[] negative(xxx[])
 
-# FIXME: Missing method "negative {ptolemy.math.Complex[]}"
+# FIXED (FIXME): Missing method "negative {ptolemy.math.Complex[]}"
 #	[list Complex ptolemy.math.Complex complex \
-#	{{{-2.0 + 2.0i -1.0 - 1.0i} {1.0 + 1.0i 0.0 + 0.0i}}} ] \
+#	{{-2.0 + 2.0i -1.0 - 1.0i}} ] \
 
 set types [list \
+        [list Complex ptolemy.math.Complex complex \
+	{{-2.0 + 2.0i -1.0 - 1.0i}} ] \
 	[list Double double double {{-2.0 1.0}}] \
 	[list Float float float {{-2.0 1.0}}] \
 	[list Integer int int {{-2 1}}] \
@@ -1120,7 +1204,6 @@ set types [list \
 
 
 testMatrix orthogonalizeColumns $types
-
 
 ######################################################################
 ####
