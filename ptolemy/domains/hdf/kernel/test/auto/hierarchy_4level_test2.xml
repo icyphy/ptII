@@ -23,8 +23,6 @@
         </property>
     </property>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -151,8 +149,6 @@
             <link port="state2.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -188,8 +184,6 @@
                 </property>
             </port>
             <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
-                <property name="IODependence" class="ptolemy.actor.IODependence">
-                </property>
                 <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                     <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                         <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -341,8 +335,6 @@ to another. Then delete this annotation.</text>
                     <link port="state2.outgoingPort" relation="relation2"/>
                 </entity>
                 <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
-                    <property name="IODependence" class="ptolemy.actor.IODependence">
-                    </property>
                     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                         </property>
@@ -419,8 +411,6 @@ to another. Then delete this annotation.</text>
                     <link port="Scale.output" relation="relation2"/>
                 </entity>
                 <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
-                    <property name="IODependence" class="ptolemy.actor.IODependence">
-                    </property>
                     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                         </property>
@@ -527,8 +517,6 @@ to another. Then delete this annotation.</text>
             <link port="modal model.output" relation="relation2"/>
         </entity>
         <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>

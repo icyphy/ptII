@@ -71,8 +71,6 @@
         </port>
     </entity>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -278,8 +276,6 @@ to another. Then delete this annotation.</text>
             <link port="state3.outgoingPort" relation="relation"/>
         </entity>
         <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -390,8 +386,6 @@ to another. Then delete this annotation.</text>
             <link port="Discard.input" relation="relation3"/>
         </entity>
         <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -473,8 +467,6 @@ to another. Then delete this annotation.</text>
             <link port="Const.output" relation="relation"/>
         </entity>
         <entity name="state3" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>

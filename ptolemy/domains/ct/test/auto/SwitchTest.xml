@@ -124,8 +124,6 @@ the model works as a discrete system. </text></svg></configure>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -149,8 +147,6 @@ the model works as a discrete system. </text></svg></configure>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="IODependence" class="ptolemy.actor.IODependence">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 190.0">
         </property>
@@ -230,8 +226,6 @@ the model works as a discrete system. </text></svg></configure>
         </port>
     </entity>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 105.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -375,8 +369,6 @@ the model works as a discrete system. </text></svg></configure>
             <link port="sine.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="constant" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="259.0, 176.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -445,8 +437,6 @@ the model works as a discrete system. </text></svg></configure>
             <link port="output" relation="relation"/>
         </entity>
         <entity name="sinewave" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="263.0, 257.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">

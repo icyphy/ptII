@@ -29,8 +29,6 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 51, 819, 565}}">
     </property>
     <entity name="HDF1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="343.0, 195.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -207,8 +205,6 @@
             <link port="State3.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="State3" class="ptolemy.actor.TypedCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="274.0, 233.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -277,8 +273,6 @@
             <link port="Discard.input" relation="relation2"/>
         </entity>
         <entity name="State2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 152.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -343,8 +337,6 @@
             <link port="Constant Zero Value.output" relation="relation"/>
         </entity>
         <entity name="State1" class="ptolemy.actor.TypedCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="276.0, 77.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
