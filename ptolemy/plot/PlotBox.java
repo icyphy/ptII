@@ -1937,9 +1937,11 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Set the padding multiple.
-     *  The plot rectangle is "padded" in each direction -x, +x, -y, and +y.
-     *  If the padding is set to 0.05, then there is 10% more length on each
-     *  axis, 5% in each direction.
+     *  The plot rectangle can be "padded" in each direction -x, +x, -y, and
+     *  +y.  If the padding is set to 0.05 (and the padding is used), then
+     *  there is 10% more length on each axis than set by the setXRange() and
+     *  setYRange() methods, 5% in each direction.
+     *  @param padding The padding multiple.
      */
     protected void _setPadding(double padding) {
 	_padding = padding;
