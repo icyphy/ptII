@@ -84,7 +84,8 @@ JSRCS = \
 	StringToken.java \
 	Token.java \
 	TokenUtilities.java \
-        UnsignedByteToken.java
+    UnsignedByteToken.java \
+    XmlToken.java
 
 EXTRA_SRCS =	$(JSRCS)
 
