@@ -992,9 +992,9 @@ else
 	      GC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
 	      AC_MSG_RESULT(use $GC_LD_DIRECTIVE)
            else 
-	      if test -d "$PTII/vendors/gc/gc6.1"; then
+	      if test -d "$PTII/vendors/gc/gc6.4"; then
                   AC_MSG_WARN([Failed to find GC_malloc(), but 
-    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
+    \$PTII/vendors/gc/gc6.4 exists.  See the \$PTII/vendors/gc/README.txt
     that directory if you would like to use the Garbage Collector
     with the C code generator])
               else 
@@ -1005,7 +1005,7 @@ else
     with the C code generator])
 		  else      
 		      AC_MSG_WARN([Failed to find GC_malloc(), and
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    \$PTII/vendors/gc/gc6.4 does not exist.  The Boehm Garbage Collector
     can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
     if you wish to use it with the C code generator])
@@ -1023,12 +1023,12 @@ else
    if test -f "$GC_INCLUDE_DIR/gc.h"; then
        AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
    else 
-       if test -f "$PTII/vendors/gc/gc6.1/include/gc.h"; then
-           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.1/include
+       if test -f "$PTII/vendors/gc/gc6.4/include/gc.h"; then
+           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.4/include
 	   AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
        else	   	   
            AC_MSG_WARN([Failed to gc.h
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    \$PTII/vendors/gc/gc6.4 does not exist.  The Boehm Garbage Collector
     can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
     if you wish to use it with the C code generator])
