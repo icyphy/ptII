@@ -194,8 +194,8 @@ public class ControllerActor extends CTActor{
         double Vx = ((DoubleToken)inputVx.get(0)).doubleValue();
         double Vz = ((DoubleToken)inputVz.get(0)).doubleValue();
         
-        double CosTh2 = Math.pow(Math.cos(Th),2);
-        double SinTh2 = Math.pow(Math.sin(Th),2);
+        double CosTh2 = Math.pow(Math.cos(Th), 2);
+        double SinTh2 = Math.pow(Math.sin(Th), 2);
         double mass2 = _mass*_mass;
         // compute inv(K)
         double IK11 = ((_Mm*Tm*Math.sin(Th))/(_Iy*_mass) +
