@@ -416,10 +416,10 @@ public abstract class BaseType implements Type, Serializable {
         // Because the private variables are below the public variables
         // that call this initializer,
         // it doesn't work to initialize this statically.
-        if(_nameToType == null) {
+        if (_nameToType == null) {
             _nameToType = new HashMap();
         }
-        if(_classNameToType == null) {
+        if (_classNameToType == null) {
             _classNameToType = new HashMap();
         }
         _nameToType.put(_name, this);

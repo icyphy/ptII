@@ -154,8 +154,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             while (targets.hasNext()) {
                 Figure figure = (Figure) targets.next();
                 Object node = figure.getUserObject();
-                if(_controller.getController().getGraphModel().isNode(node)) {
-                    if(_controller.hasLocation(node)) {
+                if (_controller.getController().getGraphModel().isNode(node)) {
+                    if (_controller.hasLocation(node)) {
                         double[] location = _controller.getLocation(node);
                         location[0] += snapTranslation[0];
                         location[1] += snapTranslation[1];

@@ -90,7 +90,7 @@ public abstract class ChangeRequest {
      *  @param listener The listener to add.
      */
     public void addChangeListener(ChangeListener listener) {
-	if(_localListeners == null) {
+	if (_localListeners == null) {
 	    _localListeners = new LinkedList();
 	}
         if (!_localListeners.contains(listener)) {
@@ -114,7 +114,7 @@ public abstract class ChangeRequest {
      *  method more than once will throw an exception.
      */
     public final synchronized void execute() {
-        if(!_pending) throw new InternalErrorException("Attempted to " +
+        if (!_pending) throw new InternalErrorException("Attempted to " +
                 "execute a change request that had already been executed.");
         _exception = null;
         // This flag is set if an exception is caught.  If the exception
@@ -219,7 +219,7 @@ public abstract class ChangeRequest {
      *  notified when the change is executed, or the change fails.
      */
     public void removeChangeListener(ChangeListener listener) {
-	if(_localListeners != null) {
+	if (_localListeners != null) {
 	    _localListeners.remove(listener);
 	}
     }

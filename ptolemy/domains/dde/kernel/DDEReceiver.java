@@ -160,7 +160,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @see #hasToken()
      */
     public Token get(Branch branch) throws NoTokenException {
-	if( !_hasTokenCache ) {
+	if ( !_hasTokenCache ) {
             throw new NoTokenException( getContainer(),
                     "Attempt to get token that does not have "
 		    + "have the earliest time stamp.");
@@ -168,18 +168,18 @@ public class DDEReceiver extends PrioritizedTimedQueue
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
 	synchronized( this ) {
-	    if( _terminate ) {
+	    if ( _terminate ) {
 		throw new TerminateProcessException("");
 	    }
 	    Token token = super.get();
-	    if( _writeBlocked ) {
+	    if ( _writeBlocked ) {
                 wakeUpBlockedPartner();
 		_writeBlocked = false;
 		notifyAll();
 	    }
 
 	    Thread thread = Thread.currentThread();
-	    if( thread instanceof DDEThread ) {
+	    if ( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens(this);
@@ -244,7 +244,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	Thread thread = Thread.currentThread();
 	TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 
-	if( !(thread instanceof DDEThread) ) {
+	if ( !(thread instanceof DDEThread) ) {
             return false;
         }
 
@@ -260,21 +260,21 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    /////////////////////////////////////////
 	    // Determine if this Receiver is in Front
 	    /////////////////////////////////////////
-	    if( this != timeKeeper.getFirstReceiver() ) {
+	    if ( this != timeKeeper.getFirstReceiver() ) {
 	        return false;
 	    }
 
 	    //////////////////////////////////////////
 	    // Determine if the TimeKeeper is inactive
 	    //////////////////////////////////////////
-            if( timeKeeper.getNextTime() == INACTIVE ) {
+            if ( timeKeeper.getNextTime() == INACTIVE ) {
                 requestFinish();
 	    }
 
 	    ///////////////////
 	    // Check Receiver Times
 	    ///////////////////
-            if( getReceiverTime() == IGNORE && !_terminate ) {
+            if ( getReceiverTime() == IGNORE && !_terminate ) {
 	        timeKeeper.removeAllIgnoreTokens();
 
                 sendNullTokens = true;
@@ -283,13 +283,13 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ///////////////////////////
 	    // Check Token Availability
 	    ///////////////////////////
-            if( super.hasToken() && !_terminate && !sendNullTokens ) {
+            if ( super.hasToken() && !_terminate && !sendNullTokens ) {
 	        if ( !_hasNullToken() ) {
 		    _hasTokenCache = true;
 	            return true;
 	        } else {
 		    // Treat Null Tokens Normally For Feedback
-		    if( !_hideNullTokens ) {
+		    if ( !_hideNullTokens ) {
 			_hasTokenCache = true;
 		        return true;
 		    }
@@ -303,10 +303,10 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ////////////////////////
 	    // Perform Blocking Read
 	    ////////////////////////
-	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
+	    if ( !super.hasToken() && !_terminate && !sendNullTokens ) {
 	        _readBlocked = true;
                 prepareToBlock(branch);
-	        while( _readBlocked && !_terminate ) {
+	        while ( _readBlocked && !_terminate ) {
 		    workspace.wait( this );
 	        }
 	    }
@@ -314,8 +314,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ////////////////////
 	    // Check Termination
 	    ////////////////////
-	    if( _terminate ) {
-	        if( _readBlocked ) {
+	    if ( _terminate ) {
+	        if ( _readBlocked ) {
 		    _readBlocked = false;
                     wakeUpBlockedPartner();
 	        }
@@ -323,7 +323,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
         }
 
-        if( sendNullTokens ) {
+        if ( sendNullTokens ) {
 	    timeKeeper.sendOutNullTokens(this);
         }
 	return hasToken();
@@ -347,7 +347,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *   false otherwise.
      */
     public boolean isConsumerReceiver() {
-        if( isConnectedToBoundary() ) {
+        if ( isConnectedToBoundary() ) {
              return true;
         }
     	return false;
@@ -406,7 +406,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *   otherwise.
      */
     public boolean isProducerReceiver() {
-        if( isOutsideBoundary() || isInsideBoundary() ) {
+        if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
     	return false;
@@ -470,7 +470,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  @param branch The Branch managing execution of this method.
      */
     public synchronized void prepareToBlock(Branch branch) {
-        if( branch != null ) {
+        if ( branch != null ) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
@@ -522,7 +522,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public void put(Token token, Branch branch) {
 	Thread thread = Thread.currentThread();
 	double time = _lastTime;
-	if( thread instanceof DDEThread ) {
+	if ( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    time = timeKeeper.getOutputTime();
 	}
@@ -571,14 +571,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
         synchronized(this) {
 
-            if( time > _getCompletionTime() &&
+            if ( time > _getCompletionTime() &&
                     _getCompletionTime() != ETERNITY && !_terminate ) {
 	        time = INACTIVE;
 	    }
 
-            if( super.hasRoom() && !_terminate ) {
+            if ( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
-		if( _readBlocked ) {
+		if ( _readBlocked ) {
                     wakeUpBlockedPartner();
 		    _readBlocked = false;
 		    notifyAll();
@@ -589,13 +589,13 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if ( !super.hasRoom() && !_terminate ) {
 		_writeBlocked = true;
                 wakeUpBlockedPartner();
-		while( _writeBlocked && !_terminate ) {
+		while ( _writeBlocked && !_terminate ) {
 		    workspace.wait( this );
 		}
             }
 
-            if( _terminate ) {
-		if( _writeBlocked ) {
+            if ( _terminate ) {
+		if ( _writeBlocked ) {
 		    _writeBlocked = false;
                     prepareToBlock(branch);
 		}
@@ -638,7 +638,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  the new state with the blocked branch.
      */
     public synchronized void wakeUpBlockedPartner() {
-        if( _otherBranch != null ) {
+        if ( _otherBranch != null ) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             DDEDirector director = ((DDEDirector)((Actor)

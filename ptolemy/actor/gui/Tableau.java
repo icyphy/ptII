@@ -217,11 +217,11 @@ public class Tableau extends CompositeEntity {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	if(container == null) {
+	if (container == null) {
 	    Effigy oldContainer = (Effigy)getContainer();
 	    super.setContainer(container);
 	    // Blow away the frame.
-	    if(_frame != null) {
+	    if (_frame != null) {
 		// Note that we call hide instead of dispose . . .
 		// The windowListener set in setFrame()
                 // will trigger dispose() to get called.
@@ -233,7 +233,7 @@ public class Tableau extends CompositeEntity {
 		// other tableaux.
 		oldContainer.setContainer(null);
             }
-	} else if(container instanceof Effigy) {
+	} else if (container instanceof Effigy) {
 	    super.setContainer(container);
 	} else {
 	    throw new IllegalActionException(this, container,

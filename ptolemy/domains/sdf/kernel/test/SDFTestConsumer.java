@@ -85,7 +85,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
         int tokens = 
             ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
         int i;
-        for(i = 0; i < tokens; i++) {
+        for (i = 0; i < tokens; i++) {
             Token t = input.get(0);
             _history.append(t.toString() + "\n");
         }

@@ -152,7 +152,7 @@ public class HTMLViewerTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof HTMLEffigy) {
+	    if (effigy instanceof HTMLEffigy) {
 
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.

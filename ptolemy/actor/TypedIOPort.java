@@ -159,7 +159,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to add.
      */
     public void addTypeListener(TypeListener listener) {
-        if(!_typeListeners.contains(listener))
+        if (!_typeListeners.contains(listener))
             _typeListeners.add(listener);
     }
 
@@ -405,7 +405,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 		// on the inside through deepInsidePortList().
                 Iterator ports = deepInsidePortList().iterator();
 	        List portTypeList = new LinkedList();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (port != this && port.isOutput()) {
@@ -463,7 +463,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to be removed.
      */
     public void removeTypeListener(TypeListener listener) {
-        if(_typeListeners.contains(listener))
+        if (_typeListeners.contains(listener))
             _typeListeners.remove(listener);
     }
 
@@ -760,7 +760,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     if (this.isKnown(i)) {
                         if (this.hasToken(i)) {
                             Token token = this.get(i);
-                            if(_debugging) _debug(getName(),
+                            if (_debugging) _debug(getName(),
                                     "transferring input from "
                                     + this.getName());
                             for (int j = 0; j < insideReceivers[i].length;

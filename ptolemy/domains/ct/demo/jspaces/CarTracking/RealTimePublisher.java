@@ -149,7 +149,7 @@ public class RealTimePublisher extends Sink
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
 
             String name = ((StringToken)entryName.getToken()).stringValue();
             Long serialNumber = new Long(System.currentTimeMillis());
@@ -164,7 +164,7 @@ public class RealTimePublisher extends Sink
                         serialNumber, token);
                 _space.write(entry, null, Lease.FOREVER);
                 /** the following test the size of the serialized obj.
-                    if(_first) {
+                    if (_first) {
                     _first = false;
                     try {
                     FileOutputStream ostream = new FileOutputStream("t1");

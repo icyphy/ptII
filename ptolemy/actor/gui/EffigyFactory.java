@@ -91,7 +91,7 @@ public class EffigyFactory extends CompositeEntity {
      */
     public boolean canCreateBlankEffigy() {
 	Iterator factories = entityList(EffigyFactory.class).iterator();
-	while(factories.hasNext()) {
+	while (factories.hasNext()) {
 	    EffigyFactory factory = (EffigyFactory)factories.next();
             if (factory.canCreateBlankEffigy()) return true;
 	}
@@ -133,7 +133,7 @@ public class EffigyFactory extends CompositeEntity {
 	    throws Exception {
 	Effigy effigy = null;
 	Iterator factories = entityList(EffigyFactory.class).iterator();
-	while(factories.hasNext() && effigy == null) {
+	while (factories.hasNext() && effigy == null) {
 	    EffigyFactory factory = (EffigyFactory)factories.next();
 	    effigy = factory.createEffigy(container, base, in);
 	}

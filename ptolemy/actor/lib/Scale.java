@@ -139,7 +139,7 @@ public class Scale extends Transformer {
             Token in = input.get(0);
             Token factorToken = factor.getToken();
             Token result;
-            if(((BooleanToken)scaleOnLeft.getToken()).booleanValue()) {
+            if (((BooleanToken)scaleOnLeft.getToken()).booleanValue()) {
                 // Scale on the left.
                 result = factorToken.multiply(in);
             } else {

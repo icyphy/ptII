@@ -172,7 +172,7 @@ public class Plotter extends TypedAtomicActor
                 }
             }
         } else if (attribute == startingDataset) {
-            if(((IntToken)startingDataset.getToken()).intValue() < 0) {
+            if (((IntToken)startingDataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
                         "startingDataset: negative value is not allowed.");
             }
@@ -263,7 +263,7 @@ public class Plotter extends TypedAtomicActor
      *  specified using the source attribute need not be returned here.
      */
     public String getText() {
-        if(plot == null) {
+        if (plot == null) {
             // FIXME
             return "";
         } else {
@@ -363,7 +363,7 @@ public class Plotter extends TypedAtomicActor
             Iterator sources = _configureSources.iterator();
             Iterator texts = _configureTexts.iterator();
             Iterator bases = _configureBases.iterator();
-            while(sources.hasNext()) {
+            while (sources.hasNext()) {
                 URL base = (URL)bases.next();
                 String source = (String)sources.next();
                 String text = (String)texts.next();
@@ -419,7 +419,7 @@ public class Plotter extends TypedAtomicActor
      */
     public void wrapup() {
         try {
-            if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
+            if (((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
                 if (plot != null) {
                     plot.fillPlot();
                 }
@@ -448,7 +448,7 @@ public class Plotter extends TypedAtomicActor
         // instructions cannot be nested in XML (lame, isn't it?).
         String header
             = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-	if(plot != null) {
+	if (plot != null) {
 	    output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
                     + header + "\n<plot>\n");
 	    PrintWriter print = new PrintWriter(output);
@@ -457,14 +457,14 @@ public class Plotter extends TypedAtomicActor
 	    plot.writeFormat(print);
 	    output.write("</plot>?>\n"
                     + _getIndentPrefix(depth) + "</configure>\n");
-        } else if(_configureSources != null) {
+        } else if (_configureSources != null) {
             // Configuration has been specified, but not yet evaluated.
             // Save the configuration just as specified.
             // Note that the bases are lost, since those are presumably
             // the URL of the file containing the XML.
             Iterator sources = _configureSources.iterator();
             Iterator texts = _configureTexts.iterator();
-            while(sources.hasNext()) {
+            while (sources.hasNext()) {
                 String source = (String)sources.next();
                 String text = (String)texts.next();
                 if (source != null && !source.trim().equals("")) {

@@ -162,7 +162,7 @@ public class ImageSequence extends Source {
                 i = _frameNumber + _startFrame;
                 String temporaryFileName = new String(fileRoot);
                 int location = temporaryFileName.lastIndexOf('*');
-                while(location >= 0) {
+                while (location >= 0) {
                     arr[location] = (byte)('0' + i % 10);
                     i = i / 10;
                     temporaryFileName = new String(arr);
@@ -235,7 +235,7 @@ public class ImageSequence extends Source {
         int length = 0;
         int remaining = b.length;
         int bytesRead = 0;
-        while(remaining > 0) {
+        while (remaining > 0) {
             bytesRead = s.read(b, length, remaining);
             if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF:" + s);

@@ -193,7 +193,7 @@ public final class SDFIOPort extends TypedIOPort {
     public void setInput(boolean isInput) {
 	super.setInput(isInput);
 	try {
-	    if(isInput) {
+	    if (isInput) {
 		tokenConsumptionRate.setToken(new IntToken(1));
 	    } else {
 		tokenConsumptionRate.setToken(new IntToken(0));
@@ -214,7 +214,7 @@ public final class SDFIOPort extends TypedIOPort {
     public void setOutput(boolean isOutput) {
 	super.setOutput(isOutput);
 	try {
-	    if(isOutput) {
+	    if (isOutput) {
 		tokenProductionRate.setToken(new IntToken(1));
 	    } else {
 		tokenProductionRate.setToken(new IntToken(0));
@@ -235,9 +235,9 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public void setTokenConsumptionRate(int rate)
             throws IllegalActionException {
-        if(rate < 0) throw new IllegalActionException(
+        if (rate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
-        if(!isInput()) throw new IllegalActionException(this, "Port " +
+        if (!isInput()) throw new IllegalActionException(this, "Port " +
                 "is not an input port.");
 	tokenConsumptionRate.setToken(new IntToken(rate));
     }
@@ -251,9 +251,9 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public void setTokenInitProduction(int count)
             throws IllegalActionException {
-        if(count < 0) throw new IllegalActionException(
+        if (count < 0) throw new IllegalActionException(
                 "Count must be >= 0");
-        if(!isOutput()) throw new IllegalActionException(this, "Port " +
+        if (!isOutput()) throw new IllegalActionException(this, "Port " +
                 "is not an Output Port.");
 	tokenInitProduction.setToken(new IntToken(count));
     }
@@ -268,9 +268,9 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public void setTokenProductionRate(int rate)
             throws IllegalActionException {
-        if(rate < 0) throw new IllegalActionException(
+        if (rate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
-        if(!isOutput()) throw new IllegalActionException(this, "Port " +
+        if (!isOutput()) throw new IllegalActionException(this, "Port " +
                 "is not an Output Port.");
 	tokenProductionRate.setToken(new IntToken(rate));
     }

@@ -92,15 +92,15 @@ public class DebugController implements DebugListener {
      * are dispatched an appropriate method according to type.
      */
     public void event(DebugEvent debugEvent) {
-	if(debugEvent instanceof FiringEvent) {
+	if (debugEvent instanceof FiringEvent) {
 	    FiringEvent event = (FiringEvent) debugEvent;
-	    if(event.getType() == FiringEvent.BEFORE_PREFIRE) {
+	    if (event.getType() == FiringEvent.BEFORE_PREFIRE) {
 		prefireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.BEFORE_FIRE) {
+	    } else if (event.getType() == FiringEvent.BEFORE_FIRE) {
 		fireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.BEFORE_POSTFIRE) {
+	    } else if (event.getType() == FiringEvent.BEFORE_POSTFIRE) {
 		postfireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.AFTER_POSTFIRE) {
+	    } else if (event.getType() == FiringEvent.AFTER_POSTFIRE) {
 		postpostfireEvent(event.getActor());
 	    }
 	}
@@ -119,7 +119,7 @@ public class DebugController implements DebugListener {
                     ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("prefire");
-	    if(breakpoint != null && breakpoint.evaluateCondition()) {
+	    if (breakpoint != null && breakpoint.evaluateCondition()) {
 		_frame.displayResult("Breakpoint encountered!");
 		waitUserCommand();
 	    }
@@ -141,7 +141,7 @@ public class DebugController implements DebugListener {
                     ((Nameable) actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("fire");
-	    if(breakpoint != null && breakpoint.evaluateCondition()) {
+	    if (breakpoint != null && breakpoint.evaluateCondition()) {
 		_frame.displayResult("Breakpoint encountered!");
 		waitUserCommand();
 	    }
@@ -241,7 +241,7 @@ public class DebugController implements DebugListener {
 	} else if (_command == "microstep") {
 	    _command = "pause";
 	} else if (_command == "stepin") {
-	    if(_method == "fire") {
+	    if (_method == "fire") {
 		stepInPause = true;
 		_command = "pause";
 	    } else {

@@ -272,7 +272,7 @@ public class Display extends Sink implements Placeable {
                 Token token = input.get(i);
                 String value = token.toString();
                 // If the value is a pure string, strip the quotation marks.
-                if((value.length() > 1) && value.startsWith("\"") &&
+                if ((value.length() > 1) && value.startsWith("\"") &&
                         value.endsWith("\"")) {
                     value = value.substring(1, value.length()-1);
                 }

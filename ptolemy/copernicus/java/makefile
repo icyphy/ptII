@@ -408,7 +408,7 @@ gcj2_2:
 	@echo "    Note that here, we end up needing .class files other"
 	@echo "    than the ones in the tree shaken jar file"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
-		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
+		objs=`find . -name "*.o" -print | awk -F / '{for (i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
 		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
 			$(GCJ_FLAGS) \
 			$(GCJ_LINK_FLAGS) \

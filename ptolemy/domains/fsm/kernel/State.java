@@ -194,7 +194,7 @@ public class State extends ComponentEntity {
             TypedCompositeActor containerContainer =
                     (TypedCompositeActor)container.getContainer();
             int index = 0;
-            while(tokenizer.hasMoreTokens()) {
+            while (tokenizer.hasMoreTokens()) {
                 String name = tokenizer.nextToken().trim();
                 if (name.equals("")) {
                     throw new IllegalActionException(this,

@@ -63,10 +63,10 @@ public class EntitySootClass extends SootClass {
 
         // Now create constructors to call the superclass constructors,
         // and then the __CGInit method.
-        for(Iterator methods = getSuperclass().getMethods().iterator();
+        for (Iterator methods = getSuperclass().getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            if(!method.getName().equals("<init>")) continue;
+            if (!method.getName().equals("<init>")) continue;
             // create the new constructor.
             SootMethod constructor = _createConstructor(this,
                     method);

@@ -76,7 +76,7 @@ public class TimeGap extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         // Consume an input.
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             input.get(0);
         }
         double currentTime = getDirector().getCurrentTime();

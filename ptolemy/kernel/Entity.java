@@ -171,7 +171,7 @@ public class Entity extends NamedObj {
         }
         Class myClass = getClass();
         Field fields[] = myClass.getFields();
-        for(int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < fields.length; i++) {
             try {
                 if (fields[i].get(newEntity) instanceof Port) {
                     fields[i].set(newEntity,
@@ -206,7 +206,7 @@ public class Entity extends NamedObj {
                 _connectedPorts = new LinkedList();
                 Iterator ports = _portList.elementList().iterator();
 
-                while( ports.hasNext() ) {
+                while ( ports.hasNext() ) {
                     Port port = (Port)ports.next();
                     _connectedPorts.addAll( port.connectedPortList() );
                 }
@@ -308,7 +308,7 @@ public class Entity extends NamedObj {
                 _linkedRelations = new LinkedList();
                 Iterator ports = _portList.elementList().iterator();
 
-                while( ports.hasNext() ) {
+                while ( ports.hasNext() ) {
                     Port port = (Port)ports.next();
                     _linkedRelations.addAll( port.linkedRelationList() );
                 }
@@ -406,10 +406,10 @@ public class Entity extends NamedObj {
      *  @return A unique name.
      */
     public String uniqueName(String prefix) {
-        if(prefix == null)
+        if (prefix == null)
             prefix = "null";
         String candidate = prefix;
-        while(getAttribute(candidate) != null
+        while (getAttribute(candidate) != null
                 || getPort(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;
         }

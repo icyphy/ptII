@@ -130,7 +130,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
         double tentativeState =
             integrator.getState() + f*(dir.getCurrentStepSize());
         double error = Math.abs(tentativeState-integrator.getTentativeState());
-        if( !(error < dir.getValueResolution())) {
+        if ( !(error < dir.getValueResolution())) {
             _voteForConvergence(false);
         }
         integrator.setTentativeState(tentativeState);
@@ -170,7 +170,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
         Iterator actors = schedule.get(
                 CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName(), " ask ", ((Nameable)next).getName(),
                    " to emit tentative output");
@@ -178,25 +178,25 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
         _setConvergence(false);
         int iterations = 0;
-        while(!_isConverged()) {
+        while (!_isConverged()) {
             _setConvergence(true);
             incrementRound();
             actors = schedule.get(
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Firing..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " Refiring..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
-            if(iterations++ > dir.getMaxIterations()) {
+            if (iterations++ > dir.getMaxIterations()) {
                 return false;
             }
         }

@@ -149,12 +149,12 @@ public class StaticSchedulingDirector extends Director {
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator firings = schedule.firingIterator();
-        while(firings.hasNext()) {
+        while (firings.hasNext()) {
             Firing firing = (Firing)firings.next();
             Actor actor = (Actor)firing.getActor();
             int iterationCount = firing.getIterationCount();
 
-            if(_debugging) {
+            if (_debugging) {
                 _debug(new FiringEvent(this, actor,
                         FiringEvent.BEFORE_ITERATE));
             }
@@ -170,7 +170,7 @@ public class StaticSchedulingDirector extends Director {
             } else if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             }
-            if(_debugging) {
+            if (_debugging) {
                 _debug(new FiringEvent(this, actor,
                         FiringEvent.AFTER_ITERATE));
             }
@@ -299,7 +299,7 @@ public class StaticSchedulingDirector extends Director {
         // The only other place it is called is CTEmbeddedDirector,
         // which extends this class?
 
-        if(_scheduler == null) {
+        if (_scheduler == null) {
             throw new IllegalActionException(this,
                     "has no scheduler.");
         }
@@ -312,7 +312,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If there's no scheduler.
      */
     public boolean isScheduleValid() throws IllegalActionException {
-        if(_scheduler == null) {
+        if (_scheduler == null) {
             throw new IllegalActionException(this,
                     "has no scheduler.");
         }

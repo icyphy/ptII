@@ -108,13 +108,13 @@ public class DoubleFork extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 	Token token = null;
 	Receiver[][] inputReceivers = input.getReceivers();
-	if( inputReceivers.length == 0 ) {
+	if ( inputReceivers.length == 0 ) {
 	    _continueIterations = false;
 	}
-	for( int i = 0; i < inputReceivers.length; i++ ) {
-	    for( int j = 0; j < inputReceivers[i].length; j++ ) {
+	for ( int i = 0; i < inputReceivers.length; i++ ) {
+	    for ( int j = 0; j < inputReceivers[i].length; j++ ) {
 		DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-		if( inputReceiver.hasToken() ) {
+		if ( inputReceiver.hasToken() ) {
 		    token = inputReceiver.get();
 		    output1.broadcast(token);
 		}

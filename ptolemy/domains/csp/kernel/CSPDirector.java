@@ -236,7 +236,7 @@ public class CSPDirector extends CompositeProcessDirector {
         super.wrapup();
         Iterator actors =
             ((CompositeActor)getContainer()).deepEntityList().iterator();
-        while( _delayedActorList.size() > 0 ) {
+        while ( _delayedActorList.size() > 0 ) {
             DelayListLink value =
                 (DelayListLink)_delayedActorList.get(0);
             value._actor._cancelDelay();
@@ -293,7 +293,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if( _getActiveActorsCount() == _getBlockedActorsCount()
+        if ( _getActiveActorsCount() == _getBlockedActorsCount()
                 + _actorsDelayed ) {
             return true;
         }
@@ -351,8 +351,8 @@ public class CSPDirector extends CompositeProcessDirector {
                     done = true;
                 }
             }
-            // } else if( _actorsBlocked == _getActiveActorsCount() ) {
-        } else if( _getBlockedActorsCount() == _getActiveActorsCount() ) {
+            // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
+        } else if ( _getBlockedActorsCount() == _getActiveActorsCount() ) {
             // Real deadlock.
             System.out.println("REAL DEADLOCK");
             return false;

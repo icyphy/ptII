@@ -153,7 +153,7 @@ public class RunTableau extends Tableau {
             _debugMenu.setMnemonic(KeyEvent.VK_D);
             DebugMenuListener debugMenuListener = new DebugMenuListener();
             // Set the action command and listener for each menu item.
-            for(int i = 0; i < debugMenuItems.length; i++) {
+            for (int i = 0; i < debugMenuItems.length; i++) {
                 debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
                 debugMenuItems[i].addActionListener(debugMenuListener);
                 _debugMenu.add(debugMenuItems[i]);
@@ -186,7 +186,7 @@ public class RunTableau extends Tableau {
                         } else {
                             debug = null;
                         }
-                        if(debug != null) {
+                        if (debug != null) {
                             Effigy effigy = (Effigy)getContainer();
                             // Create a new text effigy inside this one.
                             Effigy textEffigy = new TextEffigy(effigy,
@@ -242,7 +242,7 @@ public class RunTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+	    if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 RunTableau tableau =
                     (RunTableau)effigy.getEntity("runTableau");

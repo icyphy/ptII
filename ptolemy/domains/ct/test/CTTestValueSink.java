@@ -101,9 +101,9 @@ public class CTTestValueSink extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         _debug(getName() + " postfire.");
         _lastToken = input.get(0);
-        if(((BooleanToken)print.getToken()).booleanValue()) {
+        if (((BooleanToken)print.getToken()).booleanValue()) {
             Director dir = getDirector();
-            if(dir != null) {
+            if (dir != null) {
                 System.out.println(dir.getCurrentTime() + " " +
                         ((DoubleToken)_lastToken).doubleValue());
             }
@@ -119,7 +119,7 @@ public class CTTestValueSink extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         _debug(getName() + " wrapping up.");
-        if(_lastToken != null) {
+        if (_lastToken != null) {
             double v = ((DoubleToken)_lastToken).doubleValue();
             //System.out.println("lasttoken=" + v);
             double p = ((DoubleToken)testValue.getToken()).doubleValue();

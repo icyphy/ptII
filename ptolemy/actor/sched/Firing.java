@@ -152,7 +152,7 @@ public class Firing extends ScheduleElement {
      */
     public String toString() {
         String result = "Fire Actor " + _actor;
-        if(getIterationCount() > 1)
+        if (getIterationCount() > 1)
             result += " " + getIterationCount() + " times";
         return result;
     }

@@ -222,7 +222,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
         render.clearData();
         // Add the matrix stripe by stripe to the render object.
         for (int i = 0; i < columns; i++) {
-            for(int j = 0; j < rows; j++) {
+            for (int j = 0; j < rows; j++) {
                 stripe[j] = token.getElementAt(j, i);
             }
             render.addStripe(stripe);

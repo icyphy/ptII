@@ -162,7 +162,7 @@ public class TrackingAlarm extends DEActor {
                 if (_leaderPosition - follower < _closeThreshold) {
                     tooClose.send(0, new BooleanToken(true));
                     //System.out.println("TOO CLOSE");
-                } else if(_leaderPosition - follower > _awayThreshold) {
+                } else if (_leaderPosition - follower > _awayThreshold) {
                     tooFar.send(0, new BooleanToken(true));
                     //System.out.println("TOOFAR");
                 }

@@ -103,7 +103,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         boolean debug = Options.getBoolean(options, "debug");
 
         // Loop over all the actor instance classes.
-        for(Iterator entities = _model.deepEntityList().iterator();
+        for (Iterator entities = _model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
@@ -111,7 +111,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             SootClass entityClass = 
                         Scene.v().loadClassAndSupport(className);
             
-            for(Iterator methods = entityClass.getMethods().iterator();
+            for (Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 _eliminateComparisons(entityClass, method, entity, debug);
@@ -122,7 +122,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
     private static boolean _eliminateComparisons(SootClass theClass, 
             SootMethod method, Entity entity, boolean debug) {
         boolean doneSomething = false;
-        if(debug) System.out.println("Removing object comparisons in " +
+        if (debug) System.out.println("Removing object comparisons in " +
                 method);
         
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
@@ -131,32 +131,32 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
         
-        for(Iterator units = body.getUnits().snapshotIterator();
+        for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            for(Iterator boxes = stmt.getUseBoxes().iterator();
+            for (Iterator boxes = stmt.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
                 
-                if(value instanceof BinopExpr) {
+                if (value instanceof BinopExpr) {
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
                     // handle nulls
-                    if(left.getType() instanceof NullType &&
+                    if (left.getType() instanceof NullType &&
                             right.getType() instanceof NullType) {
                         binop.getOp1Box().setValue(
                                 IntConstant.v(0));
                         binop.getOp2Box().setValue(
                                 IntConstant.v(0));
-                    } else if(left.getType() instanceof RefType &&
+                    } else if (left.getType() instanceof RefType &&
                             right.getType() instanceof RefType) {
                         RefType leftType = (RefType)left.getType();
                         RefType rightType = (RefType)right.getType();
                         SootClass leftClass = leftType.getSootClass();
                         SootClass rightClass = rightType.getSootClass();
-                        if(SootUtilities.derivesFrom(leftClass,
+                        if (SootUtilities.derivesFrom(leftClass,
                                    PtolemyUtilities.namedObjClass) &&
                                 SootUtilities.derivesFrom(rightClass,
                                         PtolemyUtilities.namedObjClass)) {
@@ -170,7 +170,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                                 System.out.println("leftObject = " + leftObject); 
                                 System.out.println("rightObject = " + rightObject);
                                 
-                                if(leftObject == rightObject) {
+                                if (leftObject == rightObject) {
                                     binop.getOp1Box().setValue(
                                             IntConstant.v(0));
                                     binop.getOp2Box().setValue(
@@ -204,21 +204,21 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
     public static NamedObj getNamedObjValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof Local) {
+            if (value instanceof Local) {
                 return getNamedObjValue(method, 
                         (Local)value,
                         stmt, localDefs, localUses);
-            } else if(value instanceof CastExpr) {
+            } else if (value instanceof CastExpr) {
                 return getNamedObjValue(method, 
                         (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                if(tag == null) {
+                if (tag == null) {
                     // return null;
                     throw new RuntimeException(
                             "Could not determine the static value of "
@@ -226,20 +226,20 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                 } else {
                     return (NamedObj)tag.getObject();
                 }
-            } else if(value instanceof NewExpr) {
+            } else if (value instanceof NewExpr) {
                 // If we get to an object creation, then try
                 // to figure out where the variable is stored into a field.
                 Iterator pairs = localUses.getUsesOf(stmt).iterator();
-                while(pairs.hasNext()) {
+                while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
-                    if(pair.getUnit() instanceof DefinitionStmt) {
+                    if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = 
                             (DefinitionStmt)pair.getUnit();
-                        if(useStmt.getLeftOp() instanceof FieldRef) {
+                        if (useStmt.getLeftOp() instanceof FieldRef) {
                              SootField field = 
                                  ((FieldRef)useStmt.getLeftOp()).getField();
                              ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                             if(tag == null) {
+                             if (tag == null) {
                                  System.out.println("Failed usage: " +
                                          useStmt);
                              } else {
@@ -250,7 +250,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                 }
                 throw new RuntimeException("Could not determine the " +
                         " static value of" + local + " in " + method); 
-            } else if(value instanceof NullConstant) {
+            } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the 
                 // attribute statically evaluates to null.
                 return null;
@@ -260,7 +260,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             }
         } else {
             String string = "More than one definition of = " + local + "\n";
-            for(Iterator i = definitionList.iterator();
+            for (Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 string += "Definition = " + i.next().toString();
             }

@@ -107,7 +107,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @exception NoTokenException If there is no token in the receiver.
      */
     public Token get() {
-        if(_queue.isEmpty()) {
+        if (_queue.isEmpty()) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
                     "Attempt to get token from an empty QueueReceiver.");
@@ -205,11 +205,11 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
-	if(tokens < 1) {
+	if (tokens < 1) {
 	    throw new IllegalArgumentException("The argument "
                     + "must not be negative. It was: " + tokens);
 	}
-        if(_queue.getCapacity() == INFINITE_CAPACITY) {
+        if (_queue.getCapacity() == INFINITE_CAPACITY) {
 	    // Queue has infinite capacity, so it can accept any
 	    // finite number of tokens.
 	    return true;
@@ -235,7 +235,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   declared explicitly by the caller.
      */
     public boolean hasToken(int tokens) throws IllegalArgumentException {
-	if(tokens < 0) {
+	if (tokens < 0) {
 	    throw new IllegalArgumentException("The argument "
                     + "must not be negative. It was: " + tokens);
         }

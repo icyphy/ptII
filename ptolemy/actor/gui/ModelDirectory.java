@@ -153,18 +153,18 @@ public class ModelDirectory extends CompositeEntity {
             // the directory, triggering the application to exit.
             boolean anyTableau = false;
             // Check to see if the remaining effigies have any tableaux.
-            for(Iterator effigies = remainingEntities.iterator();
+            for (Iterator effigies = remainingEntities.iterator();
                 effigies.hasNext() && !anyTableau;) {
                 Effigy effigy = (Effigy)effigies.next();
-                if(effigy.numberOfOpenTableaux() > 0) {
+                if (effigy.numberOfOpenTableaux() > 0) {
                     anyTableau = true;
                 }
             }
             // If we can't find any tableau for any of the effigies, then exi
-            if(!anyTableau) {
+            if (!anyTableau) {
                 try {
                     // This gets reentrant...  Ugh..
-                     for(Iterator effigies = remainingEntities.iterator();
+                     for (Iterator effigies = remainingEntities.iterator();
                          effigies.hasNext();) {
                          Effigy effigy = (Effigy)effigies.next();
                          effigy.setContainer(null);

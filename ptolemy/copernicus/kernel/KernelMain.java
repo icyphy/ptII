@@ -233,7 +233,7 @@ public class KernelMain {
                         + "': " + xml);
 	}
 
-        if(modelClass != null) {
+        if (modelClass != null) {
             _toplevel = modelClass;
         }
 
@@ -422,7 +422,7 @@ public class KernelMain {
          *  @param options The options to apply.
          */
         protected void internalTransform(String phaseName, Map options) {
-            for(Iterator classes =
+            for (Iterator classes =
 		    Scene.v().getApplicationClasses().snapshotIterator();
                 classes.hasNext();) {
                 ((SootClass)classes.next()).setLibraryClass();

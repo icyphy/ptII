@@ -609,13 +609,13 @@ public final class Workspace implements Nameable, Serializable {
             int bracket) {
         String result = NamedObj._getIndentPrefix(indent);
         if (bracket == 1 || bracket == 2) result += "{";
-        if((detail & NamedObj.CLASSNAME) != 0) {
+        if ((detail & NamedObj.CLASSNAME) != 0) {
             result += getClass().getName();
-            if((detail & NamedObj.FULLNAME) != 0) {
+            if ((detail & NamedObj.FULLNAME) != 0) {
                 result += " ";
             }
         }
-        if((detail & NamedObj.FULLNAME) != 0) {
+        if ((detail & NamedObj.FULLNAME) != 0) {
             result += "{" + getFullName() + "}";
         }
         if ((detail & NamedObj.CONTENTS) != 0) {

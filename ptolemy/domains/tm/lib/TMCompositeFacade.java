@@ -173,7 +173,7 @@ public class TMCompositeFacade extends TypedCompositeActor
     protected synchronized void _transferInputs()
             throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort port = (IOPort)inputPorts.next();
             getDirector().transferInputs(port);
         }
@@ -186,7 +186,7 @@ public class TMCompositeFacade extends TypedCompositeActor
         Director executiveDirector = getExecutiveDirector();
         if (executiveDirector != null) {
             Iterator outports = outputPortList().iterator();
-            while(outports.hasNext()) {
+            while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();
                 executiveDirector.transferOutputs(p);
             }

@@ -170,7 +170,7 @@ public class RecordToken extends Token {
         }
 
         Iterator iterator = myLabelSet.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String label = (String)iterator.next();
             Token token1 = this.get(label);
             Token token2 = recordToken.get(label);
@@ -216,7 +216,7 @@ public class RecordToken extends Token {
 	int code = 0;
         Set labelSet = _fields.keySet();
         Iterator iterator = labelSet.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String label = (String)iterator.next();
             Token token = this.get(label);
 	    code += token.hashCode();
@@ -287,7 +287,7 @@ public class RecordToken extends Token {
         }
 
         Iterator iterator = myLabelSet.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String label = (String)iterator.next();
             Token token1 = this.get(label);
             Token token2 = recordToken.get(label);
@@ -322,7 +322,7 @@ public class RecordToken extends Token {
         }
 
         Iterator iterator = myLabelSet.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String label = (String)iterator.next();
             Token token1 = this.get(label);
             Token token2 = recordToken.get(label);

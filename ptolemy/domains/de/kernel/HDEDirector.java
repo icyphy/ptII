@@ -323,7 +323,7 @@ public class HDEDirector extends DEDirector {
 
             // Check whether the next time stamp is equal to current time.
             synchronized(_eventQueue) {
-                if(!_eventQueue.isEmpty()) {
+                if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
                     // If the next event is in the future,
                     // proceed to postfire().
@@ -348,7 +348,7 @@ public class HDEDirector extends DEDirector {
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
-	if(_debugging) _debug("Creating new HDE receiver.");
+	if (_debugging) _debug("Creating new HDE receiver.");
 	return new HDEReceiver();
     }
 

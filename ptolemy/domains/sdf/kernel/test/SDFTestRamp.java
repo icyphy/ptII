@@ -90,7 +90,7 @@ public class SDFTestRamp extends TypedAtomicActor {
 
         int tokens =
             ((IntToken)output_tokenProductionRate.getToken()).intValue();
-        for(i = 0; i < tokens; i++) {
+        for (i = 0; i < tokens; i++) {
             Token message = new IntToken(_value);
             _value = _value + 1;
             output.send(0, message);

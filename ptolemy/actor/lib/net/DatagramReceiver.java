@@ -432,7 +432,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 		    // setting of the <i>output</i> by the code below.
 		    //
 		    // Set type of <i>output</i>
-		    if(_decodeWithPtolemyParser) {
+		    if (_decodeWithPtolemyParser) {
 			// Set <i>output</i> to GENERAL so that output can
 			// handle whatever type comes out of the parser.
 			//if (true) System.out.println("->GENERAL");
@@ -529,7 +529,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                    }
                    int newSktNum = ((IntToken)
                            (localSocketNumber.getToken())).intValue();
-                   if(newSktNum != _socket.getLocalPort()) {
+                   if (newSktNum != _socket.getLocalPort()) {
                        synchronized(_syncSocket) {
                            if (_inReceive) {
                                // Wait for receive to finish, if it
@@ -830,11 +830,11 @@ public class DatagramReceiver extends TypedAtomicActor {
         if (_debugging) _debug(this + "portNumber = " + portNumber);
         // Allocate a new socket.
         try {
-            if(false&&_debugging) {
+            if (false&&_debugging) {
                 _debug("Trying to create a new socket on port " + portNumber);
             }
             _socket = new DatagramSocket(portNumber);
-            if(false&&_debugging) {
+            if (false&&_debugging) {
                 _debug("Socket created successfully!");
             }
         }
@@ -848,7 +848,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         // Allocate & start a thread to read from the socket.
         _listenerThread = new ListenerThread();
         _listenerThread.start();
-        if(_debugging) _debug("Thread created & started.");
+        if (_debugging) _debug("Thread created & started.");
 
         if (_debugging) _debug("preinitialize ends");
         if (_debugging) _debug("------------------");
@@ -1182,7 +1182,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
                 } // Close sync block
 
-                if(fireAtWillBeCalled) {
+                if (fireAtWillBeCalled) {
                     try {
                         getDirector().fireAtCurrentTime(
                                 DatagramReceiver.this);
@@ -1194,7 +1194,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                     }
                 }
 
-            } // Close while(true)
+            } // Close while (true)
         } // Close run()
 
     } // Close private class ListenerThread

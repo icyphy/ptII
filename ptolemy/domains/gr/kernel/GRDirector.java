@@ -200,7 +200,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
-            if(actor.prefire() == true) {
+            if (actor.prefire() == true) {
                 if (actor instanceof CompositeActor) {
                     CompositeActor compositeActor = (CompositeActor) actor;
                     Director  insideDirector = compositeActor.getDirector();
@@ -349,7 +349,7 @@ public class GRDirector extends StaticSchedulingDirector {
         super.postfire();
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
-        if((totalIterations > 0) && (_iteration >= totalIterations)) {
+        if ((totalIterations > 0) && (_iteration >= totalIterations)) {
             _iteration = 0;
             return false;
         }
@@ -424,7 +424,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         _debugViewActorTable();
         ListIterator receiverIterator = _receiverTable.listIterator();
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
             //currentReceiver.determineEnds(this);
         }
@@ -444,7 +444,7 @@ public class GRDirector extends StaticSchedulingDirector {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         Iterator outports = container.outputPortList().iterator();
-        while(outports.hasNext()) {
+        while (outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
 
             _outputPortTable.add(new GRIOPort(port));
@@ -460,17 +460,17 @@ public class GRDirector extends StaticSchedulingDirector {
         CompositeActor container = (CompositeActor) getContainer();
         if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
-            while(allActors.hasNext()) {
+            while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 // Get all input ports
                 Iterator allInputs = actor.inputPortList().iterator();
-                while(allInputs.hasNext()){
+                while (allInputs.hasNext()){
                     IOPort inputPort = (IOPort)allInputs.next();
                     Receiver[][] receivers = inputPort.getReceivers();
-                    if(receivers != null) {
-                        for(int i = 0; i < receivers.length; i++) {
+                    if (receivers != null) {
+                        for (int i = 0; i < receivers.length; i++) {
                             if (receivers[i] != null) {
-                                for(int j = 0; j < receivers[i].length; j++) {
+                                for (int j = 0; j < receivers[i].length; j++) {
                                     if (receivers[i][j] != null) {
                                         _receiverTable.add(receivers[i][j]);
                                     }
@@ -484,13 +484,13 @@ public class GRDirector extends StaticSchedulingDirector {
             // Also add the inside receivers in the ports of the
             // composite actor that contains this director.
             Iterator compositePorts = container.outputPortList().iterator();
-            while(compositePorts.hasNext()) {
+            while (compositePorts.hasNext()) {
                 IOPort outputPort = (IOPort)compositePorts.next();
                 Receiver[][] receivers = outputPort.getInsideReceivers();
-                if(receivers != null) {
-                    for(int i = 0; i < receivers.length; i++) {
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
                         if (receivers[i] != null) {
-                            for(int j = 0; j < receivers[i].length; j++) {
+                            for (int j = 0; j < receivers[i].length; j++) {
                                 if (receivers[i][j] != null) {
                                     _receiverTable.add(receivers[i][j]);
                                 }
@@ -513,7 +513,7 @@ public class GRDirector extends StaticSchedulingDirector {
                 + " unique actors");
         debug.println("---------------------------------------");
         ListIterator actorIterator = _actorTable.listIterator();
-        while(actorIterator.hasNext()) {
+        while (actorIterator.hasNext()) {
             ContainedGRActor currentActor =
                 (ContainedGRActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
@@ -537,7 +537,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         ListIterator receiverIterator = _receiverTable.listIterator();
 
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
             debug.println(" receiver "
                     + currentReceiver);
@@ -554,7 +554,7 @@ public class GRDirector extends StaticSchedulingDirector {
         Iterator listIterator = list.iterator();
 
         debug.println("attribute List:");
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             Attribute attribute = (Attribute) listIterator.next();
             debug.println(attribute);
         }
@@ -571,7 +571,7 @@ public class GRDirector extends StaticSchedulingDirector {
     	Iterator listIterator = list.iterator();
 
     	debug.println("\nentity List:");
-    	while(listIterator.hasNext()) {
+    	while (listIterator.hasNext()) {
     	    Entity entity = (Entity) listIterator.next();
     	    debug.println(entity);
     	}
@@ -592,7 +592,7 @@ public class GRDirector extends StaticSchedulingDirector {
         Iterator listIterator = list.iterator();
 
         debug.println("\nTypedCompositeActor container output port list:");
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             debug.println(" ->" + port);
             _debugViewPortInsideReceivers(port);
@@ -609,8 +609,8 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-    	for(int i = 0; i < port.getWidth(); i++) {
-    	    for(int j = 0; j < remoteReceivers[i].length; j++) {
+    	for (int i = 0; i < port.getWidth(); i++) {
+    	    for (int j = 0; j < remoteReceivers[i].length; j++) {
     	        debug.println("  -->" + remoteReceivers[i][j]);
     	        debug.println("  == >" + remoteReceivers[i][j].getContainer());
     	    }
@@ -629,8 +629,8 @@ public class GRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	for(int i = 0; i < port.getWidth(); i++) {
-    	    for(int j = 0; j < portReceivers[i].length; j++) {
+    	for (int i = 0; i < port.getWidth(); i++) {
+    	    for (int j = 0; j < portReceivers[i].length; j++) {
     	        debug.println("  ->" + portReceivers[i][j]);
     	        debug.println("  = >" + portReceivers[i][j].getContainer());
     	        // FIXME: remove comments when debugging

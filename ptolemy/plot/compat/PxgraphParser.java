@@ -449,7 +449,7 @@ public class PxgraphParser {
             if (arg.startsWith("-")) {
                 // Search for unsupported options that take arguments
                 boolean badarg = false;
-                for(j = 0; j < unsupportedOptions.length; j++) {
+                for (j = 0; j < unsupportedOptions.length; j++) {
                     if (arg.equals(unsupportedOptions[j])) {
                         System.err.println("Warning: pxgraph: " + arg +
                                 " is not supported");
@@ -686,7 +686,7 @@ public class PxgraphParser {
 
         _plot.setSize(width, height);
 
-        for(i = argumentsRead; i < args.length; i++) {
+        for (i = argumentsRead; i < args.length; i++) {
 
             // Have a filename.  First attempt to open it as a URL.
             InputStream instream;
@@ -796,7 +796,7 @@ public class PxgraphParser {
 
         // Create a array
         String args[] = new String[argvector.size()];
-        for(int i = 0; i < argvector.size(); i++) {
+        for (int i = 0; i < argvector.size(); i++) {
             args[i] = (String)argvector.elementAt(i);
         }
         return parseArgs(args, base);

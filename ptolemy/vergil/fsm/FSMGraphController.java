@@ -321,7 +321,7 @@ public class FSMGraphController extends FSMViewerGraphController {
                     .getConnectorTarget().getTailSite(c, source,
                             event.getLayerX(),
                             event.getLayerY());
-		if(tailSite == null) {
+		if (tailSite == null) {
 		    throw new RuntimeException("Invalid connector target: " +
                             "no valid site found for tail of new connector.");
 		}
@@ -368,7 +368,7 @@ public class FSMGraphController extends FSMViewerGraphController {
 	    super.actionPerformed(e);
 	    double x;
 	    double y;
-	    if(getSourceType() == TOOLBAR_TYPE ||
+	    if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
                 BasicGraphFrame frame = getFrame();

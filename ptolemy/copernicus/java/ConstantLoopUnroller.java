@@ -96,12 +96,12 @@ public class ConstantLoopUnroller extends BodyTransformer {
                 + phaseName + ", " + options + ")");
         
         Iterator classes = Scene.v().getApplicationClasses().iterator();
-        while(classes.hasNext()) {
+        while (classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
             Iterator methods = theClass.getMethods().iterator();
-            while(methods.hasNext()) {   
+            while (methods.hasNext()) {   
                 SootMethod m = (SootMethod) methods.next();
-                if(!m.isConcrete())
+                if (!m.isConcrete())
                     continue;
                 
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();
@@ -120,7 +120,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
-        for(Iterator blocks = graph.iterator();
+        for (Iterator blocks = graph.iterator();
             blocks.hasNext();) {
             Block block = (Block)blocks.next();
             // filter out anything that doesn't look like a loop block.
@@ -131,14 +131,14 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // filter out anything that isn't attached to something
             // that looks like a conditional jump.
             Block conditional = (Block)block.getSuccs().get(0);
-            if(conditional != block.getPreds().get(0) ||
+            if (conditional != block.getPreds().get(0) ||
                     conditional.getPreds().size() != 2 ||
                     conditional.getSuccs().size() != 2) {
                 continue;
             }
             
             Block whilePredecessor = (Block)conditional.getPreds().get(0);
-            if(whilePredecessor == block) {
+            if (whilePredecessor == block) {
                 whilePredecessor = (Block)conditional.getPreds().get(1);
             }
             System.out.println("block = " + block);
@@ -149,13 +149,13 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // Look through the conditional, and find the jump back to the
             // start of the block. It should be the only jump in the block.
             IfStmt jumpStmt = null;
-            for(Iterator stmts = conditional.iterator();
+            for (Iterator stmts = conditional.iterator();
                 stmts.hasNext();) {
                 Stmt stmt = (Stmt)stmts.next();
-                if(stmt instanceof IfStmt) {
+                if (stmt instanceof IfStmt) {
                     IfStmt ifStmt = (IfStmt)stmt;
-                    if(ifStmt.getTarget() ==  block.getHead()) {
-                        if(jumpStmt == null) {
+                    if (ifStmt.getTarget() ==  block.getHead()) {
+                        if (jumpStmt == null) {
                             jumpStmt = ifStmt;
                         } else {
                             throw new RuntimeException(
@@ -164,7 +164,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
                     }
                 }                            
             }
-            if(jumpStmt == null) {
+            if (jumpStmt == null) {
                 continue;
             }
             
@@ -175,15 +175,15 @@ public class ConstantLoopUnroller extends BodyTransformer {
        
             // Determine the loop increment.
             int increment = 0;
-            if(counterStmt.getRightOp() instanceof AddExpr) {
+            if (counterStmt.getRightOp() instanceof AddExpr) {
                 AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
                 Value incrementValue;
-                if(addExpr.getOp1().equals(counterLocal)) {
+                if (addExpr.getOp1().equals(counterLocal)) {
                     incrementValue = addExpr.getOp2();
                 } else {
                     incrementValue = addExpr.getOp1();
                 }      
-                if(!Evaluator.isValueConstantValued(incrementValue)) continue;
+                if (!Evaluator.isValueConstantValued(incrementValue)) continue;
                 increment = ((IntConstant)
                         Evaluator.getConstantValueOf(incrementValue)).value;
                 System.out.println("increment = " + increment);
@@ -195,13 +195,13 @@ public class ConstantLoopUnroller extends BodyTransformer {
             
             // Now determine the loop limit from the conditional block.
             Value limitValue;
-            if(conditionalExpr.getOp1().equals(counterLocal)) {
+            if (conditionalExpr.getOp1().equals(counterLocal)) {
                 limitValue = conditionalExpr.getOp2();
             } else {
                 limitValue = conditionalExpr.getOp1();
             }  
             int limit;
-            if(Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
+            if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
                 limit = ((IntConstant)
                         Evaluator.getConstantValueOf(limitValue)).value;
                 System.out.println("limit = " + increment);
@@ -215,7 +215,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
             DefinitionStmt initializeStmt = 
                 (DefinitionStmt)defsList.get(0);
             int initial;
-            if(Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
+            if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
                 initial = ((IntConstant)Evaluator.getConstantValueOf(
                         counterStmt.getRightOp())).value;
                 System.out.println("initial = " + initial);
@@ -229,7 +229,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             /*
             List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
-            for(Iterator locals = conditionalLiveLocals.iterator();
+            for (Iterator locals = conditionalLiveLocals.iterator();
                 locals.hasNext();) {
                 Local local = (Local)locals.next();
                 System.out.println("local = " + local);
@@ -240,30 +240,30 @@ public class ConstantLoopUnroller extends BodyTransformer {
                 } catch (Exception ex) {
                     continue;
                 }
-                if(defsList.size() == 0) {
+                if (defsList.size() == 0) {
                     DefinitionStmt counterStmt = (DefinitionStmt)defsList.get(0);
-                    if(counterStmt.getRightOp() instanceof AddExpr) {
+                    if (counterStmt.getRightOp() instanceof AddExpr) {
                         AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
                         Value incrementValue;
-                        if(addExpr.getOp1().equals(local)) {
+                        if (addExpr.getOp1().equals(local)) {
                             incrementValue = addExpr.getOp2();
                         } else {
                             incrementValue = addExpr.getOp1();
                         }      
-                        if(!Evaluator.isValueConstantValued(incrementValue)) continue;
+                        if (!Evaluator.isValueConstantValued(incrementValue)) continue;
                         int increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
                         defsList = localDefs.getDefsOfAt(local, whilePredecessor.getTail());
 
-                        if(defsList.size() == 0) {
+                        if (defsList.size() == 0) {
                             DefinitionStmt initializeStmt = 
                                 (DefinitionStmt)defsList.get(0);
-                            if(Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
+                            if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) { 
                                 int initial = ((IntConstant)Evaluator.getConstantValueOf(
                                         counterStmt.getRightOp())).value;
                                 Value conditionalExpr = jumpStmt.getCondition();
                                 
                                 Value limitValue;
-                                if(addExpr.getOp1().equals(local)) {
+                                if (addExpr.getOp1().equals(local)) {
                                     limitValue = addExpr.getOp2();
                                 } else {
                                     limitValue = addExpr.getOp1();
@@ -287,18 +287,18 @@ public class ConstantLoopUnroller extends BodyTransformer {
             List predecessorDefs = new LinkedList();
             List bodyDefs = new LinkedList();
             List conditionalDefs = new LinkedList();
-            while(conditionalBoxList.size() > 0) {
+            while (conditionalBoxList.size() > 0) {
                 ValueBox box = (ValueBox)conditionalBoxList.get(0);
                 conditionalBoxList.remove(box);
-                if(!(box.getValue() instanceof Local)) continue;
+                if (!(box.getValue() instanceof Local)) continue;
                 List defsList = localDefs.getDefsOfAt((Local)box.getValue(), jumpStmt);
-                for(Iterator defs = defsList.iterator();
+                for (Iterator defs = defsList.iterator();
                     defs.hasNext();) {
                     Unit definitionStmt = (Unit)defs.next();
                                                                   
-                    if(_blockContains(block, definitionStmt)) {
+                    if (_blockContains(block, definitionStmt)) {
                         bodyDefs.add(definitionStmt);
-                    } else if(_blockContains(conditional, definitionStmt)) {
+                    } else if (_blockContains(conditional, definitionStmt)) {
                         // conditionalBoxList.addAll(definitionStmt.getUseBoxes());
                         conditionalDefs.add(definitionStmt);
                     } else {
@@ -307,12 +307,12 @@ public class ConstantLoopUnroller extends BodyTransformer {
                 }
             }
             System.out.println("predecessorDefs = ");
-            for(Iterator i = predecessorDefs.iterator();
+            for (Iterator i = predecessorDefs.iterator();
                 i.hasNext();) {
                 System.out.println("stmt = " + i.next());
             }
            System.out.println("bodyDefs = ");
-             for(Iterator i = bodyDefs.iterator();
+             for (Iterator i = bodyDefs.iterator();
                 i.hasNext();) {
                 System.out.println("stmt = " + i.next());
             }
@@ -332,7 +332,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // so that we can copy them.  Note that this also removes 
             // them from the method body.
             Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
-            for(Iterator blockStmts = block.iterator();
+            for (Iterator blockStmts = block.iterator();
                 blockStmts.hasNext();) {
                 Stmt original = (Stmt)blockStmts.next();
                 blockStmtList.add(original);
@@ -342,23 +342,23 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // Loop through and unroll the loop block once for 
             // every element of the field list.
             /*
-            for(int i = 0; i < times; i++) {
+            for (int i = 0; i < times; i++) {
                 SootField insertField = 
                     (SootField)fields.next();
-                for(Iterator blockStmts = blockStmtList.iterator();
+                for (Iterator blockStmts = blockStmtList.iterator();
                     blockStmts.hasNext();) {
                     // clone each statement
                     Stmt original = (Stmt)blockStmts.next();
                     Stmt clone = (Stmt)original.clone();
                     // If the statement is a call to the next() method,
                     // then inline it with the next value of the iterator.
-                    for(Iterator boxes = clone.getUseBoxes().iterator();
+                    for (Iterator boxes = clone.getUseBoxes().iterator();
                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
-                        if(value instanceof InvokeExpr) {
+                        if (value instanceof InvokeExpr) {
                             InvokeExpr r = (InvokeExpr)value;
-                            if(r.getMethod() == iteratorNextMethod) {
+                            if (r.getMethod() == iteratorNextMethod) {
                                 box.setValue(Jimple.v()
                                         .newInstanceFieldRef(thisLocal,
                                                 insertField));
@@ -370,7 +370,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
                 }
             
             // remove the conditional
-            for(Iterator blockStmts = conditional.iterator();
+            for (Iterator blockStmts = conditional.iterator();
                 blockStmts.hasNext();) {
                 Stmt original = (Stmt)blockStmts.next();
                 blockStmts.remove();
@@ -379,8 +379,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
     }
 
     private static boolean _blockContains(Block block, Object object) {
-        for(Iterator i = block.iterator(); i.hasNext();) {
-            if(i.next().equals(object)) return true;
+        for (Iterator i = block.iterator(); i.hasNext();) {
+            if (i.next().equals(object)) return true;
         }
         return false;
     }

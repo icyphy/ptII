@@ -119,7 +119,7 @@ public class ImpulseBESolver extends BackwardEulerSolver
 
             Iterator actors = dir.getScheduler().getSchedule().get(
                     CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName(),
                         "update state ...", ((Nameable)next).getName());

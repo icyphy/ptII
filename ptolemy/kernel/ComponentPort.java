@@ -407,7 +407,7 @@ public class ComponentPort extends Port {
      *  @return True if the given port is deeply connected.
      */
     public boolean isDeeplyConnected(ComponentPort port) {
-        if(port == null) return false;
+        if (port == null) return false;
         try {
             _workspace.getReadAccess();
             return deepConnectedPortList().contains(port);
@@ -730,7 +730,7 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedPorts;
         }
-        if(path == null) {
+        if (path == null) {
             path = new LinkedList();
         } else {
             if (path.indexOf(this) >= 0) {
@@ -741,7 +741,7 @@ public class ComponentPort extends Port {
         Iterator nearRelations = linkedRelationList().iterator();
         LinkedList result = new LinkedList();
 
-        while(nearRelations.hasNext()) {
+        while (nearRelations.hasNext()) {
             ComponentRelation relation =
                 (ComponentRelation)nearRelations.next();
 
@@ -825,7 +825,7 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedInPorts;
         }
-        if(path == null) {
+        if (path == null) {
             path = new LinkedList();
         } else {
             if (path.indexOf(this) >= 0) {
@@ -839,7 +839,7 @@ public class ComponentPort extends Port {
         while (relations.hasNext()) {
             Relation relation = (Relation)relations.next();
             // A null link might yield a null relation here.
-            if(relation != null) {
+            if (relation != null) {
                 Iterator insidePorts =
                     relation.linkedPortList(this).iterator();
                 while (insidePorts.hasNext()) {

@@ -343,7 +343,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] randomBernoulli(double p, int N) {
         double[] returnValue = new double[N];
 
-        if(_random == null) {
+        if (_random == null) {
             _random = new Random();
         }
 
@@ -360,7 +360,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] randomExponential(double lambda, int N) {
         double[] returnValue = new double[N];
 
-        if(_random == null) {
+        if (_random == null) {
             _random = new Random();
         }
 
@@ -384,7 +384,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             double standardDeviation, int N) {
         double[] returnValue = new double[N];
 
-        if(_random == null) {
+        if (_random == null) {
             _random = new Random();
         }
 
@@ -401,7 +401,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] randomPoisson(double mean, int N) {
         double[] returnValue = new double[N];
 
-        if(_random == null) {
+        if (_random == null) {
             _random = new Random();
         }
 
@@ -435,7 +435,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double range = b - a;
         double[] returnValue = new double[N];
 
-        if(_random == null) {
+        if (_random == null) {
             _random = new Random();
         }
 

@@ -105,20 +105,20 @@ public class DDESink extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         int value = ((IntToken)numTokens.getToken()).intValue();
 
-        if( value >= 0 ) {
+        if ( value >= 0 ) {
             _count++;
-            if( _count > value ) {
+            if ( _count > value ) {
                 _continue = false;
                 return;
             }
         }
 	Receiver[][] receivers = input.getReceivers();
-	for( int i = 0; i < receivers.length; i++ ) {
-	    for( int j = 0; j < receivers[i].length; j++ ) {
+	for ( int i = 0; i < receivers.length; i++ ) {
+	    for ( int j = 0; j < receivers[i].length; j++ ) {
 		DDEReceiver receiver = (DDEReceiver)receivers[i][j];
-                if( !_continue ) {
+                if ( !_continue ) {
                     return;
-                } else if( receiver.hasToken() ) {
+                } else if ( receiver.hasToken() ) {
 		    receiver.get();
 		}
             }

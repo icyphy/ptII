@@ -83,7 +83,7 @@ public class Sines {
 
 	try{
 	    // Loop forever.
-	    while(true) {
+	    while (true) {
 
 		// Do some simple processing on the
 		// captured audio.

@@ -77,7 +77,7 @@ public class GiottoReceiver extends AbstractReceiver {
      *  @exception NoTokenException If no token is available.
      */
     public Token get() throws NoTokenException {
-        if(_token == null) {
+        if (_token == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty receiver.");
         }
@@ -91,7 +91,7 @@ public class GiottoReceiver extends AbstractReceiver {
      *  @exception NoTokenException If no token is available.
      */
     public Token remove() throws NoTokenException {
-        if(_token == null) {
+        if (_token == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty receiver.");
         }

@@ -423,7 +423,7 @@ public class PlotBox extends JPanel implements Printable {
             boolean transparent) {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.addRenderingHints(_defaultImageRenderingHints());
-        if( !transparent ) {
+        if ( !transparent ) {
             graphics.setColor(Color.white);	// set the background color
             graphics.fill(rectangle);
         }
@@ -487,7 +487,7 @@ public class PlotBox extends JPanel implements Printable {
     public static Color getColorByName(String name) {
         try {
             // Check to see if it is a hexadecimal
-            if(name.startsWith("#")) {
+            if (name.startsWith("#")) {
                 name = name.substring(1);
             }
             Color col = new Color(Integer.parseInt(name, 16));
@@ -500,8 +500,8 @@ public class PlotBox extends JPanel implements Printable {
             {"black", "00000"}, {"white", "ffffff"},
             {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
-        for(int i = 0;i< names.length; i++) {
-            if(name.equals(names[i][0])) {
+        for (int i = 0;i< names.length; i++) {
+            if (name.equals(names[i][0])) {
                 try {
                     Color col = new Color(Integer.parseInt(names[i][1], 16));
                     return col;
@@ -1294,7 +1294,7 @@ public class PlotBox extends JPanel implements Printable {
         output.flush();
         // NOTE: We used to close the stream, but if this is part
         // of an exportMoML operation, that is the wrong thing to do.
-        // if(out != System.out) {
+        // if (out != System.out) {
         //    output.close();
         // }
     }
@@ -1370,7 +1370,7 @@ public class PlotBox extends JPanel implements Printable {
         _writeOldSyntax(output);
         output.flush();
         // Avoid closing standard out.
-        if(out != System.out) {
+        if (out != System.out) {
             output.close();
         }
     }
@@ -1416,7 +1416,7 @@ public class PlotBox extends JPanel implements Printable {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, queue a request or add to a pending request.
-        if(EventQueue.isDispatchThread()) {
+        if (EventQueue.isDispatchThread()) {
             action.run();
         } else {
 
@@ -1504,7 +1504,7 @@ public class PlotBox extends JPanel implements Printable {
             int fheight = _labelFontMetrics.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for(int i = 0; i < _errorMsg.length;i++) {
+            for (int i = 0; i < _errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);
@@ -2686,7 +2686,7 @@ public class PlotBox extends JPanel implements Printable {
     private double _gridRoundUp(Vector grid, double pos) {
         double x = pos - Math.floor(pos);
         int i;
-        for(i = 0; i < grid.size() &&
+        for (i = 0; i < grid.size() &&
                 x >= ((Double)grid.elementAt(i)).doubleValue();
             i++){}
         if (i >= grid.size())

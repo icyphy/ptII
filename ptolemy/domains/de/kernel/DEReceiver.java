@@ -102,7 +102,7 @@ public class DEReceiver extends AbstractReceiver {
      *   a runtime exception, so it need not be declared explicitly.
      */
     public synchronized Token get() throws NoTokenException {
-        if(_tokens.isEmpty()) {
+        if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
         }

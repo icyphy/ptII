@@ -284,7 +284,7 @@ public class Expression extends TypedAtomicActor {
                 matlabEngine.put("iteration",
                         _iteration.getToken());
                 Iterator inputPorts = inputPortList().iterator();
-                while(inputPorts.hasNext()) {
+                while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)(inputPorts.next());
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0 && port.hasToken(0)) {
@@ -293,7 +293,7 @@ public class Expression extends TypedAtomicActor {
                 }
                 matlabEngine.evalString(expression.getExpression());
                 Iterator outputPorts = outputPortList().iterator();
-                while(outputPorts.hasNext()) {
+                while (outputPorts.hasNext()) {
                     IOPort port = (IOPort)(outputPorts.next());
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {

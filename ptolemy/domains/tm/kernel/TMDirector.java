@@ -308,7 +308,7 @@ public class TMDirector extends Director {
                 if (actor != null) {
                     if (actor.prefire()) {
                         actor.fire();
-                        if(!actor.postfire()) {
+                        if (!actor.postfire()) {
                             _disableActor(actor);
                         }
                     }
@@ -326,12 +326,12 @@ public class TMDirector extends Director {
         while (!_eventQueue.isEmpty()) {
             event = (TMEvent)_eventQueue.get();
 
-            if(_debugging) _debug("The first event in the queue is ",
+            if (_debugging) _debug("The first event in the queue is ",
                     event.toString());
             // Notice that the first event in the queue
             // either has processing time > 0 or hasn't been started.
             if (!event.hasStarted()) {
-                if(_debugging) _debug(getName(),
+                if (_debugging) _debug(getName(),
                         "put trigger event ",  event.toString(), " into "
                         + ((NamedObj)event.actor()).getName()
                         + " and processing");
@@ -343,7 +343,7 @@ public class TMDirector extends Director {
                 // actor at the same time.
 
                 Actor actor = event.actor();
-                if(actor == getContainer() || !actor.prefire()) {
+                if (actor == getContainer() || !actor.prefire()) {
                     // If the actor is the container of this director,
                     // then the event is at the output boundary.
                     // Remove the event and look at the next event.
@@ -375,7 +375,7 @@ public class TMDirector extends Director {
                         }
                     }
                     if (processingTime == 0.0) {
-                        if(_debugging) _debug(getName(), event.toString(),
+                        if (_debugging) _debug(getName(), event.toString(),
                                 " has processing time 0, so processed.");
                         // This event  can be processed immediately.
                         _eventQueue.take();
@@ -395,7 +395,7 @@ public class TMDirector extends Director {
                         // Really start a task with non-zero processing
                         // time.
                         event.setProcessingTime(processingTime);
-                        if(_debugging) _debug("Set processing time ",
+                        if (_debugging) _debug("Set processing time ",
                                 event.toString());
                         // Start a new task.
                         // Now the behavior depend on whether the
@@ -433,7 +433,7 @@ public class TMDirector extends Director {
                 _nextIterationTime = finishTime;
             }
         }
-        if(_isEmbedded() && _nextIterationTime < Double.MAX_VALUE) {
+        if (_isEmbedded() && _nextIterationTime < Double.MAX_VALUE) {
             _requestFiringAt(_nextIterationTime);
         }
     }
@@ -491,7 +491,7 @@ public class TMDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
 
-        if(_isEmbedded()) {
+        if (_isEmbedded()) {
             _outsideTime = ((CompositeActor)getContainer()).
                 getExecutiveDirector().getCurrentTime();
         } else {
@@ -512,7 +512,7 @@ public class TMDirector extends Director {
      *  @return a new TMReceiver.
      */
     public Receiver newReceiver() {
-        if(_debugging) _debug("Creating new TM receiver.");
+        if (_debugging) _debug("Creating new TM receiver.");
         return new TMReceiver();
     }
 
@@ -577,7 +577,7 @@ public class TMDirector extends Director {
                 // the transfer input from composite actors.
                 setCurrentTime(_outsideTime);
                 if (Math.abs(event.processingTime()) < 1e-10) {
-                    if(_debugging) _debug(getName(),
+                    if (_debugging) _debug(getName(),
                             "finish processing ", event.toString());
                     _eventQueue.take();
                     Actor actor = event.actor();
@@ -627,7 +627,7 @@ public class TMDirector extends Director {
      *  @return Whether the execution should continue.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_debugging) _debug("Finish one iteration at time:" +
+        if (_debugging) _debug("Finish one iteration at time:" +
                 getCurrentTime(),
                 " Next iteration time = " + _nextIterationTime);
         if (!_isEmbedded()) {
@@ -661,7 +661,7 @@ public class TMDirector extends Director {
      */
     protected void _disableActor(Actor actor) {
         if (actor != null) {
-            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
+            if (_debugging) _debug("Actor ", ((Nameable)actor).getName(),
                     " is disabled.");
             if (_disabledActors == null) {
                 _disabledActors = new HashSet();
@@ -677,7 +677,7 @@ public class TMDirector extends Director {
      *  @param message The message.
      */
     protected final void _displaySchedule() {
-        if(_eventQueue != null) {
+        if (_eventQueue != null) {
             Object[] events = _eventQueue.toArray();
             // System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
             for (int i = events.length-1; i >= 0; i-- ) {
@@ -726,7 +726,7 @@ public class TMDirector extends Director {
             // the highest priority.
             event.setPriority(0);
         }
-        if(_debugging) _debug("enqueue event: to",
+        if (_debugging) _debug("enqueue event: to",
                 event.toString());
         _eventQueue.put(event);
     }

@@ -208,7 +208,7 @@ class JHDLTransformer extends SceneTransformer {
         JimpleBody body;
         // Look for a pre-existing static initializer method, and if
         // we find it, add to it.  Otherwise, create one.
-        if(theClass.declaresMethodByName("<clinit>")) {
+        if (theClass.declaresMethodByName("<clinit>")) {
             staticInitializerMethod = theClass.getMethodByName("<clinit>");
             body = (JimpleBody)staticInitializerMethod.retrieveActiveBody();
         } else {
@@ -353,13 +353,13 @@ class JHDLTransformer extends SceneTransformer {
 
         // Remove the prefire(), fire(), and postfire() methods,
         // if they are declared in this class (vs. inherited).
-        if(prefireMethod.getDeclaringClass() == theClass) {
+        if (prefireMethod.getDeclaringClass() == theClass) {
             theClass.removeMethod(prefireMethod);
         }
-        if(fireMethod.getDeclaringClass() == theClass) {
+        if (fireMethod.getDeclaringClass() == theClass) {
             theClass.removeMethod(fireMethod);
         }
-        if(postfireMethod.getDeclaringClass() == theClass) {
+        if (postfireMethod.getDeclaringClass() == theClass) {
             theClass.removeMethod(postfireMethod);
         }
 
@@ -383,12 +383,12 @@ class JHDLTransformer extends SceneTransformer {
         Type wireType = RefType.v(wireClass);
 
         // iterate over all constructors
-        for(Iterator methods = theClass.getMethods().iterator();
+        for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             // get constructor
             SootMethod constructor = (SootMethod)methods.next();
             // Ignore things that aren't constructors.
-            if(constructor.getName() != "<init>")
+            if (constructor.getName() != "<init>")
                 continue;
             // get body & units
             JimpleBody body = (JimpleBody) constructor.retrieveActiveBody();
@@ -451,16 +451,16 @@ class JHDLTransformer extends SceneTransformer {
 	/*
           // Modify the constructor to correct all initializations
           // of the ports.
-          for(Iterator methods = theClass.getMethods().iterator();
+          for (Iterator methods = theClass.getMethods().iterator();
           methods.hasNext();) {
           SootMethod constructor = (SootMethod)methods.next();
           // Ignore things that aren't constructors.
-          if(constructor.getName() != "<init>")
+          if (constructor.getName() != "<init>")
           continue;
           Body body = constructor.getActiveBody();
           PatchingChain units = body.getUnits();
           Iterator unitIterator = units.snapshotIterator();
-          while(unitIterator.hasNext()) {
+          while (unitIterator.hasNext()) {
           Stmt statement = (Stmt)unitIterator.next();
           // Remove assignments to something of type TypedIOPort.
           if (statement instanceof AssignStmt) {
@@ -510,7 +510,7 @@ class JHDLTransformer extends SceneTransformer {
         Body body = clockMethod.getActiveBody();
         PatchingChain units = body.getUnits();
         Iterator unitIterator = units.snapshotIterator();
-        while(unitIterator.hasNext()) {
+        while (unitIterator.hasNext()) {
             Stmt statement = (Stmt)unitIterator.next();
 	    if (statement instanceof InvokeStmt) {
 		InvokeExpr expr = (InvokeExpr)
@@ -574,7 +574,7 @@ class JHDLTransformer extends SceneTransformer {
         Body body = constructor.getActiveBody();
         PatchingChain units = body.getUnits();
         Iterator unitIterator = units.snapshotIterator();
-        while(unitIterator.hasNext()) {
+        while (unitIterator.hasNext()) {
             Stmt statement = (Stmt)unitIterator.next();
             // Remove assignments to something of type TypedIOPort.
             //  	    System.out.println("***** " + statement + " obj " +
@@ -587,7 +587,7 @@ class JHDLTransformer extends SceneTransformer {
                 //      				   rightOpType);
 
 		// compare type with the arguments type
-		for(Iterator parameters=parameterTypes.iterator();
+		for (Iterator parameters=parameterTypes.iterator();
 		    parameters.hasNext();) {
 
 		    Type parameterType = (Type) parameters.next();
@@ -640,11 +640,11 @@ class JHDLTransformer extends SceneTransformer {
         Type ioPortType = RefType.v(ioPortClass);
 
         int i = 0;
-        for(Iterator fields = theClass.getFields().snapshotIterator();
+        for (Iterator fields = theClass.getFields().snapshotIterator();
             fields.hasNext();) {
 
             SootField field = (SootField)fields.next();
-            if(field.getType().equals(RefType.v(ioPortClass))) {
+            if (field.getType().equals(RefType.v(ioPortClass))) {
                 theClass.removeField(field);
             }
         }

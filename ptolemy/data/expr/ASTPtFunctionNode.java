@@ -226,7 +226,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		throw new InvalidStateException("ASTPtFunctionNode: " +
                         " recursive call to null parser.");
 	    }
-	    if(args == 1 && _childTokens[0] instanceof StringToken) {
+	    if (args == 1 && _childTokens[0] instanceof StringToken) {
 		exp = ((StringToken)_childTokens[0]).stringValue();
 		NamedList scope = _parser.getScope();
 		ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
@@ -281,7 +281,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
                     // Set scope variables
                     Iterator variables = scope.elementList().iterator();
-                    while(variables.hasNext()) {
+                    while (variables.hasNext()) {
                         Variable var = (Variable)variables.next();
                         if (var != packageDirectories)
                             matlabEngine.put(var.getName(), var.getToken());

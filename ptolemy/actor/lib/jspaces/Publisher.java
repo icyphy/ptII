@@ -189,7 +189,7 @@ public class Publisher extends Sink {
                 TokenEntry entry = new TokenEntry(name,
                         new Long(0), token);
                 _space.write(entry, null, Lease.FOREVER);
-                if(_debugging) {
+                if (_debugging) {
                     _debug(getName(), "Publisher writes " + token);
                 }
             }

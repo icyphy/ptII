@@ -126,36 +126,36 @@ public class FieldOptimizationTransformer extends SceneTransformer {
             parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = Options.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
                                               
-            for(Iterator fields = entityClass.getFields().iterator();
+            for (Iterator fields = entityClass.getFields().iterator();
                 fields.hasNext();) {
                 SootField field = (SootField)fields.next();
                 // FIXME: static fields too.
-                if(Modifier.isStatic(field.getModifiers())) {
+                if (Modifier.isStatic(field.getModifiers())) {
                     continue;
                 }
                 boolean finalize = true;
                 Value fieldValue = null;
-                for(Iterator methods = entityClass.getMethods().iterator();
+                for (Iterator methods = entityClass.getMethods().iterator();
                     (methods.hasNext() && finalize);) {
                     SootMethod method = (SootMethod)methods.next();
-                    if(method.getName().equals("<init>")) {
+                    if (method.getName().equals("<init>")) {
                         Chain units = method.retrieveActiveBody().getUnits();
                         Stmt stmt = (Stmt)units.getLast();
-                        while(!stmt.equals(units.getFirst())) {
-                            if(stmt instanceof DefinitionStmt &&
+                        while (!stmt.equals(units.getFirst())) {
+                            if (stmt instanceof DefinitionStmt &&
                                     ((DefinitionStmt)stmt).getLeftOp() instanceof InstanceFieldRef) {
                                 InstanceFieldRef ref = (InstanceFieldRef) ((DefinitionStmt)stmt).getLeftOp();
-                                if(ref.getField() == field && fieldValue == null) {
+                                if (ref.getField() == field && fieldValue == null) {
                                     fieldValue = ((DefinitionStmt)stmt).getRightOp();
                                     break;
-                                } else if(fieldValue != null) {
+                                } else if (fieldValue != null) {
                                     finalize = false;
                                 }
                             }
@@ -163,7 +163,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
                         }
                     }
                 }
-                if(finalize && fieldValue != null) {
+                if (finalize && fieldValue != null) {
                     System.out.println("field " + field + " has final value = " + fieldValue);
                 }
             }

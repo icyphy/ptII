@@ -105,7 +105,7 @@ public class VectorDisassembler extends Transformer {
 	if (input.hasToken(0)) {
 	    DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
 
-            if(vector.getColumnCount() != 1) {
+            if (vector.getColumnCount() != 1) {
                 throw new IllegalActionException(this, "The input must "
                         + "be a DoubleMatrixToken with one column.");
             }

@@ -163,12 +163,12 @@ public class ArrayMem extends TypedAtomicActor {
 	BooleanToken yes=BooleanToken.TRUE;
       
       /** Initialize the Array*/
-      if(init.hasToken(0)){
+      if (init.hasToken(0)){
 	  _init = (BooleanToken)init.get(0);
           if (_init.isEqualTo(yes).booleanValue()){
-	    if(initData.hasToken(0)){
+	    if (initData.hasToken(0)){
               ArrayToken token = (ArrayToken)initData.get(0);
-               for(int i = 0; i < alength; i++) {
+               for (int i = 0; i < alength; i++) {
                _mem[i]=(token.getElement(i));
                }
              }
@@ -184,7 +184,7 @@ public class ArrayMem extends TypedAtomicActor {
 	     }
        } 
       /** Write to the array*/
-       if(write.hasToken(0)){
+       if (write.hasToken(0)){
 	  _write = (BooleanToken)write.get(0);
        
        if (_write.isEqualTo(yes).booleanValue()){
@@ -193,9 +193,9 @@ public class ArrayMem extends TypedAtomicActor {
         }
        }
       /** Read from the array*/
-      if(read.hasToken(0)){ 
+      if (read.hasToken(0)){ 
           _read  = (BooleanToken)read.get(0);
-	 if(_read.isEqualTo(yes).booleanValue()) {
+	 if (_read.isEqualTo(yes).booleanValue()) {
               	    dataOut.send(0,_mem[_index]);
        
 	}

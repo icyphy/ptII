@@ -88,7 +88,7 @@ public class PTree extends JTree {
 		    //intersection of the users selected action, and the
 		    //source and target actions
 		    int myaction = dsde.getDropAction();
-		    if( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+		    if ( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
 			context.setCursor(DragSource.DefaultCopyDrop);
 		    } else {
 			context.setCursor(DragSource.DefaultCopyNoDrop);
@@ -100,17 +100,17 @@ public class PTree extends JTree {
 	    };
 
 	    Component source = e.getComponent();
-	    if(source instanceof JTree) {
+	    if (source instanceof JTree) {
 		JTree tree = (JTree) source;
 		Point sourcePoint = e.getDragOrigin();
 		TreePath path =
 		    tree.getPathForLocation(sourcePoint.x,
                             sourcePoint.y);
 		// If we didn't select anything.. then don't drag.
-		if(path == null) return;
+		if (path == null) return;
 		Object object = path.getLastPathComponent();
-		if(object == null) return;
-		if(object instanceof NamedObj) {
+		if (object == null) return;
+		if (object instanceof NamedObj) {
 		    PtolemyTransferable transferable =
 			new PtolemyTransferable();
                     transferable.addObject((NamedObj)object);

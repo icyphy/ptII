@@ -91,12 +91,12 @@ public class BranchController implements Runnable {
      */
     public void activateBranches() {
         synchronized(this) {
-            if( !hasBranches() ) {
+            if ( !hasBranches() ) {
                 return;
             }
             setActive(true);
             Branch branch = null;
-            for( int i = 0; i < _branches.size(); i++ ) {
+            for ( int i = 0; i < _branches.size(); i++ ) {
                 branch = (Branch)_branches.get(i);
                 branch.run();
             }
@@ -121,25 +121,25 @@ public class BranchController implements Runnable {
      */
     public void addBranches(IOPort port) throws
             IllegalActionException {
-	if( port.getContainer() != getParent() ) {
+	if ( port.getContainer() != getParent() ) {
 	    throw new IllegalActionException("Can not contain "
 		    + "a port that is not contained by this "
 		    + "BranchController's container.");
 	}
 
-        if( _ports.contains(port) ) {
+        if ( _ports.contains(port) ) {
             throw new IllegalActionException(port, "This port "
             	    + "is already controlled by this "
                     + "BranchController");
         }
         // Careful; maintain order of following test in case
         // Java is like C
-        if( _hasInputPorts() && !port.isInput() ) {
+        if ( _hasInputPorts() && !port.isInput() ) {
 	    throw new IllegalActionException("BranchControllers "
             	    + "must contain only input ports or only output "
                     + "ports; not both");
         }
-        if( _hasOutputPorts() && !port.isOutput() ) {
+        if ( _hasOutputPorts() && !port.isOutput() ) {
 	    throw new IllegalActionException("BranchControllers "
             	    + "must contain only input ports or only output "
                     + "ports; not both");
@@ -152,11 +152,11 @@ public class BranchController implements Runnable {
 	Receiver[][] prodReceivers = null;
 	Receiver[][] consReceivers = null;
 
-	for( int i = 0; i < port.getWidth(); i++ ) {
-	    if( port.isInput() ) {
+	for ( int i = 0; i < port.getWidth(); i++ ) {
+	    if ( port.isInput() ) {
 		prodReceivers = port.getReceivers();
 		consReceivers = port.deepGetReceivers();
-	    } else if( port.isOutput() ) {
+	    } else if ( port.isOutput() ) {
 		prodReceivers = port.getInsideReceivers();
 		consReceivers = port.getRemoteReceivers();
 	    } else {
@@ -242,11 +242,11 @@ public class BranchController implements Runnable {
      *   no branches; return false otherwise.
      */
     public synchronized boolean isBlocked() {
-        if( !hasBranches() ) {
+        if ( !hasBranches() ) {
             return true;
         }
-        if( _branchesBlocked >= _branches.size() ) {
-            if( _branchesBlocked > 0 ) {
+        if ( _branchesBlocked >= _branches.size() ) {
+            if ( _branchesBlocked > 0 ) {
                 return true;
             }
         }
@@ -263,11 +263,11 @@ public class BranchController implements Runnable {
     	synchronized(this) {
             try {
                 activateBranches();
-                while( isActive() ) {
-                    while( !isBlocked() && isActive() ) {
+                while ( isActive() ) {
+                    while ( !isBlocked() && isActive() ) {
                         wait();
                     }
-                    while( isBlocked() && isActive() ) {
+                    while ( isBlocked() && isActive() ) {
 			_getDirector()._controllerBlocked(this);
                         wait();
                     }
@@ -315,7 +315,7 @@ public class BranchController implements Runnable {
      */
     protected void _branchUnBlocked(ProcessReceiver receiver) {
         synchronized(this) {
-            if( _branchesBlocked > 0 ) {
+            if ( _branchesBlocked > 0 ) {
                 _branchesBlocked--;
             }
 	    _blockedReceivers.remove(receiver);
@@ -350,11 +350,11 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasInputPorts() {
-    	if( _ports.size() == 0 ) {
+    	if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
-        while( ports.hasNext() ) {
+        while ( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
             return port.isInput();
         }
@@ -367,11 +367,11 @@ public class BranchController implements Runnable {
      *  with it. False otherwise.
      */
     private boolean _hasOutputPorts() {
-    	if( _ports.size() == 0 ) {
+    	if ( _ports.size() == 0 ) {
             return false;
         }
         Iterator ports = _ports.iterator();
-        while( ports.hasNext() ) {
+        while ( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
             return port.isOutput();
         }

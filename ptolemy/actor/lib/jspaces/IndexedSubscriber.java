@@ -172,13 +172,13 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
         try {
             _minTemplate = new IndexEntry(_entryName, "minimum", null);
             IndexEntry indexmin;
-            if(_blocking) {
+            if (_blocking) {
                 indexmin = (IndexEntry)
                     _space.read(_minTemplate, null, Long.MAX_VALUE);
             } else {
                 //read for 10 seconds.
                 // FIXME: should 10000 be a paramter?
-                while(true) {
+                while (true) {
                     indexmin =
                         (IndexEntry)_space.read(_minTemplate, null, 10000);
                     if (indexmin == null) {
@@ -195,7 +195,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
 
             _maxTemplate = new IndexEntry(_entryName, "maximum", null);
             IndexEntry indexmax;
-            if(_blocking) {
+            if (_blocking) {
                 indexmax = (IndexEntry)
                     _space.read(_maxTemplate, null, Long.MAX_VALUE);
             } else {
@@ -221,7 +221,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
             // depends on the where the numberOfHistory is:
             // _lastRead serves as a lock.
             long lastread = maximum-numberofhistory;
-            if( lastread < minimum) {
+            if ( lastread < minimum) {
                 lastread = minimum -1;
             }
             System.out.println("set initial reading # to " + lastread);
@@ -231,13 +231,13 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
             _eventReg = _space.notify(
                     template, null, this, Lease.FOREVER, null);
             _notificationSeq = _eventReg.getSequenceNumber();
-            if(lastread < maximum) {
+            if (lastread < maximum) {
                 // grab a lock and read all old entries.
                 synchronized(_lastRead) {
                     boolean finished = false;
                     // We don't need the lock on _tokenList, since
                     // no one can produce outputs at this time.
-                    while(!finished) {
+                    while (!finished) {
                         TokenEntry entrytemp = new TokenEntry(_entryName,
                                 new Long(_lastRead.getSerialNumber() + 1),
                                 null);
@@ -250,7 +250,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                                     "error reading space." +
                                     e.getMessage());
                         }
-                        if(entry == null) {
+                        if (entry == null) {
                             //System.out.println("PREINIT: read null.");
                             finished = true;
                         } else {
@@ -287,9 +287,9 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
         // make sure no one is writing the token list.
         System.out.println("IndexedSubscriber get fired");
         synchronized(_tokenList) {
-            while(true) {
+            while (true) {
                 if (_tokenList.isEmpty()) {
-                    if(_blocking) {
+                    if (_blocking) {
                         try {
                             System.out.println(getName() + " is waiting.");
                             _tokenList.wait();
@@ -369,7 +369,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                     boolean finished = false;
                     // make sure the actor is not producing outputs.
                     synchronized(_tokenList) {
-                        while(!finished) {
+                        while (!finished) {
                             System.out.println(getName() +
                                     " is trying to read entry: " +
                                     ( _lastRead.getSerialNumber() + 1));
@@ -385,7 +385,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                                         "error reading space." +
                                         e.getMessage());
                             }
-                            if(entry == null) {
+                            if (entry == null) {
                                 System.out.println(getName() +
                                         " read null from space");
                                 /* check min indecies
@@ -398,7 +398,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                                    "error reading space." +
                                    e.getMessage());
                                    }
-                                   if(_indexmin != null &&
+                                   if (_indexmin != null &&
                                    _lastRead.getSerialNumber() >=
                                    indexmin.position.longValue()) {
                                    finished = true;

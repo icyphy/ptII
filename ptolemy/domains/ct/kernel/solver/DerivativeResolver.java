@@ -184,21 +184,21 @@ public class DerivativeResolver extends ODESolver
         dir.setSuggestedNextStepSize(dir.getInitialStepSize());
         Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).
             actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             CTDynamicActor next = (CTDynamicActor)actors.next();
             _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
         actors = schedule.get(
                 CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Firing..."+
                     ((Nameable)next).getName());
             next.fire();
         }
         actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " Refiring..."+
                     ((Nameable)next).getName());

@@ -73,10 +73,10 @@ public class NamedObjConstructorAnalysis {
         Local thisLocal = body.getThisLocal();
 
         _newExprToConstructor = new HashMap();
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if(unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() && 
                     unit.getInvokeExpr() instanceof NewExpr) {
                 _newExprToConstructor.put(unit.getInvokeExpr(), 
                         unit);
@@ -87,16 +87,16 @@ public class NamedObjConstructorAnalysis {
         _constructorToName = new HashMap();
         _nameToConstructor = new HashMap();
       
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if(unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() && 
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr invokeExpr = 
                     (InstanceInvokeExpr)unit.getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
                 // If we invoke a container, name constructor.
-                if(invokedMethod.getName().equals("<init>") && 
+                if (invokedMethod.getName().equals("<init>") && 
                         invokedMethod.getParameterCount() >= 2 &&
                         !analysis.getAliasesOfBefore((Local)invokeExpr.getBase(), unit).contains(thisLocal)
                         && SootUtilities.isSubtypeOf(
@@ -117,7 +117,7 @@ public class NamedObjConstructorAnalysis {
                     // Save the name.
                     Value nameValue = invokeExpr.getArg(1);
                     System.out.println("attribute name =" + nameValue);
-                    if(Evaluator.isValueConstantValued(nameValue)) {
+                    if (Evaluator.isValueConstantValued(nameValue)) {
                         StringConstant nameConstant = 
                             (StringConstant)
                             Evaluator.getConstantValueOf(nameValue);
@@ -128,7 +128,7 @@ public class NamedObjConstructorAnalysis {
                         throw new RuntimeException(string);
                     }
 
-                } else if(invokedMethod.getName().equals("setName")) {
+                } else if (invokedMethod.getName().equals("setName")) {
                     System.out.println("found setName " + unit);
                     Unit constructor = _findConstructor(
                             (Local)invokeExpr.getBase(), thisLocal, unit, analysis);
@@ -136,7 +136,7 @@ public class NamedObjConstructorAnalysis {
                     // Save the name.
                     Value nameValue = invokeExpr.getArg(0);
                     //System.out.println("attribute name =" + nameValue);
-                    if(Evaluator.isValueConstantValued(nameValue)) {
+                    if (Evaluator.isValueConstantValued(nameValue)) {
                         StringConstant nameConstant = 
                             (StringConstant)
                             Evaluator.getConstantValueOf(nameValue);
@@ -148,7 +148,7 @@ public class NamedObjConstructorAnalysis {
                     
                     }
                 
-                } else if(invokedMethod.getName().equals("setContainer")) {
+                } else if (invokedMethod.getName().equals("setContainer")) {
                     System.out.println("found setContainer " + unit);
                     Unit constructor = _findConstructor(
                             (Local)invokeExpr.getBase(), thisLocal, unit, analysis);
@@ -162,7 +162,7 @@ public class NamedObjConstructorAnalysis {
         }
 
         // Remap the containers and the names.
-        for(Iterator constructors = _constructorToName.keySet().iterator();
+        for (Iterator constructors = _constructorToName.keySet().iterator();
                 constructors.hasNext();) {
             Unit constructor = (Unit)constructors.next();
             String fullName = _getFullName(constructor);
@@ -179,7 +179,7 @@ public class NamedObjConstructorAnalysis {
     }
     
     private String _getFullName(Unit constructor) {
-        if(_constructorToContainerConstructor.get(constructor) == null) {
+        if (_constructorToContainerConstructor.get(constructor) == null) {
             return (String)_constructorToName.get(constructor);
         } else {
             String containerName = 
@@ -194,20 +194,20 @@ public class NamedObjConstructorAnalysis {
         System.out.println("unit = " + unit);
         System.out.println("aliases = " + aliasSet);
         NewExpr newExpr = null;
-        for(Iterator aliases = aliasSet.iterator();
+        for (Iterator aliases = aliasSet.iterator();
             aliases.hasNext();) {
             Object alias = aliases.next();
-            if(alias instanceof NewExpr) {
-                if(newExpr == null) {
+            if (alias instanceof NewExpr) {
+                if (newExpr == null) {
                     newExpr = (NewExpr)alias;
                 } else {
                     throw new RuntimeException("More than one newExpr found!");
                 }
-            } else if(alias.equals(thisRef)) {
+            } else if (alias.equals(thisRef)) {
                 return null;
             }
         }
-        if(newExpr == null) {
+        if (newExpr == null) {
             throw new RuntimeException("No newExpr found!");
         }
         return (Unit)_newExprToConstructor.get(newExpr);

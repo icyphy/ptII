@@ -147,19 +147,19 @@ public class JavaToC {
         boolean verbose = false;
 
         // actual flags
-        for(int i = 1;i<args.length; i++)
+        for (int i = 1;i<args.length; i++)
         {
             if (args[i].startsWith("-")) //its a flag
             {
                 if     (args[i].equals("-v")) verbose = true;
-                else if(args[i].equals("-q")) verbose = false;
-                else if(args[i].equals("-singleClass"))
+                else if (args[i].equals("-q")) verbose = false;
+                else if (args[i].equals("-singleClass"))
                     compileMode = new String("singleClass");
-                else if(args[i].equals("-headersOnly"))
+                else if (args[i].equals("-headersOnly"))
                     compileMode = new String("headersOnly");
-                else if(args[i].equals("-full"))
+                else if (args[i].equals("-full"))
                     compileMode = new String ("full");
-                else if(args[i].equals("-h"))
+                else if (args[i].equals("-h"))
                 {
                     showHelp();
                     System.exit(0);
@@ -172,7 +172,7 @@ public class JavaToC {
             }
         }
 
-        if(className.equals("")) showHelp(); //if no className specified
+        if (className.equals("")) showHelp(); //if no className specified
 
     }
 }

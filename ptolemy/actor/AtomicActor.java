@@ -134,7 +134,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void connectionsChanged(Port port) {
         if (port instanceof IOPort) {
             IOPort castedPort = (IOPort)port;
-            if(castedPort.isInput() && getDirector() != null) {
+            if (castedPort.isInput() && getDirector() != null) {
                 try {
                     castedPort.createReceivers();
                 } catch(IllegalActionException ex) {
@@ -214,15 +214,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return A list of input IOPort objects.
      */
     public List inputPortList() {
-        if(_inputPortsVersion != _workspace.getVersion()) {
+        if (_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
                 List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isInput()) {
+                    if ( p.isInput()) {
                         inputPorts.add(p);
                     }
                 }
@@ -259,7 +259,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 	while (n++ < count) {
 	    if (prefire()) {
 		fire();
-		if(!postfire()) return Executable.STOP_ITERATING;
+		if (!postfire()) return Executable.STOP_ITERATING;
 	    } else {
                 return Executable.NOT_READY;
 	    }
@@ -314,14 +314,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return A list of output IOPort objects.
      */
     public List outputPortList() {
-        if(_outputPortsVersion != _workspace.getVersion()) {
+        if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isOutput()) {
+                    if ( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
@@ -379,16 +379,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
         // Validate the attributes of this actor.
-        for(Iterator attributes = attributeList(Settable.class).iterator();
+        for (Iterator attributes = attributeList(Settable.class).iterator();
             attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
-        for(Iterator ports = portList().iterator();
+        for (Iterator ports = portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
-            for(Iterator attributes =
+            for (Iterator attributes =
                     port.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();

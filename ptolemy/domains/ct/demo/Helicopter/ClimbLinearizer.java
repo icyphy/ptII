@@ -143,7 +143,7 @@ public class ClimbLinearizer extends TypedAtomicActor
         outputR.setTypeEquals(BaseType.DOUBLE);
 
         String sV = new String();
-        for(int i = 0; i< 4; i++) {
+        for (int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
         paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
@@ -204,11 +204,11 @@ public class ClimbLinearizer extends TypedAtomicActor
             String taps = ((StringToken)paramAlphaV.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
-            if(stokens.countTokens() < 4) {
+            if (stokens.countTokens() < 4) {
                 throw new IllegalActionException ( this,
                         "Not enough parameter numbers.");
             }
-            while(stokens.hasMoreTokens() && index < 4) {
+            while (stokens.hasMoreTokens() && index < 4) {
                 String valueToken = stokens.nextToken();
                 _alphaV[index++] = (new Double(valueToken)).doubleValue();
             }

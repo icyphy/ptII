@@ -132,11 +132,11 @@ public class EditorIcon extends Attribute {
         // which typically carries no label.
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
-        if(container.getAttribute("_hideName") == null) {
+        if (container.getAttribute("_hideName") == null) {
             String name = container.getName();
             // Do not add a label figure if the name is null.
             if (name != null && !name.equals("")) {
-                if(container.getAttribute("_centerName") == null) {
+                if (container.getAttribute("_centerName") == null) {
                     LabelFigure label = new LabelFigure(name,
                             _labelFont, 1.0, SwingConstants.SOUTH_WEST);
                     // Shift the label slightly right so it doesn't
@@ -165,7 +165,7 @@ public class EditorIcon extends Attribute {
     public javax.swing.Icon createIcon() {
 	// In this class, we cache the rendered icon, since creating icons from
 	// figures is expensive.
-        if(_iconCache != null) {
+        if (_iconCache != null) {
 	    return _iconCache;
         }
         // No cached object, so rerender the icon.

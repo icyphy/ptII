@@ -338,7 +338,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                             .getTailSite(c, source,
                             event.getLayerX(),
                             event.getLayerY());
-		if(tailSite == null) {
+		if (tailSite == null) {
 		    throw new RuntimeException("Invalid connector target: " +
                             "no valid site found for tail of new connector.");
 		}
@@ -382,7 +382,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    super.actionPerformed(e);
 	    double x;
 	    double y;
-	    if(getSourceType() == TOOLBAR_TYPE ||
+	    if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
                 BasicGraphFrame frame = getFrame();
@@ -422,7 +422,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
             NamedObj container = 
                 MoMLChangeRequest.getDeferredToParent(toplevel);
-            if(container == null) {
+            if (container == null) {
                 container = toplevel;
             }
 
@@ -430,14 +430,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    final String vertexName = "vertex1";
 	    // Create the relation.
 	    StringBuffer moml = new StringBuffer();
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("<entity name=\"" + 
                         toplevel.getName(container) + "\">\n");
             }
 	    moml.append("<relation name=\"" + relationName + "\">\n");
 	    moml.append("<vertex name=\"" + vertexName + "\"/>\n");
 	    moml.append("</relation>");
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("</entity>");
             }
 

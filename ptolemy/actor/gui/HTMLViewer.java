@@ -172,7 +172,7 @@ public class HTMLViewer extends TableauFrame
 	int lastPage = (int) (scaledHeight / format.getImageableHeight());
 
 	// If we're off the end, then we're done.
-	if(index > lastPage) {
+	if (index > lastPage) {
             return Printable.NO_SUCH_PAGE;
         }
         AffineTransform at = new AffineTransform();

@@ -246,7 +246,7 @@ public class PtolemyApplet extends BasicJApplet
      *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
-        if(_manager != null && _setupOK) {
+        if (_manager != null && _setupOK) {
             _manager.finish();
         }
     }
@@ -296,7 +296,7 @@ public class PtolemyApplet extends BasicJApplet
                     foundConstructor = true;
                 }
             }
-            if(!foundConstructor) {
+            if (!foundConstructor) {
                 throw new IllegalActionException(
                         "Cannot find a suitable constructor for "
                         + modelSpecification);
@@ -401,7 +401,7 @@ public class PtolemyApplet extends BasicJApplet
         // If an exception occurred during init, do not execute.
         if (!_setupOK) return;
         // Only try to start if there is no execution currently running.
-        if(_manager.getState() == _manager.IDLE)
+        if (_manager.getState() == _manager.IDLE)
             _manager.startRun();
 
     }

@@ -158,14 +158,14 @@ public class ForwardEulerSolver extends FixedStepSolver {
         resetRound();
         Iterator actors = schedule.get(
                 CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();
         }
         actors = schedule.get(
                 CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug(getFullName() + " is firing..."+((Nameable)next).getName());
             next.fire();

@@ -123,7 +123,7 @@ public class FSMViewerGraphController extends BasicGraphController {
             // NOTE: This should not be null, but in case it is,
             // it is better to just have the selection dragger not
             // work than to get a null pointer exception.
-            if(_selectionDragger != null) {
+            if (_selectionDragger != null) {
                 _selectionDragger.addSelectionInteractor(
                         (SelectionInteractor)result.getNodeInteractor());
             }
@@ -131,13 +131,13 @@ public class FSMViewerGraphController extends BasicGraphController {
         }
 
         // Superclass cannot provide a controller. Use defaults.
-        if(object instanceof Location) {
+        if (object instanceof Location) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
-            if(semanticObject instanceof Entity) {
+            if (semanticObject instanceof Entity) {
                 return _stateController;
             } else if (semanticObject instanceof Attribute) {
                 return _attributeController;
-            } else if(semanticObject instanceof Port) {
+            } else if (semanticObject instanceof Port) {
                 return _portController;
             }
         }

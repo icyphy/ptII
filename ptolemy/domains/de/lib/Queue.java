@@ -109,13 +109,13 @@ public class Queue extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             _queue.put(input.get(0));
         }
-        if(trigger.hasToken(0)) {
+        if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
-            if(_queue.size() > 0) {
+            if (_queue.size() > 0) {
                 output.send(0, (Token)_queue.take());
             }
         }

@@ -102,21 +102,21 @@ public class Wire extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 	Token token = null;
 	Receiver[][] inputReceivers = input.getReceivers();
-	if( inputReceivers.length == 0 ) {
+	if ( inputReceivers.length == 0 ) {
 	    _continueIterations = false;
 	}
-	for( int i = 0; i < inputReceivers.length; i++ ) {
-	    for( int j = 0; j < inputReceivers[i].length; j++ ) {
+	for ( int i = 0; i < inputReceivers.length; i++ ) {
+	    for ( int j = 0; j < inputReceivers[i].length; j++ ) {
 		DDEReceiver inputReceiver = (DDEReceiver)inputReceivers[i][j];
-		if( inputReceiver.hasToken() ) {
+		if ( inputReceiver.hasToken() ) {
 		    token = inputReceiver.get();
 		    Receiver[][] outReceivers = output.getRemoteReceivers();
-		    for( int k = 0; k < outReceivers.length; k++ ) {
-			for( int l = 0; l < outReceivers[k].length; l++ ) {
+		    for ( int k = 0; k < outReceivers.length; k++ ) {
+			for ( int l = 0; l < outReceivers[k].length; l++ ) {
 			    DDEReceiver outReceiver =
                                 (DDEReceiver)outReceivers[k][l];
 			    Thread thread = Thread.currentThread();
-			    if( thread instanceof DDEThread ) {
+			    if ( thread instanceof DDEThread ) {
 				TimeKeeper timeKeeper =
                                     ((DDEThread)thread).getTimeKeeper();
 			        outReceiver.put(token,

@@ -110,7 +110,7 @@ public class ModelPane extends JPanel implements CloseListener {
      */
     public ModelPane(final CompositeActor model, int layout, int show) {
 
-        if(layout == HORIZONTAL) {
+        if (layout == HORIZONTAL) {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         } else {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -301,7 +301,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 }
             }
 
-            if(_controlPanel != null && _layout == HORIZONTAL) {
+            if (_controlPanel != null && _layout == HORIZONTAL) {
                 // Why they call this glue is beyond me, but what it does
                 // is make extra space to fill in the bottom.
                 _controlPanel.add(Box.createVerticalGlue());
@@ -346,7 +346,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  If there is no manager, do nothing.
      */
     public void stopRun() {
-        if(_manager != null) {
+        if (_manager != null) {
             _manager.finish();
         }
     }
@@ -356,7 +356,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  If there is no manager, do nothing.
      */
     public void pauseRun() {
-        if(_manager != null) {
+        if (_manager != null) {
             _manager.pause();
         }
     }
@@ -366,7 +366,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  If there is no manager, do nothing.
      */
     public void resumeRun() {
-        if(_manager != null) {
+        if (_manager != null) {
             _manager.resume();
         }
     }
@@ -378,10 +378,10 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param button The name of the button that was used to close the window.
      */
     public void windowClosed(Window window, String button) {
-        if(_directorQuery != null) {
+        if (_directorQuery != null) {
             _directorQuery.windowClosed(window, button);
         }
-        if(_parameterQuery != null) {
+        if (_parameterQuery != null) {
             _parameterQuery.windowClosed(window, button);
         }
     }
@@ -434,7 +434,7 @@ public class ModelPane extends JPanel implements CloseListener {
             .allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            if(object instanceof Placeable) {
+            if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
             }
         }

@@ -144,7 +144,7 @@ public class ArrayExtract extends Transformer {
     public void fire() throws IllegalActionException {
         // NOTE: We could use attributeChange, but we rely on java to
         // miss accessing the array.
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
             int sourcePositionValue = ((IntToken)sourcePosition
                     .getToken()).intValue();
@@ -158,13 +158,13 @@ public class ArrayExtract extends Transformer {
                 Token[] outputArray = new Token[outputArrayLengthValue];
 
                 Token zero = inputArray[0].zero();
-                for(int i = 0; i < destinationPositionValue; i++) {
+                for (int i = 0; i < destinationPositionValue; i++) {
                     outputArray[i] = zero;
                 }
                 System.arraycopy(inputArray, sourcePositionValue,
                         outputArray, destinationPositionValue,
                         extractLengthValue);
-                for(int i = destinationPositionValue + extractLengthValue;
+                for (int i = destinationPositionValue + extractLengthValue;
                     i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }

@@ -262,12 +262,12 @@ public class Schedule extends ScheduleElement {
     public String toString() {
         String result = "Execute Schedule{\n";
         Iterator i = iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             ScheduleElement e = (ScheduleElement)i.next();
             result += e + "\n";
         }
         result += "}";
-        if(getIterationCount() > 1)
+        if (getIterationCount() > 1)
             result += " " + getIterationCount() + " times";
         return result;
     }

@@ -163,7 +163,7 @@ public class CTSchedule extends Schedule {
         result += "    continuousActors {\n";
         Schedule continuous = (Schedule)get(CONTINUOUS_ACTORS);
         iterator = continuous.actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result = result +
                 "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
@@ -171,56 +171,56 @@ public class CTSchedule extends Schedule {
         result += "    discreteActors {\n";
         Schedule discrete = (Schedule)get(DISCRETE_ACTORS);
         iterator = discrete.actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result = result +
                 "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    dynamicActors {\n";
         iterator = get(DYNAMIC_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    stateStepSizeControlActors {\n";
         iterator = get(STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    outputStepSizeControlActors {\n";
         iterator = get(OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    eventGenerators {\n";
         iterator = get(EVENT_GENERATORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    waveformGenerators {\n";
         iterator = get(WAVEFORM_GENERATORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    statefulActors {\n";
         iterator = get(STATEFUL_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    stateTransitionActors {\n";
         iterator = get(STATE_TRANSITION_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
         result += "    outputActors {\n";
         iterator = get(OUTPUT_ACTORS).actorIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             result += "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";

@@ -148,11 +148,11 @@ public class Controller extends CSPActor {
      */
     public void fire() throws IllegalActionException {
 
-        if( _numRequestInChannels == -1 ) {
+        if ( _numRequestInChannels == -1 ) {
             _numRequestInChannels = 0;
             Receiver[][] rcvrs = requestInput.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
+            for ( int i = 0; i < rcvrs.length; i++ ) {
+                for ( int j = 0; j < rcvrs[i].length; j++ ) {
                     _numRequestInChannels++;
                 }
             }
@@ -163,7 +163,7 @@ public class Controller extends CSPActor {
         BooleanToken posAck = new BooleanToken( true );
         BooleanToken negAck = new BooleanToken( false );
 
-        while(true) {
+        while (true) {
 
             //
             // State 1: Wait for 1st Request
@@ -171,14 +171,14 @@ public class Controller extends CSPActor {
             _debug( new ExecEvent( this, ExecEvent.WAITING) );
             ConditionalBranch[] requiredBranches =
                 new ConditionalBranch[_numRequestInChannels];
-            for( int i = 0; i < _numRequestInChannels; i++ ) {
+            for ( int i = 0; i < _numRequestInChannels; i++ ) {
                 requiredBranches[i] = new
                     ConditionalReceive(true, requestInput, i, i);
             }
 
             br = chooseBranch(requiredBranches);
 
-            if( br != -1 ) {
+            if ( br != -1 ) {
                 IntToken token = (IntToken)requiredBranches[br].getToken();
                 code = token.intValue();
                 _winningPortChannelCode =
@@ -198,10 +198,10 @@ public class Controller extends CSPActor {
             _debug( new ExecEvent( this, ExecEvent.ACCESSING) );
             _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
-            while( continueCDO ) {
+            while ( continueCDO ) {
                 requiredBranches =
                     new ConditionalBranch[_numRequestInChannels+1];
-                for( int i = 0; i < _numRequestInChannels; i++ ) {
+                for ( int i = 0; i < _numRequestInChannels; i++ ) {
                     requiredBranches[i] =
                         new ConditionalReceive(true, requestInput, i, i);
                 }
@@ -213,10 +213,10 @@ public class Controller extends CSPActor {
 
 
                 // Contention Occurred...and might happen again
-                if( br >= 0 && br < _numRequestInChannels ) {
+                if ( br >= 0 && br < _numRequestInChannels ) {
                     IntToken token = (IntToken)requiredBranches[br].getToken();
                     code = token.intValue();
-                    if( code > _winningPortChannelCode.getCode() ) {
+                    if ( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
                             add(0, _winningPortChannelCode);
                         _winningPortChannelCode =
@@ -226,7 +226,7 @@ public class Controller extends CSPActor {
                                 PortChannelCode(requestInput, br, code) );
                     }
 
-                } else if( br == _numRequestInChannels ) {
+                } else if ( br == _numRequestInChannels ) {
 
                     //
                     // State 4: Contention is Over
@@ -242,7 +242,7 @@ public class Controller extends CSPActor {
                     // Send Negative Ack
                     Iterator enum = _losingPortChannelCodes.iterator();
                     PortChannelCode pcc = null;
-                    while( enum.hasNext() ) {
+                    while ( enum.hasNext() ) {
                         pcc = (PortChannelCode)enum.next();
                         ch = pcc.getChannel();
                         requestOutput.send(ch, negAck);

@@ -126,7 +126,7 @@ public class InlinePortTransformer extends SceneTransformer {
         SootClass modelClass = ModelTransformer.getModelClass();
         SootMethod clinitMethod;
         Body clinitBody;
-        if(modelClass.declaresMethodByName("<clinit>")) {
+        if (modelClass.declaresMethodByName("<clinit>")) {
             clinitMethod = modelClass.getMethodByName("<clinit>");
             clinitBody = clinitMethod.retrieveActiveBody();
         } else {
@@ -141,7 +141,7 @@ public class InlinePortTransformer extends SceneTransformer {
         
         // If we're doing deep (SDF) codegen, then create a
         // queue for every type of every channel of every relation.
-        for(Iterator relations = _model.relationList().iterator();
+        for (Iterator relations = _model.relationList().iterator();
             relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation)relations.next();
 
@@ -161,14 +161,14 @@ public class InlinePortTransformer extends SceneTransformer {
             Map typeMap = new HashMap();
             List destinationPortList = 
                 relation.linkedDestinationPortList();
-            for(Iterator destinationPorts = destinationPortList.iterator();
+            for (Iterator destinationPorts = destinationPortList.iterator();
                 destinationPorts.hasNext();) {
                 TypedIOPort port = (TypedIOPort)destinationPorts.next();
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
             }
             
-            for(Iterator types = typeMap.keySet().iterator();
+            for (Iterator types = typeMap.keySet().iterator();
                 types.hasNext();) {
                 ptolemy.data.type.Type type = 
                     (ptolemy.data.type.Type)typeMap.get(types.next());
@@ -180,13 +180,13 @@ public class InlinePortTransformer extends SceneTransformer {
                     Jimple.v().newLocal(fieldName, arrayType);
                 clinitBody.getLocals().add(arrayLocal);
                 
-                for(int i = 0; i < relation.getWidth(); i++) {
+                for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(
                             getBufferFieldName(relation, i, type),
                             arrayType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
-                    if(debug) System.out.println("creating field = " + field);
+                    if (debug) System.out.println("creating field = " + field);
                     
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
@@ -214,7 +214,7 @@ public class InlinePortTransformer extends SceneTransformer {
         
         // FIXME toplevel ports?
         // Loop over all the actor instance classes.
-        for(Iterator entities = _model.deepEntityList().iterator();
+        for (Iterator entities = _model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className = 
@@ -225,7 +225,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     portToTypeNameToBufferField, portToIndexArrayField);
           
             // Loop through all the methods and inline calls on ports.
-            for(Iterator methods = entityClass.getMethods().iterator();
+            for (Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -235,7 +235,7 @@ public class InlinePortTransformer extends SceneTransformer {
                 // System.out.println("method = " + method);
                 
                 boolean moreToDo = true;
-                while(moreToDo) {
+                while (moreToDo) {
                     moreToDo = _inlineMethodCalls(entityClass, method, body,
                             portToTypeNameToBufferField, 
                             portToIndexArrayField, debug);
@@ -258,49 +258,49 @@ public class InlinePortTransformer extends SceneTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
         
-        for(Iterator units = body.getUnits().snapshotIterator();
+        for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            if(stmt.containsInvokeExpr()) {
+            if (stmt.containsInvokeExpr()) {
                 ValueBox box = stmt.getInvokeExprBox();
                 Value value = stmt.getInvokeExpr();
-                if(value instanceof InstanceInvokeExpr) {
+                if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     
-                    if(r.getBase().getType() instanceof RefType) {
+                    if (r.getBase().getType() instanceof RefType) {
                         RefType type = (RefType)r.getBase().getType();
                         
                         // Inline calls to connections changed.
-                        if(r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                        if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
                             // If we are calling connections changed on one of the classes
                             // we are generating code for, then inline it.
-                            if(type.getSootClass().isApplicationClass()) {
+                            if (type.getSootClass().isApplicationClass()) {
                                 SootMethod inlinee = null;
-                                if(r instanceof VirtualInvokeExpr) {
+                                if (r instanceof VirtualInvokeExpr) {
                                     // Now inline the resulting call.
                                     List methodList = 
                                         Scene.v().getActiveHierarchy().resolveAbstractDispatch(
                                                 type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
-                                    if(methodList.size() == 1) {
+                                    if (methodList.size() == 1) {
                                         // Inline the method.
                                         inlinee = (SootMethod)methodList.get(0);
                                     } else {
                                         String string = "Can't inline " + stmt + 
                                             " in method " + method + "\n";
-                                        for(int i = 0; i < methodList.size(); i++) {
+                                        for (int i = 0; i < methodList.size(); i++) {
                                             string += "target = " + methodList.get(i) + "\n";
                                         }
                                         System.out.println(string);
                                     }
-                                } else if(r instanceof SpecialInvokeExpr) {
+                                } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
                                             (SpecialInvokeExpr)r, method);
                                 }
-                                if(!inlinee.getDeclaringClass().isApplicationClass()) {
+                                if (!inlinee.getDeclaringClass().isApplicationClass()) {
                                     inlinee.getDeclaringClass().setLibraryClass();
                                 }
                                 inlinee.retrieveActiveBody();
-                                if(debug) System.out.println("Inlining method call: " + r);
+                                if (debug) System.out.println("Inlining method call: " + r);
                                 SiteInliner.inlineSite(inlinee, stmt, method);
                                 
                                 doneSomething = true;
@@ -320,11 +320,11 @@ public class InlinePortTransformer extends SceneTransformer {
                         // Statically evaluate constant arguments.
                         Value argValues[] = new Value[r.getArgCount()];
                         int constantArgCount = 0;
-                        for(Iterator args = r.getArgs().iterator();
+                        for (Iterator args = r.getArgs().iterator();
                             args.hasNext();) {
                             Value arg = (Value)args.next();
                             //System.out.println("arg = " + arg);
-                            if(Evaluator.isValueConstantValued(arg)) {
+                            if (Evaluator.isValueConstantValued(arg)) {
                                 argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
                                 // System.out.println("argument = " + argValues[argCount-1]);
                             } else {
@@ -333,7 +333,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         }
                         boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
                                 
-                        if(SootUtilities.derivesFrom(type.getSootClass(), 
+                        if (SootUtilities.derivesFrom(type.getSootClass(), 
                                 PtolemyUtilities.portClass)) {
                             // If we are invoking a method on a port
                             // class, then attempt to get the constant
@@ -343,11 +343,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                         stmt, localDefs, localUses);
                             //     System.out.println("reference to port = " + port);
                                          
-                            if(port == null) {
+                            if (port == null) {
                                 continue;
                             }
 
-                            if(port instanceof Typeable) {
+                            if (port instanceof Typeable) {
                                 PtolemyUtilities.inlineTypeableMethods(body, 
                                         stmt, box, r, (Typeable)port);
                                        
@@ -355,19 +355,19 @@ public class InlinePortTransformer extends SceneTransformer {
                                     
 
                             // Inline namedObj methods on the attribute.
-                            if(r.getMethod().getSubSignature().equals(
+                            if (r.getMethod().getSubSignature().equals(
                                        PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
                                                      port.getFullName()));
                             } 
-                            if(r.getMethod().getSubSignature().equals(
+                            if (r.getMethod().getSubSignature().equals(
                                        PtolemyUtilities.getNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
                                                      port.getName()));
                             } 
 
                             String methodName = r.getMethod().getName();
-                            if(port.getWidth() == 0 &&
+                            if (port.getWidth() == 0 &&
                                     (methodName.equals("hasToken") ||
                                             methodName.equals("hasRoom") ||
                                             methodName.equals("get") ||
@@ -383,10 +383,10 @@ public class InlinePortTransformer extends SceneTransformer {
                                         port.getFullName() + "!");
                                 body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
                                         stmt);
-                                if(stmt instanceof DefinitionStmt) {
+                                if (stmt instanceof DefinitionStmt) {
                                     // be sure we replace with the
                                     // right return type.
-                                    if(methodName.equals("hasToken") ||
+                                    if (methodName.equals("hasToken") ||
                                             methodName.equals("hasRoom")) {
                                         box.setValue(IntConstant.v(0));
                                     } else {
@@ -398,34 +398,34 @@ public class InlinePortTransformer extends SceneTransformer {
                                 continue;
                             }
                                                                             
-                            if(r.getMethod().getName().equals("isInput")) {
+                            if (r.getMethod().getName().equals("isInput")) {
                                 // return true.
-                                if(port.isInput()) {
+                                if (port.isInput()) {
                                     box.setValue(IntConstant.v(1));
                                 } else {
                                     box.setValue(IntConstant.v(0));
                                 }
-                            } else if(r.getMethod().getName().equals("isOutput")) {
+                            } else if (r.getMethod().getName().equals("isOutput")) {
                                 // return true.
-                                if(port.isOutput()) {
+                                if (port.isOutput()) {
                                     box.setValue(IntConstant.v(1));
                                 } else {
                                     box.setValue(IntConstant.v(0));
                                 }
-                            } else if(r.getMethod().getName().equals("isMultiport")) {
+                            } else if (r.getMethod().getName().equals("isMultiport")) {
                                 // return true.
-                                if(port.isMultiport()) {
+                                if (port.isMultiport()) {
                                     box.setValue(IntConstant.v(1));
                                 } else {
                                     box.setValue(IntConstant.v(0));
                                 }
-                            } else if(r.getMethod().getName().equals("hasToken")) {
+                            } else if (r.getMethod().getName().equals("hasToken")) {
                                 // return true.
                                 box.setValue(IntConstant.v(1));
-                            } else if(r.getMethod().getName().equals("hasRoom")) {
+                            } else if (r.getMethod().getName().equals("hasRoom")) {
                                 // return true.
                                 box.setValue(IntConstant.v(1));
-                            } else if(r.getMethod().getName().equals("getWidth")) {
+                            } else if (r.getMethod().getName().equals("getWidth")) {
                                 // Reflect and invoke the same method on our port
                                 Object object = SootUtilities.reflectAndInvokeMethod(
                                         port, r.getMethod(), argValues);
@@ -435,7 +435,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                        
                                 // replace the method invocation.
                                 box.setValue(constant);
-                            } else if(r.getMethod().getName().equals("get")) {
+                            } else if (r.getMethod().getName().equals("get")) {
                                 // Could be get that takes a channel and returns a token,
                                 // or get that takes a channel and a count and returns
                                 // an array of tokens.          
@@ -443,7 +443,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                 _inlineGet(body, stmt, box, r, port, 
                                         portToIndexArrayField, portToTypeNameToBufferField);
 
-                            } else if(r.getMethod().getName().equals("send")) {
+                            } else if (r.getMethod().getName().equals("send")) {
                                 // Could be send that takes a channel and returns a token,
                                 // or send that takes a channel and an array of tokens.          
                                 // In either case, replace the send with circular array ref.
@@ -451,10 +451,10 @@ public class InlinePortTransformer extends SceneTransformer {
                                 _inlineSend(body, stmt, r, port, 
                                         portToIndexArrayField, portToTypeNameToBufferField);
 
-                            } else if(r.getMethod().getName().equals("broadcast")) {
+                            } else if (r.getMethod().getName().equals("broadcast")) {
                                 // Broadcasting on a port of zero width does 
                                 // nothing.
-                                if(port.getWidth() == 0) {
+                                if (port.getWidth() == 0) {
                                     body.getUnits().remove(stmt);
                                 } else {
                                     // Could be broadcast that takes a
@@ -485,36 +485,36 @@ public class InlinePortTransformer extends SceneTransformer {
     public static TypedIOPort getPortValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof Local) {
+            if (value instanceof Local) {
                 return getPortValue(method, (Local)value,
                         stmt, localDefs, localUses);
-            } else if(value instanceof CastExpr) {
+            } else if (value instanceof CastExpr) {
                 return getPortValue(method, (Local)((CastExpr)value).getOp(),
                         stmt, localDefs, localUses);
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                if(tag == null) {
+                if (tag == null) {
                     return null;
                 } else {
                     return (TypedIOPort)tag.getObject();
                 }
            
-            } else if(value instanceof NewExpr) {
+            } else if (value instanceof NewExpr) {
                 // If we get to an object creation, then try
                 // to figure out where the variable is stored into a field.
                 Iterator pairs = localUses.getUsesOf(stmt).iterator();
-                while(pairs.hasNext()) {
+                while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
-                    if(pair.getUnit() instanceof DefinitionStmt) {
+                    if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
-                        if(useStmt.getLeftOp() instanceof FieldRef) {
+                        if (useStmt.getLeftOp() instanceof FieldRef) {
                             SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
                             ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                            if(tag == null) {
+                            if (tag == null) {
                                 return null;
                             } else {
                                 return (TypedIOPort)tag.getObject();
@@ -530,7 +530,7 @@ public class InlinePortTransformer extends SceneTransformer {
             }
         } else {
             System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
+            for (Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 System.out.println(i.next().toString());
             }
@@ -541,7 +541,7 @@ public class InlinePortTransformer extends SceneTransformer {
     // Return a set of ptolemy.data.type.Type objects representing the
     // types of ports that the given output port is connected to.
     private Set _getConnectedTypeList(TypedIOPort port) {
-        if(!port.isOutput()) {
+        if (!port.isOutput()) {
             throw new RuntimeException("Can only get the connected types for" +
                     " an output port!");
         }
@@ -552,7 +552,7 @@ public class InlinePortTransformer extends SceneTransformer {
         Map typeMap = new HashMap();
         // FIXME: This needs to be changed to handle hierarchy.
         List portList = port.deepConnectedInPortList();
-        for(Iterator ports = portList.iterator();
+        for (Iterator ports = portList.iterator();
             ports.hasNext();) {
             TypedIOPort remotePort = (TypedIOPort)ports.next();
             ptolemy.data.type.Type type = remotePort.getType();
@@ -561,7 +561,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         // Construct the set of types.
         HashSet set = new HashSet();
-        for(Iterator types = typeMap.keySet().iterator();
+        for (Iterator types = typeMap.keySet().iterator();
             types.hasNext();) {
             set.add(typeMap.get(types.next()));
         }
@@ -575,7 +575,7 @@ public class InlinePortTransformer extends SceneTransformer {
             Entity entity, SootClass entityClass,
             Map portToTypeNameToBufferField, Map portToIndexArrayField) {
         // Loop over all the ports of the actor.
-        for(Iterator ports = entity.portList().iterator();
+        for (Iterator ports = entity.portList().iterator();
             ports.hasNext();) {
             TypedIOPort port = (TypedIOPort)ports.next();
 
@@ -585,7 +585,7 @@ public class InlinePortTransformer extends SceneTransformer {
             //  System.out.println("port = " + port.getFullName() + " type = " + port.getType());
             
             // If the port is connected.
-            if(port.getWidth() > 0) {
+            if (port.getWidth() > 0) {
                 // Create a field for the indexes into the buffer for that field.
                 SootField indexArrayField = new SootField("_index_" + port.getName(),
                         ArrayType.v(IntType.v(), 1), Modifier.PUBLIC);
@@ -594,13 +594,13 @@ public class InlinePortTransformer extends SceneTransformer {
                 portToIndexArrayField.put(port, indexArrayField);
 
                 // Initialize the index fields.
-                for(Iterator methods = entityClass.getMethods().iterator();
+                for (Iterator methods = entityClass.getMethods().iterator();
                     methods.hasNext();) {
                     SootMethod method = (SootMethod)methods.next();
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                     Object insertPoint = body.getUnits().getLast();
                     // Insert code into all the init methods.
-                    if(!method.getName().equals("<init>")) {
+                    if (!method.getName().equals("<init>")) {
                         continue;
                     }
                     Local indexesLocal = 
@@ -632,15 +632,15 @@ public class InlinePortTransformer extends SceneTransformer {
                 // is an output, then we might have to convert to
                 // multiple types.  Create a reference to the
                 // port for each type that the port may reference.
-                if(port.isInput()) {
+                if (port.isInput()) {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)port.getType();
                         
                     _createPortBufferReference(entityClass, 
                             port, type, typeNameToBufferField);
-                } else if(port.isOutput()) {
+                } else if (port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
-                    for(Iterator types = typeSet.iterator();
+                    for (Iterator types = typeSet.iterator();
                         types.hasNext();) {
                         ptolemy.data.type.Type type =
                             (ptolemy.data.type.Type)types.next();
@@ -674,13 +674,13 @@ public class InlinePortTransformer extends SceneTransformer {
         bufferField.addTag(new TypeTag(type));
         
         // Create references to the buffer for each port channel
-        for(Iterator methods = entityClass.getMethods().iterator();
+        for (Iterator methods = entityClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             Object insertPoint = body.getUnits().getLast();
             // Insert code into all the init methods.
-            if(!method.getName().equals("<init>")) {
+            if (!method.getName().equals("<init>")) {
                 continue;
             }
           
@@ -711,12 +711,12 @@ public class InlinePortTransformer extends SceneTransformer {
             // For each channel of the port, make the buffer for that
             // channel point to the appropriate buffer of the relation.
             int channel = 0;
-            for(Iterator relations = port.linkedRelationList().iterator();
+            for (Iterator relations = port.linkedRelationList().iterator();
                 relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
-                for(int i = 0; i < relation.getWidth(); i++, channel++) {
+                for (int i = 0; i < relation.getWidth(); i++, channel++) {
                     // FIXME: buffersize is only one!
-                    //  if(bufsize == 1) {
+                    //  if (bufsize == 1) {
                     //  } else {
                     // Get the buffer associated with the channel.
                     SootField arrayField = 
@@ -751,7 +751,7 @@ public class InlinePortTransformer extends SceneTransformer {
             Local typeLocal, Local tokenLocal, Local outputTokenLocal) {
         List list = new LinkedList();
         // Convert the type, if we need to.
-        if(typeLocal != null) {
+        if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(
                     tokenLocal,
                     Jimple.v().newInterfaceInvokeExpr(
@@ -784,7 +784,7 @@ public class InlinePortTransformer extends SceneTransformer {
         // Now update the index into the buffer.
         List list = new LinkedList();
         // If the buffer is size one, then the below code is a noop.
-        if(bufferSizeValue.equals(IntConstant.v(1))) {
+        if (bufferSizeValue.equals(IntConstant.v(1))) {
             return list;
         }
         // increment the position.
@@ -822,21 +822,21 @@ public class InlinePortTransformer extends SceneTransformer {
         
         Value bufferSizeValue = null;
         // Now get the appropriate buffer
-        if(Evaluator.isValueConstantValued(channelValue)) {
+        if (Evaluator.isValueConstantValued(channelValue)) {
             // If we know the channel, then refer directly to the buffer in the 
             // model
             int argChannel = 
                 ((IntConstant)Evaluator.getConstantValueOf(channelValue)).value;
             int channel = 0;
             boolean found = false;
-            for(Iterator relations = port.linkedRelationList().iterator();
+            for (Iterator relations = port.linkedRelationList().iterator();
                 !found && relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
                 
-                for(int i = 0; 
+                for (int i = 0; 
                     !found && i < relation.getWidth();
                     i++, channel++) {
-                    if(channel == argChannel) {
+                    if (channel == argChannel) {
                         found = true;
                         SootField arrayField = 
                             ModelTransformer.getModelClass().getFieldByName(
@@ -864,7 +864,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     }
                 }
             }
-            if(!found) {
+            if (!found) {
                 throw new RuntimeException("Constant channel not found!");
             }
         } else {
@@ -914,7 +914,7 @@ public class InlinePortTransformer extends SceneTransformer {
             TypedIOPort port, Local indexLocal, Local indexArrayLocal, 
             Value channelValue, Value bufferSizeValue, Map portToIndexArrayField) {
    
-        if(bufferSizeValue.equals(IntConstant.v(1))) {
+        if (bufferSizeValue.equals(IntConstant.v(1))) {
             // Load the correct index into indexLocal
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(indexLocal,
@@ -983,7 +983,7 @@ public class InlinePortTransformer extends SceneTransformer {
         Value bufferSizeValue = null;
         // Refer directly to the buffer in the model
         int channel = 0;
-        for(Iterator relations = port.linkedRelationList().iterator();
+        for (Iterator relations = port.linkedRelationList().iterator();
             relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation)relations.next();
             int bufferSize;
@@ -1000,7 +1000,7 @@ public class InlinePortTransformer extends SceneTransformer {
             // remember the size of the buffer.
             bufferSizeValue = IntConstant.v(bufferSize); 
                                                 
-            for(int i = 0; 
+            for (int i = 0; 
                 i < relation.getWidth();
                 i++, channel++) {
                 Value channelValue = IntConstant.v(channel);
@@ -1025,7 +1025,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         stmt);
 
                 // If we are calling with just a token, then send the token.
-                if(expr.getArgCount() == 1) {
+                if (expr.getArgCount() == 1) {
                     // Write to the buffer.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -1046,11 +1046,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                     expr.getArg(0)),
                             stmt);
                     // If the count is specified statically
-                    if(Evaluator.isValueConstantValued(expr.getArg(1))) {
+                    if (Evaluator.isValueConstantValued(expr.getArg(1))) {
                         int argCount =
                             ((IntConstant)Evaluator.getConstantValueOf(
                                     expr.getArg(1))).value;
-                        for(int k = 0; k < argCount; k++) {
+                        for (int k = 0; k < argCount; k++) {
                             // Get the value.
                             body.getUnits().insertBefore(
                                     Jimple.v().newAssignStmt(
@@ -1190,14 +1190,14 @@ public class InlinePortTransformer extends SceneTransformer {
                                        
         System.out.println("inlining get at " + stmt);
         // If we are calling with just a channel, then read the value.
-        if(expr.getArgCount() == 1) {
+        if (expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions( 
                     indexLocal, indexArrayLocal, channelValue,
                     bufferSizeValue), stmt);
                                            
             // We may be calling get without setting the return value
             // to anything.
-            if(stmt instanceof DefinitionStmt) {
+            if (stmt instanceof DefinitionStmt) {
                 // Replace the get() with an array read.
                 box.setValue(Jimple.v().newArrayRef(bufferLocal,
                         indexLocal));
@@ -1218,10 +1218,10 @@ public class InlinePortTransformer extends SceneTransformer {
               
             // If the count is specified statically
             // FIXME: constant loop unroller should take care of this.
-            if(Evaluator.isValueConstantValued(countValue)) {
+            if (Evaluator.isValueConstantValued(countValue)) {
                 int argCount = ((IntConstant)
                         Evaluator.getConstantValueOf(countValue)).value;
-                for(int k = 0; k < argCount; k++) {
+                for (int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -1277,7 +1277,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                         returnArrayLocal,
                                         counterLocal),
                                 returnLocal));
-                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // increment the position.
                     bodyList.add(
                             Jimple.v().newAssignStmt(
@@ -1312,7 +1312,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         conditionalExpr);
                 body.getUnits().insertBefore(loop, stmt);
 
-                if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // store back.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -1352,12 +1352,12 @@ public class InlinePortTransformer extends SceneTransformer {
          
         // We have to repeat for all of the remote types.
         Set typeSet = _getConnectedTypeList(port);
-        for(Iterator types = typeSet.iterator();
+        for (Iterator types = typeSet.iterator();
             types.hasNext();) {
             ptolemy.data.type.Type type =
                 (ptolemy.data.type.Type)types.next();
             Local typeLocal = null;
-            //   if(!port.getType().equals(type)) {
+            //   if (!port.getType().equals(type)) {
                 typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, 
                         stmt, type);
                 // }
@@ -1383,7 +1383,7 @@ public class InlinePortTransformer extends SceneTransformer {
             body.getLocals().add(outputTokenLocal);         
             
             // If we are calling with just a channel, then write the value.
-            if(expr.getArgCount() == 2) {
+            if (expr.getArgCount() == 2) {
                 Local sendTokenLocal = (Local)expr.getArg(1);
                // Replace the put() with an array write.
                 body.getUnits().insertBefore(
@@ -1418,10 +1418,10 @@ public class InlinePortTransformer extends SceneTransformer {
                 body.getLocals().add(sendTokenLocal);
             
                 // If the count is specified statically
-                if(Evaluator.isValueConstantValued(countValue)) {
+                if (Evaluator.isValueConstantValued(countValue)) {
                     int argCount =
                         ((IntConstant)Evaluator.getConstantValueOf(countValue)).value;
-                    for(int k = 0; k < argCount; k++) {
+                    for (int k = 0; k < argCount; k++) {
                         // Get the value.
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(
@@ -1475,7 +1475,7 @@ public class InlinePortTransformer extends SceneTransformer {
                            
                     // Note that we don't use createIndexUpdateInstructions
                     // because we would generate too many field stores.
-                    if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                    if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // increment the position.
                         bodyList.add(Jimple.v().newAssignStmt(
                                 indexLocal,
@@ -1505,7 +1505,7 @@ public class InlinePortTransformer extends SceneTransformer {
                             conditionalExpr);
                     body.getUnits().insertBefore(loop, stmt);
 
-                    if(!bufferSizeValue.equals(IntConstant.v(1))) {
+                    if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // store back.
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(

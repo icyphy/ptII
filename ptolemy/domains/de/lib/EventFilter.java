@@ -80,10 +80,10 @@ public class EventFilter extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        for(int i = 0; i < input.getWidth(); i++) {
-            if(input.hasToken(i)) {
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
                 BooleanToken token = (BooleanToken)input.get(i);
-                if(token.booleanValue()) {
+                if (token.booleanValue()) {
                     output.send(i, token);
                 }
             }

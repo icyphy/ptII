@@ -261,7 +261,7 @@ public abstract class Top extends JFrame {
             // and action listeners.
             FileMenuListener fileMenuListener = new FileMenuListener();
             // Set the action command and listener for each menu item.
-            for(int i = 0; i < _fileMenuItems.length; i++) {
+            for (int i = 0; i < _fileMenuItems.length; i++) {
                 _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
                 _fileMenuItems[i].addActionListener(fileMenuListener);
                 _fileMenu.add(_fileMenuItems[i]);
@@ -272,7 +272,7 @@ public abstract class Top extends JFrame {
             // and action listeners.
             HelpMenuListener helpMenuListener = new HelpMenuListener();
             // Set the action command and listener for each menu item.
-            for(int i = 0; i < _helpMenuItems.length; i++) {
+            for (int i = 0; i < _helpMenuItems.length; i++) {
                 _helpMenuItems[i].setActionCommand(
                         _helpMenuItems[i].getText());
                 _helpMenuItems[i].addActionListener(helpMenuListener);

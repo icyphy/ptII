@@ -122,16 +122,16 @@ public class FirstOrderHold extends Transformer
     public void fire() throws IllegalActionException{
         CTDirector director = (CTDirector)getDirector();
         if (director.isDiscretePhase()) {
-            if((input.hasToken(0) && (!derivative.hasToken(0))) ||
+            if ((input.hasToken(0) && (!derivative.hasToken(0))) ||
                     !input.hasToken(0) && derivative.hasToken(0)) {
                 throw new IllegalActionException(this,
                         " No synchronized inputs.");
             }
-            if(input.hasToken(0) && derivative.hasToken(0)) {
+            if (input.hasToken(0) && derivative.hasToken(0)) {
                 _value = ((DoubleToken)input.get(0)).doubleValue();
                 _derivative = ((DoubleToken)derivative.get(0)).doubleValue();
                 _time = director.getCurrentTime();
-                if(_debugging) _debug(getFullName(),
+                if (_debugging) _debug(getFullName(),
                         " get inputs: (" + _value,
                         ", " + _derivative + ").");
             }

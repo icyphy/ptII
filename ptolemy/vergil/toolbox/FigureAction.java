@@ -67,7 +67,7 @@ public class FigureAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
 	Object source = e.getSource();
-	if(source instanceof LayerEvent) {
+	if (source instanceof LayerEvent) {
 	    _sourceType = CANVAS_TYPE;
 	    // Action activated using an ActionInteractor.
 	    LayerEvent event = (LayerEvent) source;
@@ -78,7 +78,7 @@ public class FigureAction extends AbstractAction {
 
 	    Figure figure = (Figure) event.getFigureSource();
 	    // Set the target.
-	    if(figure == null) {
+	    if (figure == null) {
 		_target = (NamedObj) model.getRoot();
 	    } else {
 		Object object = figure.getUserObject();
@@ -86,10 +86,10 @@ public class FigureAction extends AbstractAction {
 	    }
 	    _x = event.getX();
 	    _y = event.getY();
-	} else if(source instanceof JMenuItem) {
+	} else if (source instanceof JMenuItem) {
 	    // Action activated using a context menu.
 	    JMenuItem item = (JMenuItem) source;
-	    if(item.getParent() instanceof JContextMenu) {
+	    if (item.getParent() instanceof JContextMenu) {
 		_sourceType = CONTEXTMENU_TYPE;
 		JContextMenu menu = (JContextMenu)item.getParent();
 		_target = (NamedObj) menu.getTarget();
@@ -99,7 +99,7 @@ public class FigureAction extends AbstractAction {
 		// Not implicit location.. should there be?
 		_sourceType = MENUBAR_TYPE;
 	    }
-	} else if(source instanceof JButton) {
+	} else if (source instanceof JButton) {
 	    // presumably we are in a toolbar...
 	    _sourceType = TOOLBAR_TYPE;
 	    _target = null;

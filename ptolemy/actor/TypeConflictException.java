@@ -104,7 +104,7 @@ public class TypeConflictException extends KernelException {
     private String _listInequalities() {
         String result = "";
 	Iterator iterator = inequalityList().iterator();
-	while(iterator.hasNext()) {
+	while (iterator.hasNext()) {
 	    Object inequality = iterator.next();
 	    result += "  " + inequality.toString() + "\n";
 	}

@@ -411,9 +411,9 @@ public class Port extends NamedObj {
             name = new String("");
         }
         Entity container = (Entity) getContainer();
-        if((container != null)){
+        if ((container != null)){
             Port another = container.getPort(name);
-            if((another != null) && (another != this)) {
+            if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
                         "already contains a port with the name "+name+".");
             }

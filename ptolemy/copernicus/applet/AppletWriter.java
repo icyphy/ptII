@@ -117,7 +117,7 @@ public class AppletWriter extends SceneTransformer {
 
 	Iterator keys = substituteMap.keySet().iterator();
 
-	while(keys.hasNext()) {
+	while (keys.hasNext()) {
 	    String key = (String)keys.next();
 	    input = StringUtilities.substitute(input, key,
 					       (String)substituteMap.get(key));
@@ -142,7 +142,7 @@ public class AppletWriter extends SceneTransformer {
 	PrintWriter outputFile =
 	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
 	String inputLine;
-	while( (inputLine = inputFile.readLine()) != null) {
+	while ( (inputLine = inputFile.readLine()) != null) {
 	    outputFile.println(substitute(inputLine, substituteMap));
  	}
 	inputFile.close();
@@ -200,7 +200,7 @@ public class AppletWriter extends SceneTransformer {
 	int start = _targetPackage.indexOf('.');
 	// _codeBase has one more level than _targetPackage.
 	StringBuffer buffer = new StringBuffer("../..");
-        while(start != -1) {
+        while (start != -1) {
 	    buffer.append("/.."); 
             start = _targetPackage.indexOf('.', start + 1);
         }
@@ -259,7 +259,7 @@ public class AppletWriter extends SceneTransformer {
 
 	// Print out the map for debugging purposes
 	Iterator keys = _substituteMap.keySet().iterator();
-	while(keys.hasNext()) {
+	while (keys.hasNext()) {
 	    String key = (String)keys.next();
 	    System.out.println("AppletWriter: '" + key + "' '" +
 			       (String)_substituteMap.get(key) + "'");

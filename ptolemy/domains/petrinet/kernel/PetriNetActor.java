@@ -197,7 +197,7 @@ public class PetriNetActor extends TypedCompositeActor  {
             if (componentActor instanceof TypedCompositeActor) {
                 TypedCompositeActor transitionComponent
                     = (TypedCompositeActor) componentActor;
-		if(director.isTransitionReady(transitionComponent)) {
+		if (director.isTransitionReady(transitionComponent)) {
                     return true;
                 }
             }

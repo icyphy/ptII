@@ -462,7 +462,7 @@ public class LocalZenoApplet extends PtolemyApplet {
          */
         public void event(DebugEvent debugEvent) {
 	    // only trap ExecEvents.
-	    if(!(debugEvent instanceof ExecEvent)) return;
+	    if (!(debugEvent instanceof ExecEvent)) return;
 	    ExecEvent event = (ExecEvent) debugEvent;
             final ExecEvent.ExecEventType state = event.getState();
             NamedObj actor = event.getSource();
@@ -478,11 +478,11 @@ public class LocalZenoApplet extends PtolemyApplet {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
-                        if(state == ExecEvent.WAITING)
+                        if (state == ExecEvent.WAITING)
 			    figure.setFillPaint(Color.yellow);
-			else if(state == ExecEvent.ACCESSING)
+			else if (state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
-			else if(state == ExecEvent.BLOCKED)
+			else if (state == ExecEvent.BLOCKED)
                             figure.setFillPaint(Color.red);
 			else
                             System.err.println("Unknown state: " + state);

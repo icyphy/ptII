@@ -106,10 +106,10 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
             CompositeEntity toplevel = (CompositeEntity)_toplevel;
             TypeListener typeListener = new PortTypeListener();
             Iterator entities = toplevel.entityList().iterator();
-            while(entities.hasNext()) {
+            while (entities.hasNext()) {
                 Entity entity = (Entity)entities.next();
                 Iterator ports = entity.portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort)ports.next();
                     port.addTypeListener(typeListener);
                 }
@@ -127,10 +127,10 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
         if (_toplevel instanceof CompositeEntity) {
             CompositeEntity toplevel = (CompositeEntity)_toplevel;
             Iterator entities = toplevel.entityList().iterator();
-            while(entities.hasNext()) {
+            while (entities.hasNext()) {
                 Entity entity = (Entity)entities.next();
                 Iterator ports = entity.portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort)ports.next();
                     _updateTypeDisplay(port);
                 }

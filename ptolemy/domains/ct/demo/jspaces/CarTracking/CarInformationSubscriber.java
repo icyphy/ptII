@@ -157,7 +157,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                 null, null);
         TokenEntry entry;
         boolean ready = false;
-        while(!ready) {
+        while (!ready) {
             try {
                 entry = (TokenEntry)_space.readIfExists(
                         entryTemplate, null, 1000);
@@ -166,7 +166,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                         "error reading space." +
                         e.getMessage());
             }
-            if(entry == null) {
+            if (entry == null) {
                 System.err.println("The publisher is not ready. Try again...");
                 try {
                     Thread.sleep(5000);
@@ -183,12 +183,12 @@ public class CarInformationSubscriber extends TypedAtomicActor
                     (TypedCompositeActor)getContainer();
                 Parameter initialVelocity =
                     (Parameter)container.getAttribute("initialVelocity");
-                if(initialVelocity != null) {
+                if (initialVelocity != null) {
                     initialVelocity.setToken(_lastData.getElement(2));
                 }
                 Parameter initialPosition =
                     (Parameter)container.getAttribute("initialPosition");
-                if(initialPosition != null) {
+                if (initialPosition != null) {
                     initialPosition.setToken(new DoubleToken(-20.0 +
                             ((DoubleToken)
                                     (_lastData.getElement(3))).doubleValue()));
@@ -232,7 +232,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
      *  if there is any.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_hasNewData) {
+        if (_hasNewData) {
             //System.out.println("check for correctness");
             // grab a lock so that the the set of data is consistent.
             double lastTimeStamp =
@@ -271,7 +271,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                     //System.out.println("read velocity: " +currentVelocity);
 
                     //System.out.println("read position: " +currentPosition);
-                    if(Math.abs(currentVelocity - computedVelocity) < _eps &&
+                    if (Math.abs(currentVelocity - computedVelocity) < _eps &&
                             Math.abs(currentPosition - computedPosition) <
                             _eps) {
                         _correct = true;
@@ -367,7 +367,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                                 "error reading from space." +
                                 e.getMessage());
                     }
-                    if(entry == null) {
+                    if (entry == null) {
                         System.out.println(getName() +
                                 " read null from space");
                     } else {

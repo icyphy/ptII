@@ -128,7 +128,7 @@ protected static String _classNameToMakeFileName(String className)
         StringBuffer name = new StringBuffer(
             RequiredFileGenerator.classNameToFileName(className));
 
-        for(int j=0;j<name.length();j++)
+        for (int j=0;j<name.length();j++)
         {
             if (name.charAt(j)=='$')
             {

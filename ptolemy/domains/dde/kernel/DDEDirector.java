@@ -353,7 +353,7 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     protected synchronized void _actorUnBlocked(LinkedList receivers) {
         Iterator receiverIterator = receivers.iterator();
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
             _actorUnBlocked(receiver);
         }
@@ -385,7 +385,7 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     protected synchronized void _actorBlocked(LinkedList receivers) {
 	Iterator receiverIterator = receivers.iterator();
-	while(receiverIterator.hasNext()) {
+	while (receiverIterator.hasNext()) {
             DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
             _actorBlocked(receiver);
 	}

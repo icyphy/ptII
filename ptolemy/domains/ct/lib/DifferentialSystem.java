@@ -167,11 +167,11 @@ public class DifferentialSystem extends TypedCompositeActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == initialStates) {
+        if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
-            if(token.getRowCount() != 1 || token.getColumnCount() < 1) {
+            if (token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a row vector.");
             }
@@ -228,7 +228,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             IORelation[] stateRelations = new IORelation[n];
             Expression[] equations = new Expression[n];
             // Integrators and feedback expressions
-            for(int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++) {
                 states[i] = ((StringToken)stateNames.getElement(i)).
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
@@ -278,16 +278,16 @@ public class DifferentialSystem extends TypedCompositeActor {
                 outIndex++;
             }
             // Connect state feedback expressions.
-            for(int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++) {
                 // One port for each state variable.
-                for(int k = 0; k < n; k++) {
+                for (int k = 0; k < n; k++) {
                     TypedIOPort port = new TypedIOPort(equations[i],
                             states[k], true, false);
                     port.setTypeEquals(BaseType.DOUBLE);
                     port.link(stateRelations[k]);
                 }
                 // One port for each input variable.
-                for(int k = 0; k < m; k++) {
+                for (int k = 0; k < m; k++) {
                     TypedIOPort port = new TypedIOPort(equations[i],
                             inputs[k], true, false);
                     port.setTypeEquals(BaseType.DOUBLE);
@@ -300,9 +300,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             // longer have input ports that represent the input of this
             // composite actor.
 
-            for(int l = 0; l < r; l++) {
+            for (int l = 0; l < r; l++) {
                 // One port for each state variable.
-                for(int k = 0; k < n; k++) {
+                for (int k = 0; k < n; k++) {
                     TypedIOPort port = new TypedIOPort(maps[l], states[k],
                             true, false);
                     port.setTypeEquals(BaseType.DOUBLE);
@@ -311,7 +311,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 /*
                   // One port for each input variable.
 
-                  for(int k = 0; k < m; k++) {
+                  for (int k = 0; k < m; k++) {
                   TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
                   true, false);
                   port.setTypeEquals(BaseType.DOUBLE);
@@ -329,7 +329,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             _workspace.doneWriting();
         }
         // preinitialize all contained actors.
-        for(Iterator i = deepEntityList().iterator(); i.hasNext();) {
+        for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor)i.next();
             actor.preinitialize();
         }
@@ -363,21 +363,21 @@ public class DifferentialSystem extends TypedCompositeActor {
         // Check state variable names.
         ArrayToken stateNames = (ArrayToken)stateVariableNames.getToken();
         int n = stateNames.length();
-        if(n < 1) {
+        if (n < 1) {
             throw new IllegalActionException(this, "There must be at "
                     + "least one state variable for a differential system.");
         }
         // Check if any of the state variable names is an empty string.
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             String name = (((StringToken)stateNames.getElement(i)).
                     stringValue()).trim();
-            if(name.equals("")) {
+            if (name.equals("")) {
                 throw new IllegalActionException(this, "A state variable "
                         + "name should not be an empty string.");
             }
             // Check state equations.
             String equation = name + "_dot";
-            if(getAttribute(equation) == null) {
+            if (getAttribute(equation) == null) {
                 throw new IllegalActionException(this, "Please add a "
                         + "parameter with name \""
                         + equation + "\" to specify the state equation.");
@@ -389,15 +389,15 @@ public class DifferentialSystem extends TypedCompositeActor {
         // Note there could be no output. If there are outputs,
         // check if any of the output variable names is an empty string,
         // and also that there is an output port with the same name.
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             TypedIOPort output = (TypedIOPort)outputPorts.next();
             String name = output.getName().trim();
-            if(name.equals("")) {
+            if (name.equals("")) {
                 throw new IllegalActionException(this, "A output variable "
                         + "name should not be an empty string.");
             }
             // Check output maps.
-            if(getAttribute(name) == null) {
+            if (getAttribute(name) == null) {
                 throw new IllegalActionException(this, "Please add a "
                         + "parameter with name \""
                         + name + "\" to specify the output map.");
@@ -413,7 +413,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         _opaque = true;
         // Request for initialization.
         Director dir = getDirector();
-        if(dir != null) {
+        if (dir != null) {
             dir.requestInitialization(this);
         }
     }

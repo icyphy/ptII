@@ -156,7 +156,7 @@ public class XYPlotter extends Plotter {
                 yValue = ((DoubleToken)inputY.get(i)).doubleValue();
                 hasY = true;
             }
-            if(hasX && hasY) {
+            if (hasX && hasY) {
                 plot.addPoint(i + offset, xValue, yValue, true);
             }
         }

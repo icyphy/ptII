@@ -190,39 +190,39 @@ public class LinearDifferenceEquationSystem extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == A) {
+        if (attribute == A) {
             // Check that it is a square matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)A.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0 ||
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0 ||
                     token.getRowCount() != token.getColumnCount()) {
                 throw new IllegalActionException(this,
                         "The A matrix must be a nonempty square matrix.");
             }
-        } else if(attribute == B) {
+        } else if (attribute == B) {
             // Check that B is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)B.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The B matrix must be a nonempty matrix.");
             }
-        } else if(attribute == C) {
+        } else if (attribute == C) {
             // Check that C is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)C.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The C matrix must be a nonempty matrix.");
             }
-        } else if(attribute == D) {
+        } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken)D.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The D matrix must be a nonempty matrix.");
             }
-        } else if(attribute == initialStates) {
+        } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
-            if(token.getColumnCount() != 1 || token.getRowCount() < 1) {
+            if (token.getColumnCount() != 1 || token.getRowCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a column vector.");
             }
@@ -241,7 +241,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *   of the ports throw this exception.
      */
     public void fire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             Token u = input.get(0);
             Token y = C.getToken().multiply(_x).add(D.getToken().multiply(u));
             _xPrime = A.getToken().multiply(_x).add(B.getToken().multiply(u));
@@ -262,7 +262,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
-        if(super.postfire()) {
+        if (super.postfire()) {
             _x = _xPrime;
             return true;
         } else {
@@ -278,11 +278,11 @@ public class LinearDifferenceEquationSystem extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        if(_initialStateChanged) {
+        if (_initialStateChanged) {
             _x = initialStates.getToken();
             _initialStateChanged = false;
         }
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             return true;
         } else {
             return false;

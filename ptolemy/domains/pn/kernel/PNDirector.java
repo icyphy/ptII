@@ -187,16 +187,16 @@ public class PNDirector extends BasePNDirector {
      public void fire() throws IllegalActionException {
      Workspace workspace = workspace();
      synchronized (this) { //Reset this as mutations must be done by now
-     if( _getActiveActorsCount() == 0 ) {
+     if ( _getActiveActorsCount() == 0 ) {
      _notDone = false;
      return;
      }
      _mutationsRequested = false;
      //Loop until a deadlock other than an artificial deadlock is
      //detected.
-     while( _readBlockCount != _getActiveActorsCount() ) {
+     while ( _readBlockCount != _getActiveActorsCount() ) {
      //Sleep until a deadlock is detected or mutations are requested
-     while( !_areActorsDeadlocked() ) {
+     while ( !_areActorsDeadlocked() ) {
      workspace.wait(this);
      }
      _notDone = _resolveDeadlock();

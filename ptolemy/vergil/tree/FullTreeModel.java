@@ -72,13 +72,13 @@ public class FullTreeModel extends EntityTreeModel {
      */
     public Object getChild(Object parent, int index) {
         // FIXME: doing attributes only.
-	if(!(parent instanceof NamedObj)) return null;
+	if (!(parent instanceof NamedObj)) return null;
         NamedObj obj = (NamedObj)parent;
         List attributes = obj.attributeList();
         int numAttributes = attributes.size();
-	if(index >= numAttributes) {
+	if (index >= numAttributes) {
             return super.getChild(parent, index - numAttributes);
-        } else if(index < 0) {
+        } else if (index < 0) {
             return null;
         } else {
             return attributes.get(index);
@@ -112,7 +112,7 @@ public class FullTreeModel extends EntityTreeModel {
         NamedObj obj = (NamedObj)parent;
         List attributes = obj.attributeList();
         int index = attributes.indexOf(child);
-	if(index >= 0) return index;
+	if (index >= 0) return index;
         else return super.getIndexOfChild(parent, child);
     }
 

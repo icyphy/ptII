@@ -240,7 +240,7 @@ public class JTextAreaExec extends JPanel {
 		_progressBar.setMaximum(_commands.size());
 		int commandCount = 0;
                 Iterator commands = _commands.iterator();
-                while(commands.hasNext()) {
+                while (commands.hasNext()) {
 		    _updateProgressBar(++commandCount);
 		    if (Thread.interrupted()) {
 			throw new InterruptedException();

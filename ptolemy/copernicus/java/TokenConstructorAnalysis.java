@@ -65,16 +65,16 @@ public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {
         _constructorToValue = new HashMap();
       
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
             Stmt unit = (Stmt)units.next();
-            if(unit.containsInvokeExpr() && 
+            if (unit.containsInvokeExpr() && 
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr invokeExpr = 
                     (InstanceInvokeExpr)unit.getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
                 // If we invoke a Token class initializer
-                if(invokedMethod.getName().equals("<init>") && 
+                if (invokedMethod.getName().equals("<init>") && 
                         SootUtilities.isSubtypeOf(
                                 invokeExpr.getBase().getType(),
                                 RefType.v(PtolemyUtilities.tokenClass))) {
@@ -82,13 +82,13 @@ public class TokenConstructorAnalysis {
                     Unit constructor = _findConstructor(
                             (Local)invokeExpr.getBase(), unit, localDefs);
                     //  System.out.println("found token constructor: " + constructor);
-                    if(constructor == null) {
+                    if (constructor == null) {
                         continue;
                     }
 
                     Token token = 
                         _evaluateInitializer(invokeExpr, invokedMethod);
-                    if(token != null) {
+                    if (token != null) {
                         _constructorToValue.put(constructor, token);
                     }
                 }
@@ -106,8 +106,8 @@ public class TokenConstructorAnalysis {
             SootMethod invokedMethod) {
         Value[] argValues = (Value[])
             invokeExpr.getArgs().toArray(new Value[0]);
-        for(int i = 0; i < argValues.length; i++) {
-            if(Evaluator.isValueConstantValued(argValues[i])) {
+        for (int i = 0; i < argValues.length; i++) {
+            if (Evaluator.isValueConstantValued(argValues[i])) {
                 argValues[i] = Evaluator.getConstantValueOf(argValues[i]);
             } else {
                 return null;
@@ -124,10 +124,10 @@ public class TokenConstructorAnalysis {
             LocalDefs localDefs) {
         NewExpr newExpr = null;
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof NewExpr) {
+            if (value instanceof NewExpr) {
                 return stmt;
             } else {
                 throw new RuntimeException("Found something other" +

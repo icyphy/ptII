@@ -322,7 +322,7 @@ public class PetriNetDirector extends Director {
             Nameable component = (Nameable) components.next();
             if (component instanceof Place) {
             }
-            else if(component instanceof PetriNetActor)
+            else if (component instanceof PetriNetActor)
                 {
                     TypedCompositeActor componentActor =
                         (TypedCompositeActor) component;
@@ -383,13 +383,13 @@ public class PetriNetDirector extends Director {
                 }
 
                 LinkedList temporarySourcePortList = new LinkedList();
-                while(newRelationList.size() > 0 )  {
+                while (newRelationList.size() > 0 )  {
                     IORelation weights =
                                  (IORelation) newRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedSourcePortList().iterator();
-                        while(weightPorts.hasNext()) {
+                        while (weightPorts.hasNext()) {
                             IOPort weightPort = (IOPort) weightPorts.next();
                             if (!temporarySourcePortList.
                                                     contains(weightPort)) {
@@ -397,10 +397,10 @@ public class PetriNetDirector extends Director {
                                 Nameable weightPlace =
                                     (Nameable) weightPort.getContainer();
                                 if (weightPlace instanceof PetriNetActor) {
-                                    if(weightPort.isOutput()) {
+                                    if (weightPort.isOutput()) {
                                         newRelationList.addAll
                                             (weightPort.insideRelationList());
-                                    } else if( weightPort.isInput()) {
+                                    } else if ( weightPort.isInput()) {
                                         newRelationList.addAll
                                             (weightPort.linkedRelationList());
                                     }
@@ -414,7 +414,7 @@ public class PetriNetDirector extends Director {
                         while (places.hasNext()) {
                             Place place = (Place) places.next();
                             place.decreaseTemporaryMarking(weightNumber);
-                            if(place.getTemporaryMarking() < 0)
+                            if (place.getTemporaryMarking() < 0)
                                 return false;
                         }
                     }
@@ -446,7 +446,7 @@ public class PetriNetDirector extends Director {
                     _debug( transition.getFullName() + " is firing");
                 }
 
-                if(transition.isOpaque()) {
+                if (transition.isOpaque()) {
                     transition.fire();
                 }
 
@@ -457,13 +457,13 @@ public class PetriNetDirector extends Director {
                     newRelationList.addAll(outPort.linkedRelationList());
                 }
                 LinkedList temporaryDestinationPortList = new LinkedList();
-                while(newRelationList.size() > 0 )  {
+                while (newRelationList.size() > 0 )  {
                     IORelation weights =
                                   (IORelation) newRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedDestinationPortList().iterator();
-                        while(weightPorts.hasNext()) {
+                        while (weightPorts.hasNext()) {
                             IOPort weightPort = (IOPort) weightPorts.next();
                             if (!temporaryDestinationPortList.
                                                       contains(weightPort)) {
@@ -471,15 +471,15 @@ public class PetriNetDirector extends Director {
                                 Nameable weightPlace =
                                     (Nameable) weightPort.getContainer();
                                 if (weightPlace instanceof PetriNetActor) {
-                                    if(weightPort.isOutput()) {
+                                    if (weightPort.isOutput()) {
                                         newRelationList.addAll
                                             (weightPort.linkedRelationList());
                                     }
-                                    else if( weightPort.isInput())
+                                    else if ( weightPort.isInput())
                                         newRelationList.addAll
                                             (weightPort.insideRelationList());
                                 }
-                                else if( weightPlace instanceof Place) {
+                                else if ( weightPlace instanceof Place) {
                                 } else {
                                     _debug("something wrong "
                                             + weightPlace.getFullName());
@@ -518,23 +518,23 @@ public class PetriNetDirector extends Director {
                 }
 
                 LinkedList temporarySourcePortList = new LinkedList();
-                while(backRelationList.size() > 0 )  {
+                while (backRelationList.size() > 0 )  {
                     IORelation weights =
                                    (IORelation) backRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedSourcePortList().iterator();
-                        while(weightPorts.hasNext()) {
+                        while (weightPorts.hasNext()) {
                             IOPort weightPort = (IOPort) weightPorts.next();
                             if (!temporarySourcePortList.contains(weightPort)) {
                                 temporarySourcePortList.add(weightPort);
                                 Nameable weightPlace =
                                     (Nameable) weightPort.getContainer();
                                 if (weightPlace instanceof PetriNetActor) {
-                                    if(weightPort.isOutput())
+                                    if (weightPort.isOutput())
                                         backRelationList.addAll
                                             (weightPort.insideRelationList());
-                                    else if( weightPort.isInput())
+                                    else if ( weightPort.isInput())
                                         backRelationList.addAll
                                             (weightPort.linkedRelationList());
                                 }
@@ -558,7 +558,7 @@ public class PetriNetDirector extends Director {
                                         + oldMarking
                                         + " new  " + item.getMarking());
                             }
-                            if(item.getMarking() < 0) {
+                            if (item.getMarking() < 0) {
                                 _debug (" negative marking ");
                                 break;
                             }
@@ -595,14 +595,14 @@ public class PetriNetDirector extends Director {
                     if (component instanceof PetriNetActor)  {
                         PetriNetActor petriNetActor =
                                     (PetriNetActor) component;
-                        if( petriNetActor.prefire()) {
+                        if ( petriNetActor.prefire()) {
                             readyComponentList.add(petriNetActor);
                         }
                     }
                     else if (component instanceof TypedCompositeActor) {
                         TypedCompositeActor componentTransition =
                             (TypedCompositeActor) component;
-                        if( isTransitionReady(componentTransition)) {
+                        if ( isTransitionReady(componentTransition)) {
                             readyComponentList.add(componentTransition);
                         }
                     }
@@ -644,11 +644,11 @@ public class PetriNetDirector extends Director {
                     Nameable chosenTransition =
                                 (Nameable) components.get(randomCount);
 
-                    if(chosenTransition instanceof PetriNetActor) {
+                    if (chosenTransition instanceof PetriNetActor) {
                         PetriNetActor realPetriNetActor =
                             (PetriNetActor) chosenTransition;
                         _fireHierarchicalPetriNetOnce(realPetriNetActor);
-                    } else if(chosenTransition instanceof TypedCompositeActor) {
+                    } else if (chosenTransition instanceof TypedCompositeActor) {
                         TypedCompositeActor realTransition
                         = (TypedCompositeActor) chosenTransition;
                         fireTransition(realTransition);
@@ -678,24 +678,24 @@ public class PetriNetDirector extends Director {
         newRelationList.add(weight);
         LinkedList temporaryDestinationPortList = new LinkedList();
         LinkedList temporaryPlaceList = new LinkedList();
-        while(newRelationList.size() > 0 )  {
+        while (newRelationList.size() > 0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
             Iterator weightPorts =
                 weights.linkedDestinationPortList().iterator();
-            while(weightPorts.hasNext()) {
+            while (weightPorts.hasNext()) {
                 IOPort weightPort = (IOPort) weightPorts.next();
                 if (!temporaryDestinationPortList.contains(weightPort)) {
                     temporaryDestinationPortList.add(weightPort);
                     Nameable weightPlace = (Nameable) weightPort.getContainer();
                     if (weightPlace instanceof PetriNetActor) {
-                        if(weightPort.isOutput())
+                        if (weightPort.isOutput())
                             newRelationList.addAll
                                 (weightPort.linkedRelationList());
-                        else if( weightPort.isInput())
+                        else if ( weightPort.isInput())
                             newRelationList.addAll
                                 (weightPort.insideRelationList());
                     }
-                    else if(weightPlace instanceof Place) {
+                    else if (weightPlace instanceof Place) {
                         temporaryPlaceList.add(weightPlace);
                     } else {
                         _debug("------found no place/PetriNetActor"
@@ -725,24 +725,24 @@ public class PetriNetDirector extends Director {
         newRelationList.add(weight);
         LinkedList temporarySourcePortList = new LinkedList();
         LinkedList temporaryPlaceList = new LinkedList();
-        while(newRelationList.size() > 0 )  {
+        while (newRelationList.size() > 0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
             Iterator weightPorts =
                 weights.linkedSourcePortList().iterator();
-            while(weightPorts.hasNext()) {
+            while (weightPorts.hasNext()) {
                 IOPort weightPort = (IOPort) weightPorts.next();
                 if (!temporarySourcePortList.contains(weightPort)) {
                     temporarySourcePortList.add(weightPort);
                     Nameable weightPlace = (Nameable) weightPort.getContainer();
                     if (weightPlace instanceof PetriNetActor) {
-                        if(weightPort.isOutput())
+                        if (weightPort.isOutput())
                             newRelationList.addAll
                                 (weightPort.insideRelationList());
-                        else if( weightPort.isInput())
+                        else if ( weightPort.isInput())
                             newRelationList.addAll
                                 (weightPort.linkedRelationList());
                     }
-                    else if(weightPlace instanceof Place) {
+                    else if (weightPlace instanceof Place) {
                         temporaryPlaceList.add(weightPlace);
                     } else {
                         _debug("-------found no place/PetriNetActor  "
@@ -776,7 +776,7 @@ public class PetriNetDirector extends Director {
         }
 
         LinkedList temporaryPlaceList = new LinkedList();
-        while(newRelationList.size() > 0 )  {
+        while (newRelationList.size() > 0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
             temporaryPlaceList.addAll
                 ( _findBackwardConnectedPlaces(weights));

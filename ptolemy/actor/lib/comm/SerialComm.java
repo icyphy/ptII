@@ -159,10 +159,10 @@ public class SerialComm extends TypedAtomicActor
 	// FIXME: Enumeration is empty, yet ports DO exits!
 	if (false) System.out.println("<>1<>");
         Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-        while(allPorts.hasMoreElements()) {
+        while (allPorts.hasMoreElements()) {
 	    if (false) System.out.println("<>2<>");
             CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
-            if(id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+            if (id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 serialPortName.setToken(new StringToken(id.getName()));
                 break;
             }
@@ -320,7 +320,7 @@ public class SerialComm extends TypedAtomicActor
 	    if (_debugging) _debug("Enumarating available ports."
 	            + "  Testing which, if any, are serial ports. {");
 	    Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-	    while(allPorts.hasMoreElements()) {
+	    while (allPorts.hasMoreElements()) {
 		CommPortIdentifier id = (CommPortIdentifier)
                         allPorts.nextElement();
 		if (_debugging) {

@@ -294,7 +294,7 @@ public class PtolemyQuery extends Query
             // are closed.  It would be better if this listener were
             // a weak reference.
             request.addChangeListener(this);
-	    if(_handler != null) {
+	    if (_handler != null) {
                 // Remove the error handler so that this class handles
                 // the error through the notification.  Save the previous
                 // error handler to restore after this request has been
@@ -512,7 +512,7 @@ public class PtolemyQuery extends Query
         removeQueryListener(this);
 
         Iterator attributes = _attributes.values().iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.removeValueListener(this);
         }

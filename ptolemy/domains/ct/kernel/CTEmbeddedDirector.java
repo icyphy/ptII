@@ -136,15 +136,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         CompositeActor container = (CompositeActor)getContainer();
         Director exe = container.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
+        if (_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
         double nextIterationTime = exe.getNextIterationTime();
-        if(_debugging) _debug(getName(), "Next Iteration Time = "
+        if (_debugging) _debug(getName(), "Next Iteration Time = "
                 + nextIterationTime);
         setCurrentTime(getIterationBeginTime());
         _outsideStepSize = nextIterationTime - getIterationBeginTime();
 
         if (_outsideStepSize == 0) {
-            if(_debugging) _debug("outside step size is 0",
+            if (_debugging) _debug("outside step size is 0",
                     "So treat this as a breakpoint.");
             // it must be a breakpoint now.
             _setCurrentODESolver(getBreakpointSolver());
@@ -158,10 +158,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // if break point now, change solver.
         Double now = new Double(_outsideTime);
         TotallyOrderedSet breakPoints = getBreakPoints();
-        if(breakPoints != null && !breakPoints.isEmpty()) {
+        if (breakPoints != null && !breakPoints.isEmpty()) {
             breakPoints.removeAllLessThan(now);
-            if(breakPoints.contains(now)) {
-                if(_debugging)
+            if (breakPoints.contains(now)) {
+                if (_debugging)
                     _debug(getName(),
                             " Break point now at" + _outsideTime);
                 // Breakpoints iterations are always successful
@@ -175,31 +175,31 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
         }
 
-        if(_debugging) _debug(getName(), "at" + getCurrentTime(),
+        if (_debugging) _debug(getName(), "at" + getCurrentTime(),
                 " step size is " + getCurrentStepSize(),
                 "breakpoint table contains " + getBreakPoints().toString());
 
         _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-        while(waveGenerators.hasNext()) {
+        while (waveGenerators.hasNext()) {
             CTWaveformGenerator generator =
                 (CTWaveformGenerator) waveGenerators.next();
             generator.fire();
         }
         _setDiscretePhase(false);
         // continuous phase;
-        if(_debugging) _debug("execute the system from "+
+        if (_debugging) _debug("execute the system from "+
                 getCurrentTime() + " step size" + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
         if (_prefireContinuousActors()) {
             ODESolver solver = getCurrentODESolver();
-            if(!solver.resolveStates()) {
+            if (!solver.resolveStates()) {
                 _stateAcceptable = false;
-                if(_debugging) _debug(getFullName() + "resolve state failed.");
+                if (_debugging) _debug(getFullName() + "resolve state failed.");
             }
 
-            if(_debugging) _debug(getFullName() + " current time after" +
+            if (_debugging) _debug(getFullName() + " current time after" +
                     " solver.resolveStates() is " + getCurrentTime());
             produceOutput();
         }
@@ -249,12 +249,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         try {
             _debug(getName() + ": Checking local actors for success.");
             if (!_isStateAccurate()) {
-                //if(_debugging) _debug(getFullName() +
+                //if (_debugging) _debug(getFullName() +
                 //        " current step not successful because of STATE.");
                 _stateAcceptable = false;
                 return false;
-            } else if(!_isOutputAccurate()) {
-                //if(_debugging) _debug(getFullName() +
+            } else if (!_isOutputAccurate()) {
+                //if (_debugging) _debug(getFullName() +
                 //        " current step not successful because of OUTPUT.");
                 _outputAcceptable = false;
                 return false;
@@ -277,7 +277,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_debugging) _debug(getFullName(), " postfire.");
+        if (_debugging) _debug(getFullName(), " postfire.");
         _discretePhaseExecution();
         updateContinuousStates();
         // The current time will be the begin time of the next iteration.
@@ -291,7 +291,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public double predictedStepSize() {
         try {
-            if(_debugging) _debug(getName(), "at " + getCurrentTime(),
+            if (_debugging) _debug(getName(), "at " + getCurrentTime(),
                     " predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
@@ -307,10 +307,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True always.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debugging) _debug(this.getFullName() + "prefire.");
+        if (_debugging) _debug(this.getFullName() + "prefire.");
         CompositeActor ca = (CompositeActor) getContainer();
 
-        if(!isScheduleValid()) {
+        if (!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
@@ -328,9 +328,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public double refinedStepSize() {
         try {
-            if(!_stateAcceptable) {
+            if (!_stateAcceptable) {
                 return _refinedStepWRTState();
-            } else if(!_outputAcceptable){
+            } else if (!_outputAcceptable){
                 return _refinedStepWRTOutput();
             } else {
                 return Double.MAX_VALUE;

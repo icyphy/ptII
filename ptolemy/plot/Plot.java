@@ -1617,7 +1617,7 @@ public class Plot extends PlotBox {
         // If X persistence has been set, then delete any old points.
         if (_xPersistence > 0.0) {
             int numToDelete = 0;
-            while(numToDelete < pts.size()) {
+            while (numToDelete < pts.size()) {
                 PlotPoint old = (PlotPoint)(pts.elementAt(numToDelete));
                 if (x - old.originalx <= _xPersistence) break;
                 numToDelete++;
@@ -1635,7 +1635,7 @@ public class Plot extends PlotBox {
         pt.originalx = x;
 
         // Modify x if wrapping.
-        if(_wrap) {
+        if (_wrap) {
             double width = _wrapHigh - _wrapLow;
             if (x < _wrapLow) {
                 x += width*Math.floor(1.0 + (_wrapLow-x)/width);
@@ -1669,7 +1669,7 @@ public class Plot extends PlotBox {
         // If this is the first point in the dataset, clear the connected bit.
         if (size == 0) {
             pt.connected = false;
-        } else if(_wrap) {
+        } else if (_wrap) {
             // Do not connect points if wrapping...
             PlotPoint old = (PlotPoint)(pts.elementAt(size-1));
             if (old.x > x) pt.connected = false;
@@ -1739,7 +1739,7 @@ public class Plot extends PlotBox {
             _drawPlotPoint(graphics, dataset, pts.size() - 1);
         }
 
-        if(_wrap && x == _wrapHigh) {
+        if (_wrap && x == _wrapHigh) {
             // Plot a second point at the low end of the range.
             _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
         }

@@ -90,7 +90,7 @@ public abstract class RandomSource extends Source {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	long sd = ((LongToken)(seed.getToken())).longValue();
-        if(sd != (long)0) {
+        if (sd != (long)0) {
             _random.setSeed(sd);
         }
     }

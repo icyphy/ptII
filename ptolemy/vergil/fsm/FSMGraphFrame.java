@@ -110,7 +110,7 @@ public class FSMGraphFrame extends BasicGraphFrame {
         _debugMenu.setMnemonic(KeyEvent.VK_D);
         DebugMenuListener debugMenuListener = new DebugMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < debugMenuItems.length; i++) {
+        for (int i = 0; i < debugMenuItems.length; i++) {
             debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
             debugMenuItems[i].addActionListener(debugMenuListener);
             _debugMenu.add(debugMenuItems[i]);

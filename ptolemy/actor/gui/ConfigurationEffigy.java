@@ -100,7 +100,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	super.setContainer(container);
-	if(container != null) {
+	if (container != null) {
 	    setModel(container.toplevel());
 	}
     }

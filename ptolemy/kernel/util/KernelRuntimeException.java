@@ -146,7 +146,7 @@ public class KernelRuntimeException extends RuntimeException {
             prefixBuffer.append("Object names: ");
         }
         Iterator objectIterator = objects.iterator();
-        while(objectIterator.hasNext()) {
+        while (objectIterator.hasNext()) {
             Object object = objectIterator.next();
             if (object instanceof Nameable) {
                 name = KernelException.getFullName((Nameable)object);

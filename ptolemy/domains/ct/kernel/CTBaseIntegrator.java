@@ -185,7 +185,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public void fire() throws  IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
-        if(_debugging) _debug(getName() +
+        if (_debugging) _debug(getName() +
                 "fire using solver: ", solver.getName());
         solver.integratorFire(this);
     }
@@ -286,12 +286,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
-        if(dir == null) {
+        if (dir == null) {
             throw new IllegalActionException( this,
                     " no director available");
         }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
-        if(solver == null) {
+        if (solver == null) {
             throw new IllegalActionException( this,
                     " no ODE solver available");
         }
@@ -301,7 +301,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
-        if(_debugging) _debug(getName(), " initialize: initial state = "
+        if (_debugging) _debug(getName(), " initialize: initial state = "
                 + _tentativeState);
         _history.clear();
     }
@@ -335,7 +335,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
-        if(_debugging) _debug(getName(), " state: " + _state +
+        if (_debugging) _debug(getName(), " state: " + _state +
                 " derivative: " + _derivative);
         if (getHistoryCapacity() > 0) {
             _history.pushEntry(_tentativeState, _tentativeDerivative);
@@ -377,13 +377,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     " does not have an ODE solver.");
         }
         int n = solver.getIntegratorAuxVariableCount();
-        if((_auxVariables == null) || (_auxVariables.length < n)) {
+        if ((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
         }
-        if(getHistoryCapacity() != solver.getHistoryCapacityRequirement()) {
+        if (getHistoryCapacity() != solver.getHistoryCapacityRequirement()) {
             setHistoryCapacity(solver.getHistoryCapacityRequirement());
         }
-        if(getValidHistoryCount() >= 2) {
+        if (getValidHistoryCount() >= 2) {
             _history.rebalance(dir.getCurrentStepSize());
         }
         return true;
@@ -397,7 +397,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public double refinedStepSize() {
         double step = ((CTDirector)getDirector()).getCurrentStepSize();
-        if(_successful) {
+        if (_successful) {
             return step;
         }else {
             return (double)0.5*step;
@@ -583,7 +583,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         public void rebalance(double currentStepSize) {
             double timeResolution =
                 ((CTDirector) _container.getDirector()).getTimeResolution();
-            if(Math.abs(currentStepSize - _stepsize)>timeResolution) {
+            if (Math.abs(currentStepSize - _stepsize)>timeResolution) {
                 double[][] history = toDoubleArray();
                 int size = _entries.size();
                 for (int i = 0; i < size-1; i++) {
@@ -631,7 +631,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             double[][] array = new double[_entries.size()][2];
             Iterator objs = _entries.iterator();
             int i = 0;
-            while(objs.hasNext()) {
+            while (objs.hasNext()) {
                 DoubleDouble entry = (DoubleDouble) objs.next();
                 array[i++] = entry.toArray();
             }

@@ -153,7 +153,7 @@ public class CompositeEntity extends ComponentEntity {
         // allAtomicEntityList() to deepAtomicEntityList()
         // However, the change would require a fair amount of work.
         LinkedList entities = (LinkedList)deepEntityList();
-        for(int i = 0; i < entities.size(); i++) {
+        for (int i = 0; i < entities.size(); i++) {
             Object entity = entities.get(i);
             if (entity instanceof CompositeEntity) {
                 // Remove the composite actor and add its containees.
@@ -918,7 +918,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public String uniqueName(String prefix) {
         String candidate = prefix;
-        while(getAttribute(candidate) != null
+        while (getAttribute(candidate) != null
                 || getPort(candidate) != null
                 || getEntity(candidate) != null
                 || getRelation(candidate) != null) {

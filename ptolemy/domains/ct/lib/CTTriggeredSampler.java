@@ -139,7 +139,7 @@ public class CTTriggeredSampler extends Transformer
             for (int i = 0;
                  i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
-                if(input.hasToken(i)) {
+                if (input.hasToken(i)) {
                     output.send(i, input.get(i));
                 }
             }

@@ -143,22 +143,22 @@ public class TwoPort extends TypedAtomicActor {
         DoubleToken token;
 
         if (input1.getWidth() >= 1) {
-            for(i=0; i < _inrate1;i++) {
+            for (i=0; i < _inrate1;i++) {
                 token = (DoubleToken) (input1.get(0));
             }
         }
 
         if (input2.getWidth() >= 1) {
-            for(i=0; i < _inrate2;i++) {
+            for (i=0; i < _inrate2;i++) {
                 token = (DoubleToken) (input2.get(0));
             }
         }
 
 
-        for(i=0; i < _outrate1;i++) {
+        for (i=0; i < _outrate1;i++) {
             output1.send(0, new DoubleToken(i));
         }
-        for(i=0; i < _outrate2;i++) {
+        for (i=0; i < _outrate2;i++) {
             output2.send(0, new DoubleToken(i));
         }
     }

@@ -67,7 +67,7 @@ public class TestToken extends Token {
      *  @exception IllegalActionException If the token is not a TestToken.
      */
     public static Token convert(Token token) throws IllegalActionException {
-        if(token instanceof TestToken) {
+        if (token instanceof TestToken) {
             return token;
         } else {
             throw new IllegalActionException("Attempt to convert token " 
@@ -97,7 +97,7 @@ public class TestToken extends Token {
      *  @return A BooleanToken which contains the result of the test.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        if(token instanceof TestToken) {
+        if (token instanceof TestToken) {
             return new BooleanToken(this == token);
         } else 
             throw new IllegalActionException(

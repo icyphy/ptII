@@ -109,7 +109,7 @@ public class VariableClock extends Clock {
      *   or if the base class throws it.
      */
     public void fire() throws IllegalActionException {
-        if(periodControl.getWidth() > 0 && periodControl.hasToken(0)) {
+        if (periodControl.getWidth() > 0 && periodControl.hasToken(0)) {
             Token in = periodControl.get(0);
             period.setToken(in);
         }

@@ -359,12 +359,12 @@ public class PlotApplication extends PlotFrame {
             + "Options that take values:\n";
 
         int i;
-        for(i = 0; i < commandOptions.length; i++) {
+        for (i = 0; i < commandOptions.length; i++) {
             result += " " + commandOptions[i][0] +
                 " " + commandOptions[i][1] + "\n";
         }
         result += "\nBoolean flags:\n";
-        for(i = 0; i < commandFlags.length; i++) {
+        for (i = 0; i < commandFlags.length; i++) {
             result += " " + commandFlags[i];
         }
         return result;

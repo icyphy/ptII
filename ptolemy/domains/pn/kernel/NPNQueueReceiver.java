@@ -103,7 +103,7 @@ public class NPNQueueReceiver extends PNQueueReceiver
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {
-	if(numberOfTokens < 1)
+	if (numberOfTokens < 1)
 	    throw new IllegalArgumentException(
                     "The number of tokens must be greater than 0");
         return _queue.size() >= numberOfTokens;
@@ -135,7 +135,7 @@ public class NPNQueueReceiver extends PNQueueReceiver
                 // director._actorBlocked(this);
                 while (_writeBlocked && !_terminate ) {
                     // while (!_terminate && !super.hasRoom()) {
-                    // while(_writeBlocked) {
+                    // while (_writeBlocked) {
                     // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                     // }

@@ -99,7 +99,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *   object of this graph model.  Otherwise return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
-	if(composite.equals(_composite)) {
+	if (composite.equals(_composite)) {
 	    return _compositeModel;
 	} else {
 	    return null;
@@ -114,7 +114,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *   of Attribute, and otherwise, null.
      */
     public NodeModel getNodeModel(Object node) {
-	if(node instanceof Location
+	if (node instanceof Location
                 && ((Location)node).getContainer() instanceof Attribute) {
             return _attributeModel;
 	}
@@ -138,7 +138,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 	    NamedObj namedObject = (NamedObj)object;
 	    Attribute a = namedObject.getAttribute(propertyName);
 	    Token t = ((Variable)a).getToken();
-	    if(t instanceof ObjectToken) {
+	    if (t instanceof ObjectToken) {
 		return ((ObjectToken)t).getValue();
 	    } else {
 		return t.toString();
@@ -165,9 +165,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *   if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-	if(element instanceof Port) {
+	if (element instanceof Port) {
 	    return element;
-	} else if(element instanceof Location) {
+	} else if (element instanceof Location) {
             return ((Location)element).getContainer();
         }
         return null;
@@ -249,7 +249,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     protected Location _getLocation(NamedObj object) {
 	List locations = object.attributeList(Location.class);
-	if(locations.size() > 0) {
+	if (locations.size() > 0) {
 	    return (Location)locations.get(0);
 	} else {
 	    try {
@@ -313,13 +313,13 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-            if(change != null
+            if (change != null
                     && change.getSource() == AbstractBasicGraphModel.this) {
                 return;
             }
 
             // update the graph model.
-            if(_update()) {
+            if (_update()) {
                 // Notify any graph listeners
                 // that the graph might have
                 // completely changed.
@@ -343,7 +343,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 MessageHandler.error("Change failed", exception);
             }
             // update the graph model.
-            if(_update()) {
+            if (_update()) {
                 dispatchGraphEvent(new GraphEvent(
                         AbstractBasicGraphModel.this,
                         GraphEvent.STRUCTURE_CHANGED,

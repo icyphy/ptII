@@ -121,7 +121,7 @@ public class GraphicalMessageHandler extends MessageHandler {
 
         Object[] message = new Object[1];
 	String string;
-	if(info != null) {
+	if (info != null) {
 	    string = info + "\n" + exception.getMessage();
 	} else {
 	    string = exception.getMessage();
@@ -141,7 +141,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options,
                 options[0]);
 
-        if(selected == 1) {
+        if (selected == 1) {
             _showStackTrace(exception, info);
         }
     }
@@ -190,7 +190,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options,
                 options[0]);
 
-        if(selected == 1) {
+        if (selected == 1) {
             throw new CancelException();
         }
     }
@@ -224,9 +224,9 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options,
                 options[0]);
 
-        if(selected == 1) {
+        if (selected == 1) {
             _showStackTrace(exception, info);
-        } else if(selected == 2) {
+        } else if (selected == 2) {
             throw new CancelException();
         }
     }
@@ -247,7 +247,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  @param length The length to which to truncate the string.
      */
     private String _ellipsis(String string, int length) {
-	if(string.length() > length) {
+	if (string.length() > length) {
 	    return string.substring(0, length-3) + "...";
 	}
 	return string;
@@ -275,7 +275,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
-        if(info != null) {
+        if (info != null) {
             string = info + "\n" + exception.getMessage();
         } else {
             string = exception.getMessage();

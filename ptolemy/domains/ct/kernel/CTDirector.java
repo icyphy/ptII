@@ -255,17 +255,17 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(_debugging) _debug("Updating CTDirector parameter: ",
+        if (_debugging) _debug("Updating CTDirector parameter: ",
                 attribute.getName());
-        if(attribute == startTime) {
+        if (attribute == startTime) {
             _startTime = ((DoubleToken)startTime.getToken()).doubleValue();
-        } else if(attribute == stopTime) {
+        } else if (attribute == stopTime) {
             _stopTime = ((DoubleToken)stopTime.getToken()).doubleValue();
             // Make stop time a breakpoint.
             if (_breakPoints != null) {
                 _breakPoints.insert(new Double(_stopTime));
             }
-        } else if(attribute == initStepSize) {
+        } else if (attribute == initStepSize) {
             double value = ((DoubleToken)initStepSize.getToken()).
                 doubleValue();
             if (value < 0.0) {
@@ -273,7 +273,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         "Cannot set a negative step size.");
             }
             _initStepSize = value;
-        } else if(attribute == errorTolerance) {
+        } else if (attribute == errorTolerance) {
             double value = ((DoubleToken)errorTolerance.getToken()).
                 doubleValue();
             if (value < 0.0) {
@@ -281,21 +281,21 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         "Cannot set a negative error tolerance.");
             }
             _errorTolerance = value;
-        } else if(attribute == minStepSize) {
+        } else if (attribute == minStepSize) {
             double value = ((DoubleToken)minStepSize.getToken()).doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
             }
             _minStepSize = value;
-        } else if(attribute == maxStepSize) {
+        } else if (attribute == maxStepSize) {
             double value = ((DoubleToken)maxStepSize.getToken()).doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
             }
             _maxStepSize = value;
-        } else if(attribute == valueResolution) {
+        } else if (attribute == valueResolution) {
             double value = ((DoubleToken)valueResolution.getToken()).
                 doubleValue();
             if (value < 0.0) {
@@ -303,7 +303,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         "Cannot set a negative value resolution.");
             }
             _valueResolution = value;
-        } else if(attribute == timeResolution) {
+        } else if (attribute == timeResolution) {
             double value = ((DoubleToken)timeResolution.getToken()).
                 doubleValue();
             if (value < 0.0) {
@@ -313,12 +313,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _timeResolution = value;
             TotallyOrderedSet table = getBreakPoints();
             // Change the breakpoint table comparator if it is created.
-            if(table != null) {
+            if (table != null) {
                 FuzzyDoubleComparator comparator =
                     (FuzzyDoubleComparator) table.getComparator();
                 comparator.setThreshold(_timeResolution);
             }
-        } else if(attribute == maxIterations) {
+        } else if (attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
             if (value < 1) {
                 throw new IllegalActionException(this,
@@ -495,16 +495,16 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
-        if(time < getCurrentTime() - getTimeResolution()) {
+        if (time < getCurrentTime() - getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
         // FIXME
-        if(Math.abs(time - getCurrentTime()) < getTimeResolution()
+        if (Math.abs(time - getCurrentTime()) < getTimeResolution()
                 && actor != null
                 && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
-            if(_debugging) _debug(((Nameable)actor).getName(),
+            if (_debugging) _debug(((Nameable)actor).getName(),
                     "requests refire at current time" + getCurrentTime());
             // These actors will be fired in the discrete phase
             // at the current time.
@@ -537,7 +537,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _timeBase = System.currentTimeMillis();
-        if(_debugging) _debug(getName(), "real starting time = " +  _timeBase);
+        if (_debugging) _debug(getName(), "real starting time = " +  _timeBase);
     }
 
     /** Return true if this is the first iteration after a breakpoint.
@@ -580,7 +580,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  or there is no scheduler.
      */
     public void preinitialize() throws IllegalActionException {
-        if(_debugging) _debug(getFullName(), "preinitializing.");
+        if (_debugging) _debug(getFullName(), "preinitializing.");
 
         Nameable nameable = getContainer();
         if (!(nameable instanceof CompositeActor)) {
@@ -606,10 +606,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         // invalidate schedule
         scheduler.setValid(false);
-        if(_debugging) _debug(getFullName(),
+        if (_debugging) _debug(getFullName(),
                 "create/clear break point table.");
         TotallyOrderedSet breakpoints = getBreakPoints();
-        if(breakpoints != null) {
+        if (breakpoints != null) {
             breakpoints.clear();
         } else {
             _breakPoints = new TotallyOrderedSet(
@@ -627,17 +627,17 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         // Integrators emit output.
         Iterator integrators =
             schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while(integrators.hasNext()) {
+        while (integrators.hasNext()) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
-            if(_debugging) _debug("Emit tentative state: "+
+            if (_debugging) _debug("Emit tentative state: "+
                     ((Nameable)dynamic).getName());
             dynamic.emitTentativeOutputs();
         }
         Iterator actors =
             schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            if(_debugging) _debug("Fire output actor: "+
+            if (_debugging) _debug("Fire output actor: "+
                     ((Nameable)actor).getName());
             actor.fire();
         }
@@ -659,12 +659,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             long realTime = System.currentTimeMillis()-_timeBase;
             long simulationTime = (long)((getCurrentTime()-getStartTime())
                     *1000);
-            if(_debugging) _debug("real time " + realTime,
+            if (_debugging) _debug("real time " + realTime,
                     "simulation time " + simulationTime);
             long timeDifference = simulationTime-realTime;
-            if(timeDifference > 20) {
+            if (timeDifference > 20) {
                 try {
-                    if(_debugging) _debug("Sleep for " + timeDifference
+                    if (_debugging) _debug("Sleep for " + timeDifference
                             + "ms");
                     Thread.sleep(timeDifference - 20);
                 }  catch (Exception e) {
@@ -672,7 +672,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                             "Sleep Interrupted" + e.getMessage());
                 }
             } else {
-                if(_debugging) _debug("Warning: " + getFullName(),
+                if (_debugging) _debug("Warning: " + getFullName(),
                         " cannot achieve real-time performance",
                         " at simulation time " + getCurrentTime());
             }
@@ -680,10 +680,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = schedule.get(
                 CTSchedule.CONTINUOUS_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             actor.postfire();
-            if(_debugging) _debug("postfire " + (Nameable)actor);
+            if (_debugging) _debug("postfire " + (Nameable)actor);
         }
     }
 
@@ -716,7 +716,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param stepsize The suggested next step size.
      */
     public void setSuggestedNextStepSize(double stepsize) {
-        if(stepsize > getMaxStepSize()) {
+        if (stepsize > getMaxStepSize()) {
             _suggestedNextStepSize = getMaxStepSize();
         } else {
             _suggestedNextStepSize = stepsize;
@@ -792,7 +792,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     protected ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
         ODESolver newSolver;
-        if(_debugging) _debug("instantiating solver..." + className);
+        if (_debugging) _debug("instantiating solver..." + className);
         try {
             Class solver = Class.forName(className);
             newSolver = (ODESolver)solver.newInstance();

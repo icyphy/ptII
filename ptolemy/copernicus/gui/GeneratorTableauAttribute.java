@@ -270,7 +270,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	// this method every time we add a field.
 	Field fields [] = getClass().getFields();
 	String fieldValue;
-	for(int i = 0; i < fields.length; i++) {
+	for (int i = 0; i < fields.length; i++) {
 	    try {
 		if (fields[i].get(newObject) instanceof StringAttribute
 		    || fields[i].get(newObject) instanceof Parameter) {
@@ -329,7 +329,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	StringBuffer results = new StringBuffer();
 	Field [] fields = getClass().getFields();
 	String fieldValue;
-	for(int i = 0; i < fields.length; i++) {
+	for (int i = 0; i < fields.length; i++) {
 	    try {
 		Object object = fields[i].get(this);
 		if (object instanceof StringAttribute) {

@@ -73,7 +73,7 @@ public class PtolemyTransferable implements Transferable {
      * then do not add it again.
      */
     public void addObject(NamedObj object) {
-	if(!_objectList.contains(object)) {
+	if (!_objectList.contains(object)) {
 	    _objectList.add(object);
 	}
     }
@@ -90,8 +90,8 @@ public class PtolemyTransferable implements Transferable {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
 	int i;
-	for(i = 0; i < _flavors.length; i++)
-	    if(_flavors[i].equals(flavor)) return true;
+	for (i = 0; i < _flavors.length; i++)
+	    if (_flavors[i].equals(flavor)) return true;
 	return false;
     }
 
@@ -116,9 +116,9 @@ public class PtolemyTransferable implements Transferable {
 	    // implements it.  The problem is that all the implementations
 	    // differ from the docs.  *sigh*
 	    return new StringReader(_getMoML());
-	} else if(flavor.equals(namedObjFlavor)) {
+	} else if (flavor.equals(namedObjFlavor)) {
 	    return _objectList.iterator();
-	} else if(flavor.equals(DataFlavor.stringFlavor)) {
+	} else if (flavor.equals(DataFlavor.stringFlavor)) {
 	    return _getMoML();
 	}
 	throw new UnsupportedFlavorException(flavor);
@@ -129,7 +129,7 @@ public class PtolemyTransferable implements Transferable {
      * If the object does not exist in the transferable, then do nothing.
      */
     public void removeObject(NamedObj object) {
-	if(_objectList.contains(object)) {
+	if (_objectList.contains(object)) {
 	    _objectList.remove(object);
 	}
     }
@@ -151,7 +151,7 @@ public class PtolemyTransferable implements Transferable {
 	buffer.write("<group>\n");
         Iterator elements =
             Collections.unmodifiableList(_objectList).iterator();
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             NamedObj element = (NamedObj) elements.next();
 	    // first level to avoid obnoxiousness with toplevel translations.
 	    element.exportMoML(buffer, 1);

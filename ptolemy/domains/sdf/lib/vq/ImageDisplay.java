@@ -143,7 +143,7 @@ public class ImageDisplay extends Sink implements Placeable {
             _container.repaint();
 	    _container.doLayout();
 	    Container c = _container.getParent();
-	    while(c.getParent() != null) {
+	    while (c.getParent() != null) {
 		c.invalidate();
 		c.validate();
 		c = c.getParent();
@@ -194,7 +194,7 @@ public class ImageDisplay extends Sink implements Placeable {
     public void place(Container container) {
         _container = container;
 	Container c = _container.getParent();
-	while(c.getParent() != null) {
+	while (c.getParent() != null) {
 	    c = c.getParent();
 	}
 	if (c instanceof JFrame) {

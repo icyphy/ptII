@@ -109,16 +109,16 @@ public class DeadObjectEliminator extends BodyTransformer {
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
-        for(Iterator units = body.getUnits().snapshotIterator();
+        for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
             Iterator boxes = unit.getUseBoxes().iterator();
-            while(boxes.hasNext()) {
+            while (boxes.hasNext()) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-                if(value instanceof SpecialInvokeExpr) {
+                if (value instanceof SpecialInvokeExpr) {
                     SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                    if(SootUtilities.derivesFrom(
+                    if (SootUtilities.derivesFrom(
                             r.getMethod().getDeclaringClass(), theClass) &&
                             !liveLocals.getLiveLocalsAfter(unit).contains(
                                     r.getBase())) {
@@ -127,11 +127,11 @@ public class DeadObjectEliminator extends BodyTransformer {
                         // the new and the object constructor.  This may
                         // not be true.
                         body.getUnits().remove(unit);
-                        for(Iterator defs = localDefs.getDefsOfAt(
+                        for (Iterator defs = localDefs.getDefsOfAt(
                                 (Local)r.getBase(), unit).iterator();
                             defs.hasNext();) {
                             Unit defUnit = (Unit)defs.next();
-                            if(defUnit instanceof DefinitionStmt) {
+                            if (defUnit instanceof DefinitionStmt) {
                                 // If we are keeping a definition, then 
                                 // set the definition to be null.
                                 ((DefinitionStmt)defUnit).getRightOpBox().

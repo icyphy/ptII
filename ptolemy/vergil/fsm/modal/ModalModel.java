@@ -166,7 +166,7 @@ public class ModalModel extends TypedCompositeActor
      */
     public boolean isThisStepAccurate() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
             return ((CTTransparentDirector)dir).isThisStepAccurate();
         }
         return true;
@@ -263,7 +263,7 @@ public class ModalModel extends TypedCompositeActor
      */
     public double predictedStepSize() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
             return ((CTTransparentDirector)dir).predictedStepSize();
         }
         return java.lang.Double.MAX_VALUE;
@@ -276,7 +276,7 @@ public class ModalModel extends TypedCompositeActor
      */
     public double refinedStepSize() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
             return ((CTTransparentDirector)dir).refinedStepSize();
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();

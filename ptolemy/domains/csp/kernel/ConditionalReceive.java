@@ -199,7 +199,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         _arriveAfterPut(receiver, controller);
                         return;
                     } else if (receiver._isConditionalSendWaiting()) {
-                        if( !_arriveAfterConditionalSend(receiver, controller) ) {
+                        if ( !_arriveAfterConditionalSend(receiver, controller) ) {
                             return;
                         }
                     } else {

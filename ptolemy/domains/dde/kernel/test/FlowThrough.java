@@ -85,20 +85,20 @@ public class FlowThrough extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 	Token token = null;
-	if( _inRcvrs.length == 0 ) {
+	if ( _inRcvrs.length == 0 ) {
 	    _continueIterations = false;
 	}
-	for( int i = 0; i < _inRcvrs.length; i++ ) {
-	    for( int j = 0; j < _inRcvrs[i].length; j++ ) {
+	for ( int i = 0; i < _inRcvrs.length; i++ ) {
+	    for ( int j = 0; j < _inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)_inRcvrs[i][j];
-		if( inRcvr.hasToken() ) {
+		if ( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
 		    Receiver[][] outRcvrs = output.getRemoteReceivers();
-		    for( int k = 0; k < outRcvrs.length; k++ ) {
-			for( int l = 0; l < outRcvrs[k].length; l++ ) {
+		    for ( int k = 0; k < outRcvrs.length; k++ ) {
+			for ( int l = 0; l < outRcvrs[k].length; l++ ) {
 			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
 			    Thread thr = Thread.currentThread();
-			    if( thr instanceof DDEThread ) {
+			    if ( thr instanceof DDEThread ) {
 				TimeKeeper kpr =
                                     ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());

@@ -77,27 +77,27 @@ public class InstanceEqualityEliminator extends SceneTransformer
 
         boolean debug = Options.getBoolean(options, "debug");
 
-        /*  if(debug) System.out.println("building invoke graph");
+        /*  if (debug) System.out.println("building invoke graph");
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
-        if(debug) System.out.println("done");
-        if(debug) System.out.println("building method call graph");
+        if (debug) System.out.println("done");
+        if (debug) System.out.println("building method call graph");
         MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
-        if(debug) System.out.println("done");
-        if(debug) System.out.println("analyzing sideeffecting methods");
+        if (debug) System.out.println("done");
+        if (debug) System.out.println("analyzing sideeffecting methods");
         SideEffectAnalysis sideEffectAnalysis =
             new SideEffectAnalysis(methodCallGraph);
-        if(debug) System.out.println("done");
+        if (debug) System.out.println("done");
         */
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
-        while(classes.hasNext()) {
+        while (classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
             Iterator methods = theClass.getMethods().iterator();
-            while(methods.hasNext()) {
+            while (methods.hasNext()) {
                 SootMethod m = (SootMethod) methods.next();
-                if(!m.isConcrete())
+                if (!m.isConcrete())
                     continue;
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();
                 removeInstanceEqualities(body, null, debug);
@@ -110,35 +110,35 @@ public class InstanceEqualityEliminator extends SceneTransformer
             InvokeGraph invokeGraph, boolean debug) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
-        if(debug) System.out.println("analyzing body of " + body.getMethod());
+        if (debug) System.out.println("analyzing body of " + body.getMethod());
 
         // The analyses that give us the information to transform the code.
         NullPointerAnalysis nullPointerAnalysis =
             new NullPointerAnalysis(unitGraph);
-        // if(debug) System.out.println("done nullpointers");
+        // if (debug) System.out.println("done nullpointers");
         MustAliasAnalysis mustAliasAnalysis =
             new MustAliasAnalysis(unitGraph);
 
-        //if(debug) System.out.println("done mustAliases");
+        //if (debug) System.out.println("done mustAliases");
         MaybeAliasAnalysis maybeAliasAnalysis =
             new MaybeAliasAnalysis(unitGraph);
-        //if(debug) System.out.println("done maybeAliases");
+        //if (debug) System.out.println("done maybeAliases");
 
         //System.out.println("done analyzing");
         // Loop through all the unit
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
-            for(Iterator boxes = unit.getUseBoxes().iterator();
+            for (Iterator boxes = unit.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
-                if(value instanceof BinopExpr) {
+                if (value instanceof BinopExpr) {
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
-                    if(left.getType() instanceof RefType &&
+                    if (left.getType() instanceof RefType &&
                             right.getType() instanceof RefType) {
                         Set leftMustAliases, rightMustAliases;
                         Set leftMaybeAliases, rightMaybeAliases;
@@ -154,59 +154,59 @@ public class InstanceEqualityEliminator extends SceneTransformer
                         rightMaybeAliases =
                             maybeAliasAnalysis.getAliasesOfBefore(
                                     (Local)right, unit);
-                        if(debug) System.out.println("Ref-ref unit = " + unit);
-                        if(debug) System.out.println("left aliases = " +
+                        if (debug) System.out.println("Ref-ref unit = " + unit);
+                        if (debug) System.out.println("left aliases = " +
                                 leftMustAliases);
-                        if(debug) System.out.println("right aliases = " +
+                        if (debug) System.out.println("right aliases = " +
                                 rightMustAliases);
-                        if(debug) System.out.println("left maybe aliases = " +
+                        if (debug) System.out.println("left maybe aliases = " +
                                 leftMaybeAliases);
-                        if(debug) System.out.println("right maybe aliases = "
+                        if (debug) System.out.println("right maybe aliases = "
                                 + rightMaybeAliases);
 
-                        if(leftMustAliases.contains(right) &&
+                        if (leftMustAliases.contains(right) &&
                            rightMustAliases.contains(left)) {
-                            if(debug) System.out.println("instances are equal");
+                            if (debug) System.out.println("instances are equal");
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
                         } else {
                             // If either set of maybe aliases is unknown, then we can do nothing.
-                            if(leftMaybeAliases != null && rightMaybeAliases != null) {
-                                if(!leftMaybeAliases.contains(right) && !rightMaybeAliases.contains(left)) {
-                                    if(debug) System.out.println("instances are not equal");
+                            if (leftMaybeAliases != null && rightMaybeAliases != null) {
+                                if (!leftMaybeAliases.contains(right) && !rightMaybeAliases.contains(left)) {
+                                    if (debug) System.out.println("instances are not equal");
                                     // Replace with operands that can be statically evaluated.
                                     binop.getOp1Box().setValue(IntConstant.v(0));
                                     binop.getOp2Box().setValue(IntConstant.v(1));
                                 }
                             }
                         }
-                    } else if(left.getType() instanceof NullType &&
+                    } else if (left.getType() instanceof NullType &&
                             right.getType() instanceof NullType) {
-                        if(debug) System.out.println("Null-Null unit = " + unit);
+                        if (debug) System.out.println("Null-Null unit = " + unit);
                         // must be equal...
                         binop.getOp1Box().setValue(IntConstant.v(0));
                         binop.getOp2Box().setValue(IntConstant.v(0));
-                    } else if(left.getType() instanceof NullType &&
+                    } else if (left.getType() instanceof NullType &&
                               right.getType() instanceof RefType) {
                         // Then the right side is the one we must analyze.
-                        if(debug) System.out.println("Null-Ref unit = " + unit);
+                        if (debug) System.out.println("Null-Ref unit = " + unit);
                         Local local = (Local)right;
-                        if(nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
+                        if (nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if(nullPointerAnalysis.isNeverNullBefore(local, unit)) {
+                        } else if (nullPointerAnalysis.isNeverNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(1));
                         }
-                    } else if(left.getType() instanceof RefType &&
+                    } else if (left.getType() instanceof RefType &&
                               right.getType() instanceof NullType) {
                         // Then the right side is the one we must analyze.
-                        if(debug) System.out.println("Ref-Null unit = " + unit);
+                        if (debug) System.out.println("Ref-Null unit = " + unit);
                         Local local = (Local)left;
-                        if(nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
+                        if (nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if(nullPointerAnalysis.isNeverNullBefore(local, unit)) {
+                        } else if (nullPointerAnalysis.isNeverNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(1));
                         }

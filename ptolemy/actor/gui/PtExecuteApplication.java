@@ -139,7 +139,7 @@ public class PtExecuteApplication extends MoMLApplication
         ModelDirectory directory
             = (ModelDirectory)_configuration.getEntity("directory");
         Iterator effigies = directory.entityList().iterator();
-        while(effigies.hasNext()) {
+        while (effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
             if (effigy instanceof PtolemyEffigy) {
                 NamedObj model = ((PtolemyEffigy)effigy).getModel();
@@ -154,7 +154,7 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public void runModels() throws IllegalActionException {
         Iterator models = models().iterator();
-        while(models.hasNext()) {
+        while (models.hasNext()) {
             NamedObj model = (NamedObj)models.next();
             if (model instanceof CompositeActor) {
                 CompositeActor actor = (CompositeActor)model;

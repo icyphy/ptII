@@ -128,7 +128,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
     }
 
     public void stopFire() {
-        if(_triggerThread != null) {
+        if (_triggerThread != null) {
             _triggerThread.interrupt();
         }
     }

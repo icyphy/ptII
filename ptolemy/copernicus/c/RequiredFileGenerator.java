@@ -114,7 +114,7 @@ public class RequiredFileGenerator
             if (fileName.lastIndexOf('/')>0);
             //the file requires some directories
             {
-                if(verbose) System.out.println(className);
+                if (verbose) System.out.println(className);
                 File dummyFile = new File(fileName.substring(0,
                                             fileName.lastIndexOf('/')));
                 dummyFile.mkdirs();
@@ -123,26 +123,26 @@ public class RequiredFileGenerator
             // Generate the .i.h file.
             if (FileHandler.exists(fileName+".i.h"))
             {
-                if(verbose) System.out.println( "\texists: "+fileName+".i.h");
+                if (verbose) System.out.println( "\texists: "+fileName+".i.h");
             }
             else
             {
                 code = iGenerator.generate(sootClass);
                 FileHandler.write(fileName+".i.h",code);
-                if(verbose) System.out.println( "\tcreated: "+fileName+".i.h");
+                if (verbose) System.out.println( "\tcreated: "+fileName+".i.h");
             }
 
 
             // Generate the .h file.
-            if(FileHandler.exists(fileName+".h"))
+            if (FileHandler.exists(fileName+".h"))
             {
-                if(verbose) System.out.println( "\texists: "+fileName+".h");
+                if (verbose) System.out.println( "\texists: "+fileName+".h");
             }
             else
             {
                 code = hGenerator.generate(sootClass);
                 FileHandler.write(fileName+".h",code);
-                if(verbose) System.out.println( "\tcreated: "+fileName+".h");
+                if (verbose) System.out.println( "\tcreated: "+fileName+".h");
             }
 
 
@@ -151,13 +151,13 @@ public class RequiredFileGenerator
             {
                 if (FileHandler.exists(fileName+".c"))
                 {
-                    if(verbose) System.out.println( "\texists:"+fileName+".c");
+                    if (verbose) System.out.println( "\texists:"+fileName+".c");
                 }
                 else
                 {
                     code = cGenerator.generate(sootClass);
                     FileHandler.write(fileName+".c",code);
-                    if(verbose) System.out.println( "\tcreated: "
+                    if (verbose) System.out.println( "\tcreated: "
                         +fileName+".c");
                 }
             }

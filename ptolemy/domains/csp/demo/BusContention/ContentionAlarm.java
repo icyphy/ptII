@@ -134,7 +134,7 @@ public class ContentionAlarm extends CSPActor {
      */
     public void fire() throws IllegalActionException {
 
-        while(true) {
+        while (true) {
             // State 1
             _debug( new ExecEvent( this, ExecEvent.WAITING ) );
             input.get(0);

@@ -111,7 +111,7 @@ public class DDEIOPort extends TypedIOPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isinput, isoutput);
-        if( !container.isAtomic() ) {
+        if ( !container.isAtomic() ) {
             throw new IllegalActionException(container, this,
                     "A DDEIOPort can not be contained by a " +
                     "composite actor.");
@@ -144,7 +144,7 @@ public class DDEIOPort extends TypedIOPort {
             workspace().getReadAccess();
 
             Receiver fr[][] = getRemoteReceivers();
-            if(fr == null) {
+            if (fr == null) {
                 return;
             }
             for (int j = 0; j < fr.length; j++) {
@@ -176,18 +176,18 @@ public class DDEIOPort extends TypedIOPort {
 	double currentTime = 0.0;
 	Thread thread = Thread.currentThread();
 	DDEThread ddeThread = null;
-	if( thread instanceof DDEThread ) {
+	if ( thread instanceof DDEThread ) {
 	    ddeThread = (DDEThread)thread;
 	    currentTime = ddeThread.getTimeKeeper().getCurrentTime();
 	}
-        if( sendTime < currentTime &&
+        if ( sendTime < currentTime &&
 		sendTime != PrioritizedTimedQueue.IGNORE &&
 		sendTime != PrioritizedTimedQueue.INACTIVE ) {
             throw new IllegalActionException( this, "Time values in "
                     + "the past are not allowed.");
 	}
 
-        if( thread instanceof DDEThread ) {
+        if ( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;
             TimeKeeper tKeeper = ddeThread.getTimeKeeper();
             tKeeper._setOutputTime(sendTime);
@@ -206,7 +206,7 @@ public class DDEIOPort extends TypedIOPort {
      */
     public void setContainer(ComponentEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if( !container.isAtomic() ) {
+        if ( !container.isAtomic() ) {
             throw new IllegalActionException(container, this,
                     "A DDEIOPort can not be contained by a " +
                     "composite actor.");

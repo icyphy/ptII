@@ -182,9 +182,9 @@ public class LinkController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    if(object instanceof Port) return super.acceptHead(c, f);
-	    if(object instanceof Vertex) return super.acceptHead(c, f);
-	    if(object instanceof Location &&
+	    if (object instanceof Port) return super.acceptHead(c, f);
+	    if (object instanceof Vertex) return super.acceptHead(c, f);
+	    if (object instanceof Location &&
                     ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
@@ -192,16 +192,16 @@ public class LinkController extends BasicEdgeController {
 
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
-	    if(object instanceof Port) return super.acceptTail(c, f);
-	    if(object instanceof Vertex) return super.acceptTail(c, f);
-	    if(object instanceof Location &&
+	    if (object instanceof Port) return super.acceptTail(c, f);
+	    if (object instanceof Vertex) return super.acceptTail(c, f);
+	    if (object instanceof Location &&
                     ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
-            if(f instanceof Terminal) {
+            if (f instanceof Terminal) {
 		Site site = ((Terminal)f).getConnectSite();
 		return site;
             } else {
@@ -225,7 +225,7 @@ public class LinkController extends BasicEdgeController {
 
 	    Link link = (Link)edge;
 	    Relation relation = link.getRelation();
-	    if(relation != null) {
+	    if (relation != null) {
 		c.setToolTipText(relation.getName());
 	    }
             return c;

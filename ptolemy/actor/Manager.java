@@ -202,8 +202,8 @@ public class Manager extends NamedObj implements Runnable {
      *  @param listener The listener.
      */
     public void addExecutionListener(ExecutionListener listener) {
-        if(listener == null) return;
-        if(_executionListeners == null) {
+        if (listener == null) return;
+        if (_executionListeners == null) {
             _executionListeners = new LinkedList();
         }
         _executionListeners.add(listener);
@@ -302,10 +302,10 @@ public class Manager extends NamedObj implements Runnable {
         // avoid race conditions.  The model may not have gotten around
         // to starting when finish is requested.
         _finishRequested = true;
-        if(_state == IDLE) return;
+        if (_state == IDLE) return;
 
         Nameable container = getContainer();
-        if(!(container instanceof CompositeActor)) {
+        if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
                     "Attempted to call finish() on an executing manager " +
                     "with no associated CompositeActor model");
@@ -453,16 +453,16 @@ public class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 _workspace.setReadOnly(true);
             }
-            if(_debugging) _debug("Prefire container.");
+            if (_debugging) _debug("Prefire container.");
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
 
-                if(_debugging) _debug("Fire model.");
+                if (_debugging) _debug("Fire model.");
                 _container.fire();
-                if(_debugging) _debug("Postfire model.");
+                if (_debugging) _debug("Postfire model.");
                 result = _container.postfire();
             }
-            if(_debugging) {
+            if (_debugging) {
                 if (result) _debug("Finish one iteration, returning true.");
                 else _debug("Finish one iteration, returning false.");
             }
@@ -490,7 +490,7 @@ public class Manager extends NamedObj implements Runnable {
             ex.printStackTrace();
         } else {
             Iterator listeners = _executionListeners.iterator();
-            while(listeners.hasNext()) {
+            while (listeners.hasNext()) {
                 ExecutionListener listener =
                     (ExecutionListener) listeners.next();
                 listener.executionError(this, ex);
@@ -514,7 +514,7 @@ public class Manager extends NamedObj implements Runnable {
     public void pause() {
         _pauseRequested = true;
         Nameable container = getContainer();
-        if(!(container instanceof CompositeActor)) {
+        if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
                     "Attempted to call pause() on an executing manager " +
                     "with no associated CompositeActor model");
@@ -528,7 +528,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @param listener The listener to remove.
      */
     public void removeExecutionListener(ExecutionListener listener) {
-        if(listener == null || _executionListeners == null) return;
+        if (listener == null || _executionListeners == null) return;
         _executionListeners.remove(listener);
     }
 
@@ -596,7 +596,7 @@ public class Manager extends NamedObj implements Runnable {
      *  suspended.
      */
     public synchronized void resume() {
-        if(_state == PAUSED) {
+        if (_state == PAUSED) {
             _pauseRequested = false;
             notifyAll();
         }
@@ -665,7 +665,7 @@ public class Manager extends NamedObj implements Runnable {
         // Indeed it should be, since it terminates a thread
         // nondeterministically, and can leave any objects that the thread
         // operating on in an inconsistent state.
-        if(_thread != null) {
+        if (_thread != null) {
             _thread.stop();
             try {
                 _thread.join();
@@ -784,7 +784,7 @@ public class Manager extends NamedObj implements Runnable {
         }
         if (_executionListeners != null) {
             Iterator listeners = _executionListeners.iterator();
-            while(listeners.hasNext()) {
+            while (listeners.hasNext()) {
                 ExecutionListener listener =
                     (ExecutionListener) listeners.next();
                 listener.executionFinished(this);
@@ -800,7 +800,7 @@ public class Manager extends NamedObj implements Runnable {
         }
         if (_executionListeners != null) {
             Iterator listeners = _executionListeners.iterator();
-            while(listeners.hasNext()) {
+            while (listeners.hasNext()) {
                 ExecutionListener listener =
                     (ExecutionListener) listeners.next();
                 listener.managerStateChanged(this);

@@ -120,7 +120,7 @@ public class ArrayElement extends Transformer {
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
             int indexValue = ((IntToken)index.getToken()).intValue();
             if (indexValue < 0 || indexValue >= token.length()) {

@@ -67,18 +67,18 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
 	    super.getTreeCellRendererComponent(tree, value,
                     selected, expanded, leaf, row, hasFocus);
-	if(value instanceof NamedObj) {
+	if (value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    // Fix the background colors because transparent
 	    // labels don't work quite right.
-	    if(!selected) {
+	    if (!selected) {
 		component.setBackground(tree.getBackground());
 		component.setOpaque(true);
 	    } else {
 		component.setOpaque(false);
 	    }
 
-            if(object instanceof Settable) {
+            if (object instanceof Settable) {
                 StringBuffer buffer = new StringBuffer();
                 buffer.append(object.getName());
                 buffer.append("=");
@@ -96,7 +96,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 		// Only if an object has an icon, an icon description, or
                 // a small icon description is it rendered in the tree.
                 List iconList = object.attributeList(EditorIcon.class);
-		if(iconList.size() > 0
+		if (iconList.size() > 0
                         || object.getAttribute("_iconDescription") != null
                         || object.getAttribute("_iconSmallDescription")
                         != null) {

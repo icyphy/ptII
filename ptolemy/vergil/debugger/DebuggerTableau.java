@@ -151,7 +151,7 @@ public class DebuggerTableau extends Tableau {
 	 *  tableau.
 	 */
 	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy))
+	    if (!(proxy instanceof PtolemyEffigy))
 		return null;
 	    DebuggerTableau tableau =
 		new DebuggerTableau((PtolemyEffigy)proxy,

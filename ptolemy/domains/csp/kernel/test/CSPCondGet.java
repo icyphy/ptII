@@ -59,7 +59,7 @@ public class CSPCondGet extends CSPGet {
         _truth = new boolean[receiverCount];
         _winningBranch = new boolean[receiverCount];
 
-	for( int i = 0; i < receiverCount; i++ ) {
+	for ( int i = 0; i < receiverCount; i++ ) {
 	    _winningBranch[i] = false;
 	    _truth[i] = false;
 	}
@@ -74,13 +74,13 @@ public class CSPCondGet extends CSPGet {
     public void fire() throws IllegalActionException {
 	int numReceivers = 0;
         Receiver[][] rcvrs = inputPort.getReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
+	for ( int i = 0; i < rcvrs.length; i++ ) {
+	    for ( int j = 0; j < rcvrs[i].length; j++ ) {
 		numReceivers++;
             }
 	}
 
-	if( _receiverCount != numReceivers ) {
+	if ( _receiverCount != numReceivers ) {
 	    throw new IllegalActionException(getName()+": Error in the number"
 		    + " of receivers. Be sure constructor is properly"
 		    + " instantiated.");
@@ -88,7 +88,7 @@ public class CSPCondGet extends CSPGet {
 
 	ConditionalBranch[] brchs = new ConditionalBranch[numReceivers];
 
-	for( int i = 0; i < numReceivers; i++ ) {
+	for ( int i = 0; i < numReceivers; i++ ) {
 	    brchs[i] = new ConditionalReceive(_truth[i], inputPort, i, i);
         }
 

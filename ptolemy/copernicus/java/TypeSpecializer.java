@@ -117,7 +117,7 @@ public class TypeSpecializer extends SceneTransformer {
         Scene.v().setActiveHierarchy(new Hierarchy());
     
         Hierarchy h = Scene.v().getActiveHierarchy();
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             
@@ -137,7 +137,7 @@ public class TypeSpecializer extends SceneTransformer {
         
         boolean succeeded = solver.solveLeast();
         
-        if(debug) {
+        if (debug) {
             System.out.println("Type Assignment:");
             Iterator variables = solver.variables();
             while (variables.hasNext()) {
@@ -146,8 +146,8 @@ public class TypeSpecializer extends SceneTransformer {
             }
         }
             
-        if(succeeded) {
-            if(debug) System.out.println("solution FOUND!");
+        if (succeeded) {
+            if (debug) System.out.println("solution FOUND!");
             Map map = _updateTypes(debug, theClass, objectToInequalityTerm);
             return map;
         } else {
@@ -164,9 +164,9 @@ public class TypeSpecializer extends SceneTransformer {
     private static void _collectConstraints(boolean debug, 
             SootClass theClass, InequalitySolver solver, Map objectToInequalityTerm,
             Set unsafeLocals) {
-        if(debug) System.out.println("collecting constraints for " + theClass);
+        if (debug) System.out.println("collecting constraints for " + theClass);
         // Loop through all the fields.
-        for(Iterator fields = theClass.getFields().iterator();
+        for (Iterator fields = theClass.getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
@@ -176,7 +176,7 @@ public class TypeSpecializer extends SceneTransformer {
             // If the field has been tagged with a more specific type, then
             // constrain the type more.
             TypeTag tag = (TypeTag)field.getTag("_CGType");
-            if(tag != null) {
+            if (tag != null) {
                 _addInequality(debug, solver, 
                         new ConstantTerm(tag.getType(), field),
                         (InequalityTerm)objectToInequalityTerm.get(field)); 
@@ -185,7 +185,7 @@ public class TypeSpecializer extends SceneTransformer {
         
         // FIXME: we also need the fields that we represent from
         //
-        for(Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
+        for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             // Ignore things that aren't reference types.
@@ -195,7 +195,7 @@ public class TypeSpecializer extends SceneTransformer {
             // If the field has been tagged with a more specific type, then
             // constrain the type more.
             TypeTag tag = (TypeTag)field.getTag("_CGType");
-            if(tag != null) {
+            if (tag != null) {
                 _addInequality(debug, solver, 
                         new ConstantTerm(tag.getType(), field),
                         (InequalityTerm)objectToInequalityTerm.get(field)); 
@@ -203,11 +203,11 @@ public class TypeSpecializer extends SceneTransformer {
         }
 
         // Loop through all the methods.
-        for(Iterator methods = theClass.getMethods().iterator();
+        for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             Body body = method.retrieveActiveBody();
-            if(debug) System.out.println("collecting constraints for " + method);
+            if (debug) System.out.println("collecting constraints for " + method);
               
             CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
             // this will help us figure out where locals are defined.
@@ -215,21 +215,21 @@ public class TypeSpecializer extends SceneTransformer {
             SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
             MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
 
-            for(Iterator locals = body.getLocals().iterator();
+            for (Iterator locals = body.getLocals().iterator();
                 locals.hasNext();) {
                 Local local = (Local)locals.next();
-                if(unsafeLocals.contains(local)) {
+                if (unsafeLocals.contains(local)) {
                     continue;
                 }
                 // Ignore things that aren't reference types.
                 Type type = local.getType();
                 _createInequalityTerm(debug, local, type, objectToInequalityTerm);
             }
-            for(Iterator units = body.getUnits().iterator();
+            for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
-                if(debug) System.out.println("stmt = " + stmt);
-                if(stmt instanceof AssignStmt) {
+                if (debug) System.out.println("stmt = " + stmt);
+                if (stmt instanceof AssignStmt) {
                     Value leftOp = ((AssignStmt)stmt).getLeftOp();
                     Value rightOp = ((AssignStmt)stmt).getRightOp();
                     
@@ -256,12 +256,12 @@ public class TypeSpecializer extends SceneTransformer {
                     // FIXME: Alternatively, we could create individual constraints for
                     // all of the different aliases.  This might be better
                     // given that we actually have alias information.
-                    if(SootUtilities.isAliasableValue(leftOp) && 
+                    if (SootUtilities.isAliasableValue(leftOp) && 
                             (SootUtilities.isAliasableValue(rightOp) ||
                                     rightOp instanceof NewArrayExpr)) {
                         _addInequality(debug, solver, leftOpTerm, rightOpTerm);
                     }
-                } else if(stmt instanceof InvokeStmt) {
+                } else if (stmt instanceof InvokeStmt) {
                     // Still call getInequalityTerm because there may be side effects
                     // that cause type constraints.
                     _getInequalityTerm(method, debug, 
@@ -276,7 +276,7 @@ public class TypeSpecializer extends SceneTransformer {
  
     private static Map _updateTypes(boolean debug,
             SootClass theClass, Map objectToInequalityTerm) {
-        if(debug) System.out.println("updateing types for " + theClass);
+        if (debug) System.out.println("updateing types for " + theClass);
         Map map = new HashMap();
 
         // Loop through all the methods and update types of locals.
@@ -287,35 +287,35 @@ public class TypeSpecializer extends SceneTransformer {
         // We are updating it because further passes of code generation
         // use this information (for example, when converting 
         // token types (like IntToken) to native types (like int).
-        for(Iterator methods = theClass.getMethods().iterator();
+        for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            if(debug) System.out.println("updating types for " + method);
+            if (debug) System.out.println("updating types for " + method);
             Body body = method.retrieveActiveBody();
-            for(Iterator locals = body.getLocals().iterator();
+            for (Iterator locals = body.getLocals().iterator();
                 locals.hasNext();) {
                 Local local = (Local)locals.next();
                 Type type = local.getType();
                 // Things that aren't token types are ignored.
                 Type newType = _getUpdateType(debug, local, type, objectToInequalityTerm);
-                if(newType != null) {
-                    if(debug) System.out.println("local = " + local);
+                if (newType != null) {
+                    if (debug) System.out.println("local = " + local);
                     local.setType(newType);
                     map.put(local, _getTokenType(objectToInequalityTerm, local));
                 }
             }
-            for(Iterator boxes = body.getUseBoxes().iterator();
+            for (Iterator boxes = body.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
-                if(box.getValue() instanceof NewArrayExpr) {
+                if (box.getValue() instanceof NewArrayExpr) {
                     NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
-                    if(debug) System.out.println("newArrayExpr = " + newArrayExpr);
+                    if (debug) System.out.println("newArrayExpr = " + newArrayExpr);
  
                     Type type = newArrayExpr.getBaseType();
                     // Things that aren't token types are ignored.
                     Type newType = _getUpdateType(debug, newArrayExpr, type, objectToInequalityTerm);
-                    if(newType != null) {
-                        if(debug) System.out.println("updating newArrayExpr = " + newArrayExpr);
+                    if (newType != null) {
+                        if (debug) System.out.println("updating newArrayExpr = " + newArrayExpr);
  
                         newArrayExpr.setBaseType(newType);
                         map.put(newArrayExpr, _getTokenType(objectToInequalityTerm, newArrayExpr));
@@ -327,20 +327,20 @@ public class TypeSpecializer extends SceneTransformer {
         // Loop through all the methods and insert casts whenever we
         // have a field store that has changed type to please the bytecode
         // verifier.
-        for(Iterator methods = theClass.getMethods().iterator();
+        for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             Body body = method.retrieveActiveBody();
-            for(Iterator units = body.getUnits().snapshotIterator();
+            for (Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit) units.next();
                 // Ignore anything that isn't an assignment.
-                if(!(unit instanceof AssignStmt)) {
+                if (!(unit instanceof AssignStmt)) {
                     continue;
                 }
                 AssignStmt assignStmt = (AssignStmt)unit;
                 // Ignore anything that isn't an assignment to a field.
-                if(!(assignStmt.getLeftOp() instanceof FieldRef)) {
+                if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
                     continue;
                 }
                 FieldRef ref = (FieldRef)((AssignStmt)assignStmt).getLeftOp(); 
@@ -349,7 +349,7 @@ public class TypeSpecializer extends SceneTransformer {
                 // Things that aren't token types are ignored.
                 // Things that are already the same type are ignored.
                 Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-                if(newType != null && !newType.equals(type)) {
+                if (newType != null && !newType.equals(type)) {
                     Local tempLocal = Jimple.v().newLocal("fieldUpdateLocal", newType);
                     body.getLocals().add(tempLocal);
                     body.getUnits().insertBefore(
@@ -364,28 +364,28 @@ public class TypeSpecializer extends SceneTransformer {
         }
 
         // Loop through all the fields and update the types.
-        for(Iterator fields = theClass.getFields().iterator();
+        for (Iterator fields = theClass.getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
-            if(debug) System.out.println("updating types for " + field);
+            if (debug) System.out.println("updating types for " + field);
             Type type = field.getType();
             // Things that aren't token types are ignored.
             Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-            if(newType != null) {
+            if (newType != null) {
                 field.setType(newType);
                 map.put(field, _getTokenType(objectToInequalityTerm, field));
             }
         }
 
         // FIXME: Loop through all the fields in the main class and update the types.
-        for(Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
+        for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
-            if(debug) System.out.println("updating types for " + field);
+            if (debug) System.out.println("updating types for " + field);
             Type type = field.getType();
             // Things that aren't token types are ignored.
             Type newType = _getUpdateType(debug, field, type, objectToInequalityTerm);
-            if(newType != null) {
+            if (newType != null) {
                 field.setType(newType);
                 map.put(field, _getTokenType(objectToInequalityTerm, field));
             }
@@ -400,16 +400,16 @@ public class TypeSpecializer extends SceneTransformer {
     private static Type _getUpdateType(boolean debug,
             Object object, Type type, Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-        if(tokenType != null) {
-            if(debug) System.out.println("type of value " + object + " = " + type);
+        if (tokenType != null) {
+            if (debug) System.out.println("type of value " + object + " = " + type);
             InequalityTerm term = (InequalityTerm)objectToInequalityTerm.get(object);
-            if(term == null) {
+            if (term == null) {
                 return null;
             }
             ptolemy.data.type.Type newTokenType = (ptolemy.data.type.Type)term.getValue();
             RefType newType = PtolemyUtilities.getSootTypeForTokenType(newTokenType);
-            if(debug) System.out.println("newType = " + newType);
-            if(!SootUtilities.derivesFrom(newType.getSootClass(), tokenType.getSootClass())) {
+            if (debug) System.out.println("newType = " + newType);
+            if (!SootUtilities.derivesFrom(newType.getSootClass(), tokenType.getSootClass())) {
                 // If the new Type is less specific, in Java terms, than what we 
                 // had before, then the resulting code is likely not correct.
                 // FIXME: hack to get around the bogus type lattice.  This should be an exception.
@@ -427,7 +427,7 @@ public class TypeSpecializer extends SceneTransformer {
 
     public static ptolemy.data.type.Type _getTokenType(Map objectToInequalityTerm, Object object) {
         InequalityTerm term = (InequalityTerm)objectToInequalityTerm.get(object);
-        if(term == null) {
+        if (term == null) {
             throw new RuntimeException("Attempt to get type for object " + object + " with no inequality term!");
         }
         return (ptolemy.data.type.Type)term.getValue();
@@ -439,9 +439,9 @@ public class TypeSpecializer extends SceneTransformer {
             Map objectToInequalityTerm,
             Unit unit, LocalDefs localDefs, LocalUses localUses,
             MustAliasAnalysis aliasAnalysis) {
-        if(value instanceof StaticInvokeExpr) {
+        if (value instanceof StaticInvokeExpr) {
             StaticInvokeExpr r = (StaticInvokeExpr)value;
-            if(r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
+            if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
                 // If we are copying one array to another, then the
                 // types must be equal.
                 InequalityTerm firstArgTerm = (InequalityTerm)
@@ -454,12 +454,12 @@ public class TypeSpecializer extends SceneTransformer {
                         firstArgTerm);
                 return null;
             }
-        } else if(value instanceof InstanceInvokeExpr) {
+        } else if (value instanceof InstanceInvokeExpr) {
             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
             String methodName = r.getMethod().getName();
             // If we are invoking on something that is not a reference type,
             // then ignore it.
-            if(!(r.getBase().getType() instanceof RefType)) {
+            if (!(r.getBase().getType() instanceof RefType)) {
                 return null;
             }
             //     System.out.println("invokeExpr = " + r);
@@ -468,14 +468,14 @@ public class TypeSpecializer extends SceneTransformer {
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
             // FIXME: match better.
             // If we are invoking a method on a token, then...
-            if(SootUtilities.derivesFrom(baseClass,
+            if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.tokenClass)) {
-                if(methodName.equals("one") ||
+                if (methodName.equals("one") ||
                         methodName.equals("zero")) {
                     // The returned type must be equal to the type  
                     // we are calling the method on.
                     return baseTerm;
-                } else if(methodName.equals("add") ||
+                } else if (methodName.equals("add") ||
                         methodName.equals("addReverse") ||
                         methodName.equals("subtract") ||
                         methodName.equals("subtractReverse") ||
@@ -500,7 +500,7 @@ public class TypeSpecializer extends SceneTransformer {
                     _addInequality(debug, solver, baseTerm,
                             returnValueTerm);
                     return returnValueTerm;
-                } else if(methodName.equals("convert")) {
+                } else if (methodName.equals("convert")) {
                     // The return value type is equal to the base type.
                     // The first argument type is less than or equal to the base type.
                     InequalityTerm firstArgTerm = (InequalityTerm)
@@ -509,7 +509,7 @@ public class TypeSpecializer extends SceneTransformer {
                     _addInequality(debug, solver, firstArgTerm,
                             baseTerm); 
                     return baseTerm;
-                } else if(methodName.equals("getElement") ||
+                } else if (methodName.equals("getElement") ||
                           methodName.equals("arrayValue")) {
                     // If we call getElement or arrayValue on an array token, then 
                     // the returned type is the element type of the array.
@@ -522,7 +522,7 @@ public class TypeSpecializer extends SceneTransformer {
                         arrayType.getElementTypeTerm();
                     return returnTypeTerm;
                 }
-            } else if(SootUtilities.derivesFrom(baseClass,
+            } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.portClass)) {
                 // If we are invoking a method on a port.
                 TypedIOPort port = (TypedIOPort)
@@ -534,13 +534,13 @@ public class TypeSpecializer extends SceneTransformer {
                             localUses);
                 // Don't create constant terms for 
                 // ports where we don't already know the type.
-                if(!port.getType().isInstantiable()) {
+                if (!port.getType().isInstantiable()) {
                     return null;
                 }
                 InequalityTerm portTypeTerm =
                     new ConstantTerm(port.getType(),
                             port);
-                if(methodName.equals("broadcast")) {
+                if (methodName.equals("broadcast")) {
                     // The type of the argument must be less than the 
                     // type of the port.
                     InequalityTerm firstArgTerm = (InequalityTerm)
@@ -551,15 +551,15 @@ public class TypeSpecializer extends SceneTransformer {
                             portTypeTerm);
                     // Return type is void.
                     return null;
-                } else if(methodName.equals("get")) {
-                    if(r.getArgCount() == 2) {
+                } else if (methodName.equals("get")) {
+                    if (r.getArgCount() == 2) {
                         // FIXME: array of portTypeTerm?
                         return portTypeTerm;
-                    } else if(r.getArgCount() == 1) {
+                    } else if (r.getArgCount() == 1) {
                         return portTypeTerm;
                     }
-                } else if(methodName.equals("send")) {
-                    if(r.getArgCount() == 3) {
+                } else if (methodName.equals("send")) {
+                    if (r.getArgCount() == 3) {
                         // The type of the argument must be less than the 
                         // type of the port.
                         InequalityTerm secondArgTerm = (InequalityTerm)
@@ -569,7 +569,7 @@ public class TypeSpecializer extends SceneTransformer {
                                 portTypeTerm);
                         // Return type is void.
                         return null;
-                    } else if(r.getArgCount() == 2) {
+                    } else if (r.getArgCount() == 2) {
                         // The type of the argument must be less than the 
                         // type of the port.
                         InequalityTerm secondArgTerm = (InequalityTerm)
@@ -581,7 +581,7 @@ public class TypeSpecializer extends SceneTransformer {
                         return null;
                     }
                 }                        
-            } else if(SootUtilities.derivesFrom(baseClass,
+            } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.attributeClass)) {
                 // If we are invoking a method on a port.
                 Attribute attribute = (Attribute)
@@ -591,17 +591,17 @@ public class TypeSpecializer extends SceneTransformer {
                             unit, 
                             localDefs, 
                             localUses);
-                if(attribute == null) {
+                if (attribute == null) {
                     // A method invocation with a null base is bogus,
                     // so don't create a type constraint.
                     return null;
                 }
-                if(attribute instanceof Variable) {
+                if (attribute instanceof Variable) {
                     Variable parameter = (Variable)attribute;
                     InequalityTerm parameterTypeTerm =
                         new ConstantTerm(parameter.getType(),
                                 parameter);
-                    if(methodName.equals("setToken")) {
+                    if (methodName.equals("setToken")) {
                     // The type of the argument must be less than the 
                         // type of the parameter.
                         InequalityTerm firstArgTerm = (InequalityTerm)
@@ -612,22 +612,22 @@ public class TypeSpecializer extends SceneTransformer {
                                 parameterTypeTerm);
                         // Return type is void.
                         return null;
-                    } else if(methodName.equals("getToken")) {
+                    } else if (methodName.equals("getToken")) {
                         // Return the type of the parameter.
                         return parameterTypeTerm;
                     }
                 }
             }
-        } else if(value instanceof ArrayRef) {
+        } else if (value instanceof ArrayRef) {
             // The type must be the same as the type of the
             // base of the array.
             return (InequalityTerm)objectToInequalityTerm.get(
                     ((ArrayRef)value).getBase());
-        } else if(value instanceof CastExpr) {
+        } else if (value instanceof CastExpr) {
             CastExpr castExpr = (CastExpr)value;
             Type type = castExpr.getType();
             RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-            if(tokenType != null) {
+            if (tokenType != null) {
                 // The type of the argument must be greater than the type of the
                 // cast.
                 // The return type will be the type of the cast.
@@ -644,12 +644,12 @@ public class TypeSpecializer extends SceneTransformer {
                 // Otherwise there is nothing to be done.
                 return null;
             }
-        } else if(value instanceof NewExpr) {
+        } else if (value instanceof NewExpr) {
             NewExpr newExpr = (NewExpr)value;
             RefType type = newExpr.getBaseType();
             SootClass castClass = type.getSootClass();
             // If we are creating a Token type...
-            if(SootUtilities.derivesFrom(castClass,
+            if (SootUtilities.derivesFrom(castClass,
                     PtolemyUtilities.tokenClass)) {
                 InequalityTerm typeTerm = new ConstantTerm(
                         PtolemyUtilities.getTokenTypeForSootType(type),
@@ -661,12 +661,12 @@ public class TypeSpecializer extends SceneTransformer {
                 // Otherwise there is nothing to be done.
                 return null;
             }
-        } else if(value instanceof NewArrayExpr) {
+        } else if (value instanceof NewArrayExpr) {
             // Since arrays are aliasable, we must update their types.
             NewArrayExpr newExpr = (NewArrayExpr)value;
             Type type = newExpr.getBaseType();
             RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-            if(tokenType != null) {
+            if (tokenType != null) {
                 InequalityTerm typeTerm = new VariableTerm(
                         PtolemyUtilities.getTokenTypeForSootType(tokenType),
                         newExpr);
@@ -679,13 +679,13 @@ public class TypeSpecializer extends SceneTransformer {
             }
             // Otherwise there is nothing to be done.
             return null;
-        } else if(value instanceof FieldRef) {
+        } else if (value instanceof FieldRef) {
             FieldRef r = (FieldRef)value;
             // Field references have the type of the field.
             SootField field = r.getField();
 
             // FIXME: UGH: This is the same as elementType...  
-            if(field.getSignature().equals("<ptolemy.data.ArrayToken: ptolemy.data.Token[] _value>")) {
+            if (field.getSignature().equals("<ptolemy.data.ArrayToken: ptolemy.data.Token[] _value>")) {
                 InequalityTerm baseTerm =
                     (InequalityTerm)objectToInequalityTerm.get(((InstanceFieldRef)r).getBase());
                 ptolemy.data.type.ArrayType arrayType =
@@ -698,7 +698,7 @@ public class TypeSpecializer extends SceneTransformer {
                 return returnTypeTerm;
             }
             return (InequalityTerm)objectToInequalityTerm.get(field);
-        } else if(value instanceof Local) {
+        } else if (value instanceof Local) {
             // Local references have the type of the local.
             return (InequalityTerm)objectToInequalityTerm.get(value);
         } 
@@ -708,9 +708,9 @@ public class TypeSpecializer extends SceneTransformer {
     
     private static void _addInequality(boolean debug, 
             InequalitySolver solver, InequalityTerm lesser, InequalityTerm greater) {
-        if(lesser != null && greater != null) {
+        if (lesser != null && greater != null) {
             Inequality inequality = new Inequality(lesser, greater);
-            if(debug) System.out.println("adding inequality = " + inequality);
+            if (debug) System.out.println("adding inequality = " + inequality);
             solver.addInequality(inequality);
         }
     }
@@ -718,9 +718,9 @@ public class TypeSpecializer extends SceneTransformer {
     private static void _createInequalityTerm(boolean debug, Object object, Type type, 
             Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-        if(tokenType != null) {
-            if(debug) System.out.println("creating inequality term for " + object);
-            if(debug) System.out.println("type " + type);
+        if (tokenType != null) {
+            if (debug) System.out.println("creating inequality term for " + object);
+            if (debug) System.out.println("type " + type);
        
             InequalityTerm term = 
                 new VariableTerm(

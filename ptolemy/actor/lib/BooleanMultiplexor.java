@@ -116,7 +116,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         Token trueToken = trueInput.get(0);
         Token falseToken = falseInput.get(0);
 
-        if(flag) {
+        if (flag) {
             output.send(0, trueToken);
         } else {
             output.send(0, falseToken);

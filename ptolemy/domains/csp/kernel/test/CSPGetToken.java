@@ -72,7 +72,7 @@ public class CSPGetToken extends CSPGet {
      */
     public void fire() throws IllegalActionException {
 	int cnt = 0;
-	while(cnt < _numTokens) {
+	while (cnt < _numTokens) {
 	    _tokens[cnt] = inputPort.get(0);
 	    cnt++;
 	}

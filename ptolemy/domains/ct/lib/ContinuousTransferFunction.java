@@ -179,7 +179,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             _opaque = true;
             // Request for initialization.
             Director dir = getDirector();
-            if(dir != null) {
+            if (dir != null) {
                 dir.requestInitialization(this);
             }
         } else if (attribute == denominator) {
@@ -193,7 +193,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             _opaque = true;
             // Request for initialization.
             Director dir = getDirector();
-            if(dir != null) {
+            if (dir != null) {
                 dir.requestInitialization(this);
             }
         } else {
@@ -306,7 +306,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
             _workspace.doneWriting();
         }
         // preinitialize all contained actors.
-        for(Iterator i = deepEntityList().iterator(); i.hasNext();) {
+        for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor)i.next();
             actor.preinitialize();
         }

@@ -80,7 +80,7 @@ public class Iterations {
     public String getResult() {
         StringBuffer result = new StringBuffer();
         Iterator tokens = _recorder.getHistory(0).iterator();
-        while(tokens.hasNext()) {
+        while (tokens.hasNext()) {
             Token token = (Token)tokens.next();
             if (result.length() > 0) result.append(", ");
             result.append(token.toString());

@@ -124,7 +124,7 @@ abstract public class GRTransform extends GRActor {
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for(int i = 0; i < width; i++) {
+        for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
                 ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
                 Node node = (Node) objectToken.getValue();

@@ -186,10 +186,10 @@ public class IORelation extends ComponentRelation {
             // multiple occurrences of a port in this list.
             // EAL 7/30/00.
             HashMap seen = new HashMap();
-            while(inputs.hasNext()) {
+            while (inputs.hasNext()) {
                 IOPort p = (IOPort) inputs.next();
 
-                if(p.isInsideLinked(this) && !p.isOpaque()) {
+                if (p.isInsideLinked(this) && !p.isOpaque()) {
                     // if p is a transparent port and this relation links
                     // from the inside, then get the Receivers outside p.
                     try {
@@ -319,14 +319,14 @@ public class IORelation extends ComponentRelation {
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Iterator ports = linkedPortList().iterator();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
                 if (p != except) {
-                    if(p.isInsideLinked(this)) {
+                    if (p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if(p.isOutput()) resultPorts.addLast(p);
+                        if (p.isOutput()) resultPorts.addLast(p);
                     } else {
-                        if(p.isInput()) resultPorts.addLast(p);
+                        if (p.isInput()) resultPorts.addLast(p);
                     }
                 }
             }
@@ -396,14 +396,14 @@ public class IORelation extends ComponentRelation {
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
             Iterator ports = linkedPortList().iterator();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
-                if(p != except) {
-                    if(p.isInsideLinked(this)) {
+                if (p != except) {
+                    if (p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if(p.isInput()) resultPorts.addLast(p);
+                        if (p.isInput()) resultPorts.addLast(p);
                     } else {
-                        if(p.isOutput()) resultPorts.addLast(p);
+                        if (p.isOutput()) resultPorts.addLast(p);
                     }
                 }
             }
@@ -486,7 +486,7 @@ public class IORelation extends ComponentRelation {
     public void setWidth(int width) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
-            if(width == 0) {
+            if (width == 0) {
                 // Check legitimacy of the change.
                 try {
                     _inferWidth();
@@ -499,7 +499,7 @@ public class IORelation extends ComponentRelation {
             if (width != 1) {
                 // Check for non-multiports
                 Iterator ports = linkedPortList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
@@ -616,13 +616,13 @@ public class IORelation extends ComponentRelation {
         Receiver[][] result = new Receiver[width][0];
 
         for (int i = 0; i < width; i++) {
-            if(array1[i] == null) {
+            if (array1[i] == null) {
 		result[i] = array2[i];
-	    } else if(array1[i].length <= 0) {
+	    } else if (array1[i].length <= 0) {
 		result[i] = array2[i];
-            } else if(array2[i] == null) {
+            } else if (array2[i] == null) {
 		result[i] = array1[i];
-	    } else if(array2[i].length <= 0) {
+	    } else if (array2[i].length <= 0) {
 		result[i] = array1[i];
             } else {
 
@@ -651,7 +651,7 @@ public class IORelation extends ComponentRelation {
         if (version != _inferredWidthVersion) {
             _inferredWidth = 1;
             Iterator ports = linkedPortList().iterator();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
                 if (p.isInsideLinked(this)) {
                     // I am linked on the inside...

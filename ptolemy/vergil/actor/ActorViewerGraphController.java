@@ -167,7 +167,7 @@ public class ActorViewerGraphController extends BasicGraphController {
             // NOTE: This should not be null, but in case it is,
             // it is better to just have the selection dragger not
             // work than to get a null pointer exception.
-            if(_selectionDragger != null) {
+            if (_selectionDragger != null) {
                 _selectionDragger.addSelectionInteractor(
                         (SelectionInteractor)result.getNodeInteractor());
             }
@@ -175,9 +175,9 @@ public class ActorViewerGraphController extends BasicGraphController {
         }
 
         // Superclass cannot provide a controller. Use defaults.
-	if(object instanceof Vertex) {
+	if (object instanceof Vertex) {
             return _relationController;
-        } else if(object instanceof Location) {
+        } else if (object instanceof Location) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             if (semanticObject instanceof Entity) {
                 return _entityController;
@@ -189,7 +189,7 @@ public class ActorViewerGraphController extends BasicGraphController {
                 throw new RuntimeException(
                 "Unrecognized object: " + semanticObject);
             }
-        } else if(object instanceof Port) {
+        } else if (object instanceof Port) {
             return _entityPortController;
         }
         throw new RuntimeException(

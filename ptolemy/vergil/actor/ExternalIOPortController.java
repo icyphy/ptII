@@ -179,15 +179,15 @@ public class ExternalIOPortController extends AttributeController {
 	    // Entity Controller.
 	    int direction;
 	    Location location = (Location)n;
-	    if(location != null) {
+	    if (location != null) {
 		final Port port = (Port)location.getContainer();
 
 		Color fill;
-		if(port instanceof IOPort) {
+		if (port instanceof IOPort) {
 		    IOPort ioport = (IOPort)port;
 		    polygon.moveTo(0, 5);
 		    polygon.lineTo(0, 10);
-		    if(ioport.isOutput()) {
+		    if (ioport.isOutput()) {
 			polygon.lineTo(6, 5);
 			polygon.lineTo(14, 5);
 			polygon.lineTo(14, -5);
@@ -196,7 +196,7 @@ public class ExternalIOPortController extends AttributeController {
 			polygon.lineTo(12, 0);
 		    }
 		    polygon.lineTo(0, -10);
-		    if(ioport.isInput()) {
+		    if (ioport.isInput()) {
 			polygon.lineTo(0, -5);
 			polygon.lineTo(-6, -5);
 			polygon.lineTo(-6, 5);
@@ -204,7 +204,7 @@ public class ExternalIOPortController extends AttributeController {
 
 		    polygon.closePath();
 
-		    if(ioport.isMultiport()) {
+		    if (ioport.isMultiport()) {
 			fill = Color.white;
 		    } else {
 			fill = Color.black;
@@ -220,17 +220,17 @@ public class ExternalIOPortController extends AttributeController {
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
 
-		if(!(port instanceof IOPort)) {
+		if (!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
 		} else {
 		    IOPort ioport = (IOPort)port;
 
-		    if(ioport.isInput() &&
+		    if (ioport.isInput() &&
                             ioport.isOutput()) {
                         direction = SwingUtilities.NORTH;
-		    } else if(ioport.isInput()) {
+		    } else if (ioport.isInput()) {
 			direction = SwingUtilities.EAST;
-		    } else if(ioport.isOutput()) {
+		    } else if (ioport.isOutput()) {
 			direction = SwingUtilities.WEST;
 		    } else {
 			// should never happen
@@ -251,15 +251,15 @@ public class ExternalIOPortController extends AttributeController {
                     // output, etc.
                     public String getToolTipText() {
                         String tipText = port.getName();
-                        if(port instanceof IOPort) {
+                        if (port instanceof IOPort) {
                             IOPort ioport = (IOPort)port;
-                            if(ioport.isInput()) {
+                            if (ioport.isInput()) {
                                 tipText += ", Input";
                             }
-                            if(ioport.isOutput()) {
+                            if (ioport.isOutput()) {
                                 tipText += ", Output";
                             }
-                            if(ioport.isMultiport()) {
+                            if (ioport.isMultiport()) {
                                 tipText += ", Multiport";
                             }
                         }

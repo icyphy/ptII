@@ -206,43 +206,43 @@ public class LinearStateSpace extends TypedCompositeActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == A) {
+        if (attribute == A) {
             // Check that it is a square matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)A.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0 ||
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0 ||
                     token.getRowCount() != token.getColumnCount()) {
                 throw new IllegalActionException(this,
                         "The A matrix must be a nonempty square matrix.");
             }
             _requestInitialization();
-        } else if(attribute == B) {
+        } else if (attribute == B) {
             // Check that B is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)B.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The B matrix must be a nonempty matrix.");
             }
             _requestInitialization();
-        } else if(attribute == C) {
+        } else if (attribute == C) {
             // Check that C is a matrix.
             DoubleMatrixToken token = (DoubleMatrixToken)C.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The C matrix must be a nonempty matrix.");
             }
             _requestInitialization();
-        } else if(attribute == D) {
+        } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken)D.getToken();
-            if(token.getRowCount() == 0 || token.getColumnCount() == 0) {
+            if (token.getRowCount() == 0 || token.getColumnCount() == 0) {
                 throw new IllegalActionException(this,
                         "The D matrix must be a nonempty matrix.");
             }
             _requestInitialization();
-        } else if(attribute == initialStates) {
+        } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token =
                 (DoubleMatrixToken)initialStates.getToken();
-            if(token.getRowCount() != 1 || token.getColumnCount() < 1) {
+            if (token.getRowCount() != 1 || token.getColumnCount() < 1) {
                 throw new IllegalActionException(this,
                         "The initialStates must be a row vector.");
             }
@@ -293,7 +293,7 @@ public class LinearStateSpace extends TypedCompositeActor {
 
             AddSubtract[] stateAdders = new AddSubtract[n];
             // Integrators
-            for(int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++) {
                 integrators[i] = new Integrator(this, "state_" + i);
                 integrators[i].initialState.setToken(
                         x0.getElementAsToken(0, i));
@@ -306,12 +306,12 @@ public class LinearStateSpace extends TypedCompositeActor {
             }
             // State feedback
             Scale[][] feedback = new Scale[n][n];
-            for(int i = 0; i < n; i++) {
-                for(int j = 0; j < n; j++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
                     // We don't create the Scale if the corresponding element
                     // in the A matrix is 0.
                     Token tokenIJ = a.getElementAsToken(i, j);
-                    if(!(tokenIJ.isEqualTo(tokenIJ.zero())).booleanValue()) {
+                    if (!(tokenIJ.isEqualTo(tokenIJ.zero())).booleanValue()) {
                         feedback[i][j] = new Scale(this,
                                 "feedback_" + i + "_" +j);
                         feedback[i][j].factor.setToken(tokenIJ);
@@ -323,7 +323,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Inputs
             Scale[][] inputScales = new Scale[n][m];
             IORelation[] inputs = new IORelation[m];
-            for(int j = 0; j < m; j++) {
+            for (int j = 0; j < m; j++) {
                 inputs[j] = new TypedIORelation(this, "relation_input_" + j);
                 input.link(inputs[j]);
                 // Create input scales.
@@ -342,14 +342,14 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Outputs
             AddSubtract[] outputAdders = new AddSubtract[r];
             Scale[][] outputScales = new Scale[r][n];
-            for(int l = 0; l < r; l++) {
+            for (int l = 0; l < r; l++) {
                 outputAdders[l] = new AddSubtract(this, "outputAdder" + l);
                 connect(outputAdders[l].output, output);
                 // Create the output scales only if the corresponding
                 // 'c' element is not 0.
-                for(int i = 0; i < n; i++) {
+                for (int i = 0; i < n; i++) {
                     Token tokenLI = c.getElementAsToken(l, i);
-                    if(!(tokenLI.isEqualTo(tokenLI.zero())).booleanValue()) {
+                    if (!(tokenLI.isEqualTo(tokenLI.zero())).booleanValue()) {
                         outputScales[l][i] = new Scale(this,
                                 "outputScale_" + l + "_" + i);
                         outputScales[l][i].factor.setToken(tokenLI);
@@ -361,11 +361,11 @@ public class LinearStateSpace extends TypedCompositeActor {
             }
             // Direct feed through.
             Scale[][] feedThrough = new Scale[r][m];
-            for(int l = 0; l < r; l++) {
-                for(int j = 0; j < m; j++) {
+            for (int l = 0; l < r; l++) {
+                for (int j = 0; j < m; j++) {
                     // Create the scale only if the element is not 0.
                     Token tokenLJ = d.getElementAsToken(l, j);
-                    if(!(tokenLJ.isEqualTo(tokenLJ.zero())).booleanValue()) {
+                    if (!(tokenLJ.isEqualTo(tokenLJ.zero())).booleanValue()) {
                         feedThrough[l][j] = new Scale(this,
                                 "feedThrough_" + l + "_" + j);
                         feedThrough[l][j].factor.setToken(tokenLJ);
@@ -385,7 +385,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             _workspace.doneWriting();
         }
         // preinitialize all contained actors.
-        for(Iterator i = deepEntityList().iterator(); i.hasNext();) {
+        for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor)i.next();
             actor.preinitialize();
         }
@@ -467,7 +467,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         _opaque = true;
         // Request for initialization.
         Director dir = getDirector();
-        if(dir != null) {
+        if (dir != null) {
             dir.requestInitialization(this);
         }
     }

@@ -83,7 +83,7 @@ public class EntityTreeModel implements TreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-	if(index > getChildCount(parent)) return null;
+	if (index > getChildCount(parent)) return null;
 	CompositeEntity entity = (CompositeEntity)parent;
 	return entity.entityList().get(index);
     }
@@ -94,7 +94,7 @@ public class EntityTreeModel implements TreeModel {
      *  @return The number of contained entities.
      */
     public int getChildCount(Object parent) {
-	if(!(parent instanceof CompositeEntity)) return 0;
+	if (!(parent instanceof CompositeEntity)) return 0;
 	CompositeEntity entity = (CompositeEntity)parent;
 	return entity.numEntities();
     }
@@ -104,7 +104,7 @@ public class EntityTreeModel implements TreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-	if(!(parent instanceof CompositeEntity)) return -1;
+	if (!(parent instanceof CompositeEntity)) return -1;
 	CompositeEntity entity = (CompositeEntity)parent;
 	return entity.entityList().indexOf(child);
     }
@@ -131,11 +131,11 @@ public class EntityTreeModel implements TreeModel {
     /** Set the object that this treemodel looks at.
      */
     public void setRoot(NamedObj root) {
-        if(_root != null) {
+        if (_root != null) {
            _root.removeChangeListener(_rootListener);
         }
 	_root = root;
-        if(_root != null) {
+        if (_root != null) {
             _root.addChangeListener(_rootListener);
         }
     }
@@ -154,7 +154,7 @@ public class EntityTreeModel implements TreeModel {
     public void valueForPathChanged(TreePath path, Object newValue) {
 	Iterator listeners = _listenerList.iterator();
 	TreeModelEvent event = new TreeModelEvent(this, path);
-	while(listeners.hasNext()) {
+	while (listeners.hasNext()) {
 	    TreeModelListener listener = (TreeModelListener)listeners.next();
 	    listener.treeStructureChanged(event);
 	}

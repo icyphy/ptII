@@ -105,20 +105,20 @@ public class Memory extends CSPActor {
      */
     public void fire() throws IllegalActionException {
 
-        if( _numInChannels == -1 ) {
+        if ( _numInChannels == -1 ) {
             _numInChannels = 0;
             Receiver[][] rcvrs = input.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
+            for ( int i = 0; i < rcvrs.length; i++ ) {
+                for ( int j = 0; j < rcvrs[i].length; j++ ) {
                     _numInChannels++;
                 }
             }
         }
-        if( _numOutChannels == -1 ) {
+        if ( _numOutChannels == -1 ) {
             _numOutChannels = 0;
             Receiver[][] rcvrs = output.getRemoteReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
+            for ( int i = 0; i < rcvrs.length; i++ ) {
+                for ( int j = 0; j < rcvrs[i].length; j++ ) {
                     _numOutChannels++;
                 }
             }
@@ -127,7 +127,7 @@ public class Memory extends CSPActor {
         boolean beginning = true;
         StringToken token;
 
-        while(true) {
+        while (true) {
             token = new StringToken( _strValue );
 
             int numBranches = _numInChannels + _numOutChannels;
@@ -135,13 +135,13 @@ public class Memory extends CSPActor {
                 new ConditionalBranch[numBranches];
 
             // Receive Branches
-            for( int i = 0; i < _numInChannels; i++ ) {
+            for ( int i = 0; i < _numInChannels; i++ ) {
                 branches[i] = new
                     ConditionalReceive(true, input, i, i);
             }
 
             // Send Branches
-            for( int i = 0; i < _numOutChannels; i++ ) {
+            for ( int i = 0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
                     ConditionalSend(true, output, i,
                             i+_numInChannels, token);
@@ -157,12 +157,12 @@ public class Memory extends CSPActor {
                 throw new TerminateProcessException(this, "Terminated");
 	    }
 
-            if( br >= 0 && br < _numInChannels ) {
+            if ( br >= 0 && br < _numInChannels ) {
                 token = (StringToken)branches[br].getToken();
                 _strValue = token.toString();
             } else if ( br >= _numInChannels && br < numBranches ) {
                 _strValue = "write";
-            } else if( br == -1 ) {
+            } else if ( br == -1 ) {
                 return;
             }
         }

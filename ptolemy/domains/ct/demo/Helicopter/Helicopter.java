@@ -209,7 +209,7 @@ public class Helicopter extends TypedCompositeActor {
         //hscInV.link(rSubOutV);
         //hscInR.link(rSubOutR);
         Iterator entities = sub.entityList().iterator();
-        while(entities.hasNext()) {
+        while (entities.hasNext()) {
             Entity ent = (Entity)entities.next();
             Port p = ent.getPort("inputPx");
             if (p != null) {

@@ -171,7 +171,7 @@ public class Director extends Attribute implements Executable {
                 .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
-                if(actor.prefire()) {
+                if (actor.prefire()) {
                     actor.fire();
                     actor.postfire();
                 }
@@ -289,7 +289,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
 	    Nameable containersContainer = container.getContainer();
-	    if(containersContainer instanceof CompositeActor) {
+	    if (containersContainer instanceof CompositeActor) {
 		double time = ((CompositeActor)containersContainer)
                     .getDirector().getCurrentTime();
                 _currentTime = time;
@@ -374,7 +374,7 @@ public class Director extends Attribute implements Executable {
 	while (n++ < count) {
 	    if (prefire()) {
 		fire();
-		if(!postfire()) return Executable.STOP_ITERATING;
+		if (!postfire()) return Executable.STOP_ITERATING;
 	    } else {
                 return Executable.NOT_READY;
 	    }
@@ -511,7 +511,7 @@ public class Director extends Attribute implements Executable {
      */
     public void preinitialize() throws IllegalActionException {
         Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }

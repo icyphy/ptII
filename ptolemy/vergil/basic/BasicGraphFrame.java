@@ -267,7 +267,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
           Object[] path = new Object[2];
           path[0] = topLibrary;
           Iterator libraries = topLibrary.entityList().iterator();
-          while(libraries.hasNext()) {
+          while (libraries.hasNext()) {
           path[1] = libraries.next();
           _library.expandPath(new TreePath(path));
           }
@@ -360,10 +360,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         HashSet namedObjSet = new HashSet();
 	HashSet nodeSet = new HashSet();
         // First get all the nodes.
-	for(int i = 0; i < selection.length; i++) {
-	    if(selection[i] instanceof Figure) {
+	for (int i = 0; i < selection.length; i++) {
+	    if (selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
-                if(graphModel.isNode(userObject)) {
+                if (graphModel.isNode(userObject)) {
                     nodeSet.add(userObject);
                     NamedObj actual =
                         (NamedObj)graphModel.getSemanticObject(userObject);
@@ -371,10 +371,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 }
 	    }
 	}
-	for(int i = 0; i < selection.length; i++) {
-	    if(selection[i] instanceof Figure) {
+	for (int i = 0; i < selection.length; i++) {
+	    if (selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
-                if(graphModel.isEdge(userObject)) {
+                if (graphModel.isEdge(userObject)) {
                     // Check to see if the head and tail are both being
                     // copied.  Only if so, do we actually take the edge.
                     Object head = graphModel.getHead(userObject);
@@ -382,18 +382,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     boolean headOK = nodeSet.contains(head);
                     boolean tailOK = nodeSet.contains(tail);
                     Iterator objects = nodeSet.iterator();
-                    while(!(headOK && tailOK) && objects.hasNext()) {
+                    while (!(headOK && tailOK) && objects.hasNext()) {
                         Object object = objects.next();
-                        if(!headOK && GraphUtilities.isContainedNode(head,
+                        if (!headOK && GraphUtilities.isContainedNode(head,
                                 object, graphModel)) {
                             headOK = true;
                         }
-                        if(!tailOK && GraphUtilities.isContainedNode(tail,
+                        if (!tailOK && GraphUtilities.isContainedNode(tail,
                                 object, graphModel)) {
                             tailOK = true;
                         }
                     }
-                    if(headOK && tailOK) {
+                    if (headOK && tailOK) {
                         NamedObj actual =
                             (NamedObj)graphModel.getSemanticObject(userObject);
                          namedObjSet.add(actual);
@@ -404,7 +404,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	StringWriter buffer = new StringWriter();
 	try {
 	    Iterator elements = namedObjSet.iterator();
-	    while(elements.hasNext()) {
+	    while (elements.hasNext()) {
                 NamedObj element = (NamedObj)elements.next();
                 // first level to avoid obnoxiousness with
 		// toplevel translations.
@@ -451,7 +451,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             Object selection[] = model.getSelectionAsArray();
             Object userObjects[] = new Object[selection.length];
             // First remove the selection.
-            for(int i = 0; i < selection.length; i++) {
+            for (int i = 0; i < selection.length; i++) {
                 userObjects[i] = ((Figure)selection[i]).getUserObject();
                 model.removeSelection(selection[i]);
             }
@@ -459,15 +459,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // Remove all the edges first,
             // since if we remove the nodes first,
             // then removing the nodes might remove some of the edges.
-            for(int i = 0; i < userObjects.length; i++) {
+            for (int i = 0; i < userObjects.length; i++) {
                 Object userObject = userObjects[i];
-                if(graphModel.isEdge(userObject)) {
+                if (graphModel.isEdge(userObject)) {
                     graphModel.disconnectEdge(this, userObject);
                 }
             }
-            for(int i = 0; i < selection.length; i++) {
+            for (int i = 0; i < selection.length; i++) {
                 Object userObject = userObjects[i];
-                if(graphModel.isNode(userObject)) {
+                if (graphModel.isNode(userObject)) {
                     graphModel.removeNode(this, userObject);
                 }
             }
@@ -571,19 +571,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	GraphController controller =
 	        (GraphController)graphPane.getGraphController();
 	GraphModel model = controller.getGraphModel();
-	if(transferable == null) return;
+	if (transferable == null) return;
 	try {
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
             NamedObj container = 
                 MoMLChangeRequest.getDeferredToParent(toplevel);
-            if(container == null) {
+            if (container == null) {
                 container = toplevel;
             }
             StringBuffer moml = new StringBuffer();
             // The pasted version will have the name prepended with
             // a unique number.  This isn't really what we want, but
             // it will have to do for now.  FIXME.
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("<entity name=\"" + 
                         toplevel.getName(container) + "\">\n");
             } 
@@ -592,7 +592,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    moml.append((String)
                     transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("</entity>");
             }
 
@@ -616,7 +616,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      */
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
-	if(_jgraph != null) {
+	if (_jgraph != null) {
             Rectangle2D view = getVisibleRectangle();
             return _jgraph.print(graphics, format, index, view);
         } else {
@@ -955,18 +955,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 // 	    // Figure out what entity.
 // 	    super.actionPerformed(e);
 // 	    NamedObj object = getTarget();
-// 	    if(!(object instanceof Entity)) return;
+// 	    if (!(object instanceof Entity)) return;
 // 	    Entity entity = (Entity) object;
 // 	    XMLIcon icon = null;
 // 	    List iconList = entity.attributeList(XMLIcon.class);
-// 	    if(iconList.size() == 0) {
+// 	    if (iconList.size() == 0) {
 // 		try {
 // 		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
 // 		} catch (Exception ex) {
 // 		    throw new InternalErrorException(
 //                             "duplicated name, but there were no other icons.");
 // 		}
-// 	    } else if(iconList.size() == 1) {
+// 	    } else if (iconList.size() == 1) {
 // 		icon = (XMLIcon)iconList.get(0);
 // 	    } else {
 // 		throw new InternalErrorException("entity " + entity +
@@ -1051,7 +1051,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		    StringBuffer buffer = new StringBuffer();
 		    FileReader reader = new FileReader(file);
 		    char[] chars = new char[50];
-		    while(reader.ready()) {
+		    while (reader.ready()) {
 			int count = reader.read(chars, 0, 50);
 			buffer.append(chars, 0, count);
 		    }
@@ -1061,7 +1061,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 			(Configuration)effigy.toplevel();
 		    NamedObj library =
 			configuration.getEntity("actor library");
-		    if(library == null) return;
+		    if (library == null) return;
 		    ChangeRequest request =
 			new MoMLChangeRequest(this, library,
                                 buffer.toString(),
@@ -1162,9 +1162,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    HashMap map = new HashMap();
 
 	    // Copy all the nodes for the graph.
-	    for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
+	    for (Iterator i = model.nodes(origComposite); i.hasNext(); ) {
 		Object origNode = i.next();
-		if(target.isNodeVisible(origNode)) {
+		if (target.isNodeVisible(origNode)) {
 		    Rectangle2D r = target.getBounds(origNode);
 		    LevelInfo inf = new LevelInfo();
 		    inf.origNode = origNode;
@@ -1181,38 +1181,38 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    // Add all the edges.
 	    Iterator i =
 		GraphUtilities.partiallyContainedEdges(origComposite, model);
-	    while(i.hasNext()) {
+	    while (i.hasNext()) {
 		Object origEdge = i.next();
 		Object origTail = model.getTail(origEdge);
 		Object origHead = model.getHead(origEdge);
-		if(origHead != null && origTail != null) {
+		if (origHead != null && origTail != null) {
 		    Figure tailFigure =
 			(Figure)target.getVisualObject(origTail);
 		    Figure headFigure =
 			(Figure)target.getVisualObject(origHead);
 		    // Swap the head and the tail if it will improve the
 		    // layout, since LevelLayout only uses directed edges.
-		    if(tailFigure instanceof Terminal) {
+		    if (tailFigure instanceof Terminal) {
 			Terminal terminal = (Terminal)tailFigure;
 			Site site = terminal.getConnectSite();
-			if(site instanceof FixedNormalSite) {
+			if (site instanceof FixedNormalSite) {
 			    double normal = site.getNormal();
 			    int direction =
 				CanvasUtilities.getDirection(normal);
-			    if(direction == SwingUtilities.WEST) {
+			    if (direction == SwingUtilities.WEST) {
 				Object temp = origTail;
 				origTail = origHead;
 				origHead = temp;
 			    }
 			}
-		    } else if(headFigure instanceof Terminal) {
+		    } else if (headFigure instanceof Terminal) {
 			Terminal terminal = (Terminal)headFigure;
 			Site site = terminal.getConnectSite();
-			if(site instanceof FixedNormalSite) {
+			if (site instanceof FixedNormalSite) {
 			    double normal = site.getNormal();
 			    int direction =
 				CanvasUtilities.getDirection(normal);
-			    if(direction == SwingUtilities.EAST) {
+			    if (direction == SwingUtilities.EAST) {
 				Object temp = origTail;
 				origTail = origHead;
 				origHead = temp;
@@ -1227,7 +1227,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		    Object copyTail = map.get(origTail);
 		    Object copyHead = map.get(origHead);
 
-		    if(copyHead != null && copyTail != null) {
+		    if (copyHead != null && copyTail != null) {
                         Object copyEdge = local.createEdge(origEdge);
                         local.setEdgeTail(this, copyEdge, copyTail);
                         local.setEdgeHead(this, copyEdge, copyHead);
@@ -1244,9 +1244,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	// and calculate the cost of that instead.
 	private Object _getParentInGraph(GraphModel model,
                 Object graph, Object node) {
-	    while(node != null && !model.containsNode(graph, node)) {
+	    while (node != null && !model.containsNode(graph, node)) {
 		Object parent = model.getParent(node);
-		if(model.isNode(parent)) {
+		if (model.isNode(parent)) {
 		    node = parent;
 		} else {
 		    node = null;
@@ -1274,7 +1274,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
          */
         public Rectangle2D getViewport(Object composite) {
             GraphModel model = getController().getGraphModel();
-            if(composite == getRootGraph()) {
+            if (composite == getRootGraph()) {
                 // Take into account the current zoom and pan.
                 Rectangle2D bounds = getVisibleCanvasRectangle();
 
@@ -1298,9 +1298,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public void translate(Object node, double dx, double dy) {
 	    super.translate(node, dx, dy);
 	    // NOTE: this is not the best way to handle locatables.
-	    if(node instanceof Location) {
+	    if (node instanceof Location) {
 		double location[] = ((Location)node).getLocation();
-		if(location == null) {
+		if (location == null) {
 		    location = new double[2];
 		    Figure figure = getController().getFigure(node);
 		    location[0] = figure.getBounds().getCenterX();
@@ -1342,12 +1342,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		PtolemyEffigy effigy =
 		        (PtolemyEffigy)getTableau().getContainer();
 		NamedObj object = effigy.getModel();
-		if(object == null) return;
+		if (object == null) return;
 		StringWriter buffer = new StringWriter();
 		object.exportMoML(buffer, 1);
 		Configuration configuration = (Configuration)effigy.toplevel();
 		NamedObj library = configuration.getEntity("actor library");
-		if(library == null) return;
+		if (library == null) return;
                 ChangeRequest request =
                     new MoMLChangeRequest(this, library, buffer.toString());
 		library.requestChange(request);

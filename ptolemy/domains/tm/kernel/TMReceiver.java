@@ -103,7 +103,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @return A token.
      */
     public synchronized Token get() throws NoTokenException {
-        if(_tokens.isEmpty()) {
+        if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the TM receiver.");
         }

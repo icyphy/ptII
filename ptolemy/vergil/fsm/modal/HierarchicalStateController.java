@@ -306,7 +306,7 @@ public class HierarchicalStateController extends StateController {
                     = state.refinementName.getExpression();
             StringTokenizer tokenizer
                     = new StringTokenizer(currentRefinements, ",");
-            while(tokenizer.hasMoreTokens()) {
+            while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 if (!token.trim().equals(refinementName)) {
                     if (newRefinements.length() > 0) {
@@ -326,7 +326,7 @@ public class HierarchicalStateController extends StateController {
                             .refinementName.getExpression();
                     if (refinementList == null) continue;
                     tokenizer = new StringTokenizer(refinementList, ",");
-                    while(tokenizer.hasMoreTokens()) {
+                    while (tokenizer.hasMoreTokens()) {
                         String token = tokenizer.nextToken();
                         if (token.equals(refinementName)) {
                             foundOne = true;

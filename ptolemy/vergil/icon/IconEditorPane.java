@@ -232,19 +232,19 @@ public class IconEditorPane extends JCanvas {
 	Shape shape = figure.getShape();
 
 	// Now assign an appropriate interactor for the shape.
-	if(shape instanceof RectangularShape) {
+	if (shape instanceof RectangularShape) {
 	    figure.setInteractor(_interactor2);
-	} else if(shape instanceof Ellipse2D) {
+	} else if (shape instanceof Ellipse2D) {
 	    figure.setInteractor(_interactor3);
-	} else if(shape instanceof GeneralPath) {
+	} else if (shape instanceof GeneralPath) {
 	    figure.setInteractor(_interactor1);
-	} else if(shape instanceof Line2D) {
+	} else if (shape instanceof Line2D) {
 	    figure.setInteractor(_interactor1);
-	} else if(shape instanceof QuadCurve2D) {
+	} else if (shape instanceof QuadCurve2D) {
 	    figure.setInteractor(_interactor1);
-	} else if(shape instanceof CubicCurve2D) {
+	} else if (shape instanceof CubicCurve2D) {
 	    figure.setInteractor(_interactor1);
-	} else if(shape instanceof Polygon2D) {
+	} else if (shape instanceof Polygon2D) {
 	    figure.setInteractor(_interactor2);
 	} else {
 	    throw new RuntimeException("unknown shape: " + shape);
@@ -272,7 +272,7 @@ public class IconEditorPane extends JCanvas {
         Iterator i = my_icon.paintedList().paintedObjects.iterator();
 
 	// And as long as the icon has more elements...
-	while(i.hasNext()) {
+	while (i.hasNext()) {
             // Create a new figure represented by this graphic element.
 	    VersatileFigure figure =
 		new VersatileFigure((PaintedObject)i.next());
@@ -297,8 +297,8 @@ public class IconEditorPane extends JCanvas {
     public void copy(Clipboard clipboard) {
 	Iterator iter = _m.getSelection();
 	Vector v = new Vector();
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 		_currentFigure = (VersatileFigure)iter.next();
 		v.add(_currentFigure);
 	    }
@@ -318,8 +318,8 @@ public class IconEditorPane extends JCanvas {
     public void cut(Clipboard clipboard) {
 	Iterator iter = _m.getSelection();
 	Vector vector = new Vector();
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 		_currentFigure =(VersatileFigure) iter.next();
 		iter.remove();
 		_m.removeSelection(_currentFigure);
@@ -340,8 +340,8 @@ public class IconEditorPane extends JCanvas {
     public void delete() {
 	Iterator iter = _m.getSelection();
 	VersatileFigure v = null;
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 		v =(VersatileFigure) iter.next();
 		iter.remove();
 		_m.removeSelection(v);
@@ -360,12 +360,12 @@ public class IconEditorPane extends JCanvas {
     public Paint getFillPaint() {
 	Paint paint = null;
         Iterator iter = _m.getSelection();
-	while(iter.hasNext()) {
+	while (iter.hasNext()) {
 	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if(paint == null) {
+	    if (paint == null) {
 		paint = v.getFillPaint();
 	    } else {
-		if(paint != v.getFillPaint())
+		if (paint != v.getFillPaint())
 		    return null;
 	    }
 	}
@@ -380,12 +380,12 @@ public class IconEditorPane extends JCanvas {
     public float getThickness() {
 	float thickness = 0.0f;
         Iterator iter = _m.getSelection();
-	while(iter.hasNext()) {
+	while (iter.hasNext()) {
 	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if(thickness == 0.0f) {
+	    if (thickness == 0.0f) {
 		thickness = v.getLineWidth();
 	    } else {
-		if(thickness != v.getLineWidth());
+		if (thickness != v.getLineWidth());
                 return 0.0f;
 	    }
 	}
@@ -400,12 +400,12 @@ public class IconEditorPane extends JCanvas {
     public Paint getOutlinePaint() {
 	Paint paint = null;
         Iterator iter = _m.getSelection();
-	while(iter.hasNext()) {
+	while (iter.hasNext()) {
 	    VersatileFigure v =(VersatileFigure) iter.next();
-	    if(paint == null) {
+	    if (paint == null) {
 		paint = v.getStrokePaint();
 	    } else {
-		if(paint != v.getStrokePaint())
+		if (paint != v.getStrokePaint())
 		    return null;
 	    }
 	}
@@ -430,7 +430,7 @@ public class IconEditorPane extends JCanvas {
 	_m.clearSelection();
 
 	Transferable t = clipboard.getContents(this);
-	if(t == null) {
+	if (t == null) {
 	    getToolkit().beep();
 	    return;
 	}
@@ -438,12 +438,12 @@ public class IconEditorPane extends JCanvas {
 	try {
 	    Vector v = (Vector)t.getTransferData(dataFlavor);
 	    Enumeration enum = v.elements();
-	    if(enum.hasMoreElements()) {
-		while(enum.hasMoreElements()) {
+	    if (enum.hasMoreElements()) {
+		while (enum.hasMoreElements()) {
 		    VersatileFigure vf = (VersatileFigure)enum.nextElement();
 		    VersatileFigure vf2 = (VersatileFigure)vf.clone();
 		    _layer.add(vf2);
-		    if(vf2.getInteractor() instanceof SelectionInteractor) {
+		    if (vf2.getInteractor() instanceof SelectionInteractor) {
 			_selectionDragger.expandSelection
 			    ((SelectionInteractor)vf2.getInteractor(), vf2);
 		    }
@@ -464,7 +464,7 @@ public class IconEditorPane extends JCanvas {
 	PrinterJob job = PrinterJob.getPrinterJob();
 	job.setPrintable(this);
 	_selectionDragger.clearSelection();
-	if(job.printDialog()) {
+	if (job.printDialog()) {
 	    try {
 	        job.print();
 	    }
@@ -483,8 +483,8 @@ public class IconEditorPane extends JCanvas {
      */
     public void setFillPaint(Paint c) {
         Iterator iter = _m.getSelection();
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 	        VersatileFigure v =(VersatileFigure) iter.next();
 		v.setFillPaint(c);
 	    }
@@ -500,8 +500,8 @@ public class IconEditorPane extends JCanvas {
     public void setThickness(float newThickness) {
         _outlineThickness = newThickness;
 	Iterator iter = _m.getSelection();
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 	        VersatileFigure v = (VersatileFigure)iter.next();
 		v.setLineWidth(newThickness);
 	    }
@@ -516,8 +516,8 @@ public class IconEditorPane extends JCanvas {
      */
     public void setOutlinePaint(Paint c) {
         Iterator iter = _m.getSelection();
-	if(iter.hasNext()) {
-	    while(iter.hasNext()) {
+	if (iter.hasNext()) {
+	    while (iter.hasNext()) {
 	        VersatileFigure v =(VersatileFigure) iter.next();
 		v.setStrokePaint(c);
 	    }

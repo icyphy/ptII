@@ -133,7 +133,7 @@ public class StateController extends AttributeController {
 	    EditorIcon icon;
             try {
                 icon = (EditorIcon)object.getAttribute("_icon");
-		if(icon == null) {
+		if (icon == null) {
 		    icon = new XMLIcon(object, "_icon");
 		}
 	    } catch (KernelException ex) {

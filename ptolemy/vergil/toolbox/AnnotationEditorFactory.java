@@ -94,10 +94,10 @@ public class AnnotationEditorFactory extends EditorFactory {
                  parent, "Edit Annotation", createEditorPane());
 
         String button = dialog.buttonPressed();
-        if(!button.equals("OK")) return;
+        if (!button.equals("OK")) return;
 
         String newText = _textArea.getText();
-        if(newText == null || newText.trim().equals("")) {
+        if (newText == null || newText.trim().equals("")) {
             // NOTE: Should we delete the attribute... no visible text.
             newText = "Double click to edit text.";
         }
@@ -148,29 +148,29 @@ public class AnnotationEditorFactory extends EditorFactory {
             reader.parse(document, in);
             XmlElement root = document.getRoot();
             String name = root.getType();
-            if(name.equals("svg")) {
+            if (name.equals("svg")) {
                 Iterator children = root.elements();
-                while(children.hasNext()) {
+                while (children.hasNext()) {
                     XmlElement child = (XmlElement)children.next();
                     name = child.getType();
-                    if(name.equals("text")) {
+                    if (name.equals("text")) {
                         text = child.getPCData();
                         String style = (String)
                                 child.getAttributeMap().get("style");
-                        if(style != null) {
+                        if (style != null) {
                             StringTokenizer tokenizer = new StringTokenizer(
                                     style, ";");
-                            while(tokenizer.hasMoreTokens()) {
+                            while (tokenizer.hasMoreTokens()) {
                                 String token = tokenizer.nextToken();
                                 int colon = token.indexOf(":");
-                                if(colon > 0) {
+                                if (colon > 0) {
                                     String property =
                                            token.substring(0, colon).trim();
-                                    if(property.equals("fill")) {
+                                    if (property.equals("fill")) {
                                         _fontColor = token.substring(colon+1);
-                                    } else if(property.equals("font-size")) {
+                                    } else if (property.equals("font-size")) {
                                         _fontSize = token.substring(colon+1);
-                                    } else if(property.equals("font-family")) {
+                                    } else if (property.equals("font-family")) {
                                         _fontFamily = token.substring(colon+1);
                                     }
                                 }

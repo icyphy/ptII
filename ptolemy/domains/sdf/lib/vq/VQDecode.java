@@ -250,7 +250,7 @@ public class VQDecode extends Transformer {
         int length = 0;
         int remaining = b.length;
         int bytesRead = 0;
-        while(remaining > 0) {
+        while (remaining > 0) {
             bytesRead = s.read(b, length, remaining);
             if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF");
@@ -272,7 +272,7 @@ public class VQDecode extends Transformer {
                     "Vector length of " + length +
                     "must be greater than 1");
         }
-        while(length > 2) {
+        while (length > 2) {
             length = length >> 1;
             x++;
         }

@@ -286,7 +286,7 @@ public class ConditionalBranchController {
     protected void _branchBlocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
 	    _branchesBlocked++;
-	    if( _branchesBlocked == _branchesStarted ) {
+	    if ( _branchesBlocked == _branchesStarted ) {
 		_getDirector()._actorBlocked( receiver );
 		_blocked = true;
 	    }

@@ -106,10 +106,10 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 	 *  tableau.
 	 */
 	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy))
+	    if (!(proxy instanceof PtolemyEffigy))
 		return null;
 	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
-	    if(effigy.getModel() instanceof InterfaceAutomaton) {
+	    if (effigy.getModel() instanceof InterfaceAutomaton) {
 		InterfaceAutomatonGraphTableau tableau =
 		    new InterfaceAutomatonGraphTableau((PtolemyEffigy)proxy,
                             proxy.uniqueName("tableau"));

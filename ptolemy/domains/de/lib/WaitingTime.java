@@ -128,16 +128,16 @@ public class WaitingTime extends DEActor {
     public void fire() throws IllegalActionException {
 
         double currentTime = ((DEDirector)getDirector()).getCurrentTime();
-        while(waiter.hasToken(0)) {
+        while (waiter.hasToken(0)) {
             waiter.get(0);
             _waiting.addElement(new Double(currentTime));
         }
         boolean godot = false;
-        while(waitee.hasToken(0)) {
+        while (waitee.hasToken(0)) {
             waitee.get(0);
             godot = true;
         }
-        if(godot) {
+        if (godot) {
             for (int i = 0; i < _waiting.size(); i++) {
                 double previousTime =
                     ((Double)_waiting.elementAt(i)).doubleValue();

@@ -65,7 +65,7 @@ public class RenameDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target.
-        if(target == null) return null;
+        if (target == null) return null;
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
                 // Create a dialog for configuring the object.

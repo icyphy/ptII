@@ -652,7 +652,7 @@ public class ByteToken extends ScalarToken {
      */
     public int unsignedConvert(byte value) {
         int intValue = value;
-        if(intValue < 0) {
+        if (intValue < 0) {
 	    intValue += 256;
 	}
 	return intValue;

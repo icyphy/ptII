@@ -110,11 +110,11 @@ public class ImageDisplay extends Sink implements Placeable {
 
         _oldxsize = 0;
         _oldysize = 0;
-        if(_container == null) {
+        if (_container == null) {
             _frame = new _PictureFrame("ImageDisplay");
             _container = _frame.getContentPane();
         }
-	if(_frame != null) {
+	if (_frame != null) {
 	    _frame.setVisible(true);
 	}
     }
@@ -140,11 +140,11 @@ public class ImageDisplay extends Sink implements Placeable {
 	} else {
 	    int xsize = image.getWidth(null);
 	    int ysize = image.getHeight(null);
-	    if((_oldxsize != xsize) || (_oldysize != ysize)) {
+	    if ((_oldxsize != xsize) || (_oldysize != ysize)) {
 		_oldxsize = xsize;
 		_oldysize = ysize;
 
-		if(_picture != null)
+		if (_picture != null)
 		    _container.remove(_picture);
 		
 		_picture = new Picture(xsize, ysize);
@@ -156,13 +156,13 @@ public class ImageDisplay extends Sink implements Placeable {
 		_container.repaint();
 		_container.doLayout();
 		Container c = _container.getParent();
-		while(c.getParent() != null) {
+		while (c.getParent() != null) {
 		    c.invalidate();
 		    c.validate();
 		    c = c.getParent();
 	    
 		}
-		if(_frame != null) {
+		if (_frame != null) {
 		    _frame.pack();
 		}
 	    }
@@ -197,10 +197,10 @@ public class ImageDisplay extends Sink implements Placeable {
     public void place(Container container) {
         _container = container;
 	Container c = _container.getParent();
-	while(c.getParent() != null) {
+	while (c.getParent() != null) {
 	    c = c.getParent();
 	}
-	if(c instanceof JFrame) {
+	if (c instanceof JFrame) {
 	    _frame = (JFrame)c;
 	}
     }

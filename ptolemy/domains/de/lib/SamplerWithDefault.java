@@ -156,24 +156,24 @@ public class SamplerWithDefault extends DETransformer {
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
         // Consume the inputs we save.
-        for(int i = 0; i < commonWidth; i++) {
+        for (int i = 0; i < commonWidth; i++) {
             while (input.hasToken(i)) {
                 _lastInputs[i] = input.get(i);
             }
         }
         // Consume the inputs we don't save.
-        for(int i = commonWidth; i < inputWidth; i++) {
+        for (int i = commonWidth; i < inputWidth; i++) {
             while (input.hasToken(i)) {
                 input.get(i);
             }
         }
         // If we have a trigger...
-        if(trigger.hasToken(0)) {
+        if (trigger.hasToken(0)) {
             // Consume the trigger token.
 
-	    // This trigger.get() used to be wrapped in a while() statement,
+	    // This trigger.get() used to be wrapped in a while () statement,
 	    // Zoltan Kemenczy of Research In Motion pointed out that
-	    // with the while() statement, this actor behaved differently
+	    // with the while () statement, this actor behaved differently
 	    // from Sampler:
 	    // "Sampler outputs a token for each token present on the trigger
 	    // port (which is what I would expect), but SamplerWithDefault
@@ -211,7 +211,7 @@ public class SamplerWithDefault extends DETransformer {
      */
     public void preinitialize() throws IllegalActionException {
         _lastInputs = new Token[input.getWidth()];
-        for(int i = 0; i < input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             _lastInputs[i] = initialValue.getToken();
         }
         super.preinitialize();

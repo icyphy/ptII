@@ -112,7 +112,7 @@ public final class NamedList implements Cloneable, Serializable {
                     _NULL_NAME_EXCEPTION_STRING);
         }
         // NOTE: Having to do this named lookup each time is expensive.
-        if( get(newName) == null ) {
+        if ( get(newName) == null ) {
             _namedList.add(element);
         } else {
             throw new NameDuplicationException(_container, element);
@@ -156,9 +156,9 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public Nameable get(String name) {
         Iterator iterator = _namedList.iterator();
-        while( iterator.hasNext() ) {
+        while ( iterator.hasNext() ) {
             Nameable obj = (Nameable)iterator.next();
-            if( name.equals(obj.getName()) ) {
+            if ( name.equals(obj.getName()) ) {
                 return obj;
             }
         }
@@ -284,9 +284,9 @@ public final class NamedList implements Cloneable, Serializable {
     private int _getIndexOf(String name) {
         Iterator iterator = _namedList.iterator();
         int count = 0;
-        while( iterator.hasNext() ) {
+        while ( iterator.hasNext() ) {
             Nameable obj = (Nameable)iterator.next();
-            if( name.equals(obj.getName()) ) {
+            if ( name.equals(obj.getName()) ) {
                 return count;
             }
             count++;
@@ -309,7 +309,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     private void _insertAt(int index, Nameable element)
             throws IllegalActionException, NameDuplicationException {
-        if( element.getName() == null ) {
+        if ( element.getName() == null ) {
             throw new IllegalActionException(_container,
                     _NULL_NAME_EXCEPTION_STRING);
         } else if (get(element.getName()) == null) {

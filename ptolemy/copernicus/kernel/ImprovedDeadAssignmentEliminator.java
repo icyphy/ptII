@@ -61,11 +61,11 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         boolean eliminateOnlyStackLocals = Options.getBoolean(options, "only-stack-locals");
 
         JimpleBody body = (JimpleBody)b;
-        if(Main.isVerbose)
+        if (Main.isVerbose)
             System.out.println("[" + body.getMethod().getName() +
                 "] Eliminating dead code...");
 
-        if(Main.isProfilingOptimization)
+        if (Main.isProfilingOptimization)
             Main.deadCodeTimer.start();
 
         Set essentialStmts = new HashSet();
@@ -77,19 +77,19 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         {
             Iterator stmtIt = units.iterator();
 
-            while(stmtIt.hasNext())
+            while (stmtIt.hasNext())
             {
                 Stmt s = (Stmt) stmtIt.next();
                 boolean isEssential = true;
 
-                if(s instanceof NopStmt)
+                if (s instanceof NopStmt)
                     isEssential = false;
 
-                if(s instanceof AssignStmt)
+                if (s instanceof AssignStmt)
                 {
                     AssignStmt as = (AssignStmt) s;
 
-                    if(as.getLeftOp() instanceof Local &&
+                    if (as.getLeftOp() instanceof Local &&
                         (!eliminateOnlyStackLocals ||
                             ((Local) as.getLeftOp()).getName().startsWith("$")))
                     {
@@ -99,7 +99,7 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
 
                         // proposed change: instance field refs to this can
                         // be removed.
-                        if(rhs instanceof InvokeExpr ||
+                        if (rhs instanceof InvokeExpr ||
                                 (rhs instanceof InstanceFieldRef &&
                                         !(!b.getMethod().isStatic() &&
                                                 ((InstanceFieldRef)rhs).getBase() ==
@@ -111,12 +111,12 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
 
                             isEssential = true;
                         }
-                        else if(rhs instanceof DivExpr ||
+                        else if (rhs instanceof DivExpr ||
                             rhs instanceof RemExpr)
                         {
                             BinopExpr expr = (BinopExpr) rhs;
 
-                            if(expr.getOp1().getType().equals(IntType.v()) ||
+                            if (expr.getOp1().getType().equals(IntType.v()) ||
                                 expr.getOp2().getType().equals(IntType.v()) ||
                                expr.getOp1().getType().equals(LongType.v()) ||
                                 expr.getOp2().getType().equals(LongType.v()))
@@ -128,7 +128,7 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
                     }
                 }
 
-                if(isEssential)
+                if (isEssential)
                 {
                     essentialStmts.add(s);
                     toVisit.addLast(s);
@@ -144,27 +144,27 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         // for the essential statements, recursively
         {
 
-            while(!toVisit.isEmpty())
+            while (!toVisit.isEmpty())
             {
                 Stmt s = (Stmt) toVisit.removeFirst();
                 Iterator boxIt = s.getUseBoxes().iterator();
 
-                while(boxIt.hasNext())
+                while (boxIt.hasNext())
                 {
                     ValueBox box = (ValueBox) boxIt.next();
 
-                    if(box.getValue() instanceof Local)
+                    if (box.getValue() instanceof Local)
                     {
                         Iterator defIt = defs.getDefsOfAt(
                             (Local) box.getValue(), s).iterator();
 
-                        while(defIt.hasNext())
+                        while (defIt.hasNext())
                         {
                             // Add all the definitions as essential stmts
 
                             Stmt def = (Stmt) defIt.next();
 
-                            if(!essentialStmts.contains(def))
+                            if (!essentialStmts.contains(def))
                             {
                                 essentialStmts.add(def);
                                 toVisit.addLast(def);
@@ -179,13 +179,13 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         {
             Iterator stmtIt = units.iterator();
 
-            while(stmtIt.hasNext())
+            while (stmtIt.hasNext())
             {
                 Stmt s = (Stmt) stmtIt.next();
 
-                if(!essentialStmts.contains(s))
+                if (!essentialStmts.contains(s))
                     stmtIt.remove();
-                else if(s instanceof AssignStmt &&
+                else if (s instanceof AssignStmt &&
                     ((AssignStmt) s).getLeftOp() == ((AssignStmt) s).getRightOp() &&
                     ((AssignStmt) s).getLeftOp() instanceof Local)
                 {
@@ -201,11 +201,11 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
         {
             Iterator stmtIt = units.snapshotIterator();
 
-            while(stmtIt.hasNext())
+            while (stmtIt.hasNext())
             {
                 Stmt s = (Stmt) stmtIt.next();
 
-                if(s instanceof AssignStmt &&
+                if (s instanceof AssignStmt &&
                     s.containsInvokeExpr())
                 {
                     Local l = (Local) ((AssignStmt) s).getLeftOp();
@@ -216,19 +216,19 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
                         Iterator useIt = uses.getUsesOf(s).iterator();
                         boolean isEssential = false;
 
-                        while(useIt.hasNext())
+                        while (useIt.hasNext())
                         {
                             UnitValueBoxPair pair = (UnitValueBoxPair)
                                 useIt.next();
 
-                            if(essentialStmts.contains(pair.unit))
+                            if (essentialStmts.contains(pair.unit))
                             {
                                 isEssential = true;
                                 break;
                             }
                         }
 
-                        if(!isEssential)
+                        if (!isEssential)
                         {
                             // Transform it into a simple invoke.
 
@@ -241,7 +241,7 @@ public class ImprovedDeadAssignmentEliminator extends BodyTransformer
             }
         }
 
-        if(Main.isProfilingOptimization)
+        if (Main.isProfilingOptimization)
             Main.deadCodeTimer.end();
 
     }

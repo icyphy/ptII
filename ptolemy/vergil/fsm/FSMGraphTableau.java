@@ -118,11 +118,11 @@ public class FSMGraphTableau extends Tableau {
 	 *   tableau.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(!(effigy instanceof PtolemyEffigy)) {
+	    if (!(effigy instanceof PtolemyEffigy)) {
 		return null;
             }
             NamedObj model = ((PtolemyEffigy)effigy).getModel();
-	    if(model instanceof FSMActor) {
+	    if (model instanceof FSMActor) {
 		FSMGraphTableau tableau =
 		        new FSMGraphTableau((PtolemyEffigy)effigy,
                         effigy.uniqueName("tableau"));

@@ -208,7 +208,7 @@ public class MoMLApplication {
             try {
                 File file = new File(spec);
 		try {
-		    if(!file.exists()) {
+		    if (!file.exists()) {
 			throw new MalformedURLException();
 		    }
 		} catch (java.security.AccessControlException accessControl) {
@@ -424,7 +424,7 @@ public class MoMLApplication {
             String arg = args[i];
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if(i >= args.length - 1) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set " +
                                 "parameter " + arg + " when no value is " +
                                 "given.");
@@ -458,9 +458,9 @@ public class MoMLApplication {
             }
             Iterator proxies
                 = directory.entityList(Effigy.class).iterator();
-            while(proxies.hasNext()) {
+            while (proxies.hasNext()) {
 		Effigy effigy = (Effigy)proxies.next();
-		if(effigy instanceof PtolemyEffigy) {
+		if (effigy instanceof PtolemyEffigy) {
 		    NamedObj model = ((PtolemyEffigy)effigy).getModel();
                     System.out.println("model = " + model.getFullName());
 		    Attribute attribute = model.getAttribute(name);
@@ -542,12 +542,12 @@ public class MoMLApplication {
             + "Options that take values:\n";
 
         int i;
-        for(i = 0; i < _commandOptions.length; i++) {
+        for (i = 0; i < _commandOptions.length; i++) {
             result += " " + _commandOptions[i][0] +
                 " " + _commandOptions[i][1] + "\n";
         }
         result += "\nBoolean flags:\n";
-        for(i = 0; i < _commandFlags.length; i++) {
+        for (i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
         return result;

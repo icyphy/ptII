@@ -93,10 +93,10 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         SideEffectAnalysis analysis =
             new SideEffectAnalysis(methodCallGraph);
 
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
-            for(Iterator methods = theClass.getMethods().iterator();
+            for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 _removeSideEffectFreeMethodCalls(method, invokeGraph, analysis);
@@ -117,23 +117,23 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
-        for(Iterator units = body.getUnits().snapshotIterator();
+        for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
             Value useValue;
 
             // Find a method invocation that doesn't have a return
             // value, or whose return value is dead.
-            if(unit instanceof DefinitionStmt) {
+            if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt)unit;
                 Value left = stmt.getLeftOp();
                 // If this statement defines a local that is later used,
                 // then we cannot remove it.
-                if(liveLocals.getLiveLocalsAfter(stmt).contains(left)) {
+                if (liveLocals.getLiveLocalsAfter(stmt).contains(left)) {
                     continue;
                 }
                 useValue = stmt.getRightOp();
-            } else if(unit instanceof InvokeStmt) {
+            } else if (unit instanceof InvokeStmt) {
                 useValue = ((InvokeStmt)unit).getInvokeExpr();
             } else {
                 continue;
@@ -145,25 +145,25 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             // that aren't used, but we have to be smarter about the
             // whole business (we have to remove the New as well, for
             // instance)
-            if(useValue instanceof VirtualInvokeExpr ||
+            if (useValue instanceof VirtualInvokeExpr ||
                useValue instanceof StaticInvokeExpr) {
                 InvokeExpr invokeExpr = (InvokeExpr)useValue;
 
                 // If any targets of the invocation have side effects,
                 // then they cannot be removed.
                 boolean removable = true;
-                for(Iterator i = invokeGraph.getTargetsOf(
+                for (Iterator i = invokeGraph.getTargetsOf(
                         (Stmt)unit).iterator();
                     i.hasNext() && removable;) {
 
                     SootMethod targetMethod = (SootMethod)i.next();
                     System.out.println("Checking Target = " + targetMethod);
-                    if(analysis.hasSideEffects(targetMethod)) {
+                    if (analysis.hasSideEffects(targetMethod)) {
                         removable = false;
                     }
                 }
 
-                if(removable) {
+                if (removable) {
                     // Otherwise we've found an invocation we can remove.
                     // Remove it.
                     System.out.println("SEFIR: removing " + unit);

@@ -76,7 +76,7 @@ public class TreeEditor extends JFrame {
      *  @param The name of a MoML file(an array of size one).
      */
     public static void main(String[] args) {
-        if(args.length != 1) {
+        if (args.length != 1) {
             System.out.println(
                     "usage : ptolemy.vergil.tree.TreeEditor file.java");
             return;

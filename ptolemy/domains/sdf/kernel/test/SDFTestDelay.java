@@ -136,13 +136,13 @@ public class SDFTestDelay extends TypedAtomicActor {
          */
         int tokens = 
             ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
-        if(((IntToken)output_tokenProductionRate.getToken()).intValue() != tokens)
+        if (((IntToken)output_tokenProductionRate.getToken()).intValue() != tokens)
             throw new IllegalActionException(
                     "SDFTestDelay: Rates on input port and output port " +
                     "must match!");
 
         int i;
-        for(i = 0; i < tokens; i++) {
+        for (i = 0; i < tokens; i++) {
             /* now that we have the port, we can get a token from it.
              * The argument to get is known as the channel.
              * The channel must be

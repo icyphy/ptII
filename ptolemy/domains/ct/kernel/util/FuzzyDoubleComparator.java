@@ -73,9 +73,9 @@ public class FuzzyDoubleComparator implements Comparator{
     public int compare(Object fst, Object snd) {
         double fstvalue = ((Double)fst).doubleValue();
         double sndvalue = ((Double)snd).doubleValue();
-        if(fstvalue < sndvalue - _threshold/2.0) {
+        if (fstvalue < sndvalue - _threshold/2.0) {
             return -1;
-        } else if(fstvalue > sndvalue + _threshold/2.0) {
+        } else if (fstvalue > sndvalue + _threshold/2.0) {
             return 1;
         } else {
             return 0;

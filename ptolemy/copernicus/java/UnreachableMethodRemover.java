@@ -112,18 +112,18 @@ public class UnreachableMethodRemover extends SceneTransformer {
         reachableMethodSet.addAll(methodCallGraph.getReachableMethods());
 
         // Loop over all the classes...
-        for(Iterator i = Scene.v().getApplicationClasses().iterator();
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
             i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
             
             // Loop through all the methods...
-            for(Iterator methods = theClass.getMethods().snapshotIterator();
+            for (Iterator methods = theClass.getMethods().snapshotIterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 
                 // And remove any methods that aren't reachable.
-                if(!reachableMethodSet.contains(method)) {
-                    if(debug) System.out.println("removing method " + method);
+                if (!reachableMethodSet.contains(method)) {
+                    if (debug) System.out.println("removing method " + method);
                     theClass.removeMethod(method);
                 }
             }

@@ -142,7 +142,7 @@ public class ProcessDirector extends Director {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_areActorsDeadlocked() ) {
+            while ( !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
             _notDone = _resolveDeadlock();
@@ -170,7 +170,7 @@ public class ProcessDirector extends Director {
             // Creating threads for all actors;
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
-            while( actors.hasNext() ) {
+            while ( actors.hasNext() ) {
                 Actor actor = (Actor)actors.next();
                 actor.initialize();
             }
@@ -193,11 +193,11 @@ public class ProcessDirector extends Director {
     public void initialize(Actor actor) throws IllegalActionException {
         // Reset the receivers.
         Iterator ports = actor.inputPortList().iterator();
-        while( ports.hasNext() ) {
+        while ( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
             Receiver[][] receivers = port.getReceivers();
-            for( int i = 0; i < receivers.length; i++ ) {
-                for( int j = 0; j < receivers[i].length; j++ ) {
+            for ( int i = 0; i < receivers.length; i++ ) {
+                for ( int j = 0; j < receivers[i].length; j++ ) {
                     ((ProcessReceiver)receivers[i][j]).reset();
                 }
             }
@@ -259,7 +259,7 @@ public class ProcessDirector extends Director {
      */
     public void stopFire() {
  	Iterator threads = _actorThreadList.iterator();
- 	while( threads.hasNext() ) {
+ 	while ( threads.hasNext() ) {
  	    ProcessThread thread = (ProcessThread)threads.next();
 
 	    // Call stopThread() on the threads first

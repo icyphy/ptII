@@ -231,7 +231,7 @@ public class VergilErrorHandler implements ErrorHandler {
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
-        if(info != null) {
+        if (info != null) {
             string = info + "\n" + exception.getMessage();
         } else {
             string = exception.getMessage();

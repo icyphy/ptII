@@ -646,7 +646,7 @@ public class DoubleToken extends ScalarToken {
 	}
 
         double mag = Math.abs(_value);
-        if(mag == 0.0 || (mag < 1000000 && mag > .001)) {
+        if (mag == 0.0 || (mag < 1000000 && mag > .001)) {
             return _regularFormat.format(_value) + unitString;
         } else {
             return _exponentialFormat.format(_value) + unitString;

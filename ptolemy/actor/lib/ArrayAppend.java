@@ -103,10 +103,10 @@ public class ArrayAppend extends Transformer {
         // NOTE: This is efficient for 2 or 3 input channels, but for
         // many channels it ends up copying each array twice.
         Token array[] = null;
-	for(int i = 0; i < input.getWidth(); i++) {
-            if(input.hasToken(i)) {
+	for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
                 ArrayToken token = (ArrayToken)input.get(i);
-                if(array == null) {
+                if (array == null) {
                     array = token.arrayValue();
                 } else {
                     Token newArray[] =

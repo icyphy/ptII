@@ -320,7 +320,7 @@ public class BasePNDirector extends CompositeProcessDirector {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
 	Iterator receivers = _writeBlockedQueues.iterator();
-        if( !receivers.hasNext() ) {
+        if ( !receivers.hasNext() ) {
             return;
         }
 	while (receivers.hasNext()) {
@@ -361,10 +361,10 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  then notify the directing thread of the same.
      */
     protected synchronized void _actorBlocked(ProcessReceiver receiver) {
-        if( receiver.isReadBlocked() ) {
+        if ( receiver.isReadBlocked() ) {
 	    _readBlockCount++;
         }
-        if( receiver.isWriteBlocked() ) {
+        if ( receiver.isWriteBlocked() ) {
 	    _writeBlockedQueues.add(receiver);
 	    _writeBlockCount++;
         }
@@ -378,10 +378,10 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  execution.
      */
     protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
-        if( receiver.isReadBlocked() ) {
+        if ( receiver.isReadBlocked() ) {
 	    _readBlockCount--;
         }
-        if( receiver.isWriteBlocked() ) {
+        if ( receiver.isWriteBlocked() ) {
 	    _writeBlockCount--;
 	    _writeBlockedQueues.remove(receiver);
         }

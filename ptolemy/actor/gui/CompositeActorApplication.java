@@ -134,7 +134,7 @@ public class CompositeActorApplication {
 
             // start the models.
             Iterator models = _models.iterator();
-            while(models.hasNext()) {
+            while (models.hasNext()) {
                 startRun((CompositeActor)models.next());
             }
         }
@@ -192,7 +192,7 @@ public class CompositeActorApplication {
         Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            if(object instanceof Placeable) {
+            if (object instanceof Placeable) {
                 hasPlaceable = true;
                 break;
             }
@@ -247,7 +247,7 @@ public class CompositeActorApplication {
      */
     public void stopRun(CompositeActor model) {
         Manager manager = model.getManager();
-        if(manager != null) {
+        if (manager != null) {
             manager.finish();
         }
     }
@@ -312,7 +312,7 @@ public class CompositeActorApplication {
                 // type constraints.
                 CompositeActor modelClass = (CompositeActor)
                     parser._searchForClass(arg, model.getMoMLInfo().source);
-                if(modelClass != null) {
+                if (modelClass != null) {
                     model = modelClass;
                 }
 
@@ -364,7 +364,7 @@ public class CompositeActorApplication {
 
             boolean match = false;
             Iterator models = _models.iterator();
-            while(models.hasNext()) {
+            while (models.hasNext()) {
                 CompositeActor model = (CompositeActor) models.next();
                 Attribute attribute = model.getAttribute(name);
                 if (attribute instanceof Variable) {
@@ -400,12 +400,12 @@ public class CompositeActorApplication {
             + "Options that take values:\n";
 
         int i;
-        for(i = 0; i < _commandOptions.length; i++) {
+        for (i = 0; i < _commandOptions.length; i++) {
             result += " " + _commandOptions[i][0] +
                 " " + _commandOptions[i][1] + "\n";
         }
         result += "\nBoolean flags:\n";
-        for(i = 0; i < _commandFlags.length; i++) {
+        for (i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
         return result;

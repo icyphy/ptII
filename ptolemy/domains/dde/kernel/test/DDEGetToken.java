@@ -85,22 +85,22 @@ public class DDEGetToken extends DDEGet {
     public void fire() throws IllegalActionException {
 	int aCntr = 0;
 	Receiver[][] theReceivers = input.getReceivers();
-	for( int i = 0; i < theReceivers.length; i++ ) {
-	    for( int j = 0; j < theReceivers[i].length; j++ ) {
+	for ( int i = 0; i < theReceivers.length; i++ ) {
+	    for ( int j = 0; j < theReceivers[i].length; j++ ) {
 		aCntr++;
 	    }
 	}
 	int cnt = 0;
-	while(cnt < _numTokens) {
+	while (cnt < _numTokens) {
 	    Receiver[][] receivers = input.getReceivers();
-	    for( int i = 0; i < receivers.length; i++ ) {
-		for( int j = 0; j < receivers[i].length; j++ ) {
+	    for ( int i = 0; i < receivers.length; i++ ) {
+		for ( int j = 0; j < receivers[i].length; j++ ) {
 		    DDEReceiver receiver = (DDEReceiver)receivers[i][j];
-		    if( receiver.hasToken() ) {
+		    if ( receiver.hasToken() ) {
 			_receiverTimes[cnt] = receiver.getReceiverTime();
 	                _tokens[cnt] = receiver.get();
 			Thread thread = Thread.currentThread();
-			if( thread instanceof DDEThread ) {
+			if ( thread instanceof DDEThread ) {
 			    TimeKeeper timeKeeper =
                                 ((DDEThread)thread).getTimeKeeper();
 			    _threadTimes[cnt] =

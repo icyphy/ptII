@@ -152,7 +152,7 @@ public class Processor extends CSPActor {
         // State 1
         _debug( new ExecEvent( this, ExecEvent.WAITING ) );
         double delayTime = java.lang.Math.random();
-        if( delayTime < 0.25 ) {
+        if ( delayTime < 0.25 ) {
             delayTime = 2.5;
         } else if ( delayTime >= 0.25 && delayTime < 0.5 ) {
             delayTime = 5.0;
@@ -173,7 +173,7 @@ public class Processor extends CSPActor {
 	}
         BooleanToken bToken = (BooleanToken)requestInput.get(0);
 
-        if( bToken.booleanValue() ) {
+        if ( bToken.booleanValue() ) {
             // State 3
             _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
 	    try {
@@ -181,7 +181,7 @@ public class Processor extends CSPActor {
 	    } catch( InterruptedException e ) {
                 throw new TerminateProcessException(this, "Terminated");
 	    }
-            if( read ) {
+            if ( read ) {
                 memoryInput.get(0);
             }
             else {
@@ -209,7 +209,7 @@ public class Processor extends CSPActor {
      */
     public boolean endYet() {
         double time = _dir.getCurrentTime();
-        if( time > 50.0 ) {
+        if ( time > 50.0 ) {
             return true;
         }
         return false;
@@ -221,13 +221,13 @@ public class Processor extends CSPActor {
      *  during communication through one of the ports.
      */
     public void fire() throws IllegalActionException {
-        while(true) {
-            if( performReadNext() ) {
+        while (true) {
+            if ( performReadNext() ) {
                 accessMemory(true);
             } else {
                 accessMemory(false);
             }
-            if( endYet() ) {
+            if ( endYet() ) {
                 return;
             }
         }
@@ -251,7 +251,7 @@ public class Processor extends CSPActor {
      *  shared resource; return false otherwise.
      */
     public boolean performReadNext() {
-        if( java.lang.Math.random() < 0.5 ) {
+        if ( java.lang.Math.random() < 0.5 ) {
             return true;
         }
         return false;

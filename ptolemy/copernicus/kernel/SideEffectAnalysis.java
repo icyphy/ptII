@@ -53,12 +53,12 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
      */
     public Set getSideEffects(SootMethod method) {
         EffectFlow flow = (EffectFlow)getFlowBefore(method);
-        if(flow == null) {
-            if(_debug) System.out.println(
+        if (flow == null) {
+            if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
             return null;
         }
-        if(flow.hasEffects()) {
+        if (flow.hasEffects()) {
             return flow.effectSet();
         } else {
             return new HashSet();
@@ -71,8 +71,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
     public boolean hasSideEffects(SootMethod method) {
         EffectFlow flow = (EffectFlow)getFlowBefore(method);
         EffectFlow flow2 = (EffectFlow)getFlowBefore(method);
-        if(flow == null) {
-            if(_debug) System.out.println(
+        if (flow == null) {
+            if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
             return true;
         }
@@ -84,8 +84,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
      */
     public boolean hasSideEffects(SootMethod method, SootField field) {
         EffectFlow flow = (EffectFlow)getFlowBefore(method);
-        if(flow == null) {
-            if(_debug) System.out.println(
+        if (flow == null) {
+            if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
             return true;
         }
@@ -106,9 +106,9 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         SootMethod method = (SootMethod)d;
 
 
-        if(_debug) System.out.println(
+        if (_debug) System.out.println(
                 "SideEffectAnalysis: method = " + method);
-        if(_debug) System.out.println(
+        if (_debug) System.out.println(
                 "input flow = " + in.effectSet());
 
         out.setEffectFlow(in);
@@ -118,27 +118,27 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         // by handling each method specifically.
         // (For Example, Thread.currentThread()
         // has no body, but also has no side effects).
-        if(!method.isConcrete()) {
-            if(_debug) System.out.println("SideEffectAnalysis: has no body.");
+        if (!method.isConcrete()) {
+            if (_debug) System.out.println("SideEffectAnalysis: has no body.");
             out.setUnknownSideEffects();
             return;
         }
 
-        if(_debug) System.out.println(
+        if (_debug) System.out.println(
                 "output flow = " + out.hasEffects() + " " + out.effectSet());
 
         // A method has side effects if it sets the values of any fields.
         Body body = method.retrieveActiveBody();
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
-            if(_debug) System.out.println("unit = " + unit);
-            for(Iterator boxes = unit.getDefBoxes().iterator();
+            if (_debug) System.out.println("unit = " + unit);
+            for (Iterator boxes = unit.getDefBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-                if(value instanceof FieldRef) {
-                    if(_debug) System.out.println(
+                if (value instanceof FieldRef) {
+                    if (_debug) System.out.println(
                             "SideEffectAnalysis: assigns to field");
                     out.addSideEffect(((FieldRef)value).getField());
                 }
@@ -153,47 +153,47 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
             // methods that are not in the invoke graph.  Conservatively
             // assume that they have side effects.
             Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-            for(Iterator boxes = unit.getUseBoxes().iterator();
+            for (Iterator boxes = unit.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value expr = box.getValue();
-                if(expr instanceof InvokeExpr) {
+                if (expr instanceof InvokeExpr) {
                     SootMethod invokedMethod = ((InvokeExpr)expr).getMethod();
-                    if(expr instanceof SpecialInvokeExpr) {
+                    if (expr instanceof SpecialInvokeExpr) {
                         SootMethod target =
                             hierarchy.resolveSpecialDispatch(
                                     (SpecialInvokeExpr)expr, invokedMethod);
 
-                        if(!((MethodCallGraph)graph).isReachable(
+                        if (!((MethodCallGraph)graph).isReachable(
                                 target.getSignature())) {
-                            if(_debug) System.out.println(
+                            if (_debug) System.out.println(
                                     "SideEffectAnalysis: specialInvokes method that is not in the graph");
                             out.setUnknownSideEffects();
                         }
-                    } else if(expr instanceof InstanceInvokeExpr) {
+                    } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType =
                             ((InstanceInvokeExpr)expr).getBase().getType();
-                        if(!(baseType instanceof RefType)) {
+                        if (!(baseType instanceof RefType)) {
                             // We can invoke methods on arrays...
                             // Ignore them here.
                             continue;
                         }
                         List list = hierarchy.resolveAbstractDispatch(
                                 ((RefType)baseType).getSootClass(), invokedMethod);
-                        for(Iterator targets = list.iterator();
+                        for (Iterator targets = list.iterator();
                             targets.hasNext();) {
                             SootMethod target = (SootMethod)targets.next();
-                             if(!((MethodCallGraph)graph).isReachable(
+                             if (!((MethodCallGraph)graph).isReachable(
                                      target.getSignature())) {
-                                 if(_debug) System.out.println(
+                                 if (_debug) System.out.println(
                                          "SideEffectAnalysis: virtualInvokes method that is not in the graph");
                                  out.setUnknownSideEffects();
                              }
                         }
-                    } else if(expr instanceof StaticInvokeExpr) {
-                        if(!((MethodCallGraph)graph).isReachable(
+                    } else if (expr instanceof StaticInvokeExpr) {
+                        if (!((MethodCallGraph)graph).isReachable(
                                 invokedMethod.getSignature())) {
-                            if(_debug) System.out.println(
+                            if (_debug) System.out.println(
                                     "SideEffectAnalysis: staticInvokes method that is not in the graph");
                             out.setUnknownSideEffects();
                         }
@@ -201,7 +201,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 }
             }
         }
-        if(_debug) System.out.println(
+        if (_debug) System.out.println(
                 "output flow = " + out.hasEffects() + " " + out.effectSet());
 
     }
@@ -229,13 +229,13 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         }
 
         public boolean equals(Object o) {
-            if(o instanceof EffectFlow) {
+            if (o instanceof EffectFlow) {
                 EffectFlow other = (EffectFlow)o;
-                if(_hasEffects != other.hasEffects()) {
+                if (_hasEffects != other.hasEffects()) {
                     return false;
-                } else if(_effectSet == null && other.effectSet() != null) {
+                } else if (_effectSet == null && other.effectSet() != null) {
                     return false;
-                } else if(_effectSet == null && other.effectSet() == null) {
+                } else if (_effectSet == null && other.effectSet() == null) {
                     return true;
                 }
                 return _effectSet.equals(((EffectFlow)o).effectSet());
@@ -245,8 +245,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         }
 
         public void addSideEffect(SootField field) {
-            if(_hasEffects) {
-                if(_effectSet != null) {
+            if (_hasEffects) {
+                if (_effectSet != null) {
                     _effectSet.add(field);
                 }
             } else {
@@ -257,16 +257,16 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         }
 
         public void mergeEffectFlow(EffectFlow flow) {
-            if(flow.hasUnknownSideEffects()) {
+            if (flow.hasUnknownSideEffects()) {
                 // If the flow has unknown effects, then we will
                 // have unknown effects.
                 setUnknownSideEffects();
-            } else if(!flow.hasEffects()) {
+            } else if (!flow.hasEffects()) {
                 // If the flow has no effects, then we have no
                 // change.
                 return;
-            } else if(_hasEffects) {
-                if(_effectSet != null) {
+            } else if (_hasEffects) {
+                if (_effectSet != null) {
                     _effectSet.addAll(flow.effectSet());
                 } // else we have unknown side effects already.
             } else {
@@ -277,8 +277,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         }
 
         public boolean hasEffects(SootField field) {
-            if(_hasEffects) {
-                if(_effectSet != null) {
+            if (_hasEffects) {
+                if (_effectSet != null) {
                     return _effectSet.contains(field);
                 } else {
                     return true;
@@ -298,7 +298,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
 
         public void setEffectFlow(EffectFlow flow) {
             _hasEffects = flow.hasEffects();
-            if(flow.effectSet() == null) {
+            if (flow.effectSet() == null) {
                 _effectSet = null;
             } else {
                 _effectSet = new HashSet();

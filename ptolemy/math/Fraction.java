@@ -72,7 +72,7 @@ public class Fraction extends Object {
      * zero.
      */
     public Fraction(int Numerator, int Denominator) {
-        if(Denominator == 0)
+        if (Denominator == 0)
             throw new ArithmeticException("Illegal Fraction: " +
                     "cannot have denominator of zero.");
 
@@ -113,7 +113,7 @@ public class Fraction extends Object {
      *  a value of zero.
      */
     public Fraction divide(Fraction b) {
-        if(b.equals(ZERO)) throw new ArithmeticException(
+        if (b.equals(ZERO)) throw new ArithmeticException(
                 "Division by zero!");
         Fraction f = new Fraction(_num * b._den, _den * b._num);
 	return f;
@@ -126,7 +126,7 @@ public class Fraction extends Object {
     public boolean equals(Object b) {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
-        if(b instanceof Fraction)
+        if (b instanceof Fraction)
             return ((_num == ((Fraction) b)._num) &&
                     (_den == ((Fraction) b)._den));
         else
@@ -141,10 +141,10 @@ public class Fraction extends Object {
     //FIXME: should this go someplace better?
     public static int gcd(int u, int v) {
         int t;
-        if(u < 0) u = -u;
-        if(v < 0) v = -v;
-        while(u > 0) {
-            if(u < v)
+        if (u < 0) u = -u;
+        if (v < 0) v = -v;
+        while (u > 0) {
+            if (u < v)
                 { t = u; u = v; v = t; }
             else
                 { u = u % v; }
@@ -170,7 +170,7 @@ public class Fraction extends Object {
      *  in which case the multiplicative inverse cannot be represented.
      */
     public Fraction inverse() {
-        if(equals(ZERO)) throw new ArithmeticException(
+        if (equals(ZERO)) throw new ArithmeticException(
                 "Inverse of zero is undefined!");
         Fraction f = new Fraction(_den, _num);
         return f;
@@ -233,7 +233,7 @@ public class Fraction extends Object {
         _num = _num / factor;
         _den = _den / factor;
         // Standardize the sign
-        if(_den < 0) {
+        if (_den < 0) {
             _den = -_den;
             _num = -_num;
         }

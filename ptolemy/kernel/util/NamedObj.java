@@ -223,7 +223,7 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public synchronized void addChangeListener(ChangeListener listener) {
 	NamedObj container = (NamedObj) getContainer();
-	if(container != null) {
+	if (container != null) {
             container.addChangeListener(listener);
         } else {
             if (_changeListeners == null) {
@@ -436,7 +436,7 @@ public class NamedObj implements Nameable, Debuggable,
             // equal to the attribute.
             Class myClass = getClass();
             Field fields[] = myClass.getFields();
-            for(int i = 0; i < fields.length; i++) {
+            for (int i = 0; i < fields.length; i++) {
                 try {
                     if (fields[i].get(newObject) instanceof Settable) {
                         fields[i].set(newObject,
@@ -877,7 +877,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return A string of the form "name2...nameN".
      */
     public String getName(NamedObj parent) {
-	if(parent == null) {
+	if (parent == null) {
 	    return getFullName();
 	}
         try {
@@ -904,7 +904,7 @@ public class NamedObj implements Nameable, Debuggable,
                 visited.add(container);
                 container = container.getContainer();
             }
-	    if(container == null) {
+	    if (container == null) {
 		return getFullName();
 	    }
 	    return name.toString();
@@ -921,7 +921,7 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
 	NamedObj container = (NamedObj) getContainer();
-	if(container != null) {
+	if (container != null) {
             container.removeChangeListener(listener);
         } else if (_changeListeners != null) {
             _changeListeners.remove(listener);
@@ -956,7 +956,7 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public void requestChange(ChangeRequest change) {
 	NamedObj container = (NamedObj) getContainer();
-	if(container == null) {
+	if (container == null) {
             // Make sure the list of listeners is not being concurrently
             // modified by making this synchronized.
             synchronized(this) {
@@ -1019,7 +1019,7 @@ public class NamedObj implements Nameable, Debuggable,
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         String oldName = "";
-        if(_debugging) {
+        if (_debugging) {
             oldName = getFullName();
         }
         if (name == null) {
@@ -1068,10 +1068,10 @@ public class NamedObj implements Nameable, Debuggable,
      *   or the prefix extended by a number.
      */
     public String uniqueName(String prefix) {
-        if(prefix == null)
+        if (prefix == null)
             prefix = "null";
         String candidate = prefix;
-        while(getAttribute(candidate) != null) {
+        while (getAttribute(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;
         }
         return candidate;
@@ -1298,16 +1298,16 @@ public class NamedObj implements Nameable, Debuggable,
             _workspace.getReadAccess();
             String result = _getIndentPrefix(indent);
             if (bracket == 1 || bracket == 2) result += "{";
-            if((detail & CLASSNAME) != 0) {
+            if ((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
-                if((detail & FULLNAME) != 0) {
+                if ((detail & FULLNAME) != 0) {
                     result += " ";
                 }
             }
-            if((detail & FULLNAME) != 0) {
+            if ((detail & FULLNAME) != 0) {
                 result += "{" + getFullName() + "}";
             }
-            if((detail & ATTRIBUTES) != 0) {
+            if ((detail & ATTRIBUTES) != 0) {
                 if ((detail & (CLASSNAME | FULLNAME)) != 0) {
                     result += " ";
                 }

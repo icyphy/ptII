@@ -115,7 +115,7 @@ public class Location extends SingletonAttribute implements Settable {
         Location newObject = (Location)super.clone(workspace);
         // Copy the location so that the reference in the new object
         // does not refer to the same array.
-        if(_location == null) {
+        if (_location == null) {
             newObject._location = null;
         } else {
             int length = _location.length;
@@ -147,7 +147,7 @@ public class Location extends SingletonAttribute implements Settable {
             throws IOException {
         String value = getExpression();
         String valueTerm = "";
-        if(value != null && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" +
                 StringUtilities.escapeForXML(value) + "\"";
         }
@@ -174,11 +174,11 @@ public class Location extends SingletonAttribute implements Settable {
      */
     public String getExpression() {
         if (_expressionSet) return _expression;
-        if(_location == null || _location.length == 0) {
+        if (_location == null || _location.length == 0) {
             return "";
         }
         StringBuffer result = new StringBuffer();
-        for(int i = 0; i < _location.length - 1; i++) {
+        for (int i = 0; i < _location.length - 1; i++) {
             result.append(_location[i]);
             result.append(", ");
         }
@@ -283,7 +283,7 @@ public class Location extends SingletonAttribute implements Settable {
             StringTokenizer tokenizer = new StringTokenizer(_expression, ",");
             double[] location = new double[tokenizer.countTokens()];
             int count = tokenizer.countTokens();
-            for(int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++) {
                 String next = tokenizer.nextToken().trim();
                 location[i] = Double.parseDouble(next);
             }

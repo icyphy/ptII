@@ -112,7 +112,7 @@ public class MessageHandler {
      *  @param handler The message handler.
      */
     public static void setMessageHandler(MessageHandler handler) {
-        if(handler != null) {
+        if (handler != null) {
             _handler = handler;
         }
     }

@@ -81,11 +81,11 @@ public class CircuitAnalysis {
             public String toString() {
 
                 String string = "nodes = " + getNodes();
-                for(Iterator nodes = getNodes().iterator();
+                for (Iterator nodes = getNodes().iterator();
                     nodes.hasNext();) {
                         Object source = nodes.next();
                         string += "\nsource = " + source + " targets = ";
-                        for(Iterator succs = getSuccsOf(source).iterator();
+                        for (Iterator succs = getSuccsOf(source).iterator();
                             succs.hasNext();) {
                                 string += succs.next() + ",";
                             }
@@ -97,7 +97,7 @@ public class CircuitAnalysis {
 
         System.out.println("className = " + entity.getClass().getName());
         // Handle SampleDelay specially.
-        if(entity.getClass().getName().equals(
+        if (entity.getClass().getName().equals(
                 "ptolemy.domains.sdf.lib.SampleDelay")) {
             Port input = entity.getPort("input");
             Port output = entity.getPort("output");
@@ -127,15 +127,15 @@ public class CircuitAnalysis {
         // are not sample delays.
         Set requiredNodeSet = new HashSet();
 
-        if(theClass.declaresMethodByName("prefire")) {
+        if (theClass.declaresMethodByName("prefire")) {
             _analyze(graph, requiredNodeSet,
                     theClass.getMethodByName("prefire"));
         }
-        if(theClass.declaresMethodByName("fire")) {
+        if (theClass.declaresMethodByName("fire")) {
             _analyze(graph, requiredNodeSet,
                     theClass.getMethodByName("fire"));
         }
-        if(theClass.declaresMethodByName("postfire")) {
+        if (theClass.declaresMethodByName("postfire")) {
             _analyze(graph, requiredNodeSet,
                     theClass.getMethodByName("postfire"));
         }
@@ -143,17 +143,17 @@ public class CircuitAnalysis {
 
         // get rid of non-essential nodes of
         boolean changed = true;
-        while(changed) {
+        while (changed) {
             changed = false;
-            for(Iterator nodes = graph.getNodes().iterator();
+            for (Iterator nodes = graph.getNodes().iterator();
                 nodes.hasNext();) {
                 Object node = nodes.next();
-                if(requiredNodeSet.contains(node)) {
+                if (requiredNodeSet.contains(node)) {
                     continue;
                 }
                 HashSet set = new HashSet(graph.getSuccsOf(node));
                 set.retainAll(requiredNodeSet);
-                if(set.isEmpty()) {
+                if (set.isEmpty()) {
                     continue;
                 }
                 requiredNodeSet.add(node);
@@ -172,16 +172,16 @@ public class CircuitAnalysis {
 
 	// find removable nodes and add new edges between removed
 	// nodes predecessors and successors
-        for(Iterator nodes = graph.getNodes().iterator();
+        for (Iterator nodes = graph.getNodes().iterator();
             nodes.hasNext();) {
             Object node = nodes.next();
-            if(node instanceof Local || node instanceof SootField ||
+            if (node instanceof Local || node instanceof SootField ||
                     !requiredNodeSet.contains(node)) {
                 // Then remove the node.
-                for(Iterator preds = graph.getPredsOf(node).iterator();
+                for (Iterator preds = graph.getPredsOf(node).iterator();
                     preds.hasNext();) {
                     Object pred = preds.next();
-                    for(Iterator succs = graph.getSuccsOf(node).iterator();
+                    for (Iterator succs = graph.getSuccsOf(node).iterator();
                         succs.hasNext();) {
                         Object succ = succs.next();
                         graph.addEdge(pred, succ);
@@ -192,17 +192,17 @@ public class CircuitAnalysis {
         }
 
         // Remove all the edges & nodes
-        for(Iterator nodes = removeSet.iterator();
+        for (Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
             Object node = nodes.next();
             List predList = new LinkedList(graph.getPredsOf(node));
-            for(Iterator preds = predList.iterator();
+            for (Iterator preds = predList.iterator();
                 preds.hasNext();) {
                 Object pred = preds.next();
                 graph.removeEdge(pred, node);
             }
             List succList = new LinkedList(graph.getSuccsOf(node));
-            for(Iterator succs = succList.iterator();
+            for (Iterator succs = succList.iterator();
                 succs.hasNext();) {
                 Object succ = succs.next();
                 graph.removeEdge(node, succ);
@@ -225,22 +225,22 @@ public class CircuitAnalysis {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
-        for(Iterator units = body.getUnits().iterator();
+        for (Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            if(stmt instanceof AssignStmt) {
+            if (stmt instanceof AssignStmt) {
                 Object leftOp = ((AssignStmt)stmt).getLeftOp();
 
-                if(leftOp instanceof FieldRef) {
+                if (leftOp instanceof FieldRef) {
                     SootField field = ((FieldRef)leftOp).getField();
                     // Then treat as a local.
-                    if(!graph.containsNode(field)) {
+                    if (!graph.containsNode(field)) {
                         graph.addNode(field);
                     }
                     leftOp = field;
                 }
 
-                if(graph.containsNode(leftOp)) {
+                if (graph.containsNode(leftOp)) {
                     // Insert a delay.
 		    //Object delayNode = new String("delay" + count++);
 		    Object delayNode = new RegisterDelay();
@@ -252,13 +252,13 @@ public class CircuitAnalysis {
                 }
 
                 Value rightOp = ((AssignStmt)stmt).getRightOp();
-                if(rightOp instanceof FieldRef) {
+                if (rightOp instanceof FieldRef) {
                     SootField field = ((FieldRef)rightOp).getField();
                     ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                    if(tag == null || !(tag.getObject() instanceof Token)) {
+                    if (tag == null || !(tag.getObject() instanceof Token)) {
 			//This represents some state that is being read
                         // Then treat as a local.
-                        if(!graph.containsNode(field)) {
+                        if (!graph.containsNode(field)) {
                             graph.addNode(field);
                         }
                         graph.addEdge(field, leftOp);
@@ -269,35 +269,35 @@ public class CircuitAnalysis {
 //                          String valueString =
 //                              ((Token)tag.getObject()).toString();
 //                          requiredNodeSet.add(valueString);
-//                          if(!graph.containsNode(valueString)) {
+//                          if (!graph.containsNode(valueString)) {
 //                              graph.addNode(valueString);
 //                          }
 //                          graph.addEdge(valueString, leftOp);
 			Token valueToken=(Token)tag.getObject();
                         requiredNodeSet.add(valueToken);
-                        if(!graph.containsNode(valueToken)) {
+                        if (!graph.containsNode(valueToken)) {
                             graph.addNode(valueToken);
                         }
 //                          graph.addEdge(valueString, leftOp);
                         graph.addEdge(valueToken, leftOp);
                     }
-                } else if(rightOp instanceof Local) {
-                    if(!graph.containsNode(rightOp)) {
+                } else if (rightOp instanceof Local) {
+                    if (!graph.containsNode(rightOp)) {
                         graph.addNode(rightOp);
                     }
                     graph.addEdge(rightOp, leftOp);
-                } else if(rightOp instanceof InvokeExpr) {
+                } else if (rightOp instanceof InvokeExpr) {
                     InvokeExpr invokeExpr = (InvokeExpr)rightOp;
                     SootMethod invokedMethod = invokeExpr.getMethod();
                     String opName = invokedMethod.getName() + count++;
-                    if(rightOp instanceof VirtualInvokeExpr) {
+                    if (rightOp instanceof VirtualInvokeExpr) {
                         Value base = ((VirtualInvokeExpr)invokeExpr).getBase();
-                        if(invokedMethod.getName().equals("get")) {
+                        if (invokedMethod.getName().equals("get")) {
                             Port port = InlinePortTransformer.getPortValue(
                                     method, (Local)base, stmt, localDefs,
                                     localUses);
                             // String portName = port.getName();
-                            if(!graph.containsNode(port)) {
+                            if (!graph.containsNode(port)) {
   			      graph.addNode(port);
 //    			      graph.addNode(port.getName());
                             }
@@ -316,11 +316,11 @@ public class CircuitAnalysis {
                             graph.addEdge(base, invokedMethod);
                         }
                     }
-                    for(Iterator arguments =
+                    for (Iterator arguments =
                             ((InvokeExpr)rightOp).getArgs().iterator();
                         arguments.hasNext();) {
                         Value argument = (Value)arguments.next();
-                        if(!graph.containsNode(argument)) {
+                        if (!graph.containsNode(argument)) {
                             graph.addNode(argument);
                         }
                         graph.addEdge(argument, opName);
@@ -328,25 +328,25 @@ public class CircuitAnalysis {
                     graph.addEdge(opName, leftOp);
                 }
 		// end of AssignStmt 'if'
-            } else if(stmt instanceof InvokeStmt) {
+            } else if (stmt instanceof InvokeStmt) {
                 Object op = ((InvokeStmt)stmt).getInvokeExpr();
-                if(op instanceof VirtualInvokeExpr) {
+                if (op instanceof VirtualInvokeExpr) {
                     VirtualInvokeExpr invokeExpr =
                         (VirtualInvokeExpr)op;
                     SootMethod invokedMethod = invokeExpr.getMethod();
                     Value base = invokeExpr.getBase();
-                    if(invokedMethod.getName().equals("send")) {
+                    if (invokedMethod.getName().equals("send")) {
                         Port port = InlinePortTransformer.getPortValue(
                                 method, (Local)base, stmt, localDefs,
                                 localUses);
                         // String portName = port.getName();
-                        if(!graph.containsNode(port)) {
+                        if (!graph.containsNode(port)) {
                             graph.addNode(port);
                         }
                         requiredNodeSet.add(port);
 
                         Value tokenValue = invokeExpr.getArg(1);
-                        if(!graph.containsNode(tokenValue)) {
+                        if (!graph.containsNode(tokenValue)) {
                             graph.addNode(tokenValue);
                         }
                         graph.addEdge(tokenValue, port);

@@ -245,7 +245,7 @@ public class Audio {
      */
     public static byte lin2mu(int sample) {
         int sign = 0;
-        if(sample < 0) {
+        if (sample < 0) {
             sample = -sample;
             sign = 0x80;
         }
@@ -259,7 +259,7 @@ public class Audio {
         // exponent + " mantissa = " + mantissa );
         ulawbyte =  ~ulawbyte;
         ulawbyte &= 0xFF;
-        if(_zerotrap && ulawbyte == 0 ) {
+        if (_zerotrap && ulawbyte == 0 ) {
             // optional CCITT trap
             ulawbyte = 0x02;
         }

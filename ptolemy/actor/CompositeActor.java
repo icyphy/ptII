@@ -202,7 +202,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void connectionsChanged(Port port) {
         if (port instanceof IOPort) {
             IOPort castedPort = (IOPort) port;
-            if(castedPort.isOpaque() && castedPort.isOutput()
+            if (castedPort.isOpaque() && castedPort.isOutput()
                     && getDirector() != null) {
                 // Note that even if castedPort is opaque, we still have to
                 // check for director above.
@@ -242,14 +242,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             // Use the local director to transfer inputs.
             Iterator inputPorts = inputPortList().iterator();
-            while(inputPorts.hasNext()) {
+            while (inputPorts.hasNext()) {
                 IOPort p = (IOPort)inputPorts.next();
                 _director.transferInputs(p);
             }
             _director.fire();
             // Use the local director to transfer outputs.
             Iterator outports = outputPortList().iterator();
-            while(outports.hasNext()) {
+            while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();
                 _director.transferOutputs(p);
             }
@@ -361,13 +361,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public List inputPortList() {
         try {
             _workspace.getReadAccess();
-            if(_inputPortsVersion != _workspace.getVersion()) {
+            if (_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
                 List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isInput()) {
+                    if ( p.isInput()) {
                         inputPorts.add(p);
                     }
                 }
@@ -414,7 +414,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 	while (n++ < count) {
 	    if (prefire()) {
 		fire();
-		if(!postfire()) return Executable.STOP_ITERATING;
+		if (!postfire()) return Executable.STOP_ITERATING;
 	    } else {
                 return Executable.NOT_READY;
 	    }
@@ -508,12 +508,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public List outputPortList() {
         try {
             _workspace.getReadAccess();
-            if(_outputPortsVersion != _workspace.getVersion()) {
+            if (_outputPortsVersion != _workspace.getVersion()) {
                 _cachedOutputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isOutput()) {
+                    if ( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
@@ -614,16 +614,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
         // in other places.
 
         // Validate the attributes of this actor.
-        for(Iterator attributes = attributeList(Settable.class).iterator();
+        for (Iterator attributes = attributeList(Settable.class).iterator();
             attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
-        for(Iterator ports = portList().iterator();
+        for (Iterator ports = portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
-            for(Iterator attributes =
+            for (Iterator attributes =
                     port.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();
@@ -654,7 +654,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } else {
 	    change.setListeners(_changeListeners);
 	    Manager manager = getManager();
-	    if(manager == null) {
+	    if (manager == null) {
 		change.execute();
 	    } else {
 		manager.requestChange(change);
@@ -776,7 +776,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  called, so just ignore.
      */
     public void terminate() {
-        if(!isOpaque()) return;
+        if (!isOpaque()) return;
         getDirector().terminate();
     }
 

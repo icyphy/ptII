@@ -971,7 +971,7 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
         propagate();
         Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
@@ -1351,7 +1351,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             _notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
-                if( !oldVarType.equals(_varType) &&
+                if ( !oldVarType.equals(_varType) &&
                         oldVarType != BaseType.UNKNOWN) {
                     container.attributeTypeChanged(this);
                 }

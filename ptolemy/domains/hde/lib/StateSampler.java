@@ -149,7 +149,7 @@ public class StateSampler extends DETransformer {
                 _lastInputs = new Token[widthOfInputs];
             }
             for (int i = 0; i < n; i++) {
-               if(input.hasToken(i)) {
+               if (input.hasToken(i)) {
                     _lastInputs[i] = input.get(i);
                 }
                 // in is the most recent token, assuming

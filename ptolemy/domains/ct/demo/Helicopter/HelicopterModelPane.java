@@ -113,7 +113,7 @@ public class HelicopterModelPane extends ModelPane {
             .allAtomicEntityList().iterator(); 
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            if(object instanceof Placeable) {
+            if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
             }
         }

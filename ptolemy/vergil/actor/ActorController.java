@@ -112,7 +112,7 @@ public class ActorController extends AttributeController {
     public ActorController(GraphController controller, Access access) {
 	super(controller, access);
 
-        if(access == FULL) {
+        if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
             _menuFactory.addMenuItemFactory(_portDialogFactory);
@@ -131,7 +131,7 @@ public class ActorController extends AttributeController {
 	Filter portFilter = new Filter() {
 	    public boolean accept(Object candidate) {
 		GraphModel model = getController().getGraphModel();
-		if(candidate instanceof Port &&
+		if (candidate instanceof Port &&
                         model.getParent(candidate) instanceof Location) {
 		    return true;
 		} else {
@@ -196,20 +196,20 @@ public class ActorController extends AttributeController {
 	    int outCount = 0;
 	    int inOutCount = 0;
 
-	    while(nodes.hasNext()) {
+	    while (nodes.hasNext()) {
 		Port port = (Port) nodes.next();
-		if(!(port instanceof IOPort)) {
+		if (!(port instanceof IOPort)) {
 		    inOutCount++;
 		    inouts.addLast(port);
 		} else {
 		    IOPort ioport = (IOPort) port;
-		    if(ioport.isInput() && ioport.isOutput()) {
+		    if (ioport.isInput() && ioport.isOutput()) {
 			inOutCount++;
 			inouts.addLast(port);
-		    } else if(ioport.isInput()) {
+		    } else if (ioport.isInput()) {
 			inCount++;
 			inputs.addLast(port);
-		    } else if(ioport.isOutput()) {
+		    } else if (ioport.isOutput()) {
 			outCount++;
 			outputs.addLast(port);
 		    } else {
@@ -240,12 +240,12 @@ public class ActorController extends AttributeController {
                 int direction) {
 	    Iterator ports = portList.iterator();
 	    int number = 0;
-	    while(ports.hasNext()) {
+	    while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		Figure portFigure = getController().getFigure(port);
 		// If there is no figure, then ignore this port.  This may
 		// happen if the port hasn't been rendered yet.
-		if(portFigure == null) continue;
+		if (portFigure == null) continue;
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
 		PortSite site = new PortSite(
                         figure.getBackgroundFigure(),
@@ -327,7 +327,7 @@ public class ActorController extends AttributeController {
 	    // Figure out what entity.
 	    super.actionPerformed(e);
 	    NamedObj object = getTarget();
-	    if(!(object instanceof CompositeEntity)) {
+	    if (!(object instanceof CompositeEntity)) {
                 // Open the source code, if possible.
                 String filename = object.getClass()
                         .getName().replace('.', '/') + ".java";

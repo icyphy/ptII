@@ -168,11 +168,11 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // initialize the field by creating a model 
         // in all the <init> methods.
-        for(Iterator methods = mainClass.getMethods().iterator();
+        for (Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore things that aren't initializers.
-            if(!method.getName().equals("<init>"))
+            if (!method.getName().equals("<init>"))
                 continue;
 
             System.out.println("method = " + method);
@@ -221,21 +221,21 @@ public class CommandLineTransformer extends SceneTransformer {
             managerClass.getMethodByName("startRun");
         SootMethod mainStartRunMethod =
             mainClass.getMethodByName("startRun");
-        for(Iterator methods = mainClass.getMethods().iterator();
+        for (Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-            for(Iterator units = body.getUnits().snapshotIterator();
+            for (Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
-                for(Iterator boxes = unit.getUseBoxes().iterator();
+                for (Iterator boxes = unit.getUseBoxes().iterator();
                     boxes.hasNext();) {
                     ValueBox box = (ValueBox)boxes.next();
-                    if(box.getValue() instanceof InstanceInvokeExpr) {
+                    if (box.getValue() instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr expr = 
                             (InstanceInvokeExpr)box.getValue();
-                        if(expr.getMethod().equals(mainStartRunMethod)) {
+                        if (expr.getMethod().equals(mainStartRunMethod)) {
                             // Replace the start run method call
                             // with code to iterate the model.
                             // First create a local that refers to the model.
@@ -274,7 +274,7 @@ public class CommandLineTransformer extends SceneTransformer {
         SootUtilities.inlineCallsToMethod(
                 mainClass.getMethodByName("stopRun"), mainClass);
 
-        for(Iterator methods = mainClass.getMethods().iterator();
+        for (Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -296,26 +296,26 @@ public class CommandLineTransformer extends SceneTransformer {
             SootMethod mainMethod = mainClass.getMethodByName("main");
             JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
             Chain units = body.getUnits();
-            for(Iterator stmts = units.iterator(); stmts.hasNext();) {
+            for (Iterator stmts = units.iterator(); stmts.hasNext();) {
                 Stmt stmt = (Stmt)stmts.next();
                 // filter out anything that is not a definition.
-                if(!(stmt instanceof DefinitionStmt)) {
+                if (!(stmt instanceof DefinitionStmt)) {
                     continue;
                 }
                 DefinitionStmt newStmt = (DefinitionStmt)stmt;
                 Value value = (newStmt).getRightOp();
-                if(!(value instanceof NewExpr)) {
+                if (!(value instanceof NewExpr)) {
                     continue;
                 }
                 RefType type = ((NewExpr)value).getBaseType();
-                if(type.getSootClass() != mainClass) {
+                if (type.getSootClass() != mainClass) {
                     continue;
                 }
                 InvokeStmt constructorStmt = null;
                 // Now walk forward and find the constructor.
-                while(stmts.hasNext()) {
+                while (stmts.hasNext()) {
                     stmt = (Stmt)stmts.next();
-                    if(stmt instanceof InvokeStmt &&
+                    if (stmt instanceof InvokeStmt &&
                             ((InvokeStmt)stmt).getInvokeExpr()
                             instanceof SpecialInvokeExpr) {
                         constructorStmt = (InvokeStmt)stmt;
@@ -341,7 +341,7 @@ public class CommandLineTransformer extends SceneTransformer {
             }
         }
         */
-        for(Iterator methods = mainClass.getMethods().iterator();
+        for (Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             System.out.println("method = " + method.toString());
@@ -359,7 +359,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // unique name for the generated class
         StringTokenizer tokenizer = new StringTokenizer(dottedName, ".");
         String endName = "error";
-        while(tokenizer.hasMoreElements()) {
+        while (tokenizer.hasMoreElements()) {
             endName = tokenizer.nextToken();
         }
         return endName;
@@ -404,7 +404,7 @@ public class CommandLineTransformer extends SceneTransformer {
 	}
 
         Local iterationLocal = null;
-        if(iterationLimit > 1) {
+        if (iterationLimit > 1) {
             iterationLocal = Jimple.v().newLocal("iteration",
                     IntType.v());
             body.getLocals().add(iterationLocal);
@@ -445,7 +445,7 @@ public class CommandLineTransformer extends SceneTransformer {
                 unit);
         
         // If we need to keep track of the number of iterations, then...
-        if(iterationLimit > 1) {
+        if (iterationLimit > 1) {
             // Increment the number of iterations.
             units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
                     Jimple.v().newAddExpr(iterationLocal,
@@ -459,7 +459,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     iterationEndStmt),
                     unit);
         }
-        if(iterationLimit != 1) {
+        if (iterationLimit != 1) {
             units.insertBefore(Jimple.v().newGotoStmt(iterationStartStmt),
                     unit);
         }

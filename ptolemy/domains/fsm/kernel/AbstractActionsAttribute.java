@@ -265,10 +265,10 @@ public abstract class AbstractActionsAttribute extends Action {
         try {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
-            if(_destinationNames != null) {
+            if (_destinationNames != null) {
 		_destinations = new LinkedList();
                 Iterator destinationNames = _destinationNames.iterator();
-                while(destinationNames.hasNext()) {
+                while (destinationNames.hasNext()) {
                     String destinationName = (String)destinationNames.next();
                     NamedObj destination = _getDestination(destinationName);
                     _destinations.add(destination);

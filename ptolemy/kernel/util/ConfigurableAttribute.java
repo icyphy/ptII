@@ -225,7 +225,7 @@ public class ConfigurableAttribute
     public void validate() throws IllegalActionException {
         // Validate contained attributes, if any.
         Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
@@ -291,7 +291,7 @@ public class ConfigurableAttribute
             throws IOException {
         super._exportMoMLContents(output, depth);
         String sourceSpec = "";
-	if(_source != null && !_source.trim().equals("")) {
+	if (_source != null && !_source.trim().equals("")) {
             sourceSpec = " source=\"" + _source + "\"";
             if (_text == null) {
                 output.write(_getIndentPrefix(depth)

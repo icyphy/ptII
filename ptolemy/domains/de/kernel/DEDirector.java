@@ -426,7 +426,7 @@ public class DEDirector extends Director {
 
             // Check whether the next time stamp is equal to current time.
             synchronized(_eventQueue) {
-                if(!_eventQueue.isEmpty()) {
+                if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
                     // If the next event is in the future,
                     // proceed to postfire().
@@ -572,7 +572,7 @@ public class DEDirector extends Director {
             // Save items to reinsert into queue.
             LinkedList eventsToPutBack = new LinkedList();
             while (nextTime <= getCurrentTime()) {
-                if(_debugging) _debug("Temporarily remove event.");
+                if (_debugging) _debug("Temporarily remove event.");
                 // take() is safe, since the queue is not empty.
                 eventsToPutBack.add(_eventQueue.take());
                 if (!_eventQueue.isEmpty()) {
@@ -586,7 +586,7 @@ public class DEDirector extends Director {
             // Put back events that need to be put back.
             Iterator events = eventsToPutBack.iterator();
             while (events.hasNext()) {
-                if(_debugging) _debug("Put dequeued current event back.");
+                if (_debugging) _debug("Put dequeued current event back.");
                 try {
                     _eventQueue.put((DEEvent)events.next());
                 } catch (IllegalActionException ex) {
@@ -694,7 +694,7 @@ public class DEDirector extends Director {
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
-        if(_debugging) _debug("Creating new DE receiver.");
+        if (_debugging) _debug("Creating new DE receiver.");
         return new DEReceiver();
     }
 
@@ -756,7 +756,7 @@ public class DEDirector extends Director {
         // Now we check if there's any input.
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort port = (IOPort)inputPorts.next();
             for (int i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
@@ -888,7 +888,7 @@ public class DEDirector extends Director {
            throws IllegalActionException {
         boolean anyWereTransferred = false;
         boolean moreTransfersRemaining = true;
-        while(moreTransfersRemaining) {
+        while (moreTransfersRemaining) {
             moreTransfersRemaining = super.transferOutputs(port);
             anyWereTransferred |= moreTransfersRemaining;
         }
@@ -1079,7 +1079,7 @@ public class DEDirector extends Director {
                 // no need to put event into receiver.
                 if (receiver != null) {
                     // Transfer the event to the receiver.
-                    if(_debugging) _debug(getName(),
+                    if (_debugging) _debug(getName(),
                             "put trigger event to",
                             receiver.getContainer().getFullName());
                     receiver._triggerEvent(currentEvent.token());
@@ -1108,7 +1108,7 @@ public class DEDirector extends Director {
                     break;
                 }
             }
-        } // Close while() loop
+        } // Close while () loop
         return actorToFire;
     }
 
@@ -1119,7 +1119,7 @@ public class DEDirector extends Director {
      */
     protected void _disableActor(Actor actor) {
         if (actor != null) {
-            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
+            if (_debugging) _debug("Actor ", ((Nameable)actor).getName(),
                     " is disabled.");
             if (_disabledActors == null) {
                 _disabledActors = new HashSet();
@@ -1160,7 +1160,7 @@ public class DEDirector extends Director {
                     + " while event time is " + time);
         }
         int depth = _getDepth(actor);
-        if(_debugging) _debug("enqueue a pure event: ",
+        if (_debugging) _debug("enqueue a pure event: ",
                 ((NamedObj)actor).getName(),
                 "time = "+ time + " microstep = "+ microstep + " depth = "
                 + depth);
@@ -1200,7 +1200,7 @@ public class DEDirector extends Director {
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
-        if(_debugging) _debug("enqueue event: to",
+        if (_debugging) _debug("enqueue event: to",
                 receiver.getContainer().getFullName()
                 + " ("+token.toString()+") ",
                 "time = "+ time + " microstep = "+ microstep + " depth = "
@@ -1335,7 +1335,7 @@ public class DEDirector extends Director {
                             continue;
                         }
                         Actor destination = (Actor)(port.getContainer());
-                        if(destination.equals(actor)) {
+                        if (destination.equals(actor)) {
                             throw new IllegalActionException(this,
                                     "Zero delay self-loop on actor: "
                                     + ((Nameable)actor).getFullName());
@@ -1394,7 +1394,7 @@ public class DEDirector extends Director {
         if (_debugging) _debug(getContainer().getFullName(),
                 "depth: " + sort.length);
         _actorToDepth.put(getContainer(), new Integer(sort.length));
-        for(int i = sort.length-1; i >= 0; i--) {
+        for (int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
             if (_debugging) _debug(((Nameable)actor).getFullName(),
                     "depth: " + i);

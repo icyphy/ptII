@@ -133,7 +133,7 @@ public class LookupTable extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)table.getToken();
 	    if (token != null) {
 		int indexValue = ((IntToken)input.get(0)).intValue();

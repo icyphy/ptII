@@ -503,7 +503,7 @@ public class CalendarQueue implements Debuggable {
         if ((_previousTakenEntry == null) ||
                 (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
             _sampleEntries[_sampleEntryIndex++] = entry;
-            if(_sampleEntryIndex == _SAMPLE_SIZE) {
+            if (_sampleEntryIndex == _SAMPLE_SIZE) {
                 _sampleEntryIndex = 0;
                 _sampleValid = true;
             }
@@ -614,7 +614,7 @@ public class CalendarQueue implements Debuggable {
             Object[] sampleCopy = new Object[_SAMPLE_SIZE];
             for (int i = 0; i < _SAMPLE_SIZE; i++) {
                 sampleCopy[i] = _sampleEntries[_sampleEntryIndex++];
-                if(_sampleEntryIndex == _SAMPLE_SIZE) {
+                if (_sampleEntryIndex == _SAMPLE_SIZE) {
                     _sampleEntryIndex = 0;
                 }
             }

@@ -110,7 +110,7 @@ public class SoftClip {
 	    // Loop forever.
 	    System.out.println("starting");
 	    int count = 0;
-	    while(count < 1000) {
+	    while (count < 1000) {
 		count++;
 		// Read in some captured audio.
 		//capturedSamplesArray = soundCapture.getSamples();

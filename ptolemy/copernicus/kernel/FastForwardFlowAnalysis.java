@@ -70,7 +70,7 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         {
             Iterator it = graph.iterator();
 
-            while(it.hasNext())
+            while (it.hasNext())
             {
                 Object s = it.next();
 
@@ -88,7 +88,7 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         {
             Object previousAfterFlow = newInitialFlow();
 
-            while(!changedUnitsSet.isEmpty())
+            while (!changedUnitsSet.isEmpty())
             {
                 Object beforeFlow;
                 Object afterFlow;
@@ -104,15 +104,15 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
 
                     beforeFlow = unitToBeforeFlow.get(s);
 
-                    if(preds.size() == 1)
+                    if (preds.size() == 1)
                         copy(unitToAfterFlow.get(preds.get(0)), beforeFlow);
-                    else if(preds.size() != 0)
+                    else if (preds.size() != 0)
                     {
                         Iterator predIt = preds.iterator();
 
                         copy(unitToAfterFlow.get(predIt.next()), beforeFlow);
 
-                        while(predIt.hasNext())
+                        while (predIt.hasNext())
                         {
                             Object otherBranchFlow = unitToAfterFlow.get(predIt.
 next());
@@ -129,14 +129,14 @@ next());
                 }
 
                 // Update queue appropriately
-                    if(!afterFlow.equals(previousAfterFlow))
+                    if (!afterFlow.equals(previousAfterFlow))
                     {
                         //            System.out.println("changed = " + s);
                         //System.out.println("from " + previousAfterFlow);
                         //System.out.println("  to " + afterFlow);
                         Iterator succIt = graph.getSuccsOf(s).iterator();
 
-                        while(succIt.hasNext())
+                        while (succIt.hasNext())
                         {
                             Object succ = succIt.next();
 

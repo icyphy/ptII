@@ -96,18 +96,18 @@ public class Branch implements Runnable {
 	    BranchController controller) throws IllegalActionException {
         _controller = controller;
 
-        if( producerReceiver == null || consumerReceiver == null ) {
+        if ( producerReceiver == null || consumerReceiver == null ) {
             throw new IllegalActionException("The boundary "
             	    + "receivers of this branch are null.");
         }
-        if( !producerReceiver.isProducerReceiver() ) {
+        if ( !producerReceiver.isProducerReceiver() ) {
 	    String name = ((Nameable)consumerReceiver.getContainer()).getName();
             throw new IllegalActionException("Receiver: " + name +
 		    " Not producer receiver");
         }
 	_producerReceiver = producerReceiver;
 
-        if( !consumerReceiver.isConsumerReceiver() ) {
+        if ( !consumerReceiver.isConsumerReceiver() ) {
 	    String name = ((Nameable)consumerReceiver.getContainer()).getName();
             throw new IllegalActionException("Receiver: " + name +
 		    " Not consumer receiver");
@@ -153,7 +153,7 @@ public class Branch implements Runnable {
      *   is blocked.
      */
     public void registerReceiverBlocked(ProcessReceiver receiver) {
-    	if( !_receiverBlocked ) {
+    	if ( !_receiverBlocked ) {
     	    _receiverBlocked = true;
             _controller._branchBlocked(receiver);
         }
@@ -166,7 +166,7 @@ public class Branch implements Runnable {
      *   which a block is being removed.
      */
     public void registerReceiverUnBlocked(ProcessReceiver receiver) {
-    	if( _receiverBlocked ) {
+    	if ( _receiverBlocked ) {
     	    _receiverBlocked = false;
             _controller._branchUnBlocked(receiver);
         }
@@ -180,7 +180,7 @@ public class Branch implements Runnable {
     public void run() {
         try {
             setActive(true);
-            while( isActive() ) {
+            while ( isActive() ) {
                 transferToken();
             }
         } catch( TerminateProcessException e ) {
@@ -203,7 +203,7 @@ public class Branch implements Runnable {
      *  token transfer.
      */
     public void transferToken() {
-        if( _producerReceiver == null ) {
+        if ( _producerReceiver == null ) {
             return;
         } else if ( _consumerReceiver == null ) {
             return;

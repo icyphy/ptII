@@ -130,7 +130,7 @@ public class TextEffigy extends Effigy {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(in.openStream()));
             String line = reader.readLine();
-            while(line != null) {
+            while (line != null) {
                 // Translate newlines to Java form.
                 doc.insertString(doc.getLength(), line + "\n", null);
                 line = reader.readLine();

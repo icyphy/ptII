@@ -71,21 +71,21 @@ public class AliasAssignmentEliminator extends BodyTransformer
             new MustAliasAnalysis(unitGraph);
 
         // Loop through all the units
-        for(Iterator units = body.getUnits().snapshotIterator();
+        for (Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
-            if(unit instanceof DefinitionStmt) {
+            if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt)unit;
                 Value left = stmt.getLeftOp();
                 Value right = stmt.getRightOp();
-                if(left.getType() instanceof RefType &&
+                if (left.getType() instanceof RefType &&
                         right.getType() instanceof RefType) {
                     Set leftMustAliases, rightMustAliases;
-                    if(left instanceof Local) {
+                    if (left instanceof Local) {
                         leftMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)left, unit);
-                    } else if(left instanceof FieldRef) {
+                    } else if (left instanceof FieldRef) {
                         SootField field = ((FieldRef)left).getField();
                         leftMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
@@ -93,11 +93,11 @@ public class AliasAssignmentEliminator extends BodyTransformer
                     } else {
                         continue;
                     }
-                    if(right instanceof Local) {
+                    if (right instanceof Local) {
                         rightMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)right, unit);
-                    } else if(right instanceof FieldRef) {
+                    } else if (right instanceof FieldRef) {
                         SootField field = ((FieldRef)right).getField();
                         rightMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
@@ -106,7 +106,7 @@ public class AliasAssignmentEliminator extends BodyTransformer
                         continue;
                     }
 
-                    if(debug) {
+                    if (debug) {
                         System.out.println("Ref-ref assignment = " +
                                 unit);
                         System.out.println("left aliases = " +
@@ -117,11 +117,11 @@ public class AliasAssignmentEliminator extends BodyTransformer
 
                     // Utter hack... Should be:
                     // Why doesn't alias analysis return the right things?
-                    // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
+                    // if (mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
                     Set intersection = leftMustAliases;
                     intersection.retainAll(rightMustAliases);
-                    if(!intersection.isEmpty()) {
-                        if(debug) {
+                    if (!intersection.isEmpty()) {
+                        if (debug) {
                             System.out.println("Instances are already" +
                                     " equal.  Removing assignment");
                         }
@@ -130,15 +130,15 @@ public class AliasAssignmentEliminator extends BodyTransformer
                 }
                     /* Not sure what to do here.. our alias analysis doesn't
                          handle nulls well...
-                        else if(left.getType() instanceof RefType &&
+                        else if (left.getType() instanceof RefType &&
                               right.getType() instanceof NullType) {
                         // Then the right side is the one we must analyze.
-                        if(debug) System.out.println("Ref-Null unit = " + unit);
+                        if (debug) System.out.println("Ref-Null unit = " + unit);
                         Local local = (Local)left;
-                        if(nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
+                        if (nullPointerAnalysis.isAlwaysNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(0));
-                        } else if(nullPointerAnalysis.isNeverNullBefore(local, unit)) {
+                        } else if (nullPointerAnalysis.isNeverNullBefore(local, unit)) {
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(1));
                         }

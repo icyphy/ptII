@@ -145,7 +145,7 @@ public class CTSubscriber extends Source
      *  is no such events, do nothing.
      */
     public void emitCurrentEvents() throws IllegalActionException {
-        if(_hasNewToken) {
+        if (_hasNewToken) {
             synchronized(_lock) {
                 output.send(0, _notifiedToken);
                 _hasNewToken = false;
@@ -234,7 +234,7 @@ public class CTSubscriber extends Source
                                 "error reading from space." +
                                 e.getMessage());
                     }
-                    if(entry == null) {
+                    if (entry == null) {
                         System.out.println(getName() +
                                 " read null from space");
                     } else {

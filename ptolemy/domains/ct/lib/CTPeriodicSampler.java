@@ -118,7 +118,7 @@ public class CTPeriodicSampler extends Transformer
             throws IllegalActionException{
         if (attribute == samplePeriod) {
             double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
-            if(p <= 0) {
+            if (p <= 0) {
                 throw new IllegalActionException(this,
                         " Sample period must be greater than 0.");
             } else {
@@ -139,7 +139,7 @@ public class CTPeriodicSampler extends Transformer
             for (int i = 0;
                  i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
-                if(input.hasToken(i)) {
+                if (input.hasToken(i)) {
                     output.send(i, input.get(i));
                 }
             }
@@ -157,13 +157,13 @@ public class CTPeriodicSampler extends Transformer
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
-        if(Math.abs(director.getCurrentTime() - _nextSamplingTime)
+        if (Math.abs(director.getCurrentTime() - _nextSamplingTime)
                 < director.getTimeResolution() ) {
             _hasCurrentEvent = true;
         } else {
             _hasCurrentEvent = false;
         }
-        if(_debugging) _debug(getFullName(), " has event at: "
+        if (_debugging) _debug(getFullName(), " has event at: "
                 + director.getCurrentTime() + " is " + _hasCurrentEvent );
         return _hasCurrentEvent;
     }
@@ -176,7 +176,7 @@ public class CTPeriodicSampler extends Transformer
         // clear receivers
         for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
              i++) {
-            if(input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 input.get(i);
             }
         }
@@ -184,7 +184,7 @@ public class CTPeriodicSampler extends Transformer
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime();
         dir.fireAt(this, dir.getCurrentTime());
-        if(_debugging) _debug(getFullName() + ": next sampling time = "
+        if (_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
 

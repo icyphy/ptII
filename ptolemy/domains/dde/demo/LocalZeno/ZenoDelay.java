@@ -94,8 +94,8 @@ public class ZenoDelay extends ListenFeedBackDelay {
      *  exceeded 50.0.
      */
     public double getDelay() {
-	if( _cntr < 1000 ) {
-	    if( getDirector().getCurrentTime() < 50.0 ) {
+	if ( _cntr < 1000 ) {
+	    if ( getDirector().getCurrentTime() < 50.0 ) {
 		return super.getDelay();
 	    } else {
 		_cntr++;

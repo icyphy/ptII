@@ -113,7 +113,7 @@ public class TimeAdvance extends DDEActor {
     public void fire() throws IllegalActionException {
 	DoubleToken token = ((DoubleToken)outputValue.getToken());
 	Receiver[][] inputReceivers = input.getReceivers();
-	if( inputReceivers.length == 0 ) {
+	if ( inputReceivers.length == 0 ) {
 	    _continueIterations = false;
 	}
 

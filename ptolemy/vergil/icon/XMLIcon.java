@@ -97,8 +97,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
                 (SingletonConfigurableAttribute)container.getAttribute(
                 "_iconDescription");
         // If the description has changed...
-        if(_description != description) {
-            if(_description != null) {
+        if (_description != description) {
+            if (_description != null) {
                 // Remove this as a listener if there
                 // was a previous description.
                 _description.removeValueListener(this);
@@ -107,7 +107,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             // update the description.
             _description = description;
 
-            if(_description != null) {
+            if (_description != null) {
                 // Listen for changes in value to the icon description.
                 _description.addValueListener(this);
             }
@@ -120,7 +120,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         _updatePaintedList();
 
         // If the paintedList is still null, then return the default figure.
-        if(_paintedList == null) {
+        if (_paintedList == null) {
             return _createDefaultBackgroundFigure();
         }
 
@@ -137,7 +137,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     public javax.swing.Icon createIcon() {
 	// In this class, we cache the rendered icon, since creating icons from
 	// figures is expensive.
-        if(_iconCache != null) {
+        if (_iconCache != null) {
 	    return _iconCache;
         }
         // No cached object, so rerender the icon.
@@ -152,8 +152,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         if (description == null) return super.createIcon();
 
         // If the description has changed...
-        if(_smallIconDescription != description) {
-            if(_smallIconDescription != null) {
+        if (_smallIconDescription != description) {
+            if (_smallIconDescription != null) {
                 // Remove this as a listener if there
                 // was a previous description.
                 _smallIconDescription.removeValueListener(this);
@@ -235,7 +235,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      */
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
-        if(bracket == 0)
+        if (bracket == 0)
             result += super._description(detail, indent, 0);
         else
             result += super._description(detail, indent, 1);
@@ -265,7 +265,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         // create a new list because the PaintedList we had before
         // was used to create some PaintedFigures already.
         // FIXME: test for 'svg' processing instruction
-        if(_description == null) {
+        if (_description == null) {
             _paintedList = null;
             return;
         }

@@ -69,7 +69,7 @@ public class DDEGetNToken extends DDEGet {
         _afterTimes = new double[_numTokens];
         _name = name;
 
-        for(int i = 0; i < _numTokens; i++ ) {
+        for (int i = 0; i < _numTokens; i++ ) {
             _beforeTimes[i] = -1.0;
             _afterTimes[i] = -1.0;
         }
@@ -101,17 +101,17 @@ public class DDEGetNToken extends DDEGet {
     public void fire() throws IllegalActionException {
 	int cnt = 0;
 	Token token;
-	while(cnt < _numTokens) {
+	while (cnt < _numTokens) {
 	    boolean finished = false;
             Thread thread = Thread.currentThread();
-	    if( thread instanceof DDEThread ) {
+	    if ( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 		_beforeTimes[cnt] = timeKeeper.getCurrentTime();
 		Receiver[][] rcvrs = input.getReceivers();
-		for( int i = 0; i < rcvrs.length; i++ ) {
-		    for( int j = 0; j < rcvrs[i].length; j++ ) {
+		for ( int i = 0; i < rcvrs.length; i++ ) {
+		    for ( int j = 0; j < rcvrs[i].length; j++ ) {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			if( rcvr.hasToken() ) {
+			if ( rcvr.hasToken() ) {
                             // System.out.println("#####");
                             // System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
                             // System.out.println("#####");
@@ -122,7 +122,7 @@ public class DDEGetNToken extends DDEGet {
 			    finished = true;
 			}
 		    }
-		    if( finished ) {
+		    if ( finished ) {
 			i = rcvrs.length + 1;
 		    }
 		}

@@ -134,7 +134,7 @@ public class StringAttribute extends Attribute implements Settable {
             throws IOException {
         String value = getExpression();
         String valueTerm = "";
-        if(value != null && !value.equals("")) {
+        if (value != null && !value.equals("")) {
             valueTerm = " value=\"" +
                 StringUtilities.escapeForXML(value) + "\"";
         }
@@ -223,7 +223,7 @@ public class StringAttribute extends Attribute implements Settable {
      */
     public void validate() throws IllegalActionException {
         Iterator attributes = attributeList(Settable.class).iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }

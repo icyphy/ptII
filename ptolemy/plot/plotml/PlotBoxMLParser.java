@@ -94,7 +94,7 @@ public class PlotBoxMLParser extends HandlerBase {
      */
     public void attribute(String name, String value, boolean specified)
             throws XmlException {
-        if(name == null) throw new XmlException("Attribute has no name",
+        if (name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
@@ -377,7 +377,7 @@ public class PlotBoxMLParser extends HandlerBase {
      */
     protected void _checkForNull(Object object, String message)
             throws XmlException {
-        if(object == null) {
+        if (object == null) {
             throw new XmlException(message,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),

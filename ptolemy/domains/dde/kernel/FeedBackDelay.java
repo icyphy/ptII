@@ -168,10 +168,10 @@ public class FeedBackDelay extends DDEActor {
         boolean delayRealVal =
             ((BooleanToken)realDelay.getToken()).booleanValue();
 	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
+	if ( thread instanceof DDEThread ) {
             DDEThread ddeThread = (DDEThread)thread;
-            if( token instanceof NullToken ) {
-                if( delayNullVal ) {
+            if ( token instanceof NullToken ) {
+                if ( delayNullVal ) {
                     _sendOutToken( token,
                             getDirector().getCurrentTime() + getDelay() );
                 } else {
@@ -179,7 +179,7 @@ public class FeedBackDelay extends DDEActor {
                             getDirector().getCurrentTime() );
                 }
             } else {
-                if( delayRealVal ) {
+                if ( delayRealVal ) {
                     _sendOutToken( token,
                             getDirector().getCurrentTime() + getDelay() );
                 } else {
@@ -201,8 +201,8 @@ public class FeedBackDelay extends DDEActor {
 	super.initialize();
 
         Receiver[][] receivers = output.getRemoteReceivers();
-	for( int i = 0; i < receivers.length; i++ ) {
-	    for( int j = 0; j < receivers[i].length; j++ ) {
+	for ( int i = 0; i < receivers.length; i++ ) {
+	    for ( int j = 0; j < receivers[i].length; j++ ) {
             	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( new Token(), PrioritizedTimedQueue.IGNORE );
             }
@@ -210,8 +210,8 @@ public class FeedBackDelay extends DDEActor {
 
 
 	receivers = input.getReceivers();
-	for( int i = 0; i < receivers.length; i++ ) {
-	    for( int j = 0; j < receivers[i].length; j++ ) {
+	for ( int i = 0; i < receivers.length; i++ ) {
+	    for ( int j = 0; j < receivers[i].length; j++ ) {
 		DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
 		rcvr._hideNullTokens(false);
 	    }
@@ -241,8 +241,8 @@ public class FeedBackDelay extends DDEActor {
     private void _sendOutToken(Token token, double time) {
         Receiver[][] receivers =
             (Receiver[][])output.getRemoteReceivers();
-	for( int i = 0; i < receivers.length; i++ ) {
-	    for( int j = 0; j < receivers[i].length; j++ ) {
+	for ( int i = 0; i < receivers.length; i++ ) {
+	    for ( int j = 0; j < receivers[i].length; j++ ) {
             	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( token, time );
             }

@@ -83,14 +83,14 @@ public class TotallyOrderedSet {
     public boolean contains(Object obj) {
         boolean result = false;
         Iterator elements = _set.iterator();
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             Object next = elements.next();
             int com = _comparator.compare(obj, next);
-            if(com == 0) {
+            if (com == 0) {
                 result = true;
                 break;
             }
-            if(com < 0) {
+            if (com < 0) {
                 break;
             }
         }
@@ -117,7 +117,7 @@ public class TotallyOrderedSet {
      *  @return The smallest element.
      */
     public Object first() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
         return _set.getFirst();
@@ -150,13 +150,13 @@ public class TotallyOrderedSet {
     public void insert(Object obj) {
         int count = 0;
         Iterator elements = _set.iterator();
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             Object next = elements.next();
             int com = _comparator.compare(obj, next);
-            if(com == 0) {
+            if (com == 0) {
                 return;
             }
-            if(com < 0) {
+            if (com < 0) {
                 _set.add(count, obj);
                 return;
             }
@@ -185,7 +185,7 @@ public class TotallyOrderedSet {
         while (!isEmpty()) {
             Object first = first();
             int com = _comparator.compare(obj, first);
-            if(com <= 0) {
+            if (com <= 0) {
                 return;
             } else {
                 take();
@@ -238,7 +238,7 @@ public class TotallyOrderedSet {
     public String toString() {
         String result = new String();
         Iterator eles = elementList().iterator();
-        while(eles.hasNext()) {
+        while (eles.hasNext()) {
             result = result + (eles.next()).toString() + " ";
         }
         return result;

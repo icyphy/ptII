@@ -111,7 +111,7 @@ public class OnePort extends TypedAtomicActor {
         //DTDebug debug = new DTDebug(true);
         //debug.prompt(""+input.getWidth());
         if (input.getWidth() >= 1) {
-            for(i=0;i<_inrate;i++) {
+            for (i=0;i<_inrate;i++) {
                 // FIXME: should consider port widths
                 //if (input.hasToken(0)) {
                 //token = (DoubleToken) (input.get(0));
@@ -123,7 +123,7 @@ public class OnePort extends TypedAtomicActor {
             }
         }
 
-        for(i=0;i<_outrate;i++) {
+        for (i=0;i<_outrate;i++) {
             //output.send(0, new DoubleToken(0.0));
             output.send(0, _buffer[i%_inrate]);
         }

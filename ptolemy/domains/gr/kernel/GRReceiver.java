@@ -90,7 +90,7 @@ public class GRReceiver extends Mailbox {
      *  @exception NoRoomException Not thrown in this base class
      */
     public void put(Token token) throws NoRoomException{
-        if(hasToken()) {
+        if (hasToken()) {
             get();
         }
         super.put(token);

@@ -82,10 +82,10 @@ public class PtolemyMenuFactory implements MenuFactory {
      */
     public JContextMenu create(Figure figure) {
 	NamedObj object = _getObjectFromFigure(figure);
-	if(object == null) return null;
+	if (object == null) return null;
 	JContextMenu menu = new JContextMenu(object, object.getFullName());
 	Iterator i = menuItemFactoryList().iterator();
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 	    MenuItemFactory factory = (MenuItemFactory)i.next();
 	    factory.create(menu, object);
 	}

@@ -333,10 +333,10 @@ public class DiningApplet extends Applet
     public class CurrentTimeThread extends Thread {
         NumberFormat nf = NumberFormat.getNumberInstance();
         public void run() {
-            while( true ) {
-            	if( simulationThread == null ) {
+            while ( true ) {
+            	if ( simulationThread == null ) {
                     return;
-                } else if( !simulationThread.isAlive() ) {
+                } else if ( !simulationThread.isAlive() ) {
                     return;
                 }
                 // get the current time from director.

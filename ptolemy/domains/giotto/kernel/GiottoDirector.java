@@ -358,7 +358,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	// The receivers should be resetted before their initialization.
 	Iterator receivers = _receivers.iterator();
-	while(receivers.hasNext()) {
+	while (receivers.hasNext()) {
 	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
 	    receiver.reset();
 	}
@@ -424,7 +424,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    _debug("next Iteration time" + _expectedNextIterationTime);
 	}
 
-	if((numberOfIterations > 0)
+	if ((numberOfIterations > 0)
                 && (_iterationCount >= numberOfIterations)) {
 	    _iterationCount = 0;
 	    return false;
@@ -466,7 +466,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    if (port.hasToken(i)) {
                 Token t = port.get(i);
                 if (insideReceivers != null && insideReceivers[i] != null) {
-                    if(_debugging) _debug(getName(),
+                    if (_debugging) _debug(getName(),
                             "transferring input from " + port.getName());
                     for (int j = 0; j < insideReceivers[i].length; j++) {
                         insideReceivers[i][j].put(t);

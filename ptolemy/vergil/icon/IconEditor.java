@@ -273,7 +273,7 @@ public class IconEditor {
 	_thicknessComboBox.addItem(new ImageIcon(thickness5));
 
 	// Similarly for the outline color pull-down menu.
-	for(int i = 0; i < _colors.length; i++) {
+	for (int i = 0; i < _colors.length; i++) {
 	    Icon bicon = new BlockIcon(_colors[i]);
 	    _outlineComboBox.addItem(bicon);
 	    _fillComboBox.addItem(bicon);
@@ -515,7 +515,7 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    int selection = _fillComboBox.getSelectedIndex();
 	    int itemCount = _fillComboBox.getItemCount();
-	    if(selection == itemCount - 1) {
+	    if (selection == itemCount - 1) {
 	        _changingFill = true;
 	        _dialog = JColorChooser.createDialog
                     (_editorPane, "Choose A Fill Color", true,
@@ -533,7 +533,7 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    int selection = _outlineComboBox.getSelectedIndex();
 	    int itemCount = _outlineComboBox.getItemCount();
-	    if(selection == itemCount - 1) {
+	    if (selection == itemCount - 1) {
 	        _changingFill = false;
 	        _dialog = JColorChooser.createDialog
                     (_editorPane, "Choose An Outline Color", true,
@@ -550,7 +550,7 @@ public class IconEditor {
     Action thinnerAction = new AbstractAction("Thinner") {
         public void actionPerformed(ActionEvent e) {
 	    float oldWidth = _editorPane.getThickness();
-	    if(oldWidth != 0.0 && oldWidth > 1.0) {
+	    if (oldWidth != 0.0 && oldWidth > 1.0) {
 		_outlineThickness = oldWidth - 1.0f;
 		_editorPane.setThickness(_outlineThickness);
 
@@ -562,7 +562,7 @@ public class IconEditor {
     Action thickerAction = new AbstractAction("Thicker") {
         public void actionPerformed(ActionEvent e) {
 	    float oldWidth = _editorPane.getThickness();
-	    if(oldWidth != 0.0) {
+	    if (oldWidth != 0.0) {
 		_outlineThickness = oldWidth + 1.0f;
 		_editorPane.setThickness(_outlineThickness);
 	    }
@@ -573,7 +573,7 @@ public class IconEditor {
     Action okAction = new AbstractAction("Ok") {
         public void actionPerformed(ActionEvent e) {
 	    Color thisColor = _colorChooser.getColor();
-	    if(_changingFill) {
+	    if (_changingFill) {
 	        _fillPaint = thisColor;
 		_editorPane.setFillPaint(thisColor);
 		// FIXME	_fillComboBox.setSelectedIndex(-1);
@@ -635,7 +635,7 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    int choice =
                 _fileChooser.showOpenDialog(_context.makeComponent());
-	    if(choice == JFileChooser.CANCEL_OPTION) {
+	    if (choice == JFileChooser.CANCEL_OPTION) {
 	        //System.out.println("You have cancelled your open file choice");
 	    } else {
 	        //System.out.println("You have chosen to open this file: " +
@@ -660,7 +660,7 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    int choice =
                 _fileChooser.showSaveDialog(_context.makeComponent());
-	    if(choice == JFileChooser.CANCEL_OPTION) {
+	    if (choice == JFileChooser.CANCEL_OPTION) {
 	        //System.out.println("You have cancelled your
 	        //                     save choice.");
 	    } else {

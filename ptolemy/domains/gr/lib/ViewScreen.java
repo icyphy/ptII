@@ -400,7 +400,7 @@ public class ViewScreen extends GRActor implements Placeable {
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for(int i = 0 ; i < width; i++) {
+        for (int i = 0 ; i < width; i++) {
             ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
             Node node = (Node) objectToken.getValue();
             _addChild(node);
@@ -496,7 +496,7 @@ public class ViewScreen extends GRActor implements Placeable {
            double[] db = new double[16];
 
            transform.get(db);
-           for(int i = 0; i < 16; i++) {
+           for (int i = 0; i < 16; i++) {
            if (i%4 == 0) {
            System.out.println(" ");
            }

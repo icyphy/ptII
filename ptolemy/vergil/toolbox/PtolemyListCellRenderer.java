@@ -51,7 +51,7 @@ public class PtolemyListCellRenderer extends DefaultListCellRenderer {
 	DefaultListCellRenderer component = (DefaultListCellRenderer)
 	    super.getListCellRendererComponent(list, value,
                     index, isSelected, cellHasFocus);
-	if(value instanceof NamedObj) {
+	if (value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    component.setText(object.getName());
 	}

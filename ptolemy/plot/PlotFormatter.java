@@ -90,8 +90,8 @@ public class PlotFormatter extends JPanel {
             StringBuffer buffer = new StringBuffer();
             Vector positions = _originalXTicks[0];
             Vector labels = _originalXTicks[1];
-            for(int i = 0; i < labels.size(); i++) {
-                if(buffer.length() > 0) {
+            for (int i = 0; i < labels.size(); i++) {
+                if (buffer.length() > 0) {
                     buffer.append(", ");
                 }
                 buffer.append(labels.elementAt(i).toString());
@@ -108,8 +108,8 @@ public class PlotFormatter extends JPanel {
             StringBuffer buffer = new StringBuffer();
             Vector positions = _originalYTicks[0];
             Vector labels = _originalYTicks[1];
-            for(int i = 0; i < labels.size(); i++) {
-                if(buffer.length() > 0) {
+            for (int i = 0; i < labels.size(); i++) {
+                if (buffer.length() > 0) {
                     buffer.append(", ");
                 }
                 buffer.append(labels.elementAt(i).toString());
@@ -168,7 +168,7 @@ public class PlotFormatter extends JPanel {
                     String spec = _wideQuery.stringValue("xticks").trim();
                     _plot.read("XTicks: " + spec);
                     // FIXME: log axis format temporarily disable, see above.
-                    // if(spec.equals("")) {
+                    // if (spec.equals("")) {
                     //    _narrowQuery.setEnabled("xlog", true);
                     // } else {
                     //    _narrowQuery.setBoolean("xlog", false);
@@ -178,7 +178,7 @@ public class PlotFormatter extends JPanel {
                     String spec = _wideQuery.stringValue("yticks").trim();
                     _plot.read("YTicks: " + spec);
                     // FIXME: log axis format temporarily disable, see above.
-                    // if(spec.equals("")) {
+                    // if (spec.equals("")) {
                     //    _narrowQuery.setEnabled("ylog", true);
                     // } else {
                     //    _narrowQuery.setBoolean("ylog", false);
@@ -243,7 +243,7 @@ public class PlotFormatter extends JPanel {
         // FIXME: log axis format temporarily disable, see above.
         // String spec = _wideQuery.stringValue("xticks").trim();
         // _plot.read("XTicks: " + spec);
-        // if(spec.equals("")) {
+        // if (spec.equals("")) {
         //    _narrowQuery.setEnabled("xlog", true);
         // } else {
         //    _narrowQuery.setBoolean("xlog", false);
@@ -251,7 +251,7 @@ public class PlotFormatter extends JPanel {
         // }
         // spec = _wideQuery.stringValue("yticks").trim();
         // _plot.read("YTicks: " + spec);
-        // if(spec.equals("")) {
+        // if (spec.equals("")) {
         //    _narrowQuery.setEnabled("ylog", true);
         // } else {
         //    _narrowQuery.setBoolean("ylog", false);
@@ -303,14 +303,14 @@ public class PlotFormatter extends JPanel {
         }
         // FIXME: log axis format temporarily disabled, see above.
         // _plot.read("XTicks: " + _originalXTicksSpec);
-        // if(_originalXTicksSpec.equals("")) {
+        // if (_originalXTicksSpec.equals("")) {
         //    _narrowQuery.setEnabled("xlog", true);
         // } else {
         //   _narrowQuery.setBoolean("xlog", false);
         //    _narrowQuery.setEnabled("xlog", false);
         // }
         // _plot.read("YTicks: " + _originalYTicksSpec);
-        // if(_originalYTicksSpec.equals("")) {
+        // if (_originalYTicksSpec.equals("")) {
         //    _narrowQuery.setEnabled("ylog", true);
         // } else {
         //    _narrowQuery.setBoolean("ylog", false);

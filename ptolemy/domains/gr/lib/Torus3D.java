@@ -129,12 +129,12 @@ public class Torus3D extends GRShadedShape {
         int[] stripCount = new int[numberOfQuads];
 
         int i, j, k, l, m;
-        for(i = 0; i < numberOfQuads; i++) {
+        for (i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
 
         j = 0;
-        for(i = 0; i < numberOfSlices ; i++) {
+        for (i = 0; i < numberOfSlices ; i++) {
             double theta = Math.PI - 2 * Math.PI * i / (numberOfSlices - 1);
             data[j++] = outerRadius +
                 innerRadius * (float) Math.cos(theta);
@@ -143,8 +143,8 @@ public class Torus3D extends GRShadedShape {
 
 
         k = l = m = 0;
-        for(i = 0; i < numberOfSweepVertices - 1;i++) {
-            for(j = 0; j<numberOfSlices; j++) {
+        for (i = 0; i < numberOfSweepVertices - 1;i++) {
+            for (j = 0; j<numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
                 float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
                 float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);

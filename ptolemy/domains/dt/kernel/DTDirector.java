@@ -323,13 +323,13 @@ public class DTDirector extends SDFDirector {
           }
 
 
-          if(!actor.prefire()) {
+          if (!actor.prefire()) {
           throw new IllegalActionException(this,
           (ComponentEntity) actor, "Actor " +
           "is not ready to fire.");
           }
 
-          if(_debugging)
+          if (_debugging)
           _debug("Firing " + ((Nameable)actor).getFullName());
 
           actor.fire();
@@ -453,7 +453,7 @@ public class DTDirector extends SDFDirector {
 
         // This portion figures out which actors should generate initial tokens
         ListIterator receiverIterator = _receiverTable.listIterator();
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
 
             IOPort currentPort = currentReceiver.getContainer();
@@ -462,7 +462,7 @@ public class DTDirector extends SDFDirector {
             String name = ((Nameable)actor).getFullName();
 
             DTActor dtActor = (DTActor) _allActorsTable.get(actor);
-            if(_debugging) {
+            if (_debugging) {
                 _debug("Checking for initial tokens:" + dtActor);
             }
             if (dtActor == null) {
@@ -482,7 +482,7 @@ public class DTDirector extends SDFDirector {
         // This portion generates the initial tokens for actors with
         // nonhomogeneous outputs.
         receiverIterator = _receiverTable.listIterator();
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
 
             TypedIOPort currentPort =
@@ -507,11 +507,11 @@ public class DTDirector extends SDFDirector {
                 if (dtFromActor._shouldGenerateInitialTokens) {
                     int numberInitialTokens =
                         currentScheduler.getTokenInitProduction(currentPort);
-                    if(_debugging) {
+                    if (_debugging) {
                         _debug("initial port: " + fromType
                                 + " to " + currentPort.getType());
                     }
-                    for(int j = 0; j < outrate; j++) {
+                    for (int j = 0; j < outrate; j++) {
                         // FIXME:  should check what token basetype
                         // for the port and generate such.
                         // move this out of the loop
@@ -667,7 +667,7 @@ public class DTDirector extends SDFDirector {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Boolean flag = (Boolean)_shouldTransferOutputs.get(port);
         if (_shouldDoInternalTransferOutputs && flag.booleanValue()) {
-            if(container.getExecutiveDirector() instanceof DTDirector) {
+            if (container.getExecutiveDirector() instanceof DTDirector) {
                 // If we have dt inside dt, then transfer all of the
                 // tokens that were created.  The containing director
                 // will figure out what time they should appear.
@@ -711,7 +711,7 @@ public class DTDirector extends SDFDirector {
         int repeats = 0;
 
     foundRepeatValue:
-        while(actorIterator.hasNext()) {
+        while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
             if (actor.equals(currentActor._actor)) {
                 repeats = currentActor._repeats;
@@ -742,7 +742,7 @@ public class DTDirector extends SDFDirector {
         CompositeActor container = (CompositeActor) getContainer();
         if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
-            while(allActors.hasNext()) {
+            while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 String name = ((Nameable) actor).getFullName();
                 DTActor dtActor = (DTActor) _allActorsTable.get(actor);
@@ -769,14 +769,14 @@ public class DTDirector extends SDFDirector {
 
         _debugViewActorTable();
         ListIterator receiverIterator = _receiverTable.listIterator();
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
             currentReceiver.determineEnds();
         }
 
         receiverIterator = _receiverTable.listIterator();
 
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
             currentReceiver.calculateDeltaTime();
         }
@@ -794,17 +794,17 @@ public class DTDirector extends SDFDirector {
         CompositeActor container = (CompositeActor) getContainer();
         if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
-            while(allActors.hasNext()) {
+            while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 // Get all input ports
                 Iterator allInputs = actor.inputPortList().iterator();
-                while(allInputs.hasNext()){
+                while (allInputs.hasNext()){
                     IOPort inputPort = (IOPort)allInputs.next();
                     Receiver[][] receivers = inputPort.getReceivers();
-                    if(receivers != null) {
-                        for(int i = 0; i < receivers.length; i++) {
+                    if (receivers != null) {
+                        for (int i = 0; i < receivers.length; i++) {
                             if (receivers[i] != null) {
-                                for(int j = 0; j < receivers[i].length; j++) {
+                                for (int j = 0; j < receivers[i].length; j++) {
                                     if (receivers[i][j] != null) {
                                         _receiverTable.add(receivers[i][j]);
                                     }
@@ -818,13 +818,13 @@ public class DTDirector extends SDFDirector {
             // Also add the inside receivers in the ports of the
             // composite actor that contains this director.
             Iterator compositePorts = container.outputPortList().iterator();
-            while(compositePorts.hasNext()) {
+            while (compositePorts.hasNext()) {
                 IOPort outputPort = (IOPort)compositePorts.next();
                 Receiver[][] receivers = outputPort.getInsideReceivers();
-                if(receivers != null) {
-                    for(int i = 0; i < receivers.length; i++) {
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
                         if (receivers[i] != null) {
-                            for(int j = 0; j < receivers[i].length; j++) {
+                            for (int j = 0; j < receivers[i].length; j++) {
                                 if (receivers[i][j] != null) {
                                     _receiverTable.add(receivers[i][j]);
                                 }
@@ -846,7 +846,7 @@ public class DTDirector extends SDFDirector {
 
         _shouldTransferOutputs = new HashMap();
         Iterator outports = container.outputPortList().iterator();
-        while(outports.hasNext()) {
+        while (outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
 
             _shouldTransferOutputs.put(port, Boolean.TRUE);
@@ -930,7 +930,7 @@ public class DTDirector extends SDFDirector {
 
             Iterator outputPorts = container.outputPortList().iterator();
             _isFiringAllowed = false;
-            while(outputPorts.hasNext()) {
+            while (outputPorts.hasNext()) {
                 Receiver[][] insideReceivers;
                 TypedIOPort port = (TypedIOPort) outputPorts.next();
 
@@ -949,8 +949,8 @@ public class DTDirector extends SDFDirector {
                 } else {
                     // firing at a time when transferOutputs should
                     // not be called
-                    for(int i = 0; i < port.getWidth(); i++) {
-                        for(int j = 0;
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        for (int j = 0;
                             j < insideReceivers[i].length; j++) {
                             DTReceiver receiver;
                             receiver = (DTReceiver) insideReceivers[i][j];
@@ -992,7 +992,7 @@ public class DTDirector extends SDFDirector {
         _debug("\nACTOR TABLE with " + _actorTable.size()
                 + " unique actors");
         ListIterator actorIterator = _actorTable.listIterator();
-        while(actorIterator.hasNext()) {
+        while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
@@ -1028,7 +1028,7 @@ public class DTDirector extends SDFDirector {
     	Iterator listIterator = list.iterator();
 
     	_debug("attribute List:");
-    	while(listIterator.hasNext()) {
+    	while (listIterator.hasNext()) {
     	    Attribute attribute = (Attribute) listIterator.next();
     	    _debug(attribute.toString());
     	}
@@ -1044,7 +1044,7 @@ public class DTDirector extends SDFDirector {
         Iterator listIterator = list.iterator();
 
         _debug("\ndirector container output port list:");
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             _debug(" ->"+port);
             _debugViewPortInsideReceivers(port);
@@ -1064,7 +1064,7 @@ public class DTDirector extends SDFDirector {
     	Iterator listIterator = list.iterator();
 
     	_debug("entity List:");
-    	while(listIterator.hasNext()) {
+    	while (listIterator.hasNext()) {
     	    Entity entity = (Entity) listIterator.next();
     	    _debug(entity.toString());
     	}
@@ -1077,8 +1077,8 @@ public class DTDirector extends SDFDirector {
             throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	for(int i = 0; i < port.getWidth(); i++) {
-    	    for(int j = 0; j < portReceivers[i].length; j++) {
+    	for (int i = 0; i < port.getWidth(); i++) {
+    	    for (int j = 0; j < portReceivers[i].length; j++) {
     	        _debug("  ->" + portReceivers[i][j]);
     	        ((DTReceiver)portReceivers[i][j])._debugViewReceiverInfo();
     	    }
@@ -1092,8 +1092,8 @@ public class DTDirector extends SDFDirector {
     private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-    	for(int i = 0; i < port.getWidth(); i++) {
-    	    for(int j = 0; j<remoteReceivers[i].length; j++) {
+    	for (int i = 0; i < port.getWidth(); i++) {
+    	    for (int j = 0; j<remoteReceivers[i].length; j++) {
     	        _debug("  -->" + remoteReceivers[i][j]);
     	    }
     	}
@@ -1109,7 +1109,7 @@ public class DTDirector extends SDFDirector {
 
         ListIterator receiverIterator = _receiverTable.listIterator();
 
-        while(receiverIterator.hasNext()) {
+        while (receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
             currentReceiver._debugViewReceiverInfo();
         }
@@ -1126,7 +1126,7 @@ public class DTDirector extends SDFDirector {
         Schedule schedule = scheduler.getSchedule();
         _debug("--------SCHEDULE for "+getName()+"-----------------");
         Iterator actors = schedule.actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             _debug(" --> " + ((Nameable)actor).getName());
         }
@@ -1193,7 +1193,7 @@ public class DTDirector extends SDFDirector {
         Iterator listIterator = list.iterator();
         Receiver[][] insideReceivers;
 
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             insideReceivers = port.getInsideReceivers();
             DTReceiver receiver = (DTReceiver) insideReceivers[0][0];
@@ -1201,7 +1201,7 @@ public class DTDirector extends SDFDirector {
             int periodDivider = receiver.getTokenFlowRate();
             _debug("request pseudo-fire at " + deltaTime
                     + " intervals. " + periodDivider);
-            for(int n = 1; n < periodDivider; n++) {
+            for (int n = 1; n < periodDivider; n++) {
                 _requestRefireAt(currentTime + n * deltaTime);
                 _debug(" request pseudo-fire at "
                         + (currentTime + n * deltaTime));
@@ -1217,12 +1217,12 @@ public class DTDirector extends SDFDirector {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
 
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for(int i = 0; i < port.getWidth(); i++) {
-    	        for(int j = 0; j < portReceivers[i].length; j++) {
+    	    for (int i = 0; i < port.getWidth(); i++) {
+    	        for (int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         false;
                 }
@@ -1239,12 +1239,12 @@ public class DTDirector extends SDFDirector {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
 
-        while(listIterator.hasNext()) {
+        while (listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for(int i = 0; i < port.getWidth(); i++) {
-    	        for(int j = 0; j < portReceivers[i].length; j++) {
+    	    for (int i = 0; i < port.getWidth(); i++) {
+    	        for (int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         true;
                 }

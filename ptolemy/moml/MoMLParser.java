@@ -234,7 +234,7 @@ public class MoMLParser extends HandlerBase {
      */
     public void attribute(String name, String value, boolean specified)
             throws XmlException {
-        if(name == null) throw new XmlException("Attribute has no name",
+        if (name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
@@ -355,7 +355,7 @@ public class MoMLParser extends HandlerBase {
         // This will also force evaluation of any parameter that this variable
         // depends on.
         Iterator parameters = _paramsToParse.iterator();
-        while(parameters.hasNext()) {
+        while (parameters.hasNext()) {
             Settable param = (Settable)parameters.next();
             // NOTE: We used to catch exceptions here and issue
             // a warning only, but this has the side effect of blocking
@@ -1637,7 +1637,7 @@ public class MoMLParser extends HandlerBase {
     // throw an exception with the given message.
     private void _checkClass(Object object, Class correctClass, String msg)
             throws XmlException {
-        if(!correctClass.isInstance(object)) {
+        if (!correctClass.isInstance(object)) {
             throw new XmlException(msg,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
@@ -1648,7 +1648,7 @@ public class MoMLParser extends HandlerBase {
     // If the argument is null, throw an exception with the given message.
     private void _checkForNull(Object object, String message)
             throws XmlException {
-        if(object == null) {
+        if (object == null) {
             throw new XmlException(message,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
@@ -2073,7 +2073,7 @@ public class MoMLParser extends HandlerBase {
         while (attributeNames.hasNext()) {
             String name = (String)attributeNames.next();
             String value = (String)_attributes.get(name);
-            if(value != null) {
+            if (value != null) {
                 // Note that we have to escape the value again,
                 // so that it is properly parsed.
                 result.append(" ");

@@ -95,18 +95,18 @@ public class DDEThread extends ProcessThread {
         Actor actor = (Actor)getActor();
 	Iterator outputPorts = actor.outputPortList().iterator();
 	double endTime = PrioritizedTimedQueue.INACTIVE;
-	if( outputPorts != null ) {
-	    while( outputPorts.hasNext() ) {
+	if ( outputPorts != null ) {
+	    while ( outputPorts.hasNext() ) {
 	        IOPort port = (IOPort)outputPorts.next();
                 Receiver receivers[][] =
                     (Receiver[][])port.getRemoteReceivers();
-                if( receivers == null ) {
+                if ( receivers == null ) {
 	            break;
 	        }
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
 			try {
-			    if( ((DDEReceiver)receivers[i][j]).getReceiverTime()
+			    if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
 				    != endTime ) {
 				((DDEReceiver) receivers[i][j]).put(null,
                                 	endTime);
@@ -135,9 +135,9 @@ public class DDEThread extends ProcessThread {
 	Actor actor = getActor();
 	DDEDirector director = (DDEDirector)actor.getDirector();
 	Hashtable table = director._getInitialTimeTable();
-	if( table != null ) {
+	if ( table != null ) {
 	    Double dTime = (Double)table.get(actor);
-	    if( dTime != null ) {
+	    if ( dTime != null ) {
 		double time = dTime.doubleValue();
 		_timeKeeper.setCurrentTime( time );
 	    }

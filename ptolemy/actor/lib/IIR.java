@@ -278,7 +278,7 @@ public class IIR extends Transformer {
     private Token _latestWindow;
 
     private void _initStateVector() throws  IllegalActionException {
-        if(_numerator == null || _denominator == null) {
+        if (_numerator == null || _denominator == null) {
             throw new IllegalActionException(
                     "Cannot initialize the IIR filter. Invalid specification "
                     + "of the numerator or the denominator polynomial.");

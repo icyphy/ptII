@@ -201,7 +201,7 @@ public class CodeFileGenerator extends CodeGenerator {
                                         stringConstants.next().toString());
                 //replace all incidences of " with \" to prevent bad characters
                 //between quotes
-                for(int i=0; i<value.length(); i++)
+                for (int i=0; i<value.length(); i++)
                 {
                     if (value.charAt(i)=='"')
                     {
@@ -278,7 +278,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 parameterCount++;
             }
 
-            for(parameterIndex = 0;parameterIndex < method.getParameterCount();
+            for (parameterIndex = 0;parameterIndex < method.getParameterCount();
                     parameterIndex++)
             {
                 if (parameterCount > 0) code.append(", ");
@@ -346,7 +346,7 @@ public class CodeFileGenerator extends CodeGenerator {
             if (tracker.trapsExist())
             {
                 code.append(_indent(1)+"epc = setjmp(env);\n");
-                code.append(_indent(1)+"if(epc == 0)\n");
+                code.append(_indent(1)+"if (epc == 0)\n");
                 code.append(_indent(1)+"{\n");
             }
 
@@ -377,7 +377,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
                 //code for end unit in exceptions
-                if(tracker.trapsExist()&&tracker.isEndUnit(unit))
+                if (tracker.trapsExist()&&tracker.isEndUnit(unit))
                 {
                     code.append(_indent(2)+"/* That was end unit for trap "+
                                 tracker.endIndexOf(unit)+" */\n");
@@ -387,7 +387,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
 
                 //code for handler unit in exceptions
-                if(tracker.trapsExist()&&tracker.isHandlerUnit(unit))
+                if (tracker.trapsExist()&&tracker.isHandlerUnit(unit))
                 {
                     code.append(_indent(2)+"/* Handler Unit for Trap "+
                                 tracker.handlerIndexOf(unit)+" */\n");
@@ -396,7 +396,7 @@ public class CodeFileGenerator extends CodeGenerator {
             }
 
             //epilogue
-            if(tracker.trapsExist())
+            if (tracker.trapsExist())
             {
                 code.append(_indent(1)+"}\n");
 
@@ -415,7 +415,7 @@ public class CodeFileGenerator extends CodeGenerator {
                             "/* Map exception_type to handler */\n");
                 code.append(_indent(2)+"switch (epc)\n");
                 code.append(_indent(2)+"{\n");
-                for(int i = 0;i<= (tracker.getEpc()-1); i++)
+                for (int i = 0;i<= (tracker.getEpc()-1); i++)
                 {
                     code.append(_indent(3)+"case "+(i)+":\n");
                     if (tracker.getHandlerUnitList(i).size()>0)

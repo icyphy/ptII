@@ -102,12 +102,12 @@ public abstract class StringOut extends TypedAtomicActor {
      *  when checking token availability in the input port.
      */
     public void fire() throws IllegalActionException {
-	if( input.hasToken(0) ) {
+	if ( input.hasToken(0) ) {
 	    input.get(0);
 	    String string = (String)_contents.get( _cntr );
 	    output.broadcast( new StringToken(string) );
 	    _cntr++;
-	    if( _cntr == _contents.size() ) {
+	    if ( _cntr == _contents.size() ) {
 		_cntr = 0;
 	    }
 	}

@@ -113,7 +113,7 @@ public class CommandLineTemplate {
            
             // start the models.
             Iterator models = _models.iterator();
-            while(models.hasNext()) {
+            while (models.hasNext()) {
 
                 // First, we gc and then print the memory stats
                 // BTW to get more info about gc, 
@@ -240,7 +240,7 @@ public class CommandLineTemplate {
         /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            if(object instanceof Placeable) {
+            if (object instanceof Placeable) {
                 hasPlaceable = true;
                 break;
             }
@@ -326,7 +326,7 @@ public class CommandLineTemplate {
      */
     public void stopRun(CompositeActor model) {
         Manager manager = model.getManager();
-        if(manager != null) {
+        if (manager != null) {
             manager.finish();
         }
     }

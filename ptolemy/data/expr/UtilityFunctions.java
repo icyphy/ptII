@@ -74,7 +74,7 @@ public class UtilityFunctions {
      *  @return An observation of a Gaussian random variable.
      */
     public static DoubleToken gaussian(double mean, double standardDeviation) {
-        if(_random == null) _random = new Random();
+        if (_random == null) _random = new Random();
         double raw = _random.nextGaussian();
         double result = (raw*standardDeviation) + mean;
         return new DoubleToken(result);
@@ -89,7 +89,7 @@ public class UtilityFunctions {
      */
     public static DoubleMatrixToken gaussian(
             double mean, double standardDeviation, int rows, int columns) {
-        if(_random == null) _random = new Random();
+        if (_random == null) _random = new Random();
         double[][] result = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -235,7 +235,7 @@ public class UtilityFunctions {
 
 
             // Read the file and convert it into a matrix
-            if(_matrixParser == null) {
+            if (_matrixParser == null) {
                 _matrixParser = new MatrixParser( System.in );
             }
 
@@ -248,7 +248,7 @@ public class UtilityFunctions {
             }
 
             Iterator i = k.iterator();
-            while( i.hasNext() ) {
+            while ( i.hasNext() ) {
                 Vector l = (Vector) i.next();
                 if ( row == -1 ) {
                     // the row size.
@@ -263,7 +263,7 @@ public class UtilityFunctions {
                     }
                 }
                 Iterator j = l.iterator();
-                while( j.hasNext() ) {
+                while ( j.hasNext() ) {
                     Double s = (Double) j.next();
                     mtr[columnPosition][rowPosition++] = s.doubleValue();
                 }
@@ -293,7 +293,7 @@ public class UtilityFunctions {
     public static ArrayToken repeat(IntToken numberOfTimes, Token element) {
         int length = numberOfTimes.intValue();
         Token[] result = new Token[length];
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             result[i] = element;
         }
 

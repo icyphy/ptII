@@ -124,7 +124,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
             = (Settable [])paramList.toArray(
                     new Settable[paramList.size()]);
 	String values[] = new String[choices.length];
-	for(int i = 0; i < choices.length; i++) {
+	for (int i = 0; i < choices.length; i++) {
 	    values[i] = choices[i].getExpression();
 	}
         Settable container = (Settable)getContainer();

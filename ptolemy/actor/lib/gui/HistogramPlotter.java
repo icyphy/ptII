@@ -290,7 +290,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  specified using the source attribute need not be returned here.
      */
     public String getText() {
-        if(histogram == null) {
+        if (histogram == null) {
             // FIXME
             return "";
         } else {
@@ -377,7 +377,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             Iterator sources = _configureSources.iterator();
             Iterator texts = _configureTexts.iterator();
             Iterator bases = _configureBases.iterator();
-            while(sources.hasNext()) {
+            while (sources.hasNext()) {
                 URL base = (URL)bases.next();
                 String source = (String)sources.next();
                 String text = (String)texts.next();
@@ -440,7 +440,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
-        if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
+        if (((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
             histogram.fillPlot();
         }
         super.wrapup();
@@ -464,7 +464,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         // instructions cannot be nested in XML (lame, isn't it?).
         String header
             = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-	if(histogram != null) {
+	if (histogram != null) {
 	    output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
                     + header + "\n<plot>\n");
 	    PrintWriter print = new PrintWriter(output);
@@ -473,14 +473,14 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
 	    histogram.writeFormat(print);
 	    output.write("</plot>?>\n"
                     + _getIndentPrefix(depth) + "</configure>\n");
-        } else if(_configureSources != null) {
+        } else if (_configureSources != null) {
             // Configuration has been specified, but not yet evaluated.
             // Save the configuration just as specified.
             // Note that the bases are lost, since those are presumably
             // the URL of the file containing the XML.
             Iterator sources = _configureSources.iterator();
             Iterator texts = _configureTexts.iterator();
-            while(sources.hasNext()) {
+            while (sources.hasNext()) {
                 String source = (String)sources.next();
                 String text = (String)texts.next();
                 if (source != null && !source.trim().equals("")) {

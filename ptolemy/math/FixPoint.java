@@ -450,7 +450,7 @@ public class FixPoint implements Cloneable, Serializable {
         if (_precision.getFractionBitLength() > 0) {
             ln +=  ".";
             // Append the zeros
-            for(int i = 0; i < delta; i++) {
+            for (int i = 0; i < delta; i++) {
                 ln += "0";
             }
             if (num > 0) {
@@ -772,7 +772,7 @@ public class FixPoint implements Cloneable, Serializable {
 
                 // Check if last delta bits are zero
                 // Because then no rounding takes place
-                for(int i = 0; i < -delta; i++){
+                for (int i = 0; i < -delta; i++){
                     if (work.fixValue.testBit(i) == true) {
                         work.setError(ROUNDING);
                     }

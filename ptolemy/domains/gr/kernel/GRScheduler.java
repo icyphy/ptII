@@ -131,13 +131,13 @@ public class GRScheduler extends Scheduler {
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
         GRDirector director = (GRDirector)getContainer();
-        if(director == null) {
+        if (director == null) {
             return null;
         }
 
         // If there is no container, there are no actors
         CompositeActor container = (CompositeActor)(director.getContainer());
-        if(container == null) {
+        if (container == null) {
             return null;
         }
 
@@ -161,18 +161,18 @@ public class GRScheduler extends Scheduler {
             // Find the successors of the actor
             LinkedList successors = new LinkedList();
             Iterator outports = actor.outputPortList().iterator();
-            while(outports.hasNext()) {
+            while (outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
                 int referenceDepth = outPort.depthInHierarchy();
                 Iterator inPorts = outPort.deepConnectedInPortList().iterator();
-                while(inPorts.hasNext()) {
+                while (inPorts.hasNext()) {
                     IOPort inPort = (IOPort)inPorts.next();
                     if (inPort.depthInHierarchy() < referenceDepth) {
                         // Skip this port... it's higher in the hierarchy.
                         continue;
                     }
                     Actor post = (Actor)inPort.getContainer();
-                    if(!successors.contains(post)) {
+                    if (!successors.contains(post)) {
                         successors.addLast(post);
                     }
                 }
@@ -211,7 +211,7 @@ public class GRScheduler extends Scheduler {
 
         Schedule schedule = new Schedule();
         Object[] sorted = dag.topologicalSort();
-        for(int counter = 0; counter < actorCount ;counter++) {
+        for (int counter = 0; counter < actorCount ;counter++) {
             Firing firing = new Firing();
             schedule.add(firing);
             firing.setActor((Actor) sorted[counter]);

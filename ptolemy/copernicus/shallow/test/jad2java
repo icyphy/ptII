@@ -44,7 +44,7 @@ awk '{if ($0 ~ /public void __CGInit/) {
 	    print $0
 	}
     }' |
-awk '{ if($0 ~ /^package/) {
+awk '{ if ($0 ~ /^package/) {
 	    print $0
 	    printf("\n");
 	    print "import ptolemy.kernel.util.IllegalActionException;"
@@ -53,7 +53,7 @@ awk '{ if($0 ~ /^package/) {
 	    print $0
 	}
     }' |
-awk '{ if($0 ~ /__CGInit\(\);/) {
+awk '{ if ($0 ~ /__CGInit\(\);/) {
 	    indent = "        ";
 	    print indent "try {"
     	    print indent $0
@@ -65,7 +65,7 @@ awk '{ if($0 ~ /__CGInit\(\);/) {
 	    print $0
 	}
     }' |
-awk '{ if( $0 ~ /CompositeEntity compositeentity, String s\)$/) {
+awk '{ if ( $0 ~ /CompositeEntity compositeentity, String s\)$/) {
 	    print $0, "throws IllegalActionException, NameDuplicationException"
 	} else {
 	    print $0

@@ -180,7 +180,7 @@ public class Configurer extends JPanel implements CloseListener {
      */
     public void windowClosed(Window window, String button) {
         Iterator listeners = _closeListeners.iterator();
-        while(listeners.hasNext()) {
+        while (listeners.hasNext()) {
             CloseListener listener = (CloseListener)listeners.next();
             listener.windowClosed(window, button);
         }

@@ -125,19 +125,19 @@ public class MailboxBoundaryReceiver extends Mailbox
         Workspace workspace = getContainer().workspace();
         Token result = null;
         synchronized(this) {
-            if( !_terminate && !hasToken() ) {
+            if ( !_terminate && !hasToken() ) {
                 _readBlock = true;
                 prepareToBlock(branch);
-                while( _readBlock && !_terminate ) {
+                while ( _readBlock && !_terminate ) {
                     workspace.wait(this);
                 }
             }
 
-            if( _terminate ) {
+            if ( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
             	result = super.get();
-                if( _writeBlock ) {
+                if ( _writeBlock ) {
                     wakeUpBlockedPartner();
                     _writeBlock = false;
                     notifyAll();
@@ -192,7 +192,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @return True if this is a consumer receiver; return false otherwise.
      */
     public boolean isConsumerReceiver() {
-        if( isConnectedToBoundary() ) {
+        if ( isConnectedToBoundary() ) {
             return true;
         }
     	return false;
@@ -233,7 +233,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @return True if this is a producer receiver; return false otherwise.
      */
     public boolean isProducerReceiver() {
-        if( isOutsideBoundary() || isInsideBoundary() ) {
+        if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
     	return false;
@@ -267,7 +267,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  @param branch The Branch managing execution of this method.
      */
     public synchronized void prepareToBlock(Branch branch) {
-        if( branch != null ) {
+        if ( branch != null ) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
@@ -293,19 +293,19 @@ public class MailboxBoundaryReceiver extends Mailbox
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
         synchronized(this) {
-            if( !_terminate && !hasRoom() ) {
+            if ( !_terminate && !hasRoom() ) {
                 _writeBlock = true;
                 prepareToBlock(branch);
-                while( _writeBlock && !_terminate ) {
+                while ( _writeBlock && !_terminate ) {
                     workspace.wait(this);
                 }
             }
 
-            if( _terminate ) {
+            if ( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
                 super.put(token);
-                if( _readBlock ) {
+                if ( _readBlock ) {
                     wakeUpBlockedPartner();
                     _readBlock = false;
                     notifyAll();
@@ -351,7 +351,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  the new state with the blocked branch.
      */
     public synchronized void wakeUpBlockedPartner() {
-        if( _otherBranch != null ) {
+        if ( _otherBranch != null ) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)

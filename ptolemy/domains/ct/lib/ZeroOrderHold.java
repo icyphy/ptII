@@ -114,7 +114,7 @@ public class ZeroOrderHold extends Transformer
      *  the old token will be held.
      *
     public void consumeCurrentEvents() throws IllegalActionException{
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             _lastToken = input.get(0);
             CTDirector dir = (CTDirector) getDirector();
             _debug(getFullName() + " receives an event at: " +
@@ -137,7 +137,7 @@ public class ZeroOrderHold extends Transformer
     public void fire() throws IllegalActionException{
         CTDirector director = (CTDirector)getDirector();
         if (director.isDiscretePhase()) {
-            if(input.hasToken(0)) {
+            if (input.hasToken(0)) {
                 _lastToken = input.get(0);
                 CTDirector dir = (CTDirector) getDirector();
                 _debug(getFullName() + " receives an event at: " +

@@ -119,7 +119,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if(_debugging) _debug(getName(), " fire.");
+        if (_debugging) _debug(getName(), " fire.");
         if (_firstFire) {
             Actor[] actors = getController().currentState().getRefinement();
             _enabledRefinements = new LinkedList();
@@ -134,7 +134,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
        FSMActor ctrl = getController();
         ctrl._setInputVariables();
-        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
+        if (_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
@@ -155,7 +155,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 	Iterator actors = _enabledRefinements.iterator();
 	while (actors.hasNext()) {
 	    Actor actor = (Actor)actors.next();
-            if(_debugging) _debug(getName(), " fire refinement",
+            if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
 	    actor.fire();
 	}

@@ -102,7 +102,7 @@ public class Sleep extends Transformer {
 	    try {
 		long sleepTimeValue =
 		    ((LongToken)sleepTime.getToken()).longValue();
-		if(_debugging) _debug(getName() + "Wait for" +
+		if (_debugging) _debug(getName() + "Wait for" +
 				      sleepTimeValue + "milliseconds.");
 		Thread.sleep(sleepTimeValue);
 	    } catch (InterruptedException e) {
@@ -113,9 +113,9 @@ public class Sleep extends Transformer {
 	    int inputWidth = input.getWidth();
 	    int outputWidth = output.getWidth();
 	    for (int i = 0; i < inputWidth; i++) {
-		if(input.hasToken(i)) {
+		if (input.hasToken(i)) {
 		    Token inToken = input.get(i);
-		    if( i < outputWidth) {
+		    if ( i < outputWidth) {
 			output.send(i, inToken);
 		    }
 		}

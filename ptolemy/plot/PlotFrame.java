@@ -157,7 +157,7 @@ public class PlotFrame extends JFrame {
 
         FileMenuListener fml = new FileMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < fileMenuItems.length; i++) {
+        for (int i = 0; i < fileMenuItems.length; i++) {
             fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
             fileMenuItems[i].addActionListener(fml);
             _fileMenu.add(fileMenuItems[i]);
@@ -182,7 +182,7 @@ public class PlotFrame extends JFrame {
         };
         SpecialMenuListener sml = new SpecialMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < specialMenuItems.length; i++) {
+        for (int i = 0; i < specialMenuItems.length; i++) {
             specialMenuItems[i].setActionCommand(
                     specialMenuItems[i].getText());
             specialMenuItems[i].addActionListener(sml);

@@ -212,9 +212,9 @@ public class Subscriber extends Source implements RemoteEventListener {
         // Consume tokens at the trigger input.
         super.fire();
         synchronized(_lock) {
-            while(true) {
+            while (true) {
                 if (_lastReadToken == null) {
-                    if(_blocking) {
+                    if (_blocking) {
                         try {
                             if (_debugging) {
                                 _debug(getName(), " is waiting.");
@@ -325,7 +325,7 @@ public class Subscriber extends Source implements RemoteEventListener {
                                 "error reading space." +
                                 e.getMessage());
                     }
-                    if(entry == null) {
+                    if (entry == null) {
                         System.out.println("Warning: " + getName() +
                                 " read null from space");
                     } else {

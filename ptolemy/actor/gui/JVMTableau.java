@@ -180,7 +180,7 @@ public class JVMTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+	    if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
                 JVMTableau tableau =
                     (JVMTableau)effigy.getEntity("JVMTableau");

@@ -143,7 +143,7 @@ public class RecordUpdater extends TypedAtomicActor {
 
         RecordToken record = (RecordToken)input.get(0);
         Set recordLabels = record.labelSet();
-        for(Iterator i = recordLabels.iterator(); i.hasNext(); ) {
+        for (Iterator i = recordLabels.iterator(); i.hasNext(); ) {
             String name = (String)i.next();
             Token value = record.get(name);
             outputMap.put(name, value);
@@ -151,7 +151,7 @@ public class RecordUpdater extends TypedAtomicActor {
 
         List inputPorts = inputPortList();
 	Iterator inputPortsIterator = inputPorts.iterator();
-	while(inputPortsIterator.hasNext()) {
+	while (inputPortsIterator.hasNext()) {
 	    TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
 	    if (inputPort != input) {
                 outputMap.put(inputPort.getName(), inputPort.get(0));

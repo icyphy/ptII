@@ -223,7 +223,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public double refinedStepSize() {
         CTDirector dir = (CTDirector)getDirector();
-        if(!_accurate) {
+        if (!_accurate) {
             return 0.5*dir.getCurrentStepSize();
         }
         return dir.getCurrentStepSize();

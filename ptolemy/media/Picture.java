@@ -86,13 +86,13 @@ public class Picture extends Canvas {
      *  now OK to display the new image.
      */
     public void displayImage() {
-        if(_imageSource == null && _image == null) {
+        if (_imageSource == null && _image == null) {
             _imageSource = new MemoryImageSource(_width, _height,
                     ColorModel.getRGBdefault(), _pixels, 0, _width);
             _imageSource.setAnimated(true);
             _image = createImage(_imageSource);
         }
-	if(_imageSource != null) {
+	if (_imageSource != null) {
 	    _imageSource.newPixels();
 	}
     }
@@ -138,7 +138,7 @@ public class Picture extends Canvas {
                     + "match that of the component.");
         }
         _pixels = pixels;
-        if(_imageSource != null) {
+        if (_imageSource != null) {
             _imageSource.newPixels(pixels,
 				   ColorModel.getRGBdefault(), 0, _width);
         }

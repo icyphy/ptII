@@ -64,9 +64,9 @@ public class ActorGraphTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        if(container instanceof PtolemyEffigy) {
+        if (container instanceof PtolemyEffigy) {
             NamedObj model = container.getModel(); 
-            if(model == null) {
+            if (model == null) {
                 return;
             }
             if (!(model instanceof CompositeEntity)) {
@@ -124,7 +124,7 @@ public class ActorGraphTableau extends Tableau {
 	 *  tableau.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+	    if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 ActorGraphTableau tableau =
                     (ActorGraphTableau)effigy.getEntity("graphTableau");

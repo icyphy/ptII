@@ -227,7 +227,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
             String arg = args[i];
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
-                    if(i >= args.length - 1) {
+                    if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set " +
                                 "parameter " + arg + " when no value is " +
                                 "given.");
@@ -312,12 +312,12 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
             + "Options that take values:\n";
 
         int i;
-        for(i = 0; i < _commandOptions.length; i++) {
+        for (i = 0; i < _commandOptions.length; i++) {
             result += " " + _commandOptions[i][0] +
                 " " + _commandOptions[i][1] + "\n";
         }
         result += "\nBoolean flags:\n";
-        for(i = 0; i < _commandFlags.length; i++) {
+        for (i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
         return result;

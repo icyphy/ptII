@@ -79,7 +79,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
         // First, resolve any 'to the power' expressions.
         ListIterator itr = _tokens.listIterator(0);
         int index = 0;
-        while( itr.hasNext() ) {
+        while ( itr.hasNext() ) {
             Token u = (Token)itr.next();
             String opr = u.image;
             if (opr.compareTo("^") == 0) {
@@ -126,7 +126,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
             itr = _tokens.listIterator(0);
             index = 1;
-            while( itr.hasNext() ) {
+            while ( itr.hasNext() ) {
 
                 Token x = (Token)itr.next();
                 op = x.image;
@@ -173,14 +173,14 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
         System.out.println(" ----------------------------- " );
         Iterator itr = _tokens.iterator();
-        while( itr.hasNext() ) {
+        while ( itr.hasNext() ) {
             Token u = (Token)itr.next();
             String opr = u.image;
             System.out.print(" " + opr );
         }
 
         itr = _numbers.iterator();
-        while( itr.hasNext() ) {
+        while ( itr.hasNext() ) {
             ptolemy.data.Token n = (ptolemy.data.Token)itr.next();
             System.out.print(" " + n.toString() );
         }

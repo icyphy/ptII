@@ -143,7 +143,7 @@ public class HoverLinearizer extends TypedAtomicActor
         outputR.setTypeEquals(BaseType.DOUBLE);
 
         String s = new String();
-        for(int i = 0; i< 5; i++) {
+        for (int i = 0; i< 5; i++) {
             s = s + _alphaP[i] + " ";
         }
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
@@ -204,7 +204,7 @@ public class HoverLinearizer extends TypedAtomicActor
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
             int tokencount = stokens.countTokens();
-            while(stokens.hasMoreTokens() && index < 5) {
+            while (stokens.hasMoreTokens() && index < 5) {
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }

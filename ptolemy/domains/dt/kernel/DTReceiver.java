@@ -137,7 +137,7 @@ public class DTReceiver extends SDFReceiver {
 
     	    Parameter param = (Parameter)
                 _fromPort.getAttribute("tokenProductionRate");
-    	    if(param == null) {
+    	    if (param == null) {
                 _outrate = 1;
             } else {
                 _outrate = ((IntToken)param.getToken()).intValue();
@@ -148,7 +148,7 @@ public class DTReceiver extends SDFReceiver {
             } else {
                 param =
                     (Parameter) _toPort.getAttribute("tokenConsumptionRate");
-    	        if(param == null) {
+    	        if (param == null) {
                     _inRate = 1;
                 } else {
                     _inRate = ((IntToken)param.getToken()).intValue();
@@ -212,8 +212,8 @@ public class DTReceiver extends SDFReceiver {
                 Receiver[][] remoteReceivers =
                                    connectedPort.getRemoteReceivers();
 
-                for(int i = 0; i < connectedPort.getWidth(); i++) {
-                    for(int j = 0; j < remoteReceivers[i].length; j++) {
+                for (int i = 0; i < connectedPort.getWidth(); i++) {
+                    for (int j = 0; j < remoteReceivers[i].length; j++) {
                         if (remoteReceivers[i][j] == this) {
                             _from = (Actor) connectedPort.getContainer();
                             _fromPort = connectedPort;

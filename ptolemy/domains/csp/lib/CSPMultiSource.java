@@ -147,7 +147,7 @@ public class CSPMultiSource extends CSPActor {
 
             boolean continueCDO = true;
             while ( continueCDO ) {
-                if( count > limit && limit >= 0 ) {
+                if ( count > limit && limit >= 0 ) {
                     return;
                 }
                 Token t = new IntToken(count);

@@ -113,7 +113,7 @@ public class VectorAssembler extends Transformer {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-	for(int i = 0; i < input.getWidth(); i++) {
+	for (int i = 0; i < input.getWidth(); i++) {
 	    if ( !input.hasToken(i)) {
 	        return false;
 	    }

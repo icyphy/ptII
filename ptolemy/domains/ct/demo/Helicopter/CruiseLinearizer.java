@@ -143,13 +143,13 @@ public class CruiseLinearizer extends TypedAtomicActor
         outputR.setTypeEquals(BaseType.DOUBLE);
 
         String sP = new String();
-        for(int i = 0; i< 5; i++) {
+        for (int i = 0; i< 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
         paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
         String sV = new String();
-        for(int i = 0; i< 4; i++) {
+        for (int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
         paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
@@ -210,11 +210,11 @@ public class CruiseLinearizer extends TypedAtomicActor
             String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
-            if(stokens.countTokens() < 5) {
+            if (stokens.countTokens() < 5) {
                 throw new IllegalActionException ( this,
                         "Not enough parameter numbers.");
             }
-            while(stokens.hasMoreTokens() && index < 5) {
+            while (stokens.hasMoreTokens() && index < 5) {
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
@@ -222,11 +222,11 @@ public class CruiseLinearizer extends TypedAtomicActor
             taps = ((StringToken)paramAlphaV.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;
-            if(stokens.countTokens() < 4) {
+            if (stokens.countTokens() < 4) {
                 throw new IllegalActionException ( this,
                         "Not enough parameter numbers.");
             }
-            while(stokens.hasMoreTokens() && index < 4) {
+            while (stokens.hasMoreTokens() && index < 4) {
                 String valueToken = stokens.nextToken();
                 _alphaV[index++] = (new Double(valueToken)).doubleValue();
             }

@@ -96,7 +96,7 @@ public class ReaderProcessWriter {
 		new double[channels][getSamplesSize];
 	    boolean done = false;
 	    // The main loop.
-	    while(!done) {
+	    while (!done) {
 		// Read in some audio samples.
 		capturedSamplesArray = soundReader.getSamples();
 		if (_debug) {

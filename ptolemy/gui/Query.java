@@ -226,8 +226,8 @@ public class Query extends JPanel {
      *  @param listener The listener to add.
      */
     public void addQueryListener(QueryListener listener) {
-        if(_listeners == null) _listeners = new Vector();
-        if(_listeners.contains(listener)) return;
+        if (_listeners == null) _listeners = new Vector();
+        if (_listeners.contains(listener)) return;
         _listeners.add(listener);
     }
 
@@ -352,7 +352,7 @@ public class Query extends JPanel {
     public boolean booleanValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + "\" in the query box.");
         }
@@ -384,7 +384,7 @@ public class Query extends JPanel {
             throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -435,7 +435,7 @@ public class Query extends JPanel {
             throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -470,7 +470,7 @@ public class Query extends JPanel {
      */
     public void notifyListeners() {
         Iterator names = _entries.keySet().iterator();
-        while(names.hasNext()) {
+        while (names.hasNext()) {
             String name = (String)names.next();
             _notifyListeners(name);
         }
@@ -481,7 +481,7 @@ public class Query extends JPanel {
      *  @param listener The listener to remove.
      */
     public void removeQueryListener(QueryListener listener) {
-        if(_listeners == null) return;
+        if (_listeners == null) return;
         _listeners.remove(listener);
     }
 
@@ -501,7 +501,7 @@ public class Query extends JPanel {
     public void set(String name, String value)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -592,7 +592,7 @@ public class Query extends JPanel {
     public void setBoolean(String name, boolean value)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + "\" in the query box.");
         }
@@ -634,7 +634,7 @@ public class Query extends JPanel {
     public void setDisplay(String name, String value)
             throws  NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -657,13 +657,13 @@ public class Query extends JPanel {
      */
     public void setEnabled(String name, boolean value) {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
-        if(result instanceof JComponent) {
+        if (result instanceof JComponent) {
             ((JComponent)result).setEnabled(value);
-        } else if(result instanceof JRadioButton[]) {
+        } else if (result instanceof JRadioButton[]) {
             JRadioButton[] buttons = (JRadioButton[])result;
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setEnabled(value);
@@ -684,7 +684,7 @@ public class Query extends JPanel {
      */
     public void setLine(String name, String value) {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -767,7 +767,7 @@ public class Query extends JPanel {
      */
     public void setSlider(String name, int value) {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -819,7 +819,7 @@ public class Query extends JPanel {
     public String stringValue(String name)
             throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
-        if(result == null) {
+        if (result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
@@ -851,7 +851,7 @@ public class Query extends JPanel {
 		// If there was more than one file chosen, then return
 		// an array of strings of the format
 		// {"file:/c:/foo/bar", "file:c:/foo/bar"}
-		for( int i = 0; i < files.length; i++ ) {
+		for ( int i = 0; i < files.length; i++ ) {
 		    if (i == 0 && files.length > 1) {
 			urls.append("{");
 		    }
@@ -972,7 +972,7 @@ public class Query extends JPanel {
      *  @param name The entry that may have changed.
      */
     void _notifyListeners(String name) {
-        if(_listeners != null) {
+        if (_listeners != null) {
             String previous = (String)_previous.get(name);
             String newValue = stringValue(name);
             if (newValue.equals(previous)) {
@@ -987,7 +987,7 @@ public class Query extends JPanel {
             _previous.put(name, newValue);
 
             Enumeration listeners = _listeners.elements();
-            while(listeners.hasMoreElements()) {
+            while (listeners.hasMoreElements()) {
                 QueryListener queryListener =
                     (QueryListener)(listeners.nextElement());
                 queryListener.changed(name);

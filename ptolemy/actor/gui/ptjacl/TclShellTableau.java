@@ -160,7 +160,7 @@ public class TclShellTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+	    if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
                 TclShellTableau tableau =
                     (TclShellTableau)effigy.getEntity("TclShellTableau");

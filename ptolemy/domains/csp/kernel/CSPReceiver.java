@@ -266,7 +266,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isConsumerReceiver() {
-        if( isConnectedToBoundary() ) {
+        if ( isConnectedToBoundary() ) {
             return true;
         }
     	return false;
@@ -302,7 +302,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isProducerReceiver() {
-        if( isOutsideBoundary() || isInsideBoundary() ) {
+        if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
     	return false;
@@ -329,7 +329,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /**
      */
     public synchronized void prepareToBlock(Branch branch) {
-        if( branch != null ) {
+        if ( branch != null ) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
@@ -399,7 +399,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 prepareToBlock(branch);
                 // _getDirector()._actorBlocked(this);
                 blocked = true;
-                while(_isPutWaiting()) {
+                while (_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
@@ -457,7 +457,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /**
      */
     public synchronized void wakeUpBlockedPartner() {
-        if( _otherBranch != null ) {
+        if ( _otherBranch != null ) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             /*

@@ -137,7 +137,7 @@ public class TextEditorTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof TextEffigy) {
+	    if (effigy instanceof TextEffigy) {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau =

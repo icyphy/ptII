@@ -159,7 +159,7 @@ public class GiottoCodeGenerator extends Attribute {
 	Iterator actors = _container.deepEntityList().iterator();
 	//Iterator actors = _container.entityList().iterator();
 
-	while(actors.hasNext()) {
+	while (actors.hasNext()) {
 	    TypedActor actor = (TypedActor)actors.next();
 	    _commActors.addLast(actor);
 	}
@@ -266,7 +266,7 @@ public class GiottoCodeGenerator extends Attribute {
 	codeString += "output" + _endLine;
 
 	Iterator actors = _commActors.iterator();
-	while(actors.hasNext()) {
+	while (actors.hasNext()) {
 	    TypedActor actor = (TypedActor)actors.next();
 	    _outPorts = actor.outputPortList().iterator();
 	    while (_outPorts.hasNext()) {
@@ -341,7 +341,7 @@ public class GiottoCodeGenerator extends Attribute {
 	// Generate task functions for common actors.
 	Iterator actors = _commActors.iterator();
 
-	while(actors.hasNext()) {
+	while (actors.hasNext()) {
 	    actor = (Actor) actors.next();
 	    codeString += _taskCode(actor);
 	}
@@ -349,10 +349,10 @@ public class GiottoCodeGenerator extends Attribute {
 /*	//Generate task code for mode actors.
 
 	Iterator modes = _modeList.iterator();
-	while(modes.hasNext()) {
+	while (modes.hasNext()) {
 	    TypedCompositeActor mode = (TypedCompositeActor) modes.next();
 	    Iterator modeActors = mode.deepEntityList().iterator();
-	    while(modeActors.hasNext()) {
+	    while (modeActors.hasNext()) {
 		actor = (TypedCompositeActor)modeActors.next();
 		codeString += _taskCode(actor);
 	    }
@@ -392,7 +392,7 @@ public class GiottoCodeGenerator extends Attribute {
                         inPort.getName(_container));
 	    //Iterator sourcePorts = inPort.sourcePortList().iterator();
 	    Iterator sourcePorts = inPort.connectedPortList().iterator();
-	    while(sourcePorts.hasNext()) {
+	    while (sourcePorts.hasNext()) {
 		IOPort port = (IOPort)sourcePorts.next();
 		sanitizedPortName = StringUtilities.sanitizeName(
                         port.getName(_container));
@@ -460,10 +460,10 @@ public class GiottoCodeGenerator extends Attribute {
 
 	//Generate driver functions for mode actors.
 	Iterator modes = _modeList.iterator();
-	while(modes.hasNext()) {
+	while (modes.hasNext()) {
 	    Actor mode = (Actor) modes.next();
 	    Iterator modeActors = ((TypedCompositeActor)mode).deepEntityList().iterator();
-	    while(modeActors.hasNext()) {
+	    while (modeActors.hasNext()) {
 		actor = (Actor) modeActors.next();
 		codeString += _driverCode(actor);
 	    }
@@ -473,7 +473,7 @@ public class GiottoCodeGenerator extends Attribute {
 	//Generate driver functions for the _modeSwitchController's inputs
 	//Only when there are several modes, the following drivers for
 	// modes switch are necessary.
-	if(_modeSwitchController!= null) {
+	if (_modeSwitchController!= null) {
 	    _inPorts = _modeSwitchController.inputPortList().iterator();
 	    while (_inPorts.hasNext()) {
 		driverParas = "";
@@ -484,7 +484,7 @@ public class GiottoCodeGenerator extends Attribute {
 			   + sanitizedPortName
 			   + "_driver (");
 		Iterator sourcePorts = inPort.sourcePortList().iterator();
-		while(sourcePorts.hasNext()) {
+		while (sourcePorts.hasNext()) {
 		    IOPort port = (IOPort)sourcePorts.next();
 		    Actor actor = (Actor) port.getContainer();
 		    Director director3 = actor.getDirector();
@@ -540,7 +540,7 @@ public class GiottoCodeGenerator extends Attribute {
 			 + "_driver (";
 
 	    Iterator portConnected = port.insidePortList().iterator();
-	    while(portConnected.hasNext()) {
+	    while (portConnected.hasNext()) {
 		IOPort outPort = (IOPort)portConnected.next();
 		sanitizedPortName = StringUtilities.sanitizeName(
                         outPort.getName(_container));
@@ -621,7 +621,7 @@ public class GiottoCodeGenerator extends Attribute {
 		while (portConnected.hasNext()) {
 		    TypedIOPort outPort =
 			(TypedIOPort) portConnected.next();
-                    if(!outPort.isOutput()) {
+                    if (!outPort.isOutput()) {
                         continue;
                     }
    		    Nameable actor = outPort.getContainer();
@@ -629,7 +629,7 @@ public class GiottoCodeGenerator extends Attribute {
 			Parameter actorFreqPara = (Parameter)
 			    ((NamedObj)actor).
                             getAttribute("frequency");
-                        if(actorFreqPara == null) {
+                        if (actorFreqPara == null) {
                             actorFreq = 1;
                         } else {
                             actorFreq = ((IntToken) actorFreqPara.
@@ -714,7 +714,7 @@ public class GiottoCodeGenerator extends Attribute {
 		// _modeSwitchController
 		State initState = _modeSwitchController.getInitialState();
 		Iterator states = _modeSwitchController.entityList().iterator(); //???
-		while(states.hasNext()) {
+		while (states.hasNext()) {
 		    State state = (State) states.next();
 		    if (state != initState) {
 			StringAttribute statePara = (StringAttribute)
@@ -830,13 +830,13 @@ public class GiottoCodeGenerator extends Attribute {
 
 			//generate mode code for each mode actor driver
 			modes = _modeList.iterator();
-			while(modes.hasNext()) {
+			while (modes.hasNext()) {
 			    TypedCompositeActor mode =
 				(TypedCompositeActor) modes.next();
 			    if (mode.getName().trim().equals(modeName)){;
 			    Iterator modeActors = mode.
 				deepEntityList().iterator();
-			    while(modeActors.hasNext()) {
+			    while (modeActors.hasNext()) {
 				TypedActor modeActor =
 				    (TypedActor)modeActors.next();
 				actorName = StringUtilities.sanitizeName((

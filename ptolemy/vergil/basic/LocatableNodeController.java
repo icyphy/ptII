@@ -90,7 +90,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  node does not have a desired location.
      */
     public double[] getLocation(Object node) {
-        if(hasLocation(node)) {
+        if (hasLocation(node)) {
             return ((Location) node).getLocation();
         } else throw new RuntimeException("The node " + node +
                 "does not have a desired location");
@@ -101,10 +101,10 @@ public class LocatableNodeController extends BasicNodeController {
      *  an instance of Location.
      */
     public boolean hasLocation(Object node) {
-        if(node instanceof Location) {
+        if (node instanceof Location) {
             Location object = (Location) node;
             double[] location = object.getLocation();
-            if(location != null) return true;
+            if (location != null) return true;
         }
         return false;
     }
@@ -119,7 +119,7 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void locateFigure(Object node) {
 	Figure nf = getController().getFigure(node);
-	if(hasLocation(node)) {
+	if (hasLocation(node)) {
 	    double[] location = getLocation(node);
 	    CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
@@ -131,7 +131,7 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
-	if(node instanceof Location) {
+	if (node instanceof Location) {
             ((Location)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");

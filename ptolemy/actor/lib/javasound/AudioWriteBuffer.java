@@ -125,7 +125,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     public AudioWriteBuffer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	if(_debugging) _debug("AudioWriteBuffer: Constructor invoked");
+	if (_debugging) _debug("AudioWriteBuffer: Constructor invoked");
 	address = new TypedIOPort(this, "address", true, false);
         address.setMultiport(true);
         address.setTypeEquals(BaseType.INT);
@@ -220,7 +220,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioWriteBuffer: attributeChanged() invoked on: " +
+	if (_debugging) _debug("AudioWriteBuffer: attributeChanged() invoked on: " +
                 attribute.getName());
 	if (attribute == channels) {
 	    _channels =
@@ -267,7 +267,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioWriteBuffer: initialize(): invoked");
+	if (_debugging) _debug("AudioWriteBuffer: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
 	_initializeWriter();
 	_safeToInitialize = true;
@@ -346,7 +346,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
-	if(_debugging) _debug("AudioWriteBuffer: wrapup(): invoked");
+	if (_debugging) _debug("AudioWriteBuffer: wrapup(): invoked");
 	// Close any open sound files.
 	if (_soundWriter != null) {
             try {
@@ -379,7 +379,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     private synchronized void _initializeWriter()
             throws IllegalActionException {
-	if(_debugging) _debug("AudioWriteBuffer: _initializeWriter() invoked.");
+	if (_debugging) _debug("AudioWriteBuffer: _initializeWriter() invoked.");
 	// Close any open sound files. Free
 	// up audio system resources.
 	if (_soundWriter != null) {
@@ -398,7 +398,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 	}
 	String pathNameString = pathName.getExpression();
 	// Write audio data to a file.
-	if(_debugging) _debug("AudioWriteBuffer: initialize(): write to file");
+	if (_debugging) _debug("AudioWriteBuffer: initialize(): write to file");
 	int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	int bitsPerSampleInt =
 	    ((IntToken)bitsPerSample.getToken()).intValue();

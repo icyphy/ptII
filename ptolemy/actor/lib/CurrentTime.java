@@ -85,7 +85,7 @@ public class CurrentTime extends TimedSource {
         double currentTime = Double.MAX_VALUE;
         if (trigger.getWidth() > 0) {
             // Trigger port is connected.
-            for(int i=0; i<trigger.getWidth(); i++) {
+            for (int i=0; i<trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
                     currentTime = Math.min(
                             trigger.getCurrentTime(i), currentTime);

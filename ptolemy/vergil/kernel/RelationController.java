@@ -92,7 +92,7 @@ public class RelationController extends ParameterizedNodeController {
 	    polygon.lineTo(0, -h/2);
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
-	    if(n != null) {
+	    if (n != null) {
 		Vertex vertex = (Vertex)n;
 		Relation relation = (Relation) vertex.getContainer();
                 ActorGraphModel model =

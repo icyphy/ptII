@@ -292,7 +292,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
             _phase = 0;
             _cycleStartTime += periodValue;
         }
-        if(_offsets[_phase] >= periodValue) {
+        if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this,
                     "Offset number " + _phase + " with value "
                     + _offsets[_phase] + " must be less than the "

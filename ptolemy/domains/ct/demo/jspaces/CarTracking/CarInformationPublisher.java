@@ -215,13 +215,13 @@ public class CarInformationPublisher extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
 	try {
 	    String name = ((StringToken)entryName.getToken()).stringValue();
-            if(Math.abs(getDirector().getCurrentTime()-_nextSamplingTime)
+            if (Math.abs(getDirector().getCurrentTime()-_nextSamplingTime)
                     < ((CTDirector)getDirector()).getTimeResolution()){
                 _nextSamplingTime +=
                     ((DoubleToken)samplingPeriod.getToken()).doubleValue();
                 getDirector().fireAt(this, _nextSamplingTime);
                 Token[] tokens = new Token[4];
-                if(!((BooleanToken)malfunctioning.getToken()).booleanValue()) {
+                if (!((BooleanToken)malfunctioning.getToken()).booleanValue()) {
                     tokens[0] =
                         new DoubleToken(getDirector().getCurrentTime());
                     tokens[1] = force.get(0);
@@ -229,7 +229,7 @@ public class CarInformationPublisher extends TypedAtomicActor
                     tokens[3] = position.get(0);
                     //System.out.println("Malfunctioning = false");
                 } else {
-                    for(int i = 0; i < 4; i++) {
+                    for (int i = 0; i < 4; i++) {
                         tokens[i] = new DoubleToken(Math.random());
                     }
                     //System.out.println("Malfunctioning = true");
@@ -241,7 +241,7 @@ public class CarInformationPublisher extends TypedAtomicActor
                         new Long(0), array);
                 _space.write(entry, null, Lease.FOREVER);
                 /** The following test the size of the serialized obj.
-                    if(_first) {
+                    if (_first) {
                     _first = false;
                     try {
                     FileOutputStream ostream = new FileOutputStream("tmp");

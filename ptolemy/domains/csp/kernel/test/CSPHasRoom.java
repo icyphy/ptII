@@ -64,14 +64,14 @@ public class CSPHasRoom extends CSPPut {
     public void fire() throws IllegalActionException {
 	Receiver[][] rcvrs = (Receiver[][])outputPort.getRemoteReceivers();
 	CSPReceiver rcvr = null;
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
+	for ( int i = 0; i < rcvrs.length; i++ ) {
+	    for ( int j = 0; j < rcvrs[i].length; j++ ) {
 		rcvr = (CSPReceiver)rcvrs[i][j];
 	    }
 	}
 
-	while( !rcvr.hasRoom() );
-	if( rcvr.hasRoom() ) {
+	while ( !rcvr.hasRoom() );
+	if ( rcvr.hasRoom() ) {
 	    _hasRoom = true;
 	}
     }

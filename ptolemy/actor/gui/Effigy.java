@@ -179,12 +179,12 @@ public class Effigy extends CompositeEntity {
      */
     public boolean closeTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
-        while(effigies.hasNext()) {
+        while (effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
             if (!effigy.closeTableaux()) return false;
         }
         Iterator tableaux = entityList(Tableau.class).iterator();
-        while(tableaux.hasNext()) {
+        while (tableaux.hasNext()) {
             Tableau tableau = (Tableau)tableaux.next();
             if (!tableau.close()) return false;
         }
@@ -243,7 +243,7 @@ public class Effigy extends CompositeEntity {
 
         List containedEffigies = entityList(Effigy.class);
         Iterator effigies = containedEffigies.iterator();
-        while(effigies.hasNext()) {
+        while (effigies.hasNext()) {
             result += ((Effigy)effigies.next()).numberOfOpenTableaux();
         }
         return result;
@@ -322,13 +322,13 @@ public class Effigy extends CompositeEntity {
      */
     public Tableau showTableaux() {
         Iterator effigies = entityList(Effigy.class).iterator();
-        while(effigies.hasNext()) {
+        while (effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
             effigy.showTableaux();
         }
         Iterator tableaux = entityList(Tableau.class).iterator();
         Tableau result = null;
-        while(tableaux.hasNext()) {
+        while (tableaux.hasNext()) {
             Tableau tableau = (Tableau)tableaux.next();
             tableau.show();
             if (result == null) result = tableau;
@@ -379,7 +379,7 @@ public class Effigy extends CompositeEntity {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-	if(container != null
+	if (container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {
 	    throw new IllegalActionException(this, container,
@@ -395,7 +395,7 @@ public class Effigy extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-       	if(numberOfOpenTableaux() == 0) {
+       	if (numberOfOpenTableaux() == 0) {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {

@@ -336,7 +336,7 @@ public class Configuration extends CompositeEntity {
         // If the entity defers its MoML definition to another,
         // then open that other.
         NamedObj deferredTo = entity.getMoMLInfo().deferTo;
-        if(deferredTo != null) {
+        if (deferredTo != null) {
             entity = deferredTo;
         }
 
@@ -442,7 +442,7 @@ public class Configuration extends CompositeEntity {
     public void showAll() {
 	final ModelDirectory directory =
 	    (ModelDirectory)getEntity(_DIRECTORY_NAME);
-	if(directory == null) return;
+	if (directory == null) return;
         _showTableaux(directory);
     }
 

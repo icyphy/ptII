@@ -243,15 +243,15 @@ public class CTScheduler extends Scheduler {
      *  @return The list of predecessors, unordered.
      */
     public List predecessorList(Actor actor) {
-        if(actor == null) {
+        if (actor == null) {
             return null;
         }
         LinkedList predecessors = new LinkedList();
         Iterator inPorts = actor.inputPortList().iterator();
-        while(inPorts.hasNext()) {
+        while (inPorts.hasNext()) {
             IOPort port = (IOPort) inPorts.next();
             Iterator outPorts = port.deepConnectedOutPortList().iterator();
-            while(outPorts.hasNext()) {
+            while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort)outPorts.next();
                 Actor pre = (Actor)outPort.getContainer();
                 // NOTE: This could be done by using
@@ -275,15 +275,15 @@ public class CTScheduler extends Scheduler {
      *  @return The enumerations of predecessors.
      */
     public List successorList(Actor actor) {
-        if(actor == null) {
+        if (actor == null) {
             return null;
         }
         LinkedList successors = new LinkedList();
         Iterator outports = actor.outputPortList().iterator();
-        while(outports.hasNext()) {
+        while (outports.hasNext()) {
             IOPort outPort = (IOPort) outports.next();
             Iterator inPorts = outPort.deepConnectedInPortList().iterator();
-            while(inPorts.hasNext()) {
+            while (inPorts.hasNext()) {
                 IOPort inPort = (IOPort)inPorts.next();
                 Actor post = (Actor)inPort.getContainer();
                 // NOTE: This could be done by using
@@ -364,7 +364,7 @@ public class CTScheduler extends Scheduler {
             ((LinkedList)container.deepEntityList()).clone();
 
         Iterator allActors = container.deepEntityList().iterator();
-        while(allActors.hasNext()) {
+        while (allActors.hasNext()) {
 
             Actor a = (Actor) allActors.next();
             //System.out.println("examine " + ((Nameable)a).getFullName());
@@ -374,7 +374,7 @@ public class CTScheduler extends Scheduler {
             // waveform generators are treated as sources.
             // Note that this breaks some causality loops.
 
-            if(a instanceof CTStatefulActor) {
+            if (a instanceof CTStatefulActor) {
                 statefulActors.add(new Firing(a));
             }
             if (a instanceof CTWaveformGenerator) {
@@ -399,7 +399,7 @@ public class CTScheduler extends Scheduler {
                             + " source actor in the CT domain.");
                 }
                 Iterator ports = ((Entity)a).portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
                     _signalTypes.setType(port, DISCRETE);
                     if (port.isOutput()) {
@@ -411,7 +411,7 @@ public class CTScheduler extends Scheduler {
                 // Opaque composite actors that are not CTComposite actors
                 // are treated as DISCRETE actors.
                 Iterator ports = ((Entity)a).portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
                     _signalTypes.setType(port, DISCRETE);
                     if (port.isOutput()) {
@@ -421,7 +421,7 @@ public class CTScheduler extends Scheduler {
             } else {
                 // Other signal types are obtained from parameters on ports.
                 Iterator ports = ((Entity)a).portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
                     Parameter signalType =
                         (Parameter)port.getAttribute("signalType");
@@ -456,7 +456,7 @@ public class CTScheduler extends Scheduler {
                 // it outputs as CONTINUOUS, unless otherwise specified.
                 if (predecessorList(a).isEmpty()) {
                     ports = ((Entity)a).portList().iterator();
-                    while(ports.hasNext()) {
+                    while (ports.hasNext()) {
                          IOPort port = (IOPort)ports.next();
                          if (_signalTypes.getType(port).equals(UNKNOWN)) {
                              _signalTypes.setType(port, CONTINUOUS);
@@ -476,12 +476,12 @@ public class CTScheduler extends Scheduler {
         // First make sure that there is no causality loop of arithmetic
         // actor. This makes other graph reachability algorithms terminate.
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
-        if(!arithmeticGraph.isAcyclic()) {
+        if (!arithmeticGraph.isAcyclic()) {
             throw new NotSchedulableException(
                     "Arithmetic loops are not allowed in the CT domain.");
         }
         DirectedAcyclicGraph dynamicGraph = _toGraph(dynamicActors);
-        if(!dynamicGraph.isAcyclic()) {
+        if (!dynamicGraph.isAcyclic()) {
             throw new NotSchedulableException(
                     "Loops of dynamic actors (e.g. integrators) " +
                     "are not allowed in the CT domain. You may insert a " +
@@ -575,7 +575,7 @@ public class CTScheduler extends Scheduler {
         Iterator continuousIterator = continuousActors.iterator();
         while (continuousIterator.hasNext()) {
             Actor actor = (Actor)continuousIterator.next();
-            if((actor instanceof SequenceActor) ||
+            if ((actor instanceof SequenceActor) ||
                     ((actor instanceof CompositeActor) &&
                             (!(actor instanceof CTStepSizeControlActor)))) {
                 throw new NotSchedulableException((Nameable)actor,
@@ -590,7 +590,7 @@ public class CTScheduler extends Scheduler {
                 sinkActors.add(actor);
             } else {
                 List successorList = successorList(actor);
-                if(successorList.isEmpty()) {
+                if (successorList.isEmpty()) {
                     sinkActors.add(actor);
                 } else {
                     Iterator successors = successorList.iterator();
@@ -612,7 +612,7 @@ public class CTScheduler extends Scheduler {
 
         // Create waveformGeneratorSchedule.
         Iterator generators = waveformGenerators.iterator();
-        while(generators.hasNext()) {
+        while (generators.hasNext()) {
             Actor generator = (Actor)generators.next();
             waveformGeneratorSchedule.add(new Firing(generator));
         }
@@ -637,11 +637,11 @@ public class CTScheduler extends Scheduler {
         // the continuous actors.
 
         arithmeticGraph = _toArithmeticGraph(continuousActors);
-        if(!dynamicActors.isEmpty()) {
+        if (!dynamicActors.isEmpty()) {
             Object[] dynamicArray = dynamicActors.toArray();
             // Dynamic actors are reverse ordered in the schedule.
             Object[] xSorted = dynamicGraph.topologicalSort(dynamicArray);
-            for(int i = 0; i < xSorted.length; i++) {
+            for (int i = 0; i < xSorted.length; i++) {
                 Actor a = (Actor)xSorted[i];
                 // Looping on add(0, a) will reverse the order.
                 dynamicActorSchedule.add(0, new Firing(a));
@@ -655,7 +655,7 @@ public class CTScheduler extends Scheduler {
             // State transition schedule
             Object[] fx = arithmeticGraph.backwardReachableNodes(dynamicArray);
             Object[] fxSorted = arithmeticGraph.topologicalSort(fx);
-            for(int i = 0; i < fxSorted.length; i++) {
+            for (int i = 0; i < fxSorted.length; i++) {
                 Actor a = (Actor)fxSorted[i];
                 stateTransitionSchedule.add(new Firing(a));
                 if (a instanceof CTStepSizeControlActor) {
@@ -667,12 +667,12 @@ public class CTScheduler extends Scheduler {
         }
 
         // Construct an array of sink actors.
-        if(!sinkActors.isEmpty()) {
+        if (!sinkActors.isEmpty()) {
             Object[] sinkArray = sinkActors.toArray();
             // Output map.
             Object[] gx = arithmeticGraph.backwardReachableNodes(sinkArray);
             Object[] gxSorted = arithmeticGraph.topologicalSort(gx);
-            for(int i = 0; i < gxSorted.length; i++) {
+            for (int i = 0; i < gxSorted.length; i++) {
                 Actor a = (Actor)gxSorted[i];
                 outputSchedule.add(new Firing(a));
                 if (a instanceof CTStepSizeControlActor) {
@@ -682,7 +682,7 @@ public class CTScheduler extends Scheduler {
             // Add sinks to the output schedule. Note the ordering among
             // sink actors since we allow chains of event generators.
             Iterator sinks = sinkActors.iterator();
-            while(sinks.hasNext()) {
+            while (sinks.hasNext()) {
                 Actor a = (Actor)sinks.next();
                 outputSchedule.add(new Firing(a));
                 if (a instanceof CTStepSizeControlActor) {
@@ -733,13 +733,13 @@ public class CTScheduler extends Scheduler {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
-            if(!(actor instanceof CTDynamicActor) &&
+            if (!(actor instanceof CTDynamicActor) &&
                !(actor instanceof CTEventGenerator)) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
                 while (successors.hasNext()) {
                     Actor successor = (Actor)successors.next();
-                    if(list.contains(successor)) {
+                    if (list.contains(successor)) {
                         graph.addEdge(actor, successor);
                     }
                 }
@@ -774,7 +774,7 @@ public class CTScheduler extends Scheduler {
             Iterator successors = successorList(a).iterator();
             while (successors.hasNext()) {
                 Actor s = (Actor) successors.next();
-                if(list.contains(s)) {
+                if (list.contains(s)) {
                     g.addEdge(a, s);
                 }
             }
@@ -880,9 +880,9 @@ public class CTScheduler extends Scheduler {
             // This includes input ports lower in the hierarchy or output
             // ports higher in the hierarchy.
             Iterator connectedPorts = port.sinkPortList().iterator();
-            while(connectedPorts.hasNext()) {
+            while (connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort)connectedPorts.next();
-                if(!_map.containsKey(nextPort)) {
+                if (!_map.containsKey(nextPort)) {
                     setType(nextPort, getType(port));
                 } else if (!getType(port).equals(getType(nextPort))) {
                     throw new NotSchedulableException(

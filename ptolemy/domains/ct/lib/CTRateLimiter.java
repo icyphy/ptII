@@ -128,7 +128,7 @@ public class CTRateLimiter extends Transformer {
         if (input.hasToken(0)) {
             _newToken = input.get(0);
             double currentTime = getDirector().getCurrentTime();
-            if(currentTime == _lastTime) {
+            if (currentTime == _lastTime) {
                 output.send(0, _newToken);
             } else {
                 double valueDifference = ((DoubleToken)_newToken.subtract(
@@ -142,7 +142,7 @@ public class CTRateLimiter extends Transformer {
                 if (rate > risingRate) {
                     _newToken = (new DoubleToken(timeDifference*
                             risingRate)).add(_lastToken);
-                } else if(rate < fallingRate) {
+                } else if (rate < fallingRate) {
                     _newToken = (new DoubleToken(timeDifference*
                             fallingRate)).add(_lastToken);
                 }

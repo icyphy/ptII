@@ -120,7 +120,7 @@ public class DDEActor extends TypedAtomicActor {
      */
     public Token getNextToken() throws IllegalActionException {
         Token token = _getNextInput();
-        if( token instanceof NullToken ) {
+        if ( token instanceof NullToken ) {
             return getNextToken();
 	}
         return token;
@@ -153,12 +153,12 @@ public class DDEActor extends TypedAtomicActor {
     Token _getNextInput() throws IllegalActionException {
 	String calleeName = getName();
 	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
+	if ( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             DDEReceiver lowestReceiver =
                 (DDEReceiver)timeKeeper.getFirstReceiver();
 
-            if( lowestReceiver.hasToken() ) {
+            if ( lowestReceiver.hasToken() ) {
                 _lastPort = (TypedIOPort)lowestReceiver.getContainer();
                 return lowestReceiver.get();
             } else {

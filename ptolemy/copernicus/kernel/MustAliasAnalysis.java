@@ -68,7 +68,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public Set getAliasesOfBefore(SootField field, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
         Set set = new HashSet();
-        if(map.get(field) != null) {
+        if (map.get(field) != null) {
             set.addAll((Set)map.get(field));
         }
         set.remove(field);
@@ -82,7 +82,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
      public Set getAliasesOfAfter(SootField field, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Set set = new HashSet();
-        if(map.get(field) != null) {
+        if (map.get(field) != null) {
             set.addAll((Set)map.get(field));
         }
         set.remove(field);
@@ -96,7 +96,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public Set getAliasesOfBefore(Local local, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
         Set set = new HashSet();
-        if(map.get(local) != null) {
+        if (map.get(local) != null) {
             set.addAll((Set)map.get(local));
         }
         set.remove(local);
@@ -110,7 +110,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public Set getAliasesOfAfter(Local local, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Set set = new HashSet();
-        if(map.get(local) != null) {
+        if (map.get(local) != null) {
             set.addAll((Set)map.get(local));
         }
         set.remove(local);
@@ -124,7 +124,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public Set getAliasesOfBefore(NewExpr constructor, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
         Set set = new HashSet();
-        if(map.get(constructor) != null) {
+        if (map.get(constructor) != null) {
             set.addAll((Set)map.get(constructor));
         }
         set.remove(constructor);
@@ -138,7 +138,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public Set getAliasesOfAfter(NewExpr constructor, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Set set = new HashSet();
-        if(map.get(constructor) != null) {
+        if (map.get(constructor) != null) {
             set.addAll((Set)map.get(constructor));
         }
         set.remove(constructor);
@@ -171,16 +171,16 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         // if we have a method invocation, then alias information
         // for all fields is killed.
         // This is a safe flow-insensitive approximation.
-        if(unit.containsInvokeExpr()) {
-            if(_sideEffectAnalysis == null) {
-                for(Iterator i = out.keySet().iterator();
+        if (unit.containsInvokeExpr()) {
+            if (_sideEffectAnalysis == null) {
+                for (Iterator i = out.keySet().iterator();
                     i.hasNext();) {
                     Object object = i.next();
-                    if(object instanceof SootField) {
+                    if (object instanceof SootField) {
                         SootField field = (SootField) object;
                         // FIXME: properly compute this..
                         boolean targetsAreInDifferentClass = true;
-                        if(field.isPrivate() && targetsAreInDifferentClass) {
+                        if (field.isPrivate() && targetsAreInDifferentClass) {
                             continue;
                         } else {
                             _killAlias(out, object);
@@ -195,20 +195,20 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 // Union the side effect sets over
                 // all the possible targets
                 List targets = _invokeGraph.getTargetsOf((Stmt)unit);
-                for(Iterator i = targets.iterator();
+                for (Iterator i = targets.iterator();
                     i.hasNext();) {
                     SootMethod target = (SootMethod)i.next();
 
                     Set newSet = _sideEffectAnalysis.getSideEffects(method);
 
-                    if(newSet != null) {
+                    if (newSet != null) {
                         allSideEffects.addAll(newSet);
                     } else {
                         allSideEffects = null;
                         break;
                     }
                 }
-                if(allSideEffects != null) {
+                if (allSideEffects != null) {
                     // kill the alias for anything that was in the set,
                     // and is in our flow.
                     allSideEffects.retainAll(out.keySet());
@@ -220,30 +220,30 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                     allSideEffects = out.keySet();
                 }
                 System.out.println("all Side effects = " + allSideEffects);
-                for(Iterator i = allSideEffects.iterator();
+                for (Iterator i = allSideEffects.iterator();
                     i.hasNext();) {
                     Object object = i.next();
-                    if(object instanceof SootField) {
+                    if (object instanceof SootField) {
                         _killAlias(out, object);
                     }
                 }
             }
         }
-        if(unit instanceof AssignStmt) {
+        if (unit instanceof AssignStmt) {
             AssignStmt assignStmt = (AssignStmt)unit;
 
             Value lvalue = assignStmt.getLeftOp();
             Value rvalue = assignStmt.getRightOp();
             Object lobject = _getAliasObject(lvalue);
             Object robject = _getAliasObject(rvalue);
-            if(lobject != null) {
+            if (lobject != null) {
                 // First remove the left side from its
                 // current set of aliases.  (Kill rule)
                 _killAlias(out, lobject);
 
-                if(robject != null) {
+                if (robject != null) {
                     // If the type is aliasable,
-                    if(lvalue.getType() instanceof ArrayType ||
+                    if (lvalue.getType() instanceof ArrayType ||
                             lvalue.getType() instanceof RefType) {
 
                         // add the left side to its new set of
@@ -264,17 +264,17 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         Map in = (Map) inValue, out = (Map) outValue;
         out.clear();
         List aliasValues = new LinkedList(in.keySet());
-        while(aliasValues.size() > 0) {
+        while (aliasValues.size() > 0) {
             Object object = aliasValues.get(0);
             aliasValues.remove(object);
             Set inSet = (Set)in.get(object);
-            if(inSet == null) {
+            if (inSet == null) {
                 out.put(object, null);
             } else {
                 Set outSet = new HashSet();
                 outSet.addAll(inSet);
                 out.put(object, outSet);
-                for(Iterator i = outSet.iterator();
+                for (Iterator i = outSet.iterator();
                     i.hasNext();) {
                     out.put(i.next(), outSet);
                 }
@@ -288,20 +288,20 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
 
         // First set the output to the first input.
-        if(in1 != out)
+        if (in1 != out)
             copy(in1, out);
 
         // Now merge in the second input.
-        for(Iterator i = in1.keySet().iterator(); i.hasNext();) {
+        for (Iterator i = in1.keySet().iterator(); i.hasNext();) {
             Object object = i.next();
             Set in1Set = (Set)in1.get(object);
             Set in2Set = (Set)in2.get(object);
-            if(in1Set == null) {
+            if (in1Set == null) {
                 // If both inputs have maybe aliases, or no
                 // alias information, then the output
                 // is the same.
                 out.put(object, null);
-            } else if(!in1Set.equals(in2Set)) {
+            } else if (!in1Set.equals(in2Set)) {
                 // If the input alias sets are not equal,
                 // then we can't tell anything for sure about
                 // what the union is.
@@ -315,7 +315,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         //System.out.println("createAlias");
         // Get its new set of aliases.
         Set rset = (Set)map.get(rObject);
-        if(rset == null) {
+        if (rset == null) {
             rset = new HashSet();
             rset.add(rObject);
         }
@@ -328,17 +328,17 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     }
 
     private static Object _getAliasObject(Value value) {
-        if(value instanceof Local) {
+        if (value instanceof Local) {
             return value;
-        } else if(value instanceof FieldRef) {
+        } else if (value instanceof FieldRef) {
             /// NOTE: we can do better
             // if we return something that is
             // instance-dependent.
             return ((FieldRef)value).getField();
-        } else if(value instanceof CastExpr) {
+        } else if (value instanceof CastExpr) {
             // Must be a local.
             return ((CastExpr)value).getOp();
-        } else if(value instanceof NewExpr ||
+        } else if (value instanceof NewExpr ||
                 value instanceof NewArrayExpr) {
             return value;
         } else return null;
@@ -347,7 +347,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     private static void _killAlias(Map map, Object lObject) {
         // Get its old set of aliases.
         Set lset = (Set)map.get(lObject);
-        if(lset != null) {
+        if (lset != null) {
             // And remove.
             lset.remove(lObject);
             map.put(lObject, null);

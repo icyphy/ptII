@@ -264,7 +264,7 @@ public class MathFunction extends TypedAtomicActor {
                 }
             } else {
                 inArray1 = firstOperand.get(0, count);
-                for(int i = 0; i < count ; i++) {
+                for (int i = 0; i < count ; i++) {
                     double input1 = ((DoubleToken)(inArray1[i])).doubleValue();
                     _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
                 }

@@ -145,7 +145,7 @@ public class ComponentRelation extends Relation {
             Iterator nearPorts = linkedPortList().iterator();
             _deepLinkedPorts = new LinkedList();
 
-            while( nearPorts.hasNext() ) {
+            while ( nearPorts.hasNext() ) {
                 ComponentPort port = (ComponentPort)nearPorts.next();
                 if (port._isInsideLinkable(this.getContainer())) {
                     // Port is above me in the hierarchy.
@@ -158,7 +158,7 @@ public class ComponentRelation extends Relation {
                     }
                 } else {
                     // Port below me in the hierarchy.
-                    if(port.isOpaque()) {
+                    if (port.isOpaque()) {
                         _deepLinkedPorts.add(port);
                     } else {
                         _deepLinkedPorts.addAll(port.deepInsidePortList());
@@ -255,9 +255,9 @@ public class ComponentRelation extends Relation {
             name = new String("");
         }
         CompositeEntity container = (CompositeEntity) getContainer();
-        if((container != null)) {
+        if ((container != null)) {
             ComponentRelation another = container.getRelation(name);
-            if((another != null) && (another != this)) {
+            if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
                         "already contains a relation with the name "+name+".");
             }
@@ -286,7 +286,7 @@ public class ComponentRelation extends Relation {
             ComponentPort portArray[] = new ComponentPort[size];
             int i = 0;
             Enumeration ports = linkedPorts();
-            while(ports.hasMoreElements()) {
+            while (ports.hasMoreElements()) {
                 ComponentPort p = (ComponentPort)ports.nextElement();
                 portArray[i++] = p;
             }

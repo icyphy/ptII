@@ -165,9 +165,9 @@ public class Relation extends NamedObj {
             LinkedList storedPorts = new LinkedList();
             Enumeration ports = _portList.getContainers();
 
-            while(ports.hasMoreElements()) {
+            while (ports.hasMoreElements()) {
                 Port p = (Port)ports.nextElement();
-                if(p != except) storedPorts.add(p);
+                if (p != except) storedPorts.add(p);
             }
             return storedPorts;
         } finally {
@@ -232,7 +232,7 @@ public class Relation extends NamedObj {
             Port portArray[] = new Port[size];
             int i = 0;
             Enumeration ports = _portList.getContainers();
-            while(ports.hasMoreElements()) {
+            while (ports.hasMoreElements()) {
                 Port p = (Port)ports.nextElement();
                 portArray[i++] = p;
             }

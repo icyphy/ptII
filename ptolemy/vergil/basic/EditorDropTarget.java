@@ -113,7 +113,7 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void dragEnter(DropTargetDragEvent dtde) {
-            if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+            if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             }
             else {
@@ -147,7 +147,7 @@ public class EditorDropTarget extends DropTarget {
             // This is nontrivial.
 
 	    Iterator iterator = null;
-            if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+            if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
 		try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    iterator = (Iterator)dtde.getTransferable().
@@ -160,7 +160,7 @@ public class EditorDropTarget extends DropTarget {
                 dtde.rejectDrop();
             }
 
-            if(iterator == null) {
+            if (iterator == null) {
 		// Nothing to drop!
 		return;
             }
@@ -184,11 +184,11 @@ public class EditorDropTarget extends DropTarget {
 	    final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
             NamedObj container = 
                 MoMLChangeRequest.getDeferredToParent(toplevel);
-            if(container == null) {
+            if (container == null) {
                 container = toplevel;
             }
                  
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 NamedObj dropObj = (NamedObj) iterator.next();
                 // FIXME: Might consider giving a simpler name and then
                 // displaying the classname in the icon.
@@ -203,7 +203,7 @@ public class EditorDropTarget extends DropTarget {
                 // imported by the parent will be imported now by
                 // the object into which this is dropped.
                 moml.append("<group>");
-                if(container != toplevel) {
+                if (container != toplevel) {
                     moml.append("<entity name=\"" + 
                             toplevel.getName(container) + "\">\n");
                 }
@@ -220,7 +220,7 @@ public class EditorDropTarget extends DropTarget {
                     }
                 }
                 moml.append(dropObj.exportMoML(name));
-                if(container != toplevel) {
+                if (container != toplevel) {
                     moml.append("</entity>");
                 }
                 moml.append("</group>");
@@ -313,7 +313,7 @@ public class EditorDropTarget extends DropTarget {
 
             Location location = (Location) newObject.getAttribute("_location");
             // If there is no location, then manufacture one.
-            if(location == null) {
+            if (location == null) {
                 location = new Location(newObject, "_location");
             }
 

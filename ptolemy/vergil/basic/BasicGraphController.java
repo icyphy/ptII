@@ -153,7 +153,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @return A custom node controller if there is one, and null otherwise.
      */
     public NodeController getNodeController(Object object) {
-        if(object instanceof Location) {
+        if (object instanceof Location) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             // Check to see whether
             // this is a NamedObj that contains a NodeControllerFactory.
@@ -164,7 +164,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             if (semanticObject instanceof NamedObj) {
                 List factoryList = ((NamedObj)semanticObject)
                         .attributeList(NodeControllerFactory.class);
-                if(factoryList.size() > 0) {
+                if (factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory)
                            factoryList.get(0);
                     NamedObjController controller = factory.create(this);
@@ -332,7 +332,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 	    super.actionPerformed(e);
 	    double x;
 	    double y;
-	    if(getSourceType() == TOOLBAR_TYPE ||
+	    if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
                 BasicGraphFrame frame = getFrame();
@@ -391,7 +391,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
             NamedObj container = 
                 MoMLChangeRequest.getDeferredToParent(toplevel);
-            if(container == null) {
+            if (container == null) {
                 container = toplevel;
             }
                 
@@ -400,7 +400,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 	    final String locationName = "_location";
 	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("<entity name=\"" + 
                         toplevel.getName(container) + "\">\n");
             }
@@ -419,7 +419,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                 }
             }
 	    moml.append("</port>");
-            if(container != toplevel) {
+            if (container != toplevel) {
                 moml.append("</entity>");
             }
 

@@ -353,7 +353,7 @@ public class EPSGraphics extends Graphics {
             } else {
                 _buffer.append("0 setgray\n");
                 // construct a new line pattern.
-                if(_patternIndex >= _patterns.length) {
+                if (_patternIndex >= _patterns.length) {
                     _patternIndex = 0;
                 }
                 _buffer.append(_patterns[_patternIndex] + " 0 setdash\n");

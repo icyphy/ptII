@@ -118,7 +118,7 @@ public class IOPortController extends AttributeController {
 	    polygon.lineTo(-4, -4);
 	    polygon.closePath();
             Color fill;
-            if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
+            if (port instanceof IOPort && ((IOPort)port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
@@ -150,13 +150,13 @@ public class IOPortController extends AttributeController {
 	    // same direction that is used to layout the port in the
 	    // Entity Controller.
 	    int direction;
-	    if(!(port instanceof IOPort)) {
+	    if (!(port instanceof IOPort)) {
 		direction = SwingUtilities.SOUTH;
-	    } else if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+	    } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
 		direction = SwingUtilities.SOUTH;
-	    } else if(((IOPort)port).isInput()) {
+	    } else if (((IOPort)port).isInput()) {
 		direction = SwingUtilities.WEST;
-	    } else if(((IOPort)port).isOutput()) {
+	    } else if (((IOPort)port).isOutput()) {
 		direction = SwingUtilities.EAST;
 	    } else {
 		// should never happen

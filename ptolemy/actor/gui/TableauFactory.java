@@ -113,7 +113,7 @@ public class TableauFactory extends Attribute {
     public Tableau createTableau(Effigy effigy) throws Exception {
 	Tableau tableau = null;
 	Iterator factories = attributeList(TableauFactory.class).iterator();
-	while(factories.hasNext() && tableau == null) {
+	while (factories.hasNext() && tableau == null) {
 	    TableauFactory factory = (TableauFactory)factories.next();
 	    tableau = factory.createTableau(effigy);
 	}

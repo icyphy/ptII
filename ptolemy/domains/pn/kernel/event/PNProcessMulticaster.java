@@ -76,7 +76,7 @@ public class PNProcessMulticaster implements PNProcessListener {
      */
     public void processFinished(PNProcessEvent event) {
  	Iterator listeners = _listeners.iterator();
-        while( listeners.hasNext() ) {
+        while ( listeners.hasNext() ) {
             ((PNProcessListener) listeners.next()).processFinished(event);
         }
     }
@@ -87,7 +87,7 @@ public class PNProcessMulticaster implements PNProcessListener {
      */
     public void processStateChanged(PNProcessEvent event) {
         Iterator listeners = _listeners.iterator();
-        while( listeners.hasNext() ) {
+        while ( listeners.hasNext() ) {
             ((PNProcessListener)listeners.next()).processStateChanged(event);
         }
     }

@@ -157,7 +157,7 @@ public class Vertex extends Location {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 	super._exportMoMLContents(output, depth);
-	if(_linked != null) {
+	if (_linked != null) {
 	    output.write(_getIndentPrefix(depth));
 	    output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
 	}

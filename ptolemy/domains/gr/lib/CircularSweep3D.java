@@ -130,15 +130,15 @@ public class CircularSweep3D extends GRShadedShape {
 
         int[] stripCount = new int[numberOfQuads];
         int i;
-        for(i = 0; i < numberOfQuads; i++) {
+        for (i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
 
         int j;
         int k = 0;
         int m = 0;
-        for(i = 0; i < numberOfSweepVertices-1; i++) {
-            for(j = 0; j < numberOfSlices; j++) {
+        for (i = 0; i < numberOfSweepVertices-1; i++) {
+            for (j = 0; j < numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
                 float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
                 float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);
@@ -210,7 +210,7 @@ public class CircularSweep3D extends GRShadedShape {
         int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*2];
 
-        for(int i = 0; i < numberOfElements * 2; i++) {
+        for (int i = 0; i < numberOfElements * 2; i++) {
             data[i] = (float) (matrixToken.getElementAt(0,i));
         }
         return data;

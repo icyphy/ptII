@@ -295,13 +295,13 @@ public class PxgraphApplication extends PlotApplication {
             + " options that take values as second args:\n";
 
         int i;
-        for(i = 0; i < commandOptions.length; i++) {
+        for (i = 0; i < commandOptions.length; i++) {
             result += " " + commandOptions[i][0] +
                 " " + commandOptions[i][1] +
                 " " + commandOptions[i][4] + "\n";
         }
         result += "\nBoolean flags:\n";
-        for(i = 0; i < commandFlags.length; i++) {
+        for (i = 0; i < commandFlags.length; i++) {
             result += " " + commandFlags[i][0] +
                 " " + commandFlags[i][2] + "\n";
         }

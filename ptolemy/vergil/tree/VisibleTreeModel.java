@@ -78,13 +78,13 @@ public class VisibleTreeModel extends EntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-	if(index > getChildCount(parent) || index < 0) return null;
-	if(!(parent instanceof NamedObj)) return null;
+	if (index > getChildCount(parent) || index < 0) return null;
+	if (!(parent instanceof NamedObj)) return null;
         NamedObj obj = (NamedObj)parent;
 
         List attributes = _visibleAttributes(obj);
         int numAttributes = attributes.size();
-        if(index < numAttributes) {
+        if (index < numAttributes) {
             return attributes.get(index);
         }
         return super.getChild(parent, index - numAttributes);
@@ -118,7 +118,7 @@ public class VisibleTreeModel extends EntityTreeModel {
         NamedObj obj = (NamedObj)parent;
         List attributes = _visibleAttributes(obj);
         int index = attributes.indexOf(child);
-	if(index >= 0) return index;
+	if (index >= 0) return index;
         else return super.getIndexOfChild(parent, child);
     }
 
@@ -169,10 +169,10 @@ public class VisibleTreeModel extends EntityTreeModel {
         // Cache is not valid.
         List result = new LinkedList();
         Iterator attributes = object.attributeList().iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
             List iconList = attribute.attributeList(EditorIcon.class);
-            if(iconList.size() > 0
+            if (iconList.size() > 0
                     || attribute.getAttribute("_iconDescription") != null
                     || attribute.getAttribute("_iconSmallDescription")!= null) {
                 result.add(attribute);

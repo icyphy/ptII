@@ -259,7 +259,7 @@ public class FSMDirector extends Director {
         if (container instanceof Actor) {
             Actor cont = (Actor)container;
             Director executiveDirector = cont.getExecutiveDirector();
-            if(executiveDirector != null) {
+            if (executiveDirector != null) {
                 executiveDirector.fireAt(cont, time);
             } else {
                 setCurrentTime(time);
@@ -493,7 +493,7 @@ public class FSMDirector extends Director {
                                 insideReceivers[i][j].get();
                             }
                             insideReceivers[i][j].put(t);
-                            if(_debugging) _debug(getName(),
+                            if (_debugging) _debug(getName(),
                                 "transferring input from " + port.getName()
                                 + " to "
                                 + (insideReceivers[i][j]).getContainer()

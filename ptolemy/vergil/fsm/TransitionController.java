@@ -220,7 +220,7 @@ public class TransitionController extends BasicEdgeController {
 	    // Make the arc rerender itself so that geometry is preserved
 	    Arc arc = (Arc) edge;
 	    Transition transition = (Transition)arc.getRelation();
-	    if(transition != null && c instanceof ArcConnector) {
+	    if (transition != null && c instanceof ArcConnector) {
 		double angle = ((ArcConnector)c).getAngle();
 		double gamma = ((ArcConnector)c).getGamma();
 		// Set the new exitAngle and gamma parameter values based
@@ -251,7 +251,7 @@ public class TransitionController extends BasicEdgeController {
             c.setUserObject(edge);
             Arc arc = (Arc) edge;
             Transition transition = (Transition)arc.getRelation();
-	    if(transition != null) {
+	    if (transition != null) {
 		c.setToolTipText(transition.getName());
                 String labelStr = transition.getLabel();
                 try {
@@ -287,7 +287,7 @@ public class TransitionController extends BasicEdgeController {
                     // Ignore, accepting the default.
                     // This exception should not occur.
                 }
-                if(!labelStr.equals("")) {
+                if (!labelStr.equals("")) {
                     // FIXME: get label position modifier, if any.
                     LabelFigure label = new LabelFigure(
                             labelStr, _labelFont);
@@ -302,9 +302,9 @@ public class TransitionController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-   	    if(object instanceof Location) {
+   	    if (object instanceof Location) {
                 Location location = (Location)object;
-                if(location.getContainer() instanceof Entity)
+                if (location.getContainer() instanceof Entity)
                     return true;
                 else
                     return false;

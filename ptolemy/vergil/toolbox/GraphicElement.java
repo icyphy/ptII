@@ -107,7 +107,7 @@ public class GraphicElement {
 	PaintedObject paintedObject =
 	    GraphicsParser.createPaintedObject(type, _attributes, label);
 
-	if(paintedObject == null)
+	if (paintedObject == null)
 	    return GraphicElement._errorObject;
 
         return paintedObject;

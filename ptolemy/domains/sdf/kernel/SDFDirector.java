@@ -192,7 +192,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == vectorizationFactor) {
+        if (attribute == vectorizationFactor) {
             invalidateSchedule();
         }
         super.attributeChanged(attribute);
@@ -215,13 +215,13 @@ public class SDFDirector extends StaticSchedulingDirector {
             throw new IllegalActionException("Attempted to initialize " +
                     "SDF system with no scheduler");
         // force the schedule to be computed.
-        if(_debugging) _debug("Computing schedule");
+        if (_debugging) _debug("Computing schedule");
         Schedule sched = scheduler.getSchedule();
 
         // FIXME: You probably only want this from the scheduler, but
         // currently there is no easy way to listen to the scheduler
         // from inside Vergil.  Hence we'll print the schedule here too...
-        if(_debugging) {
+        if (_debugging) {
             Iterator firings = sched.firingIterator();
             while (firings.hasNext()) {
 		Firing firing = (Firing)firings.next();
@@ -256,7 +256,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 	Iterator inputPorts = container.inputPortList().iterator();
 	int inputCount = 0;
-	while(inputPorts.hasNext()) {
+	while (inputPorts.hasNext()) {
 	    IOPort inputPort = (IOPort) inputPorts.next();
 	    int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
 	    if (_debugging) {
@@ -266,10 +266,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 	    Receiver receivers[][] = inputPort.getReceivers();
 
 	    int channel;
-	    for(channel = 0; channel < inputPort.getWidth(); channel++) {
-		if(threshold > 0
+	    for (channel = 0; channel < inputPort.getWidth(); channel++) {
+		if (threshold > 0
                         && !receivers[channel][0].hasToken(threshold)) {
-		    if(_debugging) {
+		    if (_debugging) {
                         _debug("Channel " + channel +
                                 " does not have enough tokens." +
                                 " Prefire returns false on " +
@@ -279,7 +279,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		}
 	    }
 	}
-	if(_debugging) _debug("Prefire returns true on " +
+	if (_debugging) _debug("Prefire returns true on " +
                 container.getFullName());
 	return true;
     }
@@ -312,7 +312,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         int iterationsValue =
             ((IntToken) (iterations.getToken())).intValue();
         _iterationCount++;
-        if((iterationsValue > 0)
+        if ((iterationsValue > 0)
                 && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             return false;

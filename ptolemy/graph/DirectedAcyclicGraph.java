@@ -275,10 +275,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
             active = false;
             finished = true;
             for (int id = 0; id < size; id++) {
-                if(indeg[id] > 0) {
+                if (indeg[id] > 0) {
                     active = true;
                 }
-                if(indeg[id] == 0) {
+                if (indeg[id] == 0) {
                     finished = false;
                     result[nextResultIndex++] = nodeWeight(id);
                     indeg[id]--;
@@ -289,7 +289,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     }
                 }
             }
-            if(finished && active) {
+            if (finished && active) {
                 throw new InvalidStateException(
                         "DirectedAcyclicGraph.topologicalSort: Graph is "
                         + "cyclic.");
@@ -315,7 +315,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         }
         for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {
-                if(_compareNodeId(ids[i], ids[j]) == HIGHER) {
+                if (_compareNodeId(ids[i], ids[j]) == HIGHER) {
                     //swap
                     int tmp = ids[i];
                     ids[i] = ids[j];

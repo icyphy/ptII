@@ -87,18 +87,18 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
-	if(!(getEdgeModel(edge) instanceof ArcModel)) return;
+	if (!(getEdgeModel(edge) instanceof ArcModel)) return;
 	ArcModel model = (ArcModel)getEdgeModel(edge);
 	Object head = model.getHead(edge);
 	Object tail = model.getTail(edge);
         model.removeEdge(edge);
-        if(head != null) {
+        if (head != null) {
             GraphEvent e = new GraphEvent(eventSource,
                     GraphEvent.EDGE_HEAD_CHANGED,
                     edge, head);
             dispatchGraphEvent(e);
         }
-        if(tail != null) {
+        if (tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
                     GraphEvent.EDGE_TAIL_CHANGED,
                     edge, tail);
@@ -113,7 +113,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
-	if(edge instanceof Arc) {
+	if (edge instanceof Arc) {
 	    return _arcModel;
 	} else {
 	    return null;
@@ -127,11 +127,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   is none.
      */
     public NodeModel getNodeModel(Object node) {
-	if(node instanceof Location) {
+	if (node instanceof Location) {
             Object container = ((Location)node).getContainer();
-            if(container instanceof ComponentEntity) {
+            if (container instanceof ComponentEntity) {
                 return _stateModel;
-            } else if(container instanceof ComponentPort) {
+            } else if (container instanceof ComponentPort) {
                 return _portModel;
             }
 	}
@@ -148,7 +148,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-	if(element instanceof Arc) {
+	if (element instanceof Arc) {
 	    return ((Arc)element).getRelation();
 	}
         return super.getSemanticObject(element);
@@ -161,7 +161,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
-	if(!(getNodeModel(node) instanceof NamedObjNodeModel)) return;
+	if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return;
 	NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
         model.removeNode(eventSource, node);
     }
@@ -195,7 +195,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      	// Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
-	while(links.hasNext()) {
+	while (links.hasNext()) {
  	    Arc link = (Arc)links.next();
             Relation relation = link.getRelation();
             if (relation == null) continue;
@@ -204,7 +204,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
                     getRoot(), this);
             // If the head or tail has been removed, then remove this link.
-            if(!(headOK && tailOK)) {
+            if (!(headOK && tailOK)) {
                 Object headObj = getSemanticObject(link.getHead());
                 Object tailObj = getSemanticObject(link.getTail());
                 link.setHead(null);
@@ -231,7 +231,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
         // Now create Links for links that may be new
         Iterator relations = getPtolemyModel().relationList().iterator();
-        while(relations.hasNext()) {
+        while (relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
         return true;
@@ -245,20 +245,20 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     private void _updateLinks(ComponentRelation relation) {
 	Iterator links = _linkSet.iterator();
 	Arc foundLink = null;
-	while(links.hasNext()) {
+	while (links.hasNext()) {
 	    Arc link = (Arc)links.next();
 	    // only consider links that are associated with this relation.
-	    if(link.getRelation() == relation) {
+	    if (link.getRelation() == relation) {
 		foundLink = link;
 		break;
 	    }
 	}
 
 	// A link exists, so there is nothing to do.
-	if(foundLink != null) return;
+	if (foundLink != null) return;
 
 	List linkedPortList = relation.linkedPortList();
-	if(linkedPortList.size() != 2) {
+	if (linkedPortList.size() != 2) {
             // Do nothing...  somebody else should take care of removing this,
             // because we have no way of representing it in this editor.
             return;
@@ -280,7 +280,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	}
 	link.setRelation(relation);
 	// We have to get the direction of the arc correct.
-	if(((State)port1.getContainer()).incomingPort.equals(port1)) {
+	if (((State)port1.getContainer()).incomingPort.equals(port1)) {
 	    link.setHead(location1);
 	    link.setTail(location2);
 	} else {
@@ -454,7 +454,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 protected void _execute() throws Exception {
                     super._execute();
                     link.setHead(newArcHead);
-                    if(relationNameToAdd != null) {
+                    if (relationNameToAdd != null) {
                         ComponentRelation relation = (ComponentRelation)
                             getPtolemyModel().getRelation(
                                     relationNameToAdd);
@@ -483,7 +483,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		}
 
 		public void changeExecuted(ChangeRequest change) {
-		    if(GraphUtilities.isPartiallyContainedEdge(edge,
+		    if (GraphUtilities.isPartiallyContainedEdge(edge,
                             getRoot(),
                             FSMGraphModel.this)) {
 			_linkSet.add(edge);
@@ -552,7 +552,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 protected void _execute() throws Exception {
                     super._execute();
                     link.setTail(newArcTail);
-                    if(relationNameToAdd != null) {
+                    if (relationNameToAdd != null) {
                         link.setRelation(
                                 getPtolemyModel()
                                 .getRelation(relationNameToAdd));
@@ -580,7 +580,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		}
 
 		public void changeExecuted(ChangeRequest change) {
-		    if(GraphUtilities.isPartiallyContainedEdge(edge,
+		    if (GraphUtilities.isPartiallyContainedEdge(edge,
                             getRoot(),
                             FSMGraphModel.this)) {
 			_linkSet.add(edge);
@@ -616,10 +616,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	private String _linkHead(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
                 Relation linkRelation) {
-	    if(linkHead != null && linkTail != null) {
+	    if (linkHead != null && linkTail != null) {
 		NamedObj head = (NamedObj)getSemanticObject(linkHead);
 		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-		if(head instanceof State && tail instanceof State) {
+		if (head instanceof State && tail instanceof State) {
 		    // When we connect two states, we actually connect the
 		    // appropriate ports.
 		    State headState = (State)head;
@@ -631,7 +631,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     CompositeEntity ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
-                    if(ptolemyModel != container) {
+                    if (ptolemyModel != container) {
                         String contextString = "<entity name=\"" +
                             ptolemyModel.getName(container) +
                             "\">\n";
@@ -705,7 +705,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "\"/>\n");
                     }
                     // close the context
-                    if(ptolemyModel != container) {
+                    if (ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
@@ -740,10 +740,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // NOTE: This method is almost identical to the previous
             // one, but just enough different that it isn't obvious
             // how to combine them into one method.
-	    if(linkHead != null && linkTail != null) {
+	    if (linkHead != null && linkTail != null) {
 		NamedObj head = (NamedObj)getSemanticObject(linkHead);
 		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-		if(head instanceof State && tail instanceof State) {
+		if (head instanceof State && tail instanceof State) {
 		    // When we connect two states, we actually connect the
 		    // appropriate ports.
 		    State headState = (State)head;
@@ -755,7 +755,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     CompositeEntity ptolemyModel = getPtolemyModel();
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
-                    if(ptolemyModel != container) {
+                    if (ptolemyModel != container) {
                         String contextString = "<entity name=\""
                             + ptolemyModel.getName(container)
                                 + "\">\n";
@@ -804,7 +804,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "\"/>\n");
                     }
                     // close the context
-                    if(ptolemyModel != container) {
+                    if (ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
@@ -973,11 +973,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
 	    Iterator links = _linkSet.iterator();
-	    while(links.hasNext()) {
+	    while (links.hasNext()) {
 		Arc link = (Arc)links.next();
 		NamedObj head = (NamedObj)link.getHead();
 
-		if(head != null && head.equals(icon)) {
+		if (head != null && head.equals(icon)) {
 		    stateLinkList.add(link);
 		}
 	    }
@@ -1000,10 +1000,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	    // those we are connected to.
 	    List stateLinkList = new LinkedList();
 	    Iterator links = _linkSet.iterator();
-	    while(links.hasNext()) {
+	    while (links.hasNext()) {
 		Arc link = (Arc)links.next();
 		Object tail = link.getTail();
-		if(tail != null && tail.equals(icon)) {
+		if (tail != null && tail.equals(icon)) {
 		    stateLinkList.add(link);
 		}
 	    }
@@ -1024,11 +1024,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             // domain, it makes no sense to have a relation with only one
             // link to it.  So we remove the relations.
             Iterator inEdges = inEdges(node);
-            while(inEdges.hasNext()) {
+            while (inEdges.hasNext()) {
                 disconnectEdge(eventSource, inEdges.next());
             }
             Iterator outEdges = outEdges(node);
-            while(outEdges.hasNext()) {
+            while (outEdges.hasNext()) {
                 disconnectEdge(eventSource, outEdges.next());
             }
             String elementName = null;

@@ -186,7 +186,7 @@ public class ExplicitRK23Solver extends ODESolver {
             integrator.setAuxVariables(3, error);
             _debug("Integrator: "+ integrator.getName() +
                     " local truncation error = " + error);
-            if(error < tolerance) {
+            if (error < tolerance) {
                 _debug("Integrator: " + integrator.getName() +
                         " report a success.");
                 return true;
@@ -216,7 +216,7 @@ public class ExplicitRK23Solver extends ODESolver {
         double h = dir.getCurrentStepSize();
         double tolerance = dir.getErrorTolerance();
         double newh = 5.0*h;
-        if(error > dir.getValueResolution()) {
+        if (error > dir.getValueResolution()) {
             newh = h*
                 Math.max(0.5, 0.8*Math.pow((tolerance/error), 1.0/_order));
         }
@@ -252,9 +252,9 @@ public class ExplicitRK23Solver extends ODESolver {
         resetRound();
         Iterator actors;
         // for the first iteration after a breakpoint, create the history.
-        if(dir.isBreakpointIteration()) {
+        if (dir.isBreakpointIteration()) {
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 CTDynamicActor next = (CTDynamicActor)actors.next();
                 _debug(getFullName() + ": Build integrator history"
                         +((Nameable)next).getName());
@@ -262,7 +262,7 @@ public class ExplicitRK23Solver extends ODESolver {
             }
             actors = schedule.get(
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + ": Build integrator history..."
                         +((Nameable)next).getName());
@@ -271,7 +271,7 @@ public class ExplicitRK23Solver extends ODESolver {
         }
         for (int i = 0; i < _timeInc.length; i++) {
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " firing..."+
                         ((Nameable)next).getName());
@@ -281,7 +281,7 @@ public class ExplicitRK23Solver extends ODESolver {
                     dir.getCurrentStepSize()*_timeInc[i]);
             actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
                 actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName(), " firing... ",
                         ((Nameable)next).getName());

@@ -107,7 +107,7 @@ public class MoMLAttribute extends Attribute {
             throws IOException {
         if (_momlDescription.size() > 0) {
             Iterator strings = _momlDescription.iterator();
-            while(strings.hasNext()) {
+            while (strings.hasNext()) {
                 String string = (String)strings.next();
                 output.write(_getIndentPrefix(depth) + string + "\n");
             }

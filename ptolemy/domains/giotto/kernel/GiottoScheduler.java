@@ -239,23 +239,23 @@ public class GiottoScheduler extends Scheduler {
 		int HoldX = 1;
 		int X, i, c = 1;
 
-		for( i = 1; i < count; ++i ) {
-			if( array[i] == array[0] )
+		for ( i = 1; i < count; ++i ) {
+			if ( array[i] == array[0] )
 				++c;
-			if( array[i] > HighestNumber )
+			if ( array[i] > HighestNumber )
 				HighestNumber = array[i] / 2;
 		}
 
-		if( c == count )
+		if ( c == count )
 			return array[0];
 
 		X = 2;
 		i = 0;
 
-		while( true ) {
+		while ( true ) {
 
 			// Check for Remainder
-			if( (array[i] % X) != 0 ) {
+			if ( (array[i] % X) != 0 ) {
 				X++;
 				i = 0;
 			}
@@ -264,12 +264,12 @@ public class GiottoScheduler extends Scheduler {
 			else
 				++i;
 
-			if( i >= count ) {
+			if ( i >= count ) {
 				HoldX = X;
 				i = 0;
 				X++;
 			}
-			if( X >= HighestNumber + 1 )
+			if ( X >= HighestNumber + 1 )
 				break;
 		}
 
@@ -283,10 +283,10 @@ public class GiottoScheduler extends Scheduler {
 	    int X = array[0];
 	    int i = 0;
 
-	    while( true ) {
+	    while ( true ) {
 
-		    if( (X % array[i]) == 0 ) {
-			    if( i >= count-1 )
+		    if ( (X % array[i]) == 0 ) {
+			    if ( i >= count-1 )
 				    break;
 			    i++;
 		    }

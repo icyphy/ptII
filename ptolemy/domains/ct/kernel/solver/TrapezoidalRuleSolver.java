@@ -142,7 +142,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             tentativeState = integrator.getState() + (h*(f1+f2))/(double)2.0;
             double error =
                 Math.abs(tentativeState-integrator.getTentativeState());
-            if( !(error < dir.getValueResolution())) {
+            if ( !(error < dir.getValueResolution())) {
                 _voteForConvergence(false);
             }
             integrator.setTentativeDerivative(f2);
@@ -168,7 +168,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         integrator.setAuxVariables(1, localError);
         _debug("Integrator: "+ integrator.getName() +
                 " local truncation error = " + localError);
-        if(localError < tolerance) {
+        if (localError < tolerance) {
             _debug("Integrator: " + integrator.getName() +
                     " report a success.");
             return true;
@@ -195,7 +195,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double h = dir.getCurrentStepSize();
         double tolerance = dir.getErrorTolerance();
         double newh = h;
-        if(localError/tolerance < 0.1) {
+        if (localError/tolerance < 0.1) {
             newh =
                 h* Math.min(2, Math.pow((3.0*tolerance/localError), 1.0/3.0));
         }
@@ -230,7 +230,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         Iterator actors = schedule.get(
                 CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while(actors.hasNext()) {
+        while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug("Guessing..."+((Nameable)next).getName());
             next.fire();
@@ -238,12 +238,12 @@ public class TrapezoidalRuleSolver extends ODESolver {
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
         _setConverge(false);
         int iterations = 0;
-        while(!_isConverged()) {
+        while (!_isConverged()) {
             incrementRound();
             _setConverge(true);
             actors = schedule.get(
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + "Firing..."+((Nameable)next).getName());
 
@@ -251,20 +251,20 @@ public class TrapezoidalRuleSolver extends ODESolver {
             }
             actors = schedule.get(
                     CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(actors.hasNext()) {
+            while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " refiring..."+
                         ((Nameable)next).getName());
                 next.fire();
             }
-            if(iterations++ > dir.getMaxIterations()) {
+            if (iterations++ > dir.getMaxIterations()) {
                 //reduce step size and start over.
                 //startOverLastStep();
                 resetRound();
                 // prediction
                 actors = schedule.get(
                         CTSchedule.DYNAMIC_ACTORS).actorIterator();
-                while(actors.hasNext()) {
+                while (actors.hasNext()) {
                     Actor next = (Actor)actors.next();
                     _debug(getFullName()+" asking..."+
                             ((Nameable)next).getName());

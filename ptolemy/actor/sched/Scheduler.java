@@ -177,7 +177,7 @@ public class Scheduler extends Attribute {
                 throw new IllegalActionException(this,
                         "Director has no container.");
             }
-            if(!isValid() || _cachedGetSchedule == null) {
+            if (!isValid() || _cachedGetSchedule == null) {
                 _cachedGetSchedule = _getSchedule();
             }
             return _cachedGetSchedule;
@@ -267,7 +267,7 @@ public class Scheduler extends Attribute {
      */
     public void setValid(boolean valid) {
         _valid = valid;
-        if(valid == false) {
+        if (valid == false) {
             _cachedGetSchedule = null;
         }
     }

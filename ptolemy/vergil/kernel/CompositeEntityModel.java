@@ -125,7 +125,7 @@ public class CompositeEntityModel implements CompositeModel {
      */
     protected Location _getLocation(NamedObj object) {
 	List locations = object.attributeList(Location.class);
-	if(locations.size() > 0) {
+	if (locations.size() > 0) {
 	    return (Location)locations.get(0);
 	} else {
 	    try {
@@ -154,7 +154,7 @@ public class CompositeEntityModel implements CompositeModel {
         // The node is actually the location contained by the entity.
         // If the entity does not contain a location, then create one.
         Iterator entities = composite.entityList().iterator();
-        while(entities.hasNext()) {
+        while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             nodes.add(_getLocation(entity));
         }
@@ -163,7 +163,7 @@ public class CompositeEntityModel implements CompositeModel {
         // The node is actually the location contained by the port.
         // If the port does not contain a location, then create one.
         Iterator ports = composite.portList().iterator();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             ComponentPort port = (ComponentPort)ports.next();
             nodes.add(_getLocation(port));
         }
@@ -174,14 +174,14 @@ public class CompositeEntityModel implements CompositeModel {
         // for FSMs, but it is harmless to include it, so there is no
         // real need to subclass this to remove it.
         Iterator relations = composite.relationList().iterator();
-        while(relations.hasNext()) {
+        while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation)relations.next();
             List vertexList = relation.attributeList(Vertex.class);
             
-            if(vertexList.size() != 0) {
+            if (vertexList.size() != 0) {
                 // Add in all the vertexes.
                 Iterator vertexes = vertexList.iterator();
-                while(vertexes.hasNext()) {
+                while (vertexes.hasNext()) {
                     Vertex v = (Vertex)vertexes.next();
                     nodes.add(v);
                 }
@@ -189,7 +189,7 @@ public class CompositeEntityModel implements CompositeModel {
                 // See if we need to create a vertex.
                 // Count the linked ports.
                 int count = relation.linkedPortList().size();
-                if(count != 2) {
+                if (count != 2) {
                     // A vertex is needed, so create one.
                     try {
                         Vertex vertex = new Vertex(relation,
@@ -210,7 +210,7 @@ public class CompositeEntityModel implements CompositeModel {
         // For visible attributes, add them only if they already
         // create a location.
         Iterator attributes = composite.attributeList().iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
             
             if (attribute instanceof Director) {
@@ -219,7 +219,7 @@ public class CompositeEntityModel implements CompositeModel {
                 // The object is not a director, so only give a locaiton
                 // if one exists already.
                 List locations = attribute.attributeList(Location.class);
-                if(locations.size() > 0) {
+                if (locations.size() > 0) {
                     nodes.add(locations.get(0));
                 }
             }

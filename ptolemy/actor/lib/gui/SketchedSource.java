@@ -144,7 +144,7 @@ public class SketchedSource extends Source
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == dataset) {
-            if(((IntToken)dataset.getToken()).intValue() < 0) {
+            if (((IntToken)dataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
                         "dataset: negative value is not allowed.");
             }
@@ -322,7 +322,7 @@ public class SketchedSource extends Source
         _previousLengthValue = lengthValue;
         plot.clear(datasetValue);
         boolean connected = false;
-        for(int i = 0; i < lengthValue; i++) {
+        for (int i = 0; i < lengthValue; i++) {
             plot.addPoint(datasetValue, (double)i, 0.0, connected);
             connected = true;
         }

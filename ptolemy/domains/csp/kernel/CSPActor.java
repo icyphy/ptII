@@ -213,7 +213,7 @@ public class CSPActor extends TypedAtomicActor
 		} else {
 		    _delayed = true;
 		    ((CSPDirector)getDirector())._actorDelayed(delta, this);
-		    while(_delayed) {
+		    while (_delayed) {
 		        _internalLock.wait();
 		    }
                     if (_cancelDelay) {
@@ -307,7 +307,7 @@ public class CSPActor extends TypedAtomicActor
 	    synchronized(_internalLock) {
 	        _delayed = true;
 		((CSPDirector)getDirector())._actorDelayed(0.0, this);
-		while(_delayed) {
+		while (_delayed) {
 		    _internalLock.wait();
 		}
 	    }

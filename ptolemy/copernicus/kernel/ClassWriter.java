@@ -86,14 +86,14 @@ public class ClassWriter extends SceneTransformer {
 
         String outDir = Options.getString(options, "outDir");
 
-        if(!outDir.equals("")) {
+        if (!outDir.equals("")) {
             File outDirFile = new File(outDir);
             if (!outDirFile.isDirectory()) {
                 outDirFile.mkdirs();
             }
         }
 
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
 

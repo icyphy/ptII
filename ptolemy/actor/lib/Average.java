@@ -109,7 +109,7 @@ public class Average extends Transformer {
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
                 BooleanToken r = (BooleanToken)reset.get(i);
-                if(r.booleanValue()) {
+                if (r.booleanValue()) {
                     // Being reset at this firing.
                     _latestSum = null;
                     _latestCount = 1;

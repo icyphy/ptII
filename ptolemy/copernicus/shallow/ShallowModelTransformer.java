@@ -117,13 +117,13 @@ public class ShallowModelTransformer extends SceneTransformer {
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
-        for(Iterator attributes = namedObj.attributeList().iterator();
+        for (Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
             // FIXME: This is horrible...  I guess we need an attribute for
             // persistance?
-            if(attribute instanceof Variable &&
+            if (attribute instanceof Variable &&
                     !(attribute instanceof Parameter)) {
                 continue;
             }
@@ -134,7 +134,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             String fieldName = getFieldNameForAttribute(attribute, context);
 
             Local local;
-            if(createdSet.contains(attribute.getFullName())) {
+            if (createdSet.contains(attribute.getFullName())) {
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 local = attributeLocal;
@@ -161,7 +161,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                     theClass, attributeType, fieldName);
             // If the attribute is settable, then set its
             // expression.
-	    if(attribute instanceof Settable) {
+	    if (attribute instanceof Settable) {
 		// cast to Settable.
 		body.getUnits().add(Jimple.v().newAssignStmt(
                         settableLocal,
@@ -292,7 +292,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     private Local _buildConstantTypeLocal(Body body,
             ptolemy.data.type.Type type) {
         Chain units = body.getUnits();
-        if(type instanceof ptolemy.data.type.BaseType) {
+        if (type instanceof ptolemy.data.type.BaseType) {
             SootClass typeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
             SootMethod typeConstructor =
@@ -304,7 +304,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                     Jimple.v().newStaticInvokeExpr(typeConstructor,
                             StringConstant.v(type.toString()))));
             return typeLocal;
-        } else if(type instanceof ptolemy.data.type.ArrayType) {
+        } else if (type instanceof ptolemy.data.type.ArrayType) {
             // recurse
             SootClass typeClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
@@ -357,12 +357,12 @@ public class ShallowModelTransformer extends SceneTransformer {
                 RefType.v(PtolemyUtilities.entityClass));
         body.getLocals().add(entityLocal);
 
-	for(Iterator entities = composite.entityList().iterator();
+	for (Iterator entities = composite.entityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ShallowModelTransformer: entity: " + entity);
             Local local;
-            if(createdSet.contains(entity.getFullName())) {
+            if (createdSet.contains(entity.getFullName())) {
                 // Get a reference to the previously created entity.
                 local = entityLocal;
                 body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
@@ -383,7 +383,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 
                 Entity classEntity = (Entity)_findDeferredInstance(entity);
 
-                if(!(entity instanceof CompositeEntity) ||
+                if (!(entity instanceof CompositeEntity) ||
                         className.equals(entity.getMoMLInfo().className)) {
                     // If the entity is NOT a moml class....
                     // Then record the things inside the master as things
@@ -398,7 +398,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 
 	    _entityLocalMap.put(entity, local);
 
-            if(entity instanceof CompositeEntity) {
+            if (entity instanceof CompositeEntity) {
                 _composite(body, containerLocal, container, local,
                         (CompositeEntity)entity, modelClass, createdSet);
             } else {
@@ -423,7 +423,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 RefType.v("ptolemy.kernel.Port"));
         body.getLocals().add(tempPortLocal);
 
-	for(Iterator ports = entity.portList().iterator();
+	for (Iterator ports = entity.portList().iterator();
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
@@ -434,7 +434,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                     PtolemyUtilities.portType);
             body.getLocals().add(portLocal);
 
-            if(createdSet.contains(port.getFullName())) {
+            if (createdSet.contains(port.getFullName())) {
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
 
@@ -457,21 +457,21 @@ public class ShallowModelTransformer extends SceneTransformer {
                 Port classPort = (Port)_findDeferredInstance(port);
                 _updateCreatedSet(entity.getFullName() + "." + port.getName(),
                         classPort, classPort, createdSet);
-                if(port instanceof TypedIOPort) {
+                if (port instanceof TypedIOPort) {
                     TypedIOPort ioPort = (TypedIOPort)port;
-                    if(ioPort.isInput()) {
+                    if (ioPort.isInput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setInputMethod,
                                         IntConstant.v(1))));
                     }
-                    if(ioPort.isOutput()) {
+                    if (ioPort.isOutput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setOutputMethod,
                                         IntConstant.v(1))));
                     }
-                    if(ioPort.isMultiport()) {
+                    if (ioPort.isMultiport()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setMultiportMethod,
@@ -497,7 +497,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	// To get the ordering right,
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
-        for(Iterator ports = composite.portList().iterator();
+        for (Iterator ports = composite.portList().iterator();
 	    ports.hasNext();) {
 	    ComponentPort port = (ComponentPort)ports.next();
 	    Iterator relations = port.insideRelationList().iterator();
@@ -528,7 +528,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     private void _linksOnPortsContainedByContainedEntities(
             JimpleBody body, CompositeEntity composite) {
 
-        for(Iterator entities = composite.entityList().iterator();
+        for (Iterator entities = composite.entityList().iterator();
             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             Iterator ports = entity.portList().iterator();
@@ -537,7 +537,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 
                 Local portLocal;
                 // If we already have a local reference to the port
-                if(_portLocalMap.keySet().contains(port)) {
+                if (_portLocalMap.keySet().contains(port)) {
                     // then just get the reference.
                     portLocal = (Local)_portLocalMap.get(port);
                 } else {
@@ -574,7 +574,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     private void _relations(JimpleBody body, Local thisLocal,
             CompositeEntity composite) {
 	_relationLocalMap = new HashMap();
-	for(Iterator relations = composite.relationList().iterator();
+	for (Iterator relations = composite.relationList().iterator();
 	    relations.hasNext();) {
 	    Relation relation = (Relation)relations.next();
 	    String className = relation.getClass().getName();
@@ -590,28 +590,28 @@ public class ShallowModelTransformer extends SceneTransformer {
     private static void _removeSuperExecutableMethods(SootClass theClass) {
         // Loop through all the methods
 
-        for(Iterator methods = theClass.getMethods().iterator();
+        for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-            for(Iterator units = body.getUnits().snapshotIterator();
+            for (Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 Iterator boxes = unit.getUseBoxes().iterator();
-                while(boxes.hasNext()) {
+                while (boxes.hasNext()) {
                     ValueBox box = (ValueBox)boxes.next();
                     Value value = box.getValue();
-                    if(value instanceof SpecialInvokeExpr) {
+                    if (value instanceof SpecialInvokeExpr) {
                         SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                        if(PtolemyUtilities.executableInterface.declaresMethod(
+                        if (PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
-                            if(r.getMethod().getName().equals("prefire") ||
+                            if (r.getMethod().getName().equals("prefire") ||
                                     r.getMethod().getName().equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
                             }
-                        } else if(!r.getMethod().getName().equals("<init>")) {
+                        } else if (!r.getMethod().getName().equals("<init>")) {
                             System.out.println("superCall:" + r);
                         }
                     }
@@ -628,17 +628,17 @@ public class ShallowModelTransformer extends SceneTransformer {
         // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
         NamedObj.MoMLInfo info = object.getMoMLInfo();
-        if(info.deferTo != null) {
+        if (info.deferTo != null) {
             deferredObject = info.deferTo;
             // System.out.println("object = " + object.getFullName());
             //System.out.println("deferredDirectly = " + deferredObject);
             //(new Exception()).printStackTrace(System.out);
-        } else if(info.className != null) {
+        } else if (info.className != null) {
             try {
                 // First try to find the local moml class that
                 // we extend
                 String deferredClass;
-                if(info.elementName.equals("class")) {
+                if (info.elementName.equals("class")) {
                     deferredClass = info.superclass;
                 } else {
                     deferredClass = info.className;
@@ -648,9 +648,9 @@ public class ShallowModelTransformer extends SceneTransformer {
                 // FIXME: This sucks.  We should integrate with
                 // the classloader mechanism.
                 String objectType;
-                if(object instanceof Attribute) {
+                if (object instanceof Attribute) {
                     objectType = "property";
-                } else if(object instanceof Port) {
+                } else if (object instanceof Port) {
                     objectType = "port";
                 } else {
                     objectType = "entity";
@@ -692,7 +692,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 //deferredObject = parser.parse(source);
                 //System.out.println("class with workspace = " +
                 //        deferredClass);
-                if(deferredObject == null) {
+                if (deferredObject == null) {
                     // Damn, no workspace constructor.  Let's
                     // try a container, name constructor.
                     // It really would be nice if all of
@@ -719,10 +719,10 @@ public class ShallowModelTransformer extends SceneTransformer {
                                 + "constructor.  Original error:\n"
                                 + ex.getMessage());
                     }
-                    if(object instanceof Attribute) {
+                    if (object instanceof Attribute) {
                         deferredObject =
                             toplevel.getAttribute(object.getName());
-                    } else if(object instanceof Port) {
+                    } else if (object instanceof Port) {
                         deferredObject =
                             toplevel.getPort(object.getName());
                     } else {
@@ -747,7 +747,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     // given context.
     private static void _updateCreatedSet(String prefix,
             NamedObj context, NamedObj object, HashSet set) {
-        if(object == context) {
+        if (object == context) {
             System.out.println("creating " + prefix);
             set.add(prefix);
         } else {
@@ -755,28 +755,28 @@ public class ShallowModelTransformer extends SceneTransformer {
             System.out.println("creating " + name);
             set.add(name);
         }
-        if(object instanceof CompositeEntity) {
+        if (object instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) object;
-            for(Iterator entities = composite.entityList().iterator();
+            for (Iterator entities = composite.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 _updateCreatedSet(prefix, context, entity, set);
             }
-            for(Iterator relations = composite.relationList().iterator();
+            for (Iterator relations = composite.relationList().iterator();
                 relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
                 _updateCreatedSet(prefix, context, relation, set);
             }
         }
-        if(object instanceof Entity) {
+        if (object instanceof Entity) {
             Entity entity = (Entity) object;
-            for(Iterator ports = entity.portList().iterator();
+            for (Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 _updateCreatedSet(prefix, context, port, set);
             }
         }
-        for(Iterator attributes = object.attributeList().iterator();
+        for (Iterator attributes = object.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
             _updateCreatedSet(prefix, context, attribute, set);

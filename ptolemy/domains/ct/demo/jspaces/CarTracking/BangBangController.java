@@ -142,12 +142,12 @@ public class BangBangController extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException {
         if (tooSmall.hasToken(0)) {
-            if(((BooleanToken)tooSmall.get(0)).booleanValue()) {
+            if (((BooleanToken)tooSmall.get(0)).booleanValue()) {
                 _lastToken = new DoubleToken(_highValue);
             }
         }
         if (tooLarge.hasToken(0)) {
-            if(((BooleanToken)tooLarge.get(0)).booleanValue()) {
+            if (((BooleanToken)tooLarge.get(0)).booleanValue()) {
                 _lastToken = new DoubleToken(_lowValue);
             }
         }

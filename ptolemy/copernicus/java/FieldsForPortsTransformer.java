@@ -112,7 +112,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
        
         // Loop over all the actor instance classes and get
         // fields for ports.
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
@@ -124,7 +124,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
 
         // Loop over all the classes and replace getPort calls.
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
@@ -132,7 +132,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             SootClass theClass = Scene.v().loadClassAndSupport(className);
                   
             // Loop through all the methods in the class.
-            for(Iterator methods = theClass.getMethods().iterator();
+            for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
@@ -144,23 +144,23 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 SimpleLocalDefs localDefs =
                     new SimpleLocalDefs(unitGraph);
 
-                for(Iterator units = body.getUnits().snapshotIterator();
+                for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    if(!unit.containsInvokeExpr()) {
+                    if (!unit.containsInvokeExpr()) {
                         continue;
                     }
                     ValueBox box = (ValueBox)unit.getInvokeExprBox();
                     Value value = box.getValue();
-                    if(value instanceof InstanceInvokeExpr) {
+                    if (value instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                         // FIXME: string matching is probably not good enough.
-                        if(r.getMethod().getName().equals("getPort")) {
+                        if (r.getMethod().getName().equals("getPort")) {
                                 // Inline calls to getPort(arg) when
                                 // arg is a string that can be
                                 // statically evaluated.
                             Value nameValue = r.getArg(0);
-                            if(Evaluator.isValueConstantValued(nameValue)) {
+                            if (Evaluator.isValueConstantValued(nameValue)) {
                                 StringConstant nameConstant = 
                                     (StringConstant)
                                     Evaluator.getConstantValueOf(nameValue);
@@ -194,13 +194,13 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         Entity entity = (Entity)classToObjectMap.get(type.getSootClass());
-        if(entity != null) {
+        if (entity != null) {
             // Then we are dealing with a getPort call on one of the
             // classes we are generating.
             Port port = entity.getPort(name);
             SootField portField = (SootField)
                 portToFieldMap.get(port);
-            if(portField != null) {
+            if (portField != null) {
                 return Jimple.v().newInstanceFieldRef(
                         baseLocal, portField);
             } else {
@@ -233,20 +233,20 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     private static DefinitionStmt _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
+            if (value instanceof CastExpr) {
                 return _getFieldDef((Local)((CastExpr)value).getOp(),
                         stmt, localDefs);
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 return stmt;
             } else {
                 throw new RuntimeException("unknown value = " + value);
             }
         } else {
             System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
+            for (Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 System.out.println(i.next().toString());
             }
@@ -260,14 +260,14 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     private void _getPortFields(SootClass theClass, Entity container,
             Entity object, Map portToFieldMap) {
       
-        for(Iterator ports = object.portList().iterator();
+        for (Iterator ports = object.portList().iterator();
             ports.hasNext();) {
             Port port = (Port)ports.next();
                     
             String fieldName =
                 StringUtilities.sanitizeName(port.getName(container));
             SootField field;
-            if(!theClass.declaresFieldByName(fieldName)) {
+            if (!theClass.declaresFieldByName(fieldName)) {
                 throw new RuntimeException("Class " + theClass 
                         + " does not declare field "
                         + fieldName + " for port "

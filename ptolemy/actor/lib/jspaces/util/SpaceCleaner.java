@@ -57,11 +57,11 @@ public class SpaceCleaner {
 
             IndexEntry allIndex = new IndexEntry();
 
-	    while(true) {
+	    while (true) {
                 IndexEntry index =
                     (IndexEntry)space.takeIfExists(
                             allIndex, null, Long.MAX_VALUE);
-                if(index == null) {
+                if (index == null) {
                     break;
                 } else {
                     System.out.println("Taken from JavaSpaces IndexEntry: " +
@@ -69,11 +69,11 @@ public class SpaceCleaner {
                             index.getPosition());
                 }
             }
-            while(true) {
+            while (true) {
                 TokenEntry token =
                     (TokenEntry)space.takeIfExists(
                             allToken, null, Long.MAX_VALUE);
-                if(token == null) {
+                if (token == null) {
                     break;
                 } else {
                     System.out.println("Taken from JavaSpaces TokenEntry: " +

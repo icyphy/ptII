@@ -66,7 +66,7 @@ public class Breakpoint extends Variable {
             throws IllegalActionException, NameDuplicationException {
 
       	super(actor, method);
-	if(!(actor instanceof Actor))
+	if (!(actor instanceof Actor))
 	    throw new IllegalActionException("Breakpoints can only be " +
                     "contained by Actors");
 

@@ -105,7 +105,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
         
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -113,16 +113,16 @@ public class InlineTokenTransformer extends SceneTransformer {
             SootClass entityClass = 
                 Scene.v().loadClassAndSupport(className);
       
-            if(debug) System.out.println("class = " + entityClass);
+            if (debug) System.out.println("class = " + entityClass);
          
             // Inline calls to token methods that can be statically 
             // evaluated.
-            for(Iterator methods = entityClass.getMethods().iterator();
+            for (Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 // What about static methods?
-                if(method.isStatic()) {
+                if (method.isStatic()) {
                     continue;
                 }
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -136,11 +136,11 @@ public class InlineTokenTransformer extends SceneTransformer {
                     continue;
                 }
 
-                if(debug) System.out.println("method = " + method);
+                if (debug) System.out.println("method = " + method);
 
                 int count = 0;
                 boolean doneSomething = true;
-                while(doneSomething) {
+                while (doneSomething) {
                     doneSomething = false;
                     // System.out.println("Inlining tokens iteration " + count++);
                     
@@ -155,34 +155,34 @@ public class InlineTokenTransformer extends SceneTransformer {
                     TokenConstructorAnalysis tokenAnalysis = 
                         new TokenConstructorAnalysis(body, localDefs);
                     
-                    for(Iterator units = body.getUnits().snapshotIterator();
+                    for (Iterator units = body.getUnits().snapshotIterator();
                         units.hasNext();) {
                         Unit unit = (Unit)units.next();
                         Iterator boxes = unit.getUseBoxes().iterator();
-                        while(boxes.hasNext()) {
+                        while (boxes.hasNext()) {
                             ValueBox box = (ValueBox)boxes.next();
                             Value value = box.getValue();
-                            if(value instanceof InstanceInvokeExpr) {
+                            if (value instanceof InstanceInvokeExpr) {
                                 InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                                if(debug) System.out.println("invoking = " + r.getMethod());
+                                if (debug) System.out.println("invoking = " + r.getMethod());
                                 
                                 // Skip initializers.
-                                if(r.getMethod().getName().equals("<init>")) {
+                                if (r.getMethod().getName().equals("<init>")) {
                                     continue;
                                 }
                                 
-                                if(r.getBase().getType() instanceof RefType) {
+                                if (r.getBase().getType() instanceof RefType) {
                                     RefType type = (RefType)r.getBase().getType();
                                     
                                 //System.out.println("baseType = " + type);
                                 // Statically evaluate constant arguments.
                                     Value argValues[] = new Value[r.getArgCount()];
                                     int argCount = 0;
-                                    for(Iterator args = r.getArgs().iterator();
+                                    for (Iterator args = r.getArgs().iterator();
                                         args.hasNext();) {
                                         Value arg = (Value)args.next();
                                         //      System.out.println("arg = " + arg);
-                                        if(Evaluator.isValueConstantValued(arg)) {
+                                        if (Evaluator.isValueConstantValued(arg)) {
                                             argValues[argCount++] = Evaluator.getConstantValueOf(arg);
                                             //       System.out.println("argument = " + argValues[argCount-1]);
                                         } else {
@@ -190,49 +190,49 @@ public class InlineTokenTransformer extends SceneTransformer {
                                         }
                                     }
                                     
-                                    if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                    if (SootUtilities.derivesFrom(type.getSootClass(), 
                                             PtolemyUtilities.tokenClass)) {
                                         
                                         // if we are invoking a method on a token class, then
                                         // attempt to get the constant value of the token.
                                         Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs, 
                                                 tokenAnalysis);
-                                        if(debug) System.out.println("reference to Token with value = " + token);
+                                        if (debug) System.out.println("reference to Token with value = " + token);
                                         
                                         // If we have a token and all the args are constant valued, 
                                         // and the method returns a Constant, or a token, then
-                                        if(token != null && argCount == r.getArgCount()) {
-                                            if(debug) {
+                                        if (token != null && argCount == r.getArgCount()) {
+                                            if (debug) {
                                                 System.out.println("statically invoking " + r);
-                                                for(int j = 0; j < r.getArgCount(); j++) {
+                                                for (int j = 0; j < r.getArgCount(); j++) {
                                                     System.out.println("argument " + j + " = " + argValues[j]);
                                                 }
                                             }
                                             // reflect and invoke the same method on our token
                                             Object object = 
                                                 SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
-                                            if(debug) System.out.println("method result  = " + object);
+                                            if (debug) System.out.println("method result  = " + object);
                                             
                                             Type returnType = r.getMethod().getReturnType();
-                                            if(returnType instanceof ArrayType) {
-                                            } else if(returnType instanceof RefType) {
+                                            if (returnType instanceof ArrayType) {
+                                            } else if (returnType instanceof RefType) {
                                                 SootClass returnClass = ((RefType)returnType).getSootClass();
-                                                if(SootUtilities.derivesFrom(returnClass,
+                                                if (SootUtilities.derivesFrom(returnClass,
                                                         PtolemyUtilities.tokenClass)) {
-                                                    if(debug) System.out.println("handling as token type");
+                                                    if (debug) System.out.println("handling as token type");
                                                     Local local = PtolemyUtilities.buildConstantTokenLocal(body, 
                                                             unit, (Token)object, "token");
                                                     box.setValue(local);
                                                     doneSomething = true;
-                                                } else if(returnClass.getName().equals("java.lang.String")) {
-                                                    if(debug) System.out.println("handling as string type");
+                                                } else if (returnClass.getName().equals("java.lang.String")) {
+                                                    if (debug) System.out.println("handling as string type");
                                                     Constant constant = StringConstant.v((String)object);
                                                 box.setValue(constant);
                                                 doneSomething = true;
                                                 }                                            
-                                            } else if(returnType instanceof BaseType &&
+                                            } else if (returnType instanceof BaseType &&
                                                     !(returnType instanceof VoidType)) {
-                                                if(debug) System.out.println("handling as base type");
+                                                if (debug) System.out.println("handling as base type");
                                             // Must be a primitive type...
                                                 Constant constant =
                                                     SootUtilities.convertArgumentToConstantValue(object);
@@ -266,28 +266,28 @@ public class InlineTokenTransformer extends SceneTransformer {
             TokenConstructorAnalysis tokenAnalysis) {
               
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-             if(value instanceof Local) {
+             if (value instanceof Local) {
                 return getTokenValue(entity, (Local)value,
                         stmt, localDefs, tokenAnalysis);
-            } else if(value instanceof CastExpr) {
+            } else if (value instanceof CastExpr) {
                 // If the local was defined by a cast, then recurse on
                 // the value we are casting from.  Note that we assume
                 // the type is acceptable.
                 return getTokenValue(entity, 
                         (Local)((CastExpr)value).getOp(), stmt, 
                         localDefs, tokenAnalysis);
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                if(tag == null) {
+                if (tag == null) {
                     return null;
                 } else {
                     return (Token)tag.getObject();
                 }
-            } else if(value instanceof NewExpr) {
+            } else if (value instanceof NewExpr) {
                 // Find the value of the constructed token.
                 return tokenAnalysis.getConstructedTokenValue(stmt);
             } else {
@@ -295,7 +295,7 @@ public class InlineTokenTransformer extends SceneTransformer {
             }
         } else {
             /*System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
+            for (Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 System.out.println(i.next().toString());
                 }*/

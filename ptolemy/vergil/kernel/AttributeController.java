@@ -70,7 +70,7 @@ public class AttributeController extends IconController {
     public AttributeController(GraphController controller, Access access) {
 	super(controller);
 
-        if(access == FULL) {
+        if (access == FULL) {
             // Add to the context menu.
             _menuFactory.addMenuItemFactory(
                     new RenameDialogFactory());

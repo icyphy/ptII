@@ -84,15 +84,15 @@ public class TokenInstanceofEliminator extends BodyTransformer
             new TokenTypeAnalysis(body.getMethod(),
                     new CompleteUnitGraph(body));
         
-         for(Iterator units = body.getUnits().iterator();
+         for (Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
-            for(Iterator boxes = unit.getUseBoxes().iterator();
+            for (Iterator boxes = unit.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
             
-                if(value instanceof InstanceOfExpr) {
+                if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is 
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
@@ -100,7 +100,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     InstanceOfExpr expr = (InstanceOfExpr)value;
                     Type checkType = expr.getCheckType();
                     Value op = expr.getOp();
-                    if(!PtolemyUtilities.isTokenType(op.getType())) {
+                    if (!PtolemyUtilities.isTokenType(op.getType())) {
                         continue;
                     }
 

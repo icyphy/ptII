@@ -111,7 +111,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param branch The Branch managing execution of this method.
      */
     public synchronized void prepareToBlock(Branch branch) {
-        if( branch != null ) {
+        if ( branch != null ) {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
@@ -129,7 +129,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  the new state with the blocked branch.
      */
     public synchronized void wakeUpBlockedPartner() {
-        if( _otherBranch != null ) {
+        if ( _otherBranch != null ) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             BasePNDirector director = ((BasePNDirector)((Actor)
@@ -279,7 +279,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isConsumerReceiver() {
-        if( isConnectedToBoundary() ) {
+        if ( isConnectedToBoundary() ) {
             return true;
         }
     	return false;
@@ -319,7 +319,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  hence this method returns true;
      */
     public boolean isProducerReceiver() {
-        if( isOutsideBoundary() || isInsideBoundary() ) {
+        if ( isOutsideBoundary() || isInsideBoundary() ) {
             return true;
         }
     	return false;
@@ -383,7 +383,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 // director._actorBlocked(this);
                 while (_writeBlocked && !_terminate ) {
                     // while (!_terminate && !super.hasRoom()) {
-                    // while(_writeBlocked) {
+                    // while (_writeBlocked) {
                     // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                     // }

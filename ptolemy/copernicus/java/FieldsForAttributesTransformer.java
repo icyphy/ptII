@@ -114,7 +114,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
        
         // Loop over all the actor instance classes and get the
         // attribute fields.
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -124,7 +124,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             _getAttributeFields(entityClass, entity, entity,
                     attributeToFieldMap);
             // And get the attributes of ports too...
-            for(Iterator ports = entity.portList().iterator();
+            for (Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 _getAttributeFields(entityClass, entity, port,
@@ -134,7 +134,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
 
         // Loop over all the entity classes and replace getAttribute calls.
-       for(Iterator i = _model.deepEntityList().iterator();
+       for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -143,7 +143,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 Scene.v().loadClassAndSupport(className);
        
             // Replace calls to getAttribute with field references.
-            for(Iterator methods = theClass.getMethods().iterator();
+            for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
@@ -153,29 +153,29 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 // this will help us figure out where locals are defined.
                 SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
-                for(Iterator units = body.getUnits().snapshotIterator();
+                for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    if(!unit.containsInvokeExpr()) {
+                    if (!unit.containsInvokeExpr()) {
                         continue;
                     }
                     ValueBox box = (ValueBox)unit.getInvokeExprBox();
                     Value value = box.getValue();
-                    if(value instanceof InstanceInvokeExpr) {
+                    if (value instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                        if(r.getMethod().getSubSignature().equals(
+                        if (r.getMethod().getSubSignature().equals(
                                 PtolemyUtilities.getDirectorMethod.getSubSignature())) {
                                 // Replace calls to getDirector with
                                 // null.  FIXME: we should be able to
                                 // do better than this?
                             box.setValue(NullConstant.v());
-                        } else if(r.getMethod().equals(
+                        } else if (r.getMethod().equals(
                                 PtolemyUtilities.getAttributeMethod)) {
                                 // inline calls to getAttribute(arg)
                                 // when arg is a string that can be
                                 // statically evaluated.
                             Value nameValue = r.getArg(0);
-                            if(Evaluator.isValueConstantValued(nameValue)) {
+                            if (Evaluator.isValueConstantValued(nameValue)) {
                                 StringConstant nameConstant = 
                                     (StringConstant)
                                     Evaluator.getConstantValueOf(nameValue);
@@ -211,13 +211,13 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
         System.out.println("name = " + name);
         System.out.println("object = " + object);
-        if(object != null) {
+        if (object != null) {
             // Then we are dealing with a getAttribute call on one of the
             // classes we are generating.
             Attribute attribute = object.getAttribute(name);
             SootField attributeField = (SootField)
                 attributeToFieldMap.get(attribute);
-            if(attributeField != null) {
+            if (attributeField != null) {
                 return Jimple.v().newInstanceFieldRef(
                         baseLocal, attributeField);
             } else {
@@ -249,20 +249,20 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     private static DefinitionStmt _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
+        if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
+            if (value instanceof CastExpr) {
                 return _getFieldDef((Local)((CastExpr)value).getOp(),
                         stmt, localDefs);
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 return stmt;
             } else {
                 throw new RuntimeException("unknown value = " + value);
             }
         } else {
             System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
+            for (Iterator i = definitionList.iterator();
                 i.hasNext();) {
                 System.out.println(i.next().toString());
             }
@@ -276,7 +276,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     private void _getAttributeFields(SootClass theClass, NamedObj container,
             NamedObj object, Map attributeToFieldMap) {
        
-        for(Iterator attributes =
+        for (Iterator attributes =
                 object.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
@@ -284,7 +284,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             String fieldName = ModelTransformer.getFieldNameForAttribute(
                     attribute, container);
             
-            if(!theClass.declaresFieldByName(fieldName)) {
+            if (!theClass.declaresFieldByName(fieldName)) {
                 // FIXME: This should be an exception.
                 System.out.println("Class " + theClass 
                         + " does not declare field for attribute "

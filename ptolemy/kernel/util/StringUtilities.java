@@ -93,7 +93,7 @@ public class StringUtilities {
      */
     public static String sanitizeName(String name) {
 	char [] nameArray = name.toCharArray();
-       	for(int i = 0; i < nameArray.length; i++) {
+       	for (int i = 0; i < nameArray.length; i++) {
 	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
 		nameArray[i] = '_';
 	    }
@@ -115,7 +115,7 @@ public class StringUtilities {
     public static String substitute(String string,
             String old, String replacement) {
         int start = string.indexOf(old);
-        while(start != -1) {
+        while (start != -1) {
             StringBuffer buffer = new StringBuffer(string);
             buffer.delete(start, start + old.length());
             buffer.insert(start, replacement);

@@ -266,11 +266,11 @@ public abstract class TableauFrame extends Top {
                 (EffigyFactory)configuration.getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
-	    if(effigyFactory != null && directory != null) {
+	    if (effigyFactory != null && directory != null) {
                 List factoryList =
                     effigyFactory.entityList(EffigyFactory.class);
 	        Iterator factories = factoryList.iterator();
-                while(factories.hasNext()) {
+                while (factories.hasNext()) {
                     final EffigyFactory factory =
                         (EffigyFactory)factories.next();
                     if (!factory.canCreateBlankEffigy()) continue;
@@ -342,7 +342,7 @@ public abstract class TableauFrame extends Top {
      */
     protected boolean _close() {
         // If we were given no tableau, then just close the window
-        if(getEffigy() == null) {
+        if (getEffigy() == null) {
             return super._close();
         }
 
@@ -401,7 +401,7 @@ public abstract class TableauFrame extends Top {
      *  @return The default icon image, or null if there is none.
      */
     protected Image _getDefaultIconImage() {
-	if(_defaultIconImage == null) {
+	if (_defaultIconImage == null) {
 	    // Note that PtolemyIISmallIcon.gif is also in doc/img.
 	    // We place a duplicate copy here to make it easy to ship
 	    // jar files that contain all the appropriate images.

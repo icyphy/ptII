@@ -485,7 +485,7 @@ public class IOPort extends ComponentPort {
 
 	    Iterator ports = deepConnectedPortList().iterator();
             int myDepth = depthInHierarchy();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isInput()) {
 		    result.addLast(port);
@@ -529,7 +529,7 @@ public class IOPort extends ComponentPort {
 
 	    Iterator ports = deepConnectedPortList().iterator();
             int myDepth = depthInHierarchy();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isOutput()) {
 		    result.addLast(port);
@@ -740,7 +740,7 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
 
-        if(channelIndex >= localReceivers.length) {
+        if (channelIndex >= localReceivers.length) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
                     "get: channel index is out of range.");
@@ -835,7 +835,7 @@ public class IOPort extends ComponentPort {
             // Have to compute the _inside_ width.
             int width = 0;
             Iterator relations = insideRelationList().iterator();
-            while(relations.hasNext()) {
+            while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
                 width += relation.getWidth();
             }
@@ -922,7 +922,7 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
 
-            if(isOpaque()) {
+            if (isOpaque()) {
                 // Check to see whether cache is valid.
                 if (_localReceiversVersion == _workspace.getVersion()) {
                     return _localReceivers;
@@ -1041,12 +1041,12 @@ public class IOPort extends ComponentPort {
             Receiver[][] result = null;
             // If the port is opaque, return the local Receivers for the
             // relation.
-            if(opaque) {
+            if (opaque) {
                 // If _localReceiversTable is null, then createReceivers()
                 // hasn't been called, so there is nothing to return.
                 if (_localReceiversTable == null) return _EMPTY_RECEIVER_ARRAY;
 
-                if( _localReceiversTable.containsKey(relation) ) {
+                if ( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
                     List list = (List)_localReceiversTable.get(relation);
                     try {
@@ -1067,7 +1067,7 @@ public class IOPort extends ComponentPort {
                 // and trim the returned Receivers array to get the
                 // part corresponding to this occurrence of the IORelation
                 Receiver[][] insideReceivers = getReceivers();
-                if(insideReceivers == null) {
+                if (insideReceivers == null) {
                     return _EMPTY_RECEIVER_ARRAY;
                 }
                 int insideWidth = insideReceivers.length;
@@ -1075,13 +1075,13 @@ public class IOPort extends ComponentPort {
                 result = new Receiver[width][];
                 Iterator outsideRelations = linkedRelationList().iterator();
                 int seen = 0;
-                while(outsideRelations.hasNext()) {
+                while (outsideRelations.hasNext()) {
                     IORelation outsideRelation =
                         (IORelation) outsideRelations.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
                     if (outsideRelation != null) {
-                        if(outsideRelation == relation) {
+                        if (outsideRelation == relation) {
                             if (seen == occurrence) {
                                 // Have to be careful here to get the right
                                 // occurrence of the relation.  EAL 7/30/00.
@@ -1096,11 +1096,11 @@ public class IOPort extends ComponentPort {
                             } else {
                                 seen++;
                                 index += outsideRelation.getWidth();
-                                if(index > insideWidth) break;
+                                if (index > insideWidth) break;
                             }
                         } else {
                             index += outsideRelation.getWidth();
-                            if(index > insideWidth) break;
+                            if (index > insideWidth) break;
                         }
                     }
                 }
@@ -1138,7 +1138,7 @@ public class IOPort extends ComponentPort {
 
             // For opaque port, try the cached _farReceivers
             // Check validity of cached version
-            if(isOpaque() &&
+            if (isOpaque() &&
                     _farReceiversVersion == _workspace.getVersion()) {
                 return _farReceivers;
             }
@@ -1147,14 +1147,14 @@ public class IOPort extends ComponentPort {
             Iterator relations = linkedRelationList().iterator();
             int index = 0;
             boolean foundRemoteInput = false;
-            while(relations.hasNext()) {
+            while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
                 // A null link (supported since indexed links) might
                 // yield a null relation here. EAL 7/19/00.
                 if (relation != null) {
                     Receiver[][] deepReceivers = relation.deepReceivers(this);
                     if (deepReceivers != null) {
-                        for(int i = 0; i < deepReceivers.length; i++) {
+                        for (int i = 0; i < deepReceivers.length; i++) {
                             farReceivers[index] = deepReceivers[i];
                             index++;
                             foundRemoteInput = true;
@@ -1174,7 +1174,7 @@ public class IOPort extends ComponentPort {
               }
             */
             // For an opaque port, cache the result.
-            if(isOpaque()) {
+            if (isOpaque()) {
                 _farReceiversVersion = _workspace.getVersion();
                 _farReceivers = farReceivers;
             }
@@ -1218,20 +1218,20 @@ public class IOPort extends ComponentPort {
 
             // no cache used.
             Receiver[][] outsideReceivers = getRemoteReceivers();
-            if(outsideReceivers == null) {
+            if (outsideReceivers == null) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
             Receiver[][] result = new Receiver[width][];
             Iterator insideRelations = insideRelationList().iterator();
             int index = 0;
-            while(insideRelations.hasNext()) {
+            while (insideRelations.hasNext()) {
                 IORelation insideRelation =
                     (IORelation) insideRelations.next();
-                if(insideRelation == relation) {
+                if (insideRelation == relation) {
                     int size = java.lang.Math.min
                         (width, outsideReceivers.length-index);
                     //NOTE: if size = 0, the for loop is skipped.
-                    for(int i = 0; i < size; i++) {
+                    for (int i = 0; i < size; i++) {
                         result[i] = outsideReceivers[i+index];
                     }
                     break;
@@ -1254,11 +1254,11 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
             long version = _workspace.getVersion();
-            if(_widthVersion != version) {
+            if (_widthVersion != version) {
                 _widthVersion = version;
                 int sum = 0;
                 Iterator relations = linkedRelationList().iterator();
-                while(relations.hasNext()) {
+                while (relations.hasNext()) {
                     IORelation relation = (IORelation) relations.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
@@ -1423,7 +1423,7 @@ public class IOPort extends ComponentPort {
                 // is an input.
                 _isInput = false;  // By default we are not an output port.
                 Iterator ports = deepInsidePortList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isInput()) _isInput = true;
@@ -1531,7 +1531,7 @@ public class IOPort extends ComponentPort {
                 // inside is an output.
                 _isOutput = false;  // By default we are not an output port.
                 Iterator ports = deepInsidePortList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isOutput()) _isOutput = true;
@@ -1844,7 +1844,7 @@ public class IOPort extends ComponentPort {
             int depthOfDirector = excDirector.depthInHierarchy();
             LinkedList result = new LinkedList();
             Iterator ports = deepConnectedPortList().iterator();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 int depth = port.depthInHierarchy();
                 if (port.isInput() && depth >= depthOfDirector) {
@@ -1873,7 +1873,7 @@ public class IOPort extends ComponentPort {
 	    int depthOfDirector = excDirector.depthInHierarchy();
             LinkedList result = new LinkedList();
 	    Iterator ports = deepConnectedPortList().iterator();
-            while(ports.hasNext()) {
+            while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
                 int depth = port.depthInHierarchy();
                 if (port.isInput() && depth <= depthOfDirector) {
@@ -1916,7 +1916,7 @@ public class IOPort extends ComponentPort {
                     if (this.isKnown(i)) {
                         if (this.hasToken(i)) {
                             Token t = this.get(i);
-                            if(_debugging) _debug(getName(),
+                            if (_debugging) _debug(getName(),
                                     "transferring input from "
                                     + this.getName());
                             for (int j = 0; j < insideReceivers[i].length;
@@ -2486,16 +2486,16 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         if (_isInsideLinkable(relation.getContainer())) {
             // An inside link
-            if(!isInsideLinked(relation)) {
+            if (!isInsideLinked(relation)) {
                 // Check for existing inside links
-                if(!isMultiport() && numInsideLinks() >= 1) {
+                if (!isMultiport() && numInsideLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation " +
                             "to a single port.");
                 }
                 if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
                     // Relation is a bus.
-                    if(!isMultiport()) {
+                    if (!isMultiport()) {
                         throw new IllegalActionException(this,  relation,
                                 "Attempt to link a bus relation " +
                                 "to a single port.");
@@ -2516,16 +2516,16 @@ public class IOPort extends ComponentPort {
             }
         } else {
             // An outside link
-            if(!isLinked(relation)) {
+            if (!isLinked(relation)) {
                 // Check for existing outside links
-                if(!isMultiport() && numLinks() >= 1) {
+                if (!isMultiport() && numLinks() >= 1) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link more than one relation " +
                             "to a single port.");
                 }
                 if (relation.getWidth() != 1 || !relation.isWidthFixed()) {
                     // Relation is a bus.
-                    if(!isMultiport()) {
+                    if (!isMultiport()) {
                         throw new IllegalActionException(this,  relation,
                                 "Attempt to link a bus relation " +
                                 "to a single port.");

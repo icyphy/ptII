@@ -224,7 +224,7 @@ public class GeneratorTableau extends Tableau {
                 (GeneratorTableauAttribute)
                 model.getAttribute("_generator",
                         GeneratorTableauAttribute.class);
-            if(attribute == null) {
+            if (attribute == null) {
                 attribute = new GeneratorTableauAttribute(
                         model, "_generator");
             }
@@ -266,7 +266,7 @@ public class GeneratorTableau extends Tableau {
                             // If the directory name is empty, then set
                             // directory to the current working directory.
                             File directory = new File(directoryName);
-                            if(!directory.isDirectory()) {
+                            if (!directory.isDirectory()) {
                                 throw new IllegalActionException(model,
                                         "Not a directory: " + directoryName);
                             }
@@ -438,7 +438,7 @@ public class GeneratorTableau extends Tableau {
                                         + className);
 				}
                             }
-                            if(execCommands.size() > 0) {
+                            if (execCommands.size() > 0) {
 				exec.setCommands(execCommands);
 				exec.start();
                             }
@@ -484,7 +484,7 @@ public class GeneratorTableau extends Tableau {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if(effigy instanceof PtolemyEffigy) {
+	    if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
                 GeneratorTableau tableau =
                     (GeneratorTableau)effigy.getEntity("generatorTableau");

@@ -318,13 +318,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of input TypedIOPort objects.
      */
     public List inputPortList() {
-        if(_inputPortsVersion != _workspace.getVersion()) {
+        if (_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
                 LinkedList inPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if (p.isInput()) {
                         inPorts.add(p);
@@ -366,7 +366,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	while (n++ < count) {
 	    if (prefire()) {
 		fire();
-		if(!postfire()) return STOP_ITERATING;
+		if (!postfire()) return STOP_ITERATING;
 	    } else {
                 return NOT_READY;
 	    }
@@ -438,14 +438,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of output TypedIOPort objects.
      */
     public List outputPortList() {
-        if(_outputPortsVersion != _workspace.getVersion()) {
+        if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isOutput()) {
+                    if ( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }
@@ -497,16 +497,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         _createInputVariables();
         // Validate the attributes of this actor.
-        for(Iterator attributes = attributeList(Settable.class).iterator();
+        for (Iterator attributes = attributeList(Settable.class).iterator();
             attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
-        for(Iterator ports = portList().iterator();
+        for (Iterator ports = portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
-            for(Iterator attributes =
+            for (Iterator attributes =
                     port.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();
@@ -807,7 +807,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
             Attribute a = getAttribute(vName);
             try {
-                if(a != null) {
+                if (a != null) {
                     a.setContainer(null);
                 }
                 pVars[chIndex][0] = new Variable(this, vName);
@@ -824,7 +824,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
             a = getAttribute(vName);
             try {
-                if(a != null) {
+                if (a != null) {
                     a.setContainer(null);
                 }
                 pVars[chIndex][1] = new Variable(this, vName);

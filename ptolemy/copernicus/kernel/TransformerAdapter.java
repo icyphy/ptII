@@ -75,12 +75,12 @@ public class TransformerAdapter extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
-        while(classes.hasNext()) {
+        while (classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
             Iterator methods = theClass.getMethods().iterator();
-            while(methods.hasNext()) {
+            while (methods.hasNext()) {
                 SootMethod m = (SootMethod) methods.next();
-                if(!m.isConcrete())
+                if (!m.isConcrete())
                     continue;
 
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();

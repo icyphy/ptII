@@ -122,17 +122,17 @@ public class Inhibit extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if(inhibit.hasToken(0)) {
+        if (inhibit.hasToken(0)) {
             // Consume the inhibit token.
             inhibit.get(0);
-            for(int i = 0; i < input.getWidth(); i++) {
-                while(input.hasToken(i)) {
+            for (int i = 0; i < input.getWidth(); i++) {
+                while (input.hasToken(i)) {
                     input.get(i);
                 }
             }
         } else {
-            for(int i = 0; i < input.getWidth(); i++) {
-                while(input.hasToken(i)) {
+            for (int i = 0; i < input.getWidth(); i++) {
+                while (input.hasToken(i)) {
                     output.send(i, input.get(i));
                 }
             }

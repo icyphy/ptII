@@ -122,7 +122,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
-        for(Iterator i = _model.deepEntityList().iterator();
+        for (Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -131,22 +131,22 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Scene.v().loadClassAndSupport(className);
        
             // Loop over all the methods...
-            for(Iterator methods = theClass.getMethods().iterator();
+            for (Iterator methods = theClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
                 // Loop over all the statements.
-                for(Iterator units = body.getUnits().snapshotIterator();
+                for (Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    if(!unit.containsInvokeExpr()) {
+                    if (!unit.containsInvokeExpr()) {
                         continue;
                     }
                     ValueBox box = (ValueBox)unit.getInvokeExprBox();
                     InvokeExpr r = (InvokeExpr)box.getValue();
-                    if(r.getMethod().getSubSignature().equals(
+                    if (r.getMethod().getSubSignature().equals(
                             PtolemyUtilities.invalidateResolvedTypesMethod.getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
@@ -173,7 +173,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            for(Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -212,7 +212,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for(Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -258,7 +258,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 throw new KernelRuntimeException(ex, 
                         "Failed to get schedule");
             }
-            while(schedule.hasNext()) {
+            while (schedule.hasNext()) {
                 Entity entity = (Entity)schedule.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
@@ -309,7 +309,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for(Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(

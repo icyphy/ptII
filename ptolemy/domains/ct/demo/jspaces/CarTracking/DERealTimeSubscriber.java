@@ -234,7 +234,7 @@ public class DERealTimeSubscriber extends DEActor
                                 "error reading from space." +
                                 e.getMessage());
                     }
-                    if(entry == null) {
+                    if (entry == null) {
                         System.err.println(getName() +
                                 " read null from space");
                     } else {

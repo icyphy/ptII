@@ -125,7 +125,7 @@ public class TimeKeeper {
      *  managed by this TimeKeeper.
      */
     public synchronized PrioritizedTimedQueue getFirstReceiver() {
-	if( _receiverList.size() == 0 ) {
+	if ( _receiverList.size() == 0 ) {
 	    return null;
 	}
         return (PrioritizedTimedQueue)_receiverList.getFirst();
@@ -140,7 +140,7 @@ public class TimeKeeper {
      *  this actor.
      */
     public double getNextTime() {
-        if( _receiverList.size() == 0 ) {
+        if ( _receiverList.size() == 0 ) {
             return _currentTime;
         }
         return ((PrioritizedTimedQueue)_receiverList.getFirst()).getReceiverTime();
@@ -154,12 +154,12 @@ public class TimeKeeper {
     public synchronized double getOutputTime() {
 	Thread thread = Thread.currentThread();
 
-        if( !((ComponentEntity)_actor).isAtomic() ) {
+        if ( !((ComponentEntity)_actor).isAtomic() ) {
             return _outputTime;
         }
 
 
-        if( _outputTime < _currentTime ) {
+        if ( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
         return _outputTime;
@@ -170,14 +170,14 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
-	if( _receiverList == null ) {
+	if ( _receiverList == null ) {
 	    return;
 	}
-	if( _ignoredReceivers ) {
+	if ( _ignoredReceivers ) {
 	    PrioritizedTimedQueue receiver;
-	    for( int i = 0; i < _receiverList.size(); i++ ) {
+	    for ( int i = 0; i < _receiverList.size(); i++ ) {
 	        receiver = (PrioritizedTimedQueue)_receiverList.get(i);
-		if( receiver.getReceiverTime() ==
+		if ( receiver.getReceiverTime() ==
 			PrioritizedTimedQueue.IGNORE ) {
 		    receiver.removeIgnoredToken();
 		}
@@ -198,13 +198,13 @@ public class TimeKeeper {
     public void sendOutNullTokens(DDEReceiver receiver) {
 	Iterator ports = _actor.outputPortList().iterator();
 	double time = getCurrentTime();
-	while( ports.hasNext() ) {
+	while ( ports.hasNext() ) {
 	    IOPort port = (IOPort)ports.next();
 	    Receiver receivers[][] =
 		(Receiver[][])port.getRemoteReceivers();
 	    for (int i = 0; i < receivers.length; i++) {
 		for (int j = 0; j < receivers[i].length; j++) {
-		    if( time > ((DDEReceiver)receivers[i][j])._lastTime ) {
+		    if ( time > ((DDEReceiver)receivers[i][j])._lastTime ) {
 			((DDEReceiver)receivers[i][j]).put(
 				new NullToken(), time );
 		    }
@@ -223,7 +223,7 @@ public class TimeKeeper {
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(double time) {
-	if( time < _currentTime
+	if ( time < _currentTime
 		&& time != PrioritizedTimedQueue.INACTIVE
 		&& time != PrioritizedTimedQueue.IGNORE ) {
 	    throw new IllegalArgumentException(
@@ -233,7 +233,7 @@ public class TimeKeeper {
 		    + "; current time = " + _currentTime );
 	}
 
-	if( time != PrioritizedTimedQueue.IGNORE ) {
+	if ( time != PrioritizedTimedQueue.IGNORE ) {
             _currentTime = time;
 	}
     }
@@ -247,19 +247,19 @@ public class TimeKeeper {
      */
     public synchronized void updateReceiverList(
             PrioritizedTimedQueue prioritizedTimedQueue) {
-	if(_receiverList == null) {
+	if (_receiverList == null) {
 	    _receiverList = new LinkedList();
 	}
 
 	double time = prioritizedTimedQueue.getReceiverTime();
-	if(time == PrioritizedTimedQueue.IGNORE) {
+	if (time == PrioritizedTimedQueue.IGNORE) {
 	    _ignoredReceivers = true;
 	}
 
-	if( !_receiverList.contains(prioritizedTimedQueue) ) {
+	if ( !_receiverList.contains(prioritizedTimedQueue) ) {
 	    // Add receiver to list with a touch of
             // optimization before actually sorting.
-	    if( time > 0 ) {
+	    if ( time > 0 ) {
 		_receiverList.addFirst(prioritizedTimedQueue);
 	    } else {
 		_receiverList.addLast(prioritizedTimedQueue);
@@ -283,23 +283,23 @@ public class TimeKeeper {
      System.out.println("\n###Print "+name+"'s ReceiverList.");
      System.out.println("   Number of Receivers in ReceiverList = "
      + _receiverList.size() );
-     if( _receiverList.size() == 0 ) {
+     if ( _receiverList.size() == 0 ) {
      System.out.println("\tList is empty");
      System.out.println("###End of printReceiverList()\n");
      return;
      }
-     for( int i = 0; i < _receiverList.size(); i++ ) {
+     for ( int i = 0; i < _receiverList.size(); i++ ) {
      PrioritizedTimedQueue testReceiver = (PrioritizedTimedQueue)_receiverList.get(i);
      double time = testReceiver.getReceiverTime();
      Token token = null;
-     if( testReceiver._queue.size() > 0 ) {
+     if ( testReceiver._queue.size() > 0 ) {
      token = ((PrioritizedTimedQueue.Event)testReceiver._queue.get(0)).getToken();
      }
      String msg = "\t"+name+"'s Receiver "+i+
      " has a time of " +time+" and ";
-     if( token instanceof NullToken ) {
+     if ( token instanceof NullToken ) {
      msg += "contains a NullToken";
-     } else if( token != null ) {
+     } else if ( token != null ) {
      msg += "contains a RealToken";
      } else {
      msg += "contains no token";
@@ -318,12 +318,12 @@ public class TimeKeeper {
     synchronized void _setOutputTime(double outputTime)
             throws IllegalActionException {
 
-        if( outputTime < _currentTime ) {
+        if ( outputTime < _currentTime ) {
             throw new IllegalActionException("Illegal attempt "
             	    + "to set the time keeper's output time "
                     + "in the past");
         }
-	if( outputTime != PrioritizedTimedQueue.IGNORE ) {
+	if ( outputTime != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
 	}
     }
@@ -344,14 +344,14 @@ public class TimeKeeper {
 
         LinkedList listOfPorts = new LinkedList();
 	Iterator inputPorts = _actor.inputPortList().iterator();
-	if( !inputPorts.hasNext() ) {
+	if ( !inputPorts.hasNext() ) {
             return;
 	}
 
         //
         // First Order The Ports
         //
-        while( inputPorts.hasNext() ) {
+        while ( inputPorts.hasNext() ) {
 	    listOfPorts.addLast( (IOPort)inputPorts.next() );
         }
 
@@ -361,11 +361,11 @@ public class TimeKeeper {
         //
         int cnt = 0;
         int currentPriority = 0;
-        while( cnt < listOfPorts.size() ) {
+        while ( cnt < listOfPorts.size() ) {
             IOPort port = (IOPort)listOfPorts.get(cnt);
             Receiver[][] receivers = port.getReceivers();
-            for( int i = 0; i < receivers.length; i++ ) {
-                for( int j = 0; j < receivers[i].length; j++ ) {
+            for ( int i = 0; i < receivers.length; i++ ) {
+                for ( int j = 0; j < receivers[i].length; j++ ) {
                     ((DDEReceiver)receivers[i][j])._priority =
                         currentPriority;
 		    //
