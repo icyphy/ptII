@@ -88,6 +88,12 @@ KVM_DIR = @KVM_DIR@
 # Directory the Palm Pilot Hot Sync program looks for downloads
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
+# Jar files used Soot - a Java Optimization Framework
+SOOT_CLASSES = @SOOT_CLASSES@
+
+# Directory that contains the Soot installation
+SOOT_DIR = @SOOT_DIR@
+
 # Tini is a single board Java processor from Dallas Semi (www.dalsemi.com)
 TINI_CLASSES = @TINI_CLASSES@
 
