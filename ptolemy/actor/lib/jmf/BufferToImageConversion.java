@@ -26,7 +26,7 @@ public class BufferToImageConversion extends Transformer {
             ObjectToken objectToken = (ObjectToken) input.get(0);
             Buffer in = (Buffer) objectToken.getValue();
             VideoFormat videoFormat = (VideoFormat) in.getFormat();
-            //the following my be expensive, and we might want to have 
+            //the following my be expensive, and we might want to have
             //videoFormat be specifed by the user at the beginning, or
             //let it default to the following.
             BufferToImage bufferToImage = new BufferToImage(videoFormat);
