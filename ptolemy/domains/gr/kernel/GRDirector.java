@@ -350,88 +350,6 @@ public class GRDirector extends StaticSchedulingDirector {
         return true;
     }
 
-
-    /** Override the base class method to transfer enough tokens to
-     *  complete an internal iteration.
-     *  The port argument must be an opaque input port. If any channel
-     *  of the input port has no data, then that channel is ignored.
-     *
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-     *  @exception IllegalActionException If the port is not an opaque
-     *  input port.
-     */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-        boolean transferred = false;
-        Receiver[][] insideReceivers = port.deepGetReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-            ptolemy.data.Token t = port.get(i);
-            if (insideReceivers != null && insideReceivers[i] != null) {
-                for (int j = 0; j < insideReceivers[i].length; j++) {
-                    insideReceivers[i][j].put(t);
-                }
-                transferred = true;
-            }
-        }
-        return transferred;
-    }
-
-
-
-    /** This is called by the outside director to get tokens from the
-     *  inside director. Return true if transfers data from an output 
-     *  port of the container to the ports it is connected to on the 
-     *  outside. The port argument must be an opaque output port. If any 
-     *  channel of the output port has no data, then that channel is 
-     *  ignored.
-     *
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
-        //  -transferOutputs-
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not " +
-                    "an opaque output port.");
-        }
-        boolean trans = false;
-
-
-        Receiver[][] portReceivers = port.getInsideReceivers();
-        if (portReceivers != null) {
-            for (int i = 0; i < portReceivers.length; i++) {
-                if (portReceivers[i] != null) {
-                    for (int j = 0; j < portReceivers[i].length; j++) {
-                        while (portReceivers[i][j].hasToken()) {
-                            try {
-                                ptolemy.data.Token t = portReceivers[i][j].get();
-                                port.send(i, t);
-                                trans = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return trans;
-    }
-
-
-
     /** Reset this director to an uninitialized state to prepare
      *  for the end of an execution.
      *
@@ -449,6 +367,7 @@ public class GRDirector extends StaticSchedulingDirector {
     ////                        protected methods                  ////
     /** Override the base class to indicate that this director does not
      *  need write access on the workspace during an iteration.
+     *
      *  @return False.
      */
     protected boolean _writeAccessRequired() {
