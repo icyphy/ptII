@@ -107,15 +107,23 @@ public abstract class Source extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Read at most one input token from each channel of the trigger
-     *  input and discard it.  If the trigger input is not connected,
-     *  then this method does nothing.  Derived classes should be
+     *  input and discard it.  If the trigger input is not connected
+     *  or has no actual sources (it might be connected to other
+     *  inputs, for example, or to an unconnected input port at
+     *  a higher level in the hierarchy) then this method does
+     *  nothing.  Derived classes should be
      *  sure to call super.fire(), or to consume the trigger input
      *  tokens themselves, so that they aren't left unconsumed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int i = 0; i < trigger.numberOfSources(); i++) {
+        // NOTE: It might seem that using trigger.numberOfSources() is
+        // correct here, but it is not. It is possible for channels
+        // to be connected, for example, to other output ports or
+        // even back to this same trigger port, in which case higher
+        // numbered channels will not have their inputs read.
+        for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
             }
