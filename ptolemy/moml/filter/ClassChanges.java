@@ -150,5 +150,9 @@ public class ClassChanges implements MoMLFilter {
         // New in 2.3-devel
         _classChanges.put("ptolemy.actor.lib.comm.SerialComm",
                 "ptolemy.actor.lib.io.comm.SerialComm");
+
+        // New in 3.1-devel
+        _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
+                "ptolemy.domains.fsm.kernel.RelationList");
     }
 }
