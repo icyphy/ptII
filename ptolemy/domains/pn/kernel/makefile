@@ -41,7 +41,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 
-DIRS = 		demo test # doc
+DIRS = 		demo test #doc
 
 CLASSPATH = ../../../..
 
@@ -65,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
