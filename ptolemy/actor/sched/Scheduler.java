@@ -276,7 +276,7 @@ public class Scheduler extends Attribute {
                 // by the composite.  If it contains more than one,
                 // use the most recently added one.
                 Scheduler previous = null;
-                StaticSchedulingDirector castContainer = 
+                StaticSchedulingDirector castContainer =
                     (StaticSchedulingDirector)oldContainer;
                 Iterator schedulers =
                     castContainer.attributeList(Scheduler.class).iterator();
@@ -348,11 +348,11 @@ public class Scheduler extends Attribute {
      *  schedulable. Not thrown in this base class, but may be thrown
      *  by derived classes.
      *  @exception IllegalActionException If the scheduling algorithm
-     *  throws it. Not thrown in this base class, but may be thrown 
+     *  throws it. Not thrown in this base class, but may be thrown
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
-    protected Schedule _getSchedule() 
+    protected Schedule _getSchedule()
             throws IllegalActionException, NotSchedulableException {
 	StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
@@ -385,7 +385,7 @@ public class Scheduler extends Attribute {
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      *  @exception IllegalActionException If the scheduling algorithm
-     *  throws it. Not thrown in this base class, but may be thrown 
+     *  throws it. Not thrown in this base class, but may be thrown
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      *  @deprecated Use the getSchedule method instead.

@@ -26,7 +26,7 @@
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
-Scheduler is an Attribute, 
+Scheduler is an Attribute,
 */
 package ptolemy.actor.sched;
 
@@ -45,7 +45,7 @@ CompositeActor it belongs to.
 A StaticSchedulingDirector contains a scheduler. By calling the getSchedule()
 method on the scheduler, the director can get an instance of the
 schedule class.  This class represents the number of times each actor
-should be fired and their firing order. 
+should be fired and their firing order.
 <p>
 "Static" means that the schedule, once constructed, can be
 used during the execution repeatedly.
@@ -115,8 +115,8 @@ public class StaticSchedulingDirector extends Director {
      *  iterate() are recorded and are used to determine the value that
      *  postfire() will return at the end of the director's iteration.
      *  <p>
-     *  This base class is intended to be sample code for statically 
-     *  scheduled domains.  In many cases, these domains will need to 
+     *  This base class is intended to be sample code for statically
+     *  scheduled domains.  In many cases, these domains will need to
      *  override this method to perform domain specific operations.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
@@ -142,7 +142,7 @@ public class StaticSchedulingDirector extends Director {
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {
-                    _debug(new FiringEvent(this, actor, 
+                    _debug(new FiringEvent(this, actor,
                             FiringEvent.BEFORE_ITERATE));
 		}
 
@@ -158,7 +158,7 @@ public class StaticSchedulingDirector extends Director {
 		    _postfireReturns = false;
 		}
 		if(_debugging) {
-                    _debug(new FiringEvent(this, actor, 
+                    _debug(new FiringEvent(this, actor,
                             FiringEvent.AFTER_ITERATE));
 		}
             }
