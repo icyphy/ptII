@@ -49,12 +49,27 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 
+# Jar files that contain demos.  Thi
+PTDEMOJARS = \
+		ptolemy/actor/lib/javasound/demo/demo.jar \
+		ptolemy/data/type/demo/demo.jar \
+		ptolemy/domains/ct/demo/demo.jar \
+		ptolemy/domains/de/demo/demo.jar \
+		ptolemy/domains/dt/demo/demo.jar \
+		ptolemy/domains/giotto/demo/demo.jar \
+		ptolemy/domains/fsm/demo/demo.jar \
+		ptolemy/domains/pn/demo/demo.jar \
+		ptolemy/domains/rtos/demo/demo.jar \
+		ptolemy/domains/sdf/demo/demo.jar \
+		ptolemy/moml/demo/demo.jar
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		doc/docConfig.jar \
 		lib/diva.jar \
 		$(PTAUXALLJARS) \
 		ptolemy/domains/experimentalDomains.jar \
+		$(PTDEMOJARS) \
 		ptolemy/ptolemy.jar \
 		ptolemy/vergil/vergil.jar
 
@@ -90,11 +105,13 @@ $(KEYSTORE):
 # the .jnlp file itself must be included in the signed jar file
 # and not be changed (See Section 5.4 of the JNLP specification).
 jnlp_sign: vergil.jnlp $(PTCLASSALLJAR) $(KEYSTORE)
+	@echo "Updating JNLP-INF/APPLICATION.JNLP with vergil.jnlp"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
 	cp vergil.jnlp JNLP-INF/APPLICATION.JNLP
 	$(JAR) -uf $(PTCLASSALLJAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	@echo "Signing the jar file"
 	$(PTJAVA_DIR)/bin/jarsigner \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
@@ -176,6 +193,9 @@ configure: configure.in
 
 # Java Network Launch Protocol aka Web Start
 vergil.jnlp: vergil.jnlp.in
+	@echo "Don't forget that if you change vergil.jnlp.in, you need"
+	@echo " to run 'make jnlp_sign' which will update vergil.jnlp"
+	@echo " in ptII.jar."
 	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
 
 # Get the rest of the rules
