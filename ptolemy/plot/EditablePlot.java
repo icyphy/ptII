@@ -209,7 +209,10 @@ public class EditablePlot extends Plot {
         save[1] = getData(_dataset);
         // FIXME: Need a way to notify menus to enable items...
         _undoStack.push(save);
-        _redoStack.clear();
+        // NOTE: the clear() method was added in jdk 1.2, so we don't
+        // use it here for maximal compatibility...
+        // _redoStack.clear();
+        while (!_redoStack.empty()) _redoStack.pop();
 
         Graphics graphics = getGraphics();
         // constrain to be in range

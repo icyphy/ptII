@@ -409,6 +409,13 @@ public class Plot extends PlotBox {
         return Integer.MAX_VALUE;
     }
 
+    /** Return the actual number of data sets.
+     *  @returns The number of data sets that have been created.
+     */
+    public int getNumDataSets() {
+        return _points.size();
+    }
+
     /** Override the base class to indicate that a new data set is being read.
      *  This method is deprecated.  Use read() instead (to read the old
      *  file format) or one of the classes in the plotml package to read

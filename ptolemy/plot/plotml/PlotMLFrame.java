@@ -122,10 +122,12 @@ public class PlotMLFrame extends PlotFrame {
      *  If not, it defers to the parent class to read it.  The current
      *  working directory (or the directory of the last opened or saved
      *  file) is the base for relative references.
+     *  @param base The base for relative file references, or null if
+     *   there are not relative file references.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    protected void _read(InputStream in) throws IOException {
+    protected void _read(URL base, InputStream in) throws IOException {
         // Create a buffered input stream so that mark and reset
         // are supported.
         BufferedInputStream bin = new BufferedInputStream(in);
@@ -144,14 +146,7 @@ public class PlotMLFrame extends PlotFrame {
                 parser = new PlotBoxMLParser(plot);
             }
             try {
-                String pwd;
-                if (_directory != null) {
-                    pwd = _directory;
-                } else {
-                    pwd = System.getProperty("user.dir");
-                }
-                URL docBase = new URL("file", null, pwd);
-                parser.parse(docBase, bin);
+                parser.parse(base, bin);
             } catch (Exception ex) {
                 String msg;
                 if (ex instanceof XmlException) {
@@ -169,7 +164,7 @@ public class PlotMLFrame extends PlotFrame {
                 ex.printStackTrace();
             }
         } else {
-            super._read(bin);
+            super._read(base, bin);
         }
     }
 }

@@ -29,8 +29,12 @@ DataSet: program a
 6, 3000
 7, 1000
 8, 400
+9, 0
+10, 0
 
 DataSet: program b
+0, 0
+1, 0
 2, 50
 3, 100
 4, 800
@@ -42,6 +46,9 @@ DataSet: program b
 10, 0
 
 DataSet: program c
+0, 0
+1, 0
+2, 0
 3, 10
 4, 100
 5, 400

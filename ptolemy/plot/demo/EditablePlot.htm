@@ -1,0 +1,36 @@
+<!-- $Id$ -->
+<html>
+<head>
+<Title>Editable Plot</Title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Editable Plot</h1>
+
+Here is an example of an editable plot:
+<p>
+<applet name="Editable plot"
+    code="ptolemy.plot.plotml.EditablePlotMLApplet"
+    width=500
+    height=400
+    codebase="../../.."
+    archive="ptolemy/plot/plotapplet.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="dataurl" value="bargraph.plt">
+<param name="background" value="faf0e6">
+    <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+<p>
+At the bottom, you can select one of the three data sets.
+Then, by dragging the right mouse button, you can change the values
+plotted for the corresponding data set.
+<p>
+This demonstration is implementing using the EditablePlotMLApplet
+class in the ptolemy.plot.plotml package.  That applet has
+an applet parameter, <i>dataurl</i>, that specifies the data to
+be plotted and format information.  It creates the choice menu
+at the bottom and implements the plot using the EditablePlot
+class instead of the base class Plot.
+</body>
+</html>

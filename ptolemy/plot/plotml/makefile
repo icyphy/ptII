@@ -47,7 +47,8 @@ PTPACKAGE = 	plotml
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = PlotBoxMLParser.java \
+JSRCS = EditablePlotMLApplet.java \
+	PlotBoxMLParser.java \
 	PlotMLApplet.java \
 	PlotMLApplication.java \
 	PlotMLFrame.java \

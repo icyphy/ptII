@@ -83,10 +83,10 @@ public class PlotApplet extends Applet {
         super.init();
         setLayout(new BorderLayout());
 
-        if (_myPlot == null) {
-            _myPlot = newPlot();
+        if (_plot == null) {
+            _plot = newPlot();
         }
-        add("Center", plot());
+        add("North", plot());
 
         // Process the width and height applet parameters
         int width, height;
@@ -98,7 +98,7 @@ public class PlotApplet extends Applet {
         if (heightspec != null) height = Integer.parseInt(heightspec);
         else height = 400;
 
-        plot().setSize(width, height);
+        _setPlotSize(width, height);
         plot().setButtons(true);
 
         // Process the background parameter.
@@ -145,7 +145,7 @@ public class PlotApplet extends Applet {
     /** Return the Plot object to operate on.
      */
     public Plot plot() {
-        return _myPlot;
+        return _plot;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,9 +160,19 @@ public class PlotApplet extends Applet {
         plot().read(in);
     }
 
+    /** Given the size of the applet, set the size of the plot.
+     *  Derived classes may override this to allow room for other
+     *  widgets below the plot.
+     *  @param appletWidth The width of the applet.
+     *  @param appletHeight The height of the applet.
+     */
+    protected void _setPlotSize(int appletWidth, int appletHeight) {
+        plot().setSize(appletWidth, appletHeight);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     // The Plot component we are running.
-    private transient Plot _myPlot;
+    private transient Plot _plot;
 }
