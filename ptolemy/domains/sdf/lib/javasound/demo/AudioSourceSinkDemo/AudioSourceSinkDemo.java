@@ -28,9 +28,14 @@
 @AcceptedRating 
 */
 
+package ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo;
 
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.domains.sdf.lib.javasound.*;
+//import ptolemy.domains.sdf.lib.javasound.demo.*;
+import ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.*;
+
+
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -143,7 +148,7 @@ public class AudioSourceSinkDemo extends SDFApplet {
     static public void main (String argv[]) {
 	final Applet applet = new AudioSourceSinkDemo();
 	System.runFinalizersOnExit(true);
-	Frame frame = new Frame ("AudioSourceDemo");
+	Frame frame = new Frame ("AudioSourceSinkDemo");
 	frame.addWindowListener (new WindowAdapter()
 	    {
 		public void windowClosing (WindowEvent event)
