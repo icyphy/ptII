@@ -53,11 +53,10 @@ public class ComplexArrayMath {
 
    /**  For each element of the argument <i>array</i>, calculate the
      *  absolute value of the real part and return the resulting array.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @return A new array of complex numbers equal to the given
      *  array but with absolute real values.
-     *  </p>
      */
     public static final Complex[] absValues (Complex[] array) {
 	int length = array.length;
@@ -70,12 +69,11 @@ public class ComplexArrayMath {
 
     /** Return a new array that is constructed from <i>array</i> by
      *  adding the complex number <i>z</i> to every element of <i>array</i>.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param z The complex number to be added to each element of <i>array</i>.
      *  @return A new array of complex numbers equal to <i>array</i> with
      *  <i>z</i> added to each element.
-     *  </p>
      */
     public static final Complex[] add(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
@@ -88,14 +86,13 @@ public class ComplexArrayMath {
     /** Return a new array that is the element-by-element sum of the two
      *  input arrays.
      *  If the sizes of both arrays are 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @return A new array that is the element-by-element sum of the two
      *  input arrays.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex[] add(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2,
@@ -112,14 +109,13 @@ public class ComplexArrayMath {
      *  using <i>z</i> as the left argument to <i>op</i> in all cases and
      *  the array elements as the right arguments (op.operate(z, array[i])).
      *  If the length of the array is 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param op The complex binary operation to be applied to the given
      *  complex number and complex array.
      *  @param z The complex number that is the first argument to <i>op</i>.
      *  @param array The array of complex numbers that is the second argument
      *  to <i>op</i>.
      *  @return A new array containing elements equal to (op.operate(z, array[i])).
-     *  </p>
      */
     public static final Complex[] applyBinaryOperation(
              ComplexBinaryOperation op, final Complex z,
@@ -137,14 +133,13 @@ public class ComplexArrayMath {
      *  using <i>z</i> as the right operand in all cases and the array elements
      *  as the left operands (op.operate(array[i], z)).
      *  If the length of the array is 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param op The complex binary operation to be applied to the given
      *  complex number and complex array.
      *  @param z The complex number that is the second argument to <i>op</i>.
      *  @param array The array of complex numbers that is the first argument
      *  to <i>op</i>.
      *  @return A new array containing elements equal to (op.operate(array[i], z)).
-     *  </p>
      */
     public static final Complex[] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[] array,
@@ -163,7 +158,7 @@ public class ComplexArrayMath {
      *  elements of the second array as the right operands.
      *  (op.operate(array[i], array2[i])).
      *  If the lengths of both arrays are 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param op The complex binary operation to be applied to each pair
      *  of corresponding elements of each complex array.
      *  @param array1 The first array.
@@ -171,7 +166,6 @@ public class ComplexArrayMath {
      *  @return A new array that with elements equal to (op.operate(array[i], array2[i])).
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex[] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[] array1,
@@ -189,13 +183,12 @@ public class ComplexArrayMath {
      *  ComplexUnaryOperation to each element in the input array
      *  (op.operate(array[i])).
      *  If the length of the array is 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param op The complex unary operation to be applied to each
      *  element of the given complex array.
      *  @param array An array of complex numbers.
      *  @return A new array of complex numbers with each element
      *  equal to (op.operate(array[i])).
-     *  </p>
      */
     public static final Complex[] applyUnaryOperation(
             final ComplexUnaryOperation op, final Complex[] array) {
@@ -210,12 +203,11 @@ public class ComplexArrayMath {
     /** Return a new array that is the result of appending <i>array2</i>
      *  to the end of <i>array1</i>. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)
-     *  <p>
+     *
      *  @param array1 The first array of complex numbers.
      *  @param array2 The second array of complex numbers.
      *  @return A new array formed by appending <i>array2</i>
      *  to the end of <i>array1</i>.
-     *  </p>
      */
     public static final Complex[] append(Complex [] array1, Complex[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
@@ -229,7 +221,7 @@ public class ComplexArrayMath {
      *  idx may be any number. Allow System.arraycopy() to throw array access
      *  exceptions if idx .. idx + length - 1 are not all valid array indices,
      *  for both of the arrays.
-     *  <p>
+     *
      *  @param array1 The first array of complex numbers.
      *  @param idx1 The starting index for array1.
      *  @param length1 The number of elements of array1 to use.
@@ -237,7 +229,6 @@ public class ComplexArrayMath {
      *  @param idx2 The starting index for array2.
      *  @param length2 The number of elements of array2 to append.
      *  @return A new array of Complex.
-     *  </p>
      */
     public static final Complex[] append(Complex[] array1, int idx1,
             int length1, Complex[] array2, int idx2, int length2) {
@@ -258,11 +249,10 @@ public class ComplexArrayMath {
      *  complex-conjugate of each element in the argument array.
      *  If the argument has length 0, return a new array of complex numbers,
      *  with length 0.
-     *  <p>
+     *
      *  @param array The given array of complex numbers.
      *  @return A new array of complex numbers formed by taking the
      *  complex-conjugate of each element in the argument array.
-     *  </p>
      */
     public static final Complex[] conjugate(Complex[] array) {
         Complex[] result = new Complex[array.length];
@@ -275,14 +265,13 @@ public class ComplexArrayMath {
     /** Return a new array that is the element-by-element division of
      *  the first array by the second array.
      *  If the sizes of both arrays are 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array1 The first array of complex numbers.
      *  @param array2 The second array of complex numbers.
      *  @return A new array of complex numbers equal to the
      *  element-by-element division of the first array by the second array.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex[] divide(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2,
@@ -296,12 +285,11 @@ public class ComplexArrayMath {
 
     /** Return a new array that is the result of dividing each element of
      *  the given array by the given value.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param divisor The number by which to divide each element of the array.
      *  @return A new array of complex numbers that is the result of dividing
      *  each element of <i>array</i> by <i>divisor</i>.
-     *  </p>
      */
     public static final Complex[] divide(Complex[] array, Complex divisor) {
 	int length = array.length;
@@ -317,14 +305,13 @@ public class ComplexArrayMath {
      *  element-by-element products of <i>array1</i> and the complex
      *  conjugates of <i>array2</i>.
      *  If the size of each array is 0, return Complex.ZERO.
-     *  <p>
+     *
      *  @param array1 The first array of complex numbers.
      *  @param array2 The second array of complex numbers.
      *  @return A new array of complex numbers equal to the
      *  dot product of the two given arrays.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex dotProduct(final Complex[] array1,
             final Complex[] array2) {
@@ -354,7 +341,7 @@ public class ComplexArrayMath {
      *  To leave either the bottom or the top unconstrained,
      *  specify Complex.NEGATIVE_INFINITY or Complex.POSITIVE_INFINITY.
      *  If the length of the array is 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param bottom The bottom limit.
      *  @param top The top limit.
@@ -363,7 +350,6 @@ public class ComplexArrayMath {
      *  @throws IllegalArgumentException If <i>bottom</i> has either a
      *   real or imaginary part larger than the corresponding part of
      *   <i>top</i>.
-     *  </p>
      */
     public static final Complex[] limit(Complex[] array,
             Complex bottom, Complex top)
@@ -405,11 +391,10 @@ public class ComplexArrayMath {
 
     /** Return a new array of doubles with the imaginary parts of the array of
      *  complex numbers.
-     *  <p>
+     *
      *  @param x The input array of complex numbers.
      *  @return A new array of doubles with the imaginary parts of the array of
      *  complex numbers.
-     *  </p>
      */
     public static final double[] imagParts(final Complex[] x) {
         int size = x.length;
@@ -433,12 +418,11 @@ public class ComplexArrayMath {
      *  null and the other array is of length 0, return a new array of
      *  complex numbers with length 0.  If both arrays are null, allow
      *  a NullPointerException to be thrown by the array access code.
-     *  <p>
+     *
      *  @param realPart An array of doubles, used for the real parts.
      *  @param imagPart An array of doubles, used for the imaginary parts.
      *  @return A new array of complex numbers each containing real and imaginary parts
      *  equal to the elements in <i>realPart</i> and <i>imagPart</i>, respectively.
-     *  </p>
      */
     public static final Complex[] formComplexArray(final double[] realPart,
             final double[] imagPart) {
@@ -478,11 +462,10 @@ public class ComplexArrayMath {
 
     /** Return a new array of doubles containing the magnitudes of the elements
      *  of the specified array of complex numbers.
-     *  <p>
+     *
      *  @param array The given array of complex numbers.
      *  @return A new array of doubles containing the magnitudes of the elements
      *  of the specified array of complex numbers.
-     *  </p>
      */
     public static final double[] magnitude(Complex[] array) {
         double[] mags = new double[array.length];
@@ -495,14 +478,13 @@ public class ComplexArrayMath {
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
      *  If the size of each array is 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array1 The first array of complex numbers.
      *  @param array2 The second array of complex numbers.
      *  @return A new array of complex numbers equal to the
      *  element-by-element multiplication of the two given arrays.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex[] multiply(Complex[] array1,
             Complex[] array2) {
@@ -519,13 +501,12 @@ public class ComplexArrayMath {
      *  multiplying each element in <i>array</i> by the second argument,
      *  which is a complex number.
      *  If the size of the array is 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param factor The complex number by which each element of <i>array</i>
      *  is multiplied by.
      *  @return A new array of complex numbers formed by
      *  multiplying each element in <i>array</i> by <i>factor</i>.
-     *  </p>
      */
     public static final Complex[] multiply(Complex[] array, Complex factor) {
         int length = array.length;
@@ -541,11 +522,10 @@ public class ComplexArrayMath {
 
     /** Return a new array that is the formed from the additive inverse of each
      *  element of the input array (-array[i]).
-     *  <p>
+     *
      *  @param array The given array of complex numbers.
      *  @return A new array of complex numbers formed from the
      *  additive inverse of each element of the input array (-array[i]).
-     *  </p>
      */
     public static final Complex[] negative(final Complex[] array) {
         int length = array.length;
@@ -559,10 +539,9 @@ public class ComplexArrayMath {
 
     /** Return a double that is the L2-norm of the array.  If the
      *  length of the array is zero, return 0.0.
-     *  <p>
+     *
      *  @param array The given array of complex numbers.
      *  @return A double that is the L2-norm of <i>array</i>.
-     *  </p>
      */
     public static final double l2norm(Complex[] array) {
         return Math.sqrt(l2normSquared(array));
@@ -572,10 +551,9 @@ public class ComplexArrayMath {
      *  the elements of <i>array</i>. This is equal to the square of the
      *  L2-norm of <i>array</i>. If the length of the array is zero,
      *  return 0.0.
-     *  <p>
+     *
      *  @param array The given array of complex numbers.
      *  @return A double that is square of the L2-norm of <i>array</i>.
-     *  </p>
      */
     public static final double l2normSquared(Complex[] array) {
         int length = array.length;
@@ -598,12 +576,11 @@ public class ComplexArrayMath {
      *  If the lengths of the input and output arrays are equal, return
      *  a copy of the input array.
      *  This method is useful for preparing data for an IFFT.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param newLength The desired length of the returned array.
      *  @return A new array of complex numbers formed by padding the
      *  middle of <i>array</i> with 0's.
-     *  </p>
      */
     public static final Complex[] padMiddle(final Complex[] array,
             final int newLength) {
@@ -638,11 +615,10 @@ public class ComplexArrayMath {
 
     /** Return a new array containing the angles of the elements of the
      *  specified complex array.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @return An array of angles in the range of
      *  <em>-pi</em> to <em>pi</em>.
-     *  </p>
      */
     public static final double[] phase(Complex[] array) {
         double[] angles = new double[array.length];
@@ -664,14 +640,12 @@ public class ComplexArrayMath {
      *  (1 - <em>r</em><sub>0</sub><em>z</em><sup>-1</sup>)
      *  (1 - <em>r</em><sub>1</sub><em>z</em><sup>-1</sup>) ...
      *  (1 - <em>r</em><sub>N-1</sub><em>z</em><sup>-1</sup>).
-     *  </p>
      *  The returned polynomial will always be monic, meaning that
      *  <em>a</em><sub>0</sub> = 1.
-     *  <p>
+     *
      *  @param roots An array of roots of a polynomial.
      *  @return A new array representing a monic polynomial with the given
      *  roots.
-     *  </p>
      */
     public static final Complex[] polynomial(final Complex[] roots) {
         if (roots.length <= 1) {
@@ -696,12 +670,11 @@ public class ComplexArrayMath {
     /** Return a new array of complex numbers that is formed by raising each
      *  element to the specified exponent, a double.
      *  If the size of the array is 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array The input array of complex numbers.
      *  @param exponent A double, which is the exponent.
      *  @return A new array that is formed by raising each
      *  element of <i>array</i> to the <i>element</i>th power.
-     *  </p>
      */
     public static final Complex[] pow(final Complex[] array,
             final double exponent) {
@@ -717,11 +690,10 @@ public class ComplexArrayMath {
     /** Return the product of the elements in the array.
      *  If there are no elements in the array, return a Complex number
      *  with value zero.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @return A new complex number equal to the product of
      *  the elements in the array.
-     *  </p>
      */
     public static final Complex product(final Complex[] array) {
         if (array.length == 0) return Complex.ZERO;
@@ -737,11 +709,10 @@ public class ComplexArrayMath {
 
     /** Return a new array of doubles that includes the real
      *  parts of the array of complex numbers.
-     *  <p>
+     *
      *  @param x An array of complex numbers
      *  @return A new array of doubles that includes the real
      *  parts of the array of complex numbers.
-     *  </p>
      */
     public static final double[] realParts(final Complex[] x) {
         int size = x.length;
@@ -759,12 +730,11 @@ public class ComplexArrayMath {
      *  either truncating or padding the input array.
      *  This method simply calls :
      *  resize(array, newLength, 0)
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param newLength The desired size of the output array.
      *  @return A new array of length <i>newLength</i> that is formed by
      *  either truncating or padding <i>array</i>.
-     *  </p>
      */
     public static final Complex[] resize(final Complex[] array,
             final int newLength) {
@@ -785,13 +755,12 @@ public class ComplexArrayMath {
      *  Copying here means shallow copying, i.e. pointers to Complex objects
      *  are copied instead of allocation of new copies. This works because
      *  Complex objects are immutable.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param newLength The desired size of the output array.
      *  @param startIdx The starting index for the input array.
      *  @return A new array of length <i>newLength</i> that is formed by
      *  either truncating or padding <i>array</i>.
-     *  </p>
      */
     public static final Complex[] resize(final Complex[] array,
             final int newLength, final int startIdx) {
@@ -820,13 +789,12 @@ public class ComplexArrayMath {
      *  scaling each element in <i>array</i> by <i>factor</i>, which is a
      *  complex number. If the array argument is of length 0, return a new
      *  array of length 0.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param factor A complex number used to multiply each element
      *  of <i>array</i> by.
      *  @return A new array of complex numbers that is constructed from
      *  the argument by scaling each element in <i>array</i> by <i>factor</i>.
-     *  </p>
      */
     public static final Complex[] scale (final Complex[] array, final Complex factor) {
         int len = array.length;
@@ -843,13 +811,12 @@ public class ComplexArrayMath {
      *  scaling each element in the array by factor, which is a
      *  double. If the array argument is of length 0, return a new
      *  array of length 0.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param factor A double used to multiply each element
      *  of <i>array</i> by.
      *  @return A new array of complex numbers that is constructed from
      *  the argument by scaling each element in <i>array</i> by <i>factor</i>.
-     *  </p>
      */
     public static final Complex[] scale (final Complex[] array, final double factor) {
         int len = array.length;
@@ -865,12 +832,11 @@ public class ComplexArrayMath {
     /** Return a new array that is constructed by subtracting the complex
      *  number z from every element in the given array. If the array argument
      *  is of length 0, return a new array of length 0.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param z A complex number subtracted from each element of <i>array</i>.
      *  @return A new array that is constructed by subtracting <i>z</i>
      *  from every element in <i>array</i>.
-     *  </p>
      */
     public static final Complex[] subtract(
             final Complex[] array, final Complex z) {
@@ -884,14 +850,13 @@ public class ComplexArrayMath {
     /** Return a new array that is the element-by-element
      *  subtraction of the second array from the first array.
      *  If the size of each array is 0, return a new array of size 0.
-     *  <p>
+     *
      *  @param array1 An array of complex numbers from which to subtract.
      *  @param array2 An array of complex numbers to subtract.
      *  @return A new array of complex numbers equal to the element-by-element
      *  subtraction of the second array from the first array.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final Complex[] subtract(Complex[] array1,
             final Complex[] array2) {
@@ -906,10 +871,9 @@ public class ComplexArrayMath {
 
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @return A new string representing the array.
-     *  </p>
      */
     public static final String toString(Complex[] array) {
         return toString(array, ArrayStringFormat.javaASFormat);
@@ -920,12 +884,11 @@ public class ComplexArrayMath {
      *  To get a String in the Ptolemy expression language format,
      *  call this method with ArrayStringFormat.exprASFormat as the
      *  format argument.
-     *  <p>
+     *
      *  @param array An array of complex numbers.
      *  @param format The type of ArrayStringFormat.
      *  @return A new string representing the array in the format specified
      *  by the ArrayStringFormat argument.
-     *  </p>
      */
     public static final String toString(final Complex[] array,
             ArrayStringFormat format) {
@@ -952,7 +915,7 @@ public class ComplexArrayMath {
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the magnitude of <i>maxError</i>. If both arrays are empty,
      *  return true.
-     *  <p>
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @param maxError A complex number whose magnitude is taken to
@@ -962,7 +925,6 @@ public class ComplexArrayMath {
      *  the magnitude of <i>maxError</i>.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, Complex maxError) {
@@ -972,7 +934,7 @@ public class ComplexArrayMath {
     /** Return true if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  <i>maxError</i>. If both arrays are empty, return true.
-     *  <p>
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @param maxError The threshold for the magnitude of the difference.
@@ -981,7 +943,6 @@ public class ComplexArrayMath {
      *  <i>maxError</i>.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length, or if <i>maxError</i> is negative.
-     *  </p>
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, double maxError) {
@@ -1008,7 +969,7 @@ public class ComplexArrayMath {
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the corresponding elements in <i>maxError</i>. If both arrays
      *  are empty, return true.
-     *  <p>
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @param maxError The array of thresholds for the magnitudes of
@@ -1018,7 +979,6 @@ public class ComplexArrayMath {
      *  the corresponding elements in <i>maxError</i>.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length, or if an elment in <i>maxError</i> is negative.
-     *  </p>
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, double[] maxError) {
@@ -1049,7 +1009,7 @@ public class ComplexArrayMath {
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the magnitudes of the corresponding elements in <i>maxError</i>.
      *  If both arrays are empty, return true.
-     *  <p>
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @param maxError An array of complex numbers whose magnitude
@@ -1059,7 +1019,6 @@ public class ComplexArrayMath {
      *  the magnitudes of the corresponding elements in <i>maxError</i>.
      *  @throws IllegalArgumentException If the arrays are not of the same
      *   length.
-     *  </p>
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, Complex[] maxError) {
