@@ -33,7 +33,9 @@
 
 ME =		ptolemy/actor/lib
 
-DIRS = 		conversions test logic
+# $PTII/configure looks for Jini and sets PTJSPACES_DIR in
+# $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
+DIRS = 		conversions test logic $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
