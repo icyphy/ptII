@@ -658,7 +658,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
       *  pertaining to the times at which ASTs are loaded. A 'true' setting
       *  enables the diagnostic output.
       */
-     public static boolean traceLoading = true; 
+     public static boolean traceLoading = false; 
 
 
     /* Perform necessary initialization functions for static resolution. This
