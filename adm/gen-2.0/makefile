@@ -255,8 +255,9 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	jnlp \
-	nonjsall \
-	remote4
+	remote2 \
+	remote4 \
+	remote5
 
 ####################################
 # Rules that operate in ~ptII
@@ -654,14 +655,14 @@ remote1jnlp:
 
 
 #####################################################################
-# Build on a remote host under JDK1.1
+# Build on a remote host under JDK1.4
 
 # Remote location of Ptolemy II tree for testing
 # Host to run on
-REMOTE2HOST = julian
+REMOTE2HOST = carson
 
 # Directory to place test distribution in
-REMOTE2HOME = /vol/$(REMOTE2HOST)/$(REMOTE2HOST)2/ptII
+REMOTE2HOME = /vol/$(REMOTE2HOST)/$(REMOTE2HOST)1/ptII
 
 # Actual ptII directory
 REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
@@ -669,15 +670,15 @@ REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE2LOG = $(GENLOGDIR)/remote2.out
 
-remote2: remote2jdk1.1
-remote2jdk1.1:  $(PTII_FULL) $(GENLOGDIR)
+remote2: remote2jdk1.4
+remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE2HOST) with JDK1.1 "
+	@echo "# Now building on $(REMOTE2HOST) with JDK1.4 "
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE2HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote2nuke remote2ptiidist remote2distclean \
-		remote2distjdk1.1 remote2distjdk1.1test remote2done \
+		remote2distjdk1.4 remote2distjdk1.4test remote2done \
 		>& $(REMOTE2LOG)" &
 
 # Remove the remote dist
@@ -706,17 +707,17 @@ remote2distclean:
 		find . -name codeDoc -exec rm -rf {} \;)
 
 
-# Compile with JDK1.1
-remote2distjdk1.1:
+# Compile with JDK1.4
+remote2distjdk1.4:
 	@echo "#"
-	@echo "# Now building with JDK1.1"
+	@echo "# Now building with JDK1.4"
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
-		PATH=/opt/jdk1.1.7B/bin:$$PATH ./configure; $(MAKE) -k JFLAGS=)
+		PATH=/usr/local/j2se/bin:$$PATH ./configure; $(MAKE) -k JFLAGS=)
 	@echo "$@ `date`"
 
-# Test with JDK1.1
+# Test with JDK1.4
 REMOTE2PTJACL_JAR	= $(REMOTE2PTIIDIST)/ptjacl.jar
 $(REMOTE2PTJACL_JAR):
 	@echo "#"
@@ -724,18 +725,18 @@ $(REMOTE2PTJACL_JAR):
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
-		cd tcl;	PATH=/opt/jdk1.1.7B/bin:$$PATH \
+		cd tcl;	PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k JFLAGS= install)
 	ls -l $@
 	@echo "$@ `date`"
 
-remote2distjdk1.1test: $(REMOTE2PTJACL_JAR)
+remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 	@echo "#"
-	@echo "# Now testing with JDK1.1"
+	@echo "# Now testing with JDK1.4"
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); \
-		PATH=/opt/jdk1.1.7B/bin:$$PATH \
+		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k JFLAGS= tests)
 	@echo "$@ `date`"
 
@@ -864,40 +865,50 @@ remote4done: $(REMOTE4DONEFILE) remotealldone
 $(REMOTE4DONEFILE):
 	date > $@
 
+# Semaphore file for the remote5 build
+REMOTE5DONEFILE = $(GENLOGDIR)/remote5done
+remote5done: $(REMOTE5DONEFILE) remotealldone
+$(REMOTE5DONEFILE):
+	date > $@
+
 
 # If the remote done files are present, concatenate the logs and send email
 # Note that currently we are not running remote 1 and remote2
 remotealldone:
-	if [ -f $(REMOTE4DONEFILE) ]; then \
+	if [ -f $(REMOTE2DONEFILE) \
+		-a -f $(REMOTE4DONEFILE) \
+		-a -f $(REMOTE5DONEFILE) \
+			]; then \
 		date; \
 		echo "Remote processes finished"; \
-		cat $(REMOTE4LOG) \
+		cat $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
 			>> $(PTIINIGHTLY_TXT); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail $(EMAILTO) ; \
 	else \
 		date; \
 		echo "Still waiting"; \
-		ls -l $(REMOTE4DONEFILE); \
+		ls -l $(REMOTE2DONEFILE) $(REMOTE4DONEFILE) $(REMOTE5DONEFILE); \
 	fi
 
 ##########################################################################
 # Build from a tar file - similar to remote1, but w/o test case coverage
+# except for the deep codegen
 
 ####################################
 # Build and generate test case coverage on a remote host
 
-# Use a non-gnu make here for testing purposes
-OTHERMAKE = /usr/ccs/bin/make
-
-# Remote location of Ptolemy II tree for testing
-REMOTE4HOME = /vol/cooley/cooley2/ptII
-REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
-
 # Host to run on
 REMOTE4HOST = cooley
 
+# Remote location of Ptolemy II tree for testing
+REMOTE4HOME = /vol/$(REMOTE4HOME)/$(REMOTE4HOME)2/ptII
+REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
+
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
+
+# Use a non-gnu make here for testing purposes
+OTHERMAKE = /usr/ccs/bin/make
 
 # Create a separate tree and build on REMOTE4HOST
 remote4: $(PTII_FULL) $(GENLOGDIR)
@@ -908,6 +919,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
+		remote4javatest \
 		remote4done \
 		 >& $(REMOTE4LOG)" &
 
@@ -923,7 +935,7 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4HOME); $(TAR) -zxf $(GENDIR)/`basename $(PTII_FULL)`)
+	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL)`)
 
 remote4configure:
 	@echo "#"
@@ -956,6 +968,93 @@ remote4build:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) sources all install)
+
+
+# Run the deep tests, this is likely to take 6 hours.
+remote4javatest:
+	@echo "#"
+	@echo "# Now running make test in $(REMOTE4PTIIDIST)/ptolemy/copernicus/java"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java;	PTII=$(REMOTE4PTIIDIST) $(MAKE) test)
+
+
+##########################################################################
+# Build from a src tar file - similar to remote1, but w/o test case coverage
+# except for the shallow codegen
+
+####################################
+# Build and generate test case coverage on a remote host
+
+# Use a non-gnu make here for testing purposes
+OTHERMAKE = /usr/ccs/bin/make
+
+
+# Host to run on
+REMOTE5HOST = bennett
+
+# Directory to build in
+REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptII
+
+REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
+
+# Log file to save the results in
+REMOTE5LOG = $(GENLOGDIR)/remote5.out
+
+# Create a separate tree and build on REMOTE5HOST
+remote5: $(PTII_FULL) $(GENLOGDIR)
+	@echo "#"
+	@echo "# Now building on $(REMOTE5HOST) from dist tar file"
+	@echo "#"
+	@echo "$@ `date`"
+	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		remote5nuke remote5ptiidist remote5configure \
+		remote5build \
+		remote5shallowtest \
+		remote5done \
+		 >& $(REMOTE5LOG)" &
+
+
+# Remove the remote dist
+remote5nuke:
+	rm -rf $(REMOTE5PTIIDIST) $(REMOTE5DONEFILE)
+
+# untarthe remote dist.  Usually this is run on the remote machine
+remote5ptiidist: $(REMOTE5PTIIDIST)
+$(REMOTE5PTIIDIST): $(PTII_FULL)
+	@echo "#"
+	@echo "# Now untaring on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE5HOME); $(TAR) -zxf $(PTII_SRC)`)
+
+remote5configure:
+	@echo "#"
+	@echo "# Now configuring on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE5PTIIDIST);	rm -f config.cache; PTII=$(REMOTE5PTIIDIST) ./configure)
+
+
+remote5build:
+	@echo "#"
+	@echo "# Now running make fast all install in $(REMOTE5PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE5PTIIDIST);	PTII=$(REMOTE5PTIIDIST) $(MAKE) sources fast all install)
+
+
+# Run the shallow tests, this is likely to take 3 hours.
+remote5shallowtest:
+	@echo "#"
+	@echo "# Now running make test in $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow; PTII=$(REMOTE5PTIIDIST) $(MAKE) test)
+
 
 
 ###########################################################################
