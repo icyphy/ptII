@@ -351,6 +351,17 @@ test NamedObj-10.1 {Test getAttribute} {
 ######################################################################
 ####
 #
+test NamedObj-10.2 {Test toplevel} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+    list [[$a toplevel] getFullName] [[$a2 toplevel] getFullName]
+} {.A .A}
+
+######################################################################
+####
+#
 test NamedObj-11.1 {Test exportMoML} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
