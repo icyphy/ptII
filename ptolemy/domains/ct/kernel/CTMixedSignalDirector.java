@@ -220,7 +220,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         _mutationVersion = -1;
 
         if (!_isTopLevel()) {
-            TypedCompositeActor container = (TypedCompositeActor) getContainer();
+            TypedCompositeActor container = 
+                (TypedCompositeActor) getContainer();
             Director exe = container.getExecutiveDirector();
             exe.fireAt(container, getModelTime());
         }
@@ -316,7 +317,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // FIXME: get a concrete example that illustrates how this
                 // can happen.
                 // Outside time less than the local time. Rollback!
-                System.out.println("Whaaat on earth are UUUUUU doing");
 
                 if (_debugging) {
                     _debug(getName() + " rollback from: " + localTime + " to: "
@@ -453,7 +453,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this, "Parameter name duplication.");
+            throw new InvalidStateException(this, 
+                    "Parameter name duplication.");
         }
     }
 

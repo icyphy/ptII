@@ -159,29 +159,28 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // to that.
         CTExecutionPhase executionPhase = getExecutionPhase();
 
-        if (executionPhase == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
+        if (executionPhase == 
+            CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
-        } else if (executionPhase == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
+        } else if (executionPhase == 
+            CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
             getCurrentODESolver().fireDynamicActors();
-        } else if (executionPhase == CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
+        } else if (executionPhase == 
+            CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
             super.fireEventGenerators();
-        } else if (executionPhase == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
+        } else if (executionPhase == 
+            CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
             getCurrentODESolver().fireStateTransitionActors();
-
             // There is not a seperate state for producing output,
             // because a CT subsystem needs to produce output
             // if it works as a state transition actor.
             super.produceOutput();
         } else if (executionPhase == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             super._iterateEventGenerators(schedule);
-        } else if (executionPhase == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
+        } else if (executionPhase == 
+            CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
             super._iterateWaveformGenerators(schedule);
         }
-
-        //        else if (executionPhase
-        //            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
-        //            super.prefireDynamicActors();
-        //        }
     }
 
     /** Return the current integration step size, which is inherited from the
@@ -366,9 +365,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  postfire method.
      */
     public boolean postfire() throws IllegalActionException {
-        if (getExecutionPhase() == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
+        if (getExecutionPhase() == 
+            CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
             super.updateContinuousStates();
-        } else if (getExecutionPhase() == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
+        } else if (getExecutionPhase() == 
+            CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
             super.postfireEventGenerators();
         }
 

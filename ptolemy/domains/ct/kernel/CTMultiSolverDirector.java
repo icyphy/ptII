@@ -417,13 +417,13 @@ public class CTMultiSolverDirector extends CTDirector {
         // be dinstinguished and treated differently.
         try {
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-            Iterator eventGenerators = schedule.get(CTSchedule.EVENT_GENERATORS)
-                .actorIterator();
+            Iterator eventGenerators = 
+                schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
             boolean hasDiscreteEvents = false;
 
             while (eventGenerators.hasNext() && !hasDiscreteEvents) {
-                CTEventGenerator eventGenerator = (CTEventGenerator) eventGenerators
-                    .next();
+                CTEventGenerator eventGenerator = 
+                    (CTEventGenerator) eventGenerators.next();
 
                 if (eventGenerator.hasCurrentEvent()) {
                     hasDiscreteEvents = true;
@@ -889,21 +889,21 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": generating events (if any) (continuous -> discrete)");
+                    ": generating events (if any) (continuous -> discrete)");
             }
 
             _iterateEventGenerators(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": iterating pure discrete actors (discrete -> discrete)");
+                    ": iterating pure discrete actors (discrete -> discrete)");
             }
 
             _iteratePurelyDiscreteActors(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": iterating waveform generators (discrete -> continuous)");
+                    ": iterating waveform generators (discrete -> continuous)");
             }
 
             _iterateWaveformGenerators(schedule);
@@ -948,14 +948,19 @@ public class CTMultiSolverDirector extends CTDirector {
         super._initParameters();
 
         try {
-            _solverClassName = "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
+            _solverClassName = 
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             ODESolver = new Parameter(this, "ODESolver",
                     new StringToken("ExplicitRK23Solver"));
             ODESolver.setTypeEquals(BaseType.STRING);
-            ODESolver.addChoice(new StringToken("ExplicitRK23Solver").toString());
-            ODESolver.addChoice(new StringToken("BackwardEulerSolver").toString());
-            ODESolver.addChoice(new StringToken("ForwardEulerSolver").toString());
-            _breakpointSolverClassName = "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
+            ODESolver.addChoice(
+                    new StringToken("ExplicitRK23Solver").toString());
+            ODESolver.addChoice(
+                    new StringToken("BackwardEulerSolver").toString());
+            ODESolver.addChoice(
+                    new StringToken("ForwardEulerSolver").toString());
+            _breakpointSolverClassName = 
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
             breakpointODESolver = new Parameter(this, "breakpointODESolver",
                     new StringToken("DerivativeResolver"));
             breakpointODESolver.setTypeEquals(BaseType.STRING);
@@ -966,7 +971,8 @@ public class CTMultiSolverDirector extends CTDirector {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this, "Parameter name duplication.");
+            throw new InvalidStateException(this, 
+                    "Parameter name duplication.");
         }
     }
 
@@ -1001,7 +1007,8 @@ public class CTMultiSolverDirector extends CTDirector {
         // accuracy in their fire emthods and they need to check the existence
         // of events in the special isOutputAccurate() method.
         while (actors.hasNext()) {
-            CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
+            CTStepSizeControlActor actor = 
+                (CTStepSizeControlActor) actors.next();
             boolean thisAccurate = actor.isOutputAccurate();
 
             if (_debugging) {
@@ -1049,7 +1056,8 @@ public class CTMultiSolverDirector extends CTDirector {
         // NOTE: all actors are guranteed to be asked once. See the
         // _isOutputAccurate() method for the similar reason.
         while (actors.hasNext()) {
-            CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
+            CTStepSizeControlActor actor = 
+                (CTStepSizeControlActor) actors.next();
             boolean thisAccurate = actor.isStateAccurate();
 
             if (_debugging) {
@@ -1079,7 +1087,8 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected void _iteratePurelyDiscreteActors(CTSchedule schedule)
             throws IllegalActionException {
-        _setExecutionPhase(CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE);
+        _setExecutionPhase(
+                CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.DISCRETE_ACTORS));
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
@@ -1126,7 +1135,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             boolean foundOne = false;
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-            Iterator actors = schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
+            Iterator actors = 
+                schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
                 .actorIterator();
 
             while (actors.hasNext()) {
@@ -1177,11 +1187,13 @@ public class CTMultiSolverDirector extends CTDirector {
 
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
+        Iterator actors = 
+            schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
             .actorIterator();
 
         while (actors.hasNext()) {
-            CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
+            CTStepSizeControlActor actor = 
+                (CTStepSizeControlActor) actors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
 
@@ -1217,11 +1229,13 @@ public class CTMultiSolverDirector extends CTDirector {
 
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
+        Iterator actors = 
+            schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
             .actorIterator();
 
         while (actors.hasNext()) {
-            CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
+            CTStepSizeControlActor actor = 
+                (CTStepSizeControlActor) actors.next();
             double size = actor.refinedStepSize();
 
             if (_debugging && _verbose) {
@@ -1315,7 +1329,8 @@ public class CTMultiSolverDirector extends CTDirector {
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         // build history information. In particular, the derivative.
-        _setExecutionPhase(CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
+        _setExecutionPhase(
+                CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
         solver.fireStateTransitionActors();
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
@@ -1396,13 +1411,15 @@ public class CTMultiSolverDirector extends CTDirector {
                 // repeating resolving states until states converge.
                 while (!solver._isConverged() && solver.resolveStates()) {
                     // fire dynamic actors
-                    _setExecutionPhase(CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
+                    _setExecutionPhase(
+                        CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
                     solver.fireDynamicActors();
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
                     // NOTE: at exactly this point, time is advanced.
                     // The amount of advance depends on the current ODE solver.
-                    _setExecutionPhase(CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
+                    _setExecutionPhase(
+                        CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
 
                     // fire state transition actors to calculate derivatives
                     solver.fireStateTransitionActors();
@@ -1443,7 +1460,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (_debugging && _verbose) {
                     _debug("Execute the system from " + getModelTime()
-                            + " with a smaller step size" + getCurrentStepSize());
+                        + " with a smaller step size" + getCurrentStepSize());
                 }
             }
 
@@ -1547,7 +1564,8 @@ public class CTMultiSolverDirector extends CTDirector {
             Time point = ((Time) breakPoints.first());
 
             if (iterationEndTime.compareTo(point) > 0) {
-                currentStepSize = point.subtract(getModelTime()).getDoubleValue();
+                currentStepSize = 
+                    point.subtract(getModelTime()).getDoubleValue();
 
                 if (_debugging && _verbose) {
                     _debug("Refining the current step size w.r.t. "
@@ -1576,5 +1594,6 @@ public class CTMultiSolverDirector extends CTDirector {
     private String _solverClassName;
 
     // The classpath for solvers.
-    private static String _solverClasspath = "ptolemy.domains.ct.kernel.solver.";
+    private static String _solverClasspath = 
+        "ptolemy.domains.ct.kernel.solver.";
 }
