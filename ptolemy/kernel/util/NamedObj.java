@@ -45,8 +45,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import com.sun.rsasign.t;
-
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
