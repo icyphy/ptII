@@ -158,7 +158,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         ex.printStackTrace();
         showStatus("Exception occurred.");
 
-	// Put the stack trave into a string.
+	// Put the stack trace into a string.
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(stream);
         ex.printStackTrace(printWriter);
