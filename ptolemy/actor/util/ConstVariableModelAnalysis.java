@@ -94,7 +94,7 @@ no expression are assumed to be the toplevel of the model.
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 3.1
 */
 public class ConstVariableModelAnalysis {
 
