@@ -316,12 +316,6 @@ public class PTMLObjectFactory {
                 try {                    
                     terminal.setName(_getString(e, n));
                 } catch (Exception ex) {};
-            } else if (n.equals("input")) {
-                terminal.setInput(_getBoolean(e, n));
-            } else if (n.equals("output")) {
-                terminal.setOutput(_getBoolean(e, n));
-            } else if (n.equals("multi")) {
-                terminal.setMulti(_getBoolean(e, n));
             } else if (n.equals("x")) {
                 terminal.setX(_getDouble(e, n));
             } else if (n.equals("y")) {

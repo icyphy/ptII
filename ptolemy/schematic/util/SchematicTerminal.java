@@ -146,13 +146,11 @@ public class SchematicTerminal extends PTMLTemplateObject {
     /** 
      * Return a string representation of the terminal
      */
-    public String toString() {
-        String str = getName() + "((" + _x + ", " + _y + ")";
-        if(isMoveable())
-            str += " moveable";
-        else 
-            str += " not moveable";
-        return str + ")";
+    protected String _description(int indent) {
+        String result = super._description(indent);
+        result += _getIndentPrefix(indent) + "X=" + _x + "\n";
+        result += _getIndentPrefix(indent) + "Y=" + _y + "\n";
+        return result;
     }
 
     private double _x, _y;

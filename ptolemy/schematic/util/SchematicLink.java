@@ -97,10 +97,13 @@ public class SchematicLink extends PTMLObject {
     /** 
      * Return a string representation of the link
      */
-    public String toString() {
-        String str = getName() + "(" + _to.toString() + 
-	    ", " + _from.toString() + ")";
-        return str;
+    protected String _description(int indent) {
+        String result = super._description(indent);
+        result +=  _getIndentPrefix(indent) + "to\n" + 
+            _to._description(indent + 1); 
+	result +=  _getIndentPrefix(indent) + "from\n" + 
+            _from._description(indent + 1);
+        return result;
     }
     
     SchematicTerminal _to;

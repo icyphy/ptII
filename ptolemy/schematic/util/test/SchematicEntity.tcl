@@ -55,7 +55,17 @@ test SchematicEntity-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicEntity $template]
     set e1 [java::new ptolemy.schematic.util.SchematicEntity "TestSchematicEntity" $template]
     list [$e0 description] [$e1 description]
-} {{SchematicEntity((0.0, 0.0))} {TestSchematicEntity((0.0, 0.0))}}
+} {{ptolemy.schematic.util.SchematicEntity(TestEntityTemplate)
+parameters
+template
+ports
+terminals
+} {ptolemy.schematic.util.SchematicEntity(TestSchematicEntity)
+parameters
+template
+ports
+terminals
+}}
 
 test SchematicEntity-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
@@ -95,4 +105,4 @@ test SchematicEntity-3.7 {toString} {
     $e1 setX 1.1
     $e1 setY 2.4
     $e1 toString
-} {TestSchematicEntity((1.1, 2.4), Input, Output, Multi)}
+} {ptolemy.schematic.util.SchematicEntity {TestSchematicEntity}}

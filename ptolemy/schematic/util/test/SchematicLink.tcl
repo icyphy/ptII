@@ -52,8 +52,40 @@ if {[string compare test [info procs test]] == 1} then {
 test SchematicLink-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicLink]
     set e1 [java::new ptolemy.schematic.util.SchematicLink "TestSchematicLink"]
-    list [$e0 toString] [$e1 toString]
-} {{link(ptolemy.schematic.util.SchematicPort {to_port}, ptolemy.schematic.util.SchematicPort {from_port})} {TestSchematicLink(ptolemy.schematic.util.SchematicPort{to_port}, ptolemy.schematic.util.SchematicPort {from_port})}}
+    list [$e0 description] [$e1 description]
+} {{ptolemy.schematic.util.SchematicLink(link)
+parameters
+to
+    ptolemy.schematic.util.SchematicTerminal(to_port)
+    parameters
+    template
+        null
+    X=0.0
+    Y=0.0
+from
+    ptolemy.schematic.util.SchematicTerminal(from_port)
+    parameters
+    template
+        null
+    X=0.0
+    Y=0.0
+} {ptolemy.schematic.util.SchematicLink(TestSchematicLink)
+parameters
+to
+    ptolemy.schematic.util.SchematicTerminal(to_port)
+    parameters
+    template
+        null
+    X=0.0
+    Y=0.0
+from
+    ptolemy.schematic.util.SchematicTerminal(from_port)
+    parameters
+    template
+        null
+    X=0.0
+    Y=0.0
+}}
 
 test SchematicLink-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
@@ -78,8 +110,26 @@ test SchematicLink-3.1 {setTo, getTo tests} {
     set r1 [$e0 getTo]
     $e0 setTo $t2
     set r2 [$e0 getTo]
-    list [$r0 toString] [$r1 toString] [$r2 toString]
-} {{to_terminal((0.0, 0.0))} {terminal1((0.0, 0.0))} {terminal2((0.0, 0.0))}}
+    list [$r0 description] [$r1 description] [$r2 description]
+} {{ptolemy.schematic.util.SchematicTerminal(to_port)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+} {ptolemy.schematic.util.SchematicTerminal(T1)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+} {ptolemy.schematic.util.SchematicTerminal(T2)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+}}
 
 test SchematicLink-3.2 {setFrom, getFrom tests} {
     # NOTE: Uses the setup above
@@ -88,8 +138,26 @@ test SchematicLink-3.2 {setFrom, getFrom tests} {
     set r1 [$e0 getFrom]
     $e0 setFrom $t2
     set r2 [$e0 getFrom]
-    list [$r0 toString] [$r1 toString] [$r2 toString]
-} {{from_terminal((0.0, 0.0))} {terminal1((0.0, 0.0))} {terminal2((0.0, 0.0))}}
+    list [$r0 description] [$r1 description] [$r2 description]
+} {{ptolemy.schematic.util.SchematicTerminal(from_port)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+} {ptolemy.schematic.util.SchematicTerminal(T1)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+} {ptolemy.schematic.util.SchematicTerminal(T2)
+parameters
+template
+    null
+X=0.0
+Y=0.0
+}}
 
 ######################################################################
 ####
@@ -98,4 +166,4 @@ test SchematicLink-4.1 {toString} {
     $e1 setTo $t1
     $e1 setFrom $t2
     $e1 toString
-} {TestSchematicLink(terminal1((0.0, 0.0)), terminal2((0.0, 0.0)))}
+} {ptolemy.schematic.util.SchematicLink {TestSchematicLink}}

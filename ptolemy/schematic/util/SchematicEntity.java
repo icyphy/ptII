@@ -238,7 +238,7 @@ public class SchematicEntity extends PTMLTemplateObject {
         Enumeration els = ports();
         while(els.hasMoreElements()) {
             SchematicPort port = (SchematicPort) els.nextElement();
-	    result += port._description(indent);
+	    result += port._description(indent + 1);
         }
         //       result += _getIndentPrefix(indent) + "terminalstyle";
         //result += getTerminalStyle().getFullName();
@@ -246,7 +246,7 @@ public class SchematicEntity extends PTMLTemplateObject {
         els = terminals();
         while(els.hasMoreElements()) {
             SchematicTerminal term = (SchematicTerminal) els.nextElement();
-	    result += term._description(indent);
+	    result += term._description(indent + 1);
             }    
         return result;
     }

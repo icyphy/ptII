@@ -104,8 +104,11 @@ public class PTMLTemplateObject extends PTMLObject {
 
     protected String _description(int indent) {
         String result = super._description(indent);
-        result += "template\n";
-        _template._description(indent + 1);
+        result += _getIndentPrefix(indent) + "template\n";
+        if(_template == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            _template._description(indent + 1);
         return result;
     }
 

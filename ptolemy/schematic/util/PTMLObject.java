@@ -304,7 +304,7 @@ public class PTMLObject extends Object implements Nameable {
     protected String _description(int indent) {
         String result = _getIndentPrefix(indent);
         result += getClass().getName() + "(";
-        result += getFullName() + "\n";
+        result += getFullName() + ")\n";
         result += _getIndentPrefix(indent) + "parameters\n";
 
         Enumeration params = parameters();
@@ -312,7 +312,7 @@ public class PTMLObject extends Object implements Nameable {
             SchematicParameter p = (SchematicParameter) params.nextElement();
             result += p._description(indent + 1) + "\n";
         }
-        result += _getIndentPrefix(indent);
+        //        result += _getIndentPrefix(indent);
 
         return result;
     }
