@@ -52,9 +52,9 @@ This class provides a cache of function/method signatures already analyzed,
 so that next time when the same method with the same signature is invoked
 the search is replaced by fast hashed access to the cache.<p>
 
-{@link # REAL} {@link #FUNCTION}s exist in classes registered with
+{@link #REAL} {@link #FUNCTION}s exist in classes registered with
 PtParser.
-{@link # REAL} {@link #METHOD}s exist in various class instances
+{@link #REAL} {@link #METHOD}s exist in various class instances
 (Tokens or other).
 {@link #CONSTRUCTED} functions/methods are functions/methods
 "constructed" by FindAndRunMethod using the argument dimension reduction
