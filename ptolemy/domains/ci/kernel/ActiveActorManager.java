@@ -154,7 +154,7 @@ public class ActiveActorManager extends PtolemyThread {
                             }*/
 
                             System.out.println("Wait for input to "
-                                    + "pulled actor " 
+                                    + "pulled actor "
                                     + ((Nameable)_actor).getName());
 
                             /*synchronized(_receiver) {

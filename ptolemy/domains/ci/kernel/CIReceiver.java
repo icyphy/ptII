@@ -31,10 +31,15 @@
 
 package ptolemy.domains.ci.kernel;
 
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
-import ptolemy.actor.*;
-import ptolemy.actor.util.FIFOQueue;        /* Needed by javadoc */
+
 
 import java.util.NoSuchElementException;
 import java.util.Collections;

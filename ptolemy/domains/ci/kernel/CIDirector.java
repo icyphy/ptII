@@ -30,7 +30,12 @@
 
 package ptolemy.domains.ci.kernel;
 
-import ptolemy.actor.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -349,7 +354,8 @@ public class CIDirector extends Director {
         if (_debugging)
             _debug("Stop fire called...");
 
-        System.out.println(getName() + " set stop requested to true in stopFire()");
+        System.out.println(getName() +
+                " set stop requested to true in stopFire()");
         try {
         Exception ex = new Exception();
         ex.fillInStackTrace();
@@ -384,7 +390,8 @@ public class CIDirector extends Director {
         super.terminate();
         if (_debugging)
             _debug("Terminate called...");
-        System.out.println(getName() + " set stop requested to true in terminate()");
+        System.out.println(getName() +
+                " set stop requested to true in terminate()");
         _stopRequested = true;
         //FIXME: terminate actor managers
     }
@@ -404,14 +411,16 @@ public class CIDirector extends Director {
         if (_debugging)
             _debug("Wrap up...");
 
-        System.out.println(getName() + " set stop requested to true in stopFire()");
+        System.out.println(getName()
+                + " set stop requested to true in stopFire()");
         try {
         Exception ex = new Exception();
         ex.fillInStackTrace();
         ex.printStackTrace(new PrintStream(System.out));
         } catch (Exception ex) {}
 
-        System.out.println(getName() + " set stop requested to true in wrapup()");
+        System.out.println(getName()
+                + " set stop requested to true in wrapup()");
         _stopRequested = true;
         /*Iterator receivers = _receivers.iterator();
         while (receivers.hasNext()) {
@@ -473,6 +482,14 @@ public class CIDirector extends Director {
         _actorsToFire.add(actor);
     }
 
+    /**Get the thread of the CI director.
+     * @return the director thread.
+     *
+     */
+    protected Thread _getThread() {
+        return _directorThread;
+    }
+
     /** Return true if the actor is active, such as:
      *  source with push output; sink with pull input; actor with pull input
      *  and push output.
@@ -507,15 +524,6 @@ public class CIDirector extends Director {
      */
     protected boolean _isPulled(Actor actor) {
         return _pulledActors.contains(actor);
-    }
-
-    /**Get the thread of the CI director.
-     * @return the director thread.
-     *
-     */
-
-    protected Thread _getThread() {
-        return _directorThread;
     }
 
     /** Handle the pull request from the given actor. Add actors providing data
@@ -572,24 +580,49 @@ public class CIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
+    /** Number of active actors. */
+    protected int _activeCount = 0;
+
+
     //FIXME: is it possible that the director is called by the manager from
     // more than one threads? Provide a protected method to get this?
-    //The CI director thread.
+
+    /** The CI director thread. */
     protected Thread _directorThread;
 
-    //Interval between itrations of an actor.
+    /** Interval between itrations of an actor. */
     protected long _interval;
+
+    /** Flag that indicates that a stop has been requested. */
+    protected boolean _stopRequested = false;
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    //get the next actor from the ashnchronously pushed actor list.
-    //@return the next actor.
-    private synchronized Actor _nextAsyncPushedActor() {
-        if (_asyncPushedActors.size() > 0)
-            return (Actor)_asyncPushedActors.removeFirst();
-        else
-            return null;
+    // return true if actor is a pull source or both its input and output are
+    // pull.
+    private boolean _isPullThrough(Actor actor) {
+        boolean inputIsPush = false;
+        boolean hasInput = false;
+        boolean outputIsPush = false;
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort)inputPorts.next();
+            if (port.getWidth() > 0) {
+                hasInput = true;
+                if (port.getAttribute("push") != null) inputIsPush = true;
+            }
+        }
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort)outputPorts.next();
+            if (port.getWidth() > 0) {
+                if (port.getAttribute("push") != null) outputIsPush = true;
+            }
+        }
+        return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
     //get the next actor from the ashnchronously pulled actor list.
@@ -601,6 +634,16 @@ public class CIDirector extends Director {
         }
         return result;
     }
+
+    //get the next actor from the ashnchronously pushed actor list.
+    //@return the next actor.
+    private synchronized Actor _nextAsyncPushedActor() {
+        if (_asyncPushedActors.size() > 0)
+            return (Actor)_asyncPushedActors.removeFirst();
+        else
+            return null;
+    }
+
 
     //Get actors providing data to the given actor.
     //FIXME: duplication in the returned list?
@@ -631,30 +674,6 @@ public class CIDirector extends Director {
         return result;
     }
 
-    // return true if actor is a pull source or both its input and output are
-    // pull.
-    private boolean _isPullThrough(Actor actor) {
-        boolean inputIsPush = false;
-        boolean hasInput = false;
-        boolean outputIsPush = false;
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
-            if (port.getWidth() > 0) {
-                hasInput = true;
-                if (port.getAttribute("push") != null) inputIsPush = true;
-            }
-        }
-        Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)outputPorts.next();
-            if (port.getWidth() > 0) {
-                if (port.getAttribute("push") != null) outputIsPush = true;
-            }
-        }
-        return (!outputIsPush && (!hasInput || !inputIsPush));
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -672,12 +691,6 @@ public class CIDirector extends Director {
 
     // the list of active actor managers
     private LinkedList _actorManagers = new LinkedList();
-
-    // flag that indicates that a stop has been requested.
-    protected boolean _stopRequested = false;
-
-    // number of active actors.
-    protected int _activeCount = 0;
 
     // list of CI receivers.
     private LinkedList _receivers = new LinkedList();
