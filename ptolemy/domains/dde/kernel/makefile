@@ -54,7 +54,6 @@ JSRCS = \
         DDEDirector.java \
         DDEIOPort.java \
         DDEReceiver.java \
-        DDESourceActor.java \
         DDEThread.java \
         FBDelay.java \
         TimeKeeper.java \
