@@ -29,6 +29,7 @@
 
 package ptolemy.copernicus.kernel;
 
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -574,7 +575,9 @@ public class Copernicus {
         } else if (arg.equals("-verbose")) {
 	    _verbose = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version 1.0, Build $Id$");
+            System.out.println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
         } else if (arg.equals("")) {
@@ -659,12 +662,32 @@ public class Copernicus {
     }
 
     /** Return a string containing the usage */
-    private static String _usage() {
-	return "Usage:\n"
-		     + "  java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help\n"
-		     + "  java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode [java|applet|c|jhdl|shallow] foo.xml\n"
-		     + "  For example:\n"
-		     + "  java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode java foo.xml -java c:/jdk1.3.1/bin/java\n";
+    private String _usage() {
+        StringBuffer usage =
+            new StringBuffer(StringUtilities.usageString(_commandTemplate,
+                    _commandOptions, _commandFlags));
+
+        try {
+            NamedObj namedObj = new NamedObj();
+            usage.append(
+                    "\n\nThe following attributes of the code generator can\n"
+                    + "be set.  For example '-codeGenerator java' means\n"
+                    + "to use the java code generator\n\n");
+
+            _generatorAttribute =
+                new GeneratorAttribute(namedObj, GENERATOR_NAME);
+            _generatorAttribute.initialize();
+            
+            // Parse the file named by the modelPath Parameter and update
+            // parameters
+            _generatorAttribute.sanityCheckAndUpdateParameters(null);
+
+            usage.append(_generatorAttribute.toString());
+        } catch(Exception ex) {
+            usage.append("Problem evaluating default arguments: " + ex);
+        }
+
+        return usage.toString();
     } 
 
     ///////////////////////////////////////////////////////////////////
@@ -680,13 +703,35 @@ public class Copernicus {
 
     /** The command-line options that take arguments. */
     protected String _commandOptions[][] = {
-        {"-class",  "<classname>"},
         {"-<parameter name>", "<parameter value>"},
     };
 
     /** The form of the command line. */
     protected String _commandTemplate =
-	"generate [options . . .] [relative xml filename] ";
+	"copernicus [options . . .] [relative xml filename]\n"
+    + "This command used to generate code from a model."
+    + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
+    + "This command does command line argument substitution by reading\n"
+    + "template files and then executes a subprocess that that does\n"
+    + "the code generation."
+    + "This command takes the usual Ptolemy II command line arguments\n"
+    + "and a number of command line arguments that are defined in the\n"
+    + "GeneratorAttribute of the model itself.\n"
+    + "Of these command line arguments, the most significant is the\n" 
+    + "-codeGenerator option which is used to select which code\n"
+    + "generator is used.  The default value is 'java', which means\n"
+    + "that $PTII/ptolemy/copernicus/java/compileCommandTemplate.txt"
+    + "is used to invoke the code generator.\n"
+    + "-codeGenerator can have the following values:\n"
+    + "   applet         Generate a html files containing an applet version.\n"
+    + "   c              Generate C code version.\n"
+    + "   interpreted    Generate interpreted version of the model\n"
+    + "                    Similar to 'Save As, used primary for testing.\n"
+    + "   java           Generate a deep Java version that uses very\n"
+    + "                    few classes from Ptolemy.\n"
+    + "   jhdl           Generate a JDHL version (requires JHDL).\n"
+    + "   shallow        Generate a shallow Java version that uses many\n"
+    + "                   classes from Ptolemy.\n";
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
