@@ -347,8 +347,13 @@ PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 # Fix the temporary directory used when building a distribution
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
-	echo "makefiles all sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean:" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "makefiles all sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean: mk/ptII.mk" > $(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
+	echo '# Generate ptII.mk by running configure' >> \
+		$(PTTMPDIR)/$(PTDIST)/makefile
+	echo 'mk/ptII.mk: configure mk/ptII.mk.in' >> \
+		$(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	./configure' >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "realclean itcldocs tests idocs weblint dists:" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot)\"" >> \
