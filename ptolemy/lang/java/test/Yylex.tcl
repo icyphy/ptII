@@ -57,8 +57,8 @@ test Yylex-1.1 {Parse Simple.java} {
     $javaParser init Simple.java
     $javaParser parse
     set ast [$javaParser getAST]
-    $ast toString
-} { {CompileUnitNode { 
+    lcompare [$ast toString] \
+{ {CompileUnitNode { 
   {DefTypes { 
    {ClassDeclNode { 
     {Interfaces  {}} 
@@ -100,14 +100,15 @@ test Yylex-1.1 {Parse Simple.java} {
                   }}} 
       }}} 
 }}}
+} {1}
 
 test Yylex-1.2 {Parse JavaScope.java} {
     set javaParser [java::new ptolemy.lang.java.JavaParser]
     $javaParser init JavaScope.java
     $javaParser parse
     set ast [$javaParser getAST]
-    $ast toString
-} { {CompileUnitNode { 
+    lcompare [$ast toString] \
+{ {CompileUnitNode { 
   {DefTypes { 
    {ClassDeclNode { 
     {Interfaces  {}} 
@@ -376,3 +377,4 @@ test Yylex-1.2 {Parse JavaScope.java} {
                   }}} 
       }}} 
 }}}
+} {1}
