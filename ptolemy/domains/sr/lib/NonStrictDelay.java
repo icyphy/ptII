@@ -117,15 +117,15 @@ public class NonStrictDelay extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     // The token received on the previous iteration to be output on the
     // current iteration.
-    private Token _previousToken;
+    protected Token _previousToken;
 
     // The most recent token received on the current iteration to be
     // output on the next iteration.
-    private Token _currentToken;
+    protected Token _currentToken;
 
 }
 
