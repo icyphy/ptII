@@ -60,8 +60,8 @@ public class CSPContentionAlarm extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          
-         input = new IOPort(this, "input", true, false);
-         output = new IOPort(this, "output", false, true);
+         _input = new IOPort(this, "input", true, false);
+         _output = new IOPort(this, "output", false, true);
     }
          
     ////////////////////////////////////////////////////////////////////////
@@ -73,11 +73,11 @@ public class CSPContentionAlarm extends CSPActor {
         
         while(true) {
             // State 1
-            input.get(0);
+            _input.get(0);
             
             // State 2
             waitForDeadlock();
-            output.send(0, null);
+            _output.send(0, null);
         }
     }
     
@@ -88,6 +88,6 @@ public class CSPContentionAlarm extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    public IOPort input;
-    public IOPort output;
+    private IOPort _input;
+    private IOPort _output;
 }
