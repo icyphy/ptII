@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"BasePNDirector.tcl" != ""} {foreach i [list BasePNDirector.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"BasePNDirector.tcl PNDirector.tcl" != ""} {foreach i [list BasePNDirector.tcl PNDirector.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}
