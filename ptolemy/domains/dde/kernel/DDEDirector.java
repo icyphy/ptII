@@ -130,7 +130,7 @@ public class DDEDirector extends CompositeProcessDirector
 
         double value = PrioritizedTimedQueue.ETERNITY;
         stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the  workspace with an empty
@@ -145,7 +145,7 @@ public class DDEDirector extends CompositeProcessDirector
 
         double value = PrioritizedTimedQueue.ETERNITY;
         stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the
@@ -167,7 +167,7 @@ public class DDEDirector extends CompositeProcessDirector
 
         double value = PrioritizedTimedQueue.ETERNITY;
         stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timePrecisionInDigits.setVisibility(Settable.FULL);
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -314,12 +314,13 @@ public class DDEDirector extends CompositeProcessDirector
 
         try {
             timeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e.toString());
-        }
-
-        receiver._setCompletionTime(new Time(this, timeValue));
-        receiver._lastTime = new Time(this);
+			receiver._setCompletionTime(new Time(this, timeValue));
+			receiver._lastTime = new Time(this);
+		} catch (IllegalActionException e) {
+			// If the time resolution of the director or the stop
+            // time is invalid, it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
         return receiver;
     }
 

@@ -260,8 +260,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 190.0">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.MultirateFSMDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>

@@ -70,8 +70,6 @@ David Hermann, Research in Motion</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>

@@ -800,7 +800,7 @@ public class DEDirector extends Director implements TimedDirector {
         // the stop time.
         if (_noMoreActorsToFire
                 && 
-                (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+                (stop || (getModelTime().compareTo(getModelStopTime()) >= 0))) {
             _exceedStopTime = true;
             result = result && false;
         } else if (_exceedStopTime) {
@@ -1740,7 +1740,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // 2. There are no more events in the event queue,
                     // and the current time is equal to the stop time.
                     if ((actorToFire != null)
-                            || (getModelTime() == getModelStopTime())) {
+                            || (getModelTime().equals(getModelStopTime()))) {
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
                     }
@@ -1957,16 +1957,20 @@ public class DEDirector extends Director implements TimedDirector {
             isCQAdaptive = new Parameter(this, "isCQAdaptive");
             isCQAdaptive.setExpression("true");
             isCQAdaptive.setTypeEquals(BaseType.BOOLEAN);
+            isCQAdaptive.setVisibility(Settable.EXPERT);
 
             minBinCount = new Parameter(this, "minBinCount");
             minBinCount.setExpression("2");
             minBinCount.setTypeEquals(BaseType.INT);
+            minBinCount.setVisibility(Settable.EXPERT);
 
             binCountFactor = new Parameter(this, "binCountFactor");
             binCountFactor.setExpression("2");
             binCountFactor.setTypeEquals(BaseType.INT);
+            binCountFactor.setVisibility(Settable.EXPERT);            
 
-            timePrecisionInDigits.setVisibility(Settable.FULL);
+            timeResolution.setVisibility(Settable.FULL);
+            timeResolution.moveToLast();
         } catch (KernelException e) {
             throw new InternalErrorException("Cannot set parameter:\n"
                     + e.getMessage());

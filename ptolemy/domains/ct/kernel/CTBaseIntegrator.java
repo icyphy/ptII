@@ -679,8 +679,10 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
          *  If the current step size is larger than the history step size,
          *  then a linear extrapolation is used.
          *  @param currentStepSize The current step size.
+         *  @exception IllegalActionException If the director has an invalid
+         *   time resolution parameter.
          */
-        public void rebalance(double currentStepSize) {
+        public void rebalance(double currentStepSize) throws IllegalActionException {
             double timeResolution = ((CTDirector) _container.getDirector())
                 .getTimeResolution();
 

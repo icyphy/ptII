@@ -39,6 +39,7 @@ import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,8 +115,14 @@ public class DDEThread extends ProcessThread {
                         try {
                             if (((DDEReceiver) receivers[i][j]).getReceiverTime()
                                     .getDoubleValue() != endTime) {
-                                ((DDEReceiver) receivers[i][j]).put(null,
-                                        new Time(getActor().getDirector(), endTime));
+                                try {
+									((DDEReceiver) receivers[i][j]).put(null,
+									        new Time(getActor().getDirector(), endTime));
+								} catch (IllegalActionException e) {
+                                    // If the time resolution of the director is invalid,
+                                    // it should have been caught before this.
+                                    throw new InternalErrorException(e);
+								}
                             }
                         } catch (TerminateProcessException e) {
                             // Do nothing since we are ending
@@ -146,8 +153,14 @@ public class DDEThread extends ProcessThread {
             Double dTime = (Double) table.get(actor);
 
             if (dTime != null) {
-                Time time = new Time(director, dTime.doubleValue());
-                _timeKeeper.setCurrentTime(time);
+                try {
+					Time time = new Time(director, dTime.doubleValue());
+					_timeKeeper.setCurrentTime(time);
+				} catch (IllegalActionException e) {
+                    // If the time resolution of the director is invalid,
+                    // it should have been caught before this.
+                    throw new InternalErrorException(e);
+				}
             }
         }
 

@@ -39,6 +39,7 @@ import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 
@@ -519,9 +520,15 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // Initialize some time variables.
     private void _initializeTimeVariables() {
         Actor actor = (Actor) getContainer().getContainer();
-        _completionTime = new Time(actor.getDirector(), ETERNITY);
-        _lastTime = new Time(actor.getDirector());
-        _receiverTime = new Time(actor.getDirector());
+        try {
+			_completionTime = new Time(actor.getDirector(), ETERNITY);
+			_lastTime = new Time(actor.getDirector());
+			_receiverTime = new Time(actor.getDirector());
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
     }
 
     ///////////////////////////////////////////////////////////////////

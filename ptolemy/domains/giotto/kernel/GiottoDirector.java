@@ -734,7 +734,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             _receivers = new LinkedList();
 
-            timePrecisionInDigits.setVisibility(Settable.FULL);
+            timeResolution.setVisibility(Settable.FULL);
         } catch (KernelException ex) {
             throw new InternalErrorException("Cannot initialize director: "
                     + ex.getMessage());

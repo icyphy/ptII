@@ -80,9 +80,9 @@ test Server-3.1 {test with zero service time} {
 test Server-3.2 {test with negative service time} {
     $serviceTime setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Attempt to queue an event in the past: Current time is 0.0000000000 while event time is -1.0000000000
-  in .top.server}}
+    set s [java::new String $msg]
+    list [$s substring 0 100]
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to queue an event in the past: Current time is 0}}
 
 test Server-4.0 {Test with service time input} {
     set clock2 [java::new ptolemy.actor.lib.Clock $e0 clock2]

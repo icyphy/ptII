@@ -129,8 +129,8 @@ test PrioritizedTimedQueue-4.2 {Check exception message for full queue} {
 test PrioritizedTimedQueue-4.3 {Check hasRoom() for infinite capacity queue} {
     set t4 [java::new ptolemy.data.Token]
     catch {$tqr put $t4 $time4} msg
-    list $msg
-} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = 3.7000000000. The _lastTime was 5.0000000000}}
+    list [string range $msg 0 82]
+} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past}}
 
 ######################################################################
 ####
@@ -188,5 +188,5 @@ test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
     set t1 [java::new ptolemy.data.Token]
 
     catch {$tqr put $t1 $time6} msg
-    list $msg
-} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = -1.5000000000. The _lastTime was 0.0000000000}}
+    list [string range $msg 0 82]
+} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past}}

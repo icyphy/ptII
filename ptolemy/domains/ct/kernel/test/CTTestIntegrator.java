@@ -65,8 +65,10 @@ public class CTTestIntegrator extends CTBaseIntegrator {
     ////                         public methods                    ////
 
     /** call to balance the history.
+     *  @exception IllegalActionException If the director has an invalid
+     *   time resolution parameter.
      */
-    public void balanceHistory() {
+    public void balanceHistory() throws IllegalActionException {
         double stepsize = ((CTDirector) getDirector()).getCurrentStepSize();
         _history.rebalance(stepsize);
     }

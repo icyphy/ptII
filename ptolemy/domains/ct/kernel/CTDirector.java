@@ -857,7 +857,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
-            timePrecisionInDigits.setVisibility(Settable.FULL);
+            timeResolution.setVisibility(Settable.FULL);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error: " + e);

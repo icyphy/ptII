@@ -569,7 +569,13 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      */
     public Receiver newReceiver() {
         DTReceiver dtReceiver = new DTReceiver();
-        dtReceiver.initializeLocalTime(new Time(this));
+        try {
+			dtReceiver.initializeLocalTime(new Time(this));
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
         return dtReceiver;
     }
 
@@ -1153,7 +1159,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             period = new Parameter(this, "period", new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
-            timePrecisionInDigits.setVisibility(Settable.FULL);
+            timeResolution.setVisibility(Settable.FULL);
         } catch (Exception e) {
             throw new InternalErrorException(
                     "unable to initialize DT Director:\n" + e.getMessage());
@@ -1165,9 +1171,15 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
-        setModelTime(new Time(this));
-        _formerTimeFired = new Time(this);
-        _formerValidTimeFired = new Time(this);
+        try {
+			setModelTime(new Time(this));
+			_formerTimeFired = new Time(this);
+			_formerValidTimeFired = new Time(this);
+		} catch (IllegalActionException e) {
+            // If the time resolution of the director is invalid,
+            // it should have been caught before this.
+            throw new InternalErrorException(e);
+		}
         _isFiringAllowed = true;
         _shouldDoInternalTransferOutputs = true;
     }
@@ -1218,7 +1230,13 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         public DTActor(Actor actor) {
             _actor = actor;
             _repeats = 0;
-            _localTime = new Time(_actor.getDirector());
+            try {
+				_localTime = new Time(_actor.getDirector());
+			} catch (IllegalActionException e) {
+                // If the time resolution of the director is invalid,
+                // it should have been caught before this.
+                throw new InternalErrorException(e);
+			}
             _shouldGenerateInitialTokens = false;
         }
     }
