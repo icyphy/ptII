@@ -1,5 +1,5 @@
-/* 
- 
+/*
+
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -7,28 +7,28 @@
  software and its documentation for any purpose, provided that the above
  copyright notice and the following two paragraphs appear in all copies
  of this software.
- 
+
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
- 
+
  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
- 
+
 @ProposedRating Red (davisj@eecs.berkeley.edu)
- 
+
 */
 
- 
+
 package ptolemy.domains.csp.demo;
 
 import ptolemy.kernel.util.*;
@@ -43,10 +43,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 
- 
+
 @author John S. Davis II
 @version $Id$
 */
@@ -64,11 +64,11 @@ public class BusContentionGraphic extends Frame {
      */
     public BusContentionGraphic( Dimension size ) {
         try {
-            _demo = new BusContentionDemo(this); 
+            _demo = new BusContentionDemo(this);
             _demo.makeConnections();
-            _size = size; 
-            setResizable(true); 
-            setSize( _size ); 
+            _size = size;
+            setResizable(true);
+            setSize( _size );
             setResizable(false);
         } catch(Exception e) {
             e.printStackTrace();
@@ -78,13 +78,13 @@ public class BusContentionGraphic extends Frame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
 
     /**
      */
     public static void main(String[] args) {
         try {
-	    BusContentionGraphic graphic = 
+	    BusContentionGraphic graphic =
                 new BusContentionGraphic( new Dimension( 500, 500 ) );
             graphic.layoutGraphics();
 	    graphic.setVisible(true);
@@ -100,7 +100,7 @@ public class BusContentionGraphic extends Frame {
     public void run() {
         _demo.run();
     }
-    
+
     /**
      */
     public void layoutGraphics() {
@@ -120,14 +120,14 @@ public class BusContentionGraphic extends Frame {
 	    Panel topLeft = new Panel();
 	    innerConstraints.fill = GridBagConstraints.BOTH;
 	    innerConstraints.weightx = 0.9;
-	    innerConstraints.gridwidth = 4; 
-	    innerGBag.setConstraints(topLeft, innerConstraints); 
-	    top.add(topLeft); 
-	    { 
+	    innerConstraints.gridwidth = 4;
+	    innerGBag.setConstraints(topLeft, innerConstraints);
+	    top.add(topLeft);
+	    {
 		Label label = new Label("Bus Contention Demo");
 		Font font = new Font("Helvetica", Font.BOLD, 16);
-		label.setFont( font ); 
-		label.setForeground(SystemColor.text); 
+		label.setFont( font );
+		label.setForeground(SystemColor.text);
 		topLeft.add(label);
 	    }
 	    Button helpButton = new Button("Info");
@@ -135,8 +135,8 @@ public class BusContentionGraphic extends Frame {
 	    innerConstraints.fill = GridBagConstraints.BOTH;
 	    innerConstraints.gridwidth = GridBagConstraints.REMAINDER;
 	    innerConstraints.weightx = 0.1;
-	    innerConstraints.gridwidth = 1; 
-	    innerGBag.setConstraints(helpButton, innerConstraints); 
+	    innerConstraints.gridwidth = 1;
+	    innerGBag.setConstraints(helpButton, innerConstraints);
 	    top.add(helpButton);
 	}
 	top.setVisible(true);
@@ -174,7 +174,7 @@ public class BusContentionGraphic extends Frame {
                 */
 	        bottom.add( _blocks[i][j] );
 	    }
-	} 
+	}
         _blocks[4][4].setVisible(true);
     }
 
@@ -196,7 +196,7 @@ public class BusContentionGraphic extends Frame {
             System.exit(1);
         }
     }
-    
+
     /*
       public void resetMark( int i, int j ) {
       if( _random == null ) {
@@ -265,7 +265,7 @@ public class BusContentionGraphic extends Frame {
       private int _currI;
       private int _currJ;
     */
-    
+
     private BusContentionDemo _demo;
 }
 

@@ -35,20 +35,20 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// Eratosthenes
 /**
-This demo implements the Sieve of Eratosthenes algorithm for obtaining 
-prime numbers. It uses changes to the topology and illustrates this working 
+This demo implements the Sieve of Eratosthenes algorithm for obtaining
+prime numbers. It uses changes to the topology and illustrates this working
 in the CSP domain.
 <p>
-The demo originally consists of a source generating integers, and one 
-sieve filtering out all multiples of two. When the end sieve sees a 
-number that it cannot filter, it creates a new sieve to filter out all 
-multiplies of that number. Thus after the sieve filtering out the number 
-two sees the number three, it creates a new sieve that filters out the 
-number three. This then continues with the three sieve eventually 
-creating a sieve to filter out all multiples of five, and so on. Thus 
-after a while there will be a chain of sieves each filtering out a 
-different prime number. If any number passes through all the sieves 
-and reaches the end with no sieve waiting, it must be another prime 
+The demo originally consists of a source generating integers, and one
+sieve filtering out all multiples of two. When the end sieve sees a
+number that it cannot filter, it creates a new sieve to filter out all
+multiplies of that number. Thus after the sieve filtering out the number
+two sees the number three, it creates a new sieve that filters out the
+number three. This then continues with the three sieve eventually
+creating a sieve to filter out all multiples of five, and so on. Thus
+after a while there will be a chain of sieves each filtering out a
+different prime number. If any number passes through all the sieves
+and reaches the end with no sieve waiting, it must be another prime
 and so a new sieve is created for it.
 <p>
 @author Neil Smyth, adapted from a file by Mudit Goel

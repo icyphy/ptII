@@ -1,5 +1,5 @@
 /* An applet containing CSP Dining Philosophers demo.
-   
+
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -27,7 +27,7 @@
 */
 
 package ptolemy.domains.csp.demo;
- 
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -44,13 +44,13 @@ import java.text.NumberFormat;
 //////////////////////////////////////////////////////////////////////////
 //// DiningApplet
 /**
-Applet containing Dining Philosophers demo. This demo uses the 
-both the time and conditional communiaction constructs of the CSP 
-domain in Ptolemy II. It represents the classic concurrency problem, 
-first described by Dijkstra in 1965, which has 5 philosophers sitting 
-around a table with one chopstick between each pair of philosophers. To 
-eat a philosopher must have both chopsticks beside it. Each philosopher 
-thinks for a while, then grabs one chopstick, then the other, eats for 
+Applet containing Dining Philosophers demo. This demo uses the
+both the time and conditional communiaction constructs of the CSP
+domain in Ptolemy II. It represents the classic concurrency problem,
+first described by Dijkstra in 1965, which has 5 philosophers sitting
+around a table with one chopstick between each pair of philosophers. To
+eat a philosopher must have both chopsticks beside it. Each philosopher
+thinks for a while, then grabs one chopstick, then the other, eats for
 a while and puts the chopsticks down. This cycle continues.
 <p>
 @author Neil Smyth
@@ -65,7 +65,7 @@ public class DiningApplet extends Applet implements Runnable, PhilosopherListene
 /** Initialize the applet.
  */
 public void init() {
-        
+
     // Process the background parameter.
     Color background = Color.white;
     try {
@@ -75,8 +75,8 @@ public void init() {
         }
     } catch (Exception ex) {}
     setBackground(background);
-        
-      
+
+
     try {
         univ = new CompositeActor();
         univ.setName("Top");
@@ -132,27 +132,27 @@ public void init() {
         IORelation r2 = (IORelation)univ.connect((IOPort)p1.getPort("leftOut"), (IOPort)f5.getPort("rightIn"));
         IORelation r3 = (IORelation)univ.connect((IOPort)p1.getPort("rightIn"), (IOPort)f1.getPort("leftOut"));
         IORelation r4 = (IORelation)univ.connect((IOPort)p1.getPort("rightOut"), (IOPort)f1.getPort("leftIn"));
-            
+
         IORelation r5 = (IORelation)univ.connect((IOPort)p2.getPort("leftIn"), (IOPort)f1.getPort("rightOut"));
         IORelation r6 = (IORelation)univ.connect((IOPort)p2.getPort("leftOut"), (IOPort)f1.getPort("rightIn"));
         IORelation r7 = (IORelation)univ.connect((IOPort)p2.getPort("rightIn"), (IOPort)f2.getPort("leftOut"));
         IORelation r8 = (IORelation)univ.connect((IOPort)p2.getPort("rightOut"), (IOPort)f2.getPort("leftIn"));
-            
+
         IORelation r9  = (IORelation)univ.connect((IOPort)p3.getPort("leftIn"), (IOPort)f2.getPort("rightOut"));
         IORelation r10 = (IORelation)univ.connect((IOPort)p3.getPort("leftOut"), (IOPort)f2.getPort("rightIn"));
         IORelation r11 = (IORelation)univ.connect((IOPort)p3.getPort("rightIn"), (IOPort)f3.getPort("leftOut"));
         IORelation r12 = (IORelation)univ.connect((IOPort)p3.getPort("rightOut"), (IOPort)f3.getPort("leftIn"));
-            
+
         IORelation r13 = (IORelation)univ.connect((IOPort)p4.getPort("leftIn"), (IOPort)f3.getPort("rightOut"));
         IORelation r14 = (IORelation)univ.connect((IOPort)p4.getPort("leftOut"), (IOPort)f3.getPort("rightIn"));
         IORelation r15 = (IORelation)univ.connect((IOPort)p4.getPort("rightIn"), (IOPort)f4.getPort("leftOut"));
         IORelation r16 = (IORelation)univ.connect((IOPort)p4.getPort("rightOut"), (IOPort)f4.getPort("leftIn"));
-            
+
         IORelation r17 = (IORelation)univ.connect((IOPort)p5.getPort("leftIn"), (IOPort)f4.getPort("rightOut"));
         IORelation r18 = (IORelation)univ.connect((IOPort)p5.getPort("leftOut"), (IOPort)f4.getPort("rightIn"));
         IORelation r19 = (IORelation)univ.connect((IOPort)p5.getPort("rightIn"), (IOPort)f5.getPort("leftOut"));
         IORelation r20 = (IORelation)univ.connect((IOPort)p5.getPort("rightOut"), (IOPort)f5.getPort("leftIn"));
-            
+
     } catch (Exception ex) {
         System.err.println("Setup failed: " + ex.getMessage());
         ex.printStackTrace();
@@ -179,8 +179,8 @@ public void init() {
     // Add the listners for the go and stop buttons
     _goButton.addActionListener(new GoButtonListener());
     _stopButton.addActionListener(new StopButtonListener());
-   
-    // Add fields for editing the rate at which the 
+
+    // Add fields for editing the rate at which the
     // philosophers think and eat.
     _eatingRateBox = new TextField("1.0", 10);
     _thinkingRateBox = new TextField("1.0", 10);
@@ -208,7 +208,7 @@ public void init() {
             // Start the CurrentTimeThread.
             ctt = new CurrentTimeThread();
             ctt.start();
-            
+
             // Start the simulation.
             _manager.run();
         } catch (Exception ex) {
@@ -226,13 +226,13 @@ public void init() {
     // The thread that updates the time display
     Thread ctt;
 
-    // The buttons and text fields on the control panel. 
+    // The buttons and text fields on the control panel.
     public Label _currentTimeLabel;
     public Button _goButton;
     public Button _stopButton;
     public TextField _eatingRateBox;
     public TextField _thinkingRateBox;
-  
+
     // the panel containing the animation for the applet.
     public TablePanel _table;
 
@@ -241,11 +241,11 @@ public void init() {
     public CompositeActor univ;
     public CSPDirector _localDirector;
     public Manager _manager;
-   
+
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
 
-    
+
     // Show simulation progress.
     // FIXME: due to an applet bug, these inner classes are public.
     public class CurrentTimeThread extends Thread {
@@ -254,7 +254,7 @@ public void init() {
             while ((simulationThread != null) || simulationThread.isAlive()) {
                 // get the current time from director.
                 double currenttime = _localDirector.getCurrentTime();
-                _currentTimeLabel.setText("Current time = " + 
+                _currentTimeLabel.setText("Current time = " +
                         nf.format(currenttime));
                 try {
                     sleep(100);
@@ -281,7 +281,7 @@ public void init() {
 
         }
     }
- 
+
     public class StopButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
@@ -295,7 +295,7 @@ public void init() {
             }
         }
     }
-    
+
     public class EatingRateListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             Parameter p = (Parameter)univ.getAttribute("eatingRate");
@@ -305,7 +305,7 @@ public void init() {
                 try {
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid eating rate: " + 
+                    System.err.println("Invalid eating rate: " +
                             ex.getMessage() + ", defaulting to 1.0");
                 }
                 p.setToken(new DoubleToken(spec));
@@ -322,7 +322,7 @@ public void init() {
                 try {
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid thinking rate: " + 
+                    System.err.println("Invalid thinking rate: " +
                             ex.getMessage() + ", defaulting to 1.0");
                 }
                 p.setToken(new DoubleToken(spec));

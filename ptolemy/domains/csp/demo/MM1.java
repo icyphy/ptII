@@ -96,7 +96,7 @@ public class MM1 {
             p2.setExpression("bufferDepth");
             Parameter p3 = (Parameter)server.getAttribute("serviceRate");
             p3.setExpression("serviceRate");
-            
+
             IOPort out1 = (IOPort)source.getPort("output");
 	    IOPort in1 = (IOPort)middle.getPort("input");
 	    IOPort out2 = (IOPort)middle.getPort("output");

@@ -35,10 +35,10 @@ import ptolemy.domains.csp.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// BasicDemo
 /**
-This demo illustrates basic rendezvous in the CSP domain. The actors 
-used here could be any polymorphic actors that wish to send and 
-receive. I use the classes below only on an interim basis until the 
-polymorphic libraries issues are fully resolved. the source and sink 
+This demo illustrates basic rendezvous in the CSP domain. The actors
+used here could be any polymorphic actors that wish to send and
+receive. I use the classes below only on an interim basis until the
+polymorphic libraries issues are fully resolved. the source and sink
 fire for a limited number of times after which they terminate.
 <p>
 Source - Sink
@@ -57,9 +57,9 @@ public class BasicDemo {
     ////                         public methods                    ////
 
     /** Construct the topology used in this demo.
-     *  Here a single level of hierarchy is used, with the 
-     *  director controlling the CompositeActor being an 
-     *  instance of CSPDirector. Thus the execution of the model 
+     *  Here a single level of hierarchy is used, with the
+     *  director controlling the CompositeActor being an
+     *  instance of CSPDirector. Thus the execution of the model
      *  follows CSP semantics.
      * @param args the command line arguments.
      */

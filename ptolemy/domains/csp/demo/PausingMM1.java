@@ -37,11 +37,11 @@ import ptolemy.data.expr.Parameter;
 /**
 Customer - Buffer - Server
 <p>
-This demo is similar to the MM1 demo, excpet that immediately after 
-starting the model execution, pause() is called on the CSPDirector. 
-When the model is successfully paused (the pause() method is blocking), 
+This demo is similar to the MM1 demo, excpet that immediately after
+starting the model execution, pause() is called on the CSPDirector.
+When the model is successfully paused (the pause() method is blocking),
 resume() is called to allow the model execution to continue.
-Thus this demo illustrates pausing, as well as time and conditional 
+Thus this demo illustrates pausing, as well as time and conditional
 communication, in the CSP domain.
 <p>
 Customers arrive with a Poisson distribution, i.e. the inter-arrival
@@ -69,12 +69,12 @@ public class PausingMM1 {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct the topology used in this demo. Here the topology 
-     *  consists of a process representing customers arriving, a buffer 
+    /** Construct the topology used in this demo. Here the topology
+     *  consists of a process representing customers arriving, a buffer
      *  process that represents a queue, and a process to represent the server.
-     *  Here a single level of hierarchy is used, with the 
-     *  director controlling the CompositeActor being an 
-     *  instance of CSPDirector. Thus the execution of the model 
+     *  Here a single level of hierarchy is used, with the
+     *  director controlling the CompositeActor being an
+     *  instance of CSPDirector. Thus the execution of the model
      *  follows CSP semantics.
      */
     public static void main(String[] args) {
@@ -109,7 +109,7 @@ public class PausingMM1 {
             p2.setExpression("bufferDepth");
             Parameter p3 = (Parameter)server.getAttribute("serviceRate");
             p3.setExpression("serviceRate");
-            
+
             IOPort out1 = (IOPort)source.getPort("output");
 	    IOPort in1 = (IOPort)middle.getPort("input");
 	    IOPort out2 = (IOPort)middle.getPort("output");
