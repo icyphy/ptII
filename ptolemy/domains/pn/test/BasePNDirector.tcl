@@ -54,9 +54,9 @@ test BasePNDirector-6.1 {Test an application} {
     $b1 setName b1
     set m2 [java::new ptolemy.actor.Manager m2]
     $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.BasePNDirector "D5"]
-    $b1 setDirector $d5
-    set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
+    set d5 [java::new ptolemy.domains.pn.kernel.BasePNDirector $b1 "D5"]
+    #$b1 setDirector $d5
+    set r1 [java::new ptolemy.domains.pn.demo.Prime.PNRamp $b1 r1]
     $r1 setParam "Initial Value"  2
     set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $b1 s1]
     set p1 [$r1 getPort output]

@@ -47,6 +47,8 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+set w [java::new ptolemy.kernel.util.Workspace W]
+set manager [java::new ptolemy.actor.Manager $w M]
 
 
 ######################################################################
@@ -55,23 +57,23 @@ if {[string compare test [info procs test]] == 1} then {
 test BasePNDirector-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.domains.pn.kernel.BasePNDirector]
     $d1 setName D1
-    set d2 [java::new ptolemy.domains.pn.kernel.BasePNDirector D2]
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $w D3]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setName E0
+    set d2 [java::new ptolemy.domains.pn.kernel.BasePNDirector $w]
+    set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 .D2 W.D3}
-
+} {.D1 W. .E0.D3}
+    
 
 ######################################################################
 ####
 #
-##FIXME: Check this for correctness. Should probably include D4
 test BasePNDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
-    set d4 [java::cast ptolemy.domains.pn.kernel.BasePNDirector [$d2 clone $w]]
+    set d4 [java::cast ptolemy.domains.pn.kernel.BasePNDirector [$d3 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D3}
+} {W.M W.}
 
 
 ######################################################################
@@ -81,11 +83,10 @@ test BasePNDirector-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
-    set manager [java::new ptolemy.actor.Manager $w "manager"]
     $e0 setManager $manager
-    $e0 setDirector $d3
+    set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $e0 D3]
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 W.E0}
+} {W.E0.D3 W.D4 {W. W.E0}}
 
 ######################################################################
 ####

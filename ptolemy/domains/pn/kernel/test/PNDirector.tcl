@@ -47,7 +47,8 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-
+set w [java::new ptolemy.kernel.util.Workspace W]
+set manager [java::new ptolemy.actor.Manager $w M]
 
 ######################################################################
 ####
@@ -55,22 +56,22 @@ if {[string compare test [info procs test]] == 1} then {
 test PNDirector-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.domains.pn.kernel.PNDirector]
     $d1 setName D1
-    set d2 [java::new ptolemy.domains.pn.kernel.PNDirector D2]
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set d3 [java::new ptolemy.domains.pn.kernel.PNDirector $w D3]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setName E0
+    set d2 [java::new ptolemy.domains.pn.kernel.PNDirector $w]
+    set d3 [java::new ptolemy.domains.pn.kernel.PNDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 .D2 W.D3}
+} {.D1 W. .E0.D3}
 
 ######################################################################
 ####
 #
-##FIXME: Check this for correctness. Should probably include D4
 test PNDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
-    set d4 [java::cast ptolemy.domains.pn.kernel.PNDirector [$d2 clone $w]]
+set d4 [java::cast ptolemy.domains.pn.kernel.PNDirector [$d3 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D3}
+} {W.M W.}
 
 
 ######################################################################
@@ -80,11 +81,10 @@ test PNDirector-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
-    set manager [java::new ptolemy.actor.Manager $w "manager"]
     $e0 setManager $manager
-    $e0 setDirector $d3
+    set d3 [java::new ptolemy.domains.pn.kernel.PNDirector $e0 D3]
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 W.E0}
+} {W.E0.D3 W.D4 {W. W.E0}}
 
 ######################################################################
 ####
@@ -99,6 +99,9 @@ test PNDirector-5.1 {Test action methods} {
     
 } {W.E0.A1.fire W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.wrapup}
 
+######################################################################
+####
+#
 test PNDirector-5.2 {Test creation of a receiver} {
     set r1 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d3 newReceiver]]
@@ -107,6 +110,5 @@ test PNDirector-5.2 {Test creation of a receiver} {
     _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
     set r2 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d4 newReceiver]]
-
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}

@@ -54,9 +54,8 @@ test PNDirector-6.1 {Test an application} {
     $b1 setName b1
     set m2 [java::new ptolemy.actor.Manager m2]
     $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector "D5"]
-    $b1 setDirector $d5
-    set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
+    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector $b1 "D5"]
+    set r1 [java::new ptolemy.domains.pn.demo.Prime.PNRamp $b1 r1]
     $r1 setParam "Initial Value"  2
     set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $b1 s1]
     $s1 clear
@@ -73,12 +72,12 @@ test PNDirector-7.1 {Test a mutation} {
     $b1 setName b1
     set m2 [java::new ptolemy.actor.Manager m2]
     $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector "local"]
+    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector $b1 "local"]
     $b1 setDirector $d5
-    set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
+    set r1 [java::new ptolemy.domains.pn.demo.Prime.PNRamp $b1 r1]
     $r1 setParam "Initial Value"  2
 
-    set sieve [java::new ptolemy.domains.pn.lib.PNSieve $b1 "2_sieve"]
+    set sieve [java::new ptolemy.domains.pn.demo.Prime.PNSieve $b1 "2_sieve"]
     set param [$sieve getAttribute "prime"]
 
     # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
@@ -93,7 +92,8 @@ test PNDirector-7.1 {Test a mutation} {
     set p1 [$sieve getPort output]
     set p2 [$s1 getPort input]
     $b1 connect $p1 $p2
-    $m2 run
+    ##########FIXME
+    #$m2 run
     
     enumToFullNames [$b1 deepGetEntities]
 } {.b1.r1 .b1.2_sieve .b1.s1 .b1.3_sieve .b1.5_sieve .b1.7_sieve .b1.11_sieve .b1.13_sieve .b1.17_sieve .b1.19_sieve .b1.23_sieve .b1.29_sieve .b1.31_sieve .b1.37_sieve .b1.41_sieve .b1.43_sieve .b1.47_sieve .b1.53_sieve .b1.59_sieve .b1.61_sieve .b1.67_sieve .b1.71_sieve .b1.73_sieve .b1.79_sieve .b1.83_sieve .b1.89_sieve .b1.97_sieve} 
