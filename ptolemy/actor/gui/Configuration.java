@@ -162,10 +162,11 @@ public class Configuration extends CompositeEntity {
             try {
                 createPrimaryTableau(effigy);
             } catch (Exception ex) {
+                // Note that we can't rethrow the exception here because
+                // removing the effigy may result in the application exiting.
+                MessageHandler.error("Attempt to open model from " 
+                        + in + " failed.", ex);
                 effigy.setContainer(null);
-                // Hmm... the following doesn't seem to properly give the
-                // stack trace.
-                throw (Exception)(ex.fillInStackTrace());
             }
         } else {
             // Model already exists.

@@ -115,9 +115,6 @@ public class MoMLApplication {
     public MoMLApplication(String args[]) throws Exception {
 	super();
 
-        // our applications want to display errors graphically.
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
-
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
         // NOTE: This creates the only dependence on Swing in this
@@ -130,6 +127,11 @@ public class MoMLApplication {
         }
 
         _parseArgs(args);
+
+        // Our applications want to display errors graphically.  We do
+        // this after parsing all the args in case we get an error above,
+        // which may cause the exception to not get reported.
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
     }
 
     ///////////////////////////////////////////////////////////////////
