@@ -100,7 +100,7 @@ description.
 @version $Id$
 */
 
-public class NamedObj implements Nameable, Debuggable, 
+public class NamedObj implements Nameable, Debuggable,
                                  Serializable, Cloneable {
 
     /** Construct an object in the default workspace with an empty string
@@ -486,7 +486,7 @@ public class NamedObj implements Nameable, Debuggable,
         exportMoML(output, 0);
     }
 
-    /** Write a MoML description of this entity with the specified 
+    /** Write a MoML description of this entity with the specified
      *  indentation depth.  The description has one of two forms, depending
      *  on whether this is a class or an entity (determined by
      *  getMoMLElement()).  If getMoMLElement() returns "class", then
