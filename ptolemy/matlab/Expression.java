@@ -34,6 +34,7 @@
 
 package ptolemy.matlab;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
@@ -43,6 +44,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.style.CheckBoxStyle;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ScalarToken;
@@ -58,6 +60,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.math.Complex;
 import ptolemy.matlab.Engine;
+import ptolemy.matlab.Engine.ConversionParameters;
 
 import java.util.StringTokenizer;
 import java.util.Iterator;
@@ -67,10 +70,11 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Expression
 /**
-On each firing send an expression for evaluation to a matlab {@link Engine}. The
-expression is any valid matlab expression, e.g.:
+On each firing send an expression for evaluation to a matlab {@link
+Engine}. The expression is any valid matlab expression, e.g.:
+
 <pre>
-    [out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... ); ...
+[out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... );...
 </pre>
 
 The expression may include references to the input port names, current
@@ -92,14 +96,19 @@ method iterates through names of output ports and converts matlab
 variables with corresponding names to Tokens that are sent to the
 corresponding output ports. Incorrect expressions are usually first
 detected at this point by not finding the expected variables. If an
-output port variable is not found in the matlab engine, an exception
-is thrown. The exception description string contains the last stdout
-of the matlab engine that usually describes the error.<p>
+output port variable is not found in the matlab {@link Engine}, an
+exception is thrown. The exception description string contains the last
+stdout of the matlab engine that usually describes the error.<p>
+
+The {@link #get1x1asScalars} and {@link #getIntegerMatrices} control
+data conversion (see {@link Engine} and
+{@link Engine.ConversionParameters}).<p>
 
 A Parameter named <i>packageDirectories</i> may be added to this actor
 to augment the matlab engine's search path during the firing of this
 actor. The value of this parameter should evaluate to a StringToken,
 e.g.:
+
 <pre>
     "path1,path2,..."
 </pre>
@@ -138,6 +147,19 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringAttribute(this, "expression");
+
+        _dataParameters = new Engine.ConversionParameters();
+
+        get1x1asScalars = new Parameter
+            (this, "get1x1asScalars",
+             new BooleanToken(_dataParameters.getScalarMatrices));
+        new CheckBoxStyle(get1x1asScalars, "style");
+
+        getIntegerMatrices = new Parameter
+            (this, "getIntegerMatrices",
+             new BooleanToken(_dataParameters.getIntMatrices));
+        new CheckBoxStyle(getIntegerMatrices, "style");
+
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
 
@@ -155,6 +177,7 @@ public class Expression extends TypedAtomicActor {
 	         + "the bin/win32 directory under the Matlab directory."
 					     );
 	}
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -168,6 +191,16 @@ public class Expression extends TypedAtomicActor {
      *  the inputs.
      */
     public StringAttribute expression;
+
+    /** If true (checked), 1x1 matrix results are converted to
+        ScalarTokens instead of a 1x1 MatrixToken, default is
+        <i>true</i>. */
+    public Parameter get1x1asScalars;
+
+    /** If true, all double-valued matrix results are checked to see if
+    all elements represent integers, and if so, an IntMatrixToken is
+    returned, default is <i>false</i> for performance reasons. */
+    public Parameter getIntegerMatrices;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -183,7 +216,9 @@ public class Expression extends TypedAtomicActor {
     public Object clone(Workspace workspace)
  	    throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
-        newObject._iteration = (Variable)newObject.getAttribute("iteration");
+        newObject._iteration =
+            (Variable)newObject.getAttribute("iteration");
+        newObject.engine = null;
         return newObject;
     }
 
@@ -258,6 +293,25 @@ public class Expression extends TypedAtomicActor {
                 }
             }
         }
+        _dataParameters.getScalarMatrices =
+            ((BooleanToken)get1x1asScalars.getToken()).booleanValue();
+        _dataParameters.getIntMatrices =
+            ((BooleanToken)getIntegerMatrices.getToken()).booleanValue();
+    }
+
+    /** Return true if all input ports have at least one token.
+     *  @return True if this actor is ready for firing, false otherwise.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort)(inputPorts.next());
+            if (!port.hasToken(0)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Evaluate the expression and send its result to the output.
@@ -289,10 +343,7 @@ public class Expression extends TypedAtomicActor {
                 Iterator inputPorts = inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)(inputPorts.next());
-                    // FIXME: Handle multiports
-                    if (port.getWidth() > 0 && port.hasToken(0)) {
-                        matlabEngine.put(engine, port.getName(), port.get(0));
-                    }
+                    matlabEngine.put(engine, port.getName(), port.get(0));
                 }
                 status = matlabEngine.evalString
                     (engine, expression.getExpression());
@@ -301,7 +352,8 @@ public class Expression extends TypedAtomicActor {
                     IOPort port = (IOPort)(outputPorts.next());
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {
-                        port.send(0, matlabEngine.get(engine, port.getName()));
+                        port.send(0, matlabEngine.get
+                                  (engine, port.getName(), _dataParameters));
                     }
                 }
                 // Restore previous path if path was modified above
@@ -341,4 +393,5 @@ public class Expression extends TypedAtomicActor {
     private int _iterationCount = 1;
     private String _addPathCommand = null;
     private Token _previousPath = null;
+    private ConversionParameters _dataParameters;
 }

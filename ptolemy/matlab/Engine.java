@@ -42,6 +42,7 @@ import ptolemy.data.ComplexToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.ComplexMatrixToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.IntMatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.ArrayToken;
@@ -50,98 +51,121 @@ import ptolemy.math.ComplexMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// Engine
-
-// NOTE: PLEASE DO NOT remove the leading '*'s from this javadoc...
-// javadoc screws up the formatting of the tables for some reason
-// if the lines are all left aligned without '*'s. (Next time we'll
-// have to switch to html tables... :-)
 /**
- * Provides a java API to the matlab environment. It uses an
- * intermediary C++ language layer (ptmatlab) that converts between
- * the java environment using the Java Native Interface and the matlab
- * environment using the matlab engine API and associated
- * mx-functions.<p>
- *
- * The intermediary layer is built as a DLL on Windows systems
- * (ptmatlab.dll).  This shared library is placed into the $PTII/bin
- * directory (that should be in the user's path) when this package is
- * built. Ptmatlab depends on matlab's engine API shared libraries
- * (libeng and libmx) that should also be installed in the user's path
- * (usually the case when matlab is installed and matlab's bin
- * directory is added to the path).<p>
- *
- * The bulk of the work done by this class is the conversion between
- * PtolemyII Tokens and matlab variables ("mxArrays").<p>
- *
- * {@link #get(long[] eng, String name)} converts a matlab engine mxArray (ma)
- * variable to a Ptolemy II Token. Recursion is used if ma is a struct
- * or cell.  The type of the Token returned is determined according to
- * the following table:
- * <pre>
- *     Matlab Type              PtolemyII Token
- *     ------------------------------------------------------------------
- *     'double'                 Double, if mxArray dimension is 1x1,
- *                              DoubleMatrix otherwise.
- *                              Complex, if mxArray is mxCOMPLEX and 1x1,
- *                              ComplexMatrix otherwise.
- *     'struct'                 RecordToken, if mxArray dimension 1x1,
- *                              ArrayToken of ArrayTokens of RecordTokens
- *                              {{RecordToken,...},{...}}  otherwise.
- *     'cell'                   ArrayToken of whatever Tokens the cell
- *                              elements resolve to through recursion
- *                              of _convertMxArrayToToken(). Note that
- *                              PtolemyII is more restrictive here in that
- *                              it requires all array elements to be of
- *                              the same type (not all matlab cell variables
- *                              may be converted to PtolemyII ArrayTokens).
- *     'char'                   StringToken, if the mxArray is 1xn,
- *                              ArrayToken of StringTokens otherwise.
- *     ------------------------------------------------------------------
- * </pre>
- * <p>
- *
+Provides a java API to the matlab environment. It uses an intermediary
+C++ language layer (ptmatlab) that converts between the java environment
+using the Java Native Interface and the matlab environment using the
+matlab engine API and associated mx-functions.<p>
 
- * {@link #put(long[] eng, String name, Token t)} converts a PtolemyII
- * Token to a matlab engine mxArray. Recursion is used if t is a
- * RecordToken or ArrayToken.
- * The type of mxArray created is determined according to the following table:
- * <pre>
- *     PtolemyII Token          Matlab type
- *     ------------------------------------------------------------------
- *     ArrayToken               'cell', 1xn, elements are determined by
- *                              recursing this method on ArrayToken
- *                              elements.
- *     RecordToken              'struct', 1x1, fields are determined by
- *                              recursing this method on RecordToken
- *                              fields
- *     StringToken              'char', 1xn
- *     ComplexMatrixToken       'double', mxCOMPLEX, nxm
- *     MatrixToken              'double', mxREAL, nxm
- *     ComplexToken             'double', mxCOMPLEX, 1x1
- *     ScalarToken              'double', mxREAL, 1x1
- *     ------------------------------------------------------------------
- * </pre>
- * <p>
- * Debug statements to stdout are enabled by calling {@link
- * #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
- * 2 includes traces from the dll as well.<p>
- *
- * {@link #evalString(long[] eng, String)} send a string to the matlab
- * engine for evaluation.<p>
- *
- * {@link #open} and {@link #close} are used to open / close the
- * connection to the matlab engine.<p>
- *
- * All callers share the same matlab engine and its workspace. Engine's methods
- * synchronize on the static {@link #semaphore} to prevent
- * overlapping calls to the same method from different threads. Use
- * Engine.{@link #semaphore} to synchronize across multiple method calls
- * if needed.<p>
- *
- * @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
- * @version $Id$
- * @since Ptolemy II 2.0
- */
+The intermediary layer is built as a DLL on Windows systems
+(ptmatlab.dll).  This shared library is placed into the $PTII/bin
+directory (that should be in the user's path) when this package is
+built. Ptmatlab depends on matlab's engine API shared libraries (libeng
+and libmx) that should also be installed in the user's path (usually the
+case when matlab is installed and matlab's bin directory is added to the
+path).<p>
+
+The bulk of the work done by this class is the conversion between
+ PtolemyII Tokens and matlab variables ("mxArrays").<p>
+
+{@link #get(long[] eng, String name)} and
+{@link ptolemy.matlab.Engine#get(long[], String,
+Engine.ConversionParameters)} convert a matlab engine mxArray
+(ma) variable to a Ptolemy II Token. Recursion is used if ma is a struct
+or cell. The type of the Token returned is determined according to
+the following table:
+
+<table border="1">
+<caption><em>Conversion from matlab to PtolemyII types (get())
+</em></caption>
+<tr><th>Matlab Type<th>PtolemyII Token
+<tr>
+<td>'double'
+<td>Double, if mxArray dimension is 1x1 and
+{@link Engine.ConversionParameters#getScalarMatrices} is true,
+DoubleMatrix otherwise.
+Complex, if mxArray is mxCOMPLEX, 1x1, and
+{@link Engine.ConversionParameters#getScalarMatrices} is true,
+ComplexMatrix otherwise.<br>
+<em>Note:</em>
+If{@link Engine.ConversionParameters#getIntMatrices} is true and
+all matrix double values can be cast to integers without loss of
+precision then an IntToken or IntTokenMatrix is returned.
+<tr>
+<td>'struct'
+<td>RecordToken, if mxArray dimension 1x1, ArrayToken of ArrayTokens
+of RecordTokens {{RecordToken,...},{...}} ("two-dimensional" ArrayToken)
+otherwise.
+<tr>
+<td>'cell'
+<td>ArrayToken of whatever Tokens the cell elements resolve to through
+recursion of _convertMxArrayToToken(). In the special case of a cell
+array of doubles, an {int} is always returned if all cell double
+values can be losslessly converted to integers.
+Note that PtolemyII is more
+restrictive here in that it requires all array elements to be of the
+same type (not all matlab cell variables may be converted to PtolemyII
+ArrayTokens).
+<tr>
+<td>'char'
+<td>StringToken, if the mxArray is 1xn,ArrayToken of StringTokens
+otherwise.
+</table>
+<p>
+{@link #put(long[] eng, String name, Token t)} converts a PtolemyII
+Token to a matlab engine mxArray. Recursion is used if t is a
+RecordToken or ArrayToken. The type of mxArray created is determined
+according to the following table.
+
+<table border="1">
+<caption><em>Conversion from PtolemyII to matlab types (put())
+</em></caption>
+<tr><th>PtolemyII Token<th>Matlab type
+<tr>
+<td>ArrayToken
+<td>'cell', 1xn, elements are determined by recursing this method
+on ArrayToken elements.
+<tr>
+<td>RecordToken
+<td>'struct', 1x1, fields are determined by recursing this method on
+RecordToken fields
+<tr>
+<td>StringToken
+<td>'char', 1xn
+<tr>
+<td>ComplexMatrixToken
+<td>'double', mxCOMPLEX, nxm
+<tr>
+<td>MatrixToken
+<td>'double', mxREAL, nxm
+<tr>
+<td>ComplexToken
+<td>'double', mxCOMPLEX, 1x1
+<tr>
+<td>ScalarToken
+<td>'double', mxREAL, 1x1
+</table>
+<p>
+Debug statements to stdout are enabled by calling {@link
+#setDebugging} with a byte parameter > 0. 1 enables basic tracing,
+2 includes traces from the dll as well.<p>
+
+{@link #evalString(long[] eng, String)} send a string to the matlab
+engine for evaluation.<p>
+
+{@link #open} and {@link #close} are used to open / close the
+connection to the matlab engine.<p>
+
+All callers share the same matlab engine and its workspace.
+Engine's methods synchronize on the static {@link #semaphore} to
+prevent overlapping calls to the same method from different threads.
+Use Engine.{@link #semaphore} to synchronize across multiple method
+calls if needed.<p>
+
+@author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
+@version $Id$
+@since Ptolemy II 2.0
+*/
 public class Engine {
     /** Load the "ptmatlab" native interface. */
     static {
@@ -151,19 +175,28 @@ public class Engine {
     /** Output buffer (allocated for each opened instance) size. */
     static int engOutputBufferSize = 2048;
 
-    /** Counts the number of (this) instances using eng. */
-    static int engUserCount = 0;
-
     /** Used for Synchronization */
-    // semaphore is public so that javadoc works.
     public static Integer semaphore = new Integer(0);
+    // semaphore is public so that javadoc works.
+
+    /** Data conversion parameters used by {@link
+     * ptolemy.matlab.Engine#get(long[], String,
+     * Engine.ConversionParameters)}. */
+    public static class ConversionParameters {
+        /** If true (default), 1x1 matrices are returned as
+         * appropriate ScalarToken.*/
+        public boolean getScalarMatrices = true;
+        /** If true, double matrices where all elements represent
+         * integers are returned as IntMatrixTokens (default false).*/
+        public boolean getIntMatrices = false;
+    }
 
     /** Construct an instance of the matlab engine interface.
      * The matlab engine is not activated at this time.
      * <p>
      * Ptmatlab.dll is loaded by the system library loader the
      * first time this class is loaded.
-     * @see #open().
+     * @see #open()
      */
     public Engine() {
         debug = 0;
@@ -177,28 +210,40 @@ public class Engine {
     }
 
     /** Open a connection to the default matlab engine installed on
-     * this host.
-     * @see #open(String) below.
+     * this host with its output buffered.
+     * @see #open(String,boolean)
      */
     public long[] open() throws IllegalActionException {
-        return open(null);              // Use default invocation, no
+        return open(null,true);         // Use default invocation, with
                                         // output buffering
     }
 
-    /** Open a connection to a matlab engine.  Currently all matlab
-     * Engine interface (this class) instances use the same matlab
-     * engine instance.  A handle to this engine is saved in the "eng"
-     * static member of this class, and a usage count ("engUserCount")
-     * is maintained.
+    /** Open a connection to the default matlab engine installed on
+     * this host with specified output buffering.
+     * @param needOutput selects whether the output should be buffered
+     * or not.
+     * @see #open(String,boolean)
+     */
+    public long[] open(boolean needOutput) throws IllegalActionException {
+        return open(null,needOutput);   // Use default invocation
+                                        // output buffering
+    }
+
+    /** Open a connection to a matlab engine.<p>
+     * For more information, see the matlab engine API reference engOpen()
      * @param startCmd hostname or command to use to start the engine.
+     * @return long[2] retval engine handle; retval[0] is the real
+     * engine handle, retval[1] is a pointer to the engine output
+     * buffer; both should be preserved and passed to subsequent engine
+     * calls.
      * @exception IllegalActionException If the matlab engine open is
      * unsuccessful.  This will typically occur if ptmatlab (.dll)
      * cannot be located or if the matlab bin directory is not in the
      * path.
-     * <p>
-     * For more information, see matlab engine API reference engOpen()
+     * @see #getOutput(long[])
      */
-    public long[] open(String startCmd) throws IllegalActionException {
+    public long[] open(String startCmd, boolean needOutput)
+        throws IllegalActionException {
         long[] retval = new long[2];
         synchronized(semaphore) {
             retval[0] = ptmatlabEngOpen(startCmd);
@@ -208,8 +253,11 @@ public class Engine {
                         + ") : can't find matlab"
                         + "engine.");
             }
-            retval[1] = ptmatlabEngOutputBuffer
-                (retval[0], engOutputBufferSize);
+            if (needOutput) {
+                retval[1] = ptmatlabEngOutputBuffer
+                    (retval[0], engOutputBufferSize);
+            } // else retval[1] = 0;
+
             if (debug > 0) {
                 System.out.println(retval[0]+" = matlabEngine.open(\""+
                                    startCmd+"\")");
@@ -259,15 +307,30 @@ public class Engine {
 	return retval;
     }
 
-    /** Return a Token from the matlab engine.
+    /** Return a Token from the matlab engine using default
+     * {@link Engine.ConversionParameters} values.
      * @param name Matlab variable name used to initialize the returned Token
      * @return PtolemyII Token.
      * @exception IllegalActionException If the matlab engine is not opened, or
      * if the matlab variable was not found in the engine. In this case, the
      * matlab engine's stdout is included in the exception message.
-     * @see Engine
+     * @see Expression
      */
     public Token get(long[] eng, String name) throws IllegalActionException {
+        return get(eng, name, new ConversionParameters());
+    }
+
+    /** Return a Token from the matlab engine using specified
+     * {@link Engine.ConversionParameters} values.
+     * @param name Matlab variable name used to initialize the returned Token
+     * @return PtolemyII Token.
+     * @exception IllegalActionException If the matlab engine is not opened, or
+     * if the matlab variable was not found in the engine. In this case, the
+     * matlab engine's stdout is included in the exception message.
+     * @see Expression
+     */
+    public Token get(long[] eng, String name, ConversionParameters par)
+        throws IllegalActionException {
         Token retval = null;
         synchronized(semaphore) {
             if (eng == null || eng[0] == 0) {
@@ -282,7 +345,7 @@ public class Engine {
                         + name + "\"\n"
                         + getOutput(eng).stringValue());
             }
-            retval = _convertMxArrayToToken(ma);
+            retval = _convertMxArrayToToken(ma, par);
             ptmatlabDestroy(ma, name);
             if (debug > 0) {
                 System.out.println("matlabEngine.get(" + name + ") = "
@@ -292,7 +355,7 @@ public class Engine {
         return retval;
     }
 
-    /** Get last matlab stdout
+    /** Get last matlab stdout.
      * @return PtolemyII StringToken
      */
     public StringToken getOutput(long[] eng) {
@@ -395,13 +458,15 @@ public class Engine {
     // an ArrayToken to be created are of the same type.
     // @see Engine
 
-    private Token _convertMxArrayToToken(long ma)
+    private Token _convertMxArrayToToken(long ma, ConversionParameters par)
 	throws IllegalActionException {
         String maClassStr = ptmatlabGetClassName(ma);
         int[] dims = ptmatlabGetDimensions(ma);
         int nRows = dims[0];
         int nCols = dims[1];
-        boolean scalar = nCols == 1 && nRows == 1;
+        boolean scalarStructs = nCols == 1 && nRows == 1;
+        boolean scalarMatrices = nCols == 1 && nRows == 1 &&
+            par.getScalarMatrices;
         Token retval = null;
         if (maClassStr.equals("double")) {
             if (ptmatlabIsComplex(ma)) {
@@ -411,7 +476,7 @@ public class Engine {
 						     + "matrix from matlab "
 						     + "engine.");
 		}
-		if (scalar) {
+		if (scalarMatrices) {
 		    retval = new ComplexToken(a[0][0]);
                 } else {
 		    retval = new ComplexMatrixToken(a);
@@ -423,15 +488,26 @@ public class Engine {
 						     + "matrix from matlab "
 						     + "engine.");
 		}
-		if (scalar) {
+		if (scalarMatrices) {
                     double tmp = a[0][0];
-                    if (tmp == Math.floor(tmp)
-                            && Math.abs(tmp) <= Integer.MAX_VALUE)
+                    if (_doubleisInteger(tmp))
                         retval = new IntToken((int)tmp);
                     else
                         retval = new DoubleToken(tmp);
                 } else {
-		    retval = new DoubleMatrixToken(a);
+                    boolean allIntegers = par.getIntMatrices;
+                    for (int i = 0; allIntegers && i < a.length; i++)
+                        for (int j = 0; allIntegers && j < a[0].length; j++)
+                            allIntegers &= _doubleisInteger(a[i][j]);
+                    if (allIntegers) {
+                        int[][] tmp = new int[a.length][a[0].length];
+                        for (int i = 0; i < a.length; i++)
+                            for (int j = 0; j < a[0].length; j++)
+                                tmp[i][j] = (int)a[i][j];
+                        retval = new IntMatrixToken(tmp);
+                    } else {
+                        retval = new DoubleMatrixToken(a);
+                    }
 		}
             }
         } else if (maClassStr.equals("struct")) {
@@ -448,7 +524,7 @@ public class Engine {
                     for (int k = 0; k < nfields; k++) {
                         long fma = ptmatlabGetFieldByNumber(ma, k, n, m);
                         if (fma != 0) {
-                            fieldValues[k] = _convertMxArrayToToken(fma);
+                            fieldValues[k] = _convertMxArrayToToken(fma, par);
                         } else {
                             throw new IllegalActionException("can't get field "
                                     + fieldNames[k]
@@ -458,11 +534,11 @@ public class Engine {
                                     + nCols);
                         }
                     }
-                    ta[m] = new RecordToken(fieldNames, fieldValues);
+                    ta[m] = new RecordToken(fieldNames,fieldValues);
                 }
                 tr[n] = new ArrayToken(ta);
             }
-            if (scalar) {
+            if (scalarStructs) {
                 retval = ((ArrayToken)tr[0]).getElement(0);
             } else {
                 retval = new ArrayToken(tr);
@@ -471,19 +547,30 @@ public class Engine {
             Token[] ta = new Token[nCols];
             Token[] tr = new Token[nRows];
             for (int n = 0; n < nRows; n++) {
+                boolean anyIntegers = false;
+                boolean anyDoubles = false;
                 for (int m = 0; m < nCols; m++) {
                     long cma = ptmatlabGetCell(ma, n, m);
                     if (cma != 0) {
-                        ta[m] = _convertMxArrayToToken(cma);
+                        ta[m] = _convertMxArrayToToken(cma, par);
+                        // Track whether we get mixed types back
+                        if (ta[m] instanceof IntToken)
+                            anyIntegers = true;
+                        else if (ta[m] instanceof DoubleToken)
+                            anyDoubles = true;
                     } // else - throw exception?
+                }
+                if (anyIntegers && anyDoubles) {
+                    for (int m = 0; m < ta.length; m++)
+                        if (ta[m] instanceof IntToken)
+                            ta[m] = (DoubleToken)DoubleToken
+                                .convert(ta[m]);
                 }
                 tr[n] = new ArrayToken(ta);
                 // If not all tokens are of the same, this will throw
 		// an exception.
             }
-            if (scalar) {
-                retval = ((ArrayToken)tr[0]).getElement(0);
-            } else if (nRows == 1) {
+            if (nRows == 1) {
                 retval = tr[0];
             } else {
                 retval = new ArrayToken(tr);
@@ -499,9 +586,9 @@ public class Engine {
                 retval = new ArrayToken(ta);
             }
         } else {
-            throw new IllegalActionException("no support for mxArray class "
-					     + maClassStr + " " + dims[0]
-					     + " x " + dims[1]);
+            throw new IllegalActionException
+                ("no support for mxArray class " + maClassStr +
+                 " " + dims[0] + " x " + dims[1]);
         }
         return retval;
     }
@@ -522,17 +609,15 @@ public class Engine {
             if (!(ta[0] instanceof StringToken)) {
                 ma = ptmatlabCreateCellMatrix(name, 1, ta.length);
                 if (ma == 0) {
-		    throw new IllegalActionException("couldn't create cell "
-						     + "array "+name);
+		    throw new IllegalActionException
+                        ("couldn't create cell " + "array "+name);
 		}
                 for (int n = 0; n < ta.length; n++) {
                     long fma = _createMxArray("("+n+")", ta[n]);
                     if (fma == 0) {
-			throw new IllegalActionException("couldn't create "
-							 + "array for index "
-							 + n
-							 + " in cell array "
-							 + name);
+			throw new IllegalActionException
+                            ("couldn't create array for index " + n
+                             + " in cell array " + name);
 		    }
                     ptmatlabSetCell(name, ma, 0, n, fma);
                 }
@@ -555,10 +640,9 @@ public class Engine {
                 Token f = ((RecordToken)t).get((String)fieldNames[n]);
                 long fma = _createMxArray((String)fieldNames[n], f);
                 if (fma == 0) {
-		    throw new IllegalActionException("couldn't create array "
-						     + "for field "
-						     + fieldNames[n]
-						     + " in struct " + name);
+		    throw new IllegalActionException
+                        ("couldn't create array for field "
+                         + fieldNames[n] + " in struct " + name);
 		}
                 ptmatlabSetStructField(name, ma, (String)fieldNames[n],
 				       0, 0, fma );
@@ -588,6 +672,11 @@ public class Engine {
 					     + name);
 	}
         return ma;
+    }
+
+    private boolean _doubleisInteger(double d) {
+        return d == Math.floor(d) && d <= Integer.MAX_VALUE &&
+            d >= Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
