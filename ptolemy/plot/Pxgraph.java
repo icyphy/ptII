@@ -649,13 +649,13 @@ public class Pxgraph extends Frame {
         int i;
         System.out.println("Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]");
         System.out.println(" options that take values as second args:");
-        for(i=0; i < commandOptions.length; i++) {
+        for(i = 0; i < commandOptions.length; i++) {
             System.out.println(" " + commandOptions[i][0] +
                     " " + commandOptions[i][1] +
                     " " + commandOptions[i][4] );
         }
         System.out.println(" Boolean flags:");
-        for(i=0; i < commandFlags.length; i++) {
+        for(i = 0; i < commandFlags.length; i++) {
             System.out.println(" " + commandFlags[i][0] +
                     " " + commandFlags[i][2]);
         }
@@ -705,7 +705,7 @@ public class Pxgraph extends Frame {
                     "<param name=\"pxgraphargs\" value=\"");
 
         if (_cmdLineArgs.length > 0) {
-            for(int i=0;i<(_cmdLineArgs.length - 1);i++) {
+            for(int i = 0; i < (_cmdLineArgs.length - 1); i++) {
                 // FIXME: we are not checking for args that contain
                 // single or double quotes.
                 if (_cmdLineArgs[i].indexOf(" ") != -1) {
