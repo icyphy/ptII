@@ -29,7 +29,7 @@
 #                                               PT_COPYRIGHT_VERSION_2
 #                                               COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/actor/lib/security
+ME =            ptolemy/actor/lib/security
 
 DIRS =		    
 
