@@ -729,7 +729,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // director, reset the _enabledTransition to null.
             if ((getExecutionPhase() == 
                     CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) 
-                    || executiveDirector == null)  {
+                    || getEnclosingCTGeneralDirector() == null)  {
                 // Only clear the cached enabled transition at the 
                 // updating continuous states phase. This guarantees that
                 // only one transition is taken in an iteration of discrete
