@@ -1281,10 +1281,39 @@ public class CTScheduler extends Scheduler {
             while (connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort) connectedPorts.next();
 
-                //System.out.println("Propagate type from port "
-                //    + port.getFullName() + " to port "
-                //    + nextPort.getFullName());
                 if (!_map.containsKey(nextPort)) {
+                    // check whether the nextPort has a parameter setting 
+                    // its signal type. compare it with the propagateType 
+                    // to see whether type conflict happens.
+                    Parameter signalType = 
+                        (Parameter) nextPort.getAttribute("signalType");
+                    String configuredType;
+                    if (signalType != null) {
+                        try {
+                            configuredType = 
+                                ((StringToken)signalType.getToken()).stringValue();
+                            configuredType = configuredType.trim().toUpperCase();
+                            String propagateType = 
+                                signalTypeToString(getType(port));
+                            if ((configuredType.compareToIgnoreCase("UNKNOWN") != 0) 
+                                && 
+                                (propagateType.compareToIgnoreCase(configuredType) 
+                                    != 0)) {
+                                throw new NotSchedulableException(
+                                        "Signal type conflict: "
+                                        + port.getFullName() + " (of type "
+                                        + configuredType + ") and "
+                                        + nextPort.getFullName() + " (of type "
+                                        + propagateType + ")"
+                                        + "). Perhaps the connection has "
+                                        + "sequence semantics?");
+                            }
+                        } catch (IllegalActionException e) {
+                            throw new NotSchedulableException("The signal" +
+                                    " type parameter does not contain a valid" +
+                                    " value.");
+                        }
+                    }                    
                     setType(nextPort, getType(port));
                 } else if (getType(port) != getType(nextPort)) {
                     throw new NotSchedulableException("Signal type conflict: "
