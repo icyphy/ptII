@@ -1260,6 +1260,60 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     list $sched1 $sched2
 } {{{Ramp Cont Consumer}} Delay}
 
+test SDFScheduler-13.5 {buffersize annotation} {
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Toplevel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    </property>
+    <entity name="Ramp" class="ptolemy.domains.sdf.kernel.test.SDFTestRamp">
+    </entity>
+    <entity name="Cont" class="ptolemy.actor.TypedCompositeActor">
+        <property name="d5" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        </property>
+        <port name="p1" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="input"/>
+        </port>
+        <port name="p2" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="output"/>
+        </port>
+        <entity name="Delay" class="ptolemy.domains.sdf.kernel.test.SDFTestDelay">
+        </entity>
+        <relation name="R2" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </relation>
+        <relation name="R3" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </relation>
+        <link port="p1" relation="R2"/>
+        <link port="p2" relation="R3"/>
+        <link port="Delay.input" relation="R2"/>
+        <link port="Delay.output" relation="R3"/>
+    </entity>
+    <entity name="Consumer" class="ptolemy.domains.sdf.kernel.test.SDFTestConsumer">
+    </entity>
+    <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="R4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="R1"/>
+    <link port="Cont.p1" relation="R1"/>
+    <link port="Cont.p2" relation="R4"/>
+    <link port="Consumer.input" relation="R4"/>
+</entity>
+}
 
 
 
@@ -1352,3 +1406,4 @@ test SDFScheduler-14.4 {Multirate Scheduling tests} {
     [java::field $a4 input] setMultiport false
     list $sched1
 } {{{Delay3 Delay4 Delay5 Consumer}}}
+

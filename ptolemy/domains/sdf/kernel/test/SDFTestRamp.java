@@ -45,7 +45,7 @@ will create the proper number of tokens with every firing.
 @author Steve Neuendorffer
 */
 public class SDFTestRamp extends TypedAtomicActor {
-    public SDFTestRamp(TypedCompositeActor container, String name)
+    public SDFTestRamp(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new SDFIOPort(this, "output", false, true);

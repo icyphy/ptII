@@ -47,7 +47,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 public class SDFTestJoin extends TypedAtomicActor {
 
-    public SDFTestJoin(TypedCompositeActor container, String name)
+    public SDFTestJoin(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input1 = new SDFIOPort(this,"input1", true, false);

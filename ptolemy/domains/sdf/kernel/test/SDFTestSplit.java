@@ -33,8 +33,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import java.util.Enumeration;import ptolemy.domains.sdf.kernel.*;
 
 /**
  * This actor deterministically splits its input token stream into two
@@ -43,7 +42,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @version $Id$
  */
 public class SDFTestSplit extends TypedAtomicActor {
-    public SDFTestSplit(TypedCompositeActor container, String name)
+    public SDFTestSplit(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new SDFIOPort(this, "input", true, false);

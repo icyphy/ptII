@@ -59,7 +59,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * @exception IllegalActionException If the contained methods throw it
      * @exception NameDuplicationException If the contained methods throw it
      */
-    public SDFTestDelay(TypedCompositeActor container, String name)
+    public SDFTestDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling TypedAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
