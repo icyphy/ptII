@@ -607,13 +607,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    //FIXME: Destroy input variables.
     public void wrapup() throws IllegalActionException {
-        //Iterator inputPorts = inputPortList().iterator();
-        //while (inputPorts.hasNext()) {
-        //    TypedIOPort inport = (TypedIOPort)inputPorts.next();
-        //    _removeInputVariables(inport);
-        //}
     }
 
     ///////////////////////////////////////////////////////////////////
