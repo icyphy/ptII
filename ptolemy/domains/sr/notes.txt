@@ -1,5 +1,5 @@
 
-check in:
+checked in:
 
 ptolemy/actor/AbstractReceiver.java (removed exception from setAbsent())
 ptolemy/actor/Receiver.java (removed exception from setAbsent())
