@@ -427,6 +427,40 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 #####################################################################
 
 #--------------------------------------------------------------------
+#       The CaffeineMark Kit is a Java benchmark kit
+#	that is used by C code generation
+#       See http://www-sor.inria.fr/~java/tools/cmkit
+#--------------------------------------------------------------------
+
+# Directory that contains the CaffeineMark Java Benchmark kit
+# used by C code generation in copernicus/c
+CMKIT_DIR='${PTII}/vendors/cm'
+
+# We only need to look for cm if $PTII/ptolemy/copernicus/c exists
+if test ! -d "$PTII/ptolemy/copernicus/c"; then
+    AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
+	so we need not find the CaffeineMark Kit.])
+else
+    AC_MSG_CHECKING([for CaffeineMarkEmbeddedApp.class])
+    AC_ARG_WITH(jhdl_jar, [  --with-cmkit=DIR       use CaffeineMark from DIR,
+                          defaults to \$PTII/vendors/cm],
+	CMKIT_DIR=$withval,
+	CMKIT_DIR=$PTII/vendors/cm)
+
+    if test -f "$CMKIT_DIR/CaffeineMarkEmbeddedApp.class"; then
+	AC_MSG_RESULT([$CMKIT_DIR])
+    else
+        AC_MSG_WARN([Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
+    perhaps CaffeineMark is not installed?
+    You need not download CaffeineMark unless you plan on using C code
+    generation.  The CaffeineMark kit can be downloaded from
+    http://www-sor.inria.fr/~java/tools/cmkit/embed.zip])
+	# Note that we don't substitute in the ${PTII} here
+	CMKIT_DIR='${PTII}/vendors/cm'
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
 #	http://java.sun.com/products/javacomm/
 #	See if there was a command-line option for commapi is
@@ -1654,6 +1688,10 @@ fi
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
+
+# Directory that contains the CaffeineMark Java Benchmark kit
+# used by C code generation in copernicus/c
+AC_SUBST(CMKIT_DIR)
 
 # Directory that contains the Java Serial Comm API
 AC_SUBST(COMMAPI_DIR)
