@@ -125,7 +125,7 @@ public class FirstOrderHold extends Transformer
             if((input.hasToken(0) && (!derivative.hasToken(0))) ||
                     !input.hasToken(0) && derivative.hasToken(0)) {
                 throw new IllegalActionException(this,
-                        " No synronized inputs.");
+                        " No synchronized inputs.");
             }
             if(input.hasToken(0) && derivative.hasToken(0)) {
                 _value = ((DoubleToken)input.get(0)).doubleValue();

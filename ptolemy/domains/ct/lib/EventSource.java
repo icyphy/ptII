@@ -1,4 +1,4 @@
-/* Generate discrete events at prespecified time intants.
+/* Generate discrete events at prespecified time instants.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
