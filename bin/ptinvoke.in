@@ -294,11 +294,6 @@ fi
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
 case "${OSTYPE-no}" in
-    [Ll]inux)
-    if [ "${JAVA_HOME-no}" != "no" ]; then
-	JAVAHOME="$JAVA_HOME"
-	export JAVAHOME
-    fi;;
 # Cygwin Bash
     cygwin*)
 	windows=yes;;
