@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import collections.LinkedList;
 import java.util.Enumeration;
@@ -61,9 +62,9 @@ public class DEChannel extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
-        output.setTypeEquals(IntToken.class);
+        output.setTypeEquals(BaseType.INT);
         input = new DEIOPort(this, "input", true, false);
-        input.setTypeEquals(IntToken.class);
+        input.setTypeEquals(BaseType.INT);
         input.delayTo(output);
         _dropRate = new Parameter(this, "DropRate", new DoubleToken(dropRate));
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));

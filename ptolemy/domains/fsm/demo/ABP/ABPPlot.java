@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
 import java.awt.*;
@@ -73,7 +74,7 @@ public class ABPPlot extends DEActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
         input.setMultiport(true);
 
         _plot = plot;

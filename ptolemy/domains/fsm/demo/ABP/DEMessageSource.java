@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
@@ -60,11 +61,11 @@ public class DEMessageSource extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
-        output.setTypeEquals(IntToken.class);
+        output.setTypeEquals(BaseType.INT);
         request = new DEIOPort(this, "request", false, true);
-        request.setTypeEquals(Token.class);
+        request.setTypeEquals(BaseType.GENERAL);
         next = new DEIOPort(this, "next", true, false);
-        next.setTypeEquals(Token.class);
+        next.setTypeEquals(BaseType.GENERAL);
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
         next.delayTo(request);
         next.delayTo(output);

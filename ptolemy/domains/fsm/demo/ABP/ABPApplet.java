@@ -37,6 +37,7 @@ import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
 import java.util.Enumeration;
@@ -181,31 +182,31 @@ public class ABPApplet extends Applet {
             // create ports
             TypedIOPort sdrRequest = (TypedIOPort)sender.newPort("request");
             sdrRequest.setInput(true);
-            sdrRequest.setTypeEquals(Token.class);
+            sdrRequest.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sdrMsgIn = (TypedIOPort)sender.newPort("msgIn");
             sdrMsgIn.setInput(true);
-            sdrMsgIn.setTypeEquals(IntToken.class);
+            sdrMsgIn.setTypeEquals(BaseType.INT);
             TypedIOPort sdrNext = (TypedIOPort)sender.newPort("next");
             sdrNext.setOutput(true);
-            sdrNext.setTypeEquals(Token.class);
+            sdrNext.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sdrError = (TypedIOPort)sender.newPort("error");
             sdrError.setOutput(true);
-            sdrError.setTypeEquals(Token.class);
+            sdrError.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sdrAck = (TypedIOPort)sender.newPort("ack");
             sdrAck.setInput(true);
-            sdrAck.setTypeEquals(IntToken.class);
+            sdrAck.setTypeEquals(BaseType.INT);
             TypedIOPort sdrPktOut = (TypedIOPort)sender.newPort("pktOut");
             sdrPktOut.setOutput(true);
-            sdrPktOut.setTypeEquals(IntToken.class);
+            sdrPktOut.setTypeEquals(BaseType.INT);
             TypedIOPort sdrSetTimer = (TypedIOPort)sender.newPort("setTimer");
             sdrSetTimer.setOutput(true);
-            sdrSetTimer.setTypeEquals(DoubleToken.class);
+            sdrSetTimer.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort sdrExpired = (TypedIOPort)sender.newPort("expired");
             sdrExpired.setInput(true);
-            sdrExpired.setTypeEquals(Token.class);
+            sdrExpired.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sdrMonitor = (TypedIOPort)sender.newPort("monitor");
             sdrMonitor.setOutput(true);
-            sdrMonitor.setTypeEquals(IntToken.class);
+            sdrMonitor.setTypeEquals(BaseType.INT);
 
             // sender's top level controller
             DEFSMActor ctrl = new DEFSMActor(sender, "Controller");
@@ -231,25 +232,25 @@ public class ABPApplet extends Applet {
             // ports
             TypedIOPort conRequest = (TypedIOPort)connect.newPort("request");
             conRequest.setInput(true);
-            conRequest.setTypeEquals(Token.class);
+            conRequest.setTypeEquals(BaseType.GENERAL);
             TypedIOPort conNext = (TypedIOPort)connect.newPort("next");
             conNext.setOutput(true);
-            conNext.setTypeEquals(Token.class);
+            conNext.setTypeEquals(BaseType.GENERAL);
             TypedIOPort conError = (TypedIOPort)connect.newPort("error");
             conError.setOutput(true);
-            conError.setTypeEquals(Token.class);
+            conError.setTypeEquals(BaseType.GENERAL);
             TypedIOPort conAck = (TypedIOPort)connect.newPort("ack");
             conAck.setInput(true);
-            conAck.setTypeEquals(IntToken.class);
+            conAck.setTypeEquals(BaseType.INT);
             TypedIOPort conPktOut = (TypedIOPort)connect.newPort("pktOut");
             conPktOut.setOutput(true);
-            conPktOut.setTypeEquals(IntToken.class);
+            conPktOut.setTypeEquals(BaseType.INT);
             TypedIOPort conSetTimer = (TypedIOPort)connect.newPort("setTimer");
             conSetTimer.setOutput(true);
-            conSetTimer.setTypeEquals(DoubleToken.class);
+            conSetTimer.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort conExpired = (TypedIOPort)connect.newPort("expired");
             conExpired.setInput(true);
-            conExpired.setTypeEquals(Token.class);
+            conExpired.setTypeEquals(BaseType.GENERAL);
             // connect's states and transitions
             FSMState conInit = new FSMState(connect, "Init");
             FSMState conWait = new FSMState(connect, "Wait");
@@ -296,25 +297,25 @@ public class ABPApplet extends Applet {
             // create ports
             TypedIOPort sendMsgIn = (TypedIOPort)send.newPort("msgIn");
             sendMsgIn.setInput(true);
-            sendMsgIn.setTypeEquals(IntToken.class);
+            sendMsgIn.setTypeEquals(BaseType.INT);
             TypedIOPort sendNext = (TypedIOPort)send.newPort("next");
             sendNext.setOutput(true);
-            sendNext.setTypeEquals(Token.class);
+            sendNext.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sendAck = (TypedIOPort)send.newPort("ack");
             sendAck.setInput(true);
-            sendAck.setTypeEquals(IntToken.class);
+            sendAck.setTypeEquals(BaseType.INT);
             TypedIOPort sendPktOut = (TypedIOPort)send.newPort("pktOut");
             sendPktOut.setOutput(true);
-            sendPktOut.setTypeEquals(IntToken.class);
+            sendPktOut.setTypeEquals(BaseType.INT);
             TypedIOPort sendSetTimer = (TypedIOPort)send.newPort("setTimer");
             sendSetTimer.setOutput(true);
-            sendSetTimer.setTypeEquals(DoubleToken.class);
+            sendSetTimer.setTypeEquals(BaseType.DOUBLE);
             TypedIOPort sendExpired = (TypedIOPort)send.newPort("expired");
             sendExpired.setInput(true);
-            sendExpired.setTypeEquals(Token.class);
+            sendExpired.setTypeEquals(BaseType.GENERAL);
             TypedIOPort sendMonitor = (TypedIOPort)send.newPort("monitor");
             sendMonitor.setOutput(true);
-            sendMonitor.setTypeEquals(IntToken.class);
+            sendMonitor.setTypeEquals(BaseType.INT);
             // the states and transitions
             FSMState s0 = new FSMState(send, "0");
             FSMState s1 = new FSMState(send, "1");
@@ -419,13 +420,13 @@ public class ABPApplet extends Applet {
             // ports
             TypedIOPort recPktIn = (TypedIOPort)receiver.newPort("pktIn");
             recPktIn.setInput(true);
-            recPktIn.setTypeEquals(IntToken.class);
+            recPktIn.setTypeEquals(BaseType.INT);
             TypedIOPort recAck = (TypedIOPort)receiver.newPort("ack");
             recAck.setOutput(true);
-            recAck.setTypeEquals(IntToken.class);
+            recAck.setTypeEquals(BaseType.INT);
             TypedIOPort recMsgOut = (TypedIOPort)receiver.newPort("msgOut");
             recMsgOut.setOutput(true);
-            recMsgOut.setTypeEquals(IntToken.class);
+            recMsgOut.setTypeEquals(BaseType.INT);
             // states and transitions
             FSMState recInit = new FSMState(receiver, "Init");
             FSMState recS0 = new FSMState(receiver, "S0");

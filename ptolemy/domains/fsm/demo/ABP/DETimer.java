@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
@@ -56,9 +57,9 @@ public class DETimer extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         expired = new DEIOPort(this, "expired", false, true);
-        expired.setTypeEquals(Token.class);
+        expired.setTypeEquals(BaseType.GENERAL);
         set = new DEIOPort(this, "set", true, false);
-        set.setTypeEquals(DoubleToken.class);
+        set.setTypeEquals(BaseType.DOUBLE);
         set.delayTo(expired);
     }
 
