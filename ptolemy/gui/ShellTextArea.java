@@ -281,7 +281,11 @@ public class ShellTextArea extends JPanel {
                     // e.printStackTrace();
                 }
                 if (result != null) {
-                    appendJTextArea(result + "\n" + mainPrompt);
+                    if (result.trim().equals("")) {
+                        appendJTextArea(mainPrompt);
+                    } else {
+                        appendJTextArea(result + "\n" + mainPrompt);
+                    }
                 } else {
                     // Result is incomplete.
                     // Make the text uneditable to prevent further input
