@@ -223,7 +223,18 @@ public class Plot extends PlotBox {
      */
     public synchronized void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
-        super.addLegend(dataset, legend);
+        if (!_reuseDatasets) {
+            super.addLegend(dataset, legend);
+        } else {
+            // If _reuseDataSets is true, then look to see if we
+            // already have a dataset with the same legend.
+            String possibleLegend = getLegend(dataset);
+            if (possibleLegend == null
+                    || (possibleLegend != null
+                            && !possibleLegend.equals(legend))) {
+                super.addLegend(dataset, legend);
+            }
+        }
     }
 
     /** In the specified data set, add the specified x, y point to the
@@ -444,6 +455,18 @@ public class Plot extends PlotBox {
      */
     public synchronized int getNumDataSets() {
         return _points.size();
+    }
+
+
+    /** Return false if setReuseDatasets() has not yet been called
+     *  or if setReuseDatasets(false) has been called.
+     *  @return false if setReuseDatasets() has not yet been called
+     *  or if setReuseDatasets(false) has been called.
+     *  @since Ptplot 5.3 
+     *  @see #setReuseDatasets(boolean)
+     */
+    public boolean getReuseDatasets() {
+        return _reuseDatasets;
     }
 
     /** Override the base class to indicate that a new data set is being read.
@@ -711,6 +734,7 @@ public class Plot extends PlotBox {
     /** If the argument is true, then datasets with the same name
      *  are merged into a single dataset.
      *  @param on If true, then merge datasets.
+     *  @see #getReuseDatasets()
      */
     public void setReuseDatasets(boolean on) {
         _reuseDatasets = on;
