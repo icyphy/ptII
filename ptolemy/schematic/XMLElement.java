@@ -230,12 +230,13 @@ public class XMLElement extends Object {
      * Take an arbitrary XMLElement and figure out what type it is, then
      * figure out what semantic meaning that has within this XMLElement.
      * By default an arbitrary XMLElement has no semantic meaning for its
-     * child elements, so this just returns.
+     * child elements, so it passes the element to its parent to see if the
+     * parent has any semantics for it.
      * This is primarily used by the parser to keep the semantic structures
      * within an XMLElement consistant with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
-        return;
+        if(parent != null) parent.applySemanticsToChild(e);
     }
 
     // The child elements of this element
