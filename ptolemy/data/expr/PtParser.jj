@@ -507,31 +507,11 @@ TOKEN : /* Function names */
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
-TOKEN : /* literal strings */
+TOKEN : /* literal strings are given using single or double quotes. */
 {
         < STRING: (
-            ("\""
-                ( (~["\"","\\"]) |
-                    ("\\"
-                        ( ["n","t","b","r","f","\\","'","\""]
-                        | ["0"-"7"] ( ["0"-"7"] )?
-                        | ["0"-"3"] ["0"-"7"] ["0"-"7"]
-                        )
-                    )
-                )*
-                "\""
-            ) |
-            ("'"
-                ( (~["\"","\\"]) |
-                    ("\\"
-                        ( ["n","t","b","r","f","\\","'","\""]
-                        | ["0"-"7"] ( ["0"-"7"] )?
-                        | ["0"-"3"] ["0"-"7"] ["0"-"7"]
-                        )
-                    )
-                )*
-                "'"
-            )
+            ("\"" (~["\""])* ("\"")?) |
+            ("'" (~["'"])* ("'")?)
         )>
 }
 
@@ -1596,7 +1576,14 @@ String tidied, x;
       }
 /*@egen*/
       {
-         // Now cut the " from each end of the string.
+        // Check to see that the start and the end are the same.
+        String start = token.image.substring(0, 1);
+        if(!token.image.endsWith(start)) {
+            throw new ParseException(
+                    "Found unterminated string: " + token.image);
+        }
+        
+        // Now cut the " from each end of the string.
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
 
@@ -1620,11 +1607,18 @@ String tidied, x;
                     case '\\': x += "\\"; break;
                     case '\'': x += "\'"; break;
                     case '"': x += "\""; break;
-                    default:
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
                         // The escape sequence is a character
                         // specified in octal.
                         int i;
-                        for (i = 0; i < tok.length(); i++) {
+                        for (i = 1; i < tok.length(); i++) {
                             // The octal sequence stops at the first
                             // non-octal character.
                             char c = tok.charAt(i);
@@ -1643,6 +1637,9 @@ String tidied, x;
                                 tok.substring(0, trailingCharIndex), 8);
                         x += (char)octVal;
                         break;
+                    default:
+                        throw new ParseException("Unknown backslash sequence: "
+                                + "\\" + tok); 
                 }
                 if (trailingCharIndex < tok.length()) {
                     // Keep any remaining characters.
@@ -1658,6 +1655,11 @@ String tidied, x;
                 x += tok;
             }
         }
+        if(escape) {
+            throw new ParseException("Unterminated backslash sequence in " + 
+                    "string: " + token.image);
+        }
+
         jjtn004._ptToken = new StringToken(x);
 	jjtn004._isConstant = true;
       }

@@ -938,3 +938,38 @@ test PtParser-17.2 {Test assignment lists.} {
     set names [$ra keySet]
     listToObjects $names
 } {a.g(1) b(2) c.g.h(3)}
+
+######################################################################
+####
+# 
+#  Test backslashing
+test PtParser-18.1 {Test expressions with backslashes.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} " \" \\\\ \n \" "]
+    set res  [ $root evaluateParseTree ]
+    list [$res toString]
+} {{" \ 
+ "}}
+
+test PtParser-18.2 {Test expressions with backslashes.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "\"\\45\""]
+    set res  [ $root evaluateParseTree ]
+    list [$res toString]
+} {{"%"}}
+
+test PtParser-18.3 {Test expressions with backslashes.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {[set root [ $p {generateParseTree String} "\"\\\""]] toString} res
+    list $res
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\"":
+Unterminated backslash sequence in string: "\"}}
+
+test PtParser-18.4 {Test expressions with backslashes.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {[set root [ $p {generateParseTree String} "\"\\dsdfsdf\""]] toString} res
+    list $res
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\dsdfsdf"":
+Unknown backslash sequence: \dsdfsdf}}
+
+
