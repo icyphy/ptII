@@ -378,14 +378,16 @@ public class StringUtilities {
      */
     public static String substitute(String string,
             String old, String replacement) {
-        int start = string.indexOf(old);
-        while (start != -1) {
-            StringBuffer buffer = new StringBuffer(string);
-            buffer.delete(start, start + old.length());
-            buffer.insert(start, replacement);
-            string = new String(buffer);
-            start = string.indexOf(old, start + replacement.length());
-        }
+        string = string.replaceAll(old, replacement);
+        // Note: we used to do this by hand, before jdk1.4
+//         int start = string.indexOf(old);
+//         while (start != -1) {
+//             StringBuffer buffer = new StringBuffer(string);
+//             buffer.delete(start, start + old.length());
+//             buffer.insert(start, replacement);
+//             string = new String(buffer);
+//             start = string.indexOf(old, start + replacement.length());
+//         }
         return string;
     }
 
