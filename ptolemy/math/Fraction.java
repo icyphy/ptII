@@ -188,6 +188,9 @@ public class Fraction {
     }
 
     /** Finds the least common multiple of two integers. 
+     *  If one of the numbers is negative, then the LCM is negative.
+     *  If both of the numbers are negative, then the LCM is positive.
+     *  the LCM is least in terms of absolute value.
      */
     public static int lcm(int u, int v) {
         int gcd = gcd(u, v);
