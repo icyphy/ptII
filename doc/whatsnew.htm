@@ -104,8 +104,17 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 (Haiyang Zheng) - The Giotto scheduler was rewritten and the kernel
 was updated.
 
+<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
+(Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
+to perform multiple runs of refinement on a model.
+
+<li> <a href="coding/debugging.htm">Support for <code>jdb</code></a> 
+(Zoltan Kemenczy, Research In Motion, Ltd.) -
+The scripts that invoke Ptolemy II have been extended to support
+<code>jdb</code>, the Java Debugger.
+
 <li> Ptolemy II Matlab interface
-(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.) -
+(Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.) -
 The Matlab Expression actor uses JNI to invoke the Matlab engine, 
 evaluate Matlab expressions and return the results to Ptolemy II.
 The Matlab Expression actor works only under Windows, and requires
@@ -126,9 +135,6 @@ for static function (and method) signatures that includes most ptolemy.math
 classes; peformance improvements by caching search results; widened token to
 java-type conversions for function arguments and results.
 
-<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
-(Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
-to perform multiple runs of refinement on a model.
 
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
@@ -141,8 +147,9 @@ Models can be annotated with the Web Start format version number of
 Ptolemy II that is required to run the model.  In the future, we will
 use this attribute to manage backward compatibility.
 
-<li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
-(Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
+<li> <a href="codeDoc/ptolemy/data/UnsignedByteToken.html">ptolemy.data.UnsignedByteToken</a>
+(Winthrop Williams, Steve Neuendorffer) - A new Token supporting
+unsigned bytes.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 

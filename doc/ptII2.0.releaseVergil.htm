@@ -20,6 +20,9 @@ untar this file with a checksum error because the pathnames are longer
 than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
+ <p>Note further that some of the .class names are longer than
+31 characters, which may cause problems when downloading zip files
+on the Macintosh and using Stuffit.
 
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
@@ -27,26 +30,20 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 <li> The Using Vergil html file has some bogus characters in it, and
 the internal hyperlinks refer to usingVergil.html instead of index.htm
 
-<li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
-
 <li> The documentation for custom actors used in demonstrations is not
-included in the release.
+included in the release.  The source code for the custom actors can be found
+in the source download.
 
+<li> If a URL ends with <CODE>#in_browser</CODE>, then
+Ptolemy II will invoke the User's web browser.  Unfortunately, this
+does not always work, especially under Windows if Netscape is already
+running.  The workaround is to exit Netscape and let Ptolemy II
+start up Netscape for you.
 
 <li> Applet issues:
 	<ul>
-	<li>   Look inside on a composite actor fails :
-	"Cannot look inside with a configuration"
-	<li> Applets that use MoMLViewerApplet do not auto start.
-	These applets include
-		<ul>
-		<li> Giotto applets
-		<li> SDF Expression, FixPoint, LMSAdaptive, MaximumEntropy
-		</ul>
-
-
-<li> The DDE Zeno demo produces an error message in the Java Plug-in console
-window:
+	<li> The DDE Zeno demo produces an error message in the Java Plug-in
+	console window:
 <pre>
 java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
 	      to the past; time = 50.001. The _lastTime was 54.0
@@ -59,8 +56,8 @@ java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
 ptolemy.actor.Manager run(): elapsed time: 23004 ms
 </pre>
 
-<li> Running the Networked demo via an applet on the local
-file system results in an AccessControlException.
+	<li> Running the Networked demo via an applet on the local
+	file system results in an AccessControlException.
 <pre>
 com.microstar.xml.XmlException: XML element "entity" triggers exception:
   java.lang.Exception: Attempted to lookup 'Waveform', but got: 
@@ -83,16 +80,21 @@ Attempted to find as a moml class, but got:
 	at ptolemy.actor.gui.MoMLApplet._createModel(MoMLApplet.java:188)
 </pre>
 
-The Network demo does not work as a local applet because the xml file
-includes a reference to http://ptolemy.eecs.berkeley.edu, which is
-not on the local file system, so we get a SecurityException.
-
+	The Network demo does not work as a local applet because the xml file
+	includes a reference to http://ptolemy.eecs.berkeley.edu, which is
+	not on the local file system, so we get a SecurityException.
+	 <br>The workaround is to run the applet by downloading it
+	from the Ptolemy Website:
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.0/ptII2.0/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.0/ptII2.0/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
 	</ul>
 
 <li> Web Start issues:
 	<ul>
-	<li> Invoking a pdf file or the code generator brings up a blank
-	 window.
+
+	<li> Viewing a pdf file may bring up a blank window along with
+	the pdf file.  Running the code generator may bring up
+	a blank window while the java or javac processes are running.
+
 	<li> Web Start is limited to about 65Mb of memory
 	 <br>If you try to run all the demos, then eventually you may
 	see the following in the Web Start console
@@ -131,7 +133,16 @@ in floating point numbers.
 Matlab be installed on the local machine. 
 The Matlab interface should work with version of Matlab from
 R11 (5.3) and up to and including R12.1 (6.1)
-
+<p>Didier Mauuary reports that under Windows 98, configure failed
+to set up the <code>MATLAB_DIR</code>, <code>PTCC</code>
+and <code>PTDLLTOOL</code> makefile variables, but after
+he set them by hand:
+<pre>
+ MATLAB_DIR = /cygdrive/c/MATLABR11
+ PTCC = gcc
+ PTDLLTOOL = dlltool
+</pre>
+he was able to get farther with the recompilation of the Matlab interface.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
@@ -164,12 +175,9 @@ mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
 <li> Query needs to be put into a scroll pane
-
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
-
-<li> HTVQ demo is badly laid out when run under vergil
-	
+<li> HTVQ demo is badly laid out when run under vergil.
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
