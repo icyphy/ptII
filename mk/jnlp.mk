@@ -89,7 +89,11 @@ CORE_JNLP_JARS = \
 # DSP - The smallest runtime
 #
 # Jar files that will appear in a DSP only JNLP Ptolemy II Runtime.
-DSP_ONLY_JNLP_JARS =
+#
+# doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
+# but not hyvisual.
+DSP_ONLY_JNLP_JARS = \
+	doc/design/usingVergil/usingVergil.jar 
 
 DSP_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/DSPApplication.jar
