@@ -6,37 +6,67 @@
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<img src="img/PtolemyII.jpg" width=372 height=447 alt="Claudius Ptolemy" align="left" vspace=6>
-<h1>Ptolemy II</h1>
-<P>
-
-The Ptolemy project studies heterogeneous modeling and design of
-concurrent systems. The focus is on embedded systems, particularly
-those that mix technologies, including for example analog and digital
-electronics, hardware and software, and electronics and mechanical
-devices (including MEMS, microelectromechanical systems). The focus is
-also on systems that are complex in the sense that they mix widely
-different operations, such as signal processing, feedback control,
-sequential decision making, and user interfaces.
-
+<table content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<tr>
+<td>
+<img vspace="6" align="left" src="../../../doc/img/PtolemyIISmall.gif" alt="Claudius Ptolemy">
+</td>
+<td>
+<h1>The Ptolemy Project</h1>
 <p>
-
-Executable models are constructed under a model of computation, which
-is the set of “laws of physics” that govern the interaction of
-components in the model. If the model is describing a mechanical
-system, then the model of computation may literally be the laws of
-physics. More commonly, however, it is a set of rules that are more
-abstract, and provide a framework within which a designer builds
-models. A set of rules that govern the interaction of components is
-called the semantics of the model of computation.
-
+Ptolemy II is a software framework developed as part of the Ptolemy project.
+It is a Java-based component assembly framework with a graphical
+user interface called Vergil.  Vergil itself is a component assembly
+defined in Ptolemy II.
+</p>
 <p>
-
-Ptolemy II is third-generation software. The objective is to support the
-construction and interoperability of executable models that are built
-under a wide variety of models of computation.  Ptolemy II is written
-entirely in Java, and aims to support the construction of applets,
-servlets, migrating code, and embedded Java.
-
+The Ptolemy project studies modeling, simulation, and design of
+concurrent, real-time, embedded systems. The focus is on assembly of
+concurrent components. The key underlying principle in the project is
+the use of well-defined <i>models of computation</i> that govern the
+interactions between components. A major problem area being addressed is
+the use of heterogeneous mixtures of models of computation.
+</p>
+</table>
+<p>
+Ptolemy II includes a growing suite of <i>domains</i>, each of which
+realizes a model of computation.  It also includes a component library,
+in which most components are <i>domain polymorphic</i>, in that they
+can operate in several of the domains.  Most are also <i>data polymorphic</i>,
+in that they operate on several data types.  The key features
+of Ptolemy II are:
+<ul>
+<li> a modular and extensible user interface infrastructure;
+<li> a sophisticated type system;
+<li> an XML persistent file format called MoML;
+<li> network integration, including support for applets;
+<li> a flexible signal plotter;
+<li> 3-D graphics animation infrastructure;
+<li> a finite-state machine domain providing modal models;
+<li> several concurrent domains, including:
+<ul>
+<li> communicating sequential processes,
+<li> continuous-time modeling,
+<li> discrete-event modeling (including a distributed version),
+<li> discrete-time,
+<li> periodic time-driven (giotto),
+<li> synchronous-reactive for graphics (gr),
+<li> process networks,
+<li> and synchronous dataflow.
+</ul></ul><p>
+The <a href="http://ptolemy.eecs.berkeley.edu/index.html">
+Ptolemy Project web page</a> contains much more information about the
+project. The work is conducted in the
+<a href="http://www.eecs.berkeley.edu/" target="_top">
+Department of Electrical Engineering and Computer Sciences</a> of the
+<a href="http://www.berkeley.edu/" target="_top">
+University of California at Berkeley</a>.
+The project is directed by
+<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html" target="_top">
+Prof. Edward Lee</a>.
+The project is named after
+<a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm">
+Claudius Ptolemaeus</a>,
+the second century Greek astronomer, mathematician, and geographer.
 </body>
 </html>
