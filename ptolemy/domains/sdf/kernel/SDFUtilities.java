@@ -85,6 +85,23 @@ public class SDFUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the Variable with the specified name in the given port, or
+     *  with the specified name preceded by an underscore.  If there
+     *  is no such variable, return null;
+     *  @param port The port.
+     *  @param name The name of the variable.
+     */
+    public static Variable getRateVariable(Port port, String name)
+            throws IllegalActionException {
+        Variable parameter = (Variable)port.getAttribute(name);
+        if (parameter == null) {
+            String altName = "_" + name;
+            parameter = (Variable)port.getAttribute(altName);
+        }
+    
+        return parameter;
+    }
+
     /** Get the number of tokens that are consumed on the given port.
      *  If the port is not an input port, then return zero.
      *  Otherwise, return the value of the port's
@@ -211,23 +228,6 @@ public class SDFUtilities {
         }
     }
     
-    /** Get the Variable with the specified name in the given port, or
-     *  with the specified name preceded by an underscore.  If there
-     *  is no such variable, return null;
-     *  @param port The port.
-     *  @param name The name of the variable.
-     */
-    public static Variable _getRateVariable(Port port, String name)
-            throws IllegalActionException {
-        Variable parameter = (Variable)port.getAttribute(name);
-        if (parameter == null) {
-            String altName = "_" + name;
-            parameter = (Variable)port.getAttribute(altName);
-        }
-    
-        return parameter;
-    }
-
     /** Get the integer value stored in the Variable with the
      *  specified name.  If there is still no such variable, then
      *  return the specified default.
@@ -239,7 +239,7 @@ public class SDFUtilities {
     public static int _getRateVariableValue(
             Port port, String name, int defaultValue)
             throws IllegalActionException {
-        Variable parameter = _getRateVariable(port, name);
+        Variable parameter = getRateVariable(port, name);
         if (parameter == null) {
             return defaultValue;
         }

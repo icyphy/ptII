@@ -645,19 +645,19 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Port port = (Port) ports.next();
                 Set set = analysis.getNotConstVariables(port);
                 Variable variable;
-                variable = SDFUtilities._getRateVariable(
+                variable = SDFUtilities.getRateVariable(
                         port, "tokenInitProduction");
                 if(set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 } 
-                variable = SDFUtilities._getRateVariable(
+                variable = SDFUtilities.getRateVariable(
                         port, "tokenConsumptionRate");
                 if(set.contains(variable)) {
                     _assertDynamicRateVariable( 
                             model, variable, rateVariables, analysis);
                 } 
-                variable = SDFUtilities._getRateVariable(
+                variable = SDFUtilities.getRateVariable(
                         port, "tokenProductionRate");
                 if(set.contains(variable)) {
                     _assertDynamicRateVariable(
