@@ -1,5 +1,5 @@
 /* An actor that looks for a color in a Buffer.
-   
+
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
 
@@ -45,13 +45,13 @@ import ptolemy.kernel.util.*;
 //// ColorFinder
 /**
    An actor that searches for a color in a Buffer.
-   
+
    @author Paul Yang, David Lee, James Yeh
    @version $Id$
  */
 
 public class ColorFinder extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,7 +59,7 @@ public class ColorFinder extends TypedAtomicActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */        
+     */
     public ColorFinder(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
@@ -69,14 +69,14 @@ public class ColorFinder extends TypedAtomicActor {
 	input.setTypeEquals(BaseType.OBJECT);
 	outputX.setTypeEquals(BaseType.DOUBLE);
 	outputY.setTypeEquals(BaseType.DOUBLE);
-	
+
         /** The default values correspond to the color green */
 	yLowValue = new Parameter(this, "yLowValue", new IntToken("110"));
 	yHighValue = new Parameter(this, "yHighValue", new IntToken("210"));
 	uLowValue = new Parameter(this, "uLowValue", new IntToken("85"));
 	uHighValue = new Parameter(this, "uHighValue", new IntToken("110"));
 	vLowValue = new Parameter(this, "vLowValue", new IntToken("120"));
-	vHighValue = new Parameter(this, "vHighValue", new IntToken("130"));	
+	vHighValue = new Parameter(this, "vHighValue", new IntToken("130"));
 
 
     }
@@ -105,54 +105,54 @@ public class ColorFinder extends TypedAtomicActor {
     /** The port for the input, which has type ObjectToken */
     public TypedIOPort input;
 
-    /** The output port for the horizontal component, which has type 
+    /** The output port for the horizontal component, which has type
      *  DoubleToken
      */
     public TypedIOPort outputX;
-    
+
     /** The output port for the vertical component, which has type
      *  DoubleToken.
      */
     public TypedIOPort outputY;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Fire this actor.
      *  Output the X and Y coordinates if it finds the color in the
      *  Buffer.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
-     */     
+     */
     public void fire() throws IllegalActionException {
 	super.fire();
-	if (input.hasToken(0)) {	    
+	if (input.hasToken(0)) {
 	    ObjectToken objectToken = (ObjectToken) input.get(0);
 	    Buffer in = (Buffer) objectToken.getValue();
 	    VideoFormat videoFormat = (VideoFormat)in.getFormat();
 	    YUVFormat yuvFormat = (YUVFormat) videoFormat;
 	    byte[] data = (byte[])in.getData();
 	    if (data != null) {
-		System.arraycopy(data, yuvFormat.getOffsetY(), 
+		System.arraycopy(data, yuvFormat.getOffsetY(),
                         YArray, 0, YArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetU(), 
+		System.arraycopy(data, yuvFormat.getOffsetU(),
                         UArray, 0, UArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetV(), 
+		System.arraycopy(data, yuvFormat.getOffsetV(),
                         VArray, 0, VArray.length);
-		
+
 		for (int x = 0; x < frameWidth; x += 1) {
 		    for (int y = 0; y < frameHeight; y += 1) {
 			int yComp = _getYComponent(x, y);
 			int uComp = _getUComponent(x, y);
 			int vComp = _getVComponent(x, y);
-			
+
 			int compInClass =
                             yClass[yComp] & uClass[uComp] & vClass[vComp];
 			if (compInClass==1) {
 			    sumX += x;
 			    sumY += y;
 			    inCount += 1;
-			}		
+			}
 		    }
 		}
 		if (inCount > 0) {
@@ -161,7 +161,7 @@ public class ColorFinder extends TypedAtomicActor {
 		    outputX.send(0, new DoubleToken(xLocation));
 		    outputY.send(0, new DoubleToken(yLocation));
 		    if (_debugging) {
-			_debug("just sent " + (int)xLocation 
+			_debug("just sent " + (int)xLocation
                                 + "and " + (int)yLocation);
 		    }
 		}
@@ -171,7 +171,7 @@ public class ColorFinder extends TypedAtomicActor {
 	    }
 	}
     }
-    
+
     /** Initialize this actor.
      *  Set the color to search for in the YUV domain.
      *  @exception IllegalActionException If a contained method throws it.
@@ -184,25 +184,25 @@ public class ColorFinder extends TypedAtomicActor {
 	_uHigh = ((IntToken)uHighValue.getToken()).intValue();
 	_vLow = ((IntToken)vLowValue.getToken()).intValue();
 	_vHigh = ((IntToken)vHighValue.getToken()).intValue();
-        
+
 	for (int i = 0; i < histSize; i += 1) {
 	    if (i > _yLow && i < _yHigh) {
 		yClass[i] = 1; }
 	    else {
-		yClass[i] = 0; }	    
+		yClass[i] = 0; }
 	    if (i > _uLow && i < _uHigh) {
 		uClass[i] = 1; }
 	    else {
-		uClass[i] = 0; } 
+		uClass[i] = 0; }
 	    if (i > _vLow && i < _vHigh) {
 		vClass[i] = 1; }
-	    else { vClass[i] = 0; }	    
+	    else { vClass[i] = 0; }
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////       
- 
+    ////                         private methods                   ////
+
     /** Convert a byte into an unsigned int */
     private int _bts(byte b) {
         return (int)b & 0xFF;
@@ -212,12 +212,12 @@ public class ColorFinder extends TypedAtomicActor {
     private int _getUComponent(int point) {
         return _bts(UArray[point]);
     }
-    
+
     /** Return the int representing the U band at this pixel*/
     private int _getUComponent(int x, int y) {
         return _getUComponent((x >> 1) + (y >> 1) * (frameWidth/2));
     }
-    
+
     /** Return the int representing the V band at this pixel*/
     private int _getVComponent(int point) {
         return _bts(VArray[point]);
@@ -228,20 +228,20 @@ public class ColorFinder extends TypedAtomicActor {
         return _getVComponent((x >> 1) + (y >> 1) * (frameWidth/2));
     }
 
-    
+
     /** Return the int representing the Y band at this pixel*/
     private int _getYComponent(int point) {
         return _bts(YArray[point]);
     }
- 
+
     /** Return the int representing the Y band at this pixel*/
     private int _getYComponent(int x, int y) {
         return _getYComponent(x + frameWidth * y);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     //FIXME should be parameters and moved to initialize.
     public int frameWidth = 320;
     public int frameHeight = 240;
@@ -270,5 +270,5 @@ public class ColorFinder extends TypedAtomicActor {
     int[] vClass = new int[histSize];
 
 }
-	   
-	    
+
+

@@ -155,7 +155,7 @@ public class VideoCamera extends Source implements ControllerListener {
     }
 
     /** Capture a frame and send a java.awt.Image object
-     *  to the output port.	
+     *  to the output port.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
@@ -170,7 +170,7 @@ public class VideoCamera extends Source implements ControllerListener {
 //                 throw new IllegalActionException(this,
 // 		"Interrupted while waiting for the first video frame.");
 //             }
-//         }	
+//         }
 	//_imageNew = JamesCodec.getFrame();
 	//output.send(0, new ObjectToken(frameBuffer));
 	_bufferNew = CameraCodec.getFrame();
@@ -329,26 +329,26 @@ public class VideoCamera extends Source implements ControllerListener {
 	}
 	/**
          * Callback to access individual video frames.
-         */	
-	
+         */
+
 	synchronized void accessFrame(Buffer frame) {
 	    long t = (long)(frame.getTimeStamp()/10000000f);
 	    //VideoFormat videoFormat = (VideoFormat)frame.getFormat();
 	    //BufferToImage bufferToImage = new BufferToImage(videoFormat);
-	    
-	    //Perhaps the next step is to instead output frames, and 
+
+	    //Perhaps the next step is to instead output frames, and
 	    //implement a transformer
 	    //_image = bufferToImage.createImage(frame);
 	    frameBuffer = frame;
 	    _newFrame = true;
 	    notifyAll();
-	    
+
 	}
 
 	/**
  	 * The code for a pass through codec.
 	 */
-	
+
 	synchronized Buffer getFrame() throws IllegalActionException {
 	    while (!_newFrame) {
 		//		try {

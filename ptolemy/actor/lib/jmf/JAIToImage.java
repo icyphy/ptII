@@ -51,7 +51,7 @@ Convert a RenderedOp into a java.awt.image
 
 
 public class JAIToImage extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,11 +59,11 @@ public class JAIToImage extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public JAIToImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
     }
@@ -75,7 +75,7 @@ public class JAIToImage extends Transformer {
      *  Output the java.awt.Image.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
-     */    
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         ObjectToken objectToken = (ObjectToken) input.get(0);

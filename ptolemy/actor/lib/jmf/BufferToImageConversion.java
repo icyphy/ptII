@@ -1,5 +1,5 @@
 /* An actor that converts a Buffer into a java.awt.Image
-   
+
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
 
@@ -47,7 +47,7 @@ import javax.media.util.BufferToImage;
 //// BufferToImageConversion
 /**
    Convert a Buffer into a java.awt.Image
-   
+
    @author James Yeh
    @version $Id$
  */

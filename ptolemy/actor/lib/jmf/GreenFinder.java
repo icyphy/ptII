@@ -47,27 +47,27 @@ public class GreenFinder extends TypedAtomicActor {
     public int bts(byte b) {
         return (int)b & 0xFF;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         for (int i = 0; i < histSize; i += 1) {
             if (i > yLow && i < yHigh) {
                 yClass[i] = 1; }
             else {
-                yClass[i] = 0; }            
+                yClass[i] = 0; }
             if (i > uLow && i < uHigh) {
                 uClass[i] = 1; }
             else {
-                uClass[i] = 0; } 
+                uClass[i] = 0; }
             if (i > vLow && i < vHigh) {
                 vClass[i] = 1; }
-            else { vClass[i] = 0; }            
+            else { vClass[i] = 0; }
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.hasToken(0)) {            
+        if (input.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken) input.get(0);
             Buffer in = (Buffer) objectToken.getValue();
             VideoFormat videoFormat = (VideoFormat)in.getFormat();
@@ -77,19 +77,19 @@ public class GreenFinder extends TypedAtomicActor {
                 System.arraycopy(data, yuvFormat.getOffsetY(), YArray, 0, YArray.length);
                 System.arraycopy(data, yuvFormat.getOffsetU(), UArray, 0, UArray.length);
                 System.arraycopy(data, yuvFormat.getOffsetV(), VArray, 0, VArray.length);
-                
+
                 for (int x = 0; x < frameWidth; x += 1) {
                     for (int y = 0; y < frameHeight; y += 1) {
                         int yComp = getYComponent(x, y);
                         int uComp = getUComponent(x, y);
                         int vComp = getVComponent(x, y);
-                        
+
                         int compInClass = yClass[yComp] & uClass[uComp] & vClass[vComp];
                         if (compInClass==1) {
                             sumX += x;
                             sumY += y;
                             inCount += 1;
-                        }                
+                        }
                     }
                 }
                 if (inCount > 0) {
@@ -121,23 +121,23 @@ public class GreenFinder extends TypedAtomicActor {
     public int getVComponent(int point) {
         return bts(VArray[point]);
     }
- 
+
     /* Return the int representing the Y band at this pixel*/
     public int getYComponent(int x, int y) {
         return getYComponent(x + 320 * y);
     }
-    
+
     /* Return the int representing the U band at this pixel*/
     public int getUComponent(int x, int y) {
         return getUComponent((x >> 1) + (y >> 1) * 160);
     }
-    
+
     /* Return the int representing the V band at this pixel*/
     public int getVComponent(int x, int y) {
         return getVComponent((x >> 1) + (y >> 1) * 160);
     }
-    
-   
+
+
     //FIXME should be parameters and moved to initialize
     public int frameWidth = 320;
     public int frameHeight = 240;
@@ -147,7 +147,7 @@ public class GreenFinder extends TypedAtomicActor {
     private byte[] YArray = new byte[frameWidth * frameHeight];
     private byte[] UArray = new byte[frameWidth/2 * frameHeight/2];
     private byte[] VArray = new byte[frameWidth/2 * frameHeight/2];
-    
+
     public int histSize = 256;
     public int inCount = 0;
     public int sumX = 0;
@@ -160,16 +160,16 @@ public class GreenFinder extends TypedAtomicActor {
     //FIXME again, following numbers should be parameters
     //the following is for green
 
-    int yLow = 110; 
-    int yHigh = 210; 
-    int uLow = 85; 
-    int uHigh = 110; 
-    int vLow = 120; 
+    int yLow = 110;
+    int yHigh = 210;
+    int uLow = 85;
+    int uHigh = 110;
+    int vLow = 120;
     int vHigh = 130;
-    
+
     public TypedIOPort input;;
     public TypedIOPort outputX;
     public TypedIOPort outputY;
 }
-           
-            
+
+

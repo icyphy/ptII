@@ -1,5 +1,5 @@
 /* An actor that scales a javax.media.jai.RenderedOp
-   
+
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
 
@@ -46,13 +46,13 @@ import javax.media.jai.RenderedOp;
 //// JAIInterpolation
 /**
    Scale a RenderedOp using the javax.media.jai.JAI class.
-   
+
    @author James Yeh
    @version $Id$
  */
 
 public class JAIInterpolation extends Transformer {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -60,40 +60,40 @@ public class JAIInterpolation extends Transformer {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */    
+     */
     public JAIInterpolation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT); 
-        
+        output.setTypeEquals(BaseType.OBJECT);
+
         xScaleFactor =
             new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
         yScaleFactor =
             new Parameter(this, "yScaleFactor", new DoubleToken("1.0F"));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The scaling factor in the horizontal direction.  The default 
+    /** The scaling factor in the horizontal direction.  The default
      *  value of this parameter is the double value 1.0
      */
     public Parameter xScaleFactor;
-    
-    /** The scaling factor in the vertical direction.  The default 
+
+    /** The scaling factor in the vertical direction.  The default
      *  value of this parameter is the double value 1.0
      */
     public Parameter yScaleFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Fire this actor.
      *  Output the scaled RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
-     */    
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         _parameters = new ParameterBlock();
@@ -108,7 +108,7 @@ public class JAIInterpolation extends Transformer {
         RenderedOp newImage = JAI.create("scale", _parameters);
         output.send(0, new ObjectToken(newImage));
     }
-    
+
     /** Initialize this actor.
      *  Set the horizontal and vertical scaling values.
      *  @exception IllegalActionException If a contained method throws it.
@@ -116,26 +116,26 @@ public class JAIInterpolation extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _xScaleFactor = ((DoubleToken)xScaleFactor.getToken()).doubleValue();
-        _yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();        
+        _yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();
         _interp = Interpolation.getInstance(
                 Interpolation.INTERP_BILINEAR);
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The horizontal scaling factor. */
     private double _xScaleFactor;
-    
+
     /** The vertical scaling factor. */
     private double _yScaleFactor;
-    
+
     /** The type of Interpolation being used is specified using this
      *  variable.
      */
     private Interpolation _interp;
-    
+
     /** The block that holds the horizontal and vertical scaling
      *  factor, the horizontal and vertical translation factor
      * (unused),  and the type of interpolation being used.

@@ -41,12 +41,12 @@ import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
 public class ImageToJAI extends Transformer {
-    
+
     public ImageToJAI(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT); 
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     public void fire() throws IllegalActionException {
@@ -61,4 +61,4 @@ public class ImageToJAI extends Transformer {
 
     private ParameterBlock parameters;
 }
-    
+
