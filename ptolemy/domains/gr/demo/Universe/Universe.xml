@@ -1,0 +1,515 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="universe2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100000">
+        </property>
+        <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="527.0, 27.0">
+        </property>
+    </property>
+    <entity name="ViewScreen2" class="ptolemy.domains.gr.lib.ViewScreen">
+        <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
+        </property>
+        <property name="vertical resolution" class="ptolemy.data.expr.Parameter" value="400">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="allow model rotation" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allow model zooming" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allow model translation" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="584.9999847412109, 178.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="earth" class="ptolemy.domains.gr.lib.Sphere3D">
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
+        </property>
+        <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
+        </property>
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="446.0, 179.0">
+        </property>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="sun" class="ptolemy.domains.gr.lib.Sphere3D">
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 0.0]">
+        </property>
+        <property name="shininess" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
+        </property>
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="0.15">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="270.0, 41.0">
+        </property>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Translate3D13" class="ptolemy.domains.gr.lib.Translate3D">
+        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
+        </property>
+        <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="359.0, 53.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Rotate3D17" class="ptolemy.domains.gr.lib.Rotate3D">
+        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="axis direction" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0, 0.0]">
+        </property>
+        <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+        </property>
+        <property name="axisDirectionX" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="axisDirectionY" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="axisDirectionZ" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="baseX" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="baseY" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="baseZ" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 90.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="angle" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Ramp21" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="354.0, 111.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="venus" class="ptolemy.domains.gr.lib.Sphere3D">
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
+        </property>
+        <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
+        </property>
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="0.08">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="354.0, 209.0">
+        </property>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Translate3D28" class="ptolemy.domains.gr.lib.Translate3D">
+        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="446.0, 346.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Ramp31" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.08">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="54.0, 250.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction33" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 256.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scale3D46" class="ptolemy.domains.gr.lib.Scale3D">
+        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="xScale" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="yScale" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="524.0, 353.0">
+        </property>
+        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="scale input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction54" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="cos">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="197.0, 323.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction59" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="177.0, 169.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction60" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="cos">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="176.0, 119.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp64" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="52.0, 111.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Scale69" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="257.0, 170.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scale70" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="258.0, 120.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract75" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 280.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract81" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.moml.Location" value="346.0, 352.0">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Torus3D0" class="ptolemy.domains.gr.lib.Torus3D">
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
+        </property>
+        <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
+        </property>
+        <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="6.2831853">
+        </property>
+        <property name="slices" class="ptolemy.data.expr.Parameter" value="56">
+        </property>
+        <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="hull radius" class="ptolemy.data.expr.Parameter" value="0.75">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 236.0">
+        </property>
+        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation47" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation49" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation52" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="125.0, 263.0">
+        </vertex>
+    </relation>
+    <relation name="relation65" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="106.0, 124.0">
+        </vertex>
+    </relation>
+    <relation name="relation72" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation74" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation77" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation78" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation80" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation83" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation84" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation86" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation9"/>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation20"/>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation49"/>
+    <link port="ViewScreen2.sceneGraphIn" relation="relation2"/>
+    <link port="earth.sceneGraphOut" relation="relation9"/>
+    <link port="sun.sceneGraphOut" relation="relation14"/>
+    <link port="Translate3D13.sceneGraphIn" relation="relation14"/>
+    <link port="Translate3D13.sceneGraphOut" relation="relation18"/>
+    <link port="Rotate3D17.sceneGraphIn" relation="relation18"/>
+    <link port="Rotate3D17.sceneGraphOut" relation="relation20"/>
+    <link port="Rotate3D17.angle" relation="relation23"/>
+    <link port="Ramp21.output" relation="relation23"/>
+    <link port="venus.sceneGraphOut" relation="relation30"/>
+    <link port="Translate3D28.sceneGraphIn" relation="relation30"/>
+    <link port="Translate3D28.sceneGraphOut" relation="relation47"/>
+    <link port="Translate3D28.xtranslate" relation="relation80"/>
+    <link port="Translate3D28.ztranslate" relation="relation86"/>
+    <link port="Ramp31.output" relation="relation52"/>
+    <link port="TrigFunction33.input" relation="relation52"/>
+    <link port="TrigFunction33.output" relation="relation78"/>
+    <link port="Scale3D46.sceneGraphIn" relation="relation47"/>
+    <link port="Scale3D46.sceneGraphOut" relation="relation49"/>
+    <link port="TrigFunction54.input" relation="relation52"/>
+    <link port="TrigFunction54.output" relation="relation84"/>
+    <link port="TrigFunction59.input" relation="relation65"/>
+    <link port="TrigFunction59.output" relation="relation72"/>
+    <link port="TrigFunction60.input" relation="relation65"/>
+    <link port="TrigFunction60.output" relation="relation74"/>
+    <link port="Ramp64.output" relation="relation65"/>
+    <link port="Scale69.input" relation="relation72"/>
+    <link port="Scale69.output" relation="relation77"/>
+    <link port="Scale70.input" relation="relation74"/>
+    <link port="Scale70.output" relation="relation83"/>
+    <link port="AddSubtract75.plus" relation="relation77"/>
+    <link port="AddSubtract75.plus" relation="relation78"/>
+    <link port="AddSubtract75.output" relation="relation80"/>
+    <link port="AddSubtract81.plus" relation="relation83"/>
+    <link port="AddSubtract81.plus" relation="relation84"/>
+    <link port="AddSubtract81.output" relation="relation86"/>
+    <link port="Torus3D0.sceneGraphOut" relation="relation2"/>
+</entity>
