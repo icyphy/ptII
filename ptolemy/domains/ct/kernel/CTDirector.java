@@ -519,7 +519,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else {
             // Otherwise, the fireAt request is in the future. So we
             // insert it to the breakpoint table.
-            // Note that the _breakPoints can never be null.
+            // Note that the _breakPoints may be null if an actor calls
+            // fireAt() in its constructor.
+            if (_breakPoints == null) {
+                _breakPoints = new TotallyOrderedSet(
+                        new FuzzyDoubleComparator(_timeResolution));
+            }
             _breakPoints.insert(new Double(time));
         }
     }
