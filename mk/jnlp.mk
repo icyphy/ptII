@@ -69,7 +69,8 @@ DSP_JNLP_JARS =	\
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
-	ptolemy/actor/lib/javasound/javasound.xml \
+	ptolemy/actor/lib/javasound/javasound.jar \
+	ptolemy/media/javasound/javasound.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
@@ -95,6 +96,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/copernicus/copernicus.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
+	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/rtos/demo/demo.jar
@@ -245,7 +247,7 @@ sign_jar:
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
  
-verify_jars:
+jnlp_verify:
 	set $(ALL_JNLP_JARS); \
 	for x do \
 		echo "$$x"; \
