@@ -41,7 +41,7 @@ include $(CONFIG)
 
 DIRS = 		test
 
-CLASSPATH =	../../../..
+CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	kernel
