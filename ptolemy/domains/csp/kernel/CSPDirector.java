@@ -201,7 +201,7 @@ public class CSPDirector extends ProcessDirector {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no mutation listeners.
+     *  current time is 0.0, and no actors are delayed or blocked.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -212,6 +212,9 @@ public class CSPDirector extends ProcessDirector {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
         newobj._actorsBlocked = 0;
 	newobj._actorsDelayed = 0;
+        newobj._delayedActorList = new LinkedList();
+        newobj._mutationsPending = false;
+        newobj._time = 0.0;
         return newobj;
     }
 
@@ -399,13 +402,16 @@ public class CSPDirector extends ProcessDirector {
                     
                     // Now go through list of delayed actors 
                     // and wake up those at this time
+                    // Note that to deal with roundoff errors on doubles,
+                    // any times within 0.000000001 are considered the same.
                     // FIXME: what about round off errors leading 
                     // to errors?
                     boolean done = false;
                     while (!done && _delayedActorList.size() > 0 ) {
                         DelayListLink val = 
                             (DelayListLink)_delayedActorList.first();
-                        if (val._resumeTime == nextTime) {
+                        double tolerance = Math.pow(10, -10);
+                        if (Math.abs(val._resumeTime - nextTime) < tolerance) {
                             _delayedActorList.removeFirst();
                             val._actor._delayed = false;
                             Object lock = val._actor._getInternalLock();
@@ -489,18 +495,22 @@ public class CSPDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Count of the number of processes blocked trying to rendezvous.
     private int _actorsBlocked = 0;
-    private int _actorsDelayed = 0;
 
-    // the current time of this simulation.
-    private double _time = 0;
+    // Count of the number of processes delayed until time 
+    // sufficently advances.
+    private int _actorsDelayed = 0;
 
     // A sorted list of the times of delayed actors. The time the simulation 
     // will next be advanced to is the time at the top of the list.
     private LinkedList _delayedActorList = new LinkedList();
-
+    
     // Flag indicating that mutations have been registered with this director.
     private boolean _mutationsPending = false;// FIXME!
+
+    // The current time of this simulation.
+    private double _time = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -509,7 +519,6 @@ public class CSPDirector extends ProcessDirector {
     // Keeps track of the actor that is delayed and the time 
     // at which to resume it.
     private class DelayListLink {
-
         public double _resumeTime;
         public CSPActor _actor;
     }
