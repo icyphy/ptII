@@ -161,8 +161,6 @@ public class MoMLViewerApplet extends MoMLApplet {
 
             pane = new GraphPane(controller, graphModel);
 
-            controller.getStateController().setMenuFactory(
-                    new StateContextMenuFactory(controller));
             controller.getTransitionController().setMenuFactory(
                     new TransitionContextMenuFactory(controller));
         } else {
