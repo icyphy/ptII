@@ -50,7 +50,7 @@ sizes of the cross-reference lists.
 
 @author Geroncio Galicia
 @contributor Edward A. Lee
-@version $Id$
+@version @(#)CrossRefList.java	1.12 12/29/97
 */
 public final class CrossRefList {
 
@@ -61,7 +61,7 @@ public final class CrossRefList {
      *  @exception IllegalActionException Argument is null.
      */
     public CrossRefList(Object container) 
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (container == null) {
             throw new IllegalActionException(
                     "Attempt to create CrossRefList with a null container.");
@@ -80,7 +80,7 @@ public final class CrossRefList {
      *  @exception IllegalActionException Second argument is null.
      */
     public CrossRefList(Object container, CrossRefList originalList)
-            throws IllegalActionException {
+    throws IllegalActionException {
         this(container);
         _duplicate(originalList);
     }
@@ -89,7 +89,7 @@ public final class CrossRefList {
     ////                         public methods                           ////
     
     /** Return the first object referenced by this list, or null if the
-     *  list is emtpy.
+     *  list is empty.
      *  Time complexity: O(1).
      */
     public synchronized Object first() {
@@ -121,7 +121,11 @@ public final class CrossRefList {
      *  that to the the new one here.  Redundant links are allowed.
      *  Time complexity: O(1).
      */
-    public synchronized void link(CrossRefList farList) {
+    public synchronized void link(CrossRefList farList) 
+    throws IllegalActionException {
+        if(farList == this)
+            throw new IllegalActionException("illegal link-back");
+
         // FIXME: Technically, this will not always prevent deadlock, since
         // grabbing the lock on "this" is not atomic with grabbing the lock
         // on the modelToCopy.  This method should instead grab a lock on a
@@ -192,7 +196,8 @@ public final class CrossRefList {
      *  the remote lists to this one.
      *  Time complexity: O(n).
      */
-    private synchronized void _duplicate(CrossRefList modelToCopy) {
+    private synchronized void _duplicate(CrossRefList modelToCopy) 
+    throws IllegalActionException {
         // FIXME: Technically, this will not always prevent deadlock, since
         // grabbing the lock on "this" is not atomic with grabbing the lock
         // on the modelToCopy.  This method should instead grab a lock on a
@@ -214,7 +219,8 @@ public final class CrossRefList {
     
     // Version number is incremented each time the list is modified.
     // This is used to make sure that elements accessed via an enumeration
-    // are valid.
+    // are valid.  This is inspired by a similar mechanism in Doug Lea's
+    // Java Collections.
     private int _listVersion;
     
     private int _size;
@@ -223,7 +229,8 @@ public final class CrossRefList {
     
     private CrossRef _lastNode;
     
-    // FIXME: make final to prohibit resetting
+    // FIXME: make final to prohibit what is called "reference
+    // reseating" (not resetting).
     private Object _container;
     
     //////////////////////////////////////////////////////////////////////////
@@ -319,7 +326,7 @@ public final class CrossRefList {
          *  @exception java.util.NoSuchElementException Exhausted enumeration.  
          */
         public Object nextElement()
-                throws NoSuchElementException {
+        throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
                 throw new CorruptedEnumerationException();
             }
