@@ -74,3 +74,92 @@ test ChangeRequest-3.2 {test DE example with inserted actor} {
     $t insertClock
     enumToObjects [$t finish]
 } {0.0 1.0 2.0 2.5 3.0 4.0 4.5 5.0 6.0 6.5 7.0 8.0 8.5 9.0 10.0 10.5}
+
+
+test ChangeRequest-4.0 {StreamChangeListener} {
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    
+    set changeRequest [$t mutateConst2ChangeRequest]
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    # Try removing the listener before adding it.
+    $changeRequest removeChangeListener $listener    
+
+    $changeRequest addChangeListener $listener
+
+    # Add the listener twice to get coverage of a basic block.
+    $changeRequest addChangeListener $listener
+
+    $t start
+    $t mutate
+
+    enumToTokenValues [$t finish]
+    $printStream flush
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list [$changeRequest isErrorReported] $output 
+} {0 {StreamChangeRequest.changeExecuted(): Changing Const to 2.0 succeeded
+}}
+
+test ChangeRequest-4.1 {StreamChangeListener} {
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    
+    set changeRequest [$t mutateBadChangeRequest]
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    # Try removing the listener before adding it.
+    $changeRequest removeChangeListener $listener    
+
+    $changeRequest addChangeListener $listener
+
+    # Add the listener twice to get coverage of a basic block.
+    $changeRequest addChangeListener $listener
+
+    $t start
+    $t mutate
+
+    catch {$t finish} errMsg
+
+    $printStream flush
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list [$changeRequest isErrorReported] $output 
+} {0 {StreamChangeRequest.changeFailed(): Change request that always throws an Exception failed: java.lang.Exception: Always Thrown Exception
+}}
+
+
+test ChangeRequest-6.1 {isErrorReported, setErrorReported} {
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    set r1 [$changeRequest isErrorReported]
+    $changeRequest setErrorReported 1
+    set r2 [$changeRequest isErrorReported]
+    list $r1 $r2
+} {0 1}
+
+test ChangeRequest-7.1 {isPersistent, setPersistent} {
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    set r1 [$changeRequest isPersistent]
+    $changeRequest setPersistent 0
+    set r2 [$changeRequest isPersistent]
+    list $r1 $r2
+} {1 0}
