@@ -38,6 +38,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.data.Token;
 
 import java.util.Set;
@@ -163,6 +164,28 @@ public class DEIOPort extends TypedIOPort {
         _delay = delay;
         _useDelay = true;
         broadcast(token);
+    }
+
+    /** Clone this port into the specified workspace. Override the base
+     *  class to clear any ports that may have been specified with the
+     *  delayTo() method. Note that this means that when cloning an
+     *  actor that uses this port, you need to respecify delayTo()
+     *  relationships.  The new port is
+     *  <i>not</i> added to the directory of that workspace (you must
+     *  do this yourself if you want it there).
+     *  The result is a new port with no connections and no container.
+     *  The new port will have the same type as this one, but will not
+     *  have any type listeners and type constraints attached to it.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one or more of the
+     *   attributes cannot be cloned.
+     *  @return A new TypedIOPort.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        DEIOPort newobj = (DEIOPort)super.clone(ws);
+        newobj._delayToSet = new HashSet();
+	return newobj;
     }
 
     /** Add the specified port to the set of output ports that
