@@ -53,7 +53,12 @@ BIN_INSTALL_DIR =	$(exec_prefix)/bin
 # The home of the Java Developer's Kit (JDK)
 # Generating Java documentation uses this makefile variable
 # The line below gets substituted by the configure script
+# Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
 PTJAVA_DIR = 	@PTJAVA_DIR@
+
+# Value of the java.home Java property, which usually refers to the jre.
+# Under Cygwin, PTJAVA_HOME will not contain /cygdrive/c
+PTJAVA_HOME =	@PTJAVA_HOME@
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
