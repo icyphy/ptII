@@ -1047,6 +1047,9 @@ public class Variable extends Attribute
             _debug("validate");
         }
         invalidate();
+        // Unless the expression is false, the following will have
+        // been set to true by the invalidate() call above.
+        boolean neededEvaluation = _needsEvaluation;
         List errors = _propagate();
         if (errors != null && errors.size() > 0) {
             Iterator errorsIterator = errors.iterator();
@@ -1065,15 +1068,16 @@ public class Variable extends Attribute
         }
         // NOTE: The call to _propagate() above has already done
         // notification, but only if _needsEvaluation was true.
-        // Can we safely remove this redundant notification?  EAL 5/22/03.
-        /*
-        if (!_isLazy) {
+        // Note that this will not happen unless the expression is also null.
+        // Thus, we do the call here only if _needsEvaluation was false.
+        // Generally, this only happens on construction of parameters (?).
+        // EAL 6/11/03
+        if (!_isLazy && !neededEvaluation) {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 container.attributeChanged(this);
             }
         }
-        */
     }
 
     /** React to the change in the specified instance of Settable.
