@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal)
-@AcceptedRating Green (cxh)
 */
 
 package ptolemy.domains.dt.kernel.test;
@@ -38,6 +36,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/**
+  @author C. Fong
+  @version $Id$
+  @Pt.ProposedRating Red (eal)
+  @Pt.AcceptedRating Red (cxh)
+*/
 public class FakePlotter extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
