@@ -390,7 +390,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  property.
      *  </ol>
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         String libName = "";
         String dllDirValue = "";
         try {
@@ -411,15 +411,37 @@ public class GenericJNIActor extends TypedAtomicActor {
         String interlibName =
             "jni" + libName.substring(1, libName.length() - 1);
         //searching the class generated
-        try {
-            URL[] tab = new URL[1];
-            tab[0] = new URL("File://" + System.getProperty("users.dir"));
-            ClassLoader cl = new URLClassLoader(tab);
-            _class = cl.loadClass("jni." + interlibName + ".Jni"
-                    + this.getName());
+	String className = "jni." + interlibName + ".Jni"
+	    + this.getName();
+
+	URL[] tab = new URL[1];
+	try {
+	    File userDirAsFile =
+		new File(StringUtilities.getProperty("user.dir"));
+	    tab[0] = userDirAsFile.toURL();
         } catch (Exception ex) {
-            MessageHandler.error("Interface C class not found : ", ex);
+	    throw new IllegalActionException(this, ex, "Could not create URL "
+					     + "from user.dir ("
+					     + StringUtilities
+					     .getProperty("user.dir") + ")"); 
+	}
+        try {
+            ClassLoader cl = new URLClassLoader(tab);
+            _class = cl.loadClass(className);
+        } catch (Exception ex) {
+	    throw new IllegalActionException(this, ex, 
+					     "Could not load JNI C class '"
+					     + className + "' relative to "
+					     + tab[0]); 
+
         }
+
+	if (_class == null) {
+	    throw new IllegalActionException(this,
+					     "Could load JNI C class, '"
+					     + className + "' relative to "
+					     + tab[0]);
+	}
 
         // Add the value of dllDir to the java.library.path
         // First, look relative to the current directory (user.dir)
@@ -435,13 +457,23 @@ public class GenericJNIActor extends TypedAtomicActor {
                 + dllDirValue
                 + File.pathSeparator
                 + System.getProperty("java.library.path"));
+
         _methods = null;
+
         try {
             _methods = _class.getMethods();
         } catch (Exception ex) {
-            MessageHandler.error("Interface C _methods not found : ", ex);
+	    throw new IllegalActionException(this, ex, 
+					     "Interface C _methods not found "
+					     + "class was: " + _class);
         }
 
+	if (_methods == null) {
+	    throw new IllegalActionException(this,
+					     "getMethods() returned null?, "
+					     + "class was: " + _class);
+
+	}
         //getting the fire _method
         _methodIndex = -1;
         for (int i = 0; i < _methods.length; i++) {
@@ -449,6 +481,15 @@ public class GenericJNIActor extends TypedAtomicActor {
                 _methodIndex = i;
             break;
         }
+
+	if (_methodIndex == -1) {
+	    throw new IllegalActionException(this,
+					     "After looking at "
+					     + _methods.length + " method(s),"
+					     + "did not find fire method in '"
+					     +  _class + "'");
+
+	}
     }
 
     /** Read the argument of the function from the ports,
