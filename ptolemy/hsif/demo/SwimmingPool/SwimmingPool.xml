@@ -141,7 +141,7 @@
 		</Location>
 		<Location _id="id45" dst="id49 id50" src="id44" name="HeatOff" initial="true">
 			<DiffEquation>
-				<VarRef _id="id1c" var="id3" unOp="NOP"/>
+				<VarRef _id="id1c" var="id3" unOp="NOP" initialValue="25.0"/>
 				<AExpr>
 					<MExpr>
 						<MExprR mulOp=" * ">
@@ -623,7 +623,7 @@
 		</Location>
 		<Location _id="id81" dst="id85" src="id80" name="steadyOff" initial="true">
 			<DiffEquation>
-				<VarRef _id="id72" var="id1a" unOp="NOP"/>
+				<VarRef _id="id72" var="id1a" unOp="NOP" initialValue="2.4"/>
 				<AExpr>
 					<MExpr>
 						<ParRef _id="id73" par="id58" name="f_in" unOp=" -"/>
