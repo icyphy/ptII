@@ -41,10 +41,9 @@ A first-in, first-out (FIFO) queue with optional capacity and
 history, with blocking reads and writes. Objects are appended to the queue
 with the put() method, performing a blocking write, and removed from the queue
 with the get() method using blocking reads. The object removed is the oldest
-one in the queue. By default, the capacity is unbounded, but it can be set to
-any nonnegative size. If the history
-capacity is greater than zero (or infinite, indicated by a capacity
-of -1), then objects removed from the queue are transferred to a
+one in the queue. 
+If the history capacity is greater than zero (or infinite, indicated by 
+a capacity of -1), then objects removed from the queue are transferred to a
 second queue rather than simply deleted. By default, the history
 capacity is zero. In case the queue is empty, the get() method blocks till
 a token is introduced into the queue or a termination exception is thrown.
@@ -74,10 +73,15 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads the oldest token from the Queue and returns it. If there are
-     *  no tokens in the Queue, then the method blocks on it. It throws
-     *  a TerminateProcessException in case the simulation has to be
-     *  terminated.
+    /** Remove and return the oldest token from the FIFO queue. If there 
+     *  are no tokens in the queue, then the method blocks on it and 
+     *  informs the director of it. Otherwise or after resuming, it takes
+     *  the token and checks if any process is blocked on a write to this 
+     *  receiver. If a process is indeed blocked, then it unblocks the 
+     *  process, and informs the director. It then checks if a pause is
+     *  requested, in which case it pauses. Otherwise it returns.
+     *  In case the simulation is to be terminated, it throws a 
+     *  TerminateProcessException.
      *  @return Token read from the queue
      */
     public Token get() {
@@ -88,7 +92,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
                 //System.out.println(getContainer().getFullName()+" Reading block");
-                director.readBlock();
+                director._readBlock();
                 //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
                 _readpending = true;
                 while (_readpending && !_terminate) {
@@ -105,7 +109,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_writepending) {
                     //System.out.println(getContainer().getFullName()+" being unblocked");
-                    director.writeUnblock(this);
+                    director._writeUnblock(this);
                     _writepending = false;
                     notifyAll(); //Wake up threads waiting on a write;
                 }
@@ -120,16 +124,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
     
-    /** Always returns true as the Process Network model of computation does
-     *  not allow polling for data.
-     * @return true
-     * @exception IllegalActionException never thrown in this class.
+    /** Return true as ideally a channel in the Kahn process networks
+     *  model of computation is of infinite capacity and always has room.
+     *  Also in our implementation, polling is not permitted as we implement
+     *  blocking writes.
+     *  @return true
      */
     public boolean hasRoom() {
 	return true;
     }
 
-    /** Always returns true as the Process Network model of computation does
+    /** Return true as the Kahn process networks model of computation does
      *  not allow polling for data.
      * @return true
      * @exception IllegalActionException never thrown in this class.
@@ -138,25 +143,32 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Returns a true or false to indicate if there is a read pending
-     *  on this queue or not.
+    /** Return a true or false to indicate if there is a read pending
+     *  on this receiver or not.
      * @return true if a read is pending else false
      */
     public synchronized boolean isReadPending() {
 	return _readpending;
     }
 
-    /** Returns a true or false to indicate if there is a write pending
-     *  on this queue.
+    /** Return a true or false to indicate if there is a write pending
+     *  on this receiver.
      * @return true if a write is pending else false
      */
     public synchronized boolean isWritePending() {
 	return _writepending;
     }
 
-    /** Put a token on the queue.  If the queue is full, then block
-     *  on a write to the queue.
-     *  @param token The token to put on the queue.
+    /** Put a token on the queue.  If the queue is full, then the method
+     *  blocks on it and informs the director of it. Otherwise or after 
+     *  resuming, it puts a token and checks whether any process is blocked 
+     *  on a read from this receiver. If a process is indeed blocked, then 
+     *  it unblocks the process, and informs the director. It then checks 
+     *  whether a pause is requested, in which case it pauses. Otherwise it 
+     *  returns.
+     *  In case the simulation is to be terminated, it throws a 
+     *  TerminateProcessException.
+     *  @param token The token to put in the FIFO queue.
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
@@ -167,7 +179,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (!super.hasRoom()) {
                 _writepending = true;
                 //System.out.println(getContainer().getFullName()+" being writeblocked");
-                director.writeBlock(this);
+                director._writeBlock(this);
                 while (!_terminate && !super.hasRoom()) {
                     //System.out.println(getContainer().getFullName()+" waiting on write");
                     while(_writepending) {
@@ -182,7 +194,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readpending) {
-                    director.readUnblock();
+                    director._readUnblock();
                     _readpending = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
@@ -196,9 +208,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
-    /** This pauses or wakes up the receiver and hence any actor trying to
-     *  read or write to the queue
-     *  @param pause true if the receiver should be paused and false otherwise.
+    /** Pause or resume the thread that tries to read or write to this 
+     *  receiver. 
+     *  @param pause true if requesting a pause and false if requesting a 
+     *  resumption of the paused thread, if any.
      */
     public synchronized void setPause(boolean pause) {
 	if (pause) {
@@ -209,22 +222,25 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	}
     }
 
-    /** Set the flag indicating a pending read from the queue
-     * @param readpending is true if there is a pending read, false otherwise.
+    /** Set the flag indicating a pending read from the receiver.
+     *  @param readpending true if the calling process is blocking on a 
+     *  read, false otherwise.
      */
     public synchronized void setReadPending(boolean readpending) {
 	_readpending = readpending;
     }
 
-    /** Set the flag indicating a pending write from the queue
-     * @param writepending is true if there is a pending read, false otherwise.
+    /** Set the flag indicating a pending write from the receiver. 
+     *  @param writepending is true if the calling process is blocking on 
+     *  a write, false otherwise.
      */
     public synchronized void setWritePending(boolean writepending) {
 	_writepending = writepending;
     }
 
-    /** This sets the flag in the receiver to indicate the onset of termination
-     *  the actor containing this receiver.
+    /** Set the flag in the receiver to indicate the onset of termination.
+     *  This will result in termination of any process that is either blocked
+     *  on the receiver or is trying to read or write from it.
      */
     public synchronized void setFinish() {
 	_terminate = true;
