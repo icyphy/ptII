@@ -36,7 +36,7 @@ DIRS = 		graph toolbox ptolemy debugger
 # Root of the Java directory
 ROOT =		../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)/boot
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
