@@ -179,20 +179,20 @@ public class Clock extends TimedSource {
             throws IllegalActionException {
         if (attribute == offsets) {
             // Check nondecreasing property.
-            double[][] offsts =
+            double[][] offsetsValue =
                 ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-            if (offsts.length != 1 || offsts[0].length == 0) {
+            if (offsetsValue.length != 1 || offsetsValue[0].length == 0) {
                 throw new IllegalActionException(this,
                         "Value of offsets is not a row vector.");
             }
             double previous = 0.0;
-            for (int j = 0; j < offsts[0].length; j++) {
-                if (offsts[0][j] < previous) {
+            for (int j = 0; j < offsetsValue[0].length; j++) {
+                if (offsetsValue[0][j] < previous) {
                     throw new IllegalActionException(this,
                             "Value of offsets is not nondecreasing " +
                             "and nonnegative.");
                 }
-                previous = offsts[0][j];
+                previous = offsetsValue[0][j];
             }
         } else if (attribute == period) {
             double prd = ((DoubleToken)period.getToken()).doubleValue();
@@ -256,36 +256,36 @@ public class Clock extends TimedSource {
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
 
-        double[][] offsts =
+        double[][] offsetsValue =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         ArrayToken val = (ArrayToken)(values.getToken());
-        if (offsts[0].length != val.length()) {
+        if (offsetsValue[0].length != val.length()) {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
         // Adjust the phase if time has moved beyond the current phase.
         while (currentTime >=
-                _tentativeCycleStartTime + offsts[0][_tentativePhase]) {
+                _tentativeCycleStartTime + offsetsValue[0][_tentativePhase]) {
             // Phase boundary.  Change the current value.
             _tentativeCurrentValue = _getValue(_tentativePhase);
             // Increment to the next phase.
             _tentativePhase++;
-            if (_tentativePhase >= offsts[0].length) {
+            if (_tentativePhase >= offsetsValue[0].length) {
                 _tentativePhase = 0;
                 // Schedule the first firing in the next period.
                 _tentativeCycleStartTime += periodValue;
             }
-            if(offsts[0][_tentativePhase] >= periodValue) {
+            if(offsetsValue[0][_tentativePhase] >= periodValue) {
                 throw new IllegalActionException(this,
                         "Offset number " + _tentativePhase + " with value "
-                        + offsts[0][_tentativePhase] + " must be less than the "
+                        + offsetsValue[0][_tentativePhase] + " must be less than the "
                         + "period, which is " + periodValue);
             }
             // NOTE: In the RTOS domain, this may not occur if we have
             // missed a deadline.  As a consequence, the clock will stop.
             // Schedule the next firing in this period.
             _tentativeNextFiringTime
-                = _tentativeCycleStartTime + offsts[0][_tentativePhase];
+                = _tentativeCycleStartTime + offsetsValue[0][_tentativePhase];
         }
 
         output.send(0, _tentativeCurrentValue);
@@ -303,11 +303,11 @@ public class Clock extends TimedSource {
         _currentValue = _getValue(0).zero();
         _phase = 0;
 
-        double[][] offsts =
+        double[][] offsetsValue =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         // This needs to be the last line, because in threaded domains,
         // it could execute immediately.
-        getDirector().fireAt(this, offsts[0][0] + currentTime);
+        getDirector().fireAt(this, offsetsValue[0][0] + currentTime);
     }
 
     /** Update the state of the actor and schedule the next firing,

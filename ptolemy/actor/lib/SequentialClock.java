@@ -171,20 +171,20 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
             throws IllegalActionException {
         if (attribute == offsets) {
             // Check nondecreasing property.
-            double[][] offsts =
+            double[][] offsetsValue =
                 ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-            if (offsts.length != 1 || offsts[0].length == 0) {
+            if (offsetsValue.length != 1 || offsetsValue[0].length == 0) {
                 throw new IllegalActionException(this,
                         "Value of offsets is not a row vector.");
             }
             double previous = 0.0;
-            for (int j = 0; j < offsts[0].length; j++) {
-                if (offsts[0][j] < previous) {
+            for (int j = 0; j < offsetsValue[0].length; j++) {
+                if (offsetsValue[0][j] < previous) {
                     throw new IllegalActionException(this,
                             "Value of offsets is not nondecreasing " +
                             "and nonnegative.");
                 }
-                previous = offsts[0][j];
+                previous = offsetsValue[0][j];
             }
         } else if (attribute == period) {
             double prd = ((DoubleToken)period.getToken()).doubleValue();
@@ -240,11 +240,11 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // Schedule the first firing.
         double currentTime = getDirector().getCurrentTime();
-        double[][] offsts =
+        double[][] offsetsValue =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         // NOTE: This must be the last line, because it could result
         // in an immediate iteration.
-        getDirector().fireAt(this, offsts[0][0] + currentTime);
+        getDirector().fireAt(this, offsetsValue[0][0] + currentTime);
     }
 
     /** Set the current value.
@@ -272,7 +272,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
-        double[][] offsts =
+        double[][] offsetsValue =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
 
         // Set the cycle start time here rather than in initialize
@@ -284,18 +284,18 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // Increment to the next phase.
         _phase++;
-        if (_phase >= offsts[0].length) {
+        if (_phase >= offsetsValue[0].length) {
             _phase = 0;
             _cycleStartTime += periodValue;
         }
-        if(offsts[0][_phase] >= periodValue) {
+        if(offsetsValue[0][_phase] >= periodValue) {
             throw new IllegalActionException(this,
                     "Offset number " + _phase + " with value "
-                    + offsts[0][_phase] + " must be less than the "
+                    + offsetsValue[0][_phase] + " must be less than the "
                     + "period, which is " + periodValue);
         }
 
-        getDirector().fireAt(this, _cycleStartTime + offsts[0][_phase]);
+        getDirector().fireAt(this, _cycleStartTime + offsetsValue[0][_phase]);
 
         return true;
     }
