@@ -146,7 +146,7 @@ public class Timer extends TimedDelay {
         if (_delayedTokens.size() > 0) {
             _currentOutput = (Token)_delayedTokens.get(currentTime);
             if (_currentOutput != null) {
-                output.send(0, _currentOutput);
+                output.send(0, value.getToken());
                 return;
             } else {
                 // no tokens to be produced at the current time.
