@@ -74,6 +74,13 @@ public class ButterflyApplication extends Frame {
 
 	show();
 
+        // Handle window closing by exiting the application.
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
@@ -95,6 +102,9 @@ public class ButterflyApplication extends Frame {
 
     }
 
+    /** Create a new window with the Butterfly plot in it and map it
+	to the screen.
+     */
     public static void main(String arg[])
 	throws IllegalActionException , NameDuplicationException {
 
