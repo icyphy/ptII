@@ -4,10 +4,24 @@
 <entitylibrary name="sdf" version="1.0">
 <description>root sdf library</description>
 
-<director name="director" icon="generic.director" implementation="ptolemy.domains.sdf.kernel.SDFDirector">
+<director name="director" implementation="ptolemy.domains.sdf.kernel.SDFDirector">
 <description>The basic SDFScheduler</description>
 <parameter name="iterations" value="1" type="ptolemy.data.IntToken"/>
 </director>
+
+<entity name="raisedcosine" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.domains.sdf.lib.RaisedCosine">
+<description>A RaisedCosine filter</description>
+<terminalmap ports="input output"/>
+<port name="input" input="true" type="double"/>
+<port name="output" output="true" type="double"/>
+</entity>
+
+<entity name="linecoder" icon="generic.transformer" terminalstyle="generic.transformer" implementation="ptolemy.domains.sdf.lib.LineCoder">
+<description>Convert binary data to transmission signals.</description>
+<terminalmap ports="input output"/>
+<port name="input" input="true" type="double"/>
+<port name="output" output="true" type="double"/>
+</entity>
 
 </entitylibrary>
 
