@@ -718,8 +718,10 @@ public class SDFScheduler extends Scheduler {
             Map firings, Map externalRates) {
         int lcm = 1;
 
-        if (_debugging) _debug("Normalizing Firings");
-        if (_debugging) _debug("vectorizationFactor = " + vectorizationFactor);
+        if (_debugging) {
+            _debug("Normalizing Firings");
+            _debug("vectorizationFactor = " + vectorizationFactor);
+        }
 
         // First find the lcm of all the denominators of all the
         // computed firings.
