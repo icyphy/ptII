@@ -39,11 +39,11 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ForwardEulerSolver
 /**
-   The Forward Euler(FE) ODE solver. For ODE
+   The Forward Euler ODE solver. For ODE
    <pre>
    dx/dt = f(x, u, t), x(0) = x0;
    </pre>
-   The FE method approximate the x(t+h) as:
+   The Forward Euler method approximates the x(t+h) as:
    <pre>
    x(t+h) =  x(t) + h * f(x(t), u(t), t)
    </pre>
@@ -51,11 +51,11 @@ import ptolemy.kernel.util.Workspace;
    simplest algorithm for solving an ODE. It is a first order method,
    and has stability problem for some systems.
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (liuxj)
 */
 public class ForwardEulerSolver extends FixedStepSolver {
 
@@ -88,11 +88,12 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Perform the fire() method for the argument integrator. This implements
-     *  the ODE solving algorithm as shown in the class comment.
+    /** Fire the integrator to resolve states. Vote true for convergence if 
+     *  a fixed-point solution is found. Otherwise, vote false. 
      *
-     *  @param integrator The integrator that calls this method.
-     *  @exception IllegalActionException If there is no director.
+     *  @param integrator The integrator to be fired. 
+     *  @exception IllegalActionException If there is no director, or can not
+     *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -104,30 +105,12 @@ public class ForwardEulerSolver extends FixedStepSolver {
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double tentativeState =
             integrator.getState() + f*(dir.getCurrentStepSize());
+        
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
 
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
-
-
-    /** Advance the current time by the current step size and resolve
-     *  the state of the system. This method always returns true to
-     *  indicate that the state is found accurately.
-     *  This gets the state transition
-     *  schedule from the scheduler and fire for one iteration
-     *  (which consists of 1 round). This method only resoles the
-     *  tentative state. It is the director's job to update the
-     *  states.
-     *
-     *  @return True.
-     *  @exception IllegalActionException If the firing of some actors
-     *       throw it.
-     */
-    public boolean resolveStates() throws IllegalActionException {
-        return true;
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

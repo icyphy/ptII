@@ -37,15 +37,15 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
 /**
-   Abstract base class for fixed step size (no error control) ODE solvers.
-   It provide base implementation for some methods that are shared by
-   all fixed-step-size solvers.
+   Abstract base class for fixed step size ODE solvers, which provide no
+   error control. It provide base implementation for some methods that 
+   are shared by all fixed-step-size solvers.
 
-   @author Jie Liu
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public abstract class FixedStepSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty
@@ -70,20 +70,21 @@ public abstract class FixedStepSolver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. 
+    /** Fire dynamic actors. Advance the model time to the current model time
+     *  plus the current step size.
      *  @throws IllegalActionException If thrown in the super class or 
      *  the model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
-        // First assume that the current step size is accurate.
-        // If any dynamic actor finds the current step size not accurate,
-        // the converged status is set to false. 
+        // First assume that the states will converge after this round.
+        // If any integrator does not agree, the final converged status may be 
+        // changed via calling _voteForConverged() by that integrator. 
         _setConverged(true);
         super.fireDynamicActors();
         CTDirector dir = (CTDirector)getContainer();
-        if (getRoundCount() == 0) {
-            dir.setModelTime(
-                dir.getModelTime().add(dir.getCurrentStepSize()));
+        if (_getRoundCount() == 0) {
+            // At the first round, advance the time with the current step size.
+            dir.setModelTime(dir.getModelTime().add(dir.getCurrentStepSize()));
         }
     }
 

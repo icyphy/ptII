@@ -39,15 +39,16 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-   Abstract base class for ODE solvers. The key method for the class is
-   resolveState(), which executes the integration method for one
-   step. This method does not consider any breakpoints. In general,
-   resolveState() will resolve the integrators' new states.
-   Step size control (including error control) is performed by the
-   director, but solvers may provide support for it. How the states are 
-   resolved and how the errors are controlled are solver dependent.  
-   Derived classes may implement these methods according to individual 
-   ODE solving algorithms.
+   Abstract base class for ODE solvers. The key methods for the class are 
+   {@link #fireDynamicActors()} and {@link #fireStateTransitionActors()}.
+   CT directors call these methods to resolve the initial states in a future 
+   time in the continuous phase of exution of a complete iteration. The process 
+   of resolving the initial states in a future time is also known as an 
+   integration. A complete integration is composed of one or more rounds of 
+   executions. One round of execution consists of calling 
+   fireDynamicActors() once followed by calling fireStateTransitionActors() 
+   once. How the states are resolved are solver dependent. Derived classes 
+   need to implement these methods according to their ODE solving algorithms.
    <P>
    The behavior of integrators also changes when changing the ODE solver, 
    so this class provides some methods for the integrators too, including the 
@@ -56,17 +57,26 @@ import ptolemy.kernel.util.Workspace;
    corresponding methods to this class. And subclasses of this class provide 
    concrete implementations of these methods.
    <P>
-   An integer called "round" is used to indicate the number of firing rounds
-   within one iteration. For some integration methods, (i.e. the so called
-   explicit methods) the round of firings are fixed.
-   For some others (i.e. implicit methods), the round could be an arbitrary
-   positive integer.
+   How many rounds are need in one integration is solver dependent. For some 
+   solving algorithms, (i.e. the so called explicit methods) the number of 
+   rounds is fixed. For some others (i.e. implicit methods), the number of 
+   rounds can not be decided beforehand. 
    <P>
-   A round counter is a counter for the number of fire() called in one 
-   iteration. It helps the actors to decide how to behave under different 
-   rounds. The round can be got by the getRound() method. The incrementRound() 
-   method will increase the counter by one, and resetRound() will always 
-   reset the counter to 0.
+   A round counter is a counter for the number of rounds in one integration. 
+   It helps the solvers to decide how to behave under different rounds. 
+   The round counter can be retrieved by the _getRoundCound() method. 
+   The _incrementRoundCount() method will increase the counter by one, 
+   and _resetRoundCount() will always reset the counter to 0. These methods are 
+   protected because they are only used by solvers and CT directors.
+   <p>
+   In this class, two methods {@link #_isConverged()} and 
+   {@link #_voteForConverged()} are defined to let CT directors know the status
+   of resolved states. If multiple integrators exist, only when all of them 
+   vote true for converged, will the _isConverged return true. Another related
+   method is {@link #resolveStates()}, which always returns true in this base 
+   class. However, in the solvers that implement the implicit solving methods,
+   this method may return false if the maximum number of iterations is reached 
+   but states have not be resolved.  
    <P>
    Conceptually, ODE solvers do not maintain simulation parameters,
    like step sizes and error tolerance.
@@ -118,7 +128,8 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. 
+    /** Fire dynamic actors. Derived classes may advance the model time. The 
+     *  amount of time increment depends on the solving algorithms. 
      *  @exception IllegalActionException If schedule can not be found or
      *  dynamic actors throw it from their fire() methods.
      */
@@ -183,20 +194,6 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract int getIntegratorAuxVariableCount();
 
-    /** Return the round counter record.
-     *  @return The round of firing the state transition schedule.
-     */
-    public int getRoundCount() {
-        return _roundCount;
-    }
-
-    /** Increase the round counter by one. In general, the round counter
-     *  will be increased for each round the state transition schedule is fired.
-     */
-    public void incrementRoundCount() {
-        _roundCount++;
-    }
-
     /** The fire() method of integrators is delegated to this method.
      *  Derived classes need to implement the details.
      *  @param integrator The integrator of that calls this method.
@@ -224,34 +221,25 @@ public abstract class ODESolver extends NamedObj {
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Return true if all integrators agree that the current integration has 
-     *  converged to a fixed point. 
-     *  @return True if the current integration has converged to a fixed point.
+    /** Return true if the states of the system have been resolved successfully.
+     *  In this base class, true is always returned. Derived classes may change
+     *  the returned value. 
+     *  @return True If states of the system have been resolved sucessfully. 
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean isConverged() {
-        return _isConverged;
+    public boolean resolveStates() throws IllegalActionException {
+        return true;
     }
-
-    /** Reset the round counter to 0.
-     */
-    public void resetRoundCount() {
-        _roundCount = 0;
-    }
-    
-    /** Return true if the state of the system is resolved successfully.
-     *  Different solvers may implement it differently. Implementations
-     *  of this method will fire STATE_TRANSITION_ACTORS and
-     *  DYNAMIC actors. When states are resolved, the current time was
-     *  increased by the amout of the used step size.
-     *  @exception IllegalActionException Thrown in derived classes if
-     *  the exception is thrown by one of the execution methods of some
-     *  actors.
-     *  @return True If states of the system is resolved sucessfully. 
-     */
-    public abstract boolean resolveStates() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return the number of the round counter.
+     *  @return The number of the round counter.
+     */
+    protected int _getRoundCount() {
+        return _roundCount;
+    }
 
     /** Get the current schedule. 
      *  @return The current schedule.
@@ -272,6 +260,22 @@ public abstract class ODESolver extends NamedObj {
         return (CTSchedule)scheduler.getSchedule();
     }
     
+    /** Increase the round counter by one. In general, the round counter
+     *  will be increased for each time the state transition actors are fired.
+     */
+    protected void _incrementRoundCount() {
+        _roundCount++;
+    }
+
+    /** Return true if all integrators agree that the current states have 
+     *  converged to a fixed point. 
+     *  @return Return true if all integrators agree that the current states 
+     *  have converged to a fixed point.
+     */
+    protected boolean _isConverged() {
+        return _isConverged;
+    }
+
     /** Make this solver the solver of the given Director. This method
      *  should only be called by CT directors, when they instantiate solvers 
      *  according to the ODESolver parameters.
@@ -310,21 +314,38 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Set a flag to indicate whether the fixed-point iteration has been 
-     *  reached. Integrators and CT director may call this method to 
+    /** Reset the round counter to 0.
+     */
+    protected void _resetRoundCount() {
+        _roundCount = 0;
+    }
+    
+    /** Set a flag to indicate whether the fixed point of states has been 
+     *  reached. Solvers and CT directors may call this method to 
      *  change the convergence.
+     *  <p>
+     *  This method should not be called by individual integrators. 
+     *  If an integrator thinks the states have not converged, it should call
+     *  _voteForConverged() method, which influences the convergence of the
+     *  solver.   
      *  @param converged The flag setting.
+     *  @see #_voteForConverged()
      */
     protected void _setConverged(boolean converged) {
         _isConverged = converged;
     }
 
-    /** Vote for whether a fixed point has reached. The final result
-     *  is the <i>and</i> of all votes.
+    /** An integrator calls this method to vote whether a fixed point has 
+     *  reached. The final result is the <i>and</i> of votes from all 
+     *  integrators. This method is particular designed for integrators and 
+     *  it should be called from the integratorFire() method.
+     *  Solvers and CT directors should use _setConverged() instead.
      *  @param converged True if vote for converge.
+     *  @see #integratorFire()
+     *  @see #_setConverged()
      */
     protected void _voteForConverged(boolean converged) {
-        _setConverged(isConverged() && converged);
+        _setConverged(_isConverged() && converged);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -332,7 +353,8 @@ public abstract class ODESolver extends NamedObj {
 
     // The CT director that contains this solver.
     private CTDirector _director = null;
-    // The flag indicating whether the fixed-point iteration has been reached.
+    // The flag indicating whether the fixed point of states has been reached.
+    // The default value is false.
     private boolean _isConverged = false;
     // The round counter.
     private int _roundCount = 0;   

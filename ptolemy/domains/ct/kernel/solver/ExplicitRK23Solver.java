@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
    K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
    x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
-   </pre>,
+   </pre>, 
    and error control:
    <pre>
    K3 = f(x(n+1), tn+h);
@@ -68,11 +68,11 @@ import ptolemy.kernel.util.Workspace;
    This is a second order method, but uses a third order procedure to estimate
    the local truncation error.
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class ExplicitRK23Solver extends ODESolver {
 
@@ -102,7 +102,11 @@ public class ExplicitRK23Solver extends ODESolver {
         }
     }
 
-    /** Fire dynamic actors. 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Fire dynamic actors. Advance the model time. The amound of increment
+     *  is decided by the number of the round counter.
      *  @throws IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
@@ -115,31 +119,22 @@ public class ExplicitRK23Solver extends ODESolver {
         Time iterationBeginTime = dir.getIterationBeginTime();
         double currentStepSize = dir.getCurrentStepSize();
         dir.setModelTime(
-            iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+            iterationBeginTime.add(currentStepSize*_timeInc[_getRoundCount()]));
     }
 
 
-    /** Fire state transition actors. 
+    /** Fire state transition actors. Increment the round count. 
+     *  If the current round is the third round, set converged flag to 
+     *  true indicating a fixed-point states have been reached.
      *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
-        incrementRoundCount();
-        if (getRoundCount() == _timeInc.length) {
-            resetRoundCount();
+        _incrementRoundCount();
+        if (_getRoundCount() == _timeInc.length) {
             _setConverged(true);
-            // enforce the current iteration stops at the expected time
-            // specially for the breakpoints.
-            // NOTE: we use the combination of iteration begin time and
-            // [0.5, 0.75, 1.0] as the time increment array. We may not
-            // need the following statement. However, it is still here 
-            // just to make sure that time goes where we expected.
-            // dir.setModelTime(dir.getIterationEndTime());
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
@@ -157,11 +152,11 @@ public class ExplicitRK23Solver extends ODESolver {
         return 4;
     }
 
-    /** Provide the fire() method for integrators under this solver.
-     *  This performs the ODE solving algorithm.
-     *
+    /** Fire the given integrator. This method performs the ODE solving 
+     *  algorithm described in the class comment.
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, or can not
+     *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -170,7 +165,7 @@ public class ExplicitRK23Solver extends ODESolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        int r = getRoundCount();
+        int r = _getRoundCount();
         double xn =  integrator.getState();
         double outvalue;
         double h = dir.getCurrentStepSize();
@@ -238,7 +233,7 @@ public class ExplicitRK23Solver extends ODESolver {
         }
     }
 
-    /** Provide the  predictedStepSize() method for the integrators
+    /** Provide the predictedStepSize() method for the integrators
      *  under this solver. It uses the algorithm in the class comments
      *  to predict the next step size based on the current estimation
      *  of the local truncation error.
@@ -259,21 +254,6 @@ public class ExplicitRK23Solver extends ODESolver {
         _debug("integrator: " + integrator.getName() +
                 " suggests next step size = " + newh);
         return newh;
-    }
-
-    /** Advance the current time by the current step size, and
-     *  resolve the state of the integrators at that time.
-     *  This method always returns true since this class implements
-     *  an explicit method. xIt gets the state transition
-     *  schedule from the scheduler and fire for one iteration,
-     *  (which consists of 4 rounds).
-     *
-     * @exception IllegalActionException If there is no director,
-     *  no scheduler, or one of the actors throw it in its fire()
-     *  method or emitTentativeOutput() method.
-     */
-    public boolean resolveStates() throws IllegalActionException {
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

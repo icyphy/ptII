@@ -39,9 +39,6 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 /**
-   NOTE: The step size control mechanism in this class is not very elegant.
-   Please avoiding using this class if possible.
-
    This is a second order variable step size ODE solver that uses the
    trapezoidal rule algorithm. For an ODE
    <pre>
@@ -55,11 +52,20 @@ import ptolemy.kernel.util.Workspace;
    This is the most accurate second order multi-step ODE solver.
    It is an implicit algorithm, which involves a fixed-point iteration
    to find x(t+h) and x'(t+h).
+   <p>
+   The local truncation error (LTE) control is based on the formula 9.78 in 
+   "Modeling and Simulation of Dynamic Systems" by Robert L. Woods and Kent L.
+   Lawrence. 
+   <p>
+   The basic idea is that once states and derivatives are resolved, denoted as 
+   x(t+h) and x'(t+h), use a two-step method with the calculated derivatives 
+   to recalculate the states, denoted as xx(t+h). Since this solver is second 
+   order, the LTE is approximately abs(x(t+h) - xx(t+h))/(2^2 - 1).    
 
-   @author Jie Liu
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (cxh)
 */
 public class TrapezoidalRuleSolver extends ODESolver {
@@ -91,33 +97,49 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
     }
 
-    /** Fire dynamic actors.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Fire dynamic actors. Advance the model time to the current model time
+     *  plus the current step size.
      *  @throws IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
-        // First assume that the current step size is accurate.
-        // If any dynamic actor finds the current step size not accurate,
-        // the converged status is set to false. 
+        // First assume that the states will converge after this round.
+        // If any integrator does not agree, the final converged status may be 
+        // changed via calling _voteForConverged() by that integrator. 
         _setConverged(true);
         CTDirector dir = (CTDirector)getContainer();
         super.fireDynamicActors();
-        if (getRoundCount() == 0) {
-            dir.setModelTime(
-                    dir.getModelTime().add(dir.getCurrentStepSize()));
+        if (_getRoundCount() == 0) {
+            _recalculatingWithTwoSteps = false;
+            _firstStep = true;
+            dir.setModelTime(dir.getModelTime().add(dir.getCurrentStepSize()));
+        }
+        if (_isConverged()) {
+            // Resolved satates have converged.
+            // We need to recalculate the states with two steps. 
+            // The new states will be used to control local truncation error
+            if (!_recalculatingWithTwoSteps) {
+                _setConverged(false);
+                _recalculatingWithTwoSteps = true;
+            } else {
+                if (_firstStep) {
+                    _setConverged(false);
+                    _firstStep = false;
+                } 
+            }
         }
     }
 
-    /** Fire state transition actors.
+    /** Fire state transition actors. Increment the round count.
      *  @throws IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
-        incrementRoundCount();
+        _incrementRoundCount();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Return 0 to indicate that this solver needs no
      *  history information.
@@ -135,69 +157,100 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return 2;
     }
 
-    /** The fire() method for integrators under this solver. It performs
-     *  the ODE solving algorithm.
+    /** Fire the given integrator. 
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, or can not
+     *  read input, or send output. 
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
-                    " must have a CT director.");
+            " must have a CT director.");
         }
-        // Tf there's no enough history, use the derivative resolver
-        // to start the method.
-
-        double f1 = integrator.getDerivative();
         double h = dir.getCurrentStepSize();
         double tentativeState;
-        if (getRoundCount() == 0) {
-            // prediction
+        if (_getRoundCount() == 0) {
+            // During the first round, use the current derivative to predict 
+            // the states at currentModelTime + currentStepSize. The predicted
+            // states are the initial guesses for fixed-point iteration.
+            double f1 = integrator.getDerivative();
             tentativeState = integrator.getState() + f1*h;
-            // for error control
-            integrator.setAuxVariables(0, tentativeState);
+            // Set converged to false such that the integrator will be refired 
+            // again to check convergence of resolved states.
+            _voteForConverged(false);
         } else {
-            //correction
+            // get the derivative at the beginning time of current integration.
+            double f1 = integrator.getDerivative();
+            // get predicated derivative at the end time of current integration.
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            tentativeState = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double error =
-                Math.abs(tentativeState-integrator.getTentativeState());
-            if ( !(error < dir.getValueResolution())) {
-                _voteForConverged(false);
+            if (!_recalculatingWithTwoSteps) {
+                tentativeState = integrator.getState() + (h*(f1+f2))/2.0;
+                double error =
+                    Math.abs(tentativeState-integrator.getTentativeState());
+                if (error < dir.getValueResolution()) {
+                    // save resolved states for local truncation error control
+                    integrator.setAuxVariables(0, tentativeState);
+                    _voteForConverged(true);
+                } else {
+                    _voteForConverged(false);
+                }
+            } else {
+                if (_firstStep) {
+                    // calculate the states with half of the step size.
+                    tentativeState 
+                        = integrator.getState() + (h*(f1+f2))/2.0/2.0;
+                } else {
+                    // calculate the states with half of the step size.
+                    tentativeState 
+                        = integrator.getTentativeState() + (h*(f1+f2))/2.0/2.0;
+                    // NOTE: We save the newly calculated state as the saved
+                    // aux variable and restore the tentativeState back to 
+                    // the fixed-point state
+                    double temp = tentativeState;
+                    integrator.setAuxVariables(0, temp);    
+                    tentativeState = (integrator.getAuxVariables())[0];
+                    integrator.setTentativeDerivative(f2);
+                }
+                _voteForConverged(true);
             }
-            integrator.setTentativeDerivative(f2);
         }
-        integrator.setTentativeState(tentativeState);
+        integrator.setTentativeState(tentativeState);  
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
     /** Perform the isThisStepAccurate() test for the integrator under
-     *  this solver. This method calculates the tentative state
-     *  and test whether the local
-     *  truncation error (an estimation of the local error) is less
-     *  than the error tolerance
+     *  this solver. This method returns true if the local truncation error 
+     *  (an estimation of the local error) is less than the error tolerance.
+     *  Otherwise, return false.
      *  @param integrator The integrator that calls this method.
-     *  @return True if the intergrator report a success on the this step.
+     *  @return True if the local truncation error is less than the 
+     *  error tolerance.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
         double tolerance = dir.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
         double localError =
-            0.1*Math.abs(integrator.getTentativeState() - k[0]);
+            (1.0/3.0)*Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, localError);
-        _debug("Integrator: "+ integrator.getName() +
-                " local truncation error = " + localError);
+        if (_debugging) {        
+            _debug("Integrator: "+ integrator.getName() +                 
+                    " local truncation error = " + localError);
+        }
         if (localError < tolerance) {
-            _debug("Integrator: " + integrator.getName() +
+            if (_debugging) {
+                _debug("Integrator: " + integrator.getName() +
                     " report a success.");
+            }
             return true;
         } else {
-            _debug("Integrator: " + integrator.getName() +
+            if (_debugging) {
+                _debug("Integrator: " + integrator.getName() +
                     " reports a failure.");
+            }
             return false;
         }
     }
@@ -227,83 +280,18 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return newh;
     }
 
-    /** Resolve the state of the integrators at time
-     *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire until the fixed point
-     *  is reached.
-     *
-     * @exception IllegalActionException Not thrown in this base class
-     *  May be needed by the derived class.
+    /** Return true if the resolved states have converged. Return false if 
+     *  states have not converged but the number of iterations reaches the 
+     *  <i>maxIterations</i> number. 
+     *  @return True if the resolved states have converged.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean resolveStates() throws IllegalActionException {
-//        _debug(getFullName() + ": in resolveState().");
-//
-//        CTDirector dir = (CTDirector)getContainer();
-//        if (dir == null) {
-//            throw new IllegalActionException( this,
-//                    " must have a CT director.");
-//        }
-//        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-//        if (scheduler == null) {
-//            throw new IllegalActionException( dir,
-//                    " must have a director to fire.");
-//        }
-//        resetRound();
-//        // prediction
-//        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-//        Iterator actors = schedule.get(
-//                CTSchedule.DYNAMIC_ACTORS).actorIterator();
-//        while (actors.hasNext()) {
-//            Actor next = (Actor)actors.next();
-//            _debug("Guessing..."+((Nameable)next).getName());
-//            next.fire();
-//        }
-//        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
-//        _setConvergence(false);
-//        int iterations = 0;
-//        while (!_isConverged()) {
-//            incrementRoundCount();
-//            _setConvergence(true);
-//            actors = schedule.get(
-//                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-//            while (actors.hasNext()) {
-//                Actor next = (Actor)actors.next();
-//                _prefireIfNecessary(next);
-//                _debug(getFullName() + "Firing..."+((Nameable)next).getName());
-//                next.fire();
-//            }
-//            actors = schedule.get(
-//                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
-//            while (actors.hasNext()) {
-//                Actor next = (Actor)actors.next();
-//                _debug(getFullName() + " refiring..."+
-//                        ((Nameable)next).getName());
-//                next.fire();
-//            }
-//            if (iterations++ > dir.getMaxIterations()) {
-//                //reduce step size and start over.
-//                //startOverLastStep();
-//                resetRound();
-//                // prediction
-//                actors = schedule.get(
-//                        CTSchedule.DYNAMIC_ACTORS).actorIterator();
-//                while (actors.hasNext()) {
-//                    Actor next = (Actor)actors.next();
-//                    _debug(getFullName()+" asking..."+
-//                            ((Nameable)next).getName());
-//                    next.fire();
-//                }
-//                dir.setCurrentTime(dir.getCurrentTime()
-//                    .add(dir.getCurrentStepSize()));
-//                _setConvergence(false);
-//                iterations = 0;
-//            }
-//        }
         CTDirector dir = (CTDirector)getContainer();
-        if (getRoundCount() > dir.getMaxIterations()) {
+        if (_getRoundCount() > dir.getMaxIterations()) {
             return false;
         }
-        return true;
+        return super.resolveStates();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -311,4 +299,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
+    private boolean _recalculatingWithTwoSteps = false;
+    private boolean _firstStep = true;
+
 }

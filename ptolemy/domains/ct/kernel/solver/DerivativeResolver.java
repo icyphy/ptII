@@ -62,16 +62,12 @@ import ptolemy.kernel.util.Workspace;
    Note that time does not progress under this solver.
    So, this class implements BreakpointODESolver and can only be
    used as a breakpoint solver.
-   It assumes that state variables are continuous after the breakpoint.
-   This may not be true if there are impulses in the system.
-   In that case, use ImpulseBESolver as the breakpoint solver for a
-   better result.
 
-   @author Jie Liu
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (liuxj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class DerivativeResolver extends ODESolver
     implements BreakpointODESolver {
@@ -121,12 +117,11 @@ public class DerivativeResolver extends ODESolver
         return 0;
     }
 
-    /** Provides the fire() method for the given integrator.
-     *  This remembers the input token, and use it for x'(t).
-     *
+    /** Fire the given integrator. Build history information by recording
+     *  the current input as the derivative and using the old state as the 
+     *  tentative state. 
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  May be needed by the derived class.
+     *  @exception IllegalActionException If can not read input.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -136,7 +131,6 @@ public class DerivativeResolver extends ODESolver
     }
 
     /** Return true, since there is no step size control.
-     *
      *  @param integrator The integrator of that calls this method.
      *  @return True always.
      */
@@ -147,7 +141,6 @@ public class DerivativeResolver extends ODESolver
     /** Return the initial step size of the director. Since this solver
      *  is always used as the breakpoint solver, the next integration
      *  step will use the initial step size.
-     *
      *  @param integrator The integrator of that calls this method.
      *  @return The initial step size.
      */
@@ -155,59 +148,6 @@ public class DerivativeResolver extends ODESolver
             CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
         return dir.getInitialStepSize();
-    }
-
-    /** Resolve the derivative of the integrators at the
-     *  current time. It gets the state transition
-     *  schedule from the scheduler and fire for one iteration.
-     *
-     * @exception IllegalActionException Not thrown in this base class
-     *  May be needed by the derived class.
-     */
-    public boolean resolveStates() throws IllegalActionException {
-//        _debug(getFullName() + ": resolveState().");
-//        CTDirector dir = (CTDirector)getContainer();
-//        if (dir == null) {
-//            throw new IllegalActionException( this,
-//                    " must have a CT director.");
-//        }
-//        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-//        if (scheduler == null) {
-//            throw new IllegalActionException( dir,
-//                    " must have a director to fire.");
-//        }
-//        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-//        
-//        // configure step sizes 
-//        dir.setCurrentStepSize(0.0);
-//        dir.setSuggestedNextStepSize(dir.getInitialStepSize());
-//        
-//        Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).
-//            actorIterator();
-//        while (actors.hasNext()) {
-//            CTDynamicActor next = (CTDynamicActor)actors.next();
-//            _debug(getFullName() + " Guessing..."+((Nameable)next).getName());
-//            next.emitTentativeOutputs();
-//        }
-//        actors = schedule.get(
-//                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-//        while (actors.hasNext()) {
-//            Actor next = (Actor)actors.next();
-//            _prefireIfNecessary(next);
-//            _debug(getFullName() + " Firing..."+
-//                    ((Nameable)next).getName());
-//            next.fire();
-//        }
-//        // FIXME: The following may not be necessary.
-//        // Since the current step size is 0.0.
-//        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-//        while (actors.hasNext()) {
-//            Actor next = (Actor)actors.next();
-//            _debug(getFullName() + " Refiring..."+
-//                    ((Nameable)next).getName());
-//            next.fire();
-//        }
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
