@@ -61,14 +61,6 @@ import soot.Options;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
-import soot.ValueBox;
-import soot.VoidType;
 
 import soot.jimple.ArrayRef;
 import soot.jimple.Expr;
@@ -119,6 +111,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import ptolemy.data.BooleanToken;
@@ -540,7 +533,8 @@ public class SootUtilities {
         }
     }
 
-    /** Return an object that represents the same numeric value as the given value.
+    /** Return an object that represents the same numeric value as the
+     *  given value.
      *  @param value A constant value.
      */
     public static Object convertConstantValueToArgument(Value value) {
@@ -560,8 +554,10 @@ public class SootUtilities {
         }            
     }
 
-    /** Return a constant value that represents the same numeric value as the given object.
-     *  @param object An object that is assumed to be either a Token or a primitive Java object.
+    /** Return a constant value that represents the same numeric value
+     *  as the given object.
+     *  @param object An object that is assumed to be either a Token
+     *  or a primitive Java object.
      *  @return A constant value.
      */
     public static Constant convertArgumentToConstantValue(Object object) {
@@ -657,16 +653,18 @@ public class SootUtilities {
                 insertPoint);
     }
 
-    /** Create statements that correspond to a for loop and return them.
-     *  The returned list will incorporate the statements in the
-     *  given list of initializer and body statements, and execute while the given 
-     *  conditional expression is true.
+    /** Create statements that correspond to a for loop and return
+     *  them.  The returned list will incorporate the statements in
+     *  the given list of initializer and body statements, and execute
+     *  while the given conditional expression is true.
      */
-    public static List createForLoopBefore(Body body, Unit insertPoint, List initializerList,
+    public static List createForLoopBefore(Body body, 
+            Unit insertPoint, List initializerList,
             List bodyList, Expr conditionalExpr) {
         List list = new LinkedList();
         Stmt bodyStart = (Stmt)bodyList.get(0);
-        Stmt conditionalStmt = Jimple.v().newIfStmt(conditionalExpr, bodyStart);
+        Stmt conditionalStmt = 
+            Jimple.v().newIfStmt(conditionalExpr, bodyStart);
         body.getUnits().insertBefore(
                 initializerList, 
                 insertPoint);
@@ -682,15 +680,16 @@ public class SootUtilities {
         return list;
     }
         
-    /** Create a type with the same shape as the given shape type, 
-     *  containing elements of the type given by the given element type.
-     *  That is, if <i>shapeType</i> is a base type (a reference Type, or a native type), 
-     *  then return <i>elementType</i>.
-     *  If <i>shapeType</i> is an ArrayType, and <i>elementType</i> is a simple type,
-     *  then return a new array type with the same number of dimensions as <i>shapeType</i>,
-     *  and element type <i>elementType</i>.  If both are array types, then return a
-     *  new array type with the sum of the number of dimensions, and the element type
-     *  <i>elementType</i>.
+    /** Create a type with the same shape as the given shape type,
+     *  containing elements of the type given by the given element
+     *  type.  That is, if <i>shapeType</i> is a base type (a
+     *  reference Type, or a native type), then return
+     *  <i>elementType</i>.  If <i>shapeType</i> is an ArrayType, and
+     *  <i>elementType</i> is a simple type, then return a new array
+     *  type with the same number of dimensions as <i>shapeType</i>,
+     *  and element type <i>elementType</i>.  If both are array types,
+     *  then return a new array type with the sum of the number of
+     *  dimensions, and the element type <i>elementType</i>.
      */
     public static Type createIsomorphicType(Type shapeType, 
             Type elementType) {
@@ -704,15 +703,18 @@ public class SootUtilities {
             } else if(elementType instanceof ArrayType) {
                 ArrayType arrayElementType = (ArrayType)elementType;
                 return ArrayType.v(arrayElementType.baseType, 
-                        arrayElementType.numDimensions + arrayShapeType.numDimensions);
+                        arrayElementType.numDimensions + 
+                        arrayShapeType.numDimensions);
             }
         }
         throw new RuntimeException("Types for shape = " + shapeType 
-                + " and element = " + elementType + " must be arrays or base types.");  
+                + " and element = " + elementType
+                + " must be arrays or base types.");  
     }
 
-    /** Create a new local variable in the given body, initialized before the given
-     *  unit that refers to a Runtime exception with the given string message.
+    /** Create a new local variable in the given body, initialized
+     *  before the given unit that refers to a Runtime exception with
+     *  the given string message.
      */
     public static Local createRuntimeException(Body body, 
             Unit unit, String string) {
@@ -740,11 +742,14 @@ public class SootUtilities {
     /** Create a new static class that will behave identically to the 
      *  given instance.  Replace all references to the given instance with
      *  references to the static class.
-     *  @param theClass The context in which method calls on the given instance
-     *  will be replaced with method calls to the new static class.
-     *  @param containerBody The body that contains the definition statement.
-     *  @param newStmt The statement where the instance is created.  The right
-     *  hand side of the definition is assumed to be an instance of NewExpr.
+     *  @param theClass The context in which method calls on the given
+     *  instance will be replaced with method calls to the new static
+     *  class.
+     *  @param containerBody The body that contains the definition
+     *  statement.
+     *  @param newStmt The statement where the instance is created.
+     *  The right hand side of the definition is assumed to be an
+     *  instance of NewExpr.
      *  @param constructorStmt The statement where the initializer
      *  for the instance is called.
      *  @param className The name of the class that will be created.
@@ -1358,6 +1363,55 @@ public class SootUtilities {
                     parameterClasses);
             
             returned = method.invoke(object, args);
+        } catch (Exception ex) {
+            throw new RuntimeException("Method not found = " 
+                    + sootMethod.getName());
+        }
+       
+        return returned;
+    }
+
+    /** Reflect the given constructor method with the given arguments
+     *  on the class of the given object.  Invoke the method and return
+     *  the returned value.
+     *  @param method The soot initializer method that corresponds to the
+     *  correct Java constructor.
+     *  @param argValues The arguments, which must be constant valued.
+     */
+    public static Object reflectAndInvokeConstructor(SootMethod sootMethod, 
+            Value argValues[]) {
+        SootClass sootClass = sootMethod.getDeclaringClass();
+        Class objectClass;
+        try {
+            objectClass = Class.forName(sootClass.getName());
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex.toString());
+        }
+        Class[] parameterClasses =
+            new Class[sootMethod.getParameterCount()];
+        int i = 0;
+        Object[] args = new Object[argValues.length];
+        for(Iterator parameterTypes = 
+                sootMethod.getParameterTypes().iterator();
+            parameterTypes.hasNext();) {
+            Type parameterType = (Type)parameterTypes.next();
+            try {
+                args[i] = convertConstantValueToArgument(argValues[i]);
+                parameterClasses[i] = getClassForType(parameterType);
+                i++;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RuntimeException("Class not found = " 
+                        + parameterType.toString());
+            }
+        }
+        
+        Object returned;
+        try {
+            Constructor constructor = objectClass.getConstructor(
+                    parameterClasses);
+            
+            returned = constructor.newInstance(args);
         } catch (Exception ex) {
             throw new RuntimeException("Method not found = " 
                     + sootMethod.getName());
