@@ -144,6 +144,7 @@ public class ShapeIcon extends EditorIcon {
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
         _figures.add(new WeakReference(newFigure));
+        
         // Trim the list of figures...
         ListIterator figures = _figures.listIterator();
         while (figures.hasNext()) {
