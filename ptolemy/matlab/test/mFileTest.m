@@ -1,2 +1,2 @@
-function t = mFileTest(varargin)
-     t=varargin{1} * 3.0; 
+function t = mFileTest(arg)
+     t = arg * 1.5; 
