@@ -95,7 +95,7 @@ public interface Settable extends Nameable {
      *  instances of the Visibility inner class.
      *  @return The visibility of this Settable.
      */
-    public Visibility getVisibility();
+    public Settable.Visibility getVisibility();
 
     /** Remove a listener from the list of listeners that are
      *  notified when the value of this variable changes.  If no such listener
@@ -118,7 +118,7 @@ public interface Settable extends Nameable {
      *  this interface should return some default, not null.
      *  @param visibility The visibility of this Settable.
      */
-    public void setVisibility(Visibility visibility);
+    public void setVisibility(Settable.Visibility visibility);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
@@ -146,6 +146,8 @@ public interface Settable extends Nameable {
     public static class Visibility {
 
         // Private constructor prevents construction outside.
-        private Visibility() {}
+        // This constructor should not be called!
+        // it is protected to work around a compiler bug in JDK1.2.2
+        protected Visibility() {}
     }
 }

@@ -141,7 +141,7 @@ public class StringAttribute extends Attribute implements Settable {
      *  The visibility is set by default to FULL.
      *  @return The visibility of this attribute.
      */
-    public Visibility getVisibility() {
+    public Settable.Visibility getVisibility() {
         return _visibility;
     }
 
@@ -182,7 +182,7 @@ public class StringAttribute extends Attribute implements Settable {
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
      */
-    public void setVisibility(Visibility visibility) {
+    public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
 
