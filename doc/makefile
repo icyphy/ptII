@@ -239,7 +239,7 @@ PTINYPACKAGES = \
 # ptoelmy.actor.lib.joystick.Joystick uses the Joystick API
 #JOYSTICKPACKAGES =	ptolemy.actor.lib.joystick
 
-ALLPACKAGES =		$(COMMPACKAGES) \
+ALLPACKAGES =		$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(DIVAPACKAGES) \
 			$(GRPACKAGES) \
