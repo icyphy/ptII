@@ -48,10 +48,10 @@ This class is created by a debugger frame to handle the logic of breakpoints.
 public class DebugController implements DebugListener {
 
     ////////////////////////////////////////////////////////
-//                Public variables                    //
-
-//Boolean that becomes false  when the Button END is pushed
-public boolean notFinished;
+    //                Public variables                    //
+    
+    //Boolean that becomes false  when the Button END is pushed
+    public boolean notFinished;
 
     //Boolean that becomes true when the Button Step In is pushed
     public boolean stepInPause;
@@ -94,13 +94,13 @@ public boolean notFinished;
     public void event(DebugEvent debugEvent) {
 	if(debugEvent instanceof FiringEvent) {
 	    FiringEvent event = (FiringEvent) debugEvent;
-	    if(event.getType() == FiringEvent.PREFIRE) {
+	    if(event.getType() == FiringEvent.BEFORE_PREFIRE) {
 		prefireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.FIRE) {
+	    } else if(event.getType() == FiringEvent.BEFORE_FIRE) {
 		fireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.POSTFIRE) {
+	    } else if(event.getType() == FiringEvent.BEFORE_POSTFIRE) {
 		postfireEvent(event.getActor());
-	    } else if(event.getType() == FiringEvent.POSTPOSTFIRE) {
+	    } else if(event.getType() == FiringEvent.AFTER_POSTFIRE) {
 		postpostfireEvent(event.getActor());
 	    }
 	}
