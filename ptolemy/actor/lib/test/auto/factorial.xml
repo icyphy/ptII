@@ -2,10 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="factorial" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -14,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 45.0">
         </property>
     </property>
-    <property name="fact" class="ptolemy.data.expr.Parameter" value="function(x:int,f:(function(x,f) int)) (x&lt;1?1:x*f(x-1,f))">
+    <property name="fact" class="ptolemy.data.expr.Parameter" value="function(x:int,f:(function(a,b) int)) (x&lt;1?1:x*f(x-1,f))">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -35,7 +39,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="fib" class="ptolemy.data.expr.Parameter" value="function(x:int,f:(function(x,f) int)) (x&lt;2?1:(f(x-2,f)+f(x-1,f)))">
+    <property name="fib" class="ptolemy.data.expr.Parameter" value="function(x:int,f:(function(a,b) int)) (x&lt;2?1:(f(x-2,f)+f(x-1,f)))">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -52,7 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 105.0">
         </property>
     </property>
-    <property name="ack" class="ptolemy.data.expr.Parameter" value="function(x:int,y:int,f:(function(x,f) int)) &#10;	(x==0?y+1:&#10;	  (y==0?f(x-1,1,f):&#10;		f(x-1,f(x,y-1,f),f)))">
+    <property name="ack" class="ptolemy.data.expr.Parameter" value="function(x:int,y:int,f:(function(a,b,c) int)) &#10;	(x==0?y+1:&#10;	  (y==0?f(x-1,1,f):&#10;		f(x-1,f(x,y-1,f),f)))">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
