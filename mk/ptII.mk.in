@@ -348,6 +348,9 @@ PTJACL_JAR =	@PTJACL_JAR@
 # when we are running the nightly build.
 JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
 
+# At runtime, ptolemy.util.XSLTUtilities uses Saxon
+SAXON_JAR =	$(ROOT)/lib/saxon7.jar
+
 # Set to jai and used in 
 # $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
 PTJAI_DIR =	@PTJAI_DIR@
