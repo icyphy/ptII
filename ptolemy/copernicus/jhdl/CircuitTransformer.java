@@ -100,6 +100,8 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("CircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
+        HashMutableDirectedGraph combinedGraph = 
+            new HashMutableDirectedGraph();
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
@@ -112,8 +114,88 @@ public class CircuitTransformer extends SceneTransformer {
             CircuitAnalysis analysis = new CircuitAnalysis(entityClass);
             HashMutableDirectedGraph operatorGraph =
                 analysis.getOperatorGraph();
-            // Write as a circuit.
+            
+            for(Iterator nodes = operatorGraph.getNodes().iterator();
+                nodes.hasNext();) {
+                Object node = nodes.next();
+                combinedGraph.addNode(node);
+            }
+            for(Iterator nodes = operatorGraph.getNodes().iterator();
+                nodes.hasNext();) {
+                Object node = nodes.next();
+                List succList = new LinkedList(operatorGraph.getSuccsOf(node));
+                for(Iterator succs = succList.iterator();
+                    succs.hasNext();) {
+                    Object succ = succs.next();
+                    combinedGraph.addEdge(node, succ);
+                }
+            }
+        }
+        
+        Set removeSet = new HashSet();
 
+        // Connect the combined graph.
+        for(Iterator entities = _model.entityList().iterator();
+            entities.hasNext();) {
+            TypedAtomicActor actor = (TypedAtomicActor)entities.next();
+         
+            for(Iterator ports = actor.outputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                
+                for(Iterator remoteports = port.connectedPortList().iterator();
+                    remoteports.hasNext();) {
+                    IOPort remotePort = (IOPort)remoteports.next();
+                    combinedGraph.addEdge(port, remotePort);
+                    removeSet.add(port);
+                    removeSet.add(remotePort);
+                }
+            }
+        }
+                  
+        // remove the extra nodes for ports.
+        for(Iterator nodes = removeSet.iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            // Then remove the node.
+            for(Iterator preds = combinedGraph.getPredsOf(node).iterator();
+                preds.hasNext();) {
+                Object pred = preds.next();
+                for(Iterator succs = combinedGraph.getSuccsOf(node).iterator();
+                    succs.hasNext();) {
+                    Object succ = succs.next();
+                    combinedGraph.addEdge(pred, succ);
+                }
+            }
+        }
+            
+        // Remove all the nodes that were not required above.
+        for(Iterator nodes = removeSet.iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            List predList = new LinkedList(combinedGraph.getPredsOf(node));
+            for(Iterator preds = predList.iterator();
+                preds.hasNext();) {
+                Object pred = preds.next();
+                combinedGraph.removeEdge(pred, node);
+            }
+            List succList = new LinkedList(combinedGraph.getSuccsOf(node));
+            for(Iterator succs = succList.iterator();
+                succs.hasNext();) {
+                Object succ = succs.next();
+                combinedGraph.removeEdge(node, succ);
+            }
+            combinedGraph.removeNode(node);
+        }
+        
+        
+        // Write as a circuit.
+        try {
+            CircuitCreator.create(combinedGraph, "JHDL" +
+                    SootUtilities.sanitizeName(
+                            _model.getName()) + ".java");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
