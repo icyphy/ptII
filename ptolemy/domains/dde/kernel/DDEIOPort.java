@@ -39,34 +39,39 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// DDEIOPort
 /**
-An DDEIOPort is a timed input/output port used in the DDE domain. DDEIOPorts
-are used to send tokens between DDEActors, and in so doing, time is
-associated with the tokens as they are placed in DDEReceivers. The
-association of time with a token involves the use of an Event which is
-then stored in a DDEReceiver.
-
-BEGIN FIXME
-       There are some critical semantic differences between actors that
-       use DDEIOPorts and polymorphic ports which use regular TypedIOPorts.
-       The key difference is that TypedIOPort.send() sets the timestamp of the
-       token to the rcvrTime of the receiving actor's receiver. DDEIOPort.send()
-       sets the timestamp of the token to the minimum rcvrTime of the
-       sending actor.
-
-       What I should do is set the timestamp of the token to the current
-       time of the sending actor.
-END FIXME
-
-In addition to the specification of time values, each DDEIOPort has a
-(integer) priority. If an DDEIOPort is an input, its priority is used
-relative to the priorities of other input DDEIOPorts for a given DDEActor
-to determine how receivers are selected when there are pending events
-with simultaneous times. The receivers of DDEIOPorts with higher priorities
-are selected first in situations involving simultaneous event times.
+A DDEIOPort is a timed input/output port used in the DDE domain. 
+DDEIOPorts are used to send tokens between DDEActors, and in so 
+doing, associate time with the tokens as they are placed in DDEReceivers. 
+<P>
+DDEIOPorts are not necessary to facilitate communication between actors
+executing in a DDE model; standard TypedIOPorts are sufficient for most
+communication. DDEIOPorts become necessary when the time stamp to be 
+associated with an outgoing token is greater than the current time of 
+the sending actor. 
+<P>
+The designers of models that incorporate DDEIOPorts should be careful
+to make sure that output time stamp ordering information is correct. 
+Since the output time stamp of a token being sent through a DDEIOPort
+can be greater then the sending actor's current time, it is possible
+on a subsequent token production to create an outgoing token with
+a time stamp that is greater than the current time but less then the
+previously produced time stamp. In such cases, an IllegalArgumentException
+will be thrown. 
+<P>
+To prevent the runtime difficulties cited above, it is suggested that
+DDEIOPorts be avoided except when necessary. The kind of actors that
+require the use of DDEIOPorts are often referred to as <I>delay
+actors</I> to indicate the fact that a delay occurs between the time stamps
+of consumed tokens and their corresponding output-produced time stamps. 
+As a general rule, it is suggested that in a DDE model, delay actors 
+derive from DDEActors. Applying this rule means that polymorphic actors 
+(those of the ptolemy.actor.lib package) should never require DDEIOPorts
+and should use TypedIOPorts instead.
 
 
 @author John S. Davis II
 @version $Id$
+@see ptolemy.domains.dde.kernel.DDEReceiver
 */
 
 public class DDEIOPort extends TypedIOPort {
@@ -81,7 +86,6 @@ public class DDEIOPort extends TypedIOPort {
     /** Construct an DDEIOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must implement the Actor interface, or an exception will be thrown.
-     *
      * @param container The container actor.
      * @param name The name of the port.
      * @exception IllegalActionException If the port is not of an acceptable
@@ -99,7 +103,6 @@ public class DDEIOPort extends TypedIOPort {
      *  either an input, an output, or both, depending on the third
      *  and fourth arguments. The specified container must implement
      *  the Actor interface or an exception will be thrown.
-     *
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @param isinput True if this is to be an input port.
@@ -119,126 +122,64 @@ public class DDEIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a token to all connected receivers. If there are no
-     *  connected receivers, then nothing is sent. The time stamp
-     *  associated with this token will be the current time of the
-     *  actor which contains this port.
-     *
+    /** Send a token to all connected receivers by calling send on
+     *  all of the remote receivers connected to this port. If there 
+     *  are no connected receivers, then nothing is sent. Associate
+     *  a time stamp with the token that is equivalent to the specified
+     *  'sendTime' parameter. Throw an IllegalActionException if the 
+     *  port is not an output. Throw a NoRoomException if one of the 
+     *  channels throws it.
      * @param token The token to send
-     * @exception IllegalActionException If the port is not an output.
-     * @exception NoRoomException If a send to one of the channels throws
-     *  it.
+     * @param sendTime The output time of the token being sent.
+     * @exception IllegalActionException If the port is not an output 
+     *  or the delay is negative.
+     * @exception NoRoomException If a send to one of the channels 
+     *  throws it.
      */
-    public void broadcast(Token token)
+    public void broadcast(Token token, double sendTime)
             throws IllegalActionException, NoRoomException {
-        broadcast( token, ((DDEActor)getContainer()).getCurrentTime() );
-    }
-
-    /** Send a token to all connected receivers. If there are no connected
-     *  receivers, then nothing is sent. The time stamp associated with
-     *  this token will be the current time of the actor which contains
-     *  this port plus the specified delay.
-     *
-     * @param token The token to send
-     * @param delay The delay from the containing actors current time.
-     * @exception IllegalActionException If the port is not an output or
-     *  the delay is negative.
-     * @exception NoRoomException If a send to one of the channels throws
-     *  it.
-     */
-    public void broadcast(Token token, double delay)
-            throws IllegalActionException, NoRoomException {
-        if( delay < -1.0 ) {
-            throw new IllegalActionException( this, "Negative delay "
-                    + "values are not allowed.");
-        }
         try {
             workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "broadcast: Tokens can only be sent from an " +
-                        "output port.");
-            }
+
             Receiver fr[][] = getRemoteReceivers();
             if(fr == null) {
                 return;
             }
-
             for (int j = 0; j < fr.length; j++) {
-                double currentTime = ((DDEActor)getContainer()).getCurrentTime();
-                send(j, token, currentTime + delay);
+                send(j, token, sendTime);
             }
         } finally {
             workspace().doneReading();
         }
     }
 
-    /** Return the priority associated with this port.
-     * @return int The priority of this port.
-     */
-    public int getPriority() {
-        return _priority;
-    }
-
-    /** Set the priority associated with this port. If this is an input
-     *  port, the priority will be passed to the contained receiver's of
-     *  this port and will be used to determine how receivers with
-     *  simultaneous events are dealt with. Greater priorities get
-     *  preference over lower priorities. Priority is measured with
-     *  respect to the priority of other input ports associated with the
-     *  containing actor of this port.
-     * @param int The priority of this port.
-     */
-    public void setPriority(int priority) {
-        _priority = priority;
-    }
-
-    /** Send the specified token to all receivers connected to the
-     *  specified channel.  The first receiver gets the actual token,
-     *  while subsequent ones get a clone.  If there are no receivers,
-     *  then do nothing. The current time of the containing actor of
-     *  this port will be associated with the token.
-     *
-     * @param channel The index of the channel, from 0 to width-1.
-     * @param token The token to send.
-     * @exception NoRoomException If there is no room in the receiver.
-     * @exception IllegalActionException If the port is not an output or if
-     *  the index is out of range.
-     */
-    public void send(int channel, Token token)
-            throws InvalidStateException, IllegalActionException  {
-        // send( channel, token );
-        send( channel, token, ((DDEActor)getContainer()).getCurrentTime() );
-    }
-
     /** Send the specified token to all receivers connected to the
      *  specified channel. The first receiver gets the actual token,
-     *  while subsequent ones get a clone.  If there are no receivers,
-     *  then do nothing. The current time of the containing actor of
-     *  this port plus the specified delay will be associated with the token.
-     *
-     * @param channel The index of the channel, from 0 to width-1.
+     *  while subsequent receivers get a clone. If there are no 
+     *  receivers, then do nothing. Associate a time stamp with the 
+     *  token that is equivalent to the specified 'sendTime' parameter. 
+     *  Throw an IllegalActionException if the port is not an output. 
+     *  Throw a NoRoomException if one of the channels throws it.
+     * @param chIndex The index of the channel, between (inclusive)
+     *  0 to width-1.
      * @param token The token to send.
-     * @param delay The delay from the containing actors current time.
+     * @param sendTime The output time of the token being sent.
      * @exception NoRoomException If there is no room in the receiver.
-     * @exception IllegalActionException If the port is not an output, if
-     *  the index is out of range.
+     * @exception IllegalActionException If the port is not an output, 
+     *  if the index is out of range.
      */
-    public void send(int channelindex, Token token, double delay)
-            throws InvalidStateException, IllegalActionException  {
-	// String aName = ((NamedObj)getContainer()).getName();
-	/*
-	if( token instanceof StringToken ) {
-	    String val = ((StringToken)token).stringValue();
-	    System.out.println(val+": send() with delay of "+delay);
-	} else {
-	    System.out.println( ((NamedObj)getContainer()).getName() +
-		    ": Reinvoked send() with delay of "+delay);
+    public void send(int chIndex, Token token, double sendTime)
+            throws IllegalActionException, NoRoomException {
+	double currentTime = 0.0;
+	Thread thread = Thread.currentThread();
+	DDEThread ddeThread = null;
+	if( thread instanceof DDEThread ) {
+	    ddeThread = (DDEThread)thread;
+	    currentTime = ddeThread.getTimeKeeper().getCurrentTime();
 	}
-	*/
-        if( delay < -1.0 ) {
-            throw new IllegalActionException( this, "Negative delay "
-                    + "values are not allowed.");
+        if( sendTime < currentTime ) {
+            throw new IllegalActionException( this, "Time values in "
+                    + "the past are not allowed.");
 	}
         Receiver[][] farRec;
         try {
@@ -248,47 +189,35 @@ public class DDEIOPort extends TypedIOPort {
                         "send: Tokens can only be sent from an "+
                         "output port.");
             }
-            if (channelindex >= getWidth() || channelindex < 0) {
+            if (chIndex >= getWidth() || chIndex < 0) {
                 throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
             // Note that the getRemoteReceivers() method doesn't throw
             // any non-runtime exception.
             farRec = getRemoteReceivers();
-            if (farRec == null || farRec[channelindex] == null) {
+            if (farRec.length == 0 || farRec[chIndex].length == 0) {
                 return;
             }
-
-            /*
-            // System.out.println("\nAbout to call DDEReceiver.put() within " +
-                    "DDEIOPort.send() for " + getName() );
-            */
-	    Thread thread = Thread.currentThread();
-	    DDEThread ddethread = null;
-	    if( thread instanceof DDEThread ) {
-	        ddethread = (DDEThread)thread;
-	    }
-            for (int j = 0; j < farRec[channelindex].length; j++) {
-                // double currentTime = ddethread.getCurrentTime();
-                double currentTime = ((DDEActor)getContainer()).getCurrentTime();
-                ((DDEReceiver)farRec[channelindex][j]).put(
-                        // FIXME
-                        // token, currentTime + delay);
-                        token, delay);
+            for (int j = 0; j < farRec[chIndex].length; j++) {
+                ((DDEReceiver)farRec[chIndex][j]).put(token, sendTime);
             }
+	} catch( IllegalArgumentException e ) {
+	    if( e.getMessage().indexOf("past") != -1 ) {
+		throw e;
+	    } else {
+	        String actorName = ((NamedObj)getContainer()).getName();
+	        throw new IllegalArgumentException(actorName + " "
+			+ "attempted to place an event into outgoing "
+			+ "channel " + chIndex + " of DDEIOPort '" 
+			+ this.getName() + "' with a time stamp "
+			+ "earlier than that of previous events placed "
+			+ "into this channel.");
+	    }
         } finally {
             workspace().doneReading();
 	}
-
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
-
-    // The higher the integer, the higher the priority.
-    private int _priority = 0;
-
 }
 
 
