@@ -72,22 +72,22 @@ public class IntToken extends ScalarToken {
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
-     *  @param tok The token to add to this Token.
+     *  @param rightArg The token to add to this Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token add(ptolemy.data.Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token add(ptolemy.data.Token rightArg) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.addR(this);
-            } else if (tok instanceof IntToken) {
-                int result = _value + ((IntToken)tok).getValue();
+                return rightArg.addR(this);
+            } else if (rightArg instanceof IntToken) {
+                int result = _value + ((IntToken)rightArg).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(tok);
+                IntToken tmp = (IntToken)this.convert(rightArg);
                 int result = _value + tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -96,7 +96,7 @@ public class IntToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "add method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -105,14 +105,15 @@ public class IntToken extends ScalarToken {
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve
      *  a lossless conversion.
-     *  @param tok The token to add this Token to.
+     *  @param leftArg The token to add this Token to.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(tok);
+    public Token addR(ptolemy.data.Token leftArg) 
+            throws IllegalActionException {
+        IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.getValue() + _value;
         return new IntToken(result);
     }
@@ -286,21 +287,21 @@ public class IntToken extends ScalarToken {
      *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param token The token to modulo this Token by.
+     *  @param rightArg The token to modulo this Token by.
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can be  used with modulo in a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token modulo(Token token) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, token);
+    public Token modulo(Token rightArg) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.moduloR(this);
-            } else if (token instanceof IntToken) {
-                int result = _value % ((IntToken)token).getValue();
+                return rightArg.moduloR(this);
+            } else if (rightArg instanceof IntToken) {
+                int result = _value % ((IntToken)rightArg).getValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(token);
+                IntToken tmp = (IntToken)this.convert(rightArg);
                 int result = _value % tmp.getValue();
                 return new IntToken(result);
             } else {
@@ -309,7 +310,7 @@ public class IntToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "modulo method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
+            str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
@@ -317,14 +318,14 @@ public class IntToken extends ScalarToken {
      *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param token The token to apply modulo to by the value of this Token.
+     *  @param leftArg The token to apply modulo to by the value of this Token.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token token) throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(token);
+    public Token moduloR(Token leftArg) throws IllegalActionException {
+        IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.getValue() %  _value;
         return new IntToken(result);
     }
