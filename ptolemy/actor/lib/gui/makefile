@@ -81,6 +81,7 @@ OPTIONAL_FILES = \
 	'HistogramPlotter$$1.class' \
 	'MatrixViewer$$1.class' \
 	'Plotter$$1.class' \
+	'SliderSource$$1.class' \
 	'SketchedSource$$1.class'
 
 JCLASS= $(JSRCS:%.java=%.class)
