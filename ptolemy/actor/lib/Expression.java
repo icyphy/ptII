@@ -278,7 +278,6 @@ public class Expression extends TypedAtomicActor {
 
     // Add a constraint to the type output port of this object.
     private void _setOutputTypeConstraint() {
-        // NOTE: uncomment this line to add better type constraints.
         output.setTypeAtLeast(new OutputTypeFunction());
     }
 
@@ -447,28 +446,9 @@ public class Expression extends TypedAtomicActor {
                 for (Iterator elements = set.iterator();
                      elements.hasNext();) {
                     String name = (String)elements.next();
-                    if (name.equals("time") ||
-                            name.equals("iteration")) {
-                        continue;
-                    }
-                    TypedIOPort port = (TypedIOPort)getPort(name);
-                    if (port != null) {
-                        InequalityTerm[] terms =
-                            port.getTypeTerm().getVariables();
-                        for (int i = 0; i < terms.length; i++) {
-                            termList.add(terms[i]);
-                        }
-                        continue;
-                    }
-                    Variable result = ModelScope.getScopedVariable(
-                            null, Expression.this, name);
-                    if (result != null) {
-                        InequalityTerm[] terms =
-                            result.getTypeTerm().getVariables();
-                        for (int i = 0; i < terms.length; i++) {
-                            termList.add(terms[i]);
-                        }
-                        continue;
+                    InequalityTerm term = _scope.getTypeTerm(name);
+                    if(term != null && term.isSettable()) {
+                        termList.add(term);
                     }
                 }
                 return (InequalityTerm[])termList.toArray(
