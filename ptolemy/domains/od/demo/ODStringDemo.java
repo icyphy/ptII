@@ -63,17 +63,18 @@ public class ODStringDemo {
         // Set up Manager, Director and top level CompositeActor
         Workspace workSpc = new Workspace();
         CompositeActor topLevelActor = new CompositeActor(workSpc);
-        topLevelActor.setName("theBoss");
+        topLevelActor.setName("universe");
         Manager manager = new Manager(workSpc, "manager");
         ODDirector director = new ODDirector(workSpc, "director");
+        director.setCompletionTime(40.0);
         topLevelActor.setManager( manager );
         topLevelActor.setDirector( director );
         
         // Set up next level actors
+        ODPrintString printer = new ODPrintString( topLevelActor, "printer" );
         ODConsonants consonants = new ODConsonants( topLevelActor, "consonants" );
         ODVowels vowels = new ODVowels( topLevelActor, "vowels" );
         ODPunctuation punctuation = new ODPunctuation( topLevelActor, "punctuation" );
-        ODPrintString printer = new ODPrintString( topLevelActor, "printer" );
         // System.out.println("Actors have been instantiated.");
         
         // Set up ports, relation 
@@ -106,7 +107,7 @@ public class ODStringDemo {
         // System.out.println("Width of input port is " + width);
         
         // Start simulation
-        manager.run();
+        manager.startRun();
         
     }
     
