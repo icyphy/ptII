@@ -152,9 +152,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                          "of type CSPReceiver." );
              }
              _receiver = (CSPReceiver)receivers[channel][0];
-	 } catch (IllegalActionException ex) {
-             _guard = false;
-         } finally {
+	 } finally {
              port.workspace().doneReading();
 	 }
 	 _token = t;
@@ -170,11 +168,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     public void run() {
         try {
-            // FIXME: For testing purposes only. Needed so that threads are
-            // not always executed in the same order.
-            Random rand = new Random();
-            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-
             synchronized(getReceiver()) {
                 if (getReceiver()._isConditionalSendWaiting()
                      || getReceiver()._isPutWaiting() ) {
