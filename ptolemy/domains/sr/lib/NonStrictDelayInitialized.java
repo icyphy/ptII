@@ -80,7 +80,7 @@ public class NonStrictDelayInitialized extends Transformer {
      */
     public Parameter initialValue;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
