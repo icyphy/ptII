@@ -53,7 +53,7 @@ empty string (not a null reference). The class also has a full name,
 which is a concatenation of the container's full name and the simple
 name, separating by a period. Obviously, if the simple name contains
 a period then there may be some confusion resolving the full name,
-so periods are discouraged (but not disallowed). If there is no
+so periods are expressly disallowed. If there is no
 container, then the full name is a concatenation of the workspace
 name with the simple name. The
 full name is used for error reporting throughout the package, which
