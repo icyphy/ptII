@@ -107,6 +107,7 @@ OPTIONAL_FILES = \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class' \
+	'PortController$$NameWrapper.class' \
 	'PortController$$PortRenderer.class' \
 	'PortDialogFactory$$1.class' \
 	'PtolemyGraphModel$$1.class' \
