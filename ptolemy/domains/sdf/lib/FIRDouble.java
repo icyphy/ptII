@@ -171,6 +171,7 @@ public class FIRDouble extends FIR {
 
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
+        // FIXME: the data shouldn't be lost at all.
         if (_data == null || _data.length != _phaseLength) {
             _data = new double[_phaseLength];
             for(int i = 0; i < _phaseLength; i++ ) {

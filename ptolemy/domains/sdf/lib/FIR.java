@@ -345,6 +345,8 @@ public class FIR extends SDFTransformer {
 
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
+        // FIXME: data is thrown away if the filter length increases.  This
+        // is not necessary.
         if (_data == null || _data.length != _phaseLength) {
             _data = new Token[_phaseLength];
             for(int i = 0; i < _phaseLength; i++ ) {
