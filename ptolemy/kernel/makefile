@@ -47,6 +47,7 @@ JSRCS = \
 	Entity.java \
 	NamedObj.java \
 	Node.java \
+	Param.java \
 	StatusArray.java
 
 EXTRA_SRCS =	$(JSRCS)
