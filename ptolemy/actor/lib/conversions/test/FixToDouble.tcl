@@ -78,7 +78,7 @@ test FixToDouble-1.1 {Test FixToDouble} {
 ######################################################################
 #### Test FixToDouble in an SDF model
 
-test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
+test FixToDouble-3.1 {Test rescaling to other Precision with saturate \
 	overflow} {
 
     set e0 [sdfModel 12]
@@ -132,15 +132,48 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {1.5 1.5 1.5 1.0 0.5 0.0 0.0 -0.5 -1.0 -2.0 -2.0 -2.0}
+} {1.5 1.5 1.5 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 -2.0 -2.0}
 
-test DoubleToFix-3.2 {Test rescaling to other Precision with zero staturate \
+test FixToDouble-3.2 {Test rescaling to other Precision with zero saturate \
 	 overflow} {
 
     set overflow [java::field $conver overflow ]
-    $overflow setExpression {overflow_to_zero}
+    $overflow setExpression {to_zero}
    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {0.0 0.0 0.0 1.0 0.5 0.0 0.0 -0.5 -1.0 0.0 0.0 0.0}
+} {0.0 0.0 0.0 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 0.0 0.0}
+
+test FixToDouble-3.3 {Test rescaling to other Precision with modulo \
+	 overflow} {
+
+    set overflow [java::field $conver overflow ]
+    $overflow setExpression {modulo}
+   
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+
+} {0.0 -1.0 -2.0 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 1.0 0.0}
+
+test FixToDouble-3.3 {Test rescaling to other Precision with grow \
+	 overflow} {
+
+    set overflow [java::field $conver overflow ]
+    $overflow setExpression {grow}
+   
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+
+} {4.0 3.0 2.0 1.0 1.0 0.5 0.0 -0.5 -1.0 -2.0 -3.0 -4.0}
+
+test FixToDouble-3.4 {Test rescaling to other Precision with floor \
+	 rounding} {
+
+    set rounding [java::field $conver rounding ]
+    $rounding setExpression {floor}
+   
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+
+} {3.5 3.0 2.0 1.0 0.5 0.0 -0.5 -1.0 -1.0 -2.0 -3.0 -4.0}
