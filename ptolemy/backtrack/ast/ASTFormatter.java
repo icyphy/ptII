@@ -335,7 +335,7 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(Assignment node) {
         node.getLeftHandSide().accept(this);
-        _output(node.getOperator().toString());
+        _output(" " + node.getOperator().toString() + " ");
         node.getRightHandSide().accept(this);
         return false;
     }
@@ -1013,6 +1013,7 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getBody() == null) {
             _output(";\n");
         } else {
+            _output(" ");
             node.getBody().accept(this);
         }
         return false;
