@@ -88,8 +88,8 @@ public class ObjectToken extends Token {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                    private protected variables                   ////
+            ////                    private protected variables                   ////
 
-    // This is protected to allow access in derived classes only.
-    protected Object _value = null;
+            // This is protected to allow access in derived classes only.
+            protected Object _value = null;
 }

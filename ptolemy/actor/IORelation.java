@@ -44,7 +44,7 @@ public class IORelation extends ComponentRelation {
      *  Increment the version number of the workspace.
      */
     public IORelation() {
-         super();
+        super();
     }
 
     /** Construct a relation in the specified workspace with an empty
@@ -69,7 +69,7 @@ public class IORelation extends ComponentRelation {
      *   a relation already in the container.
      */	
     public IORelation(CompositeEntity container, String name)
-           throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
     }
 

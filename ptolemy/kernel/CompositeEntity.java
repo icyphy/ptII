@@ -88,10 +88,10 @@ public class CompositeEntity extends ComponentEntity {
      *   an entity already in the container.
      */	
     public CompositeEntity(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
-       _containedEntities = new NamedList();
-       _containedRelations = new NamedList();
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _containedEntities = new NamedList();
+        _containedRelations = new NamedList();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -126,11 +126,11 @@ public class CompositeEntity extends ComponentEntity {
             if (!entity.isAtomic()) {
                 if (((CompositeEntity)entity).deepContains(this)) {
                     throw new IllegalActionException(entity, this,
-                    "Attempt to construct recursive containment.");
+                            "Attempt to construct recursive containment.");
                 }
             }
             CompositeEntity prevcontainer =
-                    (CompositeEntity)entity.getContainer();
+                (CompositeEntity)entity.getContainer();
             if (prevcontainer != null) {
                 // Use protected version to not alter the links nor the
                 // container of the entity.
@@ -172,7 +172,7 @@ public class CompositeEntity extends ComponentEntity {
                 throw new NameDuplicationException(this, relation);
             }
             CompositeEntity prevcontainer =
-                    (CompositeEntity)relation.getContainer();
+                (CompositeEntity)relation.getContainer();
             if (prevcontainer != null) {
                 // Use protected version to not alter the links nor the
                 // container of the relation.
@@ -312,7 +312,7 @@ public class CompositeEntity extends ComponentEntity {
                     result.insertLast(entity);
                 } else {
                     result.appendElements(
-                             ((CompositeEntity)entity).deepGetEntities());
+                            ((CompositeEntity)entity).deepGetEntities());
                 }
             }
             return result.elements();
@@ -376,7 +376,7 @@ public class CompositeEntity extends ComponentEntity {
      *   on the container's contents list.
      */
     public ComponentRelation newRelation(String name)
-           throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         return new ComponentRelation(this, name);
     }
 
@@ -412,7 +412,7 @@ public class CompositeEntity extends ComponentEntity {
 
             while (entities.hasMoreElements()) {
                 ComponentEntity entity =
-                        (ComponentEntity)entities.nextElement();
+                    (ComponentEntity)entities.nextElement();
                 try {
                     removeEntity(entity);
                 } catch (IllegalActionException ex) {
@@ -437,7 +437,7 @@ public class CompositeEntity extends ComponentEntity {
 
             while (relations.hasMoreElements()) {
                 ComponentRelation relation = 
-                        (ComponentRelation)relations.nextElement();
+                    (ComponentRelation)relations.nextElement();
                 try {
                     removeRelation(relation);
                 } catch (IllegalActionException ex) {
@@ -463,8 +463,8 @@ public class CompositeEntity extends ComponentEntity {
             CompositeEntity container = (CompositeEntity) entity.getContainer();
             if (container != this) {
                 throw new IllegalActionException(this, entity,
-                    "Attempt to remove an entity from a container that "
-                    + "does not contain it.");
+                        "Attempt to remove an entity from a container that "
+                        + "does not contain it.");
             }
             _removeEntity(entity);
             entity._setContainer(null);
@@ -491,7 +491,7 @@ public class CompositeEntity extends ComponentEntity {
             throws IllegalActionException {
         synchronized(workspace()) {
             CompositeEntity container =
-                    (CompositeEntity) relation.getContainer();
+                (CompositeEntity) relation.getContainer();
             if (container != this) {
                 throw new IllegalActionException(this, relation,
                         "Attempt to remove a relation from a container that "

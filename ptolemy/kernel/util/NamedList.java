@@ -93,7 +93,7 @@ public class NamedList implements Cloneable {
      *  an element already on the list.
      */
     public void append(Nameable element) 
-	        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	String newName = element.getName();
         if (newName == null) {
             throw new IllegalActionException(_container,
@@ -309,5 +309,5 @@ public class NamedList implements Cloneable {
 
     // Constant strings.
     private static final String _nullNameExceptionString = 
-            "Attempt to add an object with a null name to a NamedList.";
+    "Attempt to add an object with a null name to a NamedList.";
 }

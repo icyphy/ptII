@@ -199,7 +199,7 @@ public class Entity extends NamedObj {
      *  that name.
      */	
     public Port newPort(String name) 
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             Port port = new Port(this, name);
             workspace().incrVersion();
@@ -227,7 +227,7 @@ public class Entity extends NamedObj {
                     removePort(port);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException(this, port,
-                    "Inconsistent container relationship!");
+                            "Inconsistent container relationship!");
                 }
             }
             workspace().incrVersion();
@@ -304,8 +304,8 @@ public class Entity extends NamedObj {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+            ////                         private variables                        ////
 
-    // A list of Ports owned by this Entity.
-    private NamedList _portList;
+            // A list of Ports owned by this Entity.
+            private NamedList _portList;
 }
