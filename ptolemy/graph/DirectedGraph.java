@@ -207,6 +207,7 @@ public class DirectedGraph extends Graph {
         for (int i = 0; i < size; i++) {
             if (_transitiveClosure[i][i]) {
                 _isAcyclic = false;
+		break;
             }
         }
     }
