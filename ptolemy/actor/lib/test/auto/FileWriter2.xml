@@ -42,7 +42,7 @@
         </port>
     </entity>
     <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$TMP/FileWriter1Output.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$TMPDIR/FileWriter1Output.txt">
         </property>
         <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="0">
         </property>
