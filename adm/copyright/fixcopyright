@@ -1,6 +1,6 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Tue Jan 18 15:41:57 2000 by cxh]-
+#-[Thu Jan 25 08:40:03 2001 by cxh]-
 #
 # The way to run this is to use $PTII/adm/bin/ptIIfiles to generate
 # a list of files and then run this script on that over and over
@@ -22,190 +22,98 @@ done
 shift `expr $OPTIND - 1`
 
 
+search() {
+topdir=`pwd`
+echo "************ $EGREPMATCH: $topdir"
+
+for fullfile in $@
+do
+    cd $topdir
+    echo "Now processing: $fullfile"
+    egrep "$EGREPMATCH" $fullfile
+    retval=$?
+    if [ $retval = 0 ]; then
+	# There was a difference, so we might want to check this sucker out
+	file=`basename $fullfile`
+	dirname=`dirname $fullfile`
+	cd $dirname
+	if [ -d SCCS -o -d RCS ]; then
+	    echo "Error: SCCS or RCS directory"
+	    exit 2
+	fi
+	doit
+	if [ "$printonly" = "no" ]; then
+	    cp /tmp/fixcopyright.tmp $file
+	    if [ -d CVS ]; then
+		cvs commit -m "$LOGMESSAGE" $file 
+	    fi	
+	else
+	    echo "Would update and commit"
+	fi	
+    fi
+done
+rm -f /tmp/fixcopyright.tmp
+cd $topdir
+}
+
 doit() {
-    sed -e 's/\(199[0-7]\)-[ ,]/\1-1999 /' \
+    sed -e 's/\(199[0-7]\)-[ ,]/\1-2001 /' \
 	$file > /tmp/fixcopyright.tmp
     diff $file /tmp/fixcopyright.tmp
 }
 EGREPMATCH='199[0-9]-[ ,]'
 LOGMESSAGE="Fixed copyright"
 
-topdir=`pwd`
-for fullfile in $@
-do
-    cd $topdir
-    echo "Now processing: $fullfile"
-    egrep "$EGREPMATCH" $fullfile
-    retval=$?
-    if [ $retval = 0 ]; then
-	# There was a difference, so we might want to check this sucker out
-	file=`basename $fullfile`
-	dirname=`dirname $fullfile`
-	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
-	doit
-	if [ "$printonly" = "no" ]; then
-	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
-	else
-	    echo "Would update and commit"
-	fi	
-    fi
-done
-rm -f /tmp/fixcopyright.tmp
-
+search $@
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2000\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2001\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2000"
+LOGMESSAGE="Changed copyright to 2001"
 
-topdir=`pwd`
-for fullfile in $@
-do
-    cd $topdir
-    echo "Now processing: $fullfile"
-    egrep "$EGREPMATCH" $fullfile
-    retval=$?
-    if [ $retval = 0 ]; then
-	# There was a difference, so we might want to check this sucker out
-	file=`basename $fullfile`
-	dirname=`dirname $fullfile`
-	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
-	doit
-	if [ "$printonly" = "no" ]; then
-	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
-	else
-	    echo "Would update and commit"
-	fi	
-    fi
-done
-rm -f /tmp/fixcopyright.tmp
-
+search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2000/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2001/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2000"
+LOGMESSAGE="Changed copyright to 2001"
 
-topdir=`pwd`
-for fullfile in $@
-do
-    cd $topdir
-    echo "Now processing: $fullfile"
-    egrep "$EGREPMATCH" $fullfile
-    retval=$?
-    if [ $retval = 0 ]; then
-	# There was a difference, so we might want to check this sucker out
-	file=`basename $fullfile`
-	dirname=`dirname $fullfile`
-	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
-	doit
-	if [ "$printonly" = "no" ]; then
-	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
-	else
-	    echo "Would update and commit"
-	fi	
-    fi
-done
-rm -f /tmp/fixcopyright.tmp
+search $@
 
 doit() {
-    sed 's/Copyright (c) 1998 /Copyright (c) 1998-2000 /' \
+    sed 's/Copyright (c) \(199[0-9]\)-2000 /Copyright (c) \1-2001 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
-EGREPMATCH="Copyright \(c\) 1998 "
-LOGMESSAGE="Changed copyright to 2000"
+EGREPMATCH='Copyright \(c\) 199[0-9]-2000 '
+LOGMESSAGE="Changed copyright to 2001"
 
-topdir=`pwd`
-for fullfile in $@
-do
-    cd $topdir
-    echo "Now processing: $fullfile"
-    egrep "$EGREPMATCH" $fullfile
-    retval=$?
-    if [ $retval = 0 ]; then
-	# There was a difference, so we might want to check this sucker out
-	file=`basename $fullfile`
-	dirname=`dirname $fullfile`
-	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
-	doit
-	if [ "$printonly" = "no" ]; then
-	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
-	else
-	    echo "Would update and commit"
-	fi	
-    fi
-done
-rm -f /tmp/fixcopyright.tmp
+search $@
 
 doit() {
-    sed 's/Copyright (c) 1999 /Copyright (c) 1999-2000 /' \
+    sed 's/Copyright (c) 1999 /Copyright (c) 1999-2001 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 1999 "
-LOGMESSAGE="Changed copyright to 2000"
+LOGMESSAGE="Changed copyright to 2001"
 
-topdir=`pwd`
-for fullfile in $@
-do
-    cd $topdir
-    echo "Now processing: $fullfile"
-    egrep "$EGREPMATCH" $fullfile
-    retval=$?
-    if [ $retval = 0 ]; then
-	# There was a difference, so we might want to check this sucker out
-	file=`basename $fullfile`
-	dirname=`dirname $fullfile`
-	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
-	doit
-	if [ "$printonly" = "no" ]; then
-	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
-	else
-	    echo "Would update and commit"
-	fi	
-    fi
-done
-rm -f /tmp/fixcopyright.tmp
+search $@
+
+doit() {
+    sed 's/Copyright (c) 2000 /Copyright (c) 2000-2001 /' \
+	    $file > /tmp/fixcopyright.tmp	
+    diff $file /tmp/fixcopyright.tmp	
+}
+EGREPMATCH="Copyright \(c\) 2000 "
+LOGMESSAGE="Changed copyright to 2001"
+
+search $@
+
 
