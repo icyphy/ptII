@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Stop
 /**
-An actor that stops a model executing when it receives a true token
+An actor that stops execution of a model when it receives a true token
 on any input channel. This is accomplished by calling finish() on the
 manager, which requests that the current iteration be completed and
 then the model execution be halted.
@@ -59,8 +59,8 @@ iteration is concluded and then execution is stopped.  Similarly in SR.
 <p>
 In PN, where each actor has its own thread, there is no well-defined
 notion of an iteration. The finish() method of the manager calls
-stopFire() on all actors, which for threaded actors results in them
-halting upon their next attempt to read an input or write an
+stopFire() on all actors, which for threaded actors results in
+halting them upon their next attempt to read an input or write an
 output. When all actor threads have stopped, the iteration
 concludes and the model halts. <b>NOTE</b>:
 <i>This is not the best way to stop a PN model!</i>
@@ -94,6 +94,7 @@ public class Stop extends Sink {
 
         input.setTypeEquals(BaseType.BOOLEAN);
 
+        // Icon is a stop sign.
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
                 + "-8,19 -19,8 -19,-8\" "
@@ -102,6 +103,7 @@ public class Stop extends Sink {
                 + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
                 + "STOP</text>\n"
                 + "</svg>\n");
+        // Hide the name because the name is in the icon.
         new TransientSingletonConfigurableAttribute(this, "_hideName");
     }
 
@@ -109,7 +111,7 @@ public class Stop extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel that has a token,
-     *  and if any token is true, call stop() on the director.
+     *  and if any token is true, call finish() on the manager.
      *  @exception IllegalActionException If there is no director or
      *   if there is no manager, or if the container is not a
      *   CompositeActor.
@@ -117,6 +119,8 @@ public class Stop extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+        // NOTE: We need to consume data on all channels that have data.
+        // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 if (((BooleanToken)input.get(i)).booleanValue()) {

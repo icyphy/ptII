@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -39,13 +39,22 @@ import ptolemy.kernel.util.*;
 //// ThrowModelError
 /**
 An actor that throws a model error when it receives a true token
-on any input channel.  The message reported in the exception is
+on any input channel.  The message reported in the model error is
 given by the <i>message</i> parameter.
 The inputs are read and checked in the postfire() method only.
+<p>
+A model error is an exception that is passed up the containment
+hierarchy rather than being immediately thrown. Any container
+in the containment hierarchy may choose to handle the error.
+By default, containers will pass delegate the error to their
+container, if they have one, and throw an exception if they
+don't. But some containers might do more with the error.
 
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 2.1
+@see ThrowException
+@see NamedObj.handleModelError(NamedObj, IllegalActionException)
 */
 public class ThrowModelError extends Sink {
 
@@ -84,6 +93,8 @@ public class ThrowModelError extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+		// NOTE: We need to consume data on all channels that have data.
+		// If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 if (((BooleanToken)input.get(i)).booleanValue()) {

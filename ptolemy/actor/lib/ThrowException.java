@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ThrowException
 /**
-An actor that throws an exception when it receives a true token
+An actor that throws an IllegalActionException when it receives a true token
 on any input channel.  The message reported in the exception is
 given by the <i>message</i> parameter.
 The inputs are read and checked in the postfire() method only.
@@ -46,6 +46,7 @@ The inputs are read and checked in the postfire() method only.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.1
+@see ThrowModelError
 */
 
 public class ThrowException extends Sink {
@@ -72,7 +73,9 @@ public class ThrowException extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The message reported in the exception. */
+    /** The message reported in the exception, which is a string that
+     *  defaults to "Model triggered an exception."
+     */
     public StringAttribute message;
 
     ///////////////////////////////////////////////////////////////////
@@ -85,6 +88,8 @@ public class ThrowException extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
+		// NOTE: We need to consume data on all channels that have data.
+		// If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 if (((BooleanToken)input.get(i)).booleanValue()) {
