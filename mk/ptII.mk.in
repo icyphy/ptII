@@ -38,7 +38,7 @@
 # Variables with @ around them are subsituted in by the configure script
 
 # Default top-level directory.  Usually this is the same as $PTII
-prefix =	@prefix@     
+prefix =	@prefix@
 
 # Usually the same as prefix.  exec_prefix is part of the autoconf standard.
 exec_prefix =	@exec_prefix@
@@ -123,6 +123,6 @@ JAVACC =	@JAVACC@
 JTCLSH =	@JTCLSH@
 
 # Commands used to install scripts and data
-INSTALL =		$(srcdir)/install-sh -c
+INSTALL =		$(PTII)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
 INSTALL_DATA =		${INSTALL} -m 644
