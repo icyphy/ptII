@@ -877,9 +877,9 @@ public class ComplexArrayMath {
      *
      *  @param array An array of complex numbers.
      *  @param elementDelimiter The delimiter between elements,
-     *  typicalling ", "
-     *  @param vectorBegin The start of the array, typically "{"
-     *  @param vectorEnd The end of the array, typically "}"
+     *  typically ", ".
+     *  @param vectorBegin The start of the array, typically "{".
+     *  @param vectorEnd The end of the array, typically "}".
      *  @return A new string representing the array in the format specified
      *  by the ArrayStringFormat argument.
      */
