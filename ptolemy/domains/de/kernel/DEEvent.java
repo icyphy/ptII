@@ -80,7 +80,7 @@ public final class DEEvent implements Comparable {
      *   not contained by a port contained by an actor.
      */
     DEEvent(DEReceiver receiver, Token token, double timeStamp,
-                int microstep, int depth) {
+            int microstep, int depth) {
         _receiver = receiver;
         _actor = (Actor)receiver.getContainer().getContainer();
         _token = token;
@@ -126,26 +126,26 @@ public final class DEEvent implements Comparable {
      * @exception ClassCastException If the argument is not an instance
      *  of DEEvent.
      */
-     public final int compareTo(Object event) {
+    public final int compareTo(Object event) {
 
-         DEEvent castEvent = (DEEvent) event;
+        DEEvent castEvent = (DEEvent) event;
 
-         if ( _timeStamp > castEvent._timeStamp)  {
-             return 1;
-         } else if ( _timeStamp < castEvent._timeStamp) {
-             return -1;
-         } else if ( _microstep > castEvent._microstep) {
-             return 1;
-         } else if ( _microstep < castEvent._microstep) {
-             return -1;
-         } else if ( _receiverDepth > castEvent._receiverDepth) {
-             return 1;
-         } else if ( _receiverDepth < castEvent._receiverDepth) {
-             return -1;
-         } else {
-             return 0;
-         }
-     }
+        if ( _timeStamp > castEvent._timeStamp)  {
+            return 1;
+        } else if ( _timeStamp < castEvent._timeStamp) {
+            return -1;
+        } else if ( _microstep > castEvent._microstep) {
+            return 1;
+        } else if ( _microstep < castEvent._microstep) {
+            return -1;
+        } else if ( _receiverDepth > castEvent._receiverDepth) {
+            return 1;
+        } else if ( _receiverDepth < castEvent._receiverDepth) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
     /** Return the depth, which is the position of the destination actor
      *  in the topological sort.
@@ -176,11 +176,11 @@ public final class DEEvent implements Comparable {
      *  to know is whether the events are simultaneous.
      *  @param event The event to compare against.
      */
-     public final boolean isSimultaneousWith(DEEvent event) {
-         return ( _timeStamp == event._timeStamp) &&
-                ( _microstep == event._microstep) &&
-                ( _receiverDepth == event._receiverDepth);
-     }
+    public final boolean isSimultaneousWith(DEEvent event) {
+        return ( _timeStamp == event._timeStamp) &&
+            ( _microstep == event._microstep) &&
+            ( _receiverDepth == event._receiverDepth);
+    }
 
     /** Return the time stamp.
      *  @return The time stamp.
@@ -203,7 +203,7 @@ public final class DEEvent implements Comparable {
      */
     public String toString() {
         return "DEEvent(" + _token + ", " + _timeStamp + ", "
-                + ((NamedObj)_actor).getFullName() + ")";
+            + ((NamedObj)_actor).getFullName() + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

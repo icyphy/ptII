@@ -108,7 +108,7 @@ public class Delay extends DETransformer {
         if (attribute == delay) {
             if (((DoubleToken)(delay.getToken())).doubleValue() < 0.0) {
                 throw new IllegalActionException(this,
-                "Cannot have negative delay.");
+                        "Cannot have negative delay.");
             }
         } else {
             super.attributeChanged(attribute);

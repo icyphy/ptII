@@ -303,7 +303,7 @@ public class DEDirector extends Director {
             do {
                 if (_debugging) {
                     _debug("Iterating actor", ((Entity)actorToFire).getName(),
-                    "at time ", Double.toString(getCurrentTime()));
+                            "at time ", Double.toString(getCurrentTime()));
                 }
                 if (!actorToFire.prefire()) {
                     if (_debugging) _debug("Prefire returned false.");
@@ -339,8 +339,8 @@ public class DEDirector extends Director {
                 if (next.timeStamp() > getCurrentTime()) break;
                 else if (next.timeStamp() < getCurrentTime()) {
                     throw new InternalErrorException(
-                        "fire(): the next event has smaller time stamp than" +
-                        " the current time!");
+                            "fire(): the next event has smaller time stamp than" +
+                            " the current time!");
                 }
             } catch (IllegalActionException e) {
                 // The queue is empty. Proceed to postfire().
@@ -622,7 +622,7 @@ public class DEDirector extends Director {
                 microstep = _microstep + 1;
             } else if ( time < getCurrentTime()) {
                 throw new IllegalActionException((Entity)actor,
-                "Attempt to queue an event in the past.");
+                        "Attempt to queue an event in the past.");
             }
         }
         int depth = _getDepth(actor);
@@ -660,7 +660,7 @@ public class DEDirector extends Director {
             } else if ( time < getCurrentTime()) {
                 Nameable destination = receiver.getContainer();
                 throw new IllegalActionException(destination,
-                "Attempt to queue an event in the past.");
+                        "Attempt to queue an event in the past.");
             }
         }
         Actor destn = (Actor)(receiver.getContainer()).getContainer();
@@ -695,7 +695,7 @@ public class DEDirector extends Director {
         if (_startTime == Double.MAX_VALUE) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination, "Attempt to queue an"
-            + " event at the current time before current time is set.");
+                    + " event at the current time before current time is set.");
         }
         Actor destn = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destn);
@@ -778,7 +778,7 @@ public class DEDirector extends Director {
                 if (_deadActors != null && _deadActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
                     if (_debugging) _debug("Skipping actor: ",
-                           ((Entity)actorToFire).getFullName());
+                            ((Entity)actorToFire).getFullName());
                     actorToFire = null;
                     continue;
                 }
@@ -909,8 +909,8 @@ public class DEDirector extends Director {
                         Actor destination = (Actor)(pp.getContainer());
                         if(destination.equals(actor)) {
                             throw new IllegalActionException(this,
-                            "Zero delay self-loop on actor: "
-                            + ((Nameable)actor).getFullName());
+                                    "Zero delay self-loop on actor: "
+                                    + ((Nameable)actor).getFullName());
                         }
                         // create an arc from this actor to the successor.
                         if (dag.contains(destination)) {
@@ -919,9 +919,9 @@ public class DEDirector extends Director {
                             // This happens if there is a
                             // level-crossing transition.
                             throw new IllegalActionException(this,
-                            "Level-crossing transition from "
-                            + ((Nameable)actor).getFullName() + " to "
-                            + ((Nameable)destination).getFullName());
+                                    "Level-crossing transition from "
+                                    + ((Nameable)actor).getFullName() + " to "
+                                    + ((Nameable)destination).getFullName());
                         }
                     }
                 }
@@ -941,7 +941,7 @@ public class DEDirector extends Director {
                 }
             }
             throw new IllegalActionException(this,
-            "Found zero delay loop including: " + names.toString());
+                    "Found zero delay loop including: " + names.toString());
         }
         return dag;
     }
@@ -1010,7 +1010,7 @@ public class DEDirector extends Director {
         nextEvent = _eventQueue.get();
 
         if (_debugging) _debug("Request refiring of opaque composite actor.");
-       // Enqueue a refire for the container of this director.
+        // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), nextEvent.timeStamp());
     }

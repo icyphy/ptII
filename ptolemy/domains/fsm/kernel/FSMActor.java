@@ -456,52 +456,52 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public List typeConstraintList()  {
         /*try {
-	    _workspace.getReadAccess();
+          _workspace.getReadAccess();
 
-	    List result = new LinkedList();
-	    Enumeration inPorts = inputPorts();
-	    while (inPorts.hasMoreElements()) {
-	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
-		boolean isUndeclared = inport.getTypeTerm().isSettable();
-		if (isUndeclared) {
-		    // inport has undeclared type
-		    Enumeration outPorts = outputPorts();
-	    	    while (outPorts.hasMoreElements()) {
-		    	TypedIOPort outport =
-                            (TypedIOPort)outPorts.nextElement();
+          List result = new LinkedList();
+          Enumeration inPorts = inputPorts();
+          while (inPorts.hasMoreElements()) {
+          TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
+          boolean isUndeclared = inport.getTypeTerm().isSettable();
+          if (isUndeclared) {
+          // inport has undeclared type
+          Enumeration outPorts = outputPorts();
+          while (outPorts.hasMoreElements()) {
+          TypedIOPort outport =
+          (TypedIOPort)outPorts.nextElement();
 
-			isUndeclared = outport.getTypeTerm().isSettable();
-		    	if (isUndeclared && inport != outport) {
-			    // output also undeclared, not bi-directional port,
-		            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(),
-                                    outport.getTypeTerm());
-			    result.add(ineq);
-			}
-		    }
-		}
-	    }
+          isUndeclared = outport.getTypeTerm().isSettable();
+          if (isUndeclared && inport != outport) {
+          // output also undeclared, not bi-directional port,
+          Inequality ineq = new Inequality(
+          inport.getTypeTerm(),
+          outport.getTypeTerm());
+          result.add(ineq);
+          }
+          }
+          }
+          }
 
-	    // collect constraints from contained Typeables
-	    Enumeration ports = getPorts();
-	    while (ports.hasMoreElements()) {
-		Typeable port = (Typeable)ports.nextElement();
-		result.addAll(port.typeConstraintList());
-	    }
+          // collect constraints from contained Typeables
+          Enumeration ports = getPorts();
+          while (ports.hasMoreElements()) {
+          Typeable port = (Typeable)ports.nextElement();
+          result.addAll(port.typeConstraintList());
+          }
 
-	    Enumeration attrib = getAttributes();
-	    while (attrib.hasMoreElements()) {
-		Attribute att = (Attribute)attrib.nextElement();
-		if (att instanceof Typeable) {
-		    result.addAll(((Typeable)att).typeConstraintList());
-		}
-	    }
+          Enumeration attrib = getAttributes();
+          while (attrib.hasMoreElements()) {
+          Attribute att = (Attribute)attrib.nextElement();
+          if (att instanceof Typeable) {
+          result.addAll(((Typeable)att).typeConstraintList());
+          }
+          }
 
-	    return result;
+          return result;
 
-	} finally {
-	    _workspace.doneReading();
-	}*/
+          } finally {
+          _workspace.doneReading();
+          }*/
         return new LinkedList();
     }
 
