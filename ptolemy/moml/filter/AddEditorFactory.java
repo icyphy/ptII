@@ -39,12 +39,8 @@ import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// AddEditorFactory
-/** When this class is registered with the MoMLParser.setMoMLFilter()
-method, it will cause MoMLParser to filter so that models from
-earlier releases will run in the current release.
-
-<p>This class will filter for actors that have had port name changes, and
-for classes with property where the class name has changed
+/** Add a VisibleParameterEditorFactory named _editorFactory to certain
+Parameters.
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
@@ -52,9 +48,8 @@ for classes with property where the class name has changed
 */
 public class AddEditorFactory implements MoMLFilter {
 
-    /**  If the attributeName is "class" and attributeValue names a
-     *        class that has had its port names changed between releases,
-     *  then substitute in the new port names.
+    /**  Identify Parameters that need a VisibleParameterEditoryFactory
+     *   named _editorFactory added.
      *
      *  @param container  The container for this attribute.
      *  in this method.
@@ -100,9 +95,6 @@ public class AddEditorFactory implements MoMLFilter {
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-        // If you place the above command in a file five times, you
-        // can get averages with:
-        // sh c:/tmp/timeit | awk '{sum += $4; print sum, sum/NR, $0}'
 
         if (attributeName.equals("class")) {
             if (attributeValue

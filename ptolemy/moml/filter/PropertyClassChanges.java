@@ -97,14 +97,12 @@ public class PropertyClassChanges implements MoMLFilter {
                 }
             }
         }
+
         // If you change this class, you should run before and after
         // timing tests on large moml files, a good command to run
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-        // If you place the above command in a file five times, you
-        // can get averages with:
-        // sh c:/tmp/timeit | awk '{sum += $4; print sum, sum/NR, $0}'
 
         if (attributeName.equals("class")) {
             if (_actorsWithPropertyClassChanges
@@ -160,59 +158,16 @@ public class PropertyClassChanges implements MoMLFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Set of all actors that require updating.
-    private static Set _actorsThatRequireUpdating;
-
-    // We don't have a Map of actors that may need _editorFactory
-    // because currently only ptolemy.data.expr.Parameters that
-    // have a name="_icon" and a valueIcon need to have editorFactory
-    // added
-
-    // Map of actors that should have _icon
-    private static HashMap _actorsThatShouldHaveIcons;
-
-    // Map of actor names a HashMap of old ports to new ports
-    private static HashMap _actorsWithPortNameChanges;
-
     // Map of actor names a HashMap of property names to new classes.
     private static HashMap _actorsWithPropertyClassChanges;
 
-    // Map of old container.port to new container.newPort;
-    private static HashMap _containerPortMap;
-
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
-
-    // Set to true if the current attribute has a _location attribute.
-    // This variable is used to determine whether we need to add  a
-    // _editorFactory.
-    private static boolean _currentAttributeHasLocation = false;
 
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
         _currentlyProcessingActorWithPropertyClassChanges = false;
-
-    // Set to true if we are currently processing an actor with port name
-    // changes, set to false when we are done.
-    private static boolean
-        _currentlyProcessingActorWithPortNameChanges = false;
-
-    // Set to true if we are currently processing an actor that may
-    // need _editorFactory added, set to false when we are done.
-    private boolean
-        _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
-
-    // Set to true if we are currently processing an actor that may
-    // need _icon added, set to false when we are done.
-    private boolean _currentlyProcessingActorThatMayNeedAnIcon = false;
-
-    // Set to true if we are done processing an actor.
-    private static boolean _doneProcessingActorWithPortNameChanges = false;
-
-    // The moml that we should substitute in if we need to add
-    // an _icon
-    private static String _iconMoML;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
@@ -220,48 +175,11 @@ public class PropertyClassChanges implements MoMLFilter {
     // The new class name for the property we are working on.
     private static String _newClass;
 
-    // The parser we use to parse the MoML when we add an _icon.
-    private static MoMLParser _parser;
-
-    // Cache of map from old port names to new port names for
-    // the actor we are working on.
-    private static HashMap _portMap;
-
     // Cache of map from old property names to new class names for
     // the actor we are working on.
     private static HashMap _propertyMap;
 
-    // Set to true if we are currently processing an actor
-    // that requires processing. Set to false once we are
-    // done processing that actor.  This is done for performance reasons.
-    private static boolean _currentlyProcessingActorThatRequiresUpdating =
-        false;
-
     static {
-        ///////////////////////////////////////////////////////////
-        // Actors with port name changes.
-        _actorsWithPortNameChanges = new HashMap();
-        _containerPortMap = new HashMap();
-
-        // ComplexToCartesian: real is now x, imag is now y.
-        HashMap cartesianPorts = new HashMap();
-        cartesianPorts.put("real", "x");
-        cartesianPorts.put("imag", "y");
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
-                    cartesianPorts);
-
-        // CartesianToComplex has the same ports as ComplexToCartesian.
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.conversions.CartesianToComplex",
-                    cartesianPorts);
-
-        // Sleep
-        HashMap sleepPorts = new HashMap();
-        sleepPorts.put("delay", "sleepTime");
-        _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.Sleep", sleepPorts);
-
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.
         _actorsWithPropertyClassChanges = new HashMap();
@@ -301,51 +219,5 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
                .put("ptolemy.domains.sdf.lib.vq.VQDecode",
                     inputOutputTypedIOPortClassChanges);
-
-        ///////////////////////////////////////////////////////////
-        // Actors that should have _icon
-        _actorsThatShouldHaveIcons = new HashMap();
-
-        // In alphabetic order by actor class name.
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"value\"/>\n"
-                + "<property name=\"displayWidth\" value=\"40\"/>\n"
-                + "</property>\n");
-
-        String functionIcon =
-            "<property name=\"_icon\" "
-            + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-            + "<property name=\"attributeName\" value=\"function\"/>\n"
-            + "</property>\n";
-
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
-                functionIcon);
-
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"factor\"/>\n"
-                + "</property>\n");
-
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
-                functionIcon);
-
-        ///////////////////////////////////////////////////////////
-        // We put all the actors that require updating so that we can
-        // have only search for actors.
-        _actorsThatRequireUpdating = new HashSet();
-
-        // Add the entries from each of the HashMaps to the Set.
-        _actorsThatRequireUpdating
-            .addAll(_actorsWithPortNameChanges.keySet());
-        _actorsThatRequireUpdating
-            .addAll(_actorsWithPropertyClassChanges.keySet());
-        _actorsThatRequireUpdating
-            .addAll(_actorsThatShouldHaveIcons.keySet());
-        // ptolemy.data.expr.Parameters may need _editorFactory added.
-        _actorsThatRequireUpdating.add("ptolemy.data.expr.Parameter");
-
     }
 }

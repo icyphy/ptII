@@ -136,7 +136,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
+        _graphicalClasses.put("ptolemy.vergil.toolbox"
+                + ".VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
     }
 }
