@@ -127,11 +127,28 @@ public class PortConfigurerDialog extends ComponentDialog
                             container = (NamedObj)port.getContainer();
                         }
 
-                        String moml = "<deletePort name=\""
-                            + port.getName(container) + "\"/>\n";
+                        NamedObj composite = (NamedObj)container.getContainer();
+                        StringBuffer moml = new StringBuffer();
+                        if (composite != null) {
+                            moml.append("<deletePort name=\"" + port.getName() +
+                                    "\" entity=\"" + container.getName() +
+                                    "\" />\n");
+                        } else {
+                            moml.append("<deletePort name=\"" +
+                                    port.getName(container) + "\" />\n");
+                        }
 
-                        ChangeRequest request =
-                            new MoMLChangeRequest(this, container, moml);
+                        // NOTE: the context is the composite entity containing
+                        // the entity if possible
+                        MoMLChangeRequest request = null;
+                        if (composite != null) {
+                            request = new MoMLChangeRequest(this, composite,
+                                                            moml.toString());
+                        } else {
+                            request = new MoMLChangeRequest(this, container,
+                                                            moml.toString());
+                        }
+                        request.setUndoable(true);
                         container.addChangeListener(this);
                         container.requestChange(request);
                     }
@@ -242,8 +259,10 @@ public class PortConfigurerDialog extends ComponentDialog
                 + classMoML
                 + "/>";
             _target.addChangeListener(this);
-            _target.requestChange(new MoMLChangeRequest(this,
-                    _target, moml));
+            MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                                             _target, moml);
+            change.setUndoable(true);
+            _target.requestChange(change);
         }
         return dialog;
     }
