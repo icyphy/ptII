@@ -64,6 +64,8 @@ JSRCS = \
 	Sphere3D.java \
 	TextString3D.java \
 	Torus3D.java \
+	KeyInput3D.java \
+	MouseInput3D.java \
 	ViewScreen.java
 
 EXTRA_SRCS =	$(JSRCS) \
