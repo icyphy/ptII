@@ -120,9 +120,17 @@ public final class SDFIOPort extends TypedIOPort {
 	setInput(isinput);
         setOutput(isoutput);
     }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
 
+    /** The number of tokens consumed on this port each firing. */
     public Parameter tokenConsumptionRate;
+
+    /** The number of tokens produced on this port during initialization. */
     public Parameter tokenInitProduction;
+
+    /** The number of tokens produced on this port each firing. */
     public Parameter tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
@@ -272,25 +280,6 @@ public final class SDFIOPort extends TypedIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /**
-     * Return the convert() Method for the resolved type of this port.
-     */
-    private Method _getConvertMethod(Class dataType) {
-	Method _convertMethod = null;
-	try {
-	    if (_convertMethod == null) {
-	    	Class[] formal = new Class[1];
-	    	formal[0] = Token.class;
-	    	_convertMethod = dataType.getMethod("convert", formal);
-	    }
-	    return _convertMethod;
-
-	} catch (NoSuchMethodException e) {
-            throw new InternalErrorException("_getConvertMethod: "
-                    + "NoSuchMethodException: " + e.getMessage());
-        }
-    }
 
     /**
      * Initialize local data members.
