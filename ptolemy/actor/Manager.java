@@ -133,35 +133,35 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Indicator that there is no currently active execution.
      */
-    public final State IDLE = new State("Idle");
+    public final State IDLE = new State("idle");
 
     /** Indicator that the execution is in the initialize phase.
      */
-    public final State INITIALIZING = new State("Initializing");
+    public final State INITIALIZING = new State("initializing");
 
     /** Indicator that the execution is in an iteration.
      */
-    public final State ITERATING = new State("Executing iteration");
+    public final State ITERATING = new State("executing");
 
     /** Indicator that the execution is in the mutations phase.
      */
-    public final State MUTATING = new State("Processing mutations");
+    public final State MUTATING = new State("processing mutations");
 
     /** Indicator that the execution is paused.
      */
-    public final State PAUSED = new State("Execution paused");
+    public final State PAUSED = new State("pausing execution");
 
     /** Indicator that the execution is in the initialize phase.
      */
-    public final State PREINITIALIZING = new State("Prenitializing");
+    public final State PREINITIALIZING = new State("prenitializing");
 
     /** Indicator that type resolution is being done.
      */
-    public final State RESOLVING_TYPES = new State("Resolving types");
+    public final State RESOLVING_TYPES = new State("resolving types");
 
     /** Indicator that the execution is in the wrapup phase.
      */
-    public final State WRAPPING_UP = new State("Wrapping up");
+    public final State WRAPPING_UP = new State("wrapping up");
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
