@@ -400,9 +400,9 @@ public class InlineParameterTransformer extends SceneTransformer {
     // that that field contains.
     private static void _createTokenAndExpressionFields(SootClass theClass,
             NamedObj context, NamedObj container, Map attributeToValueFieldMap) {
-        SootClass tokenClass = 
+        /*   SootClass tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
-        Type tokenType = RefType.v(tokenClass);
+            Type tokenType = RefType.v(tokenClass);*/
         SootClass stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
@@ -417,14 +417,16 @@ public class InlineParameterTransformer extends SceneTransformer {
                 SootField field;
                 // Create a field to contain the value of the attribute.
                 if(settable instanceof Variable) {
+                    Variable variable = (Variable)settable;
+                    ptolemy.data.type.Type type = variable.getType();
+                    Type tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
                     field = new SootField(
                             fieldName + "_CGToken",
                             tokenType, 
                             Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
                     theClass.addField(field);
                     try {
-                        field.addTag(new ValueTag(
-                                ((Variable)settable).getToken()));
+                        field.addTag(new ValueTag(variable.getToken()));
                     } catch (Exception ex) {
                     }
                 } else {

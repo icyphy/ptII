@@ -107,19 +107,20 @@ import java.util.List;
 
 import java.lang.reflect.Method;
 
+import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.Typeable;
+import ptolemy.data.expr.Variable;
 
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.Typeable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 /*
@@ -144,25 +145,26 @@ public class PtolemyUtilities {
    public static Local buildConstantTokenLocal(Body body, Unit insertPoint, Token token, String localName) {
         Chain units = body.getUnits();
         if(token instanceof ptolemy.data.ArrayToken) {
-            SootClass tokenClass = 
-                Scene.v().loadClassAndSupport("ptolemy.data.Token");
+            ArrayToken arrayToken = (ArrayToken)token;
+            RefType tokenType = getSootTypeForTokenType(arrayToken.getElementType());
+                // SootClass tokenClass =Scene.v().loadClassAndSupport("ptolemy.data.Token");
             SootClass arrayTokenClass =
                 Scene.v().loadClassAndSupport("ptolemy.data.ArrayToken");
             SootMethod arrayTokenConstructor =
                 arrayTokenClass.getMethod("void <init>(ptolemy.data.Token[])");
-            Type tokenArrayType = ArrayType.v(RefType.v(tokenClass), 1);
+            Type tokenArrayType = ArrayType.v(tokenType, 1);
             Local tokenArrayLocal = Jimple.v().newLocal(localName + "Array",
                     tokenArrayType);
             body.getLocals().add(tokenArrayLocal);
             // Create the array of tokens.
             units.insertBefore(Jimple.v().newAssignStmt(tokenArrayLocal, 
-                    Jimple.v().newNewArrayExpr(RefType.v(tokenClass),
-                            IntConstant.v(((ArrayToken)token).length()))),
+                    Jimple.v().newNewArrayExpr(tokenType,
+                            IntConstant.v(arrayToken.length()))),
                     insertPoint);
             // recurse
-            for(int i = 0; i < ((ArrayToken)token).length(); i++) {
+            for(int i = 0; i < arrayToken.length(); i++) {
                 Local argLocal = buildConstantTokenLocal(body, insertPoint,
-                       ((ArrayToken)token).getElement(i), localName + "_" + i);
+                       arrayToken.getElement(i), localName + "_" + i);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         Jimple.v().newArrayRef(tokenArrayLocal, IntConstant.v(i)),
                         argLocal), insertPoint);
@@ -320,6 +322,15 @@ public class PtolemyUtilities {
                 Jimple.v().newSpecialInvokeExpr(local,
                         constructor, args)));
         return local;
+    }
+
+    public static RefType getSootTypeForTokenType(ptolemy.data.type.Type type) {
+        if(type instanceof ptolemy.data.type.ArrayType) {
+            return RefType.v("ptolemy.data.ArrayToken");
+        } else if(type instanceof ptolemy.data.type.BaseType) {
+            return RefType.v(((ptolemy.data.type.BaseType)type).getTokenClass().getName());
+        }
+        else throw new RuntimeException("unknown type = " + type);
     }
 
     /** Inline the given invocation expression, given knowledge that the
