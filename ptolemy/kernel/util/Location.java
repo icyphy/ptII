@@ -212,10 +212,24 @@ public class Location extends SingletonAttribute
 
     /** Set the location in some cartesian coordinate system, and notify
      *  the container and any value listeners of the new location.
+     *  No notification is done if the location is the same as before.
      *  @param location The location.
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
+        // If the location is unchanged, just return.
+        if (_location != null
+                && location != null
+                && _location.length == location.length) {
+            boolean match = true;
+            for (int i = 0; i < location.length; i++) {
+                if (_location[i] != location[i]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) return;
+        }
         _location = location;
         _expressionSet = false;
 
@@ -254,41 +268,34 @@ public class Location extends SingletonAttribute
 
     /** Parse the location specification given by setExpression(), if there
      *  has been one, and otherwise set the location to 0.0, 0.0.
-     *  Notify the container and any value listeners of the new location.
+     *  Notify the container and any value listeners of the new location,
+     *  if it has changed.
      *  @exception IllegalActionException If the expression is invalid.
      */
     public void validate() throws IllegalActionException {
         // If the value has not been set via setExpression(), there is
         // nothing to do.
         if (!_expressionSet) return;
+        double[] location;
         if (_expression == null) {
-            _location = new double[2];
-            _location[0] = 0.0;
-            _location[1] = 0.0;
+            location = new double[2];
+            location[0] = 0.0;
+            location[1] = 0.0;
         } else {
             // Parse the specification: a comma specified list of doubles.
             StringTokenizer tokenizer = new StringTokenizer(_expression, ",");
-            double[] location = new double[tokenizer.countTokens()];
+            location = new double[tokenizer.countTokens()];
             int count = tokenizer.countTokens();
             for (int i = 0; i < count; i++) {
                 String next = tokenizer.nextToken().trim();
                 location[i] = Double.parseDouble(next);
             }
-
-            _location = location;
         }
-
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
-        if (_valueListeners != null) {
-            Iterator listeners = _valueListeners.iterator();
-            while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
-                listener.valueChanged(this);
-            }
-        }
+        // Set and notify.
+        setLocation(location);
+        // The above call sets _expressionSet to false, which is incorrect.
+        // We know from above that it is true.
+        _expressionSet = true;
     }
 
     ///////////////////////////////////////////////////////////////////
