@@ -1,23 +1,6 @@
 
 check in:
 
-pde:
-UnknownResultException.java
-Variable.java
-fsmk:
-Transition.java
-OutputActionsAttribute.java
-CommitActionsAttribute.java
-FSMActor.java
-fsmkt:
-InterfaceAutomaton.tcl
-FSMActor.tcl
-srk:
-UnknownTokenException.java - add
-IllegalOutputException.java - add
-makefile
-SRReceiver.java
-SRDirector.java
 
 To Do:
 
