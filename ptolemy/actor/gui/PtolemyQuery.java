@@ -137,6 +137,8 @@ public class PtolemyQuery extends Query
      *  automatically set <i>var</i> when <i>entryName</i> changes.
      *  If <i>var</i> has previously been attached to an entry,
      *  then the old value is replaced with <i>entryName</i>.
+     *  If either of the parameters is null, then a NullPointerException
+     *  is thrown.
      *  @param var The variable to attach to an entry.
      *  @param entryName The entry to attach the variable to.
      */
@@ -185,6 +187,8 @@ public class PtolemyQuery extends Query
     /** Queue a change request to alter the value of any parameter
      *  attached to the specified entry. This method is
      *  called whenever an entry has been changed.
+     *  If no parameter is attached to the specified entry, then
+     *  do nothing.
      *  @param name The name of the entry that has changed.
      */
     // FIXME: This only works with a Parameter, not a Variable.
@@ -194,28 +198,18 @@ public class PtolemyQuery extends Query
 	if (_parameters.containsKey(name)) {
 	    Variable var = (Variable)(_parameters.get(name));
 
-            // Check if the variable exists.
+            // Check if the variable still exists. If the variable
+	    // no longer exists, than do not try to update it!
             if ( var == null ) {
                 return;
             }
-            
-            // Check to see if we should ignore this parameter set.
-            String expr;
-            try {
-                expr = var.getToken().toString();
-            } catch(Exception ex) {
-                expr = var.getExpression();
-            }
 
-            // Check if the variable contains an expression or
-            // variable.
-            if ( expr == null ) {
-                return;
-            }
-
-            if(expr.equals(stringValue(name))) {
-                return;
-            } 
+	    // In order to break a potential infinite loop, we ignore
+	    // this notification if value has not changed.
+	    String expr = var.getExpression();
+	    if(stringValue(name).equals(expr)) {
+		return;
+	    }
 
 	    // Don't ignore.	    
 	    CompositeEntity entity = _entity;
