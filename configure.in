@@ -1569,7 +1569,7 @@ else
 	    if "$JAVAC" MajorOSName.java ; then
 	        AC_MSG_CHECKING([the which major type of OS we are running under])
 		# Older versions of cygwin might not have env, but 1.1 does
-		if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
 		    # Run it again and get the results
 		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
 		    AC_MSG_RESULT($MAJOR_OS_NAME)
@@ -1648,6 +1648,20 @@ else
        AC_MSG_RESULT(ok)
        PTQUICKTIME_DIR=quicktime
     else
+       if test "${MAJOR_OS_NAME:-none}" = "none"; then
+	    if "$JAVAC" MajorOSName.java ; then
+	        AC_MSG_CHECKING([the which major type of OS we are running under])
+		# Older versions of cygwin might not have env, but 1.1 does
+		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
+		    # Run it again and get the results
+		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		    AC_MSG_RESULT($MAJOR_OS_NAME)
+		else   
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
+    This means we cannot look for the Quicktime zip file in the likely places]);		    
+		fi
+	    fi
+       fi	    
        if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
 	   SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
 
