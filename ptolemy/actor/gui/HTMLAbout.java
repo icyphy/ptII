@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLParser;
@@ -74,6 +75,8 @@ public class HTMLAbout {
      *  features.
      */   
     public static String about() {
+        String version = VersionAttribute.CURRENT_VERSION.getExpression();
+
         return "<html><head><title>About Ptolemy II</title></head>"
             + "<body><h1>About Ptolemy II</h1>\n"
             + "The HTML Viewer in Ptolemy II handles the <code>about:</code>\n"
@@ -96,6 +99,13 @@ public class HTMLAbout {
             + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
             + "   Open up the .xml files in\n"
             + "   <code>ptolemy/configs/doc/demos.htm</code>.\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew"
+            + version + ".htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/whatsNew"
+            + version + ".htm</code></a>\n"
+            + "   Open up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/whatsNew"
+            + version + ".htm</code>.\n"
             + " </ul>\n"
             // Don't include DSP here, it uses the Ptiny demos anyway.
             + "<li>Hyvisual\n"
