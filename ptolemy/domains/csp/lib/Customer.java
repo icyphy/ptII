@@ -150,7 +150,7 @@ public class Customer extends CSPActor {
             interval = (int)(interval*1000);
             delay(interval/1000);
             Token t = new IntToken(count);
-            _output.send(0,t);
+            _output.send(0, t);
             System.out.println(getName() + " sent: " +
                     t.toString());
             count++;
