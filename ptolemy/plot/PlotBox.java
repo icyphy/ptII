@@ -437,8 +437,10 @@ public class PlotBox extends Panel {
                         "Be sure to call init() before calling paint().");
         }
 
-        // background for the plotting rectangle
-        graphics.setColor(_background);
+        // Background for the plotting rectangle.
+        // Always use a white background because the dataset colors 
+        // were designed for a white background.
+        graphics.setColor(Color.white);
         graphics.fillRect(_ulx, _uly, width, height);
 
         graphics.setColor(_foreground);
