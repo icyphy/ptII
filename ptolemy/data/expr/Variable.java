@@ -279,8 +279,13 @@ public class Variable extends Attribute implements Typeable {
         newvar._valueDependents = null;
         newvar._scope = null;
         newvar._scopeVersion = -1;
-        // _varType is preserved.
-        // _declaredType is preserved
+
+	if (_declaredType instanceof StructuredType &&
+					!_declaredType.isConstant()) {
+	    newvar._declaredType =
+				(Type)((StructuredType)_declaredType).clone();
+	    newvar._varType = newvar._declaredType;
+	}
         // _typeAtMost is preserved
         newvar._parser = null;
         newvar._parseTree = null;
