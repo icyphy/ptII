@@ -84,6 +84,7 @@ public class MonitorValue extends Sink {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             value.setToken(input.get(0));
+            value.validate();
         }
         return true;
     }
