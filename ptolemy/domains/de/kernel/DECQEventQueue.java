@@ -145,7 +145,10 @@ public class DECQEventQueue implements DEEventQueue {
         _cQueue.removeDebugListener(listener);
     }
     
-    public double size() {
+    /** Return the size of the event queue.  
+     *  @return The size of the event queue.
+     */
+    public synchronized final int size() {
         return _cQueue.size();
     }
 
