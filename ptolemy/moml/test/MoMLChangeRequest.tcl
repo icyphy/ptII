@@ -191,7 +191,7 @@ test MoMLChangeRequest-1.5b {Test deleting an entity} {
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -238,7 +238,7 @@ test MoMLChangeRequest-1.6a {Test deleting a relation} {
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -276,7 +276,7 @@ test MoMLChangeRequest-1.6b {Test deleting a port, using a new parser and contex
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -309,7 +309,7 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
         </property>
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
