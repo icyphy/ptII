@@ -64,8 +64,7 @@ JSRCS = \
 	AnalogFilter.java \
 	DigitalFilter.java \
 	RealDigitalFilter.java \
-	RealAnalogFilter.java \
-        Filtertest.java 
+	RealAnalogFilter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
