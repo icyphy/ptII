@@ -107,7 +107,7 @@ public class JAIImageToken extends ImageToken {
      *
      * @param rightArgument The token to divide this token by.
      * @return A new token containing the result.
-     * @exception IllegalActionException if the data type is not supported.
+     * @exception IllegalActionException If the data type is not supported.
      */
     public Token divide(Token rightArgument)
             throws IllegalActionException {
@@ -142,7 +142,7 @@ public class JAIImageToken extends ImageToken {
      *
      * @param rightArgument The token to multiply this token by.
      * @return A new token containing the result.
-     * @exception IllegalActionException if the data type is not supported.
+     * @exception IllegalActionException If the data type is not supported.
      */
     public Token multiply(Token rightArgument)
             throws IllegalActionException {
@@ -164,7 +164,7 @@ public class JAIImageToken extends ImageToken {
      *
      * @param rightArgument The token to subtract from this token.
      * @return A new token containing the result.
-     * @exception IllegalActionException if the data type is not supported.
+     * @exception IllegalActionException If the data type is not supported.
      */
     public Token subtract(Token rightArgument)
             throws IllegalActionException {
