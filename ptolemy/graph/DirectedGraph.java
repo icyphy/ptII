@@ -112,13 +112,13 @@ public class DirectedGraph extends Graph {
      *  implementation, so the complexity is <i>O(V^2)</i>.
      *  @param nodes The collection of nodes to be sorted; each element is
      *  a {@link Node}.
-     *  @return The nodes in their sorted order in the form of a collection;
+     *  @return The nodes in their sorted order in the form of a list;
      *  each element is a {@link Node}.
      *  @exception IllegalActionException If any two nodes are strongly
      *  connected.
      *  @see #topologicalSort(Object[])
      */
-    public Collection topologicalSort(Collection nodeCollection)
+    public List topologicalSort(Collection nodeCollection)
             throws IllegalActionException {
         boolean[][] transitiveClosure = transitiveClosure();
 

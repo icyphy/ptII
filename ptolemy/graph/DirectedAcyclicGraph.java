@@ -301,20 +301,27 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         return result;
     }
 
-    /** Sort the given graph objects in their topological order.
+    /** Sort the given node weights in their topological order.
+     *  In other words, this method returns the specified node weights
+     *  according to a topological sort of the corresponding
+     *  graph nodes.
      *  This method use the transitive closure matrix. Since generally
      *  the graph is checked for cyclicity before this method is
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
      *  implementation, so the complexity is <i>O(n^2)</i>.
-     *  @return The objects in their sorted order.
+     *  The result is unpredictable if the multiple nodes have the same
+     *  weight (i.e., if the specified weights are not uniquely
+     *  associated with nodes).
+     *  @param objects The given node weights.
+     *  @return The weights in their sorted order.
      */
-    public Object[] topologicalSort(Object[] objects) {
+    public Object[] topologicalSort(Object[] weights) {
         _validate();
-        int N = objects.length;
+        int N = weights.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = nodeLabel(objects[i]);
+            ids[i] = nodeLabel(weights[i]);
         }
         for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {
