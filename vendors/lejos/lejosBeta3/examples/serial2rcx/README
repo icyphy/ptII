@@ -1,0 +1,7 @@
+
+This example was contributed by Schiedermeier Reinhard
+(schieder <at> informatik.fh). It allows two RCXs to communicate
+with each other. Compile and download Receiver to one
+RCX; then download Sender to the other RCX. (Make sure
+only one of the RCXs is on when you download each program).
+

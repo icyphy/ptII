@@ -1,0 +1,10 @@
+
+## You only need to modify this if you're
+## going to rebuild tinyvm.srec.
+
+BINDIR = /bin
+BINPREFIX = h8300-hms-
+
+export BINDIR
+export BINPREFIX
+

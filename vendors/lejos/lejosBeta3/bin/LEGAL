@@ -1,0 +1,13 @@
+The CYGWIN1.DLL file distributed in this directory (in the
+Windows version only) is not released under the MPL, unlike the 
+rest of leJOS. CYGWIN1.DLL is released under the GPL. Licensing terms
+for CYGWIN1.DLL can be found at the Cygnus (now RedHat) site:
+
+   http://sources.redhat.com/cygwin/licensing.html 
+
+The source code for CygWin should be available at
+   
+   ftp://sources.redhat.com/pub/cygwin/old/cygwin-b20
+
+You can also contact RedHat. The CYGWIN1.DLL file is from 
+CygWin B20.1 and is unmodified.   

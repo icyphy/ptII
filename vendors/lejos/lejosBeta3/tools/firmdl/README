@@ -1,0 +1,58 @@
+firmdl
+
+About:
+
+A firmware downloader for the RCX.  Version 3.0.  Supports single and
+quad speed downloading.
+
+Quad-rate downloading is a feature that significantly reduces firmware
+download times.  It is implemented on top of a fast serial protocol that
+has a 2x baud rate with no complements or parity bits.  The fast protocol
+is enabled by a short firmware stub that reconfigures some control
+registers and tweaks some ROM program state.  Once the firmware stub is
+downloaded and executed, the ROM responds to the fast serial protocol,
+which the downloader then uses to transfer the actual firmware file.
+Because the initial firmware stub is small, all but the most trivial
+programs see a download time improvement when using quad-speed downloading.
+
+The caveat to using quad-speed downloading is its sensitivity to lighting
+conditions.  Getting quad-speed downloading to work right might require
+some trial and error.  In addition to avoiding harsh lighting conditions,
+it is important to place the RCX around 4-12 inches from the IR tower.
+
+Compiling:
+
+Typing "make" should do the trick.
+
+Running:
+
+usage: firmdl [options] srecfile  (e.g. firmdl Firm0309.lgo)
+
+If necessary, set DEFAULTTTY, below, to the serial device you want to use.
+Set the RCXTTY environment variable to override DEFAULTTTY.
+Use the command-line option --tty=TTY to override RCXTTY and DEFAULTTTY.
+Use the command-line option --slow to revert to slow downloads.
+Use the command-line option --help for more information.
+
+Acknowledgements:
+
+Laurent Demailly, Allen Martin, Markus Noga, Gavin Smyth, and Luis Villa
+all contributed something to some version of this program.
+
+Version history:
+
+   1.x: single speed downloading plus many small revisions
+   2.0: double speed downloading, improved comm code, never released
+   3.0: quad speed downloads, misc other features, version numbering
+   3.1: changed mkimg to ./mkimg in Makefile
+   3.2: made srec code more lenient, use SREC_STRICT for old behavior
+
+License:
+
+See the file LICENSE for more information.
+
+Author:
+
+Kekoa Proudfoot
+kekoa@graphics.stanford.edu
+10/13/99
