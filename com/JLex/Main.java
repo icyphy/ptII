@@ -5824,7 +5824,7 @@ class CLexGen
 
     /***************************************************************
     Function: printccl
-    Description: Debuggng routine that outputs readable form
+    Description: Debugging routine that outputs readable form
     of character class.
     **************************************************************/
     private void printccl
