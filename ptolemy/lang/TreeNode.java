@@ -282,7 +282,9 @@ public abstract class TreeNode extends TrackedPropertyMap
                     TreeNode node = (TreeNode) retval;
                     sb.append(node.toString(totalprefix) + "} \n");
                 } else if (retval instanceof List) {
-                    sb.append(" " + TNLManip.toString((List) retval, nextprefix) + "} \n");
+                    sb.append(" " +
+                            TNLManip.toString((List) retval, nextprefix) +
+                            "} \n");
                 } else {
 		    if (retval == null) {
 			sb.append(" null}\n");
