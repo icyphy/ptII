@@ -146,6 +146,7 @@ public class IODependenceOfCompositeActor extends IODependence {
                 "_IODependence", IODependence.class);
             if (ioDependence == null) {
                 // Assume the actor is either atomic or composite.
+                // FIXME: Not a very object-oriented approach!
                 if (embeddedActor instanceof AtomicActor) {
                     ioDependence = 
                         new IODependenceOfAtomicActor((Entity) embeddedActor, 
@@ -187,12 +188,24 @@ public class IODependenceOfCompositeActor extends IODependence {
                 embeddedActor.outputPortList().iterator();
             while (successors.hasNext()) {
                 IOPort outPort = (IOPort) successors.next();
-                // find the inside ports connected to outPort
+                // Find the inside ports connected to outPort.
+                // NOTE: sinkPortList() is an expensive operation,
+                // and it may return ports that are not physically
+                // connected (as in wireless ports).  Hence, we
+                // use getRemoteReceivers() here. EAL
+                /*
                 Iterator inPortIterator =
                     outPort.sinkPortList().iterator();
                 while (inPortIterator.hasNext()) {
                     // connected them
                     _dg.addEdge(outPort, inPortIterator.next());
+                }
+                */
+                Receiver[][] receivers = outPort.getRemoteReceivers();
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        _dg.addEdge(outPort, receivers[i][j].getContainer());
+                    }
                 }
             }
         }
@@ -202,12 +215,24 @@ public class IODependenceOfCompositeActor extends IODependence {
         inputs = container.inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
-            // find the inside ports connected to this input port
+            // Find the inside ports connected to this input port.
+            // NOTE: insideSinkPortList() is an expensive operation,
+            // and it may return ports that are not physically
+            // connected (as in wireless ports).  Hence, we
+            // use deepGetReceivers() here. EAL
+            /*
             Iterator inPortIterator =
                 inputPort.insideSinkPortList().iterator();
             while (inPortIterator.hasNext()) {
                 // connected them
                 _dg.addEdge(inputPort, inPortIterator.next());
+            }
+            */
+            Receiver[][] receivers = inputPort.deepGetReceivers();
+            for (int i = 0; i < receivers.length; i++) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    _dg.addEdge(inputPort, receivers[i][j].getContainer());
+                }
             }
         }
     }
