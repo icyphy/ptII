@@ -63,7 +63,7 @@ public class ABP {
             sys.setManager(mgr);
 
             // the top level DE director
-            DECQDirector dedir = new DECQDirector("DETopLevelDirector");
+            DEDirector dedir = new DEDirector("DETopLevelDirector");
             sys.setDirector(dedir);
 
             // message source

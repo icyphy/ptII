@@ -134,7 +134,7 @@ public class ABPPlot extends DEActor {
             _rangeInitialized = true;
         }
 
-        double curTime = ((DECQDirector)getDirector()).getCurrentTime();
+        double curTime = ((DEDirector)getDirector()).getCurrentTime();
 
         int numEmptyChannel = 0;
 
