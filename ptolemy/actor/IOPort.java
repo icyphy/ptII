@@ -28,9 +28,16 @@
 
 */
 
-package pt.actors;
+package pt.actor;
+
 import pt.kernel.*;
+import pt.kernel.util.InvalidStateException;
+import pt.kernel.util.IllegalActionException;
+import pt.kernel.util.NameDuplicationException;
+import pt.kernel.util.NoSuchItemException;
+
 import pt.data.*;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import collections.LinkedList;
@@ -786,7 +793,7 @@ public class IOPort extends ComponentPort {
     ////                         public variables                       ////
 
     // description variables.
-    // FIXME: consider move them into pt.kernel.Nameable.java
+    // FIXME: consider move them into pt.kernel.util.Nameable.java
 
     /**
      * The description() method returns the receivers of this port.

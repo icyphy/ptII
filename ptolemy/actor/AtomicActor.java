@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.actors;
+package pt.actor;
 import pt.kernel.*;
 import java.util.*;
 

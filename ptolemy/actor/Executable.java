@@ -25,8 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.actors;
+package pt.actor;
+
 import pt.kernel.*;
+import pt.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Executable

@@ -28,15 +28,18 @@
 
 */
 
-package pt.actors;
+package pt.actor;
 
 import pt.kernel.*;
+import pt.kernel.util.*;
 import pt.data.*;
+import pt.actor.util.*;
+
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// FlowFifoQ
+//// QueueReceiver
 /** 
 A first-in, first-out (FIFO) queue with optional capacity and
 history. Objects are appended to the queue with the put() method,
@@ -51,11 +54,11 @@ capacity is zero.
 @author Edward A. Lee
 @version $Id$
 */
-public class FlowFifoQ extends NamedObj implements Receiver {
+public class QueueReceiver extends NamedObj implements Receiver {
 
     /** Construct an empty queue with the specified container.
      */	
-    public FlowFifoQ(IOPort container) {
+    public QueueReceiver(IOPort container) {
         super();
 	_container = container;
 	_queue = new FIFOQueue(this);

@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy concurrent functional classesn
+# Makefile for Java Ptolemy concurrent functional classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -42,7 +42,7 @@
 # Root of the Java directory
 ROOT =		../../..
 
-ME =		java/pt/actors
+ME =		java/pt/actor
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -53,30 +53,30 @@ DIRS = 		test #doc
 CLASSPATH = ../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.actors
+TYPACKAGE = 	pt.actor
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/actors
+TYPACKAGE_DIR = pt/actor
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 
+# Keep this list alphabetized.
 JSRCS = \
 	Actor.java \
 	CalendarQueue.java \
-	Priority.java \
-	DEPriority.java \
-	LongPriority.java \
 	CompositeActor.java \
+	DEPriority.java \
 	DataComputingInit.java \
 	Director.java \
 	Executable.java \
-	FIFOQueue.java \
-	FlowFifoQ.java \
 	IOPort.java \
 	IORelation.java \
+	LongPriority.java \
 	Mailbox.java \
+	Priority.java \
+	QueueReceiver.java \
 	Receiver.java \
 	TokenHolderFullException.java
 

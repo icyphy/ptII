@@ -27,10 +27,10 @@
 
 */
 
-package pt.actors;
+package pt.actor;
 import pt.data.*;
-import pt.kernel.Nameable;
-import pt.kernel.NoSuchItemException;
+import pt.kernel.util.Nameable;
+import pt.kernel.util.NoSuchItemException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
