@@ -229,12 +229,12 @@ public class LiveSound {
             throws IOException, IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.flushCaptureBuffer(), but " +
+                    " attempted to call LiveSound.flushCaptureBuffer(), but " +
                     "capture is inactive.  Try to startCapture().");
         }
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.flushCaptureBuffer(), but " +
+                    " attempted to call LiveSound.flushCaptureBuffer(), but " +
                     "this object does not have permission to access the " +
                     "audio capture resource.");
         }
@@ -270,13 +270,13 @@ public class LiveSound {
             throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
             throw new IllegalStateException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.flushPlaybackBuffer(), but " +
-                    "playback is inactive.  Try to startPlayback().");
+                    " attempted to call LiveSound.flushPlaybackBuffer(), " +
+                    "but playback is inactive.  Try to startPlayback().");
         }
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.flushPlaybackBuffer(), but " +
-                    "this object does not have permission to access the " +
+                    " attempted to call LiveSound.flushPlaybackBuffer(), " +
+                    "but this object does not have permission to access the " +
                     "audio playback resource.");
         }
         if (_debug) {
@@ -411,12 +411,12 @@ public class LiveSound {
             throws IOException,  IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.getSamples(), but " +
+                    " attempted to call LiveSound.getSamples(), but " +
                     "capture is inactive.  Try to startCapture().");
         }
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.getSamples(), but " +
+                    " attempted to call LiveSound.getSamples(), but " +
                     "this object does not have permission to access the " +
                     "audio capture resource.");
         }
@@ -548,12 +548,12 @@ public class LiveSound {
             throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
             throw new IllegalStateException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.putSamples(), but " +
+                    " attempted to call LiveSound.putSamples(), but " +
                     "playback is inactive.  Try to startPlayback().");
         }
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.putSamples(), but " +
+                    " attempted to call LiveSound.putSamples(), but " +
                     "this object does not have permission to access the " +
                     "audio playback resource.");
         }
@@ -981,7 +981,7 @@ public class LiveSound {
             _soundConsumers.remove(consumer);
         } else {
             throw new IOException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.stopCapture(), but " +
+                    " attempted to call LiveSound.stopCapture(), but " +
                     "never called LiveSound.startCapture().");
         }
         // Free up audio system resources.
@@ -1009,7 +1009,7 @@ public class LiveSound {
             _soundProducers.remove(producer);
         } else {
             throw new IOException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.stopPlayback(), but " +
+                    " attempted to call LiveSound.stopPlayback(), but " +
                     "never called LiveSound.startPlayback().");
         }
         if (_debug) {
