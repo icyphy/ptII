@@ -474,7 +474,7 @@ public class ThreadDemo {
             _currentElement[id] = element;
         }
 
-        /** Respond to a process finshed event.
+        /** Respond to a process finished event.
          */
         public void processFinished(PNProcessEvent event) {
             processStateChanged(event);
