@@ -80,6 +80,9 @@ public class EditorPaneFactory extends Attribute {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return a new widget for configuring the container.
      *  @return A new widget for configuring the container.
      */
