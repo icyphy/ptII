@@ -1248,6 +1248,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * presumably the root of the graph model.
 	 */
 	public Object getParent(Object node) {
+            // Undo: If we use automatic layout, then we need to check to
+            // see if the container is null here. 
+            if (((Vertex)node).getContainer() == null) {
+                return null;
+            }
 	    return ((Vertex)node).getContainer().getContainer();
 	}
 
