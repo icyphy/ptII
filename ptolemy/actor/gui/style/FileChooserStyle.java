@@ -41,7 +41,6 @@ that the value of the parameter can be optionally given using a
 FileChooser.
 
 @see ptolemy.actor.gui.EditorPaneFactory
-@see FileChooser
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
