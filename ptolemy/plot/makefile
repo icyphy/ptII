@@ -121,6 +121,11 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 	rm -f pxgraph
 	ln -s ptplot pxgraph
 
+ptplot: ptplot.in ../../config.status
+	(cd ../..; config.status)
+../../config.status: ../../configure
+	(cd ../..; configure)
+
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
 ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
