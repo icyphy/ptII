@@ -426,7 +426,7 @@ public class PtolemyUtilities {
                     ArrayType.v(RefType.v(typeClass), 1));
             body.getLocals().add(typeArrayLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeArrayLocal,
-                    Jimple.v().newNewArrayExpr(RefType.v(baseTypeClass),
+                    Jimple.v().newNewArrayExpr(RefType.v(typeClass),
                             IntConstant.v(recordType.labelSet().size()))),
                     insertPoint);
 
@@ -984,6 +984,11 @@ public class PtolemyUtilities {
     public static SootClass componentEntityClass;
     public static RefType componentEntityType;
 
+    // Soot Class representing the ptolemy.kernel.ComponentPort class.
+    public static SootClass componentPortClass;
+    // Soot Type representing the ptolemy.kernel.ComponentPort class.
+    public static Type componentPortType;
+
     // Soot Method representing Entity.connectionsChanged().
     public static SootMethod connectionsChangedMethod;
 
@@ -1119,17 +1124,16 @@ public class PtolemyUtilities {
 
     // SootClass representing java.lang.Object.
     public static SootClass objectClass;
+    public static SootMethod objectConstructor;
 
     public static SootField objectTypeField;
 
-    // Soot Class representing the ptolemy.kernel.ComponentPort class.
+    // Soot Class representing the ptolemy.kernel.Port class.
     public static SootClass portClass;
 
-    // Soot Method representing the ptolemy.actor.TypedIOPort.setTypeEquals method.
+    // Soot Method representing the
+    // ptolemy.actor.TypedIOPort.setTypeEquals method.
     public static SootMethod portSetTypeMethod;
-
-    // Soot Type representing the ptolemy.kernel.ComponentPort class.
-    public static Type portType;
 
     // Soot Class representing the ptolemy.kernel.ComponentRelation class.
     public static SootClass relationClass;
@@ -1147,6 +1151,7 @@ public class PtolemyUtilities {
     public static Type relationType;
 
     public static SootClass runtimeExceptionClass;
+    public static SootMethod runtimeExceptionConstructor;
 
     // Soot class representing the ptolemy.data.ScalarToken class.
     public static SootClass scalarTokenClass;
@@ -1253,6 +1258,7 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("java.lang.Class");
         toStringMethod = objectClass.getMethod("java.lang.String toString()");
         getClassMethod = objectClass.getMethod("java.lang.Class getClass()");
+        objectConstructor = objectClass.getMethod("void <init>()");
 
         stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
@@ -1346,8 +1352,10 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
 
         portClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.Port");
+        componentPortClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentPort");
-        portType = RefType.v(portClass);
+        componentPortType = RefType.v(componentPortClass);
 
         relationClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentRelation");
@@ -1359,8 +1367,8 @@ public class PtolemyUtilities {
         portSetTypeMethod =
             Scene.v().getMethod("<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
 
-        insertLinkMethod = SootUtilities.searchForMethodByName(portClass,
-                "insertLink");
+        insertLinkMethod = SootUtilities.searchForMethodByName(
+                componentPortClass, "insertLink");
         setInputMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setInput(boolean)>");
         setOutputMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setOutput(boolean)>");
         setMultiportMethod = Scene.v().getMethod("<ptolemy.actor.IOPort: void setMultiport(boolean)>");
@@ -1552,6 +1560,9 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.KernelRuntimeException");
         runtimeExceptionClass =
             Scene.v().loadClassAndSupport("java.lang.RuntimeException");
+        runtimeExceptionConstructor =
+            runtimeExceptionClass.getMethod("void <init>()");
+
         managerClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.Manager");
     }

@@ -787,7 +787,7 @@ public class SootUtilities {
 
         // some reason when writing out BAF.
         // fold the class up to object.
-        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
+        SootClass objectClass = PtolemyUtilities.objectClass;
         SootClass superClass = staticClass.getSuperclass();
         while (superClass != objectClass) {
             superClass.setLibraryClass();
@@ -961,7 +961,7 @@ public class SootUtilities {
      */
     public static boolean derivesFrom(SootClass theClass,
             SootClass baseClass) {
-        SootClass objectClass = Scene.v().getSootClass("java.lang.Object");
+        SootClass objectClass = PtolemyUtilities.objectClass;
         while (theClass != objectClass) {
             if (baseClass == theClass ||
                     theClass.implementsInterface(baseClass.getName())) {
