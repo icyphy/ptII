@@ -796,7 +796,7 @@ public class Pxgraph extends Frame {
      * user can print.  Note that we use the JDK1.1 PrintJob
      * class here.
      */
-    private void _print () {
+    private void _print() {
         // awt.print.destination   - can be "printer" or "file"
         // awt.print.printer       - print command
         // awt.print.fileName      - name of the file to print
