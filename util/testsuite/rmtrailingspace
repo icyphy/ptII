@@ -69,6 +69,8 @@ if [ "$1" = "-n" ]; then
     shift
 fi
 
+TMPFILE=/tmp/rmtrailingspace.tmp.$$
+
 # doit is a shell function
 doit() {
 	sed -e 's/[ 	]*$//g'  < $file > $TMPFILE
