@@ -115,6 +115,8 @@ public class Firing extends ScheduleElement {
      *   is active.
      */
     public Iterator firingIterator() {
+        // FIXME: a ConcurrentModificationException will not necessarily
+        // be thrown, see the failing tests.
         if (_firing == null) {
             _firing = new LinkedList();
             _firing.add(this);
