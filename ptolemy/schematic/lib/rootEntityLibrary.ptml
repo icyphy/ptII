@@ -4,5 +4,7 @@
 <entitylibrary name="root" version="1.0">
 <description>Root entities</description>
 <sublibrary url="../../actor/lib/genericentities.ptml"/>
+<sublibrary url="../../domains/sdf/sdfentities.ptml"/>
+
 </entitylibrary>
 

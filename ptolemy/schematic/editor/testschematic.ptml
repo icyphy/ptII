@@ -4,6 +4,10 @@
 <schematic name="hello world" version="1.0">
 <description>ramp-recorder...  a good first start</description>
 
+<director name="director" template="sdf.director">
+<parameter name="iterations" value="3" type="ptolemy.data.IntToken"/>
+</director>
+
 <entity name="Ramp1" template="generic.ramp">
 <parameter name="init" value="0" type="ptolemy.data.IntToken"/>
 <parameter name="step" value="4" type="ptolemy.data.IntToken"/>
@@ -15,11 +19,6 @@
 <relation name="R1">
 <link to="Recorder1.input" from="Ramp1.output"/>
 </relation>
-
-<!-- these parameters will get set in the Director -->
-<parameter name="domain" value="SDF" type="ptolemy.data.StringToken"/>
-<parameter name="starttime" value="1.0" type="ptolemy.data.DoubleToken"/>
-<parameter name="endtime" value="7.0" type="ptolemy.data.DoubleToken"/>
 
 </schematic>
 

@@ -59,10 +59,17 @@ color CDATA "black"
 fill CDATA "black"
 coords CDATA #REQUIRED>
 
+<!ELEMENT director (description, parameter*)>
+<!ATTLIST director
+name ID #REQUIRED
+icon CDATA "default"
+implementation CDATA #IMPLIED>
+
 <!ELEMENT entity (description, parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
 icon CDATA "default"
+implementation CDATA #IMPLIED
 terminalstyle CDATA "default">
 
 <!ELEMENT entitylibrary (description, sublibrary*, entity*)>
@@ -125,7 +132,7 @@ name ID #REQUIRED>
 <!ATTLIST sublibrary
 url CDATA #REQUIRED>
 
-<!ELEMENT schematic (entity|relation|description|parameter)*>
+<!ELEMENT schematic (director|entity|relation|description|parameter)*>
 <!ATTLIST schematic
 name ID #REQUIRED
 version CDATA #REQUIRED>
