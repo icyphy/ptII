@@ -1113,17 +1113,30 @@ public class PortConfigurerDialog extends PtolemyDialog
     /** Validate a cell. */
     abstract class CellValidator {
 
+        /** Return true if the value is valid.
+         *  @param value The value to validate.
+         *  @return True if the value is valid.
+         */
         public abstract boolean isValid(String value);
 
-        public void setMessage(String m) {
-            _message = m;
+        /** Set the message.
+         *  @param message The message.
+         *  @see #getMessage()
+         */
+        public void setMessage(String message) {
+            _message = message;
         }
-
+        
+        /** Get the message.
+         *  @return The message
+         *  @see #setMessage(String)
+         */
         public String getMessage() {
             return _message;
         }
 
-        String _message = null;
+        /** The message. */
+        private String _message = null;
     }
 
     /** Editor for a table cell that takes a string.
@@ -1137,7 +1150,9 @@ public class PortConfigurerDialog extends PtolemyDialog
             button.addActionListener(this);
         }
 
-
+        /** Get the cell editor value.
+         *  
+         */
         public Object getCellEditorValue() {
             return currentLabel;
         }
@@ -1154,6 +1169,14 @@ public class PortConfigurerDialog extends PtolemyDialog
             _validator = validator;
         }
 
+        /** Invoked when an action occurs.
+         *  If the command is "edit", then this method creates a 
+         *  dialog box that contains the component returned
+         *  by _setMessage().  
+         *  If the command is "OK", then this method creates
+         *  validates the string returned by _getMessage()
+         *  @param e The event.
+         */
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
@@ -1166,12 +1189,6 @@ public class PortConfigurerDialog extends PtolemyDialog
                 options[0].addActionListener(this);
                 options[1] = new JButton("Cancel");
                 options[1].addActionListener(this);
-//              valueText = new JTextField(currentLabel);
-//              valueText.setOpaque(true);
-//              valueText.setBackground(Color.white);
-//              valueText.setEnabled(true);
-//              Object[] msg = { null, valueText };
-               
                 Object[] msg = { null, _setMessage()};
                 pane.setMessage(msg);
                 pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
@@ -1190,15 +1207,15 @@ public class PortConfigurerDialog extends PtolemyDialog
                 dialog.setLocation(p);
                 dialog.show();
             } else if (command.equals("OK")) {
-                String nv = _getMessage();
+                String newValue = _getMessage();
                 boolean valid = true;
 
                 if (_validator != null) {
-                    valid = _validator.isValid(nv);
+                    valid = _validator.isValid(newValue);
                 }
 
                 if (valid) {
-                    currentLabel = nv;
+                    currentLabel = newValue;
                     fireEditingStopped();
                     dialog.dispose();
                 } else {
@@ -1249,12 +1266,14 @@ public class PortConfigurerDialog extends PtolemyDialog
         JOptionPane pane = null;
         CellValidator _validator;
         JTextField valueText = null;
-
     }
 
    
+    /** Editor for a table cell that takes a type.
+     */
     class TypeCellEditor extends StringCellEditor implements TableCellEditor,
                                                                  ActionListener {
+        /** Construct a Type Cell Editor. */
         public TypeCellEditor() {
             super();
             typeCombo = _createPortTypeComboBox();
@@ -1277,7 +1296,8 @@ public class PortConfigurerDialog extends PtolemyDialog
             return typeCombo;
         }
 
-        JComboBox typeCombo;
+        /** The JComboBox. */
+        private JComboBox typeCombo;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1452,20 +1472,22 @@ public class PortConfigurerDialog extends PtolemyDialog
     private JComboBox _createPortTypeComboBox () {
         JComboBox jComboBox = new JComboBox();
         jComboBox.setEditable(true); 
-        TreeMap typeMap = Constants.types();
-        try {
-            typeMap.put("{int}", new ArrayToken("{0}"));
-            typeMap.put("[double]", new DoubleMatrixToken("[0.0]"));
-            typeMap.put("{x=double, y=double}", new RecordToken("{x=0.0, y=0.0}"));
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
-        }
 
+        // Add this item first so it is first on the list.
+        jComboBox.addItem("");
+
+        // Add the types from data.expr.Constants
+        TreeMap typeMap = Constants.types();
         Iterator types = typeMap.keySet().iterator();
         while (types.hasNext()) {
             String type = (String) (types.next());
             jComboBox.addItem(type);
         }
+
+        // Add these items last so they are at the bottom.
+        jComboBox.addItem("{int}");
+        jComboBox.addItem("[double]");
+        jComboBox.addItem("{x=double, y=double}");
         return jComboBox;
     }
 
