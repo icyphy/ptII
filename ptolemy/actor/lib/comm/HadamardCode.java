@@ -176,6 +176,7 @@ public class HadamardCode extends Source {
             }
             _row = _calculateRow(matrixDimension, _latestIndex);
             _rowValueInvalid = false;
+
             // Reset the index to start at the beginning of the
             // new sequence.
             _index = 0;
