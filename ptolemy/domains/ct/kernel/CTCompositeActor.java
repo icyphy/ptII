@@ -67,6 +67,9 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public CTCompositeActor() {
         super();
+        // When exporting MoML, set the class name to CTCompositeActor
+        // instead of the default TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.domains.ct.kernel.CTCompositeActor";
     }
 
     /** Construct a CTCompositeActor in the specified workspace with no
@@ -81,6 +84,9 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public CTCompositeActor(Workspace workspace) {
 	super(workspace);
+        // When exporting MoML, set the class name to CTCompositeActor
+        // instead of the default TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.domains.ct.kernel.CTCompositeActor";
     }
 
     /** Create an CTCompositeActor with a name and a container.
@@ -104,6 +110,9 @@ public class CTCompositeActor extends TypedCompositeActor
     public CTCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // When exporting MoML, set the class name to CTCompositeActor
+        // instead of the default TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.domains.ct.kernel.CTCompositeActor";
     }
 
     ///////////////////////////////////////////////////////////////////
