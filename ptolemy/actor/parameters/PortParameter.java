@@ -191,6 +191,16 @@ public class PortParameter extends Parameter {
             super.attributeChanged(attribute);
         }
     }
+    
+    /** Return the associated port.  Normally, there always is one,
+     *  but if setContainer() is called to change the container, then
+     *  this might return null. Also, during cloning, there is a
+     *  transient during which this may return null.
+     *  @return The associated port.
+     */
+    public ParameterPort getPort() {
+        return _port;
+    }
 
     /** Clone the parameter. This overrides the base class to remove
      *  the current association with a port.  It is assumed that the
@@ -245,6 +255,11 @@ public class PortParameter extends Parameter {
                     _port.setTypeSameAs(this);
                 }
             }
+            // NOTE: Do not create an instance of the port.
+            // This is called when this object is cloned, and
+            // the port will be cloned too. If we create a new
+            // instance here, then we will get a name collision
+            // as part of the cloning.
         }
     }
 
