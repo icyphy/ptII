@@ -35,9 +35,7 @@ import diva.canvas.Figure;
  * the specifics of which are described on a case-by-case
  * basis below.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @contributor Edward A. Lee (eal@eecs.berkeley.edu)
+ * @author Michael Shilman, John Reekie, Contributor: Edward A. Lee
  * @version $Id$
  * @rating Red
  */
