@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+
+  <class name="fft" extends="ptolemy.actor.TypedCompositeActor">
+
+  <doc>
+   This composite actor generates a fft of a signal.
+  </doc>
+
+   <!-- Define the ports. -->
+   <port name="input" direction="input" class="ptolemy.actor.TypedIOPort">
+     <doc>FFT input.</doc>
+   </port>
+
+   <port name="output" direction="output" class="ptolemy.actor.TypedIOPort">
+     <doc>FFT output (in dB format).</doc>
+   </port>
+
+  <!-- Define the actors -->
+
+  <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
+        <port name="multiply"></port>
+        <port name="divide"></port>
+        <port name="output"></port>
+  </entity>
+
+  <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" value="0"></property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"></property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1]"></property>
+        <port name="output"></port>
+        <port name="trigger"></port>
+  </entity>
+
+  <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
+        <property name="order" value="8"></property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+             <property name="TokenConsumptionRate" value="1"></property>
+             <property name="TokenInitProduction" value="0"></property>
+             <property name="TokenProductionRate" value="0"></property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+             <property name="TokenConsumptionRate" value="0"></property>
+             <property name="TokenInitProduction" value="0"></property>
+             <property name="TokenProductionRate" value="1"></property>
+        </port>
+ </entity>
+
+ <entity name="ComplexToReal" class="ptolemy.actor.lib.conversions.ComplexToReal">
+       <port name="input"></port>
+       <port name="realOutput"></port>
+       <port name="imagOutput"></port>
+ </entity>
+
+ <entity name="RecToPolar" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+       <port name="xInput"></port>
+       <port name="yInput"></port>
+       <port name="magnitudeOutput"></port>
+       <port name="angleOutput"></port>
+ </entity>
+
+
+ <entity name="dB" class="ptolemy.actor.lib.conversions.dB">
+       <port name="input"></port>
+       <port name="output"></port>
+ </entity>
+
+
+ <!-- Make the connections -->
+
+ <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="input" relation="r0"/>
+ <link port="Multiply.multiply" relation="r0"/>
+
+ <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="Waveform.output" relation="r1"/>
+ <link port="Multiply.multiply" relation="r1"/>
+
+ <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="Multiply.output" relation="r2"/>
+ <link port="FFT.input" relation="r2"/>
+
+ <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="FFT.output" relation="r3"/>
+ <link port="ComplexToReal.input" relation="r3"/>
+
+ <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="ComplexToReal.realOutput" relation="r4"/>
+ <link port="RecToPolar.xInput" relation="r4"/>
+
+ <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="ComplexToReal.imagOutput" relation="r5"/>
+ <link port="RecToPolar.yInput" relation="r5"/>
+
+ <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="RecToPolar.magnitudeOutput" relation="r6"/>
+ <link port="dB.input" relation="r6"/>
+
+ <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
+ <link port="dB.output" relation="r7"/>
+ <link port="output" relation="r7"/>
+
+</class>

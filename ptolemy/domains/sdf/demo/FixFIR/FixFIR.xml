@@ -1,0 +1,182 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+<model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+
+<doc>
+This demo shows the transfer function of a type polymorphic FIR
+filter, i.e., a FIR filter that operates on a stream of tokens of
+arbitrary type. Thus, the same FIR filter can operate on fix point
+tokens, double tokens, or complex tokens. The response of a FIR filter
+operating on fix point tokens wills differ from a FIR filter operating
+on double tokens since a finite precision is used. The plot generated
+shows the effects of the use of finite precision.
+</doc>
+
+    <director name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>	
+
+  <!-- Define toplevel parameters -->
+
+ <property name="firTaps" value="[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ]"
+      class="ptolemy.data.expr.Parameter">
+      <doc>FIR Taps as doubles.</doc>
+  </property>
+
+ <property name="quantizeFirTaps" value="quantize([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 8, 2)"
+      class="ptolemy.data.expr.Parameter">
+      <doc>FIR taps quantized but still as doubles.</doc>
+  </property>
+
+ <property name="fixFirTaps" value="fix([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 6, 2)"
+      class="ptolemy.data.expr.Parameter">
+      <doc>FIR taps in fix-point representation.</doc>
+  </property>
+
+ 
+ <!-- Define the actors -->
+
+ <import source="fft_transform.xml"/>
+
+ <entity name="ramp" class="ptolemy.actor.lib.Pulse">
+       <property name="firingCountLimit" value="0"></property>
+       <property name="indexes" value="[0]"></property>
+       <property name="values"  value="[1]"></property>
+       <port name="output"></port>
+       <port name="trigger"></port>
+ </entity>
+
+ <entity name="FIR" class="ptolemy.domains.sdf.lib.FIRDouble">
+       <property name="taps" value="firTaps"></property>
+       <property name="interpolation"  value="1"></property>
+       <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="1"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="0"></property>
+       </port>
+       <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="0"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="1"></property>
+       </port>
+  </entity>
+
+ <entity name="QUANTIZE_FIR" class="ptolemy.domains.sdf.lib.FIR">
+       <property name="taps" value="quantizeFirTaps"></property>
+       <property name="interpolation"  value="1"></property>
+       <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="1"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="0"></property>
+       </port>
+       <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="0"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="1"></property>
+       </port>
+  </entity>
+
+ <entity name="d2f" class="ptolemy.actor.lib.conversions.DoubleToFix">
+       <property name="precision" value="(2.14)"></property>
+       <port name="input"></port>
+       <port name="output"></port>
+ </entity>
+
+ <entity name="FIX_FIR" class="ptolemy.domains.sdf.lib.FIR">
+       <property name="taps" value="fixFirTaps"></property>
+       <property name="interpolation"  value="1"></property>
+       <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="1"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="0"></property>
+       </port>
+       <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+               <property name="TokenConsumptionRate"  value="0"></property>
+               <property name="TokenInitProduction"  value="0"></property>
+               <property name="TokenProductionRate"  value="1"></property>
+       </port>
+ </entity>
+
+ <entity name="f2d" class="ptolemy.actor.lib.conversions.FixToDouble">
+       <property name="precision" value="(2.14)"></property>
+       <port name="input"></port>
+       <port name="output"></port>
+ </entity>
+
+  <entity name="fft" class=".fft">
+    <port name="input"></port>
+    <port name="output"></port>
+  </entity>
+
+  <entity name="fixfft" class=".fft">
+    <port name="input"></port>
+    <port name="output"></port>
+  </entity>
+
+  <entity name="quantizefft" class=".fft">
+    <port name="input"></port>
+    <port name="output"></port>
+  </entity>
+
+
+ <entity name="plot" class="ptolemy.actor.gui.SequencePlotter">
+      <property name="fillOnWrapup"    value="true"></property>
+      <property name="startingDataset" value="0"></property>
+      <property name="xInit"           value="-PI/2"></property>
+      <property name="xUnit"           value="PI/256"></property>
+      <port name="input"></port>
+    <!-- Configure provided in both a referenced file and local data -->
+    <configure source="plotConfigure.xml"><![CDATA[
+      <?xml version="1.0" standalone="no"?>
+      <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+           "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
+      <plot>
+        <size width="450" height="300"/>
+        <title>Fixed-point FIR Filter Transfer Function</title>
+      </plot>
+    ]]></configure>
+  </entity>
+
+
+  <!-- Make the connections -->
+  <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="ramp.output" relation="r1"/>
+  <link port="FIR.input" relation="r1"/>
+  <link port="d2f.input" relation="r1"/>
+  <link port="QUANTIZE_FIR.input" relation="r1"/>
+
+  <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="FIR.output" relation="r2"/>
+  <link port="fft.input" relation="r2"/>
+
+  <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="d2f.output" relation="r3"/>
+  <link port="FIX_FIR.input" relation="r3"/>
+
+  <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="FIX_FIR.output" relation="r4"/>
+  <link port="f2d.input" relation="r4"/>
+
+  <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="f2d.output" relation="r5"/>
+  <link port="fixfft.input" relation="r5"/>
+
+  <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="QUANTIZE_FIR.output" relation="r8"/>
+  <link port="quantizefft.input" relation="r8"/>
+
+  <relation name="r9" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="quantizefft.output" relation="r9"/>
+  <link port="plot.input" relation="r9"/>
+
+  <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="fft.output" relation="r6"/>
+  <link port="plot.input" relation="r6"/>
+
+  <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="fixfft.output" relation="r7"/>
+  <link port="plot.input" relation="r7"/>
+
+</model>
