@@ -31,11 +31,10 @@ package pt.kernel;
 //// NamedObj
 /** 
 
-NamedObj is the baseclass for most of the common Ptolemy objects.  A
-NamedObj is, simply put, a named object; in addition to a name, a
-NamedObj has a reference to a container object, which is always an
-Entity (derived from Node and then, in turn, from NamedObj). This
-reference can be null.
+// NamedObj (named object) is the baseclass for most of the common
+// Ptolemy objects. In addition to a name, a NamedObj has a reference
+// to a container object, which is always an Entity (derived from Node
+// and then, in turn, from NamedObj). This reference can be null.
 
 @author Richard Stevens
 <P>  Richard Stevens is an employee of the U.S. Government, whose
@@ -61,20 +60,9 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Get the name of the object. */	
-    public String getName() {
-        return _name;
-    }
-
-   /** Specify the name of the object.
-    *  The name may not have an embedded dot. */
-    public void setName(String name) throws IllegalArgumentException {
-        if (name.indexOf('.') >= 0) { 
-	  throw new IllegalArgumentException
-	    ("NamedObj name (" + name + ") has illegal embedded dot (.)");
-	}
-        _name = name;
-    }
+    /** Return the Entity object that contains this object.
+     *  Return null if this object has no container. */	
+    public Entity getContainer() { return _container; }
 
     /** Return the object's full name.
      *  If the object has no container,
@@ -89,16 +77,20 @@ public class NamedObj {
         else { return _container.getFullName() + "." + _name; }
     }
 
-    /** Return the Entity object that contains this object.
-     *  Return null if this object has no container.
-     */	
-    public Entity getContainer() {
-        return _container;
-    }
+    /** Get the name of the object. */	
+    public String getName() { return _name; }
 
     /** Specify the Entity object that contains this object. */	
-    public void setContainer(Entity newContainer) {
-        _container = newContainer;
+    public void setContainer(Entity container) { _container = container; }
+
+   /** Specify the name of the object.
+    *  The name may not have an embedded dot. */
+    public void setName(String name) throws IllegalArgumentException {
+        if (name.indexOf('.') >= 0) { 
+	  throw new IllegalArgumentException
+	    ("NamedObj name (" + name + ") has illegal embedded dot (.)");
+	}
+        _name = name;
     }
 
     /** Return a description of the object.
