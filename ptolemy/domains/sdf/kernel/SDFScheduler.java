@@ -539,10 +539,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // but have not had their ports explored yet.
         LinkedList pendingActors = new LinkedList();
         
+        // Set of actors that belong to the same cluster.
         Set clusteredActors = new HashSet();
+        // Set of external ports that are conneted to
+        // actors of the same cluster.
         Set clusteredExternalPorts = new HashSet();
         
-        // Initialize remainingActors to contain all the actors we were given .
+        // Initialize remainingActors to contain all the actors we were given.
         remainingActors.addAll(actorList);
 
         // Initialize entityToFiringsPerIteration for each actor to -1.
@@ -568,161 +571,117 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             allowDisconnectedGraphs = ((BooleanToken)token).booleanValue();
         }
 
-        if (allowDisconnectedGraphs) {
-            // Ned Stoffel's change to support disconnected graphs:
+        // Ned Stoffel's change to support disconnected graphs:
 
-            // Finally, the schedule can jump from one island to
-            // another among the disconnected graphs. There is nothing
-            // to force the scheduler to finish executing all actors
-            // on one island before firing actors on another
-            // island. However, the order of execution within an
-            // island should be correct.
+        // Finally, the schedule can jump from one island to
+        // another among the disconnected graphs. There is nothing
+        // to force the scheduler to finish executing all actors
+        // on one island before firing actors on another
+        // island. However, the order of execution within an
+        // island should be correct.
             
 
-            while (!remainingActors.isEmpty()) {
-                clusteredActors.clear();
-                clusteredExternalPorts.clear();
-                ComponentEntity actor =
-                    _pickZeroRatePortActor(remainingActors);
-                if (actor == null) {
-                    actor = (ComponentEntity)remainingActors.removeFirst();
-                } else {
-                    remainingActors.remove(actor);
-                }
-                clusteredActors.add(actor);
-
-                entityToFiringsPerIteration.put(actor, new Fraction(1));
-                pendingActors.addLast(actor);
-
-                while (!pendingActors.isEmpty()) {
-                    Actor currentActor = (Actor) pendingActors.removeFirst();
-                    Iterator AllPorts =
-                        ((ComponentEntity) currentActor).portList().iterator();
-                    while (AllPorts.hasNext()) {
-                        IOPort currentPort = (IOPort) AllPorts.next();
-                        _propagatePort(container, currentPort,
-                                entityToFiringsPerIteration,
-                                externalRates, remainingActors, pendingActors,
-                                clusteredActors, clusteredExternalPorts);
-                    }
-                }
-                // Now we have _clusteredActors, which contains actors in 
-                // one cluster (they are connected). Find the LCM of their
-                // denominator and normalize their firings. This means firings 
-                // of actors are only normalized within their cluster.
-                int lcm = 1;
-                for (Iterator actors = clusteredActors.iterator(); 
-                        actors.hasNext();) {
-                    Actor currentActor = (Actor)actors.next();
-                    Fraction fraction =
-                        (Fraction)entityToFiringsPerIteration.get(currentActor);
-                    int denominator = fraction.getDenominator();
-                    lcm = Fraction.lcm(lcm, denominator);
-                }
-                // Got the normalizing factor.
-                Fraction lcmFraction = new Fraction(lcm);
-                for (Iterator actors = clusteredActors.iterator();
-                        actors.hasNext();) {
-                    Actor currentActor = (Actor)actors.next();
-                    Fraction repetitions =
-                        ((Fraction)entityToFiringsPerIteration.
-                        get(currentActor)).multiply(lcmFraction);
-                    if (repetitions.getDenominator() != 1) {
-                        throw new InternalErrorException(
-                                "Failed to properly perform"
-                                + " fraction normalization.");
-                    }
-                    entityToFiringsPerIteration.put(currentActor, repetitions);
-                    
-                }
-                for (Iterator externalPorts = clusteredExternalPorts.iterator();
-                        externalPorts.hasNext();) {
-                    IOPort port = (IOPort)externalPorts.next();
-                    Fraction rate = ((Fraction) externalRates.get(port)).multiply(lcmFraction);
-                    if (rate.getDenominator() != 1) {
-                        throw new InternalErrorException(
-                                "Failed to properly perform"
-                                + " fraction normalization.");
-                    }
-                    externalRates.put(port, rate);
-                } 
-            }
+        while (!remainingActors.isEmpty()) {
             clusteredActors.clear();
             clusteredExternalPorts.clear();
-            return entityToFiringsPerIteration;
-        }
-        else {
-            // Pick an actor as a reference
-            // Should pick the reference actor to be one
-            // that contains 0-valued ports, if there exists one.
-            ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
+            ComponentEntity actor =
+                _pickZeroRatePortActor(remainingActors);
             if (actor == null) {
-                // We did not find an actor with any 0-rate ports,
-                // so just pick a reference actor arbitrarily.
                 actor = (ComponentEntity)remainingActors.removeFirst();
             } else {
-                // We found an actor with at least one 0-rate port.
                 remainingActors.remove(actor);
             }
-            // Set it's rate to one per iteration
+            clusteredActors.add(actor);
+
             entityToFiringsPerIteration.put(actor, new Fraction(1));
-            // Start the list to recurse over.
             pendingActors.addLast(actor);
 
-            // Loop until we run out of actors that have not been
-            // propagated.
             while (!pendingActors.isEmpty()) {
-                if (_debugging && VERBOSE) {
-                    _debug("pendingActors: ");
-                    _debug(pendingActors.toString());
-                }
-                // Get the next actor to recurse over
                 Actor currentActor = (Actor) pendingActors.removeFirst();
-                if (_debugging && VERBOSE) {
-                    _debug("Balancing from " +
-                        ((ComponentEntity) currentActor).getName());
-                }
-
-                // Traverse all the input and output ports, setting the
-                // firingsPerIteration for the actor(s)????
-                // connected to each port relative to currentActor.
                 Iterator AllPorts =
                     ((ComponentEntity) currentActor).portList().iterator();
                 while (AllPorts.hasNext()) {
                     IOPort currentPort = (IOPort) AllPorts.next();
                     _propagatePort(container, currentPort,
-                        entityToFiringsPerIteration, externalRates,
-                        remainingActors, pendingActors,
-                        clusteredActors, clusteredExternalPorts);
+                            entityToFiringsPerIteration,
+                            externalRates, remainingActors, pendingActors,
+                            clusteredActors, clusteredExternalPorts);
                 }
             }
-            if (!remainingActors.isEmpty()) {
-                // If there are any actors left that we didn't get to, then
-                // this is not a connected graph, and we throw an exception.
-                StringBuffer messageBuffer =
-                    new StringBuffer("SDF scheduler found disconnected actors! "
-                        + "Usually, disconnected actors in an SDF model "
-                        + "indicates an error.  If this is not an error, try "
-                        + "setting the SDFDirector parameter "
-                        + "allowDisconnectedGraphs to true.\n"
-                        + "Reached Actors:\n");
-                List reachedActorList = new LinkedList();
-                reachedActorList.addAll(actorList);
-                reachedActorList.removeAll(remainingActors);
-                for (Iterator actors = reachedActorList.iterator();
-                        actors.hasNext();) {
-                    Entity entity = (Entity)actors.next();
-                    messageBuffer.append(entity.getFullName() + "\n");
+            // Now we have _clusteredActors, which contains actors in 
+            // one cluster (they are connected). Find the LCM of their
+            // denominator and normalize their firings. This means firings 
+            // of actors are only normalized within their cluster.
+            int lcm = 1;
+            for (Iterator actors = clusteredActors.iterator(); 
+                actors.hasNext();) {
+                Actor currentActor = (Actor)actors.next();
+                Fraction fraction =
+                    (Fraction)entityToFiringsPerIteration.get(currentActor);
+                int denominator = fraction.getDenominator();
+                lcm = Fraction.lcm(lcm, denominator);
+            }
+            // Got the normalizing factor.
+            Fraction lcmFraction = new Fraction(lcm);
+            for (Iterator actors = clusteredActors.iterator();
+                actors.hasNext();) {
+                Actor currentActor = (Actor)actors.next();
+                Fraction repetitions =
+                    ((Fraction)entityToFiringsPerIteration.
+                    get(currentActor)).multiply(lcmFraction);
+                if (repetitions.getDenominator() != 1) {
+                    throw new InternalErrorException(
+                            "Failed to properly perform"
+                            + " fraction normalization.");
                 }
-                messageBuffer.append("Unreached Actors:\n");
-                Iterator unreachedActors = remainingActors.iterator();
-                while (unreachedActors.hasNext()) {
-                    NamedObj unreachedActor = (NamedObj)(unreachedActors.next());
-                    messageBuffer.append(unreachedActor.getFullName() + " ");
+                entityToFiringsPerIteration.put(currentActor, repetitions);     
+            }
+            for (Iterator externalPorts = clusteredExternalPorts.iterator();
+                    externalPorts.hasNext();) {
+                IOPort port = (IOPort)externalPorts.next();
+                Fraction rate = ((Fraction) externalRates.get(port))
+                .multiply(lcmFraction);
+                if (rate.getDenominator() != 1) {
+                    throw new InternalErrorException(
+                            "Failed to properly perform"
+                            + " fraction normalization.");
                 }
-                throw new NotSchedulableException(messageBuffer.toString());
+                externalRates.put(port, rate);
+            } 
+            clusteredActors.clear();
+            clusteredExternalPorts.clear();
+            if (!allowDisconnectedGraphs) {
+                break;
             }
         }
+        
+        if (!remainingActors.isEmpty()) {
+            // If there are any actors left that we didn't get to, then
+            // this is not a connected graph, and we throw an exception.
+            StringBuffer messageBuffer =
+                new StringBuffer("SDF scheduler found disconnected actors! "
+                    + "Usually, disconnected actors in an SDF model "
+                    + "indicates an error.  If this is not an error, try "
+                    + "setting the SDFDirector parameter "
+                    + "allowDisconnectedGraphs to true.\n"
+                    + "Reached Actors:\n");
+            List reachedActorList = new LinkedList();
+            reachedActorList.addAll(actorList);
+            reachedActorList.removeAll(remainingActors);
+            for (Iterator actors = reachedActorList.iterator();
+                    actors.hasNext();) {
+                Entity entity = (Entity)actors.next();
+                messageBuffer.append(entity.getFullName() + "\n");
+            }
+            messageBuffer.append("Unreached Actors:\n");
+            Iterator unreachedActors = remainingActors.iterator();
+            while (unreachedActors.hasNext()) {
+                NamedObj unreachedActor = (NamedObj)(unreachedActors.next());
+                messageBuffer.append(unreachedActor.getFullName() + " ");
+            }
+            throw new NotSchedulableException(messageBuffer.toString());
+        }
+
         return entityToFiringsPerIteration;
     }
 
@@ -735,7 +694,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             ConstVariableModelAnalysis analysis)
             throws IllegalActionException {
         boolean allowRateChanges = ((BooleanToken)
-                ((SDFDirector)getContainer()).allowRateChanges.getToken()).booleanValue();
+                ((SDFDirector)getContainer()).allowRateChanges.getToken())
+                .booleanValue();
         if (!allowRateChanges) {
             throw new IllegalActionException(variable,
                     "The SDF rate parameter may change." +
@@ -901,7 +861,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         return count;
     }
 
-    /** Return the number of firings associated with the given entity.   The
+    /** Return the number of firings associated with the given entity. The
      *  number of firings is stored in the _firingVector map, indexed
      *  by the entity.
      *  @param entity One of the actors we are scheduling.
