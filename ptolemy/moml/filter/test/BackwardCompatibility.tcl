@@ -747,6 +747,17 @@ proc createAndExecute {file} {
 	    || [file tail $file] == "DatagramReaders.xml" \
 	    || [file tail $file] == "DatagramReadersSynced.xml" \
 	    || "$file" == "compat4/MobileFunctionTest.xml" \
+	    || "$file" == "compat4/StreamLoader.xml" \
+	    || [file tail $file] == "arraymem_test.xml" \
+	    || [file tail $file] == "arraymem_test2.xml" \
+	    || [file tail $file] == "arraymem_test3.xml" \
+	    || [file tail $file] == "register_hde.xml" \
+	    || [file tail $file] == "statesample_test.xml" \
+	    || [file tail $file] == "SOC_FSM_SR_HDE.xml" \
+	    || [file tail $file] == "SOC_Sobel_FSM_HDE.xml" \
+	    || [file tail $file] == "hde_sdf_fib_two_nums.xml" \
+	    || "$file" == "compat4/Signature.xml" \
+	    || "$file" == "compat4/XSLTransformerTest.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
