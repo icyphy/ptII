@@ -29,8 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
-// FIXME: Seems that only TreeNode implements this.  Eliminate?
-
 package ptolemy.lang;
 
 
@@ -42,7 +40,7 @@ import java.util.LinkedList;
 //// ITreeNode
 /**
 An interface that nodes in an abstract syntax tree implement.
-
+TreeNode and java/nodetypes/NamedNode both implement ITreeNode.
 @author Jeff Tsay
 @version $Id$
  */
