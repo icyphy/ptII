@@ -23,8 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
+
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
 
