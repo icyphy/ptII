@@ -49,10 +49,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ColorFinder.java\
+	AudioPlayer.java \
+	ColorFinder.java \
 	JMFImageToken.java \
+	MovieReader.java \
 	PlaySound.java \
-	VideoCamera.java
+	StreamLoader.java \
+	VideoCamera.java \
+	VideoPlayer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml \
