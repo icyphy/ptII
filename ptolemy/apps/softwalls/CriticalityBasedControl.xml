@@ -806,9 +806,11 @@
     <entity name="heading_transform" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 170.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[504, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 719, 459}}">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -819,7 +821,7 @@
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 250.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -855,7 +857,7 @@
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in &gt; PI)?(in - 2*PI):((in &lt; -PI)?(in + 2*PI):in)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 175.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 250.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -935,9 +937,11 @@
         </property>
         <property name="delta_heading" class="ptolemy.data.expr.Parameter" value="PI / 36">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[616, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 81, 831, 459}}">
         </property>
         <port name="heading" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1048,9 +1052,11 @@
     <entity name="bias_control" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 160.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 76, 1027, 459}}">
         </property>
         <port name="criticality" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
