@@ -64,7 +64,6 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	Actor.java \
 	AtomicIOPort.java \
-	AutonomousActor.java \
 	CompositeActor.java \
 	ControlledActor.java \
 	DataComputingInit.java \
