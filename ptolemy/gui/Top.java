@@ -289,8 +289,8 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Directory that contains the input file. */
-    protected File _directory = null;
+    /** The most recent directory used in a file dialog. */
+    protected static File _directory = null;
 
     /** The input file. */
     protected File _file = null;
@@ -373,7 +373,10 @@ public abstract class Top extends JFrame {
     }
 
     /** Close the window.  Derived classes should override this to
-     *  release any resources or remove any listeners.
+     *  release any resources or remove any listeners.  In this class,
+     *  if the data associated with this window has been modified,
+     *  as indicated by isModified(), then ask the user whether to
+     *  save the data before closing.
      */
     protected void _close() {
         // NOTE: We use dispose() here rather than just hiding the
@@ -435,6 +438,7 @@ public abstract class Top extends JFrame {
         }
         int returnVal = fileDialog.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    _directory = fileDialog.getCurrentDirectory();
             File file = fileDialog.getSelectedFile();
             try {
                 _read(file.toURL());
@@ -476,6 +480,7 @@ public abstract class Top extends JFrame {
         if (_file != null) {
             try {
                 _writeFile(_file);
+                setModified(false);
                 return true;
             } catch (IOException ex) {
                 report("Error writing file", ex);
@@ -542,7 +547,7 @@ public abstract class Top extends JFrame {
 
         String query = "Save changes?";
         if (_file != null) {
-            query = "Save changes to " + _file.getName();
+            query = "Save changes to " + _file.getName() + "?";
         }
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
