@@ -1,6 +1,6 @@
 # Tests for the IORelation class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -120,7 +120,7 @@ test IORelation-3.4 {Test getWidth of a port} {
     $p1 link $r1
     catch {$r1 setWidth 4} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E1.R1 and .E1.E2.P1:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E1.R1 and .E1.E2.P1:
 Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.4.1 {Test getWidth of a port} {
@@ -148,7 +148,7 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
     $r1 setWidth 0
     catch {$p1 link $r1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E1.E2.P1 and .E1.R1:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E1.E2.P1 and .E1.R1:
 Attempt to link a bus relation to a single port.}}
 
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
@@ -181,7 +181,7 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
     $p2 link $r2
     catch {$r1 setWidth 0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.R1 and .E0.E1.E2.P1:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E0.E1.R1 and .E0.E1.E2.P1:
 Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
@@ -201,7 +201,7 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     $p1 setMultiport true
     catch {$r1 setWidth 0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.R1 and .E0.E1.P2:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E0.E1.R1 and .E0.E1.P2:
 Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
@@ -238,7 +238,7 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
     $r4 setWidth 0
     catch {$p2 link $r4} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E1.P2 and .E0.E1.R4:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E0.E1.P2 and .E0.E1.R4:
 Attempt to link a second bus relation with unspecified width to the inside of a port.}}
 
 test IORelation-3.12 {Test getWidth of a port with inferred relation width} {

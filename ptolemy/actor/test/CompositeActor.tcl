@@ -1,6 +1,6 @@
 # Tests for the CompositeActor class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -98,8 +98,8 @@ test CompositeActor-3.3 {Test failure mode of setManager} {
     catch {$e5 setManager $m3} msg
     catch {$e0 setManager $m4} msg2
     list $msg $msg2
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .:
-Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and .Manager:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .E0.E3.E5 and <Unnamed Object>:
+Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: Object names: .E0 and .Manager:
 Cannot set manager because workspaces are different.}}
 
 test CompositeActor-3.3a {Test failure mode of setDirector} {
@@ -108,7 +108,7 @@ test CompositeActor-3.3a {Test failure mode of setDirector} {
     $d4 setName Director
     catch {$e0 setDirector $d4} msg
     list $msg 
-} {{ptolemy.kernel.util.IllegalActionException: .Director and .E0:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .Director and .E0:
 Cannot set container because workspaces are different.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
@@ -309,8 +309,8 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res9 [[$p4 get 0] toString]
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
-} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output:
-hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
+} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: Object name: .E0.E2.IDEN.output:
+hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: Object name: .E0.E2.P3:
 hasToken: channel index is out of range.} 1 {"foo"}}
 
 ######################################################################
