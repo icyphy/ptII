@@ -181,6 +181,7 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
 
     set tok1 [java::new ptolemy.data.Token]
     
+    #$actorSend1 setToken $tok1 3.0 0 
     $actorSend1 setToken $tok1 $globalIgnoreTime 0 
     $actorSend1 setToken $tok1 5.0 1 
     $actorSend1 setToken $tok1 7.0 2 
@@ -208,7 +209,6 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     set time4 [$actorRcvr getAfterTime 4]
     
     list $time0 $time1 $time2 $time3 $time4 
-
 } {4.0 5.0 6.0 7.0 8.0}    
 
 
