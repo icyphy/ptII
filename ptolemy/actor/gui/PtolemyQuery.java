@@ -435,14 +435,18 @@ public class PtolemyQuery extends Query
                                 changed(entryName);
                             }
                         } else {
-                            // Force evaluation to check validity of the entry.
-                            // NOTE: Normally, we would not need to force
-                            // evaluation because if the value has changed, then
-                            // listeners are automatically notified.  However,
-                            // if the value has not changed, then they are not
-                            // notified.  Since the original value was invalid,
-                            // it is not acceptable to skip notification in this
-                            // case.  So we force it.
+
+                            // Force evaluation to check validity of
+                            // the entry.  NOTE: Normally, we would
+                            // not need to force evaluation because if
+                            // the value has changed, then listeners
+                            // are automatically notified.  However,
+                            // if the value has not changed, then they
+                            // are not notified.  Since the original
+                            // value was invalid, it is not acceptable
+                            // to skip notification in this case.  So
+                            // we force it.
+
                             try {
                                 attribute.validate();
                             } catch (IllegalActionException ex) {
@@ -487,8 +491,8 @@ public class PtolemyQuery extends Query
                             String name = (String)entryNames.next();
                             String newValue = attribute.getExpression();
 
-                            // Compare value against what is in already to avoid
-                            // changing it again.
+                            // Compare value against what is in
+                            // already to avoid changing it again.
                             if (!stringValue(name).equals(newValue)) {
                                 set(name, attribute.getExpression());
                             }
