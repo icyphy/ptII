@@ -1000,7 +1000,7 @@ else
 	      do
 	          if test -d "$dir"; then
                       AC_MSG_WARN([Failed to find GC_malloc(), but 
-    \$dir exists.  See \$PTII/vendors/gc/README.txt
+    $dir exists.  See \$PTII/vendors/gc/README.txt
     if you would like to use the Garbage Collector with the C code generator])
                   fi
 	      done
@@ -1025,7 +1025,7 @@ else
 	       AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
            fi
        done
-       if test -f "$GC_INCLUDE_DIR/gc.h"; then
+       if test ! -f "$GC_INCLUDE_DIR/gc.h"; then
            AC_MSG_WARN([Failed to find gc.h.
     Checked the following directories:
     $dirs
