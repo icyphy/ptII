@@ -279,6 +279,7 @@ public class SerialComm extends TypedAtomicActor
     }
 
     /** Wrap up deallocates resources, specifically the serial port.
+     *  @exception IllegalActionException Maybe thrown (?).
      */
     public void wrapup() throws IllegalActionException {
         if (serialPort != null) {
