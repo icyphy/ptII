@@ -179,10 +179,25 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 <li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
 (Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
 
+
+<li> Ptolemy II Matlab interface
+(Zoltan Kemenczy, Research In Motion, Ltd.) -
+The Matlab Expression actor uses JNI to invoke the Matlab engine, 
+evaluate Matlab expressions and return the results to Ptolemy II.
+The Matlab Expression actor works only under Windows, and requires
+that Matlab be installed on your local machine.
+ <menu>
+ <li> <a href="../ptolemy/matlab/matlab.htm">Ptolemy II Matlab Interface Overview</a>
+ <a href="codeDoc/ptolemy/matlab/package-summary.html">Java class documentation</a>
+ <li> <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab Expression Demonstration</a> -
+ Windows only, requires that Matlab be installed locally, will not work within
+ an applet, but will work with Web Start
+ </menu>
+
 <li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
 (Zoltan Kemenczy, Research In Motion, Ltd.)
 
-<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>:
+<li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
 to perform multiple runs of refinement on a model
 
@@ -250,14 +265,14 @@ The graph package was redesigned and reimplemented.
 
 
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	synchronous/reactive (experimental), and
+	Synchronous/Reactive (experimental)
  <menu>
  <li><a href="../ptolemy/domains/sr/demo/TokenRing/TokenRing.htm">TokenRing</a>
  A cyclic token-ring arbiter composed of three blocks.
  </menu>
 
 <li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
-	timed multitasking (experimental).
+	Timed Multitasking (experimental).
  <menu>
  <li><a href="../ptolemy/domains/tm/demo/Controllers/Controllers.htm" target="main">Controllers</a>
    Two (independent) control loops whose controllers share the same CPU.
