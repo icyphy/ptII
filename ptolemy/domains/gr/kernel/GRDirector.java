@@ -61,7 +61,7 @@ GR is a domain for displaying three-dimensional graphics in Ptolemy
 II.  GR is an untimed domain in where actors are connected in an
 acyclic directed graph.  Actors are fired according to a simple
 topological sort of the graph.  Nodes in the graph that have no
-descendants are assumed to be comsumers of data produced by the rest
+descendants are assumed to be consumers of data produced by the rest
 of the model.
 
 <p>The basic idea behind the GR domain is to arrange geometry and

@@ -47,7 +47,7 @@ This is a base class designed for the MAC actors. Since these actors
 largely share a set of prameters, we would like to declare them here
 to avoid repeatly do the same amount of work in every MAC actor.
 FIXME: Currently, the paremeters in this actor are extracted from
-the ChannelState componnet...
+the ChannelState component...
 
 This actor also defines a set of constant that are widely used in 
 the OMNET c++ classes.
@@ -55,7 +55,7 @@ the OMNET c++ classes.
 Based on this, it is relativly easy to translate a OMNET class
 to a actor here. 
 @author Yang Zhao
-@version $Id$
+@version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
 @since Ptolemy II 2.1
 */
 

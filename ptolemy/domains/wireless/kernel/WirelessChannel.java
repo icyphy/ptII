@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Nameable;
 /**
 Interface for wireless channels in the wireless domain. 
 Wireless channels are special components in a wireless model. 
-They are used to determine the conectivity and deliver
+They are used to determine the connectivity and deliver
 tokens from the transmiter to receiver(s). This interface 
 defines a set of methods for the wireless channel components.
 <p>

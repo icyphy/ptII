@@ -61,7 +61,7 @@ ports to tell the source of the TxRequest and the destination of the
 TxConfirm. 
 
 @author Yang Zhao, Charlie Zhong and Xiaojun Liu
-@version $Id$
+@version DataPump.java,v 1.4 2004/04/12 15:30:36 cxh Exp
 @since Ptolemy II 2.1
 */
 public class DataPump extends MACActorBase {
@@ -122,8 +122,8 @@ public class DataPump extends MACActorBase {
     public TypedIOPort fromCs;
     
     /** The input port for transmission conformation from the physical
-     *  layer, including transmission start comfirmation, transmiting
-     *  data comfirmation and transmission end comfirmation. 
+     *  layer, including transmission start confirmation, transmiting
+     *  data confirmation and transmission end confirmation. 
      */
     public TypedIOPort fromPhysical;
     

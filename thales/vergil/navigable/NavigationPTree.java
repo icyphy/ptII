@@ -51,7 +51,7 @@ public class NavigationPTree extends PTree {
 
     /**
      * Most of the time, we use the tree of the ptolemt.vergil.tree package,
-     * according to the choosen model, detail level can vary
+     * according to the chosen model, detail level can vary
      *
      * @param model the used model to create the tree
      */

@@ -134,7 +134,7 @@ public class ArcConnector extends AbstractConnector {
     }
 
     /** Get the angle that determines the orientation of a
-     * self-loop. Thie method should be used when saving an arc
+     * self-loop. This method should be used when saving an arc
      * to an external representation, if the arc is a self-loop.
      */
     public double getGamma () {

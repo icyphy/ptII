@@ -234,7 +234,7 @@ public class SignalProcessing {
     /** Return a new array the value of the argument array
      *  in decibels, using the previous decibel() method.
      *  You may wish to combine this with DoubleArrayMath.limit().
-     *  @deprecated Use toDecibles() instead.
+     *  @deprecated Use toDecibels() instead.
      */
     public static final double[] decibel(double[] values) {
         double[] result = new double[values.length];

@@ -182,7 +182,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
     /** Update the figure's position and size when the user changes
      *  the appropriate parameters.
      * @exception IllegalActionException If getToken() generates
-     * IllegalActionExeception.
+     * IllegalActionException.
      */
     protected abstract void _updateFigure() throws IllegalActionException;
 }
