@@ -271,7 +271,7 @@ public class CTBaseIntegrator extends CTActor
         return _state;
     }
 
-    /** Preinitialize the integrator. Check for director and ODE 
+    /** Initialize the integrator. Check for director and ODE 
      *  solver.
      *  Update initial state parameter. Set the initial state to
      *  the tentative state and the state. Set tentative 
@@ -281,7 +281,7 @@ public class CTBaseIntegrator extends CTActor
      *       the director has no ODE solver, or thrown by the
      *       integratorInitialize() of the solver.
      */
-    public void preinitialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
         if(dir == null) {
             throw new IllegalActionException( this,

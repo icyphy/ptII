@@ -140,7 +140,7 @@ public void init() {
         SetRefinementVariable act0 =
             new SetRefinementVariable(ctrlTr1, "act0");
         act0.expression.setToken(new StringToken("state_V"));
-        act0.variableName.setExpression("\"Integrator.InitialState\"");
+        act0.variableName.setExpression("\"Integrator.initialState\"");
         ResetRefinement act1 =
             new ResetRefinement(ctrlTr1, "act1");
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
@@ -151,7 +151,7 @@ public void init() {
         SetRefinementVariable act2 =
             new SetRefinementVariable(ctrlTr2, "act2");
         act2.expression.setToken(new StringToken("state_V"));
-        act2.variableName.setExpression("\"Integrator.InitialState\"");
+        act2.variableName.setExpression("\"Integrator.initialState\"");
         ResetRefinement act3 =
             new ResetRefinement(ctrlTr2, "act3");
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");
