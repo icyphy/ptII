@@ -92,7 +92,7 @@ public class SnapConstraint implements PointConstraint {
     /** Return true to indicate that this does snap to grid.
      *  @return True.
      */
-    public boolean snapped () {
+    public boolean snapped() {
         return true;
     }
 
@@ -100,7 +100,7 @@ public class SnapConstraint implements PointConstraint {
      *  globally.
      *  @param resolution The new resolution.
      */
-    public static void setResolution (double resolution) {
+    public static void setResolution(double resolution) {
         _resolution = resolution;
     }
 

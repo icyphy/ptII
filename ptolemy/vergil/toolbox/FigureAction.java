@@ -126,16 +126,8 @@ public class FigureAction extends AbstractAction {
 	return _y;
     }
 
-    public static class SourceType {
-	private SourceType(String name) {
-	    _name = name;
-	}
-
-	public String getName() {
-	    return _name;
-	}
-	private String _name;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** When the action was fired from a canvas interactor.
      */
@@ -152,6 +144,24 @@ public class FigureAction extends AbstractAction {
     /** When the action was fired from a menubar.
      */
     public static SourceType MENUBAR_TYPE = new SourceType("menubar");
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    public static class SourceType {
+	private SourceType(String name) {
+	    _name = name;
+	}
+
+	public String getName() {
+	    return _name;
+	}
+	private String _name;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private SourceType _sourceType = null;
     private NamedObj _target = null;
