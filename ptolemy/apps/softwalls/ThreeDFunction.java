@@ -38,14 +38,17 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.NoSuchElementException;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.expr.FileParameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction
@@ -68,12 +71,37 @@ public class ThreeDFunction implements Serializable {
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
      */
-    public ThreeDFunction(String fileName) throws IllegalActionException {
+//     public ThreeDFunction(String fileName) throws IllegalActionException {
+//         BufferedReader bufferedReader = null;
+//         try {
+//             new BufferedReader(new FileReader(fileName));
+//         } catch (IOException ex) {
+//             throw new IllegalActionException(null, ex, 
+//                     "Failed to open '" + fileName + "'");
+//         }
+
+//         // Read uncompressed data and do not write out compressed data.
+//         this(bufferedReader, false, null);
+
+//         // Read compressed data and do not write out uncompressed data.
+//         //this(bufferedReader, true, null);
+//     }
+
+
+    /** Construct the functional representation of the 3D dataset by
+     *  reading a compressed file.
+     *  
+     *  @param fileName name of file storing the dataset.
+     *  @exception IllegalActionException If any exception is
+     *     is generated during file I/O.
+     */
+    public ThreeDFunction(FileParameter fileParameter)
+            throws IllegalActionException {
         // Read uncompressed data and do not write out compressed data.
-        this(fileName, true, false);
+        this(fileParameter, false, false);
 
         // Read compressed data and do not write out uncompressed data.
-        //this(fileName, true, false);
+        //this(fileParameter, true, false);
     }
 
     /** 
@@ -113,45 +141,74 @@ public class ThreeDFunction implements Serializable {
      *  rounding errors.  However, usually this level of precision
      *  is sufficient for our needs.
      *  
-     *  @param fileName name of file storing the dataset.
+     *  @param fileParameter FileParameter that names the file to be read
      *  @param compressed True if the input data is compressed
-     *  @param wrieOutData True if the data should be written out
-     *  in a file with the same name as the input file, but with a .tmp
-     *  suffix. If we read in compressed data, we write out uncompressed.
-     *  If we read in uncompressed data, we write out compressed.
+     *  @param writeOutData If true, then write out a version of the
+     *  data in the other format.If we read in compressed data,
+     *  we write out uncompressed. If we read in uncompressed data,
+     *  we write out compressed.  The output file is created in
+     *  the current directory with a ".out" extension appended.
      *
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
      */
-    public ThreeDFunction(String fileName, boolean compressed,
+    public ThreeDFunction(FileParameter fileParameter, boolean compressed,
             boolean writeOutData) throws IllegalActionException {
         int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
         double dimension;
 
-        BufferedReader in = null;
-            
+        BufferedReader reader = null;
         try {
-            in = new BufferedReader(new FileReader(fileName));
+            reader = fileParameter.openForReading();
+            System.out.println("Opening file: " + fileParameter.stringValue());
+        } catch (IllegalActionException ex) {
+            // If we can't open the file, then try it in the classpath
+            // The reason we don't just use $CLASSPATH:
+            // 1) I think this is only supported after Ptolemy II 3.0.1
+            // 2) The softwalls data set is usually 40Mb, and is usually
+            // in a separate directory that might not be in the classpath,
+            // so we first look as a regular file and then look in the
+            // classpath.
+            URL url = getClass().getClassLoader()
+                .getResource(fileParameter.stringValue());
+            if (url == null) {
+                throw new IllegalActionException(fileParameter, ex,
+                        "Cannot find file '" + fileParameter +
+                        "'. Also looked in classpath for '"
+                        + fileParameter.stringValue() + "'");
+                
+            }
+            try {
+                reader = new BufferedReader(
+                        new InputStreamReader(url.openStream()));
+                System.out.println("Opening URL: " + url);
+            } catch (IOException ex2) {
+                throw new IllegalActionException(fileParameter, ex2,
+                        "Cannot find file '" + fileParameter +
+                        "', failed to open '" + url + "'");
+            }
+        }
 
-            // Read the dimension of the state space and ignore it,
+        try {
+             // Read the dimension of the state space and ignore it,
             // since we know it's value is 3.
-            dimension = _readDouble(in);
+            dimension = _readDouble(reader);
 
             // Read x grid information.
-            _xLowerBound = _readDouble(in);
-            _xStepSize = _readDouble(in);
-            _xUpperBound = _readDouble(in);
+            _xLowerBound = _readDouble(reader);
+            _xStepSize = _readDouble(reader);
+            _xUpperBound = _readDouble(reader);
 
             // Read y grid information.
-            _yLowerBound = _readDouble(in);
-            _yStepSize = _readDouble(in);
-            _yUpperBound = _readDouble(in);
+            _yLowerBound = _readDouble(reader);
+            _yStepSize = _readDouble(reader);
+            _yUpperBound = _readDouble(reader);
 
             // Read theta grid information.
-            _thetaLowerBound = _readDouble(in);
-            _thetaStepSize = _readDouble(in);
-            _thetaUpperBound = _readDouble(in);
+            _thetaLowerBound = _readDouble(reader);
+            _thetaStepSize = _readDouble(reader);
+            _thetaUpperBound = _readDouble(reader);
 
 //             //Complain if the theta values don't make sense
 //             if ((_thetaLowerBound != 0.0) || (_thetaUpperBound >= Math.PI)) {
@@ -180,27 +237,50 @@ public class ThreeDFunction implements Serializable {
                             // the last and the current values.
                             if (last == Integer.MIN_VALUE) {
                                 // First data point
-                                last = _readInteger(in);
+                                last = _readInteger(reader);
                                 _values[x][y][t] = last/1000.0;
                             } else {
-                                last = last - _readInteger(in);
+                                last = last - _readInteger(reader);
                                 _values[x][y][t] = last/1000.0; 
                             }
                         } else {
-                            _values[x][y][t] = _readDouble(in);
+                            _values[x][y][t] = _readDouble(reader);
                         }
                     }
                 }
             }
 
-            // Set writeOutData to true to write out the other form of data.
-            // If we read in compressed data, we write out uncompressed.
-            // If we read in uncompressed data, we write out compressed.
             if (writeOutData) {
+                // Write out the other form of data.
+                // If we read in compressed data, we write out uncompressed.
+                // If we read in uncompressed data, we write out compressed.
+
+                String outputFileName = null;
+                String baseName = fileParameter.stringValue();
+
+                // Write into the current directory.
+                // We could try to be more crafty here, but writing data
+                // is really only for experts
+
+                // The fileParameter might point to something in a jar file
+                // so we get the basename by hand.
+                if (baseName.indexOf("/") != -1 ) {
+                    outputFileName = baseName.substring(
+                            baseName.lastIndexOf("/") + 1,
+                            baseName.length()) + ".out";
+                } else if (baseName.indexOf("\\") != -1) {
+                    outputFileName = baseName.substring(
+                            baseName.lastIndexOf("\\") + 1,
+                            baseName.length()) + ".out";
+                } else {
+                    outputFileName = baseName + ".out";
+                }
+
+                System.out.println("Writing " + outputFileName );
                 BufferedWriter output = null;
                 try {
                     output =
-                        new BufferedWriter(new FileWriter(fileName + ".tmp"));
+                        new BufferedWriter(new FileWriter(outputFileName));
                     write(output, !compressed);
                 } finally {
                     if (output != null) {
@@ -211,14 +291,14 @@ public class ThreeDFunction implements Serializable {
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to parse '" + fileName + "'");
+                    "Failed to parse '" + reader + "'");
         } finally {
-            if (in != null) {
+            if (reader != null) {
                 try {
-                in.close();
+                    reader.close();
                 } catch (IOException ex) {
                     throw new IllegalActionException(null, ex,
-                            "Failed to close '" + fileName + "'");
+                            "Failed to close '" + reader + "'");
                 }
             }
         }
