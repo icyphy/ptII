@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -221,8 +222,9 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setModifiable(false);
                     textEffigy.setName("textEffigy");
                 } else {
-                    textEffigy = (TextEffigy)
-                        _newTextEffigyText.invoke
+		    // The View Source choice of the HTMLViewer runs this code.
+		    textEffigy = (TextEffigy)
+                        _newTextEffigyURL.invoke
                         (null, new Object[]{effigy, url, url});
                     textEffigy.setName("textEffigy");
                 }
