@@ -66,12 +66,18 @@ public final class NodeUtil implements JavaStaticSemanticConstants {
         else if ((definedTypes = compileUnit.getDefTypes()) == null) return null;
 
         // FIXME: what does it mean when there are multiple type definitions?
-        else if (definedTypes.size() > 1) 
-	        throw new RuntimeException("NodeUtil.getDefinedType() "
-                    + "has encountered a CompileUnitNode with multiple type definitions."
-                    + ". \nA dump of the offending AST follows.\n"
-                    + compileUnit.toString());
+        else if (definedTypes.size() > 1) {
+	    StringBuffer buffer =
+		new StringBuffer("NodeUtil.getDefinedType() "
+				 + "has encountered a CompileUnitNode with multiple type definitions."
+				 + ". \nA dump of the offending AST follows.\n"
+				 + compileUnit.toString());
+	    for(int i = 0; i< definedTYpes.size(); i++){
+		buffer.append("\nDefined Type #" + i + definedTypes.get(0));
+	    }
 
+	    throw new RuntimeException(buffer);
+	}
         else return (UserTypeDeclNode)(definedTypes.get(0));
     }
 
