@@ -122,6 +122,7 @@ public class Gaussian extends TypedAtomicActor {
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
 	long sd = ((LongToken)(seed.getToken())).longValue();

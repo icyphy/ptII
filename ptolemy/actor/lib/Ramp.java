@@ -114,6 +114,7 @@ public class Ramp extends TypedAtomicActor {
     }
 
     /** Initialize the internal state.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
 	// FIXME: after the change that initialize() is called

@@ -121,6 +121,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
      *  specified but it is not an instance of Plot, then create a new
      *  instance of Plot and place the plot in that panel
      *  using its add() method.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
         // FIXME: remove "throws" clause.
