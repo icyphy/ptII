@@ -1,6 +1,6 @@
 # Tests for the SignalProcessing Class
 #
-# @Author: Edward A. Lee, Christopher Hylands, Jeff Tsay
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -41,19 +41,6 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 set PI [java::field java.lang.Math PI]
-
-# Complex numbers to be used
-set c1 [java::new ptolemy.math.Complex 1 2]
-set c2 [java::new ptolemy.math.Complex 3 -4]
-set c3 [java::new ptolemy.math.Complex -4.9 -6]
-set c4 [java::new ptolemy.math.Complex -7 8]
-set c5 [java::new ptolemy.math.Complex -0.25 +0.4]
-
-# Complex array of length 0
-set ca0 [java::new {ptolemy.math.Complex[]} 0]
-
-# Complex array
-set ca1 [java::new {ptolemy.math.Complex[]} 4 [list $c1 $c2 $c3 $c4]]
 
 proc javaPrintArray {javaArrayObj} {
     set result {}
@@ -113,38 +100,6 @@ test SignalProcessing-1.1 {close} {
 } {{1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1}}
 
 ####################################################################
-test SignalProcessing-2.1 {convolve double: empty array} {
-    set da0 [java::new {double[]} 0]
-    set da2 [java::call ptolemy.math.SignalProcessing \
-	    {convolve double[] double[]} $da0 $da0]
-    $da2 getrange 0
-} {}
-
-####################################################################
-test SignalProcessing-2.2 {convolve double} {
-    set da1 [java::new {double[]} 4 {1 2 -3 4.1}]
-    set da2 [java::call ptolemy.math.SignalProcessing \
-	    {convolve double[] double[]} $da1 $da1]
-    epsilonDiff [$da2 getrange 0] {1.0 4.0 -2.0 -3.8 25.4 -24.6 16.81}
-} {}
-
-####################################################################
-test SignalProcessing-3.1 {convolve Complex} {
-    set ca2 [java::call ptolemy.math.SignalProcessing \
-	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca0 $ca0]
-    jdkPrintArray $ca2
-} {}
-
-####################################################################
-test SignalProcessing-3.2 {convolve Complex} {
-    set ca2 [java::call ptolemy.math.SignalProcessing \
-	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca1 $ca1]
-    epsilonDiff [jdkPrintArray $ca2] \
-	    {{-3.0 + 4.0i} {22.0 + 4.0i} {7.2 - 55.6i} {-123.4 - 8.8} \
-	    {10.01 + 162.8i} {164.6 + 5.6i} {-15.0 - 112.0i}}
-} {}
-
-####################################################################
 test SignalProcessing-2.1 {decibel} {
     epsilonDiff \
 	    [list \
@@ -155,7 +110,6 @@ test SignalProcessing-2.1 {decibel} {
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
 	    ] {-Infinity -Infinity -106.03796221 0.0 106.03796221}
 } {}
-
 
 ####################################################################
 test SignalProcessing-3.1 {decibel array: empty array} {
@@ -175,24 +129,24 @@ test SignalProcessing-3.2 {decibel array} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.1 {FFTComplexOut Complex[] order: null argument} {
+test SignalProcessing-4.1 {fft Complex: null argument} {
     # Real array
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int} [java::null] 8]} errMsg
+	    {fft ptolemy.math.Complex[]} [java::null]]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-4.2 {FFTComplexOut Complex[] : empty array} {
+test SignalProcessing-4.2 {fft Complex: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[]} $ca0]} errMsg
+	    {fft ptolemy.math.Complex[]} $ca0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 
 ####################################################################
-test SignalProcessing-4.2 {FFTComplexOut Complex[]} {
+test SignalProcessing-4.2 {FFT Complex} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -204,30 +158,30 @@ test SignalProcessing-4.2 {FFTComplexOut Complex[]} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.1 {FFTComplexOut Complex[] order: null argument} {
+test SignalProcessing-5.1 {fft Complex, order: null argument} {
     # Real array
     catch {java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int} [java::null] 1} errMsg
+	    {fft ptolemy.math.Complex[] int} [java::null] 1} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-5.2 {FFTComplexOut Complex[] order: empty array} {
+test SignalProcessing-5.2 {fft Complex, order: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int} $ca0 1} errMsg
+	    {fft ptolemy.math.Complex[] int} $ca0 1} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-5.3 {FFTComplexOut Complex[] order 0} {
+test SignalProcessing-5.3 {fft Complex, order 0} {
     catch {java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 0} errMsg
+	    {fft ptolemy.math.Complex[] int } $ca1 0} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : order of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: order argument must be positive.}}
 
 ####################################################################
-test SignalProcessing-5.4 {FFTComplexOut Complex[] order 1} {
+test SignalProcessing-5.4 {FFTComplexOut, order 1} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -238,7 +192,7 @@ test SignalProcessing-5.4 {FFTComplexOut Complex[] order 1} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
+test SignalProcessing-5.5 {fft Complex, order 2} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -250,91 +204,105 @@ test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
 
 
 ####################################################################
-test SignalProcessing-5.6 {FFTComplexOut, order 1, w/ larger array} {
+test SignalProcessing-5.6 {fft Complex, order 1, w/ larger array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 3, or a order 1 fft, the size should be 2
     set ca1 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 1]
+	    {fft ptolemy.math.Complex[] int } $ca1 1]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
+test SignalProcessing-5.7 {fft Complex, order 2, smaller array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 2, hopefully fft will pad
     set ca1 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c0]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 2]
+	    {fft ptolemy.math.Complex[] int } $ca1 2]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-6.1 {FFTComplexOut double[] : empty array} {
+test SignalProcessing-6.1 {fft Complex: empty array} {
     set da0 [java::new {double[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[]} $da0]} errMsg
+	    {fft double[]} $da0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-6.2 {FFTComplexOut double[] int : null array} {
+test SignalProcessing-6.2 {fft Complex: null array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[] int} [java::null] 8]} errMsg
+	    {fft double[]} [java::null]]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-6.3 {FFTComplexOut double[]} {
+test SignalProcessing-6.3 {FFT double} {
     # Real array
     set impulse [java::new {double[]} 5 [list 1.0 0.0 0.0 0.0 0.0]]
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut double[]} $impulse]
-    epsilonDiff [javaPrintArray $result] {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
-} {}
+    javaPrintArray $result
+} {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-7.1 {FFTComplexOut double[] order: empty array} {
+test SignalProcessing-7.1 {fft Complex, order: empty array} {
     set da0 [java::new {double[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[]} $da0]} errMsg
+	    {fft double[]} $da0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-7.3 {FFTComplexOut double[] order 0} {
+test SignalProcessing-7.2 {fft Complex, order: null array} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+	    {fft double[]} [java::null]]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+
+####################################################################
+test SignalProcessing-7.3 {fft double, order 0} {
     # NOTE: uses setup from 6.3 above
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[] int} $impulse 0]} errMsg
+	    {fft double[] int} $impulse 0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : order of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fft: order argument must be positive.}}
 
 ####################################################################
-test SignalProcessing-7.4 {FFTComplexOut double, order 1} {
+test SignalProcessing-7.4 {fft double, order 1} {
     # NOTE: uses setup from 6.3 above
     set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[] int} $impulse 1 ]
+	    {fft double[] int} $impulse 1 ]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-7.5 {FFTComplexOut double, order 3} {
+test SignalProcessing-7.5 {fft double, order 3} {
     # NOTE: uses setup from 6.3 above
     # The input array is length 5.
     set result [java::call ptolemy.math.SignalProcessing \
-	    {FFTComplexOut double[] int} $impulse 3 ]
-    epsilonDiff [javaPrintArray $result] {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
-} {}
+	    {fft double[] int} $impulse 3 ]
+    javaPrintArray $result
+} {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-9.1 {IFFTComplexOut Complex: empty array} {
+test SignalProcessing-9.1 {fftInverse Complex: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    IFFTComplexOut $ca0]} errMsg
+	    fftInverse $ca0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
+
+####################################################################
+test SignalProcessing-9.2 {fftInverse Complex: null array} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse [java::null]]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
 
 ####################################################################
 test SignalProcessing-9.3 {IFFTComplexOut Complex : order 1} {
@@ -346,30 +314,38 @@ test SignalProcessing-9.3 {IFFTComplexOut Complex : order 1} {
 } {{1.0 + 0.0i} {0.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-9.4 {IFFTComplexOut Complex: array that is not a power of two in length} {
+test SignalProcessing-9.4 {fftInverse Complex: array that is not a power of two in length} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    IFFTComplexOut $ca3]
+	    fftInverse $ca3]
     javaPrintArray $result
 } {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-10.2 {IFFTComplexOut Complex int: null array} {
+test SignalProcessing-10.1 {fftInverse Complex int: empty array} {
+    set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    IFFTComplexOut [java::null] 1]} errMsg
+	    fftInverse $ca0 1]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-10.3 {IFFTComplexOut: order 0} {
+test SignalProcessing-10.2 {fftInverse Complex int: null array} {
+    catch {set result [java::call ptolemy.math.SignalProcessing \
+	    fftInverse [java::null] 1]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: empty array argument.}}
+
+####################################################################
+test SignalProcessing-10.3 {fftInverse Complex: order 0} {
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
     catch {set result [java::call ptolemy.math.SignalProcessing \
 	    IFFTComplexOut $ca2 0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : order of transform must be positive.}}
+} {{java.lang.IllegalArgumentException: SignalProcessing.fftInverse: order must be positive.}}
 
 ####################################################################
-test SignalProcessing-10.4 {IFFTComplexOut Complex: order 1} {
+test SignalProcessing-10.4 {IFFTComplex Complex: order 1} {
     # The inverse of test 5.4 above
     set ca2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c1 ]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -378,18 +354,18 @@ test SignalProcessing-10.4 {IFFTComplexOut Complex: order 1} {
 } {{1.0 + 0.0i} {0.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-10.5 {IFFTComplexOut Complex: array that is not a power of two in length} {
+test SignalProcessing-10.5 {fftInverse Complex: array that is not a power of two in length} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    IFFTComplexOut $ca3 2]
-    epsilonDiff [javaPrintArray $result] {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
-} {}
+	    fftInverse $ca3 2]
+    javaPrintArray $result
+} {{0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i} {0.25 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-10.6 {IFFTComplexOut Complex: array is longer than order} {
+test SignalProcessing-10.6 {fftInverse Complex: array is longer than order} {
     set ca3 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0 ]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    IFFTComplexOut $ca3 1]
+	    fftInverse $ca3 1]
     javaPrintArray $result
 } {{0.5 + 0.0i} {0.5 + 0.0i}}
 

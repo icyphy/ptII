@@ -46,13 +46,14 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	
+
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	ArrayMath.tcl \
 	Complex.tcl \
 	ComplexArrayMath.tcl \
+        DoubleArrayMath.tcl \
+        DoubleArrayStat.tcl \
 	ExtendedMath.tcl \
 	Fraction.tcl \
 	SignalProcessing.tcl
