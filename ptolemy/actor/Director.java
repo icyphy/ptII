@@ -138,7 +138,7 @@ public class Director extends NamedObj implements Executable {
     /** This controls the execution. 
      * @return true if the execution is complete and should be terminated
      * @exception IllegalActionException is thrown.
-     * @see fire()
+     * @see #fire()
      */
     public boolean iterate() throws IllegalActionException {
         if (prefire()) {
@@ -196,7 +196,7 @@ public class Director extends NamedObj implements Executable {
      *  are finally incorporated when the processPendingMutations() is called
      * @param mutation The new Mutation objects that contains a list of 
      *  mutations that should be executed later
-     * @see-also processPendingMutations()
+     * @see #processPendingMutations()
      */
     public void queueMutation(Mutation mutation) {
         synchronized(workspace()) {
@@ -258,7 +258,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Mark the current schedule to be valid.
-     *  @see invalidateSchedule()
+     *  @see #invalidateSchedule()
      */
     public void validateSchedule() {
         _schedulevalid = true;
