@@ -43,6 +43,7 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.*;
 import soot.dava.*;
@@ -190,6 +191,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                     }
                 }
             }
+            TypeAssigner.v().transform(
+                    body, "ta", "");
         }   
 
         if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {

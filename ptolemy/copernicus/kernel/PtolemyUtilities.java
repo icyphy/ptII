@@ -528,7 +528,7 @@ public class PtolemyUtilities {
         } else {
             objectClass = Scene.v().loadClassAndSupport(className);
         }
-        System.out.println("done loading support of " + className);
+        // System.out.println("done loading support of " + className);
 
         RefType objectType = RefType.v(objectClass);
 
@@ -1138,6 +1138,7 @@ public class PtolemyUtilities {
     public static SootClass recordTokenClass;
     // Soot Method representing the RecordToken(String[], Token[]) constructor.
     public static SootMethod recordTokenConstructor;
+    public static SootMethod recordGetMethod;
 
     // Soot Class representing the ptolemy.data.type.RecordType class.
     public static SootClass recordTypeClass;
@@ -1405,6 +1406,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.RecordToken");
         recordTokenConstructor =
             recordTokenClass.getMethod("void <init>(java.lang.String[],ptolemy.data.Token[])");
+        recordGetMethod =
+            recordTokenClass.getMethod("ptolemy.data.Token get(java.lang.String)");
 
         scalarTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.ScalarToken");

@@ -136,7 +136,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-             
+          
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         Scene.v().getPack("wjtp").add(
@@ -149,6 +149,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
                         FieldsForAttributesTransformer.v(_toplevel)));
+        /*
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
@@ -200,6 +201,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", ClassWriter.v()));
          */
+        /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));

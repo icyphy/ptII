@@ -718,6 +718,9 @@ public class ActorTransformer extends SceneTransformer {
         SootField currentStateField = new SootField(
                 "_currentState", IntType.v());
         entityInstanceClass.addField(currentStateField);
+        SootField nextTransitionField = new SootField(
+                "_nextTransition", IntType.v());
+        entityInstanceClass.addField(nextTransitionField);
         
         // populate the initialize method.
         {
@@ -866,7 +869,10 @@ public class ActorTransformer extends SceneTransformer {
             Local transitionTakenLocal = Jimple.v().newLocal(
                     "transitionTakenLocal", BooleanType.v());
             body.getLocals().add(transitionTakenLocal);
-  
+            Local nextTransitionLocal = Jimple.v().newLocal(
+                    "nextTransitionLocal", IntType.v());
+            body.getLocals().add(nextTransitionLocal);
+            
             units.add(
                     Jimple.v().newAssignStmt(
                             currentStateLocal,
@@ -878,6 +884,10 @@ public class ActorTransformer extends SceneTransformer {
                     Jimple.v().newAssignStmt(
                             transitionTakenLocal,
                             IntConstant.v(0)));
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            nextTransitionLocal,
+                            IntConstant.v(-1)));
             
             // If no transition is taken, then stay in this state.
             units.add(
@@ -919,8 +929,8 @@ public class ActorTransformer extends SceneTransformer {
                     Local containerLocal = Jimple.v().newLocal("container",
                            RefType.v(PtolemyUtilities.namedObjClass));
                     body.getLocals().add(containerLocal);
-                     Local entityLocal = Jimple.v().newLocal("entity",
-                             RefType.v(PtolemyUtilities.entityClass));
+                    Local entityLocal = Jimple.v().newLocal("entity",
+                            RefType.v(PtolemyUtilities.entityClass));
                     body.getLocals().add(entityLocal);
                      
                     NamedObj toplevel = entity.toplevel();
@@ -1008,6 +1018,10 @@ public class ActorTransformer extends SceneTransformer {
                             Jimple.v().newAssignStmt(
                                     transitionTakenLocal,
                                     IntConstant.v(1)));
+                    units.add(
+                            Jimple.v().newAssignStmt(
+                                    nextTransitionLocal,
+                                    IntConstant.v(entity.relationList().indexOf(transition))));
                     int nextStateIndex = entity.entityList().indexOf(
                             transition.destinationState());
                     units.add(
@@ -1024,14 +1038,6 @@ public class ActorTransformer extends SceneTransformer {
                                     nameToField, nameToType, body, action);
                     }
                     
-                    // Generate code for the commitExpression of the guard.
-                    for(Iterator actions = transition.commitActionList().iterator();
-                        actions.hasNext();) {
-                        AbstractActionsAttribute action = 
-                            (AbstractActionsAttribute)actions.next();
-                        _generateActionCode(entity, entityInstanceClass,
-                                    nameToField, nameToType, body, action);
-                    }
                     units.add(skipStmt);
                 }
                 units.add(Jimple.v().newGotoStmt(finishedStmt));
@@ -1054,11 +1060,92 @@ public class ActorTransformer extends SceneTransformer {
                                     thisLocal,
                                     currentStateField),
                             nextStateLocal));
+            // And the next Transition.
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(
+                                    thisLocal,
+                                    nextTransitionField),
+                            nextTransitionLocal));
                      
             
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
         
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
+        }
+
+        // populate the postfire method.
+        {
+            System.out.println("create postfire()");
+            SootMethod postfireMethod = new SootMethod("postfire",
+                    new LinkedList(), BooleanType.v(), Modifier.PUBLIC);
+            entityInstanceClass.addMethod(postfireMethod);
+            JimpleBody body = Jimple.v().newBody(postfireMethod);
+            postfireMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+
+            Map transitionToStartStmt = new HashMap();
+            List transitionStmtList = new LinkedList();
+            int numberOfTransitions = entity.relationList().size();
+            // Figure out what transition we are in.
+            for(Iterator transitions = entity.relationList().iterator();
+                transitions.hasNext();) {
+                Transition transition = (Transition)transitions.next();
+                Stmt startStmt = Jimple.v().newNopStmt();
+                
+                transitionToStartStmt.put(transition, startStmt);
+                transitionStmtList.add(startStmt);
+            }
+                          
+            Local nextTransitionLocal = Jimple.v().newLocal(
+                    "nextTransitionLocal", IntType.v());
+            body.getLocals().add(nextTransitionLocal);
+             
+            units.add(
+                    Jimple.v().newAssignStmt(
+                            nextTransitionLocal,
+                            Jimple.v().newInstanceFieldRef(
+                                    thisLocal,
+                                    nextTransitionField)));   
+         
+            Stmt finishedStmt = Jimple.v().newNopStmt();
+            Stmt errorStmt = Jimple.v().newNopStmt();
+
+            // Get the current transition..
+            units.add(
+                    Jimple.v().newTableSwitchStmt(nextTransitionLocal,
+                            0, numberOfTransitions - 1,
+                            transitionStmtList, 
+                            errorStmt));
+         
+            // Generate code for each transition
+            for(Iterator transitions = entity.relationList().iterator();
+                transitions.hasNext();) {
+                Transition transition = (Transition)transitions.next();
+                Stmt startStmt = (Stmt)
+                    transitionToStartStmt.get(transition);
+                units.add(startStmt);
+                         
+                // Generate code for the commitExpression of the guard.
+                for(Iterator actions = transition.commitActionList().iterator();
+                    actions.hasNext();) {
+                    AbstractActionsAttribute action = 
+                        (AbstractActionsAttribute)actions.next();
+                    _generateActionCode(entity, entityInstanceClass,
+                            nameToField, nameToType, body, action);
+                }
+                units.add(Jimple.v().newGotoStmt(finishedStmt));
+            }
+            units.add(errorStmt);
+            units.add(finishedStmt);
+                       
+            // return true
+            units.add(Jimple.v().newReturnStmt(IntConstant.v(1)));
+            
             LocalNameStandardizer.v().transform(body, "at.lns");
             LocalSplitter.v().transform(body, "at.ls");
         }
@@ -1121,13 +1208,42 @@ public class ActorTransformer extends SceneTransformer {
                             RefType.v(PtolemyUtilities.variableClass));
                     body.getLocals().add(paramLocal);
                     
-                    SootField paramField = 
-                        entityClass.getFieldByName(name);
-                    
+                    Local containerLocal = Jimple.v().newLocal("container",
+                           RefType.v(PtolemyUtilities.namedObjClass));
+                    body.getLocals().add(containerLocal);
+                    Local attributeLocal = Jimple.v().newLocal("attribute",
+                            RefType.v(PtolemyUtilities.attributeClass));
+                    body.getLocals().add(attributeLocal);
+                     
+                    // Get a ref to the parameter through the toplevel,
+                    // since the parameter we are assigning to may be
+                    // above us in the hierarchy.
+
+                    NamedObj toplevel = entity.toplevel();
+                    String deepName = ((NamedObj)destination).getName(toplevel);
+                                       
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(containerLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            body.getThisLocal(),
+                                            PtolemyUtilities.toplevelMethod)));
+//                     body.getUnits().add(
+//                             Jimple.v().newAssignStmt(containerLocal,
+//                                     Jimple.v().newCastExpr(
+//                                             containerLocal,
+//                                             RefType.v(PtolemyUtilities.compositeActorClass))));
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(attributeLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            containerLocal,
+                                            PtolemyUtilities.getAttributeMethod,
+                                            StringConstant.v(deepName))));
+
                     body.getUnits().add(
                             Jimple.v().newAssignStmt(paramLocal,
-                                    Jimple.v().newInstanceFieldRef(
-                                            body.getThisLocal(), paramField)));
+                                    Jimple.v().newCastExpr(
+                                            attributeLocal,
+                                            RefType.v(PtolemyUtilities.variableClass)))); 
                     body.getUnits().add(
                             Jimple.v().newInvokeStmt(
                                     Jimple.v().newVirtualInvokeExpr(

@@ -127,7 +127,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-
+            System.out.println("replaceAttributeCalls in " + method);
+      
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             
             CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
@@ -260,6 +261,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj baseObject = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        System.out.println("sootClass = " + type.getSootClass());
         System.out.println("name = " + name);
         System.out.println("baseObject = " + baseObject);
         if (baseObject != null) {
