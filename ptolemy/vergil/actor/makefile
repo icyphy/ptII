@@ -82,7 +82,7 @@ OPTIONAL_FILES = \
 	'ActorGraphModel$$2.class' \
 	'ActorGraphModel$$ExternalPortModel.class' \
 	'ActorGraphModel$$IconModel.class' \
-	'ActorGraphModel$$LinkModel$LinkChangeListener.class' \
+	'ActorGraphModel$$LinkModel$$LinkChangeListener.class' \
 	'ActorGraphModel$$LinkModel.class' \
 	'ActorGraphModel$$PortModel.class' \
 	'ActorGraphModel$$VertexModel.class' \
