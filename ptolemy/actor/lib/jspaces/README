@@ -12,3 +12,8 @@ Here are some tips for setup and run Jini and JavaSpaces
 remote classes. In this directory, we also need to manually do:
 
 rmic -classpath ${PTII}:${PTII}/vendors/sun/jini/lib/jini-jspaces.jar ptolemy.actor.lib.jspaces.Subscriber
+
+4) In the current implememtation, entries write into the 
+JavaSpace stay there for ever. You may want to use the script
+util/cleanspace to remove all entries from the space. This is
+usually between to runs of a demo.
