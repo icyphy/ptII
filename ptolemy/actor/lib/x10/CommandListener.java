@@ -33,7 +33,6 @@ package ptolemy.actor.lib.x10;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -147,7 +146,7 @@ public class CommandListener extends Receiver {
             Command sensedCommand = _getCommand();
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.ON;
-            String commandValue = ((StringToken)command.getToken()).stringValue();
+            String commandValue = command.stringValue();
             if (commandValue.equals("OFF")) {
                 functionOfInterest = Command.OFF;
             } else if (commandValue.equals("ALL_LIGHTS_ON")) {
@@ -160,7 +159,7 @@ public class CommandListener extends Receiver {
             String sensedHouseCode = "" + sensedCommand.getHouseCode();
             int sensedUnitCode = sensedCommand.getUnitCode();
             
-            String houseCodeValue = ((StringToken)houseCode.getToken()).stringValue();
+            String houseCodeValue = houseCode.stringValue();
             int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
             
             if (sensedHouseCode.equals(houseCodeValue)

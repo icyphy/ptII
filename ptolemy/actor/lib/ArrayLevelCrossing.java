@@ -37,7 +37,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
@@ -151,7 +150,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *  "relative linear", "relative amplitude decibels" or "relatitve
      *  power decibels". The default value is "absolute".
      */
-    public Parameter scale;
+    public StringParameter scale;
 
     /** The index from which to start looking for a threshold crossing.
      *  This is an integer that defaults to 0.
@@ -195,8 +194,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             double thresholdValue = ((DoubleToken)threshold.getToken())
                     .doubleValue();
             
-            String scaleValue = ((StringToken)scale.getToken())
-                    .stringValue();
+            String scaleValue = scale.stringValue();
                     
             boolean aboveValue = ((BooleanToken)above.getToken())
                     .booleanValue();

@@ -37,7 +37,6 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -190,7 +189,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  "relative linear", "relative amplitude decibels" or "relatitve
      *  power decibels". The default value is "absolute".
      */
-    public Parameter scale;
+    public StringParameter scale;
     
     /** The value below which the input is ignored by the
      *  algorithm. This is a double that can be interpreted as an
@@ -286,8 +285,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             double dipThreshold = dipValue;
             double riseThreshold = dipValue;
             
-            String scaleValue = ((StringToken)scale.getToken())
-                    .stringValue();
+            String scaleValue = scale.stringValue();
+            
             // Index of what scale we are dealing with.
             int scaleIndicator = _ABSOLUTE;
             if (!scaleValue.equals("absolute")) {
