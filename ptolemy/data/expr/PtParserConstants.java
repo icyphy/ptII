@@ -57,17 +57,21 @@ public interface PtParserConstants {
   int AND = 26;
   int OR = 27;
   int XOR = 28;
-  int INTEGER = 29;
-  int DECIMAL_LITERAL = 30;
-  int HEX_LITERAL = 31;
-  int OCTAL_LITERAL = 32;
-  int EXPONENT = 33;
-  int DOUBLE = 34;
-  int COMPLEX = 35;
-  int BOOLEAN = 36;
-  int ID = 37;
-  int LETTER = 38;
-  int STRING = 39;
+  int SHL = 29;
+  int SHR = 30;
+  int LSHR = 31;
+  int INTEGER = 32;
+  int INTEGER_FORMAT_SPEC = 33;
+  int DECIMAL_LITERAL = 34;
+  int HEX_LITERAL = 35;
+  int OCTAL_LITERAL = 36;
+  int EXPONENT = 37;
+  int DOUBLE = 38;
+  int COMPLEX = 39;
+  int BOOLEAN = 40;
+  int ID = 41;
+  int LETTER = 42;
+  int STRING = 43;
 
   int DEFAULT = 0;
   int IN_SINGLE_LINE_COMMENT = 1;
@@ -104,7 +108,11 @@ public interface PtParserConstants {
     "\"&\"",
     "\"|\"",
     "\"#\"",
+    "\"<<\"",
+    "\">>\"",
+    "\">>>\"",
     "<INTEGER>",
+    "<INTEGER_FORMAT_SPEC>",
     "<DECIMAL_LITERAL>",
     "<HEX_LITERAL>",
     "<OCTAL_LITERAL>",

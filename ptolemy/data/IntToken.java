@@ -70,7 +70,7 @@ public class IntToken extends ScalarToken {
      */
     public IntToken(String init) throws IllegalActionException {
         try {
-            _value = (Integer.valueOf(init)).intValue();
+            _value = Integer.parseInt(init);
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
         }
@@ -178,6 +178,29 @@ public class IntToken extends ScalarToken {
         return _value;
     }
 
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the most significant bit, filling the
+     *  least significant bits with zeros.
+     *  @param bits The number of bits to shift.
+     *  @return The left shift.
+     */
+    public ScalarToken leftShift(int bits) {
+        return new IntToken(_value << bits);
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with zeros.  This treats the value as an
+     *  unsigned number, which may have the effect of destroying the 
+     *  sign of the value.
+     *  @param bits The number of bits to shift.
+     *  @return The logical right shift.
+     */
+    public ScalarToken logicalRightShift(int bits) {
+        return new IntToken(_value >>> bits);
+    }
+
     /** Return the value in the token as a long.
      *  @return The int value contained in this token as a long.
      */
@@ -190,6 +213,17 @@ public class IntToken extends ScalarToken {
      */
     public Token one() {
         return new IntToken(1);
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with the sign of the value.  This preserves
+     *  the sign of the result.
+     *  @param bits The number of bits to shift.
+     *  @return The right shift.
+     */
+    public ScalarToken rightShift(int bits) {
+        return new IntToken(_value >> bits);
     }
 
     /** Return the value of this token as a string that can be parsed

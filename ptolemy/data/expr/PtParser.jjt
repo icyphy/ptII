@@ -404,13 +404,22 @@ TOKEN : /* Boolean & bitwise operators */
 
 }
 
+TOKEN : /* Shift operators */
+{
+	< SHL: "<<" >
+  |	< SHR : ">>" >
+  |     < LSHR: ">>>" >
+}
+
 TOKEN : /* Numeric literals */
 {
   < INTEGER:
-        <DECIMAL_LITERAL> (["l","L"])?
-      | <HEX_LITERAL> (["l","L"])?
-      | <OCTAL_LITERAL> (["l","L"])?
+        <DECIMAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
+      | <HEX_LITERAL> (<INTEGER_FORMAT_SPEC>)?
+      | <OCTAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
   >
+|
+  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["u","U"] ["b","B"]) >
 |
   < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
 |
@@ -421,14 +430,14 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 |
   < DOUBLE:
-        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
   < COMPLEX:
-        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | (["0"-"9"])+ <EXPONENT> (["i","j"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]
@@ -580,13 +589,26 @@ void relational() #void :
 {Token x;}
 {
    (
-           sum() ( 
-                   ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
+           shift() ( 
+                   ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) shift()
                    {
                        jjtThis._lexicalToken = x;
                    }
            )?
    ) #PtRelationalNode(>1)
+}
+
+void shift() #void :
+{Token x;}
+{
+   (
+           sum() ( 
+                   ( x = <SHL> | x = <SHR> | x = <LSHR> ) sum()
+                   {
+                       jjtThis._lexicalToken = x;
+                   }
+           )?
+   ) #PtShiftNode(>1)
 }
 
 void sum() #void :
@@ -684,8 +706,8 @@ String tidied, x;
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtThis._ptToken = new DoubleToken(value.doubleValue());
                 } else {
-                   Double value = new Double(x);
-                   jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
+                    Double value = new Double(x);
+                    jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
                 }
 	        jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
@@ -699,33 +721,60 @@ String tidied, x;
   |  
    (
      <INTEGER>
-	{   try 
-            {
+	{   
+            try {
                 x = token.image.toLowerCase();
                 len = x.length();
 
-                // special case of hex
-                if ( x.startsWith("0x") ) {
-                    if ( x.endsWith("l") ) {                   
-                        // long case
-                        String hex = x.substring(2, len-1);
-                        long value = Long.parseLong(hex, 16);
-                        jjtThis._ptToken = new LongToken(value);
-                    } else {
-                        String hex = x.substring(2, len);
-                        int value = Integer.parseInt(hex, 16);
-                        jjtThis._ptToken = new IntToken(value);
-                    }
-                } else if ( x.endsWith("l") ) {
-                    Long value = new Long(x.substring(0, len-1 ));
-                    jjtThis._ptToken = new LongToken(value.longValue());
+                int radix;
+                boolean mustBeLong = x.endsWith("l");
+                boolean mustBeUnsignedByte = x.endsWith("ub");
+
+                int prefixLength;
+                int suffixLength;
+
+                if(mustBeLong) {
+                    suffixLength = 1;
+                } else if(mustBeUnsignedByte) {
+                    suffixLength = 2;
                 } else {
+                    suffixLength = 0;
+                }
+
+                if (x.startsWith("0x") ) {
+                    // Input is a hex number.
+                    radix = 16;
+                    prefixLength = 2;
+                } else if(x.startsWith("0") && (x.length() > 1)) {
+                    // Input is an octal number.
+                    radix = 8;
+                    prefixLength = 1;
+                } else {
+                    // Input is a decimal number.
+                    radix = 10;
+                    prefixLength = 0;
+                }
+                
+                // Strip off the radix prefix and the length suffix.
+                x = x.substring(prefixLength, len - suffixLength);
+
+                if (mustBeLong) {
+                    // If the size was specified as long, then create a long.
+                    jjtThis._ptToken = new LongToken(Long.parseLong(x, radix));
+                } else if (mustBeUnsignedByte) {
+                    // If the size was specified as unsignedbyte, 
+                    // then create an unsigned byte.
+                    jjtThis._ptToken = 
+                        new UnsignedByteToken(Byte.parseByte(x, radix));
+                } else {
+                    // Try to infer the size.  Inferred sizes are at least
+                    // integer.
 		    try { 
-                        Integer value = new Integer(x);
-                        jjtThis._ptToken = new IntToken(value.intValue()); 
+                        jjtThis._ptToken = 
+                            new IntToken(Integer.parseInt(x, radix)); 
                     } catch (NumberFormatException nfe) {
-                        Long value = new Long(x);
-                        jjtThis._ptToken = new LongToken(value.longValue());
+                        jjtThis._ptToken =
+                            new LongToken(Long.parseLong(x, radix));
                     }
                 }
 		jjtThis._isConstant = true;

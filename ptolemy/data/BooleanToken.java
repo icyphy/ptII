@@ -70,7 +70,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *   be created with the given String.
      */
     public BooleanToken(String init) throws IllegalActionException {
-        _value = (Boolean.valueOf(init)).booleanValue();
+        _value = init.toLowerCase().equals("true");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ public class BooleanToken extends AbstractConvertibleToken
             throws IllegalActionException {
         if(!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseXor",
+                    notSupportedIncomparableMessage("bitwiseAnd",
                             this, rightArgument));
         }
         return (BooleanToken)_multiply(rightArgument);

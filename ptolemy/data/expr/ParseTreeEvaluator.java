@@ -795,6 +795,45 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 //         setToken(((ASTPtRootNode)node.jjtGetChild(0)).getToken());
 //    }
 
+   public void visitShiftNode(ASTPtShiftNode node)
+        throws IllegalActionException {
+        if(node.isConstant() && node.isEvaluated()) {
+            return;
+        }
+        _evaluateAllChildren(node);
+
+        int numChildren = node.jjtGetNumChildren();
+        _assert(numChildren == 2, node,
+                "The number of child nodes must be two");
+
+        Token operator = (Token)node.getOperator();
+        ptolemy.data.Token token = node.jjtGetChild(0).getToken();
+        ptolemy.data.Token bitsToken = node.jjtGetChild(1).getToken();
+        ptolemy.data.Token result = null;
+
+        _assert(token instanceof ScalarToken, node,
+                "The " + operator + " operator cannot be applied " +
+                "to a token that is not a ScalarToken.");
+
+        _assert(bitsToken instanceof ScalarToken, node,
+                "The " + operator + " operator cannot be applied " +
+                "with a number of bits that is not a ScalarToken.");
+
+        if(operator.kind == PtParserConstants.SHL) {
+            result = ((ScalarToken)token).leftShift(
+                    ((ScalarToken)bitsToken).intValue());
+        } else if(operator.kind == PtParserConstants.SHR) {
+            result = ((ScalarToken)token).rightShift(
+                    ((ScalarToken)bitsToken).intValue());
+        } else if(operator.kind == PtParserConstants.LSHR) {
+            result = ((ScalarToken)token).logicalRightShift(
+                    ((ScalarToken)bitsToken).intValue());
+        } else {
+            _assert(false, node, "Invalid operation");
+        }
+        node.setToken(result);
+    }
+
     public void visitSumNode(ASTPtSumNode node) 
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {

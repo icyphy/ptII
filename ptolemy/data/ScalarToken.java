@@ -617,6 +617,38 @@ public abstract class ScalarToken extends Token
         return (ScalarToken)this.divide(units);
     }
 
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the most significant bit, filling the
+     *  least significant bits with zeros.
+     *  @param bits The number of bits to shift.
+     *  @return The left shift.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    public ScalarToken leftShift(int bits)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("leftShift", this, this));
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with zeros.  This treats the value as an
+     *  unsigned number, which may have the effect of destroying the 
+     *  sign of the value.
+     *  @param bits The number of bits to shift.
+     *  @return The right shift.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    public ScalarToken logicalRightShift(int bits)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("logicalRightShift", this, this));      
+    }
+
     /** Return the value of this token as a long integer.
      *  In this base class, we just throw an exception.
      *  @return The value of this token as a long.
@@ -795,6 +827,22 @@ public abstract class ScalarToken extends Token
                     notSupportedIncomparableMessage("multiplyReverse",
                             this, leftArgument));
         }
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with the sign of the value.  This preserves
+     *  the sign of the result.
+     *  @param bits The number of bits to shift.
+     *  @return The right shift.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    public ScalarToken rightShift(int bits)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("rightShift", this, this));
     }
 
     /** Set the unit category this token belongs to.  This method is

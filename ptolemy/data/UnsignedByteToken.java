@@ -98,13 +98,13 @@ public class UnsignedByteToken extends ScalarToken {
     }
 
     /** Construct a UnsignedByteToken from the specified string.  The string
-     *  is parsed by the valueOf() method of the Java Byte object.
+     *  is parsed by the parseByte() method of the Java Byte object.
      *  @exception IllegalActionException If the token could not
      *   be created from the given string.
      */
     public UnsignedByteToken(String init) throws IllegalActionException {
         try {
-            _value = (Byte.valueOf(init)).byteValue();
+            _value = Byte.parseByte(init);
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
         }
@@ -216,18 +216,51 @@ public class UnsignedByteToken extends ScalarToken {
         return unsignedConvert(_value);
     }
 
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the most significant bit, filling the
+     *  least significant bits with zeros.
+     *  @param bits The number of bits to shift.
+     *  @return The left shift.
+     */
+    public ScalarToken leftShift(int bits) {
+        return new UnsignedByteToken(_value << bits);
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with zeros.  This treats the value as an
+     *  unsigned number, which may have the effect of destroying the 
+     *  sign of the value.
+     *  @param bits The number of bits to shift.
+     *  @return The logical right shift.
+     */
+    public ScalarToken logicalRightShift(int bits) {
+        return new UnsignedByteToken(_value >>> bits);
+    }
+
     /** Return the value in the token as a long. 
      *  @return The byte value contained in this token as a long.
      */
     public long longValue() {
         return (long) unsignedConvert(_value);
     }
-
+  
     /** Returns a new UnsignedByteToken with value 1.
      *  @return A new UnsignedByteToken with value 1.
      */
     public Token one() {
         return new UnsignedByteToken(1);
+    }
+
+    /** Returns a token representing the result of shifting the bits
+     *  of this token towards the least significant bit, filling the
+     *  most significant bits with the sign of the value.  This preserves
+     *  the sign of the result.
+     *  @param bits The number of bits to shift.
+     *  @return The right shift.
+     */
+    public ScalarToken rightShift(int bits) {
+        return new UnsignedByteToken(_value >> bits);
     }
 
     /** Return the value of this token as a string that can be parsed

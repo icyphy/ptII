@@ -3,8 +3,8 @@
 /* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                   
-STATIC = false;                          
+LOOKAHEAD=1;                                                                      
+STATIC = false;                           
 }
 
 PARSER_BEGIN(PtParser)
@@ -404,13 +404,22 @@ TOKEN : /* Boolean & bitwise operators */
 
 }
 
+TOKEN : /* Shift operators */
+{
+	< SHL: "<<" >
+  |	< SHR : ">>" >
+  |     < LSHR: ">>>" >
+}
+
 TOKEN : /* Numeric literals */
 {
   < INTEGER:
-        <DECIMAL_LITERAL> (["l","L"])?
-      | <HEX_LITERAL> (["l","L"])?
-      | <OCTAL_LITERAL> (["l","L"])?
+        <DECIMAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
+      | <HEX_LITERAL> (<INTEGER_FORMAT_SPEC>)?
+      | <OCTAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
   >
+|
+  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["u","U"] ["b","B"]) >
 |
   < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
 |
@@ -421,14 +430,14 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 |
   < DOUBLE:
-        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
   < COMPLEX:
-        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | (["0"-"9"])+ <EXPONENT> (["i","j"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]
@@ -834,8 +843,48 @@ void relational()       :
    try {
 /*@egen*/
    (
+           shift() ( 
+                   ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) shift()
+                   {
+                       jjtn001._lexicalToken = x;
+                   }
+           )?
+   )/*@bgen(jjtree)*/
+   } catch (Throwable jjte001) {
+     if (jjtc001) {
+       jjtree.clearNodeScope(jjtn001);
+       jjtc001 = false;
+     } else {
+       jjtree.popNode();
+     }
+     if (jjte001 instanceof RuntimeException) {
+       throw (RuntimeException)jjte001;
+     }
+     if (jjte001 instanceof ParseException) {
+       throw (ParseException)jjte001;
+     }
+     throw (Error)jjte001;
+   } finally {
+     if (jjtc001) {
+       jjtree.closeNodeScope(jjtn001, jjtree.nodeArity() > 1);
+     }
+   }
+/*@egen*/
+}
+
+void shift()       :
+{Token x;}
+{/*@bgen(jjtree) #PtShiftNode(> 1) */
+   {
+     ASTPtShiftNode jjtn001 = new ASTPtShiftNode(JJTPTSHIFTNODE);
+     boolean jjtc001 = true;
+     jjtree.openNodeScope(jjtn001);
+   }
+   try {
+/*@egen*/
+   (
            sum() ( 
-                   ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
+                   ( x = <SHL> | x = <SHR> | x = <LSHR> ) sum()
                    {
                        jjtn001._lexicalToken = x;
                    }
@@ -1165,8 +1214,8 @@ String tidied, x;
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtn002._ptToken = new DoubleToken(value.doubleValue());
                 } else {
-                   Double value = new Double(x);
-                   jjtn002._ptToken = new DoubleToken(value.doubleValue()); 
+                    Double value = new Double(x);
+                    jjtn002._ptToken = new DoubleToken(value.doubleValue()); 
                 }
 	        jjtn002._isConstant = true;
             } catch (NumberFormatException ee) {
@@ -1198,33 +1247,60 @@ String tidied, x;
           jjtc003 = false;
         }
 /*@egen*/
-	{   try 
-            {
+	{   
+            try {
                 x = token.image.toLowerCase();
                 len = x.length();
 
-                // special case of hex
-                if ( x.startsWith("0x") ) {
-                    if ( x.endsWith("l") ) {                   
-                        // long case
-                        String hex = x.substring(2, len-1);
-                        long value = Long.parseLong(hex, 16);
-                        jjtn003._ptToken = new LongToken(value);
-                    } else {
-                        String hex = x.substring(2, len);
-                        int value = Integer.parseInt(hex, 16);
-                        jjtn003._ptToken = new IntToken(value);
-                    }
-                } else if ( x.endsWith("l") ) {
-                    Long value = new Long(x.substring(0, len-1 ));
-                    jjtn003._ptToken = new LongToken(value.longValue());
+                int radix;
+                boolean mustBeLong = x.endsWith("l");
+                boolean mustBeUnsignedByte = x.endsWith("ub");
+
+                int prefixLength;
+                int suffixLength;
+
+                if(mustBeLong) {
+                    suffixLength = 1;
+                } else if(mustBeUnsignedByte) {
+                    suffixLength = 2;
                 } else {
+                    suffixLength = 0;
+                }
+
+                if (x.startsWith("0x") ) {
+                    // Input is a hex number.
+                    radix = 16;
+                    prefixLength = 2;
+                } else if(x.startsWith("0") && (x.length() > 1)) {
+                    // Input is an octal number.
+                    radix = 8;
+                    prefixLength = 1;
+                } else {
+                    // Input is a decimal number.
+                    radix = 10;
+                    prefixLength = 0;
+                }
+                
+                // Strip off the radix prefix and the length suffix.
+                x = x.substring(prefixLength, len - suffixLength);
+
+                if (mustBeLong) {
+                    // If the size was specified as long, then create a long.
+                    jjtn003._ptToken = new LongToken(Long.parseLong(x, radix));
+                } else if (mustBeUnsignedByte) {
+                    // If the size was specified as unsignedbyte, 
+                    // then create an unsigned byte.
+                    jjtn003._ptToken = 
+                        new UnsignedByteToken(Byte.parseByte(x, radix));
+                } else {
+                    // Try to infer the size.  Inferred sizes are at least
+                    // integer.
 		    try { 
-                        Integer value = new Integer(x);
-                        jjtn003._ptToken = new IntToken(value.intValue()); 
+                        jjtn003._ptToken = 
+                            new IntToken(Integer.parseInt(x, radix)); 
                     } catch (NumberFormatException nfe) {
-                        Long value = new Long(x);
-                        jjtn003._ptToken = new LongToken(value.longValue());
+                        jjtn003._ptToken =
+                            new LongToken(Long.parseLong(x, radix));
                     }
                 }
 		jjtn003._isConstant = true;

@@ -73,7 +73,7 @@ public class DoubleToken extends ScalarToken {
      */
     public DoubleToken(String init) throws IllegalActionException {
         try {
-            _value = (Double.valueOf(init)).doubleValue();
+            _value = Double.parseDouble(init);
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
         }

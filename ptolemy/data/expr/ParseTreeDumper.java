@@ -112,6 +112,10 @@ public class ParseTreeDumper implements ParseTreeVisitor {
             throws IllegalActionException {
         _displayNode(node);
     }
+    public void visitShiftNode(ASTPtShiftNode node)
+            throws IllegalActionException {
+        _displayNode(node);
+    }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _displayNode(node);

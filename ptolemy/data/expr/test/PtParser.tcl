@@ -147,6 +147,72 @@ test PtParser-2.6 {Construct a Parser, try creating complex numbers} {
 ######################################################################
 ####
 # 
+test PtParser-2.7 {Construct a Parser, try integer format specifiers} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "29"]
+    set res1  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "035"]
+    set res2  [ $root evaluateParseTree ]
+ 
+    set root [ $p {generateParseTree String} "0x1D"]
+    set res3  [ $root evaluateParseTree ]
+  
+    set root [ $p {generateParseTree String} "0X1d"]
+    set res4  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "0xbub"]
+    set res5  [ $root evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString]
+} {29 29 29 29 11}
+
+######################################################################
+####
+# 
+test PtParser-2.8 {Construct a Parser, try long format specifiers} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "29l"]
+    set res1  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "035L"]
+    set res2  [ $root evaluateParseTree ]
+ 
+    set root [ $p {generateParseTree String} "0x1Dl"]
+    set res3  [ $root evaluateParseTree ]
+  
+    set root [ $p {generateParseTree String} "0X1dL"]
+    set res4  [ $root evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4  toString]
+} {29 29 29 29}
+
+######################################################################
+####
+# 
+test PtParser-2.9 {Construct a Parser, try floating point format specifiers} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "18."]
+    set res1  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "1.8e1"]
+    set res2  [ $root evaluateParseTree ]
+ 
+    set root [ $p {generateParseTree String} ".18E2"]
+    set res3  [ $root evaluateParseTree ]
+  
+    set root [ $p {generateParseTree String} "18.0f"]
+    set res4  [ $root evaluateParseTree ]
+
+    set root [ $p {generateParseTree String} "18.0D"]
+    set res5  [ $root evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4  toString] [$res5 toString]
+} {18.0 18.0 18.0 18.0 18.0}
+
+######################################################################
+####
+# 
 test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2*9.5 + (3.5/7) + 4/.5) +  \" hello \" + (3*5 -4)\n"]
@@ -205,6 +271,24 @@ test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} 
    
     list [$res1 toString] [$res2 toString]  
 } {true false}
+
+######################################################################
+####
+test PtParser-4.3 {Construct a Parser,test shift operators} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p {generateParseTree String} "2 << 2"]
+    set root2 [ $p {generateParseTree String} "-4 >> 1"]
+    set root3 [ $p {generateParseTree String} "-4L >>> 1"]
+    set root4 [ $p {generateParseTree String} "4UB >> 2"]
+
+    set res1  [ $root1 evaluateParseTree ]
+    set res2  [ $root2 evaluateParseTree ]
+    set res3  [ $root3 evaluateParseTree ]
+    set res4  [ $root4 evaluateParseTree ]
+   
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]  
+} {8 -2 9223372036854775806 1}
+
 ######################################################################
 ####
 # 

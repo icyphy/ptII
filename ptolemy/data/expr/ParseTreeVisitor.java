@@ -77,6 +77,8 @@ public interface ParseTreeVisitor {
             throws IllegalActionException;
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException;
+    public void visitShiftNode(ASTPtShiftNode node)
+            throws IllegalActionException;
     public void visitSumNode(ASTPtSumNode node) 
             throws IllegalActionException;
     public void visitUnaryNode(ASTPtUnaryNode node)

@@ -157,6 +157,10 @@ public class ParseTreeWriter implements ParseTreeVisitor {
             throws IllegalActionException {
         _printChildrenSeparated(node, node.getOperator().image);
     }
+    public void visitShiftNode(ASTPtShiftNode node)
+            throws IllegalActionException {
+        _printChildrenSeparated(node, node.getOperator().image);
+    }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _printChildrenSeparated(node, node.getLexicalTokenList());
