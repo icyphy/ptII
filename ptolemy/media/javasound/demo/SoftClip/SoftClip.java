@@ -55,7 +55,10 @@ public class SoftClip {
 	int inBufferSize = 4096;  // Internal buffer size for capture.
 	int outBufferSize = 4096; // Internal buffer size for playback.
 
+	// the object that has access to the sound capture device.
 	Object consumer = new Object();
+	// the object that has access to the sound playback device.
+	Object producer = new Object();
 
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
@@ -81,18 +84,23 @@ public class SoftClip {
 
 	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
+	/*
 	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
                 sampleSizeInBits,
                 channels,
                 outBufferSize,
                 putSamplesSize);
+	*/
+
 
 	// Initialize and begin real-time capture and playback.
 	try{
 	    //soundCapture.startCapture();
 	    
 	    LiveSound.startCapture(consumer);
-	    soundPlayback.startPlayback();
+
+	    LiveSound.startPlayback(producer);
+	    //soundPlayback.startPlayback();
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}
@@ -124,12 +132,14 @@ public class SoftClip {
 		}
 
 		// Play the processed audio samples.
-		soundPlayback.putSamples(capturedSamplesArray);
+		//soundPlayback.putSamples(capturedSamplesArray);
+		LiveSound.putSamples(producer, capturedSamplesArray);
             }
 	    // Stop capture.
 	    LiveSound.stopCapture(consumer);
 	    // Stop playback.
-	    soundPlayback.stopPlayback();
+	    //soundPlayback.stopPlayback();
+	    LiveSound.stopPlayback(producer);
 	    System.out.println("stoping");
 	} catch (Exception ex) {
 	    System.err.println(ex);
