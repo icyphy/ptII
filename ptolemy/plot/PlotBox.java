@@ -452,7 +452,7 @@ public class PlotBox extends Panel {
                 String label = (String) nl.nextElement();
                 double ypos = ((Double)(nt.nextElement())).doubleValue();
                 if (ypos > _yMax || ypos < _yMin) continue;
-                int yCoord1 = _lry - (int)((ypos-_yMin)*_ytickscale);
+                int yCoord1 = _lry - (int)((ypos-_yMin)*_yscale);
                 int offset = 0;
                 if (ypos < _lry - labelheight) offset = halflabelheight;
                 graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
@@ -539,7 +539,7 @@ public class PlotBox extends Panel {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
                 if (xpos > _xMax || xpos < _xMin) continue;
-                xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
+                xCoord1 = _ulx + (int)((xpos-_xMin)*_xscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
