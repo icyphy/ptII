@@ -50,7 +50,8 @@ JSRCS = \
 	BasicDemo.java \
 	BothSidesCond.java \
 	ThreeActor.java \
-	OneCond.java
+	OneCond.java \
+	FourBranchCond.java
 
 
 # Non-graphical Java demos written in Tcl
