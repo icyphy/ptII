@@ -116,26 +116,20 @@ public class DEFullAdder extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     ports and parameters                  ////
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
-    // the intial token
-    private DoubleToken _zeroToken = new DoubleToken(0.0);
-
-    // the last token seen in the input port.
-    private DoubleToken _lastToken = _zeroToken;
-
-    // the ports.
     public TypedIOPort A;
     public TypedIOPort B;
     public TypedIOPort Cin;
     public TypedIOPort S;
     public TypedIOPort Cout;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // the intial token
+    private DoubleToken _zeroToken = new DoubleToken(0.0);
+
+    // the last token seen in the input port.
+    private DoubleToken _lastToken = _zeroToken;
 }
