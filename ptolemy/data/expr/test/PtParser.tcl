@@ -979,3 +979,67 @@ test PtParser-18.5 {Test expressions with backslashes.} {
     list [$res toString]
 } {{" \" "}}
 
+######################################################################
+####
+# 
+#  Test String mode
+set nl [java::new ptolemy.kernel.util.NamedList]
+set vara [java::new ptolemy.data.expr.Variable]
+$vara setName "bar"
+$vara setExpression "\"baz\""
+$nl prepend $vara
+
+set scope [java::new ptolemy.data.expr.ExplicitScope $nl]    
+set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+set res1  [ $evaluator evaluateParseTree $root1 $scope]
+
+test PtParser-19.1 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "foobar"]
+    set res  [ $root evaluateParseTree]
+    list [$res toString]
+} {{"foobar"}}
+
+test PtParser-19.2 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "foo\$bar" ]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"foobaz"}}
+
+test PtParser-19.3 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "foo\$\$bar" ]
+    set res  [ $root evaluateParseTree]
+    list [$res toString]
+} {{"foo$bar"}}
+
+test PtParser-19.4 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "\$bar" ]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"baz"}}
+
+test PtParser-19.5 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "\$\$\$bar" ]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"$baz"}}
+
+test PtParser-19.5 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "\$\$bar\$\$" ]
+    set res  [ $root evaluateParseTree]
+    list [$res toString]
+} {{"$bar$"}}
+
+test PtParser-19.5 {Test String mode} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p generateStringParseTree "\${bar}\${bar}" ]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"bazbaz"}}
+

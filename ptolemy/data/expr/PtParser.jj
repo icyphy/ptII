@@ -169,7 +169,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
     }
                 
     /** Generates a parse tree from the given String. The root node is
-    * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
+     * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
      *  @param stringIn The expression to be parsed.
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
@@ -219,7 +219,35 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         primary.jjtSetParent(null);
         return primary;
     }
-          
+  
+    /** Generates a parse tree from the given String, which is interpreted
+     *  in "String Mode" instead of as an operator expression.  In 
+     *  string mode, the expression is a literal string, except for
+     *  identifiers which are denoted by $param.  The root node is
+     *  returned. To evaluate the parse tree, use a ParseTreeEvaluator.
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public ASTPtRootNode generateStringParseTree(String stringIn)
+            throws IllegalActionException {
+
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
+        ASTPtRootNode rootNode;
+        try {
+            // Parse the expression to obtain the parse tree
+            rootNode = startString();
+            if (debug) rootNode.displayParseTree(" ");
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing string \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
+    }
+         
     /** Generates a parse tree from the given String.  
      *  The string will be parsed according to rules for assignment lists. 
      *  The returned node is a RootNode containing one assignment
@@ -501,7 +529,7 @@ TOKEN : /* function definition */
     <FUNCTION: "function">
 }
 
-TOKEN : /* Function names */
+< DEFAULT, StringModeIDNone, StringModeIDBrace, StringModeIDParen > TOKEN : /* Function names */
 {
   	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
@@ -520,6 +548,32 @@ TOKEN : /* Assignment */
 	< SETEQUALS: "=" > | 
 	< SEPARATOR: ";" >
 }
+
+< StringMode > TOKEN : /* literal strings are any string that does not contain a lone dollar sign. */
+{
+    < SMSTRING : (("$$" | ~["$"]) ("$$" | ~["$"])*)> |
+    < SMDOLLAR : "$" > : StringModeIDNone |
+    < SMDOLLARBRACE : "${" > : StringModeIDBrace |
+    < SMDOLLARPAREN : "$(" > : StringModeIDParen 
+}
+
+< StringModeIDNone > TOKEN :
+{
+    < SMID: (<ID>) > : StringMode
+}
+
+< StringModeIDBrace > TOKEN :
+{
+    < SMIDBRACE: (<ID>) > 
+  | < SMBRACE : "}" > : StringMode
+}
+
+< StringModeIDParen > TOKEN :
+{
+    < SMIDPAREN: (<ID>) > 
+  | < SMPAREN : "}" > : StringMode
+}
+
 
 // A simple, optional assigment used by the expression evaluator
 ASTPtRootNode startSimpleAssignment()             :
@@ -641,6 +695,118 @@ void assignment()                   :
         jjtree.closeNodeScope(jjtn000, true);
       }
     }
+/*@egen*/
+}
+
+// A string mode expression, using $parameter substitution.
+ASTPtRootNode startString()             :
+{/*@bgen(jjtree) PtRootNode */
+  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) PtRootNode */
+    try {
+/*@egen*/
+    { token_source.SwitchTo(StringMode); }/*@bgen(jjtree) #PtSumNode(> 1) */
+    {
+      ASTPtSumNode jjtn001 = new ASTPtSumNode(JJTPTSUMNODE);
+      boolean jjtc001 = true;
+      jjtree.openNodeScope(jjtn001);
+    }
+    try {
+/*@egen*/
+    (
+            stringModeElement() 
+            (  
+               stringModeElement() 
+                 {
+                     Token token = Token.newToken(PtParserConstants.PLUS);
+                     token.kind = PtParserConstants.PLUS;
+                     jjtn001._lexicalTokens.add(token);
+                 }
+            )*
+    )/*@bgen(jjtree)*/
+    } catch (Throwable jjte001) {
+      if (jjtc001) {
+        jjtree.clearNodeScope(jjtn001);
+        jjtc001 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte001 instanceof RuntimeException) {
+        throw (RuntimeException)jjte001;
+      }
+      if (jjte001 instanceof ParseException) {
+        throw (ParseException)jjte001;
+      }
+      throw (Error)jjte001;
+    } finally {
+      if (jjtc001) {
+        jjtree.closeNodeScope(jjtn001, jjtree.nodeArity() > 1);
+      }
+    }
+/*@egen*/
+    <EOF>/*@bgen(jjtree)*/
+          {
+            jjtree.closeNodeScope(jjtn000, true);
+            jjtc000 = false;
+          }
+/*@egen*/ { return jjtn000; }/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+void stringModeElement()       :
+{}
+{
+    stringModeString() |
+        <SMDOLLAR> identifier() | 
+        <SMDOLLARBRACE> identifier() <SMBRACE> | 
+        <SMDOLLARPAREN> identifier() <SMPAREN> 
+}
+void stringModeString()       :
+{}
+{
+    <SMSTRING>/*@bgen(jjtree) PtLeafNode */
+               {
+                 ASTPtLeafNode jjtn001 = new ASTPtLeafNode(JJTPTLEAFNODE);
+                 boolean jjtc001 = true;
+                 jjtree.openNodeScope(jjtn001);
+               }
+               try {
+/*@egen*//*@bgen(jjtree)*/
+               {
+                 jjtree.closeNodeScope(jjtn001, true);
+                 jjtc001 = false;
+               }
+/*@egen*/ {
+        jjtn001._ptToken =
+            new StringToken(token.image.replaceAll("\\$\\$","\\$"));
+        jjtn001._isConstant = true;
+    }/*@bgen(jjtree)*/
+               } finally {
+                 if (jjtc001) {
+                   jjtree.closeNodeScope(jjtn001, true);
+                 }
+               }
 /*@egen*/
 }
 
@@ -1869,7 +2035,7 @@ void identifier()             :
 {/*@bgen(jjtree) PtLeafNode */
     try {
 /*@egen*/
-    <ID>/*@bgen(jjtree)*/
+    (<ID> | <SMID> | <SMIDBRACE> | <SMIDPAREN>)/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -1880,14 +2046,12 @@ void identifier()             :
         // name of a variable, a constant, or an undefined identifier.
         // Note that this name is not actually resolved into a value
         // until the parse tree is evaluated.
+
+        // NOTE: Parser constants *are not* evaluated here.  Doing
+        // this means that they can shadow other variables in scope,
+        // which is bad.
         jjtn000._name = token.image;
   
-        //BIG FIXME: Constants shouldn't shadow other variables in scope.
-//         if (Constants.get(token.image) != null) {
-//             // A named constant that is recognized by the parser.
-//             jjtThis._ptToken = Constants.get(token.image);
-//             jjtThis._isConstant = true;
-//         }
     }/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {

@@ -6,19 +6,19 @@ public interface PtParserTreeConstants
 {
   public int JJTPTROOTNODE = 0;
   public int JJTPTASSIGNMENTNODE = 1;
-  public int JJTVOID = 2;
-  public int JJTPTFUNCTIONALIFNODE = 3;
-  public int JJTPTLOGICALNODE = 4;
-  public int JJTPTBITWISENODE = 5;
-  public int JJTPTRELATIONALNODE = 6;
-  public int JJTPTPOWERNODE = 7;
-  public int JJTPTSHIFTNODE = 8;
-  public int JJTPTSUMNODE = 9;
-  public int JJTPTPRODUCTNODE = 10;
-  public int JJTPTUNARYNODE = 11;
-  public int JJTPTMETHODCALLNODE = 12;
-  public int JJTPTFUNCTIONAPPLICATIONNODE = 13;
-  public int JJTPTLEAFNODE = 14;
+  public int JJTPTSUMNODE = 2;
+  public int JJTVOID = 3;
+  public int JJTPTLEAFNODE = 4;
+  public int JJTPTFUNCTIONALIFNODE = 5;
+  public int JJTPTLOGICALNODE = 6;
+  public int JJTPTBITWISENODE = 7;
+  public int JJTPTRELATIONALNODE = 8;
+  public int JJTPTPOWERNODE = 9;
+  public int JJTPTSHIFTNODE = 10;
+  public int JJTPTPRODUCTNODE = 11;
+  public int JJTPTUNARYNODE = 12;
+  public int JJTPTMETHODCALLNODE = 13;
+  public int JJTPTFUNCTIONAPPLICATIONNODE = 14;
   public int JJTPTFUNCTIONDEFINITIONNODE = 15;
   public int JJTPTMATRIXCONSTRUCTNODE = 16;
   public int JJTPTRECORDCONSTRUCTNODE = 17;
@@ -28,19 +28,19 @@ public interface PtParserTreeConstants
   public String[] jjtNodeName = {
     "PtRootNode",
     "PtAssignmentNode",
+    "PtSumNode",
     "void",
+    "PtLeafNode",
     "PtFunctionalIfNode",
     "PtLogicalNode",
     "PtBitwiseNode",
     "PtRelationalNode",
     "PtPowerNode",
     "PtShiftNode",
-    "PtSumNode",
     "PtProductNode",
     "PtUnaryNode",
     "PtMethodCallNode",
     "PtFunctionApplicationNode",
-    "PtLeafNode",
     "PtFunctionDefinitionNode",
     "PtMatrixConstructNode",
     "PtRecordConstructNode",

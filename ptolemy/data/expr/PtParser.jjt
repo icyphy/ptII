@@ -169,7 +169,7 @@ public class PtParser {
     }
                 
     /** Generates a parse tree from the given String. The root node is
-    * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
+     * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
      *  @param stringIn The expression to be parsed.
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
@@ -219,7 +219,35 @@ public class PtParser {
         primary.jjtSetParent(null);
         return primary;
     }
-          
+  
+    /** Generates a parse tree from the given String, which is interpreted
+     *  in "String Mode" instead of as an operator expression.  In 
+     *  string mode, the expression is a literal string, except for
+     *  identifiers which are denoted by $param.  The root node is
+     *  returned. To evaluate the parse tree, use a ParseTreeEvaluator.
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public ASTPtRootNode generateStringParseTree(String stringIn)
+            throws IllegalActionException {
+
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
+        ASTPtRootNode rootNode;
+        try {
+            // Parse the expression to obtain the parse tree
+            rootNode = startString();
+            if (debug) rootNode.displayParseTree(" ");
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing string \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
+    }
+         
     /** Generates a parse tree from the given String.  
      *  The string will be parsed according to rules for assignment lists. 
      *  The returned node is a RootNode containing one assignment
@@ -501,7 +529,7 @@ TOKEN : /* function definition */
     <FUNCTION: "function">
 }
 
-TOKEN : /* Function names */
+< DEFAULT, StringModeIDNone, StringModeIDBrace, StringModeIDParen > TOKEN : /* Function names */
 {
   	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
@@ -520,6 +548,32 @@ TOKEN : /* Assignment */
 	< SETEQUALS: "=" > | 
 	< SEPARATOR: ";" >
 }
+
+< StringMode > TOKEN : /* literal strings are any string that does not contain a lone dollar sign. */
+{
+    < SMSTRING : (("$$" | ~["$"]) ("$$" | ~["$"])*)> |
+    < SMDOLLAR : "$" > : StringModeIDNone |
+    < SMDOLLARBRACE : "${" > : StringModeIDBrace |
+    < SMDOLLARPAREN : "$(" > : StringModeIDParen 
+}
+
+< StringModeIDNone > TOKEN :
+{
+    < SMID: (<ID>) > : StringMode
+}
+
+< StringModeIDBrace > TOKEN :
+{
+    < SMIDBRACE: (<ID>) > 
+  | < SMBRACE : "}" > : StringMode
+}
+
+< StringModeIDParen > TOKEN :
+{
+    < SMIDPAREN: (<ID>) > 
+  | < SMPAREN : "}" > : StringMode
+}
+
 
 // A simple, optional assigment used by the expression evaluator
 ASTPtRootNode startSimpleAssignment() #PtRootNode :
@@ -554,6 +608,42 @@ void assignment() #PtAssignmentNode :
 {}
 {
     assignmentIdentifier() <SETEQUALS> expression()
+}
+
+// A string mode expression, using $parameter substitution.
+ASTPtRootNode startString() #PtRootNode :
+{ }
+{
+    { token_source.SwitchTo(StringMode); }
+    (
+            stringModeElement() 
+            (  
+               stringModeElement() 
+                 {
+                     Token token = Token.newToken(PtParserConstants.PLUS);
+                     token.kind = PtParserConstants.PLUS;
+                     jjtThis._lexicalTokens.add(token);
+                 }
+            )*
+    ) #PtSumNode(>1)
+    <EOF> { return jjtThis; }
+}
+void stringModeElement() #void :
+{}
+{
+    stringModeString() |
+        <SMDOLLAR> identifier() | 
+        <SMDOLLARBRACE> identifier() <SMBRACE> | 
+        <SMDOLLARPAREN> identifier() <SMPAREN> 
+}
+void stringModeString() #void :
+{}
+{
+    <SMSTRING> {
+        jjtThis._ptToken =
+            new StringToken(token.image.replaceAll("\\$\\$","\\$"));
+        jjtThis._isConstant = true;
+    } #PtLeafNode
 }
 
 ASTPtRootNode start() #PtRootNode :
@@ -1101,20 +1191,18 @@ void assignmentIdentifier() #PtLeafNode :
 void identifier() #PtLeafNode :
 {}
 {
-    <ID>
+    (<ID> | <SMID> | <SMIDBRACE> | <SMIDPAREN>)
     { 
         // Store the name of this identifier...  This will be the
         // name of a variable, a constant, or an undefined identifier.
         // Note that this name is not actually resolved into a value
         // until the parse tree is evaluated.
+
+        // NOTE: Parser constants *are not* evaluated here.  Doing
+        // this means that they can shadow other variables in scope,
+        // which is bad.
         jjtThis._name = token.image;
   
-        //BIG FIXME: Constants shouldn't shadow other variables in scope.
-//         if (Constants.get(token.image) != null) {
-//             // A named constant that is recognized by the parser.
-//             jjtThis._ptToken = Constants.get(token.image);
-//             jjtThis._isConstant = true;
-//         }
     }
 } 
    
