@@ -844,6 +844,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " -policyfile policyfile  Run model with a specified policyfile" 
 	echo " -v         Echo the command being run"
 	echo "Note that not all combinations above the above arguments make sense."
+	echo "Note that [commonOptions] are usually appear early in the command"
 	echo ""
 	# Most commands have their own help built in, but some do not. 
 	if [ "$passHelpArgument" = "no" ]; then
