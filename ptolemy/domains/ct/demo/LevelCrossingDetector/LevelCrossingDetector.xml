@@ -193,7 +193,7 @@ detectors.</text></svg></configure>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authoer: Haiyang Zheng">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 460.0]">
         </property>

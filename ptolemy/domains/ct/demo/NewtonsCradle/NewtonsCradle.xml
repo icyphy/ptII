@@ -210,7 +210,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authoer: Haiyang Zheng">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 375.0}">
         </property>
@@ -409,14 +409,14 @@ other initial states are set to 0.0.
         </property>
         <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 35.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="initialTheta_dot" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 65.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 65.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
