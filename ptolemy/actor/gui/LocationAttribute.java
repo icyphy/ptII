@@ -107,14 +107,10 @@ public class LocationAttribute extends Parameter {
                 // right way to do this is. The following seems to work,
                 // found by trial and error.  Even then, the layout
                 // manager feels free to override it.
-// FIXME:
-System.out.println("setting location " + x + ", " + y);
                 component.setLocation(x, y);
             }
             return true;
         } catch (Exception ex) {
-// FIXME:
-System.out.println(ex.toString());
             return false;
         }
     }
