@@ -44,6 +44,7 @@ import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
 
+import java.net.URL;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -97,7 +98,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     public String getDeclaredOptions() {
-        return "targetPackage outDir templateDirectory";
+        return "targetPackage modelPath outDir templateDirectory";
     }
 
 
@@ -126,6 +127,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         System.out.println("AppletWriter.internalTransform("
                 + phaseName + ", " + options + ")");
+
+        // URL that names the model.
+        _modelPath = PhaseOptions.getString(options, "modelPath");
 
         _outputDirectory = PhaseOptions.getString(options, "outDir");
 
@@ -221,18 +225,57 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         // Generate the .xml file.
-        String modelFileName =
+        String newModelFileName =
             _outputDirectory + "/" + _sanitizedModelName + ".xml";
-        System.out.println("AppletWriter: about to write '"
-                + modelFileName + "'");
+
         try {
-            Writer modelFileWriter =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
-            _model.exportMoML(modelFileWriter);
-            modelFileWriter.close();
+            // Since we strip out the graphical information in
+            // Copernicus.readInModel(), we need to copy the original
+            // model so that the vergil applet has the layout info.
+            File newModelFile = new File(newModelFileName);
+            System.out.println("AppletWriter: about to write '"
+                    + newModelFile + "'");
+
+            // Avoid end of line and localization issues.
+            URL modelURL = new URL(_modelPath);
+            BufferedInputStream in = 
+                new BufferedInputStream(modelURL.openStream());
+            BufferedOutputStream out =
+                new BufferedOutputStream(
+                        new FileOutputStream(newModelFile));
+            int c;
+
+            while ((c = in.read()) != -1) {
+                out.write(c);
+            }
+            // FIXME: need finally?
+            in.close();
+            out.close();
+
         } catch (IOException ex) {
-            throw new InternalErrorException(null, ex,
-                    "Problem writing '" + modelFileName + "'");
+            System.out.println("AppletWriter: WARNING: Problem reading '"
+                    + _modelPath + "' and writing '" + newModelFileName
+                    + "', instead we call exportMoML(), which will lose "
+                    + "vergil layout information: "
+                    + ex.getMessage());
+            System.out.println("AppletWriter: about to write '"
+                     + newModelFileName + "'");
+            try {
+                Writer modelFileWriter =
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    new FileOutputStream(newModelFileName)));
+                _model.exportMoML(modelFileWriter);
+                // FIXME: need finally?
+                modelFileWriter.close();
+            } catch (IOException ex2) {
+                // Rethrow original exception ex.
+                throw new InternalErrorException(null, ex,
+                        "Problem reading '" + _modelPath + "' or "
+                        + "writing '" + newModelFileName + "'\n"
+                        + "Also tried calling exportMoML():"
+                        + ex2.getMessage());
+            }
         }
 
         // The directory that contains the templates.
@@ -558,6 +601,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while ((c = in.read()) != -1)
             out.write(c);
 
+        // FIXME: need finally?
         in.close();
         out.close();
     }
@@ -595,6 +639,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // is ".".
     // For example: "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar".
     private String _modelJarFiles;
+
+    // URL that names the model.
+    private String _modelPath;
 
     // The full path to the directory where we are creating the model
     private String _outputDirectory;
