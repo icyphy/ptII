@@ -96,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
    The exact way that local time increments during an iteration is described in
    detail in the DTReceiver documentation.
    <p>
-   <h1> Period Parameter </hi>
+   <h1> Period Parameter </h1><p>
 
    The DT director has a <i>period</i> parameter which specifies the
    amount of time per iteration. For hierarchical DT, this period
@@ -357,6 +357,8 @@ public class DTDirector extends SDFDirector {
      */
     public double getCurrentTime() {
         return _currentTime;
+        //FIXME: 
+        //this is a duplicate of the getCurrentTime method of Director?
     }
 
 
@@ -372,7 +374,7 @@ public class DTDirector extends SDFDirector {
         } catch (IllegalActionException exception) {
             // FIXME: handle this
         }
-        return _currentTime + period;
+        return getCurrentTime() + period;
     }
 
 
@@ -566,7 +568,7 @@ public class DTDirector extends SDFDirector {
     public boolean postfire() throws IllegalActionException {
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
-        _currentTime = _formerValidTimeFired + timeIncrement;
+        setCurrentTime(_formerValidTimeFired + timeIncrement);
         _requestRefireAt(_formerValidTimeFired + timeIncrement);
         if (! _isFiringAllowed) {
             return true;
@@ -603,7 +605,8 @@ public class DTDirector extends SDFDirector {
         dtActor._localTime = newTime;
     }
 
-    /** Set the current time of the model under this director.
+    /** Set a new value to the current time of the model, where
+     *  the new time may be earlier than the current time.
      *  Setting the time back to the past is allowed in DT.
      *
      *  @param newTime The new current simulation time.
@@ -853,13 +856,13 @@ public class DTDirector extends SDFDirector {
 
         // No need to check if this director is in the top level.
         if (outsideDirector == null) {
-            _formerValidTimeFired = _currentTime;
+            _formerValidTimeFired = getCurrentTime();
             return;
         }
 
         // No need to check if the executive director is also a DTDirector
         if (outsideDirector instanceof DTDirector) {
-            _formerValidTimeFired = _currentTime;
+            _formerValidTimeFired = getCurrentTime();
             return;
         }
 
@@ -1163,7 +1166,7 @@ public class DTDirector extends SDFDirector {
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
-        _currentTime = 0.0;
+        setCurrentTime(0.0);
         _formerTimeFired = 0.0;
         _formerValidTimeFired = 0.0;
         _isFiringAllowed = true;
