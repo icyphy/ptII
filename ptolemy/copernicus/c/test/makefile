@@ -55,10 +55,15 @@ JSRCS = \
 	FIRSingle.java \
         Simple.java
 
+# Script that removes testOutput/j2c_lib
+# Run 'rm alljtests.tcl; make CLEANLIB=' to avoid 
+# regenerating testOutput/j2c_lib
+CLEANLIB = _cleanLib.tcl
+
 # Non-graphical Java tests written in Tcl. List these in alphabetical order
 # ONLY.
 JSIMPLE_TESTS = \
-	_cleanLib.tcl 
+	$(CLEANLIB) \
         Array2DInt.tcl \
         Array3DInt.tcl \
         ArrayOfObjects.tcl \
