@@ -769,9 +769,12 @@ public class CTScheduler extends Scheduler {
 
                 if (sinkActors.contains(a)) {
                     // If Actor a is already in the sinkActors list, 
-                    // we don't add it to the outputSchedule until the
-                    // next while loop, which handles the sinkActors only. 
-                    continue;
+                    // we add it to the outputSchedule here because
+                    // we want to keep the ordering of the event 
+                    // passing. 
+                    // We remove the actor from the sinkActors list
+                    // such that it is not added twice. 
+                    sinkActors.remove(a);
                 }
 
                 outputSchedule.add(new Firing(a));
