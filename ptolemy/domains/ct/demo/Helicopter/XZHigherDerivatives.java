@@ -33,6 +33,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
@@ -59,7 +60,8 @@ DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
 @version $Id$
 
 */
-public class XZHigherDerivatives extends CTActor{
+public class XZHigherDerivatives extends TypedAtomicActor
+    implements TimedActor{
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name

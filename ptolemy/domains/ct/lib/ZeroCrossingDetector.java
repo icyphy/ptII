@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -51,8 +51,8 @@ zero crossing is defined.
 @author Jie Liu
 @version $Id$
 */
-public class ZeroCrossingDetector extends CTActor
-    implements  CTStepSizeControlActor, CTEventGenerator {
+public class ZeroCrossingDetector extends TypedAtomicActor
+    implements CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -93,7 +93,6 @@ public class ZeroCrossingDetector extends CTActor
 
     }
 
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
@@ -115,6 +114,19 @@ public class ZeroCrossingDetector extends CTActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+
+    /** Update the parameter if it has been changed.
+     *  The new parameter will be used only after this method is called.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException{
+        double p = ((DoubleToken)errorTolerance.getToken()
+                    ).doubleValue();
+        if(p <= 0) {
+            throw new IllegalActionException(this,
+                    "Error tolerance must be greater than 0.");
+        }
+        _errorTolerance = p;
+    }
 
     /** Emit the event at current time if there is any. There will be no
      *  current event after emitting it. If there is no current event,
@@ -159,7 +171,6 @@ public class ZeroCrossingDetector extends CTActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        updateParameters();
         _first = true;
         if(_debugging) _debug(getFullName() + "initialize");
     }
@@ -241,18 +252,6 @@ public class ZeroCrossingDetector extends CTActor
         return ((CTDirector)getDirector()).getCurrentStepSize();
     }
 
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     */
-    public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)errorTolerance.getToken()
-                    ).doubleValue();
-        if(p <= 0) {
-            throw new IllegalActionException(this,
-                    "Error tolerance must be greater than 0.");
-        }
-        _errorTolerance = p;
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

@@ -76,12 +76,49 @@ test CTReceiver-1.2 {Construct a CTReceiver with container} {
 } {1.0}
 
 ######################################################################
+####  check has room
+#
+test CTReceiver-2.1 {check has room} {
+    set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
+    set hr1 [$re1 hasRoom]
+    $re1 put $zero
+    set hr2 [$re1 hasRoom]
+    list $hr1 $hr2
+} {1 1}
+
+
+######################################################################
 ####  Overwrite tokens.
 #
-test CTReceiver-2.1 {put two tokens} {
+test CTReceiver-2.2 {put two tokens} {
     set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
     $re1 put $one
     $re1 put $zero
     #list [[$re1 get] doubleValue]
     [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {0.0}
+
+######################################################################
+####
+#
+test CTReceiver-3.1 {passing tokens} {
+    set ca [java::new ptolemy.actor.TypedCompositeActor]
+    $ca setName CA
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]
+    set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
+    set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummySink $ca A2]
+    set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]
+    set p2i [java::cast ptolemy.actor.IOPort [$a2 getPort input]]
+    set r1 [$ca connect $p1o $p2i]
+    $a1 preinitialize
+    $a2 preinitialize
+    $p1o broadcast $zero
+    [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
+} {0.0}
+
+test CTReceiver-3.2 {overwriting tokens} {
+    #Note: use above setup.
+    $p1o broadcast $zero
+    $p1o broadcast $one
+    [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
+} {1.0}

@@ -35,6 +35,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,8 @@ back to false.
 @version $Id$
 
 */
-public class CTButtonEvent extends CTActor {
+public class CTButtonEvent extends TypedAtomicActor 
+    implements TimedActor {
     /** Construct the actor. One output of type boolean
      *  The default output value is false.
      * @param container The TypedCompositeActor this star belongs to
@@ -67,37 +69,8 @@ public class CTButtonEvent extends CTActor {
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.BOOLEAN);
-        _buttonClicked = false;
         paramButtonClicked = new Parameter(this, "ButtonClicked",
                 new BooleanToken(_buttonClicked));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Output button clicked value. Output true for one iteration.
-     */
-    public void fire() throws IllegalActionException {
-        output.broadcast(new BooleanToken(_buttonClicked));
-    }
-
-    /** Always return true, and reset button clicked to false.
-     *  @return True
-     */
-    public boolean postfire() {
-        _buttonClicked = false;
-        return true;
-    }
-
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     */
-    public void updateParameters() throws IllegalActionException{
-        boolean b =
-            ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
-        if (!_buttonClicked && b) {
-            _buttonClicked = true;
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -111,9 +84,56 @@ public class CTButtonEvent extends CTActor {
      *  value is false.
      */
     public Parameter paramButtonClicked;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Update the parameter if it has been changed.
+     *  The new parameter will be used only after this method is called.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException{
+        boolean b =
+            ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
+        if (!_buttonClicked && b) {
+            _buttonClicked = true;
+        }
+    }
+   
+    /** Output button clicked value. Output true for one iteration.
+     */
+    public void fire() throws IllegalActionException {
+        output.broadcast(new BooleanToken(_output));
+    }
+
+    /** Always return true, and reset button clicked to false.
+     *  @return True
+     */
+    public boolean postfire() {
+        if (_buttonClicked && _output) {
+            _output = false;
+            _buttonClicked = false;
+        }
+        return true;
+    }
+
+    /** If the button is clicked in the last iteration, produces
+     *  true in the next iteratin.
+     */
+    public boolean prefire() {
+        if (_buttonClicked) {
+            _output = true;
+        }else {
+            _output = false;
+        }
+        return true;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
-    boolean _buttonClicked;
+    // output
+    boolean _output = false;
+    // button clicked
+    boolean _buttonClicked = false;
 }

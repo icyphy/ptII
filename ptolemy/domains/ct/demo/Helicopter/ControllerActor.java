@@ -33,6 +33,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
@@ -94,7 +95,8 @@ The outputs are DDDTm, and DA
 @version $Id$
 
 */
-public class ControllerActor extends CTActor{
+public class ControllerActor extends TypedAtomicActor
+    implements TimedActor {
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name

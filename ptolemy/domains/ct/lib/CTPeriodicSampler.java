@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,8 +48,8 @@ parameter "samplePeriod", which has default value 0.1.
 @author Jie Liu
 @version $Id$
 */
-public class CTPeriodicSampler extends CTActor
-    implements CTEventGenerator {
+public class CTPeriodicSampler extends TypedAtomicActor
+    implements CTEventGenerator, TimedActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -105,6 +106,19 @@ public class CTPeriodicSampler extends CTActor
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Update the parameter if it has been changed.
+     *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException If the sampling rate set is
+     *  less than or equal to 0.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException{
+        double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+        if(p <= 0) {
+            throw new IllegalActionException(this,
+                    " Sample period must be greater than 0.");
+        }
+        _samplePeriod = p;
+    }
 
     /** Emit the current event, which has the token of the latest input
      *  token.
@@ -150,7 +164,6 @@ public class CTPeriodicSampler extends CTActor
             input.get(0);
         }
         _hasCurrentEvent = false;
-        updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
         dir.fireAt(this, _nextSamplingTime);
@@ -166,7 +179,6 @@ public class CTPeriodicSampler extends CTActor
      *  @exception IllegalActionException If parameter update throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;
         while (_nextSamplingTime <
@@ -181,21 +193,6 @@ public class CTPeriodicSampler extends CTActor
                 + _nextSamplingTime);
         return true;
     }
-
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException If the sampling rate set is
-     *  less than or equal to 0.
-     */
-    public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
-        if(p <= 0) {
-            throw new IllegalActionException(this,
-                    " Sample period must be greater than 0.");
-        }
-        _samplePeriod = p;
-    }
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

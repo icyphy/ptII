@@ -42,7 +42,7 @@ import ptolemy.data.type.BaseType;
 @author Jie Liu
 @version $Id$
 */
-public class CTDummyStatefulActor extends CTActor
+public class CTDummyStatefulActor extends TypedAtomicActor
     implements CTStatefulActor {
     /** Constructor
      */

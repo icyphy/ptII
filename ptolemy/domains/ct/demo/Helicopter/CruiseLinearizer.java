@@ -33,6 +33,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
@@ -49,7 +50,8 @@ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 @author  Jie Liu
 @version $Id$
 */
-public class CruiseLinearizer extends CTActor{
+public class CruiseLinearizer extends TypedAtomicActor
+    implements TimedActor{
     /** Constructor
      */
     public CruiseLinearizer(TypedCompositeActor container, String name)

@@ -35,6 +35,8 @@ import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
+import java.util.Enumeration;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,8 +96,9 @@ multistep methods.
 @see ODESolver
 @see CTDirector
 */
-public class CTBaseIntegrator extends CTActor
-    implements CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
+public class CTBaseIntegrator extends TypedAtomicActor 
+    implements TimedActor, CTStepSizeControlActor, 
+               CTDynamicActor, CTStatefulActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
      *  A integrator has one single input port and one single

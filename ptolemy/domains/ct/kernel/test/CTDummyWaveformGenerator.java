@@ -43,7 +43,7 @@ Dummy actor that implements CTWaveformGenerator interface.
 @version $Id$
 
 */
-public class CTDummyWaveformGenerator extends CTActor
+public class CTDummyWaveformGenerator extends TypedAtomicActor
     implements CTWaveformGenerator{
     /** Constructor
      */

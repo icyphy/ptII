@@ -43,7 +43,7 @@ Dummy actor for step size control. SISO.
 @author  Jie Liu
 @version $Id$
 */
-public class CTDummySSControlActor extends CTActor
+public class CTDummySSControlActor extends TypedAtomicActor
     implements CTStepSizeControlActor{
     /** Constructor
      */

@@ -55,7 +55,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	CTActor.java \
 	CTBaseIntegrator.java \
 	CTCompositeActor.java \
 	CTDirector.java \

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating red(reviewmoderator@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
@@ -42,7 +42,7 @@ For testing schedules.
 @author  Jie Liu
 @version $Id$
 */
-public class CTDummySISOActor extends CTActor{
+public class CTDummySISOActor extends TypedAtomicActor{
     /** Constructor
      */
     public CTDummySISOActor(TypedCompositeActor container, String name)

@@ -42,7 +42,8 @@ Dummy actor that implement the CTDynamicActor interface. SISO.
 @author  Jie Liu
 @version $Id$
 */
-public class CTDummyDynamicActor extends CTActor implements CTDynamicActor{
+public class CTDummyDynamicActor extends TypedAtomicActor
+    implements CTDynamicActor{
     /** Constructor
      */
     public CTDummyDynamicActor(TypedCompositeActor container, String name)

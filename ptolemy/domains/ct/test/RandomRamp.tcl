@@ -53,9 +53,9 @@ $subout setOutput 1
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEmbDIR]
 
 # construct the sub system
-set hold [java::new ptolemy.domains.ct.lib.CTZeroOrderHold $ctsub Hold]
+set hold [java::new ptolemy.domains.ct.lib.ZeroOrderHold $ctsub Hold]
 set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
-set print [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
+set print [java::new ptolemy.actor.gui.TimedPlotter $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
 
 set holdin [$hold getPort input]
@@ -76,7 +76,7 @@ $sampout link $rc3
 $subout link $rc3
 
 # construct the DE system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson]
+set poisson [java::new ptolemy.actor.lib.Poisson $sys Poisson]
 set lambda [$poisson getAttribute lambda]
 $lambda setExpression 1.0
 set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp]

@@ -33,6 +33,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
@@ -49,7 +50,8 @@ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 @author  Jie Liu
 @version $Id$
 */
-public class HoverLinearizer extends CTActor{
+public class HoverLinearizer extends TypedAtomicActor
+    implements TimedActor{
     /** Constructor
      */
     public HoverLinearizer(TypedCompositeActor container, String name)

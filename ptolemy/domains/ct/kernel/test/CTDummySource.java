@@ -43,7 +43,7 @@ Dummy actor for source actor. One output, no input.
 @author  Jie Liu
 @version $Id$
 */
-public class CTDummySource extends CTActor{
+public class CTDummySource extends TypedAtomicActor{
     /** Constructor
      */
     public CTDummySource(TypedCompositeActor container, String name)

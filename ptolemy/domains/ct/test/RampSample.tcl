@@ -48,10 +48,10 @@ $subout setOutput 1
 #$subout setDeclaredType $ptype
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEmbDIR]
 # construct the sub system
-set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
+set const [java::new ptolemy.actor.lib.Const $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
-set print [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
-set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
+set print [java::new ptolemy.actor.gui.TimedPlotter $ctsub CTPlot]
+set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicSampler $ctsub Sample]
 
 set constout [$const getPort output]
 set intglin [$integral getPort input]
@@ -69,7 +69,7 @@ $sampout link $r3
 $subout link $r3
 
 # construct the DE system
-set deplot [java::new ptolemy.domains.de.lib.DEPlot $sys DEPLOT]
+set deplot [java::new ptolemy.actor.gui.TimedPlotter $sys DEPLOT]
 set depin [$deplot getPort input]
 set r4 [java::new ptolemy.actor.TypedIORelation $sys R4]
 $subout link $r4
@@ -90,7 +90,12 @@ $solver2 setToken $token
 set initstep [$ctdir getAttribute initStepSize]
 $initstep setExpression 0.1
 
-set constval [$const getAttribute Value]
+set constval [java::cast ptolemy.data.expr.Parameter \
+	[$const getAttribute value]]
 $constval setExpression 1.0
 
-$man run
+set sp [java::cast ptolemy.data.expr.Parameter \
+	[$sampler getAttribute SamplePeriod]]
+$sp setExpression 1.0
+
+$man startRun

@@ -44,7 +44,8 @@ Dummy actor that implements the CTEventGenerator interface. SISO
 @version $Id$
 
 */
-public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
+public class CTDummyEventGenerator extends TypedAtomicActor
+    implements CTEventGenerator{
     /** Constructor
      */
     public CTDummyEventGenerator(TypedCompositeActor container, String name)

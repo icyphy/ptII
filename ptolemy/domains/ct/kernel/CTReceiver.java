@@ -61,6 +61,12 @@ public class CTReceiver extends Mailbox{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true always, since the new token will override the old one.
+     */
+    public boolean hasRoom() {
+        return true;
+    }
+
     /** Put a token into the CTReceiver. If the argument is null,
      *  then the CTReceiver will not contain a token after this
      *  returns. If the receiver already has a token, then the old

@@ -1,4 +1,4 @@
-/* One line description of file.
+/* CT multi-input single-output actor for testing.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ Description of the class
 @author Jie Liu
 @version $Id$
 */
-public class CTDummyMISOActor extends CTActor{
+public class CTDummyMISOActor extends TypedAtomicActor{
     /** Constructor
      */
     public CTDummyMISOActor(TypedCompositeActor container, String name)

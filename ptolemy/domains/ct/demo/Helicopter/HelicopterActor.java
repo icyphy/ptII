@@ -33,6 +33,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
@@ -62,7 +63,8 @@ will be fed into integrators to get Px, Pz, and th.
 @author  Jie Liu, John Koo
 @version $Id$
 */
-public class HelicopterActor extends CTActor{
+public class HelicopterActor extends TypedAtomicActor
+    implements TimedActor {
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name

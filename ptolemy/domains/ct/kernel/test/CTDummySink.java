@@ -43,7 +43,7 @@ Dummy actor for sink. Multi-input, no output.
 @version $Id$
 
 */
-public class CTDummySink extends CTActor{
+public class CTDummySink extends TypedAtomicActor{
     /** Constructor
      */
     public CTDummySink(TypedCompositeActor container, String name)

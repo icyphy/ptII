@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor
@@ -50,8 +51,8 @@ value 1e-2 and 0, respectively.
 */
 //FIXME: need to use the new parameter mechanism.
 
-public class ThresholdMonitor extends CTActor
-    implements CTStepSizeControlActor{
+public class ThresholdMonitor extends TypedAtomicActor
+    implements CTStepSizeControlActor, TimedActor{
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -102,6 +103,20 @@ public class ThresholdMonitor extends CTActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+   /** Update the parameter if they have been changed.
+     *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException If there is no token in the
+     *  parameter.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException {
+        _thCenter = ((DoubleToken)thresholdCenter.getToken()).doubleValue();
+        _thWidth = Math.abs(
+                ((DoubleToken)thresholdWidth.getToken()).doubleValue());
+
+        _lowerBound = _thCenter - _thWidth/(double)2.0;
+        _upperBound = _thCenter + _thWidth/(double)2.0;
+    }
 
     /** Consume the current input.
      *  @exception IllegalActionException If there is no input token.
@@ -167,20 +182,7 @@ public class ThresholdMonitor extends CTActor
         return dir.getCurrentStepSize();
     }
 
-    /** Update the parameter if they have been changed.
-     *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException If there is no token in the
-     *  parameter.
-     */
-    public void updateParameters() throws IllegalActionException {
-        _thCenter = ((DoubleToken)thresholdCenter.getToken()).doubleValue();
-        _thWidth = Math.abs(
-                ((DoubleToken)thresholdWidth.getToken()).doubleValue());
-
-        _lowerBound = _thCenter - _thWidth/(double)2.0;
-        _upperBound = _thCenter + _thWidth/(double)2.0;
-    }
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -48,7 +48,8 @@ public class CTApplet extends PtolemyApplet {
     ////                         public methods                    ////
 
     /** Override start() so it won't start automatically.
-     */
+     
     public void start() {
     }
+    */
 }
