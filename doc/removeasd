@@ -17,7 +17,7 @@ for file in `cat $filenames`
 do
   # Solaris bin/grep and egrep do not have -q
   # /bin/dev does not work reliably under Cygwin
-  grepoutp=/tmp/removeasd.grep.$$
+  grepoutput=/tmp/removeasd.grep.$$
   grep 'function asd\(\)' $file > $grepoutput
   status=$?
   if [ $status -eq 0 ]; then
