@@ -604,7 +604,7 @@ public class Parameter extends Attribute implements ParameterListener {
         try {
             Class[] f = new Class[1];
             f[0] = Token.class;
-            _convertMethod = _paramType.getClass().getMethod("convert", f);
+            _convertMethod = _paramType.getMethod("convert", f);
             if (oldType == null) {
                 return;
             } else{
