@@ -94,7 +94,7 @@ and saturation is used when overflow occurs.
 @contributor Edward A. Lee
 @version $Id$
 @see PtParser
-@see ptolemy.data.FixPoint
+@see ptolemy.math.FixPoint
 @see ptolemy.math.Quantizer
 */
 
