@@ -80,10 +80,12 @@ public class NonStrictDelay extends Transformer implements NonStrictActor {
      */
     public void fire() throws IllegalActionException {
 
-        if (input.hasToken(0)) {
-            _currentToken = input.get(0);
-        } else if (input.isKnown(0)) {
-            _currentToken = AbsentToken.ABSENT;
+        if (input.isKnown(0)) {
+            if (input.hasToken(0)) {
+                _currentToken = input.get(0);
+            } else {
+                _currentToken = AbsentToken.ABSENT;
+            }
         }
         
         if (_previousToken != null) {

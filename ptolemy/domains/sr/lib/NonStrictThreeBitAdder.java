@@ -117,13 +117,15 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor
                 "inputBits must have exactly 3 connected channels.");
 
         for (int i = 0; i < width; i++) {
-            if (inputBits.isKnown(i)) numKnown++;
-            if (inputBits.hasToken(i)) {
-                int value = ((IntToken)inputBits.get(i)).intValue();
-                if ((value != 0) && (value != 1))
-                    throw new IllegalActionException(this,
-                            "Inputs can only be 0 or 1.");
-                if (value == 1) numOnes++;
+            if (inputBits.isKnown(i)) {
+                numKnown++;
+                if (inputBits.hasToken(i)) {
+                    int value = ((IntToken)inputBits.get(i)).intValue();
+                    if ((value != 0) && (value != 1))
+                        throw new IllegalActionException(this,
+                                "Inputs can only be 0 or 1.");
+                    if (value == 1) numOnes++;
+                }
             }
         }
 

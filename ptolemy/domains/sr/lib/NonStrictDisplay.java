@@ -82,16 +82,18 @@ public class NonStrictDisplay extends Display implements NonStrictActor {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             String value;
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                value = token.toString();
-                // If the value is a pure string, strip the quotation marks.
-                if ((value.length() > 1) && value.startsWith("\"") &&
-                        value.endsWith("\"")) {
-                    value = value.substring(1, value.length()-1);
+            if (input.isKnown(i)) {
+                if (input.hasToken(i)) {
+                    Token token = input.get(i);
+                    value = token.toString();
+                    // If it is a pure string, strip the quotation marks.
+                    if ((value.length() > 1) && value.startsWith("\"") &&
+                            value.endsWith("\"")) {
+                        value = value.substring(1, value.length()-1);
+                    }
+                } else {
+                    value = ABSENT_STRING;
                 }
-            } else if (input.isKnown(i)) {
-                value = ABSENT_STRING;
             } else {
                 value = UNDEFINED_STRING;
             }
