@@ -32,6 +32,17 @@ axes.
     you would see an applet here.<hr>
 </applet>
 <p>
+To see all the data in the <I>X and Y Linear Axes</I> plot,
+try zooming in on the points in the lower left corner.
+<p>
+The code that calculates the grid and labels for logarithmic axes is
+a port from David Harrison's C version in <CODE>xgraph</CODE>.
+<p>
+One limitation of the logarithmic axis feature is that sometimes not
+enough grid lines are displayed because the range of values is small.
+This bug is present in the original C version of xgraph.
+However, since logarithmic axes are usually used to show data with
+large ranges, this bug usually only shows up when zooming in by hand.
 <HR>
 <A HREF="index.html">Up</A> to the Example index -
 <a href="ErrorBars.html">Back</a> to a plot using error bars
