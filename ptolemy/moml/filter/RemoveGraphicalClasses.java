@@ -200,6 +200,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
 
         _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.IDAttribute",
+                null);
+
+        _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.ImageAttribute",
                 null);
 
