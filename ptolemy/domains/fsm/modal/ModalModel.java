@@ -28,12 +28,11 @@ COPYRIGHTENDKEY
 package ptolemy.domains.fsm.modal;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.actor.util.FunctionDependency;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
@@ -41,11 +40,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
@@ -107,7 +108,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public class ModalModel extends CTCompositeActor {
+public class ModalModel extends CTCompositeActor implements ChangeListener {
 
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -149,8 +150,7 @@ public class ModalModel extends CTCompositeActor {
      *  method of the executive director.  If there is no executive
      *  director, then the default is "ptolemy.domains.fsm.kernel.FSMDirector".
      */
-//    public StringParameter directorClass;
-    public StringAttribute directorClass;
+    public StringParameter directorClass;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -159,38 +159,58 @@ public class ModalModel extends CTCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == directorClass) {
-            Class newDirectorClass = null;
-//            String newDirectorClassName = directorClass.stringValue();
-            String newDirectorClassName = directorClass.getExpression();
-            try {
-                Director director = getDirector();
-                if (director != null && director.getContainer() == this) {
-                    // Delete the old director.
-                    director.setContainer(null);
+            final String newDirectorClassName = directorClass.stringValue();
+            final Director director = getDirector();
+            
+            // FIXME: We should change the director only if the current
+            // director is not of the right class.
+            
+            // NOTE: Creating a new director has to be done in a
+            // change request.
+            ChangeRequest request = new ChangeRequest(this, "Create a new director") {
+            	protected void _execute() throws Exception {
+                    Class newDirectorClass =
+                        Class.forName(newDirectorClassName);
+                    Constructor newDirectorConstructor =
+                        newDirectorClass.getConstructor
+                        (new Class[]{CompositeEntity.class, String.class});
+                    FSMDirector newDirector = (FSMDirector)newDirectorConstructor.newInstance
+                            (new Object[]{ModalModel.this, uniqueName("_Director")});
+                    // The director should not be persistent.
+                    newDirector.setPersistent(false);
+                    newDirector.controllerName.setExpression(
+                            "_Controller");
+                    if (director != null 
+                            && director.getContainer() == ModalModel.this) {
+                        // Delete the old director.
+                        director.setContainer(null);
+                    }
                 }
-                newDirectorClass =
-                    Class.forName(newDirectorClassName);
-                Constructor newDirectorConstructor =
-                    newDirectorClass.getConstructor
-                    (new Class[]{CompositeEntity.class, String.class});
-                director = (FSMDirector)newDirectorConstructor.newInstance
-                        (new Object[]{this, "_Director"});
-                ((FSMDirector)director).controllerName.setExpression(
-                        "_Controller");
-            } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(ex.toString());
-            } catch (ClassNotFoundException ex) {
-                throw new IllegalActionException(ex.toString());
-            } catch (NoSuchMethodException ex) {
-                throw new IllegalActionException(ex.toString());
-            } catch (InstantiationException ex) {
-                throw new IllegalActionException(ex.toString());
-            } catch (IllegalAccessException ex) {
-                throw new IllegalActionException(ex.toString());
-            } catch (InvocationTargetException ex) {
-                throw new IllegalActionException(ex.toString());
-            }
+            };
+            requestChange(request);
         }
+    }
+
+    /** React to a change request has been successfully executed.
+     *  This method is called after a change request
+     *  has been executed successfully.
+     *  This implementation does nothing.
+     *  @param change The change that has been executed, or null if
+     *   the change was not done via a ChangeRequest.
+     */
+    public void changeExecuted(ChangeRequest change) {
+    	// Ignore... Nothing to do.
+    }
+
+    /** React to a change request has resulted in an exception.
+     *  This method is called after a change request was executed,
+     *  but during the execution an exception was thrown.
+     *  @param change The change that was attempted or null if
+     *   the change was not done via a ChangeRequest.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        MessageHandler.error("Failed to create a new director.", exception);
     }
 
     /** Override the base class to ensure that the _controller private
@@ -345,27 +365,19 @@ public class ModalModel extends CTCompositeActor {
         _controller = new ModalController(this, "_Controller");
 
         // configure the directorClass parameter
-//        directorClass = new StringParameter(this, "directorClass");
-        directorClass = new StringAttribute(this, "directorClass");
-
-        ChoiceStyle style = new ChoiceStyle(directorClass, "style");
-        StringAttribute a;
+        directorClass = new StringParameter(this, "directorClass");
 
         // NOTE: If there is a container for this ModalModel, and it
         // has a director, then we get the default value from that
         // director, and also get a list of suggested values.
         Director executiveDirector = getExecutiveDirector();
         if (executiveDirector != null) {
+            // FIXME: Better solution is to override the returned
+            // list of choices in the parameter class.
             String[] suggestions = 
                 executiveDirector.suggestedModalModelDirectors();
             for (int i = 0; i < suggestions.length; i++) {
-//                directorClass.addChoice(suggestions[i]); 
-//                if (i == 0) {
-//                    directorClass.setExpression(suggestions[i]);
-//                }
-                a = new StringAttribute(style, "style"+i);
-                a.setExpression(suggestions[i]);
-
+                directorClass.addChoice(suggestions[i]); 
                 if (i == 0) {
                     directorClass.setExpression(suggestions[i]);
                 }
