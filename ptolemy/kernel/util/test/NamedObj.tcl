@@ -98,9 +98,11 @@ test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
 ####
 # 
 test NamedObj-2.3 { Check names with dots} {
-    catch {set n [java::new pt.kernel.NamedObj "This.name.has.dots"]} errMsg
-    list $errMsg
-} {{java.lang.IllegalArgumentException: NamedObj name (This.name.has.dots) has illegal embedded dot (.)}}
+    # In early versions of the kernel, we prohibited names with dots
+    # Now, dots are permitted.
+    set n [java::new pt.kernel.NamedObj "This.name.has.dots"]
+    list [ $n getName]
+} {This.name.has.dots}
 
 ######################################################################
 ####
