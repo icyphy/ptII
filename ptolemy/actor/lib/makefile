@@ -120,6 +120,7 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
+	InvariantViolationException.java \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \
@@ -130,7 +131,7 @@ JSRCS = \
 	Maximum.java \
 	Minimum.java \
 	MonitorValue.java \
-        Multiplexor.java \
+    Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
 	OrderedMerge.java \
