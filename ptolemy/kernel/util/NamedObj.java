@@ -356,7 +356,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         try {
             workspace().getReadAccess();
             // NOTE: For improved performance, the full name could be cached.
-            String fullname = getName();
+            String fullName = getName();
             // Use a linked list to keep track of what we've seen already.
             LinkedList visited = new LinkedList();
             visited.insertFirst(this);
@@ -372,11 +372,11 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                     throw new InvalidStateException(
                             "Container contains itself!");
                 }
-                fullname = container.getName() + "." + fullname;
+                fullName = container.getName() + "." + fullName;
                 visited.insertFirst(container);
                 container = container.getContainer();
             }
-            return workspace().getName() + "." + fullname;
+            return workspace().getName() + "." + fullName;
         } finally {
             workspace().doneReading();
         }
@@ -427,7 +427,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Return the class name and the full name of the object,
-     *  with syntax "classname {fullname}".
+     *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
     public String toString() {
         return getClass().getName() + " {" + getFullName()+ "}";
