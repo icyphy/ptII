@@ -1,6 +1,6 @@
 /* A token that contains a java.awt.Image.
 
- Copyright (c) 1999-2002 The Regents of the University of California.
+ Copyright (c) 2002-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,6 +37,7 @@ import ptolemy.data.type.*;
    standard image processing library.
    @author James Yeh
    @version $Id$
+   @since Ptolemy II 3.0
 */
 
 public class AWTImageToken extends ImageToken {

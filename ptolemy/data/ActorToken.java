@@ -1,6 +1,6 @@
 /* A token that contains an actor.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,8 +51,6 @@ being retrieved from this token.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
-
 */
 public class ActorToken extends Token {
 
