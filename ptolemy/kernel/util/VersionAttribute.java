@@ -126,8 +126,14 @@ public class VersionAttribute
     public int compareTo(Object object) {
 	VersionAttribute version = (VersionAttribute) object;
         Iterator versionTuples = version.iterator();
-        Iterator tuples = _tupleList.iterator();
-        while (versionTuples.hasNext() || tuples.hasNext()){
+        Iterator tuples;
+	if (_tupleList == null) {
+	    tuples = null;
+	} else {
+	    tuples =_tupleList.iterator();
+	}
+        while (versionTuples.hasNext()
+	       || (tuples != null && tuples.hasNext())){
             String versionTuple, tuple;
 
             // FIXME: deal with * and + in the JNLP Version String spec.
@@ -138,7 +144,7 @@ public class VersionAttribute
             } else {
                 versionTuple = "0";
             }
-            if (tuples.hasNext()) {
+            if (tuples != null && tuples.hasNext()) {
                 tuple = (String)tuples.next();
             } else {
                 tuple = "0";
