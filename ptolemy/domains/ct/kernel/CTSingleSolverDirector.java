@@ -28,6 +28,7 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
@@ -300,10 +301,39 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
             updateStates(); // call postfire on all actors 
             return;
         }
-        ODESolver solver = getCurrentODESolver();;
+        ODESolver solver = getCurrentODESolver();
+        double bp;
+        // If now is a break point, remove the break point from table;
+        if(!_breakPoints.isEmpty()) {
+            bp = ((Double)_breakPoints.first()).doubleValue();
+            if(bp <= getCurrentTime()) {
+                // break point now!
+                _breakPoints.removeFirst();   
+            }
+            //adjust step size;
+            if(!_breakPoints.isEmpty()) {
+                bp = ((Double)_breakPoints.first()).doubleValue();
+                double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                if (iterEndTime > bp) {
+                    setCurrentStepSize(bp-getCurrentTime());
+                }
+            }
+        }
         solver.iterate();
         produceOutput();
         updateStates(); // call postfire on all actors 
+    }
+
+    /** Register a break point in the future. This request the
+     *  Director to fire exactly at the each registered time.
+     *  Override the fireAfterDelay() method in Director.
+     */
+    public void fireAfterDelay(Actor actor, double delay) {
+        if(_breakPoints == null) {
+            _breakPoints = new TotallyOrderedSet(new DoubleComparator());
+        }
+        Double bp = new Double(delay+getCurrentTime());   
+        _breakPoints.insert(bp);
     }
 
     /** test if the current time is the stop time. 
@@ -320,6 +350,8 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     }
 
     /** produce outputs
+     *  @exception IllegalActionException If the actor on the output
+     *      path throws it.
      */
     public void produceOutput() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler) getScheduler();
@@ -466,10 +498,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
     /** Add all the parameters.
      */
     protected void _initParameters() {
@@ -587,4 +615,7 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
 
     //indicate the first round of execution.
     private boolean _first;
+
+    //A table for wave form break points.
+    private TotallyOrderedSet _breakPoints;
 }
