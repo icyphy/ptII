@@ -48,11 +48,14 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	AntennaGainTest.xml \
-	AntennaPattern.xml
+	AntennaPattern.xml \
+	ReceiveAntennaPattern.xml \
+	TransmitAntennaPattern.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	AntennaGainTest.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
