@@ -76,7 +76,7 @@ public class MouseFilter {
     private int _modifierFlags = 0;
 
     /** The button press to trap, or -1 if the button press number is not
-     * important, in which events will not be filterd based on press number.
+     * important, in which events will not be filtered based on press number.
      */
     private int _pressNumber = -1;
 
