@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3561,6 +3561,7 @@ echo $ECHO_N "checking for GMP in \$PTII/mescal/include/gmp.h... $ECHO_C" >&6
 echo "${ECHO_T}ok" >&6
 	    PTGMP_INCLUDE="-I$PTII/mescal/include"
 	    PTGMP_LIB="-L$PTII/mescal/lib"
+	    PTGMP_LD_FLAGS="-Wl,-R$PTII/mescal/lib"
 	    PTGMP=yes
         else
 	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
@@ -3576,6 +3577,7 @@ echo $ECHO_N "checking for GMP in /usr/local/include/gmp.h... $ECHO_C" >&6
 echo "${ECHO_T}ok" >&6
 	    PTGMP_INCLUDE=-I/usr/local/include
 	    PTGMP_LIB=-L/usr/local/lib
+	    PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
 	    PTGMP=yes
         else
 	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
@@ -4302,12 +4304,12 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
         cd "$srcdir/config"
         echo "$as_me:$LINENO: checking gmp by compiling a C small program" >&5
 echo $ECHO_N "checking gmp by compiling a C small program... $ECHO_C" >&6
-	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp ; then
+	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LD_FLAGS $PTGMP_LIB -lgmp ; then
 	    ./gmpTest
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	else
-	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp`
+	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LD_FLAGS$PTGMP_LIB -lgmp`
 	    { echo "$as_me:$LINENO: WARNING: Failed to compile config/gmpTest.c,
     \"$PTCC\" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp
     $RESULTS" >&5
@@ -4638,20 +4640,20 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp ; then
+	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpxx -lgmp ; then
 	    ./gmpTest2
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	else
-	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpcxx -lgmp`
+	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpcxx -lgmp`
 	    { echo "$as_me:$LINENO: WARNING: Failed to compile config/gmpTest2.cc,
-    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAG $PTGMP_LIB -lgmpxx -lgmp
     $RESULTS
     Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
     Under Linux, perhaps you need to add $PTII/bin/mescal to
     your LD_LIBRARY_PATH" >&5
 echo "$as_me: WARNING: Failed to compile config/gmpTest2.cc,
-    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAG $PTGMP_LIB -lgmpxx -lgmp
     $RESULTS
     Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
     Under Linux, perhaps you need to add $PTII/bin/mescal to
@@ -6840,7 +6842,11 @@ fi
 # and used in $PTII/mescal/relsat
 
 
-# Set to -L$PTII/lib or -L/usr/local/lib if the gmp libraries are found
+# Set to -Wl,-R$PTII/mescal/lib or -Wl,-R/usr/local/lib if the gmp
+# libraries are found and used in $PTII/mescal/relsat
+
+
+# Set to -L$PTII/mescal/lib or -L/usr/local/lib if the gmp libraries are found
 # and used in $PTII/mescal/relsat
 
 
@@ -7687,6 +7693,7 @@ s,@PTCM_DIR@,$PTCM_DIR,;t t
 s,@PTCOMM_DIR@,$PTCOMM_DIR,;t t
 s,@PTCHIC_DIR@,$PTCHIC_DIR,;t t
 s,@PTGMP_INCLUDE@,$PTGMP_INCLUDE,;t t
+s,@PTGMP_LD_FLAGS@,$PTGMP_LD_FLAGS,;t t
 s,@PTGMP_LIB@,$PTGMP_LIB,;t t
 s,@PTII@,$PTII,;t t
 s,@PTJACL_DIR@,$PTJACL_DIR,;t t
