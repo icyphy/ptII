@@ -352,7 +352,7 @@ public class DDEDirector extends ProcessDirector {
             smallestQueue.setCapacity(1);
         } else {
             int cap = smallestQueue.getCapacity(); 
-            smallestQueue.setCapacity( cap * 2 );
+            smallestQueue.setCapacity(cap * 2);
         }
         removeWriteBlock( smallestQueue );
         synchronized( smallestQueue ) {
@@ -416,7 +416,6 @@ public class DDEDirector extends ProcessDirector {
            }
        }
     }
-
 }
 
 
