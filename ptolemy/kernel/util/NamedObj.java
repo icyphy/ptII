@@ -117,7 +117,7 @@ description.
 */
 
 public class NamedObj implements Nameable, Debuggable,
-                                 Serializable, Cloneable {
+                                 ModelErrorHandler, Serializable, Cloneable {
 
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in
@@ -549,7 +549,6 @@ public class NamedObj implements Nameable, Debuggable,
      *  the MoML description.
      *  @return A MoML description, or null if there is none.
      *  @see #exportMoML(Writer, int, String)
-     *  @deprecated use a ptolemy.moml.MoMLWriter instead.
      */
     public final String exportMoML() {
         try {
