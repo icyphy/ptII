@@ -30,11 +30,20 @@
 package ptolemy.actor.gui;
 
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtAssignmentNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Set;
 
@@ -66,8 +75,9 @@ public class ExpressionShellTableau extends Tableau
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        frame = newFrame();
+        frame = new ExpressionShellFrame(this);
         setFrame(frame);
+        frame.setTableau(this);
         _evaluator = new ParseTreeEvaluator();
     }
 
@@ -80,13 +90,16 @@ public class ExpressionShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
+        if (command.trim().equals("")) {
+            return "";
+        }
         PtParser parser = new PtParser();
         ASTPtRootNode node = parser.generateSimpleAssignmentParseTree(command);
         String targetName = null;
 
         // Figure out if we got an assignment... if so, then get the
         // identifier name and only evaluated the expression part.
-        if(node instanceof ASTPtAssignmentNode) {
+        if (node instanceof ASTPtAssignmentNode) {
             ASTPtAssignmentNode assignmentNode = (ASTPtAssignmentNode) node;
             targetName = assignmentNode.getIdentifier();
             node = assignmentNode.getExpressionTree();
@@ -123,7 +136,7 @@ public class ExpressionShellTableau extends Tableau
         Token result = _evaluator.evaluateParseTree(node, scope);
 
         // If a target was specified, instantiate a new token.
-        if(targetName != null) {
+        if (targetName != null) {
             Attribute attribute = model.getAttribute(targetName);
             if (attribute != null && !(attribute instanceof Parameter)) {
                 attribute.setContainer(null);
@@ -151,22 +164,15 @@ public class ExpressionShellTableau extends Tableau
         return true;
     }
 
-    /** Return an instance of ExpressionShellFrame.
-     */
-    public ExpressionShellFrame newFrame()
-           throws IllegalActionException, NameDuplicationException {
-        return new ExpressionShellFrame(this);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     /** The associated frame. */
     public ExpressionShellFrame frame;
-    
+
     /** The contained shell. */
     public ShellTextArea shell;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
