@@ -153,6 +153,7 @@ ptolemy/media/javasound/demo/LiveSines
 ptolemy/media/javasound/demo/livesines
 ptolemy/media/test/array.au
 ptolemy/media/test/tmp2.au
+ptolemy/media/test/tmp2*.au
 ptolemy/moml/test/compat
 ptolemy/moml/test/compatDemo
 ptolemy/plot/adm
