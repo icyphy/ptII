@@ -88,8 +88,22 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** can only be an embedded director, so check it here.
+    /** Return true since this director can be inside director.
+     *  @return True always.
      */
+    public boolean canBeInsideDirector() {
+        return true;
+    }
+
+    /** Return flase since this director can not be top level director.
+     *  @return False always.
+     */
+    public boolean canBeTopLevelDirector() {
+        return false;
+    }
+
+    /** 
+     
     public void initialize() throws IllegalActionException {
         _debug(this.getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
@@ -125,7 +139,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         _debug(getName(), "breakpt table contains ", 
                 getBreakPoints().toString());
     }
-
+    */
     /** fire
      */
     public void fire() throws IllegalActionException {

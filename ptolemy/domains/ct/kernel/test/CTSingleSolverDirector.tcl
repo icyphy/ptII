@@ -166,6 +166,82 @@ test CTSingleSolverDirector-2.2 {set Parameters} {
 	    [$dir getValueResolution]
 } {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1} {KNOWN}
 
+######################################################################
+####  Test set parameters, same as above, but uses setToken
+#   
+#     
+test CTSingleSolverDirector-2.2a {set Parameters} {
+    #Note: Use above set up.
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken \
+	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
+    set token [java::new ptolemy.data.DoubleToken 0.5]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ErrorTolerance]]
+    set token [java::new ptolemy.data.DoubleToken 0.4]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MaximumIterationsPerStep]]
+    set token [java::new ptolemy.data.IntToken 10]
+    $param setToken $token 
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MaximumStepSize]]
+    set token [java::new ptolemy.data.DoubleToken 0.3]
+    $param setToken $token
+  
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute MinimumStepSize]]
+    set token [java::new ptolemy.data.DoubleToken 0.2]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
+    set token [java::new ptolemy.data.DoubleToken 10.0]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
+    set token [java::new ptolemy.data.DoubleToken 100.0]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute TimeResolution]]
+    set token [java::new ptolemy.data.DoubleToken 1e-11]
+    $param setToken $token
+
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ConvergeValueResolution]]
+    set token [java::new ptolemy.data.DoubleToken 0.1]
+    $param setToken $token
+
+    $dir prefire
+    list [[$dir getCurrentODESolver] getFullName] \
+	    [$dir getCurrentStepSize] \
+	    [$dir getCurrentTime] \
+	    [$dir getIterationBeginTime] \
+	    [$dir getInitialStepSize] \
+	    [$dir getErrorTolerance] \
+	    [$dir getMaxIterations] \
+	    [$dir getMaxStepSize] \
+	    [$dir getMinStepSize] \
+	    [$dir getNextIterationTime] \
+	    [$dir getStartTime] \
+	    [$dir getStopTime] \
+	    [$dir getSuggestedNextStepSize] \
+	    [$dir getTimeResolution] \
+	    [$dir getValueResolution]
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 10.0 100.0 0.1 1e-11 0.1}
+
+
 test CTSingleSolverDirector-2.3 {sets and gets} {
     #Note: Use above set up.
     $dir setCurrentTime 0.1
@@ -178,13 +254,18 @@ test CTSingleSolverDirector-2.3 {sets and gets} {
 	    [$dir getStopTime] \
 } {0.1 0.2 0.3 0.4}
 
+#############################################################################
+#### Test set suggested next step size, it is larger than the maximum
+#    step size, so nothing has changed.
 test CTSingleSolverDirector-2.4 {suggested next step greater than max step} {
     #Note: Use above set up.
     $dir setSuggestedNextStepSize 0.5
     list [$dir getSuggestedNextStepSize]
-} {0.5}
+} {0.3}
 
-
+#############################################################################
+#### Test set suggested next step size, it is less than the maximum
+#    step size, so it is effective.
 test CTSingleSolverDirector-2.5 {suggested next step less than max step} {
     #Note: Use above set up.
     # Max step size is 0.3

@@ -119,9 +119,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public CTDirector() {
         super();
         _initParameters();
-        // create a empty breakpoint table
-        _breakPoints = new TotallyOrderedSet(
-                    new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
@@ -141,8 +138,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public CTDirector(Workspace workspace) {
         super(workspace);
         _initParameters();
-        _breakPoints = new TotallyOrderedSet(
-                new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler(workspace));
         }catch(IllegalActionException e) {
@@ -168,8 +163,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         super(container, name);
         _initParameters();
-        _breakPoints = new TotallyOrderedSet(
-                new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler(container.workspace()));
         }catch(IllegalActionException e) {
@@ -265,6 +258,29 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
+    /** Return true if the director can be an inside director, ie
+     *  a director of an opaque composite actor not at the top level.
+     *  In this base class, it always return false.
+     *  Derived class may override this to show whether it can
+     *  serve as an inside director. This value is hard coded,
+     *  in the sense that it can not be set at run-time.
+     *  @return False always.
+     */
+    public boolean canBeInsideDirector() {
+        return false;
+    }
+
+    /** Return true if the director can be a top-level director.
+     *  In this base class, it always return false.
+     *  Derived class may override this to show whether it can
+     *  serve as a top-level director. This value is hard coded,
+     *  in the sense that it can not be set at run-time.
+     *  @return False always.
+     */
+    public boolean canBeTopLevelDirector() {
+        return false;
+    }
+    
     /** Return the break point table.
      *  @return The break point table.
      */
@@ -422,6 +438,73 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return new CTReceiver();
     }
 
+    /** Prepare for an execution.
+     *  Check to see if the director has a container and a scheduler.
+     *  Invalidate the schedule. Clear statistic variables. 
+     *  Reset the break point table.
+     *  Set the current time. And preinitialize all the directed actors.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _debug(getFullName(), " preinitializing.");
+        //from here
+        CompositeActor ca = (CompositeActor) getContainer();
+        if (ca == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        if (ca.getContainer() != null) {
+            if (!canBeInsideDirector()) {
+                throw new IllegalActionException(this,
+                        " can not serve as an inside director.");
+            }
+        } else {
+            if (!canBeTopLevelDirector()) {
+                throw new IllegalActionException(this,
+                        " can not serve as an top-level director.");
+            }
+        }
+        CTScheduler sch = (CTScheduler)getScheduler();
+        if (sch == null) {
+            throw new IllegalActionException( this,
+                    "does not have a scheduler.");
+        }
+        if(STAT) {
+            NSTEP = 0;
+            NFUNC = 0;
+            NFAIL = 0;
+        }
+        // invalidate schedule
+        sch.setValid(false);
+        _debug(getFullName(), " initialize current time");
+        _debug(getFullName(), " _init get State Time " +  getStartTime());
+        CompositeActor containersContainer =
+            (CompositeActor)ca.getContainer();
+        if( containersContainer == null ) {
+            setCurrentTime(getStartTime());
+        } else {
+            double time = 
+                containersContainer.getDirector().getCurrentTime();
+            setStartTime(time);
+            setCurrentTime(time);
+        }
+        _debug(getFullName(), " init current time to " + getCurrentTime());
+        _debug(getFullName(), " clear break point table.");
+        TotallyOrderedSet bps = getBreakPoints();
+        if(bps != null) {
+            bps.clear();
+        } else {
+            _breakPoints = new TotallyOrderedSet(
+                    new FuzzyDoubleComparator(_timeResolution));
+        }
+        _debug(getName(), " preinitialize actors");
+        Enumeration allactors = ca.deepGetEntities();
+        while (allactors.hasMoreElements()) {
+            Actor actor = (Actor)allactors.nextElement();
+            _debug("Invoking preinitialize(): ",
+                    ((NamedObj)actor).getFullName());
+            actor.preinitialize();
+        }
+    }   
+
     /** Set the current step size. This variable is very import during
      *  the simulation and should NOT be changed in the middle of an
      *  iteration.
@@ -429,6 +512,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void setCurrentStepSize(double curstepsize) {
         _currentStepSize = curstepsize;
+    }
+
+    /**  Set the current time of the model under this director.
+     *  It is allowed that the new time is less than the current time
+     *  in the director, since CT sometimes needs roll-back.
+     *  This is a critical parameter in an execution, and the 
+     *  actors are not supposed to call it.
+     *  @exception IllegalActionException Never throw.
+     *  @param newTime The new current simulation time.
+     */
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        _currentTime = newTime;
     }
 
     /** Set the start time for the simulation. The start time is not
@@ -448,7 +543,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void setStopTime(double tstop) {
         _stopTime = tstop;
     }
-
 
     /** Set the suggested next step size.
      *  @param nextstep The suggested next step size.

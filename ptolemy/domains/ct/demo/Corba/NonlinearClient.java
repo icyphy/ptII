@@ -89,6 +89,7 @@ public class NonlinearClient extends CTApplet{
 
             _dir = new CTMultiSolverDirector(
                     _toplevel, "DIR");
+            _dir.STAT = true;
             //_dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
             AddSubtract add1 = new AddSubtract( _toplevel, "Add1");

@@ -59,7 +59,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 #
 #     Test different ODE solvers and directors.
-#     The ideal result is e-1 = 1.71828182845905
+#     The exact result is e-1 = 1.71828182845905
 
 ######################################################################
 ####  Test Director and solvers by execute a demo system

@@ -140,6 +140,13 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
+    /** Return true since this director can be top-level director.
+     *  @return true always.
+     */
+    public boolean canBeTopLevelDirector() {
+        return true;
+    }
+
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
      *   resolving states and producing outputs. For the first iteration
@@ -186,41 +193,44 @@ public class CTSingleSolverDirector extends CTDirector {
         return _defaultSolver;
     }
 
-    /** Initialization for the entire system. This
+    /** Initialization after type resolution. This
      *  is called exactly once at the start of the entire execution.
-     *  It set the current time to the start time and the suggested
-     *  next step size to the initial step size.
+     *  It sets the step size and the suggested next step size 
+     *  to the initial step size. The ODE solver is instantiated.
+     *  And the stop time is registered as a breakpoint.
      *  It invoke the initialize() method for all the Actors in the
-     *  system. Parameters are updated, so that the parameters
-     *  set after the creation of the actors are evaluated and ready
-     *  for use. The stop time is registered as a breakpoint.
-     *  This method checks whether there is a composite actor for this
-     *  director to direct, and whether there is a proper scheduler for this
-     *  director. If not, an exception is throw.
-     *  The ODE solver is instantiated.
+     *  container.
+     *  This method checks if it is the top level director, if not,
+     *  it will throw an exception.
      *
-     *  @exception IllegalActionException If there's no scheduler or
-     *       thrown by a contained actor.
+     *  @exception IllegalActionException If it is not the top level
+     *      director.
      */
     public void initialize() throws IllegalActionException {
-        _debug(getFullName(), "initializing.");
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        if (ca.getContainer() != null) {
-            throw new IllegalActionException(this,
-                    " can only serve as the top level director.");
-        }
-        CTScheduler sch = (CTScheduler)getScheduler();
-        if (sch == null) {
-            throw new IllegalActionException( this,
-                    "does not have a scheduler.");
-        }
-        sch.setValid(false);
-        _initialize();
+        _debug(getFullName(), "initializing:");
+        // Instantiate ODE solver
+        _debug(getFullName(), " instantiating ODE solver ", _solverclassname);
+        _defaultSolver = _instantiateODESolver(_solverclassname);
+        _setCurrentODESolver(_defaultSolver);
+        _debug(getFullName(), " assert the current ODE solver ", 
+                getCurrentODESolver().getName());
+        // set step sizes
+        setCurrentStepSize(getInitialStepSize());
+        _debug(getFullName(), " set current step size to "
+                + getCurrentStepSize());  
+        setSuggestedNextStepSize(getInitialStepSize());
+        _debug(getFullName(), " set suggested next step size to "
+                + getSuggestedNextStepSize()); 
+        _debug(getFullName(), " set the current time as a break point: " + 
+                getCurrentTime());
         fireAt(null, getCurrentTime());
+        _debug(getFullName(), " set the stop time as a break point: " + 
+                getStopTime());
         fireAt(null, getStopTime());
+        _first = true;
+        _debug(getFullName() + " initialize directed actors: ");
+        super.initialize();  
+        _debug(getFullName() + " End of Initialization.");
     }
 
     /** Return false if the simulation stop time is reached.
@@ -403,43 +413,6 @@ public class CTSingleSolverDirector extends CTDirector {
         updateStates(); // call postfire on all actors
     }
 
-    /** Initialize the execution.
-     *  Set the current time and the first step size according
-     *  to the director parameters. Clear the break point table.
-     *  The default ODE solver is instantiated.
-     *  @exception IllegalActionException If no ODE solver is
-     *      instantiated.
-     */
-    protected void _initialize() throws IllegalActionException {
-        if(STAT) {
-            NSTEP = 0;
-            NFUNC = 0;
-            NFAIL = 0;
-        }
-        _debug(getName(), "updating parameters");
-        // Instantiate ODE solver
-        //if(_defaultSolver == null) {
-        _debug(getName(), " instantiating ODE solver ", _solverclassname);
-        _defaultSolver = _instantiateODESolver(_solverclassname);
-        //}
-        // set time
-        _debug(getFullName(),
-                "_init get State Time " +  getStartTime());
-
-        setCurrentTime(getStartTime());
-        setSuggestedNextStepSize(getInitialStepSize());
-        setCurrentStepSize(getInitialStepSize());
-        _setCurrentODESolver(_defaultSolver);
-        TotallyOrderedSet bps = getBreakPoints();
-        if(bps != null) {
-            bps.clear();
-        }
-        _first = true;
-        _debug(getFullName() + ".super initialize.");
-        super.initialize();
-    }
-
-
     /** Initialize parameters to their default values. */
     protected void _initParameters() {
         super._initParameters();
@@ -613,7 +586,6 @@ public class CTSingleSolverDirector extends CTDirector {
 
     // Indicate the first round of execution.
     protected boolean _first;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

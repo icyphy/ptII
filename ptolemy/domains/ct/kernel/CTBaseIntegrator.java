@@ -266,6 +266,7 @@ public class CTBaseIntegrator extends CTActor
      *  @exception IllegalActionException If there's no director or
      *       the director has no ODE solver, or thrown by the
      *       integratorInitialize() of the solver.
+     *  FIXME: This should be preinitialize.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

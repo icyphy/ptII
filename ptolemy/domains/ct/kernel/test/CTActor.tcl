@@ -117,8 +117,8 @@ test CTActor-3.1 {passing tokens} {
     set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]
     set p2i [java::cast ptolemy.actor.IOPort [$a2 getPort input]]
     set r1 [$ca connect $p1o $p2i]
-    $a1 initialize
-    $a2 initialize
+    $a1 preinitialize
+    $a2 preinitialize
     $p1o broadcast $zero
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {0.0}

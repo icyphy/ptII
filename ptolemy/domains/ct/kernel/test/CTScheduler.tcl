@@ -341,7 +341,7 @@ test CTScheduler-3.1 {get the description} {
         .CA.EI
         .CA.SSC
         .CA.A5
-        .CA.A6S
+        .CA.A6S 
         .CA.A7S
         .CA.ED
         .CA.A8
@@ -396,4 +396,5 @@ test CTScheduler-3.1 {get the description} {
         .CA.A8
     }
 }
-}} {Known_fail}
+}
+} {Known_fail}

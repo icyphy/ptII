@@ -138,22 +138,18 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         return _breakpointsolver;
     }
 
-    /** This does the initialization for the entire subsystem. This
-     *  is called exactly once at the start of the entire execution.
-     *  It checks if it container and its scheduler is correct.
-     *  Otherwise throw an exception. It then calls _initialize()
-     *  method to initialize parameters and times.
+    /** In addition to initialize the system as those in 
+     *  CTSingleSolverDirector, this method set up the breakpoint
+     *  solver.
+     *  It throws an exception if the super class does.
      *
-     *  @exception IllegalActionException If there's no scheduler or
-     *       thrown by a contained actor.
+     *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _debug(getName(), " create breakpoint solver.");
+        _debug(getFullName(), " instantiate breakpoint solver.");
         _breakpointsolver =
             _instantiateODESolver(_bpsolverclassname);
-        _debug(getName(), " register the initial break point.");
-        fireAt(null, getCurrentTime());
     }
 
     ////////////////////////////////////////////////////////////////////////

@@ -138,6 +138,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
+    /** Return true since this director can be an inside director.
+     *  @return True always.
+     */
+    public boolean canBeInsideDirector() {
+        return true;
+    }
+
     /** Return the end time of this director's firing.
      *
      *  @return The fire end time.
@@ -239,31 +246,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       no scheduler, or thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        _debug("MixedSignalDirector " + getName() + " initialize.");
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            _debug("Director has no container.");
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        CTScheduler sch = (CTScheduler)getScheduler();
-        if (sch == null) {
-            _debug("Director does not have a scheduler.");
-            throw new IllegalActionException( this,
-                    "does not have a scheduler.");
-        }
-        sch.setValid(false);
-        _first = true;
+        _debug(getFullName() + " initialize.");
+        super.initialize();
         if(!_isTopLevel()) {
-            _initialize();
-            // this is an embedded director.
-            // synchronize the start time and request a fire at the start time.
+            TypedCompositeActor ca = (TypedCompositeActor)getContainer();
             Director exe = ca.getExecutiveDirector();
-            double tnow = exe.getCurrentTime();
-            setStartTime(tnow);
-            exe.fireAt(ca, tnow);
-        } else {
-            super.initialize();
-        }
+            exe.fireAt(ca, getCurrentTime());
+        } 
     }
 
     /** If this is a top-level director, returns true if the current time
