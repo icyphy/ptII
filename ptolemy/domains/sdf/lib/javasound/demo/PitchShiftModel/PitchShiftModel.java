@@ -1,4 +1,4 @@
-/* An application that uses Ptolemy II SDF domain to perform
+/* An model that uses Ptolemy II SDF domain to perform
  * real-time pitch shifting of audio signals.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -29,15 +29,16 @@
 @AcceptedRating 
 */
 
-package ptolemy.domains.sdf.lib.javasound.demo.PitchShiftApplication;
+package ptolemy.domains.sdf.lib.javasound.demo.PitchShiftModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.domains.sdf.lib.javasound.*;
-import ptolemy.domains.sdf.lib.javasound.demo.PitchShiftApplication.*;
+import ptolemy.domains.sdf.lib.javasound.demo.PitchShiftModel.*;
 
 
 import java.applet.*;
@@ -66,47 +67,50 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// PitchShiftModel
 /**
-A simple application demonstrating the use of the AudioSource and 
-AudioSink actors.
-Note that AudioSource will not work unless a Java Sound API implementation
-is installed.
-
+A simple model demonstrating the use of the AudioSource and 
+AudioSink actors. This demo performs pitch shifting on a
+soundfile in the current directory.
+Note that AudioSource will not work unless the Java 1.3 SDK
+is used.
+// FIXME: currently requies that a soundfile with name 
+// "1-welcome.wav", mono, 11 kHz sample rate, be in
+// current directory.
 @author Brian K. Vogel
-@version $Id $
+@version $Id$
 */
 public class PitchShiftModel extends TypedCompositeActor {   
     
-     /** Set the number of iterations. If this method is not called, a
-     *  default vaule of 1 is used. This method should be called prior
-     *  to calling create(), otherwise the default value of iterations
-     *  will be used (1 iteration).
-     */
-    /*
-     public void setIterations() {
-	 int iterations = 10000;
-	 super.setIterations(iterations);
+
+    public PitchShiftModel() {
+        super();
+	create();
     }
-    */
+
+    public PitchShiftModel(Workspace workspace) {
+	super(workspace);
+	create();
+    }
+
+    public PitchShiftModel(TypedCompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+	create();
+    }
 
 
-    /** After invoking super.init(), create and connect the actors.
-     */
-    /*
     public void create() {
-        super.create();
-    */  
 
 	try {
-	     this.setName("topLevel");
-	     this.setManager(_manager);
+	    //this.setName("topLevel");
+	    //this.setManager(_manager);
 	     // Initialization
-            _director = new SDFDirector(this, "SDFDirector");
-            Parameter iterparam = _director.iterations;
+            SDFDirector _sdfDirector = new SDFDirector(this, "SDFDirector");
+            Parameter iterparam = _sdfDirector.iterations;
             iterparam.setToken(new IntToken(0));
             SDFScheduler scheduler = new SDFScheduler(_workspace);
 
-            _director.setScheduler(scheduler);
-            _director.setScheduleValid(false);
+            _sdfDirector.setScheduler(scheduler);
+            _sdfDirector.setScheduleValid(false);
 
 	    // gui stuff goes here.
 
@@ -149,7 +153,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // Larger values may speed up execution.
 	    int cPRate = 512;
 
-	    AudioSource soundSource = new AudioSource(_toplevel, "soundSource");
+	    AudioSource soundSource = new AudioSource(this, "soundSource");
 	    // Specify where to get the sound file.
 	    //soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
 	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
@@ -163,7 +167,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // The slider value updats the value parameter of this
 	    // actor to control the pitch scale factor.
 	    Const pitchScaleSource =
-		new Const(_toplevel, "pitchScaleSource");
+		new Const(this, "pitchScaleSource");
 	    	    pitchScaleSource.value.setTypeEquals(DoubleToken.class);
 	    // Set constant pitch scale factor.
 	    //pitchScaleSource.value.setToken(new DoubleToken(1.0));
@@ -176,39 +180,39 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // default value of the Slider is needed since the slider
 	    // only supports the integer type (IntToken).
 	    Scale controlGain =
-		new Scale(_toplevel, "controlGain");
+		new Scale(this, "controlGain");
 	    	    controlGain.factor.setTypeEquals(DoubleToken.class);
 	    // Set constant pitch scale factor.
 	    //pitchScaleSource.value.setToken(new DoubleToken(1.0));
 	    controlGain.factor.setExpression("0.001");
 
 	    SDFPitchDetector pitchDetect = 
-		new SDFPitchDetector(_toplevel, "pitchDetect");
+		new SDFPitchDetector(this, "pitchDetect");
 	    // Set the sampling rate to use.
 	    pitchDetect.sampleRate.setToken(new DoubleToken(sampleRate));
 	    pitchDetect.consumptionProductionRate.setToken(new IntToken(cPRate));
 
 	    SDFPitchShift pitchShift =
-		new SDFPitchShift(_toplevel, "pitchShift");
+		new SDFPitchShift(this, "pitchShift");
 	    // Set the sampling rate to use.
 	    pitchShift.sampleRate.setToken(new DoubleToken(sampleRate));
 	    pitchShift.consumptionProductionRate.setToken(new IntToken(cPRate));
 
-            AudioSink soundSink = new AudioSink(_toplevel, "soundSink");
+            AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
 	  
          
 	  soundSink.sampRate.setToken(new IntToken(sampleRate));
 	  
 
-            _toplevel.connect(soundSource.output, pitchDetect.input);
-	    _toplevel.connect(soundSource.output, pitchShift.input);
-	    _toplevel.connect(pitchDetect.output, pitchShift.pitchIn);
-	    _toplevel.connect(pitchScaleSource.output, controlGain.input);
-	    _toplevel.connect(controlGain.output, pitchShift.scaleFactor);
+            this.connect(soundSource.output, pitchDetect.input);
+	    this.connect(soundSource.output, pitchShift.input);
+	    this.connect(pitchDetect.output, pitchShift.pitchIn);
+	    this.connect(pitchScaleSource.output, controlGain.input);
+	    this.connect(controlGain.output, pitchShift.scaleFactor);
 
 	   
-	    _toplevel.connect(pitchShift.output, soundSink.input);
+	    this.connect(pitchShift.output, soundSink.input);
 	    
 	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchSlider");
 	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
@@ -216,64 +220,10 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 	   
         } catch (Exception ex) {
-            report("Setup failed:", ex);
+            System.err.println("Setup failed:" + ex);
         }
-    /*
     }
-    */
 
-    /** Execute the system for the number of iterations given by the
-     *  _getIterations() method.
-     *  @throws IllegalActionException Not thrown.
-     */
-    /*
-    protected void _go() throws IllegalActionException {
-	super._go();
-    }
-    */
-
-    /*
-    static public void main (String argv[]) throws IllegalActionException {
-	PitchShiftModel app = new PitchShiftModel();
-	app.setIterations();
-	app.create();
-	app._go();
-    }
-    */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    //public PtolemyQuery _ptQuery;  
-    //public Const pitchScaleSource;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Listener executes the system when any parameter is changed.
-     */
-    //  class ParameterListener implements QueryListener {
-    //  public void changed(String name) {
-    //      try {
-		
-    //	String stringVal =_ptQuery.stringValue("pitchSlider");
-		
-    //	Double d = new Double(stringVal);
-    //	double doub = d.doubleValue();
-    //	Double convDoub = new Double(doub/1000);
-		
-		// Sometimes cause an exception to occur. 
-		//pitchScaleSource.value.setExpression(convDoub.toString());
-		// But the following does not. Don't know why. Perhaps
-    // because should check that "name" == "pitchSlider."
-    //	pitchScaleSource.value.setToken(new DoubleToken(doub/1000));
-
-    //	System.out.println(((DoubleToken)pitchScaleSource.value.getToken()).doubleValue());
-    //      } catch (Exception ex) {
-    //          report(ex);
-		
-    //      }
-    //  }
-    //}
-     
+ 
 }
 
