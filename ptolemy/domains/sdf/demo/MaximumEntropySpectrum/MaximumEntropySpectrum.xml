@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="spectrumEstimation" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 346]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
@@ -44,6 +44,8 @@ by three different techniques.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 10.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 87, 840, 462}}">
     </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
@@ -169,12 +171,6 @@ the output is a periodogram spectral estimate.</text>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
-            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-            <doc>The phase, in radians.</doc>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -198,6 +194,66 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="440.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+            </property>
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
+            </property>
+            <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 136.0">
@@ -209,12 +265,6 @@ the output is a periodogram spectral estimate.</text>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="540.0">
-            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-            <doc>The phase, in radians.</doc>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -238,6 +288,66 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="540.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+            </property>
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
+            </property>
+            <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 196.0">
@@ -249,12 +359,6 @@ the output is a periodogram spectral estimate.</text>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2000.0">
-            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-            <doc>The phase, in radians.</doc>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -278,6 +382,66 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
             </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="2000.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+            </property>
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
+            </property>
+            <doc>The phase, in radians.</doc>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 256.0">
@@ -303,6 +467,10 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="periodogram, smoothed, max entropy">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -323,7 +491,7 @@ the output is a periodogram spectral estimate.</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="255.0"/>
-<yRange min="-34.44365321041491" max="20.363581857871193"/>
+<yRange min="-30.246618556605195" max="20.319276838516686"/>
 </plot>?>
         </configure>
     </entity>
