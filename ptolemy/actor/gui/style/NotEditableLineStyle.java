@@ -67,6 +67,8 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *  as its name.
      *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will contain the attribute
+     *  that is being constructed.
      */
     public NotEditableLineStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.

@@ -143,7 +143,9 @@ public class PrintThreads {
     }
 
     /** Return a user friendly description of the thread.
-     * We could use Thread.toString(), but that is hard to read.
+     *  We could use Thread.toString(), but that is hard to read.
+     *  @param thread The thread 
+     *  @return A user friendly description of the thread.
      */
     public static String toThreadDescription(Thread thread) {
         String name = "Unnamed thread";
