@@ -29,28 +29,26 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptII/collections
+
+DIRS =
 
 # Root of the Java directory
 ROOT =		..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =
 
-# Used to build zip files
-JPACKAGE = 	collections
-JPACKAGE_DIR = 	collections
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		collections/collections.zip
-PTCLASSJAR = 	$(JPACKAGE).jar
+# Used to build jar files
+PTPACKAGE = 	collections
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
-CLASSPATH = ..
+
 
 JSRCS = \
 	ArrayEnumeration.java \
@@ -143,12 +141,55 @@ OPTIONAL_FILES =	#codeDoc
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-all: suball jclass
-install: subinstall jclass javadocs $(PTCLASSJAR)
+all: suball jclass ptcollections.jar
+install: subinstall jclass ptcollections.jar javadocs
 docs: javadocs
 
+# jar file containing the .class files that Ptolemy II commonly uses
+# Once we upgrade to JDK1.2, this jar file is likely to go away
+PTCOLLECTIONS_CLASSES = \
+	collections/Assertable.class \
+	collections/Bag.class \
+	collections/CEImpl.class \
+	collections/Cell.class \
+	collections/Collection.class \
+	collections/CollectionEnumeration.class \
+	collections/Comparator.class \
+	collections/CorruptedEnumerationException.class \
+	collections/ElementSortedCollection.class \
+	collections/HTEnumeration.class \
+	collections/HashTableParams.class \
+	collections/HashedMap.class \
+	collections/HashedSet.class \
+	collections/IllegalElementException.class \
+	collections/ImplementationCheckable.class \
+	collections/ImplementationError.class \
+	collections/Keyed.class \
+	collections/KeySortedCollection.class \
+	collections/LLCell.class \
+	collections/LLCellEnumeration.class \
+	collections/LLPair.class \
+	collections/LinkedList.class \
+	collections/Map.class \
+	collections/Predicate.class \
+	collections/Pair.class \
+	collections/Seq.class \
+	collections/Set.class \
+	collections/SortableCollection.class \
+	collections/UpdatableCollection.class \
+	collections/UpdatableImpl.class \
+	collections/UpdatableMap.class \
+	collections/UpdatableMapImpl.class \
+	collections/UpdatableSeq.class \
+	collections/UpdatableSeqImpl.class \
+	collections/UpdatableSet.class \
+	collections/UpdatableSetImpl.class
+
+ptcollections.jar: jclass #$(PTCOLLECTIONS_CLASSES)
+	(cd $(ROOT); $(JAR) cf collections/$@ $(PTCOLLECTIONS_CLASSES) )
+
 depend:
-	@echo "no dependencies in this directory"
+	echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
