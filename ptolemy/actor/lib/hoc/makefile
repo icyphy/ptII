@@ -55,6 +55,7 @@ JSRCS = \
 	Case.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
+	MirrorPort.java \
 	MobileFunction.java \
 	MobileModel.java \
 	ModelReference.java \

@@ -72,26 +72,25 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
 /**
-   This actor iterates the contained actor over input arrays.
+   This actor iterates the contained actor or model over input arrays.
+   To use it, drop an actor on it and provide arrays to the inputs.
+   You can drop an IterateComposite actor on it and look inside to
+   populate that actor with a submodel that will be applied to the
+   array elements.  The submodel is required to have a director,
+   and by default will be provided with an SDF director, which will
+   often be sufficient for operations taken on array elements.
+   <p>
    Each input port expects an array. When this actor fires,
    an array is read on each input port that has one, and its
-   contents are provided sequentially to the contained actor
-   with connected ports.  This actor then iterates the
-   contained actor until either there are no more
-   input data for the actor or the prefire() method of the actor
+   contents are provided sequentially to the contained actor or model.
+   This actor then iterates the contained actor or model until either
+   there are no more input data for the actor or the prefire()
+   method of the actor or model
    returns false. If postfire() of the actor returns false,
    then postfire() of this actor will return false, requesting
    a halt to execution of the model.  The outputs from the
    contained actor are collected into arrays that are
    produced on the outputs of this actor.
-   <p>
-   To make this actor easier to use, it reacts to a "drop"
-   of an actor on it by replicating the ports and parameters
-   of that actor. The dropped actor can, of course, be a
-   composite actor. When you interactively add ports or change
-   the properties of ports of this actor (whether a port is an
-   input or output, for example), then the same changes are
-   mirrored in the contained actor.
    <p>
    A special variable named "iterationCount" can be used in
    any expression setting the value of a parameter of this actor
@@ -133,8 +132,6 @@ public class IterateOverArray extends TypedCompositeActor {
      *  local director initially, and its executive director will be simply
      *  the director of the container.
      *  You should set a director before attempting to execute it.
-
-     *
      *  @param container The container actor.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
@@ -164,8 +161,7 @@ public class IterateOverArray extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to return a specialized port and to
-     *  create a port on the inside entity, if there is one.
+    /** Override the base class to return a specialized port.
      *  @param name The name of the port to create.
      *  @return A new instance of IteratePort, an inner class.
      */
@@ -193,6 +189,7 @@ public class IterateOverArray extends TypedCompositeActor {
             ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
             ((TypedIOPort)port).setTypeEquals(arrayType);
         }
+        super.getDirector();
         return super.typeConstraintList();
     }
 
@@ -227,158 +224,161 @@ public class IterateOverArray extends TypedCompositeActor {
                 this,
                 context,
                 "Adjust ports and parameters") {
-                protected void _execute() throws Exception {
-                    // NOTE: We defer the construction of the MoML change request
-                    // to here because only at this point can we be sure that the
-                    // change request that triggered this has completed.
+            protected void _execute() throws Exception {
+                // NOTE: We defer the construction of the MoML change request
+                // to here because only at this point can we be sure that the
+                // change request that triggered this has completed.
 
-                    synchronized(this) {
+                synchronized(this) {
 
-                        StringBuffer command = new StringBuffer(
-                                "<entity name=\""
-                                + getName(context)
-                                + "\">\n");
+                    StringBuffer command = new StringBuffer(
+                            "<entity name=\""
+                            + getName(context)
+                            + "\">\n");
 
-                        // Entity most recently added.
-                        ComponentEntity entity = null;
+                    // Entity most recently added.
+                    ComponentEntity entity = null;
 
-                        // Delete any previously contained entities.
-                        Iterator priors = entityList().iterator();
-                        LinkedList deletedEntities = new LinkedList();
-                        while (priors.hasNext()) {
-                            ComponentEntity prior = (ComponentEntity)priors.next();
-                            // If there is at least one more contained object,
-                            // then delete this one.
-                            if (priors.hasNext()) {
-                                command.append("<deleteEntity name=\""
-                                        + prior.getName() + "\"/>\n");
-                                deletedEntities.add(prior);
-                            } else {
-                                entity = prior;
-                            }
+                    // Delete any previously contained entities.
+                    Iterator priors = entityList().iterator();
+                    LinkedList deletedEntities = new LinkedList();
+                    while (priors.hasNext()) {
+                        ComponentEntity prior = (ComponentEntity)priors.next();
+                        // If there is at least one more contained object,
+                        // then delete this one.
+                        if (priors.hasNext()) {
+                            command.append("<deleteEntity name=\""
+                                    + prior.getName() + "\"/>\n");
+                            deletedEntities.add(prior);
+                        } else {
+                            entity = prior;
                         }
+                    }
 
-                        if (entity == null) {
-                            // Nothing to do.
-                            return;
-                        }
+                    if (entity == null) {
+                        // Nothing to do.
+                        return;
+                    }
 
-                        // Remove all inside relations. This will have the
-                        // side effect of removing connections on the inside.
-                        Iterator relations = relationList().iterator();
-                        while (relations.hasNext()) {
-                            command.append("<deleteRelation name=\""
-                                    + ((NamedObj)relations.next()).getName()
-                                    + "\"/>\n");
-                        }
+                    // Remove all inside relations. This will have the
+                    // side effect of removing connections on the inside.
+                    Iterator relations = relationList().iterator();
+                    while (relations.hasNext()) {
+                        command.append("<deleteRelation name=\""
+                                + ((NamedObj)relations.next()).getName()
+                                + "\"/>\n");
+                    }
 
-                        // Add commands to delete ports.
-                        Iterator ports = portList().iterator();
-                        while (ports.hasNext()) {
-                            Port port = (Port)ports.next();
-                            // Only delete ports whose names don't match the
-                            // current entity. This preserves connections to
-                            // ports with the same name.
+                    // Add commands to delete ports.
+                    Iterator ports = portList().iterator();
+                    while (ports.hasNext()) {
+                        Port port = (Port)ports.next();
+                        // Only delete ports whose names don't match the
+                        // current entity. This preserves connections to
+                        // ports with the same name.
 
-                            // NOTE: then if I add ports to an empty
-                            // instance (no inside entity), then these ports
-                            // don't go away if I drop in an entity.  Maybe
-                            // this is OK?
+                        // NOTE: then if I add ports to an empty
+                        // instance (no inside entity), then these ports
+                        // don't go away if I drop in an entity.  Maybe
+                        // this is OK?
 
-                            // NOTE: When reading a MoML file (vs. processing
-                            // a change request), the ports of the entity have
-                            // not been created because the entity has not been
-                            // fully constructed when this _addEntity() method
-                            // is called.  Thus, it is important to only delete
-                            // ports that match something in a deleted entity.
-                            if (entity.getPort(port.getName()) == null) {
-                                Iterator deleted = deletedEntities.iterator();
-                                while (deleted.hasNext()) {
-                                    ComponentEntity deletedEntity = (ComponentEntity)deleted.next();
-                                    if (deletedEntity.getPort(port.getName()) != null) {
-                                        // FIXME: Must explicitly delete relations linked
-                                        // to these ports, or undo won't work properly.
-                                        // This is a bit of a pain, since we have to pop
-                                        // out of this context to do it.
-                                        command.append("<deletePort name=\"" + port.getName() + "\"/>\n");
-                                        break;
-                                    }
+                        // NOTE: When reading a MoML file (vs. processing
+                        // a change request), the ports of the entity have
+                        // not been created because the entity has not been
+                        // fully constructed when this _addEntity() method
+                        // is called.  Thus, it is important to only delete
+                        // ports that match something in a deleted entity.
+                        if (entity.getPort(port.getName()) == null) {
+                            Iterator deleted = deletedEntities.iterator();
+                            while (deleted.hasNext()) {
+                                ComponentEntity deletedEntity
+                                        = (ComponentEntity)deleted.next();
+                                if (deletedEntity.getPort(port.getName())
+                                        != null) {
+                                    // FIXME: Must explicitly delete relations linked
+                                    // to these ports, or undo won't work properly.
+                                    // This is a bit of a pain, since we have to pop
+                                    // out of this context to do it.
+                                    command.append("<deletePort name=\""
+                                            + port.getName() + "\"/>\n");
+                                    break;
                                 }
                             }
                         }
+                    }
 
-                        // Set up the inside connections.
-                        int count = 1;
-                        Iterator entityPorts = entity.portList().iterator();
-                        while (entityPorts.hasNext()) {
-                            Port insidePort = (Port)entityPorts.next();
+                    // Set up the inside connections.
+                    int count = 1;
+                    Iterator entityPorts = entity.portList().iterator();
+                    while (entityPorts.hasNext()) {
+                        Port insidePort = (Port)entityPorts.next();
 
-                            String name = insidePort.getName();
+                        String name = insidePort.getName();
 
-                            // If there isn't already a port with this name,
-                            // the MoML parser will create one.
-                            // Do not specify a class so that the MoMLParser
-                            // uses newPort() to create it; newPort() will
-                            // take care of the connections with the inside
-                            // port.
-                            command.append("<port name=\"" + name + "\">");
-                            if (insidePort instanceof IOPort) {
-                                IOPort castPort = (IOPort)insidePort;
-                                command.append(
-                                        "<property name=\"multiport\" value=\""
-                                        + castPort.isMultiport()
-                                        + "\"/>"
-                                        + "<property name=\"input\" value=\""
-                                        + castPort.isInput()
-                                        + "\"/>"
-                                        + "<property name=\"output\" value=\""
-                                        + castPort.isOutput()
-                                        + "\"/>");
-                            }
-                            command.append("</port>\n");
-
-                            // Set up inside connections. Note that if the outside
-                            // port was preserved from before, then it will have
-                            // lost its inside links when the inside relation was
-                            // deleted. Thus, we need to recreate them.
-                            // Presumably, there are no inside relations now, so
-                            // we can use any suitable names.
-
-                            String relationName = "insideRelation" + count++;
-                            command.append("<relation name=\"" + relationName + "\"/>\n");
-
-                            command.append("<link port=\"" + name + "\" relation=\""
-                                    + relationName + "\"/>\n");
-
-                            command.append("<link port=\""
-                                    + insidePort.getName(IterateOverArray.this)
-                                    + "\" relation=\""
-                                    + relationName
-                                    + "\"/>\n");
+                        // If there isn't already a port with this name,
+                        // the MoML parser will create one.
+                        // Do not specify a class so that the MoMLParser
+                        // uses newPort() to create it; newPort() will
+                        // take care of the connections with the inside
+                        // port.
+                        command.append("<port name=\"" + name + "\">");
+                        if (insidePort instanceof IOPort) {
+                            IOPort castPort = (IOPort)insidePort;
+                            command.append(
+                                    "<property name=\"multiport\" value=\""
+                                    + castPort.isMultiport()
+                                    + "\"/>"
+                                    + "<property name=\"input\" value=\""
+                                    + castPort.isInput()
+                                    + "\"/>"
+                                    + "<property name=\"output\" value=\""
+                                    + castPort.isOutput()
+                                    + "\"/>");
                         }
+                        command.append("</port>\n");
 
-                        command.append("</entity>\n");
+                        // Set up inside connections. Note that if the outside
+                        // port was preserved from before, then it will have
+                        // lost its inside links when the inside relation was
+                        // deleted. Thus, we need to recreate them.
+                        // Presumably, there are no inside relations now, so
+                        // we can use any suitable names.
 
-                        // The MoML command is the description of the change request.
-                        setDescription(command.toString());
+                        String relationName = "insideRelation" + count++;
+                        command.append("<relation name=\"" + relationName + "\"/>\n");
 
-                        // Uncomment the following to see the (rather complicated)
-                        // MoML command that is issued.
-                        // System.out.println("--------in _addEntity() -------------------");
-                        // System.out.println(command.toString());
-                        // System.out.println("--------- context: " + context.getFullName());
-                        // System.out.println("-------------------------------------------");
+                        command.append("<link port=\"" + name + "\" relation=\""
+                                + relationName + "\"/>\n");
 
-                        try {
-                            // Disable reactions to added ports.
-                            _inAddEntity = true;
-                            super._execute();
-                        } finally {
-                            _inAddEntity = false;
-                        }
+                        command.append("<link port=\""
+                                + insidePort.getName(IterateOverArray.this)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+
+                    command.append("</entity>\n");
+
+                    // The MoML command is the description of the change request.
+                    setDescription(command.toString());
+
+                    // Uncomment the following to see the (rather complicated)
+                    // MoML command that is issued.
+                    // System.out.println("--------in _addEntity() -------------------");
+                    // System.out.println(command.toString());
+                    // System.out.println("--------- context: " + context.getFullName());
+                    // System.out.println("-------------------------------------------");
+
+                    try {
+                        // Disable reactions to added ports.
+                        _inAddEntity = true;
+                        super._execute();
+                    } finally {
+                        _inAddEntity = false;
                     }
                 }
-            };
+            }
+        };
         request.setUndoable(true);
         // Do this so that a single undo reverses the entire operation.
         request.setMergeWithPreviousUndo(true);
@@ -389,13 +389,17 @@ public class IterateOverArray extends TypedCompositeActor {
     /** Add a port to this actor. This overrides the base class to
      *  mirror the new port in the contained actor, if there is one.
      *  @param port The TypedIOPort to add to this actor.
-     *  @exception IllegalActionException If the port class is not
-     *   acceptable to this actor, or the port has no name.
+     *  @exception IllegalActionException If the port is not an instance
+     *   of IteratePort, or the port has no name.
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
-    protected void _addPort(final Port port)
+    protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
+        if (!(port instanceof IteratePort)) {
+            throw new IllegalActionException(this,
+            "IterateOverArray ports are required to be instances of IteratePort");
+        }
         super._addPort(port);
         if (!_inAddEntity) {
             // Create and connect a matching inside port on contained entities.
@@ -404,49 +408,61 @@ public class IterateOverArray extends TypedCompositeActor {
             // the time this executes.  Do not use MoML here because it
             // isn't necessary to generate any undo code.  _removePort()
             // takes care of the undo.
+            final IteratePort castPort = (IteratePort)port;
+
             ChangeRequest request = new ChangeRequest(
                     this,
                     "Add a port on the inside") {
-                    protected void _execute() throws Exception {
-                        // NOTE: We defer the construction of the MoML change request
-                        // to here because only at this point can we be sure that the
-                        // change request that triggered this has completed.
+                protected void _execute() throws Exception {
+                    // NOTE: We defer the construction of the MoML change request
+                    // to here because only at this point can we be sure that the
+                    // change request that triggered this has completed.
 
-                        synchronized(this) {
-                            // Create and connect a matching inside port on contained entities.
-                            String portName = port.getName();
+                    synchronized(this) {
+                        // Create and connect a matching inside port on contained entities.
+                        
+                        // NOTE: We assume this propagates to derived objects
+                        // because _addPort is called when MoML is parsed to add
+                        // a port to IterateOverArray. Even the IterateComposite
+                        // uses MoML to add this port, so this will result
+                        // in propagation.
+                        
+                        try {
+                            _inAddPort = true;
+                            String portName = castPort.getName();
                             Iterator entities = entityList().iterator();
                             if (entities.hasNext()) {
                                 Entity insideEntity = (Entity)entities.next();
                                 Port insidePort = insideEntity.getPort(portName);
-                                boolean createdInsidePort = false;
                                 if (insidePort == null) {
                                     insidePort = insideEntity.newPort(portName);
-                                    if (port instanceof IOPort
-                                            && insidePort instanceof IOPort) {
+                                    if (insidePort instanceof IOPort) {
                                         IOPort castInsidePort = (IOPort)insidePort;
-                                        IOPort castPort = (IOPort)port;
                                         castInsidePort.setInput(castPort.isInput());
                                         castInsidePort.setOutput(castPort.isOutput());
                                         castInsidePort.setMultiport(castPort.isMultiport());
                                     }
                                 }
-                                if (port instanceof IteratePort) {
-                                    ((IteratePort)port).associatePort(insidePort);
+                                if (insidePort instanceof MirrorPort) {
+                                    castPort.setAssociatedPort((MirrorPort)insidePort);
                                 }
+
                                 // Create a link only if it doesn't already exist.
                                 List connectedPorts = insidePort.connectedPortList();
                                 ComponentRelation newRelation = null;
-                                if (!connectedPorts.contains(port)) {
+                                if (!connectedPorts.contains(castPort)) {
                                     // There is no connection. Create one.
                                     newRelation = newRelation(uniqueName("relation"));
                                     insidePort.link(newRelation);
-                                    port.link(newRelation);
+                                    castPort.link(newRelation);
                                 }
                             }
+                        } finally {
+                            _inAddPort = false;
                         }
                     }
-                };
+                }
+            };
             requestChange(request);
         }
     }
@@ -638,6 +654,9 @@ public class IterateOverArray extends TypedCompositeActor {
     // Flag indicating that we are executing _addEntity().
     private boolean _inAddEntity = false;
 
+    // Flag indicating that we are executing _addPort().
+    private boolean _inAddPort = false;
+
     // Variable that reflects the current iteration count on the
     // inside.
     private Variable _iterationCount;
@@ -645,6 +664,96 @@ public class IterateOverArray extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    ///////////////////////////////////////////////////////////////////
+    //// IterateComposite
+    
+    /** This is a specialized composite actor for use in IterateOverArray.
+     *  In particular, it ensures that if ports are added or deleted
+     *  locally, then corresponding ports will be added or deleted
+     *  in the container.  That addition will result in appropriate
+     *  connections being made.
+     */
+    public static class IterateComposite extends TypedCompositeActor {
+        // NOTE: This has to be a static class so that MoML can
+        // instantiate it.
+        
+        /** Construct an actor with a name and a container.
+         *  @param container The container.
+         *  @param name The name of this actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
+         */
+        public IterateComposite(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+
+        /** Override the base class to return a specialized port.
+         *  @param name The name of the port to create.
+         *  @return A new instance of IteratePort, an inner class.
+         */
+        public Port newPort(String name) throws NameDuplicationException {
+            try {
+                return new IteratePort(this, name);
+            } catch (IllegalActionException ex) {
+                // This exception should not occur, so we throw a runtime
+                // exception.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+
+        /** Add a port to this actor. This overrides the base class to
+         *  add a corresponding port to the container using a change
+         *  request.
+         *  @param port The TypedIOPort to add to this actor.
+         *  @exception IllegalActionException If the port is not an instance of
+         *   MirrorPort, or the port has no name.
+         *  @exception NameDuplicationException If the port name collides with a
+         *   name already in the actor.
+         */
+        protected void _addPort(final Port port)
+                throws IllegalActionException, NameDuplicationException {
+            if (!(port instanceof MirrorPort)) {
+                throw new IllegalActionException(this,
+                "Ports in IterateOverArray$IterateComposite must be MirrorPort.");
+            }
+            super._addPort(port);
+            NamedObj context = getContainer();
+            if (!(context instanceof IterateOverArray)
+                    || ((IterateOverArray)context)._inAddPort) {
+                return;
+            }
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this,
+                    context,
+                    "Adjust ports and parameters") {
+                protected void _execute() throws Exception {
+                    // NOTE: We defer the construction of the MoML change request
+                    // to here because only at this point can we be sure that the
+                    // change request that triggered this has completed.
+                    StringBuffer moml = new StringBuffer("<port name=\"");
+                    moml.append(port.getName());
+                    moml.append("\">");
+                    if (((MirrorPort)port).isInput()) {
+                        moml.append("<property name=\"input\"/>");
+                    }
+                    if (((MirrorPort)port).isMultiport()) {
+                        moml.append("<property name=\"multiport\"/>");
+                    }
+                    if (((MirrorPort)port).isOutput()) {
+                        moml.append("<property name=\"output\"/>");
+                    }
+                    moml.append("</port>");
+                    setDescription(moml.toString());
+                    super._execute();
+                }
+            };
+            context.requestChange(request);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     //// IterateDirector
 
@@ -675,7 +784,8 @@ public class IterateOverArray extends TypedCompositeActor {
          *  actor returns false, then set a flag indicating to postfire() of
          *  this director to return false.
          *  @exception IllegalActionException If any called method of
-         *  of the contained actor throws it.
+         *   of the contained actor throws it, or if the contained
+         *   actor is not opaque.
          */
         public void fire() throws IllegalActionException {
             CompositeActor container = (CompositeActor)getContainer();
@@ -684,6 +794,11 @@ public class IterateOverArray extends TypedCompositeActor {
             while (actors.hasNext() && !_stopRequested) {
 
                 Actor actor = (Actor)actors.next();
+                if (!((ComponentEntity)actor).isOpaque()) {
+                    throw new IllegalActionException(container,
+                    "Inside actor is not opaque "
+                    + "(perhaps it needs a director).");
+                }
                 int result = Actor.COMPLETED;
                 int iterationCount = 0;
                 while (result != Actor.NOT_READY) {
@@ -868,12 +983,17 @@ public class IterateOverArray extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     //// IteratePort
 
-    /** This is a specialized port for handling type conversions between
+    /** This is a specialized port for IterateOverArray.
+     *  If the container is an instance of IterateOverArray,
+     *  then it handles type conversions between
      *  the array types of the ports of the enclosing IterateOverArray
      *  actor and the scalar types (or arrays with one less dimension)
-     *  of the actor that are contained.
+     *  of the actor that are contained.  It has a notion of an
+     *  "associated port," and ensures that changes to the status
+     *  of one port (whether it is input, output, or multiport)
+     *  are reflected in the associated port.
      */
-    public static class IteratePort extends TypedIOPort {
+    public static class IteratePort extends MirrorPort {
 
         // NOTE: This class has to be static because otherwise the
         // constructor has an extra argument (the first argument,
@@ -888,7 +1008,7 @@ public class IterateOverArray extends TypedCompositeActor {
          *  @exception IllegalActionException Not thrown in this base class.
          *  @exception NameDuplicationException Not thrown in this base class.
          */
-        public IteratePort(IterateOverArray container, String name)
+        public IteratePort(TypedCompositeActor container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
             // NOTE: Ideally, Port are created when an entity is added.
@@ -900,15 +1020,6 @@ public class IterateOverArray extends TypedCompositeActor {
             // setPersistent(false);
         }
 
-        /** Specify an associated inside port.  Once this is specified,
-         *  then any changes made to this port (its name, whether it
-         *  is an input or output, and whether it is a multiport) are
-         *  mirrored in the associated port.
-         */
-        public void associatePort(Port port) {
-            _associatedPort = port;
-        }
-
         /** Override the base class to convert the token to the element
          *  type rather than to the type of the port.
          *  @param token The token to convert.
@@ -916,18 +1027,16 @@ public class IterateOverArray extends TypedCompositeActor {
          *   invalid.
          */
         public Token convert(Token token) throws IllegalActionException {
-            // If this port is an output port, then we assume the data
-            // is being sent from the inside, and hence needs to be converted.
-            if (isOutput()) {
-                Type type = ((ArrayType)getType()).getElementType();
-                if (type.equals(token.getType())) {
-                    return token;
-                } else {
-                    Token newToken = type.convert(token);
-                    return newToken;
-                }
-            } else {
+            if (!(getContainer() instanceof IterateOverArray)
+                    || !isOutput()) {
                 return super.convert(token);
+            }
+            Type type = ((ArrayType)getType()).getElementType();
+            if (type.equals(token.getType())) {
+                return token;
+            } else {
+                Token newToken = type.convert(token);
+                return newToken;
             }
         }
 
@@ -940,6 +1049,10 @@ public class IterateOverArray extends TypedCompositeActor {
          */
         public void sendInside(int channelIndex, Token token)
                 throws IllegalActionException, NoRoomException {
+            if (!(getContainer() instanceof IterateOverArray)) {
+                super.sendInside(channelIndex, token);
+                return;
+            }
             Receiver[][] farReceivers;
             if (_debugging) {
                 _debug("send inside to channel " + channelIndex + ": "
@@ -979,58 +1092,5 @@ public class IterateOverArray extends TypedCompositeActor {
                 // This is allowed, just do nothing.
             }
         }
-
-        /** Override the base class to also set the associated port,
-         *  if there is one.
-         *  @exception IllegalActionException If changing the port status is
-         *   not permitted (for example, the port status is fixed by a class
-         *   definition).
-         */
-        public void setInput(boolean isInput) throws IllegalActionException {
-            super.setInput(isInput);
-            if (_associatedPort instanceof IOPort) {
-                ((IOPort)_associatedPort).setInput(isInput);
-            }
-        }
-
-        /** Override the base class to also set the associated port,
-         *  if there is one.
-         *  @exception IllegalActionException If changing the port status is
-         *   not permitted (for example, the port status is fixed by a class
-         *   definition).
-         */
-        public void setMultiport(boolean isMultiport) throws IllegalActionException {
-            super.setMultiport(isMultiport);
-            if (_associatedPort instanceof IOPort) {
-                ((IOPort)_associatedPort).setMultiport(isMultiport);
-            }
-        }
-
-        /** Override the base class to also set the associated port,
-         *  if there is one.
-         */
-        public void setName(String name)
-                throws IllegalActionException, NameDuplicationException {
-            super.setName(name);
-            if (_associatedPort != null) {
-                _associatedPort.setName(name);
-            }
-        }
-
-        /** Override the base class to also set the associated port,
-         *  if there is one.
-         *  @exception IllegalActionException If changing the port status is
-         *   not permitted (for example, the port status is fixed by a class
-         *   definition).
-         */
-        public void setOutput(boolean isOutput) throws IllegalActionException {
-            super.setOutput(isOutput);
-            if (_associatedPort instanceof IOPort) {
-                ((IOPort)_associatedPort).setOutput(isOutput);
-            }
-        }
-
-        // The associated port, if there is one.
-        private Port _associatedPort = null;
     }
 }

@@ -7,10 +7,18 @@
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
 
+      <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+          <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+              <property name="iterations" value="1"/>
+              <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}"/>
+          </property>
+      </entity>
+
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
       </entity>
 
       <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
