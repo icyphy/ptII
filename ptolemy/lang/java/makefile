@@ -127,7 +127,7 @@ JCLASS = $(JSRCS:%.java=%.class) \
 	JavaVisitor.class \
 	Yylex.class
 
-all: jclass
+all: JavaVisitor.class jclass
 install: jclass $(PTCLASSJAR)
 
 Yylex.java: Yylex
@@ -138,6 +138,17 @@ run_GenerateVisitor JavaVisitor.java: NodeTypes.def
 
 depend:
 	@echo "no dependencies in this directory"
+
+demo: PrintTree RegenerateCode
+PrintTree:
+	@echo "Print out the AST"
+	CLASSPATH=$(CLASSPATH) $(JAVA) \
+		ptolemy.lang.java.PrintTree ./nodetypes/IntLitNode.java
+
+RegenerateCode:
+	@echo "Regenerate the code"
+	CLASSPATH=$(CLASSPATH) $(JAVA) \
+		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
