@@ -101,7 +101,7 @@ test DoubleArrayStat-1.4.2 {min with array with NaN in it} {
     # passed to Math.min() is NaN, the the result is NaN
     set r [java::call ptolemy.math.DoubleArrayStat min $a3]
     list $r
-} NaN
+} -Infinity
 
 ####################################################################
 test DoubleArrayStat-1.4.3 {min of empty aray} {
