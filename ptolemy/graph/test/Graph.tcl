@@ -554,6 +554,5 @@ test Graph-7.5 {test hashCode()} {
 	set hicg1 [java::new java.lang.Integer $hcg1]
 	set nequ  [$hiog equals $hicg1]
 	list $equ $nequ
-#FIXME: The original test has {1 0} as the correct return value.
-} {0 0}
+} {1 0}
 
