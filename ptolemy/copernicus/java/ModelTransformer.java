@@ -228,6 +228,7 @@ public class ModelTransformer extends SceneTransformer {
         units.add(Jimple.v().newReturnVoidStmt());
 
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
 
         _removeSuperExecutableMethods(modelClass);
 
@@ -237,6 +238,7 @@ public class ModelTransformer extends SceneTransformer {
 
         // Since we've added classes and methods, update the hierarchy
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
          */
     ///////////////////////////////////////////////////////////////////

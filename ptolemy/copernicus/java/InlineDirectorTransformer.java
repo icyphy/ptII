@@ -42,37 +42,8 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.actor.IOPort;
 
-import soot.Body;
-import soot.jimple.Expr;
-import soot.Hierarchy;
-import soot.Local;
-import soot.Modifier;
-import soot.BooleanType;
-import soot.NullType;
-import soot.Options;
-import soot.RefType;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.IntType;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
-import soot.ValueBox;
-import soot.VoidType;
-import soot.jimple.DefinitionStmt;
-import soot.jimple.FieldRef;
-import soot.jimple.IntConstant;
-import soot.jimple.InterfaceInvokeExpr;
-import soot.jimple.InvokeExpr;
-import soot.jimple.InvokeStmt;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.NewExpr;
-import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.Stmt;
+import soot.*;
+import soot.jimple.*;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.util.Chain;
@@ -613,6 +584,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             //                   insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
 
     private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
@@ -1114,6 +1086,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             //               insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
     private CompositeActor _model;
 }

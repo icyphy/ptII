@@ -71,8 +71,7 @@ really a big deal.
 // for context classes don't exist in the method call graph.
 // We need a lightweight way of getting the method call graph for
 // these methods without creating a JimpleBody which is expensive.
-// FIXME: This also doesn't work because it doesn't take interfaces
-// into account.
+
 public class UnreachableMethodRemover extends SceneTransformer {
     /** Construct a new transformer
      */
@@ -117,6 +116,7 @@ public class UnreachableMethodRemover extends SceneTransformer {
             for (Iterator interfaces = theClass.getInterfaces().iterator();
                  interfaces.hasNext();) {
                 SootClass theInterface = (SootClass)interfaces.next();
+                // Except for InequalityTerm...
                 if (theInterface.getName().equals(
                             "ptolemy.graph.InequalityTerm")) {
                     continue;

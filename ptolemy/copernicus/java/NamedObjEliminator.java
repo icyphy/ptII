@@ -99,87 +99,9 @@ public class NamedObjEliminator extends SceneTransformer {
         int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        List modifiedConstructorClassList = new LinkedList();
-
-        // Loop over all the classes
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-
-            SootClass theClass = (SootClass) i.next();
-            if (SootUtilities.derivesFrom(theClass,
-                    PtolemyUtilities.actorClass) ||
-                    SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.compositeActorClass)) {
-                System.out.println("changing superclass for " + theClass);
-                theClass.setSuperclass(PtolemyUtilities.objectClass);
-                // Fix the constructor for the actor to take no
-                // arguments.
-
-                // FIXME: Here we assume that there is just one
-                // constructor.. This will throw an exception if there
-                // is more than one, in which case we need to improve
-                // this code.
-                SootMethod method = null;
-                try {
-                    method = theClass.getMethodByName("<init>");
-                } catch (RuntimeException ex) {
-                    System.out.println("Could not get method <init> by name "
-                            + "from class " + theClass );
-                    throw ex;
-                }
-                method.setParameterTypes(Collections.EMPTY_LIST);
-                modifiedConstructorClassList.add(theClass);
-
-                // Dance so that indexes in the Scene are properly updated.
-                theClass.removeMethod(method);
-                theClass.addMethod(method);
-
-                // System.out.println("method = " + method);
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
-                    if(unit.containsInvokeExpr()) {
-                        ValueBox box = unit.getInvokeExprBox();
-                        Value value = box.getValue();
-                        if (value instanceof SpecialInvokeExpr) {
-                            // Fix super.<init> calls. constructor...
-                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            if (expr.getBase().equals(body.getThisLocal()) &&
-                                    expr.getMethod().getName().equals("<init>")) {
-                                System.out.println("replacing constructor = "
-                                        + unit + " in method " + method);
-                                
-                                // Replace with zero arg object constructor.
-                                box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                     (Local)expr.getBase(),
-                                                     PtolemyUtilities.objectConstructor,
-                                                     Collections.EMPTY_LIST));
-                            }
-                        }
-                    } else if(unit instanceof IdentityStmt) {
-                        IdentityStmt identityStmt = (IdentityStmt)unit;
-                        Value value = identityStmt.getRightOp();
-                        if (value instanceof ParameterRef) {
-                            // Parameter values are null.
-                            body.getUnits().swapWith(identityStmt,
-                                    Jimple.v().newAssignStmt(
-                                            identityStmt.getLeftOp(),
-                                            NullConstant.v()));
-                        }
-                    }
-                }
-
-                // Remove all the interfaces that it implements??
-                //                theClass.getInterfaces().clear();
-            }
-        }
-
-        // Reset the hierarchy, since we've changed superclasses and such.
-        Scene.v().setActiveHierarchy(new Hierarchy());
-
+        
+        // First remove most method invocations that are not
+        // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
 
@@ -218,26 +140,8 @@ public class NamedObjEliminator extends SceneTransformer {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
                         
-                        if (value instanceof SpecialInvokeExpr) {
-                            // If we're constructing one of our actor classes,
-                            // then switch to the object constructor.
-                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            SootClass declaringClass =
-                                expr.getMethod().getDeclaringClass();
-                            if (expr.getMethod().getName().equals("<init>") && 
-                                    modifiedConstructorClassList.contains(
-                                            declaringClass)) {
-                                System.out.println(
-                                        "replacing constructor invocation = "
-                                        + unit + " in method " + method);
-
-                                // Replace with zero arg object constructor.
-                                box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                     (Local)expr.getBase(),
-                                     declaringClass.getMethod("void <init>()"),
-                                     Collections.EMPTY_LIST));
-                            }
-                        } else if (value instanceof InvokeExpr) {
+                        if ((value instanceof InvokeExpr) && 
+                                !(value instanceof SpecialInvokeExpr)) {
                             // remove attachText
                             InvokeExpr expr = (InvokeExpr)value;
                             if (expr.getMethod().getSubSignature().equals(
@@ -293,91 +197,149 @@ public class NamedObjEliminator extends SceneTransformer {
                                 body.getUnits().remove(unit);
                             }
                         }
-                         
-                 //    // If any box is removable, then remove the statement.
-//                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-//                          boxes.hasNext();) {
-//                         ValueBox box = (ValueBox)boxes.next();
+                    }
+                }
+            }
+        }
+        
 
-//                         Value value = box.getValue();
-//                         Type type = value.getType();
+        List modifiedConstructorClassList = new LinkedList();
 
-//                         // If we're constructing one of our actor classes,
-//                         // then switch to the object constructor.
-//                         if (value instanceof SpecialInvokeExpr) {
-//                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-//                             SootClass declaringClass =
-//                                 expr.getMethod().getDeclaringClass();
-//                             if (expr.getMethod().getName().equals("<init>") && 
-//                                     modifiedConstructorClassList.contains(
-//                                             declaringClass)) {
-//                                 System.out.println(
-//                                         "replacing constructor invocation = "
-//                                         + unit + " in method " + method);
+        // Loop over all the classes
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
 
-//                                 // Replace with zero arg object constructor.
-//                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-//                                      (Local)expr.getBase(),
-//                                      declaringClass.getMethod("void <init>()"),
-//                                      Collections.EMPTY_LIST));
-//                                 break;
-//                             }
+            SootClass theClass = (SootClass) i.next();
+            if (SootUtilities.derivesFrom(theClass,
+                    PtolemyUtilities.actorClass) ||
+                    SootUtilities.derivesFrom(theClass,
+                            PtolemyUtilities.compositeActorClass)) {
+                System.out.println("changing superclass for " + theClass);
+                theClass.setSuperclass(PtolemyUtilities.objectClass);
+                // Fix the constructor for the actor to take no
+                // arguments.
+
+                // FIXME: Here we assume that there is just one
+                // constructor.. This will throw an exception if there
+                // is more than one, in which case we need to improve
+                // this code.
+                SootMethod method = null;
+                try {
+                    method = theClass.getMethodByName("<init>");
+                } catch (RuntimeException ex) {
+                    System.out.println("Could not get method <init> by name "
+                            + "from class " + theClass );
+                    throw ex;
+                }
+                method.setParameterTypes(Collections.EMPTY_LIST);
+                modifiedConstructorClassList.add(theClass);
+
+                // Dance so that indexes in the Scene are properly updated.
+                theClass.removeMethod(method);
+                theClass.addMethod(method);
+
+                // System.out.println("method = " + method);
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+
+                for (Iterator units = body.getUnits().snapshotIterator();
+                     units.hasNext();) {
+                    Stmt unit = (Stmt)units.next();
+                   
+                    if(unit.containsInvokeExpr()) {
+                        ValueBox box = unit.getInvokeExprBox();
+                        Value value = box.getValue();
+                        if (value instanceof SpecialInvokeExpr) {
+                            // Fix super.<init> calls. constructor...
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+                            if (expr.getBase().equals(body.getThisLocal()) &&
+                                    expr.getMethod().getName().equals("<init>")) {
+                                System.out.println("replacing constructor = "
+                                        + unit + " in method " + method);
+                                
+                                // Replace with zero arg object constructor.
+                                box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                                     (Local)expr.getBase(),
+                                                     PtolemyUtilities.objectConstructor,
+                                                     Collections.EMPTY_LIST));
+                                //          body.getUnits().remove(unit);
+                            }
+                        }
+                    } else if(unit instanceof IdentityStmt) {
+                        IdentityStmt identityStmt = (IdentityStmt)unit;
+                        Value value = identityStmt.getRightOp();
+                        if (value instanceof ParameterRef) {
+                            System.out.println("value = " + value);
+                            // Parameter values are null.  Note that
+                            // we need to make sure that the
+                            // assignment to null happens after all
+                            // the identity statements, otherwise the
+                            // super constructor will be implicitly
+                            // called.
+                            body.getUnits().remove(identityStmt);
+                            body.getUnits().insertBefore(
+                                    Jimple.v().newAssignStmt(
+                                            identityStmt.getLeftOp(),
+                                            NullConstant.v()),
+                                    body.getFirstNonIdentityStmt());
+                        }//  else if(value instanceof ThisRef) {
+//                             // Fix the type of thisRefs.
+//                             ValueBox box = identityStmt.getRightOpBox();
+//                             box.setValue(
+//                                     Jimple.v().newThisRef(
+//                                             RefType.v(PtolemyUtilities.objectClass)));
 //                         }
-//                         // remove attachText
-//                         if (value instanceof InvokeExpr) {
-//                             InvokeExpr expr = (InvokeExpr)value;
-//                             if (expr.getMethod().getSubSignature().equals(
-//                                     PtolemyUtilities.attachTextMethod.getSubSignature())) {
-//                                 body.getUnits().remove(unit);
-//                                 break;
-//                             }
-//                             if (expr.getMethod().getSubSignature().equals(
-//                                     PtolemyUtilities.setNameMethod.getSubSignature())) {
-//                                 body.getUnits().remove(unit);
-//                                 break;
-//                             }
-//                             if (expr.getMethod().getName().equals("_debug")) {
-//                                 body.getUnits().remove(unit);
-//                                 break;
-//                             }
-//                             // Inline namedObj methods on the
-//                             // attribute.
-//                             // FIXME: This should do the
-//                             // whole traceback business to ensure that
-//                             // we are calling the methods on the
-//                             // toplevel object.  This assumes we've
-//                             // already removed other namedobj methods
-//                             // on the object objects already.  See
-//                             // InlineParameterTransformer and
-//                             // InlinePortTransformer
-//                             if (expr.getMethod().getSubSignature().equals(
-//                                     PtolemyUtilities.getFullNameMethod.getSubSignature())) {
-//                                 box.setValue(StringConstant.v(
-//                                         _model.getFullName()));
-//                             }
-//                             if (expr.getMethod().getSubSignature().equals(
-//                                     PtolemyUtilities.getNameMethod.getSubSignature())) {
-//                                 box.setValue(StringConstant.v(
-//                                         _model.getName()));
-//                             }
-//                         }
-//                         // Remove other remaining method invocations.
-//                         // &&
-//                         //        SootUtilities.derivesFrom(theClass,
-//                         //                PtolemyUtilities.actorClass)
-//                         /* if (value instanceof InvokeExpr) {
-//                            InvokeExpr expr = (InvokeExpr)value;
-//                            SootClass methodClass =
-//                            expr.getMethod().getDeclaringClass();
-//                            if (SootUtilities.derivesFrom(methodClass,
-//                            PtolemyUtilities.namedObjClass)) {
-//                            System.out.println(
-//                            "removing namedobj call = " + unit
-//                            + " in method " + method);
-//                            body.getUnits().remove(unit);
-//                            break;
-//                            }
-//                            }*/
+                    }
+                }
+
+                // Remove all the interfaces that it implements??
+                //                theClass.getInterfaces().clear();
+            }
+        }
+
+        // Reset the hierarchy, since we've changed superclasses and such.
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+
+        // Fix the specialInvokes.
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+
+            SootClass theClass = (SootClass) i.next();
+            // Loop through all the methods in the class.
+            for (Iterator methods = theClass.getMethods().iterator();
+                 methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                
+                // System.out.println("method = " + method);
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                
+                for (Iterator units = body.getUnits().snapshotIterator();
+                     units.hasNext();) {
+                    Stmt unit = (Stmt)units.next();
+                    if (unit.containsInvokeExpr()) {
+                        ValueBox box = unit.getInvokeExprBox();
+                        Value value = box.getValue();
+                        
+                        if (value instanceof SpecialInvokeExpr) {
+                            // If we're constructing one of our actor classes,
+                            // then switch to the object constructor.
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+                            SootClass declaringClass =
+                                expr.getMethod().getDeclaringClass();
+                            if (expr.getMethod().getName().equals("<init>") && 
+                                    modifiedConstructorClassList.contains(
+                                            declaringClass)) {
+                                System.out.println(
+                                        "replacing constructor invocation = "
+                                        + unit + " in method " + method);
+
+                                // Replace with zero arg object constructor.
+                                box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                     (Local)expr.getBase(),
+                                     declaringClass.getMethod("void <init>()"),
+                                     Collections.EMPTY_LIST));
+                            }
+                        }
                     }
                 }
             }
@@ -433,7 +395,8 @@ public class NamedObjEliminator extends SceneTransformer {
                     }
                 }
             }
-        }
+        }/*
+         */
     }
 
     // Return true if the type is one that should not appear in generated
@@ -452,7 +415,9 @@ public class NamedObjEliminator extends SceneTransformer {
                     SootUtilities.derivesFrom(refClass,
                             PtolemyUtilities.relationClass) ||
                     SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.portClass)) {
+                            PtolemyUtilities.portClass) ||
+                    SootUtilities.derivesFrom(refClass,
+                            PtolemyUtilities.entityClass)) {
                 return true;
             }
         }

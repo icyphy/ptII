@@ -43,7 +43,9 @@ PTPACKAGE = 	@modelName@
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = 
+
+JCLASS = 	@javaClasses@
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS)
@@ -285,7 +287,9 @@ runTreeShakeObfuscate:
 # Rules to run gcj, the GNU Java -> Native compiler
 # This code is very experimental, and not likely to work
 
+
 GCJ_DIR =	/usr/local
+
 # The GNU C/Java compiler 
 GCJ =		$(GCJ_DIR)/bin/gcj
 GCJ_LIBDIR =	$(GCJ_DIR)/lib

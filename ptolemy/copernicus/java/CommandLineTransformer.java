@@ -39,25 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
-import soot.Body;
-import soot.Hierarchy;
-import soot.IntType;
-import soot.Local;
-import soot.Modifier;
-import soot.NullType;
-import soot.Options;
-import soot.BooleanType;
-import soot.RefType;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
-import soot.ValueBox;
-import soot.VoidType;
+import soot.*;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
@@ -156,6 +138,7 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
 
         // Optimizations.
         // We know that we will never parse classes, so throw away that code.
@@ -392,6 +375,7 @@ public class CommandLineTransformer extends SceneTransformer {
             SootMethod method2 = Scene.v().getMethod(method.toString());
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
 
     /** Default value for the iterations command line parameter

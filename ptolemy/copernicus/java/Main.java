@@ -109,10 +109,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                                               WatchDogTimer.v()));
 
-	// Generate the makefile files in outDir
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel)));
-
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
         // so that we can
@@ -135,6 +131,10 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
+
+	// Generate the makefile files in outDir
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
@@ -273,12 +273,12 @@ public class Main extends KernelMain {
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-               
+           
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -329,9 +329,11 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ib",
                         InvocationBinder.v()));
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
                         NamedObjEliminator.v(_toplevel)));
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
         
