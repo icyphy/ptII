@@ -56,8 +56,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 proc autoDeepCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
-	if { [regexp {ComplexDivide.xml} $file] \
-	    || [regexp {expression_bug.xml} $file] \
+	if { [regexp {expression_bug.xml} $file] \
 	    || [regexp {Expression14.xml} $file] \
 	     } {
 	    test "Auto" "Automatic test in file $file" {
