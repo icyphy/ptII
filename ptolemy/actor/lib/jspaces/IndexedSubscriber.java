@@ -172,17 +172,17 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
         output.setTypeEquals(defaultToken.getToken().getType());
         try {
             _minTemplate = new IndexEntry(_entryName, "minimum", null);
-            IndexEntry indexmin;
+            IndexEntry indexMinimum;
             if (_blocking) {
-                indexmin = (IndexEntry)
+                indexMinimum = (IndexEntry)
                     _space.read(_minTemplate, null, Long.MAX_VALUE);
             } else {
                 //read for 10 seconds.
                 // FIXME: should 10000 be a paramter?
                 while (true) {
-                    indexmin =
+                    indexMinimum =
                         (IndexEntry)_space.read(_minTemplate, null, 10000);
-                    if (indexmin == null) {
+                    if (indexMinimum == null) {
                         System.err.println(getName() +
                                 ": The publisher (min index) is not ready." +
                                 " Try again...");
@@ -192,20 +192,20 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                 }
             }
 
-            long minimum = indexmin.getPosition();
+            long minimum = indexMinimum.getPosition();
 
             _maxTemplate = new IndexEntry(_entryName, "maximum", null);
-            IndexEntry indexmax;
+            IndexEntry indexMaximum;
             if (_blocking) {
-                indexmax = (IndexEntry)
+                indexMaximum = (IndexEntry)
                     _space.read(_maxTemplate, null, Long.MAX_VALUE);
             } else {
                 while (true) {
                     // read for 10 seconds.
                     // FIXME: should 10000 be a paramter?
-                    indexmax =
+                    indexMaximum =
                         (IndexEntry)_space.read(_maxTemplate, null, 10000);
-                    if (indexmax == null) {
+                    if (indexMaximum == null) {
                         System.err.println(getName() +
                                 " The publisher (max index) is not ready. "+
                                 " Try again...");
@@ -214,7 +214,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                     }
                 }
             }
-            long maximum = indexmax.getPosition();
+            long maximum = indexMaximum.getPosition();
 
             // The template does not consider the serial number.
             TokenEntry template = new TokenEntry(_entryName, null, null);
@@ -390,22 +390,22 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                                 System.out.println(getName() +
                                         " read null from space");
                                 /* check min indecies
-                                   IndexEntry indexmin ;
+                                   IndexEntry indexMinimum ;
                                    try {
-                                   indexmin = (IndexEntry)_space.read(
+                                   indexMinimum = (IndexEntry)_space.read(
                                    _minTemplate, null, Long.MAX_VALUE);
                                    } catch (Exception e) {
                                    throw new InvalidStateException(_container,
                                    "error reading space." +
                                    e.getMessage());
                                    }
-                                   if (_indexmin != null &&
+                                   if (_indexMinimum != null &&
                                    _lastRead.getSerialNumber() >=
-                                   indexmin.position.longValue()) {
+                                   indexMinimum.position.longValue()) {
                                    finished = true;
                                    } else {
                                    _lastRead.setSerialNumber(
-                                   indexmin.position.longValue());
+                                   indexMinimum.position.longValue());
                                    }*/
                                 finished = true;
                             } else {
