@@ -14,6 +14,57 @@
 <h2>Major Features that are new in Ptolemy 3.0 </h2>
 <menu>
 
+<li> Continuous Time rework for improved mixed signal and
+hybrid systems semantics
+(Haiyang Zheng, Jie Liu (Parc).
+
+<li> <a href="../ptolemy/domains/ci/doc/main.htm">Component Interaction Domain</a>
+(Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
+both data-driven and demand-driven styles of computation.
+
+<li> Expression language rework to create a full-featured, functional
+and higher-order expression language with extensive support for
+composite types such as matrices, arrays, and records;
+the expression language is also now fully integrated with the Ptolemy II
+type system
+ (Steve Neuendorffer, Edward A. Lee).
+
+<li> Configurations have been reworked to make it much easier to
+create standalone tools that extract portions of the Ptolemy II
+infrastructure and have customized user interfaces, documentation,
+and actor and director libraries.
+Configurations have been refactored into
+separate directories in <CODE>$PTII/ptolemy/configs</CODE>,
+and one example of such a standalone tool, HyVisual, is provided.
+
+FIXME: Python.
+
+<li> Updates to Vergil, the user interface for building models
+(Steve Neuendorffer, Edward A. Lee, John Reekie):
+	<menu>
+	<li> Run buttons on the toolbar and hotkeys.
+        <li> Persistent window sizing and placement.
+	<li> Undo/Redo.
+	<li> Port Parameters.
+	<li><CODE>vergil -help</CODE> will list the possible configurations.
+	<li> A full-screen mode was created for viewing Ptolemy II
+	models.  This could be used, for example, in presentations.
+        </menu>
+
+<li> Other user interface improvements
+(Steve Neuendorffer, Edward A. Lee):
+        <menu>
+        <li> An infrastructure has been provided for creating
+        interactive shells, and an expression parser, Python shell,
+        and Tcl shell are provided (under File:New).
+	<li> GUI components for viewing Ptolemy II data,
+	as given in the expression language. Files with the extension .ptd are
+	now
+opened by a token viewer. The default viewer is a text editor, but if
+the data is a matrix, then the matrix viewer is used.
+        </menu>
+
+
 <li> HSIF Support
 (Haiyang Zheng)
  <br>
@@ -22,12 +73,12 @@ The Hybrid System Interchange Format (HSIF), was developed by the
 as part of the <a href="http://www.isis.vanderbilt.edu/Projects/mobies/default.html#in_browser">ISIS MoBIES</a> effort.
 The HSIF documentation states:
 
-
+<quote>
 "The goal of HSIF is to define an interchange format for hybrid system
 models that can be shared between modeling and analysis tools. HSIF
 models represent dynamic systems, whose dynamics includes both
 continuous and discrete behaviors."
-
+</quote>
 
 <br> Haiyang Zheng developed a set of XSLT files that convert
  HSIF into MoML, the XML format used to represent Ptolemy II Models.
@@ -35,36 +86,6 @@ continuous and discrete behaviors."
  <br>See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
 </li>
 
-<li> Expression language rework
- (Steve Neuendorffer, Edward A. Lee)
-
-
-<li> Continuous Time rework
-(Haiyang Zheng, Jie Liu (Parc)
-
-<li> <a href="../ptolemy/domains/ci/doc/main.htm">Component Interaction Domain</a>
-(Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
-both event-driven and demand-driven styles of computation.
-
-<li> Vergil updates
-(Steve Neuendorffer, Edward A. Lee, John Reekie)
- Vergil has been improved
- and the following features have been added
-	<menu>
-	<li> Run buttons on the toolbar and hotkeys. 
-	<li> Undo/Redo
-	<li> Port Parameters
-	<li> GUI components for viewing Ptolemy II data,
-	as given in the expression language. Files with the extension .ptd are
-	now
-opened by a token viewer. The default viewer is a text editor, but if
-the data is a matrix, then the matrix viewer is used.
-	<li> Ptolemy II configurations have been refactored into
-	separate directories in <CODE>$PTII/ptolemy/configs</CODE>
-
-	<li><CODE>vergil -help</CODE> will list the possible configurations.
-	<li> A full-screen mode was created for viewing Ptolemy II
-	models.  This could be used, for example, in presentations.
 <li> Higher Order Components
 <a href="codeDoc/ptolemy/actor/hoc/MultiInstanceComposite.html">MultiInstanceComposite</a>
 (Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.)
