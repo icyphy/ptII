@@ -94,7 +94,7 @@ of the integer.
 
 <p>This actor is a class which implements SerialPortEventListener.
 This means that when serial events (such as DATA_AVAILABLE) occur,
-this actor's serialEvent() method gets called.  the serialEvent()
+the serialEvent() method gets called.  The serialEvent()
 method calls the director's fireAtCurrentTime() method, triggering
 a call to fire().
 
