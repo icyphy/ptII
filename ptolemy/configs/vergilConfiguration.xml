@@ -5,6 +5,9 @@
 
   <doc>Configuration to run but not edit Ptolemy II models</doc>
 
+  <!-- The library of all icons. -->
+  <input source="../vergil/lib/rootIconLibrary.xml"/>
+
   <!-- Factories for effigies. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
     <doc name="description">Block Diagram Model</doc>
