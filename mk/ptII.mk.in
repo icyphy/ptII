@@ -349,6 +349,10 @@ PTLEJOS_DIR =	@PTLEJOS_DIR@
 # matlab was found.
 PTMATLAB_DIR =	@PTMATLAB_DIR@
 
+# Set to mescal and used in $PTII/ptolemy/makefile 
+# if $PTII/ptolemy/mescal was found
+PTMESCAL_DIR=	@PTMESCAL_DIR@
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
