@@ -2,9 +2,7 @@
 # Tree shake a demo: Build the minimal jar file and then run it
 # Usage:
 #       treeshake pathToJarExecutable treeshakejarfile \
-#                 [-main Mainclass] java_commands . . .
-#  or
-#       treeshake pathToJarExecutable treeshakejarfile -c filelistingclasses \ 
+#                 [-c filelistingclasses] \ 
 #                 [-main Mainclass] java_commands . . .
 #
 #   The first java_command is expected to be the java interpreter
@@ -73,8 +71,6 @@ fi
 
 javaCommand=$1
 
-
-
 # We can't use tmp here because under cygwin will remap /tmp
 # to c:/cygwin/tmp, and java will not be able to find it
 manifest=$PTII/treeshake_manifest$$.txt
@@ -82,9 +78,9 @@ touch $manifest
 
 # If the -main argument was not present, try to find a class
 if [ "$mainClass" = "" ]; then
-    # Find the class that includes main()
-    # This is a bit of a hack, we look for a command line argument that
-    # starts with "ptolemy."
+    # Find the class that includes main() This is a bit of a hack, and
+    # most of the time, won't work.  We look for a command line
+    # argument that starts with "ptolemy."
     for arg in $@
     do
 	echo "$arg" | egrep "^ptolemy\."
@@ -109,7 +105,7 @@ if [ "$fileListingClasses" = "" ]; then
     shift
     ptolemyFiles=`"$javaCommand" -verbose ${1+"$@"} | \
         egrep '^\[Loaded ' | \
-        egrep 'Loaded (ptolemy|com.microstar|diva)' | \
+        egrep -v 'Loaded (java|sun|com.sun)' | \
         awk '{print substr($2, 1, length($2)-1)}' | \
         sed 's@\.@/@g' | awk '{print $1 ".class"}'`
     #set +x
