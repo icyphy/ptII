@@ -51,6 +51,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
 A histogram plotter.  This plotter contains an instance of the Histogram
@@ -69,6 +70,12 @@ So for example, if <i>o = w/2</i>,
 then each bin represents values from <i>nw</i> to
 (<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
 The default offset is 0.5, half the default bin width, which is 1.0.
+<p>
+This actor has a <i>legend</i> parameter,
+which gives a comma-separated list of labels to attach to
+each dataset.  Normally, the number of elements in this list
+should equal the number of input channels, although this
+is not enforced.
 
 @see ptolemy.plot.Histogram
 
@@ -95,6 +102,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                 new DoubleToken(1.0));
         binOffset = new Parameter(this, "binOffset",
                 new DoubleToken(0.5));
+        legend = new StringAttribute(this, "legend");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,6 +122,11 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  This parameter has type double, with default value 0.5.
      */
     public Parameter binOffset;
+
+    /** A comma-separated list of labels to attach to each data set.
+     *  This is always a string, with no enclosing quotation marks.
+     */
+    public StringAttribute legend;
 
     /** The histogram object. */
     public transient Histogram histogram;
@@ -142,6 +155,19 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
            if (histogram != null) {
                histogram.setBinOffset(offset);
            }
+       } else if (attribute == legend) {
+            if (histogram != null) {
+                histogram.clearLegends();
+                String value = legend.getExpression();
+                if (value != null && !value.trim().equals("")) {
+                    StringTokenizer tokenizer = new StringTokenizer(value, ",");
+                    int channel = 0;
+                    while (tokenizer.hasMoreTokens()) {
+                        histogram.addLegend(channel++,
+                               tokenizer.nextToken().trim());
+                    }
+                }
+            }
        } else {
            super.attributeChanged(attribute);
        }
@@ -266,7 +292,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
 		// java.awt.Component.setBackground(color) says that
 		// if the color "parameter is null then this component
 		// will inherit the  background color of its parent."
-                //plot.setBackground(_container.getBackground());
+                //histogram.setBackground(_container.getBackground());
 		histogram.setBackground(null);
             }
         }
@@ -294,6 +320,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         try {
             attributeChanged(binWidth);
             attributeChanged(binOffset);
+            attributeChanged(legend);
         } catch (IllegalActionException ex) {
             // Safe to ignore because user would
             // have already been alerted.

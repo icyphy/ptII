@@ -41,6 +41,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -56,12 +57,20 @@ import ptolemy.plot.plotml.PlotMLParser;
 Base class for plotters.  This class contains an instance of the
 Plot class from the Ptolemy plot package as a public member.
 It provides a parameter that determines whether to fill the plot
-when wrapup is invoked.  It also provides a parameter
+when wrapup is invoked. It also has a <i>legend</i> parameter,
+which gives a comma-separated list of labels to attach to
+each dataset.  Normally, the number of elements in this list
+should equal the number of input channels, although this
+is not enforced.
+<p>
+This actor also provides a parameter
 <i>startingDataset</i>, which specifies the starting point
 for the number of the dataset to use to create the plots.
 This defaults to zero, but will typically be set to a positive
 number when more than one instance of a plotter actor shares
 the same plot object.
+
+@see ptolemy.plot.Plot
 
 @author  Edward A. Lee
 @version $Id$
@@ -83,6 +92,7 @@ public class Plotter extends TypedAtomicActor
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
         fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
+        legend = new StringAttribute(this, "legend");
         startingDataset = new Parameter(this, "startingDataset",
                 new IntToken(0));
         startingDataset.setTypeEquals(BaseType.INT);
@@ -99,6 +109,11 @@ public class Plotter extends TypedAtomicActor
      */
     public Parameter fillOnWrapup;
 
+    /** A comma-separated list of labels to attach to each data set.
+     *  This is always a string, with no enclosing quotation marks.
+     */
+    public StringAttribute legend;
+
     /** The starting dataset number to which data is plotted.
      *  This parameter has type IntToken, with default value 0.
      *  Its value must be non-negative.
@@ -108,18 +123,32 @@ public class Plotter extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Throw an exception if the specified new value for
-     *  <i>startingDataset</i> is negative.
+    /** If the attribute is <i>legend</i>, then parse the string
+     *  and set the legend.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>startingDataset</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == startingDataset) {
+        if (attribute == legend) {
+            if (plot != null) {
+                plot.clearLegends();
+                String value = legend.getExpression();
+                if (value != null && !value.trim().equals("")) {
+                    StringTokenizer tokenizer = new StringTokenizer(value, ",");
+                    int channel = 0;
+                    while (tokenizer.hasMoreTokens()) {
+                        plot.addLegend(channel++, tokenizer.nextToken().trim());
+                    }
+                }
+            }
+        } else if (attribute == startingDataset) {
             if(((IntToken)startingDataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
                         "startingDataset: negative value is not allowed.");
             }
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -271,6 +300,13 @@ public class Plotter extends TypedAtomicActor
             _configureSources = null;
             _configureTexts = null;
             _configureBases = null;
+        }
+        // Configure the new plot with legends, if appropriate.
+        try {
+            attributeChanged(legend);
+        } catch (IllegalActionException ex) {
+            // Safe to ignore because user would
+            // have already been alerted.
         }
     }
 
