@@ -44,23 +44,33 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	test
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
 # Keep this list alphabetized.
 JSRCS = Test1Main.java \
         Test2Main.java
 
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	Backtrack.tcl
+
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
 OTHER_FILES_TO_BE_JARED = 
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	#test
-
+MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -68,7 +78,20 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: suball
+tests:: $(EXTRA_SRCS) backtrack test_jsimple
+
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
+
+
+backtrack: suball transform jclass
+
+transform:
 	# Transform the source and add prefix "ptolemy.backtrack.test"
 	# to the package name.
 	# The output root dir is $(ROOT).
@@ -83,9 +106,7 @@ all: suball
 	    $$x/*.java; \
 	done
 
-	# Compile all the tests in the current directory.
-	$(MAKE) jclass
-
+run:
 	# Finally, run the test program.
 	for test in $(JSRCS); do \
 	  "$(JAVA)" \
@@ -93,11 +114,10 @@ all: suball
 	    ptolemy.backtrack.test.`basename $$test .java`; \
 	done
 
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
-
 # Remove the ptolemy directory 
 # It is generated during the testing, and should not be preserved.
 KRUFT = ptolemy
 
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
+
