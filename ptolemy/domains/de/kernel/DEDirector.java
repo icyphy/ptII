@@ -39,6 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
 
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -141,7 +142,7 @@ import java.util.Enumeration;
  *  reaches that future time.  This may not always be the expected behavior.
  *  The Delay actor in the DE library behaves this way.
  *
- *  @author Lukito Muliadi, Edward A. Lee
+ *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
  *  @see CalendarQueue
@@ -339,27 +340,7 @@ public class DEDirector extends Director {
         // so we don't check for it here.
 
         // Set the depth equal to the depth of the actor.
-        // NOTE: This used to set it to one more than the depth of the
-        // actor, but with the new DEDirector, this results in double
-        // firings where only one is expected.  Setting equal to the
-        // depth of the actor ensures that events that are simultaneous
-        // with the refiring will be seen.  The depth of the actor
-        // can only be gotten from a receiver, so this is a bit baroque.
-        // Since that depth is computed by this class, would it be worth
-        // saving it?  It could go into a hashtable indexed by actor.
-        Enumeration iports = actor.inputPorts();
-        while (iports.hasMoreElements()) {
-            IOPort p = (IOPort) iports.nextElement();
-            Receiver[][] r = p.getReceivers();
-            if (r != null && r.length != 0
-                    && r[0] != null && r[0].length != 0) {
-                DEReceiver rr = (DEReceiver) r[0][0];
-                _enqueueEvent(actor, time, rr._getDepth());
-                return;
-            }
-        }
-        // No receivers found, so the depth is zero (highest priority).
-        _enqueueEvent(actor, time, 0);
+        _enqueueEvent(actor, time);
     }
 
     /** Return the time stamp of the next event in the queue with time stamp
@@ -376,6 +357,7 @@ public class DEDirector extends Director {
             // Save items to reinsert into queue.
             LinkedList eventsToPutBack = new LinkedList();
             while (nextTime <= getCurrentTime()) {
+                if(_debugging) _debug("temporarily remove event.");
                 eventsToPutBack.add(_eventQueue.take());
                 next = _eventQueue.get();
                 nextTime = next.timeStamp();
@@ -383,11 +365,13 @@ public class DEDirector extends Director {
             // Put back events that need to be put back.
             Iterator events = eventsToPutBack.iterator();
             while (events.hasNext()) {
+                if(_debugging) _debug("put dequeue current event back.");
                 _eventQueue.put((DEEvent)events.next());
             }
             return nextTime;
         } catch (IllegalActionException e) {
             // The queue is empty.
+            System.out.println(e.getMessage());
             return getStopTime();
         }
     }
@@ -433,6 +417,7 @@ public class DEDirector extends Director {
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
+        //if (_debugging) _debug(getContainer().description());
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -582,25 +567,23 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Put a pure event into the event queue with the specified time stamp
-     *  and depth. A "pure event" is one with no token, used to request
+    /** Put a pure event into the event queue with the specified time stamp.
+     *  A "pure event" is one with no token, used to request
      *  a firing of the specified actor.
      *  Note that the actor may have no new data at its input ports
      *  when it is fired.
-     *  The depth is used to prioritize events that have equal
-     *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  The microstep for the queued event is equal to the current
-     *  microstep (determined by the last dequeue, or zero if there has
-     *  been none), unless the time is equal to the current time.
+     *  The depth for the queued event is equal to the depth of the actor.
+     *  A smaller depth corresponds to a higher priority.
+     *  The microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time.
      *  If it is, then the event is queued with the current microstep
      *  plus one.
      *
      *  @param actor The destination actor.
      *  @param time The time stamp of the "pure event".
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the time  argument is in the past.
+     *  @exception IllegalActionException If the time argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time, int depth)
+    protected void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
 
         int microstep = 0;
@@ -614,13 +597,18 @@ public class DEDirector extends Director {
                 "Attempt to queue an event in the past.");
             }
         }
+        int depth = _getDepth(actor);
+        if(_debugging) _debug("enqueue a pure event: ", 
+                ((NamedObj)actor).getName(),
+                "time = "+ time + " microstep = "+ microstep + " depth = "
+                + depth);
         _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, token, time stamp and depth. The depth
-     *  is used to prioritize
-     *  events that have equal time stamps.  A smaller depth corresponds
+     *  receiver, token, and time stamp. The depth of the event is the 
+     *  depth of the actor that has the receiver.
+     *  A smaller depth corresponds
      *  to a higher priority.  The microstep is always equal to zero,
      *  unless the time argument is equal to the current time, in which
      *  case, the microstep is equal to the current microstep (determined
@@ -633,7 +621,7 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time, int depth) throws IllegalActionException {
+            double time) throws IllegalActionException {
 
         int microstep = 0;
         if (_startTime != Double.MAX_VALUE) {
@@ -647,13 +635,21 @@ public class DEDirector extends Director {
                 "Attempt to queue an event in the past.");
             }
         }
+        Actor destn = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destn);
+        if(_debugging) _debug("enqueue event: to", 
+                receiver.getContainer().getName()+ " ("+token.toString()+") ",
+                "time = "+ time + " microstep = "+ microstep + " depth = "
+                + depth);
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, token, and depth.  The time stamp of the event is the
+     *  receiver, and token. 
+     *  The time stamp of the event is the
      *  current time, but the microstep is one larger than the current
-     *  microstep.  This method is used by actors that declare that they
+     *  microstep. The depth is the depth of the actor.  
+     *  This method is used by actors that declare that they
      *  introduce delay, but where the value of the delay is zero.
      *  This method must not be used before any firings have occurred
      *  (i.e. in the initialize() method) because current time has no
@@ -665,14 +661,16 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the delay is negative, or if
      *   current time has not been set.
      */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
-            int depth) throws IllegalActionException {
+    protected void _enqueueEvent(DEReceiver receiver, Token token)
+            throws IllegalActionException {
 
         if (_startTime == Double.MAX_VALUE) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination, "Attempt to queue an"
             + " event at the current time before current time is set.");
         }
+        Actor destn = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destn);
         _eventQueue.put(new DEEvent(receiver, token,
                 getCurrentTime(), _microstep + 1, depth));
     }
@@ -794,6 +792,9 @@ public class DEDirector extends Director {
                 // no need to put event into receiver.
                 if (rec != null) {
                     // Transfer the event to the receiver.
+                    if(_debugging) _debug(getName(),
+                            "put tigger event to",
+                            rec.getContainer().getName());
                     rec._triggerEvent(currentEvent.token());
                 }
             } else {
@@ -917,38 +918,41 @@ public class DEDirector extends Director {
     }
 
     // Perform topological sort on the directed graph and use the result
-    // to set the depth field of the DEReceiver objects.
+    // to set the depth for each actor. A new Hashtable is created each
+    // time this method is called.
     private void _computeDepth() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
         Object[] sort = (Object[]) dag.topologicalSort();
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
+        // Allocate a new hash table with the equal to the
+        // number of actors sorted.
+        _actorToDepth = new Hashtable(sort.length);
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
-            if (_debugging) _debug(((Nameable)actor).getFullName());
-            // Set the fine levels of all DEReceiver instances in input
-            // ports of the actor to i.
-            Enumeration ports = actor.inputPorts();
-            while (ports.hasMoreElements()) {
-                IOPort inputPort = (IOPort)ports.nextElement();
-                Receiver[][] r;
-                r = inputPort.getReceivers();
-                if (r == null) {
-                    // dangling input port..
-                    continue;
-                }
-                for (int j = r.length-1; j >= 0; j--) {
-                    for (int k = r[j].length-1; k >= 0; k--) {
-                        DEReceiver der = (DEReceiver)r[j][k];
-                        der._setDepth(i);
-                    }
-                }
-            }
+            if (_debugging) _debug(((Nameable)actor).getFullName(), 
+                    "depth : " + i);
+            // Insert the hashtable entry. 
+            _actorToDepth.put(actor, new Integer(i));
 	}
         if (_debugging) _debug("## End of topological sort.");
     }
 
+    // Return the depth of the actor. Throws IllegalActionException
+    // if the actor is not in the table.
+    private int _getDepth(Actor actor) throws IllegalActionException {
+        if (_actorToDepth != null ) {
+            Integer depth = (Integer)_actorToDepth.get(actor);
+            if (depth != null) {
+                return depth.intValue();
+            }
+        }
+        throw new IllegalActionException (this, 
+                "Request the depth of an actor which is not sorted");
+    } 
+            
+        
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
@@ -999,4 +1003,7 @@ public class DEDirector extends Director {
     // Indicator of whether the topological sort giving ports their
     // priorities is valid.
     private boolean _sortValid = false;
+
+    // A Hashtable stores the mapping of each actor to its depth.
+    private Hashtable _actorToDepth = null;
 }

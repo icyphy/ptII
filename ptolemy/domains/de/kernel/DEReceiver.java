@@ -170,13 +170,13 @@ public class DEReceiver implements Receiver {
                 _useDelay = false;
                 if (_delay == 0.0) {
                     // Use special enqueue method to increment microstep.
-                    dir._enqueueEvent(this, token, _depth);
+                    dir._enqueueEvent(this, token);
                 } else {
                     dir._enqueueEvent(this, token,
-                            dir.getCurrentTime() + _delay, _depth);
+                            dir.getCurrentTime() + _delay);
                 }
             } else {
-                dir._enqueueEvent(this, token, dir.getCurrentTime(), _depth);
+                dir._enqueueEvent(this, token, dir.getCurrentTime());
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -211,23 +211,6 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the depth of this receiver as set by _setDepth().
-     *  @return depth The depth of this receiver.
-     */
-    protected int _getDepth() {
-        return _depth;
-    }
-
-    /** Set the depth of this receiver, obtained from the topological
-     *  sort.  The depth determines the priority assigned to tokens
-     *  with equal time stamps.  A smaller depth corresponds to a
-     *  higher priority. Only DEDirector should call this method.
-     *  @param depth The depth of this receiver.
-     */
-    protected void _setDepth(int depth) {
-        _depth = depth;
-    }
-
     /** Make a token available to the get() method.
      *  Normally, only a director will call this method. It calls it
      *  when current time matches the time stamp of the token, i.e.
@@ -251,7 +234,7 @@ public class DEReceiver implements Receiver {
     private IOPort _container = null;
 
     // The topological depth associated with this receiver.
-    private int _depth = 0;
+    //private int _depth = 0;
 
     // The director where this DEReceiver should register the
     // events being put in it. If this receiver is an inside receiver of
