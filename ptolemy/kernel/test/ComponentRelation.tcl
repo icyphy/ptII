@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ComponentEntity-2.1 {Constructor} {
+test ComponentRelation-2.1 {Constructor} {
     set r1 [java::new ptolemy.kernel.ComponentRelation]
     set r2 [java::new ptolemy.kernel.ComponentRelation]
     $r2 setName R2
@@ -64,7 +64,7 @@ test ComponentEntity-2.1 {Constructor} {
 ######################################################################
 ####
 #
-test ComponentEntity-3.1 {Test for NameDuplicationException in constructor} {
+test ComponentRelation-3.1 {Test for NameDuplicationException in constructor} {
     set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
     set b [java::new ptolemy.kernel.ComponentRelation $a B]
@@ -72,11 +72,11 @@ test ComponentEntity-3.1 {Test for NameDuplicationException in constructor} {
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "B" into container named ".A", which already contains an object with that name.}}
 
-test ComponentEntity-8.2 {Test for IllegalActionException on setName} {
+test ComponentRelation-3.2 {Test for NameDuplicationException on setName} {
     set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
     set b1 [java::new ptolemy.kernel.ComponentRelation $a B1]
     set b2 [java::new ptolemy.kernel.ComponentRelation $a B2]
     catch {$b2 setName B1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .A: already contains a relation with the name B1.}}
+} {{ptolemy.kernel.util.NameDuplicationException: .A: already contains a relation with the name B1.}}

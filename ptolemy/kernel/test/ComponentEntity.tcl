@@ -147,12 +147,12 @@ test ComponentEntity-8.1 {Test for NameDuplicationException on constructor} {
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "B" into container named ".A", which already contains an object with that name.}}
 
-test ComponentEntity-8.2 {Test for IllegalActionException on setName} {
+test ComponentEntity-8.2 {Test for NameDuplicationException on setName} {
     set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
     set b1 [java::new ptolemy.kernel.ComponentEntity $a B1]
     set b2 [java::new ptolemy.kernel.ComponentEntity $a B2]
     catch {$b2 setName B1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .A: already contains an entity with the name B1.}}
+} {{ptolemy.kernel.util.NameDuplicationException: .A: already contains an entity with the name B1.}}
 
