@@ -41,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
@@ -191,11 +192,8 @@ public class MathFunction extends TypedAtomicActor {
                 super.attributeChanged(attribute);
             }
         } catch (NameDuplicationException e) {
-            // Catch NameDuplicationException and rethrow it
-            InternalErrorException internalError =
-                new InternalErrorException("Unexpected name duplication:" + e);
-            internalError.fillInStackTrace();
-            throw internalError;
+            throw new InternalErrorException("Unexpected name duplication:"
+                    + KernelException.stackTraceToString(e));
         }
     }
 
