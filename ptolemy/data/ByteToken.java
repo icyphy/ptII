@@ -90,7 +90,8 @@ public class ByteToken extends ScalarToken {
         _value = (byte)value;
     }
 
-    /** Construct a ByteToken from the specified string.
+    /** Construct a ByteToken from the specified string.  The string
+     *  is parsed by the valueOf() method of the java Byte object.
      *  @exception IllegalActionException If the token could not
      *   be created from the given string.
      */
@@ -115,13 +116,16 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of ByteToken.
-     *  This method does lossless conversion, or throws an exception
-     *  if it cannot.  If the argument is already an instance of
-     *  ByteToken, it is returned without any change. Otherwise, if
-     *  the argument is below ByteToken in the type hierarchy, it is
-     *  converted to an instance of ByteToken or one of the subclasses
-     *  of ByteToken and returned. If none of the above condition is
-     *  met, an exception is thrown.
+     *  If the argument is already an instance of ByteToken, it is
+     *  returned without any change. Otherwise, if the argument is
+     *  above ByteToken in the type hierarchy or is incomparable with
+     *  ByteToken, an exception is thrown with a message stating that
+     *  either the conversion is not supported, or the types are
+     *  incomparable.  If none of the above conditions is met, then the
+     *  argument must be below ByteToken in the type heirarchy.
+     *  However, not such types exist at this time, so an exception is
+     *  thrown with a message stating simply that the conversion is
+     *  not supported.
      *  @param token The token to be converted to a ByteToken.
      *  @return A ByteToken.
      *  @exception IllegalActionException If the conversion
