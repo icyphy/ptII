@@ -60,12 +60,12 @@ public class HSIFUtilities {
     private HSIFUtilities() {
     }
 
-    /**  Read in an HSIF file, transform it into MoML and write the output
-     *         to a FileWriter.
-     *   @param input HSIF file to be read in.
-     *   @param fileWriter A FileWriter that will write to the MoML
-     *   file.
-     *   @exception Exception if there is a problem with the transformation.
+    /** Read in an HSIF file, transform it into MoML and write the output
+     *  to a FileWriter.
+     *  @param input HSIF file to be read in.
+     *  @param fileWriter A FileWriter that will write to the MoML
+     *  file.
+     *  @exception Exception If there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, FileWriter fileWriter)
             throws Exception {
@@ -110,11 +110,11 @@ public class HSIFUtilities {
         //fileWriter.close();
     }
 
-    /**  Read in an HSIF file, transform it into MoML and generate an output
-     *         file.  Note that if the output file exists, then it is overwritten.
-     *   @param input HSIF file to be read in
-     *   @param output The MoMLFile to be generated.
-     *   @exception Exception if there is a problem with the transformation.
+    /** Read in an HSIF file, transform it into MoML and generate an output
+     *  file.  Note that if the output file exists, then it is overwritten.
+     *  @param input HSIF file to be read in
+     *  @param output The MoMLFile to be generated.
+     *  @exception Exception If there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, String output)
             throws Exception {
