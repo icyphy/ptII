@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class SYSTEM "../../moml/moml.dtd">
+
+<class name="generic" extends="ptolemy.actor.TypedCompositeActor">
+<doc>Generic Icons</doc>
+
+<entity name="source" class="ptolemy.schematic.util.XMLIcon">
+<doc>A default entity for sources</doc>
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="orange"/>
+	<polygon coords="10 10 50 20 10 30" fill="blue"/>
+	</xmlgraphic>
+]]>
+</configure>
+</entity>
+
+<entity name="sink" class="ptolemy.schematic.util.XMLIcon">
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="orange"/>
+	<polygon coords="50 10 10 20 50 30" fill="blue"/>
+	</xmlgraphic>
+]]>
+</configure>
+</entity>
+
+<entity name="transformer" class="ptolemy.schematic.util.XMLIcon">
+<configure>
+<![CDATA[
+	<xmlgraphic>
+	<rectangle coords="0 0 60 40" fill="orange"/>
+	<polygon coords="30 10 10 20 30 30 50 20" fill="blue"/>
+	</xmlgraphic>
+]]>
+</configure>
+</entity>
+
+</class>
+
