@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
+import ptolemy.actor.parameters.ParameterPort;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActor
@@ -287,11 +287,28 @@ public class CompositeActor extends CompositeEntity
                 throw new IllegalActionException(this,
                         "Cannot fire a non-opaque actor.");
             }
-            // Use the local director to transfer inputs.
-            Iterator inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext() && !_stopRequested) {
+          
+            // This HAS to be split because in some domains (e.g. SDF)
+            // the behavior of the schedule might depend on rate variables
+            // set from ParameterPorts.
+
+            // Use the local director to first read from port parameters.
+            for(Iterator inputPorts = inputPortList().iterator();
+                inputPorts.hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort)inputPorts.next();
-                _director.transferInputs(p);
+                if(p instanceof ParameterPort) {
+                    ((ParameterPort)p).getParameter().update();
+                    //Used to be: _director.transferInputs(p);
+                }
+            }
+            // Use the local director to transfer inputs from
+            // everything that is not a port parameter.
+            for(Iterator inputPorts = inputPortList().iterator();
+                inputPorts.hasNext() && !_stopRequested;) {
+                IOPort p = (IOPort)inputPorts.next();
+                if(!(p instanceof ParameterPort)) {
+                    _director.transferInputs(p);
+                }
             }
             if (_stopRequested) return;
             _director.fire();
