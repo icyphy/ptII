@@ -86,7 +86,7 @@ public class BrowserTableau extends Tableau {
      *  so this is the best we can do.
      *  If the URI ends in "#in_browser", we strip it off before
      *  passing the URI to the browser.  #in_browser is used by 
-     *  {@link ptolemy.actor.gui.HTMLViewer to force a hyperlink to be
+     *  {@link ptolemy.actor.gui.HTMLViewer} to force a hyperlink to be
      *  opened in a browser.
      */
     public void show() {
