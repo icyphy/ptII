@@ -186,10 +186,10 @@ public class GiottoDirector extends StaticSchedulingDirector
             double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
             if (_expectedNextIterationTime.getDoubleValue()
-                > elapsedTimeInSeconds) {
+                    > elapsedTimeInSeconds) {
                 long timeToWait = (long)
                     ((_expectedNextIterationTime.getDoubleValue()
-                        - elapsedTimeInSeconds) * 1000.0);
+                            - elapsedTimeInSeconds) * 1000.0);
                 if (timeToWait > 0) {
                     if (_debugging) {
                         _debug("Waiting for real time to pass: " + timeToWait);
@@ -289,8 +289,9 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  @return int value of period in ms.
      */
     public int getIntPeriod() {
-        // In ptolemy model, for simulation, time is double with unit Second
-        // however, for giotto code, we need integer and its unit is microSecond
+        // In ptolemy model, for simulation, time is double with unit
+        // Second however, for giotto code, we need integer and its
+        // unit is microSecond
         return (new Double(_periodValue * 1000)).intValue();
     }
 
@@ -313,8 +314,11 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  @return double value of period in ms.
      */
     public double getPeriod() {
-        //In ptolemy model, for simulation, time is double with unit Second
-        // however, for giotto code, we need integer and its unit is milliSecond
+
+        // In ptolemy models, for simulation, time is double with seconds 
+        // unit; however, for giotto code, we need integer and its
+        // unit is milliSecond.
+
         return _periodValue;
     }
 
@@ -471,7 +475,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 // not the scheduled time to fire.
                 _readyToFire = false;
             } else if (outsideCurrentTime
-                .compareTo(_expectedNextIterationTime) > 0) {
+                    .compareTo(_expectedNextIterationTime) > 0) {
                 // catch up with the outside time.
                 setModelTime(outsideCurrentTime);
                 if (_debugging) {
@@ -481,8 +485,8 @@ public class GiottoDirector extends StaticSchedulingDirector
             }
             // guaranteed to be synchronized to outside.
         } else {
-           _readyToFire = true;
-       }
+            _readyToFire = true;
+        }
         return true;
     }
 
@@ -496,20 +500,22 @@ public class GiottoDirector extends StaticSchedulingDirector
         // before initialize the contained actors, reset the period parameter
         // if the model is embedded inside another giotto model.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
-       if (_isEmbedded()) {
+        if (_isEmbedded()) {
             Director executiveDirector = compositeActor.getExecutiveDirector();
             if (executiveDirector instanceof GiottoDirector) {
-                double periodValue = ((GiottoDirector)executiveDirector).getPeriod();
+                double periodValue =
+                    ((GiottoDirector)executiveDirector).getPeriod();
                 Attribute frequency = compositeActor.getAttribute("frequency");
                 int frequencyValue;
                 if (frequency != null) {
                     frequencyValue =
-                        ((IntToken)(((Parameter)frequency).getToken())).intValue();
+                        ((IntToken)(((Parameter)frequency).getToken()))
+                        .intValue();
                 } else {
                     frequencyValue = 1;
                 }
                 _periodValue = periodValue / frequencyValue;
-               period.setExpression(new Double(_periodValue).toString());
+                period.setExpression(new Double(_periodValue).toString());
             }
         }
         // Next, construct the schedule.
@@ -588,9 +594,11 @@ public class GiottoDirector extends StaticSchedulingDirector
                             if (insideReceivers[i][j].isKnown()) {
                                 if (insideReceivers[i][j].hasToken()) {
                                     if (_debugging) _debug(getName(),
-                                            "transferring output from " + port.getName() +
-                                            " to channel " + i);
-                                    Token t = ((GiottoReceiver) insideReceivers[i][j]).remove();
+                                            "transferring output from "
+                                            + port.getName()
+                                            + " to channel " + i);
+                                    Token t = ((GiottoReceiver)
+                                            insideReceivers[i][j]).remove();
                                     port.send(i, t);
                                     wasTransferred = true;
                                 }
@@ -679,7 +687,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     private void _requestFiring() throws IllegalActionException {
 
         if (_debugging) _debug("Request refiring of opaque composite actor at "
-            + _expectedNextIterationTime);
+                + _expectedNextIterationTime);
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
                 (Actor)getContainer(), _expectedNextIterationTime);
