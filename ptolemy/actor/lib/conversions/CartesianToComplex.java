@@ -1,4 +1,4 @@
-/* An actor that converts Cartesian components to a single complex token.
+/* An actor that converts Cartesian coordinates to a single complex token.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.math.Complex;
 /// CartesianToComplex
 /**
 Convert a Cartesian pair (represented as two double tokens) to a single
-complex token. At each firing of the actor, it will consume at exactly one
+complex token. At each firing of the actor, it will consume exactly one
 token from each of the two input ports and produce a complex token on the
 output port. The x input becomes the real output and the y input becomes the
 imaginary output. If either input port is empty, nothing is produced.
@@ -80,12 +80,12 @@ public class CartesianToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port for the x component of the Cartesian pair, which
+    /** The input port for the x coordinate of the Cartesian pair, which
         has type DoubleToken.
     */
     public TypedIOPort real;
 
-    /** The input port for the y component of the Cartesian pair, which
+    /** The input port for the y coordinate of the Cartesian pair, which
         has type DoubleToken.
     */
     public TypedIOPort imag;

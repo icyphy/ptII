@@ -1,4 +1,4 @@
-/* An actor that converts polar components to Cartesian components.
+/* An actor that converts polar coordinates to Cartesian coordinates.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -92,10 +92,10 @@ public class PolarToCartesian extends TypedAtomicActor {
         DoubleToken. */
     public TypedIOPort angle;
 
-    /** The output port for the x component, which has type DoubleToken. */
+    /** The output port for the x coordinate, which has type DoubleToken. */
     public TypedIOPort x;
 
-    /** The output port for the y component, which has type DoubleToken. */
+    /** The output port for the y coordinate, which has type DoubleToken. */
     public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ public class PolarToCartesian extends TypedAtomicActor {
 
     /** Consume a double token from each of the two input ports (magnitude
      *  and angle) and output a double token on each of the two output ports
-     *  (x and y). The output is a Cartesian representation of the components
+     *  (x and y). The output is a Cartesian representation of the coordinates
      *  given at the inputs in polar form. The angle is in radians.
      *  @exception IllegalActionException If there is no director.
      */

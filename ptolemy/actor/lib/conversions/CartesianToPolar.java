@@ -1,4 +1,4 @@
-/* An actor that converts Cartesian components to polar components.
+/* An actor that converts Cartesian coordinates to polar coordinates.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -85,10 +85,10 @@ public class CartesianToPolar extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The x component of the input pair, which has type DoubleToken. */
+    /** The x coordinate of the input pair, which has type DoubleToken. */
     public TypedIOPort x;
 
-    /** The y component of the input pair, which has type DoubleToken. */
+    /** The y coordinate of the input pair, which has type DoubleToken. */
     public TypedIOPort y;
 
     /** The magnitude component of the output pair, which has type

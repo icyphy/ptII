@@ -1,4 +1,4 @@
-/* An actor that converts polar components to a complex token.
+/* An actor that converts polar coordinates to a complex token.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,7 @@ import ptolemy.math.Complex;
 
 This actor reads two double tokens (magnitude and angle) and outputs
 a single complex token. The output is a complex token representation of
-the components given at the inputs in polar form. The angle input is
+the coordinates given at the inputs in polar form. The angle input is
 assumed to be in radians. If either input is NaN or infinity,
 then the output is NaN or infinity.
 
@@ -97,7 +97,7 @@ public class PolarToComplex extends TypedAtomicActor {
 
     /** Consume a double token from each input port (magnitude and angle)
      *  and output a new complex token on the output port. The output is
-     *  a complex representation of the components given at the inputs in
+     *  a complex representation of the coordinates given at the inputs in
      *  polar form. The input angle is assumed to be in radians. If either
      *  input has no token, then do nothing.
      *  @exception IllegalActionException If there is no director.

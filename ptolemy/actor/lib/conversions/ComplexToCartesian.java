@@ -1,4 +1,4 @@
-/* An actor that converts a complex token to Cartesian components.
+/* An actor that converts a complex token to Cartesian coordinates.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -80,10 +80,10 @@ public class ComplexToCartesian extends TypedAtomicActor {
     /** The port for the input, which has type ComplexToken. */
     public TypedIOPort input;
 
-    /** The output port for real component, which has type DoubleToken. */
+    /** The output port for real coordinate, which has type DoubleToken. */
     public TypedIOPort real;
 
-    /** The output port for the imaginary component, which has type
+    /** The output port for the imaginary coordinate, which has type
         DoubleToken. */
     public TypedIOPort imag;
 
