@@ -794,7 +794,7 @@ public class SRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
 
         // Nonstrict actors may intend to output undefined values.
-        if ((!_isNonStrict(actor)) || (!_isFinishedFiring(actor))) {
+        if ((!_isNonStrict(actor)) && (!_isFinishedFiring(actor))) {
             // No need to do anything if this actor has defined all of its 
             // outputs.
             _debug("  SRDirector is calling sendAbsent()",
