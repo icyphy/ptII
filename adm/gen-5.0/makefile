@@ -339,7 +339,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		$(JAR) -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
-		rm -rf jni \
+		rm -rf META-INF \
+		jni \
 		bin/comm.policy \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
@@ -364,10 +365,11 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		bin/tinicomm.bat \
 		bin/tiniconverter.bat \
 		bin/vergil.bat \
-		diva/canvas/test/alljsimpletests.tcl
-		diva/canvas/tutorial/doc-files
-		diva/graph/test/alljsimpletests.tcl
-		diva/util/test/alljsimpletests.tcl
+		diva/build.xml \
+		diva/canvas/test/alljsimpletests.tcl \
+		diva/canvas/tutorial/doc-files \
+		diva/graph/test/alljsimpletests.tcl \
+		diva/util/test/alljsimpletests.tcl \
 		doc/usingVergil \
 		doc/design/usingVergil \
 		lib/hsif \
@@ -390,7 +392,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/colt \
 		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
-		ptolemy/actor/lib/ecsl
+		ptolemy/actor/lib/ecsl \
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/lib/jai \
 		ptolemy/actor/lib/javasound \
@@ -443,6 +445,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
 		ptolemy/domains/sr \
+		ptolemy/domains/test \
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
 		ptolemy/demo \
@@ -454,7 +457,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
 		thales; \
 	   touch configure; \
-	   chmod a+rx configure; \
+	   chmod a+rx configure util/testsuite/chkextra; \
 	)
 	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/hyvisual$(VERSION)/bin/makefile \
 		> src_jar/hyvisual$(VERSION)/bin/makefile.tmp
