@@ -13,6 +13,7 @@
 <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength"/>
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray"/>
+<entity name="MaximumElement" class="ptolemy.actor.lib.MaximumElement"/>
 
       </group>
     ?>
