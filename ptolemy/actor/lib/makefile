@@ -67,6 +67,7 @@ JSRCS = \
 	Maximum.java \
 	Minimum.java \
 	MultiplyDivide.java \
+	Poisson.java \
 	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
