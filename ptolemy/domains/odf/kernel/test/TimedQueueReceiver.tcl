@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-2.1 {Check for correct IOPort container in new receiver} {
+test TimedQueueReceiver-2.1 {Check IOPort container in new receiver} {
     set iop [java::new ptolemy.actor.IOPort]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     list [expr { $iop == [$tqr getContainer] } ]
@@ -61,14 +61,15 @@ test TimedQueueReceiver-2.1 {Check for correct IOPort container in new receiver}
 #
 test TimedQueueReceiver-3.1 {Check that hasToken() works for empty queue} {
     set iop [java::new ptolemy.actor.IOPort]
-    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
+    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    $tqr setContainer $iop
     list [expr { 0 == [$tqr hasToken] } ]
 } {1}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-3.2 {Check that hasToken() works for non-empty queue} {
+test TimedQueueReceiver-3.2 {Check hasToken() for non-empty queue} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
@@ -82,7 +83,7 @@ test TimedQueueReceiver-3.2 {Check that hasToken() works for non-empty queue} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-4.1 {Check that hasRoom() works for finite capacity, empty queue} {
+test TimedQueueReceiver-4.1 {Check hasRoom() for finite, empty queue} {
     set iop [java::new ptolemy.actor.IOPort]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     $tqr setCapacity 10
@@ -107,7 +108,7 @@ test TimedQueueReceiver-4.2 {Check that hasRoom() works for full queue} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-4.3 {Check that hasRoom() works for infinite capacity queue} {
+test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
