@@ -303,6 +303,16 @@ public class PropertyClassChanges implements MoMLFilter {
         inputOutputTypedIOPortClassChanges.put("output",
                 "ptolemy.actor.TypedIOPort");
 
+        // SRDirector
+        HashMap srDirectorClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        trigFunctionClassChanges.put("scheduler",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.domains.sr.kernel.Director",
+                    srDirectorClassChanges);
+
         _actorsWithPropertyClassChanges
             .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
                     inputOutputTypedIOPortClassChanges);
