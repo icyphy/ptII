@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Thu Feb  5 09:40:59 2004 by cxh]-
+# -[Thu Feb  5 09:41:49 2004 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -25,7 +25,7 @@ complexityfile=/tmp/coveragerating.complexity
 
 testing=no
 # Uncomment next line if testing
-testing=yes
+#testing=yes
 
 # Create a file that has three records on each line:
 #  1. The filename    
