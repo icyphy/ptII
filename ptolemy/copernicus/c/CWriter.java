@@ -131,7 +131,13 @@ public class CWriter extends SceneTransformer {
             CodeFileGenerator cGenerator = new CodeFileGenerator();
             InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
             CNames.setup();
+ 
+            RequiredFileGenerator RFG = new RequiredFileGenerator();
 
+            String classPath = Scene.v().getSootClassPath();
+            System.out.println("CWriter: soot class path = " + classPath); 
+            RFG.init(classPath, sootClass.getName());
+            
             // Figure out if this is the main class
             System.out.println("Main file: " + mainFile);
             System.out.println("Class name:" + sootClass.getName()); 
@@ -154,6 +160,18 @@ public class CWriter extends SceneTransformer {
             code = cGenerator.generate(sootClass);
             FileHandler.write(fileName + ".c", code);
             sourcesList.append(" " + fileName + ".c");
+
+            // Generate other required files.
+            boolean verbose = true;
+            String compileMode = "full";
+            // FIXME: Improve exception handling here.
+            try {
+                RFG.generateTransitiveClosureOf(classPath,
+                            sootClass.getName(), compileMode, verbose);
+            } catch (IOException exception) {
+                throw new RuntimeException("Could not generate transitive "
+                        + "closure during required file generation");
+            }
 
             // Generate a main file, containing a C main function,
             // if this is the main class.

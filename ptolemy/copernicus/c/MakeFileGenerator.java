@@ -100,6 +100,13 @@ public class MakeFileGenerator {
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
+        // Generate all the source files for system(library) classes.
+        code.append("\n\nLIB_SOURCES = ");
+        Iterator i = libSources.iterator();
+        while (i.hasNext()) {
+            code.append("\t" + (String)i.next() + ".c\\\n");
+        }
+
         code.append("\n");// Takes care of blank line for last "\".
 
         // Definitions for various kinds of files.
