@@ -121,21 +121,6 @@ Berkeley, CA 94706</property>
             <property name="bundledJVMSource"/>
             <property name="bundledJVMArguments"/>
         </extendedProperty>
-        <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
-            <property name="bundledJVMResource"/>
-            <property name="useCurrentJVM">False</property>
-            <property array="True" length="0" name="JVMFileResources" type="string"/>
-            <property array="True" length="1" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
-                <arrayItem type="com.installshield.util.jvm.JVMFile">
-                    <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jre.1.1.x.solaris.jvm</property>
-                </arrayItem>
-            </property>
-            <property name="timeout">120</property>
-            <property name="JVMResolution">1</property>
-            <property name="bundledJVMSource"/>
-            <property name="bundledJVMArguments">-qq -o</property>
-        </extendedProperty>
     </uninstallerJVMResolution>
     <logFile>log.txt</logFile>
     <selectedLocales/>
@@ -284,29 +269,10 @@ Berkeley, CA 94706</property>
                                 <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_117.jvm</property>
                             </arrayItem>
                         </property>
-                        <property name="timeout">10</property>
-                        <property name="JVMResolution">2</property>
-                        <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
-                        <property name="bundledJVMArguments"/>
-                    </extendedProperty>
-                    <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
-                        <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">False</property>
-                        <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="2" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.3.solaris.jvm</property>
-                            </arrayItem>
-                            <arrayItem type="com.installshield.util.jvm.JVMFile">
-                                <property name="fullSearch">False</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.2.2.solaris.jvm</property>
-                            </arrayItem>
-                        </property>
                         <property name="timeout">120</property>
                         <property name="JVMResolution">2</property>
                         <property name="bundledJVMSource"/>
-                        <property name="bundledJVMArguments">-qq -o</property>
+                        <property name="bundledJVMArguments"/>
                     </extendedProperty>
                     <property name="JVMId">jvm</property>
                     <property name="installLocation">_jvm</property>
