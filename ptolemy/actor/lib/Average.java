@@ -118,7 +118,7 @@ public class Average extends Transformer {
      */
     public void fire() throws IllegalActionException {
         try {
-            _latestSum = _accum;
+            _latestSum = _sum;
             _latestCount = _count + 1;
             // Check whether to reset.
             for (int i = 0; i < reset.getWidth(); i++) {
@@ -151,7 +151,7 @@ public class Average extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;
-        _accum = null;
+        _sum = null;
     }
 
     /** Record the most recent input as part of the running average.
@@ -159,7 +159,7 @@ public class Average extends Transformer {
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _accum = _latestSum;
+        _sum = _latestSum;
         _count = _latestCount;
         return super.postfire();
     }
@@ -167,8 +167,8 @@ public class Average extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private Token _accum;
+    private Token _sum;
+    private Token _latestSum;
     private int _count = 0;
     private int _latestCount;
-    private Token _latestSum;
 }
