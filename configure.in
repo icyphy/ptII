@@ -1391,7 +1391,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present,
 	so we need not find the Dallas Semiconductor tini.])
     TINI_DIR='${PTII}/vendors/dalsemi/tini'
-    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+    TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
 else
     AC_MSG_CHECKING([for tini directory])
     AC_ARG_WITH(tini, [  --with-tini=DIR       use TINI from DIR,
@@ -1400,45 +1400,15 @@ else
 	TINI_DIR=$PTII/vendors/dalsemi/tini)
 
     if test -d "$TINI_DIR"; then
-	AC_MSG_RESULT([$TINI_DIR])
-        AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
-	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	    AC_MSG_RESULT([$TINI_DIR/bin/tiniclasses.jar])
-	    AC_MSG_CHECKING([for \$TINI_DIR/bin/tini.jar])
-  	    if test -f "$TINI_DIR/bin/tini.jar"; then
-                AC_MSG_RESULT([$TINI_DIR/bin/tini.jar])
-	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
-	    else
-	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
-            fi
-	    AC_MSG_RESULT([$TINI_CLASSES])
-        else
-	    TINI_CLASSES=no
+    	AC_MSG_RESULT([$TINI_DIR])
+      	AC_MSG_CHECKING([for \$TINI_DIR/bin/tini.jar])
+	if test -f "$TINI_DIR/bin/tini.jar"; then
+	   AC_MSG_RESULT([$TINI_DIR/bin/tini.jar])
+	   TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
+	else
+	   TINI_CLASSES=no
         fi
-    else
-	AC_MSG_RESULT([Not found in $TINI_DIR])
-	AC_MSG_CHECKING([for tini directory in /tini])
-	# Likely place for tini under windows
-	TINI_DIR=/tini
-        if test -d "$TINI_DIR"; then
-	    AC_MSG_RESULT([$TINI_DIR])
-            AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
-	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	        AC_MSG_RESULT([$TINI_DIR/bin/tiniclasses.jar])
-	        AC_MSG_CHECKING([for \$TINI_DIR/bin/tini.jar])
-	        if test -f "$TINI_DIR/bin/tini.jar"; then
-	            AC_MSG_RESULT([$TINI_DIR/bin/tini.jar])
-	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
-	        else
-	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
-	        fi
-            fi
-	    AC_MSG_RESULT([$TINI_CLASSES])
-        else
-	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
-	    AC_MSG_RESULT([$TINI_CLASSES])
-        fi
-
+	AC_MSG_RESULT([$TINI_CLASSES])
     fi
     if test "$TINI_CLASSES" = "no"; then
         AC_MSG_WARN([Failed to find tini/bin/tiniclasses.jar
@@ -1448,11 +1418,61 @@ else
     The Tini SDK can be downloaded from http://www.ibutton.com])
 	# Note that we don't substitute in the ${PTII} or $(TINI_DIR) here
 	TINI_DIR='${PTII}/vendors/dalsemi/tini'
-   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+   	TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
     else
 	# Set to tini and used in
 	# $PTII/ptolemy/apps/makefile if tini was found
 	PTTINI_DIR=tini
+    fi
+fi
+
+#--------------------------------------------------------------------
+#       GiottoSDK is an embedded implementation of the Giotto language
+#	www.eecs.berkeley.edu/~fresco/giotto
+#
+#       check to see if $PTII/vendors/giotto/giotto.jar exists
+#--------------------------------------------------------------------
+
+# PTGIOTTO_DIR is set to Giotto and used in
+# $PTII/ptolemy/apps/makefile if tini was found
+PTGIOTTO_DIR=
+#
+if test ! -d "$PTII/ptolemy/domains/giotto"; then
+    AC_MSG_RESULT([$PTII/ptolemy/domains/giotto is not present,
+	so we need not find the Giotto SDK.])
+    GIOTTO_DIR='${PTII}/vendors/giotto'
+    GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+else
+    AC_MSG_CHECKING([for giotto directory])
+    AC_ARG_WITH(tini, [  --with-giotto=DIR       use GiottoSDF from DIR,
+                          defaults to \$PTII/vendors/giotto],
+	GIOTTO_DIR=$withval,
+	GIOTTO_DIR=$PTII/vendors/giotto)
+
+    if test -d "$GIOTTO_DIR"; then
+    	AC_MSG_RESULT([$GIOTTO_DIR])
+      	AC_MSG_CHECKING([for \$GIOTTO_DIR/giotto.jar])
+	if test -f "$GIOTTO_DIR/giotto.jar"; then
+	   AC_MSG_RESULT([$GIOTTO_DIR/giotto.jar])
+	   GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+	else
+	   GIOTTO_CLASSES=no
+        fi
+	AC_MSG_RESULT([$GIOTTO_CLASSES])
+    fi
+    if test "$GIOTTO_CLASSES" = "no"; then
+        AC_MSG_WARN([Failed to find giotto/giotto.jar
+    perhaps Giotto is not installed?
+    You need not download Giotto unless you plan on generating code for 
+    Giotto models.
+    The Giotto SDK can be downloaded from http://www.eecs.berkeley.edu/~fresco/giotto])
+	# Note that we don't substitute in the ${PTII} or $(GIOTTO_DIR) here
+	GIOTTO_DIR='${PTII}/vendors/giotto'
+   	GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+    else
+	# Set to giotto and used in
+	# $PTII/ptolemy/copernicus/java/ if giotto was found
+	PTGIOTTO_DIR=giotto
     fi
 fi
 
@@ -1685,6 +1705,10 @@ AC_SUBST(PTMATLAB_DIR)
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
 
+# Set to giotto and used in
+# $PTII/ptolemy/apps/makefile if Giotto was found
+AC_SUBST(PTGIOTTO_DIR)
+
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
@@ -1699,11 +1723,17 @@ AC_SUBST(SOOT_CLASSES)
 # Directory that contains the Soot installation
 AC_SUBST(SOOT_DIR)
 
-# tini/bin/tinclasses.jar file used by the Dallas Semi Tini
+# tini/bin/tiniclasses.jar file used by the Dallas Semi Tini
 AC_SUBST(TINI_CLASSES)
 
 # Directory that contains the Tini installation
 AC_SUBST(TINI_DIR)
+
+# giotto/giotto.jar file used by GiottoSDK
+AC_SUBST(GIOTTO_CLASSES)
+
+# Directory that contains the GiottoSDK installation
+AC_SUBST(GIOTTO_DIR)
 
 # waba/tools/classes.jar file used by the PalmOS WABA
 AC_SUBST(WABA_CLASSES)
