@@ -120,7 +120,7 @@ public class DEActor extends TypedAtomicActor {
     }
 
     /** Schedule this actor to be fired at a specified time in the future.
-     *  If the time is not in the future (i.e. less than the current time), 
+     *  If the time is not in the future (i.e. less than the current time),
      *  then throw an exception.
      *  @param timeStamp The time stamp at which the actor will be fired.
      *  @exception IllegalActionException If the time stamp is in the past.

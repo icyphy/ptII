@@ -49,7 +49,7 @@ import ptolemy.data.expr.Parameter;
  *  in a typical DE simulator is in the mantainance of the global event
  *  queue. The 'best' current implementation is the calendar queue
  *  algorithm which gives us O(1) time in both enqueue and dequeue operation.
- *  The DECQDirector class, which derives from DEDirector, uses 
+ *  The DECQDirector class, which derives from DEDirector, uses
  *  this implementation.
  *  <p>
  *  Several of the methods provided in this base class have two versions.
@@ -59,7 +59,7 @@ import ptolemy.data.expr.Parameter;
  *  absolute time in case your datas are already in that form. This will
  *  eliminate unnecessary quantization error, e.g. <i>A-B+B</i>. For example,
  *  if the current time is 10.0 and the actor need to be refired at time
- *  20.0, then use fireAt(20.0) rather than fireAfterDelay(10.0). 
+ *  20.0, then use fireAt(20.0) rather than fireAfterDelay(10.0).
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -101,14 +101,14 @@ public abstract class DEDirector extends Director {
     public DEDirector(Workspace workspace, String name) {
 	super(workspace, name);
         try {
-            _stopTime = new Parameter(this, 
-                    "StopTime", 
+            _stopTime = new Parameter(this,
+                    "StopTime",
                     new DoubleToken(0.0));
         } catch (IllegalActionException e) {
             // shouldn't happen, because we know the Parameter class is an
             // acceptable type for this director.
             e.printStackTrace();
-            throw new InternalErrorException("IllegalActionException: " + 
+            throw new InternalErrorException("IllegalActionException: " +
                     e.getMessage());
         } catch (NameDuplicationException e) {
             // The name is guaranteed to be unique here..
@@ -129,7 +129,7 @@ public abstract class DEDirector extends Director {
      *  @param delay The scheduled time to fire.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void fireAfterDelay(Actor actor, double delay) 
+    public void fireAfterDelay(Actor actor, double delay)
             throws IllegalActionException {
         // FIXME: Check if the actor is in the composite actor containing this
         // director. I.e. the specified actor is under this director
@@ -144,20 +144,20 @@ public abstract class DEDirector extends Director {
 
         fireAt(actor, getCurrentTime() + delay);
     }
-    
+
     /** Schedule an actor to be fired at the specified time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
      */
-    public void fireAt(Actor actor, double time) 
+    public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        
+
         // FIXME: Check if the actor is in the composite actor containing this
         // director. I.e. the specified actor is under this director
         // responsibility. This could however be an expensive operation. So,
         // leave it out for now, and see if this will turn out to be an issue.
-        
+
         // Check the special case, when the delay is equal to zero
         if (time == getCurrentTime() && _isInitialized) {
             this._enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
@@ -189,7 +189,7 @@ public abstract class DEDirector extends Director {
     public double getCurrentTime() {
 	return _currentTime;
     }
-    
+
     /** Return the next future time of the next iterations. This means
      *  simultaneous iterations will be skipped, and only look at the next
      *  future time stamp (i.e. not equal to the current time).
@@ -315,7 +315,7 @@ public abstract class DEDirector extends Director {
     ////                         protected methods                 ////
 
     /** Put a "pure event" into the event queue with the specified delay and
-     *  the time stamp of the event. 
+     *  the time stamp of the event.
      *  The depth is used to prioritize events that have equal
      *  time stamps.  A smaller depth corresponds to a higher priority.
      *  A "pure event" is one where no token is transferred.  The event
@@ -332,8 +332,8 @@ public abstract class DEDirector extends Director {
      *  @param depth The depth.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected abstract void _enqueueEvent(Actor actor, 
-            double time, 
+    protected abstract void _enqueueEvent(Actor actor,
+            double time,
             long depth)
 	 throws IllegalActionException;
 

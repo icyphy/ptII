@@ -88,7 +88,7 @@ import java.util.Enumeration;
  *  the choice of the firing actor is determined by the topological depth
  *  of the input ports of the actors.
  *  <p>
- *  Next step in the fire() method, the 'firing actor' is fired (i.e. its 
+ *  Next step in the fire() method, the 'firing actor' is fired (i.e. its
  *  fire() method is invoked). The actor will consume events from
  *  its input port(s) and will usually produce new events on its output
  *  port(s). These new events will be enqueued in the global event queue
@@ -158,15 +158,15 @@ public class DECQDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the one actor identified by the _prepareActorToFire() method 
+    /** Fire the one actor identified by the _prepareActorToFire() method
      *  as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
      *  then they will have all been dequeued from the global queue and put
      *  into the corresponding receivers.
      *  <p>
      *  The actor will be fired multiple times until it has consumed all tokens
-     *  in all of its receivers that don't tolerate pending tokens. If the 
-     *  actor firing resulted from a 'pure event' then the actor 
+     *  in all of its receivers that don't tolerate pending tokens. If the
+     *  actor firing resulted from a 'pure event' then the actor
      *  will be fired exactly once.
      *
      *  @exception IllegalActionException If the firing actor throws it.
@@ -316,7 +316,7 @@ public class DECQDirector extends DEDirector {
 	    throw new IllegalActionException("Can't initialize a "+
 		    "cyclic graph in DECQDirector.initialize()");
 	}
-        
+
         _isInitialized = false;
 
         // Call the parent initialize method to create the receivers.
@@ -388,8 +388,8 @@ public class DECQDirector extends DEDirector {
             System.out.print(getFullName() + ":");
             System.out.println("Enqueue event for actor: " +
                     ((Entity)actor).description(FULLNAME)+
-                    " at time " + time + 
-                    " with depth = " + depth + 
+                    " at time " + time +
+                    " with depth = " + depth +
                     " .");
         }
 
@@ -400,7 +400,7 @@ public class DECQDirector extends DEDirector {
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, transferred token, time stamp and depth. The depth 
+     *  receiver, transferred token, time stamp and depth. The depth
      *  is used to prioritize
      *  events that have equal time stamps.  A smaller depth corresponds
      *  to a higher priority.
@@ -415,10 +415,10 @@ public class DECQDirector extends DEDirector {
             double time, long depth) throws IllegalActionException {
 
         // FIXME: Should this check that the depth is not negative?
-        if (time < _currentTime) { 
+        if (time < _currentTime) {
             throw new IllegalActionException(getContainer(),
-                    "Attempt to queue a token with a past time stamp = " + 
-                    time + ", while current time " + 
+                    "Attempt to queue a token with a past time stamp = " +
+                    time + ", while current time " +
                     "is equal to " + _currentTime + " .");
         }
 
@@ -430,7 +430,7 @@ public class DECQDirector extends DEDirector {
             System.out.print(getFullName()+":");
             System.out.println("Enqueue event for port: " +
                     receiver.getContainer().description(FULLNAME)+
-                    " on actor: " + 
+                    " on actor: " +
                     ((Entity)event.actor).description(FULLNAME) +
                     " at time " + time +
                     " with depth = " + depth +
@@ -850,7 +850,7 @@ public class DECQDirector extends DEDirector {
 	 * @param object2 the second DESortKey argument
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *         argument is less than, equal to, or greater than the second.
-	 * @exception ClassCastException object1 and object2 have to be 
+	 * @exception ClassCastException object1 and object2 have to be
          *         instances
 	 *            of DESortKey
 	 */

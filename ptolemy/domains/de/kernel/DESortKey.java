@@ -35,7 +35,7 @@ package ptolemy.domains.de.kernel;
  *  (double) and depth (long)
  *  <p>
  *  In a particular implementation of the global event queue, namely
- *  calendar queue, methods of the DECQDirector$DECQComparator class are 
+ *  calendar queue, methods of the DECQDirector$DECQComparator class are
  *  used to perform the sorting and arranging of events in the calendar queue.
  *  <p>
  *

@@ -38,10 +38,10 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
-/** An implementation of the ptolemy.actor.Receiver interface for 
+/** An implementation of the ptolemy.actor.Receiver interface for
  *  the DE domain.  Tokens received by this receiver are associated with
- *  time stamps. 
- *  If the time stamp is not explicitly given, 
+ *  time stamps.
+ *  If the time stamp is not explicitly given,
  *  then it is assumed to be the current time (which is
  *  maintained by the director).  The get() method returns only tokens
  *  with time stamps equal to or earlier than the current time. Thus, when
@@ -82,7 +82,7 @@ public class DEReceiver implements Receiver {
 
     /** Specify whether pending tokens (i.e. leftover tokens) after an
      *  actor firing is allowed in this receiver by the
-     *  director. 
+     *  director.
      */
     public void allowPendingTokens(boolean b) {
         _isPendingTokenAllowed = b;
@@ -191,7 +191,7 @@ public class DEReceiver implements Receiver {
         } catch (IllegalActionException e) {
             // Can't happen.
             e.printStackTrace();
-            throw new InternalErrorException("Calling Director." + 
+            throw new InternalErrorException("Calling Director." +
                     "_enqueueEvent() with time "+
                     "argument = currentTime shouldn't throw an exception." +
                     " : " + e.getMessage());
@@ -222,7 +222,7 @@ public class DEReceiver implements Receiver {
 
     /** Set the IOPort containing this receiver.
      *  @param port The container.
-     *  @exception IllegalActionException Not thrown, since any IOPort 
+     *  @exception IllegalActionException Not thrown, since any IOPort
      *     can be the container.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
@@ -277,7 +277,7 @@ public class DEReceiver implements Receiver {
     /** Set the depth of this receiver, obtained from the topological
      *  sort.  The depth determines the priority assigned to tokens
      *  with equal time stamps.  A smaller depth corresponds to a
-     *  higher priority. Only DEDirector should call this method. 
+     *  higher priority. Only DEDirector should call this method.
      *
      *  @param depth The depth of this receiver, determined from
      *  topological sort.
@@ -315,7 +315,7 @@ public class DEReceiver implements Receiver {
     DEDirector _director;
     long _directorVersion = -1;
 
-    // List for storing tokens.  Access with clear(), insertLast(), 
+    // List for storing tokens.  Access with clear(), insertLast(),
     // and take().
     private LinkedList _tokens = new LinkedList();
 

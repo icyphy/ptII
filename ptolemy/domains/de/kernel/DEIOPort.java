@@ -113,7 +113,7 @@ public class DEIOPort extends TypedIOPort {
      *  @param flag True to allow pending tokens, false to disallow.
      *  @exception IllegalActionException If this.getReceivers() throws it.
      */
-    public void allowPendingTokens(boolean flag) 
+    public void allowPendingTokens(boolean flag)
             throws IllegalActionException {
         Receiver[][] recs = getReceivers();
         for (int i = 0; i < recs.length ; i++) {
