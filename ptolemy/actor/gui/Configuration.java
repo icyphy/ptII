@@ -1,4 +1,4 @@
-/* Base class for Ptolemy applications.
+/* Base class for Ptolemy configurations.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -44,15 +44,21 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// Configuration
 /**
-This is a base class for an application that uses Ptolemy II classes.
+This is a base class for a composite entity that defines the
+configuration of an application that uses Ptolemy II classes.
 It must contain, at a minimum, an instance of ModelDirectory, called
 "directory", an instance of ModelReader, called "reader", and
 an instance of TableauFactory, called "factory".  This class uses
 those instances to manage a collection of models, open new models,
-and create tableaus of those models.
+and create tableaux of those models.  A tableau is a visual
+representation of the model in a top-level window.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see ModelDirectory
+@see ModelReader
+@see Tableau
+@see TableauFactory
 */
 public class Configuration extends CompositeEntity {
 
@@ -61,6 +67,9 @@ public class Configuration extends CompositeEntity {
      *  If the workspace argument is null, then use the default workspace.
      *  Add the instance to the workspace directory.
      *  Increment the version number of the workspace.
+     *  Note that there is no constructor that takes a container
+     *  as an argument, thus ensuring that a Configuration is always
+     *  a top-level entity.
      *  @param workspace The workspace that will list the entity.
      */
     public Configuration(Workspace workspace) {
@@ -71,7 +80,7 @@ public class Configuration extends CompositeEntity {
     ////                         public methods                    ////
 
     /** If a model with the specified name is present in the directory,
-     *  then find all the tableaus of that model and make them 
+     *  then find all the tableaux of that model and make them 
      *  visible; otherwise, read a model from the specified URL
      *  and create a default tableau for the model and add the tableau 
      *  to this directory.
@@ -87,13 +96,15 @@ public class Configuration extends CompositeEntity {
         if (directory == null) {
             throw new InternalErrorException("No model directory!");
         }
-        Effigy model = directory.getModel(identifier);
+        // Check to see whether the model is already open.
+        Effigy model = directory.get(identifier);
         if (model == null) {
+            // No previous model exists that is identified by this URL.
             ModelReader reader = (ModelReader)getEntity("reader");
             if (reader == null) {
                 throw new InternalErrorException("No model reader!");
             }
-            model = reader.read(base, in, identifier);
+            model = reader.read(base, in);
 	    Parameter parameter = new Parameter(model, "identifier");
 	    parameter.setToken(new StringToken(identifier));
             model.setName(directory.uniqueName("model"));
@@ -108,9 +119,23 @@ public class Configuration extends CompositeEntity {
 	    tableau.setMaster(true);
         } else {
             // Model already exists.
-            model.showTableaus();
+            model.showTableaux();
         }
     }
+
+    /** If the argument is not null, then throw an exception.
+     *  This ensures that the object is always at the top level of
+     *  a hierarchy.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the argument is not null.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException {
+        if (container != null) {
+            throw new IllegalActionException(this,
+            "Configuration can only be at the top level of a hierarchy.");
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

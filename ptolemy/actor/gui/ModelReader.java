@@ -47,10 +47,12 @@ import java.net.URL;
 /**
 An object that can read models from a URL.
 A configuration contains one instance of this class, and delegates
-reading URLs to that instance.  The configuration is responsible for
+reading URLs to that instance.  By convention, that instance is named
+"reader", although that is not enforced by this class.
+The configuration is responsible for
 registering the model with the ModelDirectory.
 
-@author Edward A. Lee
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @see Configuration
 @see ModelDirectory
@@ -74,18 +76,18 @@ public class ModelReader extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the specified input URL, and return an instance of Effigy
-     *  for the data at that URL.  The instance of Effigy is created
-     *  in the same workspace as this model reader, but it is not given
-     *  a name.
+    /** Read the specified input URL, and return an effigy
+     *  for the data at that URL.  An effigy represents that data in
+     *  the model directory, and contains all open tableaux of that data.
+     *  The effigy is created in the same workspace as this model reader,
+     *  but it is not given a name.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
      *  @param in The input URL.
-     *  @param key The key to use to uniquely identify the model.
-     *  @exception Exception If the stream cannot be read.
+     *  @exception Exception If the stream cannot be read, or if the data
+     *   is malformed in some way.
      */
-    // FIXME remove key.
-    public Effigy read(URL base, URL in, String key) throws Exception {
+    public Effigy read(URL base, URL in) throws Exception {
         MoMLParser parser = new MoMLParser(new Workspace(), null);
         NamedObj toplevel = parser.parse(base, in.openStream());
         // Create a proxy for the model.

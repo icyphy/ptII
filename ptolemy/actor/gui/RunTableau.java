@@ -153,7 +153,7 @@ public class RunTableau extends Tableau {
 	}
     }
 
-    /** A factory that creates run control panel tableaus for Ptolemy models.
+    /** A factory that creates run control panel tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
 	/** Create an factory with the given name and container.

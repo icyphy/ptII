@@ -52,21 +52,26 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ModelDirectory
 /**
-A directory of open models. This is a static class, with no instances
-nor any way to create instances.  It is static so that any application
-that opens Ptolemy models can use it to make sure that a model is not
-opened more than once.  The key for each entry is any object, often an
-instance of String.  Typical choices (which depend on the application)
-are the fully qualified class name, or the canonical URL or file name
-for a MoML file that describes the model.
+A directory of open models. An instance of this class is contained
+by a Configuration. Each open model is represented by an instance of
+Effigy.  An effigy represents the model data.
+It contains a parameter named "identifier"
+with a string value that uniquely identifies the model.
+A typical choice (which depend on the configuration)
+is the canonical URL for a MoML file that describes the model.
+An effigy also contains all open instances of Tableau associated
+with the model.
 
-@author Edward A. Lee and Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see Configuration
+@see Effigy
+@see Tableau
 */
 public class ModelDirectory extends CompositeEntity {
 
     /** Construct a model directory with the specified container and name.
-     *  @param container The application that contains this directory.
+     *  @param container The configuration that contains this directory.
      *  @param name The name of the directory.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.  This should not be thrown.
@@ -81,11 +86,13 @@ public class ModelDirectory extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the model that corresponds to the specified identifier.
+    /** Get the effigy of the model that corresponds to the specified
+     *  identifier.
      *  @param identifier The identifier for the model, such as a URL.
-     *  @return The model, or null if there is no such model in the directory.
+     *  @return The effigy for the model, or null if the model is not
+     *   in the directory.
      */
-    public Effigy getModel(String identifier) {
+    public Effigy get(String identifier) {
         Iterator entities = entityList(Effigy.class).iterator();
         while (entities.hasNext()) {
             Effigy entity = (Effigy)entities.next();

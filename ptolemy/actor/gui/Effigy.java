@@ -1,4 +1,4 @@
-/* A named object that represents a graphical tableau of another ptolemy model.
+/* A named object that represents a ptolemy model.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -48,11 +49,22 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
 /**
-A named object that represents an object that can be tableaued in an application.
-This is intended to be used in a user interface model.  
+An effigy represents model data, and is contained in the model directory.
+An effigy contains all open instances of Tableau associated with the model.
+It also contains a parameter named "identifier" with a string value that
+uniquely identifies the model. A typical choice (which depend on
+the configuration) is the canonical URL for a MoML file that
+describes the model.
+<p>
+NOTE: It might seem more natural for the identifier
+to be the name of the effigy rather than the value of a parameter.
+But the name cannot have periods in it, and a URL typically does
+have periods in it.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see ModelDirectory
+@see Tableau
 */
 public class Effigy extends CompositeEntity {
 
@@ -64,16 +76,9 @@ public class Effigy extends CompositeEntity {
 	super(workspace);
     }
 
-    /** Construct a tableau with the given name contained by the specified
-     *  ModelDirectory. The tableau will act on the given model.  
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This entity will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  This constructor write-synchronizes on the workspace.
-     *  @param container The container entity.
-     *  @param name The name of the entity.
+    /** Construct an effigy with the given name and container.
+     *  @param container The container.
+     *  @param name The name of the effigy.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
@@ -87,30 +92,26 @@ public class Effigy extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class so that tableaus contained within this object
-     *  are removed before the model is removed from the ModelDirectory.
-     *  This should trigger the frames associated with those tableaus to be 
+    /** Override the base class so that tableaux contained by this object
+     *  are removed before this effigy is removed from the ModelDirectory.
+     *  This causes the frames associated with those tableaux to be 
      *  closed.
-     *  @param container The container to attach this attribute to..
+     *  @param container The directory in which to list this effigy.
      *  @exception IllegalActionException If the proposed container is not
-     *  an instance of ModelDirectory, if this attribute is not of the
-     *   expected class for the container, or it has no name,
-     *   or the attribute and container are not in the same workspace, or
-     *   the proposed container would result in recursive containment.
+     *   an instance of ModelDirectory, or if the superclass throws it.
      *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
+     *   an entity with the specified name.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	if (container == null) {
-	    // Remove all tableaus.
-	    Iterator tableaus = entityList(Tableau.class).iterator();
-	    while (tableaus.hasNext()) {
-		ComponentEntity tableau = (ComponentEntity)tableaus.next();
+	    // Remove all tableaux.
+	    Iterator tableaux = entityList(Tableau.class).iterator();
+	    while (tableaux.hasNext()) {
+		ComponentEntity tableau = (ComponentEntity)tableaux.next();
 		tableau.setContainer(null);
 	    }  
 	    super.setContainer(container);
-	   
 	} else if(container instanceof ModelDirectory) {
 	    super.setContainer(container);
 	} else {
@@ -120,13 +121,13 @@ public class Effigy extends CompositeEntity {
 	}
     }
 
-    /** Make all tableaus associated with this model visible by raising
+    /** Make all tableaux associated with this model visible by raising
      *  or deiconifying them.
      */
-    public void showTableaus() {
-        Iterator tableaus = entityList(Tableau.class).iterator();
-        while(tableaus.hasNext()) {
-            Tableau tableau = (Tableau)tableaus.next();
+    public void showTableaux() {
+        Iterator tableaux = entityList(Tableau.class).iterator();
+        while(tableaux.hasNext()) {
+            Tableau tableau = (Tableau)tableaux.next();
             tableau.show();
         }
     }
@@ -134,16 +135,9 @@ public class Effigy extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Remove the specified entity. This method should not be used
-     *  directly.  Call the setContainer() method of the entity instead with
-     *  a null argument.
-     *  The entity is assumed to be contained by this composite (otherwise,
-     *  nothing happens). This does not alter the entity in any way.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *  This class overrides the superclass to check if this composite is
-     *  empty, and if so, removes this object from its container.
-     *  @param entity The entity to remove.
+    /** Remove the specified entity, and if there are no more tableaux
+     *  contained, then remove this object from its container.
+     *  @param entity The tableau to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
@@ -151,7 +145,7 @@ public class Effigy extends CompositeEntity {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {
-		// Ignore.
+		throw new InternalErrorException("Cannot remove effigy!");
 	    }
 	}
     }

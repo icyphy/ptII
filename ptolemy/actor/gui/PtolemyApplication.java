@@ -180,7 +180,7 @@ public class PtolemyApplication {
             if (_expectingClass) {
                 _expectingClass = false;
 
-                Effigy model = directory.getModel(arg);
+                Effigy model = directory.get(arg);
                 if (model == null) {
                     // No preexisting model.  Create class.
                     Class newClass = Class.forName(arg);
@@ -198,13 +198,13 @@ public class PtolemyApplication {
                     CompositeActor newModel
                              = (CompositeActor)constructor.newInstance(args);
 		
-                    // Create a proxy for the model.
-                    PtolemyEffigy proxy
+                    // Create an effigy for the model.
+                    PtolemyEffigy effigy
                             = new PtolemyEffigy(_config.workspace());
-                    proxy.setModel(newModel);
+                    effigy.setModel(newModel);
                 } else {
                     // Model already exists.
-                    model.showTableaus();
+                    model.showTableaux();
                 }
 	    } else {
                 if (!arg.startsWith("-")) {
@@ -314,9 +314,9 @@ public class PtolemyApplication {
             Iterator proxies
                     = directory.entityList(Effigy.class).iterator();
             while(proxies.hasNext()) {
-		Effigy proxy = (Effigy)proxies.next();
-		if(proxy instanceof PtolemyEffigy) {
-		    NamedObj model = ((PtolemyEffigy)proxy).getModel();
+		Effigy effigy = (Effigy)proxies.next();
+		if(effigy instanceof PtolemyEffigy) {
+		    NamedObj model = ((PtolemyEffigy)effigy).getModel();
 		    Attribute attribute = model.getAttribute(name);
 		    if (attribute instanceof Variable) {
 			match = true;

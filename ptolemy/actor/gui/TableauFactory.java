@@ -1,4 +1,4 @@
-/* An object that can create a tableau for a model proxy.
+/* An object that can create a tableau for a model.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -42,27 +42,24 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// TableauFactory
 /**
-An object that will create a tableau for a Model Proxy.  Instances of this
-class will usually be contained in an application hierarchy.
-
-This base class assumes that it contains other tableau factories.  It defers
+A configuration contains an instance of this class, and uses it to create
+a tableau for a model represented by an effigy.  This base class assumes
+that it contains other tableau factories. Its createTableau() method defers
 to each contained factory in order until one is capable of creating a
-tableau.  Subclasses of this class will usually be inner classes of a Tableau,
-and create a Tableau appropriate with a given subclass of model proxy.
+tableau for the specified effigy.  Subclasses of this class will usually
+be inner classes of a Tableau, and will create the Tableau.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see Configuration
+@see Effigy
+@see Tableau
 */
 public class TableauFactory extends CompositeEntity {
 
-    /** Create an factory with the given name and container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This entity will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container entity.
-     *  @param name The name of the entity.
+    /** Create a factory with the given name and container.
+     *  @param container The container.
+     *  @param name The name.
      *  @exception IllegalActionException If the container is incompatible
      *   with this entity.
      *  @exception NameDuplicationException If the name coincides with
@@ -76,23 +73,23 @@ public class TableauFactory extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a tableau in the default workspace with no name for the 
-     *  given Effigy.  The tableau will created with a new unique name
-     *  in the given model proxy.  If this factory cannot create a tableau
-     *  for the given proxy (perhaps because the proxy is not of the
-     *  appropriate subclass) then return null.
-     *  This base class assumes that it contains other instances of
-     *  TableauFactory and returns the tableau returned by the first one of those
-     *  contained factories that does not return null, or null if they
-     *  all return null.
-     *  @param proxy The model proxy.
+    /** Create a tableau for the specified effigy. The tableau will
+     *  created with a new unique name with the specified effigy as its
+     *  container.  If this factory cannot create a tableau
+     *  for the given effigy (perhaps because the effigy is not of the
+     *  appropriate subclass), then return null.  This base class assumes
+     *  that it contains other tableau factories. This method defers
+     *  to each contained factory in order until one is capable of creating a
+     *  tableau for the specified effigy.  Subclasses of this class will
+     *  usually be inner classes of a Tableau, and will create the Tableau.
+     *  @param effigy The model effigy.
      */
-    public Tableau createTableau(Effigy proxy) {
+    public Tableau createTableau(Effigy effigy) {
 	Tableau tableau = null;
 	Iterator factories = entityList(TableauFactory.class).iterator();
 	while(factories.hasNext() && tableau == null) {
 	    TableauFactory factory = (TableauFactory)factories.next();
-	    tableau = factory.createTableau(proxy);
+	    tableau = factory.createTableau(effigy);
 	}
 	return tableau;
     }

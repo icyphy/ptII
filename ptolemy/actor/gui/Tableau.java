@@ -1,4 +1,4 @@
-/* A named object that represents a graphical view of another ptolemy model.
+/* An object that represents a graphical view of a ptolemy model.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
@@ -49,62 +49,67 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Tableau
 /**
-A named object that represents a graphical view of another ptolemy model.
-This is intended to be used in a user interface model, with the ptolemy model
-in a separate hierarchy (or even a separate workspace).  
+A tableau is a visual representation of a Ptolemy II model in a top-level
+window.  This class represents such a top level window.  The top-level
+is always a frame, which is a window with a border and title bar. The
+window itself is specified by the setFrame() method, and accessed by
+the getFrame() method.  An instance of this class will be contained
+by the instance of Effigy that represents the model that is depicted
+in the top-level window.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see Effigy
 */
 public class Tableau extends ComponentEntity {
 
-    /** Construct a tableau with the given name contained by the specified
-     *  ModelDirectory. The tableau will act on the given model.  
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This entity will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  This constructor write-synchronizes on the workspace.
-     *  @param container The container entity.
-     *  @param name The name of the entity.
-     *  @exception IllegalActionException If the entity cannot be contained
+    /** Construct a tableau with the given name and container.
+     *  @param container The container.
+     *  @param name The name of the tableau.
+     *  @exception IllegalActionException If the tableau cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Tableau(Effigy container,
-		String name)
+    public Tableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
 
-    /** Return the component that implements the display of this tableau.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the top-level window that implements the display of
+     *  this tableau.
+     *  @return A top-level window.
      */
     public JFrame getFrame () {
 	return _frame;
     }
     
-    /** Return the title of this tableau.  Subclasses should override this to
+    /** Return the title of this tableau.  Subclasses can override this to
      *  provide a better description of themselves.  This base class
-     *  returns the full name of the model.
+     *  returns the identifier of the effigy containing this tableau,
+     *  or the string "Unnamed Tableau" if there is no such identifier.
+     *  The title is used as the title of the top-level window in
+     *  the setFrame() method.
+     *  @return The title to put on the window.
      */
-    public String getTableauTitle() {
+    public String getTitle() {
 	try {
-	    Effigy proxy = (Effigy)getContainer();
-	    Parameter idParameter = 
-		(Parameter)proxy.getAttribute("identifier");
-	    return ((StringToken)idParameter.getToken()).stringValue();
-	}
-	catch (Exception ex) {
-	    return "UnNamed Tableau";
+            Effigy effigy = (Effigy)getContainer();
+            Parameter idParameter = 
+                  (Parameter)effigy.getAttribute("identifier");
+            return ((StringToken)idParameter.getToken()).stringValue();
+	} catch (Exception ex) {
+	    return "Unnamed Tableau";
 	}
     }
 
-    /** Return true if the window associated with this attribute
-     *  is a master, which means that if that window is closed, then
-     *  all windows associated with the model are closed.
-     *  @return True if the window is a master.
+    /** Return true if this tableau is a master, which means that
+     *  if that if its window is closed, then all other windows associated 
+     *  with the model are also closed.
+     *  @return True if the tableau is a master.
      */
     public boolean isMaster() {
         return _master;
@@ -133,13 +138,14 @@ public class Tableau extends ComponentEntity {
 	    // Blow away the frame.
 	    if(_frame != null) {
 		// Note that we call hide instead of dipose..
-		// The windowListener below will trigger this to get called.
+		// The windowListener set in setFrame()
+                // will trigger dispose() to get called.
 		_frame.hide();
 	    }
 	    
-            if (_master && oldContainer != null) {
+            if (isMaster() && oldContainer != null) {
                 // Window is a master.  Close the model which will close all
-		// other tableaus.
+		// other tableaux.
 		oldContainer.setContainer(null);
             }
 	} else if(container instanceof Effigy) {	
@@ -151,13 +157,13 @@ public class Tableau extends ComponentEntity {
 	}
     }
 
-    /** Set the frame associated with this attribute.
-     *  @param frame The frame associated with the attribute.
+    /** Set the top-level window associated with this tableau.
+     *  @param frame The top-level window associated with the attribute.
      */
     public void setFrame(JFrame frame) {
         _frame = frame;
 
-	frame.setTitle(getTableauTitle());
+	frame.setTitle(getTitle());
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
@@ -168,15 +174,14 @@ public class Tableau extends ComponentEntity {
 		    setContainer(null);
                 } catch (KernelException ex) {
 		    try {
-			MessageHandler.warning(
-                            "Cannot remove tableau: " + ex);
+			MessageHandler.warning("Cannot remove tableau: " + ex);
                     } catch (CancelException exception) {}
 		}
             }
         });
     }
 
-    /** Specify whether the window associated with this attribute
+    /** Specify whether the window associated with this tableau
      *  is a master, which means that if that window is closed, then
      *  all windows associated with the model are closed.
      *  @param flag If true, makes the window a master.
@@ -185,14 +190,14 @@ public class Tableau extends ComponentEntity {
         _master = flag;
     }
 
-    /** Make this tableau visible by raising or deiconifying it.
+    /** Make this tableau visible by raising or deiconifying its window.
      */
     public void show() {
         getFrame().toFront();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                  ////
 
     /** The frame that the tableau is shown in.
      */
