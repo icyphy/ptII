@@ -214,7 +214,7 @@ public class CTScheduler extends Scheduler{
     }
     */
     /** Return an enumeration of step size control (SSC) actors in the 
-     *  state and state transiotion schedule. These are the step size
+     *  state and state transition schedule. These are the step size
      *  control actors in the dx/dt=f(x,u,t) equations.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
