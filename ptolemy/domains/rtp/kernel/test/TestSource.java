@@ -37,6 +37,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// TestSource
 /**
    This actor produces a ramp at 2Hz.
 
