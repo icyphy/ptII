@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (mudit@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.Interleave;
@@ -43,11 +46,11 @@ import java.util.*;
 public class PNRedirect extends AtomicActor{
 
     /** Constructor Adds ports to the star
-     * @exception NameDuplicationException indicates that an attempt to add
+     *  @exception NameDuplicationException If an attempt to add
      *  two ports with the same name has been made, or a star with an
      *  identical name already exists.
-     * @exception IllegalActionException a port with name null is being added
-     *  to the star
+     *  @exception IllegalActionException If a port with name null is being
+     *  added to the star.
      */
     public PNRedirect(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
