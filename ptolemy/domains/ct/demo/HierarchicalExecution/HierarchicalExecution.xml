@@ -43,20 +43,26 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 1016, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 1016, 659}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 541]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.6716382575758, 232.1624053030302}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.6716382575758, 327.6624053030302}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows that CT directors can execute a hierarchical &#10;continuous-time model. The simulation result is the same as&#10;a flat version of the same model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 390.0]">
+        </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -186,28 +192,50 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 225.0]">
         </property>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+    <entity name="Difference" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 333, 439, 378}, maximized=false}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 323]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 270.0]">
-        </property>
-    </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 270.0]">
         </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Difference</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="5.0"/>
+<yRange min="0.0" max="0.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Signal 1 vs Signal 2" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 336, 414, 375}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[406, 320]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 175.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Signal 1 vs. Signal 2</title>
+<xLabel>signal1</xLabel>
+<yLabel>signal2</yLabel>
+<xRange min="0.0" max="73.19911522880366"/>
+<yRange min="0.0" max="73.19911522880366"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[340.0, 165.0]">
+        <vertex name="vertex1" value="[335.0, 165.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="[340.0, 370.0]">
-        </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[195.0, 305.0]">
+        <vertex name="vertex" value="[365.0, 365.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -220,15 +248,15 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Integrator.input" relation="relation7"/>
     <link port="Integrator.output" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.minus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation6"/>
+    <link port="AddSubtract.output" relation="relation11"/>
     <link port="Integrator3.input" relation="relation4"/>
     <link port="Integrator3.output" relation="relation3"/>
     <link port="Const.output" relation="relation9"/>
@@ -243,7 +271,7 @@
     <link port="AddSubtract3.plus" relation="relation9"/>
     <link port="AddSubtract3.plus" relation="relation5"/>
     <link port="AddSubtract3.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation10"/>
-    <link port="PeriodicSampler.input" relation="relation6"/>
-    <link port="PeriodicSampler.output" relation="relation10"/>
+    <link port="Difference.input" relation="relation11"/>
+    <link port="Signal 1 vs Signal 2.inputX" relation="relation5"/>
+    <link port="Signal 1 vs Signal 2.inputY" relation="relation3"/>
 </entity>
