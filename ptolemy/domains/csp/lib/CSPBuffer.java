@@ -57,8 +57,8 @@ public class CSPBuffer extends CSPActor {
     public CSPBuffer() throws IllegalActionException, NameDuplicationException{
         super();
         _depth = new Parameter(this, "depth", (new IntToken(1)) );
-        output = new IOPort(this, "bufferOutput", false, true);
-        input = new IOPort(this, "bufferInput", true, false);
+        _output = new IOPort(this, "output", false, true);
+        _input = new IOPort(this, "input", true, false);
     }
 
     public CSPBuffer(CompositeActor cont, String name)
@@ -70,8 +70,8 @@ public class CSPBuffer extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          _depth = new Parameter(this, "depth", (new IntToken(depth)) );
-         output = new IOPort(this, "bufferOutput", false, true);
-         input = new IOPort(this, "bufferInput", true, false);
+         _output = new IOPort(this, "output", false, true);
+         _input = new IOPort(this, "input", true, false);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -130,9 +130,6 @@ public class CSPBuffer extends CSPActor {
         }
     }
 
-    public IOPort input;
-    public IOPort output;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
@@ -140,8 +137,14 @@ public class CSPBuffer extends CSPActor {
     private Token[] _buffer;
 
     // The Parameter storing the depth of the buffer.
-     private Parameter _depth;
+    private Parameter _depth;
 
+    // The input port for this actor.
+    private IOPort _input;
+    
+    // the output port for this actor.
+    private IOPort _output;
+    
     // The number of Tokens currently stored in the buffer.
     private int _size = 0;
 
