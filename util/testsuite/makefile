@@ -90,11 +90,15 @@ EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = README.jindent
+MISC_FILES = \
+	README.jindent \
+	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	doc
+OPTIONAL_FILES = \
+	doc \
+	'WatchDog$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
