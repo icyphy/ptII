@@ -407,7 +407,7 @@ jstest_jsimple:
 		test_jsimple
 	@echo "To view code coverage results, run javascope or jsreport"
 	@echo "To get a summary, run jsreport or jsreport -HTML or" 
-	@echo "jssummary -HTML -PROGRESS -OUTFILE=\$$HOME/public_html/java/js/coverage.html"
+	@echo "jssummary -HTML -PROGRESS -OUTFILE=\$$HOME/public_html/private/js/coverage.html"
 	@echo "jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=\$$HOME/public_html/private/js"
 
 # Run the test_jsimple rule with the proper classpath  
