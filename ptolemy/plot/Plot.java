@@ -1617,12 +1617,19 @@ public class Plot extends PlotBox {
             _pendingPointsGraphics.add(getGraphics());
             Runnable doPlotPoint = new Runnable() {
                 public void run() {
-                    Graphics graphics =
-                            (Graphics)_pendingPointsGraphics.remove(0);
-                    int[] pendingPointsData = 
-                            (int[])_pendingPointsData.remove(0);
-                    _drawPlotPoint(graphics, pendingPointsData[0],
-                            pendingPointsData[1]);
+                    try {
+                        Graphics graphics =
+                               (Graphics)_pendingPointsGraphics.remove(0);
+                        int[] pendingPointsData = 
+                               (int[])_pendingPointsData.remove(0);
+                        _drawPlotPoint(graphics, pendingPointsData[0],
+                               pendingPointsData[1]);
+                    } catch (NoSuchElementException ex) {
+                        // In theory, this should not occur, but in any
+                        // case, we do not want to report it since it
+                        // will be evident on the plot anyway; it will
+                        // have missing points.
+                    }
                 }
             };
             SwingUtilities.invokeLater(doPlotPoint);
