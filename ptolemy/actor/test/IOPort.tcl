@@ -196,7 +196,7 @@ test IOPort-5.3 {Test getWidth} {
 
 test IOPort-5.4 {Test getWidth after unlinking} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -209,6 +209,12 @@ test IOPort-5.4 {Test getWidth after unlinking} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
+    
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     $p1 getRemoteReceivers
     $p2 unlink $r1
     list [$p1 getWidth] [$p2 getWidth]
@@ -263,7 +269,7 @@ test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
 
 test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -276,6 +282,12 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
+    
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     $p1 getRemoteReceivers
     $p2 unlink $r1
     expr {[$p1 getRemoteReceivers] == [java::null]}
@@ -286,7 +298,7 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
 #
 test IOPort-9.1 {Check connectivity via send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -299,6 +311,12 @@ test IOPort-9.1 {Check connectivity via send} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
+    
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
     $p1 send 0 $token
@@ -344,7 +362,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -359,6 +377,12 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     $p2 link $r1
     # unlink one end
     $p1 unlink $r1
+    
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
     catch {$p1 send 0 $token} msg1
@@ -368,7 +392,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     # sending port
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -377,6 +401,12 @@ test IOPort-9.4 {Check loopback send} {
     set r1 [$e0 connect $p1 $p2 R1]
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     $p1 send 0 $token
     set received [$p2 get 0]
     $received toString
@@ -408,7 +438,7 @@ test IOPort-10.2 {Check description use test-7.1 topology} {
 
 test IOPort-10.3 {Check description use test-9.1 topology} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sending entity
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -416,6 +446,12 @@ test IOPort-10.3 {Check description use test-9.1 topology} {
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
     set r1 [$e0 connect $p1 $p2 R1]
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     list "[$p1 description $detail]\n[$p2 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
 } remotereceivers {
@@ -432,7 +468,7 @@ ptolemy.actor.IOPort {..E2.P2} receivers {
 
 test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sender
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -447,6 +483,12 @@ test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     $p1 link $r1
     $p2 link $r1
     $p3 link $r1
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
 } remotereceivers {
@@ -470,7 +512,7 @@ ptolemy.actor.IOPort {..E3.P3} receivers {
 
 test IOPort-10.5 {Check description use multi-output port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     # sender
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -488,6 +530,12 @@ test IOPort-10.5 {Check description use multi-output port} {
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $p1 link $r2
     $p3 link $r2
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
 } remotereceivers {
@@ -513,7 +561,7 @@ ptolemy.actor.IOPort {..E3.P3} receivers {
 
 test IOPort-10.6 {Check description use the example in design doc} {
     set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1 false true]
@@ -576,6 +624,12 @@ test IOPort-10.6 {Check description use the example in design doc} {
     $p9 link $r7
     set r8 [java::new ptolemy.actor.IORelation $e0 R8]
     $p3 link $r8
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     list "[$p1 description $detail]\n[$p10 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.E2.P1} receivers {
 } remotereceivers {
@@ -852,6 +906,12 @@ test IOPort-13.1 {test getReceivers()} {
     $r2 setWidth 2
     set r3 [$e2 connect $p2 $p4]
     $r3 setWidth 4
+
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $e0 initialize
+    
     set receivers [java::field ptolemy.actor.IOPort RECEIVERS]
     set remotereceivers [java::field ptolemy.actor.IOPort REMOTERECEIVERS]
     $p2 description $receivers
