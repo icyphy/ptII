@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	EntityLibrary.java \
+	ErrorHandler.java \
 	Icon.java \
 	Locatable.java \
 	Location.java \
