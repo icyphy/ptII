@@ -544,6 +544,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  null is returned.
 	 */
 	private String _linkMoML(StringBuffer moml,
+				 StringBuffer failmoml,
 				 NamedObj linkHead, 
 				 NamedObj linkTail) throws Exception {
 	    if(linkHead != null && linkTail != null) {
@@ -561,10 +562,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    moml.append("<relation name=\"" + relationName + "\"/>\n");
 		    moml.append("<link port=\"" +
 				headPort.getName(getToplevel()) + 
-				"\" relation=\"" + relationName + "\"/>\n");
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
 		    moml.append("<link port=\"" + 
 				tailPort.getName(getToplevel()) + 
-				"\" relation=\"" + relationName + "\"/>\n");
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    // Record moml so that we can blow away these
+		    // links in case we can't create them
+		    failmoml.append("<unlink port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    failmoml.append("<unlink port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    failmoml.append("<deleteRelation name=\"" + 
+				relationName + 
+				"\"/>\n");
 		    return relationName;
 		} else if(head instanceof ComponentPort &&
 			  linkTail instanceof Vertex) {
@@ -607,8 +623,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    NamedObj linkHead = (NamedObj)link.getHead();
 	    NamedObj linkTail = (NamedObj)link.getTail();
 	    Relation linkRelation = (Relation)link.getRelation();
-	    StringBuffer moml = new StringBuffer();
+	    // This moml is parsed to execute the change
+	    final StringBuffer moml = new StringBuffer();
+	    // This moml is parsed in case the change fails.
+	    final StringBuffer failmoml = new StringBuffer();
 	    moml.append("<group>\n");
+	    failmoml.append("<group>\n");
 			    
 	    String relationName = "";
     
@@ -618,12 +638,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		
 		// create moml to make the new links. 
 		relationName =
-		    _linkMoML(moml, (NamedObj)newLinkHead, linkTail);
+		    _linkMoML(moml, failmoml, 
+			      (NamedObj)newLinkHead, linkTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	    moml.append("</group>\n");
 
+	    moml.append("</group>\n");	   
+	    failmoml.append("</group>\n");	   
+    
 	    final String relationNameToAdd = relationName;
 
 	    ChangeRequest request = 
@@ -638,19 +661,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			} else {
 			    link.setRelation(null);
 			}
-
-			if(GraphUtilities.isPartiallyContainedEdge(edge, 
-								   getRoot(),
-			    PtolemyGraphModel.this)) {
-				_linkSet.add(edge);
-			    } else {
-				_linkSet.remove(edge);
-			    }
 		    }
 		};	    
 
 	    // Handle what happens if the mutation fails.
-	    /*	    request.addChangeListener(new ChangeListener() {
+	    request.addChangeListener(new ChangeListener() {
 		public void changeFailed(ChangeRequest change, 
 					 Exception exception) {
 		    // If we fail here, then we remove the link entirely.
@@ -659,10 +674,17 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    link.setHead(null);
 		    link.setTail(null);
 		    link.setRelation(null);
+		    // and queue a new change request to clean up the model
+		    ChangeRequest request = 
+			new MoMLChangeRequest(PtolemyGraphModel.this, 
+					      getToplevel(),
+					      failmoml.toString());
+		    getToplevel().requestChange(request);
 		}
 		
 		public void changeExecuted(ChangeRequest change) {
-		    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+		    if(GraphUtilities.isPartiallyContainedEdge(edge, 
+				   getRoot(),
 				   PtolemyGraphModel.this)) {
 			_linkSet.add(edge);
 		    } else {
@@ -670,7 +692,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    }
 		}
 	    });
-	    */
+	    
 	    getToplevel().requestChange(request);
 	}	
 	
@@ -686,9 +708,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    NamedObj linkHead = (NamedObj)link.getHead();
 	    NamedObj linkTail = (NamedObj)link.getTail();
 	    Relation linkRelation = (Relation)link.getRelation();
-	    StringBuffer moml = new StringBuffer();
+	    // This moml is parsed to execute the change
+	    final StringBuffer moml = new StringBuffer();
+	    // This moml is parsed in case the change fails.
+	    final StringBuffer failmoml = new StringBuffer();
 	    moml.append("<group>\n");
-		  
+	    failmoml.append("<group>\n");
+	  
 	    String relationName = "";
     
 	    try {
@@ -697,37 +723,60 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		
 		// create moml to make the new links. 
 		relationName =
-		    _linkMoML(moml, linkHead, (NamedObj)newLinkTail);
+		    _linkMoML(moml, failmoml, 
+			      linkHead, (NamedObj)newLinkTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
 	    
 	    moml.append("</group>\n");
-		
+	    failmoml.append("</group>\n");	   
+	
 	    final String relationNameToAdd = relationName;
 	    
 	    ChangeRequest request = 
 		new MoMLChangeRequest(PtolemyGraphModel.this, 
 				      getToplevel(),
 				      moml.toString()) {
-		    protected void _execute() throws Exception {
-			super._execute();
-			link.setTail(newLinkTail);
-			if(relationNameToAdd != null) {
+		   protected void _execute() throws Exception {
+		       super._execute();
+		       link.setTail(newLinkTail);
+		       if(relationNameToAdd != null) {
 			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
-			} else {
-			    link.setRelation(null);
-			}
+		       } else {
+			   link.setRelation(null);
+		       }
+		   }
+	       };
 
-			if(GraphUtilities.isPartiallyContainedEdge(edge, 
-								   getRoot(),
-			    PtolemyGraphModel.this)) {
-				_linkSet.add(edge);
-			    } else {
-				_linkSet.remove(edge);
-			    }
+	    // Handle what happens if the mutation fails.
+	    request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change, 
+					 Exception exception) {
+		    // If we fail here, then we remove the link entirely.
+		    // FIXME uno the moml?
+		    _linkSet.remove(link);
+		    link.setHead(null);
+		    link.setTail(null);
+		    link.setRelation(null);
+		    // and queue a new change request to clean up the model
+		    ChangeRequest request = 
+			new MoMLChangeRequest(PtolemyGraphModel.this, 
+					      getToplevel(),
+					      failmoml.toString());
+		    getToplevel().requestChange(request);
+		}
+		
+		public void changeExecuted(ChangeRequest change) {
+		    if(GraphUtilities.isPartiallyContainedEdge(edge, 
+				   getRoot(),
+				   PtolemyGraphModel.this)) {
+			_linkSet.add(edge);
+		    } else {
+			_linkSet.remove(edge);
 		    }
-	    };
+		}
+	    });
 
 	    getToplevel().requestChange(request);
 	}	

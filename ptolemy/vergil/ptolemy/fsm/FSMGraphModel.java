@@ -200,6 +200,116 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    return true;
 	}	
 
+
+	/** Append moml to the given buffer that disconnects a link with the
+	 *  given head, tail, and relation.  
+	 */
+	private void _unlinkMoML(StringBuffer moml,
+				 NamedObj linkHead, 
+				 NamedObj linkTail,
+				 Relation relation) throws Exception {
+	    // If the link is already connected, then create a bit of MoML
+	    // to unlink the link.
+ 	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+	        if(head instanceof State &&
+		   tail instanceof State) {
+		    // When we connect two states, we actually connect the
+		    // appropriate ports.
+		    State headState = (State)head;
+		    State tailState = (State)tail;
+		    ComponentPort headPort = 
+			(ComponentPort)headState.incomingPort;
+		    ComponentPort tailPort = 
+			(ComponentPort)tailState.outgoingPort;
+		    // Unlinking two ports with an anonymous relation.
+		    moml.append("<unlink port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		    moml.append("<unlink port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		    moml.append("<deleteRelation name=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		} else {
+		    throw new RuntimeException(
+		        "Unlink failed: " +
+			"Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No unlinking to do.
+	    }
+	}
+
+	/** Append moml to the given buffer that connects a link with the
+	 *  given head, tail, and relation.  This may require addinging an
+	 *  anonymous relation to the ptolemy model.  If this is required,
+	 *  the name of the relation is returned.  
+	 *  If no relation need be added, then
+	 *  null is returned.
+	 */
+	private String _linkMoML(StringBuffer moml,
+				 StringBuffer failmoml,
+				 NamedObj linkHead, 
+				 NamedObj linkTail) throws Exception {
+	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+		if(head instanceof State &&
+		   tail instanceof State) {
+		    // When we connect two states, we actually connect the
+		    // appropriate ports.
+		    State headState = (State)head;
+		    State tailState = (State)tail;
+		    ComponentPort headPort = 
+			(ComponentPort)headState.incomingPort;
+		    ComponentPort tailPort = 
+			(ComponentPort)tailState.outgoingPort;
+		    // Linking two ports with a new relation.
+		    String relationName = 
+			getToplevel().uniqueName("relation");
+		    // Note that we use no class so that we use the container's
+		    // factory method when this gets parsed
+		    moml.append("<relation name=\"" + relationName + "\"/>\n");
+		    moml.append("<link port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    moml.append("<link port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    // Record moml so that we can blow away these
+		    // links in case we can't create them
+		    failmoml.append("<unlink port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    failmoml.append("<unlink port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + 
+				"\"/>\n");
+		    failmoml.append("<deleteRelation name=\"" + 
+				relationName + 
+				"\"/>\n");
+		    return relationName;
+		} else {
+		    throw new RuntimeException(
+		        "Link failed: " +
+			"Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No Linking to do.
+		return null;
+	    }
+	}
+	
 	/** Connect the given edge to the given head node.
 	 *  This class queues a new change request with the ptolemy model
 	 *  to make this modification.
@@ -207,32 +317,83 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  @param head The new head for the edge, which is assumed to
 	 *  be an icon.
 	 */
-	public void setHead(final Object edge, final Object head) {
-	    Arc arc = (Arc)edge;
+	public void setHead(final Object edge, final Object newArcHead) {
+	    final Arc link = (Arc)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+	    NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    // This moml is parsed to execute the change
+	    final StringBuffer moml = new StringBuffer();
+	    // This moml is parsed in case the change fails.
+	    final StringBuffer failmoml = new StringBuffer();
+	    moml.append("<group>\n");
+	    failmoml.append("<group>\n");
+			    
+	    String relationName = "";
+    
 	    try {
-		arc.unlink(FSMGraphModel.this);		
+		// create moml to unlink any existing. 
+		_unlinkMoML(moml, linkHead, linkTail, linkRelation);
+		
+		// create moml to make the new links. 
+		relationName =
+		    _linkMoML(moml, failmoml, 
+			      (NamedObj)newArcHead, linkTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	    arc.setHead(head);
-	    try {
-		// This should remove the links and 
-		// must not leave the model in an inconsistent state.
-		arc.link(FSMGraphModel.this);
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		// If we fail here, then we remove the link entirely.
-		//_linkSet.remove(link);
-		arc.setHead(null);
-		arc.setTail(null);
-		throw new GraphException(ex);
-	    }
-	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
-						  FSMGraphModel.this)) {
-		_linkSet.add(edge);
-	    } else {
-		_linkSet.remove(edge);
-	    }
+
+	    moml.append("</group>\n");	   
+	    failmoml.append("</group>\n");	   
+    
+	    final String relationNameToAdd = relationName;
+
+	    ChangeRequest request = 
+		new MoMLChangeRequest(FSMGraphModel.this, 
+				      getToplevel(),
+				      moml.toString()) {
+		    protected void _execute() throws Exception {
+			super._execute();
+			link.setHead(newArcHead);
+			if(relationNameToAdd != null) {
+			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+			} else {
+			    link.setRelation(null);
+			}
+		    }
+		};	    
+
+	    // Handle what happens if the mutation fails.
+	    request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change, 
+					 Exception exception) {
+		    // If we fail here, then we remove the link entirely.
+		    // FIXME uno the moml?
+		    _linkSet.remove(link);
+		    link.setHead(null);
+		    link.setTail(null);
+		    link.setRelation(null);
+		    // and queue a new change request to clean up the model
+		    ChangeRequest request = 
+			new MoMLChangeRequest(FSMGraphModel.this, 
+					      getToplevel(),
+					      failmoml.toString());
+		    getToplevel().requestChange(request);
+		}
+		
+		public void changeExecuted(ChangeRequest change) {
+		    if(GraphUtilities.isPartiallyContainedEdge(edge, 
+				   getRoot(),
+				   FSMGraphModel.this)) {
+			_linkSet.add(edge);
+		    } else {
+			_linkSet.remove(edge);
+		    }
+		}
+	    });
+	    
+	    getToplevel().requestChange(request);
+	
 	}
 	
 	/** Connect the given edge to the given tail node.
@@ -242,31 +403,82 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  @param head The new head for the edge, which is assumed to
 	 *  be an icon.
 	 */
-	public void setTail(final Object edge, final Object tail) {
-	    Arc arc = (Arc)edge;
+	public void setTail(final Object edge, final Object newArcTail) {
+	    final Arc link = (Arc)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+	    NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    // This moml is parsed to execute the change
+	    final StringBuffer moml = new StringBuffer();
+	    // This moml is parsed in case the change fails.
+	    final StringBuffer failmoml = new StringBuffer();
+	    moml.append("<group>\n");
+	    failmoml.append("<group>\n");
+	  
+	    String relationName = "";
+    
 	    try {
-		arc.unlink(FSMGraphModel.this);		
+		// create moml to unlink any existing. 
+		_unlinkMoML(moml, linkHead, linkTail, linkRelation);
+		
+		// create moml to make the new links. 
+		relationName =
+		    _linkMoML(moml, failmoml, 
+			      linkHead, (NamedObj)newArcTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	    arc.setTail(tail);
-	    try {
-		// This should remove the links and 
-		// must not leave the model in an inconsistent state.
-		arc.link(FSMGraphModel.this);
-	    } catch (Exception ex) {
-		// If we fail here, then we remove the link entirely.
-		//_linkSet.remove(link);
-		arc.setHead(null);
-		arc.setTail(null);
-		throw new GraphException(ex);
-	    }
-	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
-						  FSMGraphModel.this)) {
-		_linkSet.add(edge);
-	    } else {
-		_linkSet.remove(edge);
-	    }
+	    
+	    moml.append("</group>\n");
+	    failmoml.append("</group>\n");	   
+	
+	    final String relationNameToAdd = relationName;
+	    
+	    ChangeRequest request = 
+		new MoMLChangeRequest(FSMGraphModel.this, 
+				      getToplevel(),
+				      moml.toString()) {
+		   protected void _execute() throws Exception {
+		       super._execute();
+		       link.setTail(newArcTail);
+		       if(relationNameToAdd != null) {
+			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+		       } else {
+			   link.setRelation(null);
+		       }
+		   }
+	       };
+
+	    // Handle what happens if the mutation fails.
+	    request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change, 
+					 Exception exception) {
+		    // If we fail here, then we remove the link entirely.
+		    // FIXME uno the moml?
+		    _linkSet.remove(link);
+		    link.setHead(null);
+		    link.setTail(null);
+		    link.setRelation(null);
+		    // and queue a new change request to clean up the model
+		    ChangeRequest request = 
+			new MoMLChangeRequest(FSMGraphModel.this, 
+					      getToplevel(),
+					      failmoml.toString());
+		    getToplevel().requestChange(request);
+		}
+		
+		public void changeExecuted(ChangeRequest change) {
+		    if(GraphUtilities.isPartiallyContainedEdge(edge, 
+				   getRoot(),
+				   FSMGraphModel.this)) {
+			_linkSet.add(edge);
+		    } else {
+			_linkSet.remove(edge);
+		    }
+		}
+	    });
+
+	    getToplevel().requestChange(request);
 	}	
     }
     

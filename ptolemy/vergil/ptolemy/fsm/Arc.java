@@ -66,150 +66,58 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// Arc
 /**
+Instances of this class represent an arc between two states in a state 
+machine visualization.  To see how this class is used and links are made
+using this class, see ArcModel in FSMGraphModel.
 
 @author Steve Neuendorffer
 @version $Id$
+@see FSMGraphModel$ArcModel
 */
 public class Arc {
 
-    /** Construct an attribute with the specified container and name.
-     *  The location contained by the attribute is initially null,
-     *  but can be set using the setLocation() method.
-     *  @param container The container.
-     *  @param name The name of the attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+    /** Return the head of this link.   This will be the icon of a state.
      */
-    public Arc() {
-	super();
-    }
-
     public Object getHead() {
 	return _head;
     }
 
+    /** Return the relation that this link represents.  This should always
+     *  be an instance of Transition.
+     */
     public ComponentRelation getRelation() {
 	return _relation;
     }
 
+    /** Return the tail of this link.   This will be the icon of a state.
+     */
     public Object getTail() {
 	return _tail;
     } 
 
+    /** Set the head of this link.  This will be the icon of a state.
+     */
     public void setHead(Object head) {
 	_head = head;
     }
 
+    /** Set the relation that this link represents.  This should always
+     *  be an instance of Transition.
+     */
     public void setRelation(ComponentRelation relation) {
 	_relation = relation;
     }
 
+    /** Set the tail of this link.  This will be the icon of a state.
+     */
     public void setTail(Object tail) {
 	_tail = tail;
     } 
 
-    public void link(Object requestor) throws IllegalActionException {
-	ComponentPort port;
-	ComponentRelation relation;
-	Vertex vertex;
-
-        if(_head == null || _tail == null) return;
-	// In FSM, it looks like two states are getting connected, but
-	// really we make attachments to the appropriate ports.
-	if(_head instanceof Icon && _tail instanceof Icon) {        
-	    State headState = (State)((Icon)_head).getContainer();
-	    State tailState = (State)((Icon)_tail).getContainer();
-	    final CompositeEntity container = 
-		(CompositeEntity)headState.getContainer();
-	    // Linking two ports with a new relation.
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<group>\n");
-	    final String relationName = container.uniqueName("relation");
-	    // Note that we use no class so that we use the container's
-	    // factory method when this gets parsed
-	    moml.append("<relation name=\"" + relationName + 
-			"\" class=\"ptolemy.domains.fsm.kernel.Transition\"/>\n");
-	    moml.append("<link port=\"" + 
-			headState.incomingPort.getName(container) + 
-			"\" relation=\"" + relationName + "\"/>\n");
-	    moml.append("<link port=\"" + 
-			tailState.outgoingPort.getName(container) + 
-			"\" relation=\"" + relationName + "\"/>\n");
-	    moml.append("</group>\n");
-	    ChangeRequest request = 
-		new MoMLChangeRequest(requestor, container, moml.toString()) {
-                    protected void _execute() throws Exception {
-			super._execute();
-			// Set the relation that this link is going to modify.
-			// I'm not sure if this asynchrony will cause
-			// things to break.
-			setRelation(container.getRelation(relationName));
-		    }
-		};
-	    container.requestChange(request);
-	    try {
-		request.waitForCompletion();
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-	    }
-	} else {
-	    throw new RuntimeException("Trying to link, " +
-                    "but head is " + _head +
-                    " and tail is " + _tail);
-	}
-    }
-
-    public void unlink(Object requestor) throws IllegalActionException {
-	ComponentPort port;
-	Vertex vertex;
-	ComponentRelation relation;
-
-	if(_head == null || _tail == null) return;
-        if(_head instanceof Icon && _tail instanceof Icon) {
-	    State headState = (State)((Icon)_head).getContainer();
-	    State tailState = (State)((Icon)_tail).getContainer();
-	    final CompositeEntity container = 
-		(CompositeEntity)headState.getContainer();
-	    // Linking two ports with a new relation.
-	    StringBuffer moml = new StringBuffer();
-	    moml.append("<group>\n");
-	    final String relationName = getRelation().getName(container);
-	    // Note that we use no class so that we use the container's
-	    // factory method when this gets parsed
-	    moml.append("<unlink port=\"" + 
-			headState.incomingPort.getName(container) + 
-			"\" relation=\"" + relationName + "\"/>\n");
-	    moml.append("<unlink port=\"" + 
-			tailState.outgoingPort.getName(container) + 
-			"\" relation=\"" + relationName + "\"/>\n");
-	    moml.append("<deleteRelation name=\"" + 
-			relationName + "\"/>\n");
-	    moml.append("</group>\n");
-	    ChangeRequest request = 
-		new MoMLChangeRequest(requestor, container, moml.toString()) {
-                    protected void _execute() throws Exception {
-			super._execute();
-			// Set the relation that this link is going to modify.
-			// I'm not sure if this asynchrony will cause
-			// things to break.
-			setRelation(null);
-		    }
-		};
-	    container.requestChange(request);
-	    try {
-		request.waitForCompletion();
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-	    }
-        }
-    }
-
     /** Return a string representation of this link.
      */
     public String toString() {
-	return "Link(" 
+	return "Arc(" 
 	    + _head + ", " 
 	    + _tail + ", " 
 	    + _relation + ")";
