@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="timed sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Sources that depend on time.</doc>
+
+<entity name="Clock" class="ptolemy.actor.lib.Clock">
+<doc>Create a generalized square wave</doc>
+</entity>
+
+<!-- NOTE: Appears also in sequencesources.xml. -->
+<entity name="Const" class="ptolemy.actor.lib.Const">
+<doc>Create a constant signal</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="40"/>
+   </property>
+</entity>
+
+<entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+<doc>Output the current time.</doc>
+</entity>
+
+<entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+</entity>
+
+<entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine"/>
+<entity name="TriggeredClock" class="ptolemy.actor.lib.TriggeredClock"/>
+<entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
+<doc>Create a sequence of tokens with increasing value</doc>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

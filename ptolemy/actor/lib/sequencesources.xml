@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="sequence sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Sources of sequences of values. </doc>
+
+<!-- NOTE: Appears also in timedsources.xml. -->
+<entity name="Const" class="ptolemy.actor.lib.Const">
+<doc>Create a constant sequence</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="40"/>
+   </property>
+</entity>
+
+<entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
+</entity>
+
+<entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+</entity>
+
+<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+<doc>Create a sequence of tokens with increasing value</doc>
+</entity>
+
+<entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
+<doc>A clock producing exactly one output per clock tick</doc>
+</entity>
+
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+
+<entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
+<doc>Create values from a sketch on the screen</doc>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
