@@ -153,16 +153,38 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     static {
         _graphicalClasses = new HashMap();
         // Alphabetical by key class
+        // FIXME: removing MonitorValue is probably not right, but
+        // it gets us through the moml tests.
+        _graphicalClasses.put("ptolemy.actor.lib.MonitorValue",
+                null);
+        //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
+        //        "ptolemy.actor.lib.Discard");
+
+	// Generated applet from moml/demo/modulation.xml
+	// fails to run if substitute Attribute for NodeControllerFactory
+	// so we set it to null instead.
+        //_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
+        //        "ptolemy.kernel.util.Attribute");
+
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
-                "ptolemy.kernel.util.Attribute");
+                null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
                 null);
+        _graphicalClasses.put("ptolemy.vergil.icon.UpdatedValueIcon",
+                "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
+  	// Generated applet from moml/demo/modulation.xml
+  	// fails to run if substitute Attribute for AnnotationEditorFactory
+	// so we set it to null instead.
+
+        //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
+        //        "ptolemy.kernel.util.Attribute");
+
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-                "ptolemy.kernel.util.Attribute");
+                null);
         _graphicalClasses.put("ptolemy.vergil.toolbox"
                 + ".VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
