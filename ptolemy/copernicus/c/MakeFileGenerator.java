@@ -56,23 +56,27 @@ public class MakeFileGenerator {
      *  @param className The class for which the Makefile is to be generated.
      *  The makefile will have the name <i>className</i>.make.
      */
-    public static void generateMakeFile(String classPath, String className,
-        Collection requiredClasses) {
+    public static void generateMakeFile(String classPath, String className) {
         StringBuffer code = new StringBuffer();
 
         code.append("#Standard variables\n");
         code.append("RUNTIME = ../runtime\n");
         code.append("LIB = " + System.getProperty("j2c_lib","/j2c_lib")
                 + "\n");
-        code.append("CFLAGS = -Wall -pedantic\n");
+
+        // The -g3 flag is for gdb debugging.
+        code.append("CFLAGS = -Wall -pedantic -g3\n");
         code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB)\n\n");
 
         code.append("THIS = " + className + ".make\n");
 
         // Get names of all .c files in the transitive closure.
-        Iterator i = requiredClasses.iterator();
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
-                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n");
+                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
+                + "\t" + className + "_main.c\\\n");
+
+        Iterator i = RequiredFileGenerator.getRequiredClasses(classPath,
+                className).iterator();
 
         while (i.hasNext()) {
             String name = _classNameToMakeFileName(
@@ -89,7 +93,7 @@ public class MakeFileGenerator {
                 + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
 
         code.append(className + ".exe : $(OBJECTS)\n");
-        code.append("\tgcc $(OBJECTS)\n");
+        code.append("\tgcc $(OBJECTS) -o "+ className +".exe\n");
 
         code.append(".c.o:\n");
         code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $< -o $@\n\n");
@@ -97,7 +101,8 @@ public class MakeFileGenerator {
         code.append(".PHONY:depend\n\n");
         code.append("depend:\n");
         code.append("\t$(DEPEND) $(SOURCES)>makefile.tmp;\\\n");
-        code.append("\tcat $(THIS) makefile.tmp>makefile;\\\n");
+        code.append("\tcat $(THIS) makefile.tmp>"
+                + className + ".mk;\\\n");
         code.append("\trm makefile.tmp;\n");
         code.append("\n");
 

@@ -576,6 +576,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _context.addIncludeFile("\""
                 + CNames.includeFileNameOf(className)
                 + "\"");
+
     }
 
     public void caseThisRef(ThisRef v) {
@@ -756,8 +757,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _push("< UNHANDLED: "+obj.getClass().getName()+">");
         }
 
+        /* FIXME: Enable this when diagnostic output is needed.
         System.out.println("Unsupported visitation type: "
                 + obj.getClass().getName() + "(ignored).");
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -936,9 +939,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     protected void _unexpectedCase(Object object, String message) {
         _push("0 /*" + object.getClass().getName() + "*/");
+
+        /* FIXME: Enable this when diagnostic output is needed.
+
         System.err.println("Unexpected code conversion case in CSwitch:\n"
                 + "        " + message + "\n        Case object is of class "
                 + object.getClass().getName());
+        */
     }
 
     ///////////////////////////////////////////////////////////////////

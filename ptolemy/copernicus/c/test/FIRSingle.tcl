@@ -65,13 +65,16 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
         in singlclass mode and compile into an exe} {
     
+    set outputDir testOutput/FirSingle.out
+    set runtimeDir ../../../runtime
+    
     # Check if the FIRSingle.out directory exists.
-    if {[file isdirectory FIRSingle.out]} {
+    if {[file isdirectory $outputDir]} {
         # Remove all files generated in the previous run.
-	file delete -force [glob -nocomplain FIRSingle.out/*]
+	file delete -force [glob -nocomplain $outputDir/*]
     } else {
         # Create the FIRSingle.out directory.
-	file mkdir FIRSingle.out
+	file mkdir $outputDir
     }
 
 
@@ -101,33 +104,27 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     # Move the generated files to the FIRSingle.out directory.
     foreach fileName {FIRSingle.c FIRSingle.h FIRSingle_i.h} {
         if ([file readable $fileName]) {
-            exec mv $fileName FIRSingle.out/$fileName
+            exec mv $fileName $outputDir/$fileName
         }
     }
 
 
-    cd FIRSingle.out
+    cd $outputDir
 
     # Generate the required .o files.
-    exec gcc -c -I ../../runtime FIRSingle.c
-    exec gcc -c -I ../../runtime -I . ../FIRSingleMain.c
-    exec gcc -c ../../runtime/pccg_runtime.c
+    exec gcc -c -I $runtimeDir FIRSingle.c
+    exec gcc -c -I $runtimeDir -I . ../../FIRSingleMain.c
+    exec gcc -c    $runtimeDir/pccg_runtime.c
 
     # Link the .o files into the executable.
     eval exec gcc -o firSingle [glob *.o]
 
-    # Run the executable, convert control-m to \n
-    regsub -all [java::call System getProperty "line.separator"] \
-	        [exec firSingle] "\n" results
-    list $results
-} {{11.000000
-4.000000
-9.000000
-0.000000
-0.000000
-0.000000
-0.000000
-0.000000
-0.000000
-0.000000}}
+    # Run the executible.
+    set output [exec "firSingle"]
+    
+    # Check if the output is correct.
+    set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"
+    string first $template $output]
+    
+} {0}
 

@@ -1,4 +1,5 @@
-# Tests Copernicus C Code generation for the Simple example
+# Tests Copernicus C Code generation for the Object example in singleclass
+# mode.
 #
 # @Author: Christopher Hylands, Shuvra S. Bhattacharyya, Ankush Varma
 #
@@ -51,7 +52,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
 
-    set outputDir ObjectSingle.out
+    set outputDir testOutput/ObjectSingle.out
     set className java.lang.Object
     
     # Adds the .java suffix after a space.
@@ -65,14 +66,13 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     regsub ".java" $javaFile "_i.h"   iFile
     regsub ".java" $javaFile ".o"     oFile
     
-    # Check if the .out directory exists.
+    # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
-        # Remove all files generated in the previous run.
-	file delete -force [glob -nocomplain $outputDir/*]
-    } else {
-        # Create the Simple.out directory.
-        file mkdir $outputDir
-    }
+	file delete -force $outputDir
+    } 
+    
+    # Create the output directory.
+    file mkdir $outputDir
 
 
     # We need to get the classpath so that we can run if we are running
@@ -93,10 +93,10 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
 
     # NOTE: JavaToC expects the class file to be converted to be in the
     # directory from which it is invoked. It outputs the generated code
-    # files to this directory.  However, here Simple.class is in c/test/
-    # whereas we want the generated code to go to c/test/SimpleSingle.out/
+    # files to this directory.  However, here xyz.class is in c/test/
+    # whereas we want the generated code to go to c/test/xyz.out/
     # . We solve this by automatically moving the generated files to the
-    # SimpleSingle.out directory after they are created. A better method to
+    # xyz.out directory after they are created. A better method to
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.

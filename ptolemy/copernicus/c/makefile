@@ -69,6 +69,7 @@ JSRCS = \
 	InterfaceFileGenerator.java \
 	JavaToC.java \
 	Main.java \
+        MainFileGenerator.java \
 	MakeFileGenerator.java \
 	MethodListGenerator.java \
 	RequiredFileGenerator.java

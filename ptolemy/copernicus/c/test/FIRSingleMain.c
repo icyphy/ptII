@@ -29,8 +29,8 @@ int main(void) {
 
     /* Print the contents of the output buffer */
     for (i=0; i<10; i++) {
-        printf("%f\n", output[i]);
+        printf("%f ", output[i]);
     }
-
+    
     return 0;
 }

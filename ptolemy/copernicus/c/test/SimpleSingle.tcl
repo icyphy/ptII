@@ -1,4 +1,4 @@
-# Tests Copernicus C Code generation for the Simple example
+# Tests Copernicus C Code generation for the Simple example.
 #
 # @Author: Christopher Hylands, Shuvra S. Bhattacharyya, Ankush Varma
 #
@@ -51,8 +51,9 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
 
-    set outputDir SimpleSingle.out
+    set outputDir testOutput/SimpleSingle.out
     set className Simple
+    set runtimeDir ../../../runtime
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -65,15 +66,13 @@ test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
     regsub ".java" $javaFile "_i.h"   iFile
     regsub ".java" $javaFile ".o"     oFile
     
-    # Check if the .out directory exists.
+    # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
-        # Remove all files generated in the previous run.
-	file delete -force [glob -nocomplain $outputDir/*]
-    } else {
-        # Create the Simple.out directory.
-        file mkdir $outputDir
-    }
-
+	file delete -force $outputDir
+    } 
+    
+    # Create the output directory.
+    file mkdir $outputDir
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
@@ -92,10 +91,10 @@ test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
 
     # NOTE: JavaToC expects the class file to be converted to be in the
     # directory from which it is invoked. It outputs the generated code
-    # files to this directory.  However, here Simple.class is in c/test/
-    # whereas we want the generated code to go to c/test/SimpleSingle.out/
+    # files to this directory.  However, here xyz.class is in c/test/
+    # whereas we want the generated code to go to c/test/xyz.out/
     # . We solve this by automatically moving the generated files to the
-    # SimpleSingle.out directory after they are created. A better method to
+    # xyz.out directory after they are created. A better method to
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.
@@ -105,7 +104,7 @@ test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
 
     # Check if the generated code compiles into a .o file.
     # A .exe file cannot be generated because we are in singleClass mode.
-    exec gcc -c -I ../../runtime $cFile
+    exec gcc -c -I $runtimeDir $cFile
 
     # Test the existence of the generated files.
     # The existence of the .o file means that it compiled correctly. 

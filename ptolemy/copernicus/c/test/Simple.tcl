@@ -1,4 +1,4 @@
-# Tests Copernicus C Code generation for the Simple example
+# Tests Copernicus C Code generation for the Simple example.
 #
 # @Author: Christopher Hylands, Shuvra S. Bhattacharyya, Ankush Varma
 #
@@ -51,7 +51,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test Simple-1.1 {Generate all required files for Simple.java} {
 
-    set outputDir Simple.out
+    set outputDir testOutput/Simple.out
     set className Simple
     
     # Adds the .java suffix after a space.
@@ -59,21 +59,24 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     # Remove that space.
     regsub " " $javaFile "" javaFile
 
-    regsub ".java" $javaFile ".class" classFile
-    regsub ".java" $javaFile ".c"     cFile
-    regsub ".java" $javaFile ".h"     hFile
-    regsub ".java" $javaFile "_i.h"   iFile
-    regsub ".java" $javaFile ".o"     oFile
-    regsub ".java" $javaFile ".make"  mkFile 
+    regsub ".java" $javaFile ".class"  classFile
+    regsub ".java" $javaFile ".c"      cFile
+    regsub ".java" $javaFile ".h"      hFile
+    regsub ".java" $javaFile "_i.h"    iFile
+    regsub ".java" $javaFile ".o"      oFile
+    regsub ".java" $javaFile ".make"   makeFile
+    regsub ".java" $javaFile ".mk"     mkFile
+    regsub ".java" $javaFile ".exe"    exeFile
+    regsub ".java" $javaFile "_main.c" mainCFile
+    regsub ".java" $javaFile "_main.o" mainOFile
 
-    # Check if the .out directory exists.
+    # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
-        # Remove all files generated in the previous run.
-	file delete -force [glob -nocomplain $outputDir/*]
-    } else {
-        # Create the Simple.out directory.
-        file mkdir $outputDir
-    }
+	file delete -force $outputDir
+    } 
+    
+    # Create the output directory.
+    file mkdir $outputDir
 
 
     # We need to get the classpath so that we can run if we are running
@@ -97,35 +100,25 @@ test Simple-1.1 {Generate all required files for Simple.java} {
         ]]
 
     set errors $className-err.txt
+
+    # Take the class file to the output directory. All other files can now
+    # be generated there.
+    exec javac $javaFile
+    
     # Generate the code.
-    #java::call ptolemy.copernicus.c.JavaToC main $args 
+    #java::call ptolemy.copernicus.c.JavaToC main $args
     exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
+   
+    exec make depend -s -f $makeFile
+    #This creates the .mk file.
+    exec make -s -f $mkFile
     
-    # NOTE: JavaToC expects the class file to be converted to be in the
-    # directory from which it is invoked. It outputs the generated code
-    # files to this directory.  However, here Simple.class is in c/test/
-    # whereas we want the generated code to go to c/test/SimpleSingle.out/
-    # . We solve this by automatically moving the generated files to the
-    # SimpleSingle.out directory after they are created. A better method to
-    # solve this might exist.
+    # Run the automatically generated executible.
+    exec $exeFile
 
-    # Move the generated files to the SimpleSingle.out directory.
-    file rename -force $cFile $hFile $iFile $mkFile $outputDir
+    # Move all generated files to the output directory.
+    file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
+            $mkFile $exeFile $outputDir
     
-    cd $outputDir
-
-    # Check if the generated code compiles into a .o file.
-    # A .exe file cannot be generated because we are in singleClass mode.
-    # Not done for built-in(system) classes.
-    # exec gcc -c -I ../../runtime $cFile
-
-    # Test the existence of the generated files.
-    # The existence of the .o file means that it compiled correctly. 
-    list \
-    	    [file readable $cFile] \
-    	    [file readable $hFile] \
-    	    [file readable $iFile] \
-            [file isdirectory j2c_lib]
-
-} {1 1 1 1}
+} {}
 

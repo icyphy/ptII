@@ -49,6 +49,12 @@ generated code.
 
 public class Simple {
 
+    public void main()
+    {
+        method1();
+        method2(1,2);
+        staticMethod(this);
+    }
     // Constructor with no arguments.
     public Simple() {
         publicField1 = publicField2 = privateField = 0;

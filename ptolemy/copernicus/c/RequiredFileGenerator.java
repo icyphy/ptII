@@ -40,12 +40,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Collection;
 
+import soot.Unit;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.SootField;
+import soot.Value;
 
+import soot.jimple.InvokeStmt;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Stmt;
+import soot.jimple.FieldRef;
+import soot.jimple.JimpleBody;
 
 /** A class that generates the other required files in the
     transitive closure.
@@ -73,10 +79,10 @@ public class RequiredFileGenerator {
     }
 
 
-    /** Generate the .h files for all classes in the transitive closure of the
-     *  given class, and the .c files for required classes only. A class is
-     *  considered "required" if it contains atleast one method that is in the
-     *  transitive closure of methods called in the main class.
+    /** Generate the .h files for all classes in the transitive closure of
+     * the given class, and the .c files for required classes only. A class
+     * is considered "required" if it contains atleast one method that is
+     * in the transitive closure of methods called in the main class.
      *  @param classPath The classPath.
      *  @param className The main class.
      *  @param compileMode The compilation mode.
@@ -87,10 +93,9 @@ public class RequiredFileGenerator {
             String className, String compileMode, boolean verbose)
             throws IOException {
         if (!compileMode.equals("singleClass")) {
-            _compute(classPath, className);
-
             Scene.v().setSootClassPath(classPath);
             Scene.v().loadClassAndSupport(className);
+            _compute(classPath, className);
 
             // Generate headers for everything in the transitive closure.
 
@@ -104,8 +109,7 @@ public class RequiredFileGenerator {
 
 
             // Generate only the required .c files.
-
-            Iterator i = _requiredClasses.iterator();
+            Iterator i = getRequiredClasses(classPath, className).iterator();
             while (i.hasNext()) {
                 String nextClassName=((SootClass)i.next()).getName();
 
@@ -126,7 +130,7 @@ public class RequiredFileGenerator {
      */
     public static Collection getRequiredClasses(String classPath, String
             className) {
-        _compute(classPath, className);
+        //_compute(classPath, className);
         return (Collection) _requiredClasses;
     }
 
@@ -155,14 +159,17 @@ public class RequiredFileGenerator {
      */
     private static void _compute(String classPath, String className) {
 
-         // Initialize the scene and other variables.
-         _requiredMethods = new HashSet();
-         _requiredClasses = new HashSet();
-         Scene.v().setSootClassPath(classPath);
-         Scene.v().loadClassAndSupport(className);
-         Scene.v().setMainClass(Scene.v().getSootClass(className));
-         ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
-         Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
+        // Initialize the scene and other variables.
+        _requiredMethods = new HashSet();
+        _requiredClasses = new HashSet();
+        Scene.v().setSootClassPath(classPath);
+        Scene.v().loadClassAndSupport(className);
+        Scene.v().setMainClass(Scene.v().getSootClass(className));
+
+        /*
+        ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
+        Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
+        */
 
         // Note all methods in the main class as required methods.
          Iterator mainMethodsIter =
@@ -172,53 +179,177 @@ public class RequiredFileGenerator {
         // required methods.
          while (mainMethodsIter.hasNext()) {
              SootMethod thisMethod = (SootMethod)mainMethodsIter.next();
-             List targetList =
-                 Scene.v().getActiveInvokeGraph(
-                     ).getTransitiveTargetsOf(thisMethod);
-
-             Iterator i = targetList.iterator();
-             while (i.hasNext()) {
-                 SootMethod newMethod = (SootMethod)i.next();
-                 _requiredMethods.add(newMethod);
-             }
              _requiredMethods.add(thisMethod);
          }
 
          // Add all required runtime methods to the list of required
          // methods.
-
          SootClass stringClass = Scene.v().
                 loadClassAndSupport("java.lang.String");
          SootMethod initStringWithCharArray = stringClass.getMethod(
                 "void <init>(char[])");
          _requiredMethods.add(initStringWithCharArray);
 
+         _growRequiredTree();
+    }
 
-         // The set of required classes is all classes that declare atleast
-         // one required method.
-         Iterator requiredMethodsIter = _requiredMethods.iterator();
 
-         while (requiredMethodsIter.hasNext()) {
-             SootMethod thisMethod =
-                     (SootMethod)requiredMethodsIter.next();
+    /** The set of methods we get from
+     * Scene.v.getTransitiveTargetsOf(sootMethod) used in _compute is not
+     * sufficient. Methods called using getSpecialInvokeExpression are not
+     * included in this. Neither are class structure initialization and
+     * clinit() methods. Therefore, we need to add methods called like
+     * this(and their transitive closures) to the tree also.
+     *  FIXME: Perhaps we can do away with getTransitiveTargetsOf()
+     *  completely and use only this method?
+     *  @return Whether further growth in the tree is possible.
+     */
+    private static void _growRequiredTree() {
+        // We will recurse if any new classes or methods are added.
+        boolean newMethodsAdded = false;
+        boolean newClassesAdded = false;
 
-             _requiredClasses.add(thisMethod.getDeclaringClass());
-         }
+        // Note that we only use iterators over clones. This is to prevent
+        // ConcurrentModificationException from being thrown.
+        // Iterate over all the classes and add their "clinit" methods to
+        // the set of required methods.
+        Iterator requiredClassesIter = ((HashSet)_requiredClasses.clone()).
+                iterator();
 
-         // Make sure the "clinit" method is noted as required, if it
-         // exists
-
-         Iterator requiredClassesIter = _requiredClasses.iterator();
-         while (requiredClassesIter.hasNext()) {
+        while (requiredClassesIter.hasNext()) {
              SootClass thisClass = (SootClass)requiredClassesIter.next();
 
              if (thisClass.declaresMethod("void <clinit>()")) {
                  SootMethod initMethod =
                         thisClass.getMethod("void <clinit>()");
-                 _requiredMethods.add(initMethod);
+
+                if (!_requiredMethods.contains(initMethod)) {
+                    newMethodsAdded = true;
+                    _requiredMethods.add(initMethod);
+                }
              }
-         }
+        }
+
+        // For each method in the required set, find all the methods it
+        // calls. Add these to the required set. Also find the fields it
+        // accesses. All classes containing these fields are required.
+        // FIXME: This is a correct, but non-optimal algorithm.
+        // We clone to prevent ConcurrentModificationException.
+        Iterator requiredMethodsIter = ((HashSet)_requiredMethods.clone()).
+                iterator();
+
+        while (requiredMethodsIter.hasNext()) {
+            SootMethod thisMethod = (SootMethod)requiredMethodsIter.next();
+
+            // Iterate over all methods called by this method.
+            Iterator targetsIter = _methodsCalledBy(thisMethod).iterator();
+            while (targetsIter.hasNext()) {
+                SootMethod targetMethod = (SootMethod)targetsIter.next();
+                if (!_requiredMethods.contains(targetMethod)) {
+                    newMethodsAdded = true;
+                    _requiredMethods.add(targetMethod);
+                }
+            }
+
+            // Iterate over all fields used by this method.
+            Iterator fieldsIter = _fieldsUsedBy(thisMethod).iterator();
+            while (fieldsIter.hasNext()) {
+                SootClass declaringClass =
+                        ((SootField)fieldsIter.next()).getDeclaringClass();
+
+                if(!_requiredClasses.contains(declaringClass)) {
+                    newClassesAdded = true;
+                    _requiredClasses.add(declaringClass);
+                }
+            }
+
+        }
+
+        // The set of required classes is all classes that declare atleast
+        // one required method.
+        requiredMethodsIter = ((HashSet)_requiredMethods.clone()).iterator();
+        while (requiredMethodsIter.hasNext()) {
+            SootMethod thisMethod =
+                    (SootMethod)requiredMethodsIter.next();
+
+            SootClass declaringClass = thisMethod.getDeclaringClass();
+
+            if (!_requiredClasses.contains(declaringClass)) {
+                newClassesAdded = true;
+                _requiredClasses.add(declaringClass);
+            }
+        }
+
+
+        // If this call to _growRequiredTree cause any changes, another call to
+        // _growRequiredTree is required.
+        if (newMethodsAdded || newClassesAdded) {
+            _growRequiredTree();
+        }
     }
+
+    /** Gets all methods called directly by a given method.
+     * @param method The method for which we want the target methods.
+     * @return The collection of all methods called by this method.
+     */
+    private static Collection _methodsCalledBy(SootMethod method)
+    {
+        // Set of all the called methods.
+        HashSet targets = new HashSet();
+
+        // FIXME: What about native methods?
+        if(method.isConcrete()) {
+            method.getDeclaringClass().setApplicationClass();
+            // Iterate over all the units and see which ones call methods.
+            Iterator unitsIter = ((JimpleBody)method.retrieveActiveBody()).
+                    getUnits().iterator();
+
+            while (unitsIter.hasNext()) {
+                Unit unit = (Unit)unitsIter.next();
+                if (unit instanceof InvokeStmt) {
+                        InvokeExpr invokeExpr = (InvokeExpr)(((InvokeStmt)unit)
+                                .getInvokeExpr());
+
+                        targets.add(invokeExpr.getMethod());
+                }
+            }
+        }
+
+        return ((Collection) targets);
+    }
+
+    /** Gets all fields called directly by a given method.
+     * @param method The method for which we want the target methods.
+     * @return The collection of all methods called by this method.
+     */
+    private static Collection _fieldsUsedBy(SootMethod method)
+    {
+        // Set of all the called methods.
+        HashSet fields = new HashSet();
+
+        // FIXME: What about native methods?
+        if(method.isConcrete()) {
+            method.getDeclaringClass().setApplicationClass();
+            // Iterate over all the units and see which ones use fields.
+            Iterator unitsIter = ((JimpleBody)method.retrieveActiveBody()).
+                    getUnits().iterator();
+
+            while (unitsIter.hasNext()) {
+                Unit unit = (Unit)unitsIter.next();
+                if (unit instanceof Stmt) {
+                    if (((Stmt)unit).containsFieldRef()) {
+                        fields.add(((FieldRef)((Stmt)unit).
+                                getFieldRef()).getField());
+                    }
+                }
+            }
+        }
+
+        return ((Collection) fields);
+    }
+
+
+
 
     /** Generate the C code for the given class.
         @param classPath

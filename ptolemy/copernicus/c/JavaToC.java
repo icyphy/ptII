@@ -92,6 +92,7 @@ public class JavaToC {
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
         InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
+        MainFileGenerator mGenerator = new MainFileGenerator();
 
         if (generateSingleClass) {
             cGenerator.setSingleClassMode();
@@ -119,9 +120,14 @@ public class JavaToC {
             RFG.generateTransitiveClosureOf(classPath,
                             className, compileMode, verbose);
 
-            // Generate the makefile
-            MakeFileGenerator.generateMakeFile(classPath, className,
-                RFG.getRequiredClasses(classPath, className));
+            // Generate the makefile.
+            MakeFileGenerator.generateMakeFile(classPath, className);
+
+            // Generate the file containing the wrapper for the main
+            // method.
+            code = mGenerator.generate(sootClass);
+            FileHandler.write(className + "_main.c", code);
+
         }
     }
 
