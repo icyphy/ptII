@@ -145,6 +145,14 @@ public class Token implements Serializable {
                 + dividend.getClass().getName() + " divided by "
                 + this.getClass().getName() + ".");
     }
+    
+    /** Return the time associated with this token.
+     *  @return the time associated with this token.
+     */
+    public double getTime() {
+        return _time;
+    }
+
 
     /** Return the type of this token.
      *  @return BaseType.GENERAL
@@ -243,6 +251,14 @@ public class Token implements Serializable {
                 + this.getClass().getName() + ".");
     }
 
+    /** Set the time associated with this token to the argument
+     *  @param theTime The time to be associated with this token.
+     */
+    public void setTime(double theTime) {
+        _time = theTime;
+    }
+
+
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
      *  It should be overridden in derived classes to provide type specific
@@ -296,4 +312,10 @@ public class Token implements Serializable {
                 "Token.zero: Additive identity not supported on "
                 + this.getClass().getName() + ".");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
+    
+    // the current time of this token
+    protected double _time;
 }
