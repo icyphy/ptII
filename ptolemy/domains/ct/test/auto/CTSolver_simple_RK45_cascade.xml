@@ -33,7 +33,7 @@
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 285}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 150.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -41,7 +41,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 150.0]">
         </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
@@ -51,7 +51,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 150.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -62,19 +62,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[320.0, 235.0]">
+        <vertex name="vertex1" value="[155.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{295.0, 150.0}">
+        <vertex name="vertex1" value="[255.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{410.0, 285.0}">
+        <vertex name="vertex1" value="[400.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
