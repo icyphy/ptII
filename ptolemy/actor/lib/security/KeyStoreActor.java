@@ -338,15 +338,25 @@ public class KeyStoreActor extends TypedAtomicActor {
     public void createKeystore(String keystoreFilename)
             throws IllegalActionException {
         System.out.println("Creating keystore " + keystoreFilename);
-        String javaDir = StringUtilities.getProperty("ptolemy.ptII.java.dir");
-        File javaDirFile = new File(javaDir);
-        if ( !javaDirFile.isDirectory()) {
+        String javaHomeProperty = "ptolemy.ptII.java.home";
+        String javaHome = StringUtilities.getProperty(javaHomeProperty);
+        if (javaHome == null) {
+            // FIXME: we could try to read java.home and convert
+            // the backslashes like we do in $PTII/configs/JavaHome.java
+            throw new InternalErrorException(this, null,
+                    "Could not find the " + javaHomeProperty + " perhaps "
+                    + "$PTII/lib/ptII.properties is not being read properly?");
+        }
+        File javaHomeFile = new File(javaHome);
+        if ( !javaHomeFile.isDirectory()) {
             throw new InternalErrorException(this, null,
                     "Could not find the Java "
                     + "directory that contains bin/keytool.  Perhaps the "
-                    + "ptolemy.ptII.java.dir property was not set?");
+                    + javaHomeProperty + " property was not set properly "
+                    + " because "
+                    + "$PTII/lib/ptII.properties is not being read properly?");
         }
-        String keytoolPath = javaDir + "/bin/keytool";
+        String keytoolPath = javaHome + "/bin/keytool";
 
         String commonCommand = " -keystore " + keystoreFilename
                 + " -storetype " + _keyStoreType

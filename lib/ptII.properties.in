@@ -36,8 +36,9 @@ user.region=US
 # These properties are used by PtinyOS
 #
 
-# PTJAVA_DIR without /cygdrive
-ptolemy.ptII.java.dir=@PTJAVA_DIR_NO_CYGDRIVE@
+# PTJAVA_HOME: The directory where the Java distribution can be found
+# Don't use PTJAVA_DIR here, it is likely to be set to /usr under Solaris.
+ptolemy.ptII.java.home=@PTJAVA_HOME@
 
 # Architecture that where jni includes can be found, for example:
 #    ptolemy.ptII.java.dir + /include/ + ptolemy.ptII.jni.architecture
