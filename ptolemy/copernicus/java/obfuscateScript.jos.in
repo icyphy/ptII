@@ -18,7 +18,8 @@ load = new WildCard { value = "*" }
 
 # this variable will tell, which classes and packages must not be
 # renamed.
-preserve = new WildCard { value = "@targetPackage@.Main.main*" },
+preserve = new WildCard { value = "@targetPackage@.Main.main*" },	
+	new WildCard { value = "ptolemy.actor.lib.SequenceActor"},
 	new WildCard { value = "ptolemy.data.*Token" },
 	new WildCard { value = "ptolemy.data.Numerical" },
 	new WildCard { value = "ptolemy.graph.CPO" }
