@@ -25,7 +25,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
+Review synchronization of _enqueueEvent() and _dequeueEvent() methods.
+Do this together with re-review of Director base class.
 */
 
 package ptolemy.domains.de.kernel;
@@ -797,9 +799,15 @@ public class DEDirector extends Director {
      *  is true, then this method may suspend the calling thread using
      *  Object.wait(long) to let elapsed real time catch up with the
      *  current event.
+     *  <p>
+     *  This method is synchronized on the director to ensure that
+     *  current time does not advance between the dequeueing of an
+     *  event and the setting of current time, and to ensure that
+     *  an event does not get enqueued while we are in the middle
+     *  of dequeueing.
      *  @return The next actor to fire.
      */
-    protected Actor _dequeueEvents() {
+    protected synchronized Actor _dequeueEvents() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
         int currentDepth = 0;
@@ -828,6 +836,10 @@ public class DEDirector extends Director {
                         _debug("Queue is empty. Waiting for input events.");
                     }
                     Thread.currentThread().yield();
+                    // NOTE: Potential deadlock here.
+                    // Always grab a lock on the director before grabbing
+                    // a lock on the _eventQueue, and deadlock will be
+                    // avoided.
                     synchronized(_eventQueue) {
                         try {
                             // FIXME: If the manager gets a change request
@@ -1001,7 +1013,7 @@ public class DEDirector extends Director {
      *  @param time The time stamp of the "pure event".
      *  @exception IllegalActionException If the time argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time)
+    protected synchronized void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
 
         if (_eventQueue == null) return;
@@ -1038,7 +1050,7 @@ public class DEDirector extends Director {
      *  @param time The time stamp of the event.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
+    protected synchronized void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
         if (_eventQueue == null) return;
@@ -1077,7 +1089,7 @@ public class DEDirector extends Director {
      *  @param token The token destined for that receiver.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected void _enqueueEvent(DEReceiver receiver, Token token)
+    protected synchronized void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
 
         if (_eventQueue == null) return;
