@@ -37,7 +37,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Sub directories to run make in.
-DIRS =		 coding internals #usersGuides
+DIRS =		 coding #internals #usersGuides
 
 EXTRA_SRCS = \
 	demos.html \
