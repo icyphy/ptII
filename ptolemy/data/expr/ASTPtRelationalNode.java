@@ -67,8 +67,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                 return result;
             } else  if (x.image.compareTo("!=") == 0) {
                 result = result.equals(childTokens[1]);
-                ((ptolemy.data.BooleanToken)result).negate();
-                return result;
+                return ((ptolemy.data.BooleanToken)result).negate();
             } else  {
                 // relational operators only make sense on types below double
                 double a = ((ptolemy.data.ScalarToken)childTokens[0]).doubleValue();

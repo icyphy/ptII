@@ -68,7 +68,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                     String str = "Cannot negate a nonBoolean type: ";
                     throw new IllegalArgumentException(str + result.toString()); 
                 }
-                ((BooleanToken)result).negate();
+                result = ((BooleanToken)result).negate();
             } else if (isBitwiseNot == true) {
                 if (result instanceof IntToken) {
                     int tmp = ~(((IntToken)result).getValue());
