@@ -171,8 +171,13 @@ foreach i $configs {
 					set msg "\n\nIn '$className'\n\
 					    The getName() method returns\n \
 					    '[$fieldObj getName]' but the \
-					    field is named\n  '$field'"
-					lappend results $msg
+					    field is named\n  '$field'.\n \
+                                            Perhaps you should use an \
+                                            underscore followed by the field \
+                                            name\n, see how SDFTransformer \
+                                            keeps a reference to objecs that \
+                                            are not directly contained."
+				lappend results $msg
 				    }
 				}
 			    }
