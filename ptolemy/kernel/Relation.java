@@ -27,12 +27,10 @@ a hierarchical graph.
 */
 
 package pt.kernel;
-
 import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import pt.kernel.NullReferenceException; 
-import pt.kernel.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -40,16 +38,20 @@ import pt.kernel.NameDuplicationException;
 hierarchical graph. A Relation connects n links such that each link has 
 access to the other n-1 links. In our case, a "link" is a Port. We say 
 that a Relation is <EM> dangling </EM> if it has only one Port connected 
-to it.  FIXME: Eventually we will set a variable in Port for determining if 
+to it. We assume Ports may attach themselves to Relations, but the other 
+direction does not hold.
+FIXME: Eventually we will set a variable in Port for determining if 
 it is connected to a dangling Relation. 
 @author John S. Davis, II
+@author Neil Smyth
 @version $Id$
 */
-public abstract class Relation extends GraphElement {
+public abstract class Relation extends NamedObj {
     /** 
      */	
     public Relation() {
 	super();
+        _portList = new CrossRefList(this);
     }
 
     /** 
@@ -57,74 +59,61 @@ public abstract class Relation extends GraphElement {
      */	
     public Relation(String name) {
 	super(name);
+        _portList = new CrossRefList(this);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Connect a Port to this Relation.
-     * @param port The Port being connected to the Relation.
-     * @exception pt.kernel.NameDuplicationException Attempt to store 
-     * two instances of the same class with identical names in the same 
-     * container.
-     * @exception pt.kernel.NullReferenceException Signals an attempt 
-     * to pass null object references as arguments.
-     */	
-    public void connectPort(Port port) throws NameDuplicationException,
-	NullReferenceException {
-	if( _links == null ) {
-	     _links = new Hashtable();
-	}
-
-	Port duplicatePort = (Port)_links.put( port.getName(), port );
-	if( duplicatePort != null ) {
-	     duplicatePort = (Port)_links.put
-		( duplicatePort.getName(), duplicatePort );
-	     throw new NameDuplicationException( duplicatePort.getName() );
-	} else if( !(port.isConnectedToRelation(this.getName())) ) {
-	     port.connectToRelation( this );
-	}
-    }
-
-    /** Disconnect a Port from this Relation.
-     * @param port The Port being disconnected from the Relation.
-     * @return Return the disconnected Port; returns null if the Port is
-     * not found.
-     */	
-    public Port disconnectPort(Port port) {
-	if( _links == null ) {
-	     return null;
-	}
-	return (Port)_links.remove( port.getName() );
-    }
-
-    /** Get a particle from this relation.
-     */
-    public abstract Particle get() throws NoSuchElementException;
+    
 
     /** Return the Ports which are connected to this Relation.
      * @return Return an Enumeration of Ports; returns null if the
      * collection of Ports is null.
      */	
-    public Enumeration getPorts() {
-	if( _links == null ) {
-	     return null;
-	}
-	if( numberOfConnections() == 0 ) {
-	     return null;
-	}
-        return _links.elements();
+    public Enumeration enumPorts() {
+        return new PortEnumeration();
     }
+
+    /** Return the Ports which are connected to this Relation, except for 
+     * the specified Port
+     * @param exceptPort Do not return this Port in the Enumeration 
+     * @return Return an Enumeration of Ports; returns null if the
+     * collection of Ports is null.
+     */	
+    public Enumeration enumPortsExcept(Port exceptPort) {
+        return new PortEnumeration(exceptPort);
+    }
+
+    /** Return the Entities which are connected to this Relation.
+     * @return Return an Enumeration of Entities; returns null if the
+     * collection of Entities is null.
+     * FIXME : assumes Port has method getEntity()
+     */	
+    public Enumeration enumEntities() throws NameDuplicationException,
+	NullReferenceException {
+
+        Enumeration Xrefs = _portList.elements();
+        Hashtable storeEntities = new Hashtable();
+
+        while (XRefs.hasMoreElements()) {
+            Port tmpPort = (Port)XRefs.nextElement();
+            if ((Entity tmp = tmpPort.getEntity()) != null) {
+                 storeEntities.put(tmp, tmp);
+             }
+        }
+        return storeEntities.elements();
+        }
 
     /** Determine if the Relation is dangling? By dangling, we mean that the
      *  Relation has exactly one Port connection.
      * @return Return true if the Relation is dangling; returns false otherwise.
      */	
     public boolean isDangling() {
-	if( _links == null ) {
+	if( _portList == null ) {
 	     return false;
 	}
-	if( _links.size() == 1 ) {
+	if( _portList.size() == 1 ) {
 	     return true;
 	}
         return false;
@@ -136,38 +125,34 @@ public abstract class Relation extends GraphElement {
      * false otherwise.
      */	
     public boolean isPortConnected(String portName) {
-	if( _links == null ) {
-	     return false;
+	Enumeration XRefs = _portList.elements();
+        while (XRefs.hasMoreElements()) {
+            Port nextPort = (Port)XRefs.nextElement();
+            if (nextPort.getName() == portName) return true;
 	}
-	return _links.containsKey( portName );
+	return false
     }
 
     /** Return the number of Ports connected to the relation.
      */	
     public int numberOfConnections() {
-	if( _links == null ) {
+	if( _portList == null ) {
 	     return 0;
 	}
-        return _links.size();
+        return _portList.size();
     }
-
-    /** Return the number of particles stored in this relation. 
-     */
-    public abstract int numberOfParticles(); 
-
-    /** Put a particle into this relation.
-     */
-    public abstract void put(Particle particle); 
-
-    /** Initialize this Relation.
-     */
-    public void systemInit() {}
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
+    /* A CrossRefList of Ports which are connected to this Relation.
+     * Note : This member has been made protected for the sole purpose of
+     * connecting Ports to Relations (see Port.connect(Port)). It should 
+     * NOT be modified by any other method.
+     */
+    protected CrossRefList __ortList;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
@@ -175,14 +160,53 @@ public abstract class Relation extends GraphElement {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* A hashtable of links which are connected to this Relation.
-     */
-    private Hashtable _links;
+    //////////////////////////////////////////////////////////////////////////
+    ////                         inner classes                            ////
+
+    // Class PortEnumeration
+    /** Wrapper class for returning an emumeration of Ports. It uses the 
+    *  enumerate() method provided by CrossRefList
+    *  @see CrossRefList
+    */
+
+    private class PortEnumeration implements Enumeration {
+
+        public PortEnumeration() {
+            _XRefEnum = _portList.enumerate();
+        }
+
+        * @param exceptPort Do not return this port in the enumeration. 
+        public PortEnumeration(Port exceptPort) {
+            _XRefEnum = _portList.enumerate();
+            _exceptPort = exceptPort;
+            _skip = true;
+        }
+        
+        /** Check if there are remaining elements to enumerate. */
+        public boolean hasMoreElements() {
+            return _XRefEnum.hasMoreElements();
+        }
+
+        /** Return the next element in the enumeration. */
+        public Object nextElement() {
+            if (!_skip) return (Port)_XRefEnum.nextElement();
+            else {
+                Port nextPort = (Port)_XRefEnum.nextElement();
+                   // do not wish to skip any port in the enumeration
+                   if (_exceptPort == null) return nextPort; 
+                   //  skip the desired Port in the enumeration
+                   if (nextPort == _exceptPort) {
+                       nextPort = (Port)_XRefEnum.nextElement();
+                   }
+                   return nextPort;
+               }
+        }
+
+        private Enumeration _XRefEnum;
+        
+        private Port _exceptPort;
+        private boolean _skip = false;
+    }
+
 
 }
-
-
-
-
-
-
