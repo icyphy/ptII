@@ -194,7 +194,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  to any change listeners and the change listener will think
      *  that the change succeeded.
      * 
-     *  @see #ErrorHandler 
+     *  @see ErrorHandler 
      *  @param report False to disable error reporting.
      */
     public void setReportErrorsToHandler(boolean report) {
