@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		#demo test
+DIRS =		dsp lib
 
 # Root of the Java directory
 ROOT =		../..
