@@ -555,6 +555,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
