@@ -1303,10 +1303,10 @@ public class InlinePortTransformer extends SceneTransformer {
             ptolemy.data.type.Type type =
                 (ptolemy.data.type.Type)types.next();
             Local typeLocal = null;
-            if(!port.getType().equals(type)) {
+            //   if(!port.getType().equals(type)) {
                 typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, 
                         stmt, type);
-            }
+                // }
 
             Value bufferSizeValue = _getBufferAndSize(body, 
                     stmt, port, type, channelValue, bufferLocal, 
