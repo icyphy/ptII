@@ -347,8 +347,24 @@ public class PropertyClassChanges implements MoMLFilter {
         modalModelClassChanges.put("_Director", "REMOVED!");
 
         _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.fsm.modal.ModalModel",
-                    modalModelClassChanges);
+        .put("ptolemy.domains.fsm.modal.ModalModel",
+                modalModelClassChanges);
+
+        // LevelCrossingDetector
+        HashMap levelCrossingDetectorClassChanges = new HashMap();
+        levelCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
+        levelCrossingDetectorClassChanges.put("useDefaultEventValue", 
+                "REMOVED!");
+        _actorsWithPropertyClassChanges
+        .put("ptolemy.domains.ct.lib.LevelCrossingDetector",
+                levelCrossingDetectorClassChanges);
+
+        // ZeroCrossingDetector
+        HashMap zeroCrossingDetectorClassChanges = new HashMap();
+        zeroCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.domains.ct.lib.ZeroCrossingDetector",
+                    zeroCrossingDetectorClassChanges);
 
         // ImageUnpartition
         _actorsWithPropertyClassChanges
