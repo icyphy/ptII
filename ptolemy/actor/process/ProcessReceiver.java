@@ -50,13 +50,13 @@ corresponding threads are normally waiting on a call to some
 methods (for reading or writing) on a receiver.
 To terminate or end the simulation, these methods should
 either return or throw an exception to inform the processes that they
-should terminate themselves. For this a method setFinish() is defined.
+should terminate themselves. For this a method requestFinish() is defined.
 This method would set a local flag in the receivers and wake up all the
 processes waiting on some call to the receiver. On waking up these
 processes would see that the termination flag set and behave accordingly.
 A sample implementation is <BR>
 <Code>
-public synchronized void setFinish() {
+public synchronized void requestFinish() {
     _terminate = true;
     notifyAll();
 }
@@ -65,7 +65,7 @@ public synchronized void setFinish() {
 
 Similarly, in process oriented domains, a simulation can be paused,
 safely, only when the processes try to communicate with some other
-process by calling methods on the receiver. For this, a setPause()
+process by calling methods on the receiver. For this, a requestPause()
 method is defined. This method will set a local flag in the receiver
 which indicates that a pause has been requested. When a process next
 calls any of the methods in the receiver to read or write a token,
@@ -74,7 +74,7 @@ with false as an argument. This method will then reset the local flag
 and resume the paused processes.
 A sample implementation is: <BR>
 <code>
-public synchronized void setPause(boolean pause) {
+public synchronized void requestPause(boolean pause) {
     if (pause) {
         _pause = true;
     } else {
@@ -103,11 +103,11 @@ public interface ProcessReceiver extends Receiver {
      *  or resumed.
      *  @param value The flag indicating a requested pause or resume.
      */
-    public void setPause(boolean value);
+    public void requestPause(boolean value);
 
     /** Set a local flag requesting that the simulation be finished.
       */
-    public void setFinish();
+    public void requestFinish();
 }
 
 

@@ -283,7 +283,7 @@ public class ProcessDirector extends Director {
 		    for (int i = 0; i < receivers.length; i++) {
 			for (int j = 0; j < receivers[i].length; j++) {
 			    nextRec = (ProcessReceiver)receivers[i][j];
-			    nextRec.setPause(true);
+			    nextRec.requestPause(true);
 			    _pausedReceivers.insertFirst(receivers[i][j]);
 			}
 		    }
@@ -302,7 +302,7 @@ public class ProcessDirector extends Director {
 		for (int i = 0; i<receivers.length; i++) {
 		    for (int j = 0; j<receivers[i].length; j++) {
 			nextRec = (ProcessReceiver)receivers[i][j];
-			nextRec.setPause(true);
+			nextRec.requestPause(true);
 			_pausedReceivers.insertFirst(receivers[i][j]);
 		    }
 		}
@@ -334,7 +334,7 @@ public class ProcessDirector extends Director {
 	Enumeration receivers = copy.elements();
 	while (receivers.hasMoreElements()) {
 	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
-            rec.setPause(false);
+            rec.requestPause(false);
 	}
         // Now wake up all the receivers.
         (new NotifyThread(copy)).start();
@@ -389,7 +389,8 @@ public class ProcessDirector extends Director {
                 for (int i = 0; i<receivers.length; i++) {
                     for (int j = 0; j<receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setFinish();
+                        //nextRec.setFinish();
+                        nextRec.requestFinish();
                         recs.insertFirst(nextRec);
                     }
                 }
@@ -406,7 +407,8 @@ public class ProcessDirector extends Director {
                 for (int i = 0; i<receivers.length; i++) {
                     for (int j = 0; j<receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setFinish();
+                        //nextRec.setFinish();
+                        nextRec.requestFinish();
                         recs.insertFirst(nextRec);
                     }
                 }
