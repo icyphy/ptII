@@ -103,7 +103,7 @@ public final class SignalProcessing {
         // Calculate the order of the FFT.
         double m = Math.log(x.length)*_LOG2SCALE;
         double exp = Math.ceil(m);
-        return fft(x,(int)exp);
+        return fft(x, (int)exp);
     }
 
     /** Return the discrete Fourier transform of the specified complex array.
@@ -215,7 +215,7 @@ public final class SignalProcessing {
         // always initializes arrays.
         int length = x.length;
         if (reals.length < length) length = reals.length;
-        System.arraycopy(x,0,reals,0,length);
+        System.arraycopy(x, 0, reals, 0, length);
         _fft(reals, imags, order, false);
         Complex[] result = new Complex[size];
         for (int i = 0; i < size; i++) {
@@ -406,7 +406,8 @@ public final class SignalProcessing {
      *  @param poles An array of pole locations.
      *  @param zeros An array of zero locations.
      *  @param gain A complex gain.
-     *  @param numsteps The number of samples in the returned frequency response.
+     *  @param numsteps The number of samples in the returned
+     *  frequency response.
      */
     public static Complex[] poleZeroToFreq(Complex[] poles, Complex[] zeros,
             Complex gain, int numsteps){
@@ -621,7 +622,8 @@ public final class SignalProcessing {
         if (close(denominator, 0.0)) {
             return (T * sqrtT/(8 * excess * Math.PI * t)) *
                 (oneplus * Math.sin(oneplus * t) -
-                        (oneminus * T/(4 * excess * t)) * Math.cos(oneminus * t) +
+                        (oneminus * T/(4 * excess * t)) * 
+                        Math.cos(oneminus * t) +
                         (T/(4 * excess * t * t)) * Math.sin(oneminus * t) );
         }
         return (4 * excess / (Math.PI*sqrtT)) *
@@ -770,8 +772,10 @@ public final class SignalProcessing {
                 for (index = 0; index < le - 1; index++) {
                     twReals[index] = wrecurReal;
                     twImags[index] = wrecurImag;
-                    double temp = wrecurReal*rotationReal - wrecurImag*rotationImag;
-                    wrecurImag = wrecurReal*rotationImag + wrecurImag*rotationReal;
+                    double temp = wrecurReal*rotationReal -
+                        wrecurImag*rotationImag;
+                    wrecurImag = wrecurReal*rotationImag +
+                        wrecurImag*rotationReal;
                     wrecurReal = temp;
                 }
                 twReals[index] = wrecurReal;
