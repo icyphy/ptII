@@ -45,7 +45,9 @@ import diva.util.java2d.Polygon2D;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.type.Typeable;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
@@ -279,9 +281,9 @@ public class ExternalIOPortController extends AttributeController {
                     figure = new NameWrapper(figure, port.getName());
                 }
                 figure = new TerminalFigure(figure, tsite)  {
-                        // Override this because the tooltip may change over time.
-                        // I.e., the port may change from being an input or
-                        // output, etc.
+                        // Override this because the tooltip may
+                        // change over time.  I.e., the port may
+                        // change from being an input or output, etc.
                         public String getToolTipText() {
                             String tipText = port.getName();
                             if (port instanceof IOPort) {
@@ -295,6 +297,10 @@ public class ExternalIOPortController extends AttributeController {
                                 if (ioport.isMultiport()) {
                                     tipText += ", Multiport";
                                 }
+                                try {
+                                    tipText = tipText + ", type:"
+                                        + ((Typeable)port).getType();
+                                } catch (IllegalActionException ex) {}
                             }
                             return tipText;
                         }

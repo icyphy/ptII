@@ -260,7 +260,8 @@ public class IOPortController extends AttributeController {
             Figure figure = new BasicFigure(shape, fill, (float)1.5) {
                     // Override this because we want to show the type.
                     // It doesn't work to set it once because the type
-                    // has not been resolved, and anyway, it may change.
+                    // has not been resolved, and anyway, it may
+                    // change.
                     public String getToolTipText() {
                         String tipText = port.getName();
                         if (port instanceof Typeable) {
