@@ -16,7 +16,10 @@
 	     contains this file. -->
 
 	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
-	    <!-- GR depends on the 3D graphics package of Java being present-->            <input source="ptolemy/domains/gr/gr.xml"/>
+
+            <input source="ptolemy/domains/giotto/giotto.xml"/>
+
+	    <!-- GR depends on the 3D graphics package of Java being present-->             <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
 	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
