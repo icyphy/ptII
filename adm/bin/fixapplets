@@ -46,7 +46,15 @@ do
 		        # We call split twice so that we get the
 		        # name that is in $1 without leading spaces
 			split($1, n, "=")
-			split($0, f, "=")
+			nf=split($0, f, "=")
+
+                        # Deal with lines that have other = in them, like 
+                        # plot/demo/Binary.htm
+                        if (nf > 2) {
+                            for(i=3;i<=nf;i++) {
+                                f[2] = f[2] "=" f[i]
+                            }
+                        }
 
 			# Look for applet parameters
 			sawAppletParam = 0
@@ -62,7 +70,7 @@ do
 				    f[2] = substr(f[2], 0, length(f[2])- 7)
 				}				
 				sawAppletParam = 1
-				appletParams[appletParamName] = f[2]
+		                appletParams[appletParamName] = f[2]
 				lastAppletParam = appletParamName
 			    }
 			}
@@ -71,7 +79,17 @@ do
 				    && n[1] != "scriptable" \
 				    && n[1] != "pluginspage") {
 			    paramName[paramCount] = n[1]
-			    paramValue[paramCount++] = f[2]
+                        singlequote = sprintf("%c", 39)
+                            if ( match(f[2], singlequote) == 0) { 
+			        paramValue[paramCount++] = f[2]
+                            } else {
+                                nff = split(f[2], ff, singlequote)
+                                param = ""
+                                for(i=1; i<nff; i++) {
+                                    param=sprintf("%s%s\\%c", param, ff[i], 39)
+                                }                                    
+		                paramValue[paramCount++] = param ff[nff]
+                            }
 			}
 		    } else {
 			if ($1 !~ /</ && lastAppletParam == "archive") {
@@ -194,6 +212,7 @@ $NF ~ /);$/ {
                    /' \
 	-e 's/<PARAM NAME = background /<PARAM NAME = "background" /' \
 	-e 's/background = */background = /' \
+	-e 's/\\\\/\\/g' \
 	 |
      grep -v '^ \\$' |
 awk ' $0 == "<!--" { sawCommentStart = NF; sawAppletStart = 0} 
@@ -234,7 +253,9 @@ awk '
        }
      }
      END {print lastline}     
-     ' > fixapplets2.htm
+     '  |
+     sed -e 's/\\\\/\\/g' \
+     > fixapplets2.htm
      diff $file fixapplets2.htm
      if [ "$printOnly" = "no" ]; then
 	 mv fixapplets2.htm $file
