@@ -49,7 +49,14 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Equals.tcl
+	Equals.tcl \
+	LogicalAnd.tcl \
+	LogicalNand.tcl \
+	LogicalOr.tcl \
+	LogicalNor.tcl \
+	LogicalXor.tcl \
+	LogicalXnor.tcl \
+	LogicalNot.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

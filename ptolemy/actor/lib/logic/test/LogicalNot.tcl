@@ -1,4 +1,4 @@
-# Test Equals.
+# Test LogicalNot.
 #
 # @Author: John Li
 #
@@ -40,54 +40,40 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Equals-1.1 {test constructor and clone} {
+test LogicalNot-1.1 {test constructor and clone} {
     set e0 [sdfModel 1]
-    set equals [java::new ptolemy.actor.lib.logic.Equals $e0 equals]
-    set newobj [java::cast ptolemy.actor.lib.logic.Equals [$equals clone]]
+    set logic [java::new ptolemy.actor.lib.logic.LogicalNot $e0 logic]
+    set newobj [java::cast ptolemy.actor.lib.logic.LogicalNot [$logic clone]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}
 
+
 ######################################################################
 #### Test Equals in an SDF model
 #
-test Equals-2.1 {test equality of two different constant integers} {
-
-    # set boolean [java::new ptolemy.data.BooleanToken true]
-    # set booleanClass [$boolean getClass]
-    # $value setTypeEquals $booleanClass
-    # $value2 setTypeEquals $booleanClass
-    # $value setExpression true
-    # $value2 setExpression true
-    # won't allow value.type to be set to BooleanToken...
-
-    set const [java::new ptolemy.actor.lib.Const $e0 const]
-    set const2 [java::new ptolemy.actor.lib.Const $e0 const2]
-    set value [getParameter $const value]
-    set value2 [getParameter $const2 value]
-    $value2 setExpression {2.0}
+test LogicalNot-2.1 {Basic value: True} {
+    set in1 [java::new ptolemy.actor.lib.Const $e0 in1]
+    set in1value [getParameter $in1 value]
+    $in1value setToken [java::new ptolemy.data.BooleanToken true]
 
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set upperPort [java::field $equals upperPort]
-    set lowerPort [java::field $equals lowerPort]
+    set input [java::field [java::cast ptolemy.actor.lib.Transformer \
+            $logic] input]
     set r1 [$e0 connect \
-       [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-       $upperPort]
-    set r2 [$e0 connect \
-       [java::field [java::cast ptolemy.actor.lib.Source $const2] output] \
-       $lowerPort]
-      $e0 connect \
-       [java::field $equals output] \
+       [java::field [java::cast ptolemy.actor.lib.Source $in1] output] \
+       $input]
+    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Transformer \
+            $logic] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {false}
 
-test Equals-2.2  {test equality of two Boolean Tokens} {
-
-    $value setToken [java::new ptolemy.data.BooleanToken true]
-    $value2 setToken [java::new ptolemy.data.BooleanToken true]
-
+test LogicalNot-2.2 {Basic value: False} {
+    $in1value setToken [java::new ptolemy.data.BooleanToken false]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {true}
+
