@@ -207,6 +207,7 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
+        // FIXME: can not be used in SR, dealing with time
         DEDirector director = (DEDirector)getDirector();
         double currentTime = director.getCurrentTime();
 
