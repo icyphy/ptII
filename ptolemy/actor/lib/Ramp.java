@@ -83,14 +83,12 @@ public class Ramp extends SequenceSource {
     ////                         public variables                  ////
 
     /** The value produced by the ramp on its first iteration.
-     *  If this parameter is not set by the time type resolution is done,
-     *  then its value is set to an IntToken with value 0.
+     *  The default value of this parameter is the integer 0.
      */
     public Parameter init;
 
     /** The amount by which the ramp output is incremented on each iteration.
-     *  If this parameter is not set by the time type resolution is done,
-     *  then its value is set to an IntToken with value 1.
+     *  The default value of this parameter is the integer 1.
      */
     public Parameter step;
 

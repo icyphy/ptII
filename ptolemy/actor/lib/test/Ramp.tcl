@@ -75,7 +75,7 @@ test Ramp-2.1 {test with the default output values} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {0 1 2 3 4}
 
@@ -84,6 +84,6 @@ test Ramp-2.1 {test with strings} {
     set step [getParameter $ramp step]
     $init setExpression {"a"}
     $step setExpression {"b"}
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {a ab abb abbb abbbb}

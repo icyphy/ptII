@@ -1,4 +1,4 @@
-# Test Gaussian
+# Test Cosine.
 #
 # @Author: Edward A. Lee
 #
@@ -40,50 +40,36 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Gaussian-1.1 {test constructor} {
+test Cosine-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set g [java::new ptolemy.actor.lib.Gaussian $e0 g]
-    set seed [getParameter $g seed]
-    set mean [getParameter $g mean]
-    set standardDeviation [getParameter $g standardDeviation]
-
-    set seedVal [[$seed getToken] stringValue]
-    set meanVal [[$mean getToken] stringValue]
-    set standardDeviation [[$standardDeviation getToken] stringValue]
-
-    list $seedVal $meanVal $standardDeviation
-} {0 0.0 1.0}
-
-test Gaussian-1.2 {test clone} {
-    set g2 [java::cast ptolemy.actor.lib.Gaussian [$g clone]]
-    $seed setExpression {2l}
-    set seed [getParameter $g2 seed]
-    [$seed getToken] stringValue
-} {0}
+    set cosbase [java::new ptolemy.actor.lib.Cosine $e0 cos]
+    set cos [java::cast ptolemy.actor.lib.Cosine [$cosbase clone]]
+    # Success here is just not throwing an exception.
+    list {}
+} {{}}
 
 ######################################################################
-#### Test Gaussian in an SDF model
+#### Test Cosine in an SDF model
 #
-test Gaussian-2.1 {test without seed set} {
-    set e0 [sdfModel]
-    set g [java::new ptolemy.actor.lib.Gaussian $e0 g]
+test Cosine-2.1 {test with the default output values} {
+    set e0 [sdfModel 5]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression {0.0}
+    $step setExpression {1.0}
+    # Use clone of cos to make sure that is ok.
+    $cos setContainer $e0
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $g] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+       [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $cos] input]
+    $e0 connect \
+       [java::field \
+       [java::cast ptolemy.actor.lib.Transformer $cos] output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    set first [enumToTokenValues [$rec getRecord 0]]
-    [$e0 getManager] execute
-    set second [enumToTokenValues [$rec getRecord 0]]
-    expr {$first != $second}
-} {1}
-
-test Gaussian-2.2 {test with seed set} {
-    set seed [getParameter $g seed]
-    $seed setExpression {2l}   
-    [$e0 getManager] execute
-    set first [enumToTokenValues [$rec getRecord 0]]
-    [$e0 getManager] execute
-    set second [enumToTokenValues [$rec getRecord 0]]
-    expr {$first == $second}
+    close [enumToTokenValues [$rec getRecord 0]] \
+            {1.0 0.540 -0.416 -0.99 -0.654} \
+            0.001
 } {1}

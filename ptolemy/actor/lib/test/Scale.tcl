@@ -1,4 +1,4 @@
-# Test Average.
+# Test Scale.
 #
 # @Author: Edward A. Lee
 #
@@ -40,33 +40,72 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Average-1.1 {test constructor and clone} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set average [java::new ptolemy.actor.lib.Average $e0 average]
-    set newobj [java::cast ptolemy.actor.lib.Average [$average clone]]
+test Scale-1.1 {test constructor and clone} {
+    set e0 [sdfModel 5]
+    set scalebase [java::new ptolemy.actor.lib.Scale $e0 scale]
+    set scale [java::cast ptolemy.actor.lib.Scale [$scalebase clone]]
+    $scalebase setContainer [java::null]
+    $scale setContainer $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}
 
 ######################################################################
-#### Test Average in an SDF model
+#### Test Scale in an SDF model
 #
-test Average-2.1 {test with the default output values} {
-    set e0 [sdfModel 5]
+test Scale-2.1 {test with the default parameter values} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression {0.0}
-    $step setExpression {1.0}
-    set average [java::new ptolemy.actor.lib.Average $e0 average]
+    set gain [getParameter $scale gain]
+    # Use clone of scale to make sure that is ok.
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       [java::field [java::cast ptolemy.actor.lib.Transformer $average] input]
+       [java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
     $e0 connect \
        [java::field \
-       [java::cast ptolemy.actor.lib.Transformer $average] output] \
+       [java::cast ptolemy.actor.lib.Transformer $scale] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {0.0 0.5 1.0 1.5 2.0}
+} {0 1 2 3 4}
+
+test Scale-2.2 {test with the alternative parameter values} {
+    $gain setExpression {0.1}
+    [$gain getToken] stringValue
+    [$e0 getManager] execute
+    close [enumToTokenValues [$rec getRecord 0]] {0.0 0.1 0.2 0.3 0.4}
+} {1}
+
+test Scale-2.3 {test with the alternative parameter values} {
+    $step setExpression {0.1}
+    [$gain getToken] stringValue
+    [$e0 getManager] execute
+    close [enumToTokenValues [$rec getRecord 0]] {0.0 0.01 0.02 0.03 0.04}
+} {1}
+
+######################################################################
+#### Test Scale with matrices
+#
+# test Scale-3.1 {test with matrices} {
+#     set e0 [sdfModel 1]
+#     set const [java::new ptolemy.actor.lib.Const $e0 const]
+#     set value [getParameter $const value]
+#     $value setExpression {[1; 2]}
+# 
+#     set scale [java::new ptolemy.actor.lib.Scale $e0 scale]
+#     set gain [getParameter $scale gain]
+#     $gain setExpression {[2, 3; 4, 5]}
+# 
+#     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+#     $e0 connect \
+#        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+#        [java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
+#     $e0 connect \
+#        [java::field \
+#        [java::cast ptolemy.actor.lib.Transformer $scale] output] \
+#        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+#     [$e0 getManager] execute
+#     enumToTokenValues [$rec getRecord 0]    
+# } {}

@@ -89,14 +89,14 @@ test Const-2.1 {test with the default output value} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1}
 
 test Const-2.1 {change output value and type and rerun} {
     set p [getParameter $const value]
     $p setExpression 3.0
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {3.0}
 

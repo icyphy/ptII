@@ -52,12 +52,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AddSubtract.java \
+	AbsoluteValue.java \
 	Average.java \
 	Bernoulli.java \
 	Const.java \
+	Cosine.java \
 	Expression.java \
 	FileWrite.java \
 	Gaussian.java \
+	Maximum.java \
+	Minimum.java \
 	MultiplyDivide.java \
 	Pulse.java \
 	Ramp.java \
@@ -65,7 +69,8 @@ JSRCS = \
 	Recorder.java \
 	SequenceActor.java \
 	SequenceSource.java \
-	Sin.java \
+	Scale.java \
+	Sine.java \
 	Sink.java \
 	Source.java \
 	TimeActor.java \

@@ -71,9 +71,9 @@ test Bernoulli-2.1 {test with seed set} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set seed [getParameter $g seed]
     $seed setExpression {2l}   
-    [$e0 getManager] run
+    [$e0 getManager] execute
     set first [enumToTokenValues [$rec getRecord 0]]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     set second [enumToTokenValues [$rec getRecord 0]]
     expr {$first == $second}
 } {1}

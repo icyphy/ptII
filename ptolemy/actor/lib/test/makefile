@@ -50,13 +50,19 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	AddSubtract.tcl \
+	AbsoluteValue.tcl \
 	Average.tcl \
 	Bernoulli.tcl \
 	Const.tcl \
+	Cosine.tcl \
 	Gaussian.tcl \
+	Maximum.tcl \
+	Minimum.tcl \
 	MultiplyDivide.tcl \
 	Pulse.tcl \
-	Ramp.tcl
+	Ramp.tcl \
+	Scale.tcl \
+	Sine.tcl
 
 #	Expression.tcl \
 
