@@ -689,6 +689,67 @@ ptolemy.actor.IOPort {..E7.P10} receivers {
     }
 }}}
 
+test IOPort-10.7 {Construct a simple system, then call description} {
+    # This test fails with a java.lang.NullPointerException
+    # inside ptolemy.actor.IOPort.getReceivers(Relation)
+    # because _localReceiversTable is null
+    # The problem is that we don't call createReceiverw, so
+    # _localReceiversTable is null
+    set container [java::new ptolemy.actor.TypedCompositeActor]
+    set source [java::new ptolemy.actor.TypedAtomicActor $container source]
+    set dest [java::new ptolemy.actor.TypedAtomicActor $container dest]
+    $source newPort output
+    $dest newPort input
+    set output [$source getPort output]
+    $output setOutput true
+    set input [$dest getPort input]
+    $input setInput true
+    $container connect $output $input edge0
+    $container description
+} {ptolemy.actor.TypedCompositeActor {.} attributes {
+} ports {
+} entities {
+    {ptolemy.actor.TypedAtomicActor {..source} attributes {
+    } ports {
+        {ptolemy.actor.TypedIOPort {..source.output} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {..edge0} attributes {
+            } configuration {width 1 fixed}}
+        } insidelinks {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+        } type {declared null resolved null}}
+    }}
+    {ptolemy.actor.TypedAtomicActor {..dest} attributes {
+    } ports {
+        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {..edge0} attributes {
+            } configuration {width 1 fixed}}
+        } insidelinks {
+        } configuration {input opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared null resolved null}}
+    }}
+} relations {
+    {ptolemy.actor.TypedIORelation {..edge0} attributes {
+    } links {
+        {ptolemy.actor.TypedIOPort {..source.output} attributes {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+        } type {declared null resolved null}}
+        {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+        } configuration {input opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared null resolved null}}
+    } configuration {width 1 fixed}}
+} director {
+} executivedirector {
+}} {KNOWN_FAILURE}
 
 ######################################################################
 ####
