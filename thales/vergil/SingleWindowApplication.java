@@ -38,12 +38,14 @@ import ptolemy.vergil.VergilApplication;
 
 import thales.actor.gui.SingleWindowHTMLViewer;
 
+//////////////////////////////////////////////////////////////////////////
+//// SingleWindowApplication
 /**
- * <p>Titre : SingleWindowApplication</p>
- * <p>Description : Main entry point for the SingleWindow mode</p>
- * <p>Société : Thales Research and technology</p>
- * @author Jérôme Blanc & Benoit Masson
- * 12 nov. 2003
+Main entry point for the SingleWindow mode.
+
+@author Jérôme Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
+@version $Id$
+@since
  */
 public class SingleWindowApplication extends VergilApplication {
 
