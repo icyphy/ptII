@@ -180,7 +180,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Sinewave.xml \
 	TimedSine.xml \
 	aggregators.xml \
-	assertion.xml \
 	array.xml \
 	booleanflowcontrol.xml \
 	busses.xml \
