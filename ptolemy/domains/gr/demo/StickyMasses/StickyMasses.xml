@@ -2,32 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Together" class="ptolemy.actor.TypedCompositeActor">
-    <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
-        </property>
-        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
-        </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.3">
-        </property>
-        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-        </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 40.0">
-        </property>
-    </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
     <property name="velocity1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -39,6 +13,50 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
+    </property>
+    <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="86.0, 43.0">
+        </property>
     </property>
     <entity name="viewer" class="ptolemy.actor.TypedCompositeActor">
         <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
@@ -63,7 +81,7 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[30, 10]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="475.5, 185.5">
+        <property name="_location" class="ptolemy.moml.Location" value="475.5, 186.5">
         </property>
         <port name="displacement for red bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1014,7 +1032,7 @@
             </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="yHeight" class="ptolemy.data.expr.Parameter" value="5.8">
+            <property name="yHeight" class="ptolemy.data.expr.Parameter" value="6.0">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
@@ -1033,7 +1051,7 @@
             </property>
             <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="-0.55">
             </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-2.8">
+            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-3.0">
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -2213,31 +2231,6 @@
         <link port="Translate3D4.sceneGraphIn" relation="relation10"/>
         <link port="Translate3D4.sceneGraphOut" relation="relation20"/>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="360.0, 302.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title></title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.02" max="50.0"/>
-<yRange min="9.999000000000001E-5" max="2.498487720255638"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Hybrid System" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -2245,7 +2238,7 @@
             <property name="_location" class="ptolemy.moml.Location" value="104.0, 42.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 208.0">
+        <property name="_location" class="ptolemy.moml.Location" value="88.0, 185.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
         </property>
@@ -2430,13 +2423,13 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 135]">
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.7368712">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.580172">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="0.041653">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.3484944">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.7368712">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.580172">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="0.041653">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.3484944">
             </property>
             <port name="touched" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2648,9 +2641,9 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 142]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.5894944">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.966688">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="-0.0016536">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="-0.4665508">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -2830,18 +2823,48 @@
         <link port="Together.P2" relation="_R3"/>
         <link port="Together.V1" relation="HSV1"/>
     </entity>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="199.0, 183.0">
-        </vertex>
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="269.0, 157.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="271.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="140.0, 307.0">
-        </vertex>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="viewer.displacement for red bob" relation="relation7"/>
-    <link port="viewer.displacement for blue bob" relation="relation8"/>
-    <link port="TimedPlotter.input" relation="relation7"/>
-    <link port="TimedPlotter.input" relation="relation8"/>
-    <link port="Hybrid System.P1" relation="relation7"/>
-    <link port="Hybrid System.P2" relation="relation8"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="viewer.displacement for red bob" relation="relation3"/>
+    <link port="viewer.displacement for blue bob" relation="relation5"/>
+    <link port="Hybrid System.P1" relation="relation"/>
+    <link port="Hybrid System.P2" relation="relation4"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation3"/>
+    <link port="PeriodicSampler2.input" relation="relation4"/>
+    <link port="PeriodicSampler2.output" relation="relation5"/>
 </entity>
