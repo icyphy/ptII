@@ -89,6 +89,12 @@ public class UnitSystem extends ScopeExtendingAttribute {
     /** Register the specified unit category.
      *  If the category is not already registered, assign a unique index
      *  for the category.
+     *  This method is static, so a category added here will be
+     *  available throughout the system.  
+     *  <p>Note that the 
+     *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
+     *  calls this method.
+     *
      *  @param category The unit category to be registered.
      */
     public static void addUnitCategory(UnitCategory category) {
@@ -134,6 +140,31 @@ public class UnitSystem extends ScopeExtendingAttribute {
         } else {
             return index.intValue();
         }
+    }
+
+    /** Return a string representation of the UnitSystem.
+     *  @returns A string representation of the UnitSystem
+     *  @since Ptolemy II 2.1
+     */
+    public /*static*/ String toString() {
+        // toString() cannot be static because Object.toString() is
+        // not static.
+        StringBuffer buffer = new StringBuffer(super.toString());
+        buffer.append("\n contains " + _categories + " categories\n"); 
+        buffer.append(_categoryVector.toString());
+        return buffer.toString();
+    }
+
+    /** Reset the internal state of the UnitSystem.
+     *  @since Ptolemy II 2.1
+     */
+    public static void reset() {
+        // This method is necessary for testing.
+        // UnitSystem has static state, so it makes it difficult
+        // to create multiple small UnitSystems. 
+        _indexTable = new Hashtable();
+        _categories = 0;
+        _categoryVector = new Vector(); 
     }
 
     ///////////////////////////////////////////////////////////////////
