@@ -6,7 +6,7 @@
   See the file $PTOLEMY/copyright for copyright notice,
   limitation of liability, and disclaimer of warranty provisions.
 */
-package ptolemy.codegen.lib;
+package ptolemy.codegen.dsp.lib;
 
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
