@@ -261,12 +261,19 @@ public class WirelessChannel extends TypedAtomicActor {
      *  @param port The port from which this is being transmitted.
      *  @param properties The transmit properties (ignored in this base class).
      *  @exception IllegalActionException If a location cannot be evaluated
-     *   for a port, or if a type conflict occurs.
+     *   for a port, or if a type conflict occurs, or the director is not
+     *   a WirelessDirector.
      */
     public void transmit(Token token, WirelessIOPort port, Token properties)
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            // The following check will ensure that receivers are of type
+            // WirelessReceiver.
+            if (!(getDirector() instanceof WirelessDirector)) {
+                throw new IllegalActionException(this,
+                "WirelessChannel can only work with a WirelessDirector.");
+            }
             Iterator receivers = _receiversInRange(port, properties).iterator();
             if (_debugging) {
                 _debug("----\nTransmitting from port: " + port.getFullName());
@@ -278,7 +285,8 @@ public class WirelessChannel extends TypedAtomicActor {
                 }
             }
             while (receivers.hasNext()) {
-                Receiver receiver = (Receiver)receivers.next();
+                WirelessReceiver receiver
+                        = (WirelessReceiver)receivers.next();
                 _transmitTo(token, port, receiver, properties);
             }
         } finally {
@@ -370,7 +378,7 @@ public class WirelessChannel extends TypedAtomicActor {
      *  The calling method is expected to have read access on the workspace.
      *  @param sourcePort The sending port.
      *  @param properties The transmit properties (ignored in this base class).
-     *  @return A list of objects implementing the Receiver interface.
+     *  @return A list of instances of WirelessReceiver.
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
      */
@@ -414,6 +422,32 @@ public class WirelessChannel extends TypedAtomicActor {
         return _receiversInRangeList;
     }
     
+    /** Transform the properties to take into account channel losses,
+     *  noise, etc., for transmission between the specified sender
+     *  and the specified receiver.  In this base class, the
+     *  specified properties are returned unchanged.
+     *  @param properties The transmit properties.
+     *  @param sender The sending port.
+     *  @param receiver The receiving port.
+     *  @return The transformed properties.
+     *  @throws IllegalActionException FIXME
+     */
+    protected Token _transformProperties(
+            Token properties,
+            WirelessIOPort sender, 
+            WirelessReceiver receiver)
+            throws IllegalActionException {
+        Token result = properties;
+        if (_debugging) {
+            _debug(" * transforming properties: \""
+                    + properties.toString()
+                    + "\" to \""
+                    + result.toString()
+                    + "\".");
+        }
+        return result;
+    }
+    
     /** Transmit the specified token to the specified receiver.
      *  If necessary, the token will be converted to the resolved
      *  type of the port containing the specified receiver. 
@@ -429,7 +463,7 @@ public class WirelessChannel extends TypedAtomicActor {
     protected void _transmitTo(
             Token token,
             WirelessIOPort sender, 
-            Receiver receiver, 
+            WirelessReceiver receiver, 
             Token properties)
             throws IllegalActionException {
         if (_debugging) {
@@ -441,7 +475,12 @@ public class WirelessChannel extends TypedAtomicActor {
                 WirelessIOPort destination = (WirelessIOPort)
                         receiver.getContainer();
                 Token newToken = destination.convert(token);
-                receiver.put(newToken);
+                // Bundle the properties.
+                Token transformedProperties = _transformProperties(
+                        properties,
+                        sender,
+                        receiver);
+                receiver.put(newToken, transformedProperties);
             }
         } else {
             receiver.clear();

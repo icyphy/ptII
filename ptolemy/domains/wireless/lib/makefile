@@ -53,7 +53,8 @@ JSRCS = \
 	GraphicalLocator.java \
 	LimitedRangeChannel.java \
 	Locator.java \
-	RadioChannel.java
+	RadioChannel.java \
+	Triangulator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	actors.xml \

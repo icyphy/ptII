@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	WirelessSoundDetection
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	SoundTracker.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	WirelessSoundDetection.xml

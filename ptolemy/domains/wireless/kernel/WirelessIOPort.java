@@ -79,7 +79,6 @@ a receiver may be out of range of a transmitter).
 
 @author Edward A. Lee and Xiaojun Liu
 @version $Id$
-@since Ptolemy II 0.2
 */
 
 public class WirelessIOPort extends TypedIOPort {
@@ -290,7 +289,7 @@ public class WirelessIOPort extends TypedIOPort {
             return super.hasRoomInside(channelIndex);
         }
     }
-
+    
     /** Get the channel specified by the <i>insideChannel</i> parameter.
      *  The channel is contained by the container of this  port.
      *  @return A channel, or null if there is none.
@@ -362,6 +361,61 @@ public class WirelessIOPort extends TypedIOPort {
         }
         _outsideChannelVersion = workspace().getVersion();
         return _outsideChannel;
+    }
+    
+    /** Get the properties token associated with the data token most
+     *  recently retrieved using get().
+     *  @param channelIndex The channel index.
+     *  @see #get(int)
+     *  @see #get(int, int)
+     *  @return The properties token of the most recently received
+     *   data token, or null if there hasn't been one.
+     */
+    public Token getProperties(int channelIndex) {
+        try {
+            _workspace.getReadAccess();
+            Receiver[][] localReceivers = getReceivers();
+            // NOTE: The checks of the base class get() aren't necessary
+            // because we assume get() has just been called.
+            Token token = null;
+            for (int j = 0; j < localReceivers[channelIndex].length; j++) {
+                Token localToken = ((WirelessReceiver)localReceivers
+                        [channelIndex][j]).getProperties();
+                if (token == null) {
+                    token = localToken;
+                }
+            }
+            return token;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
+    /** Get the properties token associated with the data token most
+     *  recently retrieved using getInside().
+     *  @param channelIndex The channel index.
+     *  @see #getInside(int)
+     *  @return The properties token of the most recently received
+     *   data token, or null if there hasn't been one.
+     */
+    public Token getPropertiesInside(int channelIndex) {
+        try {
+            _workspace.getReadAccess();
+            Receiver[][] localReceivers = getInsideReceivers();
+            // NOTE: The checks of the base class getInside() aren't necessary
+            // because we assume get() has just been called.
+            Token token = null;
+            for (int j = 0; j < localReceivers[channelIndex].length; j++) {
+                Token localToken = ((WirelessReceiver)localReceivers
+                        [channelIndex][j]).getProperties();
+                if (token == null) {
+                    token = localToken;
+                }
+            }
+            return token;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Override the base class to return the outside receiver for wireless

@@ -51,7 +51,8 @@ JSRCS = \
 	WirelessChannel.java \
 	WirelessComposite.java \
 	WirelessDirector.java \
-	WirelessIOPort.java
+	WirelessIOPort.java \
+	WirelessReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 

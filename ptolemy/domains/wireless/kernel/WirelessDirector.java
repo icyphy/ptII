@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (sanjeev@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
 
@@ -34,10 +34,15 @@ import java.util.Iterator;
 import java.util.Random;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.Receiver;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -46,25 +51,28 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
-//// SensorDirector
+//// WirelessDirector
 /**
-This director manages the communication between sensor nodes. Whenever a
-sensor node broadcasts, it asks the director to put the broadcast
-tokens at the input of other sensor nodes that are reachable by the
-broadcasting sensor node.
+This director is nearly identical to the DE director except that it
+creates instances of WirelessReceiver and it has
+a set of attributes that can be used to randomize the location of wireless
+nodes on each execution.  The location of each actor that is not an
+instance of WirelessChannel will be set to a random location.
+The <i>range</i> parameter is an array of arrays giving the range
+of possible values for each dimension of the location.  For example,
+if the location is in two dimensions, then range has the form
+{{<i>x1</i>, <i>x2</i>}, {<i>y1</i>, <i>y2</i>}},
+indicating that the X value of the location is uniformly
+distributed between <i>x1</i> and <i>x2</i>, and that the Y value is
+uniformly distributed between <i>y1</i> and <i>y2</i>.
 
 @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, and Xiaojun Liu
 @version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.actor.Director
+@see DEDirector
 */
 public class WirelessDirector extends DEDirector {
-    
-    // FIXME: This director is not needed!
-    // Move the randomization code to an attribute.
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -82,102 +90,151 @@ public class WirelessDirector extends DEDirector {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        randomizeGraph = new Parameter(this, "randomizeGraph",
+        randomizeLocations = new Parameter(this, "randomizeLocations",
                 new BooleanToken(false));
-        randomizeGraph.setTypeEquals(BaseType.BOOLEAN);
+        randomizeLocations.setTypeEquals(BaseType.BOOLEAN);
+        
+        range = new Parameter(this, "range");
+        Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));
+        range.setTypeEquals(rangeType);
+        range.setExpression("{{0.0, 500.0}, {0.0, 500.0}}");
+        
+        seed = new Parameter(this, "seed", new LongToken(0));
+        seed.setTypeEquals(BaseType.LONG);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** If set to true, randomly distribute the nodes before each run.
+    /** If set to true, randomly distribute nodes before each run.
      *  The default value is false.
      */
-    public Parameter randomizeGraph;
+    public Parameter randomizeLocations;
+
+    /** The range of values for locations. This is an array of
+     *  arrays that defaults to {{0.0, 500.0}, {0.0, 500.0}},
+     *  indicating that the X and Y values are uniformly distributed
+     *  between 0.0 and 500.0.
+     */
+    public Parameter range;
+    
+    /** The seed that controls the random number generation.
+     *  A seed of zero is interpreted to mean that no seed is specified,
+     *  which means that each execution of the model could result in
+     *  distinct data. For the value 0, the seed is set to
+     *  System.currentTimeMillis() + hashCode(), which means that
+     *  with extremely high probability, two distinct actors will have
+     *  distinct seeds.  However, current time may not have enough
+     *  resolution to ensure that two subsequent executions of the
+     *  same model have distinct seeds.
+     *  This parameter contains a LongToken, initially with value 0.
+     */
+    public Parameter seed;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the relation that manages the communication through the
-     *  named port. If the relation is named <i>foo</i><code>Channel</code>,
-     *  then an output port that sends tokens to the relation must be
-     *  named <i>foo</i><code>OPort</code>, and an input port that receives
-     *  tokens from the relation must be named <i>foo</i><code>IPort</code>.
-     *  @param portName The name of an input or output port.
-     *  @return The relation that manages the communication through the named
-     *   port.
-     */
-    public TypedIORelation getChannel(String portName) {
-        CompositeEntity container = (CompositeEntity)getContainer();
-        if (!portName.endsWith("IPort") && !portName.endsWith("OPort")) {
-            return null;
-        }
-        String channel = portName.substring(0, portName.length() - 5);
-        TypedIORelation relation =
-                (TypedIORelation)container.getRelation(channel + "Channel");
-        return relation;
-    }
-
     /** Override the base class to randomize the positions of the nodes
-     *  if <i>randomizeNodes</i> is set to true.
+     *  if <i>randomizeLocations</i> is set to true.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _randomizeNodes();
+        if(((BooleanToken)randomizeLocations.getToken()).booleanValue()) {
+            long seedValue = ((LongToken)(seed.getToken())).longValue();
+            if (seedValue == (long)0) {
+                seedValue = System.currentTimeMillis() + hashCode();
+            }
+            if(_random == null) {
+                _random = new Random(seedValue);
+            } else {
+                _random.setSeed(seedValue);
+            }
+            _randomizeLocations();
+        }
+    }
+    
+    /** Return a new receiver of a type WirelessReceiver.
+     *  @return A new WirelessReceiver.
+     */
+    public Receiver newReceiver() {
+        if (_debugging) _debug("Creating new WirelessReceiver.");
+        return new WirelessReceiver();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Randomly distribute the sensor nodes present in the model.
-    private void _randomizeNodes() throws IllegalActionException {
-        if(((BooleanToken)randomizeGraph.getToken()).booleanValue()) {
-            Nameable container = getContainer();
-            CompositeActor castContainer = (CompositeActor)container;
-            Iterator actors  = castContainer.deepEntityList().iterator();
-            Iterator actors1;
-            Entity node;
+    /** Randomly distribute the sensor nodes present in the model.
+     *  This method distributes the location according to uniform
+     *  random variables (one for each dimension) with ranges given
+     *  by the <i>range</i> parameter. Subclasses can override this
+     *  to perform some other randomization.  This delegates to the
+     *  method _setLocationOfNode() to actually set the location of the
+     *  actor.
+     *  @IllegalActionException If the range parameter is malformed.
+     */
+    protected void _randomizeLocations() throws IllegalActionException {
+        // Get the range.
+        ArrayToken rangeValue = (ArrayToken)range.getToken();
+        int dimensions = rangeValue.length();
+        double[] randomLocation = new double[dimensions];
 
-            if(_random1 == null) {
-                _random1 = new Random(_seed1);
-                _random2 = new Random(_seed2);
-                _random3 = new Random(_seed1*_seed2);
-            } else {
-                _random1.setSeed(_random3.nextLong());
-                _random2.setSeed(_random3.nextLong());
+        Iterator actors 
+                = ((CompositeActor)getContainer()).deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Entity node = (Entity)actors.next();
+            
+            // Skip channels.
+            if (node instanceof WirelessChannel) {
+                continue;
             }
-            double[] randomLocation = new double[2];
-            while (actors.hasNext()) {
-                node = (Entity)actors.next();
-                randomLocation[0] = (_random1.nextFloat())*1000;
-                randomLocation[1] = (_random2.nextFloat())*800;
-                try {
-                    Locatable myLocation =
-                            (Locatable)node.getAttribute("_location", Locatable.class);
-                    if(myLocation != null)
-                            myLocation.setLocation(randomLocation);
-                    else {
-                        myLocation = new Location(node, "_location");
-                        myLocation.setLocation(randomLocation);
-                    }
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
+            for (int i = 0; i < dimensions; i++) {
+                ArrayToken lowHigh = (ArrayToken)rangeValue.getElement(i);
+                if (lowHigh.length() < 2) {
+                    throw new IllegalActionException(this,
+                    "Invalid range: " + range.getExpression());
                 }
+                double low = ((DoubleToken)lowHigh.getElement(0)).doubleValue();
+                double high = ((DoubleToken)lowHigh.getElement(1)).doubleValue();
+                if (high < low) {
+                    throw new IllegalActionException(this,
+                    "Invalid range: " + range.getExpression());
+                }
+                randomLocation[i] = low + (_random.nextDouble())*(high - low);
             }
+            _setLocationOfNode(randomLocation, node);
+        }
+    }
+
+    /** Set the location of the specified node.  This sets the _location
+     *  attribute, which is the location as used in Vergil, the visual editor.
+     *  Derived classes may override this to set the location differently.     * 
+     *  @param location The specified location.
+     *  @param node The node for which to set the location.
+     *  @throws IllegalActionException If the location attribute
+     *   cannot be set.
+     */
+    protected void _setLocationOfNode(double[] location, Entity node)
+            throws IllegalActionException {
+        try {
+            Locatable myLocation =
+                    (Locatable)node.getAttribute("_location", Locatable.class);
+            if(myLocation != null) {
+                myLocation.setLocation(location);
+            } else {
+                myLocation = new Location(node, "_location");
+                myLocation.setLocation(location);
+            }
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(e);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Random number generators.
-    private Random _random1;
-    private Random _random2;
-    private Random _random3;
-
-    // Seeds for random variables.
-    private long _seed1 = 37;
-    private long _seed2 = 88;
+    // Random number generator.
+    private Random _random;
 }

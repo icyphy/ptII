@@ -33,12 +33,12 @@ package ptolemy.domains.wireless.lib;
 import java.util.HashMap;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
+import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -183,7 +183,7 @@ public class DelayChannel extends ErasureChannel {
     protected void _transmitTo(
             Token token, 
             WirelessIOPort sender,
-            Receiver receiver,
+            WirelessReceiver receiver,
             Token properties)
             throws IllegalActionException {
         double speed = ((DoubleToken)propagationSpeed.getToken())
@@ -235,7 +235,7 @@ public class DelayChannel extends ErasureChannel {
     private class Reception {
         public Token token;
         public WirelessIOPort sender;
-        public Receiver receiver;
+        public WirelessReceiver receiver;
         public Token properties;
     }
 }

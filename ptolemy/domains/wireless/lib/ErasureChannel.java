@@ -32,7 +32,6 @@ package ptolemy.domains.wireless.lib;
 
 import java.util.Random;
 
-import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.Token;
@@ -40,6 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
+import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -117,9 +117,9 @@ public class ErasureChannel extends WirelessChannel {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        long sd = ((LongToken)(seed.getToken())).longValue();
-        if (sd != (long)0) {
-            _random.setSeed(sd);
+        long seedValue = ((LongToken)(seed.getToken())).longValue();
+        if (seedValue != (long)0) {
+            _random.setSeed(seedValue);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
@@ -151,7 +151,7 @@ public class ErasureChannel extends WirelessChannel {
     protected void _transmitTo(
             Token token,
             WirelessIOPort sender,
-            Receiver receiver, 
+            WirelessReceiver receiver, 
             Token properties)
             throws IllegalActionException {
         double experiment = _random.nextDouble();

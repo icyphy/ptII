@@ -1,4 +1,4 @@
-/* A sound tracker that uses triangulation to identify the origin of a sound.
+/* Triangulate to identify the origin of a signal.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -28,14 +28,16 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.wireless.demo.WirelessSoundDetection;
+package ptolemy.domains.wireless.lib;
 
 
+import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -43,15 +45,58 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SoundTracker
+//// Triangulator
 /**
-FIXME
+Given inputs that represent the location of a sensor and the time at
+which those sensors detect an event, this actor outputs the location
+of the source of the event.  It uses the specified
+<i>signalPropagationSpeed</i> and triangulates.
+<p>
+The input is a record with two fields named "location" and "time".
+The location field is an array of doubles, and the time is a double.
+In the current implementation, the actor assumes a two-dimensional space,
+so the location field is assumed to be an array with two doubles,
+which represent the horizontal (east-west) and vertical (north-south)
+location of the sensor.  The time field is assumed to be
+a double representing the time at which the event was detected by
+the sensor.
+<p>
+The triangulation algorithm requires three distinct sensor inputs
+for the same event in order to be able to calculate the location
+of the origin of the event.  Suppose that the event occurred at
+time <i>t</i> and location <i>x</i>.  Suppose that three sensors
+at locations <i>y1</i>, <i>y2</i>, and <i>y3</i> have each detected
+events at times <i>t1</i>, <i>t2</i>, and <i>t3</i>, respectively.
+Then this actor looks for a solution for <i>x</i> and <i>t</i>
+in the following equations:
+<quote>
+distance(<i>x</i>, <i>y1</i>)/<i>v</i> = <i>t1</i> - <i>t</i>,
+<br>
+distance(<i>x</i>, <i>y2</i>)/<i>v</i> = <i>t2</i> - <i>t</i>,
+<br>
+distance(<i>x</i>, <i>y3</i>)/<i>v</i> = <i>t3</i> - <i>t</i>,
+<br>
+</quote>
+where <i>v</i> is the value of <i>propagationSpeed</i>.
+If such a solution is found, then the output <i>x</i> is produced.
+<p>
+Since three distinct observations are required, this actor will
+produce no output until it has received three distinct observations.
+The observations are distinct if the sensor locations are distinct.
+If the three observations yield no solution, then this actor
+will produce no output.  However, it is possible for the three
+observations to come from distinct events, in which case the output
+may be erroneous.  To guard against this, this actor provides a
+<i>timeWindow</i> parameter.  The times of the three observations
+must be within the value of <i>timeWindow</i>, or no output will
+be produced. The output is an array of doubles, which in this
+implementation represent the X and Y locations of the event.
 
-@author TODO: Philip Baldwin, Xioajun Liu, Edward A. Lee
+@author Xioajun Liu, Edward A. Lee
 @version $Id$
 */
 
-public class SoundTracker extends TypedAtomicActor {
+public class Triangulator extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -61,20 +106,17 @@ public class SoundTracker extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SoundTracker(CompositeEntity container, String name)
+    public Triangulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
+        
         input = new TypedIOPort (this, "input", true, false);
-        // FIXME: Set type?
-        //TypeAttribute inputType = new TypeAttribute(input, "type");
-        //inputType.setExpression("{location=[double], time=double}");
+        TypeAttribute inputType = new TypeAttribute(input, "type");
+        inputType.setExpression("{location={double}, time=double}");
 
-        outputX = new TypedIOPort (this, "outputX", false, true);
-        outputX.setTypeEquals(BaseType.DOUBLE);
-
-        outputY = new TypedIOPort (this, "outputY", false, true);
-        outputY.setTypeEquals(BaseType.DOUBLE);
+        output = new TypedIOPort (this, "output", false, true);
+        TypeAttribute outputType = new TypeAttribute(output, "type");
+        outputType.setExpression("{double}");
 
         // Create parameters.
         signalPropagationSpeed = new Parameter(this, "signalPropagationSpeed");
@@ -88,20 +130,19 @@ public class SoundTracker extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** TODO: Describe port and its type constraints.
+    
+    /** The input port for an event detection, which is a record
+     *  containing the location of a sensor that has detected the
+     *  event and the time at which the sensor detected the event.
+     *  This has type {location={double}, time=double} The location
+     *  is assumed to have two entries.
      */
     public TypedIOPort input;
 
-    /** The output producing the X coordinate of the sound source.
-     *  This has type double.
+    /** The output producing the calculated event location.
+     *  This has type {double}, a double array with two entries.
      */
-    public TypedIOPort outputX;
-
-    /** The output producing the Y coordinate of the sound source.
-     *  This has type double.
-     */
-    public TypedIOPort outputY;
+    public TypedIOPort output;
 
     /** Speed of propagation of the signal to be used for triangulation.
      *  This is a double that defaults to 344.0 (the speed of sound in
@@ -118,11 +159,12 @@ public class SoundTracker extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read an input token and attempt to use it to triangulate
+    /** Read all available input tokens and attempt to use them to triangulate
      *  the signal source. If the attempt is successful, then output
      *  the location of the signal source. Otherwise, output nothing.
      *  This method keeps a buffer of the three most recently seen
-     *  inputs If the new input token has a location field that matches
+     *  inputs from distinct sensors (as determined by their locations).
+     *  If a new input token has a location field that matches
      *  a location already in the buffer, then the new input simply
      *  replaces that previous observation.  Otherwise, it replaces
      *  the oldest observation in the buffer.  If there are three
@@ -130,7 +172,8 @@ public class SoundTracker extends TypedAtomicActor {
      *  <i>timeWindow</i> parameter value, then triangulation is
      *  performed, and if the the three observations are consistent,
      *  then an output is produced.
-     *  @exception IllegalActionException TODO: Describe when this is thrown.
+     *  @exception IllegalActionException If there is no director,
+     *   or if the parameters cannot be evaluated.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -138,10 +181,15 @@ public class SoundTracker extends TypedAtomicActor {
         while (input.hasToken(0)) {
             RecordToken recordToken = (RecordToken)input.get(0);
             
-            DoubleMatrixToken locationMatrix = (DoubleMatrixToken)recordToken.get("location");
+            ArrayToken locationArray = (ArrayToken)recordToken.get("location");
+            if (locationArray.length() < 2) {
+                throw new IllegalActionException(this,
+                "Input is malformed: location field does not have two entries.");
+            }
+            double locationX = ((DoubleToken)locationArray.getElement(0)).doubleValue();
+            double locationY = ((DoubleToken)locationArray.getElement(1)).doubleValue();
+
             double time = ((DoubleToken)recordToken.get("time")).doubleValue();
-            double locationX = locationMatrix.getElementAt(0,0);
-            double locationY = locationMatrix.getElementAt(0,1);
             
             // First check whether the location matches one already in the
             // buffer.  At the same time, identify the entry with the
@@ -206,17 +254,16 @@ public class SoundTracker extends TypedAtomicActor {
                     _locationsY[2], 
                     _times[2], 
                     speed);
-                    
-            // FIXME
-            System.out.println("source at " + result[0] + ", " + result[1] + ", at time " + result[2]);
                 
             if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
                 // Result is not valid (inconsistent data).
                 return;
-            } 
+            }
+            Token[] resultArray = new Token[2];
+            resultArray[0] = new DoubleToken(result[0]);
+            resultArray[1] = new DoubleToken(result[1]);
         
-            outputX.send(0, new DoubleToken(result[0]));
-            outputY.send(0, new DoubleToken(result[1]));
+            output.broadcast(new ArrayToken(resultArray));
         }
     }
 
@@ -265,7 +312,7 @@ public class SoundTracker extends TypedAtomicActor {
                 Math.abs(_distance(x2, y2, result[0], result[1])/v - (t2 - result[2]));
         double tdiff3 = 
                 Math.abs(_distance(x3, y3, result[0], result[1])/v - (t3 - result[2]));
-        //TODO: make the check threshold a parameter?
+        // FIXME: make the check threshold a parameter?
         if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
             return false;
         } else {
@@ -289,7 +336,7 @@ public class SoundTracker extends TypedAtomicActor {
      *  observations of the event. In the returned array, the first element
      *  is the x-coordinate of the event, the second is the y-coordinate,
      *  and the third is the time of the event. These are obtained by
-     *  solving the following equations:
+     *  solving the following equations for x, y, and t:
      *  <pre>
      *  distance(x, y, x1, y1)/v = t1 - t
      *  distance(x, y, x2, y2)/v = t2 - t

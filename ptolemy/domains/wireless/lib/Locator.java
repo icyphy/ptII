@@ -32,7 +32,7 @@ package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
@@ -47,10 +47,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Locator
 
 /**
-This is a wireless sensor node that reacts to an input by transmitting
-an output with the current location of this node and the time of the
-input.  The output is a record token with type
-{location=[double], time=double}.
+This is a wireless sensor node that reacts to an input event by
+transmitting an output with the current location of this node and
+the time of the input.  The output is a record token with type
+{location={double}, time=double}.  The location is an array with
+two doubles representing the X and Y positions of the sensor.
+The location of the sensor is determined by the _getLocation()
+protected method, which in this base class returns the location
+of the icon in the visual editor, which is determined from the
+_location attribute of the actor.  If there is no _location
+attribute, then an exception is thrown.  Derived classes may
+override this protected method to specify the location in some
+other way (or in more dimensions).
 
 @author Philip Baldwin, Xiaojun Liu and Edward A. Lee
 @version $Id$
@@ -85,7 +93,7 @@ public class Locator extends TypedAtomicActor {
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
-        portType.setExpression("{location=[double], time=double}");
+        portType.setExpression("{location={double}, time=double}");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +111,7 @@ public class Locator extends TypedAtomicActor {
 
     /** Port that transmits the current location and the time
      *  of the event on the <i>input</i> port.  This has
-     *  type {location=[double], time=double}, a record token.
+     *  type {location={double}, time=double}, a record token.
      */
     public WirelessIOPort output;
 
@@ -131,17 +139,46 @@ public class Locator extends TypedAtomicActor {
 
             // Construct the message about the input signal detected.
             String[] labels = {"location", "time"};
-            double[][] locationMatrix = new double[1][0];
-            Location myLocation = (Location)getAttribute("_location");
-            locationMatrix[0] = myLocation.getLocation();
+            
+            // Get the location and wrap each coordinate in a token.
+            double[] location = _getLocation();
+            Token[] locationArray = new Token[location.length];
+            for (int i = 0; i < location.length; i++) {
+                locationArray[i] = new DoubleToken(location[i]);
+            }
+            
             double time = getDirector().getCurrentTime();
             Token[] values = {
-                new DoubleMatrixToken(locationMatrix),
+                new ArrayToken(locationArray),
                 new DoubleToken(time)
             };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);
         }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the location of this sensor. In this base class,
+     *  this is determined by looking for an attribute with name
+     *  "_location" and class Location.  Normally, a visual editor
+     *  such as Vergil will create this icon, so the location will
+     *  be determined by the visual editor.  Derived classes can
+     *  override this method to specify the location in some other way.
+     *  @returns An array identifying the location.
+     *  @throws IllegalActionException If the location attribute does
+     *   not exist or cannot be evaluated.
+     */
+    protected double[] _getLocation() throws IllegalActionException {
+        Token[] result = new Token[2];
+        Location locationAttribute = (Location)getAttribute(
+                "_location", Location.class);
+        if (locationAttribute == null) {
+            throw new IllegalActionException(this,
+            "Cannot find a _location attribute of class Location.");
+        }
+        return locationAttribute.getLocation();
     }
 }

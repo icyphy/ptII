@@ -14,6 +14,9 @@
 <entity name="Locator" class="ptolemy.domains.wireless.lib.Locator">
 </entity>
 
+<entity name="Triangulator" class="ptolemy.domains.wireless.lib.Triangulator">
+</entity>
+
 <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
 	<!-- The inside MUST have a director, so we create one. -->
 	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
