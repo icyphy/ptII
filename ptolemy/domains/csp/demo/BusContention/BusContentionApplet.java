@@ -108,8 +108,8 @@ import diva.graph.layout.LevelLayout;
  *  a processor has been granted permission to access memory. The color
  *  red indicates that the processor has been denied memory access.
  *
- *  @author John S. Davis II (davisj@eecs.berkeley.edu)
- *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ *  @author John S. Davis II
+ *  @author Michael Shilman
  *  @version $Id$
  *  @since Ptolemy II 0.3
  *  @Pt.ProposedRating Red (eal)
