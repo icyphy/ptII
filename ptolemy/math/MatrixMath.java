@@ -286,8 +286,6 @@ public class MatrixMath {
 
         double[][] Ai = allocCopy(A);
 
-        System.out.println(toString(Ai));
-
         // We depend on each of the elements being initialized to 0
         int[] pivotFlag = new int[n];
         int[] swapCol = new int[n];
