@@ -57,6 +57,11 @@ public class WatchDogTimer extends SceneTransformer {
         return instance; 
     }
 
+    public void cancel() {
+            System.out.println("WatchDogTimer.cancel(): canceling");
+            _timer.cancel();
+    }
+
     public String getDefaultOptions() {
         return super.getDefaultOptions() + " cancel:false";
     }
@@ -84,8 +89,8 @@ public class WatchDogTimer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         boolean isCancelling = Options.getBoolean(options, "cancel");
-        if(isCancelling) {
-            _timer.cancel();
+        if (isCancelling) {
+            _cancel();
             return;
         }
 
