@@ -300,6 +300,19 @@ public class BranchController implements Runnable {
         }
     }
 
+    /** Return the list of currently engaged branches controlled by 
+     *  this controller.
+     * @return The list of currently engaged branches controlled by 
+     *  this controller.
+     */
+    public LinkedList getEngagedBranchList() {
+        if( _maxEngagers < 0 ) {
+            return _branches;
+        } else {
+            return _engagements;
+        }
+    }
+    
     /** Return the list of branches controlled by this controller.
      *  @return The list of branches controlled by this controller.
      */
