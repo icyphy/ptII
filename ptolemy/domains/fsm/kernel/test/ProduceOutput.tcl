@@ -139,6 +139,5 @@ test ProduceOutput-3.1 {test execution} {
     $pname setExpression p2
     catch {$act0 execute} msg2
     list $re0 $re1 $msg0 $msg1 $msg2
-} {1 2 {ptolemy.actor.NoTokenException: ..e1.p1:
-Attempt to get data from an empty mailbox.} {ptolemy.actor.NoTokenException: ..e1.p1: Attempt to get data from an empty mailbox.} {ptolemy.kernel.util.IllegalActionException: ..fsm and ..fsm.t0.act0:
+} {1 2 {ptolemy.actor.NoTokenException: ..e1.p1: Attempt to get data from an empty mailbox.} {ptolemy.actor.NoTokenException: ..e1.p1: Attempt to get data from an empty mailbox.} {ptolemy.kernel.util.IllegalActionException: ..fsm and ..fsm.t0.act0:
 Cannot find port with name: p2}}
