@@ -92,7 +92,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  This method does nothing.
      *  @param change The change that has been executed.
      */
-    public void changeExecuted(ChangeRequest change) {}
+    public void changeExecuted(ChangeRequest change) {
+        // Needed for undo.
+        setModified(true);
+    }
 
     /** React to the fact that a change has triggered an error by
      *  reporting the error in a top-level dialog.
@@ -142,11 +145,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     public void setModel(NamedObj model) {
         if (_model != null) {
-            _model.removeChangeListener(this);
+            _model.toplevel().removeChangeListener(this);
         }
         _model = model;
         if (model != null) {
-            _model.addChangeListener(this);
+            _model.toplevel().addChangeListener(this);
         }
     }
 
