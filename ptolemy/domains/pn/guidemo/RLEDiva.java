@@ -116,13 +116,19 @@ public class RLEDiva extends PNApplet implements Runnable {
         GraphModel model = constructThreadGraph();
 
         // Display the model in the window
-        try {
-            displayGraph(jgraph, model);
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
+        //try {
+	callInvoke(model);
+	//SwingUtilities.invokeAndWait(new Runnable (final GraphModel model){
+	//private mod = model;
+	//public void run () {
+	//displayGraph(jgraph, mod);
+	//}
+	//});
+        //}
+        //catch(Exception ex) {
+	//ex.printStackTrace();
+	//System.exit(0);
+        //}
 	
         // Add the process state listener
         //BasePNDirector dir = (BasePNDirector) compositeActor.getDirector();
@@ -137,6 +143,21 @@ public class RLEDiva extends PNApplet implements Runnable {
 	return;
     }
 
+    private void callInvoke(final GraphModel mod) {
+	try {
+	    SwingUtilities.invokeAndWait(new Runnable (){
+		//private mod = model;
+		public void run () {
+		    displayGraph(jgraph, mod);
+		}
+	    });
+        } catch(Exception ex) {
+	    ex.printStackTrace();
+	    System.exit(0);
+	}
+    }
+	
+	
     /**  Construct the graph representing the PN topology.
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
