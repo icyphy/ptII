@@ -58,8 +58,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
   /** Return the sum of all of the elements in the array.
    *  Return 0.0 of the length of the array is 0.
-   *  @param array An array of doubles.
-   *  @return A double.
    */
   public static final double sumOfElements(double[] array) {
     double sum = 0.0;
@@ -71,8 +69,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the product of all of the elements in the array.
      *  Return 1.0 if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
      */
     public static final double productOfElements(double[] array) {
         double product = 1.0;
@@ -84,8 +80,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the sum of the squares of all of the elements in the array.
      *  Return 0.0 if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
      */
     public static final double sumOfSquares(double[] array) {
         double sum = 0.0;
@@ -96,8 +90,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the arithmetic mean of the elements in the array.
-     *  @param array An array of doubles.
-     *  @return A double.
      */
     public static final double mean(double[] array) {
         _nonZeroLength(array, "mean");
@@ -121,8 +113,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the maximum value in the array.
      *  Throw an exception if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
      */
     public static final double max(double[] array) {
 
@@ -138,9 +128,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the minimum value in the array.
      *  Throw an exception if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @param array An array of doubles.
-     *  @return A double.
      */
     public static final double min(double[] array) {
 
@@ -155,9 +142,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the variance of the elements in the array.
-     *  Return 0.0 if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
+     *  Simply return variance(array, false).
      */
     public static double variance(double[] array) {
       return variance(array, false);
@@ -167,22 +152,34 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The variance is computed as follows :
      *  <p>
      *  <pre>
-     *  variance = (sum(X<sup>2</sup>) - sum(X)<sup>2</sup>) / N
+     *  variance = (sum(X<sup>2</sup>) - (sum(X) / N)<sup>2</sup>) / N
      *  </pre>
      *  <p>
      *  The sample variance is computed as follows :
      *  <p>
      *  <pre>
-     *  variance<sub>sample</sub> = (sum(X<sup>2</sup>) - sum(X)<sup>2</sup>) / (N - 1)
+     *  variance<sub>sample</sub> = (sum(X<sup>2</sup>) - (sum(X) / N)<sup>2</sup>) / (N - 1)
      *  </pre>
      *  <p>
-     *  where E[X] denotes the expectation of X :
      *
-     *  Return 0.0 if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
+     *  Throw an exception if the array is of length 0, or if the
+     *  sample variance is taken on an array of length less than 2.
      */
     public static double variance(double[] array, boolean sample) {
+
+        if (array.length < 1) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.DoubleArrayStat.variance() : variance and " +
+            "standard deviation of an empty array are not defined.");
+        }
+
+        if (sample && (array.length < 2)) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.DoubleArrayStat.variance() : sample variance and " +
+            "standard deviation of an array of length less than 2 are not " + 
+            "defined.");
+        } 
+
         int length = array.length;
         double ex2 = 0.0;
         double sum = 0.0;
@@ -190,16 +187,14 @@ public class DoubleArrayStat extends DoubleArrayMath {
             ex2 += array[i] * array[i];
             sum += array[i];
         }
-        double retval = ex2 - (sum * sum);
 
-        double norm = sample ? (length - 1) : length;
-        return retval / (double) norm;
+        double norm = sample ? (length - 1) : length;        
+        double sumSquaredOverLength = sum * sum / length;
+        return (ex2 - sumSquaredOverLength) / norm; 
     }
 
     /** Return the standard deviation of the elements in the array.
-     *  Return 0.0 if the length of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
+     *  Simply return standardDeviation(array, false).
      */
     public static double standardDeviation(double[] array) {
         return Math.sqrt(variance(array, false));
@@ -218,9 +213,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  stdDev = sqrt(variance<sub>sample</sub>)
      *  </pre>
      *  <p>
-     *  Return 0.0 if the length of the array is 0.
+     *  Throw an exception if the array is of length 0, or if the
+     *  sample standard deviation is taken on an array of length less than 2.
      *  @param array An array of doubles.
-     *  @param sample
+     *  @param sample True if the sample standard devation is desired.
      *  @return A double.
      */
     public static double standardDeviation(double[] array, boolean sample) {
@@ -381,8 +377,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The entropy is always non-negative.
      *  Throw an IllegalArgumentException if the length of the array is 0,
      *  or a negative probability is encountered.
-     *  @param p An array of doubles representing the pmf.
-     *  @return A double.
      */
     public static final double entropy(double[] p) {
 
@@ -416,8 +410,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Throw an IllegalArgumentException if either array has length 0.
      *  If the two arrays do not have the same length, throw an 
      *  IllegalArgumentException.
-     *  @param p An array of doubles representing the first pmf.
-     *  @param q An array of doubles representing the second pmf.
+     *  @param p An array of doubles representing the first pmf, p.
+     *  @param q An array of doubles representing the second pmf, q.
      *  @return A double representing the relative entropy of the
      *  random variable.
      */
@@ -529,9 +523,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return a new array of Poisson random variables (as doubles) with 
      *  a given mean. The number of elements to allocate is given by N.
      *  This algorithm is from [1].
-     *  @param mean A double.
-     *  @param N An int indicating how many elements to generate.
-     *  @return A new array of doubles.
      */
     public static final double[] randomPoisson(double mean, int N) {
         Random random = new Random();
