@@ -451,7 +451,7 @@ public class Plotter extends TypedAtomicActor
             "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
 	    + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 	if (plot != null) {
-	    output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml"
+	    output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
                     + header + "\n<plot>\n");
 	    PrintWriter print = new PrintWriter(output);
 	    // The second (null) argument indicates that PlotML PUBLIC DTD
