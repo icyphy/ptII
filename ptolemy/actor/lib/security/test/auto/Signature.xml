@@ -38,26 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 60.0">
-        </property>
-    </property>
-    <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 20.0">
         </property>
     </property>
     <property name="scale" class="ptolemy.data.expr.Parameter" value="1ub">
@@ -106,7 +87,7 @@ to something else</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -181,7 +162,7 @@ to something else</text></svg></configure>
         </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -202,7 +183,7 @@ to something else</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -214,7 +195,7 @@ to something else</text></svg></configure>
     <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="arraySize">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 60.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -231,7 +212,7 @@ to something else</text></svg></configure>
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 55.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -247,7 +228,7 @@ to something else</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 45.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -272,13 +253,9 @@ to something else</text></svg></configure>
         </port>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
-        </property>
         <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
-        </property>
-        <property name="keyPairGenerator" class="ptolemy.data.expr.StringParameter" value="DSA">
+        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Reads a public key from a port and creates a signature for
 	  the given piece of data to be sent to the signature verifier.</doc>
@@ -298,16 +275,14 @@ to something else</text></svg></configure>
         </port>
     </entity>
     <entity name="SignatureVerifier" class="ptolemy.actor.lib.security.SignatureVerifier">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
-        </property>
         <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
+        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and
           uses it to encrypt a data input based on a given asymmetric
           algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 125.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -326,8 +301,6 @@ to something else</text></svg></configure>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -343,6 +316,8 @@ to something else</text></svg></configure>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>

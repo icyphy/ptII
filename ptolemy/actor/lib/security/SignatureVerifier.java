@@ -71,6 +71,7 @@ Cryptography Extension (JCE).
 <br>Information about JCE can be found at
 <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
+@see PublicKeyReader
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
@@ -99,7 +100,7 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** The signature of the data.  The type is unsigned byte array.
+    /** The signature of the data.  The type is unsigned byte array.
      */
     public TypedIOPort signature;
 
@@ -126,49 +127,27 @@ public class SignatureVerifier extends SignatureActor {
             // Process the input data to generate a signature.
 
             byte [] signatureData =
-                _arrayTokenToUnsignedByteArray((ArrayToken)signature.get(0));
+                CryptographyActor.arrayTokenToUnsignedByteArray(
+                        (ArrayToken)signature.get(0));
             ArrayToken inputToken = (ArrayToken)input.get(0);
-            _inputBytes =
-                _arrayTokenToUnsignedByteArray(inputToken);
-            // We ignore the output of _process(): If the signature is
-            // invalid, then _process() throws an exception
-            _process(signatureData);
+            try {
+                _signature.initVerify(_publicKey);
+                _signature.update(CryptographyActor.
+                        arrayTokenToUnsignedByteArray(inputToken));
+                if (!_signature.verify(signatureData)) {
+                    throw new IllegalActionException(
+                            "Signature verification failed");
+                }
+            } catch (java.security.GeneralSecurityException ex) {
+                throw new IllegalActionException("There was a problem with "
+                        + "the key or signature");
+            }
 
             // If we got to here, then the signature verified, so
             // output the data
             output.send(0, inputToken);
 
-            // Don't call CryptograpyActor.fire() here, we already processed
-            // the input data.
-            super._fireWithoutProcessing();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         Protected Methods                 ////
-
-    /** Verify the signature.
-     * @exception IllegalActionException If there is a problem with
-     * the signature or the key.
-     */
-    protected byte[] _process(byte[] signatureData)
-            throws IllegalActionException {
-        ByteArrayOutputStream byteArrayOutputStream =
-            new ByteArrayOutputStream();
-        try {
-            _signature.initVerify(_publicKey);
-            _signature.update(_inputBytes);
-            boolean verify = _signature.verify(signatureData);
-            if (verify) {
-                return _inputBytes;
-            } else {
-                throw new IllegalActionException("Signature verification "
-                        + "failed");
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem processing " + signatureData.length
-                    + " bytes of signature data");
+            super.fire();
         }
     }
 
@@ -177,4 +156,6 @@ public class SignatureVerifier extends SignatureActor {
 
     // The original input data in cleartext that is being verified.
     private byte[] _inputBytes;
+
+    private PublicKey _publicKey;
 }

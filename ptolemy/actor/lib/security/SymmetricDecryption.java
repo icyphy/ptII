@@ -143,10 +143,6 @@ public class SymmetricDecryption extends CipherActor {
         try {
             if (key.hasToken(0)) {
                 ObjectToken objectToken = (ObjectToken)key.get(0);
-                //_key =
-                //    (SecretKey)_bytesToKey(_arrayTokenToUnsignedByteArray(
-                //            (ArrayToken)key.get(0)));
-                // FIXME: shouldn't this be called _key? 
                 _key = (java.security.Key)objectToken.getValue();
             }
 

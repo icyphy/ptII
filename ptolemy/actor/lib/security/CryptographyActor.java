@@ -194,6 +194,23 @@ public class CryptographyActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Convert an ArrayToken to an array of unsigned bytes.
+     *
+     * @param dataArrayToken to be converted to a unsigned byte array.
+     * @return dataBytes the resulting unsigned byte array.
+     */
+    public static byte[] arrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
+        byte[] dataBytes = new byte[dataArrayToken.length()];
+        for (int j = 0; j < dataArrayToken.length(); j++) {
+            UnsignedByteToken dataToken =
+                (UnsignedByteToken)dataArrayToken.getElement(j);
+            dataBytes[j] = (byte)dataToken.byteValue();
+        }
+        return dataBytes;
+    }
+
+
     /** Override the base class to reinitialize the state if
      *  the <i>algorithm</i>, <i>provider</i>, or <i>keysize</i>
      *  parameter is changed.
@@ -224,10 +241,12 @@ public class CryptographyActor extends TypedAtomicActor {
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
-                    _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
+                    CryptographyActor.arrayTokenToUnsignedByteArray(
+                            (ArrayToken)input.get(0));
                 dataBytes = _process(dataBytes);
                 output.send(0, 
-                        CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
+                        CryptographyActor.unsignedByteArrayToArrayToken(
+                                dataBytes));
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
@@ -288,112 +307,6 @@ public class CryptographyActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
-
-    /** Convert an ArrayToken to an array of unsigned bytes.
-     *
-     * @param dataArrayToken to be converted to a unsigned byte array.
-     * @return dataBytes the resulting unsigned byte array.
-     */
-    protected byte[] _arrayTokenToUnsignedByteArray(
-            ArrayToken dataArrayToken) {
-        byte[] dataBytes = new byte[dataArrayToken.length()];
-        for (int j = 0; j < dataArrayToken.length(); j++) {
-            UnsignedByteToken dataToken =
-                (UnsignedByteToken)dataArrayToken.getElement(j);
-            dataBytes[j] = (byte)dataToken.byteValue();
-        }
-        return dataBytes;
-    }
-
-    /** Convert a byte array to a key Object using an ObjectStream.
-     *  The byte array must be the result of the ObjectOutputStream of a Key.
-     *
-     * @param keyBytes The array of bytes to be converted to a Key.
-     * @return the Key object
-     * @exception IllegalActionException if IOException or ClassNotFound
-     *  exceptions occurs.
-     */
-    protected Key _bytesToKey(byte keyBytes[]) throws IllegalActionException {
-        try {
-            ByteArrayInputStream byteArrayInputStream;
-            ObjectInputStream objectInputStream;
-            Key key;
-            byteArrayInputStream = new ByteArrayInputStream(keyBytes);
-            objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            key = (Key)objectInputStream.readObject();
-            return key;
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem converting " + keyBytes.length + " bytes");
-        }
-    }
-
-    /** Create a pair of keys to be used for asymmetric algorithms.
-     *
-     * @exception IllegalActionException If the algorithm or provider is
-     * not found.
-     */
-    protected KeyPair _createAsymmetricKeys() throws IllegalActionException{
-        try {
-            KeyPairGenerator keyPairGen;
-            if (_provider.equalsIgnoreCase("SystemDefault")) {
-                keyPairGen = KeyPairGenerator.getInstance(_keyPairGenerator);
-            } else {
-                keyPairGen = KeyPairGenerator.getInstance(_keyPairGenerator,
-                        _provider);
-            }
-
-            keyPairGen.initialize(_keySize, new SecureRandom());
-            return keyPairGen.generateKeyPair();
-
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to create asymmetric keys. "
-                    + "algorithm: '"
-                    + _algorithm + "', keyGenerator: '"
-                    + _keyPairGenerator + "', keySize: '"
-                    + _keySize + "', provider: '"
-                    + _provider + "'");
-        }
-    }
-
-    /** Create a symmetric secret key for symmetric algorithms.
-     *
-     * @exception IllegalActionException If algorithm or provider is not found.
-     */
-    protected Key _createSymmetricKey() throws IllegalActionException{
-        try {
-            KeyGenerator keyGen;
-            if (_provider.equalsIgnoreCase("SystemDefault")) {
-                keyGen = KeyGenerator.getInstance(_algorithm);
-            } else {
-                keyGen = KeyGenerator.getInstance(_algorithm, _provider);
-            }
-            keyGen.init(_keySize, new SecureRandom());
-            return keyGen.generateKey();
-
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to create symmetric key, "
-                    + "algorithm: '"
-                    + _algorithm + "', keyGenerator: '"
-                    + _keyPairGenerator + "', keySize: '"
-                    + _keySize + "', provider: '"
-                    + _provider + "'");
-        }
-    }
-
-    /** Call super.fire() without calling _process().  
-     *  This method is necessary so that derived classes
-     *  that want to process data specially can still call super.fire().
-     *  Most actors will call fire() instead of this method.
-     *
-     * @exception IllegalActionException If thrown by the base class.
-     */
-    public void _fireWithoutProcessing() throws IllegalActionException {
-        super.fire();
-    }
-
 
     /** Processes the data based on parameter specifications.  This
      *  class returns the data in its original form.  Subclasses

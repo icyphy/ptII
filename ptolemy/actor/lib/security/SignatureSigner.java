@@ -1,4 +1,4 @@
-/* Sign the input data using a public key.
+/* Sign the input data using a private key.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -56,7 +56,7 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner
-/** Sign the input data using a public key.
+/** Sign the input data using a private key.
 
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
@@ -70,17 +70,6 @@ actor on the <i>signature</i> port as an unsigned byte array.
 <p>The <i>input</i> data itself is passed to in <b>cleartext</b>
 on the <i>output</i> port.
 
-<p>In this actor, the <i>algorithm<ii> parameter is used to set
-the Signature and the <i>keyPairGenerator</i> parameter is used
-to set the KeyPairGenerator.
-<br>Common settings are:
-<br><i>algorithm</i>: <code>SHA1WITHDSA</code>
-<br><i>keyPairGenerator</i>:<code>DSA</code>
-<br>or
-<br><i>algorithm</i>: <code>MD5WITHRSA</code>
-<br><i>keyPairGenerator</i>:<code>RSA</code>
-Other possible values can be found in the JCE documentation below.
-
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
@@ -89,6 +78,7 @@ Cryptography Extension (JCE).
 <br>Information about JCE can be found at
 <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
+@see PrivateKeyReader
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
@@ -107,18 +97,6 @@ public class SignatureSigner extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyPairGenerator = new StringParameter(this, "keyPairGenerator");
-        // Get the possible choices.
-        Set algorithms = Security.getAlgorithms("KeyPairGenerator");
-        Iterator algorithmsIterator = algorithms.iterator();
-        for(int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
-            if (i == 0) {
-                keyPairGenerator.setExpression(algorithmName);
-            }
-            keyPairGenerator.addChoice(algorithmName);
-        }
-
         privateKey = new TypedIOPort(this, "privateKey", true, false);
         privateKey.setTypeEquals(BaseType.OBJECT);
 
@@ -129,21 +107,9 @@ public class SignatureSigner extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
-
-    /** The algorithm to be used to generate the key pair.  For
-     *  example, using RSAwithMD5 as the signature algorithm in the
-     *  <i>algorithm</i> parameter, RSA would be used for the
-     *  <i>keyPairGenerator</i> parameter.  If the
-     *  <i>algorithm</i>parameter was SHA1WITHDSA, then the value of
-     *  this parameter would be DSA.
-     */
-    public StringParameter keyPairGenerator;
-
     /** The private key to be used by the SignatureVerifier actor
      *  to verify the data on the <i>output</i> port.
      *  The type is an ObjectToken containin a java.security.Key.
-
      */
     public TypedIOPort privateKey;
 
@@ -153,21 +119,6 @@ public class SignatureSigner extends SignatureActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to reinitialize the state if
-     *  the <i>keyPairGenerator</i> parameter is changed.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == keyPairGenerator) {
-            _keyPairGenerator =
-                ((StringToken)keyPairGenerator.getToken()).stringValue();
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** Created a signature for the input data and the signature to the
      *  output.   
@@ -186,43 +137,23 @@ public class SignatureSigner extends SignatureActor {
             try {
                 // Process the input data to generate a signature
                 byte[] dataBytes =
-                    _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
-                dataBytes = _process(dataBytes);
-                signature.send(0, 
+                    CryptographyActor.arrayTokenToUnsignedByteArray(
+                            (ArrayToken)input.get(0));
+
+                _signature.initSign(_privateKey);
+                _signature.update(dataBytes);
+
+                output.send(0,
                         CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
+                signature.send(0, 
+                        CryptographyActor.unsignedByteArrayToArrayToken(
+                                _signature.sign()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Problem sending data");
             }
         }
-        
-        // Most actors let CryptographyActor.fire() read the input
-        // port and process the data and generate tokens on the output port
-        // However, this reads the input port and generates tokens on
-        // both the signature and output ports, so we don't call
-        // CryptographyActor.fire(), we call _fireWithoutProcessing().
-        super._fireWithoutProcessing();
-    }
-
-    /** Calculate a signature.
-     *
-     * @return byte[] the data to calculate a signature for.
-     * @exception IllegalActionException If the key or padding is invalid.
-     */
-    protected byte[] _process(byte[] dataBytes) throws IllegalActionException{
-        ByteArrayOutputStream byteArrayOutputStream =
-            new ByteArrayOutputStream();
-        try {
-            // The output port contains the unsigned data.
-            output.send(0,
-                    CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
-            _signature.initSign(_privateKey);
-            _signature.update(dataBytes);
-            return _signature.sign();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem sending " + dataBytes.length + " bytes.");
-        }
+        super.fire();
     }
 
     ///////////////////////////////////////////////////////////////////

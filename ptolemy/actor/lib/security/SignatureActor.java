@@ -30,12 +30,19 @@
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.Signature;
@@ -46,16 +53,19 @@ import java.util.Set;
 //// SignatureActor
 /**
 
-This is a base class that implements general and helper functions used
-by signature actors. Actors extending this class take in an unsigned
-byte array at the <i>input</i>, create an encrypted hash of the
-message and send it on the <i>output</i>.  The algorithms that maybe
-implemented are limited to the signature algorithms that are
-implemented by "providers" following the JCE specifications and
-installed on the machine being run. In case a provider specific
-instance of an algorithm is needed, the provider may also be specified
-in the <i>provider</i> parameter.  The <i>keySize</i> parameter also
-allows implementations of algorithms using various key sizes.
+General and helper functions used by signature actors.
+
+<p>In cryptography, digital signatures can be used to verify that the
+data was not modified in transit.  However, the data itself is passed
+in cleartext.
+
+<p>The signature algorithms that maybe implemented are limited to the
+signature algorithms that are implemented by providers following the
+JCE specifications and installed on the machine being run. In case a
+provider specific instance of an algorithm is needed, the provider may
+also be specified in the <i>provider</i> parameter.
+
+<p>The input and output are both arrays of unsigned bytes.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -69,7 +79,7 @@ Information about JCE can be found at
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SignatureActor extends CryptographyActor {
+public class SignatureActor extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -83,22 +93,70 @@ public class SignatureActor extends CryptographyActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // Reset the choices to possible signatures
-        algorithm.removeAllChoices();
-        Set algorithms = Security.getAlgorithms("Signature");
-        Iterator algorithmsIterator = algorithms.iterator();
-        for(int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
+        input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+
+        provider = new StringParameter(this, "provider");
+        provider.setExpression("SystemDefault");
+        provider.addChoice("SystemDefault");
+        Provider [] providers = Security.getProviders();
+        for (int i = 0; i < providers.length; i++) {
+            provider.addChoice(providers[i].getName());
+        }
+
+        signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
+        Iterator signatureAlgorithms =
+            Security.getAlgorithms("Signature").iterator();
+        for(int i = 0; signatureAlgorithms.hasNext(); i++) {
+            String algorithmName = (String)signatureAlgorithms.next();
             if (i == 0) {
-                algorithm.setExpression(algorithmName);
+                signatureAlgorithm.setExpression(algorithmName);
             }
-            algorithm.addChoice(algorithmName);
+            signatureAlgorithm.addChoice(algorithmName);
         }
     }
 
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Specify a provider for the given algorithm.  Takes the algorithm name
+     *  as a string. The default value is "SystemDefault" which allows the
+     *  system chooses the provider based on the JCE architecture.
+     */
+    public StringParameter provider;
+
+    /** Specify the algorithm to be used to sign data.  The algorithm is
+     *  specified as a string. The algorithms are limited to those
+     *  implemented by providers using the Java JCE which are found on the
+     *  system.
+     *  Depending on your JDK installation is, possible values might
+     *  be SHA1WITHDSA or MD5WITHRSA.
+     *  The initial default is the first value returned by
+     *  Security.getAlgorithms("Signature").
+     */
+    public StringParameter signatureAlgorithm;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to reinitialize the state if
+     *  the <i>signatureAlgorithm</i>, or <i>provider</i>
+     *  parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == signatureAlgorithm) {
+            _signatureAlgorithm =
+                ((StringToken)signatureAlgorithm.getToken()).stringValue();
+        } else if (attribute == provider) {
+            _provider = ((StringToken)provider.getToken()).stringValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** This method initializes the Signature object.  If provider is
      *  left as "SystemDefault" the system chooses the provider based
@@ -112,14 +170,15 @@ public class SignatureActor extends CryptographyActor {
         super.initialize();
         try {
             if (_provider.equalsIgnoreCase("SystemDefault")) {
-                _signature = Signature.getInstance(_algorithm);
+                _signature = Signature.getInstance(_signatureAlgorithm);
             } else {
-                _signature = Signature.getInstance(_algorithm, _provider);
+                _signature = Signature.getInstance(_signatureAlgorithm,
+                        _provider);
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to initialize Signature with algorithm: '"
-                    + _algorithm + "', provider: '"
+                    + _signatureAlgorithm + "', provider: '"
                     + _provider + "'");
         }
     }
@@ -129,11 +188,13 @@ public class SignatureActor extends CryptographyActor {
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
 
+    /** The provider to be used for a provider specific implementation. */
+    protected String _provider;
+
     /** The signature that will be used to process the data.
      */
     protected Signature _signature;
 
-    /** The public key to be used for the signature.
-     */
-    protected PublicKey _publicKey = null;
+    /** The name of the signature algorithm to be used. */
+    protected String _signatureAlgorithm;
 }
