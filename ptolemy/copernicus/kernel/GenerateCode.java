@@ -29,6 +29,17 @@
 
 package ptolemy.copernicus.kernel;
 
+import ptolemy.kernel.util.StringUtilities;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// GenerateCode
@@ -133,8 +144,8 @@ Set this to the empty string if the model has the number of iterations built.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class KernelMain {
-        /** Given a string and a Map containing String key/value pairs,
+public class GenerateCode {
+    /** Given a string and a Map containing String key/value pairs,
      *  substitute any keys found in the input with the corresponding
      *  values.
      *
