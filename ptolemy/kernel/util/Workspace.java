@@ -109,6 +109,8 @@ it's combined with, say, mutable domain (e.g. PN).
 // FIXME: should this class be made final ?
 public class Workspace implements Nameable, Serializable {
 
+    private static final boolean DEBUG = false;
+
     /** Create a workspace with an empty string as its name.
      */
     public Workspace() {
@@ -223,6 +225,9 @@ public class Workspace implements Nameable, Serializable {
         // (lmuliadi).
 
         if (current instanceof PtolemyThread) {
+            if (DEBUG) {
+                System.out.println("PtolemyThread calling doneReading");
+            }
             // The current thread is a PtolemyThread.
             PtolemyThread ptThread = (PtolemyThread)current;
             if (ptThread.readDepth == 0) {
@@ -241,6 +246,9 @@ public class Workspace implements Nameable, Serializable {
                 }
             }
         } else {
+            if (DEBUG) {
+                System.out.println("Thread calling doneReading");
+            }
             // The current thread is not a PtolemyThread.
             ReadDepth depth = (ReadDepth)_readers.get(current);
             //System.out.println("Thread returning a read access");
@@ -337,6 +345,9 @@ public class Workspace implements Nameable, Serializable {
             Thread current = Thread.currentThread();
 
             if (current instanceof PtolemyThread) {
+                if (DEBUG) {
+                    System.out.println("PtolemyThread calling getReadAccess");
+                }
                 // If the current thread is an instance of PtolemyThread,
                 // then use the readDepth field of it.
                 PtolemyThread ptThread = (PtolemyThread)current;
@@ -353,6 +364,9 @@ public class Workspace implements Nameable, Serializable {
                     }
                 }
             } else {
+                if (DEBUG) {
+                    System.out.println("Thread calling getReadAccess");
+                }
                 // The current thread is not an instance of PtolemyThread.
                 ReadDepth depth = (ReadDepth)_readers.get(current);
                 if (depth != null) {
@@ -426,23 +440,46 @@ public class Workspace implements Nameable, Serializable {
                 // there are no writers.  Are there any readers?
                 if (_readers.isEmpty() && _numPtReaders==0) {
                     // No readers
-                    _writer = Thread.currentThread();
+                    
+                    // _writer = Thread.currentThread();
+                    // I changed the above line, because I think it's more
+                    // efficient.. Hope I won't introduce any bug (lmuliadi)
+                    _writer = current;
+
                     _writeDepth = 1;
                     return;
                 }
                 
                 if (_readers.size() == 1 && _readers.get(current) != null) {
+                    if (DEBUG) {
+                        System.out.println("Thread calling " +
+                        "getWriteAccess");
+                    }
                     // Sole reader is this thread.
-                    _writer = Thread.currentThread();
+
+                    // _writer = Thread.currentThread();
+                    // I changed the above line, because I think it's more
+                    // efficient.. Hope I won't introduce any bug (lmuliadi)
+                    _writer = current;                   
+
                     _writeDepth = 1;
                     return;
                 } 
                 
                 if (current instanceof PtolemyThread) {
+                    if (DEBUG) {
+                        System.out.println("PtolemyThread calling " + 
+                        "getWriteAccess");
+                    }
                     PtolemyThread ptThread = (PtolemyThread)current;
                     if (_numPtReaders==1 && ptThread.readDepth > 0) {
                         // Sole reader is this thread.
-                        _writer = Thread.currentThread();
+                        
+                        // _writer = Thread.currentThread();
+                        // I changed the above line, because I think it's more
+                        // efficient.. Hope I won't introduce any bug (lmuliadi)
+                        _writer = current;
+                           
                         _writeDepth = 1;
                         return;  
                     }
@@ -614,16 +651,36 @@ public class Workspace implements Nameable, Serializable {
      *  workspace.
      */
     private synchronized void _reacquireReadPermissions(int count) {
+
+        // If the count argument is equal to zero, which means we would like
+        // the current thread to has read depth equal to 0, i.e. not a reader,
+        // then it's already trivially done, since this method call is always
+        // preceded by _releaseAllReadPermissions.
 	if (count == 0) return;
+
+        // Go into an infinite 'while (true)' loop, and each time through
+        // the loop, check if the condition is satisfied to have the current
+        // thread as a writer. If not, then wait on the workspace. Upon
+        // re-awakening, iterate in the loop again to check if the condition
+        // is now satisfied.
         while (true) {
+            Thread current = Thread.currentThread();
+
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
-            Thread current = Thread.currentThread();
             if (current == _writer || _writeReq == 0 ) {
-                ReadDepth depth = new ReadDepth();
-		_readers.put(current, depth);
-		depth._count = count;
-                return;
+                if (current instanceof PtolemyThread) {
+                    // Current thread is an instance of PtolemyThread.
+                    _numPtReaders++;
+                    ((PtolemyThread)current).readDepth = count;
+                    return;
+                } else {
+                    // Current thread is not an instance of PtolemyThread.
+                    ReadDepth depth = new ReadDepth();
+                    _readers.put(current, depth);
+                    depth._count = count;
+                    return;
+                }
             }
             try {
                 wait();
@@ -643,13 +700,36 @@ public class Workspace implements Nameable, Serializable {
      */
     private synchronized int _releaseAllReadPermissions() {
 	Thread current = Thread.currentThread();
-        ReadDepth depth = (ReadDepth)_readers.get(current);
-        if (depth == null) {
-	    return 0;
+        
+        // First check whether current thread is an instance of PtolemyThread.
+        
+        if (current instanceof PtolemyThread) {
+            // the current thread is an instance of PtolemyThread.
+            PtolemyThread pthread = (PtolemyThread) current;
+            int depth = pthread.readDepth;
+            // check if the thread is a reader.
+            if (depth == 0) {
+                // not a reader, so just return.
+                return 0;
+            } else {
+                // the thread is a reader, so make it not a reader.
+                // Reduce the number of PtReaders
+                _numPtReaders--;
+                // Make sure the state is consistent, by setting the readDepth
+                // field in the thread to be zero.
+                pthread.readDepth = 0;
+                notifyAll();
+                return depth;
+            }
+        } else {
+            ReadDepth depth = (ReadDepth)_readers.get(current);
+            if (depth == null) {
+                return 0;
+            }
+            _readers.remove(current);
+            notifyAll();
+            return depth._count;
         }
-	_readers.remove(current);
-	notifyAll();
-	return depth._count;
     }
 
 
@@ -680,8 +760,8 @@ public class Workspace implements Nameable, Serializable {
 
     // The number of PtolemyThread readers.
     // The use of this field is to increment it everytime we have a new
-    // Ptolemy reader (readCount field goes from 0 to 1) and decrement it
-    // whenever a Ptolemy reader relinguishes ALL its read access (readCount
+    // Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
+    // whenever a Ptolemy reader relinguishes ALL its read access (readDepth
     // field goes from 1 to 0).
     private long _numPtReaders = 0;
 
