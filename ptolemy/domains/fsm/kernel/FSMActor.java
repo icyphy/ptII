@@ -992,9 +992,6 @@ public class FSMActor extends CompositeEntity
      *   the token read from its corresponding channel (should not occur).
      */
     protected void _readInputs() throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        Director director = container.getDirector();
-
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
