@@ -420,8 +420,9 @@ test ParseTreeEvaluator-13.1 {Test array method calls.} {
 
 # Test record construction,
 test ParseTreeEvaluator-13.2 {Test record construction.} {
-    list [evaluate "{a=1,b=2.4}" ]
-} {{{a=1, b=2.4}}}
+    list [evaluate {{a=1,b=2.4}} ] \
+         [evaluate {{b=1,a=2.4}} ]
+ } {{{a=1, b=2.4}} {{a=2.4, b=1}}}
 
 ######################################################################
 ####

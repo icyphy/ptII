@@ -80,14 +80,14 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
     
-    /** Return a StringToken that contains the names of all the
+    /** Return a record token that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants
-     *  and their values.
+     *   and their values.
      *  @since Ptolemy II 2.1
      */
-    public static StringToken constants() {
-        return new StringToken(Constants.constants());
+    public static RecordToken constants() {
+        return Constants.constants();
     }
 
     /** Return a Gaussian random number.
@@ -706,6 +706,19 @@ public class UtilityFunctions {
                     + illegalArgument.getMessage());
         }
         return arrayToken;
+    }
+    
+    /** Set a variable with the specified name to have the specified value.
+     *  This is done in the global namespace of the expression evaluator,
+     *  and will replace any previously defined constants with the specified
+     *  name.
+     *  @param name The name of the variable.
+     *  @param value The value of the variable.
+     *  @return The value.
+     */
+    public static ptolemy.data.Token set(String name, ptolemy.data.Token value) {
+    	Constants.add(name, value);
+    	return value;
     }
 
     /** Return the sum of the elements in the specified array.

@@ -33,9 +33,12 @@ package ptolemy.data.expr;
 
 import ptolemy.data.*;
 import ptolemy.util.StringUtilities;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Constants
@@ -62,6 +65,8 @@ public class Constants {
     ////                         public methods                    ////
 
     /** Add a constant with the given name and value to the table.
+     *  If a constant with this same name had been previously added,
+     *  then that value is replaced with the new one.
      *  Neither the name nor the value can be null, otherwise a
      *  NullPointerException will be thrown.
      *  @param name The name of the constant.
@@ -71,14 +76,33 @@ public class Constants {
         _table.put(name, value);
     }
 
-    /** Return a String representation of the constants.
-     *  @return name The names of the constants and their values.
+    /** Return a record representation of the constants.
+     *  @return A record with the constants and their values.
      *  @since Ptolemy II 2.1
      */
-    public static String constants() {
+    public static RecordToken constants() {
         // This should be called toString(), but we cannot have a static
         // toString() because Object.toString() is not static.
-        return _table.toString();
+        
+        // NOTE: Construct these arrays rather than using keySet()
+        // and values() because we have no assurance that those will
+        // return the contents in the same order.
+        int size =_table.size();
+        String[] names = new String[size];
+        ptolemy.data.Token[] values = new ptolemy.data.Token[size];
+        Iterator keys = _table.keySet().iterator();
+        int i = 0;
+        while (keys.hasNext()) {
+        	String key = (String)keys.next();
+        	names[i] = key;
+        	values[i] = (ptolemy.data.Token)_table.get(key);
+        	i++;
+        }
+        try {
+        	return new RecordToken(names, values);
+        } catch (IllegalActionException ex) {
+        	throw new InternalErrorException("Cannot construct a record!");
+        }
     }
 
     /** Look up the value of the constant with the given name.
