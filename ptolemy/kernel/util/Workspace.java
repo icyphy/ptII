@@ -24,18 +24,31 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (liuxj@eecs.berkeley.edu)
+
+Changed wait(Object) to throw InterruptedException. This method is used
+in:
+ProcessThread, ProcessDirector, MailboxBoundaryReceiver,
+CompositeProcessDirector, DDEReceiver, PBOThreadDirector,
+PNQueueReceiver
+Need to make sure that the exception is handled reasonably.
+
+Removed support for setReadOnly().
+-- liuxj
+
 */
 
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
@@ -228,55 +241,38 @@ public final class Workspace implements Nameable, Serializable {
      *   before a corresponding call to getReadAccess().
      */
     public final synchronized void doneReading() {
-        // A read-only workspace can't have any writers.
-        // Since, getReadAccess() simply returns, so does doneReading().
-        if (_readOnly) {
-            return;
-        }
 
         Thread current = Thread.currentThread();
-
-        // Implementation note: I used instance of here, because of some
-        // performance details plus instanceof is really a better coding
-        // style, in term of code visibility (lmuliadi).
-
-        // FIXME: The code for PtolemyThread and non-PtolemyThread are really
-        // similar. Find way to consolidate them.. I sure can't find one now
-        // (lmuliadi).
-        if (current instanceof PtolemyThread) {
-            // The current thread is a PtolemyThread.
-            PtolemyThread ptThread = (PtolemyThread)current;
-            if (ptThread.readDepth == 0) {
-                throw new InvalidStateException(this,
-                        "Workspace: doneReading() called without a prior "
-                        + "matching call to getReadAccess()!");
-            }
-            ptThread.readDepth--;
-            if (ptThread.readDepth == 0) {
-                // Look at the use of _numPtReaders at this variable
-                // declaration location. (near the bottom of this file)
-                // This thread is no longer a reader.
-                _numPtReaders--;
-                if (_writer != current) {
-                    notifyAll();
-                }
-            }
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
         } else {
-            // The current thread is not a PtolemyThread.
-            ReadDepth depth = (ReadDepth)_readers.get(current);
-            if (depth == null) {
-                throw new InvalidStateException(this,
-                        "Workspace: doneReading() called without a prior "
-                        + "matching call to getReadAccess()!");
-            }
-            depth.decr();
-            if (depth.isZero()) {
-                _readers.remove(current);
-                if (_writer != current) {
+            record = _getAccessRecord(current, false);
+        }
+
+        if (record == null) {
+            throw new InvalidStateException(this,
+                    "Workspace: doneReading() called without a prior "
+                    + "matching call to getReadAccess()!");
+        }
+
+        if (record.readDepth > 0) {
+            record.readDepth--;
+            if (record.readDepth == 0) {
+                // the current thread is no longer a reader
+                _numReaders--;
+                if (_numReaders == 0) {
                     notifyAll();
                 }
             }
+        } else if (record.failedReadAttempts > 0) {
+            record.failedReadAttempts--;
+        } else {
+            throw new InvalidStateException(this,
+                    "Workspace: doneReading() called without a prior "
+                    + "matching call to getReadAccess()!");
         }
+
     }
 
     /** Indicate that the calling thread is finished writing.
@@ -287,25 +283,40 @@ public final class Workspace implements Nameable, Serializable {
      *  the workspace is read-only.
      */
     public final synchronized void doneWriting() {
-        // A read-only workspace can't be written, so calling this method
-        // doesn't really make sense.
-        if (_readOnly) {
-            throw new InvalidStateException(this, "Trying to relinquish " +
-                    "write access on a write-protected workspace.");
-        }
-        _writeReq--;
-        _writeDepth--;
-        if (_writeDepth == 0) {
-            _writer = null;
-            incrVersion();
-            notifyAll();
-        } else if (_writeDepth < 0) {
-            throw new InvalidStateException(this,
-                    "Workspace: doneWriting called without a prior "
-                    + "matching call to getWriteAccess().");
-        }
-    }
 
+        Thread current = Thread.currentThread();
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(current, false);
+        }
+
+        if (current != _writer) {
+            if (record != null && record.failedWriteAttempts > 0) {
+                record.failedWriteAttempts--;
+            } else {
+                throw new InvalidStateException(this,
+                        "Workspace: doneWriting called without a prior "
+                        + "matching call to getWriteAccess().");
+            }
+        } else {
+            if (_writeDepth > 0) {
+                _writeReq--;
+                _writeDepth--;
+                if (_writeDepth == 0) {
+                    _writer = null;
+                    incrVersion();
+                    notifyAll();
+                }
+            } else {
+                throw new InvalidStateException(this,
+                        "Workspace: doneWriting called without a prior "
+                        + "matching call to getWriteAccess().");
+            }
+        }
+
+    }
 
     /** Get the container.  Always return null since a workspace
      *  has no container.
@@ -346,55 +357,56 @@ public final class Workspace implements Nameable, Serializable {
      */
     public final synchronized void getReadAccess() {
 
-        // The workspace is read-only, so there are no writers,
-        // so always grant the permission.
-        if (_readOnly) {
-            return;
-        }
-        // Go into an infinite 'while (true)' loop, and at each iteration
-        // check if this current thread can get a read access, if not then
-        // at the end of iteration, do a wait() on the workspace. Otherwise,
-        // once the thread get a read access, it returns.
         Thread current = Thread.currentThread();
-        while (true) {
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(current, true);
+        }
+
+        if (record.readDepth > 0) {
             // If the current thread has read permission, then grant
             // it read permission
-            if (current instanceof PtolemyThread) {
-                // If the current thread is an instance of PtolemyThread,
-                // then use the readDepth field of it.
-                PtolemyThread ptThread = (PtolemyThread)current;
-                if (ptThread.readDepth != 0) {
-                    ptThread.readDepth++;
-                    return;
-                } else {
-                    if (current == _writer || _writeReq == 0 ) {
-                        ptThread.readDepth++;
-                        // This is a new reader, so we increment the number
-                        // of Ptolemy readers.
-                        _numPtReaders++;
-                        return;
-                    }
-                }
-            } else {
-                // The current thread is not an instance of PtolemyThread.
-                ReadDepth depth = (ReadDepth)_readers.get(current);
-                if (depth != null) {
-                    depth.incr();
-                    return;
-                } else {
-                    // If the current thread has write permission or if there
-                    // are no pending write requests, then grant
-                    // read permission.
-                    if (current == _writer || _writeReq == 0 ) {
-                        depth = new ReadDepth();
-                        _readers.put(current, depth);
-                        depth.incr();
-                        return;
-                    }
-                }
-            }
-            wait(this);
+            record.readDepth++;
+            return;
+        } else if (current == _writer) {
+            record.readDepth++;
+            // The current thread has write permission, so we grant
+            // read permission.
+            // This is a new reader, so we increment the number
+            // of readers.
+            _numReaders++;
+            return;
         }
+
+        // need to wait for read access
+        // first increment this to make the record not empty, so as to
+        // prevent the recrod from being deleted from the _readerRecords
+        // table by other threads
+        record.failedReadAttempts++;
+
+        // Go into a loop, and at each iteration check whether the current
+        // thread can get read access. If not then do a wait() on the
+        // workspace. Otherwise, exit the loop.
+        while (_writeReq != 0) {
+            try {
+                wait(this);
+            } catch (InterruptedException ex) {
+                throw new InternalErrorException(current.getName()
+                        + " - thread interruped while waiting to get "
+                        + "read access: " + ex.getMessage());
+            }
+        }
+
+        record.failedReadAttempts--;
+        // now there is no writer, and no thread waiting to get write access
+        record.readDepth++;
+        // This is a new reader, so we increment the number
+        // of readers.
+        _numReaders++;
+        return;
+
     }
 
     /** Get the version number.  The version number is incremented on
@@ -419,65 +431,69 @@ public final class Workspace implements Nameable, Serializable {
      *  workspace is read-only.
      */
     public final synchronized void getWriteAccess() {
-        // A read-only workspace can't be written, so throw an exception.
-        if (_readOnly) {
-            throw new InvalidStateException(this, "Trying to get write " +
-                    "access on a write-protected workspace.");
+
+        // check whether this workspace is read-only, if this feature
+        // is to be supported
+
+        Thread current = Thread.currentThread();
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(current, true);
         }
+
         _writeReq++;
+
+        if (current == _writer) {
+            // already have write permission
+            _writeDepth++;
+            return;
+        }
+
+        // probably need to wait for write access
+        // first increment this to make the record not empty, so as to
+        // prevent the recrod from being deleted from the _readerRecords
+        // table by other threads
+        record.failedWriteAttempts++;
 
         // Go into an infinite 'while (true)' loop and check if this thread
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
 
         while (true) {
-            Thread current = Thread.currentThread();
-            if (current == _writer) {
-                // already have write permission
-                _writeDepth++;
-                return;
-            }
-            if ( _writer == null) {
-                // there are no writers.  Are there any readers?
-                if (_readers.isEmpty() && _numPtReaders == 0) {
+
+            if (_writer == null) {
+                // there are no writers. Are there any readers?
+                if (_numReaders == 0) {
                     // No readers
-
                     _writer = current;
-
                     _writeDepth = 1;
+                    record.failedWriteAttempts--;
                     return;
-                }
-
-                // Check if sole reader is this current thread.
-                if (current instanceof PtolemyThread) {
-                    // current thread is a PtolemyThread.
-                    PtolemyThread ptThread = (PtolemyThread)current;
-                    if (_numPtReaders == 1
-                            && _readers.size() == 0
-                            && ptThread.readDepth > 0) {
-                        // Sole reader is this thread.
+                } else if (_numReaders == 1) {
+                    // Check if sole reader is this current thread.
+                    if (record != null && record.readDepth > 0) {
+                        // The only reader is the current thread.
                         _writer = current;
                         _writeDepth = 1;
-                        return;
-
-                    }
-                } else {
-                    // current thread is not a PtolemyThread.
-                    if (_readers.size() == 1 &&
-                            _numPtReaders == 0 &&
-                            _readers.get(current) != null) {
-                        _writer = current;
-                        _writeDepth = 1;
+                        record.failedWriteAttempts--;
                         return;
                     }
                 }
             }
+
             try {
                 wait();
-            } catch (InterruptedException e) {
-                System.err.println(e.toString());
+            } catch (InterruptedException ex) {
+                _writeReq--;
+                throw new InternalErrorException(current.getName()
+                        + " - thread interruped while waiting to get "
+                        + "write access: " + ex.getMessage());
             }
+
         }
+
     }
 
     /** Handle a model error by throwing the specified exception.
@@ -555,17 +571,27 @@ public final class Workspace implements Nameable, Serializable {
      */
     public synchronized void setReadOnly(boolean flagValue)
             throws IllegalActionException {
-        if (flagValue == true) {
-            // Check if there's no writer or reader.
+
+        // Problem with the read-only feature:
+        // One thread set the workspace to read only, another thread gets
+        // read permission without a trace. Suppose the first thread then
+        // set the workspace to be writable, then the second thread calls
+        // doneReading() to release read access: invalid state.
+
+        /*
+        if (flagValue != _readOnly) {
+            // assert that there is no writer or reader
             // NOTE: This used to only check the writer, but that's
-            // not correct, because doneReading() and getReadPermission()
+            // not correct, because doneReading() and getReadAccess()
             // will get out of sync.  EAL 4/10/03
-            if (_writer != null || (_readers.isEmpty() && _numPtReaders == 0)) {
+            if (_writer != null || _numReaders != 0 ||
+                    _numBlockedReaders != 0) {
                 throw new IllegalActionException(this,
-                        "Can't make a workspace read-only while "
-                        + "threads have read or write permission.");
+                        "Can't change the read-only status of a workspace "
+                        + "while threads have read or write permission.");
             }
         }
+        */
         _readOnly = flagValue;
     }
 
@@ -584,17 +610,13 @@ public final class Workspace implements Nameable, Serializable {
      *  that something by holding read access on the workspace.
      *  @param obj The object that the thread wants to wait on.
      */
-    public void wait(Object obj) {
+    public void wait(Object obj) throws InterruptedException {
         int depth = 0;
         depth = _releaseAllReadPermissions();
         try {
             synchronized(obj) {
                 obj.wait();
             }
-        } catch (InterruptedException ex) {
-            throw new InternalErrorException(
-                    "Thread interrupted while paused! " +
-                    ex.getMessage());
         } finally {
             _reacquireReadPermissions(depth);
         }
@@ -655,6 +677,48 @@ public final class Workspace implements Nameable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Return the AccessRecord object for the current thread.
+    // If the flag createNew is true and the current thread does not
+    // have an access record, then create a new one and return it.
+    private final AccessRecord _getAccessRecord(Thread current, boolean createNew) {
+
+        //System.out.println("-- look up access record for " + current.getName());
+        AccessRecord record = (AccessRecord)_readerRecords.get(current);
+
+        if (record == null) {
+
+            // delete any record that contains no history information
+            // AND is not the last reader's record
+            Iterator records = _readerRecords.values().iterator();
+            while (records.hasNext()) {
+                AccessRecord aRecord = (AccessRecord)records.next();
+                if (aRecord.failedReadAttempts == 0 &&
+                        aRecord.failedWriteAttempts == 0 &&
+                        aRecord.readDepth == 0 &&
+                        aRecord != _lastReaderRecord) {
+                    //System.out.println("-- delete record for thread "
+                    //        + aRecord.thread
+                    //        + " in " + current.getName());
+                    records.remove();
+                }
+            }
+
+            if (createNew) {
+                record = new AccessRecord();
+                _readerRecords.put(current, record);
+            }
+
+        }
+
+        if (record != null) {
+            _lastReader = current;
+            _lastReaderRecord = record;
+        }
+
+        return record;
+
+    }
+
     /** Obtain permissions to read objects in the workspace. This obtains
      *  many permissions on the read access and should be called in
      *  conjunction with _releaseAllReadPermissions.
@@ -666,15 +730,6 @@ public final class Workspace implements Nameable, Serializable {
      *  workspace.
      */
     private synchronized void _reacquireReadPermissions(int count) {
-        // FIXME: this might introduce later, when you have the workspace
-        // write-protected and wanting to wait(obj). Right now, since
-        // only PN uses this method and PN doesn't permit the workspace
-        // to be write-protected, this case shouldn't happen at all.
-        // See also the _releaseAllReadPermissions() method
-        if (_readOnly) {
-            return;
-        }
-
 
         // If the count argument is equal to zero, which means we would like
         // the current thread to has read depth equal to 0, i.e. not a reader,
@@ -682,30 +737,35 @@ public final class Workspace implements Nameable, Serializable {
         // preceded by _releaseAllReadPermissions.
         if (count == 0) return;
 
+        Thread current = Thread.currentThread();
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(current, false);
+        }
+
+        if (record == null || count > record.failedReadAttempts) {
+            throw new InvalidStateException(this, "Trying to reaquire "
+                    + "read permission not in record.");
+        }
+
         // Go into an infinite 'while (true)' loop, and each time through
         // the loop, check if the condition is satisfied to have the current
         // thread as a writer. If not, then wait on the workspace. Upon
         // re-awakening, iterate in the loop again to check if the condition
         // is now satisfied.
         while (true) {
-            Thread current = Thread.currentThread();
 
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
             if (current == _writer || _writeReq == 0 ) {
-                if (current instanceof PtolemyThread) {
-                    // Current thread is an instance of PtolemyThread.
-                    _numPtReaders++;
-                    ((PtolemyThread)current).readDepth = count;
-                    return;
-                } else {
-                    // Current thread is not an instance of PtolemyThread.
-                    ReadDepth depth = new ReadDepth();
-                    _readers.put(current, depth);
-                    depth._count = count;
-                    return;
-                }
+                _numReaders++;
+                record.failedReadAttempts -= count;
+                record.readDepth = count;
+                return;
             }
+
             try {
                 wait();
             } catch(InterruptedException ex) {
@@ -713,7 +773,9 @@ public final class Workspace implements Nameable, Serializable {
                         "Thread interrupted while waiting for read access!"
                         + ex.getMessage());
             }
+
         }
+
     }
 
     /** Frees the thread of all the readAccesses on the workspace. The method
@@ -724,48 +786,31 @@ public final class Workspace implements Nameable, Serializable {
      */
     private synchronized int _releaseAllReadPermissions() {
 
-        // FIXME: this might introduce a bug later..
-        // Since, currently, only PN uses this code, and PN never let the
-        // workspace to be read-only, you don't have to worry about it.
-        if (_readOnly) {
-            return 0;
-        }
-
         // Find the current thread.
         Thread current = Thread.currentThread();
-
-        // First check whether current thread is an instance of PtolemyThread.
-        if (current instanceof PtolemyThread) {
-            // the current thread is an instance of PtolemyThread.
-            PtolemyThread pthread = (PtolemyThread) current;
-            int depth = pthread.readDepth;
-            // check if the thread is a reader.
-            if (depth == 0) {
-                // not a reader, so just return.
-                return 0;
-            } else {
-                // the thread is a reader, so make it not a reader.
-                // Reduce the number of PtReaders
-                _numPtReaders--;
-                // Make sure the state is consistent, by setting the readDepth
-                // field in the thread to be zero.
-                pthread.readDepth = 0;
-                notifyAll();
-                return depth;
-            }
+        AccessRecord record = null;
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
         } else {
-            // the current thread is not an instance of PtolemyThread.
-            ReadDepth depth = (ReadDepth)_readers.get(current);
-            // check if the thread is a reader.
-            if (depth == null) {
-                return 0;
-            }
-            _readers.remove(current);
-            notifyAll();
-            return depth._count;
+            record = _getAccessRecord(current, false);
         }
-    }
 
+        if (record == null || record.readDepth == 0) {
+            // current thread is not a reader
+            return 0;
+        } else {
+            _numReaders--;
+            if (_numReaders == 0) {
+                // notify any waiting writer
+                notifyAll();
+            }
+            int result = record.readDepth;
+            record.failedReadAttempts += result;
+            record.readDepth = 0;
+            return result;
+        }
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -792,18 +837,18 @@ public final class Workspace implements Nameable, Serializable {
      */
     private int _writeDepth = 0;
 
-    /** @serial A table by readers (threads) of how many times they have
-     *  gotten read permission.
+    /** @serial The last thread that acquires/releases read permission.
      */
-    private Hashtable _readers = new Hashtable();
+    private Thread _lastReader = null;
+    private AccessRecord _lastReaderRecord = null;
+    private HashMap _readerRecords = new HashMap();
 
-    /** @serial The number of PtolemyThread readers.
+    /** @serial The number of readers.
      *  The use of this field is to increment it every time we have a new
-     *  Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
-     *  whenever a Ptolemy reader relinquishes ALL its read access (readDepth
-     *  field goes from 1 to 0).
+     *  reader and decrement it whenever a reader relinquishes ALL its read
+     *  access.
      */
-    private long _numPtReaders = 0;
+    private long _numReaders = 0;
 
     /** @serial Indicate that the workspace is read-only, and no changes in
      * this Workspace object is permitted.
@@ -813,21 +858,19 @@ public final class Workspace implements Nameable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    // Class ReadDepth
-    // Keeps track of the number of reader permissions that a thread has.
-    // This is used instead of the Integer class because Integer has no
-    // incr() or decr() methods.  These methods save creating new instances
-    // every time a read permission is granted.
-    private class ReadDepth implements Serializable {
-        public void decr() {
-            _count--;
-        }
-        public void incr() {
-            _count++;
-        }
-        public boolean isZero() {
-            return _count == 0;
-        }
-        public int _count = 0;
+    private final class AccessRecord {
+        // the number of failed calls to getReadAccess() performed
+        // by a thread and not yet matched by a call to doneReading()
+        public int failedReadAttempts = 0;
+        // the number of failed calls to getWriteAccess() performed
+        // by a thread and not yet matched by a call to doneWriting()
+        public int failedWriteAttempts = 0;
+        // the number of successful calls to getReadAccess() performed
+        // by a thread and not yet matched by a call to doneReading()
+        public int readDepth = 0;
+
+        //public Thread thread = null;
+        //public boolean inUse;
     }
+
 }

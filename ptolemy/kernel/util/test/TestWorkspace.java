@@ -50,6 +50,13 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class TestWorkspace extends Thread {
 
+    public static void main(String[] args) {
+        Workspace w = new Workspace("test");
+        TestWorkspace tw = new TestWorkspace("test", w);
+        tw.run();
+        System.out.println(tw._profile);
+    }
+
     public TestWorkspace(String name, Workspace workspace) {
         _name = name;
         _workspace = workspace;

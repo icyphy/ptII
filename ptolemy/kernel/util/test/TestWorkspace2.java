@@ -54,6 +54,13 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class TestWorkspace2 extends Thread {
 
+    public static void main(String[] args) {
+        Workspace w = new Workspace("test");
+        TestWorkspace2 tw = new TestWorkspace2("test", w);
+        tw.run();
+        System.out.println(tw.profile);
+    }
+
     public TestWorkspace2(String name, Workspace workspace) {
         _name = name;
         _workspace = workspace;
@@ -79,7 +86,11 @@ public class TestWorkspace2 extends Thread {
             }
             synchronized(_notif) {
                 _notif.getWriteAccess = true;
-                _workspace.wait(_notif);
+                try {
+                    _workspace.wait(_notif);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 _notif.done = true;
             }
         } finally {
