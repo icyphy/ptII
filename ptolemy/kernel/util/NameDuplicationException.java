@@ -35,7 +35,7 @@ objects with identical names in the same container object.
 @author John S. Davis, II
 @version $Id$
 */
-public class NameDuplicationException extends PtolemyException {
+public class NameDuplicationException extends GraphException {
     /** 
      */	
     public NameDuplicationException() {
