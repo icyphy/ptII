@@ -72,4 +72,9 @@
     </configure>
   </property>
 </property>
+
+<!-- EntityLibrary, Used to add hierarchy to the user's vergilUserLibrary.xml -->
+<property name="EntityLibrary" 
+          class="ptolemy.moml.EntityLibrary"/>
+
 </group>
