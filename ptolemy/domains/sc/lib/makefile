@@ -51,7 +51,8 @@ JARFILE = 	$(TYPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
-	DEFSMActor.java 
+	DEFSMActor.java \
+	HSInit.java
 
 EXTRA_SRCS =	$(JSRCS)
 
