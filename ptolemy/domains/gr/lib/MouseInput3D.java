@@ -84,7 +84,8 @@ public class MouseInput3D extends GRActor {
             x.send(0, new IntToken(_xClicked));
             y.send(0, new IntToken(_yClicked));
             _hasData = false;
-            System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
+            // FIXME: for debugging, uncomment
+            //System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
         }
     }
 
@@ -104,7 +105,6 @@ public class MouseInput3D extends GRActor {
         }
 
         public void processStimulus(Enumeration criteria) {
-            System.out.println("new stimulus");
             WakeupCriterion wakeup;
             int eventId;
             AWTEvent[] event;
@@ -118,7 +118,6 @@ public class MouseInput3D extends GRActor {
             	        _xClicked = ((MouseEvent)event[i]).getX();
                         _yClicked = ((MouseEvent)event[i]).getY();
                         _hasData = true;
-                        System.out.println(" "+_xClicked+" "+_yClicked);
                     }
                 }
             }
