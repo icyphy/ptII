@@ -30,9 +30,11 @@
 
 package pt.kernel;
 
+import collections.CorruptedEnumerationException;
+
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import collections.CorruptedEnumerationException;
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
@@ -52,7 +54,7 @@ sizes of the cross-reference lists.
 @contributor Edward A. Lee
 @version $Id$
 */
-public final class CrossRefList {
+public final class CrossRefList implements Serializable  {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
 
@@ -239,7 +241,7 @@ public final class CrossRefList {
     // Class CrossRef.
     // Objects of this type form the elements of the list.
     // They occur in pairs, one in each list at each end of a link.
-    private class CrossRef {
+    private class CrossRef implements Serializable{
         
         protected CrossRef _far;
         

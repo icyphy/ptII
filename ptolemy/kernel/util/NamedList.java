@@ -37,7 +37,8 @@ package pt.kernel;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
- 
+import java.io.Serializable; 
+
 //////////////////////////////////////////////////////////////////////////
 //// NamedList
 /** 
@@ -56,7 +57,7 @@ name lookup for large lists.
 @see LinkedList
 @see collections.LinkedList
 */
-public class NamedList implements Cloneable {
+public class NamedList implements Cloneable, Serializable {
 
     /** Construct an empty NamedList with no container.
      */	
