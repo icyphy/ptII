@@ -56,15 +56,23 @@ Is the synchronization below provable? Or is it just reasoned?
 public class CSPReceiver implements Receiver {
   
   /** FIXME: look at CTReceiver, PNReceiver for choice of constructors
-   * @param name The name of this receiver.
-   */
-  public CSPReceiver(String name) {
-    _name = name;
-  }
-  
-  public CSPReceiver() {
-    _name = "";
-  }
+     */
+
+    /** Construct a CSPReceiver with no container.
+     */
+    public CSPReceiver() {
+        System.out.println("new CSPReceiver");
+	_container = new IOPort();
+    }
+
+    /** Construct a CSPReceiver with the specified container.
+     *  @param container The container.
+     */
+    public CSPReceiver(IOPort container) {
+        System.out.println("new CSPReceiver");
+        _container = container;
+    }
+
 
   ////////////////////////////////////////////////////////////////////////
   ////                         public methods                         ////
@@ -93,7 +101,7 @@ public class CSPReceiver implements Receiver {
 	notifyAll(); //wake up the waiting put
 	_checkAndWait();
       } else { // get got there first, so have to wait for a put
-	//System.out.println(getName() + ": get got here before put");
+	//System.out.println(getContainer().getName() + ": get got here before put");
 	_setGetWaiting(true);
 	notifyAll();
 	while(isGetWaiting()) {
@@ -126,7 +134,7 @@ public class CSPReceiver implements Receiver {
 	_checkAndWait();
 	return;
       } else { // put got there first, so have to wait for a get
-	//System.out.println(getName() + ": put got here before get");
+	//System.out.println(getContainer().getName() + ": put got here before get");
 	_setPutWaiting(true);
 	notifyAll();
 	while(isPutWaiting()) {
@@ -143,18 +151,18 @@ public class CSPReceiver implements Receiver {
       // FIXME: what should be done here?
     }
   }
- 
-  public Nameable getContainer() {
-    return null; // FIXME: look at PN code
-  }
-  
-  public String getName() {
-    return _name;
-  }
 
-  public boolean isGetWaiting() {
-    return _getWaiting;
-  }
+    /** Return the container.
+     *  @return The container.
+     */
+    public Nameable getContainer() {
+        return _container; 
+    }
+
+ 
+    public boolean isGetWaiting() {
+        return _getWaiting;
+    }
 
   /** is hasRoom() the same as isGetWaiting()?
    */
@@ -225,7 +233,7 @@ public class CSPReceiver implements Receiver {
      */
     protected synchronized void _checkAndWait() throws InterruptedException {
         if (_simulationTerminated) {
-            throw new TerminateProcessException(getName() + ": simulation terminated");
+            throw new TerminateProcessException(getContainer().getName() + ": simulation terminated");
         }
         wait();
     }
@@ -251,6 +259,10 @@ public class CSPReceiver implements Receiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
     
+    
+    // Container is not changeable.
+    private IOPort _container = null;
+
     // Flag indicating whather or not a get is waiting at this receiver.  
     private boolean _getWaiting = false;
     
@@ -275,8 +287,6 @@ public class CSPReceiver implements Receiver {
     // The token being transfered during the rendezvous.
     private Token _token;
     
-    // The name of this receiver.
-    private String _name;
 }  
 
   

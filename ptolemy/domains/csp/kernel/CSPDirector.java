@@ -205,6 +205,7 @@ public class CSPDirector extends Director {
      *  @return A new CSPReceiver.
      */
     public Receiver newReceiver() {
+        System.out.println("creating a new receiver in CSPDirector");
         return new CSPReceiver();
     }
 
@@ -212,6 +213,7 @@ public class CSPDirector extends Director {
    *  UI deides to terminate a simulation prematurely
    */
   public void terminateSimulation() {
+      System.out.println("about to terminate simulation");
     synchronized(workspace()) {
       _simulationTerminated = true;
       

@@ -284,6 +284,7 @@ public class CSPActor extends AtomicActor implements Runnable {
        throws CloneNotSupportedException, IllegalActionException {
            CSPDirector director = (CSPDirector)getDirector();
 	 _myThread = new Thread( director.getProcessGroup(), this);
+         System.out.println("Created thread for " + getName() + "not started");
 	 director.actorStarted();
   }
 
@@ -313,6 +314,7 @@ public class CSPActor extends AtomicActor implements Runnable {
    */
   public void run() {
     try {
+      //System.out.println("In run method for " + getName() + ", about to call _run method of derived class");
       _run(); //what would be a better name for this method?
     } catch (TerminateProcessException ex) {
       // return with appropriate message
@@ -356,13 +358,14 @@ public class CSPActor extends AtomicActor implements Runnable {
     Enumeration inports = inputPorts();
     while (inports.hasMoreElements()) {
       IOPort port = (IOPort)inports.nextElement();
-      Receiver[][] receivers = port.getReceivers();
+      /*Receiver[][] receivers = port.getReceivers();
       for (int i=0; i < receivers.length; i++) {
 	if (receivers[i].length > 1) {
 	  System.out.println("Error: more than one receiver on CSP input channel");
 	}
 	((CSPReceiver)receivers[i][0]).setSimulationTerminated();
       }
+      */
     }
   }
 
@@ -372,7 +375,9 @@ public class CSPActor extends AtomicActor implements Runnable {
   /** in this base class this does nothing. It should be overridden by 
    *  derived classes to do the actor specific work.
    */
-  protected void _run() {}
+  protected void _run() {
+    System.out.println("_run() method in CSPActor should be overridden in derived classes!");
+  }
 
   ////////////////////////////////////////////////////////////////////////
   ////                         private methods                        ////
