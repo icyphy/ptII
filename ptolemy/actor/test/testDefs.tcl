@@ -48,5 +48,5 @@ if {![info exist TYCHO]} {
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source [file join $TYCHO java pt kernel test testDefs.tcl]
+    source [file join $TYCHO java pt kernel util test testDefs.tcl]
 } {}
