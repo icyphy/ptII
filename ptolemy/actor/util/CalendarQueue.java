@@ -650,7 +650,7 @@ public class CalendarQueue {
     private void _localInit(
             int nbuckets,
             Object bwidth,
-            Object startkey) {
+            Object startKey) {
 
         _width = bwidth;
         _nBuckets = nbuckets;
@@ -663,8 +663,8 @@ public class CalendarQueue {
         }
 
         // Set up initial position in queue
-        _minKey = startkey;
-        _minVirtualBucket = _getBinIndex(startkey);
+        _minKey = startKey;
+        _minVirtualBucket = _getBinIndex(startKey);
         _minBucket = (int)(_minVirtualBucket % _nBuckets);
         if (_minBucket < 0) _minBucket += _nBuckets;
 
