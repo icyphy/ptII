@@ -1285,6 +1285,21 @@ public class Query extends JPanel {
                 } else {
                     // Relative file name.
                     File selectedFile = fileChooser.getSelectedFile();
+                    // FIXME: There is a bug here under Windows XP
+                    // at least... Sometimes, the drive ID (like c:)
+                    // is lower case, and sometimes it's upper case.
+                    // When we open a MoML file, it's upper case.
+                    // When we do "save as", it's lower case.
+                    // This despite the fact that both use the same
+                    // file browser to determine the file name.
+                    // Beats me... Consequence is that if you save as,
+                    // then the following relativize call doesn't work
+                    // until you close and reopen the file.
+                    try {
+                        selectedFile = selectedFile.getCanonicalFile();
+                    } catch (IOException ex) {
+                        // Ignore, since we can't do much about it anyway.
+                    }
                     URI relativeURI = _base.relativize(selectedFile.toURI());
                     _entryBox.setText(relativeURI.toString());
                 }
