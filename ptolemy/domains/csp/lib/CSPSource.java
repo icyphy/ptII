@@ -43,7 +43,7 @@ import java.util.Random;
     FIXME: add description!!
 
 @author Neil Smyth
-@version $Id$
+@version @(#)CSPSource.java	1.4 08/28/98
 
 */
 
@@ -52,34 +52,35 @@ public class CSPSource extends CSPActor {
         super();
     }
     
-    public CSPSource(CSPCompositeActor cont, String name, CSPReceiver rec) 
+    public CSPSource(CSPCompositeActor cont, String name) 
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-	receiver = rec;
         output = new IOPort(this, "output", false, true);
     }
 
-
-    public void _run() {
-        try {
-            int count = 0;
-            while (count < 10 ) {
-                Token t = new IntToken(count);
-                //System.out.println(getName() + ": created token about to send it");
-		output.send(0,t);
-		//receiver.put(t);
-                System.out.println("Source sent Token: " +t.toString() + " to " + getName());
-                count++;
-            }
-            // terminate 
-            output.send(0, new NullToken());
-	    //receiver.put( new NullToken());
-        } catch (Exception ex) {
-            System.out.println(getName() + ": " + ex.getMessage() + ":" +ex.getClass().getName());
-            //throw new IllegalActionException(this, "error in source");
-        }
-        return;
+  ////////////////////////////////////////////////////////////////////////
+  ////                         protected methods                      ////
+ 
+    protected void _run() {
+    try {
+	Random rand = new Random();
+	int count = 0;
+	while (count < 15 ) {
+	  Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+	  Token t = new IntToken(count);
+	  output.send(0,t);
+	  System.out.println(getName() + " sent Token: " + t.toString());
+	  count++;
+	}
+	return;
+      } catch (IllegalActionException ex) {
+	System.out.println("CSPSource: illegalActionException, exiting");
+      }  catch (CloneNotSupportedException ex) {
+	System.out.println(getName() + ": cannot clone  token, bug in DATA");
+      } catch (InterruptedException ex) {
+	System.out.println(getName() + ": interupted while sleeping");
+      }
     }
+    
     public IOPort output;
-    public CSPReceiver receiver;
 }

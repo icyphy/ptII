@@ -43,7 +43,7 @@ import java.util.Random;
     FIXME: add description!!
 
 @author Neil Smyth
-@version @(#)CSPSink.java	1.4 08/28/98
+@version $Id$
 
  */
 public class CSPSink extends CSPActor {
