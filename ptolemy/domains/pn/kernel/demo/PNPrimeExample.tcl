@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Hylands
 #
-# @Version: $Id$
+# @Version:  $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -90,6 +90,7 @@ if {[info procs description2DAG] == "" } {
 }
 
 set myUniverse [java::new pt.domains.pn.kernel.PNUniverse]
+$myUniverse setName "root"
 
 # Save the universe handle so that we can call back to Tcl Blend
 # while inspecting Entities and Relations in the DAG
@@ -101,11 +102,11 @@ if ![info exists numberOfCycles] {
     set numberOfCycles 10
 }
 
-# FIXME: setNoCycles should be setNumberOfCycles or setCycleNumber 
+# Suggestion: setNoCycles should be setNumberOfCycles or setCycleNumber 
 $myUniverse setNoCycles $numberOfCycles 
 
 set ramp [java::new pt.domains.pn.kernel.PNRamp $myUniverse "ramp"]
-# FIXME: what does '2' mean?
+# 2 is the seed to the ramp. It starts it's outputs beginning with integer 2.
 $ramp {initialize int} 2
 $ramp setCycles $numberOfCycles
 
