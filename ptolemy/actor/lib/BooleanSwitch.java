@@ -1,4 +1,4 @@
-/* A polymorphic multiplexor with boolean select.
+/* A polymorphic switch with boolean select.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
