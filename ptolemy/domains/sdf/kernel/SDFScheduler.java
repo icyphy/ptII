@@ -46,25 +46,54 @@ import collections.HashedSet;
 //////////////////////////////////////////////////////////////////////////
 //// SDFScheduler
 /**
-A scheduler than implements scheduling of SDF networks by solving the
-balance equations for the rates between actors.
+A scheduler than implements basic scheduling of SDF networks.
+This class calculates the SDF schedule in two phases.  
+First, the balance equations for the rates between actors are solved to 
+determine the <i>firing vector</i> (also known as the repetitions vector).
+The firing vector is the least integer solution such that the number of 
+tokens created on each channel of each relation is equal to the number of 
+tokens consumed.   In some cases, no solution exists.  Such graphs are not
+executable under SDF
+<p>
+Then the actors are ordered such that each actor only fires when the scheduler 
+has determined that enough tokens will be present on its input ports to 
+allow it to fire.  In cases where the Dataflow graph is cyclic, a valid firing
+vector exists, but no actor can fire, since they all depend on the output
+of another actor.  This situation is known as "Deadlock".  Deadlock must 
+be prevented in SDF by manually inserting delay actors, which represent
+initial tokens on each relation.   Such delay actors are responsible for 
+creating tokens during initialization that will prevent deadlock.  Delay actors
+must set their "TokenInitProduction" parameters to represent the number
+of tokens they will create during initialization.
+The SDFScheduler uses the TokenInitProduction parameter to break the
+dependancy in a cyclic graph.
+<p>
+Note that this scheduler only ensures that the number of
+firings is minimal.  Most notably, it does not attempt to minimize the
+size of the buffers that are associated with each relation.  The resulting
+schedule is a linear schedule (as opposed to a looped schedule) and 
+is not suitable for Multiprocessing environments.
 <p>
 Any actors may be scheduled by this scheduler, which will assume
-homogenous behavior for each actor.  (i.e. each output port produces one 
+homogenous behavior by default for each actor.  
+(i.e. each output port produces one 
 token for each firing, and each input port consumes one token on each firing,
 and no tokens are created during initialization.)  If this is not the case
 then the parameters "TokenConsumptionRate", "TokenProductionRate", and
-"TokenInitProduction" must be set.   The SDFAtomicActor and 
-SDFCompositeActor classes provide easier access to these parameters.
+"TokenInitProduction" must be set.   The SDFAtomicActor 
+class provides easier access to these parameters.
 <p>
+Note that reconstructing the schedule is expensive, so the schedule is 
+locally cached for as long as possible, andmutations under SDF
+should be avoided.  
 
-FIXME: This class uses CircularList in the collections package. Change it
-to Java collection when update to JDK1.2
 @see ptolemy.actor.Scheduler
 @see ptolemy.domains.sdf.kernel.SDFAtomicActor
 @author Stephen Neuendorffer
 @version $Id$
 */
+// FIXME: This class uses CircularList in the collections package. Change it
+// to Java collection when update to JDK1.2
 public class SDFScheduler extends Scheduler {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
@@ -98,46 +127,13 @@ public class SDFScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the firing vector, which is a LLMap associating an Actor
-     *  with the number of times that it will fire during an SDF iteration.
-     *  The firing vector is only guaraunteed to be valid if the schedule 
-     *  is valid.
-     *
-     *  @return A LLMap from ComponentEntity to Integer.
+    /** Create the schedule.  Return the number of times that the given
+     *  entity will fire in a single iteration of the system.
      */
-    public LLMap getFiringVector() {
-        return _firingvector;
-    }
-
-    /** Set the firing vector, which is a LLMap associating an Actor
-     *  with the number of times that it will fire during an SDF iteration.
-     *  Every object that this Scheduler is responsible for should have an
-     *  entry, even if it is zero indicating that the Actor has not yet had
-     *  its firings determined.
-     *
-     *  @param newfiringvector A LLMap from ComponentEntity to Integer.
-     */
-    public void setFiringVector(LLMap newfiringvector) {
-        _firingvector = newfiringvector;
-        _firingvectorvalid = true;
-    }
-
-    /** Return the number of firings associated with the Actor.   This is
-     *  equivalent to indexing into the Map returned by getFiringVector and
-     *  casting the result to an integer.
-     */
-    public int getFiringCount(Entity entity) {
-            Debug.println(_firingvector.toString());
-            return ((Integer) _firingvector.at(entity)).intValue();
-    }
-
-    /** Set the number of firings associated with the Actor.   This is
-     *  equivalent to changing the entry in the FiringVector associated with
-     *  with the entity to have a value count.
-     */
-    public void setFiringCount(Entity entity, int count) {
-        _firingvector = (LLMap)
-            _firingvector.puttingAt(entity, new Integer(count));
+    public int getFiringCount(Entity entity) 
+            throws IllegalActionException {
+        schedule();
+        return _getFiringCount(entity);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,18 +148,20 @@ public class SDFScheduler extends Scheduler {
     /** Count the number of inputports in the Actor that must be
      *  fulfilled before the actor can fire.   Ports
      *  that are connected to actors that we are not scheduling right now are
-     *  assumed to be fulfilled.   Ports that have more tokens waiting than
-     *  their input consumption rate are also already fulfilled.
+     *  assumed to be fulfilled.   Ports that have more tokens waiting on
+     *  each of their channels than
+     *  their input consumption rate are also already fulfilled.  All other
+     *  ports are considered to be unfulfilled.
      *
      *  @param a The actor
      *  @param unscheduledactors The set of actors that we are scheduling.
      *  @param waitingTokens The Map of tokens currently waiting on all the
      *  input ports.
      *  @return The number of unfulfilled inputs of a.
-     *  @exception IllegalActionException if any called method throws it.
+     *  @exception IllegalActionException If any called method throws it.
      */
-    protected int _countUnfulfilledInputs(Actor a,
-            CircularList unscheduledactors, LLMap waitingTokens)
+    private int _countUnfulfilledInputs(Actor a,
+            CircularList unscheduledActors, LLMap waitingTokens)
             throws IllegalActionException {
                Enumeration ainputPorts = a.inputPorts();
 
@@ -175,7 +173,7 @@ public class SDFScheduler extends Scheduler {
                 boolean isonlyexternalport = true;
                 while(cports.hasMoreElements()) {
                     IOPort cport = (IOPort) cports.nextElement();
-                    if(unscheduledactors.includes(cport.getContainer()))
+                    if(unscheduledActors.includes(cport.getContainer()))
                         isonlyexternalport = false;
                 }
 
@@ -191,6 +189,26 @@ public class SDFScheduler extends Scheduler {
                     InputCount++;
             }
             return InputCount;
+    }
+
+    /** Return the number of firings associated with the Actor.   This is
+     *  equivalent to indexing into the Map returned by _getFiringVector and
+     *  casting the result to an integer.
+     */
+    private int _getFiringCount(Entity entity) {
+        Debug.println(_firingvector.toString());
+        return ((Integer) _firingvector.at(entity)).intValue();
+    }
+
+    /** Return the firing vector, which is a LLMap associating an Actor
+     *  with the number of times that it will fire during an SDF iteration.
+     *  The firing vector is only guaraunteed to be valid if the schedule 
+     *  is valid.
+     *
+     *  @return A LLMap from ComponentEntity to Integer.
+     */
+    private LLMap _getFiringVector() {
+        return _firingvector;
     }
 
     /** Get the number of tokens that are produced or consumed
@@ -229,7 +247,7 @@ public class SDFScheduler extends Scheduler {
      *  as supplied by
      *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogenous and return a
-     *  rate of 1..
+     *  rate of 1.
      */
     protected int _getTokenProductionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
@@ -250,7 +268,7 @@ public class SDFScheduler extends Scheduler {
     }
 
     /** Normalize fractional firing ratios into a firing vector that
-     *  corresponds to a single SDF iteration.   Multiplies all of the
+     *  corresponds to a single SDF iteration.   Multiply all of the
      *  fractions by the GCD of their denominators.
      *
      *  @param Firings LLMap of firing ratios to be normalized
@@ -258,8 +276,8 @@ public class SDFScheduler extends Scheduler {
      *  @exception ArithmeticException If the calculated GCD does not
      *  normalize all of the fractions.
      */
-    protected LLMap _normalizeFirings(LLMap Firings) {
-        Enumeration unnormalizedFirings = Firings.elements();
+    private LLMap _normalizeFirings(LLMap firings) {
+        Enumeration unnormalizedFirings = firings.elements();
         int lcm = 1;
 
         Debug.println("Normalizing Firings");
@@ -271,7 +289,7 @@ public class SDFScheduler extends Scheduler {
         }
 
         Debug.println("lcm = " + (new Integer(lcm)).toString());
-        Enumeration Actors = Firings.keys();
+        Enumeration Actors = firings.keys();
 
         Fraction lcmFraction = new Fraction(lcm);
         // now go back through and multiply by the lcm we just found, which
@@ -281,37 +299,37 @@ public class SDFScheduler extends Scheduler {
             Object actor = Actors.nextElement();
             Debug.println("normalizing Actor " + 
                     ((ComponentEntity) actor).getName());
-            Fraction reps = (Fraction) Firings.at(actor);
+            Fraction reps = (Fraction) firings.at(actor);
             reps = reps.multiply(lcmFraction);
             if(reps.getDenominator() != 1)
                 throw new ArithmeticException("Failed to properly perform " +
                         "fraction normalization");
-            Firings = (LLMap) 
-                Firings.puttingAt(actor, new Integer(reps.getNumerator()));
+            firings = (LLMap) 
+                firings.puttingAt(actor, new Integer(reps.getNumerator()));
         }
-        return Firings;
+        return firings;
     }
 
     /** Propagate the number of fractional firing decided for this actor
      *  through the specified input port.   Set and verify the fractional
      *  firing for each Actor that is connected through this input port.
      *  Any actors that we calculate their firing vector for the first time
-     *  are moved from RemainingActors to PendingActors.
+     *  are moved from RemainingActors to pendingActors.
      *
      *  @param currentPort The port that we are propagating from.
-     *  @param Firings The current LLMap of fractional firings for each
-     *  Actor
-     *  @param RemainingActors The set of actors that have not had their
+     *  @param firings The current LLMap of fractional firings for each
+     *  Actor.
+     *  @param remainingActors The set of actors that have not had their
      *  fractional firing set.
-     *  @param PendingActors The set of actors that have had their rate
+     *  @param pendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
-     * @exception NotSchedulableException If the CompositeActor is not
+     *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. 
      */
-    protected void _propagateInputPort(IOPort currentPort,
-            LLMap Firings,
-            CircularList RemainingActors,
-            CircularList PendingActors)
+    private void _propagateInputPort(IOPort currentPort,
+            LLMap firings,
+            CircularList remainingActors,
+            CircularList pendingActors)
         throws NotSchedulableException {
 
             ComponentEntity currentActor =
@@ -342,7 +360,7 @@ public class SDFScheduler extends Scheduler {
                     // currentFiring is the firing that we've already
                     // calculated for currentactor
                     Fraction currentFiring =
-                        (Fraction) Firings.at(currentActor);
+                        (Fraction) firings.at(currentActor);
 
                     // the firing that we think the connected actor should be,
                     // based on currentActor
@@ -354,17 +372,17 @@ public class SDFScheduler extends Scheduler {
                     // This should be either 0, or equal to desiredFiring.
                     try {
                         Fraction presentFiring =
-                            (Fraction) Firings.at(connectedActor);
+                            (Fraction) firings.at(connectedActor);
 
 			if(presentFiring.equals(Fraction.ZERO)) {
                             // create the entry in the firing table
-                            Firings.putAt(connectedActor, desiredFiring);
+                            firings.putAt(connectedActor, desiredFiring);
 
-                            // Remove them from RemainingActors
-                            RemainingActors.removeOneOf(connectedActor);
+                            // Remove them from remainingActors
+                            remainingActors.removeOneOf(connectedActor);
 
-                            // and add them to the PendingActors.
-                            PendingActors.insertLast(connectedActor);
+                            // and add them to the pendingActors.
+                            pendingActors.insertLast(connectedActor);
                         }
 
                         else if(!presentFiring.equals(desiredFiring))
@@ -375,11 +393,11 @@ public class SDFScheduler extends Scheduler {
                         throw new InvalidStateException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
-                                "does not appear in the Firings LLMap");
+                                "does not appear in the firings LLMap");
                     }
 
                     Debug.print("New Firing: ");
-                    Debug.println(Firings.toString());
+                    Debug.println(firings.toString());
                 }
             }
     }
@@ -388,22 +406,22 @@ public class SDFScheduler extends Scheduler {
      *  through the specified output port.   Set or verify the fractional
      *  firing for each Actor that is connected through this output port.
      *  Any actors that we calculate their firing vector for the first time
-     *  are moved from RemainingActors to PendingActors.
+     *  are moved from remainingActors to pendingActors.
      *
      *  @param currentPort The port that we are propagating from.
-     *  @param Firings The current LLMap of fractional firings for each
-     *  Actor
-     *  @param RemainingActors The set of actors that have not had their
+     *  @param firings The current LLMap of fractional firings for each
+     *  Actor.
+     *  @param remainingActors The set of actors that have not had their
      *  fractional firing set.
-     *  @param PendingActors The set of actors that have had their rate
+     *  @param pendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
-     * @exception NotSchedulableException If the CompositeActor is not
+     *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. 
      */
-    protected void _propagateOutputPort(IOPort currentPort,
-            LLMap Firings,
-            CircularList RemainingActors,
-            CircularList PendingActors)
+    private void _propagateOutputPort(IOPort currentPort,
+            LLMap firings,
+            CircularList remainingActors,
+            CircularList pendingActors)
         throws NotSchedulableException {
 
             ComponentEntity currentActor =
@@ -434,7 +452,7 @@ public class SDFScheduler extends Scheduler {
                     // currentFiring is the firing that we've already
                     // calculated for currentactor
                     Fraction currentFiring =
-                        (Fraction) Firings.at(currentActor);
+                        (Fraction) firings.at(currentActor);
                     // the firing that we think the connected actor should be,
                     // based on currentActor
                     Fraction desiredFiring =
@@ -445,16 +463,16 @@ public class SDFScheduler extends Scheduler {
                     // This should be either 0, or equal to desiredFiring.
                     try {
                         Fraction presentFiring =
-                            (Fraction) Firings.at(connectedActor);
+                            (Fraction) firings.at(connectedActor);
 
                         if(presentFiring.equals(Fraction.ZERO)) {
-                            Firings.putAt(connectedActor, desiredFiring);
+                            firings.putAt(connectedActor, desiredFiring);
 
-                            // Remove them from RemainingActors
-                            RemainingActors.removeOneOf(connectedActor);
+                            // Remove them from remainingActors
+                            remainingActors.removeOneOf(connectedActor);
 
-                            // and add them to the PendingActors.
-                            PendingActors.insertLast(connectedActor);
+                            // and add them to the pendingActors.
+                            pendingActors.insertLast(connectedActor);
                         }
                         else if(!presentFiring.equals(desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
@@ -464,11 +482,11 @@ public class SDFScheduler extends Scheduler {
                         throw new InvalidStateException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
-                                "does not appear in the Firings LLMap");
+                                "does not appear in the firings LLMap");
                     }
 
-                   // Remove them from RemainingActors
-                    RemainingActors.removeOneOf(connectedActor);
+                   // Remove them from remainingActors
+                    remainingActors.removeOneOf(connectedActor);
                 }
             }
     }
@@ -515,21 +533,21 @@ public class SDFScheduler extends Scheduler {
         }
 
         // First solve the balance equations
-        LLMap Firings = _solveBalanceEquations(AllActors.elements());
-        Firings = _normalizeFirings(Firings);
+        LLMap firings = _solveBalanceEquations(AllActors.elements());
+        firings = _normalizeFirings(firings);
 
-        setFiringVector(Firings);
+        _setFiringVector(firings);
 
         Debug.print("Firing Vector:");
-        Debug.println(Firings.toString());
+        Debug.println(firings.toString());
 
         // Schedule all the actors using the calculated firings.
         CircularList result = _scheduleConnectedActors(AllActors);
 
-        setFiringVector(Firings);
+        _setFiringVector(firings);
 
         Debug.print("Firing Vector:");
-        Debug.println(Firings.toString());
+        Debug.println(firings.toString());
 
         _setContainerRates();
 
@@ -538,7 +556,7 @@ public class SDFScheduler extends Scheduler {
         return result.elements();
     }
 
-     /** Create a schedule for a set of UnscheduledActors.  Given a valid
+    /** Create a schedule for a set of UnscheduledActors.  Given a valid
      *  firing vector, simulate the scheduling of the actors until the
      *  end of one synchronous dataflow iteration.
      *  Each actor will appear in the schedule exactly the number of times that
@@ -554,7 +572,7 @@ public class SDFScheduler extends Scheduler {
      *  inconsistant internal state.
      */
 
-    protected CircularList _scheduleConnectedActors(
+    private CircularList _scheduleConnectedActors(
             CircularList UnscheduledActors) {
         
         // A linked list containing all the actors that have no inputs
@@ -641,9 +659,9 @@ public class SDFScheduler extends Scheduler {
                 unfulfilledInputs.putAt(currentActor, new Integer(inputcount));
 
                 // Update the firingCount for this actor.
-                int firingsRemaining = getFiringCount(currentActor);
+                int firingsRemaining = _getFiringCount(currentActor);
                 firingsRemaining -= 1;
-                setFiringCount(currentActor, firingsRemaining);
+                _setFiringCount(currentActor, firingsRemaining);
 
                 Debug.print(currentActor.getName() + " should fire ");
                 Debug.print((new Integer(firingsRemaining)).toString());
@@ -780,7 +798,11 @@ public class SDFScheduler extends Scheduler {
         return newSchedule;
     }
 
-    protected void _setContainerRates() 
+    /** Push the rates calculated for this system up to the contained Actor.
+     *  This allows the container to be properly scheduled if it is
+     *  in a hierarchical system
+     */
+    private void _setContainerRates() 
         throws NotSchedulableException {
         Director director = (Director) getContainer();
         if(director == null) 
@@ -803,11 +825,11 @@ public class SDFScheduler extends Scheduler {
             if(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
-                consumptionrate = getFiringCount(cactor) * 
+                consumptionrate = _getFiringCount(cactor) * 
                     _getTokenConsumptionRate(cport);
-                productionrate = getFiringCount(cactor) * 
+                productionrate = _getFiringCount(cactor) * 
                     _getTokenProductionRate(cport);
-                initproduction = getFiringCount(cactor) * 
+                initproduction = _getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
                 Debug.println("CPort " + cport.getName());
                 Debug.println("consumptionrate = " + consumptionrate);
@@ -818,7 +840,7 @@ public class SDFScheduler extends Scheduler {
             while(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
-                int crate = getFiringCount(cactor) * 
+                int crate = _getFiringCount(cactor) * 
                     _getTokenConsumptionRate(cport);
                 if(crate != consumptionrate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
@@ -826,7 +848,7 @@ public class SDFScheduler extends Scheduler {
                         " which does not match the computed aggregate rate " +
                         "of " + port.getName() + " of " + consumptionrate + 
                         "!");
-                int prate = getFiringCount(cactor) * 
+                int prate = _getFiringCount(cactor) * 
                     _getTokenProductionRate(cport);
                 if(prate != productionrate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
@@ -834,7 +856,7 @@ public class SDFScheduler extends Scheduler {
                         " which does not match the computed aggregate rate " +
                         "of " + port.getName() + " of " + productionrate + 
                         "!");
-                int initp = getFiringCount(cactor) * 
+                int initp = _getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
                 if(initp != initproduction) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
@@ -927,7 +949,29 @@ public class SDFScheduler extends Scheduler {
         }            
     }
 
-    public void _setTokenConsumptionRate(Entity e, IOPort port, int rate) 
+    /** Set the number of firings associated with the Actor.   This is
+     *  equivalent to changing the entry in the FiringVector associated with
+     *  with the entity to have a value count.
+     */
+    private void _setFiringCount(Entity entity, int count) {
+        _firingvector = (LLMap)
+            _firingvector.puttingAt(entity, new Integer(count));
+    }
+
+    /** Set the firing vector, which is a LLMap associating an Actor
+     *  with the number of times that it will fire during an SDF iteration.
+     *  Every object that this Scheduler is responsible for should have an
+     *  entry, even if it is zero indicating that the Actor has not yet had
+     *  its firings determined.
+     *
+     *  @param newfiringvector A LLMap from ComponentEntity to Integer.
+     */
+    private void _setFiringVector(LLMap newfiringvector) {
+        _firingvector = newfiringvector;
+        _firingvectorvalid = true;
+    }
+
+    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate) 
         throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -957,7 +1001,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    public void _setTokenProductionRate(Entity e, IOPort port, int rate) 
+    protected void _setTokenProductionRate(Entity e, IOPort port, int rate) 
         throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -987,7 +1031,7 @@ public class SDFScheduler extends Scheduler {
          }
     }
 
-    public void _setTokenInitProduction(Entity e, IOPort port, int rate) 
+    protected void _setTokenInitProduction(Entity e, IOPort port, int rate) 
         throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -1023,14 +1067,14 @@ public class SDFScheduler extends Scheduler {
      *  Also determine if enough tokens still remain at the inputs of the actor
      *  for it to fire again immediately.
      *
-     *  @param currentActor The actor that is being simulated
+     *  @param currentActor The actor that is being simulated.
      *  @param waitingTokens A Map between each input IOPort and the number of
      *  tokens in the queue for that port.
      *  @return boolean Whether or not the actor can fire again right away
      *  after it has consumed tokens.
      *  @exception IllegalActionException if any called method throws it.
      */
-    protected boolean _simulateInputConsumption(ComponentEntity currentActor,
+    private boolean _simulateInputConsumption(ComponentEntity currentActor,
             LLMap waitingTokens)
         throws IllegalActionException {
 
@@ -1062,61 +1106,61 @@ public class SDFScheduler extends Scheduler {
      *  be live and operate within bounded memory.   This ratio is known as the
      *  fractional firing of the actor.
      *
-     *  @param Actors The actors that we are interested in
+     *  @param Actors The actors that we are interested in.
      *  @return A LLMap that associates each actor with its fractional
      *  firing.
      *  @exception NotSchedulableException If the graph is not consistant
      *  under the synchronous dataflow model.
      *  @exception NotSchedulableException If the graph is not connected.
      */
-    protected LLMap _solveBalanceEquations(Enumeration Actors)
+    private LLMap _solveBalanceEquations(Enumeration Actors)
             throws NotSchedulableException {
 
-        // Firings contains the LLMap that we will return.
+        // firings contains the LLMap that we will return.
         // It gets populated with the fraction firing ratios for
         // each actor
-        LLMap Firings = new LLMap();
+        LLMap firings = new LLMap();
 
-        // RemainingActors contains the pool of Actors that have not been
+        // remainingActors contains the pool of Actors that have not been
         // touched yet. (i.e. all their firings are still set to Fraction.ZERO)
-        CircularList RemainingActors = new CircularList();
+        CircularList remainingActors = new CircularList();
 
-        // PendingActors have their Firings set, but have not had their
+        // pendingActors have their firings set, but have not had their
         // ports explored yet.
-        CircularList PendingActors = new CircularList();
+        CircularList pendingActors = new CircularList();
 
-        // Are we done?  (Is PendingActors Empty?)
+        // Are we done?  (Is pendingActors Empty?)
         boolean Done = false;
 
-        // Initialize RemainingActors to contain all the actors we were given
-        RemainingActors.appendElements(Actors);
+        // Initialize remainingActors to contain all the actors we were given
+        remainingActors.appendElements(Actors);
 
-        // Initialize Firings for everybody to Zero
-        Enumeration enumActors = RemainingActors.elements();
+        // Initialize firings for everybody to Zero
+        Enumeration enumActors = remainingActors.elements();
         while(enumActors.hasMoreElements()) {
             ComponentEntity e = (ComponentEntity) enumActors.nextElement();
-            Firings.putAt(e, Fraction.ZERO);
+            firings.putAt(e, Fraction.ZERO);
         }
 
         try {
             // Pick an actor as a reference
-            Actor a = (Actor) RemainingActors.take();
+            Actor a = (Actor) remainingActors.take();
             // And set it's rate to one per iteration
-            Firings.putAt(a, new Fraction(1));
+            firings.putAt(a, new Fraction(1));
             // And start the list to recurse over.
-            PendingActors.insertLast(a);
+            pendingActors.insertLast(a);
         }
         catch (NoSuchElementException e) {
-            // if RemainingActors.take() fails, then we've been given
+            // if remainingActors.take() fails, then we've been given
             // no actors to do anything with, so return an empty LLMap
-            return Firings;
+            return firings;
         }
 
         while(! Done) try {
-            Debug.print("PendingActors: ");
-            Debug.println(PendingActors.toString());
+            Debug.print("pendingActors: ");
+            Debug.println(pendingActors.toString());
             // Get the next actor to recurse over
-            Actor currentActor = (Actor) PendingActors.take();
+            Actor currentActor = (Actor) pendingActors.take();
             Debug.println("Balancing from " +
                     ((ComponentEntity) currentActor).getName());
 
@@ -1129,24 +1173,24 @@ public class SDFScheduler extends Scheduler {
                 IOPort currentPort = (IOPort) AllPorts.nextElement();
 
                 if(currentPort.isInput())
-                    _propagateInputPort(currentPort, Firings,
-                            RemainingActors, PendingActors);
+                    _propagateInputPort(currentPort, firings,
+                            remainingActors, pendingActors);
 
                 if(currentPort.isOutput())
-                    _propagateOutputPort(currentPort, Firings,
-                            RemainingActors, PendingActors);
+                    _propagateOutputPort(currentPort, firings,
+                            remainingActors, pendingActors);
             }
         }
         catch (NoSuchElementException e) {
-            // Once we've exhausted PendingActors, this exception will be
+            // Once we've exhausted pendingActors, this exception will be
             // thrown, causing us to terminate the loop.
             Done = true;
 
             // If there are any Actors left that we didn't get to, then
             // this is not a connected graph, and we throw an exception.
-            if(RemainingActors.elements().hasMoreElements()) {
+            if(remainingActors.elements().hasMoreElements()) {
                 String msg = "SDF scheduler found disconnected actors: ";
-                Enumeration actors = RemainingActors.elements();
+                Enumeration actors = remainingActors.elements();
                 while (actors.hasMoreElements()) {
                     NamedObj actor = (NamedObj)(actors.nextElement());
                     msg += actor.getFullName() + " ";
@@ -1154,11 +1198,11 @@ public class SDFScheduler extends Scheduler {
                 throw new NotSchedulableException(msg);
             }
         }
-        return Firings;
+        return firings;
     }
 
-    protected LLMap _firingvector;
-    protected boolean _firingvectorvalid;
+    private LLMap _firingvector;
+    private boolean _firingvectorvalid;
 
 }
 

@@ -43,17 +43,40 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
-/**  An SDFDirector is the class that controls execution of a set of SDFActors.
-     It is derived from StaticSchedulingDirector and by default uses an
-     SDFScheduler to static schedule the execution of the Actors.
-     Furthermore, it creates Receivers of type QueueReceiver, which is
-     consistant with a dataflow domain.
-
-     The SDF director has a single parameter, "iterations" corresponding to a
-     limit on the number of times the director will fire its hierarchy
-     before it returns false in postfire.   If this number is not greater
-     than zero, then no limit is set and postfire will always return false.
-     The default number of iterations is zero.
+/**  
+<h1>SDF overview<h1>
+The Synchronous Dataflow(SDF) domain supports the efficient 
+execution of Dataflow graphs that 
+lack control structures.   Dataflow graphs that contain control structures 
+should be executed using the Process Networks(PN) domain instead.
+SDF allows efficient execution, with very little overhead at runtime.  It
+requires that the rates on the ports of all actors be known before hand. 
+SDF also requires that the rates on the ports not change during 
+execution.  In addition, in some cases (namely systems with feedback) delays,
+which are represented by initial tokens on relations must be explicitly
+noted.  SDF uses this rate and delay information to determine 
+the execution sequence of the actors before execution begins. 
+<h2>Schedule Properties<h2>
+<ul>
+<li>The number of tokens accumulated on every relation is bounded, given
+an infinite number of executions of the schedule.
+<li>Deadlock will never occur, given and infinite number of executions of 
+the schedule.
+<ul> 
+<h1>Class comments<h1>
+An SDFDirector is the class that controls execution of actors under the
+SDF domain.  By default, actor scheduling is handled by the SDFScheduler
+class.  Furthermore, the newReceiver method creates Receivers of type 
+SDFReceiver, which extends QueueReceiver to support optimized gets 
+and puts of arrays of tokens.
+<p>
+The SDF director has a single parameter, "iterations" corresponding to a
+limit on the number of times the director will fire its hierarchy
+before it returns false in postfire.  If this number is not greater
+than zero, then no limit is set and postfire will always return false.
+The default value of the iterations parameter is an IntToken with value zero.
+@see ptolemy.domains.sdf.SDFScheduler
+@see ptolemy.domains.sdf.SDFReceiver
 
 @author Steve Neuendorffer
 @version $Id$
@@ -103,34 +126,45 @@ public class SDFDirector extends StaticSchedulingDirector {
 
 
     /** Return a new receiver consistant with the SDF domain.
-     *  @return A new SDFReceiver
+     *  @return A new SDFReceiver.
      */
     public Receiver newReceiver() {
         return new SDFReceiver();
     }
 
 
-    /** Initialize the number of iterations to zero.
-     *  @exception IllegalActionException Not Thrown.
+    /** Intialize the actors associated with this director and 
+     *  initialize the number of iterations to zero.  The order in which
+     *  the actors are initialized is arbitrary.
+     *  @exception IllegalActionException If the initialize() method of
+     *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iteration = 0;
     }
 
-    /** The SDFDirector always assumes that it can be fired.  
-     *  @return True If the Director can be fired.
-     *  @exception IllegalActionException Not Thrown
+    /** The SDFDirector always returns true, 
+     *  assuming that it can be fired.   It does
+     *  not call prefire on any contained actors.
+     *  @return True.
+     *  @exception IllegalActionException Not Thrown.
      */
+    // FIXME This should, perhaps return false if the rates on the
+    // Composite actors input ports are not satisfied.  This will
+    // ease integration with other domains.  But will it be efficient?
     public boolean prefire() throws IllegalActionException {
         _postfirereturns = true;
         return true;
     }
 
-    /** Increment the number of iterations.
-     *  If an iteration limit has been set, then 
+    /** Return false if the system has finished executing, either by
+     *  reaching the iteration limit, or having an actor in the system return
+     *  false in postfire.
+     *  Increment the number of iterations.
+     *  If the "iterations" parameter is greater than zero, then 
      *  see if the limit has been reached.  If so, return false.
-     *  otherwise return true if all of the fired actors since the last
+     *  Otherwise return true if all of the fired actors since the last
      *  call to prefire returned true.
      *  @return True if the Director wants to be fired again in the 
      *  future.
@@ -147,11 +181,21 @@ public class SDFDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
-    /** Calculate the current schedule, and fire the contained actors
-     *  in the order given by the schedule. 
-     *
-     *  @exception IllegalActionException If the fire() method of the
-     *   container or one of the deeply contained actors throws it.
+    /** Calculate the current schedule, and iterate the contained actors
+     *  in the order given by the schedule.  No internal state of the 
+     *  director is updated during fire, so it may be used with domains that
+     *  require this property, such as CT.
+     *  <p>
+     *  Iterating an actor involves calling the actor's prefire, fire and 
+     *  postfire methods in succession.  If prefire returns false, indicating
+     *  that the actor is not ready to execute, then an IllegalActionException 
+     *  will be thrown.   The values returned from postfire are recorded and
+     *  are used to determine the value that postfire will return at the
+     *  end of the director's iteration.
+     *  @exception IllegalActionException If any actor executed by this 
+     *  actor return false in prefire.
+     *  @exception InvalidStateException If this director does not have a 
+     *  container.
      */
     public void fire() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
@@ -174,22 +218,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
                 actor.fire();
                 _postfirereturns = _postfirereturns && actor.postfire();
-            }
-        }
-    }
-
-
-    /** Call wrapup in all the contained actors.
-     *  @exception IllegalActionException If the wrapup() method of the
-     *   container or one of the deeply contained actors throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
-                actor.wrapup();
             }
         }
     }

@@ -197,7 +197,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  which provides support getArray() and sendArray().
      *  @exception NameDuplicationException If the SDFIOPort constructor
      *  throws it.
-     *  @return A new instance of SDFIOPort
+     *  @return A new instance of SDFIOPort.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -219,7 +219,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Set the number of tokens that are consumed
      *  on the appropriate port of this Actor during each firing.
      *
-     *  @exception IllegalActionException if port is not contained 
+     *  @exception IllegalActionException If port is not contained 
      *  in this actor, the rate is less than zero, or the port is
      *  not an input port.
      */
@@ -255,7 +255,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
-     *  @exception IllegalActionException if port is not contained 
+     *  @exception IllegalActionException If port is not contained 
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
@@ -287,7 +287,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Set the number of tokens that are produced
      *  on the appropriate port of this Actor during each firing.
      *
-     *  @exception IllegalActionException if port is not contained 
+     *  @exception IllegalActionException If port is not contained 
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
