@@ -454,11 +454,11 @@ public class NamedObj implements Nameable, Debuggable,
                     }
                 } catch (IllegalAccessException e) {
 
-                    // FIXME: This would be a nice 
+                    // FIXME: This would be a nice
                     // place for exception chaining.
                     throw new CloneNotSupportedException(
-                            "The field associated with " 
-                            + fields[i].getName() 
+                            "The field associated with "
+                            + fields[i].getName()
                             + " could not be automatically cloned because "
                             + e.getMessage() + ".  This can be caused if "
                             + "the field is not defined in a public class.");
@@ -550,7 +550,7 @@ public class NamedObj implements Nameable, Debuggable,
     public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
-            // ptolemy.moml.MoMLWriter writer = 
+            // ptolemy.moml.MoMLWriter writer =
             //    new ptolemy.moml.MoMLWriter(buffer);
             //writer.write(this);
             exportMoML(buffer, 0);
@@ -688,7 +688,7 @@ public class NamedObj implements Nameable, Debuggable,
         if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
-            if (momlElement.equals("class") 
+            if (momlElement.equals("class")
                 || momlElement.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
                         + "<!DOCTYPE " + momlElement + " PUBLIC "
@@ -697,14 +697,14 @@ public class NamedObj implements Nameable, Debuggable,
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
-    
+
         output.write(_getIndentPrefix(depth)
                 + "<"
                 + momlElement
                 + " name=\""
                 + name
                 + template);
-    
+
         if (getMoMLInfo().source != null) {
             output.write(" source=\"" + getMoMLInfo().source + "\">\n");
         } else {
@@ -712,11 +712,11 @@ public class NamedObj implements Nameable, Debuggable,
         }
 
         if (depth == 0 && getContainer() == null) {
-	    if (_attributes == null 
+	    if (_attributes == null
 		|| _attributes.get("_createdBy") == null) {
 		// If there is no _createdBy attribute, then add one.
 		output.write(_getIndentPrefix(depth+1)
-			     + "<property name=\"_createdBy\" " 
+			     + "<property name=\"_createdBy\" "
 			     + "class=\"ptolemy.kernel.util.VersionAttribute\" "
 			     + "value=\""
 			     + VersionAttribute.CURRENT_VERSION.getExpression()

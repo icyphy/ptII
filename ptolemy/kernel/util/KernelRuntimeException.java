@@ -63,7 +63,7 @@ for differences between our exception chaining implementation and
 the JDK1.4 implementation.
 
 @author Edward A. Lee, Christopher Hylands
-@version $Id$ 
+@version $Id$
 @since Ptolemy II 1.0
 */
 public class KernelRuntimeException extends RuntimeException {

@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
 //// VersionAttribute
 /**
 A nonpersistent attribute that identifies the version of an object.
-This attribute does not export MoML 
+This attribute does not export MoML
 The value of the attribute contains a String version-id that represents
 the version.
 A version-id is a string with substrings separated by one of '.', '-' or '_'.
