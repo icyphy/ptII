@@ -42,6 +42,12 @@ grouped.  The role of Ports is to organize such aggregates.
 Derived classes support hierarchy by defining entities that
 aggregate other entities.
 
+An Entity is created within a Workspace.  If the workspace is
+not specified as a constructor argument, then the default workspace
+is used.  Almost all actions are synchronized on the workspace,
+so using only the default workspace will have the effect of
+serializing all method calls.
+
 @author John S. Davis II, Edward A. Lee
 @version $Id$
 @see Port
@@ -49,19 +55,39 @@ aggregate other entities.
 */
 public class Entity extends NamedObj {
 
-    /** Create an entity with no ports and no name. */	
+    /** Construct an entity in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     */
     public Entity() {
 	super();
         _portList = new NamedList(this);
     }
 
-    /** Create an entity with the specified name.
-     *  @param name
-     *  @exception IllegalActionException Argument is null.
-     */	
-    public Entity(String name) 
-            throws IllegalActionException {
+    /** Construct an entity in the default workspace with the given name.
+     *  If the name argument
+     *  is null, then the name is set to the empty string.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param name Name of this object.
+     */
+    public Entity(String name) {
 	super(name);
+        _portList = new NamedList(this);
+    }
+
+    /** Construct an entity in the given workspace with the given name.
+     *  If the workspace argument is null, use the default workspace.
+     *  If the name argument
+     *  is null, then the name is set to the empty string.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version of the workspace.
+     *  @param workspace Object for synchronization and version tracking
+     *  @param name Name of this object.
+     */
+    public Entity(Workspace workspace, String name) {
+	super(workspace, name);
         _portList = new NamedList(this);
     }
 
@@ -71,160 +97,101 @@ public class Entity extends NamedObj {
     /** Append a port to the list of ports belonging to this entity.
      *  If the port has a container (other than this), remove it from
      *  the port list of that container.  Set the container of the port
-     *  to point to this entity.
+     *  to point to this entity.  If the port and this entity are not
+     *  in the same workspace, throw an exception.  If the port argument
+     *  is null, do nothing.
+     *  This method is sychronized on the
+     *  workspace and increments its version number.
      *  @param port
      *  @exception IllegalActionException Port is not of the expected class
-     *   (thrown in derived classes only).
-     *  @exception InvalidStateException Inconsistent port-container
-     *   relationship, or the port has no name.
+     *   (thrown in derived classes only), or port has no name.
      *  @exception NameDuplicationException Name collides with a name already
-     *  on the port list.
+     *   on the port list.
      */	
     public void addPort(Port port) 
-            throws IllegalActionException, InvalidStateException,
-            NameDuplicationException {
-        // NOTE: This code is fairly tricky, and is designed to ensure
-        // consistency.  It works in concert with Port.setContainer()
-        // and with removePort(), so do not modify it without considering
-        // those.
-        Entity prevcontainer = (Entity) port.getContainer();
-        if (prevcontainer == this) {
-            // If the port is not on the port list, then this is a half
-            // constructed link, and we should complete it and return.
-            // Otherwise, we should throw a name duplication exception
-            // for an attempt to put the same port on the list twice.
-            try {
-                _portList.append(port);
-            } catch (IllegalActionException ex) {
-                throw new InvalidStateException(port, "Has no name!");
+            throws IllegalActionException, NameDuplicationException {
+        if (port == null) return;
+        if (workspace() != port.workspace()) {
+            throw new IllegalActionException(this, port,
+                    "Cannot add port because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            Entity prevcontainer = (Entity) port.getContainer();
+            // Do this first, because it may throw an exception.
+            _addPort(port);
+            if (prevcontainer != null) {
+                prevcontainer._removePort(port);
+            } else {
+                workspace().remove(port);
             }
-            return;
+            port._setContainer(this);
         }
-        port.setContainer(this);
     }
 
-    /** Enumerate all connected entities.
-     *  This entity is not included unless there is a loopback, meaning
-     *  that two distinct ports are linked to the same relation.
-     *  @return An enumeration of Entity objects.
+    /** Enumerate all connected ports.
+     *  Ports in this entity is not included unless there is a loopback, 
+     *  meaning that two distinct ports of this entity are linked to the same
+     *  relation.  This method is sychronized on the workspace.  The connected
+     *  entities can be obtained from the ports using getContainer().
+     *  @return An enumeration of Port objects.
      */	
-    public Enumeration getConnectedEntities() {
-        // This works by constructing a linked list and then enumerating it.
-        LinkedList storedEntities = new LinkedList();
-        Enumeration ports = _portList.getElements(); 
+    public Enumeration getConnectedPorts() {
+        synchronized(workspace()) {
+            // This works by constructing a linked list and then enumerating it.
+            LinkedList storedEntities = new LinkedList();
+            Enumeration ports = _portList.getElements(); 
 
-        while( ports.hasMoreElements() ) {
-            Port port = (Port)ports.nextElement();
-            Enumeration entities = getConnectedEntities(port);
-            storedEntities.appendElements( entities );
-        }
-        return storedEntities.elements();
-    }
-
-    /** Enumerate entities connected to the specified Port.
-     *  The port is normally contained by this entity, but this is not
-     *  enforced.
-     *  This entity is not included unless there is a loopback, meaning
-     *  that it is linked through another port to a relation linked to
-     *  the specified port.
-     *  @param port
-     *  @return An enumeration of Entity objects.
-     */	
-    public Enumeration getConnectedEntities(Port port) {
-        // This works by constructing a linked list and then enumerating it.
-        LinkedList storedEntities = new LinkedList();
-        Enumeration relations = port.getLinkedRelations(); 
-	 
-        while( relations.hasMoreElements() ) { 
-            Relation relation = (Relation)relations.nextElement(); 
-            Enumeration otherPorts = relation.getLinkedPortsExcept( port );
-
-            while( otherPorts.hasMoreElements() ) {
-                Port otherPort = (Port)otherPorts.nextElement(); 
-                storedEntities.insertLast( otherPort.getContainer() );
+            while( ports.hasMoreElements() ) {
+                Port port = (Port)ports.nextElement();
+                storedEntities.appendElements( port.getConnectedPorts() );
             }
+            return storedEntities.elements();
         }
-        return storedEntities.elements();
-    }
-
-    /** Enumerate entities connected to the port with the given name.
-     *  This entity is not included unless there is a loopback, meaning
-     *  that it is linked through another port to a relation linked to
-     *  the specified port.
-     *  @param portname
-     *  @return An enumeration of Entity objects.
-     *  @exception NoSuchItemException No such port.
-     */	
-    public Enumeration getConnectedEntities(String portname)
-            throws NoSuchItemException {
-        Port port = (Port)_portList.get(portname);
-        if (port == null) {
-            throw new NoSuchItemException(this,
-            "Attempt to get the connected entities of a non-existent port: " 
-            + portname);
-        }
-        return getConnectedEntities(port);
     }
 
     /** Enumerate linked relations. 
+     *  This method is sychronized on the workspace.
      *  @return An enumeration of Relation objects.
      */	
     public Enumeration getLinkedRelations() {
-	 LinkedList storedRelations = new LinkedList();
-	 Enumeration ports = _portList.getElements(); 
+        synchronized(workspace()) {
+            LinkedList storedRelations = new LinkedList();
+            Enumeration ports = _portList.getElements(); 
 
-	 while( ports.hasMoreElements() ) {
-	     Port newPort = (Port)ports.nextElement(); 
-	     Enumeration relations = newPort.getLinkedRelations(); 
-	     storedRelations.appendElements( relations );
-	 }
-	 return storedRelations.elements();
-    }
-
-    /** Enumerate the relations that are linked to the specified port.
-     *  The port is normally contained by this entity, but this is not
-     *  enforced.
-     *  @param port
-     *  @return An enumeration of Relation objects
-     */	
-    public Enumeration getLinkedRelations(Port port) {
-        return port.getLinkedRelations(); 
-    }
-
-    /** Enumerate the relations that are linked to the port with the
-     *  specified name.
-     *  @param portname
-     *  @return An enumeration of Relation objects.
-     *  @exception NoSuchItemException No such port.
-     */	
-    public Enumeration getLinkedRelations(String portname)
-            throws NoSuchItemException {
-        Port port = (Port)_portList.get(portname);
-        if (port == null) {
-            throw new NoSuchItemException(this,
-            "Attempt to get the connected entities of a non-existent port: " 
-            + portname);
+            while( ports.hasMoreElements() ) {
+                Port port = (Port)ports.nextElement(); 
+                Enumeration relations = port.getLinkedRelations(); 
+                storedRelations.appendElements( relations );
+            }
+            return storedRelations.elements();
         }
-        return getLinkedRelations(port);
     }
 
     /** Return the port belonging to this entity that has the specified name.
+     *  This method is sychronized on the workspace.
      *  @return A port with the given name, or null if none exists.
      */	
     public Port getPort(String name) {
-	 return (Port)_portList.get(name);
+        synchronized(workspace()) {
+            return (Port)_portList.get(name);
+        }
     }
 
     /** Enumerate the ports belonging to this entity, in the order in which
      *  they were created by newPort() or added by addPort().
+     *  This method is sychronized on the workspace.
      *  @return An enumeration of Port objects.
      */	
     public Enumeration getPorts() {
-	 return _portList.getElements();
+        synchronized(workspace()) {
+            return _portList.getElements();
+        }
     }
 
     /** Create a new port with the specified name.
      *  The container of the port is set to this entity.
+     *  This method is sychronized on the workspace, and increments
+     *  its version number.
      *  @param name
      *  @return The new port
      *  @exception IllegalActionException Argument is null.
@@ -233,101 +200,106 @@ public class Entity extends NamedObj {
      */	
     public Port newPort(String name) 
              throws IllegalActionException, NameDuplicationException {
-        Port port = new Port(this, name);
-        return port;
+        synchronized(workspace()) {
+            Port port = new Port(this, name);
+            workspace().incrVersion();
+            return port;
+        }
     }
 
     /** Remove all ports
+     *  As a side effect, the ports will be unlinked from all relations.
+     *  This method is sychronized on the workspace, and increments
+     *  its version number.
      *  @exception InvalidStateException Inconsistent port-container
      *   relationship.
      */	
     public void removeAllPorts()
             throws InvalidStateException {
-        // Have to copy _portList to avoid corrupting the enumeration.
-        NamedList portListCopy = new NamedList(_portList);
-        Enumeration ports = portListCopy.getElements();
-
-        while (ports.hasMoreElements()) {
-            Port port = (Port)ports.nextElement();
-            try {
-                removePort(port);
-            } catch (IllegalActionException ex) {
-                throw new InvalidStateException(this, port,
-                       "Inconsistent container relationship!");
+        synchronized(workspace()) {
+            // Have to copy _portList to avoid corrupting the enumeration.
+            NamedList portListCopy = new NamedList(_portList);
+            Enumeration ports = portListCopy.getElements();
+            
+            while (ports.hasMoreElements()) {
+                Port port = (Port)ports.nextElement();
+                try {
+                    removePort(port);
+                } catch (IllegalActionException ex) {
+                    throw new InvalidStateException(this, port,
+                    "Inconsistent container relationship!");
+                }
             }
+            workspace().incrVersion();
         }
     }
 
     /** Remove a port from the list of ports belonging to this entity.
-     *  If the port does not belong to this entity, trigger an exception.
+     *  If the port does not belong to this entity or is null, throw
+     *  an exception.
      *  As a side effect, the port will be unlinked from all relations.
-     *  @param port
-     *  @exception IllegalActionException Port does not belong to me.
+     *  This method is sychronized on the workspace, and increments
+     *  its version number.
+     *  @param port Port to remove.
+     *  @exception IllegalActionException Port does not belong to me,
+     *   or the argument is null.
      *  @exception InvalidStateException Inconsistent port-container
      *   relationship.
      */	
     public void removePort(Port port)
             throws IllegalActionException, InvalidStateException {
-        // NOTE: This code is fairly tricky, and is designed to ensure
-        // consistency.  It works in concert with Port.setContainer()
-        // and with addPort(), so do not modify it without considering
-        // those.
-        // NOTE: The port is not unlinked from all relations if the
-        // port container is already null.  This condition is part of
-        // the specialized interaction with Port.setContainer().
-        Entity portcontainer = (Entity) port.getContainer();
-        if (portcontainer == null) {
-            // If we are half-way through a remove, then the port is still
-            // on the port list.  Otherwise, this is an error.
-            if (_portList.includes(port)) {
-                _portList.remove(port);
-                return;
-            } else {
-                throw new IllegalActionException(this, port,
-                        "Attempt to remove a port with no container.");
+        synchronized(workspace()) {
+            if (port == null) {
+                throw new IllegalActionException(this,
+                        "Attempt to remove null port.");
             }
-        }
-        if (portcontainer != this) {
-            if (_portList.includes(port)) {
-                // Changing owners, initiated by Port.setContainer()
-                _portList.remove(port);
-               return;                
-            } else {
+            if (!_portList.includes(port)) {
                 throw new IllegalActionException(this, port,
                         "Attempt to remove a port from an entity that "
                         + "does not contain it.");
             }
+            Entity portcontainer = (Entity) port.getContainer();
+            if (portcontainer != this) {
+                throw new InvalidStateException(this, port,
+                        "Inconsistent container relationship!");
+            }
+            port.unlinkAll();
+            _removePort(port);
+            port._setContainer(null);
         }
-        // Ignore exception since it can't occur.
-        try {
-            port.setContainer(null);
-        } catch (NameDuplicationException ex) {};
     }
 
-    /** Remove a port with the specified name from the list of ports
-     *  belonging to this entity. If there is no such port, trigger
-     *  an exception.
-     *  @param name
-     *  @exception InvalidStateException Thrown only if data is inconsistent
-     *  (e.g. port and container do not agree).  Should not be thrown.
-     *  @exception NoSuchItemException No such port.
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /** Add a port to this entity with minimal error checking.
+     *  Unlike the corresponding public method, this method does not set
+     *  the container of the port to point to this entity.
+     *  This method is sychronized on the workspace.
+     *  It assumes the port is in the workspace as this entity, but does
+     *  not check.  The caller should check.
+     *  @param port Port to contain.
+     *  @exception IllegalActionException Argument has no name.
+     *  @exception NameDuplicationException Name collides with a name already
+     *   on the entity port list.
      */	
-    public void removePort(String name)
-            throws InvalidStateException, NoSuchItemException {
-        Port port = (Port)_portList.get(name);
-        if (port == null) {
-            throw new NoSuchItemException(this,
-                    "Attempt to remove a nonexistent port: " + name);
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
+        synchronized(workspace()) {
+            _portList.append(port);
         }
-        // In case there are outstanding references to the port.
-        // The following exception should never trigger, since the port
-        // belongs to me.
-        try {
-            removePort(port);
-        } catch (IllegalActionException ex) {
-            // Disaster has struck.  We have an inconsistent data structure.
-            throw new InvalidStateException(this, port,
-                    "Inconsistent containment relationship!");
+    }
+
+    /** Remove the specified port with minimal error checking.
+     *  The port is assumed to be contained by this composite (otherwise,
+     *  nothing happens). Unlike the corresponding public method, this
+     *  method does not alter the container of the port.
+     *  This method is sychronized on the workspace.
+     *  @param port Port to remove
+     */	
+    protected void _removePort(Port port) {
+        synchronized(workspace()) {
+            _portList.remove(port);
         }
     }
 

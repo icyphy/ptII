@@ -154,9 +154,6 @@ public class KernelException extends Exception {
             } catch (InvalidStateException ex) {
                 name = obj.getName();
             }
-            if (name.equals("")) {
-                name = new String("<Unnamed Object>");
-            }
         }
         return name;
     }

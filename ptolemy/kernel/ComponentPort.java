@@ -36,175 +36,315 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ComponentPort
 /** 
-A port supporting hierarchy.
-Specifically, it supports a mechanism whereby the port of a composite
-entity can represent the port of one of its contained entities.
-The port of the composite alias is called an "alias" or "up alias"
-of the port of the contained entity.  The port of the contained entity
-is called a "down alias" of the port of the composite entity.
-Aliases can be chained to arbitrary depth.
+A port supporting hierarchy. A component port can have "inside"
+links as well as the usual "outside" links supported by the base
+class. An inside link is a link to a relation that is within the
+container of the port. Any ComponentPort object may be transparent
+or not. It is transparent if it has one or
+more inside links.
+
 As with all classes that support hierarchical graphs,
 methods that read the graph structure come in two versions,
 shallow and deep.  The deep version flattens the hierarchy.
-For example, deepGetLinkedRelations() enumerates the relations
-that are linked to this port or any of its up aliases, while
-getLinkedRelations() only enumerates the relations directly linked
-to this port, some of which may be alias relations.
+Deep traversals pass through transparent ports. This is
+done with a simple rule. If a transparent port is encountered from
+inside, then the traversal continues with its outside links. If it
+is encountered from outside, then the traversal continues with its
+inside links. 
+
+For ComponentPort to support both inside links and outside links, it
+has to override the link() and unlink() methods. Given a relation as
+an argument, these methods can determine whether a link is an inside
+link or an outside link by checking the container of the relation.
+If that container is also the container of the port, then the link
+is an inside link.
+
+For a few applications, such as Statecharts, level-crossing
+connections are needed. The links in these connections are created
+using the liberalLink() method of ComponentPort. The link() method
+prohibits such links, throwing an exception if they are attempted
+(most applications will prohibit level-crossing connections by using
+only the link() method).
 
 @author Edward A. Lee
 @version $Id$
 */
 public class ComponentPort extends Port {
 
-    /** Create a port with no containing Entity or name. */	
+    /** Construct a port in the default workspace with an empty string
+     *  as its name.
+     *  Increment the version number of the workspace.
+     */
     public ComponentPort() {
 	super();
+        // Ignore exception because "this" cannot be null.
+        try {
+            _insideLinks = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
     }
 
-    /** Create a port contained by the specified entity and having
-     *  the specified name.  The port is appended to the port list
-     *  of the entity, so its name must not already exist on the port
-     *  list of the container.
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException name argument is null.
+    /** Construct a port in the specified workspace with an empty
+     *  string as a name (you can then change the name with setName()).
+     *  If the workspace argument is null, then use the default workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the port.
+     */
+    public ComponentPort(Workspace workspace) {
+	super(workspace);
+        // Ignore exception because "this" cannot be null.
+        try {
+            _insideLinks = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
+    }
+
+    /** Construct a port with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This port will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The parent entity.
+     *  @param name The name of the port.
      *  @exception NameDuplicationException Name coincides with
-     *   an element already on the port list of the parent.
+     *   a port already in the container.
      */	
     public ComponentPort(ComponentEntity container, String name) 
-             throws IllegalActionException, NameDuplicationException {
+             throws NameDuplicationException {
 	super(container,name);
+        // Ignore exception because "this" cannot be null.
+        try {
+            _insideLinks = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Enumerate the deep entities connected to this port and all of its
-     *  up aliases.  This is simply the containers of the ports returned
-     *  by deepGetConnectedPorts().  Note that a particular entity may be
-     *  listed more than once if there is more than one link to it.
-     *  If any port has no container then nothing is included for that
-     *  that port.
-     *  @return An enumeration of ComponentEntity objects.
-     */	
-    public Enumeration deepGetConnectedEntities() {
-        Enumeration ports = deepGetConnectedPorts();
-        LinkedList result = new LinkedList();
-        
-        while (ports.hasMoreElements()) {
-            ComponentPort port = (ComponentPort)ports.nextElement();
-            Nameable container = port.getContainer();
-            if (container != null) {
-                result.insertLast(container);
-            }
-        }
-        return result.elements();
-    }
-
-    /** Enumerate the ports connected to this port followed by all the
-     *  ports connected to its up aliases.
-     *  If any ports are found that have down aliases, then the deep down
-     *  aliases of that port are the ones listed.
+    /** Deeply enumerate the ports connected to this port on the outside.
+     *  Begin by enumerating the ports that are connected to this port.
+     *  If any of those are transparent ports that we are connected to
+     *  from the inside, then enumerate all the ports deeply connected
+     *  on the outside to that transparent port.
+     *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
     public Enumeration deepGetConnectedPorts() {
-
-        Enumeration nearrelations = getLinkedRelations();
-        LinkedList result = new LinkedList();
+        synchronized(workspace()) {
+            if (_deeplinkedportsversion == workspace().getVersion()) {
+                // Cache is valid.  Use it.
+                return _deeplinkedports.elements();
+            }
+            Enumeration nearrelations = getLinkedRelations();
+            LinkedList result = new LinkedList();
             
-        while( nearrelations.hasMoreElements() ) {
-            ComponentRelation relation =
-                 (ComponentRelation)nearrelations.nextElement();
-            result.appendElements(relation.deepGetLinkedPortsExcept(this));
-            if (relation.isAlias()) {
-                ComponentPort upport = ((AliasRelation)relation).getUpAlias();
-                if (upport != null) {
-                    result.appendElements(upport.deepGetConnectedPorts());
+            while( nearrelations.hasMoreElements() ) {
+                ComponentRelation relation =
+                       (ComponentRelation)nearrelations.nextElement();
+
+                Enumeration connectedports =
+                        relation.getLinkedPortsExcept(this);
+                while (connectedports.hasMoreElements()) {
+                    ComponentPort port =
+                            (ComponentPort)connectedports.nextElement();
+                    // NOTE: If level-crossing transitions are not allowed, then
+                    // a simpler test than that of the following would work.
+                    if (port._outside(relation.getContainer())) {
+                        // Port is transparent, and we are coming at it from
+                        // the inside.
+                        result.appendElements(port.deepGetConnectedPorts());
+                    } else {
+                        // We are coming at the port from the outside.
+                        // Is it transparent?
+                        if (port.numInsideLinks() > 0) {
+                            // It is transparent.
+                            result.appendElements(port.deepGetInsidePorts());
+                        } else {
+                            result.insertLast(port);
+                        }
+                    }
                 }
             }
+            _deeplinkedports = result;
+            _deeplinkedportsversion = workspace().getVersion();
+            return _deeplinkedports.elements();
         }
-        return result.elements();
     }
 
-    /** Enumerate the ports at the bottom of the alias chains descending
-     *  from this port, or this port if there is no such alias chain.
+    /** Deeply enumerate the ports linked on the inside to this port.
+     *  If there are no such ports, then enumerate just this port.
+     *  All ports enumerated are opaque, in that they have no
+     *  inside links.  Note that the returned enumeration could
+     *  conceivably be empty, for example if this port has an inside
+     *  link, but no other ports are linked to the inside relation.
+     *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
-    public Enumeration deepGetDownPorts() {
-        LinkedList result = new LinkedList();
-        if (_downAlias != null) {
-            Enumeration downports = _downAlias.getLinkedPorts();
-            while (downports.hasMoreElements()) {
-                ComponentPort downport = (ComponentPort)downports.nextElement();
-                result.appendElements(downport.deepGetDownPorts());
+    public Enumeration deepGetInsidePorts() {
+        synchronized(workspace()) {
+            if (_deeplinkedinportsversion == workspace().getVersion()) {
+                // Cache is valid.  Use it.
+                return _deeplinkedinports.elements();
             }
-        } else {
-            result.insertLast(this);
-        }
-        return result.elements();
-    }
-
-    /** Enumerate the relations linked to this port and all of its up aliases.
-     *  @return An enumeration of ComponentRelation objects.
-     */	
-    public Enumeration deepGetLinkedRelations() {
-        Enumeration nearrelations = getLinkedRelations();
-        LinkedList result = new LinkedList();
-            
-        while( nearrelations.hasMoreElements() ) {
-            ComponentRelation relation =
-                   (ComponentRelation)nearrelations.nextElement();
-            if (relation.isAlias()) {
-                ComponentPort upport = ((AliasRelation)relation).getUpAlias();
-                if (upport != null) {
-                    result.appendElements(upport.deepGetLinkedRelations());
+            LinkedList result = new LinkedList();
+            if (numInsideLinks() > 0) {
+                // Port is transparent.
+                Enumeration relations = getInsideRelations();
+                while (relations.hasMoreElements()) {
+                    Relation relation = (Relation)relations.nextElement();
+                    Enumeration insideports =
+                            relation.getLinkedPortsExcept(this);
+                    while (insideports.hasMoreElements()) {
+                        ComponentPort downport =
+                        (ComponentPort)insideports.nextElement();
+                        if (downport._outside(relation.getContainer())) {
+                            result.appendElements(
+                                    downport.deepGetConnectedPorts());
+                        } else {
+                            result.appendElements(
+                                    downport.deepGetInsidePorts());
+                        }
+                    }
                 }
             } else {
-                result.insertLast(relation);
+                // Port is opaque.
+                result.insertLast(this);
             }
+            _deeplinkedinports = result;
+            _deeplinkedinportsversion = workspace().getVersion();
+            return _deeplinkedinports.elements();
         }
-        return result.elements();
     }
 
-    /** Return the port immediately below this one in the alias chain, or
-     *  null if there is no such port.
+    /** Enumerate the ports connected on the inside to this port.
+     *  This method is synchronized on the workspace.
+     *  @return An enumeration of ComponentPort objects.
      */	
-    public AliasRelation getDownAlias() {
-        return _downAlias;
+    public Enumeration getInsidePorts() {
+        synchronized(workspace()) {
+            LinkedList result = new LinkedList();
+            Enumeration relations = getInsideRelations();
+            while (relations.hasMoreElements()) {
+                Relation relation = (Relation)relations.nextElement();
+                result.appendElements(relation.getLinkedPortsExcept(this));
+            }
+            return result.elements();
+        }
     }
 
-    /** Set the down alias of this port, and the corresponding up alias
-     *  of the relation argument.  The relation argument must belong to an
-     *  entity that is contained by the entity that contains this port.
-     *  Otherwise, throw an exception.  If there was previously a down alias,
-     *  then reset (to null) the corresponding up alias first.
-     *  Similarly, if the argument port previously had an up alias,
-     *  set to null the down alias of the port it referred to.
-     *  @param aliasrelation
-     *  @exception IllegalActionException Alias relationship is required to
-     *   span exactly one level of the hierarchy.
+    /** Enumerate the relations linked on the inside to this port.
+     *  This method is synchronized on the workspace.
+     *  @return An enumeration of ComponentRelation objects.
      */	
-    public void setDownAlias(AliasRelation aliasrelation) 
+    public Enumeration getInsideRelations() {
+        synchronized(workspace()) {
+            return _insideLinks.getLinks();
+        }
+    }
+
+    /** Link this port with a relation.  The only constraints are
+     *  that the port and the relation share the same workspace, and
+     *  that the relation be of a compatible type (ComponentRelation).
+     *  They are not required to be at the same level of the hierarchy.
+     *  To prohibit links across levels of the hierarchy, use link().
+     *  Both inside and outside links are supported.
+     *  If the relation argument is null, do nothing.
+     *  This method is synchronized on the workspace
+     *  and increments its version number.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException Relation does not share the same
+     *   workspace, or attempt to link with an incompatible relation,
+     *   of the port has no container.
+     */	
+    public void liberalLink(Relation relation) 
             throws IllegalActionException {
-        // First check validity (null is always valid).
-        if (aliasrelation != null) {
-            if (aliasrelation.getContainer() != getContainer()) {
-                throw new IllegalActionException(this, aliasrelation,
-                       "Alias relationship is required to " +
-                       "span exactly one level of the hierarchy.");
+        if (relation == null) return;
+        if (workspace() != relation.workspace()) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            if (_outside(relation.getContainer())) {
+                // An inside link
+                _checkRelation(relation);
+                if (getContainer() == null) {
+                throw new IllegalActionException(this, relation,
+                         "Port must have a container to establish a link.");
+                }
+                _insideLinks.link(relation._getPortList(this));
+            } else {
+                // An outside link
+                _link(relation);
             }
         }
+    }
 
-        if (_downAlias != null) {
-            _downAlias._setUpAlias(null);
+    /** Link this port with a relation.  This method calls liberalLink()
+     *  if the proposed link does not cross levels of the hierarchy, and
+     *  otherwise throws an exception.
+     *  If the argument is null, do nothing.
+     *  This method is synchronized on the workspace
+     *  and increments its version number.
+     *  @param relation
+     *  @exception IllegalActionException Link crosses levels of
+     *   the hierarchy, or attempts to link with an incompatible relation,
+     *   or the port has no container.
+     */	
+    public void link(Relation relation) 
+            throws IllegalActionException {
+        if (relation == null) return;
+        if (workspace() != relation.workspace()) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
         }
-        _downAlias = aliasrelation;
-        if (aliasrelation != null) {
-            ComponentPort prevupport = aliasrelation.getUpAlias();
-            if (prevupport != null) {
-                prevupport.setDownAlias(null);
+        synchronized(workspace()) {
+            _checkRelation(relation);
+            Nameable container = getContainer();
+            if (container != null) {
+                Nameable relcont = relation.getContainer();
+                if (container != relcont &&
+                        container.getContainer() != relcont) {
+                    throw new IllegalActionException(this, relation,
+                            "Link crosses levels of the hierarchy");
+                }
             }
-            aliasrelation._setUpAlias(this);
+            liberalLink(relation);
+        }
+    }
+
+    /** Return the number of inside links.
+     *  This method is synchronized on the workspace.
+     *  @return A non-negative integer
+     */
+    public int numInsideLinks() {
+        synchronized(workspace()) {
+            return _insideLinks.size();
+        }
+    }
+
+    /** Unlink the specified Relation. If the Relation
+     *  is not linked to this port, do nothing.
+     *  This method is synchronized on the workspace
+     *  and increments its version number.
+     *  @param relation
+     */
+    public void unlink(Relation relation) {
+        synchronized(workspace()) {
+            // Not sure whether it's an inside link, so unlink both.
+            super.unlink(relation);
+            _insideLinks.unlink(relation);
+            workspace().incrVersion();
+        }
+    } 
+
+    /** Unlink all relations, inside and out.
+     *  This method is synchronized on the workspace
+     *  and increments its version number.
+     */	
+    public void unlinkAll() {
+        synchronized(workspace()) {
+            super.unlinkAll();
+            _insideLinks.unlinkAll();
+            workspace().incrVersion();
         }
     }
 
@@ -224,16 +364,32 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Set the down alias of this port without ensuring consistency.
-     *  This method should be used only by the public method setUpAlias().
+    /** Return true if the port is either a port of the specified entity,
+     *  or a port of an entity that contains the specified entity.
+     *  This method is synchronized on the workspace.
+     *  @param entity A container.
      */	
-    protected void _setDownAlias(AliasRelation relation) {
-        _downAlias = relation;
+    public boolean _outside(Nameable entity) {
+        synchronized(workspace()) {
+            Nameable portcontainer = getContainer();
+            while (entity != null) {
+                if (portcontainer == entity) return true;
+                entity = entity.getContainer();
+            }
+            return false;
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    // The port of a contained entity.
-    private AliasRelation _downAlias = null;
+    // The list of inside relations for this port.
+    private CrossRefList _insideLinks;
+
+    // A cache of the deeply linked ports, and the version used to
+    // construct it.
+    private LinkedList _deeplinkedports;
+    private long _deeplinkedportsversion = -1;
+    private LinkedList _deeplinkedinports;
+    private long _deeplinkedinportsversion = -1;
 }

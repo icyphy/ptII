@@ -31,6 +31,7 @@
 package pt.kernel;
 
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
@@ -51,7 +52,11 @@ representing each subset.
 */
 public class Port extends NamedObj {
 
-    /** Create a port with no containing Entity. */	
+    /** Construct a port in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     */
     public Port() {
 	super();
         // Ignore exception because "this" cannot be null.
@@ -60,23 +65,46 @@ public class Port extends NamedObj {
         } catch (IllegalActionException ex) {}
     }
 
-    /** Create a port contained by the specified Entity and having
-     *  the specified name.  The port is appended to the port list
-     *  of the entity, so its name must not already exist on the port
-     *  list of the container.
-     *  @param container The parent Entity.
+    /** Construct a port in the specified workspace with an empty
+     *  string as a name (you can then change the name with setName()).
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the port.
+     */
+    public Port(Workspace workspace) {
+	super(workspace, "");
+        // Ignore exception because "this" cannot be null.
+        try {
+            _relationsList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
+    }
+
+    /** Construct a port with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This port will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace,
+     *  unless the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The parent entity.
      *  @param name The name of the Port.
-     *  @exception IllegalActionException Name argument is null.
      *  @exception NameDuplicationException Name coincides with
-     *  an element already on the port list of the parent.
+     *   an element already on the port list of the container.
      */	
     public Port(Entity container, String name) 
-             throws IllegalActionException, NameDuplicationException {
-	super(name);
-        // Ignore this exception because it can't occur with a new port.
+             throws NameDuplicationException {
+        super(container.workspace(), name);
         try {
-            setContainer(container);
-        } catch (InvalidStateException ex) {};
+            container._addPort(this);
+        } catch (IllegalActionException ex) {
+            // Ignore -- always has a name.
+        }
+        // "super" call above puts this on the workspace list.
+        workspace().remove(this);
+        _setContainer(container);
         // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
@@ -86,161 +114,161 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Enumerate the connected ports.
+     *  This method is synchronized on the workspace.
+     *  @return An enumeration of Port objects. 
+     */
+    public Enumeration getConnectedPorts() {
+        synchronized(workspace()) {
+            LinkedList result = new LinkedList();
+            Enumeration relations = getLinkedRelations();
+            while (relations.hasMoreElements()) {
+                Relation relation = (Relation)relations.nextElement();
+                result.appendElements(relation.getLinkedPortsExcept(this));
+            }
+            return result.elements();
+        }
+    }
+
+    /** Get the container entity.
+     *  This method is synchronized on the workspace.
+     *  @return An instance of Entity.
+     */
+    public Nameable getContainer() {
+        synchronized(workspace()) {
+            return _container;
+        }
+    }
+
     /** Enumerate the linked relations.
+     *  This method is synchronized on the workspace.
      *  @return An enumeration of Relation objects. 
      */
     public Enumeration getLinkedRelations() {
-        if (_relationsList == null) {
-            // Ignore exception because "this" cannot be null.
-            try {
-                _relationsList = new CrossRefList(this);
-            } catch (IllegalActionException ex) {}
+        synchronized(workspace()) {
+            return _relationsList.getLinks();
         }
-	return _relationsList.getLinks();
     }
 
     /** Link this port with a relation of the same level.
-     *  If the argument is null,
-     *  do nothing. The relation and the entity that contains this
+     *  If the argument is null, do nothing.
+     *  The relation and the entity that contains this
      *  port are required to be at the same level of the hierarchy.
      *  I.e., if the container of this port has a container,
      *  then that container is required to also contain the relation.
+     *  In derived classes, the relation may be required to be an
+     *  instance of a particular subclass of Relation.
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
      *  @param relation
      *  @exception IllegalActionException Link crosses levels of
-     *   the hierarchy, or attempts to link with an incompatible relation,
-     *   or the port has no container.
+     *   the hierarchy, or link with an incompatible relation,
+     *   or the port has no container, or the port is not in the
+     *   same workspace as the relation.
      */	
     public void link(Relation relation) 
             throws IllegalActionException {
-        if (relation != null) {
-            _checkRelation(relation);
-            if (_container != null) {
-                if (_container.getContainer() != relation.getContainer()) {
+        if (relation == null) return;
+        if (workspace() != relation.workspace()) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            Nameable container = getContainer();
+            if (container != null) {
+                if (container.getContainer() != relation.getContainer()) {
                     throw new IllegalActionException(this, relation,
                             "Link crosses levels of the hierarchy");
                 }
-            } else {
-                throw new IllegalActionException(this, relation,
-                       "Port must have a container to establish a link.");
             }
-            _relationsList.link( relation._getPortList(this) );
-        }
-    }
-
-    /** Link this port with a relation of any level of the hierarchy.
-     *  If the argument is null,
-     *  do nothing. The relation and the entity that contains this
-     *  port are NOT required to be at the same level of the hierarchy.
-     *  This should be used with caution. It should be avoid in all
-     *  data flow oriented domains.
-     *  @param relation
-     *  @exception IllegalActionException attempts to link with an
-     *  incompatible relation or the port has no container.
-     */	
-    public void CrossLevelLink(Relation relation) 
-            throws IllegalActionException {
-        if (relation != null) {
-            _checkRelation(relation);
-            if (_container == null) {
-                throw new IllegalActionException(this, relation,
-                       "Port must have a container to establish a link.");
-            } else {
-                Entity portContainer = (Entity)_container;
-                Entity relationContainer = (Entity)relation.getContainer();
-                while (portContainer.getContainer() != null) {
-                    portContainer = (Entity) portContainer.getContainer();
-                }
-                while (relationContainer.getContainer() != null) {
-                    relationContainer = (Entity) relationContainer.getContainer();
-                }
-                if (portContainer != relationContainer ) {
-                    throw new IllegalActionException(this, relation,
-                    "Port and relation not in the same workspace.");
-                }  
-            }
-            _relationsList.link( relation._getPortList(this) );
+            _link(relation);
         }
     }
 
     /** Return the number of linked relations.
-     * @return A non-negative integer
+     *  This method is synchronized on the workspace.
+     *  @return A non-negative integer
      */
     public int numLinks() {
-        if (_relationsList == null) return 0;
-	else return _relationsList.size();
+        synchronized(workspace()) {
+            return _relationsList.size();
+        }
     }
 
     /** Specify the container entity, adding the port to the list of ports
      *  in the container.  If the container already contains
      *  a port with the same name, then throw an exception and do not make
-     *  any changes.  If a container was previously specified, remove
-     *  this port from its port list.  If the argument is null, the
-     *  unlink the port from any relations.  Note that a port can be moved
-     *  from one entity to another without unlinking the relations.
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this port, throw an exception.
+     *  If the port already has a container, remove
+     *  this port from its port list first.  Otherwise, remove it from
+     *  the list of objects in the workspace. If the argument is null, then
+     *  unlink the port from any relations, remove it from its container,
+     *  and add it to the list of objects in the workspace.
+     *  If the port is already contained by the entity, do nothing.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
      *  @exception IllegalActionException Port is not of the expected class
-     *   for container.
-     *  @exception InvalidStateException Inconsistent port-container
-     *   relationship, or this port has a null name.
+     *   for the container, or it has no name, or the port and container are
+     *   not in the same workspace.
      *  @exception NameDuplicationException Duplicate name in the container.
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, InvalidStateException,
-            NameDuplicationException {
-        // NOTE: This code is fairly tricky, and is designed to ensure
-        // consistency.  It works in concert with Entity.addPort()
-        // and with Entity.removePort(), so do not modify it without
-        // considering those.
-        Entity prevcontainer = (Entity)_container;
-        if (prevcontainer == entity) return;
-        // Must set _container before calling addPort or removePort
-        // to avoid infinite loop.
-	_container = entity;
-        if (prevcontainer != null) {
-            try {
-                prevcontainer.removePort(this);
-            } catch (IllegalActionException ex) {
-                // Restore state.
-                _container = prevcontainer;
-                throw new InvalidStateException(prevcontainer, this,
-                       "Inconsistent port-container relationship!");
-            }
+            throws IllegalActionException, NameDuplicationException {
+        if (entity != null && workspace() != entity.workspace()) {
+            throw new IllegalActionException(this, entity,
+                    "Cannot set container because workspaces are different.");
         }
-        if (entity != null) {
-            try {
-                entity.addPort(this);
-            } catch (InvalidStateException ex) {
-                // Restore state.
-                _container = prevcontainer;
-                // Rethrow same exception
-                throw ex;
-            } catch (NameDuplicationException ex) {
-                // Restore state.
-                _container = prevcontainer;
-                // Rethrow same exception
-                throw ex;
+        synchronized(workspace()) {
+            Entity prevcontainer = (Entity)getContainer();
+            if (prevcontainer == entity) return;
+            // Do this first, because it may throw an exception.
+            if (entity != null) {
+                entity._addPort(this);
+                if (prevcontainer == null) {
+                    workspace().remove(this);
+                }
             }
-        }
-        if (_container == null) {
-            unlinkAll();
+            _setContainer(entity);
+            if (entity == null) {
+                // Ignore exceptions, which mean the object is already
+                // on the workspace list.
+                try {
+                    workspace().add(this);
+                } catch (IllegalActionException ex) {}
+            }
+
+            if (prevcontainer != null) {
+                prevcontainer._removePort(this);
+            }
+            if (entity == null) {
+                unlinkAll();
+            }
         }
     }
 
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
      *  @param relation
      */
     public void unlink(Relation relation) {
-        if ( _relationsList != null ) _relationsList.unlink(relation);
-        return;
+        synchronized(workspace()) {
+            _relationsList.unlink(relation);
+            workspace().incrVersion();
+        }
     } 
 
     /** Unlink all relations.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
      */	
     public void unlinkAll() {
-	if( _relationsList == null ) return;
-	_relationsList.unlinkAll();
-	_relationsList = null;
-	return;
+        synchronized(workspace()) {
+            _relationsList.unlinkAll();
+            workspace().incrVersion();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -252,13 +280,66 @@ public class Port extends NamedObj {
      *  @param relation
      *  @exception IllegalActionException Incompatible relation.
      */	
-    public void _checkRelation(Relation relation) 
+    protected void _checkRelation(Relation relation) 
             throws IllegalActionException {
+    }
+
+    /** Link this port with a relation.
+     *  If the argument is null, do nothing.
+     *  If this port has no container, throw an exception.
+     *  Invoke _checkRelation, which may also throw an exception,
+     *  but do no further checking.  I.e., level-crossing links are allowed.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  This port and the relation are assumed to be in the same workspace,
+     *  but this not checked here.  The caller should check.
+     *  @param relation
+     *  @exception IllegalActionException Port has no container.
+     */	
+    protected void _link(Relation relation) 
+            throws IllegalActionException {
+        synchronized(workspace()) {
+            if (relation != null) {
+                _checkRelation(relation);
+                if (getContainer() == null) {
+                    throw new IllegalActionException(this, relation,
+                            "Port must have a container to establish a link.");
+                }
+                _relationsList.link( relation._getPortList(this) );
+            }
+            workspace().incrVersion();
+        }
+    }
+
+    /** Set the container without any effort to maintain consistency
+     *  (i.e. nothing is done to ensure that the container includes the
+     *  port in its list of ports, nor that the port is removed from
+     *  the port list of the previous container.
+     *  If the previous container is null and the
+     *  new one non-null, remove the port from the list of objects in the
+     *  workspace.  If the new container is null, then add the port to
+     *  the list of objects in the workspace.
+     *  This method is synchronized on the
+     *  workspace, and increments its version number.
+     *  It assumes the workspace of the container is the same as that
+     *  of this port, but this is not checked.  The caller should check.
+     *  Use the public version to to ensure consistency.
+     *  @param container The new container.
+     */	
+    protected void _setContainer(Entity container) {
+        synchronized(workspace()) {
+            _container = container;
+            workspace().incrVersion();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     // The list of relations for this port.
+    // This member is protected to allow access from derived classes only.
     private CrossRefList _relationsList;
+
+    // The entity that contains this port.
+    private Entity _container;
 }

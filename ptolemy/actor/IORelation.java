@@ -39,29 +39,37 @@ connected to IOPorts.
 */
 public class IORelation extends ComponentRelation {
 
-    /** Create an object with no name and no container */	
+    /** Construct a relation in the default workspace with an empty string
+     *  as its name.
+     *  Increment the version number of the workspace.
+     */
     public IORelation() {
          super();
     }
 
-    /** Create an object with a name and no container. 
-     *  @param name
-     *  @exception IllegalActionException Argument is null.
-     */	
-    public IORelation(String name)
-           throws IllegalActionException {
-        super(name);
+    /** Construct a relation in the specified workspace with an empty
+     *  string as a name (you can then change the name with setName()).
+     *  If the workspace argument is null, then use the default workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the relation.
+     */
+    public IORelation(Workspace workspace) {
+	super(workspace);
     }
 
-    /** Create an object with a name and a container. 
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException Name argument is null.
-     *  @exception NameDuplicationException Name collides with a name already
-     *   on the container's contents list.
+    /** Construct a relation with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This relation will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The parent entity.
+     *  @param name The name of the relation.
+     *  @exception NameDuplicationException Name coincides with
+     *   a relation already in the container.
      */	
     public IORelation(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
+           throws NameDuplicationException {
         super(container, name);
     }
 
@@ -82,6 +90,6 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException(this, port,
                     "IORelation can only link to a IOPort.");
         }
-        return _portList;
+        return super._getPortList(port);
     }
 }

@@ -30,6 +30,7 @@
 
 package pt.kernel;
 
+import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,36 +45,46 @@ be atomic.  I.e., it contains no components.
 */
 public class ComponentEntity extends Entity {
 
-    /** Create an object with no name and no container */	
+    /** Construct an entity in the default workspace with an empty string
+     *  as its name.
+     *  Increment the version number of the workspace.
+     */
     public ComponentEntity() {
-         super();
+	super();
     }
 
-    /** Create an object with a name and no container. 
-     *  @param name
-     *  @exception IllegalActionException Argument is null.
-     */	
-    public ComponentEntity(String name)
-           throws IllegalActionException {
-        super(name);
+    /** Construct an entity in the specified workspace with an empty
+     *  string as a name (you can then change the name with setName()).
+     *  If the workspace argument is null, then use the default workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     */
+    public ComponentEntity(Workspace workspace) {
+	super(workspace, "");
     }
 
-    /** Create an object with a name and a container. 
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException name argument is null.
-     *  @exception NameDuplicationException Name collides with a name already
-     *   on the container's contents list.
+    /** Construct an entity with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This entity will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The parent entity.
+     *  @param name The name of the entity.
+     *  @exception NameDuplicationException Name coincides with
+     *   an entity already in the container.
      */	
-    public ComponentEntity(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-        super(name);
-        // NOTE: This unnecessarily does the check for recursive topologies.
-        // Not sure how to avoid this, however.  Inconsistency is impossible
-        // at this stage, so we silence the compiler by catching.
+    public ComponentEntity(CompositeEntity container, String name) 
+             throws NameDuplicationException {
+        super(container.workspace(), name);
         try {
-            setContainer(container);
-        } catch (InvalidStateException ex) {}
+            container._addEntity(this);
+        } catch (IllegalActionException ex) {
+            // Ignore -- always has a name.
+        }
+        // "super" call above puts this on the workspace list.
+        workspace().remove(this);
+        _setContainer(container);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -85,21 +96,31 @@ public class ComponentEntity extends Entity {
      *  to point to this entity.  This overrides the base class to ensure
      *  that the port added is a ComponentPort.  If it is not, throw an
      *  exception.
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
      *  @param port
      *  @exception IllegalActionException Port is not of class ComponentPort.
-     *  @exception InvalidStateException Inconsistent port-container
-     *   relationship, or port has no name.
      *  @exception NameDuplicationException Name collides with a name already
      *  on the port list.
      */	
     public void addPort(Port port) 
-            throws IllegalActionException, InvalidStateException,
-            NameDuplicationException {
-        if (port instanceof ComponentPort) {
-            super.addPort(port);
-        } else {
+            throws IllegalActionException, NameDuplicationException {
+        if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
                    "Component entities require ComponentPorts.");
+        }
+        synchronized(workspace()) {
+            super.addPort(port);
+        }
+    }
+
+    /** Get the container entity.
+     *  This method is synchronized on the workspace.
+     *  @return An instance of CompositeEntity.
+     */
+    public Nameable getContainer() {
+        synchronized(workspace()) {
+            return _container;
         }
     }
 
@@ -118,7 +139,9 @@ public class ComponentEntity extends Entity {
      *  The container of the port is set to this entity.
      *  This overrides the base class to create a ComponentPort rather
      *  than a simple Port.
-     *  @param name
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
+     *  @param name The new port name.
      *  @return The new port
      *  @exception IllegalActionException Argument is null.
      *  @exception NameDuplicationException Entity already has a port with
@@ -126,40 +149,66 @@ public class ComponentEntity extends Entity {
      */	
     public Port newPort(String name) 
              throws IllegalActionException, NameDuplicationException {
-        Port port = new ComponentPort(this, name);
-        return port;
+        synchronized(workspace()) {
+            Port port = new ComponentPort(this, name);
+            return port;
+        }
     }
 
-    /** Set the container.  Throw an exception if this object directly
-     *  or indirectly contains the proposed container.  Unless the argument
-     *  is null, add the object to the entity list of the new container.
-     *  If this object was previously contained, remove it from the entity
-     *  list of the old container.
-     *  @param container
-     *  @exception IllegalActionException Recursive containment structure.
-     *  @exception InvalidStateException Inconsistent containment relationship.
+    /** Specify the container entity, adding the entity to the list 
+     *  of entities in the container.  If the container already contains
+     *  an entity with the same name, then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.
+     *  If this entity already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the list of objects in the workspace. If the argument is null, then
+     *  unlink the ports of the entity from any relations, remove it from
+     *  its container, and add it to the list of objects in the workspace.
+     *  If the entity is already contained by the container, do nothing.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException Recursive containment structure, or
+     *   this entity and container are not in the same workspace..
      *  @exception NameDuplicationException Name collides with a name already
      *   on the contents list of the container.
      */	
     public void setContainer(CompositeEntity container) 
-            throws IllegalActionException, InvalidStateException,
-            NameDuplicationException {
-        if (container != null) {
-            // To ensure consistency, this is handled by the container.
-            container.addEntity(this);
-        } else {
-            if (_container != null) {
-                // To ensure consistency, this is handled by the container.
-                // If this throws an IllegalActionException, then the container
-                // does not contain me, which is an inconsistent state.
-                try {
-                    ((CompositeEntity)_container).removeEntity(this);
-                } catch (IllegalActionException ex) {
-                    throw new InvalidStateException(_container, this,
-                          "Inconsistent containment relationship!");
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && workspace() != container.workspace()) {
+            throw new IllegalActionException(this, container,
+                    "Cannot set container because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
+            if (prevcontainer == container) return;
+
+            // Do this first, because it may throw an exception.
+            if (container != null) {
+                container._addEntity(this);
+                if (prevcontainer == null) {
+                    workspace().remove(this);
                 }
-            } else {
-                // Both the old and the new container are null.  Do nothing.
+            }
+            _setContainer(container);
+            if (container == null) {
+                // Ignore exceptions, which mean the object is already
+                // on the workspace list.
+                try {
+                    workspace().add(this);
+                } catch (IllegalActionException ex) {}
+            }
+
+            if (prevcontainer != null) {
+                prevcontainer._removeEntity(this);
+            }
+            if (container == null) {
+                Enumeration ports = getPorts();
+                while (ports.hasMoreElements()) {
+                    Port port = (Port)ports.nextElement();
+                    port.unlinkAll();
+                }
             }
         }
     }
@@ -167,16 +216,31 @@ public class ComponentEntity extends Entity {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Set the container.  This protected
-     *  method should be called _only_ by CompositeEntity.addEntity() and
-     *  CompositeEntity.removeEntity().
-     *  This way, synchronization and consistency are ensured.
-     *  Note that this method does nothing about removing this entity
-     *  from the previous container's contents, nor does it check for
-     *  recursive containment errors.
+    /** Set the container without any effort to maintain consistency
+     *  (i.e. nothing is done to ensure that the container includes the
+     *  entity in its list of entities, nor that the entity is removed from
+     *  the entity list of the previous container).
+     *  If the previous container is null and the
+     *  new one non-null, remove the entity from the list of objects in the
+     *  workspace.  If the new container is null, then add the entity to
+     *  the list of objects in the workspace.
+     *  This method is synchronized on the
+     *  workspace, and increments its version number.
+     *  It assumes the workspace of the container is the same as that
+     *  of this entity, but this is not checked.  The caller should check.
+     *  Use the public version to to ensure consistency.
      *  @param container
      */	
     protected void _setContainer(CompositeEntity container) {
-	_container = container;
+        synchronized(workspace()) {
+            _container = container;
+            workspace().incrVersion();
+        }
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private variables                        ////
+
+    // The entity that contains this entity.
+    private CompositeEntity _container;
 }

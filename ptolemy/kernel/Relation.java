@@ -37,7 +37,7 @@ import collections.LinkedList;
 /**
 A Relation links ports, and therefore the entities that contain them.
 It can be used to represent arcs in non-hierarchical graphs.
-Ports may attach themselves to Relations, but the other direction is
+Ports may link themselves to Relations, but the other direction is
 not supported.
 
 @author Neil Smyth, Edward A. Lee
@@ -46,8 +46,11 @@ not supported.
 @see Entity
 */
 public class Relation extends NamedObj {
-    /** Create a new relation with no links.
-     */	
+
+    /** Construct a relation in the default workspace with an empty string
+     *  as its name.
+     *  Increment the version number of the workspace.
+     */
     public Relation() {
 	super();
         // Ignore exception because "this" cannot be null.
@@ -56,13 +59,31 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {}
     }
 
-    /** Create a new relation with no links.
-     *  @param name
-     *  @exception IllegalActionException Argument is null.
-     */	
+    /** Construct a relation in the default workspace with the given name.
+     *  If the name argument
+     *  is null, then the name is set to the empty string.
+     *  Increment the version number of the workspace.
+     *  @param name Name of this object.
+     */
     public Relation(String name)
             throws IllegalActionException {
 	super(name);
+        // Ignore exception because "this" cannot be null.
+        try {
+            _portList = new CrossRefList(this);
+        } catch (IllegalActionException ex) {}
+    }
+
+    /** Construct a relation in the given workspace with the given name.
+     *  If the workspace argument is null, use the default workspace.
+     *  If the name argument
+     *  is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param workspace Object for synchronization and version tracking
+     *  @param name Name of this object.
+     */
+    public Relation(Workspace workspace, String name) {
+	super(workspace, name);
         // Ignore exception because "this" cannot be null.
         try {
             _portList = new CrossRefList(this);
@@ -77,52 +98,88 @@ public class Relation extends NamedObj {
      *  have fewer entries in it than what is reported by numLinks().
      *  Note that a particular entity may be listed more than once if it is
      *  linked more than once.
+     *  This method is synchronized on the workspace.
      *  @return An Enumeration of Entity objects.
      */	
     public Enumeration getLinkedEntities() {
+        synchronized(workspace()) {
+            Enumeration ports = _portList.getLinks();
+            LinkedList storedEntities = new LinkedList();
 
-	Enumeration ports = _portList.getLinks();
-        LinkedList storedEntities = new LinkedList();
-
-        while( ports.hasMoreElements() ) {
-            Port port = (Port)ports.nextElement();
-            Entity parent = (Entity) port.getContainer();
-            // Ignore ports with no container.
-            if (parent != null) {
-                storedEntities.insertLast( parent );
+            while( ports.hasMoreElements() ) {
+                Port port = (Port)ports.nextElement();
+                Entity parent = (Entity) port.getContainer();
+                // Ignore ports with no container.
+                if (parent != null) {
+                    storedEntities.insertLast( parent );
+                }
             }
-        }
 
-        return storedEntities.elements();
+            return storedEntities.elements();
+        }
     }
 
     /** Enumerate the linked ports.
+     *  This method is synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */	
     public Enumeration getLinkedPorts() {
-        return _portList.getLinks();
+        synchronized(workspace()) {
+            return _portList.getLinks();
+        }
     }
 
     /** Enumerate the linked ports except the specified port.
+     *  This method is synchronized on the workspace.
      *  @param except Do not return this Port in the Enumeration 
      *  @return An Enumeration of Port objects.
      */	
     public Enumeration getLinkedPortsExcept(Port except) {
         // This works by constructing a linked list and then enumerating it.
-        LinkedList storedPorts = new LinkedList();
-        Enumeration ports = _portList.getLinks();
+        synchronized(workspace()) {
+            LinkedList storedPorts = new LinkedList();
+            Enumeration ports = _portList.getLinks();
         
-        while(ports.hasMoreElements()) {
-            Port p = (Port)ports.nextElement();
-            if(p != except)
-            storedPorts.insertFirst(p); 
+            while(ports.hasMoreElements()) {
+                Port p = (Port)ports.nextElement();
+                if(p != except)
+                storedPorts.insertLast(p); 
+            }
+            return storedPorts.elements();
         }
-        return storedPorts.elements();
     }
 
-    /** Return the number of links to ports. */	
+    /** Return the number of links to ports.
+     *  This method is synchronized on the workspace.
+     */	
     public int numLinks() {
-        return _portList.size();
+        synchronized(workspace()) {
+            return _portList.size();
+        }
+    }
+
+    /** Unlink the specified port. If the port
+     *  is not linked to this relation, do nothing.
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
+     *  @param port
+     */
+    public void unlink(Relation port) {
+        synchronized(workspace()) {
+            _portList.unlink(port);
+            workspace().incrVersion();
+        }
+    } 
+
+    /** Unlink all ports.
+     *  This method is synchronized on the workspace and increments
+     *  its version number.
+     */	
+    public void unlinkAll() {
+        synchronized(workspace()) {
+            _portList.unlinkAll();
+            workspace().incrVersion();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -147,12 +204,9 @@ public class Relation extends NamedObj {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ////                         prive variables                          ////
 
     /** The CrossRefList of Ports which are connected to this Relation.
-     *  NOTE: This variable is protected _only_ to allow access in derived
-     *  classes.   Java does not provide this level of encapsulation, so
-     *  we rely on convention.
      */
-    protected CrossRefList _portList;
+    private CrossRefList _portList;
 }
