@@ -352,6 +352,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		lib/ptCal.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
+		mk/ptII.mk \
 		ptolemy/actor/gui/python \
 		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
