@@ -53,6 +53,12 @@ import java.util.List;
 //// TypedAtomicActor
 /**
 A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
+<p>
+The typeConstraintList() method returns the type constraints among
+the contained ports and parameters.  This base class provides a default
+implementation of this method, which should be suitable for most of the
+derived classes.
+<p>
 Derived classes may constrain the container by overriding
 _checkContainer(). The Ports of TypedAtomicActors are constrained to be
 TypedIOPorts.  Derived classes may further constrain the ports by
@@ -60,11 +66,6 @@ overriding the public method newPort() to create a port of the
 appropriate subclass, and the protected method _addPort() to throw an
 exception if its argument is a port that is not of the appropriate
 subclass.
-<p>
-The typeConstraintList() method returns the type constraints among
-the contained ports.  This base class provides a default implementation
-of this method, which should be suitable for most of the derived classes.
-
 
 @author Yuhong Xiong
 @version $Id$
@@ -125,6 +126,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  override this method.
      *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException Not thrown in this base class.
+     *   Derived classes can throw this exception if type change is not allowed.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -168,7 +170,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  In addition, this method also collects type constraints from the
      *  contained Typeables (ports, variables, and parameters).
      *  This method is read-synchronized on the workspace.
-     *  @return a list of Inequality.
+     *  @return A list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList()  {
@@ -241,7 +243,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  directly.  Call the setContainer() method of the port instead.
      *  This method does not set the container of the port to point to
      *  this entity. It assumes that the port is in the same workspace
-     *  as this actor, but does not check.  The caller should check.
+     *  as this actor.
      *  Derived classes may override this method to further constrain to
      *  a subclass of TypedIOPort. This method is <i>not</i> synchronized on
      *  the workspace, so the caller should be.
@@ -249,11 +251,15 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @param port The port to add to this actor.
      *  @exception IllegalActionException If the port class is not
      *   acceptable to this actor, or the port has no name.
-     *  @exception NameDuplicationException If the port name coincides with a
-     *   name already in the actor.
+     *  @exception NameDuplicationException If the port name coincides with
+     *   the name of another port already in the actor.
      */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
+        // In the future, this method can be changed to allow IOPort to be
+	// added. In that case, the type system just ignores instances of
+	// IOPort during type checking. Since there is no intended application
+	// for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this actor.");
