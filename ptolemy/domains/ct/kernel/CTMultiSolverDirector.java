@@ -337,7 +337,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // Schedule has to be computed before calling initialize() on
         // actors since some actors may call fireAt() in their initialize().
-        getScheduler().getSchedule();
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         // Display schedule
         if (_debugging) _debug(getScheduler().getSchedule().toString());
 
@@ -355,19 +355,28 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Set suggested next step size to "
                     + getSuggestedNextStepSize());
         }
-        if (_debugging) {
+        
+        if (((Schedule)schedule.get(CTSchedule.DYNAMIC_ACTORS)).size() != 0) {
+          if (_debugging) {
+            _debug("There are dynamic actors in " 
+                + getContainer().getFullName() 
+                + " require firing at current time.");
+          }
+          
+          if (_debugging) {
             _debug("Set the current time as a break point: "
-                   + getCurrentTime());
-        }
-        fireAt(null, getCurrentTime());
-        if (_debugging) {
+                + getCurrentTime());
+          }
+          fireAt(null, getCurrentTime());
+          if (_debugging) {
             _debug("Set the stop time as a break point: "
-                    + getStopTime());
-        }
-        fireAt(null, getStopTime());
-        if (_debugging) {
+                + getStopTime());
+          }
+          fireAt(null, getStopTime());
+          if (_debugging) {
             _debug("----- End of Initialization of: " + getFullName());
-        }
+          }
+        } 
     }
 
     /** Return false if the stop time is reached or if any actor returned
