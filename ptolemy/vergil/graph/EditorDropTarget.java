@@ -109,12 +109,12 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
             NamedObj data = null;
-
+            Iterator iterator = null;
             if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 try {
 		    // System.out.println(PtolemyTransferable.namedObjFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    data = (NamedObj)dtde.getTransferable().
+		    iterator = (Iterator)dtde.getTransferable().
 			getTransferData(PtolemyTransferable.namedObjFlavor);
 		    // System.out.println("Data is [" + data + "]");//DEBUG
                 }
@@ -127,7 +127,7 @@ public class EditorDropTarget extends DropTarget {
                 dtde.rejectDrop();
             }
 
-            if(data == null) {
+            if(iterator == null) {
                 System.out.println("Drop failure"); //DEBUG
                 dtde.dropComplete(false); //failure!
             }
@@ -139,46 +139,48 @@ public class EditorDropTarget extends DropTarget {
 		// the right workspace.
 		Graph graph = gc.getGraph();
 		NamedObj container = (NamedObj) graph.getSemanticObject();
-		try {
-		    Node newNode = null;
-		    if(data instanceof Entity) {
-			NamedObj sourceEntity = 
-			    (NamedObj) data;
-			// Create the new node
-			NamedObj entity = (NamedObj) sourceEntity.clone(
-				container.workspace());
-			// FIXME get by class.
-			Icon icon = (Icon) entity.getAttribute("_icon");
-			// If there is no icon, then manufacture one.
-			if(icon == null) {
-			    icon = new EditorIcon(entity, "_icon");
-			}
-			
-			// FIXME it would be nice if this was 
-			// not editor specific.
-			entity.setName(container.uniqueName(
-			    sourceEntity.getName()));  
-		        newNode = 
-			    gc.getGraphImpl().createCompositeNode(icon);
-		    } else if(data instanceof Port) {
-			Port sourcePort = (Port) data;
-			Port port = 
-			    (Port)sourcePort.clone(container.workspace());
-			port.setName(container.uniqueName(
-			    sourcePort.getName()));
-			newNode =
-			    gc.getGraphImpl().createNode(port);
-		    } else {
-			throw new RuntimeException("Drop target doesn't " + 
-						   "recognize data");
-		    }
-		    gc.addNode(newNode, p.x, p.y);
-		}
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new RuntimeException(ex.getMessage());
+                while(iterator.hasNext()) {
+                    data = (NamedObj) iterator.next();
+                    try {
+                        Node newNode = null;
+                        if(data instanceof Entity) {
+                            NamedObj sourceEntity = 
+                                (NamedObj) data;
+                            // Create the new node
+                            NamedObj entity = (NamedObj) sourceEntity.clone(
+                                    container.workspace());
+                            // FIXME get by class.
+                            Icon icon = (Icon) entity.getAttribute("_icon");
+                            // If there is no icon, then manufacture one.
+                            if(icon == null) {
+                                icon = new EditorIcon(entity, "_icon");
+                            }
+                            
+                            // FIXME it would be nice if this was 
+                            // not editor specific.
+                            entity.setName(container.uniqueName(
+                                    sourceEntity.getName()));  
+                            newNode = 
+                                gc.getGraphImpl().createCompositeNode(icon);
+                        } else if(data instanceof Port) {
+                            Port sourcePort = (Port) data;
+                            Port port = 
+                                (Port)sourcePort.clone(container.workspace());
+                            port.setName(container.uniqueName(
+                                    sourcePort.getName()));
+                            newNode =
+                                gc.getGraphImpl().createNode(port);
+                        } else {
+                            throw new RuntimeException("Drop target doesn't " + 
+                                    "recognize data");
+                        }
+                        gc.addNode(newNode, p.x, p.y);
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex.getMessage());
+                    }
                 }
-
 		dtde.dropComplete(true); //success!
             }
         }
