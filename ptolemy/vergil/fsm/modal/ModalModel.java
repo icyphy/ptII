@@ -186,6 +186,17 @@ public class ModalModel extends CTCompositeActor {
                 throw new IllegalActionException(ex.toString());
             }
             director.controllerName.setExpression("_Controller");
+            String directorClass =
+                ((StringAttribute)attribute).getExpression();
+            if (directorClass.equals(modalDirectorClassNames[2])) {
+                // The director is an HDFFSMDirector.  
+                _controller.setHDFFSMActor(true);
+                _directorChanged = true;
+            } else if (_directorChanged &&
+              (directorClass.equals(modalDirectorClassNames[0])
+              || (directorClass.equals(modalDirectorClassNames[1])))) {
+                _controller.setHDFFSMActor(false);
+            }
         }
     }
 
@@ -218,7 +229,6 @@ public class ModalModel extends CTCompositeActor {
     public FSMDirector newDirector()
             throws IllegalActionException, NameDuplicationException {
         return new HSDirector(this, "_Director");
-        //return new HDFFSMDirector(this, "_Director");
     }
     
     /** Create a new port with the specified name in this entity, the
@@ -390,6 +400,11 @@ public class ModalModel extends CTCompositeActor {
 
     /** The FSM controller. */
     private FSMActor _controller;
+    
+    // A flag indicating the director has been changed to HDFFSMDirector
+    // by the user. This prevents setting the HDFFSMActor flag before
+    // the FSMActor is created.
+    private boolean _directorChanged = false;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
