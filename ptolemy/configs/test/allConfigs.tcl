@@ -96,7 +96,9 @@ foreach i $configs {
 	    regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
 	    # Filter out interactive icons
 	    regsub -all {.*lib/interactive.xml.*} $lineout4 {} lineout5
-	    puts $outfd $lineout5
+	    # Filter out jxta
+	    regsub -all {.*jxta/jxta.xml.*} $lineout5 {} lineout6
+	    puts $outfd $lineout6
 	}
 	close $infd
 	close $outfd
