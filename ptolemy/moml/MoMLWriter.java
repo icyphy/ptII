@@ -449,7 +449,7 @@ public class MoMLWriter extends Writer {
         if (attribute != null) {
             MoMLParser parser = attribute.getParser();
             return parser._searchForClass(deferredClass,
-                        source);
+                    source);
         }
         return null;
     }
@@ -462,133 +462,133 @@ public class MoMLWriter extends Writer {
             // faster.
             object.workspace().getReadAccess();
             // System.out.println("Writing = " + object.getFullName());
-        synchronized(lock) {
-            boolean wroteAnything = false;
-            // Alot of things aren't presistent and are just skipped.
-            if (object instanceof NotPersistent && !_isForcePersistence)
-                return false;
+            synchronized(lock) {
+                boolean wroteAnything = false;
+                // Alot of things aren't presistent and are just skipped.
+                if (object instanceof NotPersistent && !_isForcePersistence)
+                    return false;
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistance?
-            if (object instanceof Variable && !(object instanceof Parameter))
-                return false;
+                // FIXME: This is horrible...  I guess we need an attribute for
+                // persistance?
+                if (object instanceof Variable && !(object instanceof Parameter))
+                    return false;
 
-            // Documentation uses a special tag with no class.
-            if (object instanceof Documentation && !_isLiteral) {
-                Documentation container = (Documentation)object;
+                // Documentation uses a special tag with no class.
+                if (object instanceof Documentation && !_isLiteral) {
+                    Documentation container = (Documentation)object;
+                    write(_getIndentPrefix(depth));
+                    // If the name is the default name, then omit it
+                    if (name.equals("_doc")) {
+                        write("<doc>");
+                    } else {
+                        write("<doc name=\"");
+                        write(name);
+                        write("\">");
+                    }
+                    write(container.getValue());
+                    write("</doc>\n");
+                    return true;
+                }
+                // MoMLAttribute writes arbitrary moml.
+                // This is a hack, and hopefully we should be able to
+                // get rid of it eventually.
+                if (object instanceof MoMLAttribute && !_isLiteral) {
+                    // MoMLAttribute container = (MoMLAttribute)object;
+                    //container.writeMoMLDescription(this, depth);
+                    return true;
+                }
+                NamedObj.MoMLInfo info = object.getMoMLInfo();
+                // Write if nothing is being deferred to and there is no
+                // class name.
+                NamedObj deferredObject = _findDeferredInstance(object);
+
+                // Write the first line.
                 write(_getIndentPrefix(depth));
-                // If the name is the default name, then omit it
-                if (name.equals("_doc")) {
-                    write("<doc>");
+                write("<");
+                write(info.elementName);
+                write(" name=\"");
+                write(name);
+
+                if (info.elementName.equals("class")) {
+                    write("\" extends=\"");
+                    write(info.superclass);
                 } else {
-                    write("<doc name=\"");
-                    write(name);
-                    write("\">");
+                    write("\" class=\"");
+                    write(info.className);
                 }
-                write(container.getValue());
-                write("</doc>\n");
-                return true;
-            }
-            // MoMLAttribute writes arbitrary moml.
-            // This is a hack, and hopefully we should be able to
-            // get rid of it eventually.
-            if (object instanceof MoMLAttribute && !_isLiteral) {
-                // MoMLAttribute container = (MoMLAttribute)object;
-                //container.writeMoMLDescription(this, depth);
-                return true;
-            }
-            NamedObj.MoMLInfo info = object.getMoMLInfo();
-            // Write if nothing is being deferred to and there is no
-            // class name.
-            NamedObj deferredObject = _findDeferredInstance(object);
-
-            // Write the first line.
-            write(_getIndentPrefix(depth));
-            write("<");
-            write(info.elementName);
-            write(" name=\"");
-            write(name);
-
-            if (info.elementName.equals("class")) {
-                write("\" extends=\"");
-                write(info.superclass);
-            } else {
-                write("\" class=\"");
-                write(info.className);
-            }
-            if (info.source != null) {
-                write("\" source=\"");
-                write(info.source);
-            }
-            if (object instanceof Settable) {
-                Settable settable = (Settable)object;
-                String value = settable.getExpression();
-                if (value != null && !value.equals("")) {
-                    write("\" value=\"");
-                    write(StringUtilities.escapeForXML(value));
+                if (info.source != null) {
+                    write("\" source=\"");
+                    write(info.source);
                 }
-                wroteAnything = true;
-            }
-            write("\">\n");
-
-            if (object instanceof Configurable) {
-                Configurable container = (Configurable)object;
-                String source = container.getSource();
-                String text = container.getText();
-                boolean hasSource = source != null && !source.equals("");
-                boolean hasText = text != null && !text.equals("");
-                if (source == null) source = "";
-                if (text == null) text = "";
-
-                if (hasSource || _isVerbose) {
-                    write(_getIndentPrefix(depth + 1));
-                    write("<configure source=\"");
-                    write(source);
-                    write("\">");
-                } else if (hasText) {
-                    write(_getIndentPrefix(depth + 1));
-                    write("<configure>");
+                if (object instanceof Settable) {
+                    Settable settable = (Settable)object;
+                    String value = settable.getExpression();
+                    if (value != null && !value.equals("")) {
+                        write("\" value=\"");
+                        write(StringUtilities.escapeForXML(value));
+                    }
+                    wroteAnything = true;
                 }
-                if (hasText) {
-                    write(text);
-                }
-                if (hasText || hasSource || _isVerbose) {
-                    write("</configure>\n");
-                }
+                write("\">\n");
 
-                // Rather awkwardly we have to configure the
-                // container, to handle the entity library.
-                if (deferredObject != null &&
-                        !(object instanceof EntityLibrary)) {
-                    try {
-                        // first clone it, since we are going to have to
-                        // run configure on this object.
+                if (object instanceof Configurable) {
+                    Configurable container = (Configurable)object;
+                    String source = container.getSource();
+                    String text = container.getText();
+                    boolean hasSource = source != null && !source.equals("");
+                    boolean hasText = text != null && !text.equals("");
+                    if (source == null) source = "";
+                    if (text == null) text = "";
+
+                    if (hasSource || _isVerbose) {
+                        write(_getIndentPrefix(depth + 1));
+                        write("<configure source=\"");
+                        write(source);
+                        write("\">");
+                    } else if (hasText) {
+                        write(_getIndentPrefix(depth + 1));
+                        write("<configure>");
+                    }
+                    if (hasText) {
+                        write(text);
+                    }
+                    if (hasText || hasSource || _isVerbose) {
+                        write("</configure>\n");
+                    }
+
+                    // Rather awkwardly we have to configure the
+                    // container, to handle the entity library.
+                    if (deferredObject != null &&
+                            !(object instanceof EntityLibrary)) {
                         try {
-                            deferredObject = (NamedObj)deferredObject.clone();
-                        } catch (CloneNotSupportedException ex) {
+                            // first clone it, since we are going to have to
+                            // run configure on this object.
+                            try {
+                                deferredObject = (NamedObj)deferredObject.clone();
+                            } catch (CloneNotSupportedException ex) {
+                            }
+                            Configurable deferredContainer =
+                                (Configurable)deferredObject;
+                            deferredContainer.configure(null, source, text);
                         }
-                        Configurable deferredContainer =
-                            (Configurable)deferredObject;
-                        deferredContainer.configure(null, source, text);
-                    }
-                    catch (Exception ex) {
-                        System.out.println("Failed to configure because:");
-                        ex.printStackTrace();
+                        catch (Exception ex) {
+                            System.out.println("Failed to configure because:");
+                            ex.printStackTrace();
+                        }
                     }
                 }
-            }
 
-            //   boolean wroteAnything;
-            if (!(object instanceof EntityLibrary)) {
-                wroteAnything |=
-                    _writeContents(object, deferredObject, depth + 1);
-            } else {
-                wroteAnything = true;
+                //   boolean wroteAnything;
+                if (!(object instanceof EntityLibrary)) {
+                    wroteAnything |=
+                        _writeContents(object, deferredObject, depth + 1);
+                } else {
+                    wroteAnything = true;
+                }
+                write(_getIndentPrefix(depth) + "</"
+                        + info.elementName + ">\n");
+                return wroteAnything;
             }
-            write(_getIndentPrefix(depth) + "</"
-                    + info.elementName + ">\n");
-            return wroteAnything;
-        }
         } finally {
             // System.out.println("DONEING = " + object.getFullName());
             object.workspace().doneReading();
@@ -614,7 +614,7 @@ public class MoMLWriter extends Writer {
             list.addAll(deferredObject.attributeList());
             // Describe parameterization.
             for (Iterator attributes = object.attributeList().iterator();
-                attributes.hasNext();) {
+                 attributes.hasNext();) {
                 Attribute attribute = (Attribute)attributes.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the attribute.
@@ -628,7 +628,7 @@ public class MoMLWriter extends Writer {
             // Now delete all the elements of the deferredContainer that
             // no longer exist.
             for (Iterator attributes = list.iterator();
-                attributes.hasNext();) {
+                 attributes.hasNext();) {
                 Attribute attribute = (Attribute)attributes.next();
                 write(_getIndentPrefix(depth));
                 write("<deleteProperty name=\"" +
@@ -724,7 +724,7 @@ public class MoMLWriter extends Writer {
             List list = new ArrayList();
             list.addAll(deferredContainer.entityList());
             for (Iterator entities = container.entityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 ComponentEntity entity =
                     (ComponentEntity)entities.next();
                 // Otherwise, check inside the referred object to
@@ -744,7 +744,7 @@ public class MoMLWriter extends Writer {
             // Now delete all the elements of the deferredContainer that
             // no longer exist.
             for (Iterator entities = list.iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 ComponentEntity entity =
                     (ComponentEntity)entities.next();
                 write(_getIndentPrefix(depth));
@@ -823,7 +823,7 @@ public class MoMLWriter extends Writer {
             int index = -1;
             // Then just write the links.
             for (Iterator relations = relationList.iterator();
-                relations.hasNext();) {
+                 relations.hasNext();) {
                 index++;
                 ComponentRelation relation
                     = (ComponentRelation)relations.next();
@@ -916,8 +916,8 @@ public class MoMLWriter extends Writer {
                 boolean foundInsertion = false;
                 int insertionIndex;
                 for (insertionIndex = index;
-                    insertionIndex < relationList.size();
-                    insertionIndex++) {
+                     insertionIndex < relationList.size();
+                     insertionIndex++) {
                     ComponentRelation insertRelation
                         = (ComponentRelation)relationList.get(insertionIndex);
                     if (insertRelation != null &&
@@ -932,8 +932,8 @@ public class MoMLWriter extends Writer {
                 boolean foundDeletion = false;
                 int deletionIndex;
                 for (deletionIndex = deferredIndex;
-                    deletionIndex < relationList.size();
-                    deletionIndex++) {
+                     deletionIndex < relationList.size();
+                     deletionIndex++) {
                     ComponentRelation deleteRelation
                         = (ComponentRelation)relationList.get(deletionIndex);
                     if (deleteRelation != null &&
@@ -1068,7 +1068,7 @@ public class MoMLWriter extends Writer {
             List list = new ArrayList();
             list.addAll(deferredContainer.portList());
             for (Iterator ports = container.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the attribute.
@@ -1086,7 +1086,7 @@ public class MoMLWriter extends Writer {
             // Now delete all the elements of the deferredContainer that
             // no longer exist.
             for (Iterator ports = list.iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 write(_getIndentPrefix(depth));
                 write("<deletePort name=\"" + port.getName() + "\"/>\n");
@@ -1114,7 +1114,7 @@ public class MoMLWriter extends Writer {
             List list = new ArrayList();
             list.addAll(deferredContainer.relationList());
             for (Iterator relations = container.relationList().iterator();
-                relations.hasNext();) {
+                 relations.hasNext();) {
                 ComponentRelation relation
                     = (ComponentRelation)relations.next();
                 // Otherwise, check inside the referred object to
@@ -1128,7 +1128,7 @@ public class MoMLWriter extends Writer {
                             depth);
             }
             for (Iterator relations = list.iterator();
-                relations.hasNext();) {
+                 relations.hasNext();) {
                 ComponentRelation relation
                     = (ComponentRelation)relations.next();
                 write(_getIndentPrefix(depth));
@@ -1194,7 +1194,7 @@ public class MoMLWriter extends Writer {
     // out even if they duplicate an object in a superclass.
     private boolean _isVerbose = false;
 
-     // The writer
+    // The writer
     private Writer _writer;
 
     // The preamble string for entities.

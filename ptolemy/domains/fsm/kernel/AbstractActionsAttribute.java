@@ -121,7 +121,7 @@ public abstract class AbstractActionsAttribute extends Action {
      *   to the container, or if the action is syntactically incorrect.
      */
     public void setExpression(String expression)
-             throws IllegalActionException {
+            throws IllegalActionException {
         super.setExpression(expression);
 
         if (expression == null) return;
@@ -144,23 +144,23 @@ public abstract class AbstractActionsAttribute extends Action {
             int equalSign = command.indexOf("=");
             if (equalSign < 1 || equalSign >= command.length()-1) {
                 throw new IllegalActionException(this,
-                "Malformed action: expected destination == expression."
-                + " Got: "
-                + command);
+                        "Malformed action: expected destination == expression."
+                        + " Got: "
+                        + command);
             }
 
             // Parse the destination specification first.
             String completeDestinationSpec
-                    = command.substring(0, equalSign).trim();
+                = command.substring(0, equalSign).trim();
             int openParen = completeDestinationSpec.indexOf("(");
             if (openParen > 0) {
                 // A channel is being specified.
                 int closeParen = completeDestinationSpec.indexOf(")");
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                    "Malformed action: expected destination == expression. "
-                    + "Got: "
-                    + command);
+                            "Malformed action: expected destination == expression. "
+                            + "Got: "
+                            + command);
                 }
                 _destinationNames.add(
                         completeDestinationSpec.substring(
@@ -171,9 +171,9 @@ public abstract class AbstractActionsAttribute extends Action {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                    "Malformed action: expected destination == expression. "
-                    + "Got: "
-                    + command);
+                            "Malformed action: expected destination == expression. "
+                            + "Got: "
+                            + command);
                 }
             } else {
                 // No channel is specified.
@@ -186,10 +186,10 @@ public abstract class AbstractActionsAttribute extends Action {
             Transition transition = (Transition)getContainer();
             // Arcane name for variable to ensure we don't get collisions.
             String variableName = "_action_"
-                    + getName()
-                    + "_"
-                    + completeDestinationSpec.replace('(', '_')
-                    .replace(')', '_').replace('.', '_');
+                + getName()
+                + "_"
+                + completeDestinationSpec.replace('(', '_')
+                .replace(')', '_').replace('.', '_');
             Variable evalVariable = null;
             if (transition == null) {
                 // Create the variable in the workspace.
@@ -232,7 +232,7 @@ public abstract class AbstractActionsAttribute extends Action {
      *   does not have a destination with the specified name.
      */
     protected abstract NamedObj _getDestination(String name)
-             throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
