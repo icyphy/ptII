@@ -977,6 +977,9 @@ public class Variable extends Attribute
                     message.append("\n-------------- and --------------\n");
                 }
             }
+            // FIXME: we need exception chaining here!  Otherwise, exceptions
+            // thrown in attributeChanged will get reported to the user as 
+            // originating here.
             throw new IllegalActionException(message.toString());
         }
         if (!_isLazy) {
