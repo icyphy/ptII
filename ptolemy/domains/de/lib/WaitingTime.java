@@ -28,6 +28,8 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
+import ptolemy.actor.lib.SequenceActor;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -44,13 +46,14 @@ next arrival of an event at <i>waitee</i>.  When one or more events arrive
 at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
 the last <i>waitee</i> (or since the start of the execution) trigger an
 output.  The value of each output is the time that the <i>waiter</i> event
-waited for <i>waitee</i>.  The inputs can be of any type.  The output
-is always a DoubleToken.
+waited for <i>waitee</i>.  The inputs are of type Token, so anything
+is acceptable.  The output is always a DoubleToken.
 
 @author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
-public class WaitingTime extends DEActor {
+public class WaitingTime extends TypedAtomicActor
+        implements SequenceActor, TimedActor {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -65,15 +68,12 @@ public class WaitingTime extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports
-        output = new DEIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(DoubleToken.class);
-        waiter = new DEIOPort(this, "waiter", true, false);
+        waiter = new TypedIOPort(this, "waiter", true, false);
         waiter.setTypeEquals(Token.class);
-        waitee = new DEIOPort(this, "waitee", true, false);
+        waitee = new TypedIOPort(this, "waitee", true, false);
         waitee.setTypeEquals(Token.class);
-        // Ensure that waiters are seen before simultaneous waitees.
-        waiter.before(waitee);
-        waitee.triggers(output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,18 +82,18 @@ public class WaitingTime extends DEActor {
     /** The output, which is always a DoubleToken representing the
      *  that a waiter waited for an input at the <i>waitee</i> input.
      */
-    public DEIOPort output;
+    public TypedIOPort output;
 
     /** An input event here waits for the next event at the <i>waitee</i>
      *  input.  The type of this port is Token, so any input is acceptable.
      */
-    public DEIOPort waiter;
+    public TypedIOPort waiter;
 
     /** An input event here triggers an output event for each <i>waiter</i>
      *  input that arrived since the last input here.  The type of this
      *  port is Token, so any input is acceptable.
      */
-    public DEIOPort waitee;
+    public TypedIOPort waitee;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
