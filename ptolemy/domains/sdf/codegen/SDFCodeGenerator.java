@@ -95,7 +95,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         new File(_packageDirectoryName).mkdirs();
 
         // write a dummy CG_Main.java file to the output package directory so
-        // that a ClassDecl stub is placed in the package environment for it
+        // that a ClassDecl stub is placed in the package scope for it
         // (this is a nasty hack)
         try {
             new File(_packageDirectoryName + "CG_Main.java").createNewFile();
