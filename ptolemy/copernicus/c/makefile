@@ -58,6 +58,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CNames.java \
+    CWriter.java \
 	CodeFileGenerator.java \
 	CodeGenerator.java \
 	Context.java \
