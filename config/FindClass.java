@@ -102,8 +102,11 @@ public class FindClass {
 
             if (foundInJavaHome) {
                 System.out.println("FindClass: '" + className + "' was found "
-                        + "in '" + jarFileURLFileName + "', which is inside "
-                        + "the java.home property (" + javaHome + ")");
+                        + "in\n      '" + jarFileURLFileName
+                        + "', which is inside the\n      " 
+                        + "java.home property (" + javaHome + ").\n      "
+                        + "Thus, it is not necessary to add jmf.jar to the "
+                        + "eclipse classpath");
             } else {
                 System.out.println(jarFileURLFileName);
             }
