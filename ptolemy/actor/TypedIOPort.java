@@ -598,9 +598,10 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    return (new InequalityTerm[0]);
         }
 
-        /** Test if the type of this TypedIOPort is set thought
-	 *  setTypeEquals().
-         *  @return True if the type of this TypedIOPort is set;
+        /** Test if the type of this TypedIOPort can be changed.
+	 *  The type can be changed if setTypeEquals() is not called,
+	 *  or called with a null argument.
+         *  @return True if the type of this TypedIOPort can be changed;
 	 *   false otherwise.
          */
         public boolean isSettable() {
@@ -610,11 +611,10 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    return false;
         }
 
-        /** Check whether the current type of this term is acceptable,
-         *  and return true if it is.  A type is acceptable
-         *  if it represents an instantiable object.  Any type is
-         *  acceptable (including non-instantiable types) if the associated
-         *  port is not connected to anything.
+        /** Check whether the current type of this port is acceptable.
+         *  A type is acceptable if it represents an instantiable object.
+	 *  Any type is acceptable (including non-instantiable types)
+	 *  if the associated port is not connected to anything.
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
