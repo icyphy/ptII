@@ -126,7 +126,6 @@ public class TimedQueueReceiver {
     public Token get() {
 	Thread thread = Thread.currentThread();
 	Token token = null;
-	// synchronized( this ) {
         Event event = (Event)_queue.take();
         if (event == null) {
             throw new NoTokenException(getContainer(),
@@ -159,7 +158,6 @@ public class TimedQueueReceiver {
                 timeKeeper.updateRcvrList(this);
             }
         }
-	// }
         return token;
     }
 
@@ -303,6 +301,19 @@ public class TimedQueueReceiver {
 	    }
 	}
         return false;
+    }
+
+    /** Reset local flags. The local flags of this receiver impact
+     *  the local notion of time of the actor that contains this
+     *  receiver.
+     */
+    public void reset() {
+        DDEDirector director = (DDEDirector)
+            ((Actor)getContainer().getContainer()).getDirector();
+	double time = director.getCurrentTime();
+	_rcvrTime = time;
+	_lastTime = time;
+	_queue = new FIFOQueue();
     }
 
     /** Set the completion time of this receiver. If the
