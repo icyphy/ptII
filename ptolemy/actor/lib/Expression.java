@@ -252,7 +252,6 @@ public class Expression extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 1;
-        _tokenMap = new HashMap();
     }
 
     /** Increment the iteration count.
@@ -281,7 +280,13 @@ public class Expression extends TypedAtomicActor {
         }
         return super.prefire();
     }
-
+    
+    /** Preinitialize this actor.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _tokenMap = new HashMap();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
