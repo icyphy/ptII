@@ -43,7 +43,7 @@ will be thrown in the method or called methods.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
 @version
- */
+*/
 public class LongArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -672,9 +672,6 @@ public class LongArrayMath {
         }
         return retval;
     }
-
-
-
 
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.

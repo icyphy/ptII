@@ -43,7 +43,7 @@ will be thrown in the method or called methods.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
 @version $Id$
- */
+*/
 public class IntegerArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -209,7 +209,8 @@ public class IntegerArrayMath {
      */
     public static final int[] bitwiseAnd(final int[] array1,
             final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseAnd");
+        int length = _commonLength(array1, array2,
+				   "IntegerArrayMath.bitwiseAnd");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
             retval[i] = array1[i] & array2[i];

@@ -969,7 +969,7 @@ public class FloatMatrixMath {
      *  error matrix may contain negative entries; the absolute value
      *  is used.
      *  More concisely, abs(M1[i, j] - M2[i, j]) must be
-     *  within [-E[i,j], E[i,j]], for 0 <= i < m and 0 <= j < n
+     *  within [-E[i, j], E[i, j]], for 0 <= i < m and 0 <= j < n
      *  where M1, M2, and E are all m x n matrices.
      *  @param matrix1 A matrix of floats.
      *  @param matrix2 A matrix of floats.

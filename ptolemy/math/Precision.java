@@ -69,7 +69,7 @@ In giving a precision, at least a single bit is required to describe
 the sign and thus the minimum precision that can be given to a
 FixPoint is equal to (1.0). Since a single bit is used, the
 FixPoint represents the numbers 0 and -1. Note that a
-precision of (2.0) represents the numbers 1, 0,-1, and -2.
+precision of (2.0) represents the numbers 1, 0, -1, and -2.
 The representation is two's complement.
 <p>
 An instance of the class is immutable, meaning

@@ -37,7 +37,7 @@ type int. This interface attempts to mimic a first-class function of
 a single variable.
 @author Jeff Tsay
 @version $Id$
- */
+*/
 public interface IntegerUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */

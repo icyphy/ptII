@@ -1199,7 +1199,8 @@ public class SignalProcessing {
      *  </pre>
      *  </p>
      */
-    public static class GaussianSampleGenerator implements DoubleUnaryOperation {
+    public static class GaussianSampleGenerator
+	implements DoubleUnaryOperation {
 
         /** Construct a GaussianSampleGenerator.
          *  @param mean The mean of the Gaussian function.

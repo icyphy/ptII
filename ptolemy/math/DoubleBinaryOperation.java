@@ -1,9 +1,6 @@
 /* A operation taking two operands of type double, and producing a value of
 type double.
 
-This file was automatically generated with a preprocessor, so that
-similar operations are supported on ints, longs, floats, and doubles.
-
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
@@ -38,9 +35,10 @@ package ptolemy.math;
 /** A operation taking two operands of type double, and producing a value of
 type double. This interface attempts to mimic a first-class function of two
 variables.
+
 @author Jeff Tsay
 @version $Id$
- */
+*/
 public interface DoubleBinaryOperation {
 
     /** Operate on the operands, returning a value of the same

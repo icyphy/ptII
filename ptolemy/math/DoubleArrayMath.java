@@ -109,7 +109,7 @@ public class DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] append(final double[] array1,
-            final int idx1, final int length1, 
+            final int idx1, final int length1,
             final double[] array2, final int idx2, final int length2) {
         double[] retval = new double[length1 + length2];
 

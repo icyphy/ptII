@@ -5,9 +5,6 @@ Some algorithms are from
  [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
     Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-This file was automatically generated with a preprocessor, so that
-similar matrix operations are supported on ints, longs, floats, and doubles.
-
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
@@ -74,12 +71,12 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  adding the second matrix to the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      *  @param matrix1 The first matrix of ints.
      *  @param matrix2 The second matrix of ints.
-     *  @return A new matrix of ints.
-     */
+     *  @return A new matrix of ints.  */
     public static final int[][] add(final int[][] matrix1,
             final int[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
@@ -140,14 +137,16 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new array that is formed by applying an instance of a
-     *  IntegerBinaryOperation to the two matrices, element by element,
-     *  using the elements of the first matrix as the left operands and the
-     *  elements of the second matrix as the right operands.
-     *  (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  If the matrices are not the same size, throw an IllegalArgumentException.
+     *  IntegerBinaryOperation to the two matrices, element by
+     *  element, using the elements of the first matrix as the left
+     *  operands and the elements of the second matrix as the right
+     *  operands.  (op.operate(matrix1[i][j], matrix2[i][j])).  If the
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[][] matrix1, final int[][] matrix2) {
+            IntegerBinaryOperation op, final int[][] matrix1,
+	    final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -180,8 +179,8 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is the formed by bitwise ANDing z with each element
-     *  of the input matrix (matrix[i][j] & z).
+    /** Return a new matrix that is the formed by bitwise ANDing z
+     *  with each element of the input matrix (matrix[i][j] & z).
      */
     public static final int[][] bitwiseAnd(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
@@ -198,9 +197,10 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise AND of the two
-     *  input matrices (matrix1[i][j] & matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+    /** Return a new array that is the element-by-element bitwise AND
+     *  of the two input matrices (matrix1[i][j] & matrix2[i][j]).  If
+     *  the two matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] bitwiseAnd(final int[][] matrix1,
             final int[][] matrix2) {
@@ -219,8 +219,8 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new array that formed by the bitwise complement of each element in
-     *  the input matrix (~matrix[i][j]).
+    /** Return a new array that formed by the bitwise complement of
+     *  each element in the input matrix (~matrix[i][j]).
      */
     public static final int[][] bitwiseComplement(final int[][] matrix) {
         int rows = _rows(matrix);
@@ -236,8 +236,9 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is the formed by bitwise ORing z with each element
-     *  of the input matrix (matrix[i][j] | z).
+    /** Return a new matrix that is the formed by bitwise ORing z with
+     *  each element of the input matrix (matrix[i][j] | z).
+
      */
     public static final int[][] bitwiseOr(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
@@ -254,9 +255,10 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise OR of the two
-     *  input matrices (matrix1[i][j] | matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+    /** Return a new array that is the element-by-element bitwise OR
+     *  of the two input matrices (matrix1[i][j] | matrix2[i][j]).  If
+     *  the two matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] bitwiseOr(final int[][] matrix1,
             final int[][] matrix2) {
@@ -275,8 +277,8 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is the formed by bitwise XORing z with each element
-     *  of the input matrix (matrix[i][j] ^ z).
+    /** Return a new matrix that is the formed by bitwise XORing z
+     *  with each element of the input matrix (matrix[i][j] ^ z).
      */
     public static final int[][] bitwiseXor(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
@@ -293,9 +295,10 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise XOR of the two
-     *  input matrices (matrix1[i][j] & matrix2[i][j]).
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+    /** Return a new array that is the element-by-element bitwise XOR
+     *  of the two input matrices (matrix1[i][j] & matrix2[i][j]).  If
+     *  the two matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] bitwiseXor(final int[][] matrix1,
             final int[][] matrix2) {
@@ -335,12 +338,11 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  second matrix.  If the two matrices are not the same size,
+     *  throw an IllegalArgumentException.
      */
     public static final int[][] divideElements(final int[][] matrix1,
             final int[][] matrix2) {
@@ -392,7 +394,6 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
@@ -404,7 +405,6 @@ public class IntegerMatrixMath {
         }
         return retval;
     }
-
 
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be
@@ -445,8 +445,8 @@ public class IntegerMatrixMath {
         }
     }
 
-    /** Return a new matrix that is constructed by computing the remainders between
-     *  each element in the matrix and z.
+    /** Return a new matrix that is constructed by computing the
+     *  remainders between each element in the matrix and z.
      */
     public static final int[][] moduloElements(final int[][] matrix,
             final int z) {
@@ -459,10 +459,11 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is constructed by computing the remainders between
-     *  each element in the first matrix argument and the corresponding element in the
-     *  second matrix argument.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+    /** Return a new matrix that is constructed by computing the
+     *  remainders between each element in the first matrix argument
+     *  and the corresponding element in the second matrix argument.
+     *  If the two matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] modulo(final int[][] matrix1,
             final int[][] matrix2) {
@@ -476,7 +477,6 @@ public class IntegerMatrixMath {
         }
         return retval;
     }
-
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
@@ -582,8 +582,9 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  multiplication of the two matrix arguments.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] multiplyElements(final int[][] matrix1,
             final int[][] matrix2) {
@@ -617,17 +618,15 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
-
-
-
     /** Return a new matrix that is constructed from the argument by
-     *  arithmetically shifting the elements in the matrix by the second argument.
-     *  If the second argument is positive, the elements are shifted left by
-     *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (arithmetically, with the >>> operator) by the absolute
-     *  value of the second argument. If the second argument is 0, no operation is
-     *  performed (the matrix is just copied).
+     *  arithmetically shifting the elements in the matrix by the
+     *  second argument.  If the second argument is positive, the
+     *  elements are shifted left by the second argument. If the
+     *  second argument is negative, the elements are shifted right
+     *  (arithmetically, with the >>> operator) by the absolute value
+     *  of the second argument. If the second argument is 0, no
+     *  operation is performed (the matrix is just copied).
+     *
      *  @param matrix A first matrix of ints.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
@@ -658,12 +657,14 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  logically shifting the elements in the matrix by the second argument.
-     *  If the second argument is positive, the elements are shifted left by
-     *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (logically, with the >> operator) by the absolute value
-     *  of the second  argument. If the second argument is 0, no operation is performed
-     *  (the matrix is just copied).
+     *  logically shifting the elements in the matrix by the second
+     *  argument.  If the second argument is positive, the elements
+     *  are shifted left by the second argument. If the second
+     *  argument is negative, the elements are shifted right
+     *  (logically, with the >> operator) by the absolute value of the
+     *  second argument. If the second argument is 0, no operation is
+     *  performed (the matrix is just copied).
+     *
      *  @param matrix A first matrix of ints.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
@@ -693,10 +694,10 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
     /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  subtracting the second matrix from the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final int[][] subtract(final int[][] matrix1,
             final int[][] matrix2) {
@@ -713,9 +714,6 @@ public class IntegerMatrixMath {
         }
         return retval;
     }
-
-
-
 
     /** Return a new matrix that is formed by converting the ints in
      *  the argument matrix to doubles.
@@ -736,7 +734,6 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
     /** Return a new matrix that is formed by converting the ints in
      *  the argument matrix to floats.
      *  @param array An matrix of int.
@@ -755,9 +752,6 @@ public class IntegerMatrixMath {
         }
         return retval;
     }
-
-
-
 
     /** Return a new matrix that is formed by converting the ints in
      *  the argument matrix to longs.
@@ -778,14 +772,15 @@ public class IntegerMatrixMath {
         return retval;
     }
 
-
     /** Return a new matrix of ints that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
      *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
      *  entries are denoted by (row, column).
      *  @param array An array of ints.
-     *  @param rows An integer representing the number of rows of the new matrix.
-     *  @param cols An integer representing the number of columns of the new matrix.
+     *  @param rows An integer representing the number of rows of the new
+     *  matrix. 
+     *  @param cols An integer representing the number of columns of the new
+     *  matrix.
      *  @return A new matrix of ints.
      */
     public static final int[][] toMatrixFromArray(int[] array, int rows,
@@ -837,7 +832,6 @@ public class IntegerMatrixMath {
 
         return new String(sb);
     }
-
 
     /** Return the trace of a square matrix, which is the sum of the
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
@@ -912,7 +906,7 @@ public class IntegerMatrixMath {
      *  error matrix may contain negative entries; the absolute value
      *  is used.
      *  More concisely, abs(M1[i, j] - M2[i, j]) must be
-     *  within [-E[i,j], E[i,j]], for 0 <= i < m and 0 <= j < n
+     *  within [-E[i, j], E[i, j]], for 0 <= i < m and 0 <= j < n
      *  where M1, M2, and E are all m x n matrices.
      *  @param matrix1 A matrix of ints.
      *  @param matrix2 A matrix of ints.
@@ -956,9 +950,10 @@ public class IntegerMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller + "() : one matrix " +
-                    _dimensionString(matrix1) +
-                    " is not the same size as another matrix " +
+                    "ptolemy.math.IntegerMatrixMath." + caller
+		    + "() : one matrix "
+                    + _dimensionString(matrix1)
+                    + " is not the same size as another matrix "
                     _dimensionString(matrix2) + ".");
         }
     }
@@ -983,8 +978,6 @@ public class IntegerMatrixMath {
     protected static final String _dimensionString(final int[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
-
-
 
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final int[][] matrix) {

@@ -38,7 +38,7 @@ variables.
 
 @author Jeff Tsay
 @version $Id$
- */
+*/
 public interface IntegerBinaryOperation {
 
     /** Operate on the operands, returning a value of the same
