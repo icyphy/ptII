@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -333,7 +334,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  yourself if you want it there). This uses the clone() method of
      *  java.lang.Object, which makes a field-by-field copy.
      *  It then adjusts the workspace reference and clones the
-     *  attributes on the attribute list, if there is one. In addition,
+     *  attributes on the attribute list, if there is one.  The attributes
+     *  are set to the attributes of the new object.  In addition,
      *  if this object has the MoML element name "class", as determined
      *  by elementName field of the associated MoMLInfo object,
      *  then the new object will not export
@@ -426,6 +428,19 @@ public class NamedObj implements Nameable, Debuggable,
                 }
                 */
             }
+            Class myClass = getClass();
+            Field fields[] = myClass.getFields();
+            for(int i = 0; i < fields.length; i++) {
+                try {
+                    if (fields[i].get(newObject) instanceof Settable) {
+                        fields[i].set(newObject,
+                                newObject.getAttribute(fields[i].getName()));
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new CloneNotSupportedException(e.getMessage() +
+                            ": " + fields[i].getName());
+                }
+            }
             return newObject;
         } finally {
             _workspace.doneReading();
@@ -492,14 +507,11 @@ public class NamedObj implements Nameable, Debuggable,
      *  the MoML description.
      *  @return A MoML description, or null if there is none.
      *  @see #exportMoML(Writer, int, String)
-     *  @deprecated use a ptolemy.moml.MoMLWriter instead.
      */
     public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
-            ptolemy.moml.MoMLWriter writer = 
-                new ptolemy.moml.MoMLWriter(buffer);
-            writer.write(this);
+            exportMoML(buffer, 0);
             return buffer.toString();
         } catch (IOException ex) {
             // This should not occur.
@@ -1423,7 +1435,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  by calling getMoMLInfo().
      *  @see NamedObj#getMoMLInfo()
      */
-    public static class MoMLInfo implements Serializable {
+    public class MoMLInfo implements Serializable {
 
         /** Construct an object with default values for the fields.
          *  @param owner The object that this describes.
