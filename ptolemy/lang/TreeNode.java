@@ -264,7 +264,7 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 String methodLabel = methodName.substring(3);
 
-                String totalprefix = nextPrefix +
+                String totalPrefix = nextPrefix +
                     _makeSpaceString(methodLabel.length()) + "  ";
 
                 sb.append(nextPrefix + " {" + methodLabel);
@@ -279,7 +279,7 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 if (retval instanceof TreeNode) {
                     TreeNode node = (TreeNode) retval;
-                    sb.append(node.toString(totalprefix) + "} \n");
+                    sb.append(node.toString(totalPrefix) + "} \n");
                 } else if (retval instanceof List) {
                     sb.append(" " +
                             TNLManip.toString((List) retval, nextPrefix) +
