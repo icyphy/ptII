@@ -140,5 +140,5 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private final static boolean _debug = true;
+    private final static boolean _debug = false;
 }
