@@ -64,8 +64,7 @@ public class StreamExecutionListener implements ExecutionListener {
      *  stream specified to the constructor.
      */
     public void executionError(Manager manager, Exception ex) {
-        _output.println("Execution error.");
-	_output.println(ex.getMessage());
+        _output.println("Execution error.\n" + ex);
         ex.printStackTrace(_output);
     }
 
