@@ -37,7 +37,7 @@ import java.io.IOException;
 //// SingletonAttribute
 /**
 This class is an attribute that replaces any previously
-existing SingletonAttribute in the container that has the same name.
+existing attribute in the container that has the same name.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -88,13 +88,10 @@ public class SingletonAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove any previous attribute in the container that has
-     *  class SingletonAttribute and the same name as this
-     *  attribute, and then call the base class method to set the container.
-     *  If the container already contains an attribute with the same name
-     *  that is not of class SingletonAttribute, then throw an
-     *  exception and do not make any changes.  Similarly, if the container
-     *  is not in the same workspace as this attribute, throw an exception.
+    /** Remove any previous attribute in the container that has the same
+     *  name as this attribute, and then call the base class method to set
+     *  the container. If the container is not in the same workspace as
+     *  this attribute, throw an exception.
      *  If this attribute is already contained by the NamedObj, do nothing.
      *  If the attribute already has a container, remove
      *  this attribute from its attribute list first.  Otherwise, remove
@@ -117,14 +114,14 @@ public class SingletonAttribute extends Attribute {
      *   the proposed container would result in recursive containment.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute that is of class
-     *   SingletonAttribute.
+     *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
         if (container != null) {
             previous = container.getAttribute(getName());
-            if (previous instanceof SingletonAttribute) {
+            if (previous != null) {
                 previous.setContainer(null);
             }
         }
@@ -132,13 +129,13 @@ public class SingletonAttribute extends Attribute {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
             // Restore previous.
-            if (previous instanceof SingletonAttribute) {
+            if (previous != null) {
                 previous.setContainer(container);
             }
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
-            if (previous instanceof SingletonAttribute) {
+            if (previous != null) {
                 previous.setContainer(container);
             }
             throw ex;

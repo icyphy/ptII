@@ -37,7 +37,7 @@ import java.io.IOException;
 //// SingletonConfigurableAttribute
 /**
 This class is a configurable attribute that replaces any previously
-existing SingletonConfigurableAttribute in the container that has the same name.
+existing attribute in the container that has the same name.
 An important use of this class is to describe icons for visual rendition.
 The icons are described in an XML schema called SVG, given in the
 body of a configure XML element.  The icon description is named
@@ -93,13 +93,10 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove any previous attribute in the container that has
-     *  class SingletonConfigurableAttribute and the same name as this
-     *  attribute, and then call the base class method to set the container.
-     *  If the container already contains an attribute with the same name
-     *  that is not of class SingletonConfigurableAttribute, then throw an
-     *  exception and do not make any changes.  Similarly, if the container
-     *  is not in the same workspace as this attribute, throw an exception.
+    /** Remove any previous attribute in the container that has the same
+     *  name as this attribute, and then call the base class method to set
+     *  the container. If the container is not in the same workspace as
+     *  this attribute, throw an exception.
      *  If this attribute is already contained by the NamedObj, do nothing.
      *  If the attribute already has a container, remove
      *  this attribute from its attribute list first.  Otherwise, remove
@@ -129,7 +126,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
         Attribute previous = null;
         if (container != null) {
             previous = container.getAttribute(getName());
-            if (previous instanceof SingletonConfigurableAttribute) {
+            if (previous != null) {
                 previous.setContainer(null);
             }
         }
@@ -137,13 +134,13 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
             // Restore previous.
-            if (previous instanceof SingletonConfigurableAttribute) {
+            if (previous != null) {
                 previous.setContainer(container);
             }
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
-            if (previous instanceof SingletonConfigurableAttribute) {
+            if (previous != null) {
                 previous.setContainer(container);
             }
             throw ex;

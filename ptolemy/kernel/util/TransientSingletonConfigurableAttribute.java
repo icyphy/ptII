@@ -49,7 +49,22 @@ in MoML.
 */
 
 public class TransientSingletonConfigurableAttribute
-    extends SingletonConfigurableAttribute {
+        extends ConfigurableAttribute {
+
+    // NOTE: This class does not extend SingletonConfigurableAttribute
+    // even though the setContainer() method is identical.  The reason
+    // is subtle.  The base classes in the Ptolemy kernel all create
+    // instances of this class with the name "_iconDescription" to
+    // give a default icon.  However, when one wishes to replace
+    // this with another icon, the natural way to do it is to create
+    // an instance of SingletonConfigurableAttribute in the MoML
+    // data that goes in the library.  However, when the MoML parser
+    // reads this MoML, it finds a pre-existing atttribute that is
+    // an instance of TransientSingletonConfigurableAttribute.
+    // If that is also an instance of SingletonConfigurableAttribute,
+    // then the MoML parser will not replace the attribute.
+    // Thus, it is important that a TransientSingletonConfigurableAttribute
+    // not be an instance of SingletonConfigurableAttribute.
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
@@ -101,5 +116,59 @@ public class TransientSingletonConfigurableAttribute
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+    }
+
+    /** Remove any previous attribute in the container that has the same
+     *  name as this attribute, and then call the base class method to set
+     *  the container. If the container is not in the same workspace as
+     *  this attribute, throw an exception.
+     *  If this attribute is already contained by the NamedObj, do nothing.
+     *  If the attribute already has a container, remove
+     *  this attribute from its attribute list first.  Otherwise, remove
+     *  it from the directory of the workspace, if it is there.
+     *  If the argument is null, then remove this attribute from its
+     *  container. It is not added to the workspace directory, so this
+     *  could result in this object being garbage collected.
+     *  <p>
+     *  Note that since an Attribute is a NamedObj, it can itself have
+     *  attributes.  However, recursive containment is not allowed, where
+     *  an attribute is an attribute of itself, or indirectly of any attribute
+     *  it contains.
+     *  <p>
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param container The container to attach this attribute to.
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute that is of class
+     *   SingletonConfigurableAttribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        Attribute previous = null;
+        if (container != null) {
+            previous = container.getAttribute(getName());
+            if (previous != null) {
+                previous.setContainer(null);
+            }
+        }
+        try {
+            super.setContainer(container);
+        } catch (IllegalActionException ex) {
+            // Restore previous.
+            if (previous != null) {
+                previous.setContainer(container);
+            }
+            throw ex;
+        } catch (NameDuplicationException ex) {
+            // Restore previous.
+            if (previous != null) {
+                previous.setContainer(container);
+            }
+            throw ex;
+        }
     }
 }
