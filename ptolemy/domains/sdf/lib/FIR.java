@@ -215,17 +215,6 @@ public class FIR extends SDFTransformer {
         }
     }
 
-    /** Override the base class to allow type changes in the taps.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == taps) {
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
      *  @param workspace The workspace for the new object.
