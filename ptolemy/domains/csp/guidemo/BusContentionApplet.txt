@@ -20,7 +20,7 @@ computation can deal with determinacy using time.
 applet is displayed on a XGA screen-->
 <center>
 <applet name="BusContentionApplet"
-   archive="ptolemy/domains/csp/guidemo/BusContentionDemo.jar, diva/diva.jar,
+   archive="ptolemy/domains/csp/guidemo/BusContentionDemo.jar, lib/diva.jar,
 	ptolemy/domains/csp/csp.jar, ptolemy/ptsupport.jar"
    code=ptolemy.domains.csp.guidemo.BusContentionApplet.class
    codebase=../../../..
