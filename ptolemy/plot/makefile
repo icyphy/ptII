@@ -567,3 +567,5 @@ update_ftp:
 	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
 	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
 	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
+	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
+	cp $(PTDIST).zip $(DIST_DIR)/ptolemy/plot/
