@@ -113,6 +113,7 @@ public class ComSystem extends SDFApplet {
             plotter.plot.setTitle("Eye Diagram");
             plotter.plot.setYRange(-1.3, 1.3);
             plotter.plot.setXLabel("Symbol intervals");
+            plotter.plot.setGrid(false);
 
             _toplevel.connect(data.output, coder.input);
             _toplevel.connect(coder.output, shaper.input);
