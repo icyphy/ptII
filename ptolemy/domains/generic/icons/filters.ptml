@@ -8,36 +8,10 @@
     <description>Generic filter icons</description>
 </header>
 
-<icon name="DEFIRfilter">
-    <entitytype name="DEFIRfilter" ports="2"/>
-    <port name="input" input="true" type="string">
-	<graphic format="tcl">
-	<tclscript>
-		-coords {0 50} -direction w
-                -style arrowtail
-	</tclscript>
-	</graphic>
-    </port>
 
-    <port name="output" input="false" type="string">
-	<graphic format="tcl">
-	<tclscript>
-		-coords {100 50} -direction e
-                -style arrowout
-	</tclscript>
-	</graphic>
-    </port>
 
-    <graphic format="tcl" color="blue">
-    <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
-    </tclscript>
-    </graphic>
-</icon>
-
-<icon name="DETestLevel">
-    <entitytype name="DETestLevel" ports="2"/>
+<icon name="FIRfilter">
+    <entitytype name="FIRfilter" ports="2"/>
     <port name="input" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
@@ -182,7 +156,33 @@
     </graphic>
 </icon>
 
+<icon name="Processor">
+    <entitytype name="Processor" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
 
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="blue">
+    <tclscript>
+	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
+         text 70 55 -text dx -fill yellow 
+    </tclscript>
+    </graphic>
+</icon>
 
 <icon name="ZeroOrderHold">
     <entitytype name="ZeroOrderHold" ports="2"/>
@@ -232,6 +232,84 @@
 
     <graphic format="tcl">
     <tclscript>
+    </tclscript>
+    </graphic>
+</icon>
+
+<icon name="Statistics">
+    <entitytype name="Statistic" ports="5"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="demand" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="reset" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="average" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="variance" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+    <graphic format="tcl" color="blue">
+    <tclscript>
+	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
+         text 70 55 -text dx -fill yellow 
+    </tclscript>
+    </graphic>
+</icon>
+
+<icon name="TestLevel">
+    <entitytype name="TestLevel" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="blue">
+    <tclscript>
+	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
+         text 70 55 -text dx -fill yellow 
     </tclscript>
     </graphic>
 </icon>
