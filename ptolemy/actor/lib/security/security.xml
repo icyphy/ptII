@@ -32,7 +32,7 @@
 	</entity>  	  
 
 	<entity name="KeyReader"
-"	        class="ptolemy.actor.lib.security.KeyReader">
+	        class="ptolemy.actor.lib.security.KeyReader">
 	  <doc>Read a key public or private key from a key store
 	   and output it.</doc>
 	</entity>  	  
