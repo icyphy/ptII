@@ -32,7 +32,7 @@ import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
-//// DoubleToken
+//// ComplexToken
 /**
 A token that contains a Complex.
 <p>
@@ -86,7 +86,7 @@ public class ComplexToken extends ScalarToken {
     public Token add(Token token)
 	    throws IllegalActionException {
 
-        int compare = TypeCPO.compare(this, token);
+        int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             String msg = "add method not supported between " +
                          this.getClass().getName() + " and " +
@@ -113,7 +113,7 @@ public class ComplexToken extends ScalarToken {
     public Token addR(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(this, token);
+	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
                 + "token " + token.getClass().getName() + " is not lower than "
@@ -147,7 +147,7 @@ public class ComplexToken extends ScalarToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new ComplexToken(), token);
+	int compare = TypeLattice.compare(new ComplexToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
 	    	"type of argument: " + token.getClass().getName() +
@@ -159,7 +159,7 @@ public class ComplexToken extends ScalarToken {
 	    return token;
 	}
 
-	compare = TypeCPO.compare(new DoubleToken(), token);
+	compare = TypeLattice.compare(new DoubleToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    DoubleToken doubletoken = (DoubleToken)DoubleToken.convert(token);
 	    return new ComplexToken(doubletoken.complexValue());
@@ -187,7 +187,7 @@ public class ComplexToken extends ScalarToken {
      */
     public Token divide(Token divisor)
 	    throws IllegalActionException {
-        int compare = TypeCPO.compare(this, divisor);
+        int compare = TypeLattice.compare(this, divisor);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.divide: " +
                 "type of argument: " + divisor.getClass().getName() +
@@ -215,7 +215,7 @@ public class ComplexToken extends ScalarToken {
      */
     public Token divideR(Token dividend)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, dividend);
+	int compare = TypeLattice.compare(this, dividend);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the dividend "
                 + dividend.getClass().getName() + " is not lower than "
@@ -239,7 +239,7 @@ public class ComplexToken extends ScalarToken {
      */
     public BooleanToken equals(Token token)
 	     throws IllegalActionException {
-        int compare = TypeCPO.compare(this, token);
+        int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.eauals: " +
                 "type of argument: " + token.getClass().getName() +
@@ -284,7 +284,7 @@ public class ComplexToken extends ScalarToken {
     public Token multiply(Token token)
 	    throws IllegalActionException {
 
-        int compare = TypeCPO.compare(this, token);
+        int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             String msg = "multiply method not supported between " +
                          this.getClass().getName() + " and " +
@@ -311,7 +311,7 @@ public class ComplexToken extends ScalarToken {
     public Token multiplyR(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(this, token);
+	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("Complex.multiplyR: The type "
 		+ "of the specified token " + token.getClass().getName()
@@ -352,7 +352,7 @@ public class ComplexToken extends ScalarToken {
      */
     public Token subtract(Token rightArg)
 	    throws IllegalActionException {
-        int compare = TypeCPO.compare(this, rightArg);
+        int compare = TypeLattice.compare(this, rightArg);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.subtract: " +
                 "type of argument: " + rightArg.getClass().getName() +
@@ -381,7 +381,7 @@ public class ComplexToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, leftArg);
+	int compare = TypeLattice.compare(this, leftArg);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
                 + "token " + leftArg.getClass().getName() + " is not lower "

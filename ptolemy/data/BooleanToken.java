@@ -73,7 +73,7 @@ public class BooleanToken extends Token {
      *  @return A new Token containing the result.
      */
     public Token add(ptolemy.data.Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+        int typeInfo = TypeLattice.compare(this, tok);
         try {
             if (typeInfo == CPO.LOWER) {
                 return tok.addR(this);
@@ -103,7 +103,7 @@ public class BooleanToken extends Token {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new BooleanToken(), token);
+	int compare = TypeLattice.compare(new BooleanToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
 	    	"type of argument: " + token.getClass().getName() +

@@ -200,7 +200,7 @@ public class TypedIOPort extends IOPort {
                 throw new NoRoomException(this,
                         "send: channel index is out of range.");
             }
-	    int compare = TypeCPO.compare(token.getClass(), _resolvedType);
+	    int compare = TypeLattice.compare(token.getClass(), _resolvedType);
 	    if (compare == CPO.HIGHER ||
 		compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException("send: token cannot be " +
@@ -280,7 +280,7 @@ public class TypedIOPort extends IOPort {
     // FIXME: this method may want to inform its director about this
     // change.
     public void setDeclaredType(Class c) {
-	if (c != null && !(TypeCPO.isInstantiableType(c))) {
+	if (c != null && !(TypeLattice.isInstantiableType(c))) {
 	    throw new IllegalArgumentException(
 		    "TypedIOPort.setDeclaredType: argument is not " +
 		    "a non-abstract token type, or null.");
@@ -304,11 +304,12 @@ public class TypedIOPort extends IOPort {
     ////                         protected methods                 ////
 
     /** Set the resolved type of this port.  The type is represented
-     *  by an instance of Class that is an element in the type CPO.
+     *  by an instance of Class that is an element in the type lattice.
      *  This method is write-synchronized on the workspace.
      *  Note that this method should not be used directly. It should
      *  only be used by the type resolution algorithm.
-     *  @param type an instance of Class that is an element in the type CPO.
+     *  @param type an instance of Class that is an element in the type
+     *   lattice.
      */
     protected void setResolvedType(Class c) {
 	try {

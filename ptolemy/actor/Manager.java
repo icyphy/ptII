@@ -321,7 +321,8 @@ public final class Manager extends NamedObj {
                 	((TypedCompositeActor)toplevel).typeConstraints();
 
 	    if (constraints.hasMoreElements()) {
-                InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
+                InequalitySolver solver = new InequalitySolver(
+						TypeLattice.lattice());
 	        while (constraints.hasMoreElements()) {
                     Inequality ineq = (Inequality)constraints.nextElement();
                     solver.addInequality(ineq);
@@ -353,7 +354,7 @@ public final class Manager extends NamedObj {
 		    TypeTerm term = (TypeTerm)var.nextElement();
 		    TypedIOPort port = term.getPort();
 		    Class type = port.getResolvedType();
-		    if ( !TypeCPO.isInstantiableType(type)) {
+		    if ( !TypeLattice.isInstantiableType(type)) {
 		        conflicts.insertLast(port);
 		    }
 	        }

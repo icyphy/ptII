@@ -87,7 +87,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token add(ptolemy.data.Token rightArg) 
             throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, rightArg);
+        int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.addR(this);
@@ -151,7 +151,7 @@ public class DoubleToken extends ScalarToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new DoubleToken(), token);
+	int compare = TypeLattice.compare(new DoubleToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
 	    	"type of argument: " + token.getClass().getName() +
@@ -163,7 +163,7 @@ public class DoubleToken extends ScalarToken {
 	    return token;
 	}
 
-	compare = TypeCPO.compare(new IntToken(), token);
+	compare = TypeLattice.compare(new IntToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    IntToken inttoken = (IntToken)IntToken.convert(token);
 	    return new DoubleToken(inttoken.doubleValue());
@@ -183,7 +183,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token divide(Token divisor) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, divisor);
+        int typeInfo = TypeLattice.compare(this, divisor);
         try {
             if (typeInfo == CPO.LOWER) {
                 return divisor.divideR(this);
@@ -237,7 +237,7 @@ public class DoubleToken extends ScalarToken {
      *  @return BooleanToken indicating whether the values are equal.
      */
     public BooleanToken equals(Token token) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, token);
+        int typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
                 return token.equals(this);
@@ -281,7 +281,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token modulo(Token rightArg) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, rightArg);
+        int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.moduloR(this);
@@ -332,7 +332,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, rightFactor);
+        int typeInfo = TypeLattice.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightFactor.multiplyR(this);
@@ -398,7 +398,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token subtract(Token rightArg) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, rightArg);
+        int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.subtractR(this);

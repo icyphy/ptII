@@ -78,7 +78,7 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token add(Token token) throws IllegalActionException {
-        long typeInfo = TypeCPO.compare(this, token);
+        long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
                 return token.addR(this);
@@ -131,7 +131,7 @@ public class LongToken extends ScalarToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new LongToken(), token);
+	int compare = TypeLattice.compare(new LongToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongToken.convert: " +
 	    	"type of argument: " + token.getClass().getName() +
@@ -143,7 +143,7 @@ public class LongToken extends ScalarToken {
 	    return token;
 	}
 
-	compare = TypeCPO.compare(new IntToken(), token);
+	compare = TypeLattice.compare(new IntToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    IntToken inttoken = (IntToken)IntToken.convert(token);
 	    return new LongToken(inttoken.longValue());
@@ -162,7 +162,7 @@ public class LongToken extends ScalarToken {
      *  @return BooleanToken indicating whether the values are equal.
     */
     public BooleanToken equals(Token token) throws IllegalActionException {
-        long typeInfo = TypeCPO.compare(this, token);
+        long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
                 return token.equals(this);
@@ -211,7 +211,7 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token modulo(Token token) throws IllegalActionException {
-        long typeInfo = TypeCPO.compare(this, token);
+        long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
                 return token.moduloR(this);
@@ -261,7 +261,7 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
-        long typeInfo = TypeCPO.compare(this, rightFactor);
+        long typeInfo = TypeLattice.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightFactor.multiplyR(this);
@@ -325,7 +325,7 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     public Token subtract(Token rightArg) throws IllegalActionException {
-        long typeInfo = TypeCPO.compare(this, rightArg);
+        long typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.subtractR(this);

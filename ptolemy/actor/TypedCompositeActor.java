@@ -394,7 +394,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    	Class inDeclared = inport.getDeclaredType();
 	    	if (outDeclared != null && inDeclared != null) {
 		    // both in/out ports are declared, check type
-		    int compare = TypeCPO.compare(outDeclared, inDeclared);
+		    int compare = TypeLattice.compare(outDeclared, inDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
 		    	result.insertLast(outport);
 		    	result.insertLast(inport);

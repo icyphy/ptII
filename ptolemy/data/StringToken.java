@@ -76,7 +76,7 @@ public class StringToken extends Token {
      *  @return A new StringToken containing the result.
      */
     public Token add(Token token) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, token);
+        int typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.HIGHER) {
                 StringToken tmp = (StringToken)this.convert(token);
@@ -128,7 +128,7 @@ public class StringToken extends Token {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new StringToken(), token);
+	int compare = TypeLattice.compare(new StringToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("StringToken.convert: " +
                 "type of argument: " + token.getClass().getName() +

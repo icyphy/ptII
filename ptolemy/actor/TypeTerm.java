@@ -69,7 +69,7 @@ public class TypeTerm implements InequalityTerm {
      *   a token type.
      */
     public TypeTerm(Class type) {
-        if ( !TypeCPO.isAType(type)) {
+        if ( !TypeLattice.isAType(type)) {
             throw new IllegalArgumentException("TypeTerm: argument is not " +
                     "an acceptable type.");
         }

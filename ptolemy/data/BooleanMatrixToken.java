@@ -93,7 +93,7 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public Token add(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE || compare == CPO.HIGHER ||
 	    compare == CPO.SAME) {
             String msg = "add method not supported between " +
@@ -121,7 +121,7 @@ public class BooleanMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new BooleanMatrixToken(), token);
+	int compare = TypeLattice.compare(new BooleanMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("BooleanMatrixToken.convert: " +
                 "type of argument: " + token.getClass().getName() +
@@ -134,7 +134,7 @@ public class BooleanMatrixToken extends MatrixToken {
 	}
 
 	// try boolean
-	compare = TypeCPO.compare(new BooleanToken(), token);
+	compare = TypeLattice.compare(new BooleanToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    BooleanToken tem = (BooleanToken)BooleanToken.convert(token);
 	    boolean[][] result = new boolean[1][1];
@@ -160,7 +160,7 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public BooleanToken equals(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
 	     compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +

@@ -79,7 +79,7 @@ public class ObjectToken extends Token {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new ObjectToken(), token);
+	int compare = TypeLattice.compare(new ObjectToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("ObjectToken.convert: " +
 	    	"type of argument: " + token.getClass().getName() +

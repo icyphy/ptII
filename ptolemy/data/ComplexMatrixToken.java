@@ -104,7 +104,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token add(Token t)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
 			 this.getClass().getName() + " and " +
@@ -155,7 +155,7 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token addR(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
 	    throw new IllegalActionException("The type of the specified "
 		+ "token " + t.getClass().getName() + " is not lower than "
@@ -195,7 +195,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new ComplexMatrixToken(), token);
+	int compare = TypeLattice.compare(new ComplexMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("ComplexMatrixToken.convert: " +
                 "type of argument: " + token.getClass().getName() +
@@ -208,7 +208,7 @@ public class ComplexMatrixToken extends MatrixToken {
 	}
 
 	// try Complex
-	compare = TypeCPO.compare(new ComplexToken(), token);
+	compare = TypeLattice.compare(new ComplexToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    Complex[][] result = new Complex[1][1];
 	    ComplexToken tem = (ComplexToken)ComplexToken.convert(token);
@@ -217,7 +217,7 @@ public class ComplexMatrixToken extends MatrixToken {
 	}
 
 	// try DoubleMatrix
-	compare = TypeCPO.compare(new DoubleMatrixToken(), token);
+	compare = TypeLattice.compare(new DoubleMatrixToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    DoubleMatrixToken tem =
 			(DoubleMatrixToken)DoubleMatrixToken.convert(token);
@@ -245,7 +245,7 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public BooleanToken equals(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
 	     compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +

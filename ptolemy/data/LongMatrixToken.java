@@ -102,7 +102,7 @@ public class LongMatrixToken extends MatrixToken {
     public Token add(Token t)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
 			 this.getClass().getName() + " and " +
@@ -152,7 +152,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public Token addR(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
 	    throw new IllegalActionException("The type of the specified "
 		+ "token " + t.getClass().getName() + " is not lower than "
@@ -178,7 +178,7 @@ public class LongMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeCPO.compare(new LongMatrixToken(), token);
+	int compare = TypeLattice.compare(new LongMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongMatrixToken.convert: " +
                 "type of argument: " + token.getClass().getName() +
@@ -191,7 +191,7 @@ public class LongMatrixToken extends MatrixToken {
 	}
 
 	// try long
-	compare = TypeCPO.compare(new LongToken(), token);
+	compare = TypeLattice.compare(new LongToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    LongToken tem = (LongToken)LongToken.convert(token);
 	    long[][] result = new long[1][1];
@@ -200,7 +200,7 @@ public class LongMatrixToken extends MatrixToken {
 	}
 
 	// try IntMatrix
-	compare = TypeCPO.compare(new IntMatrixToken(), token);
+	compare = TypeLattice.compare(new IntMatrixToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    IntMatrixToken tem = (IntMatrixToken)IntMatrixToken.convert(token);
 	    long[][] result = tem.longMatrix();
@@ -227,7 +227,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public BooleanToken equals(Token t)
 	    throws IllegalActionException {
-	int compare = TypeCPO.compare(this, t);
+	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
 	     compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
