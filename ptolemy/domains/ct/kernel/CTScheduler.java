@@ -417,7 +417,7 @@ public class CTScheduler extends Scheduler {
                             (!(actor instanceof CTCompositeActor)))) {
                 throw new NotSchedulableException((Nameable)actor,
                         " is in the continuous cluster, but it is a " 
-                        + " sequence or discrete actor.");
+                        + "sequence or discrete actor.");
             }
             continuousActorSchedule.add(new Firing(actor));
         }
