@@ -32,11 +32,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 import java.awt.Point;
 import java.awt.color.ColorSpace;
@@ -57,10 +62,14 @@ import javax.media.jai.TiledImage;
 //// DoubleMatrixToJAI
 /**
    Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
-   single-banded grayscale image.  If the image is to be displayed or saved
-   after this actor, the data should be formatted to type byte by using
-   the JAIDataCaster actor.
+   single-banded grayscale image.  To assemble multiple band's into one
+   image, use the BandCombine operator on each image and add them 
+   together.  
 
+   If the data was previously normalized, then the data can be rescaled
+   to whichever non-floating data type is chosen.
+
+   @see JAIBandCombine
    @see JAIDataCaster
    @see JAIToDoubleMatrix
    @author James Yeh
@@ -81,8 +90,67 @@ public class DoubleMatrixToJAI extends Transformer {
     public DoubleMatrixToJAI(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        dataFormat = new StringAttribute(this, "dataFormat");
+        dataFormat.setExpression("byte");
+        _dataFormat = _BYTE;
+
+        scale = new Parameter(this, "scale");
+        scale.setTypeEquals(BaseType.BOOLEAN);
+        scale.setToken(BooleanToken.TRUE);
+        
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.OBJECT);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    
+    /** The type to cast the data to.  This is a string valued
+     *  attribute that defaults to "byte".
+     */
+    public StringAttribute dataFormat;
+    
+    /** This parameter indicates whether to scale the data or not.
+     *  This should only be checked if the data was normalized in
+     *  the first place.  The default value is true.
+     */
+    public Parameter scale;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Override the base class and determine the data type to format
+     *  the data to, as well as whether to scale the data.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the base class throws it,
+     *  or if the data type is not recognized.
+     */
+    
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == dataFormat) {
+            String dataFormatName = dataFormat.getExpression();
+            if (dataFormatName.equals("byte")) {
+                _dataFormat = _BYTE;
+            } else if (dataFormatName.equals("double")) {
+                _dataFormat = _DOUBLE;
+            } else if (dataFormatName.equals("float")) {
+                _dataFormat = _FLOAT;
+            } else if (dataFormatName.equals("int")) {
+                _dataFormat = _INT;
+            } else if (dataFormatName.equals("short")) {
+                _dataFormat = _SHORT;
+            } else if (dataFormatName.equals("ushort")) {
+                _dataFormat = _USHORT;
+            } else {
+                throw new IllegalActionException(this,
+                        "Unrecognized data type: " + dataFormatName);
+            }
+        } else if (attribute == scale) {
+            _scale = ((BooleanToken)scale.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Fire this actor.
@@ -98,14 +166,47 @@ public class DoubleMatrixToJAI extends Transformer {
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
         double newdata[] = new double[width*height];
-
-        // Convert the matrix of doubles into an array of doubles
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                newdata[i*height + j] = data[i][j];
+        _maxValue = 1;
+        _minValue = 0;
+        if(_scale && (_dataFormat != _DOUBLE) && (_dataFormat != _FLOAT)) {
+            switch(_dataFormat) {
+            case _BYTE:
+                _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;
+                _minValue = 0;
+                break;
+            case _INT:
+                _maxValue = (double)Integer.MAX_VALUE;
+                _minValue = (double)Integer.MIN_VALUE;
+                break;
+            case _SHORT:
+                _maxValue = (double)Short.MAX_VALUE;
+                _minValue = (double)Short.MIN_VALUE;
+                break;
+            case _USHORT:
+                _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
+                _minValue = 0;
+                break;
+            default:
+                throw new InternalErrorException(
+                        "Invalid value for _dataFormat private variable. "
+                        + "JAIDataCaster actor (" + getFullName()
+                        + ")"
+                        + " on data type " + _dataFormat);
+            }
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    newdata[i*height + j] = 
+                        data[i][j]*(_maxValue - _minValue) + _minValue;
+                }
+            }
+        } else {
+            // Convert the matrix of doubles into an array of doubles
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    newdata[i*height + j] = data[i][j];
+                }
             }
         }
-
         // Create a new dataBuffer from the array of doubles
         DataBufferDouble dataBuffer =
             new DataBufferDouble(newdata, width*height);
@@ -141,8 +242,66 @@ public class DoubleMatrixToJAI extends Transformer {
         tiledImage.setData(raster);
         ParameterBlock parameters = new ParameterBlock();
         parameters.addSource(tiledImage);
-        parameters.add(DataBuffer.TYPE_DOUBLE);
+        switch(_dataFormat) {
+        case _BYTE:
+            parameters.add(DataBuffer.TYPE_BYTE);
+            break;
+        case _DOUBLE:
+            parameters.add(DataBuffer.TYPE_DOUBLE);
+            break;
+        case _FLOAT:
+            parameters.add(DataBuffer.TYPE_FLOAT);
+            break;
+        case _INT:
+            parameters.add(DataBuffer.TYPE_INT);
+            break;
+        case _SHORT:
+            parameters.add(DataBuffer.TYPE_SHORT);
+            break;
+        case _USHORT:
+            parameters.add(DataBuffer.TYPE_USHORT);
+            break;
+        default:
+            throw new InternalErrorException(
+                    "Invalid value for _dataFormat private variable. "
+                    + "JAIDataCaster actor (" + getFullName()
+                    + ")"
+                    + " on data type " + _dataFormat);
+        }
         RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** An indicator for the data type to format to. */
+    private int _dataFormat;
+    
+    /** Double representation of the highest value possible for the
+     *  internal data type.
+     */
+    private double _maxValue;
+    
+    /** Double representation of the lowest value possible for the
+     *  internal data type.
+     */    
+    private double _minValue;
+
+    /** Flag determining whether or not to scale the data */
+    private boolean _scale;
+
+    // Constants used for more efficient execution.
+    private static final int _BYTE = 0;
+    private static final int _DOUBLE = 1;
+    private static final int _FLOAT = 2;
+    private static final int _INT = 3;
+    private static final int _SHORT = 4;
+    private static final int _USHORT = 5;
 }
+
+
+
+
+
+

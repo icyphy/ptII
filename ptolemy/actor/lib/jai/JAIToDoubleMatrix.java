@@ -32,14 +32,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
+import java.lang.Byte;
+import java.lang.Integer;
+import java.lang.Short;
 
 import javax.media.jai.RenderedOp;
 
@@ -52,6 +58,11 @@ import javax.media.jai.RenderedOp;
    To convert multiple banded images (for instance, color images or the
    output of a Discrete Fourier Transform), use either the BandSelect or
    BandCombine actors to seperate the bands.
+
+   The normalize parameter allows non floating point data types to be
+   normalized when the token is converted.  The normalization that 
+   occurs is a mapping between the lowest and highest value's of the
+   data type into the double values of 0 and 1.
 
    @see DoubleMatrixToJAI
    @see JAIBandSelect
@@ -74,8 +85,40 @@ public class JAIToDoubleMatrix extends Transformer {
     public JAIToDoubleMatrix(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        normalize = new Parameter(this, "normalize");
+        normalize.setTypeEquals(BaseType.BOOLEAN);
+        normalize.setToken(BooleanToken.TRUE);
+
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** This parameter indicates whether to normalize or not.  This
+     *  only should be checked for non-floating point data-types.
+     *  The default value is true.
+     */
+    public Parameter normalize;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Override the base class and determine whether the user wants to
+     *  normalize the data.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == normalize) {
+            _normalize = ((BooleanToken)normalize.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Fire this actor.
@@ -90,13 +133,72 @@ public class JAIToDoubleMatrix extends Transformer {
         int width = jaiImage.getWidth();
         Raster raster = jaiImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
-        //Construct a matrix of doubles.
         double data[][] = new double[width][height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                data[i][j] = dataBuffer.getElemDouble(i*height + j);
+        _type = dataBuffer.getDataType();
+        if (_normalize) {
+            switch(_type) {
+            case DataBuffer.TYPE_BYTE:
+                _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;
+                _minValue = 0;
+                break;
+            case DataBuffer.TYPE_INT:
+                _maxValue = (double)Integer.MAX_VALUE;
+                _minValue = (double)Integer.MIN_VALUE;
+                break;
+            case DataBuffer.TYPE_SHORT:
+                _maxValue = (double)Short.MAX_VALUE;
+                _minValue = (double)Short.MIN_VALUE;
+                break;
+            case DataBuffer.TYPE_USHORT:
+                _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
+                _minValue = 0;
+                break;
+            default:
+                throw new IllegalActionException("Data type not suitable for "
+                        + "normalizing");
+            }
+            if(_debugging) {
+                _debug("max value is " + _maxValue);
+                _debug("min value is " + _minValue);
+            }
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    data[i][j] = 
+                        (dataBuffer.getElemDouble(i*height + j) - _minValue)/
+                        (_maxValue - _minValue);
+                }
+            }
+        } else {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                }
             }
         }
+        DoubleMatrixToken matrixToken = new DoubleMatrixToken(data);
         output.send(0, new DoubleMatrixToken(data));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Double representation of the highest value possible for the
+     *  internal data type.
+     */
+    private double _maxValue;
+    
+    /** Double representation of the lowest value possible for the
+     *  internal data type.
+     */
+    private double _minValue;
+
+    /** Flag determining whether or not to normalize. */
+    private boolean _normalize;
+    
+    /** Type determinator for the internal data. */
+    private int _type;
 }
+
+
+
+
