@@ -20,6 +20,7 @@ CVS
 */TAGS
 */tags
 adm
+alljsimpletests.tcl
 brass
 collections
 config/*.class
@@ -41,16 +42,18 @@ nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
 ptolemy/actor/corba
-ptolemy/actor/gui/test/CompositeActorApplication.tcl
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/javasound/test/pitchshift
+ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/net/test_auto
+ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/apps
 ptolemy/automata
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/com
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
+ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/*/cg
@@ -78,8 +81,8 @@ ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
-ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/giotto/demo/Legiotto
+ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
@@ -91,10 +94,10 @@ ptolemy/domains/rtos
 ptolemy/domains/rtp
 ptolemy/domains/sc
 ptolemy/domains/sdf/demo/FixPointSystem
-ptolemy/domains/sdf/demo/Sketch
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
+ptolemy/kernel/test/TestSerializable.data
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
@@ -104,6 +107,8 @@ ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
 ptolemy/media/SoundCapture.java
 ptolemy/media/SoundCapture.class
+ptolemy/media/test/array.au
+ptolemy/media/test/tmp2.au
 ptolemy/moml/test/compat
 ptolemy/moml/test/compatDemo
 ptolemy/plot/adm
@@ -114,6 +119,7 @@ ptolemy/system
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
 ptolemy/vergil/graph
+ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 updateMoMLFiles.xml
 devel
 htmlchek*
