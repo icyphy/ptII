@@ -87,12 +87,10 @@ public class HysteresisApplet extends SDFApplet {
           
 	    // Create and configure noise source
             Gaussian noise = new Gaussian(_toplevel, "noise");
-            noise.standardDeviation.setToken(new DoubleToken(0.1));
+            noise.standardDeviation.setToken(new DoubleToken(0.2));
 
             // Create the adder.
-            AddSubtractBroad add = new AddSubtractBroad(_toplevel, "add");
-	    // Make it a multiport so can connect to plotter and tempAct.
-	    add.output.setMultiport(true);
+            AddSubtract add = new AddSubtract(_toplevel, "add");
 
             // Create and configure hystplotter
             SequencePlotter hystplotter = new SequencePlotter(_toplevel, "plot1");
@@ -106,11 +104,11 @@ public class HysteresisApplet extends SDFApplet {
             hystplotter.plot.setBackground(getBackground());
             hystplotter.plot.setGrid(false);
             hystplotter.plot.setTitle("Plot");
-            hystplotter.plot.setXRange(0.0, 150.0);
+            hystplotter.plot.setXRange(0.0, 200.0);
             hystplotter.plot.setWrap(true);
             hystplotter.plot.setYRange(-1.3, 1.3);
             hystplotter.plot.setMarksStyle("none");
-            hystplotter.plot.setPointsPersistence(150);
+            hystplotter.plot.setPointsPersistence(200);
 
 	    // Create and configure the SDF test acotor which refines
 	    // to a FSM.	    
@@ -300,14 +298,16 @@ public class HysteresisApplet extends SDFApplet {
 
 	    //////////
             _toplevel.connect(rampSig.output, sineSig.input);
-	    // FIXME: why not refer to inPort as tempAct.inPort?
-            //_toplevel.connect(sineSig.output, tempActInPort);
-	     _toplevel.connect(sineSig.output, add.plus);
-	     _toplevel.connect(noise.output, add.plus);
-	    _toplevel.connect(add.output, tempActInPort);
+	    _toplevel.connect(sineSig.output, add.plus);
+	    _toplevel.connect(noise.output, add.plus);
+	    
 	    _toplevel.connect(tempActOutPort, hystplotter.input);
-	    // _toplevel.connect(add.output, inputplotter.input);
-	    _toplevel.connect(add.output, hystplotter.input);
+
+	    TypedIORelation noisyRel =
+		(TypedIORelation)_toplevel.newRelation("noisyRel");
+	    (add.output).link(noisyRel);
+	    (tempActInPort).link(noisyRel);
+	    (hystplotter.input).link(noisyRel);
            
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -315,5 +315,5 @@ public class HysteresisApplet extends SDFApplet {
     }
 
     // Number of iterations to run refining SDF graphs.
-    int iterations = 150;
+    int iterations = 200;
 }
