@@ -122,14 +122,12 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
-	if (_configuration != null ) {
-	    // NOTE: The following requires that the configuration be
-	    // non-null, or it will report an error.
+	// NOTE: The following requires that the configuration be
+	// non-null, or it will report an error.
 
-	    // "Look Inside"
-	    _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new LookInsideAction()));
-	}
+	// "Look Inside"
+	_menuFactory.addMenuItemFactory(
+		new MenuActionFactory(new LookInsideAction()));
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(
