@@ -70,6 +70,7 @@ JSRCS = \
 	EventToken.java \
 	FixMatrixToken.java \
 	FixToken.java \
+        Function.java \
         FunctionToken.java \
 	ImageToken.java \
 	IntMatrixToken.java \

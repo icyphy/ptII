@@ -149,41 +149,5 @@ public class FunctionToken extends Token {
 
     // The type of this function.
     private FunctionType _type;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** The interface for functions contained by function tokens.
-     */
-    public interface Function {
-
-        /** Apply the function to the list of arguments, which are tokens.
-         *  @param arguments The list of arguments.
-         *  @return The result of applying the function to the given
-         *   arguments.
-         *  @exception IllegalActionException If thrown during evaluating
-         *   the function.
-         */
-        public Token apply(Token[] arguments) throws IllegalActionException;
-
-        /** Return the number of arguments of the function.
-         *  @return The number of arguments of the function.
-         */
-        public int getNumberOfArguments();
-
-        /** Return true if this function is congruent to the given
-         *  function.  Classes should implement this method so that
-         *  two functions are congruent under any renaming of the
-         *  bound variables of the function.  For simplicity, a
-         *  function need only be congruent to other functions of the
-         *  same class.
-         *  @param function The function to check congruency against.
-         */
-        public boolean isCongruent(Function function);
-
-        /** Return a string representation
-         */
-        public String toString();
-    }
 }
 
