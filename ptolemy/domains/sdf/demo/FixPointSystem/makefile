@@ -41,8 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	FixPointSystem.java \
-	Pass12.java
+	FixPointSystem.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	FixPointSystem.htm

@@ -112,8 +112,6 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             _query.addQueryListener(this);
             getContentPane().add( _query );
 
-            // Pass12 copy = new Pass12(_toplevel,"copy");
-	    
             // Create and configure data source
 	    _ramp = new Ramp(_toplevel, "ramp");
 	    _ramp.step.setToken(new DoubleToken(0.1));
