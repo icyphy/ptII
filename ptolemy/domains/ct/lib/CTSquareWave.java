@@ -39,7 +39,7 @@ import java.lang.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTSquareWave
 /**
-    FIXME: Not consider break points yet.
+FIXME: This class may be replaced by the domain polymorphic TimedPulse.
 A square wave source. The actor will regist a discontinuity to the
 director when the jump occurs. Single output source (Output type:double).
 
@@ -81,7 +81,7 @@ public class CTSquareWave extends CTActor {
     ////                         public methods                    ////
 
 
-    /** Initalize the actor, start the waveform from the start time,
+    /** Initialize the actor, start the waveform from the start time,
      *  and the first output is min-level.
      *
      *  @exception IllegalActionException If there's no director or no
@@ -97,7 +97,7 @@ public class CTSquareWave extends CTActor {
         _isMin = ((BooleanToken)StartFromMin.getToken()).booleanValue();
     }
 
-    /** Always returns true. If the currentTime is greate than lastFlipTime
+    /** Always returns true. If the currentTime is great than lastFlipTime
      *  + _halfPeriod, then flip, and reset lastFlipTime.
      */
     public boolean prefire() throws IllegalActionException{
@@ -152,7 +152,7 @@ public class CTSquareWave extends CTActor {
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
-     *  FIXME: default values? negative frquency?
+     *  FIXME: default values? negative frequency?
      *  @exception IllegalActionException If the frequency id negative.
      */
     public synchronized void updateParams() throws IllegalActionException{
@@ -189,7 +189,7 @@ public class CTSquareWave extends CTActor {
      */
     public Parameter MinValue;
 
-    /** Parameter for the frequency of the squarewave; the type is double;
+    /** Parameter for the frequency of the square wave; the type is double;
      *  the default value is 1.0.
      */
     public Parameter Frequency;

@@ -112,7 +112,7 @@ public class CTZeroCrossingDetector extends CTActor
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Emit the event at current time id there is any. There will be no
+    /** Emit the event at current time if there is any. There will be no
      *  current event after emitting it. If there is no current event,
      *  do nothing.
      *  @exception IllegalActionException If the event cannot be broadcasted.
@@ -149,7 +149,7 @@ public class CTZeroCrossingDetector extends CTActor
     /** Set up parameters and internal state, so that it has no history
      *  before the first firing.
      *  
-     *  @exceptin IllegalActionException If thrown by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -163,7 +163,7 @@ public class CTZeroCrossingDetector extends CTActor
      *  cross the zero threshold, this step is not successful. 
      *  A special case is taken care such that if the history trigger
      *  and the current trigger are both zero, then no new event is
-     *  tiggered. If this step crosses zero, then the refined integration
+     *  triggered. If this step crosses zero, then the refined integration
      *  step size is computed.
      */
     public boolean isThisStepSuccessful() {
@@ -203,7 +203,7 @@ public class CTZeroCrossingDetector extends CTActor
         }
     }
 
-    /** Make the current trigger token the history tigger token. Prepare
+    /** Make the current trigger token the history trigger token. Prepare
      *  for the next iteration.
      *  @return True always.
      */
@@ -270,7 +270,7 @@ public class CTZeroCrossingDetector extends CTActor
     // flag indicating if there is an event at the current time. 
     private boolean _eventNow = false;
 
-    // flag indicating if this is the firt iteration in the execution,
+    // flag indicating if this is the first iteration in the execution,
     private boolean _first = true;
 
     // the current input token.

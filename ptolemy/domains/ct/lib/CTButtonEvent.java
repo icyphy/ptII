@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -39,7 +39,8 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTButtonEvent
 /**
-This is not an event generator. It outputs a continuous signal with value
+This is a continuous time actor that response to button clicks.
+It is not an event generator. It outputs a continuous signal with value
 true or false. At the beginning of the execution it outputs false. If the 
 parameter "Button" is changed, it will output true in the next iteration.
 I.e. there is, at most, one step size delay of responding the button event.
@@ -72,7 +73,7 @@ public class CTButtonEvent extends CTActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output button clicked value
+    /** Output button clicked value. Output true for one iteration.
      */
     public void fire() throws IllegalActionException {
         output.broadcast(new BooleanToken(_buttonClicked));
@@ -111,7 +112,6 @@ public class CTButtonEvent extends CTActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    
     boolean _buttonClicked;
 }

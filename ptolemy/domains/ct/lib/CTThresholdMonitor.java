@@ -1,4 +1,4 @@
-/* Minitor integration steps so that the threshold is not crossed in one step.
+/* Monitor integration steps so that the threshold is not crossed in one step.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -39,7 +39,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTThresholdMonitor
 /** 
-Minitor integration steps so that the threshold is not crossed in one step.
+Monitor integration steps so that the threshold is not crossed in one step.
 This actor has one input port, but no output port. If functionality is
 solely devoted to controlling the integration step size. It has two 
 parameters "ThresholdWidth" and "ThresholdCenter", which have default
@@ -47,7 +47,7 @@ value 1e-2 and 0, respectively.
 @author  Jie Liu
 @version $Id$
 */
-//FIXME: need to use the new parameter machanism.
+//FIXME: need to use the new parameter mechanism.
 
 public class CTThresholdMonitor extends CTActor 
     implements CTStepSizeControlActor{ 
@@ -111,7 +111,7 @@ public class CTThresholdMonitor extends CTActor
     }
 
     /** Setup the internal variables so that there is no history.
-     *  @exception IllegalActionException If throen by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
      */	
     public void initialize() throws IllegalActionException {
         super.initialize();

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
-
+@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -42,6 +42,8 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// GeneralFunctionActor
 /**
+
+Note: This class will be removed soon. Please don't use it.
 An actor implementing general function. Upon each fire, the actor updates
 its internal variables using input tokens. Then the output variables are
 evaluated, the resulting tokens are put to the output ports.

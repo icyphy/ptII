@@ -101,12 +101,61 @@ public class CTPeriodicSampler extends CTActor
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+
+    /** Emit the current event, which has the token of the latest input 
+     *  token.
+     */
+    public void emitCurrentEvents() {
+        CTDirector dir = (CTDirector)getDirector();
+        if(_hasCurrentEvent) {
+            try {
+                if(input.hasToken(0)) {
+                    output.broadcast(input.get(0));
+                    _hasCurrentEvent = false;
+                }
+            }catch (IllegalActionException e) {
+                throw new InternalErrorException("Token missmatch.");
+            }
+        }
+    } 
+
+    /** If the current time is the event time, set the flag indicating
+     *  that there is a current event.
+     */
+    public void fire() {
+        CTDirector dir = (CTDirector)getDirector();
+        double tnow = dir.getCurrentTime();
+        _hasCurrentEvent = false;
+        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
+            _hasCurrentEvent = true;
+        }
+    }
+
+    /** Return true if there is a current event.
+     */
+    public boolean hasCurrentEvent() {
+        return _hasCurrentEvent;
+    }
+
+    /** Request the first sampling time as a director refire.
+     *  @exception IllegalActionException If thrown by the supper class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        updateParameters();
+        CTDirector dir = (CTDirector) getDirector();
+        _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
+        dir.fireAt(this, _nextSamplingTime);
+        _debug(getFullName() + ": next sampling time= "
+                + _nextSamplingTime);
+    }
+
     /** Return true always. If the current time is greater than the next
      *  sampling time, increase the next sample time until it is 
      *  greater than the current time. Request a director refire at the 
      *  next sampling time.
      *  @return True always.
-     *  @exceptoin IllegalActionException If parameter update throws it.
+     *  @exception IllegalActionException If parameter update throws it.
      */
     public boolean prefire() throws IllegalActionException {
         updateParameters();
@@ -125,31 +174,6 @@ public class CTPeriodicSampler extends CTActor
         return true;
     }
 
-    /** If the current time is the event time, set the flag indicating
-     *  that there is a current event.
-     */
-    public void fire() {
-        CTDirector dir = (CTDirector)getDirector();
-        double tnow = dir.getCurrentTime();
-        _hasCurrentEvent = false;
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
-            _hasCurrentEvent = true;
-        }
-    }
-
-    /** Request the first sampling time as a director refire.
-     *  @exception IllegalActionException If thrown by the supper class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        updateParameters();
-        CTDirector dir = (CTDirector) getDirector();
-        _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
-        dir.fireAt(this, _nextSamplingTime);
-        _debug(getFullName() + ": next sampling time= "
-                + _nextSamplingTime);
-    }
-
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException If the sampling rate set is
@@ -164,28 +188,6 @@ public class CTPeriodicSampler extends CTActor
         _samplePeriod = p;
     }
 
-    /** Return true if there is a current event.
-     */
-    public boolean hasCurrentEvent() {
-        return _hasCurrentEvent;
-    }
-
-    /** Emmit the current event, which has the token of the latest input 
-     *  token.
-     */
-    public void emitCurrentEvents() {
-        CTDirector dir = (CTDirector)getDirector();
-        if(_hasCurrentEvent) {
-            try {
-                if(input.hasToken(0)) {
-                    output.broadcast(input.get(0));
-                    _hasCurrentEvent = false;
-                }
-            }catch (IllegalActionException e) {
-                throw new InternalErrorException("Token missmatch.");
-            }
-        }
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

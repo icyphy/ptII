@@ -47,7 +47,7 @@ DoubleToken, and no parameter.
 @version $Id$
 */
 
-//FIXME: Consider make it type polimorphic.
+//FIXME: Consider make it type polymorphic.
 
 public class CTZeroOrderHold extends TypedAtomicActor 
     implements CTEventInterpreter{
@@ -108,7 +108,7 @@ public class CTZeroOrderHold extends TypedAtomicActor
         }
     }
 
-    /** Output a doubleToken of the last event token.
+    /** Output a DoubleToken of the last event token.
      *  @exception IllegalActionException If the token cannot be
      *  broadcasted.
      */

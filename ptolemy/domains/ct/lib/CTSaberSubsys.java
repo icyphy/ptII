@@ -42,11 +42,13 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTSaberSubsys
 /** 
-A subsystem implemeneted and simulated in Saber. This is basically a tool
+A subsystem implements and simulates in Saber. This is basically a tool
 interface. The basic actor has no input no output. The ports can be added
 by addPort or set the port's container to this actor. 
-For each inputport, there is one parameter, the varName. 
+For each input port, there is one parameter, the varName. 
 For each output port, there is one parameter, the nodeId.
+<P>
+Note: This class is demo dependent, may be moved to demo directory.
 @author Jie Liu, William Wu
 @version $Id$
 */
@@ -505,7 +507,7 @@ public class CTSaberSubsys extends CTActor
     private String _netlist;
     private String _innerStep;
 
-    //protential output
+    //potential output
     private int _numout;
     private DoubleToken[] _outtoken;
     private double[] _outvar;
