@@ -30,22 +30,21 @@
 
 package ptolemy.vergil.icon;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicEllipse;
-import diva.canvas.toolbox.LabelFigure;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 
 import javax.swing.SwingConstants;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicEllipse;
+import diva.canvas.toolbox.LabelFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ValueIcon

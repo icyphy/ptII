@@ -30,22 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.javasound;
 
+import java.io.IOException;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
-import ptolemy.media.javasound.LiveSoundEvent;
-import ptolemy.media.javasound.LiveSoundListener;
-
-import java.io.IOException;
 
 
 /////////////////////////////////////////////////////////

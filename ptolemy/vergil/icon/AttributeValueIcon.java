@@ -30,9 +30,12 @@
 
 package ptolemy.vergil.icon;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.swing.SwingConstants;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -43,13 +46,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.swing.SwingConstants;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeValueIcon

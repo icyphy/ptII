@@ -30,13 +30,6 @@
 
 package ptolemy.vergil.icon;
 
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
@@ -46,6 +39,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.SwingUtilities;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ShapeIcon

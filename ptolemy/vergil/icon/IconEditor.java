@@ -31,16 +31,6 @@
 package ptolemy.vergil.icon;
 
 // Diva imports.
-import diva.gui.AppContext;
-import diva.gui.BasicFrame;
-import diva.gui.ExtensionFileFilter;
-import diva.gui.GUIUtilities;
-import diva.util.java2d.PaintedShape;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -72,6 +62,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import diva.gui.AppContext;
+import diva.gui.BasicFrame;
+import diva.gui.ExtensionFileFilter;
+import diva.gui.GUIUtilities;
+import diva.util.java2d.PaintedShape;
 
 // Java imports.
 

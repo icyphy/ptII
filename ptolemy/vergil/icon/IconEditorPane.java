@@ -31,19 +31,6 @@
 package ptolemy.vergil.icon;
 
 // Diva imports.
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
-import diva.canvas.interactor.BasicSelectionModel;
-import diva.canvas.interactor.BoundsManipulator;
-import diva.canvas.interactor.CircleManipulator;
-import diva.canvas.interactor.DragInteractor;
-import diva.canvas.interactor.PathManipulator;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.Polygon2D;
-
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.datatransfer.Clipboard;
@@ -62,6 +49,19 @@ import java.util.Vector;
 
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+
+import diva.canvas.FigureLayer;
+import diva.canvas.GraphicsPane;
+import diva.canvas.JCanvas;
+import diva.canvas.interactor.BasicSelectionModel;
+import diva.canvas.interactor.BoundsManipulator;
+import diva.canvas.interactor.CircleManipulator;
+import diva.canvas.interactor.DragInteractor;
+import diva.canvas.interactor.PathManipulator;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.Polygon2D;
 
 // Java imports.
 
