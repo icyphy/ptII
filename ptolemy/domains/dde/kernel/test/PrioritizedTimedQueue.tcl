@@ -64,7 +64,7 @@ and lastTime for empty queue} {
     set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
     set hasToken [$tqr hasToken]
     set hasRoom [$tqr hasRoom]
-    set rcvrTime [$tqr getRcvrTime]
+    set rcvrTime [$tqr getReceiverTime]
     set lastTime [$tqr getLastTime]
     list $hasToken $hasRoom $rcvrTime $lastTime
 } {0 1 0.0 0.0}
@@ -78,10 +78,10 @@ test PrioritizedTimedQueue-3.2 {Check hasToken() after putting token} {
     set t2 [java::new ptolemy.data.Token]
     $tqr put $t1 5.0
     set hasToken [$tqr hasToken]
-    set rcvrTime1 [$tqr getRcvrTime]
+    set rcvrTime1 [$tqr getReceiverTime]
     set lastTime1 [$tqr getLastTime]
     $tqr put $t1 15.0
-    set rcvrTime2 [$tqr getRcvrTime]
+    set rcvrTime2 [$tqr getReceiverTime]
     set lastTime2 [$tqr getLastTime]
     list $hasToken $rcvrTime1 $lastTime1 $rcvrTime2 $lastTime2
 } {1 5.0 5.0 5.0 15.0}
@@ -133,7 +133,7 @@ test PrioritizedTimedQueue-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
     $tqr put $t0 5.0
     $tqr put $t1 7.0
 
-    set rcvrTime0 [$tqr getRcvrTime]
+    set rcvrTime0 [$tqr getReceiverTime]
     set lastTime0 [$tqr getLastTime]
 
     set outToken0 [$tqr get]
@@ -141,20 +141,20 @@ test PrioritizedTimedQueue-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
 
     $tqr put $t2 15.0
 
-    set rcvrTime1 [$tqr getRcvrTime]
+    set rcvrTime1 [$tqr getReceiverTime]
     set lastTime1 [$tqr getLastTime]
 
     set outToken1 [$tqr get]
     set rslt1 [expr { $outToken1 == $t1 } ]
 
-    set rcvrTime3 [$tqr getRcvrTime]
+    set rcvrTime3 [$tqr getReceiverTime]
 
     $tqr get
 
     set empty [expr { [$tqr hasToken] == 0 } ]
 
-    set rcvrTime4 [$tqr getRcvrTime]
-    set rcvrTime5 [$tqr getRcvrTime]
+    set rcvrTime4 [$tqr getReceiverTime]
+    set rcvrTime5 [$tqr getReceiverTime]
 
     list $rcvrTime0 $lastTime0 $rslt0 $rcvrTime1 $lastTime1 $rslt1 $rcvrTime3 $rcvrTime4 $rcvrTime5 $empty
 } {5.0 7.0 1 7.0 15.0 1 15.0 15.0 15.0 1}

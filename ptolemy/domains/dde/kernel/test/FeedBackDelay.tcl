@@ -50,12 +50,12 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # Global Variables 
-set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTimeReceiver [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
+#set globalEndTime [java::field $globalEndTimeReceiver INACTIVE]
 set globalEndTime -2.0
-set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
+set globalIgnoreTimeReceiver [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalIgnoreTime -1.0
-# set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
+# set globalIgnoreTime [java::field $globalIgnoreTimeReceiver IGNORE]
 set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
 ######################################################################
@@ -85,14 +85,14 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
 
     $fBack setDelay 4.0
 
-    set rcvrIn [$actorRcvr getPort "input"]
+    set rcvrIn [$actorReceiver getPort "input"]
     set joinIn [$join getPort "input"]
     set joinOut [$join getPort "output"]
     set forkIn [$fork getPort "input"]
@@ -109,9 +109,9 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
-    set time2 [$actorRcvr getAfterTime 2]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
+    set time2 [$actorReceiver getAfterTime 2]
 
     list $time0 $time1 $time2
 
@@ -145,7 +145,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
@@ -155,7 +155,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set realDelay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute realDelay]]
     $realDelay setToken [java::new ptolemy.data.BooleanToken true]
 
-    set rcvrIn [$actorRcvr getPort "input"]
+    set rcvrIn [$actorReceiver getPort "input"]
     set clockOut [$clock getPort "output"]
     set joinIn [$join getPort "input"]
     set joinOut [$join getPort "output"]
@@ -175,9 +175,9 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
-    set time2 [$actorRcvr getAfterTime 2]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
+    set time2 [$actorReceiver getAfterTime 2]
 
     list $time0 $time1 $time2
 

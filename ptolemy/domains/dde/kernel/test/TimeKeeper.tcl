@@ -51,8 +51,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # Global Variables 
 set globalIgnoreTime -1
-set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTimeReceiver [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
+#set globalEndTime [java::field $globalEndTimeReceiver INACTIVE]
 set globalEndTime -2.0
 
 ######################################################################
@@ -88,7 +88,7 @@ test TimeKeeper-3.1 {getNextTime()} {
     $keeper updateReceiverList $rcvr2
     $keeper updateReceiverList $rcvr3
 
-    set newrcvr [$keeper getFirstRcvr]
+    set newrcvr [$keeper getFirstReceiver]
 
     list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
 
@@ -111,7 +111,7 @@ test TimeKeeper-3.2 {getNextTime()} {
     $keeper updateReceiverList $rcvr2
     $keeper updateReceiverList $rcvr3
 
-    set newrcvr [$keeper getFirstRcvr]
+    set newrcvr [$keeper getFirstReceiver]
 
     list [$keeper getNextTime] [expr {$rcvr3 == $newrcvr} ]
 
@@ -131,7 +131,7 @@ test TimeKeeper-3.3 {getNextTime()} {
     $keeper updateReceiverList $rcvr1
     $keeper updateReceiverList $rcvr2
 
-    set newrcvr [$keeper getFirstRcvr]
+    set newrcvr [$keeper getFirstReceiver]
 
     list [$keeper getNextTime] [expr {$rcvr1 == $newrcvr} ]
 
@@ -151,7 +151,7 @@ test TimeKeeper-3.4 {getNextTime()} {
     $keeper updateReceiverList $rcvr1
     $keeper updateReceiverList $rcvr2
 
-    set newrcvr [$keeper getFirstRcvr]
+    set newrcvr [$keeper getFirstReceiver]
 
     list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
 
@@ -175,7 +175,7 @@ test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
     if { [$keeper getNextTime] != 0.0 } {
 	set val 0
     }
-    if { ![java::isnull [$keeper getFirstRcvr]] } {
+    if { ![java::isnull [$keeper getFirstReceiver]] } {
 	set val 0
     }
 
@@ -255,7 +255,7 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 	set newVal 0
     }
 
-    set time [$rcvr2 getRcvrTime]
+    set time [$rcvr2 getReceiverTime]
 
     list $val $time
 
@@ -293,7 +293,7 @@ test TimeKeeper-5.3 {Ignore Tokens} {
 	}
     }
 
-    set time [$rcvr2 getRcvrTime]
+    set time [$rcvr2 getReceiverTime]
 
     list $val $newVal
 

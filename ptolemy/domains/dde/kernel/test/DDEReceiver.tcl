@@ -50,12 +50,12 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # Global Variables 
-set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTimeReceiver [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
+#set globalEndTime [java::field $globalEndTimeReceiver INACTIVE]
 set globalEndTime -2.0
-set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
+set globalIgnoreTimeReceiver [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalIgnoreTime -1.0
-# set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
+# set globalIgnoreTime [java::field $globalIgnoreTimeReceiver IGNORE]
 set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
 ######################################################################
@@ -69,7 +69,7 @@ test DDEReceiver-2.1 {Send three tokens between two actors} {
     $toplevel setDirector $dir
     $toplevel setManager $mgr
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 3]
     set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
 
     set tok1 [java::new ptolemy.data.Token]
@@ -77,15 +77,15 @@ test DDEReceiver-2.1 {Send three tokens between two actors} {
     $actorSend setToken $tok1 15.0 1
     $actorSend setToken $tok1 25.0 2
 
-    set ioprcvr [$actorRcvr getPort "input"]
+    set ioprcvr [$actorReceiver getPort "input"]
     set iopsend [$actorSend getPort "output"]
     set rel [$toplevel connect $ioprcvr $iopsend "rel"]
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
-    set time2 [$actorRcvr getAfterTime 2]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
+    set time2 [$actorReceiver getAfterTime 2]
 
     list $time0 $time1 $time2
 
@@ -102,7 +102,7 @@ test DDEReceiver-2.2 {Send a real token, an ignore token and a real token.} {
     $toplevel setDirector $dir
     $toplevel setManager $mgr
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 2]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 2]
     set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
 
     set tok1 [java::new ptolemy.data.Token]
@@ -110,14 +110,14 @@ test DDEReceiver-2.2 {Send a real token, an ignore token and a real token.} {
     $actorSend setToken $tok1 $globalIgnoreTime 1
     $actorSend setToken $tok1 25.0 2
 
-    set ioprcvr [$actorRcvr getPort "input"]
+    set ioprcvr [$actorReceiver getPort "input"]
     set iopsend [$actorSend getPort "output"]
     set rel [$toplevel connect $ioprcvr $iopsend "rel"]
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
 
     list $time0 $time1
 
@@ -134,7 +134,7 @@ test DDEReceiver-2.3 {Send NullTokens through FlowThrough.} {
     $toplevel setDirector $dir
     $toplevel setManager $mgr
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 3]
     set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 6]
     set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "actorThru"]
 
@@ -147,7 +147,7 @@ test DDEReceiver-2.3 {Send NullTokens through FlowThrough.} {
     $actorSend setToken $globalNullTok 9.0 4 
     $actorSend setToken $tok1 9.5 5
 
-    set rcvrInPort [$actorRcvr getPort "input"]
+    set rcvrInPort [$actorReceiver getPort "input"]
     set sendOutPort [$actorSend getPort "output"]
     set thruInPort [$actorThru getPort "input"]
     set thruOutPort [$actorThru getPort "output"]
@@ -157,9 +157,9 @@ test DDEReceiver-2.3 {Send NullTokens through FlowThrough.} {
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
-    set time2 [$actorRcvr getAfterTime 2]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
+    set time2 [$actorReceiver getAfterTime 2]
 
     list $time0 $time1 $time2
 
@@ -176,7 +176,7 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     $toplevel setDirector $dir
     $toplevel setManager $mgr
 
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 5]
+    set actorReceiver [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorReceiver" 5]
     set actorSend1 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend1" 3]
     set actorSend2 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend2" 3]
     set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "actorThru"]
@@ -191,7 +191,7 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     $actorSend2 setToken $tok1 6.0 1 
     $actorSend2 setToken $tok1 8.0 2 
 
-    set rcvrInPort [$actorRcvr getPort "input"]
+    set rcvrInPort [$actorReceiver getPort "input"]
     set sendOutPort1 [$actorSend1 getPort "output"]
     set sendOutPort2 [$actorSend2 getPort "output"]
     set thruInPort [$actorThru getPort "input"]
@@ -203,11 +203,11 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
 
     $mgr run
 
-    set time0 [$actorRcvr getAfterTime 0]
-    set time1 [$actorRcvr getAfterTime 1]
-    set time2 [$actorRcvr getAfterTime 2]
-    set time3 [$actorRcvr getAfterTime 3]
-    set time4 [$actorRcvr getAfterTime 4]
+    set time0 [$actorReceiver getAfterTime 0]
+    set time1 [$actorReceiver getAfterTime 1]
+    set time2 [$actorReceiver getAfterTime 2]
+    set time3 [$actorReceiver getAfterTime 3]
+    set time4 [$actorReceiver getAfterTime 4]
 
     list $time0 $time1 $time2 $time3 $time4 
 } {4.0 5.0 6.0 7.0 8.0}    
