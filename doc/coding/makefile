@@ -40,7 +40,9 @@ include $(CONFIG)
 DIRS =
 
 EXTRA_SRCS = \
-	index.html
+	directories.html \
+	index.html \
+	packages.html
 
 MISC_FILES =	$(DIRS)
 
