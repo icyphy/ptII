@@ -170,6 +170,16 @@ public class XMLElement extends Object {
         return _pcdata;
     }
 
+
+    /**
+     * Get the URL that this file was parsed from. This will return
+     * a null string if this element is not the root element
+     * of an XML document.
+     */
+    public String getXMLFileLocation() {
+        return _xmlFileLocation;
+    }
+
     /**
      * Test if this schematic has the attribute wuth the given name.
      */
@@ -235,6 +245,14 @@ public class XMLElement extends Object {
     }
 
     /**
+     * Set the location that this file was parsed from.
+     * Is called by the parser for document root elements only.
+     */
+    void setXMLFileLocation(String s) {
+        _xmlFileLocation = s;
+    }
+
+    /**
      * Convert this element to a string in XML
      */
     public String toString() {
@@ -290,13 +308,20 @@ public class XMLElement extends Object {
 
     // The child elements of this element
     private LinkedList _childelements;
+
     // The attributes of this element
     private HashedMap _attributes;
+
     // The element type of this element
     private String _elementtype;
+
     // The character data that is contained in this element
     private String _pcdata;
+
     // The XMLElement that contains this element (possibly null).
     private XMLElement _parent;
+
+    // The location that thisfile was parsed from
+    private String _xmlFileLocation = null;
 }
 

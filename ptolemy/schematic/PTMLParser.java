@@ -159,6 +159,7 @@ public class PTMLParser extends HandlerBase{
         catch (Exception e) {
             e.printStackTrace();
         }
+        root.setXMLFileLocation(url);
         return root;
     }
 
@@ -180,6 +181,7 @@ public class PTMLParser extends HandlerBase{
         catch (Exception e) {
             e.printStackTrace();
         }
+        root.setXMLFileLocation(url);
         return root;
     }
 

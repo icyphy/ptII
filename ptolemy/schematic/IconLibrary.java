@@ -134,8 +134,11 @@ public class IconLibrary extends XMLElement{
      * Get the Icon that is stored in this IconLibrary with the specified
      * type signature
      */
-    public Icon getIcon(EntityType e) {
-        return (Icon) _icons.at(e);
+    // public Icon getIcon(EntityType e) {
+    //    return (Icon) _icons.at(e);
+    //}
+    public Icon getIcon(String s) {
+        return (Icon) _icons.at(s);
     }
 
     /**
@@ -155,8 +158,8 @@ public class IconLibrary extends XMLElement{
     /** 
      * return the URL of the given sublibrary.
      */
-    public String getSubLibraryURL(String name) {
-        return ((XMLElement) _sublibraries.at(name)).getAttribute("url");
+    public XMLElement getSubLibrary(String name) {
+        return (XMLElement) _sublibraries.at(name);
     }
 
     /** Return the version of this library.
@@ -172,7 +175,7 @@ public class IconLibrary extends XMLElement{
      */
     public Enumeration icons() {
         if(_icons==null) return null;
-        return _icons.elements();
+        return _icons.keys();
     }
 
    /**
