@@ -442,7 +442,7 @@ public class Director extends NamedObj implements Executable {
             // find the greatest solution (most general types)
             boolean resolved = solver.solveGreatest();
             if ( !resolved) {
-		Enumeration unsatisfied = solver.unsatisfiedIneq();
+		Enumeration unsatisfied = solver.unsatisfiedInequalities();
                 // FIXME: should have a new TypeConflictException?
                 throw new InvalidStateException("Type Conflict.");
             }

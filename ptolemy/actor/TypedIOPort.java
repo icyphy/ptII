@@ -231,7 +231,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
                         "send: channel index is out of range.");
             }
 	    int compare = TypeCPO.compare(token, _resolvedType);
-	    if (compare == CPO.STRICT_GREATER ||
+	    if (compare == CPO.HIGHER ||
 		compare == CPO.INCOMPARABLE) {
 		throw new IllegalActionException(this,
 			"send: token has wrong type.");

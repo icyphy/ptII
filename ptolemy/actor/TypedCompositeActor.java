@@ -197,7 +197,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 			    // both in/out ports are declared, type check
 			    int compare = TypeCPO.compare(outDeclared,
                                     inDeclared);
-			    if (compare == CPO.STRICT_GREATER ||
+			    if (compare == CPO.HIGHER ||
                                     compare == CPO.INCOMPARABLE) {
 			        // FIXME: should have a TypeConflictException();
 			        // throw new TypeConflictException();
