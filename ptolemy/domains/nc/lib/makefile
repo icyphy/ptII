@@ -1,10 +1,10 @@
 # Makefile for the NC domain lib
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2003 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
