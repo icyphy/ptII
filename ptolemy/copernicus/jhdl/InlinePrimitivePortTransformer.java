@@ -492,7 +492,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
         // Map, but types don't implement hashCode properly.
         Map typeMap = new HashMap();
         // FIXME: This needs to be changed to handle hierarchy.
-        List portList = port.sinkPortListInside();
+        List portList = port.insideSinkPortList();
         for (Iterator ports = portList.iterator();
              ports.hasNext();) {
             TypedIOPort remotePort = (TypedIOPort)ports.next();
