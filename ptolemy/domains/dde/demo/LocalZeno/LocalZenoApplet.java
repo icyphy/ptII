@@ -54,6 +54,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -69,69 +70,30 @@ import javax.swing.JButton;
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
  */
-public class LocalZenoApplet extends DDEApplet {
+public class LocalZenoApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** Override the baseclass start method so that the model
+     *  does not immediately begin executing as soon as the
+     *  the applet page is displayed. Execution begins once
+     *  the "Go" button is depressed. Layout the graph visualization,
+     *  since this can't be done in the init method, because the graph
+     *  hasn't yet been displayed.
      */
-    public void init() {
-	super.init();
-
-	getContentPane().setLayout( new BorderLayout(5, 5) );
-
-	// Panel for controls and plotter
-	JPanel topPanel = new JPanel();
-	topPanel.setSize( new Dimension(600, 200) );
-        getContentPane().setBackground(getBackground());
-        topPanel.setBackground(getBackground());
-
-	// The '3' argument specifies 'go' and 'stop' buttons.
-	// If we need a layout button in the future, then change the '2' to
-	// a '3'.
-	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
-
-	_plotPanel = new JPanel();
-	_plotPanel.setSize( new Dimension(600, 200) );
-        _plotPanel.setBackground(getBackground());
-	topPanel.add( _plotPanel, BorderLayout.CENTER );
-
-	getContentPane().add( topPanel, BorderLayout.NORTH );
-
-	constructPtolemyModel();
-
-	_divaPanel = new JPanel( new BorderLayout() );
-	_divaPanel.setSize( new Dimension(600, 400) );
-	_divaPanel.setBackground( getBackground() );
-	getContentPane().add( _divaPanel, BorderLayout.CENTER );
-
-        _graph = constructDivaGraph();
-	final MutableGraphModel finalGraphModel = _graph;
-	// display the graph.
-	final GraphController gc = new LocalZenoGraphController();
-	final GraphPane gp = new GraphPane(gc, _graph);
-	_jgraph = new JGraph(gp);
-	_divaPanel.add(_jgraph, BorderLayout.CENTER );
-
-        StateListener listener =
-            new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_join1.addDebugListener(listener);
-	_join2.addDebugListener(listener);
-	_fork1.addDebugListener(listener);
-	_fork2.addDebugListener(listener);
-	_fBack1.addDebugListener(listener);
-	_fBack2.addDebugListener(listener);
-	_rcvr1.addDebugListener(listener);
-	_rcvr2.addDebugListener(listener);
-	_clock.addDebugListener(listener);
+    public void start() {
+   	_doLayout(_graph, _jgraph.getGraphPane());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Construct the graph representing the topology.
      *  This is sort of bogus because it's totally hard-wired,
      *  but it will do for now...
      */
-    public MutableGraphModel constructDivaGraph() {
+    protected MutableGraphModel _constructDivaGraph() {
 	BasicGraphModel model = new BasicGraphModel();
 	Object root = model.getRoot();
 
@@ -219,77 +181,130 @@ public class LocalZenoApplet extends DDEApplet {
     /** Construct the Ptolemy model; instantiate all
      *  actors and make connections.
      */
-    public void constructPtolemyModel() {
-        try {
-            // Instantiate the Actors
-	    _clock = new ListenClock( _toplevel, "Clock" );
-	    _clock.values.setExpression( "[1, 1, 1]" );
-	    _clock.period.setToken( new DoubleToken(20.0) );
-	    _clock.offsets.setExpression( "[5.0, 10.0, 15.0]" );
-	    _clock.stopTime.setToken( new DoubleToken(90.0) );
+    protected CompositeActor _createModel(Workspace workspace)
+            throws Exception {
 
-	    _join1 = new ListenWire( _toplevel, "UpperJoin" );
-	    _fork1 = new ListenFork( _toplevel, "UpperFork" );
-	    _fBack1 = new ListenFeedBackDelay( _toplevel, "UpperFeedBack" );
-	    _join2 = new ListenWire( _toplevel, "LowerJoin" );
-	    _fork2 = new ListenFork( _toplevel, "LowerFork" );
-	    _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
+        _toplevel = new TypedCompositeActor(workspace);
+        DDEDirector director = new DDEDirector(_toplevel, "DDE Director");
+        director.stopTime.setExpression("90.0");
 
-	    _rcvr1 = new ListenSink( _toplevel, "UpperRcvr" );
-	    _rcvr2 = new ListenSink( _toplevel, "LowerRcvr" );
+        // Instantiate the Actors
+        _clock = new ListenClock( _toplevel, "Clock" );
+        _clock.values.setExpression( "[1, 1, 1]" );
+        _clock.period.setToken( new DoubleToken(20.0) );
+        _clock.offsets.setExpression( "[5.0, 10.0, 15.0]" );
+        _clock.stopTime.setToken( new DoubleToken(90.0) );
 
-	    _upperTime = new TimeAdvance( _toplevel, "upperTime" );
-	    _upperPlotter = new TimedPlotter( _toplevel, "upperPlotter" );
-	    _upperPlotter.place( _plotPanel );
-	    _upperPlotter.plot.setTitle("Upper Branch");
-	    _upperPlotter.plot.setXRange(0.0, 90.0);
-	    _upperPlotter.plot.setYRange(-1.0, 1.0);
-	    _upperPlotter.plot.setSize(200, 150);
-	    _upperPlotter.plot.addLegend(0, "Time");
+        _join1 = new ListenWire( _toplevel, "UpperJoin" );
+        _fork1 = new ListenFork( _toplevel, "UpperFork" );
+        _fBack1 = new ListenFeedBackDelay( _toplevel, "UpperFeedBack" );
+        _join2 = new ListenWire( _toplevel, "LowerJoin" );
+        _fork2 = new ListenFork( _toplevel, "LowerFork" );
+        _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
 
-	    _lowerTime = new TimeAdvance( _toplevel, "lowerTime" );
-	    _lowerPlotter = new TimedPlotter( _toplevel, "lowerPlotter" );
-	    _lowerPlotter.place( _plotPanel );
-	    _lowerPlotter.plot.setTitle("Lower Branch");
-	    _lowerPlotter.plot.setXRange(0.0, 90.0);
-	    _lowerPlotter.plot.setYRange(-1.0, 1.0);
-	    _lowerPlotter.plot.setSize(200, 150);
-	    _lowerPlotter.plot.addLegend(0, "Time");
+        _rcvr1 = new ListenSink( _toplevel, "UpperRcvr" );
+        _rcvr2 = new ListenSink( _toplevel, "LowerRcvr" );
+        
+        _upperTime = new TimeAdvance( _toplevel, "upperTime" );
+        _upperPlotter = new TimedPlotter( _toplevel, "upperPlotter" );
 
-	    _fBack1.setDelay(4.5);
-	    _fBack2.setDelay(4.5);
+        _lowerTime = new TimeAdvance( _toplevel, "lowerTime" );
+        _lowerPlotter = new TimedPlotter( _toplevel, "lowerPlotter" );
 
-	    // Set up ports, relations and connections
-            Relation clkRelation =
+        _fBack1.setDelay(4.5);
+        _fBack2.setDelay(4.5);
+
+        // Set up ports, relations and connections
+        Relation clkRelation =
                 _toplevel.connect( _clock.output, _join1.input );
-            _join2.input.link( clkRelation );
+        _join2.input.link( clkRelation );
 
-	    _toplevel.connect( _join1.output, _fork1.input );
-	    _toplevel.connect( _fork1.output1, _rcvr1.input );
-	    _toplevel.connect( _fork1.output2, _fBack1.input );
-	    _toplevel.connect( _fBack1.output, _join1.input );
+        _toplevel.connect( _join1.output, _fork1.input );
+        _toplevel.connect( _fork1.output1, _rcvr1.input );
+        _toplevel.connect( _fork1.output2, _fBack1.input );
+        _toplevel.connect( _fBack1.output, _join1.input );
 
-	    _toplevel.connect( _join2.output, _fork2.input );
-	    _toplevel.connect( _fork2.output1, _rcvr2.input );
-	    _toplevel.connect( _fork2.output2, _fBack2.input );
-	    _toplevel.connect( _fBack2.output, _join2.input );
+        _toplevel.connect( _join2.output, _fork2.input );
+        _toplevel.connect( _fork2.output1, _rcvr2.input );
+        _toplevel.connect( _fork2.output2, _fBack2.input );
+        _toplevel.connect( _fBack2.output, _join2.input );
 
-	    _toplevel.connect( _fork1.output1, _upperTime.input );
-	    _toplevel.connect( _upperTime.output, _upperPlotter.input );
+        _toplevel.connect( _fork1.output1, _upperTime.input );
+        _toplevel.connect( _upperTime.output, _upperPlotter.input );
+        
+        _toplevel.connect( _fork2.output1, _lowerTime.input );
+        _toplevel.connect( _lowerTime.output, _lowerPlotter.input );
 
-	    _toplevel.connect( _fork2.output1, _lowerTime.input );
-	    _toplevel.connect( _lowerTime.output, _lowerPlotter.input );
+        return _toplevel;
+    }
 
-            System.out.println("Connections are complete.");
+    /** Create a custom view to control execution of the model and display
+     *  its results.  Derived classes may override this to do something
+     *  different.
+     */
+    protected void _createView() {
 
-        } catch (Exception e) {
-	    report("Setup failed:", e);
-        }
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+        // Create control panels.
+        super._createView();
+
+	// Panel for controls and plotter
+	JPanel topPanel = new JPanel();
+	topPanel.setSize( new Dimension(600, 200) );
+        topPanel.setBackground(null);
+
+	_plotPanel = new JPanel();
+	_plotPanel.setSize( new Dimension(600, 200) );
+        _plotPanel.setBackground(getBackground());
+	topPanel.add( _plotPanel );
+
+        _upperPlotter.place( _plotPanel );
+        _upperPlotter.plot.setTitle("Upper Branch");
+        _upperPlotter.plot.setXRange(0.0, 90.0);
+        _upperPlotter.plot.setYRange(-1.0, 1.0);
+        _upperPlotter.plot.setSize(200, 150);
+        _upperPlotter.plot.addLegend(0, "Time");
+
+        _lowerPlotter.place( _plotPanel );
+        _lowerPlotter.plot.setTitle("Lower Branch");
+        _lowerPlotter.plot.setXRange(0.0, 90.0);
+        _lowerPlotter.plot.setYRange(-1.0, 1.0);
+        _lowerPlotter.plot.setSize(200, 150);
+        _lowerPlotter.plot.addLegend(0, "Time");
+
+	getContentPane().add( topPanel );
+
+	_divaPanel = new JPanel( new BorderLayout() );
+	_divaPanel.setSize( new Dimension(600, 400) );
+	_divaPanel.setBackground( null );
+	getContentPane().add( _divaPanel );
+
+        _graph = _constructDivaGraph();
+	final MutableGraphModel finalGraphModel = _graph;
+	// display the graph.
+	final GraphController gc = new LocalZenoGraphController();
+	final GraphPane gp = new GraphPane(gc, _graph);
+	_jgraph = new JGraph(gp);
+	_divaPanel.add(_jgraph );
+
+        StateListener listener =
+                new StateListener((GraphPane)_jgraph.getCanvasPane());
+	_join1.addDebugListener(listener);
+	_join2.addDebugListener(listener);
+	_fork1.addDebugListener(listener);
+	_fork2.addDebugListener(listener);
+	_fBack1.addDebugListener(listener);
+	_fBack2.addDebugListener(listener);
+	_rcvr1.addDebugListener(listener);
+	_rcvr2.addDebugListener(listener);
+	_clock.addDebugListener(listener);
     }
 
     /** Layout the graph again.
      */
-    public void doLayout(GraphModel graph, GraphPane gp) {
+    protected void _doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
 	try {
 	    final GraphModel layoutGraph = graph;
@@ -308,37 +323,6 @@ public class LocalZenoApplet extends DDEApplet {
 	} catch (Exception e) {
 	    System.out.println(e);
 	}
-    }
-
-    /** Override the baseclass start method so that the model
-     *  does not immediately begin executing as soon as the
-     *  the applet page is displayed. Execution begins once
-     *  the "Go" button is depressed. Layout the graph visualization,
-     *  since this can't be done in the init method, because the graph
-     *  hasn't yet been displayed.
-     */
-    public void start() {
-   	doLayout(_graph, _jgraph.getGraphPane());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** In addition to creating the buttons provided by the base class,
-     *  if the number of iterations has not been specified, then create
-     *  a dialog box for that number to be entered.  The panel containing
-     *  the buttons and the entry box is returned.
-     *  @param numButtons The number of buttons to create.
-     */
-    protected JPanel _createRunControls(int numButtons) {
-        JPanel controlPanel = super._createRunControls(numButtons);
-
-        if (numButtons > 2) {
-            JButton layout = new JButton("Layout");
-            controlPanel.add(layout);
-            layout.addActionListener(new LayoutListener());
-        }
-        return controlPanel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -388,7 +372,7 @@ public class LocalZenoApplet extends DDEApplet {
 	public void actionPerformed(ActionEvent evt) {
 	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
 	    final GraphModel g = _graph;
-	    doLayout(g, gp);
+	    _doLayout(g, gp);
 	}
     }
 
@@ -555,7 +539,6 @@ public class LocalZenoApplet extends DDEApplet {
 		f.setFillPaint(Color.pink);
             }
             String label = actor.getName();
-            System.out.println("Actor " + actor + " has label " + label);
             LabelWrapper w = new LabelWrapper(f, label);
             w.setAnchor(SwingConstants.SOUTH);
             w.getLabel().setAnchor(SwingConstants.NORTH);
