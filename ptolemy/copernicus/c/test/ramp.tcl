@@ -1,6 +1,6 @@
 # Test translation of a simple Ptolemy II ramp model to C.
 #
-# @Author: Shuvra S. Bhattacharyya 
+# @Author: Shuvra S. Bhattacharyya, Contributor: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -91,10 +91,13 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     set outputDirectorySpecifier outDir:$outputDirectory
 
     # Run C code generation.
-    #exec "java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors" 
-
-    # The double quotes cause problems under Solaris!
-    exec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors 
+    if {[java::call System getProperty "path.separator"] == ";"} {
+	exec "java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors" 
+    } else {
+	# The double quotes above cause problems under Solaris, and the
+	# > and 2> cause problems when code coverage is run for some reason
+	exec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
+    }
 
     # Make sure all the output files were created.
     list  \
