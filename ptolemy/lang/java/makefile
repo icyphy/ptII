@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-1999 The Regents of the University of California.
+# @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -146,9 +146,9 @@ run_GenerateVisitor JavaVisitor.java: NodeTypes.def ../GenerateVisitor.class
 # If jskel files are present in actor.lib, then you will end up
 # with the intialize() and fire() methods being declared native, which
 # will result in errors like:
-# cxh@maury 15% java -classpath ../.. cg.orthocom.CG_Main
+# cxh@maury 15% java -classpath ../.. cg.OrthogonalCom.CG_Main
 # Exception in thread "main" java.lang.UnsatisfiedLinkError: initialize
-#	at cg.orthocom.CG_Main.main(CG_Main.java, Compiled Code)
+#	at cg.OrthogonalCom.CG_Main.main(CG_Main.java, Compiled Code)
 #
 SKELETON_DIRS = \
 	ptolemy/actor/sched \
@@ -294,15 +294,15 @@ generate_codegen:
 	fi
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
 	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
+	-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 	-iterations 50 \
-	-outdir $(ROOT) -outpkg cg.orthocom
+	-outdir $(ROOT) -outpkg cg.OrthogonalCom
 
 compile_codegen:
-	(cd $(ROOT)/cg/orthocom; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
+	(cd $(ROOT)/cg/OrthogonalCom; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
 run_codegen: 	
-	(cd $(ROOT)/cg/orthocom; \
-		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
+	(cd $(ROOT)/cg/OrthogonalCom; \
+		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
