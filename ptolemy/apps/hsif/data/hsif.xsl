@@ -615,6 +615,7 @@
         </xsl:for-each>
 
         <!-- Link the relations and the input ports of Invariants-->
+        <!-- Link the output port of Invariants and the input of throwModelError actor -->
         <xsl:for-each select="Expr">
             <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
             <xsl:variable name="name">
@@ -630,6 +631,21 @@
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                     </xsl:element>              
                 </xsl:if>
+
+                <xsl:element name="relation">
+                    <xsl:attribute name="name"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
+                </xsl:element>
+
+                <xsl:element name="link">
+                    <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', 'output')"/></xsl:attribute>
+                    <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                </xsl:element>  
+                <xsl:element name="link">
+                    <xsl:attribute name="port"><xsl:value-of select="concat('throwModelError', '.', 'input')"/></xsl:attribute>
+                    <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                </xsl:element>              
+                
             </xsl:for-each>
         </xsl:for-each>
 
@@ -891,11 +907,27 @@
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
             <xsl:if test="$temp=''">invariant</xsl:if>
         </xsl:attribute>
-        <xsl:attribute name="class">ptolemy.actor.lib.Assertion</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.actor.lib.Expression</xsl:attribute>
         <xsl:element name="property">
-            <xsl:attribute name="name">assertion</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
-            <xsl:attribute name="value"><xsl:apply-templates select="." mode="expr"/></xsl:attribute>
+            <xsl:attribute name="name">expression</xsl:attribute>
+            <!--<xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>-->
+            <xsl:attribute name="value">
+                <xsl:text>!(</xsl:text>
+                <xsl:apply-templates select="." mode="expr"/>
+                <xsl:text>)</xsl:text>
+            </xsl:attribute>
+        </xsl:element>
+        <xsl:element name="port">
+            <xsl:attribute name="name">output</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
+            <xsl:element name="property">
+                <xsl:attribute name="name">output</xsl:attribute>
+            </xsl:element>
+            <xsl:element name="property">
+                <xsl:attribute name="name">_type</xsl:attribute>
+                <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                <xsl:attribute name="value"><xsl:value-of select="'boolean'"/></xsl:attribute>
+            </xsl:element>
         </xsl:element>
 
         <!--xsl:element name="property">
@@ -918,25 +950,32 @@
                 </xsl:element>
             </xsl:if>
         </xsl:for-each>
-
-        <!--xsl:for-each select="../../IntegerVariable|../../RealVariable|../../BooleanVariable">
-            <xsl:element name="port">
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
-                <xsl:element name="property">
-                    <xsl:attribute name="name">input</xsl:attribute>
-                </xsl:element>
-            </xsl:element>
-        </xsl:for-each-->
-
     </xsl:element>
+
+    <xsl:element name="entity"> 
+        <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
+        <xsl:attribute name="name">
+            <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
+            <xsl:if test="$temp=''">throwModelError</xsl:if>
+        </xsl:attribute>
+        <xsl:attribute name="class">ptolemy.actor.lib.ThrowModelError</xsl:attribute>
+        <xsl:element name="property">
+            <xsl:attribute name="name">message</xsl:attribute>
+            <xsl:attribute name="value">
+                <xsl:text>AssertionModelError</xsl:text>
+            </xsl:attribute>
+
+        </xsl:element>
+    </xsl:element>
+
 </xsl:template>
 
 <!-- Default setActions to ensure the continuity of integrator states. -->
+<!-- While the states of integrators could be modified by other actions later. -->
+
 <xsl:template name="defaultSetAction">
     <xsl:param name="stateName" select="'Default StateName'"/>
     <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable">
-        <xsl:variable name="index" select="position()"/>
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
         <xsl:choose>
             <xsl:when test="$temp!=''"><xsl:value-of select="concat($stateName, '.', $temp, '.initialState=', $temp)"/></xsl:when>
@@ -950,9 +989,14 @@
     <xsl:param name="stateName" select="'Default StateName'"/>
     <xsl:for-each select="VarRef">
         <xsl:variable name="index" select="position()"/>
+        <xsl:variable name="id" select="@var"/>
         <xsl:variable name="temp"><xsl:value-of select="key('nid', @var)/@name"/></xsl:variable>
+        <xsl:variable name="count" select="count(../../../IntegerVariable[@_id = $id]|../../../RealVariable[@_id = $id]|../../../BooleanVariable[@_id = $id])"/>
         <xsl:choose>
-            <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
+            <xsl:when test="$temp!=''">
+                <xsl:if test="$count=0"><xsl:value-of select="$temp"/></xsl:if>
+                <xsl:if test="$count!=0"><xsl:value-of select="concat($stateName, '.', $temp, '.initialState')"/></xsl:if>
+            </xsl:when>
         </xsl:choose>
         <xsl:value-of select="'='"/>
         <xsl:apply-templates select="../Expr[$index]" mode="expr"/>
