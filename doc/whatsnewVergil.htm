@@ -6,246 +6,57 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 3.0.2 Release Notes</title>
+<title>Ptolemy II 4.0-alpha Release Notes</title>
 
 </head>
 <body>
 <!--whatsnew-->
-<h2>Major Features that are new in Ptolemy II 3.0 </h2>
-Below are new features that were not present in Ptolemy II 2.x
+<h2>Major Features that are new in Ptolemy II 4.0 </h2>
+Below are new features that were not present in Ptolemy II 3.x
 <menu>
 
-<li> Continuous Time (CT) domain rework for improved mixed signal and
-hybrid systems semantics
-(Jie Liu, Parc, and Haiyang Zheng).
 
-<li> <a href="../ptolemy/domains/ci/doc/main.htm">Component Interaction Domain</a>
-(Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
-both data-driven and demand-driven styles of computation.
+<li> Classes and inheritance at the block diagram level
+(Edward A. Lee)
 
-<li> Rework of FSM domain to support chained transitions
-and better hybrid systems semantics (Haiyang Zheng).
+<li> Lifecycle management components
+(Yang Zhao)
 
-<li> Expression language rework to create a full-featured, functional
-and higher-order expression language with extensive support for
-composite types such as matrices, arrays, and records;
-the expression language is also now fully integrated with the Ptolemy II
-type system
- (Steve Neuendorffer, Edward A. Lee).
-
-<li> Configurations have been reworked to make it much easier to
-create standalone tools that extract portions of the Ptolemy II
-infrastructure and have customized user interfaces, documentation,
-and actor and director libraries.
-Configurations have been refactored into
-separate directories in <CODE>$PTII/ptolemy/configs</CODE>,
-and one example of such a standalone tool, HyVisual, is provided.
+<li> Unit system rework
+(Rowland Johnson)
 
 <li> Updates to Vergil, the user interface for building models
-(Steve Neuendorffer, Edward A. Lee, John Reekie):
+(Steve Neuendorffer, Edward A. Lee)
 	<menu>
-	<li> Run buttons on the toolbar and hotkeys.
-        <li> Persistent window sizing and placement.
-	<li> Undo/Redo.
-	<li> Port Parameters.
+	<li> Decorative elements in block diagrams (boxes, etc.)
+        <li> Much smaller XML files
+	<li> Icon editor (and animated icons)
+	<li> Expert mode parameter editing
 	<li><CODE>vergil -help</CODE> lists available configurations.
 	<li> Full-screen mode for use in presentations.
         </menu>
 
-<li> Other user interface improvements
-(Steve Neuendorffer, Edward A. Lee):
-        <menu>
-        <li> Interactive shells infrastructure.
-        <li> An interactive expression shell using this infrastructure.
-	<li> Infrastructure for specialized token viewers.
-        Files with the extension .ptd are now opened by a token viewer.
-        The default token viewers is a text editor, but others can be
-	added in the configuration.
-	<li> A matrix token viewer.
-        </menu>
+<li> Single Window Mode
+(J.  Blanc (Thales),  B. Masson (Thales))
 
-<li> HSIF Support
-(Haiyang Zheng).
-The Hybrid System Interchange Format (HSIF), was developed by the
-<a href="http://www.isis.vanderbilt.edu#in_browser">
-Institute of Software Integrated Systems (ISIS) at Vanderbilt University</a>
-as part of the
-<a href="http://www.isis.vanderbilt.edu/Projects/mobies/default.html#in_browser">ISIS MoBIES</a> effort.
-The HSIF documentation states:
+</menu>
+
+<h2>Other Features that are new in Ptolemy II 4.0</h2>
+
 <menu>
-"The goal of HSIF is to define an interchange format for hybrid system
-models that can be shared between modeling and analysis tools. HSIF
-models represent dynamic systems, whose dynamics includes both
-continuous and discrete behaviors."
+<li> <I>TBA</I>
 </menu>
-Haiyang Zheng developed a set of XSLT files that convert
-HSIF into MoML, the XML format used to represent Ptolemy II Models.
-See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a>.
-</li>
-
-<li> A first version of higher-order components, the
-<a href="codeDoc/ptolemy/actor/hoc/MultiInstanceComposite.html">
-MultiInstanceComposite</a> actor
-(Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.).
-This actor creates a parameterized number of instances of a composite
-actor.
-
-<li>
-Python integration, with a
-<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript</a>
-actor that permits definition of actors in Python (Xiaojun Liu).
-This uses
-<a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
-a Java implementation of Python.
-</menu>
-
-<h2>Other Features that are new in Ptolemy II 3.0</h2>
-
-<ul>
-
-<li> Ptolemy II Matlab interface updates
-(Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.):
-<menu>
-<li> Logical variable support for Matlab version 6.5 (R13).
-<li> Remove (the need for) ptmatlab.dll being in the user's path.
-<li> Removed warnings for gcc version 3.2 (used by latest cygwins).
-<li> Add support/configuration for building on Linux.
-</menu>
-Resources:
- <menu>
- <li> <a href="../ptolemy/matlab/matlab.htm">
-Ptolemy II Matlab Interface Overview</a>
- <a href="codeDoc/ptolemy/matlab/package-summary.html">
-Java class documentation</a>
- <li> <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml">
-Matlab Expression Demonstration</a>,
- <li> <a href="../ptolemy/matlab/demo/MatlabCT/MatlabCT.xml">
-Matlab Continuous Time Demonstration</a>
-</menu>
-These demos require that Matlab be installed locally; they will not work
-within an applet, but will work with Web Start.
-
-<li> <a href="http://embedded.eecs.berkeley.edu/caltrop/index.html#in_browser" target="_top">Cal Actor Language (CAL)</a>
-(J&ouml;rn W. Janneck, Chris Chang, Johan Ecker,
-John Reekie, Yang Zhao, Ed Willink, Lars Wernli):
-
-<br>The CAL actor language is a textual notation for representing the
-functionality of dataflow actors. It is designed to allow low-entropy
-descriptions of actors by providing statically analyzable information
-about the behavior of an actor, such as the number of tokens it
-produces and consumes in each firing, whether there are any conditions
-on being able to fire, what those conditions depend on, etc.
-
-<br>CAL demos:
-<a href="../ptolemy/cal/demo/FunctionClosures/FunctionClosures.xml">Function Closures</a>,
-<a href="../ptolemy/cal/demo/FunctionDefinition/FunctionDefinition.xml">Function Definition</a>,
-<a href="../ptolemy/cal/demo/Primes/Primes.xml">Primes</a>,
-<a href="../ptolemy/cal/demo/SDFDDI/SDFDDI.xml">SDFDDI</a>.
-
-<li> <a href="codegen.htm">Code generator improvements</a>
-(Steve Neuendorffer, Christopher Hylands):
-The Java code generator now handles Expression actors.
-The code generator now works with Java 1.4.
-The applet generator has been extended to copy necessary jar
-files on an as needed basis.
-
-<li> <a href="codeDoc/ptolemy/data/FunctionToken.html">FunctionToken</a>
-class (Xiaojun Liu, Steve Neuendorffer): An expression that defines a function
-can be passed among actors in a function token.
-
-<li> Transition Refinements: A transition in an FSM can have
-a refinement, which is a model that executes when the refinement
-is taken.
-
-<li> <a href="codeDoc/ptolemy/kernel/attributes/FileAttribute.html">
-FileAttribute</a> class
-(Edward A. Lee).
-This attribute makes it easy to create a parameter in an actor
-that represents a file or resource. It supports specification
-of files using paths relative to the model, the classpath, or
-the user directory.  It also provides a convenient user interface for
-selecting and accessing files on the file system.
-
-<li> <a href="codeDoc/ptolemy/data/ImageToken.html">ImageToken</a> class
-(James Yeh): An abstract token that contains images.  Derived tokens
-such as 
-<a href="codeDoc/ptolemy/data/AWTImageToken.html">
-AWTImageToken</a>,
-<a href="codeDoc/ptolemy/actor/lib/jai/JAIImageToken.html">
-ptolemy.actor.lib.jai.JAIImageToken</a>
-provide concrete classes.
-
-<li> Interface to C actors using the Java Native Interface
-(Vincent Arnould, Thales, contributor: Christopher Hylands):
-The <a href="codeDoc/jni/package-summary.htm">jni</a>
-package contains a prototype of an interface between Ptolemy II actors
-and C code by using the Java Native Interface (JNI).
-To use this facility, you must download and install Ptolemy II 
-from source.
-</ul>
 
 <h3>New Demonstrations</h3>
 
+
 <menu>
-<li> <a href="../ptolemy/domains/ci/doc/main.htm">CI</a>:
-	Component Interaction
+<li> <I>Domain</I>
+	<menu>
+	<li> <I>Demo</I>
+	</menu>
 
- <menu>
- <li> <a href="../ptolemy/domains/ci/demo/Router/Router.xml">Router</a> 
- </menu>
-
-<li> <a href="../ptolemy/domains/ct/doc/main.htm">CT</a>:
-	Continuous Time
-<menu>
-
-<li> <a href="../ptolemy/domains/ct/demo/ComparedClocks/ComparedClocks.xml">Compared Clocks</a>
-
-<li> <a href="../ptolemy/matlab/demo/MatlabCT/MatlabCT.xml">Matlab Continuous Time Demonstration</a>
-
-<li>HSIF Thermostat and Swimming Pool
-<br> This example shows a simple thermostat modeled as a hybrid system.
-The purpose of the example is to demonstrate the ability that HyVisual has
-to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
-To run HSIF models, you must invoke Ptolemy II with the <CODE>-hyvisual</CODE>
-command line argument or else run the HyVisual Web Edition.  These
-models will not work in a standard Ptolemy II vergil or Web Edition
-because to support HSIF, we need to check xml each file to see
-if it is an HSIF file of a MoML file.  This check slows Ptolemy II
-down slightly.
-
- <br>See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
-
-<li><a href="../ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml">HSIF Swimming Pool</a>.
-<br> This example shows a simple hybrid system model of a pool.
-
-<li> <a href="../ptolemy/domains/ct/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>
-<li> <a href="../ptolemy/domains/ct/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a>
 </menu>
-
-<li> <a href="../ptolemy/domains/de/doc/main.htm">DE</a>:
-	 Discrete Event
- <menu>
- <li> <a href="../ptolemy/actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0.2)
- </menu>
-
-
-<li><a href="../ptolemy/domains/fsm/doc/main.htm">FSM</a>:
-	Finite State Machine
- <menu>
-<li> <a href="../ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
- <li> <a href="../ptolemy/domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a>
- <li> <a href="../ptolemy/domains/fsm/demo/StateTracker/StateTracker.xml">State&nbsp;Tracker</a>
- </menu>
-
-<li> <a href="../ptolemy/domains/sdf/doc/main.htm">SDF</a>:
-	Synchronous Dataflow
- <menu>
- <li><a href="../ptolemy/actor/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a>
- <li><a href="../ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>
- <li><a href="../ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>
- </menu>
-</menu>
-
 
 <h3>New Actors</h3>
 
@@ -255,148 +66,22 @@ down slightly.
 
 <dl>
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMaximum.html"><code>ArrayMaximum</code></a>
-<dd> (Mark Oliver)
-Extract maximum element from an array. (New in Ptolemy II 3.0.2)
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMinimum.html"><code>ArrayMinimum</code></a>
-<dd> (Mark Oliver, Edward A. Lee)
-Extract minimum element from an array. (New in Ptolemy II 3.0.2)
-
-
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/BusAssembler.html"><code>BusAssembler</code></a>
-<dd> (Zoltan Kemenczy, Research in Motion Limited)
-Assemble input port channels into output bus.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/BusDisassembler.html"><code>BusDisassembler</code></a>
-<dd> (Zoltan Kemenczy, Research in Motion Limited)
-split input bus channels onto output port channels.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/Rician.html"><code>Rician</code></a>
-<dd> (Rachel Zhou)
-An actor that outputs a random sequence with a Rician distribution.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/Stop.html"><code>Stop</code></a>
-<dd> (Edward A. Lee)
-An actor that stops a model executing when it receives a true token.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/ThrowException.html"><code>ThrowException</code></a>
-<dd> (Edward A. Lee)
-An actor that throws an exception when it receives a true token.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/ThrowModelError.html"><code>ThrowModelError</code></a>
-<dd> (Edward A. Lee)
-An actor that throws a model error when it receives a true token.
+<dt> <a href="codeDoc/ptolemy/actor/lib/Exec.html"><code>Exec</code></a>
+<dd> (Christopher Hylands Brooks)
+Execute a subprocess
 
 </dl>
 
-<li> <a href="codeDoc/ptolemy/actor/lib/comm/package-summary.html">ptolemy.actor.lib.comm</a>:
+<li>  <a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">ptolemy.actor.lib.security</a>:
 
 <dl>
-
- <dt> <a href="codeDoc/ptolemy/actor/lib/comm/ConvolutionalCoder.html"><code>ConvolutionalCoder</code></a>
-
-<dd> (Rachel Zhou) Generate a convolutional code.
-
- <dt> <a href="codeDoc/ptolemy/actor/lib/comm/DeScrambler.html"><code>DeScrambler</code></a>
-<dd> (Rachel Zhou) Descramble the input bit sequence using a feedback shift register.
-
- <dt> <a href="codeDoc/ptolemy/actor/lib/comm/HadamardCode.html"><code>HadamardCode</code></a>
-<dd> (Rachel Zhou) Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
-
- <dt> <a href="codeDoc/ptolemy/actor/lib/comm/Scrambler.html"><code>Scrambler</code></a>
-<dd> (Rachel Zhou) Given an input bit sequence, scramble it in a pseudo random way.
-
- <dt> <a href="codeDoc/ptolemy/actor/lib/comm/ViterbiDecoder.html"><code>ViterbiDecoder</code></a>
-<dd> (Rachel Zhou) Viterbi Decoder.
+<dt> Java Cryptography Actors
+<dd> (Christopher Hylands Brooks, Rakesh Reddy)
 
 </dl>
 
-<li>  <a href="codeDoc/ptolemy/actor/lib/conversions/package-summary.html">ptolemy.actor.lib.conversions</a>:
-
-<dl>
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/ExpressionToToken.html"><code>ExpressionToToken</code></a>
-<dd> (Steve Neuendorffer)
-An actor that reads expressions and parses them into tokens.
-
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/TokenToExpression.html"><code>TokenToExpression</code></a>
-<dd> (Steve Neuendorffer)
-An actor that converts tokens into expressions.
-
-</dl>
-
-<li>  <a href="codeDoc/ptolemy/actor/lib/jai/package-summary.html">ptolemy.actor.lib.jai</a>:
-
-<dl>
-<dt> Java Advanced Imaging actors
-<dd> (James Yeh)
-Actors that use the Java Advanced Imagining framework
-</dl>
-
-<li>  <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">ptolemy.actor.lib.jmf</a>:
-
-<dl>
-<dt> Java Media Framework actors
-<dd> (James Yeh)
-Actors that use the Java Media Framework
-</dl>
-
-
-</ul>
-
-
-<h2>Changes between Ptolemy II 3.0.1 and 3.0.2</h2>
-Ptolemy II 3.0.1 was an interim release with a narrow distribution.
-<br>The following changes occurred between 3.0.1 and 3.0.2
-
-<h3>Actors that were added between Ptolemy II 3.0.1 and 3.0.2</h3>
-<dl>
-<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMaximum.html"><code>ArrayMaximum</code></a>
-<dd> (Mark Oliver)
-Extract maximum element from an array.
-
-<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMinimum.html"><code>ArrayMinimum</code></a>
-<dd> (Mark Oliver, Edward A. Lee)
-Extract minimum element from an array.
-
-</dl>
-
-<h3>Enhancements between Ptolemy II 3.0.1 and 3.0.2</h3>
-<dl>
-<dt> <code>$PTII/configure.in</code>,
-<code>$PTII/configure</code>,
-<code>$PTII/.classpath.in</code>,
-<code>$PTII/.eclipse.epf</code>,
-<code>$PTII/configs/FindClass.java</code>
-<dd> Support for <a href="coding/eclipse.htm">configuring Eclipse</a>.
-
-</dl>
-<h3>Bug Fixes between Ptolemy II 3.0.1 and 3.0.2</h3>
-<dl>
-<dt> <code>ptolemy/domains/sdf/lib/vq/ImageSequence.java</code>
-<dd> Adjusted initial value of imageURLTemplate parameter
-<dt> <code>ptolemy/domains/sdf/lib/Autocorrelation.java</code>
-<dd> Can now handle complex data.
-<dt> <code>lib/saxon7.jar</code>
-Updated to 7.6.5 of Saxon.  This was necessary to get both
-the HSIF demos and the Cal demos to work.
-<dt> <code>ptolemy/vergil/actor/ActorEditorGraphController.java</code>
-<dd> Under MacOS look and feel, use Command-Click to create new
-relations and drag new edges
-<dt> <code>ptolemy/vergil/toolbox/PtolemyTransferable.java</code>
-<dd> Under MacOS look and feel, change how we instantiate
-the DataFlavor so as to avoid a stack trace
-<dt> <code>ptolemy/actor/gui/TextEffigy.java</code>
-<dd> If the user tries to open a missing file, throw a better exception.
-</dl>
-
-<h2>Backward compatibility issues</h2>
-
-Most models developed under Ptolemy II 1.0.1 or
-2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.2.
+Most models developed under Ptolemy II 1.0.1,
+2.0.1, 3.0.2  or HyVisual 2.2-beta should run under Ptolemy II 4.0
 The MoMLParser includes a list of backward
 compatibility filters that make certain changes on models
 when read, handling such issues as actors being moved or renamed
