@@ -79,7 +79,7 @@ public class BasicDemo {
             IORelation rel = (IORelation)univ.connect(out, in, "R1");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getExecutiveDirector().run(1);
+            univ.getExecutiveDirector().go(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());
