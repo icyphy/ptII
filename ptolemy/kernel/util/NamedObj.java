@@ -38,13 +38,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
 
 import ptolemy.util.StringUtilities;
@@ -619,7 +617,7 @@ public class NamedObj implements
 
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
-     *  not persistent or if this object is an inherited object.  This uses the
+     *  not persistent or if this object is a derived object.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
@@ -642,7 +640,7 @@ public class NamedObj implements
     /** Get a MoML description of this object with its name replaced by
      *  the specified name.  The description might be an empty string
      *  if there is no MoML description of this object or if this object
-     *  is not persistent, or this object an inherited object.  This uses the
+     *  is not persistent, or this object a derived object.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
@@ -665,7 +663,7 @@ public class NamedObj implements
 
     /** Write a MoML description of this object using the specified
      *  Writer.  If there is no MoML description, or if the object
-     *  is not persistent, or if this object is an inherited object,
+     *  is not persistent, or if this object is a derived object,
      *  then nothing is written. To write to standard out, do
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
@@ -1046,8 +1044,8 @@ public class NamedObj implements
         }
     }
 
-    /** Return -1 if this is not an inherited object, 0 if this
-     *  is an inherited object that has been modified locally, and
+    /** Return -1 if this is not a derived object, 0 if this
+     *  is a derived object that has been modified locally, and
      *  a depth greater than zero if this derived object has
      *  been modified by propagation at the returned depth above
      *  this object in the containment hierarchy.
@@ -1172,7 +1170,7 @@ public class NamedObj implements
      *  break the relationship with the object from which this inherits.
      *  @see Instantiable
      *  @see #getOverrideDepth()
-     *  @return True if the object is an inherited object.
+     *  @return True if the object is a derived object.
      */
     public final boolean isDerived() {
         // NOTE: New method added. EAL 12/03
@@ -1376,14 +1374,12 @@ public class NamedObj implements
     }
 
     /** Set or change the name.  If a null argument is given the
-     *  name is set to an empty string. Propagate the change to
-     *  any derived objects.  If the name change fails on any
-     *  of those, then the names of all objects are left unchanged.
+     *  name is set to an empty string.
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
      *  @exception IllegalActionException If the name contains a period
-     *   or if the object is an inherited object and the name argument does
+     *   or if the object is a derived object and the name argument does
      *   not match the current name.
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
@@ -1410,112 +1406,7 @@ public class NamedObj implements
         }
         try {
             _workspace.getWriteAccess();
-            
-            // Propagate.  Note that a rename in a derived object
-            // could cause a NameDuplicationException.  We have to
-            // be able to unroll the changes if that occurs.
-            Iterator heritage = getDerivedList().iterator();
-            Set changedName = new HashSet();
-            HashMap changedClassName = new HashMap();
-            NamedObj derived = null;
-            try {
-                while (heritage.hasNext()) {
-                    derived = (NamedObj)heritage.next();
-                    // If the derived object has the same
-                    // name as the old name, then we assume it
-                    // should change.
-                    if (derived.getName().equals(oldName)) {
-                        derived.setName(name);
-                        changedName.add(derived);
-                    }
-                    // Also need to modify the class name of
-                    // the instance or derived class if the
-                    // class or base class changes its name.
-                    if (derived instanceof Instantiable) {
-                        Instantiable parent = ((Instantiable)derived)
-                            .getParent();
-                        // This relies on the depth-first search
-                        // order of the getHeritageList() method
-                        // to be sure that the base class will
-                        // already be in the changedName set if
-                        // its name will change.
-                        if (parent != null
-                                && (parent == this
-                                        || changedName.contains(parent))) {
-                            String previousClassName
-                                = derived.getClassName();
-                            int last = previousClassName
-                                .lastIndexOf(oldName);
-                            if (last < 0) {
-                                throw new InternalErrorException(
-                                        "Expected instance "
-                                        + derived.getFullName()
-                                        + " to have class name ending with "
-                                        + oldName
-                                        + " but its class name is "
-                                        + previousClassName);
-                            }
-                            String newClassName = name;
-                            if (last > 0) {
-                                newClassName
-                                    = previousClassName
-                                    .substring(0, last)
-                                    + name;
-                            }
-                            derived.setClassName(newClassName);
-                            changedClassName.put(
-                                    derived, previousClassName);
-                        }
-                    }
-                }
-            } catch (NameDuplicationException ex) {
-                // Unravel the name changes before
-                // rethrowing the exception.
-                Iterator toUndo = changedName.iterator();
-                while (toUndo.hasNext()) {
-                    NamedObj revert = (NamedObj)toUndo.next();
-                    revert.setName(oldName);
-                }
-                Iterator classNameFixes = changedClassName.entrySet().iterator();
-                while (classNameFixes.hasNext()) {
-                    Map.Entry revert = (Map.Entry)classNameFixes.next();
-                    NamedObj toFix = (NamedObj)revert.getKey();
-                    String previousClassName = (String)revert.getValue();
-                    toFix.setClassName(previousClassName);
-                }
-                throw new IllegalActionException(this, ex,
-                        "Propagation to instance and/or derived class causes" +
-                        "name duplication: " + derived.getFullName());
-            }
-
             _name = name;
-            
-            // If this object is a class definition, then find
-            // subclasses and instances and propagate the
-            // change to the name of the
-            // object they refer to.
-            if ((this instanceof Instantiable)
-                    && ((Instantiable)this).isClassDefinition()) {
-                List deferredFrom = ((Instantiable)this).getChildren();
-                if (deferredFrom != null) {
-                    Iterator deferrers = deferredFrom.iterator();
-                    while (deferrers.hasNext()) {
-                        WeakReference reference
-                            = (WeakReference)deferrers.next();
-                        NamedObj deferrer = (NamedObj)reference.get();
-                        if (deferrer != null) {
-                            // Got a live one.
-                            // Need to determine whether the name is
-                            // absolute or relative.
-                            String replacementName = name;
-                            if (deferrer.getClassName().startsWith(".")) {
-                                replacementName = getFullName();
-                            }
-                            deferrer.setClassName(replacementName);
-                        }
-                    }
-                }
-            }
         } finally {
             _workspace.doneWriting();
         }
@@ -1961,7 +1852,7 @@ public class NamedObj implements
      *  a derived object, then the depth is -1. If this object is a
      *  derived object defined by an object that a container defers to,
      *  then the depth is the number of levels up the hierarchy to that
-     *  container.  If this object is an inherited object but is not defined
+     *  container.  If this object is a derived object but is not defined
      *  by an object that a container defers to (e.g., it is a class
      *  element defined by the Java definition of some container), then
      *  the depth is the number of class objects containing it up the
@@ -1978,7 +1869,7 @@ public class NamedObj implements
                 return 1 + container._getDeferralDepth(definedObject);
             } else {
                 // It seems strange for the top of the hierarchy
-                // to be an inherited object, but I suppose it's possible.
+                // to be a derived object, but I suppose it's possible.
                 // Return 0 because there is no more depth to reach.
                 return 0;
             }
@@ -2093,7 +1984,7 @@ public class NamedObj implements
 
     /** Return true if this class should not export a MoML description.
      *  This will return true if setPersistent() has been called
-     *  with argument false, or it is an inherited object that has not
+     *  with argument false, or it is a derived object that has not
      *  been modified and all of the objects it contains return true
      *  on this same method (indicating that none of them needs to
      *  export MoML). It will always return false if the depth argument
@@ -2107,12 +1998,12 @@ public class NamedObj implements
             return true;
         } else {
             // Always export at the top level, even if it's
-            // an inherited object.
+            // a derived object.
             if (depth == 0) {
                 return false;
             }
             // Object has not been explicitly declared not persistent.
-            // Suppress MoML only if it is an inherited object that has
+            // Suppress MoML only if it is a derived object that has
             // not been locally changed, and that its contained objects
             // have not been locally changed.
             if (_isDerived) {
@@ -2135,7 +2026,7 @@ public class NamedObj implements
                         return false;
                     }
                 }
-                // If we get here, then this object is an inherited object
+                // If we get here, then this object is a derived object
                 // that has not been modified, and all its contained
                 // objects have not been modified. In this case,
                 // it is OK to suppress MoML.
@@ -2360,8 +2251,8 @@ public class NamedObj implements
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
-    // Boolean variable to indicate whether this is an inherited object.
-    // By default, instances of NamedObj are not inherited.
+    // Boolean variable to indicate whether this is a derived object.
+    // By default, instances of NamedObj are not derived.
     private boolean _isDerived = false;
 
     // Boolean variable to indicate the persistence of the object.
@@ -2374,7 +2265,7 @@ public class NamedObj implements
     /** The name */
     private String _name;
 
-    /** Flag indicating that this inherited object has been modified. */
+    /** Flag indicating that this derived object has been modified. */
     private int _overrideDepth = -1;
 
     /** The value for the source MoML attribute. */

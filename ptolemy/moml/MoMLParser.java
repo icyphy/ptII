@@ -61,6 +61,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -69,6 +70,8 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -2205,7 +2208,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 // NOTE: The direction attribute is deprecated, but
-                // supported nonetheless.
+                // supported nonetheless. This is not propagated, but
+                // hopefully deprecated attributes are not used with
+                // the class mechanism.
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
                     if (direction != null) {
@@ -2366,7 +2371,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (_current != null) {
                     String oldName = _current.getName();
 
-                    // Ensure that derived objects aren't changed.
+                    // NOTE: Added to ensure that derived objects aren't changed.
+                    // EAL 1/04.
                     if (!oldName.equals(newName)
                             && _current.isDerived()) {
                         throw new IllegalActionException(_current,
@@ -2374,6 +2380,83 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + newName
                                 + ". The name is fixed by the class definition.");
                     }
+                    // Propagate.  Note that a rename in a derived class
+                    // could cause a NameDuplicationException.  We have to
+                    // be able to unroll the changes if that occurs.
+                    Iterator heritage = _current.getDerivedList().iterator();
+                    Set changedName = new HashSet();
+                    HashMap changedClassName = new HashMap();
+                    NamedObj derived = null;
+                    try {
+                        while (heritage.hasNext()) {
+                            derived = (NamedObj)heritage.next();
+                            // If the derived object has the same
+                            // name as the old name, then we assume it
+                            // should change.
+                            if (derived.getName().equals(oldName)) {
+                                derived.setName(newName);
+                                changedName.add(derived);
+                            }
+                            // Also need to modify the class name of
+                            // the instance or derived class if the
+                            // class or base class changes its name.
+                            if (derived instanceof Instantiable) {
+                                Instantiable parent = ((Instantiable)derived)
+                                    .getParent();
+                                // This relies on the depth-first search
+                                // order of the getHeritageList() method
+                                // to be sure that the base class will
+                                // already be in the changedName set if
+                                // its name will change.
+                                if (parent != null
+                                        && (parent == _current
+                                                || changedName.contains(parent))) {
+                                    String previousClassName
+                                        = derived.getClassName();
+                                    int last = previousClassName
+                                        .lastIndexOf(oldName);
+                                    if (last < 0) {
+                                        throw new InternalErrorException(
+                                                "Expected instance "
+                                                + derived.getFullName()
+                                                + " to have class name ending with "
+                                                + oldName
+                                                + " but its class name is "
+                                                + previousClassName);
+                                    }
+                                    String newClassName = newName;
+                                    if (last > 0) {
+                                        newClassName
+                                            = previousClassName
+                                            .substring(0, last)
+                                            + newName;
+                                    }
+                                    derived.setClassName(newClassName);
+                                    changedClassName.put(
+                                            derived, previousClassName);
+                                }
+                            }
+                        }
+                    } catch (NameDuplicationException ex) {
+                        // Unravel the name changes before
+                        // rethrowing the exception.
+                        Iterator toUndo = changedName.iterator();
+                        while (toUndo.hasNext()) {
+                            NamedObj revert = (NamedObj)toUndo.next();
+                            revert.setName(oldName);
+                        }
+                        Iterator classNameFixes = changedClassName.entrySet().iterator();
+                        while (classNameFixes.hasNext()) {
+                            Map.Entry revert = (Map.Entry)classNameFixes.next();
+                            NamedObj toFix = (NamedObj)revert.getKey();
+                            String previousClassName = (String)revert.getValue();
+                            toFix.setClassName(previousClassName);
+                        }
+                        throw new IllegalActionException(_current, ex,
+                                "Propagation to instance and/or derived class causes" +
+                                "name duplication: " + derived.getFullName());
+                    }
+
                     _current.setName(newName);
 
                     // Handle the undo aspect if needed
@@ -2392,6 +2475,34 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Do not need to continue generating undo MoML
                         // as rename does not have any child elements
                         _undoContext.setChildrenUndoable(false);
+                    }
+
+                    // If _current is a class definition, then find
+                    // subclasses and instances and propagate the
+                    // change to the name of the
+                    // object they refer to.
+                    if ((_current instanceof Instantiable)
+                            && ((Instantiable)_current).isClassDefinition()) {
+                        List deferredFrom
+                            = ((Instantiable)_current).getChildren();
+                        if (deferredFrom != null) {
+                            Iterator deferrers = deferredFrom.iterator();
+                            while (deferrers.hasNext()) {
+                                WeakReference reference
+                                    = (WeakReference)deferrers.next();
+                                Prototype deferrer = (Prototype)reference.get();
+                                if (deferrer != null) {
+                                    // Got a live one.
+                                    // Need to determine whether the name is
+                                    // absolute or relative.
+                                    String replacementName = newName;
+                                    if (deferrer.getClassName().startsWith(".")) {
+                                        replacementName = _current.getFullName();
+                                    }
+                                    deferrer.setClassName(replacementName);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -3058,6 +3169,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             // Mark contents as being derived objects.  EAL 12/03
+            // FIXME: Probably this needs to indicate the level
+            // at which they are derived... (depth)...
             _markContentsDerived(newEntity);
 
             // Set the class name as specified in this method call.
@@ -3101,7 +3214,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  This method marks the contents of what it creates as derived objects,
      *  since they are defined in the Java code of the constructor.
      *  If we are currently propagating, then it also marks the new
-     *  instance itself as an derived object.
+     *  instance itself as a derived object.
      *  @param newClass The class.
      *  @param arguments The constructor arguments.
      *  @exception Exception If no matching constructor is found, or if
@@ -3769,8 +3882,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "a multiport. That property is fixed by " +
                         "the class definition.");
             }
-            // Propagation is handled by setMultiport() below.
             ((IOPort)_current).setMultiport(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort derived = (IOPort)heritage.next();
+                derived.setMultiport(newValue);
+            }
 
             _pushContext();
             _current =  (Attribute)_current.getAttribute(propertyName);
@@ -3816,8 +3935,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "the class definition.");
             }
 
-            // Propagation is handled by setOutput() below.
             ((IOPort)_current).setOutput(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort derived = (IOPort)heritage.next();
+                derived.setOutput(newValue);
+            }
 
             _pushContext();
             _current =  (Attribute)
@@ -3864,8 +3989,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "the class definition.");
             }
 
-            // Propagation is handled by setInput() below.
             ((IOPort)_current).setInput(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort derived = (IOPort)heritage.next();
+                derived.setInput(newValue);
+            }
 
             _pushContext();
             _current =  (Attribute)
