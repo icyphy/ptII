@@ -496,8 +496,8 @@ public class PlotBox extends JPanel implements Printable {
             result[1] = _xhighgiven;
         } else {
             // Have to first correct for the padding.
-            result[0] = _xMin + ((_xMax - _xMin) * _PADDING);
-            result[1] = _xMax - ((_xMax - _xMin) * _PADDING);;
+            result[0] = _xMin + ((_xMax - _xMin) * _padding);
+            result[1] = _xMax - ((_xMax - _xMin) * _padding);;
         }
         return result;
     }
@@ -542,8 +542,8 @@ public class PlotBox extends JPanel implements Printable {
             result[1] = _yhighgiven;
         } else {
             // Have to first correct for the padding.
-            result[0] = _yMin + ((_yMax - _yMin) * _PADDING);
-            result[1] = _yMax - ((_yMax - _yMin) * _PADDING);;
+            result[0] = _yMin + ((_yMax - _yMin) * _padding);
+            result[1] = _yMax - ((_yMax - _yMin) * _padding);;
         }
         return result;
     }
@@ -1938,11 +1938,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Set the padding multiple.
      *  The plot rectangle is "padded" in each direction -x, +x, -y, and +y.
-     *  If the padding is set to 0.05, then there is 10% more length to each
+     *  If the padding is set to 0.05, then there is 10% more length on each
      *  axis, 5% in each direction.
      */
-    // See the private methods _setYRange() and -setXRange() where the padding
-    // is used.
     protected void _setPadding(double padding) {
 	_padding = padding;
     }
@@ -2047,13 +2045,9 @@ public class PlotBox extends JPanel implements Printable {
     // The range of the data to be plotted.
     protected transient double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
 
-    // The factor we pad by so that we don't plot points on the axes.
-    protected transient static final double _PADDING = 0.05;
-    // _padding was added to allow a setPadding() method.  _PADDING was not
-    // replaced by _padding because of the complication of finding all of the
-    // places where _PADDING is used (possibly in subclasses).  _padding is
-    // used in place of _PADDING, so far, only in _setYRange() and _setXRange. 
-    protected double _padding = _PADDING;
+    /** The factor we pad by so that we don't plot points on the axes.
+     */
+    protected double _padding = 0.05;
 
     // Whether the ranges have been given.
     protected transient boolean _xRangeGiven = false;
