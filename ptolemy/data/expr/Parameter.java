@@ -69,8 +69,13 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  @param container The container.
      *  @param name The name.
      *  @param token The Token contained by this Parameter.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
-     public Parameter(NamedObj container, String name, pt.data.Token token) {
+     public Parameter(NamedObj container, String name, pt.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
          super(container, name);
          try {
              _origToken = (pt.data.Token)token.clone();
@@ -86,8 +91,13 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *   @param container The NamedObj which contains this parameter.
      *   @param name The name for this object.
      *   @param value The String to be parsed to a Token.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
-    public Parameter(NamedObj container, String name, String value) {
+    public Parameter(NamedObj container, String name, String value)
+            throws IllegalActionException, NameDuplicationException {
        super(container, name);
        _initialValue = value;
        _parser = new PtParser(this);
@@ -152,7 +162,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
             NamedObj paramContainer = (NamedObj)getContainer();
             NamedObj paramContainerContainer =
                     ((NamedObj)paramContainer.getContainer());
-            Enumeration level = paramContainer.getParameters();       
+            Enumeration level = paramContainer.getAttributes();       
             Parameter p;
             while (level.hasMoreElements() ) {
                 // now  copy the nmaedlist, omitting the current Parameter
@@ -166,7 +176,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
                 }
             }
             if (paramContainerContainer != null) {
-                level = paramContainerContainer.getParameters();
+                level = paramContainerContainer.getAttributes();
                 while (level.hasMoreElements() ) {
                     p=(Parameter)level.nextElement();
                     try {
@@ -311,7 +321,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  @param ws The workspace the cloned object is to be placed in.
      */
     protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clear(ws);
+        super._clearAndSetWorkspace(ws);
         _token = null;
         _origToken = null;
         _initialValue = null;
