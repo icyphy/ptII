@@ -6,12 +6,6 @@
     <?moml
       <group>
 <doc>softwalls</doc>
-<entity name="ZeroBias" class="ptolemy.apps.softwalls.ZeroBias">
-<doc>Output a zero for any input.</doc>
-</entity>
-<entity name="Bias" class="ptolemy.apps.softwalls.Bias">
-<doc>A view screen with a mountain backdrop.</doc>
-</entity>
 <entity name="ImplicitSurface" class="ptolemy.apps.softwalls.ImplicitSurface">
 <doc>A view screen with a mountain backdrop.</doc>
 </entity>
