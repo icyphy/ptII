@@ -514,8 +514,8 @@ public class Type extends SDFApplet implements ChangeListener {
     private String _exprIn1Type = "NaT";
     private String _exprIn2Type = "NaT";
     private String _exprOutType = "NaT";
-    private String _plotterType = "Double";
-    private String _displayType = "String";
+    private String _plotterType = "double";
+    private String _displayType = "string";
 
     private JPanel _ioPanel = new JPanel();
     private JPanel _plotPanel = new JPanel();
