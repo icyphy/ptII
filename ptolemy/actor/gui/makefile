@@ -51,8 +51,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CheckBoxStyle.java \
 	CompositeActorApplication.java \
 	Configurer.java \
+	EditorPaneFactory.java \
 	ExecEvent.java \
 	ExecEventListener.java \
 	HistogramPlotter.java \
@@ -61,6 +63,7 @@ JSRCS = \
 	ModelPane.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
+	ParameterEditorStyle.java \
 	Placeable.java \
 	Plotter.java \
 	Print.java \

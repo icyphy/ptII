@@ -83,12 +83,12 @@ public class PtolemyQuery extends Query implements QueryListener {
 	if (_parameters.containsKey(name)) {
 	    // Set the variable.
 	    ((Variable)(_parameters.get(name))).setExpression(
-                    this.stringValue(name));
+                    stringValue(name));
 	}
-	
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private HashMap _parameters;
-    
+
+    private HashMap _parameters; 
 }

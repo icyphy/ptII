@@ -1,4 +1,4 @@
-/* An attribute that manages configuring its container.
+/* An editor for Ptolemy II objects.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -36,117 +36,110 @@ import ptolemy.data.expr.Parameter;
 
 // Java imports.
 import java.awt.Component;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
 /**
-This is an attribute that manages configuring its container.
-It serves as a factory producing widgets for interactively editing
-the configuration of the container (these are called "configuration
-widgets").
+This class is an editor for the parameters of an object.  It may consist
+of more than one editor panel.  If the object has any attributes that
+are instances of EditorPaneFactory, then the panes made by those
+factories are stacked vertically in this panel.  Otherwise, a
+single instance of EditorPaneFactory is created and used to
+construct an editor.
 
-In this base class, the createEditPane() method creates an
-instance of PtolemyQuery with one entry for each parameter in
-the container of this configurer.  This is the default mechanism
-for editing parameters.  Derived classes may override this
-method to present radically different interfaces to the user.
-For example, a digital filter actor could present a filter
-design interface.  A plotter actor could present a panel for
-configuring a plot.  A file reader actor could present a file
-browser.
+The restore() method restores the values of the parameters of the
+object to their values when this object was created.  This can be used
+in a modal dialog to implement a cancel button, which restores
+the parameter values to those before the dialog was opened.
 
-A GUI for Ptolemy II should use the convenience method consolidate(),
-which obeys the following policy.
-To edit the parameters of any instance of NamedObj, it
-first checks to see whether that NamedObj contains an instance
-of Configurer (using the attributesList(filter: Class) method).
-If it contains no configurer, then it creates an
-instance of this base class configurer.  It then returns
-a panel containing the configuration widgets specified by
-each contained configurer, stacked vertically if there is more
-than one.  A GUI should typically insert this panel into a
-a dialog box and present it to the user.
-
+@see EditorPaneFactory
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 
-public class Configurer extends Attribute {
+public class Configurer extends JPanel {
 
-    /** Construct a configurer with the specified container and name.
-     *  @param container The container.
-     *  @param name The name of the configurer.
-     *  @exception IllegalActionException If the configurer is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+    /** Construct a configurer for the specified object.
+     *  @param object The object to configure.
+     *  @exception IllegalActionException If the specified object has
+     *   no editor factories, and refuses to accept as an attribute
+     *   an instance of EditorPaneFactory.
      */	
-    public Configurer(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
+    public Configurer(NamedObj object) throws IllegalActionException {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-    /** Create configuration widgets specified by all the instances
-     *  of Configurer in the specified object.  These are consolidated
-     *  into a single panel, stacked vertically.
-     *  @return A panel containing configuration widgets.
-     *  @exception IllegalActionException If a configurer is not of an
-     *   acceptable attribute for the container.
-     */
-    public static JPanel createEditor(NamedObj object)
-            throws IllegalActionException {
-        JPanel result = new JPanel();
-        result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
+        _object = object;
+        Iterator params
+                = object.attributeList(Parameter.class).iterator();
+        while (params.hasNext()) {
+            Parameter param = (Parameter)params.next();
+            _originalValues.put(param.getName(), param.stringRepresentation());
+        }
 
         boolean foundOne = false;
-        Iterator configurers
-                = object.attributeList(Configurer.class).iterator();
-        while (configurers.hasNext()) {
+        Iterator editors
+                = object.attributeList(EditorPaneFactory.class).iterator();
+        while (editors.hasNext()) {
             foundOne = true;
-            Configurer configurer = (Configurer)configurers.next();
-            result.add(configurer.createEditPane());
+            EditorPaneFactory editor = (EditorPaneFactory)editors.next();
+            add(editor.createEditorPane());
         }
         if (!foundOne) {
             try {
-                Configurer configurer = new Configurer(object,
-                        object.uniqueName("configurer"));
-                result.add(configurer.createEditPane());
+                EditorPaneFactory editor = new EditorPaneFactory(object,
+                        object.uniqueName("editorFactory"));
+                add(editor.createEditorPane());
             } catch (NameDuplicationException ex) {
                 throw new InternalErrorException(ex.toString());
             }
         }
-        return result;
     }
 
-    /** Return a new widget for configuring the container.
-     *  @return A new widget for configuring the container.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Request restoration of the parameter values to what they
+     *  were when this object was created.  The actual restoration
+     *  occurs later, in the UI thread, in order to allow all pending
+     *  changes to the parameter values to be processed first.
      */
-    public Component createEditPane() {
-        PtolemyQuery query = new PtolemyQuery();
-        // FIXME: The following doesn't work... why?
-        query.setTextWidth(20);
-        NamedObj container = (NamedObj)getContainer();
-        Iterator params
-               = container.attributeList(Parameter.class).iterator();
-        boolean foundOne = false;
-        while (params.hasNext()) {
-            foundOne = true;
-            Parameter param = (Parameter)params.next();
-            // FIXME: Check for ParameterConfigurer.
-            query.addLine(param.getName(),
-                   param.getName(),
-                   param.stringRepresentation());
-            query.attachParameter(param, param.getName());
-        }
-        if (!foundOne) {
-            return new JLabel(container.getName() + " has no parameters.");
-        }
-        // FIXME: should this build in a mechanism for adding
-        // parameters?  Perhaps that should be in CompositeActor...
-        return query;
+    public void restore() {
+        // This is done in the UI thread in order to
+        // ensure that all pending UI events have been
+        // processed.  In particular, some of these events
+        // may trigger notification of new parameter values,
+        // which must not be allowed to occur after this
+        // restore is done.  In particular, the default
+        // parameter editor has lines where notification
+        // of updates occurs when the line loses focus.
+        // That notification occurs some time after the
+        // window is destroyed.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Iterator entries = _originalValues.entrySet().iterator();
+                while (entries.hasNext()) {
+                    Map.Entry entry = (Map.Entry)entries.next();
+                    Parameter param =
+                    (Parameter)_object.getAttribute((String)entry.getKey());
+                    param.setExpression((String)entry.getValue());
+                }
+            }
+        });
     }
+            
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The object that this configurer configures.
+    private NamedObj _object;
+
+    // The original values of the parameters.
+    private Map _originalValues = new HashMap();
 }
