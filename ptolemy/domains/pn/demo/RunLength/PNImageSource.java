@@ -42,7 +42,7 @@ import java.util.Enumeration;
 Reads an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
-@(#)PNImageSource.java	1.22 09/13/98
+@version @(#)PNImageSource.java	1.22 09/13/98
 */
 
 public class PNImageSource extends AtomicActor {
