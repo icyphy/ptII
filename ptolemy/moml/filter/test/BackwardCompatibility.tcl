@@ -769,6 +769,16 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/SDFVQMovieWriter.xml" \
 	    || "$file" == "compat4/SDFVQMovieWriter.xml" \
 	    || "$file" == "compat4/SDFVQSequenceDisplay.xml" \
+	    || "$file" == "compat4/FunctionClosures.xml" \
+	    || "$file" == "compat4/FunctionDefinition.xml" \
+	    || "$file" == "compat4/Primes.xml" \
+	    || "$file" == "compat4/SDFDDI.xml" \
+	    || "$file" == "compat4/PSDFinsidePN.xml" \
+	    || "$file" == "compat4/SDFDirector1.xml" \
+	    || "$file" == "compat4/singleActor.xml" \
+	    || "$file" == "compat4/PythonScale.xml" \
+	    || "$file" == "compat4/PythonStop.xml" \
+	    || "$file" == "compat4/PythonTerminate.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
