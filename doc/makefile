@@ -126,13 +126,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/media/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).." $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
-	@for x in codeDoc/*.html; do \
-		echo "Fixing paths in $$x"; \
-		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
-		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \
-			$$x > $$x.bak; \
-		mv $$x.bak $$x; \
-	done
+
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
