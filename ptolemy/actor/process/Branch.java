@@ -1,4 +1,6 @@
-/* 
+/* A Branch serves as a proxy for a BranchController by transfer tokens
+between the producer receiver and the consumer receiver to which it
+is assigned. 
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -38,11 +40,11 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 /**
-A Branch serves as a proxy for a BranchController by getting or
-putting tokens in to the BoundaryReceiver to which it is assigned.
-The execution of a Branch is controlled by a BranchController in
-that a BranchController can deny a Branch permission to get or
-put data in the receiver. 
+A Branch serves as a proxy for a BranchController by transfer tokens
+between the producer receiver and the consumer receiver to which it
+is assigned. The execution of a Branch is controlled by a 
+BranchController in that a BranchController can deny a Branch permission 
+to get or put data in the receiver. 
 
 An iteration of a Branch lasts until the BranchController notifies
 the Branch that the current iteration is done. Such notification 
@@ -119,7 +121,7 @@ public class Branch {
      * @exception TerminateBranchException If this method is called
      *  is called successively without an intervening call to
      *  beginEngagement.
-     * @see beginEngagement
+     * @see #beginEngagement
      */
     public void completeEngagement() {
 	if( _currentlyEngaged ) {
@@ -131,21 +133,38 @@ public class Branch {
 	}
     }
 
-    /**
+    /** End the current iteration of this branch. Notify both the 
+     *  producer and consumer receivers that the iteration is over.
      */
-    public int numberOfCompletedEngagements() {
-        return _completedEngagements;
+    public synchronized void endIteration() {
+	_iterationIsOverCache = true;
+        BoundaryReceiver rcvr = null;
+        rcvr = getProdReceiver();
+        synchronized(rcvr) {
+            rcvr.notifyAll();
+        }
+        rcvr = getConsReceiver();
+        synchronized(rcvr) {
+            rcvr.notifyAll();
+        }
+        notifyAll();
     }
-    
-    /** Return the Consumer BoundaryReceiver that this branch puts data into.
-     *  @return The Consumer BoundaryReceiver that this branch puts data into.
+
+    /** Return the consumer receiver that this branch puts data into.
+     *  A consumer receiver is defined as being a receiver whose  
+     *  containing port is connected to a boundary port.
+     * @return The consumer receiver that this branch puts data into.
+     * @see ptolemy.actor.process.BoundaryDetector
      */
     public BoundaryReceiver getConsReceiver() {
         return _consRcvr;
     }
 
-    /** Return the Producer BoundaryReceiver that this branch gets data from.
-     *  @return The Producer BoundaryReceiver that this branch gets data from.
+    /** Return the producer receiver that this branch gets data from.
+     *  A producer receiver is defined as being a receiver that is
+     *  contained in a boundary port.
+     * @return The producer receiver that this branch gets data from.
+     * @see ptolemy.actor.process.BoundaryDetector
      */
     public BoundaryReceiver getProdReceiver() {
         return _prodRcvr;
@@ -162,7 +181,13 @@ public class Branch {
         return _active;
     }
 
-    /** 
+    /** Return true if this branch is permitted to begin an 
+     *  engagement with the branch controller; return false
+     *  otherwise. During an engagement a branch is able
+     *  transfer a token between its producer receiver and
+     *  its consumer receiver.
+     * @return True if this branch may engage with its
+     *  branch controller.
      */
     public boolean isBranchPermitted() {
         try {
@@ -180,6 +205,28 @@ public class Branch {
     	return false;
     }
 
+    /** Return true if this branch has been informed that the
+     *  current iteration is over or if this branch is no 
+     *  longer active. 
+     * @return True if this branch is not active or if its
+     *  iteration is over.
+     */
+    public boolean isIterationOver() {
+	if( !isActive() ) {
+	    return true;
+	}
+	return _iterationIsOverCache;
+    }
+
+    /** Return the number of engagements that have been
+     *  successfully completed by this branch.
+     * @return The number of successful engagements completed
+     *  by this branch.
+     */
+    public int numberOfCompletedEngagements() {
+        return _completedEngagements;
+    }
+    
     /** Register that the receiver controlled by this branch
      *  is blocked.
      */
@@ -198,7 +245,9 @@ public class Branch {
         }
     }
 
-    /**
+    /** Reset this branch so that it may begin a new iteration.
+     *  End the current iteration and wake up the consumer and
+     *  producer receivers. 
      */
     public void reset() {
 	_active = true;
@@ -208,34 +257,10 @@ public class Branch {
 	endIteration();
     }
 
-    /**
-     */
-    public boolean isIterationOver() {
-	if( !isActive() ) {
-	    return false;
-	}
-	return _iterationIsOverCache;
-    }
-
-    /**
-     */
-    public synchronized void endIteration() {
-	_iterationIsOverCache = true;
-	// FIXME: Here I wake up the branch; What about the receiver?
-        BoundaryReceiver rcvr = null;
-        rcvr = getProdReceiver();
-        synchronized(rcvr) {
-            rcvr.notifyAll();
-        }
-        rcvr = getConsReceiver();
-        synchronized(rcvr) {
-            rcvr.notifyAll();
-        }
-        notifyAll();
-    }
-
-    /** 
-     * FIXME: Can we optimize this?
+    /** Transfer a single token between the producer receiver and 
+     *  the consumer receiver. If a TerminateBranchException is
+     *  thrown, then reset this receiver and return. 
+     *  FIXME: Can we optimize this?
      */
     public void transferTokens() {
         try {
@@ -250,9 +275,6 @@ public class Branch {
         }
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                    package friendly methods               ////
-
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
 
@@ -262,9 +284,6 @@ public class Branch {
     public void setActive(boolean value) {
         _active = value;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -284,7 +303,6 @@ public class Branch {
     private boolean _rcvrBlocked = false;
     private int _completedEngagements = 0;
     private boolean _currentlyEngaged = false;
-    // private boolean _stopped = false;
     private boolean _iterationIsOverCache = false;
 
 }
