@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sr/demo
 
-DIRS = 		ReflexGame TokenRing
+DIRS = 		TokenRing
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -46,7 +46,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	ReflexGame/ReflexGame.jar \
 	TokenRing/TokenRing.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
