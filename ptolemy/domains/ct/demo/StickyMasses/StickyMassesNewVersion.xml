@@ -17,7 +17,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 45.0]">
         </property>
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -36,7 +36,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 20.0]">
         </property>
     </property>
     <property name="position2" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -55,7 +55,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 60.0]">
         </property>
     </property>
     <property name="velocity1" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -74,7 +74,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 35.0]">
         </property>
     </property>
     <property name="velocity2" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -93,23 +93,23 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 811, 659}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 789, 648}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 541]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 530]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9991636465013">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{194.7291666666667, 226.6100049039504}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.0, 265.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 490.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -131,11 +131,11 @@ to see the modal behavior.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 95.0]">
         </property>
     </property>
     <property name="13:0:0:annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 195.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:Arial; fill:blue">This model is a modified version of the Sticky Masses model made by Jie Liu.
@@ -166,7 +166,7 @@ to develop modal models.</text></svg></configure>
     <entity name="Masses" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 140.0]">
         </property>
         <port name="p1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -1174,7 +1174,7 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 187]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 110.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1195,7 +1195,7 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1222,7 +1222,7 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 194]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 170.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
