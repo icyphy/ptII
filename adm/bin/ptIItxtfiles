@@ -1,10 +1,10 @@
 #!/bin/sh
-# -[Mon Mar  4 13:05:01 2002 by cxh]-
+# -[Mon Mar  4 13:06:07 2002 by cxh]-
 # Return all the text source files (with exceptions) in the ptII tree
 
 $PTII/adm/bin/ptIIfiles | egrep -v '\.#' | grep -v .au \
 	| egrep -v '\.bin' | grep -v .bmp \
-	| grep -v .class | grep -v .dat | grep -v .data | \
+	| grep -v .class | grep -v .dat | grep -v .data \
 	| grep -v .dll | grep -v .fm \
 	| grep -v .eps | grep -v .gif | grep -v .ico | grep -v .isj \
 	| grep -v .jar | grep -v .jpg \
