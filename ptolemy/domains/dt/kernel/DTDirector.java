@@ -403,7 +403,7 @@ public class DTDirector extends SDFDirector {
             Actor actor = (Actor) currentPort.getContainer();
             String name = ((Nameable)actor).getFullName();
 
-            DTActor dtActor = (DTActor) _allActorsTable.get(actor);
+            _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
             debug.println(dtActor);
             if (dtActor == null) {
                 throw new IllegalActionException(
@@ -437,7 +437,7 @@ public class DTDirector extends SDFDirector {
 
             String name = ((Nameable)fromActor).getFullName();
 
-            DTActor dtFromActor = (DTActor) _allActorsTable.get(fromActor);
+            _DTActor dtFromActor = (_DTActor) _allActorsTable.get(fromActor);
 
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
@@ -633,7 +633,7 @@ public class DTDirector extends SDFDirector {
 
         foundRepeatValue:
         while(actorIterator.hasNext()) {
-            DTActor currentActor = (DTActor) actorIterator.next();
+            _DTActor currentActor = (_DTActor) actorIterator.next();
             if (actor.equals(currentActor._actor)) {
                 repeats = currentActor._repeats;
                 break foundRepeatValue;
@@ -670,10 +670,10 @@ public class DTDirector extends SDFDirector {
         while (allActorsScheduled.hasMoreElements()) {
             Actor actor = (Actor) allActorsScheduled.nextElement();
             String name = ((Nameable)actor).getFullName();
-            DTActor dtActor = (DTActor) _allActorsTable.get(actor);
+            _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
             if (dtActor==null) {
-              _allActorsTable.put(actor, new DTActor(actor));
-              dtActor = (DTActor) _allActorsTable.get(actor);
+              _allActorsTable.put(actor, new _DTActor(actor));
+              dtActor = (_DTActor) _allActorsTable.get(actor);
               _actorTable.add(dtActor);
             }
             dtActor._repeats++;
@@ -683,8 +683,8 @@ public class DTDirector extends SDFDirector {
         // include the container as an actor.  This is needed for TypedCompositeActors
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        _allActorsTable.put(actor, new DTActor((Actor)getContainer()));
-        DTActor dtActor = (DTActor) _allActorsTable.get(actor);
+        _allActorsTable.put(actor, new _DTActor((Actor)getContainer()));
+        _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
         dtActor._repeats = 1;
         _actorTable.add(dtActor);
 
@@ -714,7 +714,7 @@ public class DTDirector extends SDFDirector {
         while(outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
 
-            _outputPortTable.add(new DTIOPort(port));
+            _outputPortTable.add(new _DTIOPort(port));
         }
 
     }
@@ -774,7 +774,7 @@ public class DTDirector extends SDFDirector {
             Iterator outputPorts = _outputPortTable.iterator();
             _isFiringAllowed = false;
             while(outputPorts.hasNext()) {
-                DTIOPort dtport = (DTIOPort) outputPorts.next();
+                _DTIOPort dtport = (_DTIOPort) outputPorts.next();
                 Receiver[][] insideReceivers = dtport._port.getInsideReceivers();
                 double deltaT = ((DTReceiver)insideReceivers[0][0]).getDeltaT();
                 double ratio = timeElapsed/deltaT;
@@ -820,7 +820,7 @@ public class DTDirector extends SDFDirector {
          debug.println("---------------------------------------");
          ListIterator actorIterator = _actorTable.listIterator();
          while(actorIterator.hasNext()) {
-            DTActor currentActor = (DTActor) actorIterator.next();
+            _DTActor currentActor = (_DTActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
             debug.print(actorName+" repeats:"+currentActor._repeats);
@@ -828,8 +828,8 @@ public class DTDirector extends SDFDirector {
 
             if (currentActor._actor instanceof Delay) {
                 Delay delay = (Delay) currentActor._actor;
-                MatrixToken initialTokens = (MatrixToken)delay.initialOutputs.getToken();
-                int delayCount = initialTokens.getColumnCount();
+                ArrayToken initialTokens = (ArrayToken) delay.initialOutputs.getToken();
+                int delayCount = initialTokens.length();
 
                 debug.print(" **DELAY** with "+delayCount+" initial tokens");
             }
@@ -954,7 +954,7 @@ public class DTDirector extends SDFDirector {
 
         Iterator outputPorts = _outputPortTable.iterator();
         while(outputPorts.hasNext()) {
-            DTIOPort dtport = (DTIOPort) outputPorts.next();
+            _DTIOPort dtport = (_DTIOPort) outputPorts.next();
 
             if (dtport._shouldTransferOutputs) {
                 outsideDirector.transferOutputs(dtport._port);
@@ -1122,7 +1122,7 @@ public class DTDirector extends SDFDirector {
     ////                         inner classes                     ////
 
     // Inner class to cache important variables for contained actors
-    private class DTActor {
+    private class _DTActor {
     	private Actor    _actor;
     	private int      _repeats;
         private boolean  _shouldGenerateInitialTokens;
@@ -1130,7 +1130,7 @@ public class DTDirector extends SDFDirector {
     	/* Construct the information on the contained Actor
     	 * @param a The actor
     	 */
-    	public DTActor(Actor actor) {
+    	public _DTActor(Actor actor) {
     		_actor = actor;
     		_repeats = 0;
             _shouldGenerateInitialTokens = false;
@@ -1138,14 +1138,14 @@ public class DTDirector extends SDFDirector {
     }
 
     // Inner class to cache important variables for container output ports
-    private class DTIOPort {
+    private class _DTIOPort {
         private IOPort _port;
         private boolean _shouldTransferOutputs;
 
         /*  Construct the information on the output port
          *  @param p The port
          */
-        public DTIOPort(IOPort port) {
+        public _DTIOPort(IOPort port) {
             _port = port;
             _shouldTransferOutputs = false;
         }
