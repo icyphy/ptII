@@ -91,7 +91,7 @@ public class PlotFrame extends Frame {
             new MenuItem("Save", new MenuShortcut(KeyEvent.VK_S)),
             new MenuItem("SaveAs", new MenuShortcut(KeyEvent.VK_A)),
             new MenuItem("Print", new MenuShortcut(KeyEvent.VK_P)),
-            new MenuItem("Close", new MenuShortcut(KeyEvent.VK_C)),
+            new MenuItem("Close", new MenuShortcut(KeyEvent.VK_W)),
         };
         FileMenuListener fml = new FileMenuListener();
         // Set the action command and listener for each menu item.
