@@ -1879,14 +1879,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // it is being converted to an entity.
                     if (entity.isClassDefinition()) {
                         entity.setClassDefinition(false);
-                        Class entityClass = entity.getClass();
-                        entity.setClassName(entityClass.getName());
                         converted = true;
                     }
                 } else {
                     NamedObj candidate = _createEntity(className, entityName, source);
                     if (candidate instanceof Entity) {
                         entity = (Entity)candidate;
+                        entity.setClassName(className);
                     } else {
                         throw new IllegalActionException(_current,
                         "Attempt to create an entity named "
@@ -3123,6 +3122,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
             
             // Mark contents as being inherited objects.  EAL 12/03
+            // FIXME: Probably this needs to indicate the level
+            // at which they are inherited... (depth)...
             _markContentsInherited(newEntity);
             
             // Set the class name as specified in this method call.
@@ -3564,9 +3565,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             String className, 
             String source)
             throws Exception {
-        _xmlFile = fileNameToURL(file, base);
+        URL previousXmlFile = parser._xmlFile;
+        parser._xmlFile = fileNameToURL(file, base);
         if (_imports != null) {
-            NamedObj previous = (NamedObj)_imports.get(_xmlFile);
+            NamedObj previous = (NamedObj)_imports.get(parser._xmlFile);
             if (previous != null) {
                 // NOTE: In theory, we should not even have to
                 // check whether the file has been updated, because
@@ -3575,19 +3577,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 return previous;
             }
         }
-        InputStream input = _xmlFile.openStream();
+        InputStream input = parser._xmlFile.openStream();
         try {
-            NamedObj toplevel = parser.parse(_xmlFile, input);
+            NamedObj toplevel = parser.parse(parser._xmlFile, input);
             input.close();
-            // Set the classname and source of the import.
-            // NOTE: We have gone back and forth on whether this
-            // is right. For a phase, we had two fields in MoMLInfo,
-            // one for the className and one for the superclass.
-            // The key is to make sure that
-            // further instances of this class will be cloned
-            // from this same reference (otherwise, we break look
-            // inside).
-            toplevel.setClassName(className);
 
             // NOTE: This might be a relative file reference, which
             // won't be of much use if a MoML file is moved.
@@ -3606,7 +3599,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // equal() so that it returns true if two URLs refer
             // to the same file, regardless of whether they have
             // the same string representation.
-            _imports.put(_xmlFile, toplevel);
+            _imports.put(parser._xmlFile, toplevel);
 
             return toplevel;
         } catch (CancelException ex) {
@@ -3614,7 +3607,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         } finally {
             input.close();
-            _xmlFile = null;
+            parser._xmlFile = previousXmlFile;
         }
     }
 
