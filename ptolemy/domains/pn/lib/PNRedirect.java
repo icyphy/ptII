@@ -43,10 +43,14 @@ public class PNRedirect extends PNStar{
         super();
     }
 
+    /** Constructor 
+     */
     public PNRedirect(Workspace workspace) {
         super(workspace);
     }
 
+    /** Constructor
+     */
     public PNRedirect(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
@@ -59,19 +63,18 @@ public class PNRedirect extends PNStar{
      * @param initValue is the initial token that the star puts in the stream
      * @exception NameDuplicationException indicates that an attempt to add
      *  two ports with the same name has been made
-     * @exception GraphException is thrown to indicate that a port with no
-     *  name is being added to the star
+     * @exception IllegalActionException a port with name null is being added
+     *  to the star
      */
     public void initialize(int initValue)
             throws NameDuplicationException, IllegalActionException {
         _initValue = new IntToken(initValue);
         _input = newInPort(this, "input");
-        //        executive().increasePortBlocks(1);
         _output = newOutPort(this, "output");
         super.initialize(this);
     }
 
-    /** Reads a token from it's input stream and writes it to the outout
+    /** Reads a token from it's input stream and writes it to the output
      */
     public void run() {
         int i;
@@ -86,7 +89,6 @@ public class PNRedirect extends PNStar{
             }
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
-            //            executive().decreasePortBlocks(1);
             return;
         }
     }
