@@ -1840,8 +1840,36 @@ public class MoMLParser extends HandlerBase {
                     // code generator, then we may end up obscuring
                     // that error, requiring debugging here. 
 
+                    // We use error.toString() here instead of
+                    // error.getMessage() so that the name of the
+                    // actual class that caused the error is reported.
+                    // This is critical if the problem is a class not
+                    // found error.  If we use error.getMessage()
+                    // and try to open up 
+                    // actor/lib/comm/demo/SerialPort/SerialPort.xml
+                    // when the Java Serial Comm API is not installed, we get
+                        
+                    // Error encounted in:
+                    // <entity name="SerialComm" class="ptolemy.actor.lib ...
+                    // -- ptolemy.actor.lib.comm.SerialComm:
+                    // javax/comm/SerialPortEventListener
+                    // ptolemy.actor.lib.comm.SerialComm: XmlException:
+                    // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
+
+                    // If we use toString(), we get:
+                    // Error encounted in:
+                    // <entity name="SerialComm" class="ptolemy.actor.lib ...
+                    // -- ptolemy.actor.lib.comm.SerialComm:
+                    // java.lang.NoClassDefFoundError: javax/comm/SerialPortEventListener
+                    // ptolemy.actor.lib.comm.SerialComm: XmlException:
+                    // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
+
+                    // It is critical that the error include the
+                    // NoClassDefFoundError string -cxh 
+                        
                     errorMessage.append(className + ": \n "
-                            + error.getMessage() + "\n");
+                            + error.toString() + "\n");
+
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (XmlException ex2) {
