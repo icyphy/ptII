@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -63,7 +64,7 @@ by the <i>scaleOnLeft</i> parameter. Setting the parameter to true means
 that the factor is  multiplied on the left, and the input
 on the right. Otherwise, the factor is multiplied on the right.
 
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.3
 */
@@ -99,8 +100,9 @@ public class Scale extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The factor.
-     *  This parameter can contain any token that supports multiplication.
-     *  The default value of this parameter is the IntToken 1.
+     *  This parameter can contain any scalar token that supports
+     *  multiplication.  The default value of this parameter is the
+     *  IntToken 1.
      */
     public Parameter factor;
 
@@ -125,8 +127,8 @@ public class Scale extends Transformer {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         Scale newObject = (Scale)super.clone(workspace);
-	PortParameterFunction function = new PortParameterFunction(newObject.input,
-                newObject.factor);
+	PortParameterFunction function =
+            new PortParameterFunction(newObject.input, newObject.factor);
         newObject.output.setTypeAtLeast(function);
         return newObject;
     }
@@ -142,11 +144,47 @@ public class Scale extends Transformer {
             Token result;
             if (((BooleanToken)scaleOnLeft.getToken()).booleanValue()) {
                 // Scale on the left.
-                result = factorToken.multiply(in);
+                result = _scaleOnLeft(in, factorToken);
             } else {
-                result = in.multiply(factorToken);
+                // Scale on the right.
+               result = _scaleOnRight(in, factorToken);
             }
             output.send(0, result);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+    // Scale the given input token on the left by the given factor.
+    private Token _scaleOnLeft(Token input, Token factor) 
+            throws IllegalActionException {
+        if(input instanceof ArrayToken) {
+            Token[] argArray = ((ArrayToken)input).arrayValue();
+            Token[] result = new Token[argArray.length];
+            for (int i = 0; i < argArray.length; i++) {
+                result[i] = _scaleOnLeft(argArray[i], factor);
+            }
+            
+            return new ArrayToken(result);
+        } else {
+            return factor.multiply(input);
+        }
+    }
+    
+    // Scale the given input token on the right by the given factor.
+    private Token _scaleOnRight(Token input, Token factor) 
+            throws IllegalActionException {
+        if(input instanceof ArrayToken) {
+            Token[] argArray = ((ArrayToken)input).arrayValue();
+            Token[] result = new Token[argArray.length];
+            for (int i = 0; i < argArray.length; i++) {
+                result[i] = _scaleOnRight(argArray[i], factor);
+            }
+            
+            return new ArrayToken(result);
+        } else {
+            return factor.multiply(input);
         }
     }
 
