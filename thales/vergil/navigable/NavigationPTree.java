@@ -23,7 +23,25 @@ import thales.vergil.SingleWindowApplication;
 /**
  * <p>Titre : NavigationPTree</p>
  * <p>Description : A navigation tree to browse a Ptolemy model</p>
- * <p>Copyright : Copyright (c) 2003</p>
+Copyright (c) 2003 THALES.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  * <p>Société : Thales Research and technology</p>
  * @author Jérôme Blanc & Benoit Masson
  * 01 sept. 2003
