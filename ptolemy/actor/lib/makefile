@@ -70,11 +70,9 @@ JSRCS = \
 	ArrayExtract.java \
 	Average.java \
 	Bernoulli.java \
-	BooleanExpression.java \
 	Clock.java \
 	Commutator.java \
 	Const.java \
-	Counter.java \
 	CurrentTime.java \
 	DB.java \
 	Discard.java \
