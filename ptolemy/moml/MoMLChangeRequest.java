@@ -94,8 +94,6 @@ public class MoMLChangeRequest extends ChangeRequest {
      *   while evaluating the request.
      */
     protected void _execute() throws Exception {
-        // FIXME: This isn't right... reset forgets about the top-level,
-        // which makes the first constructor useless for incremental parsing.
         _parser.reset();
         if (_context != null) {
             _parser.setContext(_context);
