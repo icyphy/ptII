@@ -111,9 +111,6 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
@@ -135,6 +132,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *  or getToken() method of Variable throws it.
      */
     public void fire() throws IllegalActionException {
+        // FIXME: why does this method just call super.fire()? 
         super.fire();
     }
 
@@ -152,12 +150,10 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
      *  @return True if the assertion holds.
      */
     public boolean isThisStepAccurate() {
-
         try {
             BooleanToken result = (BooleanToken) evaluate();
 
             if (!result.booleanValue()) {
-
                 if (_debugging) {
                     _debug(this.getFullName() + " adjusts the step size");
                 }
@@ -168,14 +164,18 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
                 // The refined step size is half of the previous one.
                 _refineStep = 0.5*dir.getCurrentStepSize();
 
-                if (_debugging) _debug(getFullName() +
-                                       " Former stepsize as " + dir.getCurrentStepSize() +
-                                       "\nRefined step at" +  _refineStep);
+                if (_debugging) {
+                    _debug(getFullName()
+                            + " Former stepsize as "
+                            + dir.getCurrentStepSize()
+                            + "\nRefined step at" +  _refineStep);
+                }
                 return false;
             }
             else {
                 if (_debugging) {
-                    _debug(this.getFullName() + " need not adjust the step size");
+                    _debug(this.getFullName()
+                            + " need not adjust the step size");
                 }
             }
         } catch (IllegalActionException e) {
