@@ -337,7 +337,7 @@ public class Receiver extends X10Interface {
                 }
             }
             synchronized (Receiver.this) {
-                notifyAll();
+                Receiver.this.notifyAll();
             }
         }    
     }
