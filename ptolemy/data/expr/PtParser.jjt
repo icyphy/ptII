@@ -139,15 +139,12 @@ public class PtParser {
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalArgumentException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-        this.ReInit(stream);
+        _scope = null;
+	this.ReInit(stream);
         //debug = true;
         String str = stringIn.replace('\n', ' ');
-        if (debug) { 
-            System.out.print("\nParsing expression: ");
-            System.out.println(str);
-        }
         try {
-            // First parse the expression to obtain the parse tree
+            // Parse the expression to obtain the parse tree
             ASTPtRootNode rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
             return rootNode;
@@ -167,16 +164,19 @@ public class PtParser {
      */
     public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
             throws IllegalArgumentException {
+        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         _scope = scope;
-        ASTPtRootNode rootNode;
+        this.ReInit(stream);
+        String str = stringIn.replace('\n', ' ');
+	ASTPtRootNode rootNode;
         try {
-            rootNode = generateParseTree(stringIn);
-        } catch (IllegalArgumentException ex) {
-            throw ex;
-        } finally {
-            // need to make sure Parser state is reset
-            _scope = null;
-        } 
+            // Parse the expression to obtain the parse tree
+            rootNode = start();
+            if (debug) rootNode.displayParseTree(" ");
+        } catch (ParseException x) {
+            str = "parse of " + stringIn + " failed: " + x.getMessage();
+            throw new IllegalArgumentException(str);
+        }
         return rootNode;
     }
                
@@ -248,17 +248,17 @@ public class PtParser {
      *  @exception IllegalArgumentException If the Class named by the 
      *   argument could not be found.
      */
-    public static void registerClass(String newClassName)
+    public static void registerFunctionClass(String newClassName)
             throws IllegalArgumentException {
         if (_classesSearched == null) {
             _classesSearched = new LinkedList();
         }
         try {
             Class newClass = Class.forName(newClassName);
-            _classesSearched.insertLast(newClass);
+            _classesSearched.insertFirst(newClass);
         } catch (ClassNotFoundException ex) {
-                throw new IllegalArgumentException("PtParser.registerClass: " +
-                        "Could not find " + newClassName + ".");
+            throw new IllegalArgumentException("PtParser.registerClass: " +
+                     "Could not find " + newClassName + ".");
         }
     }
 
@@ -272,8 +272,8 @@ public class PtParser {
             _alreadyInitialized = true;
             registerConstant("PI", new DoubleToken(java.lang.Math.PI));
             registerConstant("E", new DoubleToken(java.lang.Math.E));
-            registerClass("java.lang.Math");
-            registerClass("ptolemy.data.expr.UtilityFunctions");
+            registerFunctionClass("java.lang.Math");
+            registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
         }
     }
     
