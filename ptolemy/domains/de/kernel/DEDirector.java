@@ -1279,14 +1279,14 @@ public class DEDirector extends Director implements TimedDirector {
         for (int i = 0; i <= sort.length-1; i++) {
             IOPort ioPort = (IOPort)sort[i];
             ports.add(ioPort);
-            if (_debugging) {
+            if (_debugging && _verbose) {
                 _debug(((Nameable)ioPort).getFullName(), "depth: " + i);
             }
             // Insert the hashtable entry.
             _portToDepth.put(ioPort, new Integer(i));
         }
 
-        if (_debugging) {
+        if (_debugging && _verbose) {
             _debug("## adjusting port depths based " +
                     "on the strictness constraints.");
         }
@@ -1347,7 +1347,7 @@ public class DEDirector extends Director implements TimedDirector {
                     inputsIterator = inputPorts.iterator();
                     while (inputsIterator.hasNext()) {
                         IOPort input = (IOPort)inputsIterator.next();
-                        if (_debugging) {
+                        if (_debugging && _verbose) {
                             _debug(((Nameable)input).getFullName(),
                                     "depth is adjusted to: " + maximumPortDepth);
                         }
@@ -1382,7 +1382,7 @@ public class DEDirector extends Director implements TimedDirector {
             inputsIterator = inputPorts.iterator();
             while (inputsIterator.hasNext()) {
                 IOPort input = (IOPort)inputsIterator.next();
-                if (_debugging) {
+                if (_debugging && _verbose) {
                     _debug(((Nameable)input).getFullName(),
                             "depth is adjusted to: " + maximumPortDepth);
                 }
