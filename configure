@@ -746,12 +746,12 @@ echo "configure:744: checking the Java compiler with a simple compile" >&5
 startdir=`pwd`
 cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC -d $startdir confTest.java ; then
+if $JAVAC confTest.java ; then
     echo "$ac_t""ok" 1>&6
 
     echo $ac_n "checking the value of the java.version Property ""... $ac_c" 1>&6
 echo "configure:754: checking the value of the java.version Property " >&5
-    JVERSION=`CLASSPATH=$PTII $JAVA confTest`	
+    JVERSION=`CLASSPATH=$PTII/config $JAVA confTest`	
     echo "$ac_t""$JVERSION" 1>&6
 
     JFLAGS="$JFLAGSINIT -depend"
@@ -778,7 +778,7 @@ files depend on" 1>&2
     fi
 else
     JFLAGS="$JFLAGSINIT -depend"
-   echo "configure: warning: '$JAVAC -d $startdir confTest.java' failed,
+   echo "configure: warning: '$JAVAC confTest.java' failed,
 so we can't figure out whether to use -depend or -Xdepend.
 Defaulting to $JFLAGS" 1>&2;
 fi
