@@ -103,8 +103,12 @@ public class VergilApplication extends MDIApplication {
     protected VergilApplication(AppContext frame) {
         super();
 
-        // Initialize behavioral objects for superclass
-        DesktopContext context = new DesktopContext(frame, new JPanel());
+	JPanel palettePane = new JPanel();
+	palettePane.setBorder(null);
+        palettePane.setLayout(new BoxLayout(palettePane, BoxLayout.Y_AXIS));
+	    
+	// Initialize behavioral objects for superclass
+        final DesktopContext context = new DesktopContext(frame, palettePane);
         setAppContext(context);
 
 	// Handle exceptions thrown by awt events in a nice way.
@@ -155,9 +159,26 @@ public class VergilApplication extends MDIApplication {
 
 	//	classLoadingService = new ClassLoadingService();
 	//addService(classLoadingService);
-	// FIXME read this out of resources somehow.
+	// FIXME read this out of resources somehow.	
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
+	
+	final JPanner panner = new JPanner();
+	panner.setPreferredSize(new Dimension(200, 150));
+	panner.setMaximumSize(new Dimension(200, 150));
+	panner.setSize(200, 150);
+	panner.setBorder(BorderFactory.createEtchedBorder());
+	context.addViewListener(new ViewAdapter() {
+	    public void viewSelected(ViewEvent e) {
+		JComponent view = e.getView();
+		if(view instanceof JScrollPane) {
+		    panner.setViewport(((JScrollPane)view).getViewport());
+		} else {
+		    panner.setViewport(null);
+		}
+	    }
+	});
+	palettePane.add(panner);
 	
 	context.setVisible(true);
 	
@@ -229,7 +250,7 @@ public class VergilApplication extends MDIApplication {
 				       "on VergilDocuments.");
 	}
 	JComponent view = ((VergilDocument)document).createView();
-        return view;
+	return view;
     }
 
     /** 
