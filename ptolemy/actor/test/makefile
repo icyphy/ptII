@@ -72,7 +72,8 @@ MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
+OPTIONAL_FILES = \
+	'TestActor$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
