@@ -264,8 +264,10 @@ public class AudioSource extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("attributeChanged() invoked on: " + 
+	if(_debugging) _debug("AudioSource: attributeChanged() invoked on: " + 
 			      attribute.getName());
+	//System.out.println("AudioSource: attributeChanged() invoked on: " + 
+	//		      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
 	    ((IntToken)channels.getToken()).intValue();
@@ -327,7 +329,9 @@ public class AudioSource extends Source {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	if(_debugging) _debug("AudioSource: initialize(): invoked");
+	//System.out.println("AudioSource: initialize(): invoked");
 	_initializeCapture();
+	_safeToInitialize = true;
 	_haveASample = false;
     }
 
@@ -454,6 +458,7 @@ public class AudioSource extends Source {
      */
     public void wrapup() throws IllegalActionException {
 	if(_debugging) _debug("AudioSource: wrapup(): invoked");
+	//System.out.println("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundCapture != null) {
 	    try {
@@ -482,6 +487,7 @@ public class AudioSource extends Source {
     private synchronized void _initializeCapture() throws IllegalActionException {
 	// Stop playback, if necessary. If we were writing to a sound
 	// file, this will save it.
+	//System.out.println("AudioSource: _initializeCapture() invoked.");
 	if (_soundCapture != null) {
 	    try {
 		_soundCapture.stopCapture();

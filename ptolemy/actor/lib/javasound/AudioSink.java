@@ -242,8 +242,10 @@ public class AudioSink extends Sink {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("attributeChanged() invoked on: " + 
+	if(_debugging) _debug("AudioSink: attributeChanged() invoked on: " + 
 			      attribute.getName());
+	//System.out.println("AudioSink: attributeChanged() invoked on: " + 
+	//	      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
 	    ((IntToken)channels.getToken()).intValue();
@@ -320,6 +322,7 @@ public class AudioSink extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	if(_debugging) _debug("AudioSink: initialize(): invoked");
+	//System.out.println("AudioSink: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
 	_initializePlayback();
 	_safeToInitialize = true;
@@ -434,6 +437,7 @@ public class AudioSink extends Sink {
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
 	if(_debugging) _debug("AudioSink: wrapup(): invoked");
+	//System.out.println("AudioSink: wrapup(): invoked");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
@@ -461,7 +465,8 @@ public class AudioSink extends Sink {
      *   audio playback.
      */
     private synchronized void _initializePlayback() throws IllegalActionException {
-	if(_debugging) _debug("_initializePlayback() invoked.");
+	if(_debugging) _debug("AudioSink: _initializePlayback() invoked.");
+	//System.out.println("AudioSink: _initializePlayback() invoked.");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
