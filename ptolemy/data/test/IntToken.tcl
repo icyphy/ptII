@@ -83,7 +83,7 @@ test IntToken-1.1 {Get information about the class} {
 test IntToken-2.1 {Create an empty instance} {
     set p [java::new pt.data.IntToken]
     $p toString
-} {0}
+} {pt.data.IntToken(0)}
 
 ######################################################################
 ####

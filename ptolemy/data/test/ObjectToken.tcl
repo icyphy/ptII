@@ -100,7 +100,7 @@ test ObjectToken-3.1 {Create an empty instance and attempt to init from string} 
     set p [java::new pt.data.ObjectToken]
     catch {$p fromString foo} msg
     list $msg
-} {{pt.kernel.IllegalActionException: Tokens of class pt.data.ObjectToken cannot be initialized from a string.}}
+} {{pt.kernel.util.IllegalActionException: Tokens of class pt.data.ObjectToken cannot be initialized from a string.}}
 
 ######################################################################
 ####

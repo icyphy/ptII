@@ -84,7 +84,7 @@ test StringToken-1.1 {Get information about the class} {
 test StringToken-2.1 {Create an empty instance} {
     set p [java::new pt.data.StringToken]
     $p toString
-} {}
+} {pt.data.StringToken()}
 
 ######################################################################
 ####
@@ -101,7 +101,7 @@ test StringToken-3.1 {Create an empty instance and attempt to init from string} 
     set p [java::new pt.data.StringToken]
     $p fromString foo
     $p toString
-} {foo}
+} {pt.data.StringToken(foo)}
 
 ######################################################################
 ####
@@ -120,5 +120,5 @@ test StringToken-4.2 {Create a non empty instance and clone} {
     set p [java::new pt.data.StringToken $n]
     set q [$p clone]
     list [$p toString] [$q toString]
-} {foo foo}
+} {pt.data.StringToken(foo) pt.data.StringToken(foo)}
 
