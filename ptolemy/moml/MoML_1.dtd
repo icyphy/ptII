@@ -49,6 +49,7 @@
                  class CDATA #IMPLIED>
 
 <!ELEMENT group ANY>
+<!ATTLIST group name CDATA #IMPLIED>
 
 <!ELEMENT import EMPTY>
 <!ATTLIST import source CDATA #REQUIRED

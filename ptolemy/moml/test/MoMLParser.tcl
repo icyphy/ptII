@@ -1710,3 +1710,30 @@ test MoMLParser-8.2 {test input with a relative source } {
 </model>
 }
 
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+  <group name="a">
+    <entity name="b" class="ptolemy.kernel.CompositeEntity">
+      <entity name="c" class="ptolemy.kernel.CompositeEntity"/>
+    </entity>
+  </group>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-9.1 {test namespaces} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="a:b" class="ptolemy.kernel.CompositeEntity">
+        <entity name="c" class="ptolemy.kernel.CompositeEntity">
+        </entity>
+    </entity>
+</model>
+}
