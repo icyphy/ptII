@@ -35,6 +35,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import java.util.*;
+import ptolemy.graph.*;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQDirector
@@ -82,6 +84,23 @@ public class DECQDirector extends Director {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+   /** Override the default initialize() method, to invoke the computeDepth()
+    *  method.
+    *
+    *  @exception CloneNotSupportedException If the initialize() method of the
+    *   container or one of the deeply contained actors throws it.
+    *  @exception IllegalActionException If the initialize() method of the
+    *   container or one of the deeply contained actors throws it.
+    */
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException {
+        
+        _constructDirectedGraph();
+        _checkDelayFreeLoop();
+        _computeDepth();
+        super.initialize();
+    }
+
     /** Override the default fire method so that only one actor fire.
      *  The firing actor would be the one obtained from the global queue.
      *  <p>
@@ -96,17 +115,17 @@ public class DECQDirector extends Director {
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
         
-        CompositeActor container = ((CompositeActor)getContainer());
+        CompositeActor container = ((CompositeActor)getContainer());       
 
-        CQValue cqValue = null;
-        DEToken token;
-        DECQReceiver receiver;
-        
+        // First check if container is null, which indicates an error in
+        // the topology.
         if (container != null) {
+
             
+            CQValue cqValue = null;
+            DEReceiver receiver;            
             _currentActor = null;
             FIFOQueue fifo = new FIFOQueue();
-            double eventTime = 0.0;
             
             // Keep taking events out until there are no more simultaneous
             // events or until the queue is empty.
@@ -128,30 +147,39 @@ public class DECQDirector extends Director {
                     System.out.println("Bug in DECQDirector.fire()");
                 }
                 
-                // At first iteration always accept the event.
+                // On first iteration always accept the event.
                 if (_currentActor == null) {
-                    // only do this once.
+                    // These are done only once per execution of this fire()
+                    // method.
                     _currentActor = cqValue.actor;
-                    eventTime = ((DETag)cqValue.deToken.getTag()).timeStamp();
+                    _currentTime = cqValue.key.timeStamp();
                 }
                 
-                // check if it is at the same time stamp
-                if (((DETag)cqValue.deToken.getTag()).timeStamp() != eventTime) {
-                    fifo.put(cqValue);
-                    break;
+                // Check if the event occured at current time.
+                if (cqValue.key.timeStamp() != _currentTime) {
+                    // The event occured not at current time, therefore put the 
+                    // event into the fifo queue to be enqueued back into the 
+                    // calendar queue later outside the loop.
+                fifo.put(cqValue);
+                break;
                 }
 
                 // check if it is for the same actor
                 if (cqValue.actor == _currentActor) {
-                    // FIXME: assuming it's always for different port.
-                    cqValue.deReceiver.superPut(cqValue.deToken);
+                    // FIXME: assume it's always for different receiver.
+                    // FIXME: What do do if there are multiple events destined
+                    // for the same receiver.
+                    
+                    // Use the mailbox class put method to put the token into 
+                    // the receiver.
+                    cqValue.deReceiver.superPut(cqValue.token);
                     
                     // FIXME: start debug stuff
                     NamedObj b = (NamedObj) _currentActor;
                     System.out.println("Dequeueing event: " + 
                             b.description(CLASSNAME | FULLNAME) + 
                         " at time: " + 
-                        ((DETag)cqValue.deToken.getTag()).timeStamp());
+                        cqValue.key.timeStamp());
                     // FIXME: end debug stuff
 
                 } else {
@@ -164,9 +192,10 @@ public class DECQDirector extends Director {
             // queue.
             while (fifo.size() > 0) {
                 CQValue cqval = (CQValue)fifo.take();
-                _cQueue.put(cqval.deToken.getTag(),cqval);
+                _cQueue.put(cqval.key,cqval);
             }
             
+            // Done with dequeueing necessary events, time to fire the actor!
             _currentActor.fire();
         
         } else {
@@ -189,52 +218,52 @@ public class DECQDirector extends Director {
      */
     public boolean postfire()
             throws CloneNotSupportedException, IllegalActionException {
-        DETag tag = null;
+        double nextTimeStamp = 0.0;
         try {
-            tag = (DETag)_cQueue.getNextKey();
+            nextTimeStamp = ((DESortKey)_cQueue.getNextKey()).timeStamp();
         } catch (IllegalAccessException e) {
             // FIXME: can't happen ?
             System.out.println("Check DECQDirector.postfire() for a bug!");
         }
-        double currentTime = tag.timeStamp();
-        if (currentTime > _stopTime) {
+        if (nextTimeStamp > _stopTime) {
             return false;
         } else {
             return true;
         }
     }
     
-    /** Return a new receiver of a type DECQReceiver.
+    /** Return a new receiver of a type DEReceiver.
      *  
-     *  @return A new DECQReceiver.
+     *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
-        return new DECQReceiver(this);
+        return new DEReceiver(this);
     }
 
     /** Put the new event into the global event queue. The event consists 
      *  of the destination actor, the destination receiver, and the 
      *  transferred token.
+     *  <p>
+     *  Only the receiver should call this method.
      *
      *  @param a The destination actor.
      *  @param r The destination receiver.
      *  @param t The transferred token.
      *
      */
-    public void enqueueEvent(Actor a, DECQReceiver r, DEToken t) {
+    public void enqueueEvent(Actor a, DEReceiver r, Token t, DESortKey k) {
 
         // FIXME: debug stuff
         NamedObj b = (NamedObj) a;
-        System.out.println("Enqueuing event: " + b.description(CLASSNAME | FULLNAME) + " at time: " + ((DETag)t.getTag()).timeStamp());
+        System.out.println("Enqueuing event: " + b.description(CLASSNAME | FULLNAME) + " at time: " + k.timeStamp());
         // FIXME: end debug stuff
 
         // FIXME: need to check if Actor == null ??
         if (a==null) {
             throw new IllegalArgumentException("DECQDirector, trying to enqueue null actor!");
         }
-        CQValue newValue = new CQValue(a, r, t);
-        DETag newTag = (DETag)(t.getTag());
-        _cQueue.put(newTag, newValue);
+        CQValue newValue = new CQValue(a, r, t, k);
+        _cQueue.put(k, newValue);
     }
 
     /** Return the start time of the simulation. 
@@ -271,20 +300,110 @@ public class DECQDirector extends Director {
         _stopTime = st;
     }
 
-    /** FIXME: implement this
+    /** Return the current time of the simulation. Firing actors that need to
+     *  know the current time (e.g. for calculating the time stamp of the
+     *  delayed outputs) call this method.
      */
-    public boolean computeDepth() {
-        return true;
+    public double currentTime() {
+        return _currentTime;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    // FIXME: implement this
-    private int setDepth(IOPort p, Actor a) {
-        return 1;
+    // Construct a directed graph with the nodes representing input ports and
+    // directed edges representing zero delay path.
+    //
+    private void _constructDirectedGraph() {
+        
+        LinkedList portList = new LinkedList();
+        
+        // First, include all input ports to be nodes in the graph.
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container != null) {
+            // get all the contained actors.
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                // get all the input ports in that actor
+                Enumeration allports = actor.inputPorts();
+                while (allports.hasMoreElements()) {
+                    IOPort port = (IOPort)allports.nextElement();
+                    // create the nodes in the graph.
+                    _dag.add(port);
+                    portList.insertLast(port);
+                }
+            }
+        }
+        
+        // Next, create the directed edges.
+        Enumeration copiedPorts = portList.elements();
+        while (copiedPorts.hasMoreElements()) {
+            IOPort ioPort = (IOPort)copiedPorts.nextElement();
+            // Find the successor of p
+            if (ioPort instanceof DEIOPort) {
+                DEIOPort p = (DEIOPort) ioPort;
+                if (p.beforePort != null) {
+                    // create an arc from p.beforePort to p
+                    if (_dag.contains(p.beforePort)) {
+                        _dag.addEdge(p.beforePort, p);
+                    } else {
+                        throw new InvalidStateException("Check in "+
+                                "DECQDirector.computeDepth for bug (1)");
+                    }
+                }
+                Enumeration triggers = p.triggerList.elements();
+                while (triggers.hasMoreElements()) {
+                    IOPort outPort = (IOPort) triggers.nextElement();
+                    // find out the input ports connected to outPort
+                    Enumeration inPortEnum = outPort.deepConnectedInPorts();
+                    while (inPortEnum.hasMoreElements()) {
+                        IOPort pp = (IOPort)inPortEnum.nextElement();
+                        // create an arc from p to pp
+                        if (_dag.contains(pp)) {
+                            _dag.addEdge(p,pp);
+                        } else {
+                            throw new InvalidStateException("Check in "+
+                                    "DECQDirector.computeDepth for bug (2)");
+                        }
+                    }
+                }
+            }
+        }    
     }
 
+    // Return true if there's no delay free loop, false otherwise.
+    private boolean _checkDelayFreeLoop() {
+        return (_dag.isAcyclic());
+    }
+
+    // Perform topological sort on the directed graph and use the result
+    // to set the fine level field of the DEReceiver objects.
+    private void _computeDepth() {
+        Object[] sort = (Object[]) _dag.topSort();       
+        for(int i=sort.length-1; i >= 0; i--) {
+            IOPort p = (IOPort)sort[i];
+            // set the fine levels of all DEReceiver instances in IOPort p
+            // to be i
+            // FIXME: should I use deepGetReceivers() here ?
+            Receiver[][] r;
+            try {
+                r = p.getReceivers();
+            } catch (IllegalActionException e) {
+                // do nothing
+                throw new InvalidStateException("Bug in DECQDirector."+
+                        "computeDepth() (3)");
+            }
+            for (int j=r.length-1; j >= 0; j--) {
+                for (int k=r[j].length-1; k >= 0; k--) {
+                    DEReceiver der = (DEReceiver)r[j][k];
+                    der.setFineLevel(i);
+                }
+            }
+            
+        }                
+    }
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
     
@@ -293,16 +412,19 @@ public class DECQDirector extends Director {
     // FIXME: CQValue.. bad name ?
     private class CQValue {
         // constructor
-        CQValue(Actor a, DECQReceiver r, DEToken t) {
+        CQValue(Actor a, DEReceiver r, Token t, DESortKey k) {
             actor = a;
             deReceiver = r;
-            deToken = t;
+            token = t;
+            key = k;
         }
         
         // public fields
         public Actor actor;
-        public DECQReceiver deReceiver;
-        public DEToken deToken;
+        public DEReceiver deReceiver;
+        public Token token;
+        // FIXME: key is not really needed, but have it anyway for convenience.
+        public DESortKey key;
     }
     
 
@@ -318,5 +440,26 @@ public class DECQDirector extends Director {
     
     // _stopTime defines the stopping condition
     private double _stopTime = 0.0;
+
+    // _currentTime the current time of the simulation.
+    // Firing stars may get the current time by calling the getCurrentTime()
+    // method.
+    private double _currentTime = 0.0;
+
+    // _dag Directed Graph whose nodes represent input ports and whose
+    // edges represent delay free paths.
+    private DirectedGraph _dag = new DirectedGraph();
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
