@@ -610,8 +610,10 @@ public class Director extends Attribute implements Executable {
                 .deepEntityList().iterator();
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
-                if (_debugging) _debug("Invoking initialize(): ",
-                        ((NamedObj)actor).getFullName());
+                if (_debugging) {
+                    _debug("Invoking initialize(): ", 
+                            ((NamedObj)actor).getFullName());
+                }
                 initialize(actor);
             }
         }
