@@ -90,6 +90,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/matlab.xml"
+    $inputFileNamesToSkip add "/x10/x10.xml"
 
     # Tell the parser to skip inputting the above files
     java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
