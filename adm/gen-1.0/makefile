@@ -65,6 +65,8 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 #USER =		ptolemy
 # For use under Windows
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII TAR=tar 
+# make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar 
+# make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar PTIIADM=//c/users/cxh/ptII/adm
 USER =		ptII
 PTIIHOME =	/users/ptII
 PTIIADM =	$(PTIIHOME)/adm
@@ -870,32 +872,32 @@ indent_all:
 # Rules to build and install shield version
 INSTALLSHIELD_SRC=installshield
 INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
-INSTALLSHIELD_RUNTIME=$(INSTALLSHIELD_SRC)/runtime
+INSTALLSHIELD_PTINY=$(INSTALLSHIELD_SRC)/ptiny
 INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
 INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
-# Runtime is last so we don't get the kruft from the doc dir
+# Ptiny is last so we don't get the kruft from the doc dir
 installshield_app: $(INSTALLSHIELD_APP) \
 	$(INSTALLSHIELD_DESIGNDOC) \
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
-	$(INSTALLSHIELD_RUNTIME) \
+	$(INSTALLSHIELD_PTINY) \
 
 clean_installshield:
 	rm -rf $(INSTALLSHIELD_APP) \
 	$(INSTALLSHIELD_DESIGNDOC) \
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
-	$(INSTALLSHIELD_RUNTIME)
+	$(INSTALLSHIELD_PTINY)
 
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
 	 tar -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
 
-INSTALLSHIELD_RUNTIME_DOMAINS=ct de fsm pn sdf
-$(INSTALLSHIELD_RUNTIME): bar
+INSTALLSHIELD_PTINY_DOMAINS=ct de fsm pn sdf
+$(INSTALLSHIELD_PTINY): bar
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/codeDoc/ptolemy/actor
 	 mkdir -p $@/moml/demo/Networked
@@ -906,14 +908,14 @@ $(INSTALLSHIELD_RUNTIME): bar
 		$(INSTALLSHIELD_APP)/ptolemy/configs \
 		$@/ptolemy
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
-	 for domain in $(INSTALLSHIELD_RUNTIME_DOMAINS); do \
+	 for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
 	  mkdir -p $@/ptolemy/domains/$$domain; \
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/$$domain.jar \
 	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
 		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
 		$@/ptolemy/domains/$$domain; \
-	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/$$domain \
-		 $@/doc/codeDoc/ptolemy
+		 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/$$domain \
+		 $@/doc/codeDoc/ptolemy; \
 	 done
 	 # We do want to ship actor/lib docs
 	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/actor/lib \
@@ -937,20 +939,20 @@ $(INSTALLSHIELD_RUNTIME): bar
 	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
 		$@/ptolemy/actor/lib/conversions
 
-configsRuntime.jar: $(INSTALLSHIELD_RUNTIME)/ptolemy/configs/configsRuntime.jar
-$(INSTALLSHIELD_RUNTIME)/ptolemy/configs/configsRuntime.jar: \
-	$(INSTALLSHIELD_RUNTIME)/ptolemy/configs
-	(cd $(INSTALLSHIELD_RUNTIME); \
-		jar -cf ptolemy/configs/configsRuntime.jar \
+configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
+$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
+	$(INSTALLSHIELD_PTINY)/ptolemy/configs
+	(cd $(INSTALLSHIELD_PTINY); \
+		jar -cf ptolemy/configs/configsPtiny.jar \
 			ptolemy/configs)
 
-$(INSTALLSHIELD_RUNTIME)/ptolemy/configs:
-	mkdir $(INSTALLSHIELD_RUNTIME)/ptolemy/configs
-	mkdir $(INSTALLSHIELD_RUNTIME)/ptolemy/configs/doc
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introRuntime.htm $@/intro.htm
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationRuntime.xml \
+$(INSTALLSHIELD_PTINY)/ptolemy/configs:
+	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs
+	mkdir $(INSTALLSHIELD_PTINY)/ptolemy/configs/doc
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introPtiny.htm $@/intro.htm
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationPtiny.xml \
 		$@/vergilConfiguration.xml
-	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosRuntime.htm \
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosPtiny.htm \
 		$@/doc/demos.htm
 
 $(INSTALLSHIELD_DESIGNDOC):
