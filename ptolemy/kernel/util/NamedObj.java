@@ -117,7 +117,10 @@ description.
 */
 
 public class NamedObj implements Nameable, Debuggable,
-                                 ModelErrorHandler, Serializable, Cloneable {
+                                 Serializable, Cloneable {
+
+    // Note that Nameable extends ModelErrorHandler, so this class
+    // need not declare that it directly implements ModelErrorHandler.
 
     /** Construct an object in the default workspace with an empty string
      *  as its name. The object is added to the list of objects in

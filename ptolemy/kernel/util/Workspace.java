@@ -117,6 +117,9 @@ we can predict in advance that no write access will be needed.
 
 public final class Workspace implements Nameable, Serializable {
 
+    // Note that Nameable extends ModelErrorHandler, so this class
+    // need not declare that it directly implements ModelErrorHandler.
+
     /** Create a workspace with an empty string as its name.
      */
     public Workspace() {
