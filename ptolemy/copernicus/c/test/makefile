@@ -1,11 +1,11 @@
 # Makefile for testing Ptolemy II C code generation
 #
-# @Authors:  (makefile) Shuvra S. Bhattacharyya --- based on a file by 
-# Christopher Hylands and Tom Parks
+# @Authors:  (makefile) Shuvra S. Bhattacharyya, Christopher Hylands --- based 
+# on a file by Tom Parks.
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001 The Regents of the University of California.
+# @Copyright (c) 2001-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -94,9 +94,11 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 ptjacl:
 	$(JTCLSH)
 
-demo: Object
+demo: Simple
 
 # Generate C code for java.lang.Object
+# FIXME: get this to work again once non-singleclass mode translation is
+# working properly.
 Object:
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.copernicus.c.JavaToC \
@@ -105,11 +107,18 @@ Object:
 
 # Generate C code under single class mode for a simple class 
 Simple:
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.copernicus.c.JavaToC \
-		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
-		Simple \
-		-singleClass
+		rm -f Simple.class Simple.c Simple.h Simple.i.h Simple.o; \
+		echo "Generating the class file ..."; \
+		javac Simple.java; \
+		echo "Translating the class file to C ..."
+		CLASSPATH="$(CLASSPATH)" \
+		$(JAVA) -Dj2c_lib=\j2c_lib ptolemy.copernicus.c.JavaToC \
+		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -singleClass Simple; \
+		echo "Compiling the generated C with 'gcc -c'..."; \
+		gcc -c -I../runtime Simple.c; \
+        echo "Compilation finished."; \
+        echo "The generated source files are Simple.c, Simple.i.h, and ";\
+        echo "Simple.h. The resulting object file is Simple.o"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
