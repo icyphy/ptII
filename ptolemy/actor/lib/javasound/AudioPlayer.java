@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -63,18 +63,21 @@ tokens that are outside of the valid range will be hard-clipped
 to fall within the range [-1.0, 1.0] before they are written
 to the audio output port of the computer.
 <p>
-This actor should be fired often enough to prevent underflow of 
-the internal audio playback buffer. Underflow should be avoided, 
-since it will result in audio discontinuities (heard as clicks) 
+This actor should be fired often enough to prevent underflow of
+the internal audio playback buffer. Underflow should be avoided,
+since it will result in audio discontinuities (heard as clicks)
 in the output. No exception will be thrown if underflow occurs.
 <p>
-The following parameters should be set accordingly. In all cases, 
-an exception is thrown if an illegal parameter value is used. 
-Note that these parameters may be changed while audio capture is 
-active. If this actor is used in conjunction with an AudioCapture 
-actor, changing a parameter of this actor will cause the 
-corresponding parameter value of the AudioCapture actor to 
-automatically be set to the same value.
+The following parameters should be set accordingly. In all cases,
+an exception is thrown if an illegal parameter value is used.
+Note that these parameters may be changed while audio capture is
+active. If this actor is used in conjunction with an AudioCapture
+actor, changing a parameter of this actor will cause the
+corresponding parameter value of the AudioCapture actor to
+automatically be set to the same value. This behavior is required
+because the AudioCapture and AudioPlayback actors both share access
+to the audio hardware, which is associated with a single sample rate,
+bit resolution, and number of channels.
 <p>
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
@@ -152,54 +155,24 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The desired sample rate to use, in Hz. Valid values
-     *  are dependent on the audio hardware (sound card), but typically
-     *  include at least 8000, 11025, 22050, 44100, and 48000. The
-     *  default value of the sample rate is 8000 Hz. Some sound cards 
-     *  support 96000 Hz operation, but this is not supported in Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioCapture actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioCapture actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The desired sample rate to use, in Hz. The default value
+     *  is an IntToken equal to 8000.
      *  <p>
      *  An exception will be occur if this parameter is set to an
      *  unsupported sample rate.
      */
     public Parameter sampleRate;
 
-    /** The number of bits per sample to use. Allowed values 
-     *  are dependent on the audio hardware, but typically at 
-     *  least include 8 and 16. The default value is 16.
-     *  Some sound cards support 20 and 24 bit audio, but this is not
-     *  supported in Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioCapture actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioCapture actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The number desired number of bits per sample. The default
+     *  value is an IntToken equal to 16.
      *  <p>
      *  An exception will occur if this parameter is set to an
-     *  unsupported sample size.
+     *  unsupported bit resolution.
      */
     public Parameter bitsPerSample;
 
-    /** The number of audio channels to use. . Valid values
-     *  are dependent on the sound card, but typically
-     *  at least include 1 (for mono) and 2 (for stereo). The
-     *  default value is 1. Some sound cards support more than
-     *  two audio channels, but this is not supported in Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioCapture actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioCapture actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The number of audio channels to use. The default value is
+     *  an IntToken equal to 1.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  an unsupported channel number.
@@ -281,8 +254,8 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      *  An exception will occur if there is a problem starting
      *  playback. This will occur if another AudioPlayer actor is
      *  playing audio.
-     *  @exception IllegalActionException If there is a problem 
-     *   begining audio playback.
+     *  @exception IllegalActionException If there is a problem
+     *   beginning audio playback.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -302,17 +275,18 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      *  port, invoke <i>count</i> iterations of this actor.
      *  Otherwise, do nothing, and return a value of NOT_READY.
      *  One token is read from each channel in an iteration
-     *  and written to the audio output port of the computer, 
+     *  and written to the audio output port of the computer,
      *  which is typically the computer speaker or the headphones output.
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. 
+     *  domain that supports vectorized actors.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY if there
      *   are not enough tokens on the input port, or throw an exception
      *   if there is a problem writing audio samples to the audio sink.
+     *  @see ptolemy.actor.Executable
      *  @exception IllegalActionException If the <i>count</i> samples
      *   cannot be written to the audio output device.
      */

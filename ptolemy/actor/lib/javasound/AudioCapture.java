@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -63,12 +63,12 @@ data. Each captured audio sample is converted to a double that
 may range from -1.0 to 1.0. Thus, the output type of this actor
 is DoubleToken.
 <p>
-The following parameters should be set accordingly. In all cases, 
-an exception is thrown if an illegal parameter value is used. 
-Note that these parameters may be changed while audio playback 
-is active. If this actor is used in conjunction with an 
-AudioPlayer actor, changing a parameter will cause the corresponding 
-parameter value of the AudioPlayer to automatically be set to the 
+The following parameters should be set accordingly. In all cases,
+an exception is thrown if an illegal parameter value is used.
+Note that these parameters may be changed while audio playback
+is active. If this actor is used in conjunction with an
+AudioPlayer actor, changing a parameter will cause the corresponding
+parameter value of the AudioPlayer to automatically be set to the
 same value. This behavior is required because the AudioCapture and
 AudioPlayback actors both share access to the audio hardware, which
 is associated with a single sample rate, bit resolution, and
@@ -84,8 +84,8 @@ Note that Java does not support 20 or 24 bit audio, even if the
 audio hardware supports it.
 <li><i>channels</i> should be set to desired number of audio
 channels. The default value is 1 (for mono audio). Allowable
-values are 1 and 2 (for stereo). Note that more than two 
-channels of audio is not currently supported in Java, even if 
+values are 1 and 2 (for stereo). Note that more than two
+channels of audio is not currently supported in Java, even if
 the audio hardware supports it.
 </ul>
 <p>
@@ -146,55 +146,24 @@ public class AudioCapture extends Source implements LiveSoundListener {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** The desired sample rate to use, in Hz. Valid values
-     *  are dependent on the audio hardware (sound card), but typically
-     *  include at least 8000, 11025, 22050, 44100, and 48000. The
-     *  default value of the sample rate is 8000 Hz. Some sound
-     *  cards support 96000 Hz audio, but this is not supported by
-     *  Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioPlayer actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioPlayer actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The desired sample rate to use, in Hz. The default value
+     *  is an IntToken equal to 8000.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  unsupported sample rate.
      */
     public Parameter sampleRate;
 
-    /** The number desired number of bits per sample. Allowed 
-     *  values are dependent on the audio hardware, but typically 
-     *  at least include 8 and 16. The default value is 16. Some
-     *  sound cards suport 20 and 24 bit audio, but this is not
-     *  supported by Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioPlayer actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioPlayer actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The number desired number of bits per sample. The default
+     *  value is an IntToken equal to 16.
      *  <p>
      *  An exception will occur if this parameter is set to an
-     *  unsupported sample size.
+     *  unsupported bit resolution.
      */
     public Parameter bitsPerSample;
 
-    /** The number of audio channels to use. Valid values
-     *  are dependent on the audio hardware (sound card), but typically
-     *  at least include 1 (for mono) and 2 (for stereo). The
-     *  default value is 1. Some sound cards support more than two
-     *  audio channels, but this is not supported by Java.
-     *  <p>
-     *  If this actor is used simultaneously with an AudioPlayer actor,
-     *  then this parameter will be constrained to be the same for
-     *  both actors, since most sound cards require the capture and 
-     *  playback parameters to be the same. This actor will 
-     *  automatically cause the parameters of an AudioPlayer actor 
-     *  to be set to the same values as the parameters of this actor.
+    /** The number of audio channels to use. The default value is
+     *  an IntToken equal to 1.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  an unsupported channel number.
@@ -267,7 +236,6 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	// FIXME: remove this after debug.
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: initialize(): invoked");
 	}
@@ -295,11 +263,12 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. 
+     *  domain that supports vectorized actors.
      *
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times.
+     *  @see ptolemy.actor.Executable
      *  @exception IllegalActionException If there is a problem capturing
      *   audio.
      */
@@ -372,7 +341,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	}
     }
 
-    /** React to a change in an audio parameters of LiveSound. 
+    /** React to a change in an audio parameters of LiveSound.
      *  LiveSound will call this method when an audio parameter
      *  such as the sample rate, number of channels, or bit
      *  resolution changes.
@@ -446,7 +415,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  read, so it is not possible to invoke this method too
      *  frequently.
      *
-     *  @return True 
+     *  @return True
      *  @exception IllegalActionException If audio cannot be captured.
      */
     public boolean postfire() throws IllegalActionException {
