@@ -109,7 +109,7 @@ public abstract class Token implements Cloneable {
     /** Divide the value of the argument Token with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for divide. It is here to provide operator overloading. 
-     *  @param tok The token whose value we divide by the value of this Token. 
+     *  @param tok The token whose value we divide by the value of this Token.
      *  @exception IllegalActionException Thrown if this method is not 
      *  supported by the derived class.
      */
@@ -163,7 +163,7 @@ public abstract class Token implements Cloneable {
     }
 
     /** Find the result of the value of this Token modulo the value of the 
-     *  argument Token. Set the value of this token to the result.
+     *  argument Token. Return a new Token with the result.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for modulo. It is here to provide operator overloading. 
      *  @param a The token whose value we do modulo with.
@@ -172,6 +172,20 @@ public abstract class Token implements Cloneable {
      */
     public Token modulo(Token a) throws  IllegalActionException {
         String str = "Modulo method not supported on ";
+        str = str + this.getClass().getName() + "objects";
+        throw new IllegalActionException(str);
+    }
+
+    /** Find the result of the value of the arrgument Token modulo the 
+     *  value of this Token. Return a new Token with the result.
+     *  It  should be overridden in derived classes to provide type specific 
+     *  actions for modulo. It is here to provide operator overloading. 
+     *  @param a The token whose value we do modulo with.
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class.
+     */
+    public Token moduloR(Token a) throws  IllegalActionException {
+        String str = "ModuloR method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
@@ -190,7 +204,7 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Multiply the value of the argument  Token with the value of this Token.
+    /** Multiply the value of the argument Token with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for multiply. It is here to provide operator overloading. 
      *  @param tok The token whose value we multiply the value of this 
@@ -199,7 +213,7 @@ public abstract class Token implements Cloneable {
      *  supported by the derived class.
      */
     public Token multiplyR(Token tok) throws  IllegalActionException {
-        String str = "Multiply method not supported on ";
+        String str = "MultiplyR method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
@@ -213,6 +227,18 @@ public abstract class Token implements Cloneable {
            _publisher.notifyObservers(this);
         }
     }
+
+    /** Returns the multiplicative identity. It should be overridden 
+     *  in subclasses.
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class.
+     */
+    public Token one() throws IllegalActionException {
+        String str = "Multiplicative identity not supported on ";
+        str = str + this.getClass().getName() + "objects";
+        throw new IllegalActionException(str);
+    }
+        
        
     /** Attach a new TokenPublisher to this token. This method is 
      *  only intended for use when placing a new Token in a Param.
@@ -268,7 +294,17 @@ public abstract class Token implements Cloneable {
         return getClass().getName();
     }
 
-
+    /** Returns the additive identity. It should be overridden 
+     *  in subclasses.
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class.
+     */
+    public Token zero() throws IllegalActionException {
+        String str = "Additive identity not supported on ";
+        str = str + this.getClass().getName() + "objects";
+        throw new IllegalActionException(str);
+    }
+        
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 

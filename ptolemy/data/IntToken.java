@@ -1,6 +1,6 @@
-/* A Particle that contains an integer
+/* A token that contains an integer number.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,21 +26,22 @@
 */
 
 package pt.data;
-import pt.kernel.*;
+
+import pt.kernel.IllegalActionException;
+import pt.graph.Cpo;
 
 //////////////////////////////////////////////////////////////////////////
-//// IntToken
+//// IntegerToken
 /** 
-A token that contains an integer value.
-The value is never null, the default being 0.
-
-@author Mudit Goel, Yuhong Xiong, Neil Smyth
-@version $Id$
-*/
+ * A token that contains an integer number.
+ * 
+ * @author Neil Smyth, Yuhong Xiong
+ * $Id$
+ */
 public class IntToken extends ScalarToken {
 
     /** Construct a token with integer 0.
-     */	
+     */
     public IntToken() {
 	_value = 0;
     }
@@ -48,222 +49,386 @@ public class IntToken extends ScalarToken {
     /** Construct a token with the specified value.
      */
     public IntToken(int value) {
-        _value = value;
+	_value = value;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Set the value of the token to be the specified value.
-     */
-    public void setValue(int value) {
-	_value = value;
-    }
 
-    /** Get the value of the token.
+    /** Add the value of the argument Token to this Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param tok The token to add to this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
      */
-    public int getValue() {
-	return _value;
+    public Token add(pt.data.Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.addR(this);
+            } else if (tok instanceof IntToken) {
+                int result = _value + ((IntToken)tok).getValue();
+                return new IntToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                IntToken tmp = this.convert(tok);
+                int result = _value + tmp.getValue();
+                return new IntToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "add method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
     }
-
+         
+    /** Add the value of this Token to the argument Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param tok The token to add this Token to.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token addR(pt.data.Token tok) throws IllegalActionException {
+        IntToken tmp = this.convert(tok);
+        int result = tmp.getValue() + _value;
+        return new IntToken(result);
+    }
+   
     // Return a reference to a Complex. The real part of the Complex
     // is the value in the token, the imaginary part is set to 0.
-    // FIXME: finish after the Complex class is available.
- 
-//    public Complex complexValue() {
-//    }
+    // FIXME: finish after the Complex class is moved to this package.
 
-    /** Return the value in the token as a double.
-     */
-    public double doubleValue() {
-        return (double)_value;
-    }
+    //    public Complex complexValue() {
+    //    }
 
-    /** Return the value in the token as an int.
+    /** Used to convert Token types further down the type hierarchy to
+     *  the type of this Token
+     *  @param tok The token to be converted to a IntToken.
+     *  @exception IllegalActionException Thrown if the conversion
+     *  cannot be carried out in a lossless fashion.
      */
-    public int intValue() {
-        return _value;
-    }
-
-    /** Return the value in the token as a long integer.
-     */
-    public long longValue() {
-        return (long)_value;
-    }
- 
-    /** Set the value in the token to the value represented by the
-        specified string.
-        @exception IllegalArgumentException The string does not contain
-         a parsable integer.
-     */
-    public void fromString(String init)
-            throws IllegalArgumentException {
-        try {
-            _value = (Integer.valueOf(init)).intValue();
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(e.getMessage());
+    static public IntToken convert(Token tok) throws IllegalActionException{
+        if (tok instanceof ByteToken) {
+            int result = ((ByteToken)tok).intValue();
+            return new IntToken(result);
+        } else {
+            try {
+                ByteToken res = ByteToken.convert(tok);
+                return convert(res);
+            } catch (Exception ex) {
+                String str = "cannot convert from token type: ";
+                str = str + tok.getClass().getName() + " to a ";
+                throw new IllegalActionException(str + "IntToken");
+            }
         }
     }
 
-    /** Create a string representation of the value in the token.
+    /** Divide the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. If two integers are divided,
+     *  the result may or may not be an integer.
+     *  @param tok The token to divide this Token by
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *  not of a type that can be divide this Tokens value by in a 
+     *  lossless fashion.
      */
-    public String toString() {
+    public Token divide(Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.divideR(this);
+            } else if (tok instanceof IntToken) {
+                double result = _value / ((IntToken)tok).doubleValue();
+                if ((result - (int)result) == 0) {
+                    return new IntToken((int)result);
+                } else {
+                    return new DoubleToken(result);
+                }
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                IntToken tmp = this.convert(tok);
+                double result = _value / tmp.doubleValue();
+                if ((result - (int)result) == 0) {
+                    return new IntToken((int)result);
+                } else {
+                    return new DoubleToken(result);
+                }
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "divide method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+
+    /** Divide the value of the argument Token by this Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param tok The token to be divided by the value of this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be divided by this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token divideR(pt.data.Token tok) throws IllegalActionException {
+        IntToken tmp = this.convert(tok);
+        double result = tmp.getValue() / _value;
+        if (result == (int)result) {
+            return new IntToken((int)result);
+        } else {
+            return new DoubleToken(result);
+        }
+    }
+
+    /** Return the value in the token as a double
+     */
+    public double doubleValue() {
+        return _value;
+    }
+  
+    /** Test the values of this Token and the argument Token for equality.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to divide this Token by
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *  not of a type that can be compared with this Tokens value.
+     */
+    public BooleanToken equality(Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.equality(this);
+            } else if (tok instanceof IntToken) {
+                if ( _value == ((IntToken)tok).getValue()) {
+                    return new BooleanToken(true);
+                }
+                return new BooleanToken(false);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                IntToken tmp = this.convert(tok);
+                if ( _value == tmp.getValue()) {
+                    return new BooleanToken(true);
+                }
+                return new BooleanToken(false);
+            } else {
+                throw new Exception();            
+            }
+        } catch (Exception ex) {
+            String str = "equality method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+
+    /** Set the value in the token to the value represented by the
+     *  specified string.
+     *  @exception IllegalArgumentException The string does not contain
+     *  a parsable number.
+     */
+    public void fromString(String init)
+	    throws IllegalArgumentException {
+	try {
+	    _value = (Integer.valueOf(init)).intValue();
+	} catch (NumberFormatException e) {
+	    throw new IllegalArgumentException(e.getMessage());
+	}
+    }
+    
+    /** Get the int value contained by this token.
+     */
+    public int getValue() {
+        return _value;
+    }
+
+    /** Return the value in the token as a int.
+     */
+    public int intValue() {
+	return _value;
+    }
+
+    /** Return the value in the token as a int.
+     */
+    public long longValue() {
+	return (long)_value;
+    }
+
+    /** Get the value of this Token modulo the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to modulo this Token by
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be  used with modulo in a lossless fashion.
+     */
+    public Token modulo(Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.moduloR(this);
+            } else if (tok instanceof IntToken) {
+                int result = _value % ((IntToken)tok).getValue();
+                return new IntToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                IntToken tmp = this.convert(tok);
+                int result = _value % tmp.getValue();
+                return new IntToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "modulo method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+    /** Modulo the value of the argument Token by this Token. 
+     *  Type resolution also occurs here, with the returned Token 
+     *  type chosen to achieve a lossless conversion.
+     *  @param tok The token to apply modulo to by the value of this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can apply modulo by this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token moduloR(pt.data.Token tok) throws IllegalActionException {
+        IntToken tmp = this.convert(tok);
+        int result = tmp.getValue() %  _value;
+        return new IntToken(result);
+    }
+   
+
+    /** Multiply the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to multiply this Token by.
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *  not of a type that can be multiplied by this Tokens value in 
+     *  a lossless fashion.
+     */
+    public Token multiply(Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.multiplyR(this);
+            } else if (tok instanceof IntToken) {
+                int result = _value * ((IntToken)tok).getValue();
+                return new IntToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS){
+                IntToken tmp = this.convert(tok);
+                int result = _value * tmp.getValue();
+                return new IntToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "multiply method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        } 
+    }
+   
+    /** Multiply the value of the argument Token by this Token. 
+     *  Type resolution also occurs here, with the returned Token 
+     *  type chosen to achieve a lossless conversion.
+     *  @param tok The token to be multiplied by the value of this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be multiplied by this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token multiplyR(pt.data.Token tok) throws IllegalActionException {
+        IntToken tmp = this.convert(tok);
+        int result = tmp.getValue() * _value;
+        return new IntToken(result);
+    }
+    
+    /** Returns the multiplicativeive identity. 
+     */
+    public Token one() {
+        return new IntToken(1);
+    }
+
+    /** Set the value in the token 
+     *  @param d The new value for the token
+     */
+    public void setValue(int d) {
+        _value = d;
+    }
+
+    /** Get the value contained in this Token as a String.
+     */
+    public String stringValue() {
         return Integer.toString(_value);
     }
 
-    /** Add the value of the argument Token to the current Token.
-     *  @param The token whose value we add to this Token.
-     *  @return A token of the appropriate type.
+    /** Subtract the value of the argument Token from this Token. Type 
+     *  resolution also occurs here, with the returned Token type chosen to 
+     *  achieve a lossless conversion. 
+     *  @param tok The token to subtract to this Token.
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *   not of a type that can be subtracted from this Tokens value in
+     *   a lossless fashion.
      */
-    // FIXME: add handling of Complex and Fix tokens.
-    public Token add(Token a)
-	    throws IllegalActionException {
-	if (a instanceof StringToken) {
-	    return new StringToken(this.toString() +
-					((StringToken)a).toString());
-	} else if (a instanceof ByteToken) {
-	    return new IntToken(_value + ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new DoubleToken(this.doubleValue() +
-				((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new IntToken(_value + ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new LongToken(this.longValue() + ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't add " +
-		getClass().getName() + "to " + a.getClass().getName());
-	}
+    public Token subtract(pt.data.Token tok) throws IllegalActionException {
+        int typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.addR(this);
+            } else if (tok instanceof IntToken) {
+                int result = _value -  ((IntToken)tok).getValue();
+                return new IntToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS){
+                IntToken tmp = this.convert(tok);
+                int result = _value - tmp.getValue();
+                return new IntToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "subtract method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
     }
- 
-    /** Subtract the value of the argument Token from the current Token.
-     *  @param The token whose value we substract from this Token.
-     *  @return A token of the appropriate type.
+
+    /** Subtract the value of this Token from the argument Token. Type 
+     *  resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion.
+     *  @param tok The token to add this Token to.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
      */
-    // FIXME: add handling of Complex and Fix tokens.
-    public Token subtract(Token a)
-	    throws IllegalActionException {
-	if (a instanceof ByteToken) {
-	    return new IntToken(_value - ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new DoubleToken(this.doubleValue() -
-					((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new IntToken(_value - ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new LongToken(this.longValue() - ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't subtract " +
-		a.getClass().getName() + "from " + getClass().getName());
-	}
+    public Token subtractR(pt.data.Token tok) throws IllegalActionException {
+        IntToken tmp = this.convert(tok);
+        int result = _value - tmp.getValue();
+        return new IntToken(result);
     }
- 
-    /** Multiply the value of the argument Token to the current Token.
-     *  @param The token whose value we multiply to this Token.
-     *  @return A token of the appropriate type.
+   
+    /** Return a representation of the token as a String.
      */
-    // FIXME: add handling of Complex and Fix tokens.
-    public Token multiply(Token a)
-	    throws IllegalActionException {
-	if (a instanceof ByteToken) {
-	    return new IntToken(_value * ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new DoubleToken(this.doubleValue() *
-				((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new IntToken(_value * ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new LongToken(this.longValue() * ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't multiply " +
-		getClass().getName() + "to " + a.getClass().getName());
-	}
+    public String toString() {
+        String str = getClass().getName() + "(" + stringValue() + ")";
+        return str;
     }
- 
-    /** Divide the value of the argument Token with the current Token.
-     *  If the argument is an IntToken or a LongToken, a DoubleToken 
-     *  is returned. For the case of Long, is this what we want?
-     *  @param The token whose value we divide with this Token.
-     *  @return A token of the appropriate type.
+
+    /** Returns the additive identity. 
      */
-    // FIXME: add handling of Complex and Fix tokens.
-    public Token divide(Token a)
-	    throws IllegalActionException {
-	if (a instanceof ByteToken) {
-	    return new IntToken(_value / ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new DoubleToken(this.doubleValue() /
-					((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new DoubleToken(_value / ((IntToken)a).doubleValue());
-	} else if (a instanceof LongToken) { // FIXME: what do here...! Wrong! 2/4L !=0
-	    return new DoubleToken(this.doubleValue() / ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't divide " +
-		getClass().getName() + "by " + a.getClass().getName());
-	}
+    public Token zero() {
+        return new IntToken(0);
     }
- 
-    /** Find the result of the value of this Token modulo the value of the
-     *  argument Token.
-     *  @param The token whose value we do modulo with.
-     *  @return A token of the appropriate type.
-     */
-    // FIXME: add handling of Complex and Fix tokens.
-    public Token modulo(Token a)
-	    throws IllegalActionException {
-	if (a instanceof ByteToken) {
-	    return new IntToken(_value % ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new DoubleToken(this.doubleValue() % 
-				((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new IntToken(_value % ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new LongToken(this.longValue() % ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't do modulo on " +
-		getClass().getName() + "and " + a.getClass().getName());
-	}
-    }
- 
-    /** Test for equality of the values of this Token and the argument Token.
-     *  @param The token with which to test equality.
-     */
-    // FIXME: add handling of Complex and Fix tokens.
-    public BooleanToken equality(Token a)
-	    throws  IllegalActionException {
-	if (a instanceof ByteToken) {
-	    return new BooleanToken(_value == ((ByteToken)a).intValue());
-//	} else if (a instanceof ComplexToken) {
-	} else if (a instanceof DoubleToken) {
-	    return new BooleanToken(this.doubleValue() ==
-				((DoubleToken)a).doubleValue());
-//	} else if (a instanceof FixToken) {
-	} else if (a instanceof IntToken) {
-	    return new BooleanToken(_value == ((IntToken)a).intValue());
-	} else if (a instanceof LongToken) {
-	    return new BooleanToken(this.longValue() ==
-					 ((LongToken)a).longValue());
-	} else {
-	    throw new IllegalActionException("Can't compare equality between "
-		+ getClass().getName() + "and " + a.getClass().getName());
-	}
-    }
- 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        private variables                        ////
- 
-    private int _value = 0;
+        
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                        private variables                         ////
+    private int _value;
 }
 
