@@ -134,6 +134,10 @@ public class GenerateCopyrights {
                 "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.html");
 
         _addIfPresent(copyrightsMap,
+                "ptolemy.domains.psdf.kernel.PSDFScheduler",
+                "ptolemy/domains/psdf/synthesis-copyright.html");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 
