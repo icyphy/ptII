@@ -220,6 +220,29 @@ public class HDFFSMDirector extends FSMDirector {
         return destinationState;
     }
 
+   /**
+    * 
+    * @param currentState
+    * @throws IllegalActionException
+    */
+    public void chooseTransitions(State currentState) 
+        throws IllegalActionException {
+            State state = chooseStateTransition(currentState);
+            Actor[] actors = state.getRefinement();
+            Transition transition;
+            while (actors == null) {
+                super.postfire();
+                state = chooseStateTransition(state);
+                transition = _getLastChosenTransition();
+                if (transition == null)
+                    throw new IllegalActionException(this,
+                        "Reached a transient state" +
+                        " without enabled transition.");
+                actors = (transition.destinationState()).getRefinement();
+            }
+    }
+
+
     /** Set the values of input variables in the mode controller.
      *  If the refinement of the current state of the mode controller
      *  is ready to fire, then fire the current refinement.
@@ -233,9 +256,9 @@ public class HDFFSMDirector extends FSMDirector {
         controller.setNewIteration(_sendRequest);
         _readInputs();
         Transition transition;
-        State state = controller.currentState();
-        _lastIntransientState =state;
-        Actor[] actors = state.getRefinement();
+        State currentState = controller.currentState();
+        _lastIntransientState = currentState;
+        Actor[] actors = currentState.getRefinement();
         _fireRefinement = false;
 
         if (actors != null) {
@@ -251,6 +274,8 @@ public class HDFFSMDirector extends FSMDirector {
         _readOutputsFromRefinement();
 
         if (_embeddedInSDF) {
+            chooseTransitions(currentState);
+            /*
             state = chooseStateTransition(state);
             actors = state.getRefinement();
             while (actors == null) {
@@ -262,7 +287,7 @@ public class HDFFSMDirector extends FSMDirector {
                         "Reached a transient state" +
                         "without enabled transition.");
                 actors = (transition.destinationState()).getRefinement();
-            }
+            }*/
         }
         if (_sendRequest && !_embeddedInSDF) {
             ChangeRequest request =
@@ -270,9 +295,11 @@ public class HDFFSMDirector extends FSMDirector {
                     protected void _execute() throws KernelException, 
                             IllegalActionException{
                         FSMActor controller = getController();
-                        State state = controller.currentState();
-                        TypedActor[] actors;
-                        Transition transition;
+                        State currentState = controller.currentState();
+                        chooseTransitions(currentState);
+                        //TypedActor[] actors;
+                        //Transition transition;
+                        /*
                         state = chooseStateTransition(state);
                         
                         actors = state.getRefinement();
@@ -289,7 +316,7 @@ public class HDFFSMDirector extends FSMDirector {
                                 actors = (transition.destinationState())
                                     .getRefinement();
                             }
-                        }
+                        }*/
                     }
                 };
             request.setPersistent(false);
@@ -354,7 +381,6 @@ public class HDFFSMDirector extends FSMDirector {
             _sendRequest = true;
             controller.setNewIteration(_sendRequest);
             currentState = transientStateTransition();
-            currentState = controller.currentState();
             TypedActor[] curRefinements = currentState.getRefinement();
             if (curRefinements != null) {
                 // FIXME
@@ -544,18 +570,15 @@ public class HDFFSMDirector extends FSMDirector {
 
         FSMActor controller = getController();
         State initialState = controller.getInitialState();
-        State currentState;
         _setCurrentState(initialState);
         
         // Make transient state transition in case the initial state
         // does not have a refinement.
         _nextIntransientState = transientStateTransition();
         super.preinitialize();
-        currentState = _nextIntransientState;
-        _setCurrentState(currentState);
-        // Get the current refinement.
-        currentState = controller.currentState();
-        TypedActor[] currentRefinements = currentState.getRefinement();
+        _setCurrentState(_nextIntransientState);
+        TypedActor[] currentRefinements
+            = _nextIntransientState.getRefinement();
         if (currentRefinements != null) {
             // FIXME
             TypedCompositeActor curRefinement
@@ -613,20 +636,21 @@ public class HDFFSMDirector extends FSMDirector {
      *  a transient state is made.
      * @throws IllegalActionException If the super class throws it.
      */
-    public void superPostfire() throws IllegalActionException {
-        super.postfire();
-    }
+    //public void superPostfire() throws IllegalActionException {
+      //  super.postfire();
+    //}
     
     /** Throw IllegalActionException when a transient state
      *  is reached but no further transition is enabled. This
      *  method is called in ChangRequest.
      * @throws IllegalActionException
      */
+    /*
     public void throwTransientException() throws IllegalActionException {
         throw new IllegalActionException(this,
             "Reached a transient state" +
             "without enabled transition.");  
-    }
+    }*/
     
 
     /** Return true if data are transferred from the input port of
