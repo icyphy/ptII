@@ -59,9 +59,9 @@ public class TokenEntry implements Entry {
      *  @param serialNumber The starting serial number of this entry.
      *  @param token A Token.
      */
-    public TokenEntry(String name, long serialNumber, Token token) {
+    public TokenEntry(String name, long serialnumber, Token token) {
 	this.name = name;
-	this.serialNumberObj = new Long(serialNumber);
+	this.serialNumber = new Long(serialnumber);
 	this.token = token;
     }
 
@@ -75,7 +75,7 @@ public class TokenEntry implements Entry {
     /** The Integer object that contains the serial number of this
      *  TokenEntry. JavaSpaces requires entry fields to be objects.
      */
-    public Long serialNumberObj = null;
+    public Long serialNumber = null;
 
     /** The token contained in this TokenEntry.
      */
@@ -89,21 +89,21 @@ public class TokenEntry implements Entry {
      *  @return An int.
      */
     public long getSerialNumber() {
-	if (serialNumberObj == null) {
+	if (serialNumber == null) {
 	    return 0;
 	}
-	return serialNumberObj.intValue();
+	return serialNumber.longValue();
     }
 
     /** Increase the serial number by 1. If the serialNumberObj is
      *  null, change it to contain 1.
      */
     public void increaseSerialNumber() {
-	if (serialNumberObj == null) {
-	    serialNumberObj = new Long(1);
+	if (serialNumber == null) {
+	    serialNumber = new Long(1);
 	} else {
-	    int val = serialNumberObj.intValue();
-	    serialNumberObj = new Long(val+1);
+	    long val = serialNumber.longValue();
+	    serialNumber = new Long(val+1);
 	}
     }
 }
