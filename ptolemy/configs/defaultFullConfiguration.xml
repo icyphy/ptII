@@ -83,6 +83,7 @@
             <input source="ptolemy/actor/corba/corba.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
+            <input source="ptolemy/domains/hdf/lib/hdfentities.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <input source="ptolemy/domains/gr/gr.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
