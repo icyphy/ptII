@@ -59,7 +59,27 @@ is defined remotely.</text>
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 101, 815, 566}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 815, 559}}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 395.0">
+        </property>
     </property>
     <entity name="Carrier" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
@@ -153,6 +173,8 @@ is defined remotely.</text>
             </property>
             <doc>The phase, in radians.</doc>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 210.0">
         </property>
@@ -228,7 +250,7 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 408, 508, 348}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -252,7 +274,7 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.0"/>
-<yRange min="-0.9142955792462609" max="1.0290141944088942"/>
+<yRange min="-1.010703356727812" max="1.0627163995101394"/>
 <noGrid/>
 </plot>?>
         </configure>

@@ -13,7 +13,7 @@
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model repeatedly evaluates an expression, a function of two ramp
 signals, slow and fast. Try right clicking on the expr actor, select
 "Configure" and change it to "cos(slow)*cos(fast)" and then run
-the demo with View-&gt;Run Window-&gt;Go. Other interesting alternatives
+the demo with View->Run Window->Go. Other interesting alternatives
 include:
     "cos(fast*cos(slow))"
     "0.2*slow + cos(fast)"</text>
@@ -26,6 +26,8 @@ include:
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -33,16 +35,38 @@ include:
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 260]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 310.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 154, 872, 459}}">
     </property>
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="PI/100.0">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 113.0">
         </property>
@@ -53,13 +77,16 @@ include:
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="fast" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="PI/10.0">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 223.5">
         </property>
@@ -70,11 +97,18 @@ include:
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="Plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
