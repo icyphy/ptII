@@ -164,27 +164,33 @@ test LongToken-3.1 {Test adding longs and ints.} {
 ######################################################################
 ####
 # Test division of longs with Token types below it in the lossless 
-# type hierarchy, and with other longs.
-#test LongToken-4.0 {Test dividing longs.} {
-#    set p [java::new {ptolemy.data.LongToken long} 7]
-#    set res1 [$p divide $p]
-#    set res2 [$p divideReverse $p]
-#
-#    list [$res1 toString] [$res2 toString]
-#} {}
+# type hierarchy, and with other ints.
+test LongToken-4.0 {Test dividing longs.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 5]
+    set tok2 [java::new {ptolemy.data.LongToken long} 12]
+ 
+    set res1 [$tok1 divide $tok1]
+    set res2 [$tok1 divideReverse $tok1]
+
+    set res3 [$tok1 divide $tok2]
+    set res4 [$tok1 divideReverse $tok2]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(1) ptolemy.data.LongToken(0) ptolemy.data.LongToken(2)}
+
 ######################################################################
 ####
 # 
-#test LongToken-4.1 {Test dividing longs and ints.} {
-#    set tok1 [java::new {ptolemy.data.LongToken long} 7]
-#    set tok2 [java::new {ptolemy.data.IntToken int} 2]
-#    set res1 [$tok1 divide $tok2]
-#    set res2 [$tok1 divideReverse $tok2]
-#
-#    set res3 [$tok2 divide $tok1]
-# 
-#    list [$res1 toString] [$res2 toString] [$res3 toString]
-#} {}
+test LongToken-4.1 {Test dividing longs and ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+    set res1 [$tok1 divide $tok2]
+    set res2 [$tok1 divideReverse $tok2]
+
+    set res3 [$tok2 divide $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.LongToken(3) ptolemy.data.LongToken(0) ptolemy.data.LongToken(0)}
 
 ######################################################################
 ####
