@@ -78,6 +78,17 @@ public class StringAttribute extends Attribute implements Settable {
         _value = "";
     }
 
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public StringAttribute(Workspace workspace) {
+        super(workspace);
+        _value = "";
+    }
+ 
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

@@ -33,6 +33,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
@@ -83,6 +84,17 @@ same syntax as in expressions. For example:
 @see ptolemy.data.expr.Constants
 */
 public class TypeAttribute extends Parameter {
+    
+    /** Construct a parameter in the specified workspace with an empty
+     *  string as a name.
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the parameter.
+     */
+    public TypeAttribute(Workspace workspace) {
+        super(workspace);
+    }
 
     /** Construct an attribute with the given name contained by the specified
      *  port. The container argument must not be null, or a
