@@ -52,6 +52,11 @@ are described in the documentation for ODFThread. Note that consumed
 tokens may include NullTokens. A NullToken is a subclass of Token
 that is communicated solely for the purpose of advancing the local
 notion of time of the actor that receives the NullToken.
+<P>
+The ODF model of computation supports typed, polymorphic actors and 
+does not require this base class for implementation. Nevertheless, 
+this class provides useful syntactic conveniences for developing ODF 
+models. 
 
 @author John S. Davis II
 @version $Id$
@@ -104,26 +109,44 @@ public class ODFActor extends AtomicActor {
     
     /** Return a non-NullToken from the receiver that has the minimum,
      *  nonegative rcvrTime of all receivers contained by this actor.
+     *  If there exists a set of multiple receivers that share a common 
+     *  minimum rcvrTime, then return the token contained by the highest 
+     *  priority receiver within this set. If this actor contains no
+     *  receivers then return null.
      * @return Return a non-NullToken that has the minimum, nonnegative 
      *  rcvrTime of all receivers contained by this actor.
      */
     public Token getNextToken() {
-        Token token = getNextInput(); 
+        Token token = _getNextInput(); 
         if( token instanceof NullToken ) {
 	    System.out.println(getName()+": got a NullToken "
-                    + "from getNextInput()");
+                    + "from _getNextInput()");
             return getNextToken();
 	}
         return token;
     }
     
+    /** Prepare to cease iterations of this actor. Notify actors which
+     *  are connected downstream of this actor's cessation. Return false
+     *  to indicate that future execution can not occur.
+     * @return False to indicate that future execution can not occur.
+     * @exception IllegalActionException Not thrown in this class. May be
+     *  thrown in derived classes.
+     */
+    public boolean postfire() throws IllegalActionException {
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+    
     /** Return a token from the receiver that has the minimum rcvrTime
-     *  of all receivers contained by this actor. The returned token will 
-     *  have the lowest time stamp of all pending tokens for this actor. 
-     *  If there exists a set of multiple receivers that share a common 
-     *  minimum rcvrTime, then return the token contained by the highest 
-     *  priority receiver within this set. If this actor contains no
-     *  receivers then return null.
+     *  of all receivers contained by this actor. The returned token 
+     *  will have the lowest time stamp of all pending tokens for this 
+     *  actor. If there exists a set of multiple receivers that share 
+     *  a common minimum rcvrTime, then return the token contained by 
+     *  the highest priority receiver within this set. If this actor 
+     *  contains no receivers then return null.
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest 
      *  time stamp this token will come from the highest priority 
@@ -133,7 +156,7 @@ public class ODFActor extends AtomicActor {
      * @see ODFReceiver
      * @see ODFThread
      */
-    public Token getNextInput() {
+    private Token _getNextInput() {
 	Thread thread = Thread.currentThread();
 	ODFThread odfthread = null;
         ODFReceiver lowestRcvr = null;
@@ -148,138 +171,9 @@ public class ODFActor extends AtomicActor {
 	if( lowestRcvr.hasToken() ) {
 	    return lowestRcvr.get();
 	} else {
-	    return getNextInput();
+	    return _getNextInput();
 	}
     }
-
-    /** Prepare to cease iterations of this actor. Notify actors which
-     *  are connected downstream of this actor's cessation. Return false
-     *  to indicate that future execution can not occur.
-     * @return False to indicate that future execution can not occur.
-     * @exception IllegalActionException Not thrown in this class. May be
-     *  thrown in derived classes.
-     */
-    public boolean postfire() throws IllegalActionException {
-        return false;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                   package friendly methods		   ////
-
-    /** Print the contents of the RcvrTimeTriple list contained by 
-     *  this actor. Use this method for testing purposes only.
-    void printRcvrList() {
-        System.out.println("\n***Print "+getName()+"'s RcvrList.");
-        System.out.println("   Number of Receivers in RcvrList = " 
-                + _rcvrTimeList.size() );
-        if( _rcvrTimeList.size() == 0 ) {
-            System.out.println("\tList is empty");
-            System.out.println("***End of printRcvrList()\n");
-	    return;
-        }
-        for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
-	    RcvrTimeTriple testTriple = 
-                    (RcvrTimeTriple)_rcvrTimeList.at(i);
-	    Receiver testRcvr = testTriple.getReceiver(); 
-            double time = testTriple.getTime();
-            String testPort = testRcvr.getContainer().getName();
-            String testString = "null";
-            String testString2 = "null";
-            if( getName().equals("printer") ) {
-		System.out.println("   Printer -> size() = "
-                        +((ODFReceiver)testRcvr)._queue.size());
-		if( ((ODFReceiver)testRcvr)._queue.size() > 1 ) {
-                    Event testEvent2 = 
-		            ((Event)((ODFReceiver)testRcvr)._queue.get(1));
-                    StringToken testToken2 = 
-		            (StringToken)testEvent2.getToken();
-		    testString2 = testToken2.stringValue();
-                    System.out.println("\t"+getName()+"'s Receiver "+i+ 
-		            " has a 2nd time of "+testEvent2.getTime()+
-			    " and string: ");
-		}
-		if( ((ODFReceiver)testRcvr)._queue.size() > 0 ) {
-                    Event testEvent = 
-                            ((Event)((ODFReceiver)testRcvr)._queue.get(0));
-                    StringToken testToken = 
-                            (StringToken)testEvent.getToken();
-		    if( testToken != null ) {
-                        testString = testToken.stringValue();
-		    }
-		} else {
-                    testString = "null";
-		}
-            }
-            System.out.println("\t"+getName()+"'s Receiver "+i+
-	            " has a time of " +time+" and string: "+testString);
-        }
-        System.out.println("***End of printRcvrList()\n");
-    }
-     */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods			   ////
-
-    /** Add the specified RcvrTimeTriple to the list of triples.
-     *  If the time stamp of the specified triple is -1.0, then
-     *  insert the triple into the last position of the RcvrTimeTriple
-     *  list. Otherwise, insert the triple immediately after all
-     *  other triples with time stamps less than or equal to the
-     *  time stamp of the specified triple. ALWAYS call _removeRcvrTriple 
-     *  immediately before calling this method if the RcvrTimeTriple list 
-     *  already contains the triple specified in the argument.
-    private void _addRcvrTriple(RcvrTimeTriple newTriple) {
-        if( _rcvrTimeList.size() == 0 ) {
-            _rcvrTimeList.insertAt( 0, newTriple );
-            return;
-        }
-
-	if( newTriple.getTime() == -1.0 ) {
-	    _rcvrTimeList.insertLast(newTriple);
-	    return;
-	}
-        
-	int cnt = 0;
-        boolean notAddedYet = true;
-	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
-            
-	    if( triple.getTime() == -1.0 ) {
-	        _rcvrTimeList.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeList.size();
-                notAddedYet = false;
-	    } else if( newTriple.getTime() < triple.getTime() ) {
-	        _rcvrTimeList.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeList.size();
-                notAddedYet = false;
-	    }
-	    cnt++;
-	}
-        
-        if( notAddedYet ) {
-            _rcvrTimeList.insertLast( newTriple );
-        }
-    }
-     */
-    
-    /** Remove the specified RcvrTimeTriple that contains the same
-     *  Receiver as that contained by the RcvrTimeTriple passed as
-     *  a parameter.
-    private void _removeRcvrTriple(RcvrTimeTriple triple) {
-
-        Receiver rcvrToBeRemoved = triple.getReceiver();
-        
-	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
-	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
-	    Receiver nextRcvr = nextTriple.getReceiver(); 
-            
-	    if( rcvrToBeRemoved == nextRcvr ) {
-	        _rcvrTimeList.removeAt( cnt );
-		cnt = _rcvrTimeList.size();
-	    }
-	}
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
@@ -289,22 +183,6 @@ public class ODFActor extends AtomicActor {
     private double _currentTime = 0.0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
