@@ -66,6 +66,8 @@ public class ShellTextArea extends JPanel {
         _initialMessage = initialMessage;
         // FIXME: Size needs to be configurable.
         _jTextArea = new JTextArea("", 20, 80);
+        // FIXME: Large font for demo. Font needs to be configurable.
+        // _jTextArea.setFont(new Font("DialogInput", 0, 24));
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
