@@ -41,7 +41,9 @@ DIRS =		 coding internals #usersGuides
 
 EXTRA_SRCS = \
 	index.html \
-	javalinks.html
+	install.html \
+	javalinks.html \
+	ptII0.1release.html
 
 MISC_FILES =	$(DIRS)
 
