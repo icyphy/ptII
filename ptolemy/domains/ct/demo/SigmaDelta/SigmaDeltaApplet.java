@@ -107,7 +107,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             // Set up the top level composite actor, director and manager
             _deDirector = new DEDirector(_toplevel,"DEDirector");
-            _deDirector.addDebugListener(new StreamListener());
+            //_deDirector.addDebugListener(new StreamListener());
 
             // CT subsystem
             TypedCompositeActor ctsub = new TypedCompositeActor(_toplevel,
@@ -120,7 +120,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             CTMixedSignalDirector ctdir =
                 new CTMixedSignalDirector(ctsub, "CTEmbDir");
-            ctdir.addDebugListener(new StreamListener());
+            //ctdir.addDebugListener(new StreamListener());
 
             // ---------------------------------
             // Create the actors.
