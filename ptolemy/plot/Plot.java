@@ -169,6 +169,24 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
+        if (_xlog) {
+            if (x <= 0.0) {
+                System.err.println("Can't plot non-positive X values "+
+                        "when the logarithmic X axis value is specified: " +
+                        x);
+                return;
+            }
+            x = Math.log(x)/_LN10;
+        }
+        if (_ylog) {
+            if (y <= 0.0) {
+                System.err.println("Can't plot non-positive Y values "+
+                        "when the logarithmic Y axis value is specified: " +
+                        y);
+                return;
+            }
+            y = Math.log(y)/_LN10;
+        }
         _addPoint(_graphics, dataset, x, y, connected);
     }
     
@@ -280,7 +298,7 @@ public class Plot extends PlotBox {
             "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
         };
         String unsupportedFlags[] = {
-            "-bb", "-lnx", "-lny"
+            "-bb"
         };
         // Default URL to be opened
         String dataurl = "";
@@ -404,6 +422,12 @@ public class Plot extends PlotBox {
                     // -impulses is not in the original X11 pxgraph.
                     setImpulses(true);
                     setConnected(false);
+                    continue;
+                } else if (arg.equals("-lnx")) {
+                    setXLog(true);
+                    continue;
+                } else if (arg.equals("-lny")) {
+                    setYLog(true);
                     continue;
                 } else if (arg.equals("-m")) {
                     // -m Markers Marks: various

@@ -97,6 +97,15 @@ import java.lang.*;
  * </pre>
  * Tick marks could also denote years, months, days of the week, etc.
  * <p>
+ * The X and Y axes can use a logarithmic scale with the following commands:
+ * <pre>
+ * XLog: on
+ * YLog: on
+ * </pre>
+ * The grid labels represent powers of 10.  Note that if a logarithmic
+ * scale is used, then the values must be positive.  Non-positive values
+ * will be silently dropped.
+ * <p>
  * By default, tick marks are connected by a light grey background grid.
  * This grid can be turned off with the following command:
  * <pre>
@@ -367,7 +376,12 @@ public class PlotBox extends Panel {
             for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                String yl = _formatNum(ypos, numfracdigits);
+                String yl;
+                if (_ylog) {
+                    yl = _formatLogNum(ypos);
+                } else {
+                    yl = _formatNum(ypos, numfracdigits);
+                }
                 ylabels[ind] = yl;
                 int lw = _labelFontMetrics.stringWidth(yl);
                 ylabwidth[ind++] = lw;
@@ -522,7 +536,12 @@ public class PlotBox extends Panel {
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
-                String xticklabel = _formatNum(xpos, numfracdigits);
+                String xticklabel;
+                if (_xlog) {
+                    xticklabel = _formatLogNum(xpos);
+                } else {
+                    xticklabel =  _formatNum(xpos, numfracdigits);
+                }
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
@@ -1192,6 +1211,13 @@ public class PlotBox extends Panel {
     }
 
     /** 
+     * Control whether the X axis is drawn with a logarithmic scale.
+     */
+    public void setXLog (boolean xlog) {
+        _xlog = xlog;
+    }
+
+    /** 
      * Set the X (horizontal) range of the plot.  If this is not done
      * explicitly, then the range is computed automatically from data
      * available when <code>paint()</code> or <code>drawPlot()</code>
@@ -1212,6 +1238,14 @@ public class PlotBox extends Panel {
     public void setYLabel (String label) {
         _ylabel = label;
     }
+
+    /** 
+     * Control whether the Y axis is drawn with a logarithmic scale.
+     */
+    public void setYLog (boolean ylog) {
+        _ylog = ylog;
+    }
+
 
     /**
      * Set the Y (vertical) range of the plot.  If this is not done
@@ -1327,10 +1361,21 @@ public class PlotBox extends Panel {
             _parsePairs(line.substring(7), true);
             return true;
         }
-        if (lcLine.startsWith("yticks:")) {
-            // example:
-            // YTicks "label" 0, "label" 1, "label" 3
-            _parsePairs(line.substring(7), false);
+        if (lcLine.startsWith("xlog:")) {
+            if (lcLine.indexOf("off",5) >= 0) {
+                _xlog = false;
+            } else {
+                _xlog = true;
+            }
+            return true;
+        }
+        
+        if (lcLine.startsWith("ylog:")) {
+            if (lcLine.indexOf("off",5) >= 0) {
+                _ylog = false;
+            } else {
+                _ylog = true;
+            }
             return true;
         }
         
@@ -1394,6 +1439,13 @@ public class PlotBox extends Panel {
     protected double _yBottom = Double.MAX_VALUE;
     protected double _yTop = - Double.MAX_VALUE;
     
+    // Whether to draw the axes using a logarithmic scale.
+    protected boolean _xlog = false, _ylog = false;
+
+    // ln(10), used to calculae log10: 
+    //   Log base 10 = Math.log(x)/Math.log(10)
+    protected static final double _LN10 = 2.30258509299;
+
     // Whether to draw a background grid.
     protected boolean _grid = true;
     
@@ -1475,6 +1527,25 @@ public class PlotBox extends Panel {
             ypos += spacing;
         }
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
+    }
+
+    /*
+     * Return the number as a String for use as a label on a
+     * logarithmic axis.
+     * Since this is a log plot, number passed in will not have too many
+     * digits to cause problems.
+     * If the number is an integer, then we print 1e<num>.
+     * If the numer is not an integer, then print only the fractional
+     * components.
+     */
+    private String _formatLogNum (double num) {
+        String results;
+        if (num - Math.floor(num) < 0.001) {
+            results = "1e"+Integer.toString((int)Math.floor(num));
+        } else {
+            results = Integer.toString((int)((num - Math.floor(num))*10));
+        }
+        return results;
     }
 
     /*
