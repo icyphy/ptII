@@ -43,6 +43,8 @@ import java.net.*;
 @see full-classname
 */
 public class LogicAnalyzer extends PlotBox {
+    
+    public static final boolean DEBUG = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -68,7 +70,10 @@ public class LogicAnalyzer extends PlotBox {
             yVal = -dataset - _heightRatio*0.5;
         }
         
-        System.out.println("Set="+dataset + " X-value=" + time + " Y-value=" + yVal);
+        if (DEBUG) {
+            System.out.println("Set="+dataset + " X-value=" + time + 
+                    " Y-value=" + yVal);
+        }
         _addPoint(dataset, time, yVal);
     }
 
@@ -691,6 +696,8 @@ public class LogicAnalyzer extends PlotBox {
     //     // FIXME: This has to be friendly or Netscape fails
     //     boolean _painting = false;
 
+    // the ratio between the height of the digital signal compared to the grid
+    // height.
     private double _heightRatio = 0.9;
 
 }
