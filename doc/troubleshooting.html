@@ -13,6 +13,8 @@ Local Resources
 
 Contents
 <menu>
+
+<li> <a href="#build">Troubleshooting Build problems</a>
 <li> <a href="#applets">Troubleshooting Applets</a>
 	<menu>
 	<li> <a href="#jdk">Java version</a>
@@ -23,6 +25,15 @@ Contents
 	<li> <a href="#Other Applet Resources">Other Applet Resources</a>
 	</menu>
 </menu>
+
+<H2><a name="build">Troubleshooting Build problems</a></H2>
+The <a href="install.html">Ptolemy II Installation page</a> describes
+how to rebuild Ptolemy.  If you are having problems building, try
+removing <CODE>$PTII/config.cache</CODE>
+and then re-running <CODE>$PTII/configure</CODE> and looking at the contents
+of <CODE>$PTII/mk/ptII.mk.in</CODE>.
+
+
 
 <H2><a name="applets">Troubleshooting Applets</a></H2>
 <p>
