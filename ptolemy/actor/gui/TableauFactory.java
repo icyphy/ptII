@@ -57,6 +57,14 @@ import ptolemy.kernel.util.NamedObj;
    factories should be aggregated into a single factory contained herein.
    Those instances can be presented as alternative views of the data when
    any single view is opened.
+   <p>
+   There is a significant subtlety with respect to how Ptolemy II classes
+   are dealt with. Normally, when one looks inside an instance of a class,
+   what is opened is the class definition, not the instance. However,
+   if the instance contains an instance of TableauFactory, then what
+   is opened is the instance, not the class definition.  This is used,
+   for example, when the look inside behavior is customized on a per
+   instance basis.
 
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
