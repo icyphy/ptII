@@ -321,7 +321,6 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
             _opaque = false;
             _workspace.incrVersion();
-            System.out.println("Finish creating the model.");
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
