@@ -109,15 +109,41 @@ the applets with the JDK <CODE>appletviewer</CODE> command.
 
 <h2>Optional packages that are shipped with Ptolemy</h2>
 
-<h3><a name="Soot">Soot</a></h3>
+<h3><a name="Diva">Diva</a></h3>
+Diva is a visualization package used by some of the demos and by
+vergil, the Ptolemy II user interface.
 
-Soot is used by the <a href="codegen.htm">code generator</a>.
-Soot, is a Java optimization framework from
-<a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
+ <p>The Ptolemy II distribution include <CODE>$PTII/lib/diva.jar</CODE>.
+ <p>The Diva sources and documentation are available at
+<a href="http://www.gigascale.org/diva" target="_top"><CODE>http://www.gigascale.org/diva</CODE></a>.
 
-<p> If the code generator is present, then we include
-<code>sootclasses.jar</code> and <code>jasminclasses.jar</code> in
-<code>$PTII/lib</code>
+
+<h3>Jython</h3>
+Jython is a Java implementation of a subset of Python.
+The <a name="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript actor</a> requires Jython.  
+
+<p>Usually, one not need install Jython as 
+all Ptolemy II distributions that include the PythonScript actor
+also include Jython as <code>$PTII/lib/jython.jar<code>.
+The Ptolemy II source distribution also includes <code>$PTII/lib/jython.jar<code>.
+Jython is covered by a 
+<a href="../ptolemy/actor/lib/python/copyright.htm">Jython specific copyright</a>
+
+
+<p>If, for some reason you want to install Jython by hand:
+<ol>
+<li> Download Jython from
+<a href="http://www.jython.org" target="_top"><code>http://www.jython.org</code></a>
+<li> Follow the instructions in
+<a href="http://www.jython.org/install.html" target="_top"><code>http://www.jython.org/install.html</code></a>
+<br>Basically, you should do something like
+<pre>
+java -classpath . jython-21
+</pre>
+and then install Jython in <code>$PTII/vendors/jython</code>
+</ol>
+Configure looks for <code>$PTII/lib/jython.jar</code> and
+then <code>$PTII/vendors/jython/jython.jar</code>
 
 
 <h3><a name="Jacl">Jacl</a></h3>
@@ -145,14 +171,18 @@ is shipped with Ptolemy II.
 <li> <a href="coding/tcljava.htm"><CODE>java::</CODE> man page</a>
 </menu>
 
+<h3><a name="Soot">Soot</a></h3>
 
-<h3><a name="Diva">Diva</a></h3>
-Diva is a visualization package used by some of the demos and by
-vergil, the Ptolemy II user interface.
+Soot is used by the <a href="codegen.htm">code generator</a>.
+Soot, is a Java optimization framework from
+<a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
 
- <p>The Ptolemy II distribution include <CODE>$PTII/lib/diva.jar</CODE>.
- <p>The Diva sources and documentation are available at
-<a href="http://www.gigascale.org/diva" target="_top"><CODE>http://www.gigascale.org/diva</CODE></a>.
+<p> If the code generator is present, then we include
+<code>sootclasses.jar</code> and <code>jasminclasses.jar</code> in
+<code>$PTII/lib</code>
+<p> Soot and Jasmin are both covered by the
+<a href="../ptolemy/copernicus/kernel/soot-license.html">Soot and Jasmin specific copyright</a>
+
 
 
 <h2>Optional packages not shipped with Ptolemy used at runtime</h2>
@@ -198,6 +228,13 @@ was fixed in Java 3D 1.2.1_04
 The <a name="codeDoc/ptolemy/actor/lib/joystick/Joystick.html">Joystick actor</a>
 requires the Joystick interface from
 <a href="http://sourceforge.net/projects/javajoystick/" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code>.
+The Joystick interface works under Windows and Linux.
+Joystick is covered by a 
+<a href="../ptolemy/actor/lib/joystick/copyright.htm">Joystick specific copyright</a>
+
+<p>You must download and install the Joystick interface to use the
+Joystick actor.
+
 <p>Configure looks for the joystick interface in
 <code>$PTII/vendors/misc/joystick</code>.  In that directory, 
 it looks for <code>joystick.jar</code>.
@@ -217,22 +254,6 @@ The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Media Fram
 <p>You need not install JMF if you are not planning on using the JMF Actors.
 <p>We verified that JMF 2.1.1c works with these actors.
 
-<h3>Jython</h3>
-Jython is a Java implementation of a subset of Python.
-The <a name="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript actor</a> requires Jython.
-<p>
-<ol>
-<li> Download Jython from
-<a href="http://www.jython.org" target="_top"><code>http://www.jython.org</code></a>
-<li> Follow the instructions in
-<a href="http://www.jython.org/install.html" target="_top"><code>http://www.jython.org/install.html</code></a>
-<br>Basically, you should do something like
-<pre>
-java -classpath . jython-21
-</pre>
-and then install Jython in 
-</ol>
-Configure looks for <code>$PTII/vendors/jython/jython.jar</code>
 
 <h3><a name="matlab">Matlab</a></h3>
 Ptolemy II includes an interface to Matlab that was  
@@ -252,7 +273,9 @@ using the Matlab plotter.
 
 <h4>Compiling the Matlab interface</h4>
 
-<p>The Matlab interface will only work under Windows.
+<p>The Matlab interface works under Windows and Linux.
+In theory, the Matlab interface might work under Solaris, but
+we have not tested it.
 
 <p>If you do not have <code>gcc</code> or <code>dlltool</code>
 installed, you can install them as part of the 
