@@ -1,5 +1,4 @@
-/* An interface used by receivers that receive data across
-composite actor boundaries. 
+/* 
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -39,8 +38,6 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// BranchThread
 /**
-A BranchThread is an interface used by receivers that receive 
-data across composite actor boundaries. 
 
 @author John S. Davis II
 @version $Id$

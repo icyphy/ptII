@@ -1,4 +1,4 @@
-/* Parent class of guarded communication branches.
+/* 
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -38,93 +38,20 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 /**
-Base class for classes representing guarded communication statements. A
-guarded communication statement is of the form
-<P>
-      <CENTER>guard; communication => statements </CENTER>
-<P>
-If the guard is true, or absent which implies true, then the branch
-is enabled. Guarded communication statements are used to perform
-both forms of conditional communication constructs: "conditional if" (CIF)
-and "conditional do" (CDO). These constructs are analogous to,
-but different from, the common <I>if</I> and <I>do</I> statements.
-Each guarded communication statement is one branch of a CIF or CDO.
-<p>
-A CDO has the form
-<P>
-CDO {
-<br>G1; C1 => S1;
-<br>[]
-<br>G2; C2 => S2;
-<br>[]
-<br>...
-<br>}
-<P>
-The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
-communication associated with that branch, and may be either a send()
-or a get(). The S1, S2 etc. represent the blocks of statements
-associated with that branch. They are executed if that branch is
-successful. The "[]" hints at the fact that the guards are all evaluated
-in parallel (as opposed to sequentially in a common <I>if</I> statement).
-<p>
-While at least one of the branches is enabled, the construct continues
-to evaluate and execute one of the enabled branches. If more than one
-branch is enabled, the first branch to be able to rendezvous succeeds
-and its statements are executed. Note that this construct is
-nondeterministic as it may be  a race condition that determines
-which branch is successful. The CIF is similar to the CDO except that
-it is only evaluated once.
-<p>
-The communication part of a guarded communication statement can be
-either a send() or a get(). There are thus two subclasses of this
-class, each representing a guarded communication statement for one of
-the communication primitives. The subclasses are ConditionalSend and
-ConditionalReceive.
-<p>
-If more than one branch is enabled, each enabled branch is executed
-in a separate thread. For rendezvous, the receiver is the key
-synchronization point.
-<p>
-Conditional branches are designed to be used once. Upon instantiation,
-they are given the guard, the port and channel over which to communicate,
-and the identification number of the branch according to the controller.
-The port and the channel together define the BoundaryReceiver with which to
-rendezvous. The BranchController, that controls this branch,
-is assumed to be contained by the container of the port.
-<p>
-@author  Neil Smyth, John S. Davis II
+
+@author  John S. Davis II
 @version $Id$
 */
 
 public abstract class Branch {
 
-    /** Create a guarded communication statement. This class contains
-     *  all of the information necessary to carry out a guarded
-     *  communication statement, with the exception of the type of
-     *  communication. The receiver is set in the subclass as it
-     *  is subject to communication specific tests.
-     *  @param guard The guard for the guarded communication statement
-     *   represented by this object.
-     *  @param port The IOPort that contains the channel to
-     *   try an communicate through.
-     *  @param branch The identification number assigned to this branch
-     *   upon creation by the CSPActor.
-     *  @exception IllegalActionException If the actor that contains
-     *   the port is not of type CSPActor.
+    /** Create a guarded communication statement. 
     public Branch(boolean guard, int branchID, BranchController cntlr)
             throws IllegalActionException {
      */
     public Branch(boolean guard, int prodChannel, int consChannel, 
     	    int branchID, IOPort prodPort, IOPort consPort, 
             BranchController cntlr) throws IllegalActionException {
-        /*
-        Nameable tmp = port.getContainer();
-        if (!(tmp instanceof MultiBranchActor)) {
-            throw new IllegalActionException(port,
-		    "A conditional branch can only be created" +
-		    "with a port contained by MultiBranchActor");
-        }
-        */
         _guard = guard;
         _branchID = branchID;
         _controller = cntlr;
@@ -152,6 +79,11 @@ public abstract class Branch {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** 
+     */
+    public void branchWasSuccessful() {
+    }
+
     /** Return the controller that manges conditional rendezvous for this
      *  branch when performing a CIF or CDO.
      *  @return The controller that manages conditional rendezvous for
@@ -177,11 +109,18 @@ public abstract class Branch {
         return _branchID;
     }
 
-    /** Return the BoundaryReceiver this branch is trying to rendezvous with.
-     *  @return The BoundaryReceiver this branch is trying to rendezvous with.
+    /** Return the Consumer BoundaryReceiver that this branch puts data into.
+     *  @return The Consumer BoundaryReceiver that this branch puts data into.
      */
-    public BoundaryReceiver getReceiver() {
-        return _receiver;
+    public BoundaryReceiver getConsReceiver() {
+        return _consRcvr;
+    }
+
+    /** Return the Producer BoundaryReceiver that this branch gets data from.
+     *  @return The Producer BoundaryReceiver that this branch gets data from.
+     */
+    public BoundaryReceiver getProdReceiver() {
+        return _prodRcvr;
     }
 
     /** Boolean indicating if this branch is still alive. If it is false, it
@@ -198,22 +137,29 @@ public abstract class Branch {
     /** 
      */
     public boolean isBranchCommitted() {
-    	return true;
+        if( _controller._canBranchContinue( getID() ) ) {
+            return true;
+        }
+    	return false;
     }
 
-    /** 
+    /** Register that the receiver controlled by this branch
+     *  is blocked.
      */
     public void registerRcvrBlocked() {
+    	if( !_rcvrBlocked ) {
+            _controller._branchBlocked();
+        }
     }
 
-    /** 
+    /** Register that the receiver controlled by this branch
+     *  is no longer blocked.
      */
     public void registerRcvrUnBlocked() {
+    	if( _rcvrBlocked ) {
+            _controller._branchUnBlocked();
+        }
     }
-
-    /** 
-    public abstract void run(); 
-     */
 
     /** 
      */
@@ -224,14 +170,10 @@ public abstract class Branch {
             _consRcvr.put(token, this);
         } catch( TerminateBranchException e ) {
             // Do nothing
+            return;
         }
     }
     
-    /** 
-     */
-    public void branchWasSuccessful() {
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                    package friendly methods               ////
 
@@ -249,10 +191,10 @@ public abstract class Branch {
      *  This method should only be called from derived classes.
      *  @param rec The BoundaryReceiver this branch is trying to 
      *   rendezvous with.
-     */
     protected void setReceiver(BoundaryReceiver rec) {
         _receiver = rec;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
@@ -260,8 +202,6 @@ public abstract class Branch {
     // The guard for this guarded communication statement.
     protected boolean _guard;
     
-    protected boolean _branchStopRequest = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -278,10 +218,9 @@ public abstract class Branch {
     // rendezvous for.
     private BranchController _controller;
 
-    // The receiver this thread is trying to rendezvous with. It is immutable.
-    private BoundaryReceiver _receiver;
-
     private BoundaryReceiver _prodRcvr;
     private BoundaryReceiver _consRcvr;
+    
+    private boolean _rcvrBlocked = false;
 
 }

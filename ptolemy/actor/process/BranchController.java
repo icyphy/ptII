@@ -132,8 +132,11 @@ public class BranchController {
                 
             Iterator threads = _threadList.iterator();
             BranchThread thread = null;
+            Branch branch = null;
             while( threads.hasNext() ) {
                 thread = (BranchThread)threads.next();
+                branch = thread.getBranch();
+                branch.setActive(true);
                 thread.start();
             }
         }
@@ -245,7 +248,7 @@ public class BranchController {
      *  register this actor with the director as no longer being 
      *  blocked.
      */
-    protected void _branchUnblocked() {
+    protected void _branchUnBlocked() {
         synchronized(_internalLock) {
  	    if (_blocked) {
             	if ( !_isDeadlocked() ) {
