@@ -314,7 +314,7 @@ remote1coverage: $(PTII_SRC)
 
 
 bldmastrcoverage:
-	$(MAKE) REMOTE1HOME=/home/bldmastr/ptII \
+	$(MAKE) REMOTE1HOME=/home/bldmastr \
 		VERSION= \
 		JSDATABASE=/home/bldmastr/ptII/js \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
