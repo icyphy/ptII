@@ -38,6 +38,8 @@ import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.FilterOutGraphicalClasses;
+import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
@@ -51,7 +53,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
-
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -319,9 +321,24 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 					     + modelPathOrURL + "'");
 	}
 
+        MoMLParser parser = new MoMLParser();
+
+        // Get the old filters, save them, add our own 
+        // filters, use them, remove our filters,
+        // and then readd the old filters in the finally clause.
+        List oldFilters = parser.getMoMLFilters();
+        parser.setMoMLFilters(null);
+
 	// Parse the model and get the name of the model.
 	try {
-	    MoMLParser parser = new MoMLParser();
+
+
+            // Handle Backward Compatibility.
+            parser.addMoMLFilter(new FilterBackwardCompatibility());
+
+            // Filter out any graphical classes
+            parser.addMoMLFilter(new FilterOutGraphicalClasses());
+
 	    NamedObj topLevel = null;
 	    try {
 		topLevel = parser.parse(null, modelURL);
@@ -366,6 +383,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    throw new IllegalActionException(this, ex,
 					     "Failed to parse '"
 					     + modelPathOrURL + "'");
-	}
+	} finally {
+            parser.setMoMLFilters(oldFilters);
+        }
     }
 }

@@ -45,6 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.FilterOutGraphicalClasses;
+import ptolemy.moml.FilterBackwardCompatibility;
 
 import com.microstar.xml.XmlException;
 
@@ -99,6 +101,17 @@ public class KernelMain {
      */
     public KernelMain(String momlClassName) {
 	_momlClassName = momlClassName;
+        _parser = new MoMLParser();
+
+	// Handle Backward Compatibility.
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
+
+	// Add any _icons.
+	//_parser.addMoMLFilter(new FilterAddIcons());
+        
+	// Filter out any graphical classes
+	_parser.addMoMLFilter(new FilterOutGraphicalClasses());
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -412,7 +425,7 @@ public class KernelMain {
 
     /** The MoMLParser for parsing models.
      */
-    protected MoMLParser _parser = new MoMLParser();
+    protected MoMLParser _parser = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
