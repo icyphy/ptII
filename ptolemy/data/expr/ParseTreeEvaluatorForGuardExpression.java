@@ -75,29 +75,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         ptolemy.data.Token value = node.getToken();
 
-        // If the token is "true", we set the token as -1.0
-        // to indicate that refiring at the same time is necessary.
-        // By "the same time", we mean current time + time resolution.
-        // FIXME
-        /*
-                     if(value instanceof BooleanToken) {
-                         if ( ( (BooleanToken) value).booleanValue()) {
-                node.setToken(new DoubleToken(0.0));
-                return;
-            }
-                 }
-         */
 
         // evaluate the leaf node.
         super.visitLeafNode(node);
 
-        // If the token is "true", we set the token as 0.0
-        // to indicate the transition happens accurately.
+        // If the token is "true", we set the token as -1.0
+        // to indicate that refiring at the same time is necessary.
+        // By "the same time", we mean current time + time resolution.
+        // FIXME
         value = node.getToken();
 
         if(value instanceof BooleanToken) {
             if ( ( (BooleanToken) value).booleanValue()) {
-                node.setToken(new DoubleToken(0.0));
+                node.setToken(new DoubleToken(-1.0));
                 return;
             }
         }
@@ -106,7 +96,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     /** Visit the logical node. The short-circuit evaluation is used here
      *  if one of the children has token as "true" or the only child has
      *  token as "true", known as constant, we return the evaluation result
-     *  as 0.0. Otherwise, we return the minimum double value of all children.
+     *  as -1.0. Otherwise, we return the minimum double value of all children.
      *  @param node The logical node to be evaluated.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
@@ -115,7 +105,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             ptolemy.data.Token result = node.getToken();
             if(result instanceof BooleanToken) {
                 if ( ( (BooleanToken) result).booleanValue()) {
-                    node.setToken(new DoubleToken(0.0));
+                    node.setToken(new DoubleToken(-1.0));
                 }
             }
             return;
@@ -135,7 +125,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
         if(result instanceof BooleanToken) {
             if (((BooleanToken) result).booleanValue()) {
-                node.setToken(new DoubleToken(0.0));
+                node.setToken(new DoubleToken(-1.0));
                 return;
             }
 /*            throw new IllegalActionException("Cannot perform minimum "
@@ -159,7 +149,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             if(nextToken instanceof BooleanToken) {
                 if (((BooleanToken) nextToken).booleanValue()) {
-                    node.setToken(new DoubleToken(0.0));
+                    node.setToken(new DoubleToken(-1.0));
                     return;
                 }
             } else if (((ScalarToken) nextToken).isLessThan((ScalarToken) result).booleanValue()) {
