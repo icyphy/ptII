@@ -157,6 +157,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // it gets us through the moml tests.
         _graphicalClasses.put("ptolemy.actor.lib.MonitorValue",
                 null);
+        //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
+        //        "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
