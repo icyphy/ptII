@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[201, 135]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -376,7 +376,7 @@
         <link port="horiz.output" relation="relation9"/>
     </entity>
     <entity name="1:DoubleReader" class="ptolemy.actor.lib.DoubleReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:./test.txt&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:./sobel.txt&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="true">
         </property>
