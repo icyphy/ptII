@@ -66,11 +66,11 @@ public class MaxIndex extends Transformer {
     public MaxIndex(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeAtMost(BaseType.DOUBLE);        
+        input.setTypeAtMost(BaseType.DOUBLE);
          input.setMultiport(true);
-                
+
         // This could change if we add ShortTokens or ByteTokens
-        output.setTypeEquals(BaseType.INT);   
+        output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,9 +102,9 @@ public class MaxIndex extends Transformer {
     /** If there is at least one token on the input ports, compare the
      *  tokens by converting them into doubles, and output the index of
      *  the port that has the Token with the largest double value.
-     *  At most one token is read from each channel, so if more than one token is 
+     *  At most one token is read from each channel, so if more than one token is
      *  pending, the rest are left for future firings.  If none of the input
-     *  channels has a token, do nothing.  
+     *  channels has a token, do nothing.
      *
      *  @exception IllegalActionException If there is no director,
      *  or if conversion to DoubleToken is not supported by the input tokens.
@@ -116,20 +116,20 @@ public class MaxIndex extends Transformer {
        boolean foundFirst = false;
        for (int i = 0; i < input.getWidth(); i++) {
            if (input.hasToken(i)) {
-              double val = ((ScalarToken) input.get(i)).doubleValue();                  
-              if (foundFirst) {                                   
+              double val = ((ScalarToken) input.get(i)).doubleValue();
+              if (foundFirst) {
                  if (maxValue < val) {
                     maxValue = val;
                     maxIndex = i;
-                 }     
+                 }
               } else {
                  maxValue = val;
                  maxIndex = i;
                  foundFirst = true;
-              }                                 
-           } 
+              }
+           }
        }
-    
+
        if (foundFirst) {
            output.send(0, new IntToken(maxIndex));
        }

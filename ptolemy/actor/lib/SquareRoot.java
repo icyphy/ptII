@@ -41,7 +41,7 @@ import ptolemy.data.expr.Parameter;
 /**
 Produce an output token on each firing with a value that is
 equal to the square root of the input. The input and output types
-are DoubleToken. 
+are DoubleToken.
 @author Shankar Rao
 @version $Id$
 */

@@ -74,25 +74,25 @@ public class DiscreteRandomSource extends RandomSource {
         pmf.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         // initialize cache of pmf
-        attributeChanged(pmf);         
+        attributeChanged(pmf);
 
         values = new Parameter(this, "values", new IntMatrixToken(
-                               new int[][] {{0, 1}}));                 
-                               
+                               new int[][] {{0, 1}}));
+
         //values.setTypeAtLeast(new IntMatrixToken());
-                                                              
+
         // initialize cache of values matrix
         attributeChanged(values);
-        
+
         // initialize type of output port
-        attributeTypeChanged(values);                
+        attributeTypeChanged(values);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The probability mass function.
-     *  This parameter contains a DoubleMatrixToken, initially with value 
+     *  This parameter contains a DoubleMatrixToken, initially with value
      *  [0.5 0.5].
      */
     public Parameter pmf;
@@ -102,36 +102,36 @@ public class DiscreteRandomSource extends RandomSource {
      *  [0 1] (an IntMatrixToken).
      */
     public Parameter values;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the argument is the pmf parameter, update the stored value
-     *  of the DoubleMatrixToken representation of pmf. 
+     *  of the DoubleMatrixToken representation of pmf.
      *  If the argument is the values parameter, update the stored value
-     *  of the MatrixToken representation of values.    
+     *  of the MatrixToken representation of values.
      *  @exception IllegalActionException If the values parameter does not
-     *  evaluate to a MatrixToken. 
+     *  evaluate to a MatrixToken.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pmf) {
            try {
-               DoubleMatrixToken pmfMatrixToken = (DoubleMatrixToken) pmf.getToken(); 
+               DoubleMatrixToken pmfMatrixToken = (DoubleMatrixToken) pmf.getToken();
                double[][] temp = pmfMatrixToken.doubleMatrix();
                // get first (and only) row of the matrix
                _pmfDoubleArray = temp[0];
-               
+
            } catch (ClassCastException cce) {
                throw new IllegalActionException("pmf parameter is not a double matrix");
-           }                                     
+           }
         } else if (attribute == values) {
            try {
-               _valuesMatrixToken = (MatrixToken) values.getToken(); 
+               _valuesMatrixToken = (MatrixToken) values.getToken();
            } catch (ClassCastException cce) {
                throw new IllegalActionException("values parameter is not a matrix");
            }
-                      
+
         } else {
            super.attributeChanged(attribute);
         }
@@ -141,25 +141,25 @@ public class DiscreteRandomSource extends RandomSource {
      *  output port to change. Notify the director, which will cause
      *  type resolution to be redone at the next opportunity. It is assumed that
      *  type changes in the parameter are implemented by the director's change
-     *  request mechanism, so they are implement when it is safe to redo type 
-     *  resolution. 
-     *  If there is no director, do not notify any objects. 
+     *  request mechanism, so they are implement when it is safe to redo type
+     *  resolution.
+     *  If there is no director, do not notify any objects.
      */
-    public void attributeTypeChanged(Attribute attribute) 
+    public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
        if (attribute == values) {
-       
-           // set the output type to be the type of the element at values[0][0]           
+
+           // set the output type to be the type of the element at values[0][0]
            Token value = ((MatrixToken) values.getToken()).getElementAsToken(0, 0);
-           
+
            output.setTypeEquals(value.getType());
-           
+
            Director dir = getDirector();
-           
+
            if (dir != null) {
               dir.invalidateResolvedTypes();
            }
-            
+
        } else {
           super.attributeTypeChanged(attribute);
        }
@@ -176,7 +176,7 @@ public class DiscreteRandomSource extends RandomSource {
 	    throws CloneNotSupportedException {
         DiscreteRandomSource newobj = (DiscreteRandomSource) super.clone(ws);
         newobj.pmf = (Parameter) newobj.getAttribute("pmf");
-        newobj.values = (Parameter) newobj.getAttribute("values");        
+        newobj.values = (Parameter) newobj.getAttribute("values");
         return newobj;
     }
 
@@ -186,21 +186,20 @@ public class DiscreteRandomSource extends RandomSource {
     public void fire() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();
-    
+
         double cdf = 0.0;
-        
+
         for (int i = 0; i < _pmfDoubleArray.length; i++) {
             cdf += _pmfDoubleArray[i];
-            
+
             if (randomValue <= cdf) {
                output.send(0, _valuesMatrixToken.getElementAsToken(0, i));
             }
-        }        
+        }
     }
 
     /** The cached matrix of pmf values. */
     protected double[] _pmfDoubleArray = null;
-    
+
     /** The cached matrix of value tokens. */
-    protected MatrixToken _valuesMatrixToken = null;        
-}
+    protected MatrixToken _valuesMatrixToken = null;

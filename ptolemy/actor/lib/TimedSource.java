@@ -125,7 +125,7 @@ public class TimedSource extends Source implements TimedActor {
         return newobj;
     }
 
-    /** Initialize the actor. Schedule a refiring of this actor at the 
+    /** Initialize the actor. Schedule a refiring of this actor at the
      *  stoptime given by the stopTime parameter.
      *  @exception IllegalActionException If there is no director.
      */
@@ -140,7 +140,7 @@ public class TimedSource extends Source implements TimedActor {
             double currentTime = director.getCurrentTime();
             director.fireAt(this, time);
         }
-    }        
+    }
 
     /** Return false if the current time is greater than or equal to
      *  the <i>stopTime</i> parameter value.
