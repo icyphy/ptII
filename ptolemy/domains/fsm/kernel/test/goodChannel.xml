@@ -13,21 +13,21 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 495]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[59, 80]">
     </property>
     <port name="send" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="99.92775665399239, 159.96197718631186">
+        <property name="_location" class="ptolemy.moml.Location" value="112.0, 150.0">
         </property>
     </port>
     <port name="ack" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="99.92775665399239, 209.96197718631186">
+        <property name="_location" class="ptolemy.moml.Location" value="112.0, 200.0">
         </property>
     </port>
     <port name="nack" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="102.92775665399239, 254.96197718631186">
+        <property name="_location" class="ptolemy.moml.Location" value="115.0, 245.0">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">

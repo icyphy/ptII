@@ -17,17 +17,17 @@
     </property>
     <port name="msg" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="53.0, 100.0">
+        <property name="_location" class="ptolemy.moml.Location" value="64.5845959595957, 101.5845959595957">
         </property>
     </port>
     <port name="ok" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 155.0">
+        <property name="_location" class="ptolemy.moml.Location" value="67.5845959595957, 156.5845959595957">
         </property>
     </port>
     <port name="fail" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="56.0, 205.0">
+        <property name="_location" class="ptolemy.moml.Location" value="67.5845959595957, 206.5845959595957">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
