@@ -35,6 +35,8 @@ import java.applet.Applet;
 import java.lang.System;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 
 // Ptolemy imports
 import ptolemy.gui.*;
@@ -155,7 +157,14 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
-        new Message(msg + "\nSee Java console for stack trace.");
+
+	// Put the stack trave into a string.
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintWriter printWriter = new PrintWriter(stream);
+        ex.printStackTrace(printWriter);
+        printWriter.flush();
+
+        new Message(msg + "\n" + stream.toString());
     }
 
     /** Report an exception with an additional message.  Currently
@@ -199,6 +208,21 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     public void stop() {
         if(_manager != null) {
             _manager.finish();
+        }
+    }
+
+
+    /** Cleanup after execution of the model.  This method is called
+     *  by the browser or appletviewer to inform this applet that
+     *  it should clean up.
+     *  In this base class, this method calls the terminate() method
+     *  of the manager.  If there is no manager, do nothing.
+     *  @deprecated This method calls Manager.terminate(), which
+     *  is deprecated.
+     */
+    public void destroy() {
+        if(_manager != null) {
+            _manager.terminate();
         }
     }
 
