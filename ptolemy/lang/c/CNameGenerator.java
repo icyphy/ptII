@@ -125,9 +125,18 @@ public final class CNameGenerator implements CCodeGeneratorConstants {
         }
         String compileUnitName = ASTReflect.getFullyQualifiedName(
                 (CompileUnitNode)parent);
+        if ((compileUnitName == null) || (compileUnitName.length() == 0))
+            _nameRequestError(node, "Invalid compile unit name."); 
+
+        // Make sure the first letter of the C name is a letter.
+        // The choice of 'a' as a "default" first letter is arbitrary.
+        char firstLetter = (Character.isLetter(compileUnitName.charAt(0))) ?
+                compileUnitName.charAt(0) : 'a'; 
         String className = node.getName().getIdent();
-        String CClassName = (compileUnitName + "." + className).hashCode() + 
-                "_" + className;
+        String prefixBase = compileUnitName + "." + className;
+        Integer prefixCode = new Integer(prefixBase.hashCode());
+        String CClassName = firstLetter + prefixCode.toString().replace('-', '0') 
+                + "_" + className;
         node.setProperty(C_NAME_KEY, CClassName);
         // FIXME: Handle use of "\" in directory names (windows compatibility).
         String includeFileName = compileUnitName.replace('.', '/') 

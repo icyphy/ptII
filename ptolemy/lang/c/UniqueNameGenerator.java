@@ -170,6 +170,7 @@ public class UniqueNameGenerator extends JavaVisitor implements CCodeGeneratorCo
      */
     public Object visitClassDeclNode(
             ClassDeclNode node, LinkedList args) {
+        if (!ASTReflect.isDeep(node)) return null;
         String className = _uniqueName(node.getName().getIdent()) + "_t";
         node.setProperty(C_NAME_KEY, className);
 
