@@ -51,51 +51,65 @@ import java.util.*;
 The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow 
 (SDF) domain.  Like the SDF, it has static scheduling of the dataflow graph 
 model. Likewise, DT requires that the rates on the ports of all actors be
-known before hand. It also requires that the rates on the ports not change
-during execution.  DT handles feedback systems in the same way as SDF does,
-but with additional constraints on initial tokens.
+known before hand and fixed. DT handles feedback systems in the same way as 
+SDF does, but may with additional constraints on initial tokens.
+<p>
+<h1>Local and Global Time</h1>
+Because of the inherent concurency occuring within SDF dataflow graph models,
+there are two notions of time in DT -- global time and local time.  Global time
+increases steadily as execution progresses.  Moreover, global time increments by 
+fixed discrete chunks of time based on the value of the 'period' parameter.  On 
+the other hand, local time applies to each of the actors in the model. All the
+actors have distinct local times as an iteration proceeds. The local time of
+an actor during an iteration depend on the global time, period, firing count,
+port rates, and the schedule. These local times obey the following constraint:
 
+   Global Time  <=  Local Time <= (Global Time + period)
+   
+The exact way of how local time increments during an iteration is described in
+detail in the DTReceiver documentation.
+<p>.   
 <h1>DT Features</h1>
 The design of the DT domain is motivated by the following criteria:
 1.) Uniform Token Flow:  The time interval between tokens should be regular
     and unchanging.  This conforms to the idea of having sampled systems 
-    with fixed rates. Although the tokens flowing in DT do not have a notion
-    of time stamps, each actor aware of time can query its director for the
-    current time.  Hence, each actor can get its own notion of current time
-    while executing. The current time is incremented everytime an actor 
-    calls the get() method to obtain a token.
-2.) Causality: Tokens produced that depend on other tokens should be issued
-    at latter time than when the other tokens were issued.  This makes sense
-    because we don't expect actors to produce tokens before they consume 
-    tokens and compute, e.g. if an actor needs three tokens A, B, and C to 
-    compute token D, then the time when tokens A, B, and C are consumed should
-    earlier than than or equal to the time when token D is produced.  Note, in
-    DT, computation does not have to take time.
+    with fixed rates. Although the tokens flowing in DT do not keep internal
+    time stamps, each actor can query the DT director for its own local time.
+    This local time is regularly increasing by a constant fraction of the
+    director's period.  Local time is incremented everytime an actor calls
+    the get() method to obtain a token. 
+2.) Causality: Tokens produced by an actor should only depend on tokens produced
+    or consumed in the past. This makes sense because we don't expect an actors to
+    produce a token before it can calculate the token's value.  For example,
+    if an actor needs three tokens A, B, and C to  compute token D, then the time
+    when tokens A, B, and C are consumed should be earlier than than or equal to
+    the time when token D is produced.  Note that in DT, computation does not 
+    have to take time.
 3.) SDF-style semantics: Ideally, we want DT to be a timed-superset of SDF with
     compatible token flow and scheduling.  However, we can only approximate
     this behavior. It is not possible to have uniform token flow, causality,
-    and SDF-style semantics at the same time.  Causality is broken for non-
+    and SDF-style semantics at the same time.  Causality breaks for non-
     homogeneous actors in a feedback system when fully-compatible SDF-style
-    semantics is adapted.  To remedy this situation, every actor in DT that 
+    semantics is adopted.  To remedy this situation, every actor in DT that 
     has non-homogeneous input ports should produce initial tokens at each 
     of its output ports.
-
-<h1>Class comments</h1>
+<p>
+<h1>DTDirector and other classes</h1>
 DTDirector is the class that controls execution of actors under the DT
-domain.  It follows the same execution semantics as SDF.  By default,
-actor scheduling is handled by the SDFScheduler class.  Furthermore,
-the newReceiver method creates receivers of type DTReceiver, which extends 
-SDFReceiver.
-
+domain.  It is derived from SDFDirector; and hence, follows the same execution 
+semantics as SDF.  Actor scheduling is handled by the SDFScheduler class.
+The newReceiver() method creates receivers of type DTReceiver, which is derived
+from SDFReceiver.
+<p>
 <h1> Design Notes</h1>
 DT (Discrete Time) is a timed model of computation.  In order 
 to benefit from the internal time-keeping mechanism of DT, one should
 use actors aware of time. For example, one should use TimedPlotter or
-TimedScope instead of SequencePlotter or SequenceScope.
-  
+TimedScope instead of SequencePlotter or SequenceScope.  
+<p>  
 <h1> DT and Vergil </h1>
 Non-hierarchical DT has been tested to work with Vergil.  However,
-there is limited support for hierarchical DT at the moment.  It is
+there is only limited support for hierarchical DT at the moment.  It is
 possible to use hierarchical DT in Vergil by doing the following steps
 1.) Create and save the inside model in Vergil. 
 2.) Modify the inside model MOML file with the following modifications:
@@ -168,7 +182,7 @@ public class DTDirector extends SDFDirector {
      *  the inside director.
      *  For heterogeneous hierarchical DT (i.e. DT inside DE or CT), the 
      *  period parameter is used to determine how often the fireAt()
-     *  method is fired by the outside director. 
+     *  method is called to request firing from the outside director. 
      */
     public Parameter period;
     
@@ -192,10 +206,10 @@ public class DTDirector extends SDFDirector {
         return newobj;
     }
     
-    /** Get the time increment per iteration for this director
+    /** Get the global time increment per iteration for this director.
      *  This is a convenience method for getting the period parameter.
-     *  For hierarchical DT (DT inside DT), 
-     *
+     *  For hierarchical DT (DT inside DT), extra calculation is done
+     *  to compute the period as a fraction of the outside period.
      *  @return The value of the period parameter.
      *  @exception IllegalActionException If the period parameter is
      *  is not of type DoubleToken or IntToken.
@@ -231,11 +245,13 @@ public class DTDirector extends SDFDirector {
     /** Initialize all the actors associated with this director by calling
      *  super.initialize().  Create a cached table of all the actors 
      *  associated with this director.  Determine which actors need to generate
-     *  initial tokens for DT causality. All actors with nonhomogeneous input 
-     *  ports will need to generate initial tokens. For example, if actor A has
-     *  a nonhomogeneous input port and an output port with production rate 'm'
-     *  then actor A needs to produce 'm' initial tokens.
-     *
+     *  initial tokens for causality. All actors with nonhomogeneous input 
+     *  ports will need to generate initial tokens for all its output ports. 
+     *  For example, if actor A has a nonhomogeneous input port and an output
+     *  port with production rate 'm' then actor A needs to produce 'm' initial
+     *  tokens on the output port.  The director will handle the production of 
+     *  initial tokens if the actor does not have a parameter 'initialOutputs'
+     *  on its output ports. 
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
@@ -312,7 +328,8 @@ public class DTDirector extends SDFDirector {
     
     
     /** Reset the internal cache containing a list of actors and 
-     *  receivers directed by this director. 
+     *  receivers under this director. Notify parent class about
+     *  invalidated schedule.
      */
     public void invalidateSchedule() {
         _receiverTable = new ArrayList();
@@ -336,14 +353,14 @@ public class DTDirector extends SDFDirector {
     }
     
     
-    /** Set current time to zero, invoke the preinitialize() methods of
-     *  all actors deeply contained by the container. 
-     *  This method should be invoked once per execution, before any
-     *  iteration; i.e. every time the GO button is pressed.
+    /** Set current time to zero. Invoke the preinitialize() methods of
+     *  all actors deeply contained by the container by calling
+     *  super.preinitialize(). This method is invoked once per execution,
+     *  before any iteration; i.e. every time the GO button is pressed.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception IllegalActionException if the preinitialize() method 
+     *  @exception IllegalActionException If the preinitialize() method 
      *   of the container or one of the deeply contained actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -361,8 +378,10 @@ public class DTDirector extends SDFDirector {
     
     /** Request outside director to fire this director's container
      *  again for the next period.  
-     * @return true if the Director wants to be fired again in the
+     *  @return true if the Director wants to be fired again in the
      *  future.
+     *  @exception IllegalActionException If the parent class throws
+     *  it.
      */
     public boolean postfire() throws IllegalActionException {
         boolean returnValue = super.postfire();
@@ -375,7 +394,7 @@ public class DTDirector extends SDFDirector {
       
     /** Set the current time of the model under this director.
      *  Setting the time back to the past is allowed in DT.
-=     *  @param newTime The new current simulation time.
+     *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
         _currentTime = newTime;
@@ -383,9 +402,10 @@ public class DTDirector extends SDFDirector {
     
 
     
-   /** Clear-up cached tables in the DTDirector so that
-    *  next execution can start fresh.
-    *  @exception IllegalActionException
+   /** Clear-up cached tables in the DTDirector so that next
+    *  execution can start fresh.
+    *  @exception IllegalActionException If the parent class 
+    *  throws it
     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -399,14 +419,12 @@ public class DTDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
     
-    /**
-     *
+    /**Get the number of times an actor repeats in the schedule of an 
+     * SDF graph.  If the actor does not exist, throw an exception.
      * @param a The actor whose firing count is needed
-     * @exception InternalErrorException If actor has zero firing count
-     *
-     *
+     * @exception IllegalActionException If actor does not exist.
      */
-    protected final int getRepeats(Actor a) {
+    protected int getRepeats(Actor a) throws IllegalActionException {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
         
@@ -420,13 +438,11 @@ public class DTDirector extends SDFDirector {
         }
         
         if (repeats == 0) {
-            throw new InternalErrorException(
+            throw new IllegalActionException(
                       "internal DT error: actor with zero firing count");
         }
     	return repeats;
     }
-    
-
     
     
 
@@ -437,8 +453,7 @@ public class DTDirector extends SDFDirector {
 
     /** Create an actor table that caches all the actors directed by this
      *  director.  This method is called once at initialize();
-     *  @exception IllegalActionException If the scheduler is null or if
-     *  the methods invoked throw it.
+     *  @exception IllegalActionException If the scheduler is null 
      */
     private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
@@ -587,9 +602,9 @@ public class DTDirector extends SDFDirector {
         }
     }
     
-    /** Convenience method for getting the director of container that 
-     *  contains this director.  If this director in the toplevel, then
-     *  returned value is null.
+    /** Convenience method for getting the director of the container that 
+     *  holds this director.  If this director is inside a toplevel 
+     *  container, then the returned value is null.
      *  @returns The executive director
      */
     private Director _getOutsideDirector() {
@@ -648,10 +663,6 @@ public class DTDirector extends SDFDirector {
     ////                         private variables                 ////
     
     // ArrayList to keep track of all actors scheduled by DTDirector
-    //   also used to keep track of the firing count of each actor
-    //        in the schedule
-    //   also used to keep track of which actor should generate 
-    //        initial tokens
     private ArrayList _actorTable;
     
     // ArrayList used to cache all receivers managed by DTDirector
