@@ -142,12 +142,12 @@ public class SignatureVerifier extends SignatureActor {
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
                                           inputToken));
                 if (!_signature.verify(signatureData)) {
-                    throw new IllegalActionException(
-                            "Signature verification failed");
+                    throw new IllegalActionException(this, 
+                            "Signature verification failed.");
                 }
             } catch (java.security.GeneralSecurityException ex) {
-                throw new IllegalActionException("There was a problem with "
-                        + "the key or signature");
+                throw new IllegalActionException(this, ex,
+                        "There was a problem with the key or signature.");
             }
 
             // If we got to here, then the signature verified, so
