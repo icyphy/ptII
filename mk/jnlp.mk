@@ -131,6 +131,7 @@ COPERNICUS_JARS = \
 	ptolemy/copernicus/copernicus.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
+# ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
@@ -141,6 +142,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
+	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/matlab/demo/demo.jar \
