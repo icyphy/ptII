@@ -34,7 +34,7 @@ ME =		ptolemy/domains/gr/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		FurutaPendulum Pendulum Universe
+DIRS =		FurutaPendulum Pendulum StickyMasses Universe
 
 CLASSPATH =	$(ROOT)
 
