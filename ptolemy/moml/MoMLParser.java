@@ -33,6 +33,7 @@ package ptolemy.moml;
 // Ptolemy imports.
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.attributes.URLAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.CancelException;
