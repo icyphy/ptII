@@ -62,7 +62,7 @@ import java.util.Iterator;
 //// MultiInstanceComposite
 /**
  A {@link ptolemy.actor.TypedCompositeActor} that creates multiple
- intances of itself during the preinitialize phase of model execution.<p>
+ instances of itself during the preinitialize phase of model execution.<p>
 
  A MultiInstanceComposite actor may be used to instantiate {@link
  #nInstances} identical processing blocks within a model. This actor

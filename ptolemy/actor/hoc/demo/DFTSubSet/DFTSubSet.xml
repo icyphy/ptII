@@ -116,7 +116,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -541,7 +541,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -741,7 +741,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -941,7 +941,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -1141,7 +1141,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -1341,7 +1341,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -1541,7 +1541,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -1741,7 +1741,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="7">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -1941,7 +1941,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">
@@ -2141,7 +2141,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         </property>
         <property name="instance" class="ptolemy.data.expr.Parameter" value="9">
         </property>
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
         </property>
         <property name="w" class="ptolemy.data.expr.Parameter" value="2*PI*(FirstDFTCoefficient+instance)/DFTBlockLength">

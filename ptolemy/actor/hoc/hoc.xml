@@ -8,7 +8,7 @@
       <doc>Higher-Order Computation Infrastructure.</doc>
 
       <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
-        <doc>Creates multiple intances of itself</doc>
+        <doc>Creates multiple instances of itself</doc>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
            </property>
