@@ -40,7 +40,11 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+OTHER_FILES_TO_BE_JARED = \
+	debugging.htm
+
 EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	addinganactor.htm \
 	applets.htm \
 	body.htm \
@@ -60,6 +64,8 @@ EXTRA_SRCS = \
 	testing.htm \
 	toc.htm
 
+PTAUXALLJAR = codingConfig.jar
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) templates sftwareprac
@@ -69,7 +75,7 @@ MISC_FILES =	$(DIRS) templates sftwareprac
 OPTIONAL_FILES =
 
 all: $(EXTRA_SRCS)
-install: all
+install: all jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
