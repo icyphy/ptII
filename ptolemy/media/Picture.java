@@ -46,7 +46,7 @@ import java.lang.*;
  *  @author Edward A. Lee
  *  @version $Id$
  */
-public class Picture extends Component {
+public class Picture extends Canvas {
 
     /** Create an image with the specified width and height, in pixels.
      *  @param width The width in pixels.
@@ -77,13 +77,11 @@ public class Picture extends Component {
             _image = createImage(_imagesource);
         }
         _imagesource.newPixels();
-        prepareImage(_image, null);
-        repaint();
     }
 
     /** Paint this component.  If no pixels have been set, do nothing.
      */
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         if (_image != null) {
             g.drawImage(_image, 0, 0, this);
         }
