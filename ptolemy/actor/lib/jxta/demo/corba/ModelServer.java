@@ -149,7 +149,7 @@ public class ModelServer implements QueryHandler{
 			groupAdv = (PeerGroupAdvertisement)
 					AdvertisementFactory.newAdvertisement(
 							XML_MIME_TYPE,
-							new FileInputStream(Dir + "/" + groupAdvFileName));
+							new FileInputStream(_configDir + "/" + groupAdvFileName));
 		} catch (FileNotFoundException ex) {
 			System.out.println("Error: cannot find group adv file.\n"
 					+ ex.getMessage());
@@ -159,13 +159,16 @@ public class ModelServer implements QueryHandler{
 		}
                 System.out.println("peer groupAdv: " + groupAdvFileName);
                 System.out.println("success before instantiate peer group");
+		System.out.println("created peer group adv from file " + groupAdv);
 		// instantiate the peer group for actor exchange
 		try {
 			_group = netPeerGroup.newGroup(groupAdv);
 		} catch (PeerGroupException ex) {
 			System.out.println("Error: cannot instantiate peer group.\n"
 					+ ex.getMessage());
+			ex.printStackTrace();
 		}
+		System.out.println("new peer group created...");
 
 		// join the peer group for actor exchange
 		// no authentication is done here
