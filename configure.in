@@ -425,9 +425,6 @@ ECLIPSE_EXCLUDING_SRC=""
 # Jar files to include in the Eclipse library
 ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 
-ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
-
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -515,7 +512,7 @@ else
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
-    or run the demosntrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/cal])
 	   # Note that we don't substitute in the ${PTII} here
 	   CAL_DIR='${PTII}/lib/'
         fi
@@ -523,7 +520,7 @@ else
         AC_MSG_WARN([Failed to find PTII/lib/ptCal.jar
     ptCal.jar should be present in your distribution.  
     If it is not present, you will not be able to use the Cal actor
-    or run the demosntrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/cal])
 	# Note that we don't substitute in the ${PTII} here
 	CAL_DIR='${PTII}/lib/'
     fi
@@ -535,6 +532,57 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+fi 
+
+#--------------------------------------------------------------------
+#       "CHIC is a modular verifier for behavioral compatibility checking
+#	 of software and hardware components"
+#
+#	For more information, 
+#       see http://www-cad.eecs.berkeley.edu/~tah/chic/
+#--------------------------------------------------------------------
+
+# PTCHIC_DIR is set to chic and used in
+# $PTII/ptolemy/makefile if Chic was found.
+PTCHIC_DIR=
+
+# Directory that contains the chic jar file
+CHIC_DIR='${PTII}/lib'
+
+# We only need to look for if $PTII/ptolemy/chic exists
+CHIC_USER_DIR="$PTII/ptolemy/chic"
+if test ! -d "$CHIC_USER_DIR"; then
+    AC_MSG_RESULT([$CHIC_USER_DIR is not present,
+    so we need not find Chic, the modular verifier for
+    behavioral compatibility checking of software and hardware components.]) 
+else
+    AC_MSG_CHECKING([for Chic, the model checker])
+    AC_ARG_WITH(CHIC_DIR, [  --with-chic=DIR       use chic.jar from DIR,
+                          defaults to \$PTII/lib],
+	CHIC_DIR=$withval,
+	CHIC_DIR=$PTII/lib)
+
+    if test -f "$CHIC_DIR/chic.jar"; then
+	AC_MSG_RESULT([$CHIC_DIR])
+	# We found chic
+	PTCHIC_DIR=chic
+    else  
+        AC_MSG_WARN([Failed to find PTII/lib/chic.jar
+    chic.jar should be present in your distribution.  
+    Chic is a modular verifier for behavioral compatibility checking
+    of software and hardware components.
+    If it is not present, you will not be able to use the Chic facilities
+    or run the demonstrations in ptolemy/chic.])
+	# Note that we don't substitute in the ${PTII} here
+	CHIC_DIR='${PTII}/lib/'
+    fi
+fi
+
+if test -z "$PTCHIC_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
 fi 
 
 #--------------------------------------------------------------------
@@ -2043,6 +2091,12 @@ fi
 # used by bin/ptinvoke.in
 AC_SUBST(CAL_DIR)
 
+# Directory that contains chic.jar.
+# Chic is a modular verifier for behavioral compatibility checking of
+# software and hardware components.
+# Used in bin/ptinvoke.in
+AC_SUBST(CHIC_DIR)
+
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
 
@@ -2157,6 +2211,9 @@ AC_SUBST(PTCM_DIR)
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
 #
 AC_SUBST(PTCOMM_DIR)
+
+# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+AC_SUBST(PTCHIC_DIR)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
