@@ -38,7 +38,6 @@ import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
-import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -99,11 +98,6 @@ public class Main extends KernelMain {
     public void addTransforms() {
 	super.addTransforms();
         
-        // Set up a watch dog timer to exit after a certain amount of time.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                WatchDogTimer.v()));
-
-
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
         // so that we can 
