@@ -46,7 +46,7 @@ import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// JNLPUtilities
-/** This class contains utilities for use with JNLP, aka Web Start 
+/** This class contains utilities for use with JNLP, aka Web Start
 
 <p>For more information about Web Start, see
 <a href="http://java.sun.com/products/javawebstart/" target="_top"><code>http://java.sun.com/products/javawebstart</a></code>
@@ -87,7 +87,7 @@ public class JNLPUtilities {
 	    try {
 		// !/ means that this could be in a jar file.
 		String entry = spec.substring(jarEntry + 2);
-		// We might be in the Swing Event thread, so 
+		// We might be in the Swing Event thread, so
 		// Thread.currentThread().getContextClassLoader()
 		// .getResource(entry) probably will not work.
 		Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
@@ -111,7 +111,7 @@ public class JNLPUtilities {
      *  with "jar:" and have a "!/" in them.
      *  @param prefix The prefix used to generate the name, it must be
      *  at least three characters long.
-     *  @param suffix The suffix to use to generate the name.  If the 
+     *  @param suffix The suffix to use to generate the name.  If the
      *  suffix is null, then the suffix of the jarURLName is used.  If
      *  the jarURLName does not contain a ".", then ".tmp" will be used
      *  @param directory The directory where the temporary file is
@@ -163,7 +163,7 @@ public class JNLPUtilities {
 	//FileOutputStream output = new FileOutputStream(temporaryFile);
 	BufferedOutputStream output =
 	    new BufferedOutputStream(new FileOutputStream(temporaryFile));
-	
+
 	int c;
 	while (( c = input.read()) != -1) {
 	    output.write(c);
