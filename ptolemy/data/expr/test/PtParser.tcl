@@ -384,10 +384,15 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
 test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true)?(7):(6)\n"]
-    set res  [ $root evaluateParseTree ]
+    set res1  [ $root evaluateParseTree ]
 
-    list [$res toString] 
-} {7}
+    set root [ $p1 {generateParseTree String} "(true)?(7):(6.0)\n"]
+    set res2  [ $root evaluateParseTree ]
+
+    catch {[[ $p1 {generateParseTree String} "(true)?(7L):(6.0)\n"] evaluateParseTree] toString} res3
+ 
+    list [$res1 toString] [$res2 toString] $res3
+} {7 7.0 {ptolemy.kernel.util.IllegalActionException: Cannot convert token 7 to type scalar, because scalar is not a concrete type.}}
 
 ######################################################################
 ####
@@ -866,3 +871,13 @@ test PtParser-16.1 {Test method calls on arrays, matrices, etc.} {
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString]
 } {{{{x=2}, {x=3}, {x=4}}} {{2, 4, 8}} {{5, 1, 2, 3}} {[1, 2, 3; 11, 12, 13]} {{"one", "two", "thr"}}}
 
+test PtParser-16.2 {Test record indexing} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "true ? 2 : ({a={0,0,0}}.a).length()"]
+    set res1  [ $evaluator evaluateParseTree $root]
+    set root [ $p {generateParseTree String} "false ? 2 : ({a={0,0,0}}.a).length()"]
+    set res2 [ $evaluator evaluateParseTree $root]
+    list [$res1 toString] [$res2 toString]
+} {2 3}

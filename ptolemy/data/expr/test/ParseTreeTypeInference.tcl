@@ -370,11 +370,14 @@ test ParseTreeTypeInference-5.1 {Construct a Parser, unary minus & unary logical
 test ParseTreeTypeInference-7.0 {Construct a Parser, try simple functional if then else} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true)?(7):(6)\n"]
-    set res  [[ $root evaluateParseTree ] getType]
-    set type [inferTypes $root]
+    set res1  [[ $root evaluateParseTree ] getType]
+    set type1 [inferTypes $root]
+    set root [ $p1 {generateParseTree String} "(true)?(7):(6.0)\n"]
+    set res2  [[ $root evaluateParseTree ] getType]
+    set type2 [inferTypes $root]
 
-   list [$res equals $type]
-} {1}
+   list [$res1 equals $type1] [$res2 equals $type2]
+} {1 1}
 
 ######################################################################
 ####
@@ -657,3 +660,16 @@ test ParseTreeTypeInference-16.0 {Test method calls on arrays, matrices, etc.} {
     list [$res1 equals $type1] [$res2 equals $type2] [$res3 equals $type3] [$res4 equals $type4] 
 } {1 1 1 1} {method calls are not properly typed}
 
+test PtParser-16.2 {Test record indexing} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "true ? 2 : ({a={0,0,0}}.a).length()"]
+    set res1 [[ $evaluator evaluateParseTree $root] getType]
+    set type1 [inferTypes $root]
+   
+    set root [ $p {generateParseTree String} "false ? 2 : ({a={0,0,0}}.a).length()"]
+    set res2  [[ $evaluator evaluateParseTree $root] getType]
+    set type2 [inferTypes $root]
+    list [$res1 equals $type1] [$res2 equals $type2]
+} {1 1}
