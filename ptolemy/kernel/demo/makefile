@@ -48,6 +48,8 @@ TCL_SRCS =
 
 JSRCS = \
 	ExampleApplet.java \
+	ExampleSerializable.java \
+	ExampleSystem.java \
 	ExampleSystemApplet.java \
 	ExampleFrame.java \
 
