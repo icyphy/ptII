@@ -94,7 +94,52 @@ foreach i $configs {
 	expr [string length [$configuration description]] > 0
     } {1}
 
-    test "$i-2.1" "Test to see if $i contains any actors whose type constraints don't clone" {
+    test "$i-2.1" "Test to see if $i has fields with names that are wrong" {
+	# In general, if we call getName on a public field in an actor,
+	# then the name that is returned should be the same as the name
+	# of the field.
+	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]} \
+		{[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set momlInfo [$actor getMoMLInfo]
+		set className [java::field $momlInfo className]
+		if [java::instanceof $entity $className] {
+		    set realActor [java::cast $className $entity]
+		    set fields [java::info fields $realActor]
+		    # This puts seems to be necessary, or else we get
+		    # field being set to 'tcl.lang.FieldSig@2b6fc7'
+		    # instead of 'factor'
+  		    puts "actor: $className fields: $fields"
+		    foreach field $fields {
+			# If the field is actually defined in the parent class
+			# then java::field will not find the field
+			set fieldObj [java::null]
+			catch {
+			    set fieldObj [java::field $realActor $field]
+			}
+			if {![java::isnull $fieldObj]} { 
+			    if {"[$fieldObj getName]" != "$field"} {
+				set msg "\n\nIn '$className'\n\
+					The getName() method returns\n \
+					'[$fieldObj getName]' but the \
+					field is named\n  '$field'"
+				lappend results $msg
+			    }
+			}
+		    }
+		}
+	    }
+	}
+	list $results
+    } {{}}
+
+    test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
 
 	set entityList [$configuration allAtomicEntityList]
