@@ -13,6 +13,9 @@
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
 </entity>
 
+<entity name="Queue" class="ptolemy.domains.de.lib.Queue">
+</entity>
+
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
 </entity>
 
