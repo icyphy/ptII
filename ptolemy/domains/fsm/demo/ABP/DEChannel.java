@@ -88,7 +88,7 @@ public class DEChannel extends TypedAtomicActor {
         DEDirector dir = (DEDirector)getDirector();
         double now = dir.getCurrentTime();
         if (input.hasToken(0)) {
-            if (Math.random() < 
+            if (Math.random() <
                     ((DoubleToken)_dropRate.getToken()).doubleValue()) {
                 // drop the message
                 input.get(0);
