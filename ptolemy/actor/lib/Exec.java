@@ -572,7 +572,8 @@ public class Exec extends TypedAtomicActor {
                 }
             } catch (Throwable throwable) {
                 throw new InternalErrorException(_actor, throwable,
-                        "Failed while reading from " + _inputStream);
+                        getName() + ": Failed while reading from "
+                        + _inputStream);
             }
         }
 
