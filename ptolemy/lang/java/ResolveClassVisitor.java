@@ -115,7 +115,17 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         } else if (superClass == AbsentTreeNode.instance) {
             superDecl = StaticResolution.OBJECT_DECL;
         } else {
-            superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+	    try {
+		//superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+		superDecl = (ClassDecl) JavaDecl.getDecl(superClass);
+	    } catch (Exception e) {
+		throw new RuntimeException("ResolveClassVisitor.visitClassDeclNode() node=" +
+					   node + "\nargs.get(0) = " +
+					   args.get(0) + ")\n superClass = " +
+					   superClass + "\n" +
+					   superClass.toString() +
+					   ": " + e);
+	    }
         }
 
         if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
