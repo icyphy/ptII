@@ -146,10 +146,12 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     set value1 [[$p1 getToken] stringValue]
     set value2 [[$p2 getToken] stringValue]
     set value3 [[$p3 getToken] stringValue]
+    $p1 setExpression  "P3"
     
-    catch {$p1 setExpression  "P3"} errormsg
-    list $value1 $value2 $value3 $errormsg
-} {1.1 9.9 11.0 {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .E.P3: P1 + P2}}
+    catch {$p1 getToken} errormsg1
+    catch {$p3 getToken} errormsg2
+    list $value1 $value2 $value3 $errormsg1 $errormsg2
+} {1.1 9.9 11.0 {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .E.P1: P3} {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .E.P3: P1 + P2}}
 
 #################################
 ####
@@ -160,8 +162,174 @@ test Variable-3.0 {First check for no error message} {
 } {}
 
 test Variable-3.1 {Next check for reasonable error message} {
-    catch {$p1 evaluate} msg
+    catch {$p1 getToken} msg
     list $msg
 } {{ptolemy.data.expr.IllegalExpressionException: Error parsing expression "P2":
 The ID P2 is undefined.}}
 
+#################################
+####
+test Variable-4.0 {Check notification} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression "P2"
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression "1.0"
+    set r1 [[$p1 getToken] stringValue]
+    $p2 setExpression "2.0"
+    set r2 [[$p1 getToken] stringValue]
+    list $r1 $r2
+} {1.0 2.0}
+
+test Variable-4.1 {Check notification} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression "P2"
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression "1.0"
+    set r1 [[$p1 getToken] stringValue]
+    $p2 setToken [java::new ptolemy.data.DoubleToken 2.0]
+    set r2 [[$p1 getToken] stringValue]
+    list $r1 $r2
+} {1.0 2.0}
+
+#################################
+####
+test Variable-5.0 {Check types} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression "1.0"
+    set r1 [[$p1 getType] toString]
+    $p1 setExpression "2"
+    set r2 [[$p1 getType] toString]
+    $p1 setExpression "3.0i"
+    set r3 [[$p1 getType] toString]
+    $p1 setToken [java::new ptolemy.data.DoubleToken 2.0]
+    set r4 [[$p1 getType] toString]
+    $p1 setToken [java::new ptolemy.data.StringToken foo]
+    set r5 [[$p1 getType] toString]
+    list $r1 $r2 $r3 $r4 $r5
+} {{class ptolemy.data.DoubleToken} {class ptolemy.data.DoubleToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.ComplexToken} {class ptolemy.data.StringToken}}
+
+test Variable-5.1 {Set types without first clearing} {
+    set double [java::new ptolemy.data.DoubleToken 0.0]
+    set doubleClass [$double getClass]
+    catch {$p1 setTypeEquals $doubleClass} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .E.P1: setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) cannot be losslessly converted to the desired type class ptolemy.data.DoubleToken}}
+
+test Variable-5.2 {Set types with first clearing} {
+    $p1 setToken [java::null]
+    $p1 setTypeEquals $doubleClass
+    [$p1 getType] toString
+} {class ptolemy.data.DoubleToken}
+
+test Variable-5.3 {Check return value is null} {
+    string compare [$p1 getToken] [java::null]
+} {0}
+
+test Variable-5.4 {Check setting expression to null} {
+    $p1 setExpression 1
+    set r1 [[$p1 getToken] stringValue]
+    set r3 [[$p1 getContainedToken] stringValue]
+    $p1 setExpression ""
+    set int [java::new ptolemy.data.IntToken 0]
+    set intClass [$int getClass]
+    $p1 setTypeEquals $intClass
+    set r2 [$p1 getToken]
+    list $r1 $r3 [string compare $r2 [java::null]]
+} {1.0 1 0}
+
+#################################
+####
+test Variable-6.0 {Check addToScope} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression {"b"}
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "V1"
+    $v1 setExpression {"c"}
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "V2"
+    $v2 setExpression "P1+P2+V1"
+    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+    $v2 {addToScope ptolemy.data.expr.Variable} $v1
+    [$v2 getToken] stringValue
+} {abc}
+
+test Variable-6.1 {Check shadowing} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression {"b"}
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "P1"
+    $v1 setExpression {"c"}
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "V2"
+    $v2 setExpression "P1+P2"
+    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+    $v2 {addToScope ptolemy.data.expr.Variable} $v1
+    [$v2 getToken] stringValue
+} {cb}
+
+test Variable-6.2 {Check shadowing} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression {"b"}
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "P1"
+    $v1 setExpression {"c"}
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "V2"
+    $v2 setExpression "P1+P2"
+    $v2 {addToScope ptolemy.data.expr.Variable} $v1
+    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+    [$v2 getToken] stringValue
+} {ab}
+
+test Variable-6.3 {check getScope} {
+    set namelist [$v2 getScope]
+    enumToFullNames [$namelist elements]
+} {.E.P2 .E.P1}
+
+#################################
+####
+test Variable-7.0 {Check clone} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"1.0"}
+    set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
+    set r1 [[$p2 getToken] stringValue]
+    set r2 [$p2 getContainer]
+    list $r1 [string compare $r2 [java::null]]
+} {1.0 0}
+
+test Variable-7.0 {Check clone} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression P3
+    set p3 [java::new ptolemy.data.expr.Variable $e P3]
+    $p3 setExpression 3.0
+    set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
+    $p2 {addToScope ptolemy.data.expr.Variable} $p3
+    set r1 [[$p2 getToken] stringValue]
+    set r2 [$p2 getContainer]
+    list $r1 [string compare $r2 [java::null]]
+} {3.0 0}
+
+#################################
+####
+test Variable-7.1 {Check getExpression} {
+    set p1 [java::new ptolemy.data.expr.Variable]
+    $p1 setExpression {"1.0"}
+    set r1 [$p1 getExpression]
+    $p1 setToken [java::new ptolemy.data.DoubleToken 2.0]
+    set r2 [$p1 getExpression]
+    list $r1 $r2
+} {{"1.0"} {}}

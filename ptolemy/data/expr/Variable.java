@@ -44,39 +44,18 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 /**
-A Variable is an Attribute that contains a token, can be set by an expression,
-and can be referenced in expressions.
+A Variable is an Attribute that contains a token, and can be set by an
+expression that can refer to other variables.
 <p>
 A variable can be given a token or an expression as its value. To create 
 a variable with a token, either call the appropriate constructor, or create 
 the variable with the appropriate container and name, and then call 
-setToken() to place the token in this variable. To create a variable from 
-an expression, create the variable with the appropriate container and name, 
-then call setExpression() to set its value. If a variable is referred 
-to by expressions of other variables, then the name of the variable must be a
-valid identifier as defined by the Ptolemy II expression language syntax.
+setToken(). To set the value from an expression, call setExpression().
+The expression is not actually evaluated until you call getToken().
+If the expression string is null or empty, then getToken() will return
+null.
 <p>
-If it is given an expression, then the token contained by this variable 
-needs to be resolved via a call to evaluate(). If the expression string 
-is null or empty, or if the token placed in it is null, then the token 
-contained will be null. If the variable is set from an expression, PtParser 
-is used to generate a parse tree from the expression which can then be 
-evaluated to a token. Calling getToken() also results in evaluate() being 
-called if the expression in the variable has not yet been evaluated.
-<p>
-The expression of a variable can only reference variables that are
-added to the scope of this variable before the evaluate() call.
-By default, all variables
-contained by the same NamedObj and those contained by the NamedObj
-one level up in the hierarchy (i.e. contained by the container of
-the container of this variable, if it has one) are added to the
-scope of this variable.
-<p>
-When a variable gets a new token via setToken() or a new expression
-via setExpression(), it will call the evaluate() method of all variables
-depending on it to reflect the change.  This implies some constraints
-on the order in which expressions can be set. Consider for example
-the sequence:
+Consider for example the sequence:
 <pre>
    Variable v3 = new Variable(container,"v3");
    Variable v2 = new Variable(container,"v2");
@@ -84,47 +63,25 @@ the sequence:
    v3.setExpression("v1 + v2");
    v2.setExpression("1.0");
    v1.setExpression("2.0");
+   v3.getToken();
 </pre>
 Notice that the expression for <code>v3</code> cannot be evaluated
 when it is set because <code>v2</code> and <code>v1</code> do not
-yet have values.  But there is no problem because the dependencies
-are not known until <code>v3</code> is first evaluated,
-<pre>
-   v3.evaluate();
-</pre>
-(Note that getToken() also triggers evaluation.)
-Once <code>v3</code> has been evaluated, then its dependence on
-<code>v2</code> and <code>v1</code> is registered, so the following
-code will fail:
-<pre>
-   Variable v4 = new Variable(container,"v3");
-   v1.setExpression("v4 +v2");
-   v4.setExpression("0.0");
-</pre>
-The second statement here will trigger an attempt to evaluate
-<code>v3</code>, which will in turn attempt to evaluate <code>v1</code>,
-which in turn will fail because <code>v4</code> has no token.
+yet have values.  But there is no problem because the expression
+is not evaluated until getToken() is called.
 <p>
-The high-level view is that Variable has somewhat declarative
-semantics, but not completely. In declarative semantics, the order
-of statements does not matter. An expression is treated as an
-assertion about relationships between variables, not as an
-assignment. However, in declarative semantics, you need access to
-all such relationships before you can begin to evaluate any of them.
-In general, we don't have such access, so we cannot have purely
-declarative semantics.
+The expression can only reference variables that are
+added to the scope of this variable before the expression is evaluated
+(i.e., before getToken() is called). Otherwise, getToken() will throw
+an exception.  By default, all variables
+contained by the same container, and those contained by the container's
+container, are in the scope of this variable. Thus, in the above,
+all three variables are in each other's scope because they belong
+to the same container.
 <p>
-The semantics of Variable are basically imperative.  Expressions
-may be evaluated in the order they are given.  All their
-terms must be defined when they are given.  However, we relax this
-constraint to allow expressions to be given in any order prior to the
-first evaluation for some pool of variables. This approach has the
-advantage that when reading a model from a file, it does not matter
-in what order the
-expressions defining variable values are given.  After that, however,
-it does matter.  Thus, at the UI level, when you enter a new expression
-for a variable, all the terms in the new expression have to already
-exist.  This is intuitive.
+If a variable is referred
+to by expressions of other variables, then the name of the variable must be a
+valid identifier as defined by the Ptolemy II expression language syntax.
 <p>
 A variable is a Typeable object. Constraints on its type can be
 specified relative to other Typeable objects (as inequalities on the types).
@@ -353,78 +310,23 @@ public class Variable extends Attribute implements Typeable {
         return newvar;
     }
 
-    /** Evaluate the current expression to a token. If this variable
-     *  was last set directly with a token, then do nothing. In other words,
-     *  the expression is evaluated only if the value of the token was most
-     *  recently given by an expression.  If the value of this variable
-     *  changes due to this evaluation, then evaluate all 
-     *  value dependents and notify the container (if there is one) by
-     *  calling its attributeChanged() method. An exception is thrown
-     *  if the expression is illegal, for example if a parse error occurs
-     *  or if there is a dependency loop. In such cases, the value of
-     *  the variable is left unmodified.
-     *  <p>
-     *  If evaluation results in a token that is not of the same type
-     *  as the current type of the variable, and cannot be converted
-     *  to the current type of the variable, then the type of this variable
-     *  is changed, assuming the new type is compatible with any
-     *  absolute constraints (constraints that require type resolution
-     *  to check are not checked here).
-     *  <p>
-     *  Part of this method is read-synchronized on the workspace.
-     *
-     *  @exception IllegalExpressionException If the expression cannot
-     *   be parsed or cannot be evaluated.  This is a runtime exception
-     *   so it need not be declared explicitly.
-     */
-    public void evaluate() throws IllegalExpressionException {
-        if (_currentExpression == null) return;
-        // If _dependencyLoop is true, then this call to evaluate() must
-        // have been triggered by evaluating the expression of this variable,
-        // which means that the expression directly or indirectly refers
-        // to itself.
-	if (_dependencyLoop) {
-            _dependencyLoop = false;
-            throw new IllegalExpressionException("Found dependency loop "
-                    + "when evaluating " + getFullName() 
-                    + ": " + _currentExpression);
-        }
-        _dependencyLoop = true;
-
-        try {
-            workspace().getReadAccess();
-            _buildParseTree();
-            _setToken(_parseTree.evaluateParseTree());
-            _needsEvaluation = false;
-        } catch (IllegalActionException ex) {
-            _needsEvaluation = true;
-            throw new IllegalExpressionException(ex.getMessage());
-        } finally {
-	    _dependencyLoop = false;
-	    workspace().doneReading();
-	}
-    }
-
     /** Get the token contained by this variable. It will be null if
      *  neither an expression nor a token has been set.
-     *  The token is not converted to the type of this variable if
-     *  necessary (if it is not already an instance of this type).
+     *  The token is not converted to the type of this variable.
      *  The contained token is either a token that has been placed
      *  directly into this variable using setToken(), or the result
-     *  of evaluating the current expression. This method will call
-     *  evaluate() if this variable was last set from an expression
-     *  and the expression has not been evaluated yet. Note that this
-     *  could result in an exception being thrown.
-     *  @return The token contained by this variable.
+     *  of evaluating the current expression.  Note that evaluating
+     *  this expression can result in an exception being thrown.
+     *  @return The token contained by this variable, or null if there
+     *   is none.
      *  @exception IllegalExpressionException If the expression cannot
      *   be parsed or cannot be evaluated.  This is a runtime exception
      *   so it need not be declared explicitly.
      */
+// FIXME: This should not throw a runtime exception!
     public ptolemy.data.Token getContainedToken()
             throws IllegalExpressionException {
-        if (_needsEvaluation) {
-            evaluate();
-        }
+        _evaluate();
         return _token;
     }
 
@@ -526,21 +428,17 @@ public class Variable extends Attribute implements Typeable {
      *  an expression nor a token has been set. Conversion is done if the
      *  the contained token is not an instance of the class of the type
      *  of this variable, or of some derived class.  This conversion is
-     *  lossless (or the token would not have been allowed to be set).
-     *  This method will call evaluate if this 
-     *  variable was last set from an expression and the expression has not
-     *  been evaluated yet.  This could trigger an exception if the expression
-     *  is not valid.
+     *  lossless. Notice the evaluation of the expression can trigger
+     *  an exception if the expression is not valid.
      *  @return The token contained by this variable converted to the
-     *   type of this variable.
+     *   type of this variable, or null if there is none.
      *  @exception IllegalExpressionException If the expression cannot
      *   be parsed or cannot be evaluated.  This is a runtime exception
      *   so it need not be declared explicitly.
      */
-    public ptolemy.data.Token getToken() {
-        if (_needsEvaluation) {
-            evaluate();
-        }
+// FIXME: This should not be a runtime exception.
+    public ptolemy.data.Token getToken() throws IllegalExpressionException {
+        _evaluate();
         if (_token == null) {
             return null;
         }
@@ -584,12 +482,19 @@ public class Variable extends Attribute implements Typeable {
         return _castToken;
     }
 
-    /** Get the type of this variable. It is null if the type is not set.
-     *  Note that the type is set by setToken() and evaluate() as well as
-     *  by setType().
+    /** Get the type of this variable. It is null if the type has not set
+     *  by setTypeEquals(), no token has been set by setToken(), and no
+     *  expression has been set by setExpression().  If an expression has
+     *  been set, then calling this method causes this expression to be
+     *  evaluated, which can cause an exception to be thrown.
      *  @return The type of this variable.
+     *  @exception IllegalExpressionException If the expression cannot
+     *   be parsed or cannot be evaluated.  This is a runtime exception
+     *   so it need not be declared explicitly.
      */
-    public Class getType() {
+// FIXME: This should not be a runtime exception.
+    public Class getType() throws IllegalExpressionException {
+        _evaluate();
         return _varType;
     }
 
@@ -724,20 +629,15 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /** Set the expression of this variable and notify variables that
-     *  depend on this one.  If there are variables that depend on this
-     *  one, then the expression will be evaluated immediately.  Otherwise,
-     *  evaluation is deferred until the value of the variable is accessed
-     *  by getToken() or evaluate() is called.  If the expression string 
-     *  is null, the token contained by this variable is set to null. 
-     *  If it is not null, the expression is stored to be evaluated at
-     *  a later stage. To evaluate the expression now, invoke the 
-     *  method evaluate() on this variable. Value dependencies on
-     *  other variables built for any previous expression are cleared.
+    /** Set the expression of this variable. Evaluation is deferred until
+     *  the value of the variable is accessed by getToken().  If the 
+     *  argument is null, then getToken() will return null.  The container
+     *  is notified of the value change by calling its attributeChanged()
+     *  method.  If that method throws an exception, then the previous
+     *  value of the expression is restored.
      *  @param expr The expression for this variable.
-     *  @exception IllegalActionException If there are variables that
-     *   depend on this one, and the attempt to evaluate those variables
-     *   (which includes an attempt to evaluate this one) fails.
+     *  @exception IllegalActionException If the container rejects this
+     *   expression.
      */
     public void setExpression(String expr) throws IllegalActionException {
         if (expr == null) {
@@ -747,19 +647,28 @@ public class Variable extends Attribute implements Typeable {
         } else {
             _needsEvaluation = true;
         }
+        String saveExpr = _currentExpression;
         _currentExpression = expr;
         _destroyParseTree();
-        _notifyValueDependents();
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            try {
+                container.attributeChanged(this);
+            } catch (IllegalActionException ex) {
+                _currentExpression = saveExpr;
+                throw ex;
+            }
+        }
     }
 
     /** Put a new token in this variable. If an expression had been
-     *  previously given using setExpression(), then the 
-     *  dependencies registered with other variables for that expression
-     *  are cleared.
+     *  previously given using setExpression(), then that expression
+     *  is forgotten.
      *  @param token The new token to be stored in this variable.
      *  @exception IllegalActionException If the token type is not 
      *   compatible with specified constraints, or if you are attempting
-     *   to set to null a variable that has value dependents.
+     *   to set to null a variable that has value dependents, or if the
+     *   container rejects the change.
      */
     public void setToken(ptolemy.data.Token token)
             throws IllegalActionException {
@@ -813,7 +722,8 @@ public class Variable extends Attribute implements Typeable {
     /** Set a type constraint that the type of this object equal
      *  the specified value. This is an absolute type constraint (not
      *  relative to another Typeable object), so it is checked every time
-     *  the value of the variable is set by either setToken() or evaluate().
+     *  the value of the variable is set by setToken() or by evaluating
+     *  an expression.
      *  To remove the type constraint, call this method will a null argument.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint, in that the currently contained
@@ -883,7 +793,8 @@ public class Variable extends Attribute implements Typeable {
 	    LinkedList result = new LinkedList();
 	    result.appendElements(_constraints.elements());
 
-	    TypeConstant tokenType = new TypeConstant(getContainedToken().getClass());
+	    TypeConstant tokenType =
+                    new TypeConstant(getContainedToken().getClass());
 	    Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
 	    result.insertLast(ineq);
 	    return result.elements();
@@ -947,6 +858,69 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
+    /** Evaluate the current expression to a token. If this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all 
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop. In such cases, the value of
+     *  the variable is left unmodified.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, and cannot be converted
+     *  to the current type of the variable, then the type of this variable
+     *  is changed.  In this case, the attributeTypeChanged() method of
+     *  the container is called.  It is up to the container to check
+     *  that any type constraints are valid. 
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
+     *
+     *  @exception IllegalExpressionException If the expression cannot
+     *   be parsed or cannot be evaluated.  This is a runtime exception
+     *   so it need not be declared explicitly.
+     */
+    protected void _evaluate() throws IllegalExpressionException {
+        if (!_needsEvaluation) return;
+        if (_currentExpression == null || _currentExpression.equals("")) {
+            try {
+                _setToken(null);
+            } catch (IllegalActionException ex) {
+                throw new IllegalExpressionException(ex.getMessage());
+            }
+            return;
+        }
+        // If _dependencyLoop is true, then this call to evaluate() must
+        // have been triggered by evaluating the expression of this variable,
+        // which means that the expression directly or indirectly refers
+        // to itself.
+	if (_dependencyLoop) {
+            _dependencyLoop = false;
+            throw new IllegalExpressionException("Found dependency loop "
+                    + "when evaluating " + getFullName() 
+                    + ": " + _currentExpression);
+        }
+        _dependencyLoop = true;
+
+        try {
+            workspace().getReadAccess();
+            _buildParseTree();
+            _setToken(_parseTree.evaluateParseTree());
+            _needsEvaluation = false;
+        } catch (IllegalActionException ex) {
+            _needsEvaluation = true;
+            throw new IllegalExpressionException(ex.getMessage());
+        } finally {
+	    _dependencyLoop = false;
+	    workspace().doneReading();
+	}
+    }
+
     /** Return true if the argument is legal to be added to the scope
      *  of this variable. In this base class, this method only checks
      *  that the argument is in the same workspace as this variable.
@@ -958,22 +932,19 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Notify the value dependents of this variable that this variable
-     *  changed.  Also call the attributeChanged() method of the container,
-     *  if there is one.
-     *  @exception IllegalActionException If the value change is not
-     *   acceptable to the container (the value change should therefore
-     *   be reversed).
+     *  changed.  This marks them to trigger evaluation next time their
+     *  value is accessed.
      */
-    protected void _notifyValueDependents() throws IllegalActionException {
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
+    protected void _notifyValueDependents() {
         if (_valueDependents != null) {
             Enumeration vars = _valueDependents.elements();
             while (vars.hasMoreElements()) {
                 Variable var = (Variable)vars.nextElement();
-                var.evaluate();
+                // Already marked?
+                if (!var._needsEvaluation) {
+                    var._needsEvaluation = true;
+                    var._notifyValueDependents();
+                }
             }
         }
     }        
@@ -1046,7 +1017,8 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /*  Destroy the current parse tree, clearing the value dependencies.
+    /*  Destroy the current parse tree and mark all value dependents
+     *  as needing to be evaluated.
      */
     private void _destroyParseTree() {
         if (_parseTree != null) {
@@ -1056,16 +1028,7 @@ public class Variable extends Attribute implements Typeable {
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
-        // Need to make sure all variables whose values depend on this
-        // are re-evaluated when their values are accessed.
-        if (_valueDependents != null) {
-            Enumeration vars = _valueDependents.elements();
-            while (vars.hasMoreElements()) {
-                Variable var = (Variable)vars.nextElement();
-                var._needsEvaluation = true;
-            }
-        }
-        return;
+        _notifyValueDependents();
     }
 
     /*  Set the token value and type of the variable.
@@ -1129,7 +1092,8 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /*  Set the token value and type of the variable, and notify the
-     *  container and any value dependents.
+     *  container that the value (and type, if appropriate) has changed.
+     *  Also notify value dependents that they need to be re-evaluated.
      *  @param newToken The new value of the variable.
      *  @exception IllegalActionException If the token type is not 
      *   compatible with specified constraints, or if you are attempting
@@ -1149,6 +1113,13 @@ public class Variable extends Attribute implements Typeable {
         try {
             _setToken(newToken);
             _notifyValueDependents();
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                if(oldVarType != _varType && oldVarType != null) {
+                    container.attributeTypeChanged(this);
+                }
+                container.attributeChanged(this);
+            }
         } catch (IllegalActionException ex) {
             // reverse the changes
             _token = oldToken;
@@ -1307,4 +1278,3 @@ public class Variable extends Attribute implements Typeable {
         private Variable _variable = null;
     }
 }
-
