@@ -30,11 +30,13 @@
 package ptolemy.apps.softwalls;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -59,9 +61,24 @@ subset of R^3 for which the dataset is defined.
 @since Ptolemy II 2.0.1
 */
 public class ThreeDFunction implements Serializable {
+    /** Construct the functional representation of the 3D dataset by
+     *  reading a compressed file.
+     *  
+     *  @param fileName name of file storing the dataset.
+     *  @exception IllegalActionException If any exception is
+     *     is generated during file I/O.
+     */
+    public ThreeDFunction(String fileName) throws IllegalActionException {
+        // Read uncompressed data and do not write out compressed data.
+        this(fileName, true, false);
+
+        // Read compressed data and do not write out uncompressed data.
+        //this(fileName, true, false);
+    }
+
     /** 
      *  Constructs the functional representation of the 3D dataset by
-     *  reading a file.
+     *  reading a compressed or uncompressed file.
      *
      *  <p>The human readable data file has the following format:
      *
@@ -81,27 +98,33 @@ public class ThreeDFunction implements Serializable {
      *  information.
      *
      *  <p> The fifth and successive lines consist of the array.
-     *  Each line is one double.  See the code for the format.
+     *  Each line is one double.  
 
-     *  <p>The human readable datasets are often on the order of 10mb
-     *  in size.  In an effort to reduce the size of the data set,
-     *  before opening the human readable dataset, this method first
-     *  looks for a file with the same name that ends in ".cache" and
-     *  opens the .cache file if it exists and is newer than the human
-     *  readable file.  The .cache file consists of a Java serialized
-     *  version of the human readable file.
-     *
-     *  <p>If the .cache file does not exist, the human readable file
-     *  is read and if the directory is writable, a cache file is created. 
-     *
-     *  See <a href="http://java.sun.com/docs/books/tutorial/essential/io/serialization.html">Object Serialization</a>
-     *  in the Java tutorial.
-     *
+     *  <p> The data can be stored in two formats, uncompressed and
+     *  compressed.  In the uncompressed format, a 101 x 101 x 101
+     *  array will be about 10Mb.  In compressed format, the same
+     *  array will be about 3Mb.  
+     *  
+     *  <p>In the compressed format, the 5th line is the initial
+     *  value of the [0, 0, 0]th element of the array, and each
+     *  successive line is the difference from the previous element.
+     *  Values in the compressed format stored with three or four
+     *  digits of precision as integers, so there are likely to be
+     *  rounding errors.  However, usually this level of precision
+     *  is sufficient for our needs.
+     *  
      *  @param fileName name of file storing the dataset.
+     *  @param compressed True if the input data is compressed
+     *  @param wrieOutData True if the data should be written out
+     *  in a file with the same name as the input file, but with a .tmp
+     *  suffix. If we read in compressed data, we write out uncompressed.
+     *  If we read in uncompressed data, we write out compressed.
+     *
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
      */
-    public ThreeDFunction(String fileName) throws IllegalActionException {
+    public ThreeDFunction(String fileName, boolean compressed,
+            boolean writeOutData) throws IllegalActionException {
         int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
         double dimension;
@@ -144,12 +167,44 @@ public class ThreeDFunction implements Serializable {
             thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
             _values = new double[xPoints][yPoints][thetaPoints];
 
+            int last = Integer.MIN_VALUE;
+
             // Fill in the values array with values, sorted in
             // reverse lexicographical order.
             for (int t = 0; t < thetaPoints; t = t + 1) {
                 for (int y = 0; y < yPoints; y = y + 1) {
                     for (int x = 0; x < xPoints; x = x + 1) {
-                        _values[x][y][t] = _readDouble(in);
+                        if (compressed) {
+                            // The data is stored in a delta format,
+                            // where we record the difference between
+                            // the last and the current values.
+                            if (last == Integer.MIN_VALUE) {
+                                // First data point
+                                last = _readInteger(in);
+                                _values[x][y][t] = last/1000.0;
+                            } else {
+                                last = last - _readInteger(in);
+                                _values[x][y][t] = last/1000.0; 
+                            }
+                        } else {
+                            _values[x][y][t] = _readDouble(in);
+                        }
+                    }
+                }
+            }
+
+            // Set writeOutData to true to write out the other form of data.
+            // If we read in compressed data, we write out uncompressed.
+            // If we read in uncompressed data, we write out compressed.
+            if (writeOutData) {
+                BufferedWriter output = null;
+                try {
+                    output =
+                        new BufferedWriter(new FileWriter(fileName + ".tmp"));
+                    write(output, !compressed);
+                } finally {
+                    if (output != null) {
+                        output.close();
                     }
                 }
             }
@@ -170,88 +225,7 @@ public class ThreeDFunction implements Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public mehtods                       ////
-
-    public static ThreeDFunction read(String fileName)
-            throws IllegalActionException {
-        File humanReadableFile = new File(fileName);
-        File cacheFile = new File(fileName + ".cache");
-        boolean useCache = false;
-        if (cacheFile.exists()) {
-            if (!humanReadableFile.exists()) {
-                useCache = true;
-            } else {
-                long humanReadableLastModified =
-                    humanReadableFile.lastModified();
-                if (humanReadableLastModified == 0L) {
-                    // Problem getting the last modified date from the
-                    // human readable file
-                    useCache = true;
-                }
-                if (cacheFile.lastModified() > humanReadableLastModified) {
-                    // Cache file was modified after human readable file
-                    useCache = true;
-                }
-            }
-        } 
-        ThreeDFunction threeDFunction = null;
-        
-        if (useCache) {
-            FileInputStream fileInputStream = null;
-            ObjectInputStream objectInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(cacheFile);
-                objectInputStream = new ObjectInputStream(fileInputStream);
-                threeDFunction =
-                    (ThreeDFunction)objectInputStream.readObject();
-            } catch (Exception ex) {
-                // FIXME: if we can't read the cache file, and
-                // the human readable data file exists, we should remove
-                // the cache file?
-                // For example recompiling this will bump up the version
-                // number of the file, which invalidates the cache.
-                throw new IllegalActionException(null, ex,
-                        "Problem reading ThreeDFunction from '"
-                        + cacheFile + "'");
-            } finally {
-                if (objectInputStream != null) {
-                    try {
-                        objectInputStream.close();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(null, ex,
-                                "Failed to close '" + objectInputStream + "'");
-                    } 
-                }
-            }
-        } else {
-            threeDFunction = new ThreeDFunction(fileName);
-            // Write out a copy of the file
-            // FIXME: Check for writability.
-            FileOutputStream fileOutputStream = null;
-            ObjectOutputStream objectOutputStream = null;
-            try {
-                fileOutputStream = new FileOutputStream(cacheFile);
-                objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(threeDFunction);
-            } catch (Exception ex) {
-                throw new IllegalActionException(null, ex,
-                        "Problem writing ThreeDFunction to '"
-                        + cacheFile + "'");
-            } finally {
-                if (objectOutputStream != null) {
-                    try {
-                        objectOutputStream.close();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(null, ex,
-                                "Failed to close '" + objectOutputStream + "'");
-                    } 
-                }
-            }
-            
-        }
-        return threeDFunction;
-        
-    }
+    ////                      public methods                       ////
 
     /**
      *  Return the approximate value of f(x, y, theta) using trilinear
@@ -357,8 +331,59 @@ public class ThreeDFunction implements Serializable {
         }
     }
 
-    /** Write out the data in the human readable format */
-    //FIXME: public String toString();
+    /** Write the data out in human readable uncompressed format
+     *  @param output The output file.
+     */
+    public void write(BufferedWriter output) throws IOException {
+        write(output, false);
+    }
+
+    /** Write out the data in the human readable format that is
+     *  either compressed or uncompressed.
+     *  @param output The output file.
+     *  @param compressed True if the output should be compressed.
+     */
+    public void write(BufferedWriter output, boolean compressed)
+            throws IOException {
+        output.write("3" + "\n");
+        output.write(_xLowerBound
+                + "   " + _xStepSize
+                + "   " + _xUpperBound + "\n");
+
+        output.write(_yLowerBound
+                + "   " + _yStepSize
+                + "   " + _yUpperBound + "\n");
+
+        output.write(_thetaLowerBound
+                + "   " + _thetaStepSize
+                + "   " + _thetaUpperBound + "\n");
+        
+        // FIXME: we assume the array is regular, that is that
+        // all the rows have the same length.
+
+        long last = Math.round(_values[0][0][0] * 1000.0) ;
+        boolean sawFirst = false;
+
+        for (int t = 0; t < _values[0][0].length; t = t + 1) {
+            for (int y = 0; y < _values[0].length; y = y + 1) {
+                for (int x = 0; x < _values.length; x = x + 1) {
+                    if (compressed) {
+                        if (!sawFirst) {
+                            sawFirst = true;
+                            output.write( last + "\n");
+                        } else {
+                            long current =
+                                Math.round(_values[x][y][t] * 1000.0);
+                            output.write( last - current + "\n");
+                            last = current;
+                        }
+                    } else {
+                        output.write( _values[x][y][t] + "\n");
+                    }
+                }
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
@@ -437,6 +462,25 @@ public class ThreeDFunction implements Serializable {
         } else {
             _tokenizer = new StringTokenizer(reader.readLine());
             return _readDouble(reader);
+        }
+    }
+
+    /**
+     *  If a line has no data, it tries to return the next line.
+     *  If no next line exists, it returns null,
+     *
+     *  @param reader BufferedReader storing the file of interest
+     *  @exception IOException if reader throws an IOException
+     *  @return double value read from the file
+     **/
+    private int _readInteger(BufferedReader reader) throws IOException {
+        String line;
+        String token;
+        if (_tokenizer.hasMoreTokens()) {
+            return (new Integer(_tokenizer.nextToken())).intValue();
+        } else {
+            _tokenizer = new StringTokenizer(reader.readLine());
+            return _readInteger(reader);
         }
     }
 }
