@@ -399,6 +399,11 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		> src_jar/hyvisual$(VERSION)/bin/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/bin/makefile
+	grep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
 	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
 	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
