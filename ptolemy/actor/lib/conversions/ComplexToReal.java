@@ -75,11 +75,12 @@ public class ComplexToReal extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
+    /** The input port. This has type ComplexToken. */
     public TypedIOPort input;
 
-    /** The output ports. */
+    /** The real part. This has type DoubleToken. */
     public TypedIOPort realOutput;
+    /** The imaginary part. This has type DoubleToken. */
     public TypedIOPort imagOutput;
 
     ///////////////////////////////////////////////////////////////////
@@ -105,28 +106,21 @@ public class ComplexToReal extends TypedAtomicActor {
         }
     }
 
-    /** initialization
+    /** Consume a complex token from input port and
+     *  output two new double token as the real and imaginary parts
+     *  given by the input complex token.
+     *
+     *  @exception IllegalActionException will be thrown if attempt to
+     *  fire this actor when there is no director.
      */
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-    }
-
-    /** Consume the inputs and produce the outputs of the ComplexToReal actor.
-     *
-     *  realPart = real part of the complex token.
-     *  imagPart = imaginary part of the complex token.
-     *
-     *  @exception IllegalActionException Not Thrown.
-     */
-    public void fire() throws IllegalActionException {
+    public final void fire() throws IllegalActionException  {
 
         ComplexToken complex = (ComplexToken) (input.get(0));
-        Complex comp = complex.complexValue();
+        Complex complexNumber = complex.complexValue();
 
-        DoubleToken realPart = new DoubleToken (comp.real);
-        DoubleToken imagPart = new DoubleToken (comp.imag);
+        DoubleToken realPart = new DoubleToken (complexNumber.real);
+        DoubleToken imagPart = new DoubleToken (complexNumber.imag);
 
         realOutput.broadcast(realPart);
         imagOutput.broadcast(imagPart);
