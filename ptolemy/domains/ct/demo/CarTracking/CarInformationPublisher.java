@@ -151,25 +151,20 @@ public class CarInformationPublisher extends TypedAtomicActor
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-	try {
-	    CarInformationPublisher newobj = 
-                (CarInformationPublisher)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.samplingPeriod = (Parameter)newobj.getAttribute(
-                    "samplingPeriod");
-            newobj.malfunctioning = (Parameter)newobj.getAttribute(
-                    "malfunctioning");
-            newobj.force = (TypedIOPort)newobj.getPort("force");
-            newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
-            newobj.position = (TypedIOPort)newobj.getPort("position");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        CarInformationPublisher newobj = 
+            (CarInformationPublisher)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        newobj.samplingPeriod = 
+            (Parameter)newobj.getAttribute("samplingPeriod");
+        newobj.malfunctioning =
+            (Parameter)newobj.getAttribute("malfunctioning");
+        newobj.force = (TypedIOPort)newobj.getPort("force");
+        newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
+        newobj.position = (TypedIOPort)newobj.getPort("position");
+        return newobj;
     }
 
     /** Return true always.
