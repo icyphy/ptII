@@ -242,6 +242,16 @@ public class Director extends NamedObj implements Executable {
             }
         }
     }
+    
+    /** Returns true if this director is an executive director. Otherwise 
+     *  it returns false.
+     *  @return Boolean indicating whather or not this director is an 
+     *   executive director.
+     */
+    public boolean isExecutiveDirector() {
+        return _executivedirector;
+    }
+
 
     /** Invoke one iteration.  In this base class, one iteration consists of
      *  exactly one invocation of prefire(), fire(), and postfire(), in that
