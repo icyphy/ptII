@@ -82,11 +82,16 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param ex The exception being reported.
      */
     public synchronized void executionError(Manager manager, Exception ex) {
-// FIXME
-System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+        // FIXME
+        System.out.println("executionError: before -- adjustment: " +
+                _activeCount + "\n" + this + 
+                util.testsuite.PrintThreads.allThreads());
+
         _activeCount--;
-// FIXME
-System.out.println("*************** error: " + _activeCount + " " + this);
+        // FIXME
+        System.out.println("executionError: after adjustment: " +
+                _activeCount + "\n" + this + 
+                util.testsuite.PrintThreads.allThreads());
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -98,11 +103,15 @@ System.out.println("*************** error: " + _activeCount + " " + this);
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-// FIXME
-System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+        // FIXME
+        System.out.println("executionFinished: before -- adjustment: " +
+                _activeCount + "\n" + this + 
+                util.testsuite.PrintThreads.allThreads());
         _activeCount--;
-// FIXME
-System.out.println("*************** finished: " + _activeCount + " " + this);
+        // FIXME
+        System.out.println("executionFinished: after adjustment: " +
+                _activeCount + "\n" + this + 
+                util.testsuite.PrintThreads.allThreads());
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -158,12 +167,15 @@ System.out.println("*************** finished: " + _activeCount + " " + this);
     /** Wait for all executing runs to finish, then return.
      */
     public synchronized void waitForFinish() {
-// FIXME
-System.out.println("*************** calling waiting: " + _activeCount + " " + this);
+        // FIXME
+        System.out.println("waitForFinish: before while loop: " +
+                _activeCount + "\n" + this + 
+                util.testsuite.PrintThreads.allThreads());
         while (_activeCount > 0) {
-// FIXME
-System.out.println("*************** waiting: " + _activeCount + " " + this);
-
+            // FIXME
+            System.out.println("waitForFinish: inside while: " +
+                    _activeCount + "\n" + this + 
+                    util.testsuite.PrintThreads.allThreads());
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -186,7 +198,8 @@ System.out.println("*************** waiting: " + _activeCount + " " + this);
         URL inurl = specToURL(
                 "ptolemy/configs/runConfiguration.xml");
         MoMLParser parser = new MoMLParser();
-        _configuration = (Configuration)parser.parse(inurl, inurl.openStream());
+        _configuration =
+            (Configuration)parser.parse(inurl, inurl.openStream());
         return _configuration;
     }
 
@@ -220,11 +233,15 @@ System.out.println("*************** waiting: " + _activeCount + " " + this);
                     actor.setManager(manager);
                 }
                 manager.addExecutionListener(this);
-// FIXME
-System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+                // FIXME
+                System.out.println("_parseArgs: before ++ adjustment: " +
+                        _activeCount + "\n" + this + 
+                        util.testsuite.PrintThreads.allThreads());
                 _activeCount++;
-// FIXME
-System.out.println("*************** " + _activeCount + " " + this);
+                // FIXME
+                System.out.println("_parseArgs: after adjustment: " +
+                        _activeCount + "\n" + this + 
+                        util.testsuite.PrintThreads.allThreads());
                 // Run the model in a new thread.
                 manager.startRun();
             }
@@ -238,5 +255,5 @@ System.out.println("*************** " + _activeCount + " " + this);
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    private int _activeCount = 0;
+    private static int _activeCount = 0;
 }
