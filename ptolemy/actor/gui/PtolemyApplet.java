@@ -185,7 +185,10 @@ public class PtolemyApplet extends BasicJApplet
         _workspace = new Workspace(getClass().getName());
         try {
             _toplevel = _createModel(_workspace);
-            if (_toplevel instanceof CompositeActor ) {
+            // This might not actually be a top level, because we might
+            // be looking inside.  So we check before creating a manager.
+            if (_toplevel.getContainer() == null
+                    && _toplevel instanceof CompositeActor ) {
                 if (((CompositeActor)_toplevel).getManager() == null) {
                     _manager = new Manager(_workspace, "manager");
                     _manager.addExecutionListener(this);

@@ -47,6 +47,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.gui.*;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
@@ -166,13 +168,37 @@ public class MoMLApplet extends PtolemyApplet {
                 throw new Exception("Applet does not not specify a modelURL.");
             }
         }
+        // NOTE: Regrettably, Java's URL class is too dumb
+        // to handle a fragment part of a URL.  Thus, if
+        // there is one, we have to remove it.  Note that
+        // Java calls this a "fragment", a "ref", and
+        // and "reference", all in different parts of the
+        // docs.
+        int sharp = modelURL.indexOf("#");
+        String fragment = null;
+        if (sharp > 0) {
+            fragment = modelURL.substring(sharp + 1);
+            modelURL = modelURL.substring(0, sharp);
+        }
+
         MoMLParser parser = new MoMLParser();
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
-        if (toplevel instanceof CompositeActor) {
+        if (fragment != null && !fragment.trim().equals("")) {
+            // A fragment was specified, so we should look inside.
+            ComponentEntity inside = null;
+            if (toplevel instanceof CompositeEntity) {
+                inside = ((CompositeEntity)toplevel).getEntity(fragment);
+            }
+            if (inside == null) {
+                throw new IllegalActionException(toplevel,
+                "No such contained entity: " + fragment);
+            }
+            toplevel = inside;
+        } else if (toplevel instanceof CompositeActor) {
             CompositeActor result = (CompositeActor)toplevel;
             _manager = result.getManager();
             if (_manager == null) {
