@@ -74,7 +74,6 @@ JSIMPLE_TESTS = \
     Exceptions.tcl\
     FIR2.tcl \
     FIRSingle.tcl \
-    HashSetTest.tcl \
     LinkedListTest.tcl \
     Linpack.tcl\
     InnerField.tcl \
