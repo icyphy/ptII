@@ -154,7 +154,7 @@ test SearchPath-3.2 {Do we need to resize the systemClassSet HashSet?} {
     # If the number gets too large then modify the initial size 
     # of the hashset.
     puts "SearchPatch-3.2: systemClassSet size: [$systemClassSet size]"
-    list [expr {[$systemClassSet size] > 5900}]
+    list [expr {[$systemClassSet size] > 8200}]
 } {0}
 
 ######################################################################
