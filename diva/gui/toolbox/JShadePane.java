@@ -183,8 +183,6 @@ public class JShadePane extends JPanel {
 
     /**
      * Returns the component at the given index.
-     *
-     * @see #setComponentAt
      */
     public Component getComponentAt (int index) {
         return ((Shade)_shades.get(index))._component;

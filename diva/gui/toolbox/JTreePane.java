@@ -213,8 +213,6 @@ public class JTreePane extends JSplitPane {
 
     /**
      * Returns the component at the given index.
-     *
-     * @see #setComponentAt
      */
     public JComponent getComponentAt (String title) {
         return (_findEntry(title))._component;
