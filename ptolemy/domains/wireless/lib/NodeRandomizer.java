@@ -51,10 +51,8 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// NodeRandomizer
@@ -252,7 +250,9 @@ public class NodeRandomizer extends TypedAtomicActor {
 
     /** Set the location of the specified node.  This sets the _location
      *  attribute, which is the location as used in Vergil, the visual editor.
-     *  Derived classes may override this to set the location differently.     *
+     *  Derived classes may override this to set the location differently.
+     *  The location is set by queueing a change request, so it may not take
+     *  effect immediately.
      *  @param location The specified location.
      *  @param node The node for which to set the location.
      *  @exception IllegalActionException If the location attribute
@@ -260,18 +260,17 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     protected void _setLocationOfNode(double[] location, Entity node)
             throws IllegalActionException {
-        try {
-            Locatable myLocation =
-                (Locatable)node.getAttribute("_location", Locatable.class);
-            if (myLocation != null) {
-                myLocation.setLocation(location);
-            } else {
-                myLocation = new Location(node, "_location");
-                myLocation.setLocation(location);
-            }
-        } catch (NameDuplicationException e) {
-            throw new InternalErrorException(e);
-        }
+        // Do this as a MoML change request to ensure
+        // propagation.
+        MoMLChangeRequest request = new MoMLChangeRequest(this, node,
+                "<property name=\"_location\" "
+                + "class=\"ptolemy.kernel.util.Location\" "
+                + "value=\"["
+                + location[0]
+                + ", "
+                + location[1]
+                + "]\"/>");
+        node.requestChange(request);
     }
 
     ///////////////////////////////////////////////////////////////////
