@@ -733,14 +733,67 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; }
 fi
 
+
 #--------------------------------------------------------------------
-#	See if there was a command-line option for where Java is;  if
-#	not, check to see if the PTJAVA_DIR environment variable is set;
-#       if it is not, look for javac on the path.
+#	Figure out whether to use javac -depend or javac -Xdepend
+#--------------------------------------------------------------------
+JFLAGSINIT=-g
+
+echo $ac_n "checking the Java compiler with a simple compile""... $ac_c" 1>&6
+echo "configure:744: checking the Java compiler with a simple compile" >&5
+if env $JAVAC -d . $srcdir/mk/confTest.java ; then
+    echo "$ac_t""ok" 1>&6
+    JFLAGS="$JFLAGSINIT -depend"
+    echo $ac_n "checking javac $JFLAGS""... $ac_c" 1>&6
+echo "configure:749: checking javac $JFLAGS" >&5
+    if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+	echo "$ac_t""yes" 1>&6
+    else
+	echo "$ac_t""no" 1>&6
+	JFLAGS="$JFLAGSINIT -Xdepend"
+	echo $ac_n "checking javac $JFLAGS""... $ac_c" 1>&6
+echo "configure:756: checking javac $JFLAGS" >&5
+	if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+	    echo "$ac_t""yes" 1>&6
+	else
+	    echo "$ac_t""no" 1>&6
+	    echo "configure: warning: '$JAVAC -d . -depend $srcdir/mk/confTest.java' and
+'$JAVAC -d . -Xdepend $srcdir/mk/confTest.java' both failed, so we don't
+know how to build with dependencies taken into account.  This could
+cause problems later if you modify .java files that other .java
+files depend on" 1>&2
+	    echo "$ac_t""$JFLAGS" 1>&6
+	fi
+    fi
+else
+    JFLAGS="$JFLAGSINIT -depend"
+   echo "configure: warning: '$JAVAC -d . $srcdir/mk/confTest.java' failed,
+so we can't figure out whether to use -depend or -Xdepend.
+Defaulting to $JFLAGS" 1>&2;
+fi
+
+
+
+#--------------------------------------------------------------------
+#	Figure out which separator to use for CLASSPATH
+#	So much for write once, run everywhere.
+#--------------------------------------------------------------------
+echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
+echo "configure:783: checking for the proper CLASSPATH separator" >&5
+case "`uname -s`" in
+    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
+    *) CLASSPATHSEPARATOR=":";;
+esac
+echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where javacc is;  if
+#	not, check to see if $PTOLEMY/vendors/sun/JavaCC exists
+#       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
 echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:744: checking for JavaCC" >&5
+echo "configure:797: checking for JavaCC" >&5
 # Check whether --with-java or --without-java was given.
 if test "${with_java+set}" = set; then
   withval="$with_java"
@@ -761,7 +814,7 @@ so we search for the jjtree command." 1>&2
 	# Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:765: checking for $ac_word" >&5
+echo "configure:818: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -800,7 +853,7 @@ fi
     if test -d "$JAVACC_DIR"; then
 	echo "$ac_t""$JAVACC_DIR" 1>&6
 	echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:804: checking for jjtree" >&5
+echo "configure:857: checking for jjtree" >&5
  	if test -x "$JAVACC_DIR/bin/jjtree"; then
 	    # Note that we don't substitute in the $(JAVACC_DIR) here
 	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -809,7 +862,7 @@ echo "configure:804: checking for jjtree" >&5
 	    echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	fi    
 	echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:813: checking for javacc" >&5
+echo "configure:866: checking for javacc" >&5
  	if test -x "$JAVACC_DIR/bin/javacc"; then
 	    # Note that we don't substitute in the $(JAVACC_DIR) here
 	    JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -841,13 +894,13 @@ fi
 
 if test "$JTCLSH" != "jtclsh"; then
     echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
-echo "configure:845: checking for jtclsh" >&5
+echo "configure:898: checking for jtclsh" >&5
     echo "$ac_t""$JTCLSH]" 1>&6;
 else
     # Extract the first word of "jtclsh", so it can be a program name with args.
 set dummy jtclsh; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:851: checking for $ac_word" >&5
+echo "configure:904: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JTCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -884,20 +937,6 @@ See http://www.scriptics.com/java for Tcl Blend sources and binaries." 1>&2
 fi 
 
 
-#--------------------------------------------------------------------
-#	Figure out which separator to use for CLASSPATH
-#	So much for write once, run everywhere.
-#--------------------------------------------------------------------
-echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:893: checking for the proper CLASSPATH separator" >&5
-case "`uname -s`" in
-    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
-    *) CLASSPATHSEPARATOR=":";;
-esac
-echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
-
-
-
 # Keep these substitutions alphabetical, with a description
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
@@ -907,6 +946,9 @@ echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
+
+
+# Arguments to pass to javac.  Usually something like '-g -depend'
 
 
 # jtclsh script, used for test suites
@@ -1071,6 +1113,7 @@ s%@JTCLSH@%$JTCLSH%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
 s%@JAVACC@%$JAVACC%g
 s%@JAVACC_DIR@%$JAVACC_DIR%g
+s%@JFLAGS@%$JFLAGS%g
 s%@JTREE@%$JTREE%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
