@@ -53,8 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-import ptolemy.actor.util.ConstVariableModelAnalysis;
-
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
