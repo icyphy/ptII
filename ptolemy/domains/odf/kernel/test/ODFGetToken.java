@@ -66,12 +66,6 @@ public class ODFGetToken extends ODFGet {
 
     /**
      */
-    public double getLastTime() {
-	return _lastTime;
-    }
-
-    /**
-     */
     public double getRcvrTime(int cntr) {
 	return _rcvrTimes[cntr];
     }
@@ -103,8 +97,6 @@ public class ODFGetToken extends ODFGet {
 	                ODFThread thread = rcvr.getThread();
 			_threadTimes[cnt] = thread.getCurrentTime();
 		    }
-		    System.out.println(getName()+": set last time; cnt = "+cnt);
-		    _lastTime = rcvr.getLastTime();
 		}
 	    }
 	    cnt++;
@@ -118,5 +110,5 @@ public class ODFGetToken extends ODFGet {
     private Token[] _tokens = null;
     private double[] _threadTimes = null;
     private double[] _rcvrTimes = null;
-    private double _lastTime;
+    
 }
