@@ -1,4 +1,4 @@
-/* A  two actor simulation executing a simple get and put rendezvous.
+/* A three actor simulation with a sink and a source seperated by a buffer.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import ptolemy.domains.csp.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// ThreeActor Demo
 /** 
-Source - Transfer - Sink
+Source - Buffer - Sink
 @author Neil Smyth
 @version $Id$
 @see classname
@@ -64,14 +64,14 @@ public class ThreeActor {
     public static void main(String[] args) {
         try {
             CompositeActor univ = new CompositeActor();
-            univ.setName( "Universe");
+            univ.setName( "Buffer demo");
             Manager manager = new Manager("Manager");
             CSPDirector localdir = new CSPDirector("Local Director");
             univ.setManager(manager);
             univ.setDirector(localdir);
 
 	    CSPSource source = new CSPSource(univ, "Source");
-	    CSPTransfer middle = new CSPTransfer(univ, "Transfer");
+	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
             CSPSink sink = new CSPSink(univ, "Sink");
             
             IOPort out1 = source.output;
@@ -83,7 +83,7 @@ public class ThreeActor {
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getManager().go(1);
+            univ.getManager().go();
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());
