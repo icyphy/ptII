@@ -83,6 +83,13 @@ public class DEProcessor extends TypedCompositeActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        // create and initialize the parameters.
+        _minimumServiceTime = 
+            new Parameter(this, "MST", new DoubleToken(minimumServiceTime));
+        _interruptServiceTime = 
+            new Parameter(this, "IST", new DoubleToken(interruptServiceTime));
+        _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
+
         // create an output port
         output = new TypedIOPort(this, "output", false, true);
 
@@ -95,21 +102,36 @@ public class DEProcessor extends TypedCompositeActor {
         
         // create the actors.
         InterruptibleServer iServer = new InterruptibleServer(this, 
-                "InterruptibleServer", 
-                minimumServiceTime, 
-                interruptServiceTime);
-        DEPoisson poisson = new DEPoisson(this, "InterruptPoisson", new Token(), lambda);
+                "InterruptibleServer");
+        DEPoisson poisson = new DEPoisson(this, "InterruptPoisson");
 
         // connect the actors
         this.connect(input, iServer.input);
         this.connect(poisson.output, iServer.interrupt);
         this.connect(iServer.output, output);
 
-        // Set up the parameters.
-        _minimumServiceTime = (Parameter)iServer.getAttribute("Minimum Service Time");
-        _interruptServiceTime = (Parameter)iServer.getAttribute("Interrupt Service Time");
-        _lambda = (Parameter)poisson.getAttribute("lambda");
+        // get the inner parameters.
+        Parameter iServerMST = 
+            (Parameter)iServer.getAttribute("Minimum Service Time");
+        Parameter iServerIST = 
+            (Parameter)iServer.getAttribute("Interrupt Service Time");
+        Parameter poissonLambda = 
+            (Parameter)poisson.getAttribute("lambda");
         
+        // make inner parameters depend on outer.
+
+        iServerMST.setExpression(_minimumServiceTime.getName());
+        _minimumServiceTime.addParameterListener(iServerMST);
+        iServerMST.evaluate();
+
+        iServerIST.setExpression(_interruptServiceTime.getName());
+        _interruptServiceTime.addParameterListener(iServerIST);
+        iServerIST.evaluate();
+
+        poissonLambda.setExpression(_lambda.getName());
+        _lambda.addParameterListener(poissonLambda);
+        poissonLambda.evaluate();
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -146,18 +146,19 @@ public class InterruptibleServer extends DEActor {
                 }
             }
 
-            if (input.hasToken(0)) {
-                _tokenBeingServed = input.get(0);
-                _busyUntil = currentTime + minimumServiceTime;
-                if (DEBUG) {
-                    System.out.println("InterruptibleServer: Input at " + 
-                            "time " + currentTime + " .");
-                }
-            }
-
+            // process all the interrupts.
             while (interrupt.hasToken(0)) {
                 interrupt.get(0);
-                _busyUntil = currentTime + interruptServiceTime;
+
+                // due to these interrupts, it might become busy.
+                // If that's the case then add the time wrt to the _busyUntil
+                // value. Othewise add it wrt to the current time.
+                if (_busyUntil > currentTime) {
+                    _busyUntil += interruptServiceTime;
+                } else {   
+                    _busyUntil = currentTime + interruptServiceTime;
+                }
+
                 if (DEBUG) {
                     System.out.println("InterruptibleServer: Interrupted " + 
                             "while not busy at time " + 
@@ -166,6 +167,29 @@ public class InterruptibleServer extends DEActor {
                 }
                 
             }
+
+            // process input event after the interrupts.
+            if (input.hasToken(0)) {
+                _tokenBeingServed = input.get(0);
+                
+                // If due to the interrupts above, the _busyUntil has
+                // got incremented then add the time to that value.
+                // Otherwise, it will busy starting from currentTime processing
+                // the input event.
+                if (_busyUntil > currentTime) {
+                    _busyUntil += minimumServiceTime;
+                } else {
+                    _busyUntil = currentTime + minimumServiceTime;
+                }
+
+                if (DEBUG) {
+                    System.out.println("InterruptibleServer: Input at " + 
+                            "time " + currentTime + " .");
+                }
+                fireAt(_busyUntil);
+            }
+
+            
         }
     }
 
@@ -174,6 +198,9 @@ public class InterruptibleServer extends DEActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         input.allowPendingTokens(true);
+        while (input.hasToken(0)) {
+            input.get(0);
+        }
         _busyUntil = Double.NEGATIVE_INFINITY;
         _tokenBeingServed = null;
     }
