@@ -1,3 +1,5 @@
+package ptolemy.domains.de.demo.mems.demo;
+
 import ptolemy.domains.de.demo.mems.lib.*;
 import ptolemy.domains.de.demo.mems.gui.*;
 

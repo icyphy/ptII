@@ -34,22 +34,22 @@
 #
 
 # Create the top level Composite Actor
-set sys [java::new ptolemy.actor.CompositeActor]
+set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
+set exec [java::new ptolemy.actor.Manager]
+$sys setManager $exec
 
 # Build the system
-set mems1 [java::new ptolemy.domains.mems.lib.MEMSDevice $sys Device]
-set mems2 [java::new ptolemy.domains.mems.lib.MEMSDevice $sys Device]
-set mems3 [java::new ptolemy.domains.mems.lib.MEMSDevice $sys Device]
-set envr1 [java::new ptolemy.domains.mems.lib.MEMSEnvir_alpha $sys Enviro $mems1 0 0 0 74]
-set envr2 [java::new ptolemy.domains.mems.lib.MEMSEnvir $sys Enviro $mems2 7.0 7.0 0 69]
-set envr3 [java::new ptolemy.domains.mems.lib.MEMSEnvir $sys Enviro $mems3 8.0 8.0 0 69]
+set mems1 [java::new ptolemy.domains.de.demo.mems.lib.MEMSDevice $sys Device]
+set mems2 [java::new ptolemy.domains.de.demo.mems.lib.MEMSDevice $sys Device]
+set mems3 [java::new ptolemy.domains.de.demo.mems.lib.MEMSDevice $sys Device]
+set envr1 [java::new ptolemy.domains.de.demo.mems.lib.MEMSEnvir_alpha $sys Enviro $mems1 0 0 0 74]
+set envr2 [java::new ptolemy.domains.de.demo.mems.lib.MEMSEnvir $sys Enviro $mems2 7.0 7.0 0 69]
+set envr3 [java::new ptolemy.domains.de.demo.mems.lib.MEMSEnvir $sys Enviro $mems3 8.0 8.0 0 69]
 
 
 # Identify the ports
@@ -85,7 +85,7 @@ set r7 [$sys connect $envr1carrierMsgIO $envr2carrierMsgIO R7]
 $envr3carrierMsgIO link $r7
 
 $dir setStopTime 5.0
-$exec go
+$exec run
 
 
 

@@ -42,7 +42,6 @@ An actor containing methods that implements the functionality of
  MEMS sensors, processor, and message encoders.  The MEMSDevice will 
 communicate with another MEMSDevice via the MEMSEnvir actor.
 
-
 @author Allen Miu
 @version $Id$
 */
@@ -67,7 +66,7 @@ public class MEMSDevice extends MEMSActor {
 	//	sysIO = new IOPort(this, "sysIO", true, true);
 	_myAttrib = new MEMSDeviceAttrib(6.0);
 	_seenMsgRegister = new int[_myAttrib.getSeenMsgBufSize()];
-	myID = id;
+	_myID = id;
 	id++;
 	_recvTimeRemaining = 0;
 	Debug.log(0, this, "instance created");
@@ -75,8 +74,6 @@ public class MEMSDevice extends MEMSActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
 
     /** Schedules the next sampling event for all sensors and 
      *  processes pending tokens at the msgIO and sysIO ports
@@ -104,55 +101,55 @@ public class MEMSDevice extends MEMSActor {
      */
     public void fire() throws IllegalActionException {
 
-      curTime = getCurrentTime();      
+        curTime = getCurrentTime();      
 
-      /* fire due events */
-      fireDueEvents();
+        /* fire due events */
+        fireDueEvents();
       
-      /* check input and process any pending tokens */
-      try {
-	ObjectToken token = (ObjectToken) msgIO.get(0);
-	if (token.getValue() instanceof ProbeMsg) {
-	  Debug.log(1, this,
-		    "probe from MEMSEnvir received");
-	  processProbeMsg((ProbeMsg) token.getValue());
-	} else if (token.getValue() instanceof MEMSMsg) {
-	  Debug.log(1, this,
-		    "message from MEMSEnvir received");
-	  processMessage((MEMSMsg) token.getValue());
-	}
-      } catch (NoTokenException e) {
-	// No MEMS message received ... do nothing
-      }
+        /* check input and process any pending tokens */
+        try {
+            ObjectToken token = (ObjectToken) msgIO.get(0);
+            if (token.getValue() instanceof ProbeMsg) {
+                Debug.log(1, this,
+                        "probe from MEMSEnvir received");
+                processProbeMsg((ProbeMsg) token.getValue());
+            } else if (token.getValue() instanceof MEMSMsg) {
+                Debug.log(1, this,
+                        "message from MEMSEnvir received");
+                processMessage((MEMSMsg) token.getValue());
+            }
+        } catch (NoTokenException e) {
+            // No MEMS message received ... do nothing
+        }
       
-      /* check for sensor inputs */
-      /*
-      try {
-	ObjectToken sensorToken = (ObjectToken) sysIO.get(0);
-	log("probe from MEMSEnvir received");
-	processProbe((Probe) sensorToken.getValue());
-      } catch (NoTokenException e) {
-	// no state value update, ignore
-      }
-      */
+        /* check for sensor inputs */
+        /*
+          try {
+          ObjectToken sensorToken = (ObjectToken) sysIO.get(0);
+          log("probe from MEMSEnvir received");
+          processProbe((Probe) sensorToken.getValue());
+          } catch (NoTokenException e) {
+          // no state value update, ignore
+          }
+        */
 
-      /* check for message inputs */
-      /*
-      try {
-	ObjectToken msgToken = (ObjectToken) msgIO.get(0);
-	log("message from MEMSEnvir received");
-	processMessage((MEMSMsg) msgToken.getValue());
-      } catch (NoTokenException e) {
-	// No MEMS message received ... do nothing
-      }
-      */
-      fireAfterDelay(_myAttrib.getClockPeriod());
+        /* check for message inputs */
+        /*
+          try {
+          ObjectToken msgToken = (ObjectToken) msgIO.get(0);
+          log("message from MEMSEnvir received");
+          processMessage((MEMSMsg) msgToken.getValue());
+          } catch (NoTokenException e) {
+          // No MEMS message received ... do nothing
+          }
+        */
+        fireAfterDelay(_myAttrib.getClockPeriod());
     }
 
     /** Returns the MEMSDeviceAttrib of this Device
      */
     public MEMSDeviceAttrib getAttrib() {
-      return _myAttrib;
+        return _myAttrib;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -170,18 +167,18 @@ public class MEMSDevice extends MEMSActor {
      *  probeTemperature()
      */
     protected void fireDueEvents() throws IllegalActionException {
-      /* logic to prevent handlers being called twice at the current time */
-      if(prevFireTime < curTime) {
-	prevFireTime = curTime;
-	if(_xferTimeRemaining != 0) {
-	  _xferTimeRemaining--;
-	}
-	if(_recvTimeRemaining != 0) {
-	  _recvTimeRemaining--;
-	}
-	/* register handlers below */
-	probeTemperature();
-      }
+        /* logic to prevent handlers being called twice at the current time */
+        if(prevFireTime < curTime) {
+            prevFireTime = curTime;
+            if(_xferTimeRemaining != 0) {
+                _xferTimeRemaining--;
+            }
+            if(_recvTimeRemaining != 0) {
+                _recvTimeRemaining--;
+            }
+            /* register handlers below */
+            probeTemperature();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,15 +192,15 @@ public class MEMSDevice extends MEMSActor {
      *  @param probe - probe to be processed
      */
     private void processProbeMsg(ProbeMsg probe) {
-      if (probe.isThermoProbeMsg()) {
-	_curTemperature = ((thermoProbeMsg) probe).getTemperature();
-	Debug.log(2, this, 
-		  "current temperature updated (temp = " +  
-		  _curTemperature + ")");
-      }
-      if (probe.isMessageProbeMsg()) {
-	_recvTimeRemaining = ((messageProbeMsg) probe).getTimeRemaining();
-      }
+        if (probe.isThermoProbeMsg()) {
+            _curTemperature = ((thermoProbeMsg) probe).getTemperature();
+            Debug.log(2, this, 
+                    "current temperature updated (temp = " +  
+                    _curTemperature + ")");
+        }
+        if (probe.isMessageProbeMsg()) {
+            _recvTimeRemaining = ((messageProbeMsg) probe).getTimeRemaining();
+        }
     }
 
     /** Invokes the corresponding message handler according to message type.
@@ -211,22 +208,22 @@ public class MEMSDevice extends MEMSActor {
      *  @param message - message to be processed
      */
     private void processMessage(MEMSMsg message) throws 
-      IllegalActionException {
-      /* shut off receiver when transmitting */
-      if(_xferTimeRemaining != 0) {
-	return;
-      }
-      if(message.SID == getID()) {
-	Debug.log(2, this, 
-		  "source discarding the message sent out by itself");
-	return;
-      }
-      if(message.isThermoAlarm()) {
-        handleThermoAlarm((thermoAlarmMsg) message);
-      }
-      if(message.isGarbledMsg()) {
-	handleGarbledMsg((garbledMsg) message);
-      }
+            IllegalActionException {
+        /* shut off receiver when transmitting */
+        if(_xferTimeRemaining != 0) {
+            return;
+        }
+        if(message.SID == getID()) {
+            Debug.log(2, this, 
+                    "source discarding the message sent out by itself");
+            return;
+        }
+        if(message.isThermoAlarm()) {
+            handleThermoAlarm((thermoAlarmMsg) message);
+        }
+        if(message.isGarbledMsg()) {
+            handleGarbledMsg((garbledMsg) message);
+        }
     }
 
     /*------------------ Probe Event Methods --------------------------*/
@@ -243,15 +240,15 @@ public class MEMSDevice extends MEMSActor {
      *    Destination ID (DID) = ALL_NODES
      */
     private void probeTemperature() throws IllegalActionException {
-      int myid = getID();
-      if(_curTemperature > _myAttrib.getThermoAlarmThreshold()) {
-	thermoAlarmMsg newAlarm = new thermoAlarmMsg(myid, 
-						     myid,
-						     MEMSMsg.ALL_NODES);
-	_transmitMsg(newAlarm, _myAttrib.getProbeTempProcTime());
-	Debug.log(2, this, "thermoalarm" + 
-		  myid + " generated and broadcasted");
-      }
+        int myid = getID();
+        if(_curTemperature > _myAttrib.getThermoAlarmThreshold()) {
+            thermoAlarmMsg newAlarm = new thermoAlarmMsg(myid, 
+                    myid,
+                    MEMSMsg.ALL_NODES);
+            _transmitMsg(newAlarm, _myAttrib.getProbeTempProcTime());
+            Debug.log(2, this, "thermoalarm" + 
+                    myid + " generated and broadcasted");
+        }
     }
     
     /*------------------ Message Handlers -----------------------------*/
@@ -268,26 +265,26 @@ public class MEMSDevice extends MEMSActor {
      *  msgOut port.  Otherwise, ignore.
      */
     private void handleThermoAlarm(thermoAlarmMsg thalrm) throws
-      IllegalActionException {
-      if (!_seenBefore(thalrm)) {
-	_registerMsg(thalrm);
-	thalrm.ASID = getID();
-	_transmitMsg(thalrm, _myAttrib.getThermoAlarmProcTime());
-	Debug.log(2, this,
-		  "thermoAlarm" + thalrm.getID() + 
-		  " handled and forwarded");
-      } else {
-	Debug.log(2, this, 
-		  "thermoAlarm" + thalrm.getID() + 
-		  " seen before, discard");
-      }
+            IllegalActionException {
+        if (!_seenBefore(thalrm)) {
+            _registerMsg(thalrm);
+            thalrm.ASID = getID();
+            _transmitMsg(thalrm, _myAttrib.getThermoAlarmProcTime());
+            Debug.log(2, this,
+                    "thermoAlarm" + thalrm.getID() + 
+                    " handled and forwarded");
+        } else {
+            Debug.log(2, this, 
+                    "thermoAlarm" + thalrm.getID() + 
+                    " seen before, discard");
+        }
     }
 
     private void handleGarbledMsg(garbledMsg msg) {
-      Debug.log(1,this, "!!! Received A Garbled Message, discard !!!");
-      /* jtc - please insert the neces. method calls to indicate
-	 a message has been garbled for this particular MEMSDevice (node). 
-      */
+        Debug.log(1,this, "!!! Received A Garbled Message, discard !!!");
+        /* jtc - please insert the neces. method calls to indicate
+           a message has been garbled for this particular MEMSDevice (node). 
+        */
     }
 
     /*----------------- Helper/Misc Methods --------------------------*/
@@ -297,15 +294,15 @@ public class MEMSDevice extends MEMSActor {
      *  @param message - message to be tested
      */
     private boolean _seenBefore(MEMSMsg message) {
-      int msgID = message.getID();
-      for(int c = 0; c < _seenMsgEndPos; c++) {
-	if (_seenMsgRegister[c] == msgID)
-	  return true;
-      }
-      _seenMsgRegister[_seenMsgEndPos] = msgID;
-      _seenMsgEndPos++;
-      _seenMsgEndPos%=_seenMsgRegister.length;
-      return false;
+        int msgID = message.getID();
+        for(int c = 0; c < _seenMsgEndPos; c++) {
+            if (_seenMsgRegister[c] == msgID)
+                return true;
+        }
+        _seenMsgRegister[_seenMsgEndPos] = msgID;
+        _seenMsgEndPos++;
+        _seenMsgEndPos%=_seenMsgRegister.length;
+        return false;
     }
 
     /** Registers message into the seen message list.  If the list is
@@ -315,11 +312,11 @@ public class MEMSDevice extends MEMSActor {
      *  @param message - message to be registered
      */
     private void _registerMsg(MEMSMsg message) {
-      if (_seenMsgEndPos == _seenMsgRegister.length) {
-	_seenMsgEndPos = 0;
-      }
-      _seenMsgRegister[_seenMsgEndPos] = message.getID();
-      _seenMsgEndPos++;
+        if (_seenMsgEndPos == _seenMsgRegister.length) {
+            _seenMsgEndPos = 0;
+        }
+        _seenMsgRegister[_seenMsgEndPos] = message.getID();
+        _seenMsgEndPos++;
     }
 
     /** Broadcasts MEMSMsg using the msgIO port after a specified delay.
@@ -328,20 +325,20 @@ public class MEMSDevice extends MEMSActor {
      *  @param delay   - delay
      */
     private void _transmitMsg(MEMSMsg message, double delay) 
-      throws IllegalActionException {
-      /* shut off transmitter when receiving */
-      if (_recvTimeRemaining != 0) {
-	return;
-      }
-      /* drop transmission request if already transmitting */
-      if (_xferTimeRemaining != 0) {
-	return;
-      }
+            throws IllegalActionException {
+        /* shut off transmitter when receiving */
+        if (_recvTimeRemaining != 0) {
+            return;
+        }
+        /* drop transmission request if already transmitting */
+        if (_xferTimeRemaining != 0) {
+            return;
+        }
       
-      //FIXME: bandwidth for MEMSMsg instead of MEMSEnvirMsg...
-      _xferTimeRemaining = message.getSize() + (int) delay;
+        //FIXME: bandwidth for MEMSMsg instead of MEMSEnvirMsg...
+        _xferTimeRemaining = message.getSize() + (int) delay;
 
-      msgIO.broadcast(new ObjectToken(message), delay);
+        msgIO.broadcast(new ObjectToken(message), delay);
     }
 
     ///////////////////////////////////////////////////////////////////

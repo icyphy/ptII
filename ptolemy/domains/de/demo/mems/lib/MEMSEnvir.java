@@ -1,26 +1,5 @@
 /* A MEMS actor that represents the physical environment containing
-   a MEMS device.  It serves mainly two purposes:  
-     1) Defines the geographic location (via three dimensional coordinates)
-        and the local enviroment conditions of the associated MEMSDevice.
-     2) Acts as a "medium" for transferring MEMSMsg among the MEMSDevices.
-
-   Hence, a typical MEMSEnvir does the following things:
-     1) Informs the MEMS device of any changes in the local 
-     environmental (eg temperature)
-     2) Appends local environment values (eg coordinates) to
-     outgoing MEMSMsg.
-     3) Filters/processes the MEMSMsg by using the appended 
-        information in the MEMSMsg.
-
-   Points 2) and 3) of the above is designed to simulate the environmental
-   effects on the communication between any pair of MEMSDevices.  For
-   example, when Device B recieves a message from Device A, the MEMSEnvir
-   of Device B will compare its own coordinate values with Device A's 
-   coordinate values contained in the message header, and decide
-   whether Device A is within range.  If not, the MEMSEnvir of 
-   Device B will discard the message.  Else, it will "unwrap" the
-   environmental information from the message and pass the original
-   MEMSMsg sent by Device A to Device B.
+   a MEMS device.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -118,7 +97,7 @@ public class MEMSEnvir extends MEMSActor {
 	// draw location of memsenvir
 	plot.addPoint(x,y);
 
-	myID = mems.getID();
+	_myID = mems.getID();
 	_debugHeader = "MEMSEnvir";
         deviceMsgIO = new TypedIOPort(this, "deviceMsgIO", true, true);
         deviceMsgIO.setDeclaredType(ObjectToken.class);
