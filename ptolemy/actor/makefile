@@ -67,6 +67,7 @@ JSRCS = \
 	CompositeActor.java \
 	ControlledActor.java \
 	DataComputingInit.java \
+	Executable.java \
 	FIFOQueue.java \
 	FlowPort.java \
 	IOPort.java \
