@@ -42,10 +42,10 @@ import ptolemy.lang.java.nodetypes.*;
 import java.io.IOException;
 
 /** A class containing declarations created by the compiler of
- *  of known fields and methods in the ptolemy.actor and ptolemy.data
- *  packages.
- *
- *  @author Jeff Tsay
+of known fields and methods in the ptolemy.actor and ptolemy.data
+packages.
+@author Jeff Tsay
+@version $Id$
  */
 public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
