@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
+import ptolemy.gui.GUIStringUtilities;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -177,7 +178,8 @@ public class Tableau extends CompositeEntity {
         if (_title == null) {
             Effigy effigy = (Effigy)getContainer();
 	    // Abbreviate the title to 80 chars for use on the Mac.
-            return Top.abbreviate(effigy.identifier.getExpression());
+            return GUIStringUtilities.abbreviate(
+                    effigy.identifier.getExpression());
         } else {
             return _title;
         }
@@ -279,7 +281,8 @@ public class Tableau extends CompositeEntity {
                         (Tableau.this).setContainer(null);
                     } catch (KernelException ex) {
                         try {
-                            MessageHandler.warning("Cannot remove tableau: " + ex);
+                            MessageHandler.warning("Cannot remove tableau: "
+                                    + ex);
                         } catch (CancelException exception) {}
                     }
                 }
@@ -304,7 +307,7 @@ public class Tableau extends CompositeEntity {
      *  @param title The title to put on the window.
      */
     public void setTitle(String title) {
-        _title = Top.abbreviate(title);
+        _title = GUIStringUtilities.abbreviate(title);
         if (_frame != null) {
             _frame.setTitle(getTitle());
         }
