@@ -95,7 +95,7 @@ public class VectorDisassembler extends Transformer {
      *  the input token has more than one column.
      */
     public void fire() throws IllegalActionException {
-     
+
 	if (input.hasToken(0)) {
 	    DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
 
