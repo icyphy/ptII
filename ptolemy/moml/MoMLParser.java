@@ -435,7 +435,15 @@ public class MoMLParser extends HandlerBase {
      */
     public void error(String message, String sysid,
             int line, int column) throws XmlException {
-        throw new XmlException(message, _currentExternalEntity(), line, column);
+	String currentExternalEntity = "";
+	try {
+	    // Error message methods should be very careful to handle
+	    // exceptions while trying to provide the user with information
+	    currentExternalEntity = _currentExternalEntity();
+	} catch (java.util.EmptyStackException emptyStack) {
+	}
+
+        throw new XmlException(message, currentExternalEntity, line, column);
     }
 
     /** Get the top-level entity associated with this parser, or null if none.
