@@ -136,13 +136,15 @@ public class IconDemo {
         for (Enumeration i = constIcon.graphicElements(); i.hasMoreElements(); ) {
             GraphicElement ge = (GraphicElement) i.nextElement();
             String type = ge.getType();
+	    String content = ge.getContent();
             HashMap map = new HashMap();
             for (Enumeration j = ge.attributeNames(); j.hasMoreElements(); ) {
                 String key = (String) j.nextElement();
                 String val = (String) ge.getAttribute(key);
                 map.put(key,val);
             }
-            PaintedObject po = GraphicsParser.createPaintedObject(type, map);
+            PaintedObject po = 
+		GraphicsParser.createPaintedObject(type, map, content);
             graphic.add(po);
         }
 
