@@ -121,7 +121,7 @@ public class BrowserLauncher {
             System.out.println("Delaying exit for 10 seconds because we"
                     + "may have copied a jar: file");
             try {
-                Thread.currentThread().sleep(10000);
+                Thread.sleep(10000);
             }
             catch (InterruptedException e) {
             }
@@ -821,7 +821,6 @@ public class BrowserLauncher {
                         }
                     }
                 } catch (IllegalArgumentException iare) {
-                    browser = browser;
                     errorMessage = iare.getMessage();
                     return null;
                 } catch (IllegalAccessException iae) {
