@@ -33,15 +33,10 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// Nameable
 /** 
-Interface for objects with a name and a container.
-A simple name is an arbitrary string.
-In addition, the interface supports a "full name" which in implementation
-should identify both the container and the individual object.
-
-This interface is separate from the primary implementation in the package,
-NamedObj, so that arbitrary classes not derived from NamedObj can
-implement it.  In particular, this permits construction of a NamedList
-of arbitrary objects.
+Interface for objects with a name and a container. A simple name is an 
+arbitrary string. In addition, the interface supports a "full name" which 
+in implementation should identify both the container and the individual 
+object.
 
 @author Edward A. Lee
 @version $Id$
