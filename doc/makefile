@@ -56,6 +56,7 @@ ALLJSRCS = 		collections \
 			ptolemy.kernel.event \
 			ptolemy.kernel.util \
 			ptolemy.actor \
+			ptolemy.actor.event \
 			ptolemy.actor.lib \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
@@ -87,6 +88,7 @@ ALLJSRCS = 		collections \
 			ptolemy.media
 
 all: suball codeDoc/tree.html
+install: all
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../collections/*.java \
@@ -95,6 +97,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
+			../ptolemy/actor/event/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
