@@ -31,8 +31,12 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.gui.CloseListener;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -115,7 +119,10 @@ public class PtolemyQuery extends Query
      *  and the attribute will be attached to the entry, so that if the
      *  attribute is updated, then the entry is updated. If the attribute
      *  contains an instance of ParameterEditorStyle, then defer to
-     *  the style to create the entry, otherwise just create a new line entry.
+     *  the style to create the entry, otherwise just create a default entry.
+     *  The style used in a default entry depends on the class of the
+     *  attribute and on its declared type, but defaults to a one-line
+     *  entry if there is no obviously better style.
      *  Only the first style that is found is used to create an entry.
      *  @param attribute The attribute to create an entry for.
      */
@@ -143,6 +150,43 @@ public class PtolemyQuery extends Query
                 }
             }
 	}
+
+        if (!foundStyle) {
+            // NOTE: Infer the style.
+            // This is a regrettable approach, but it keeps
+            // dependence on UI issues out of actor definitions.
+            // Also, the style code is duplicated here and in the
+            // style attributes. However, it won't work to create
+            // a style attribute here, because we don't necessarily
+            // have write access to the workspace.
+            String name = attribute.getName();
+            try{
+                if (attribute instanceof Variable) {
+                    Type declaredType = ((Variable)attribute).getDeclaredType();
+                    Token current = ((Variable)attribute).getToken();
+                    if (declaredType == BaseType.BOOLEAN) {
+                        addCheckBox(name,
+                                name,
+                                ((BooleanToken)current).booleanValue());
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    }
+                    // FIXME: Other types?
+                } else if (attribute instanceof FileAttribute) {
+                    // FIXME: Third argument is the directory.
+                    addFileChooser(name, name, attribute.getExpression(), "");
+                    attachParameter(attribute, name);
+                    foundStyle = true;
+                }
+                // FIXME: Other attribute classes?
+                // FIXME: Create a ChoiceAttribute create a style
+                // similar to what's in addEntry of actor.gui.style.ChoiceStyle.
+                // FIXME: Similarly for EditableChoiceStyle and TextStyle.
+            } catch (IllegalActionException ex) {
+                // Ignore and create a line entry.
+            }
+        }
+
         String defaultValue = attribute.getExpression();
         if (defaultValue == null) defaultValue = "";
 	if (!(foundStyle)) {
@@ -277,7 +321,7 @@ public class PtolemyQuery extends Query
                                // specially.  This is too bad...
                                if (attribute instanceof Variable) {
 
-                               // FIXME: Will this ever happen?  A
+                               // Will this ever happen?  A
                                // Variable that is not a NamedObj???
                                // Retrieve the token to force
                                // evaluation, so as to check the
