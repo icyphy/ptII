@@ -92,8 +92,8 @@ affect the model time through delays. Thus time is centralized
 in that it is advanced by the director controlling the process 
 represented by this actor.
 <p>
-A process can also choose to delay itself its execution until the 
-next time a deadlock occurs by calling waitForDeadlock(). The process 
+A process can also choose to delay its execution until the 
+next occasion a deadlock occurs by calling waitForDeadlock(). The process 
 resumes at the same model time at which it delayed. This is useful 
 if a process wishes to delay itself until some changes to the 
 topology have been carried out.
