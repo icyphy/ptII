@@ -308,6 +308,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			if (toplevel != null) {
 			    effigy.setModel(toplevel);
 
+			    // A MoMLFilter may have modified the model
+			    // as it was being parsed.
+			    effigy.setModified(MoMLParser.isModified());
+                            // The effigy will handle saving the modified
+                            // moml for us, so MoMLParser need
+                            // not care anymore.
+                            MoMLParser.setModified(false);
+
 			    // Identify the URL from which the model was read
 			    // by inserting an attribute into both the model
 			    // and the effigy.
