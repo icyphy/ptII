@@ -188,48 +188,6 @@ public class KernelMain {
             throws IllegalActionException, NameDuplicationException {
 	_toplevel = toplevel;
 
-	// While we are here, make sure that we are using JDK1.3, not
-	// JDK1.4
-	String javaSpecificationVersion =
-	    System.getProperty("java.specification.version");
-	if (javaSpecificationVersion == null) {
-	    System.err.println("Warning: could not read "
-                    + "'java.specification.version' property. "
-                    + "Soot work best with JDK1.3.1");
-	} else {
-	    VersionAttribute javaSpecificationVersionAttribute =
-		new VersionAttribute(javaSpecificationVersion);
-	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
-		System.err.println("Warning, Soot 1.2.3 may not work with Java specification '"
-                        + javaSpecificationVersion
-                        + "'. You may need to patch soot and compile"
-                        + "Ptolemy II with javac -target 1.1 ...");
-	    }
-	}
-
-
-	String javaVersion =
-	    System.getProperty("java.version");
-	if (javaSpecificationVersion == null) {
-	    System.err.println("Warning: could not read "
-                    + "'java.version' property. "
-                    + "Soot works best with JDK1.3.1");
-	} else {
-	    VersionAttribute javaVersionAttribute =
-		new VersionAttribute(javaVersion);
-	    if ( javaVersionAttribute
-                    .compareTo(new VersionAttribute("1.3.1")) < 0) {
-		System.err.println("Warning: deep codegen works best with "
-                        + "JVMS that have a "
-                        + " java.version > 1.3.0. "
-                        + " java.version was '"
-                        + javaVersion + "'."
-                        + "The problem is that "
-                        + "actor.lib.auto.MathFunction3 will run "
-                        + "forever and not terminate");
-	    }
-	}
-
 	// If the name of the model is the empty string, change it to
 	// the basename of the file.
 	if (_toplevel.getName().length() == 0) {
