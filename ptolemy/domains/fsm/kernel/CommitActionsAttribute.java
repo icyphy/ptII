@@ -105,7 +105,7 @@ to variables and parameters contained by the FSM actor.
 @see FSMActor
 */
 public class CommitActionsAttribute
-        extends AbstractActionsAttribute implements CommitAction {
+    extends AbstractActionsAttribute implements CommitAction {
 
     /** Construct an action with the given name contained
      *  by the specified transition. The <i>transition</i> argument must not
@@ -202,7 +202,7 @@ public class CommitActionsAttribute
                         }
                     } catch (NoRoomException ex) {
                         throw new IllegalActionException(this,
-                        "Cannot complete action: " + ex.getMessage());
+                                "Cannot complete action: " + ex.getMessage());
                     } catch (UnknownResultException ex) {
                         // Produce no output.
                     }
@@ -243,12 +243,12 @@ public class CommitActionsAttribute
         Transition transition = (Transition)getContainer();
         if (transition == null) {
             throw new IllegalActionException(this,
-            "Action has no container transition.");
+                    "Action has no container transition.");
         }
         Entity fsm = (Entity)transition.getContainer();
         if (fsm == null) {
             throw new IllegalActionException(this, transition,
-            "Transition has no container.");
+                    "Transition has no container.");
         }
         IOPort port = (IOPort)fsm.getPort(name);
         if (port == null) {
@@ -266,10 +266,10 @@ public class CommitActionsAttribute
                     Nameable fsmContainer = fsm.getContainer();
                     if (fsmContainer instanceof CompositeEntity) {
                         Entity refinement = ((CompositeEntity)fsmContainer)
-                                .getEntity(refinementName);
+                            .getEntity(refinementName);
                         if (refinement != null) {
                             Attribute entry
-                                    = refinement.getAttribute(entryName);
+                                = refinement.getAttribute(entryName);
                             if (entry instanceof Variable) {
                                 return entry;
                             }
@@ -277,22 +277,22 @@ public class CommitActionsAttribute
                     }
                 }
                 throw new IllegalActionException(fsm, this,
-                "Cannot find port or variable with the name: " + name);
+                        "Cannot find port or variable with the name: " + name);
             } else {
                 if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(fsm, this,
-                    "The attribute with name \""
-                    + name
-                    + "\" is not an "
-                    + "instance of Variable.");
+                            "The attribute with name \""
+                            + name
+                            + "\" is not an "
+                            + "instance of Variable.");
                 }
                 return variable;
             }
         } else {
             if (!port.isOutput()) {
                 throw new IllegalActionException(fsm, this,
-                "The port is not an output port: "
-                + name);
+                        "The port is not an output port: "
+                        + name);
             }
             return port;
         }

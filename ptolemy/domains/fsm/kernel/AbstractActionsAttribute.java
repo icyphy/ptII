@@ -135,11 +135,11 @@ public abstract class AbstractActionsAttribute extends Action {
             throws IllegalActionException {
         Integer integer = (Integer)_numbers.get(
                 _destinationNames.indexOf(name));
-       if (integer == null) {
-           throw new IllegalActionException(
-                   "No channel was specified for " + name);
-       }
-       return integer.intValue();
+        if (integer == null) {
+            throw new IllegalActionException(
+                    "No channel was specified for " + name);
+        }
+        return integer.intValue();
     }
 
     /** Return the destination object referred to by the given name.
@@ -199,7 +199,7 @@ public abstract class AbstractActionsAttribute extends Action {
         // This is important for InterfaceAutomata which extend from
         // this class.
         if (expression == null ||
-            expression.trim().equals("")) return;
+                expression.trim().equals("")) return;
 
         // Initialize the lists that store the commands to be executed.
         _destinationNames = new LinkedList();
@@ -214,7 +214,7 @@ public abstract class AbstractActionsAttribute extends Action {
         PtParser parser = new PtParser();
         Map map = parser.generateAssignmentMap(expression);
         for (Iterator names = map.keySet().iterator();
-            names.hasNext();) {
+             names.hasNext();) {
             String name = (String)names.next();
             ASTPtAssignmentNode node = (ASTPtAssignmentNode)map.get(name);
 
