@@ -304,16 +304,19 @@ public class SketchedSource extends Source
     // If the plot is null, return without doing anything.
     private void _setInitialTrace() throws IllegalActionException {
         if (plot == null) return;
-        int set = ((IntToken)dataset.getToken()).intValue();
-        int len = ((IntToken)length.getToken()).intValue();
+        int datasetValue = ((IntToken)dataset.getToken()).intValue();
+        int lengthValue = ((IntToken)length.getToken()).intValue();
         // If the values haven't changed, return.
-        if (set == _previousSet && len == _previousLen) return;
-        _previousSet = set;
-        _previousLen = len;
-        plot.clear(set);
+        if (datasetValue == _previousDatasetValue
+                && lengthValue == _previousLengthValue) {
+            return;
+        }
+        _previousDatasetValue = datasetValue;
+        _previousLengthValue = lengthValue;
+        plot.clear(datasetValue);
         boolean connected = false;
-        for(int i = 0; i < len; i++) {
-            plot.addPoint(set, (double)i, 0.0, connected);
+        for(int i = 0; i < lengthValue; i++) {
+            plot.addPoint(datasetValue, (double)i, 0.0, connected);
             connected = true;
         }
         plot.repaint();
@@ -336,10 +339,10 @@ public class SketchedSource extends Source
     private boolean _placeCalled = false;
 
     // Previous value of dataset parameter.
-    private int _previousSet;
+    private int _previousDatasetValue;
 
     // Previous value of length parameter.
-    private int _previousLen;
+    private int _previousLengthValue;
 
     /** Zero token. */
     private DoubleToken _zero = new DoubleToken(0.0);
