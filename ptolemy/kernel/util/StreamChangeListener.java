@@ -30,7 +30,9 @@
 
 package ptolemy.kernel.util;
 
-import java.io.*;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// StreamChangeListener
