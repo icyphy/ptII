@@ -137,8 +137,8 @@ public class ActorRecursion extends TypedCompositeActor {
             // has been guaranteed during initialization.
             ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(true);
             ((DDFDirector)getDirector()).setTypeResolutionFlag(true);
-          
-            try { 
+
+            try {
                 _cloneRecursionActor();
             } catch (CloneNotSupportedException ex) {
                 throw new IllegalActionException(this, "cannot clone.");
@@ -155,7 +155,7 @@ public class ActorRecursion extends TypedCompositeActor {
             } catch (NameDuplicationException ex) {
                 //should not happen.
                 throw new InternalErrorException(this, ex, null);
-            } 
+            }
         } finally {
             ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(false);
         }
@@ -236,9 +236,9 @@ public class ActorRecursion extends TypedCompositeActor {
             throw new IllegalActionException(this, "The executive Director " +
                     "must be DDFDirector.");
         }
-        if (_recursionActor.inputPortList().size() 
+        if (_recursionActor.inputPortList().size()
                 != inputPortList().size()
-                || 
+                ||
                 _recursionActor.outputPortList().size()
                 != outputPortList().size()) {
             throw new IllegalActionException(this, "The recursionActor " +
@@ -288,7 +288,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If the CompositeActor cannot
      *   be cloned.
      */
-    private void _cloneRecursionActor() 
+    private void _cloneRecursionActor()
             throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
@@ -389,7 +389,7 @@ public class ActorRecursion extends TypedCompositeActor {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (farReceivers[i] != null) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
-                        SDFReceiver farReceiver 
+                        SDFReceiver farReceiver
                             = (SDFReceiver)farReceivers[i][j];
                         IOPort port = farReceiver.getContainer();
 
@@ -425,18 +425,18 @@ public class ActorRecursion extends TypedCompositeActor {
                         if (rate != null) {
                             Token token = rate.getToken();
                             if (token instanceof ArrayToken) {
-                                Token[] tokens 
+                                Token[] tokens
                                     = ((ArrayToken)token).arrayValue();
                                 // Scan the contained receivers of the remote
                                 // port to find the channel index.
-                                Receiver[][] portReceivers 
+                                Receiver[][] portReceivers
                                     = port.getReceivers();
                                 int channelIndex = 0;
                                 foundChannelIndex:
                                 for (int m = 0; m < portReceivers.length; m++)
-                                    for (int n = 0; 
+                                    for (int n = 0;
                                         n < portReceivers[m].length; n++)
-                                        if (farReceiver == 
+                                        if (farReceiver ==
                                             portReceivers[m][n]) {
                                             channelIndex = m;
                                             break foundChannelIndex;
@@ -456,7 +456,7 @@ public class ActorRecursion extends TypedCompositeActor {
                     }
                 }
             }
-            IntToken[] productionRateToken 
+            IntToken[] productionRateToken
                 = new IntToken[outputPort.getWidthInside()];
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);
@@ -471,7 +471,7 @@ public class ActorRecursion extends TypedCompositeActor {
             }
             if (tokenProductionRate == null) {
                 try {
-                    tokenProductionRate 
+                    tokenProductionRate
                         = new Parameter(outputPort, "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
