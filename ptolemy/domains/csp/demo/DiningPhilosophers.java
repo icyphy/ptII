@@ -62,7 +62,7 @@ one of the philosoph ers could make progress but does not because others
 always go first?
 <p>
 This demo uses an algorithm that lets each philosopher randomly chose
-which chopstick to pick up first, and all phiilosophers eat and think at the
+which chopstick to pick up first, and all philosophers eat and think at the
 same rates. This algorithm is fair as any time a chopstick is not being used
 and both philosophers try to use it, they both have an equal chance of
 succeeding. However this algorithm does not guarantee the absence of
@@ -105,7 +105,7 @@ public class DiningPhilosophers {
             CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
             CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
             CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
-            CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
+
             CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
 
             CSPChopstick f1 = new CSPChopstick(univ, "Chopstick1");
