@@ -66,8 +66,7 @@ and populates the menus and toolbar.  This overrides the base class
 to associate with the editor an instance of ActorEditorGraphController.
 
 @see ActorEditorGraphController
-@author  Steve Neuendorffer
-@contributor Edward A. Lee
+@author  Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

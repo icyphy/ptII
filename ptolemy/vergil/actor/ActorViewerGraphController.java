@@ -71,8 +71,7 @@ not provide interaction for adding or removing nodes; those are provided
 by a derived class.  Right-clicking on the background will
 create a context-sensitive menu for the graph.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

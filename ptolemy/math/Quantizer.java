@@ -46,14 +46,12 @@ The various truncate() methods return a fixed point value that is
 nearest to the specified number, but no greater in magnitude.
 All of these methods may introduce quantization errors and/or overflow.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
 @see FixPoint
 @see Precision
 */
-
 public class Quantizer {
 
     // The only constructor is private so that this class cannot

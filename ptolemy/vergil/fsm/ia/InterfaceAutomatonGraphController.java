@@ -52,8 +52,7 @@ import java.net.URL;
 A Graph Controller for interface automata models.  This controller adds
 the "Compose With" menu item to the Graph menu.
 
-@author Steve Neuendorffer, Yuhong Xiong
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

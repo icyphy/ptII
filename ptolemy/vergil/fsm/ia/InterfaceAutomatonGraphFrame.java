@@ -47,8 +47,7 @@ Given a composite entity and a tableau, it creates an editor and populates
 the menus and toolbar.  This overrides the base class to associate with the
 editor an instance of InterfaceAutomatonGraphController.
 
-@author  Steve Neuendorffer, Yuhong Xiong
-@contributor Edward A. Lee
+@author  Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

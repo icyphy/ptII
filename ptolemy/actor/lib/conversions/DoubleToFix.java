@@ -64,7 +64,7 @@ the total number of bits in the output is <i>m</i>, of which
 that an output has 16 bits, of which 2 bits represent the
 integer part.
 
-@author Bart Kienhuis, Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
 @see ptolemy.math.Quantizer
