@@ -450,7 +450,7 @@ public class IntegerMatrixMath {
     /** Return a new matrix that is constructed by computing the
      *  remainders between each element in the matrix and z.
      */
-    public static final int[][] moduloElements(final int[][] matrix,
+    public static final int[][] modulo(final int[][] matrix,
             final int z) {
         int[][] returnValue = new int[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
@@ -469,7 +469,7 @@ public class IntegerMatrixMath {
      */
     public static final int[][] modulo(final int[][] matrix1,
             final int[][] matrix2) {
-        _checkSameDimension("moduloElements", matrix1, matrix2);
+        _checkSameDimension("modulo", matrix1, matrix2);
 
         int[][] returnValue = new int[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {

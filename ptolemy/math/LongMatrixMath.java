@@ -455,7 +455,7 @@ public class LongMatrixMath {
     /** Return a new matrix that is constructed by computing the
      *  remainders between each element in the matrix and z.
      */
-    public static final long[][] moduloElements(final long[][] matrix,
+    public static final long[][] modulo(final long[][] matrix,
             final long z) {
         long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
@@ -474,7 +474,7 @@ public class LongMatrixMath {
      */
     public static final long[][] modulo(final long[][] matrix1,
             final long[][] matrix2) {
-        _checkSameDimension("moduloElements", matrix1, matrix2);
+        _checkSameDimension("modulo", matrix1, matrix2);
 
         long[][] returnValue = new long[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {

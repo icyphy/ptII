@@ -194,8 +194,8 @@ proc testMatrixMath {op types arraySize opSignature \
 		}
 	    }
 	    regsub -all {,} $stringResults {} stringAsList
-	    puts "got: $stringAsList"
-	    puts "expected: $expectedResults"
+	    #puts "got: $stringAsList"
+	    #puts "expected: $expectedResults"
 	    epsilonDiff $stringAsList $expectedResults
 	} {}
     }
@@ -730,14 +730,14 @@ testArrayMathArrayScalar modulo $types
 
 ######################################################################
 ####
-#  *MatrixMath Test out: xxx[][] moduloElements(xxx[][], xxx)
+#  *MatrixMath Test out: xxx[][] modulo(xxx[][], xxx)
 
 set types [list \
 	[list Integer int int {{{0 -1} {1 1}}} ] \
 	[list Long long long {{{0 -1} {1 1}}}]]
 
 
-testMatrixScalar moduloElements $types 2_2nonzero
+testMatrixScalar modulo $types 2_2nonzero
 
 
 ######################################################################
