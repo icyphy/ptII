@@ -384,44 +384,72 @@ remote1distjavadocs:
 JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
-	$(REMOTE1PTIIDIST)/ptolemy/data/ \
+	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
+	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/process \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/sched \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/util \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/corba \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/corba/util \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/solver \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/util \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dd3d/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dd3d/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/de/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pbo/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/javasound \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/test \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
+	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/lang \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
-	$(REMOTE1PTIIDIST)/ptolemy/schematic/util \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/graph \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy/fsm \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui
 
@@ -461,6 +489,11 @@ remote1distjsall:
 	sh $(PTIIADM)/bin/coveragerating $(PTII) \
 		$(JSOUTDIR)/coverage.html
 	-chmod -R a+r $(JSOUTDIR)
+
+# report directories that have java files in them, but are not
+# in JSALLDIRS
+jsalldirs_check:
+	@sh $(PTIIHOME)/adm/bin/jsalldirs_check $(REMOTE1PTIIDIST) $(JSALLDIRS)
 
 # Remove the JavaScope instrumentation
 remote1distjsrestore:
