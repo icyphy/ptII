@@ -145,7 +145,7 @@ public class HSController extends SCController {
 
         if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {   
             // Initialize the refinement.
-            Actor actor = currentRefinement();
+            // Actor actor = currentRefinement();
             if (actor == null) {
                 return true;
             }
