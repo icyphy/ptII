@@ -36,6 +36,20 @@ import java.io.File;
 //////////////////////////////////////////////////////////////////////////
 //// Rerun
 /**
+Run a MoML model over and over again.
+This class reads in a MoML file and executes it over and over again.
+The time and memory usage stats are printed on stdout.
+
+For example to run a model 100 times:
+<pre>
+cd $PTII/ptolemy/actor/gui/test
+java -classpath $PTII ptolemy.actor.gui.test.Rerun ../../lib/test/auto/Sinewave.xml
+</pre>
+
+To run the model 10 times:
+<pre>
+java -classpath $PTII ptolemy.actor.gui.test.Rerun 10 ../../lib/test/auto/Sinewave.xml
+<pre>
 
 @author Christopher Hylands Brooks
 @version $Id$
