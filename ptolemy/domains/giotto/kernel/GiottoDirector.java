@@ -337,9 +337,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
 	    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
-	    if (_unitTimeIncrement > elapsedTimeInSeconds) {
+	    if (_expectedNextIterationTime > elapsedTimeInSeconds) {
 		long timeToWait = (long)
-                    ((_unitTimeIncrement - elapsedTimeInSeconds) * 1000.0);
+                    ((_expectedNextIterationTime - elapsedTimeInSeconds) * 1000.0);
 		if (timeToWait > 0) {
 		    if (_debugging) {
 			_debug("Waiting for real time to pass: " + timeToWait);
