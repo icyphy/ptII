@@ -50,7 +50,7 @@ This <i>start</i> and <i>stop</i> ports can are declared DISCRETE, and they
 should be connected to an event generator.  Other domains ignore this
 declaration.
 <p>
-@see ptolemy.actor.lib.Clock
+@see ptolemy.domains.ct.lib.ContinuousClock
 
 @author Edward A. Lee, Haiyang Zheng
 @version $Id$
