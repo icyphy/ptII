@@ -232,6 +232,16 @@ public class BaseType implements Type {
 	    }
 	});
 
+    /** The fix matrix data type */
+    public static final BaseType FIX_MATRIX = new BaseType(
+	FixMatrixToken.class,
+	"fixMatrix",
+	new ConvertOperator() {
+	    public Token convert(Token t) throws IllegalActionException {
+		return FixMatrixToken.convert(t);
+	    }
+	});
+
     /** The integer data type */
     public static final BaseType INT = new BaseType(IntToken.class, "int",
 	new ConvertOperator() {
