@@ -34,6 +34,8 @@ import ptolemy.kernel.util.*;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
@@ -62,6 +64,31 @@ public class Documentation extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Return as a single string all the documentation associated with
+     *  the specified object.  Each attribute of type of class Documentation
+     *  that the object contains contributes to the documentation.
+     *  The text contributed by each such attribute starts on a new line.
+     *  If there are no such attributes, then null is returned.
+     *  @param The object to document.
+     *  @return The documentation for the object.
+     */
+    public static String consolidate(NamedObj object) {
+        List docList = object.attributeList(Documentation.class);
+        if (docList.size() > 0) {
+            StringBuffer doc = new StringBuffer();
+            Iterator segments = docList.iterator();
+            while (segments.hasNext()) {
+                Documentation segment = (Documentation)segments.next();
+                doc.append(segment.getValue());
+                if (segments.hasNext()) doc.append("\n");
+            }
+            return doc.toString();
+        } else {
+            return null;
+        }
+    }
 
     /** Write a MoML description of this object with the specified
      *  indentation depth.  This class is directly supported by the MoML
