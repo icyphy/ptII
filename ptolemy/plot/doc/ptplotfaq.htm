@@ -48,6 +48,7 @@ infrastructure.
 
 	<LI> <A HREF="#twoplots"><B>3.6 How do I have two separate plots?</B></A>
 	<LI> <A HREF="#simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
+	<LI> <A HREF="#simpleapplet"><B>3.8 How do I create a simple standalone Plot applet?</B></A>
 	</MENU>
 
 </MENU>
@@ -355,6 +356,69 @@ is a simple standalone Java application that uses the Plot class.
 The comment towards the top of the file contains instructions about
 how to compile it.
 </ol>
+
+<dt> <A NAME"#simpleapplet"><B>3.8 How do I create a simple standalone Plot applet?</B></A>
+
+<dd> The applet <CODE>codebase</CODE> parameter controls where
+and applet may look for data files.  See
+<a href="http://java.sun.com/docs/books/tutorial/applet/appletsonly/data.html"><CODE>http://java.sun.com/docs/books/tutorial/applet/appletsonly/data.html</CODE></a>
+for details.
+
+ <p>For example, to move the
+<a href="../demo/Marks.htm"><CODE>../demo/Marks.html</CODE></a>
+file out of the Ptplot tree, follow these steps below:
+
+<ol>
+<li> Copy the necessary files to the directory where your
+web server serves files:
+<pre>
+mkdir ~/public_html/ptplot
+cd ptplot5.1p1/ptolemy/plot
+cp plotmlapplet.jar ~/public_html/ptplot
+cp demo/Marks.htm ~/public_html/ptplot
+cp demo/plotmlSample.txt ~/public_html/ptplot
+cp plotml/PlotML_1.dtd ~/public_html/ptplot
+</pre>
+
+
+1) Edit <CODE>~/public_html/ptplot/Marks.htm</CODE>
+and change
+ <br>the <CODE>codebase</CODE> from <CODE>"../../.."</CODE> to
+<CODE>"."</CODE> in two places
+ <br>and change the <CODE>archive</CODE> from
+	<CODE>ptolemy/plot/plotmlapplet.jar</CODE>
+ to <CODE>plotmlapplet.jar</CODE>: 
+
+<pre>
+25,26c25,26
+< <PARAM NAME="codebase"   VALUE=".">
+< <PARAM NAME="archive"    VALUE="plotmlapplet.jar">
+---
+> <PARAM NAME="codebase"   VALUE="../../..">
+> <PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar">
+36,37c36,37
+<    codebase="."
+<    archive="plotmlapplet.jar"
+---
+>    codebase="../../.."
+>    archive="ptolemy/plot/plotmlapplet.jar"
+</pre>
+
+
+
+<li>  Edit <CODE>~/public_html/ptplot/plotmlSample.txt</CODE>
+ and change the dtd from <CODE>../plotml/plotml.dtd</CODE>
+ to <CODE>PlotML_1.dtd</CODE>:
+
+<pre>
+2c2
+< <!DOCTYPE plot SYSTEM "PlotML_1.dtd">
+---
+> <!DOCTYPE plot SYSTEM "../plotml/plotml.dtd">
+</pre>
+</ol>
+If you have problems, then be sure to enable the Java plugin
+console and look for messages there
 </DL>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
