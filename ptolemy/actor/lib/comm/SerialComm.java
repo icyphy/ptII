@@ -70,31 +70,33 @@ Bytes to be sent must enter the actor as an array of integers.
 The lowest order byte from each integer is used.  (Negative numbers
 are treated as though 256 has been added enough times to make them
 non-negative.)  Likewise, bytes received are broadcast out of the actor
+as an integer array of which only the low bytes carry data.
 <p>
 This actor is a class which implements SerialPortEventListener.
-This means that when serial events (such as DATA_AVAILABLE) occurr,
+This means that when serial events (such as DATA_AVAILABLE) occur,
 this actor's serialEvent() method gets called.  the serialEvent()
-method calls the directors fireAt() method, triggering a call to fire().
+method calls the director's fireAtCurrentTime() method, triggering 
+a call to fire().
 <p>
 By the time fire() executes, there may be several bytes of available
 data.  These are packaged by fire() into an array of integers (one int
 per byte) and broadcast.
 <p>
 This approach assumes that the DATA_AVAILABLE event is defined so that
-it will occurr only once until the available data has been consumed.
-It also assumes that if additional bytes come in between the call to
-.available() (which says how many bytes are available) and the call to
+it will occur only once until the available data has been consumed.
+It also assumes that if additional bytes come in between fire()'s call to
+.available() (which says how many bytes are available) and its call to
 .read() (which retrieves them) that the DATA_AVAILABLE event DOES occur
 again, even though the serial buffer was never really empty.
 <p>
-@param baudRate the baud rate (integer such as 19200) to use
-        (applies to both input and output)
-@param serialPortName the name (string such as COM1) of the serial port
+@param baudRate the baud rate (integer such as 19200) to use (applies
+to both input and output)
+@param serialPortName the name (string such as "COM2") of the serial
+port to use
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
-@version $Id$
-*/
+@version $Id$ */
 public class SerialComm extends TypedAtomicActor
         implements SerialPortEventListener {
 
@@ -129,15 +131,18 @@ public class SerialComm extends TypedAtomicActor
         baudRate.setTypeEquals(BaseType.INT);
         baudRate.setToken(new IntToken(19200));
 
-
+	// FIXME: Enumeration is empty, yet ports DO exits!
+	if (false) System.out.println("<>1<>");
         Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
         while(allPorts.hasMoreElements()) {
+	    if (false) System.out.println("<>2<>");
             CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
             if(id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 serialPortName.setToken(new StringToken(id.getName()));
                 break;
             }
         }
+	if (false) System.out.println("<>3<>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,7 +169,7 @@ public class SerialComm extends TypedAtomicActor
 
     /** The baud rate, such as 115200, for the serial port.  This has
      *  type integer and must be one of the following values:
-     *  FIXME find the values.  The default is 19200.
+     *  FIXME find the values.  The default value is 19200.
      */
     public Parameter baudRate;
 
@@ -180,9 +185,10 @@ public class SerialComm extends TypedAtomicActor
             throws IllegalActionException {
         if (attribute == serialPortName || attribute == baudRate) {
             /* Do nothing */
-            // One desired behavior would be to use new serial port
+            // One desired behavior would be to use the new serial port
             // and/or new baud rate with next transmission and
-            // to set to receive on new port and/or at new baud rate.
+            // to set to receive on the new port and/or at new baud rate
+	    // with the reception following that transmission.
             // The latter may be tricky since this actor (which is a
             // java class) implements 'SerialPortEventListener'.
             // I'm not sure what happens when baud rate is altered
@@ -203,15 +209,23 @@ public class SerialComm extends TypedAtomicActor
     /** Transfers data between the Ptolemy model and the built in
      *  buffers associated with the serial port.  Actual serial
      *  input and output occur right before or right after fire().
+     *  For example, serial output occurs in responce to the .flush()
+     *  call below.  This data written to the serial port out to the 
+     *  serial hardware.  The .flush() method does not wait for the 
+     *  hardware to complete the transmission, as this might take 
+     *  many milliseconds (roughly 1mS for every 10 bytes at 115200
+     *  baud).
      *  <p>
+     *  This fire() method checks for either or both of the following 
+     *  conditions.  Data may have been received and is available in 
+     *  the serial port.  A Token may have been received by this actor.
      *  If at least 1 byte is available, broadcast it.
      *  If an integer-array token is available, take a byte out
      *  of each integer and send the byte stream to the serial port.
-     *  @exception IllegalActionException Thrown if try fails.
+     *  @exception IllegalActionException Thrown if the try fails.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("Actor is fired");
-
         try {
 
             InputStream in = _serialPort.getInputStream();
@@ -236,6 +250,7 @@ public class SerialComm extends TypedAtomicActor
                 }
                 out.flush();
             }
+
         } catch (IOException ex) {
             throw new IllegalActionException(this, "I/O error: " +
                     ex.getMessage());
@@ -247,7 +262,8 @@ public class SerialComm extends TypedAtomicActor
      *  and other communication settings) and then activates the
      *  serial port's event listening resource, directing events to the
      *  serialEvent() method of this actor.  (serialEvent() is the
-     *  default name for such a method, it is not explicitly named in
+     *  required name for this method.  It is required since this actor
+     *  implements SerialPortEventListener.  It is not explicitly named in
      *  the calls to .addEventListener() and .notifyOnDataAvailable()
      *  below.)
      *  @exception IllegalActionException if the try fails.
@@ -255,11 +271,13 @@ public class SerialComm extends TypedAtomicActor
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
+
             String serialPortNameValue =
                     ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID =
                     CommPortIdentifier.getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
+	    // The 2000 above is 2000mS to open the port, otherwise time out.
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
             _serialPort.setSerialPortParams(
@@ -270,36 +288,58 @@ public class SerialComm extends TypedAtomicActor
 
             _serialPort.addEventListener(this);
             _serialPort.notifyOnDataAvailable(true);
-            // Directs serial events on this port to my serialEvent method.
+            // Directs serial events on this port to my serialEvent() method.
+
         } catch (Exception ex) {
+	    // Maybe the port was the problem, _debug() the available ports.
+	    // FIXME: Enumeration is empty, yet ports DO exits!
+	    // FIXME: When enumaration works, uncomment line in catch clause.
+	    if (_debugging) _debug("Enumarating available ports."
+	            + "  Testing which, if any, are serial ports.");
+	    Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
+	    while(allPorts.hasMoreElements()) {
+		CommPortIdentifier id = (CommPortIdentifier)
+                        allPorts.nextElement();
+		if (_debugging) _debug("-------");
+		if (_debugging) _debug(id.toString());
+		if(id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+		    if (_debugging) _debug(id.getName()
+                            + " is a serial port");
+		}
+	    }
+	    if (_debugging) _debug("-----------");
+
             throw new IllegalActionException(this,
                     "Communication port initialization failed: "
+		    // + " for available ports, 'listen' to actor & rerun "
                     + ex);
         }
     }
 
 
-    /** serialEvent -
-     *  The one and only method required to implement SerialPortEventListener
-     *  <p>
-     *  Call the directors fireAt() method when new data is available.
-     *  By the reqirement of serialEvent() implementing
+    /** serialEvent - The one and only method required to implement
+     *  SerialPortEventListener.  <p> 
+
+     *  Call the director's fireAtCurrentTime() method when new data
+     *  is available.  By the reqirement of serialEvent() implementing
      *  SerialPortEventListener, no exceptions can be thrown.
-     *  However, runtime exceptions are always permitted anyway.
-     *  Thus KernelRuntimeException is permitted.
+     *  However, runtime exceptions are always permitted anyway.  Thus
+     *  KernelRuntimeException is permitted.  
      */
     public void serialEvent(SerialPortEvent e) {
         try {
             if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-                getDirector().fireAt(this, getDirector().getCurrentTime());
+                getDirector().fireAtCurrentTime(this);
+                //getDirector().fireAt(this, getDirector().getCurrentTime());
             }
         } catch (Exception ex) {
-            // This class implements javax.comm.SerialPortEventListener,
-            // which defines serialEvent() so we can't throw
-            // an IllegalActionException here so we throw a RuntimeException
-            // instead.
+            // This class implements
+            // javax.comm.SerialPortEventListener, which defines
+            // serialEvent() so we can't throw an
+            // IllegalActionException here.  Thus we throw a
+            // RuntimeException instead.
             throw new KernelRuntimeException(this,
-                    "serialEvent's call to fireAt() failed: "
+                    "serialEvent's call to fireAtCurrentTime() failed: "
                     + ex);
         }
     }
@@ -322,7 +362,7 @@ public class SerialComm extends TypedAtomicActor
 
     // Weirdo thing required for accessing the serial port.
     // Somehow the .initialize() call must do something crucial.
-    // Removing this code block makes things fail.  Specifically,
+    // Removing this code makes things fail.  Specifically,
     // it makes the 'try' block in fire() have an exception whose
     // message is the word "null".
     static {
