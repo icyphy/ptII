@@ -88,7 +88,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  version of the workspace.
      *  The actor creates a DDFDirector initially, which will be removed
      *  toward the end of firing this actor, when the director completes
-     *  its reposibility of prinitializing and initializing the cloned
+     *  its responsibility of preinitializing and initializing the cloned
      *  composite actor and merging with the outside DDFDirector.
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -101,7 +101,7 @@ public class ActorRecursion extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new DDFDirector(this, uniqueName("DDFDirector"));
-        recursionActor = new StringParameter(this, "resursionActor");
+        recursionActor = new StringParameter(this, "recursionActor");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -137,8 +137,12 @@ public class ActorRecursion extends TypedCompositeActor {
             // has been guaranteed during initialization.
             ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(true);
             ((DDFDirector)getDirector()).setTypeResolutionFlag(true);
-
-            _cloneRecursionActor();
+          
+            try { 
+                _cloneRecursionActor();
+            } catch (CloneNotSupportedException ex) {
+                throw new IllegalActionException(this, "cannot clone.");
+            }
             getDirector().preinitialize();
             _transferInputs();
             _setOutputPortRate();
@@ -151,7 +155,7 @@ public class ActorRecursion extends TypedCompositeActor {
             } catch (NameDuplicationException ex) {
                 //should not happen.
                 throw new InternalErrorException(this, ex, null);
-            }
+            } 
         } finally {
             ((DDFDirector)getExecutiveDirector()).setTypeResolutionFlag(false);
         }
@@ -178,7 +182,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  important since its local director has been removed and its
      *  executive director now controls all actors contained by this actor.
      *  @return false.
-     *  @exception IllegalActionException Not thrown here.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         return false;
@@ -232,8 +236,10 @@ public class ActorRecursion extends TypedCompositeActor {
             throw new IllegalActionException(this, "The executive Director " +
                     "must be DDFDirector.");
         }
-        if (_recursionActor.inputPortList().size() != inputPortList().size()
-                || _recursionActor.outputPortList().size()
+        if (_recursionActor.inputPortList().size() 
+                != inputPortList().size()
+                || 
+                _recursionActor.outputPortList().size()
                 != outputPortList().size()) {
             throw new IllegalActionException(this, "The recursionActor " +
                     recursionActor.stringValue() + " must have the same " +
@@ -266,8 +272,8 @@ public class ActorRecursion extends TypedCompositeActor {
             }
             if (port.isOutput() && !portType.isCompatible(matchingPortType))
                 throw new IllegalActionException(this, "The type of the port " +
-                        port.getName() + " of the actor " + getName() + " must " +
-                        "be the same or less than the matching port.");
+                        port.getName() + " of the actor " + getName() + " must "
+                        + "be the same or less than the matching port.");
         }
         _isCompatibilityChecked = true;
     }
@@ -277,10 +283,13 @@ public class ActorRecursion extends TypedCompositeActor {
      *  input ports of this actor. Connect the corresponding ports of
      *  this actor and the cloned composite actor.
      *  @exception IllegalActionException If any called method throws
-     *  IllegalActionException, or CloneNotSupportedException is caught
-     *  in this method.
+     *   IllegalActionException, or NameDuplicationException is caught
+     *   in this method.
+     *  @exception CloneNotSupportedException If the CompositeActor cannot
+     *   be cloned.
      */
-    private void _cloneRecursionActor() throws IllegalActionException {
+    private void _cloneRecursionActor() 
+            throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor)
@@ -324,16 +333,13 @@ public class ActorRecursion extends TypedCompositeActor {
                     relation.setWidth(port.getWidth());
                 }
             }
-        } catch (CloneNotSupportedException ex) {
-            throw new IllegalActionException(this,
-                    "couldn't clone: " + ex.toString());
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(this, "name duplication.");
         }
     }
 
     /** Get the to-be-cloned composite actor's name from StringParameter
-     *  recusionActor. Go up in hierarchy and find the first container
+     *  recursionActor. Go up in hierarchy and find the first container
      *  with matching name.
      *  @exception IllegalActionException If no actor is found with
      *   the given name.
@@ -383,7 +389,8 @@ public class ActorRecursion extends TypedCompositeActor {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (farReceivers[i] != null) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
-                        SDFReceiver farReceiver = (SDFReceiver)farReceivers[i][j];
+                        SDFReceiver farReceiver 
+                            = (SDFReceiver)farReceivers[i][j];
                         IOPort port = farReceiver.getContainer();
 
                         // Having a self-loop doesn't make it deferrable.
@@ -418,16 +425,19 @@ public class ActorRecursion extends TypedCompositeActor {
                         if (rate != null) {
                             Token token = rate.getToken();
                             if (token instanceof ArrayToken) {
-                                Token[] tokens = ((ArrayToken)token).arrayValue();
+                                Token[] tokens 
+                                    = ((ArrayToken)token).arrayValue();
                                 // Scan the contained receivers of the remote
                                 // port to find the channel index.
-                                Receiver[][] portReceivers =
-                                    port.getReceivers();
+                                Receiver[][] portReceivers 
+                                    = port.getReceivers();
                                 int channelIndex = 0;
                                 foundChannelIndex:
                                 for (int m = 0; m < portReceivers.length; m++)
-                                    for (int n = 0; n < portReceivers[m].length; n++)
-                                        if (farReceiver == portReceivers[m][n]) {
+                                    for (int n = 0; 
+                                        n < portReceivers[m].length; n++)
+                                        if (farReceiver == 
+                                            portReceivers[m][n]) {
                                             channelIndex = m;
                                             break foundChannelIndex;
                                         }
@@ -446,8 +456,8 @@ public class ActorRecursion extends TypedCompositeActor {
                     }
                 }
             }
-            IntToken[] productionRateToken =
-                new IntToken[outputPort.getWidthInside()];
+            IntToken[] productionRateToken 
+                = new IntToken[outputPort.getWidthInside()];
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);
             }
@@ -461,8 +471,8 @@ public class ActorRecursion extends TypedCompositeActor {
             }
             if (tokenProductionRate == null) {
                 try {
-                    tokenProductionRate =
-                        new Parameter(outputPort, "tokenProductionRate");
+                    tokenProductionRate 
+                        = new Parameter(outputPort, "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
                     throw new InternalErrorException(this, ex, null);
@@ -520,7 +530,7 @@ public class ActorRecursion extends TypedCompositeActor {
     private CompositeActor _recursionActor = null;
 
     // A flag indicating if the compatibility of the to-be-cloned composite
-    // actor has been checkd. It is set to true after checking so that
+    // actor has been checked. It is set to true after checking so that
     // checking is performed only once during the execution of the model.
     private boolean _isCompatibilityChecked = false;
 

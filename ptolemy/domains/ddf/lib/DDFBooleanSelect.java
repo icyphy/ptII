@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 /**
    A type polymorphic select with boolean valued control for use in
@@ -136,6 +137,21 @@ public class DDFBooleanSelect extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        DDFBooleanSelect newObject = (DDFBooleanSelect)super.clone(workspace);
+        newObject.output.setTypeAtLeast(newObject.trueInput);
+        newObject.output.setTypeAtLeast(newObject.falseInput);
+        return newObject;
+    }
 
     /** Read a new token from the <i>control</i> port and note its value
      *  if it hasn't done so. This concludes the current firing. Otherwise

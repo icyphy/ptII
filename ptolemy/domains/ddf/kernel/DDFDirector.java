@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
    DDF domain, there are few constraints on the production and consumption
    behavior of actors and the schedulers make no attempt to construct a
    compile-time schedule. Instead, each actor has a set of firing rules
-   and can be fired if one of them is satisfied, i.e. one set of firing
+   and can be fired if one of them is satisfied, i.e., one set of firing
    patterns forms a prefix of sequences of unconsumed tokens at input
    ports.
    <p>
@@ -296,7 +296,7 @@ public class DDFDirector extends Director {
     /** Initialize the actors associated with this director and then
      *  set the iteration count to zero.  The order in which the
      *  actors are initialized is arbitrary.
-     *  For each actor, dertermine its enabling status:
+     *  For each actor, determine its enabling status:
      *  _NOT_ENABLED, _ENABLED_NOT_DEFERRABLE or _ENABLED_DEFERRABLE.
      *  Determine requiredFiringsPerIteration for each actor.
      *  @exception IllegalActionException If the requiredFiringsPerIteration
@@ -316,7 +316,7 @@ public class DDFDirector extends Director {
         while (actors.hasNext()) {
 
             // Get an array of actor flags from HashMap.
-            // Creat it if none found.
+            // Create it if none found.
             int[] flags;
             Actor actor = (Actor)actors.next();
             if (_actorsFlags.containsKey(actor)) {
@@ -330,7 +330,7 @@ public class DDFDirector extends Director {
             flags[_ENABLING_STATUS] = _actorStatus(actor);
 
             // Determine required requiredFiringsPerIteration for each actor.
-            // The default vaule 0 means no requirement on this actor.
+            // The default value 0 means no requirement on this actor.
             flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
             Variable requiredFiringsPerIteration = (Variable)((Entity)actor).
                 getAttribute("requiredFiringsPerIteration");
@@ -580,7 +580,7 @@ public class DDFDirector extends Director {
     /** Check actor enabling status. It could be in one of three statuses:
      *  _NOT_ENABLED, _ENABLED_DEFERRABLE, _ENABLED_NOT_DEFERRABLE.
      *  @param actor The actor to be checked.
-     *  @return An int indicating actor enabing status.
+     *  @return An int indicating actor enabling status.
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
@@ -686,7 +686,7 @@ public class DDFDirector extends Director {
                     if (port == outputPort)
                         continue;
 
-                    // The defalult vaule for tokenConsumptionRate is 1.
+                    // The default value for tokenConsumptionRate is 1.
                     int tokenConsumptionRate = 1;
                     Variable rate = null;
                     if (port.isInput()) {
@@ -765,14 +765,14 @@ public class DDFDirector extends Director {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort)inputPorts.next();
 
-            //The defalult vaule for tokenConsumptionRate is 1.
+            //The default value for tokenConsumptionRate is 1.
             int tokenConsumptionRate = 1;
             Variable parameter = SDFUtilities.getRateVariable(
                     inputPort, "tokenConsumptionRate");
 
             if (parameter != null) {
                 Token token = parameter.getToken();
-                // If token is Arraytoken, then each channel has a
+                // If token is ArrayToken, then each channel has a
                 // corresponding tokenConsumptionRate in the array.
                 if (token instanceof ArrayToken) {
                     Token[] tokens = ((ArrayToken)token).arrayValue();
@@ -821,7 +821,7 @@ public class DDFDirector extends Director {
                 "tokenConsumptionRate");
         if (parameter != null) {
             Token token = parameter.getToken();
-            // If token is Arraytoken, then each channel has a
+            // If token is ArrayToken, then each channel has a
             // corresponding input rate in the array.
             if (token instanceof ArrayToken) {
                 Token[] tokens = ((ArrayToken)token).arrayValue();
@@ -855,7 +855,7 @@ public class DDFDirector extends Director {
                 "tokenProductionRate");
         if (parameter != null) {
             Token token = parameter.getToken();
-            // If token is Arraytoken, then each channel has a
+            // If token is ArrayToken, then each channel has a
             // corresponding output rate in the array.
             if (token instanceof ArrayToken) {
                 Token[] tokens = ((ArrayToken)token).arrayValue();
@@ -913,7 +913,7 @@ public class DDFDirector extends Director {
     // To store those actors for which positive requiredFiringsPerIteration
     // has been defined.
     // We could save more space by making it a HashMap and storing
-    // requiredFiringsPerIterationa and numberOfFirings in this
+    // requiredFiringsPerIteration and numberOfFirings in this
     // variable instead of in _actorsFlags.
     private LinkedList _actorsToCheckNumberOfFirings = new LinkedList();
 

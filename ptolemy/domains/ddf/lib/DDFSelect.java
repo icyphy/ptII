@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 /**
    A type polymorphic select, which routes specified input channels to
@@ -123,6 +124,20 @@ public class DDFSelect extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        DDFSelect newObject = (DDFSelect)super.clone(workspace);
+        newObject.output.setTypeAtLeast(newObject.input);
+        return newObject;
+    }
 
     /** Read a new token from the <i>control</i> port and note its value
      *  if it hasn't done so. This concludes the current firing. Otherwise
