@@ -65,13 +65,14 @@ test PtParser-1.1 {Get information about an instance of PtParser} {
     etNextToken {getToken int} hashCode logicalAnd logicalE
     quals logicalOr notify notifyAll {parseExpression java.
     lang.String} {parseExpression java.lang.String pt.kerne
-    l.NamedList pt.data.Param} parseFromInput reEvaluatePar
-    seTree relational start sum term toString unary wait {w
-    ait long} {wait long int}
+    l.NamedList} parseFromInput reEvaluateParseTree relatio
+    nal start sum term toString unary wait {wait long} {wai
+    t long int}
     
   constructors:  pt.data.parser.PtParser {pt.data.parser.PtParser java.i
-    o.InputStream} {pt.data.parser.PtParser pt.data.parser.
-    PtParserTokenManager}
+    o.InputStream} {pt.data.parser.PtParser java.util.Obser
+    ver} {pt.data.parser.PtParser pt.data.parser.PtParserTo
+    kenManager}
     
   properties:    class nextToken token
     
@@ -85,9 +86,14 @@ test PtParser-1.1 {Get information about an instance of PtParser} {
 # 
 test PtParser-2.1 {Construct Parse objects using different constructors} {
     set p1 [java::new pt.data.parser.PtParser]
+    set e [java::new {pt.kernel.Entity String} parent]
+    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
+    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
+    set p2 [java::new {pt.data.parser.PtParser java.util.Observer} $param1]
     set c1 [$p1 getClass]
-    list [ $c1 getName ]
-} {pt.data.parser.PtParser}
+    set c2 [$p2 getClass]
+    list [ $c1 getName ] [$c2 getName] 
+} {pt.data.parser.PtParser pt.data.parser.PtParser}
 
 ######################################################################
 ####
@@ -222,7 +228,7 @@ test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
 ####
 # 
 test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist} {
-    set parser [java::new pt.data.parser.PtParser]
+    
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
     set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
@@ -233,6 +239,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set param3 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id3 $tok3]
     set param4 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id4 $tok4]
 
+    set parser [java::new {pt.data.parser.PtParser java.util.Observer} $param1]
     $e {addParam pt.data.Param} $param1
     $e {addParam pt.data.Param} $param2
     $e {addParam pt.data.Param} $param3
@@ -240,7 +247,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
 
     set nl [$param1 getScope]
 
-    set r1 [ $parser {parseExpression String pt.kernel.NamedList pt.data.Param} "id2 + id3 + id4\n" $nl $param1]
+    set r1 [ $parser {parseExpression String pt.kernel.NamedList} "id2 + id3 + id4\n" $nl]
     set c1 [$r1 getClass]
     list [$c1 getName ] [$r1 toString] 
 } {pt.data.StringToken {11.45 hello world }}
@@ -248,7 +255,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
 ####
 # 
 test PtParser-6.1 {Test reEvaluation of parse Tree} {
-    set parser [java::new pt.data.parser.PtParser]
+    
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
     set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
@@ -264,9 +271,11 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     $e {addParam pt.data.Param} $param3
     $e {addParam pt.data.Param} $param4
 
+    set parser [java::new pt.data.parser.PtParser]
+
     set nl [$param1 getScope]
 
-    set r1 [ $parser {parseExpression String pt.kernel.NamedList pt.data.Param} "id2 + id3 + id4\n" $nl $param1]
+    set r1 [ $parser {parseExpression String pt.kernel.NamedList} "id2 + id3 + id4\n" $nl]
     set c1 [$r1 getClass]
 
     $tok2 {setValue double} 102.45
