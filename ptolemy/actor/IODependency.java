@@ -58,7 +58,6 @@ array is empty.
 
 @see IODependencyOfAtomicActor
 @see IODependencyOfCompositeActor
-@see IODependencyOfFSMActor
 @see ptolemy.domains.de.kernel.DEDirector
 @author Haiyang Zheng
 @version $Id$
