@@ -272,9 +272,9 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
     $c1 link $c2
     $c1 link $c3
     list [enumToNames [$c1 getContainers]] \
-	   [[$c1 first] getName] \
-	   [[$c2 first] getName] \
-	   [[$c3 first] getName]
+	   [[java::cast ptolemy.kernel.util.NamedObj [$c1 first]] getName] \
+	   [[java::cast ptolemy.kernel.util.NamedObj [$c2 first]] getName] \
+	   [[java::cast ptolemy.kernel.util.NamedObj [$c3 first]] getName]
     
 } {{A2 A3} A2 A1 A1}
 

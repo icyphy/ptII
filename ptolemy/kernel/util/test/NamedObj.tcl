@@ -171,7 +171,7 @@ test NamedObj-6.2 {Test description} {
 test NamedObj-7.1 {Test clone} {
     set n [java::new ptolemy.kernel.util.Workspace "N"]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
-    set b [$a clone]
+    set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
     $b description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
 } {ptolemy.kernel.util.NamedObj {N.A} attributes {
 }}

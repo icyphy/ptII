@@ -130,12 +130,12 @@ test Attribute-6.2 {Test description} {
 test Attribute-7.1 {Test clone into a new workspace} {
     # NOTE: Builds on previous test.
     set x [java::new ptolemy.kernel.util.Workspace X]
-    set ax [$a clone $x]
-    set aw [$a clone]
-    set bx [$b clone $x]
-    set bw [$b clone]
-    set cx [$c clone $x]
-    set cw [$c clone]
+    set ax [java::cast ptolemy.kernel.util.Attribute [$a clone $x]]
+    set aw [java::cast ptolemy.kernel.util.Attribute [$a clone]]
+    set bx [java::cast ptolemy.kernel.util.Attribute [$b clone $x]]
+    set bw [java::cast ptolemy.kernel.util.Attribute [$b clone]]
+    set cx [java::cast ptolemy.kernel.util.Attribute [$c clone $x]]
+    set cw [java::cast ptolemy.kernel.util.Attribute [$c clone]]
     list [$ax getFullName] \
             [$aw getFullName] \
             [$bx getFullName] \
@@ -146,8 +146,8 @@ test Attribute-7.1 {Test clone into a new workspace} {
 
 test Attribute-7.2 {Test cloning of NamedObj with attributes} {
     # NOTE: Builds on previous test.
-    set nx [$n clone $x]
-    set nw [$n clone]
+    set nx [java::cast ptolemy.kernel.util.NamedObj [$n clone $x]]
+    set nw [java::cast ptolemy.kernel.util.NamedObj [$n clone]]
     list [$nx description $detail] [$nw description $detail]
 } {{ptolemy.kernel.util.NamedObj {X.N} attributes {
     {ptolemy.kernel.util.Attribute {X.N.C}}
