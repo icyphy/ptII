@@ -97,16 +97,11 @@ public class PNApplet extends PtolemyApplet {
         }
 
         try {
-            _manager = new Manager();
-            _toplevel = new CompositeActor();
-            _toplevel.setName("topLevel");
-            _toplevel.setManager(_manager);
-            _director = new BasePNDirector();
+            // initialize
+            _director = new BasePNDirector( _toplevel, "PNDirector");
             Parameter param =
                 (Parameter)_director.getAttribute("Initial_queue_capacity");
             param.setToken(new IntToken(capacity));
-            _toplevel.setDirector(_director);
-            //_toplevel.setManager(_manager);
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -218,7 +213,7 @@ public class PNApplet extends PtolemyApplet {
     ////                         protected variables               ////
 
     /** The top-level composite actor, created in the init() method. */
-    protected CompositeActor _toplevel;
+    // protected CompositeActor _toplevel;
 
     /** The director for the top-level composite actor, created in the
      *  init() method. */
