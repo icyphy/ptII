@@ -52,11 +52,16 @@ public abstract class DDEStringSource extends DDESourceActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	_output = new DDEIOPort( this, "output", false, true );
-	_output.setTypeEquals(StringToken.class);
+	output = new DDEIOPort( this, "output", false, true );
+	output.setTypeEquals(StringToken.class);
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables		   ////
+
+    public DDEIOPort output;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -94,8 +99,7 @@ public abstract class DDEStringSource extends DDESourceActor {
 	    }
 
 	    if( nextOutputReady ) {
-		// _output.send( 0, strToken );
-		_output.send( 0, strToken, getCurrentTime() );
+		output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
 
@@ -146,7 +150,6 @@ public abstract class DDEStringSource extends DDESourceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private DDEIOPort _output;
     private LinkedList _contents;
 
 
