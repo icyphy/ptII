@@ -37,12 +37,12 @@ import java.io.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNAudioSource
+//// PNImageSource
 /** 
 Reads an image file (int the ASCII PBM format) and creates a matrix token
 
-@author Yuhong Xiong, Mudit Goel
-@(#)PNAudioSource.java	1.22 09/13/98
+@author Mudit Goel
+@(#)PNImageSource.java	1.22 09/13/98
 */
 
 public class PNImageSource extends AtomicActor {
@@ -66,16 +66,20 @@ public class PNImageSource extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
 	String filename =((StringToken)_filename.getToken()).stringValue();
 	try {
             //_file = new BufferedReader(new FileReader(filename));
             FileInputStream fis = new FileInputStream(filename);
             _file = new DataInputStream(fis);
         } catch (FileNotFoundException e) {
-        System.out.println("Error: In PNAudioSource: file \"" +
+        System.out.println("Error: In PNImageSource: file \"" +
                 filename + "\" not found!");
         }
+    }
+
+    public void readFrom(FileInputStream fis) {
+	_file = new DataInputStream(fis);
     }
 
     /** Reads one block of data from file and writes it to output port.
@@ -83,6 +87,10 @@ public class PNImageSource extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         try {
+	    if (_file == null) {
+		throw new IllegalActionException(this, "Error: No valid Input"+
+			" set in PNImageSource");
+	    }
             String dataread = _file.readLine();
             if (!dataread.equals("P1")) {
                 System.out.println("First line is not P1. It is "+dataread);
@@ -116,21 +124,6 @@ public class PNImageSource extends AtomicActor {
                         image[i][j] = (int)datastr.nval;
                     }
                 }
-
-                //Converting it to a format that can use media.Picture
-                //Note that it is currently is a hack for BW pbm images alone.
-                //int[] display = new int[datarow*datacol];
-                //int alpha = 0;
-                //for (int i=0; i<datarow; i++) {
-                    //for (int j=0; j<datacol; j++) {
-                        //int col = image[i][j]*255;
-                        //display[i*datacol+j] = 
-                              //(alpha << 24) | (col << 16) | (col << 8) | col;
-                        //}
-                    //}
-                //Picture pic = new Picture(datarow, datacol);
-                //pic.setImage(display);
-                //pic.displayImage();
 
                 //System.out.println("i = "+i+" j ="+j);
                 IntMatrixToken dataToken = new IntMatrixToken(image);
