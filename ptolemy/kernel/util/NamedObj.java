@@ -56,7 +56,6 @@ public class NamedObj {
 
     /** Construct an object with the given name. */	
     public NamedObj(String name) {
-        super();
 	setName(name);
     }
 
@@ -118,7 +117,8 @@ public class NamedObj {
      */
       public ParamList getParam(){
       	  if( _paramList == null){
-		ParamList  _paramList = new ParamList();  }
+              _paramList = new ParamList();
+          }
 	  return _paramList;
       }
 
