@@ -93,6 +93,31 @@ public class ExtendedMath {
         return Math.log(x) * _ONEOVERLN2;
     }
 
+    /** Compute the remainder after dividing the first argument by the
+     *  second argument as prescribed by the IEEE 754 standard.  This
+     *  is implemented by the java.lang.Math class method IEEERemainder.
+     *  The documentation for that class says:
+     *  <p>
+     *  "The remainder value is mathematically equal to f1 - f2 × <i>n</i>,
+     *  where <i>n</i> is the mathematical integer
+     *  closest to the exact mathematical value of the quotient f1/f2,
+     *  and if two mathematical integers are equally close to f1/f2,
+     *  then <i>n</i> is the integer that is even. If the remainder is zero,
+     *  its sign is the same as the sign of the first argument. Special
+     *  cases:
+     *  <ul>
+     *  <li> If either argument is NaN, or the first argument is
+     *  infinite, or the second argument is positive zero or negative
+     *  zero, then the result is NaN.
+     *  <li> If the first argument is finite
+     *  and the second argument is infinite, then the result is the
+     *  same as the first argument.
+     *  </ul>
+     */
+    public static double remainder(double f1, double f2) {
+        return Math.IEEEremainder(f1, f2);
+    }
+
     /** Round to the nearest integer.
      *  @param x The number to round.
      *  @return The nearest integer.

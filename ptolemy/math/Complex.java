@@ -246,8 +246,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return the complex conjugate of this complex number.
-     *
-     *  @return a new Complex with value equal to the complex conjugate of
+     *  @return A new Complex with value equal to the complex conjugate of
      *  of this complex number.
      */
     public final Complex conjugate() {
@@ -255,6 +254,15 @@ public class Complex implements Cloneable, Serializable {
         if (imag != 0.0) return new Complex(real, -imag);
 
         return new Complex(real, imag);
+    }
+
+    /** Return the complex conjugate of the specified complex number.
+     *  @param z The specified complex number.
+     *  @return A new Complex with value equal to the complex conjugate of
+     *   of the specified complex number.
+     */
+    public static final Complex conjugate(Complex z) {
+        return z.conjugate();
     }
 
     /** Return the cosine of this complex number.  This is defined by:
