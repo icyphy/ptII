@@ -1,4 +1,4 @@
-/* A simple phase unwrapper.
+/* A simple phase PhaseUnwrapper.
 
  Copyright (c) 1990-2001 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// Unwrap
+//// PhaseUnwrap
 
 /**
 
@@ -53,7 +53,7 @@ the job.
 @version $Id$
 */
 
-public class Unwrap extends Transformer {
+public class PhaseUnwrap extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -63,7 +63,7 @@ public class Unwrap extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Unwrap(CompositeEntity container, String name)
+    public PhaseUnwrap(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

@@ -32,7 +32,7 @@
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 <entity name="SmoothedSpectrum" class="ptolemy.domains.sdf.lib.SmoothedSpectrum"/>
 <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum"/>
-<entity name="Unwrap" class="ptolemy.actor.lib.Unwrap"/>
+<entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap"/>
 <entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample"/>
 <entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR"/>
 
