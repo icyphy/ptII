@@ -67,7 +67,7 @@ run make in the doc directory.
 @version $Id$
 */
 
-public class DocumentationViewer extends PtolemyTop {
+public class DocumentationViewer extends PtolemyTop implements Printable {
 
     /** Construct a blank viewer.
      */
