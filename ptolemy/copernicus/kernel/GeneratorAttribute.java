@@ -499,7 +499,14 @@ public class GeneratorAttribute extends SingletonAttribute
                 }
             }
 
-            Parameter modelPath = (StringParameter)getAttribute("modelPath");
+            Parameter modelPath;
+            try {
+                modelPath = (StringParameter)getAttribute("modelPath");
+            } catch (ClassCastException ex) {
+                throw new InternalErrorException(this, ex,
+                        "Failed to cast '" + getAttribute("modelPath")
+                        + "' to a StringParameter");
+            }
             modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
@@ -511,7 +518,14 @@ public class GeneratorAttribute extends SingletonAttribute
             modelName.setExpression(modelNameValue);
 
             // Set the iterations parameter.
-            CompositeActor compositeActor = (CompositeActor)toplevel;
+            CompositeActor compositeActor;
+            try {
+                compositeActor = (CompositeActor)toplevel;
+            } catch (ClassCastException ex) {
+                throw new InternalErrorException(this, ex,
+                        "Failed to cast toplevel '" + toplevel
+                        + "' to a CompositeActor");
+            }
             Director director = compositeActor.getDirector();
             // If we save a blank model, then there might not be a director.
             Parameter iterations = (StringParameter)getAttribute("iterations");
