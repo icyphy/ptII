@@ -98,11 +98,6 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _xValue = -1.0;
-        int width = input.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
-        for (int i = width - 1; i >= 0; i--) {
-            plot.clear(i + offset);
-        }
     }
 
     /** Read at most one token from each input channel and plot

@@ -111,19 +111,6 @@ public class XYPlotter extends Plotter implements Placeable {
         return newobj;
     }
 
-    /** Clear the datasets that this actor will use.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // Assume the two inputs have the same width.
-        int width = inputX.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
-        for (int i = width - 1; i >= 0; i--) {
-            plot.clear(i + offset);
-        }
-    }
-
     /** Read at most one input from each channel of each input port
      *  and plot it.
      *  This is done in postfire to ensure that data has settled.

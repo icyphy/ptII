@@ -151,8 +151,11 @@ public class Plotter extends TypedAtomicActor
         super.initialize();
         if (plot == null) {
             setPanel(_panel);
-        } else {
-            plot.clear(false);
+        }
+        int width = plot.getNumDataSets();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        for (int i = width - 1; i >= 0; i--) {
+            plot.clear(i + offset);
         }
         plot.repaint();
     }

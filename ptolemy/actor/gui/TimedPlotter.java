@@ -93,18 +93,6 @@ public class TimedPlotter extends Plotter implements Placeable, TimedActor {
         return newobj;
     }
 
-    /** Clear the datasets that this actor will use.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        int width = input.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
-        for (int i = width - 1; i >= 0; i--) {
-            plot.clear(i + offset);
-        }
-    }
-
     /** Read at most one input from each channel and plot it as a
      *  function of time.
      *  This is done in postfire to ensure that data has settled.
