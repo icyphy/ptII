@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	eptolemy2
+PTPACKAGE = 	EPtolemyB
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -71,7 +71,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: Gaussian.class jclass $(PTCLASSJAR)
-	@echo "The EPtolemyB directory is used by the EPtolemyB demo"
+	@echo "The EPtolemyB directory is used by the EPtolemyA demo"
 	@echo "To run the demo, run 'make demo'"
 
 install: all
@@ -81,7 +81,7 @@ Gaussian.class:
 
 demo:
 	@echo "Don't forget to run"
-	@echo "   cd $PTII/ptolemy/moml/jxta/demo/eptolemy; make demo"
+	@echo "   cd $PTII/ptolemy/moml/jxta/demo/EPtolemyA; make demo"
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
 	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/moml/jxta/jxta.xml" \
