@@ -91,7 +91,7 @@ clicking on it or by invoking Configure in the context menu) it generates
 Giotto code and displays it a text editor.  It is up to the user to save
 the Giotto code in an appropriate file, if necessary.
 
-@author Edward A. Lee, Steve Neuendorffer
+@author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 2.0
 */

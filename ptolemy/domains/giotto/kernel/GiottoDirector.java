@@ -94,7 +94,7 @@ This ensures that the director does not get ahead of real time,
 but, of course, it does not ensure that the director keeps up with
 real time.
 
-@author  Christoph Meyer Kirsch and Edward A. Lee
+@author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
 @version $Id$
 @since Ptolemy II 1.0
 @see GiottoScheduler
