@@ -101,7 +101,7 @@ public class AppletWriter extends SceneTransformer {
      *
      *  @param input The input string that contains substrings
      *  like "@codeBase@".
-     *  @param subsituteMap The Map of String keys like "@codeBase@"
+     *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @return  A string with the keys properly substituted with
      *  their corresponding values.
@@ -129,7 +129,7 @@ public class AppletWriter extends SceneTransformer {
      *	String key found in substituteMap with the corresponding String value.
      *
      *  @param inputFileName  The name of the file to read from.
-     *  @param subsituteMap The Map of String keys like "@codeBase@"
+     *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      */
