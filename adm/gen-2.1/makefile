@@ -460,6 +460,9 @@ remote1distjavadocs:
 # * auto tests should be run after actor/gui so that MoMLSimpleApplication
 #   is present
 # 
+# 5/9/02: Removed petrinet because it hangs.  It should go after giotto
+#	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
+
 # Don't run
 #	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman
 # it hangs
@@ -504,7 +507,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
