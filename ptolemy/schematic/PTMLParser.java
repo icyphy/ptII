@@ -206,7 +206,7 @@ public class PTMLParser extends HandlerBase{
         dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
         dtdPath.append("lib" + fileSep + pubID);
 
-        return "file:/" + dtdPath;
+        return "file:" + dtdPath;
     }
 
     /**
