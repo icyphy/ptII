@@ -558,18 +558,22 @@ public class PtolemyModule implements Module {
 	}
 	public void actionPerformed(ActionEvent e) {
 	    // Figure out what entity.
-	    /** FIXME
 	    super.actionPerformed(e);		
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
 	    CompositeEntity entity = (CompositeEntity)object;
+	    NamedObj deferredTo = entity.getDeferMoMLDefinitionTo();
+	    if(deferredTo != null) {
+		entity = (CompositeEntity)deferredTo;
+	    }
+
 	    Application app = getApplication();
 	    PtolemyDocument doc = new PtolemyDocument(app);
 	    doc.setModel(entity);
 	    app.addDocument(doc);
-	    app.displayDocument(doc);
-	    app.setCurrentDocument(doc);
-	    **/
+	    View v = app.createView(doc);
+	    app.addView(v);
+	    app.setCurrentView(v);
 	}
     }
    
@@ -596,7 +600,8 @@ public class PtolemyModule implements Module {
 		    Point2D point = pane.getSize();    
 		    x = point.getX()/2;
 		    y = point.getY()/2;
-		} else {		    x = getX();
+		} else {		    
+		    x = getX();
 		    y = getY();
 		}
 		
