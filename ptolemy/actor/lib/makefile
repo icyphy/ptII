@@ -33,9 +33,6 @@
 
 ME =		ptolemy/actor/lib
 
-# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
-# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
-#
 # $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
 #
@@ -52,7 +49,7 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 
 DIRS = 		conversions gui logic hoc image javasound net io \
-		test $(PTCOMM_DIR) $(PTJAI_DIR) \
+		test comm $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) $(PTJSPACES_DIR) $(PTJXTA_DIR)
 
 # Root of the Java directory
