@@ -46,6 +46,7 @@ PTVERSION =	2.0a2
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSZIP = 	$(PTPACKAGE).zip
 
 CLASSPATH =	../..
 
@@ -111,7 +112,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(PTZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
+all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
