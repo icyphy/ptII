@@ -306,7 +306,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  given head, tail, and relation.  Names in the returned moml will be
          *  relative to the iven container.  This may require addinging an
 	 *  anonymous relation to the ptolemy model.  If this is required,
-	 *  the name of the relation is returned.
+	 *  the name of the relation <b>relative to the toplevel object
+         *  of this graph model</b> is returned.
 	 *  If no relation need be added, then
 	 *  null is returned.
 	 */
@@ -331,31 +332,45 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 			(ComponentPort)tailState.outgoingPort;
 		    // Linking two ports with a new relation.
 		    String relationName =
-			container.uniqueName("relation");
+			getToplevel().uniqueName("relation");
+                    // If the context is not the entity that we're editing,
+                    // then we need to set the context correctly.
+                    if(getToplevel() != container) {
+                        String contextString = "<entity name=\"" + 
+                            getToplevel().getName(container) + 
+                            "\">\n";
+                        moml.append(contextString);
+                        failmoml.append(contextString);
+                    }
 		    // Note that we use no class so that we use the container's
 		    // factory method when this gets parsed
 		    moml.append("<relation name=\"" + relationName + "\"/>\n");
 		    moml.append("<link port=\"" +
-                            headPort.getName(container) +
+                            headPort.getName(getToplevel()) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    moml.append("<link port=\"" +
-                            tailPort.getName(container) +
+                            tailPort.getName(getToplevel()) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    // Record moml so that we can blow away these
 		    // links in case we can't create them
 		    failmoml.append("<unlink port=\"" +
-                            headPort.getName(container) +
+                            headPort.getName(getToplevel()) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<unlink port=\"" +
-                            tailPort.getName(container) +
+                            tailPort.getName(getToplevel()) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<deleteRelation name=\"" +
                             relationName +
                             "\"/>\n");
+                    // close the context
+                    if(getToplevel() != container) {
+                        moml.append("</entity>");
+                        failmoml.append("</entity>");
+                    }
 		    return relationName;
 		} else {
 		    throw new RuntimeException(
@@ -419,7 +434,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setHead(newArcHead);
                     if(relationNameToAdd != null) {
                         ComponentRelation relation =
-                        (ComponentRelation)container.getRelation(
+                        (ComponentRelation)getToplevel().getRelation(
                                 relationNameToAdd);
                         link.setRelation(relation);
                     } else {
@@ -513,7 +528,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setTail(newArcTail);
                     if(relationNameToAdd != null) {
                         link.setRelation(
-                                container.getRelation(relationNameToAdd));
+                                getToplevel().getRelation(relationNameToAdd));
                     } else {
                         link.setRelation(null);
                     }
