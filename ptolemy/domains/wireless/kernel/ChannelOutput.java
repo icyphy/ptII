@@ -109,7 +109,6 @@ public class ChannelOutput extends TypedAtomicActor {
      *  type of the port containing the specified receiver. 
      *  @param token The token to transmit, or null to clear
      *   the specified receiver.
-     *  @param token The token to send.
      *  @param receiver The receiver to which to transmit.
      *  @param properties The transmit properties (ignored in this base class).
      *  @throws IllegalActionException If the token cannot be converted
