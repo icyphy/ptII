@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then { 
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 set PI [java::field java.lang.Math PI]
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -198,6 +202,29 @@ test FixPoint-1.4 {constructors-bad} {
     catch { set c0 [java::new $ctor_string "1g6" $q_20_1] } msg
     list $msg
 } {{java.lang.IllegalArgumentException: NumberFormatException while converting "1g6" to a FixPoint.}}
+
+
+####################################################################
+test FixPoint-1.5 {clone} {
+    set clone [$c0 clone]
+    list [$clone equals $c0]
+} {1}
+
+####################################################################
+test FixPoint-1.7 {printFix} {
+    jdkCapture {$c0 printFix} out
+    list $out
+} {{ unscale Value  (2) 1
+ unscaled Value (10) 1
+ scale Value (10) 1.0 Precision: (20.0)
+ BitCount:   1
+ BitLength   1
+ ABS value   1
+ ABS bit count:  1
+ ABD bitLength:  1
+ Max value:  524287.0
+ Min value:  -524288.0
+}}
 
 
 ####################################################################
@@ -365,6 +392,12 @@ test FixPoint-6.1 {equals} {
 7.573399998247623443603515625 7.573399998247623443603515625 1 
 7.573399998247623443603515625 7.57340000569820404052734375 0 
 7.573399998247623443603515625 7.573399998247623443603515625 1 }}
+
+####################################################################
+test FixPoint-6.5 {getError is deprecated, but we call it for completeness } {
+    set err [$c0 getError]
+    list [$err getDescription]
+} {{ Overflow status is no longer tracked.}}
 
 ####################################################################
 
