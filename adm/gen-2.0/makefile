@@ -43,7 +43,7 @@ WINDOWS_VERSION =	2.0$(MINOR_VERSION)
 
 # Location of utilities
 # Don't use /usr/sww/bin/gtar sun4 binaries if you are building on a sol2
-TAR = 		/usr/tools/gnu/bin/tar
+TAR = 		/usr/local/bin/tar
 ZIP =		/usr/sww/bin/zip
 COMPRESS =	/usr/sww/bin/gzip
 GUNZIP =	/usr/sww/bin/gunzip
