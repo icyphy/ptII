@@ -40,6 +40,12 @@ defines method to let actors vote if the fixed point has reached.
 @version $Id$
 */
 public interface ImplicitMethodSolver {
+
+    /** Return true if the fixed-point iteration is converged.
+     *  @return True if the fixed-point iteration is converged.
+     */
+     public boolean isConverged();
+
     /** Vote if a fixed point has reached. The final result is the
      *  <i>and</i> of all votes.
      *  @param converge True if vote for converge.

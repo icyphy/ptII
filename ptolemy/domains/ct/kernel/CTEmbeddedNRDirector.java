@@ -88,10 +88,6 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public double getIterEndTime() {
-        return _iterEndTime;
-    }
-
     /** can only be an embedded director, so check it here.
      */
     public void initialize() throws IllegalActionException {
@@ -143,7 +139,6 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
 
         _debug(getFullName() + " current time after" +
                 " solver.resolveStates() is " + getCurrentTime());
-        //setCurrentTime(getIterEndTime());
         produceOutput();
     }
 
@@ -319,16 +314,6 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     */
-    protected void _setIterEndTime(double endTime) {
-        _iterEndTime = endTime;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private double _outsideStepSize;
@@ -338,17 +323,4 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     private boolean _stateAcceptable;
 
     private double _outsideTime;
-
-    private double _iterEndTime;
-
-    // whether in the emit event phase;
-    private boolean _eventPhase = false;
-
-    // If this fire is successful (not interrupted by events)
-    private boolean _isFireSuccessful = true;
-
-    // The refined step size if this fire is not successful
-    private double _refinedStep;
-
-    //private boolean _first;
 }

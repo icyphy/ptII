@@ -75,8 +75,7 @@ the fire end time and the first detected event time.
 @author  Jie Liu
 @version $Id$
 */
-public class CTMixedSignalDirector extends CTMultiSolverDirector
-    implements CTEmbeddedDirector {
+public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -115,7 +114,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    // parameter of default runaheadlength
+    /** parameter of default runaheadlength.
+     */
     public Parameter RunAheadLength;
 
 
@@ -206,20 +206,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             _debug("Resolved stepsize: "+getCurrentStepSize() +
                     " One iteration from " + getCurrentTime());
             _fireOneIteration();
-            if (_stopByEvent()) {
+            if (_isStoppedByEvent()) {
                 _debug( this.getFullName() + " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
-                _isFireSuccessful = false;
-                _refinedStep = getCurrentTime() - getOutsideTime();
                 _setEventPhase(true);
                 return;
             } else if (getCurrentTime() >= getIterationEndTime()) {
                 exe.fireAt(ca, getCurrentTime());
-                _isFireSuccessful = true;
                 _setEventPhase(false);
                 return;
             }
-            _isFireSuccessful = true;
         }
     }
 
@@ -270,16 +266,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return true if this is an embedded director and the current fire
-     *  is successful. The success is determined by asking all the
-     *  step size control actors in the output schedule. If this is a
-     *  top level director, then return true always.
-     *  @return True if the current step is successful.
-     */
-    public boolean isThisStepSuccessful() {
-        return _isFireSuccessful;
-    }
-
     /** If this is a top-level director, returns true if the current time
      *  is less than the stop time, otherwise, return true always.
      *  If this is a top-level director, and the current time is greater
@@ -294,12 +280,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         } else {
             return true;
         }
-    }
-
-    /** Return the suggested next step size.
-     */
-    public double predictedStepSize() {
-        return getSuggestedNextStepSize();
     }
 
     /** Returns true always, indicating that the (sub)system is always ready
@@ -401,66 +381,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         return true;
     }
 
-    /** Return the refines step size if the current fire is not successful.
-     *  @return The refined step size.
-     */
-    public double refinedStepSize() {
-        if(!_isFireSuccessful) {
-            return _refinedStep;
-        } else {
-            return Double.MAX_VALUE;
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-
-    /** Return true if the current phase of fire is event phase.
-     */
-    protected boolean _isEventPhase() {
-        return _eventPhase;
-    }
-
-    /**Return true if this is a top-level director. A syntax sugar.
-     */
-    protected boolean _isTopLevel() {
-        long version = workspace().getVersion();
-        if (version == _mutationVersion) {
-            return _isTop;
-        }
-        try {
-            workspace().getReadAccess();
-            CompositeActor container = (CompositeActor)getContainer();
-            if(container.getExecutiveDirector() == null) {
-                _isTop = true;
-            } else {
-                _isTop = false;
-            }
-            _mutationVersion = version;
-        } finally {
-            workspace().doneReading();
-            return _isTop;
-        }
-    }
-
-    /** Rollback the system to a "known good" state. All the actors with
-     *  states are called to restore their saved states. The
-     *  current time of the director is set to the time of the "known
-     *  good" state.
-     *  @exception IllegalActionException If thrown by the goToMarkedState()
-     *       method of an actor.
-     */
-    protected void _rollback() throws IllegalActionException{
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.statefulActors();
-        while(memactors.hasMoreElements()) {
-            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
-            _debug("Restore State..."+
-                    ((Nameable)mem).getName());
-            mem.goToMarkedState();
-        }
-        setCurrentTime(_knownGoodTime);
-    }
 
     /** Catch up the simulation from a known good state to the outside
      *  current time. There's should be no breakpoints of any kind
@@ -499,42 +421,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Mark the current state as the known good state. Call the
-     *  markStates() method on all CTStatefulActors. Save the current time
-     *  as the "known good" time.
+    /** Return true if the current phase of fire is event phase.
      */
-    protected void _markStates() {
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.statefulActors();
-        while(memactors.hasMoreElements()) {
-            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
-            _debug("Save State..."+
-                    ((Nameable)mem).getName());
-            mem.markState();
-        }
-        _knownGoodTime = getCurrentTime();
-    }
-
-    /** Set the stop time for this iteration.
-     *  For a director that is not at the top-level, set the fire end time
-     *  to be the current time  will result
-     *  in that the local director
-     *  release the control to the executive director.
-     *  @param The fire end time.
-     */
-    protected void _setIterationEndTime(double time ) {
-        if(time < getCurrentTime()) {
-            throw new InvalidStateException(this,
-                    " Fire end time" + time + " is less than" +
-                    " the current time." + getCurrentTime());
-        }
-        _iterationEndTime = time;
+    protected boolean _isEventPhase() {
+        return _inEventPhase;
     }
 
     /** Return true if the current fire phase need to stop due to
      *  the occurrence of events (expected or unexpected).
      */
-    protected boolean _stopByEvent() {
+    protected boolean _isStoppedByEvent() {
 
         // expected events
         double bp;
@@ -567,10 +463,83 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         return false;
     }
 
+    /**Return true if this is a top-level director. A syntax sugar.
+     */
+    protected boolean _isTopLevel() {
+        long version = workspace().getVersion();
+        if (version == _mutationVersion) {
+            return _isTop;
+        }
+        try {
+            workspace().getReadAccess();
+            CompositeActor container = (CompositeActor)getContainer();
+            if(container.getExecutiveDirector() == null) {
+                _isTop = true;
+            } else {
+                _isTop = false;
+            }
+            _mutationVersion = version;
+        } finally {
+            workspace().doneReading();
+            return _isTop;
+        }
+    }
+
+    /** Mark the current state as the known good state. Call the
+     *  markStates() method on all CTStatefulActors. Save the current time
+     *  as the "known good" time.
+     */
+    protected void _markStates() {
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+        Enumeration memactors = scheduler.statefulActors();
+        while(memactors.hasMoreElements()) {
+            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
+            _debug("Save State..."+
+                    ((Nameable)mem).getName());
+            mem.markState();
+        }
+        _knownGoodTime = getCurrentTime();
+    }
+
+    /** Rollback the system to a "known good" state. All the actors with
+     *  states are called to restore their saved states. The
+     *  current time of the director is set to the time of the "known
+     *  good" state.
+     *  @exception IllegalActionException If thrown by the goToMarkedState()
+     *       method of an actor.
+     */
+    protected void _rollback() throws IllegalActionException{
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+        Enumeration memactors = scheduler.statefulActors();
+        while(memactors.hasMoreElements()) {
+            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
+            _debug("Restore State..."+
+                    ((Nameable)mem).getName());
+            mem.goToMarkedState();
+        }
+        setCurrentTime(_knownGoodTime);
+    }
+
     /** True argument sets the phase to be event phase.
      */
     protected void _setEventPhase(boolean eph) {
-        _eventPhase = eph;
+        _inEventPhase = eph;
+    }
+
+    /** Set the stop time for this iteration.
+     *  For a director that is not at the top-level, set the fire end time
+     *  to be the current time  will result
+     *  in that the local director
+     *  release the control to the executive director.
+     *  @param The fire end time.
+     */
+    protected void _setIterationEndTime(double time ) {
+        if(time < getCurrentTime()) {
+            throw new InvalidStateException(this,
+                    " Fire end time" + time + " is less than" +
+                    " the current time." + getCurrentTime());
+        }
+        _iterationEndTime = time;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -582,9 +551,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
 
     // Illustrate if this is the top level director.
     private boolean _isTop;
-
-    // indicate the first execution.
-    //private boolean _first;
 
     // The time for the "known good" state.
     private double _knownGoodTime;
@@ -599,11 +565,5 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     private double _iterationEndTime;
 
     // whether in the emit event phase;
-    private boolean _eventPhase = false;
-
-    // If this fire is successful (not interrupted by events)
-    private boolean _isFireSuccessful = true;
-
-    // The refined step size if this fire is not successful
-    private double _refinedStep;
+    private boolean _inEventPhase = false;
 }

@@ -49,7 +49,6 @@ No error control is performed.<BR>
 */
 public class ForwardEulerSolver extends FixedStepSolver{
 
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.

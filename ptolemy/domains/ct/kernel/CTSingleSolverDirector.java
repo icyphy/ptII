@@ -108,7 +108,12 @@ public class CTSingleSolverDirector extends CTDirector {
         super(container, name);
     }
 
-    // Parameter of the ODE solver.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Parameter of the ODE solver.
+     */
     public Parameter ODESolver;
 
 
@@ -126,9 +131,9 @@ public class CTSingleSolverDirector extends CTDirector {
             throws IllegalActionException {
         if(param == ODESolver) {
             _debug(getFullName() + " solver updating...");
-            _solverclass =
+            _solverclassname =
                 ((StringToken)((Parameter)param).getToken()).stringValue();
-            _defaultSolver = _instantiateODESolver(_solverclass);
+            _defaultSolver = _instantiateODESolver(_solverclassname);
             _setCurrentODESolver(_defaultSolver);
         } else {
             super.attributeChanged(param);
@@ -198,7 +203,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        _debug(getFullName() + "initializing.");
+        _debug(getFullName(), "initializing.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
             throw new IllegalActionException(this, "Has no container.");
@@ -345,51 +350,6 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
-    /** Return true if the prefire() methods of all the actors in the system
-     *  return true.
-     *  @return True if the prefire() methods of all actors returns true.
-     */
-    protected boolean _prefireSystem() throws IllegalActionException {
-        boolean ready = true;
-        CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
-            ready = ready && a.prefire();
-            _debug("Prefire "+((Nameable)a).getName() +
-                    " returns" + ready);
-        }
-        return ready;
-    }
-
-    /** Clean old breakpoints in the breakpoint table, and adjust
-     *  the the current step size according to the first breakpoint.
-     *  @exception IllegalActionException Not thrown in this class,
-     *      may be thrown by derived classes.
-     */
-    protected void _processBreakpoints() throws IllegalActionException {
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        Double tnow = new Double(getCurrentTime());
-        _setIsBPIteration(false);
-        // If now is a break point, remove the break point from table;
-        if(breakPoints != null && !breakPoints.isEmpty()) {
-            breakPoints.removeAllLessThan(tnow);
-            if(breakPoints.contains(tnow)) {
-                // now is the break point.
-                breakPoints.removeFirst();
-                _setIsBPIteration(true);
-            }else { 
-                // adjust step size according to the first break point.
-                bp = ((Double)breakPoints.first()).doubleValue();
-                double iterEndTime = getCurrentTime() + getCurrentStepSize();
-                if (iterEndTime > bp) {
-                    setCurrentStepSize(bp-getCurrentTime());
-                }
-            }
-        }
-    }
-    
     /** Fire one iteration. Return directly if any actors return false
      *  in their prefire() method. The the time is advanced by the
      *  current step size.
@@ -443,7 +403,12 @@ public class CTSingleSolverDirector extends CTDirector {
         updateStates(); // call postfire on all actors
     }
 
-    /** Real initialize method.
+    /** Initialize the execution.
+     *  Set the current time and the first step size according
+     *  to the director parameters. Clear the break point table.
+     *  The default ODE solver is instantiated.
+     *  @exception IllegalActionException If no ODE solver is
+     *      instantiated.
      */
     protected void _initialize() throws IllegalActionException {
         if(STAT) {
@@ -454,8 +419,8 @@ public class CTSingleSolverDirector extends CTDirector {
         _debug(getName(), "updating parameters");
         // Instantiate ODE solver
         //if(_defaultSolver == null) {
-        _debug(getName(), " instantiating ODE solver ", _solverclass);
-        _defaultSolver = _instantiateODESolver(_solverclass);
+        _debug(getName(), " instantiating ODE solver ", _solverclassname);
+        _defaultSolver = _instantiateODESolver(_solverclassname);
         //}
         // set time
         _debug(getFullName(),
@@ -474,14 +439,15 @@ public class CTSingleSolverDirector extends CTDirector {
         super.initialize();
     }
 
+
     /** Initialize parameters to their default values. */
     protected void _initParameters() {
         super._initParameters();
         try {
-            _solverclass =
+            _solverclassname =
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             ODESolver = new Parameter(
-                    this, "ODESolver", new StringToken(_solverclass));
+                    this, "ODESolver", new StringToken(_solverclassname));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -489,6 +455,25 @@ public class CTSingleSolverDirector extends CTDirector {
             throw new InvalidStateException(this,
                     "Parameter name duplication.");
         }
+    }
+
+    /** Return true if the newly resolved state is acceptable.
+     *  It does it by asking all the step control actors in the
+     *  state transition and dynamic schedule.
+     *  If one of them returns false, then the method returns
+     *  false.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    protected boolean _isOutputAcceptable() throws IllegalActionException {
+        boolean successful = true;
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.outputSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a =
+                (CTStepSizeControlActor) sscs.nextElement();
+            successful = successful && a.isThisStepSuccessful();
+        }
+        return successful;
     }
 
     /** Return true if the newly resolved state is acceptable.
@@ -510,23 +495,49 @@ public class CTSingleSolverDirector extends CTDirector {
         return successful;
     }
 
-    /** Return true if the newly resolved state is acceptable.
-     *  It does it by asking all the step control actors in the
-     *  state transition and dynamic schedule.
-     *  If one of them returns false, then the method returns
-     *  false.
-     *  @exception IllegalActionException If the scheduler throws it.
+    /** Return true if the prefire() methods of all the actors in the system
+     *  return true.
+     *  @return True if the prefire() methods of all actors returns true.
      */
-    protected boolean _isOutputAcceptable() throws IllegalActionException {
-        boolean successful = true;
-        CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration sscs = sched.outputSSCActors();
-        while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a =
-                (CTStepSizeControlActor) sscs.nextElement();
-            successful = successful && a.isThisStepSuccessful();
+    protected boolean _prefireSystem() throws IllegalActionException {
+        boolean ready = true;
+        CompositeActor ca = (CompositeActor) getContainer();
+        Enumeration actors = ca.deepGetEntities();
+        while(actors.hasMoreElements()) {
+            Actor a = (Actor) actors.nextElement();
+            ready = ready && a.prefire();
+            _debug("Prefire "+((Nameable)a).getName() +
+                    " returns" + ready);
         }
-        return successful;
+        return ready;
+    }
+
+    /** Clean old breakpoints in the breakpoint table, and adjust
+     *  the the current step size according to the first breakpoint.
+     *  @exception IllegalActionException Not thrown in this class,
+     *      may be thrown by derived classes.
+     */
+    protected void _processBreakpoints() throws IllegalActionException {
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        Double tnow = new Double(getCurrentTime());
+        _setIsBPIteration(false);
+        // If now is a break point, remove the break point from table;
+        if(breakPoints != null && !breakPoints.isEmpty()) {
+            breakPoints.removeAllLessThan(tnow);
+            if(breakPoints.contains(tnow)) {
+                // now is the break point.
+                breakPoints.removeFirst();
+                _setIsBPIteration(true);
+            }else { 
+                // adjust step size according to the first break point.
+                bp = ((Double)breakPoints.first()).doubleValue();
+                double iterEndTime = getCurrentTime() + getCurrentStepSize();
+                if (iterEndTime > bp) {
+                    setCurrentStepSize(bp-getCurrentTime());
+                }
+            }
+        }
     }
 
     /** Predict the next step size. This method should be called if the
@@ -604,7 +615,7 @@ public class CTSingleSolverDirector extends CTDirector {
     ////                         private variables                 ////
 
     // The classname of the ODE solver.
-    private String _solverclass;
+    private String _solverclassname;
 
     // The default solver.
     private ODESolver _defaultSolver = null;

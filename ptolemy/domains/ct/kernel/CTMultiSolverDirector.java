@@ -101,6 +101,13 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** parameter of breakpoint ODE solver.
+     */
+    public Parameter BreakpointODESolver;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute matches
@@ -115,10 +122,10 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         Parameter param = (Parameter)attr;
         if (param == BreakpointODESolver) {
             _debug(getName() + "breakpoint solver updating.");
-            _breakpointsolverclass =
+            _bpsolverclassname =
                 ((StringToken)param.getToken()).stringValue();
-            _breakpointSolver =
-                _instantiateODESolver(_breakpointsolverclass);
+            _breakpointsolver =
+                _instantiateODESolver(_bpsolverclassname);
         } else {
             super.attributeChanged(param);
         }
@@ -128,7 +135,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      *  @return The breakpoint ODE solver.
      */
     public ODESolver getBreakpointSolver() {
-        return _breakpointSolver;
+        return _breakpointsolver;
     }
 
     /** This does the initialization for the entire subsystem. This
@@ -143,8 +150,8 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _debug(getName(), " create breakpoint solver.");
-        _breakpointSolver =
-            _instantiateODESolver(_breakpointsolverclass);
+        _breakpointsolver =
+            _instantiateODESolver(_bpsolverclassname);
         _debug(getName(), " register the initial break point.");
         fireAt(null, getCurrentTime());
     }
@@ -160,11 +167,11 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             ODESolver.setToken(
                     new StringToken(defaultsolverclass));
-            _breakpointsolverclass =
+            _bpsolverclassname =
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
             BreakpointODESolver = new Parameter(
                     this, "BreakpointODESolver",
-                    new StringToken(_breakpointsolverclass));
+                    new StringToken(_bpsolverclassname));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -194,7 +201,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 // now is the break point.
                 breakPoints.removeFirst();
                 _setIsBPIteration(true);
-                _setCurrentODESolver(_breakpointSolver);
+                _setCurrentODESolver(_breakpointsolver);
                 setCurrentStepSize(getMinStepSize());
                 _debug(getFullName(), 
                         "IN BREAKPOINT iteration.");
@@ -239,18 +246,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // parameter of default ODE solver
-    //public Parameter DefaultODESolver;
     // The classname of the default ODE solver
-    //private String _defaultsolverclass;
+    private String _bpsolverclassname;
     // The default solver.
-    //private ODESolver _defaultSolver = null;
-
-    // parameter of breakpoint ODE solver
-    public Parameter BreakpointODESolver;
-    // The classname of the default ODE solver
-    private String _breakpointsolverclass;
-    // The default solver.
-    private ODESolver _breakpointSolver = null;
+    private ODESolver _breakpointsolver = null;
 
 }

@@ -137,9 +137,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration arithmaticActors() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _arith.elements();
         } finally {
@@ -250,9 +250,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration dynamicActors() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _dynam.elements();
         } finally {
@@ -286,7 +286,7 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _dynamicversion = workspace().getVersion();
+            _wsversion = workspace().getVersion();
             return _stateschedule.elements();
         } finally {
             workspace().doneReading();
@@ -305,9 +305,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration eventGenerators() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _evgen.elements();
         } finally {
@@ -327,9 +327,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration eventInterpreters() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _evint.elements();
         } finally {
@@ -355,7 +355,7 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _dynamicversion = workspace().getVersion();
+            _wsversion = workspace().getVersion();
             return _outputssc.elements();
         } finally {
             workspace().doneReading();
@@ -387,7 +387,7 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _dynamicversion = workspace().getVersion();
+            _wsversion = workspace().getVersion();
             return _outputschedule.elements();
         } finally {
             workspace().doneReading();
@@ -405,9 +405,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration sinkActors() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _sink.elements();
         } finally {
@@ -426,9 +426,9 @@ public class CTScheduler extends Scheduler{
     public Enumeration statefulActors() {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
+            if(_wsversion != workspace().getVersion()) {
                 _classifyActors();
-                _dynamicversion = workspace().getVersion();
+                _wsversion = workspace().getVersion();
             }
             return _stateful.elements();
         } finally {
@@ -455,7 +455,7 @@ public class CTScheduler extends Scheduler{
             if(!isValid()) {
                 schedule();
             }
-            _dynamicversion = workspace().getVersion();
+            _wsversion = workspace().getVersion();
             return _statessc.elements();
         } finally {
             workspace().doneReading();
@@ -497,7 +497,7 @@ public class CTScheduler extends Scheduler{
      *  CompositeActor.
      */
     protected void _classifyActors() {
-        if(_dynamicversion == -1) {
+        if(_wsversion == -1) {
             _sink = new LinkedList();
             _dynam = new LinkedList();
             _arith = new LinkedList();
@@ -599,7 +599,6 @@ public class CTScheduler extends Scheduler{
         _outputschedule = new LinkedList();
         _statessc = new LinkedList();
         _outputssc = new LinkedList();
-        // _eventschedule = new LinkedList(); //deprecated
         LinkedList _scheList = new LinkedList();
 
         _classifyActors();
@@ -807,7 +806,6 @@ public class CTScheduler extends Scheduler{
     private LinkedList _stateschedule;
     private LinkedList _transitionschedule;
     private LinkedList _outputschedule;
-    private LinkedList _eventschedule;
 
     // A LinkedList of the source actors.
     private transient LinkedList _dynam;
@@ -827,5 +825,5 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _stateful;
 
     // Version of the lists.
-    private transient long _dynamicversion = -1;
+    private transient long _wsversion = -1;
 }

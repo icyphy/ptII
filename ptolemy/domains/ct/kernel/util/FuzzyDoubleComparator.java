@@ -47,7 +47,7 @@ public class FuzzyDoubleComparator implements Comparator{
      *  1e-10
      */
     public FuzzyDoubleComparator() {
-        _threshold = 1e-10;
+        _threshold = 0.0;
     }
 
     /** Construct a FuzzyDoubleComparator with the given threshold.
