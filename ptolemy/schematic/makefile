@@ -54,6 +54,7 @@ PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Test.java \
 	Domain.java \
 	DomainLibrary.java \
 	EntityType.java \
@@ -83,7 +84,6 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
@@ -93,4 +93,7 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+test: Test.class
+	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVA) $(JFLAGS) ptolemy.schematic.Test
 

@@ -191,15 +191,24 @@ public class PTMLParser extends HandlerBase{
      */
     public Object resolveEntity(String pubID, String sysID)
             throws Exception {
-        if(pubID == null) return sysID;
+        // Use System ID if the public on unknown
+        if(pubID == null) {
+            return sysID;
+        }
 
         // Construct the path to the DTD file
         StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
 
-        if(dtdPath.toString().equals("UNKNOWN")) return sysID;
-        
-        String fileSep = java.lang.System.getProperty("file.separator");
+        // Use System ID if there's no PTII environment variable
+        if(dtdPath.toString().equals("UNKNOWN")) {
+            return sysID;
+        }
 
+        // Always use slashes as file separator, since this is a URL
+        //String fileSep = java.lang.System.getProperty("file.separator");
+        String fileSep = "/";
+
+        // Construct the URL
         int last = dtdPath.length()-1;
         if (dtdPath.charAt(last) != fileSep.charAt(0)) {
             dtdPath.append(fileSep);
@@ -207,7 +216,12 @@ public class PTMLParser extends HandlerBase{
         dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
         dtdPath.append("lib" + fileSep + pubID);
 
-        return "file:" + dtdPath;
+        // Windows is special. Very special.
+        if (System.getProperty("os.name").equals("Windows NT")) {
+            return "file:/" + dtdPath;
+        } else {
+            return "file:" + dtdPath;
+        }
     }
 
     /**
