@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCALTROP_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3697,12 +3697,12 @@ fi
 #       See if there was a command-line option for where Cal is.
 #--------------------------------------------------------------------
 
-# PTCAL_DIR is set to cal and used in
+# PTCALTROP_DIR is set to caltrop and used in
 # $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR=
+PTCALTROP_DIR=
 
 # Directory that contains the ptCal jar file
-CAL_DIR='${PTII}/lib'
+CALTROP_DIR='${PTII}/lib'
 
 # We only need to look for on if $PTII/ptolemy/cal exists
 CAL_USER_DIR="$PTII/ptolemy/cal"
@@ -3715,37 +3715,58 @@ else
     echo "$as_me:$LINENO: checking for Cal, the actor language" >&5
 echo $ECHO_N "checking for Cal, the actor language... $ECHO_C" >&6
 
-# Check whether --with-CAL_DIR or --without-CAL_DIR was given.
-if test "${with_CAL_DIR+set}" = set; then
-  withval="$with_CAL_DIR"
-  CAL_DIR=$withval
+# Check whether --with-CALTROP_DIR or --without-CALTROP_DIR was given.
+if test "${with_CALTROP_DIR+set}" = set; then
+  withval="$with_CALTROP_DIR"
+  CALTROP_DIR=$withval
 else
-  CAL_DIR=$PTII/lib
+  CALTROP_DIR=$PTII/lib
 fi;
 
-    if test -f "$CAL_DIR/ptCal.jar"; then
-	echo "$as_me:$LINENO: result: $CAL_DIR" >&5
-echo "${ECHO_T}$CAL_DIR" >&6
+    if test -f "$CALTROP_DIR/ptCal.jar"; then
+	echo "$as_me:$LINENO: result: $CALTROP_DIR" >&5
+echo "${ECHO_T}$CALTROP_DIR" >&6
 	# We found cal
-	echo "$as_me:$LINENO: checking for saxon7.jar (used by cal)" >&5
-echo $ECHO_N "checking for saxon7.jar (used by cal)... $ECHO_C" >&6
-	if test -f "$CAL_DIR/saxon7.jar"; then
-	   echo "$as_me:$LINENO: result: $CAL_DIR/saxon7.jar" >&5
-echo "${ECHO_T}$CAL_DIR/saxon7.jar" >&6
-	   PTCAL_DIR=cal
+	echo "$as_me:$LINENO: checking for saxon7.jar (used by caltrop)" >&5
+echo $ECHO_N "checking for saxon7.jar (used by caltrop)... $ECHO_C" >&6
+	if test -f "$CALTROP_DIR/saxon7.jar"; then
+	   echo "$as_me:$LINENO: result: $CALTROP_DIR/saxon7.jar" >&5
+echo "${ECHO_T}$CALTROP_DIR/saxon7.jar" >&6
+	   echo "$as_me:$LINENO: checking for java_cup.jar (used by caltrop)" >&5
+echo $ECHO_N "checking for java_cup.jar (used by caltrop)... $ECHO_C" >&6
+	   if test -f "$CALTROP_DIR/java_cup.jar"; then
+	       echo "$as_me:$LINENO: result: $CALTROP_DIR/java_cup.jar" >&5
+echo "${ECHO_T}$CALTROP_DIR/java_cup.jar" >&6
+	       PTCALTROP_DIR=caltrop
+	   else
+               { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/java_cup.jar
+    which is required by Cal, the actor language.
+    You can download java_cup from
+    http://www.cs.princeton.edu/~appel/modern/java/CUP/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&5
+echo "$as_me: WARNING: Failed to find $CALTROP_DIR/java_cup.jar
+    which is required by Cal, the actor language.
+    You can download java_cup from
+    http://www.cs.princeton.edu/~appel/modern/java/CUP/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&2;}
+	       # Note that we don't substitute in the ${PTII} here
+	       CALTROP_DIR='${PTII}/lib/'
+	   fi
 	else
-           { echo "$as_me:$LINENO: WARNING: Failed to find $CAL_DIR/saxon7.jar
+           { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/saxon7.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal" >&5
-echo "$as_me: WARNING: Failed to find $CAL_DIR/saxon7.jar
+echo "$as_me: WARNING: Failed to find $CALTROP_DIR/saxon7.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal" >&2;}
 	   # Note that we don't substitute in the ${PTII} here
-	   CAL_DIR='${PTII}/lib/'
+	   CALTROP_DIR='${PTII}/lib/'
         fi
     else
         { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/ptCal.jar
@@ -3757,16 +3778,16 @@ echo "$as_me: WARNING: Failed to find PTII/lib/ptCal.jar
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal" >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	CAL_DIR='${PTII}/lib/'
+	CALTROP_DIR='${PTII}/lib/'
     fi
 fi
 
-if test -z "$PTCAL_DIR"; then
+if test -z "$PTCALTROP_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
 fi
 
 #--------------------------------------------------------------------
@@ -6867,7 +6888,7 @@ fi
 
 # Keep these substitutions alphabetical, with a description
 
-# Directory that contains the Cal jar file ptCal.jar
+# Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in
 
 
@@ -6985,7 +7006,7 @@ fi
 # if we found boost/static_assert.hpp (mescal)
 
 
-# Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
+# Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
@@ -7822,7 +7843,7 @@ s,@CXXFLAGS@,$CXXFLAGS,;t t
 s,@ac_ct_CXX@,$ac_ct_CXX,;t t
 s,@JJTREE@,$JJTREE,;t t
 s,@MATLAB@,$MATLAB,;t t
-s,@CAL_DIR@,$CAL_DIR,;t t
+s,@CALTROP_DIR@,$CALTROP_DIR,;t t
 s,@CHIC_DIR@,$CHIC_DIR,;t t
 s,@CLASSPATHSEPARATOR@,$CLASSPATHSEPARATOR,;t t
 s,@CMKIT_DIR@,$CMKIT_DIR,;t t
@@ -7855,7 +7876,7 @@ s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
 s,@MATLAB_DIR@,$MATLAB_DIR,;t t
 s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
 s,@PTBOOST_INCLUDE@,$PTBOOST_INCLUDE,;t t
-s,@PTCAL_DIR@,$PTCAL_DIR,;t t
+s,@PTCALTROP_DIR@,$PTCALTROP_DIR,;t t
 s,@PTCOPERNICUS_DIR@,$PTCOPERNICUS_DIR,;t t
 s,@PTCM_DIR@,$PTCM_DIR,;t t
 s,@PTCOMM_DIR@,$PTCOMM_DIR,;t t
