@@ -42,16 +42,11 @@ and the Relations are constrained to be IORelations.
 @see full-classname
 */
 public abstract class Actor extends ComponentEntity implements Executable {
-    /** Constructor
-     */	
-    /*    public Actor() {
-        super();
-    }
-
-    public Actor(Workspace workspace) {
-        super(workspace);
-    } */
-     
+    /** Constructor. This registers the actor with both the director and 
+     *  the compositeActor
+     * @param container is the CompositeActor containing this Actor
+     * @param name is the name of this actor
+     */    
     public Actor(CompositeActor container, String name) 
             throws NameDuplicationException {
         super((CompositeEntity)container, name);
@@ -61,40 +56,47 @@ public abstract class Actor extends ComponentEntity implements Executable {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
     
+    /** Returns the director responsible for the execution of the 
+     *  CompositeActor containing this actor
+     * @return the director
+     */
     public Director getDirector() {
         return ((CompositeActor)getContainer()).getDirector();            
     }
 
+    /** This is where the actors would normally define their actions
+     * @exception IllegalActionException would be required in derived classes
+     */
     public void fire() throws IllegalActionException {
     }
 
+    /** The actors would be initialized in this method before their execution 
+     *  begins
+     */
     public void initialize() {
     }
 
+    /** This would define the actions that an actor should do at the end of
+     *  every iteration of its execution
+     */
     public void postfire() {
     }
 
-    //FIXME::
+    /** This would define the actions of an actor in the beginning of every
+     *  iteration of it's execution. 
+     * @return true if the star is ready for firing, false otherwise.
+     */
     public boolean prefire() {
         return true;
     }
   
+    /** This is called at the end of every execution of the star. This is for 
+     *  cleanups and freeing resources that the actor currently has access to
+     */
     public void wrapup() {
         return;
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
-
 }
 
 
