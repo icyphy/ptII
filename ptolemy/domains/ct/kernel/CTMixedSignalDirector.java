@@ -29,19 +29,29 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import java.util.Iterator;
+import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.DoubleToken;
-import java.util.Iterator;
-
+import ptolemy.data.type.Type;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
@@ -333,10 +343,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             double timeResolution = getTimeResolution();
             double nextIterationTime = exe.getNextIterationTime();
 
-            if(_debugging) _debug("Outside time is " + _outsideTime, 
+            if(_debugging) _debug("Outside time is " + _outsideTime,
                     "\nNext interation time is " + nextIterationTime,
                     "\nCurrent local time is " + getCurrentTime());
-            
+
             // Now, check the next iteration time.
             if (nextIterationTime < _outsideTime) {
                 throw new InvalidStateException(this, "Outside domain"
@@ -354,10 +364,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 exe.fireAt(container, nextIterationTime);
                 return false;
             }
-           
-            // Ideally, the outside time should equal to the current 
+
+            // Ideally, the outside time should equal to the current
             // local time. If the outside time is less than the local
-            // time, then rollback is needed. If the outside time 
+            // time, then rollback is needed. If the outside time
             // is greater than the local time, we will complain.
             if (Math.abs(_outsideTime - getCurrentTime()) < timeResolution) {
                 // We are woke up as we requested.
@@ -380,7 +390,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     }
                     _hasDiscreteEvents = false;
                     if (hasOutput) {
-                        if(_debugging) _debug(getName(), 
+                        if(_debugging) _debug(getName(),
                                 " produces output to the outside domain.",
                                 " Requesting zero delay refiring",
                                 " Prefire() returns false.");
@@ -406,15 +416,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 _catchUp();
             }
 
-            // Now, we have outside time equals to the curren time, 
-            // and there are no discrete events. So we consider 
+            // Now, we have outside time equals to the curren time,
+            // and there are no discrete events. So we consider
             // how far we should run ahead of the outside time.
-            // If outside next iteration time is equal to the outside 
+            // If outside next iteration time is equal to the outside
             // time, then request for a zero delay refire.
-            // Notice that DE will pust this zero delay refire to be the 
+            // Notice that DE will pust this zero delay refire to be the
             // last one with the same time stamp. So we expect that
             // next time we wake up, the next iteration time is not
-            // the same as the current time. 
+            // the same as the current time.
             // But there exists an additional subtlety, which is that
             // we can have two CT composite actors in DE.
             // So we need to check that after the second time we wake
@@ -434,7 +444,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "Outside Time = " + _outsideTime,
                         "NextIterationTime = " + nextIterationTime,
                         "Inferred run length = " + aheadLength);
-                
+
                 if (aheadLength < timeResolution ) {
                     // We should use the runAheadLength paremeter.
                     _setIterationEndTime(_outsideTime + _runAheadLength);
@@ -669,14 +679,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The held output tokens. It maps receivers to the tokens they 
+    // The held output tokens. It maps receivers to the tokens they
     // contains.
     // private HashMap _heldTokens = new HashMap();
 
     // Indicate whether there are pending discrete events.
     private boolean _hasDiscreteEvents;
 
-    // Indicate whether this is the second time that prefire has been 
+    // Indicate whether this is the second time that prefire has been
     // called in a row.
     private boolean _secondPrefire = false;
 

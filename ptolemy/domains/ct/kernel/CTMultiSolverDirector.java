@@ -30,28 +30,28 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.CompositeEntity;
+import java.util.Iterator;
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.Director;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.StringToken;
+import ptolemy.data.type.Type;
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-//FIXME: We seem to need a setBreakpoint iteration method. 
+//FIXME: We seem to need a setBreakpoint iteration method.
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
@@ -246,7 +246,7 @@ public class CTMultiSolverDirector extends CTDirector {
     public void fire() throws IllegalActionException {
         /*
         if (_first) {
-            
+
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
             Iterator integrators =
                 schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
@@ -267,7 +267,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     actor.postfire();
                 }
             }
-            
+
             _first = false;
         } else {
         */
@@ -291,7 +291,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     getCurrentTime() + " step size" + getCurrentStepSize()
                     + " using solver " + getCurrentODESolver().getName());
             _fireOneIteration();
-        
+
             // Process discrete events.
             _discretePhaseExecution();
             //}
@@ -353,8 +353,8 @@ public class CTMultiSolverDirector extends CTDirector {
         fireAt(null, getStopTime());
         if(_debugging) _debug(getScheduler().toString());
         if(_debugging) _debug(getFullName() + " End of Initialization.");
-        
-        
+
+
     }
 
     /** Return false if the stop time is reached.
@@ -425,7 +425,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if(_debugging) _debug(getName(), ": discrete phase execution at "
                 + getCurrentTime());
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator eventGenerators = 
+        Iterator eventGenerators =
             schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
         boolean hasDiscreteEvents = false;
         while(eventGenerators.hasNext()) {
@@ -448,7 +448,7 @@ public class CTMultiSolverDirector extends CTDirector {
             if(_debugging) _debug(getName(), "has discrete events at time "+
                     getCurrentTime());
             _setDiscretePhase(true);
-            Iterator discrete = 
+            Iterator discrete =
                 schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
             while(discrete.hasNext()) {
                 Actor actor = (Actor)discrete.next();
@@ -481,7 +481,7 @@ public class CTMultiSolverDirector extends CTDirector {
                         if(_debugging) _debug("state resolved.");
                         // Check if this step is acceptable
                         if (!_isStateAccurate()) {
-                            if(_debugging) 
+                            if(_debugging)
                                 _debug(getName(), "state not accurate.");
                             setCurrentTime(getIterationBeginTime());
                             setCurrentStepSize(_refinedStepWRTState());
@@ -520,7 +520,7 @@ public class CTMultiSolverDirector extends CTDirector {
             }
             setSuggestedNextStepSize(_predictNextStepSize());
             // call postfire on all continuous actors
-            updateContinuousStates(); 
+            updateContinuousStates();
         }
     }
 
@@ -593,14 +593,14 @@ public class CTMultiSolverDirector extends CTDirector {
         return accurate;
     }
 
-    /** Return true if the prefire() methods of all the actors in the 
-     *  continuous part of the system return true. 
+    /** Return true if the prefire() methods of all the actors in the
+     *  continuous part of the system return true.
      *  @return The logical AND of the prefire() of continuous actors.
      */
     protected boolean _prefireContinuousActors()
             throws IllegalActionException {
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator actors = 
+        Iterator actors =
             schedule.get(CTSchedule.CONTINUOUS_ACTORS).actorIterator();
         while(actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -617,7 +617,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         return true;
     }
-    
+
     /** Clear obsolete breakpoints, switch to breakpointODESolver if this
      *  is the first fire after a breakpoint, and adjust step sizes
      *  accordingly.
@@ -733,7 +733,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTOutput() throws IllegalActionException {
-        
+
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = schedule.get(

@@ -30,18 +30,13 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.ScheduleElement;
-import ptolemy.actor.sched.Firing;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
+import java.util.List;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.ScheduleElement;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSchedule
@@ -59,20 +54,20 @@ OUTPUT_ACTORS
 OUTPUT_STEP_SIZE_CONTROL_ACTORS
 STATE_TRANSITION_ACTORS
 STATEFUL_ACTORS
-STATE_STEP_SIZE_CONTROL_ACTORS 
-WAVEFORM_GENERATORS 
-</pre> 
+STATE_STEP_SIZE_CONTROL_ACTORS
+WAVEFORM_GENERATORS
+</pre>
 Each entry is a Schedule. Actors
 in the schedules are ordered according to the order they should be
 executed.
 <P>
-A typical use of the schedule is to get one of the subschedules. 
-For example, to schedule the CT execution and get the iterator for 
-dynamic actor schedule, 
+A typical use of the schedule is to get one of the subschedules.
+For example, to schedule the CT execution and get the iterator for
+dynamic actor schedule,
 (assume we have a CTScheduler called scheduler) do:
 <pre>
 CTSchedule schedule = scheduler.getSchedule();
-Iterator dynamicActorIterator = 
+Iterator dynamicActorIterator =
         schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
 </pre>
 @author  Jie Liu
@@ -85,10 +80,10 @@ public class CTSchedule extends Schedule {
     public CTSchedule() {
         super();
     }
- 
+
     /////////////////////////////////////////////////////////////////////
-    ////                         public variables                    ////     
-    
+    ////                         public variables                    ////
+
     /** Index for actors in the discrete part of the system,
      *  topologically ordered.
      */
@@ -97,7 +92,7 @@ public class CTSchedule extends Schedule {
     /** Index for actors in the continuous part of the system, unordered.
      */
     public final static int CONTINUOUS_ACTORS = 1;
-    
+
     /** Index for dynamic actor schedule.
      */
     public final static int DYNAMIC_ACTORS = 2;
@@ -105,7 +100,7 @@ public class CTSchedule extends Schedule {
     /** Index for actors implement the CTEventGenerator interface.
      */
     public final static int EVENT_GENERATORS = 3;
-    
+
     /** Index for output schedule.
      */
     public final static int OUTPUT_ACTORS = 4;
@@ -131,7 +126,7 @@ public class CTSchedule extends Schedule {
     /** Index for actors that implement the CTWaveformGenerator interface.
      */
     public final static int WAVEFORM_GENERATORS = 9;
-    
+
 
     ////////////////////////////////////////////////////////////////
     ////                      public methods                    ////
@@ -146,7 +141,7 @@ public class CTSchedule extends Schedule {
 	_incrementVersion();
 	_schedule.add(element);
     }
-    
+
     /** Return the element at the specified position in the list.
      *
      * @param index The index of the element to return.
@@ -155,7 +150,7 @@ public class CTSchedule extends Schedule {
     public ScheduleElement get(int index) {
 	return((ScheduleElement)_schedule.get(index));
     }
-    
+
     /** Return all the scheduling information in a Sting.
      *  @return All the schedules.
      */
@@ -168,7 +163,7 @@ public class CTSchedule extends Schedule {
         Schedule continuous = (Schedule)get(CONTINUOUS_ACTORS);
         iterator = continuous.actorIterator();
         while(iterator.hasNext()) {
-            result = result + 
+            result = result +
                 "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
@@ -176,7 +171,7 @@ public class CTSchedule extends Schedule {
         Schedule discrete = (Schedule)get(DISCRETE_ACTORS);
         iterator = discrete.actorIterator();
         while(iterator.hasNext()) {
-            result = result + 
+            result = result +
                 "\t" + ((NamedObj)iterator.next()).getFullName() + "\n";
         }
         result += "    }\n";
@@ -234,7 +229,7 @@ public class CTSchedule extends Schedule {
 
     ////////////////////////////////////////////////////////////////
     ////               protected variables                      ////
-    
+
     // We choose an ArrayList implementation for _schedule,
     // so that most access time is constant.
     protected List _schedule = new ArrayList(10);

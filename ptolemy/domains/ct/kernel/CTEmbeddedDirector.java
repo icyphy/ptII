@@ -29,16 +29,18 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-
-import java.util.Iterator;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
@@ -140,7 +142,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 + nextIterationTime);
         setCurrentTime(getIterationBeginTime());
         _outsideStepSize = nextIterationTime - getIterationBeginTime();
-        
+
         if (_outsideStepSize == 0) {
             if(_debugging) _debug("outside step size is 0",
                     "So treat this as a breakpoint.");
@@ -160,23 +162,23 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             breakPoints.removeAllLessThan(now);
             if(breakPoints.contains(now)) {
                 if(_debugging)
-                    _debug(getName(), 
+                    _debug(getName(),
                             " Break point now at" + _outsideTime);
                 // Breakpoints iterations are always successful
                 // so remove the breakpoints.
                 breakPoints.removeFirst();
-                // does not adjust step size, 
+                // does not adjust step size,
                 // since the exe-dir should do it.
                 _setCurrentODESolver(getBreakpointSolver());
                 _setBreakpointIteration(true);
                 setCurrentStepSize(getMinStepSize());
             }
         }
-        
+
         if(_debugging) _debug(getName(), "at" + getCurrentTime(),
                 " step size is " + getCurrentStepSize(),
                 "breakpoint table contains " + getBreakPoints().toString());
-        
+
         _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
@@ -196,7 +198,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 _stateAcceptable = false;
                 if(_debugging) _debug(getFullName() + "resolve state failed.");
             }
-            
+
             if(_debugging) _debug(getFullName() + " current time after" +
                     " solver.resolveStates() is " + getCurrentTime());
             produceOutput();
@@ -233,9 +235,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         setCurrentTime(exe.getCurrentTime());
         _setIterationBeginTime(getCurrentTime());
         super.initialize();
-        
+
     }
-        
+
 
     /** Return true if the current integration step
      *  is accurate. This is determined by asking all the
@@ -310,7 +312,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             NSTEP++;
         }
         CompositeActor ca = (CompositeActor) getContainer();
-        
+
         if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -321,7 +323,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             scheduler.getSchedule();
             setScheduleValid(true);
         }
-        
+
         return true;
     }
 

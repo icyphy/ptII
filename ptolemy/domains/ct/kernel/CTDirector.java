@@ -30,20 +30,30 @@
 
 package ptolemy.domains.ct.kernel;
 
+import java.util.Comparator;
+import java.util.Iterator;
 import ptolemy.actor.Actor;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator;
+import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
-import java.util.Iterator;
-import java.util.List;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
@@ -446,7 +456,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public final double getStartTime() {
         return _startTime;
     }
-    
+
     /** Return the stop time. This method is final
      *  for performance reason.
      *  @return the stop time.
@@ -512,7 +522,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
            isDiscretePhase()) {
             // This is specifc for discrete actors.
             // Fire it right away.
-            if (actor.prefire()) { 
+            if (actor.prefire()) {
                 actor.fire();
                 actor.postfire();
             }
@@ -538,7 +548,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public final boolean isBreakpointIteration() {
         return _breakpointIteration;
     }
-    
+
     /** Return true if this is the discrete phase execution.
      *  @return True if this is the discrete phase execution.
      */

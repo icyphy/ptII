@@ -32,7 +32,6 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerator
@@ -56,7 +55,7 @@ public interface CTEventGenerator extends Actor{
      *
     public void emitCurrentEvents() throws IllegalActionException;
     */
-    
+
     /** Imeplementations of this method should return
      *  true if there is an event at the current time.
      *  @return True if there is an event to emit now.

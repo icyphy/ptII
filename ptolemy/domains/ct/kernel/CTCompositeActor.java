@@ -30,13 +30,14 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.Port;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NamedObj.MoMLInfo;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
@@ -160,7 +161,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }
 
-    /** Create a new IOPort with the specified name. This port is 
+    /** Create a new IOPort with the specified name. This port is
      *  created with a parameter <i>signalType</i> with default value
      *  <i>CONTINUOUS</i>
      *  The container of the port is set to this actor.
@@ -169,7 +170,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return The new port.
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
-     
+
     public Port newPort(String name)
             throws NameDuplicationException {
         Port newPort = super.newPort(name);
