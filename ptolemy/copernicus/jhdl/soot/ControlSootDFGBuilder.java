@@ -128,7 +128,7 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
     */
 
     public static SootBlockDirectedGraph[] getGraphs(String args[]) {
-	SootASTVisitor.DEBUG = true;
+	//SootASTVisitor.DEBUG = true;
 	Block blocks[] = getBlocks(args);
 	SootBlockDirectedGraph graphs[] = 
 	    new SootBlockDirectedGraph[blocks.length];	

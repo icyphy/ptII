@@ -29,6 +29,8 @@
 
 package ptolemy.copernicus.jhdl;
 
+import ptolemy.copernicus.jhdl.soot.*;
+
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Vector;

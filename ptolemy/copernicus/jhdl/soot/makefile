@@ -48,6 +48,8 @@ JSRCS = SootASTVisitor.java \
 	SootBlockDirectedGraph.java \
 	SootDFGBuilder.java \
 	ControlSootDFGBuilder.java \
+	ConditionalControlCompactor.java \
+	BooleanNotCompactor.java \
 	JHDLNotExpr.java \
 	CompoundBooleanExpression.java \
 	AbstractCompoundExpression.java \

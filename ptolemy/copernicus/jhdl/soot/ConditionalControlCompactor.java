@@ -27,7 +27,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
 
 import java.util.Iterator;
 import java.util.Collection;
@@ -43,6 +43,8 @@ import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
 import ptolemy.copernicus.jhdl.soot.CompoundOrExpression;
 import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
+
+import ptolemy.copernicus.jhdl.*;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;

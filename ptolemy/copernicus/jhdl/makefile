@@ -58,8 +58,6 @@ JSRCS = \
 	RequiredBlockDataFlowGraph.java \
 	BlockDataFlowGraph.java \
 	DominatorHashMap.java \
-	ConditionalControlCompactor.java \
-	BooleanNotCompactor.java \
 	DirectedAcyclicCFG.java \
 	DominatorCFG.java \
 	IntervalChain.java \

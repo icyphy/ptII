@@ -131,16 +131,19 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    Node n = (Node) i.next();
 	    if (n.weight() instanceof InstanceFieldRef) {
 		InstanceFieldRef t_ifr = (InstanceFieldRef) n.weight();
-		if (SootBlockDirectedGraph.equal(t_ifr, ifr)) {
+		if (SootBlockDirectedGraph.equal(t_ifr, ifr) &&
+		    ifr != t_ifr) {
 		    dupIfr = t_ifr;
 		}
 	    }
 	}
 
 	if (dupIfr == null) {
+	    //System.out.println("No dup");
 	    // No matching IFR. Add edge for base.
 	    _graph.addEdge(baseNode,ifrNode,_graph.BASE_WEIGHT);
  	} else {
+	    //System.out.println("dup:"+ifr+" "+dupIfr);
 	    // A matching IFR has been found. Delete the Node that
 	    // has been created for ifr and create a reference
 	    // between ifr with the Node of the matching ifr.
@@ -153,7 +156,6 @@ public class SootDFGBuilder extends SootASTVisitor {
 		_graph.addEdge(baseNode,newNode,_graph.BASE_WEIGHT);
 	    }
 	}
-
 	return ifr;
     }
 

@@ -113,6 +113,7 @@ import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 
 import ptolemy.copernicus.jhdl.soot.JHDLNotExpr;
 import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
+import ptolemy.copernicus.jhdl.soot.ConditionalControlCompactor;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph

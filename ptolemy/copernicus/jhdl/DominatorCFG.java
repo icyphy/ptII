@@ -42,6 +42,7 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
+import ptolemy.copernicus.jhdl.soot.*;
 
 import soot.Body;
 import soot.Unit;

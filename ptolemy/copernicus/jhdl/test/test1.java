@@ -94,12 +94,14 @@ public class test1 extends TypedAtomicActor {
 	int a = (b + 5) * 4 + 3;
 	a = -a;	    
     }
+
     /** fieldref **/
     public void method3() {
 	test1 b=null;
 	int a = b.e + 4;
 	this.e = a;
     }
+
     /** invoke statement * expr **/
     public int method4(int b) {
 	g(b+3);
