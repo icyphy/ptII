@@ -222,10 +222,10 @@ public class IOPort extends ComponentPort {
      *  receivers previously associated with that relation will
      *  be overwritten.
      *  <p>
-     *  If the port is an input port, receivers are created as neccessary
+     *  If the port is an input port, receivers are created as necessary
      *  for each relation connecting to the port from the outside.
      *  <p>
-     *  If the port is an output port, receivers are created as neccessary
+     *  If the port is an output port, receivers are created as necessary
      *  for each relation connected to the port from the inside. Note that
      *  only composite entities will have relations connecting to ports
      *  from the inside.

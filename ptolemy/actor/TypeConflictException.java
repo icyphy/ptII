@@ -39,7 +39,7 @@ import java.util.Enumeration;
 //// TypeConflictException
 /**
 Thrown on detecting type conflicts.
-This class contains all the TypedIOPorts where type conflicts occured.
+This class contains all the TypedIOPorts where type conflicts occurred.
 There are several kinds of type conflicts: (1) Two TypedIOPorts
 with declared types are connected, but the type of the port at the
 source end of the connection is not less than or equal to the type of
@@ -57,7 +57,7 @@ public class TypeConflictException extends KernelException {
 
     /** Construct an Exception with an Enumeration of TypedIOPorts.
      *  The ports are the places where type conflicts
-     *  occured.  The detailed message of this Exception will be
+     *  occurred.  The detailed message of this Exception will be
      *  the string "type conflict.".
      *  @param ports an Enumeration of TypedIOPorts.
      */
@@ -67,7 +67,7 @@ public class TypeConflictException extends KernelException {
 
     /** Construct an Exception with an Enumeration of TypedIOPorts
      *  and a message. The ports are the places where type conflicts
-     *  occured.  The detailed message of this Exception will be
+     *  occurred.  The detailed message of this Exception will be
      *  the specified message.
      *  @param ports an Enumeration of TypedIOPorts.
      *  @param detail a message.
@@ -81,7 +81,7 @@ public class TypeConflictException extends KernelException {
     ////                          public methods                   ////
 
     /** Return an Enumeration of TypedIOPorts where type conflicts
-     *  occured. The ports are those specified in the Enumeration
+     *  occurred. The ports are those specified in the Enumeration
      *  argument of the constructor.
      *  @return An Enumeration.
      */
