@@ -70,7 +70,7 @@ import diva.resource.RelativeBundle;
  * MDIApplication.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public abstract class AbstractApplication implements Application {

@@ -112,7 +112,7 @@ import diva.gui.BasicFrame;
  *
  * @author John Reekie      (johnr@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class CompositeFigureTutorial {

@@ -62,7 +62,7 @@ import diva.gui.BasicFrame;
  * select a node and control-drag to create new edges.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class EditorTutorial {

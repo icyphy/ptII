@@ -53,7 +53,7 @@ import diva.gui.BasicFrame;
  * This tutorial illustrates how to use Terminals.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class TerminalTutorial {
 

@@ -90,7 +90,7 @@ import diva.gui.BasicFrame;
  * changing the behaviour of the interactor).
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class DragTutorial {
 

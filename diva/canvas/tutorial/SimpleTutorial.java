@@ -101,7 +101,7 @@ import diva.util.java2d.Polyline2D;
  * segments are needed.
  *
  * @author John Reekie
- * @version $Revision$ */
+ * @version $Id$ */
 public class SimpleTutorial {
 
     // The JCanvas

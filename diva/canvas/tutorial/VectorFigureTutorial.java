@@ -59,7 +59,7 @@ import diva.gui.BasicFrame;
  * a series of shapes that are added one at a time to it.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class VectorFigureTutorial {
 

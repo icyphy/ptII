@@ -121,7 +121,7 @@ import diva.gui.BasicFrame;
  * kinds of figures (in this case, different kinds of connectors).
  *
  * @author John Reekie
- * @version $Revision$ */
+ * @version $Id$ */
 public class ArcTutorial {
 
     // The JCanvas

@@ -42,7 +42,7 @@ import diva.gui.AbstractView;
  * A simple MDI text editor view.  FIXME
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class TextView extends AbstractView {
     private JEditorPane _editorPane;

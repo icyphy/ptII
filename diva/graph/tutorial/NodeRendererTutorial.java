@@ -69,7 +69,7 @@ import diva.gui.BasicFrame;
  * </ul>
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class NodeRendererTutorial {

@@ -60,7 +60,7 @@ import diva.gui.DocumentFactory;
  * this type.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public class TextDocument extends AbstractDocument {
 

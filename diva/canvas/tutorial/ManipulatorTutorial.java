@@ -61,7 +61,7 @@ import diva.util.java2d.Polyline2D;
  * to figures.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class ManipulatorTutorial {
 

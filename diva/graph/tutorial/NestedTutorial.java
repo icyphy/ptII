@@ -60,7 +60,7 @@ import diva.gui.BasicFrame;
  * More comments below in the individual methods.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class NestedTutorial {

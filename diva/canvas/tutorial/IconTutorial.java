@@ -64,7 +64,7 @@ import diva.util.java2d.Polygon2D;
  * This tutorial illustrates how to use Icons.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class IconTutorial {
 

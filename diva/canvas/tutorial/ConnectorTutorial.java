@@ -165,7 +165,7 @@ import diva.gui.BasicFrame;
  * of the rectangles, which is why the connectors snap to those points.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class ConnectorTutorial {
 

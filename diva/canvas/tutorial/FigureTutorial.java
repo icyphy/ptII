@@ -194,7 +194,7 @@ import diva.util.java2d.ShapeUtilities;
  * by "wrapping" it.
  *
  * @author John Reekie
- * @version $Revision$ */
+ * @version $Id$ */
 public class FigureTutorial {
     // The file name for the image that is displayed
     public static final String IMAGE_FILE_NAME = "demo.gif";

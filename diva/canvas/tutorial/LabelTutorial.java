@@ -56,7 +56,7 @@ import diva.gui.BasicFrame;
  * This tutorial illustrates how to use LabelFigure and related classes.
  *
  * @author John Reekie
- * @version $Revision$
+ * @version $Id$
  */
 public class LabelTutorial {
 

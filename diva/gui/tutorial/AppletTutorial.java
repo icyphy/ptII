@@ -36,7 +36,7 @@ import diva.gui.AppletContext;
  * A graph editor that runs as an applet.
  *
  * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  * @rating Red
  */
 public class AppletTutorial extends AppletContext {

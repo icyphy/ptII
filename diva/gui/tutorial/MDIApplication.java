@@ -55,7 +55,7 @@ import diva.gui.ViewEvent;
  * implement the view-document mapping yourself.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class MDIApplication extends AbstractApplication {
 
