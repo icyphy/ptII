@@ -135,7 +135,7 @@ public class CTScheduler extends Scheduler{
 
     /** Construct a CT scheduler in the default workspace
      *  with the default name "CTScheduler". There is no director
-     *  containing this scheduler. To attach this schduler to a
+     *  containing this scheduler. To attach this schdeuler to a
      *  CTDirector, call setScheduler() on the CTDirector.
      */
     public CTScheduler() {
@@ -144,7 +144,7 @@ public class CTScheduler extends Scheduler{
 
     /** Construct a CT scheduler in the given workspace
      *  with the name "CTScheduler". There is no director
-     *  containing this scheduler. To attach this schduler to a
+     *  containing this scheduler. To attach this schdeuler to a
      *  CTDirector, call setScheduler() on the CTDirector.
      *
      *  @param workspace The workspace.
@@ -335,7 +335,7 @@ public class CTScheduler extends Scheduler{
      *  If workspace version equals to the cached version,
      *  then it returns the cached list.
      *  Otherwise, it will reconstruct, cache, and return the
-     *  updated schdule.
+     *  updated schedule.
      *  The dynamic actor schedule lists all the
      *  dynamic actors
      *  in the reverse topology order. This order can be used
@@ -538,93 +538,93 @@ public class CTScheduler extends Scheduler{
      *  @return All the schedules.
      */
     public String toString() {
-        String res = new String();
+        String result = new String();
         Iterator iterator;
-        res += "CTSchedule {\n";
-        res += "    arithmaticActors {\n";
+        result += "CTSchedule {\n";
+        result += "    arithmaticActors {\n";
         iterator = arithmaticActorList().iterator();
         try {
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    dynamicActors {\n";
+            result += "    }\n";
+            result += "    dynamicActors {\n";
             iterator = dynamicActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    stateTransitionSSCActors {\n";
+            result += "    }\n";
+            result += "    stateTransitionSSCActors {\n";
             iterator = stateTransitionSSCActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    outputSSCActors {\n";
+            result += "    }\n";
+            result += "    outputSSCActors {\n";
             iterator = outputSSCActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    eventGenerators {\n";
+            result += "    }\n";
+            result += "    eventGenerators {\n";
             iterator = eventGeneratorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    eventInterpreters {\n";
+            result += "    }\n";
+            result += "    eventInterpreters {\n";
             iterator = waveformGeneratorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    statefulActors {\n";
+            result += "    }\n";
+            result += "    statefulActors {\n";
             iterator = statefulActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    sinkActors {\n";
+            result += "    }\n";
+            result += "    sinkActors {\n";
             iterator = sinkActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    dynamicActorSchedule {\n";
+            result += "    }\n";
+            result += "    dynamicActorSchedule {\n";
             iterator = scheduledDynamicActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    stateTransitionSchedule {\n";
+            result += "    }\n";
+            result += "    stateTransitionSchedule {\n";
             iterator = scheduledStateTransitionActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "    outputSchedule {\n";
+            result += "    }\n";
+            result += "    outputSchedule {\n";
             iterator = scheduledOutputActorList().iterator();
             while(iterator.hasNext()) {
-                res += "\t" +
+                result += "\t" +
                     ((NamedObj)iterator.next()).getFullName() + "\n";
             }
-            res += "    }\n";
-            res += "}\n";
+            result += "    }\n";
+            result += "}\n";
         } catch (IllegalActionException ex) {
             throw new InvalidStateException(this,
                     "Failed to generate CT schedule.");
         }
-        return res;
+        return result;
     }
 
     /** Return a list of waveform generators in their creation order.
@@ -843,8 +843,8 @@ public class CTScheduler extends Scheduler{
         LinkedList successors = new LinkedList();
         Iterator outports = actor.outputPortList().iterator();
         while(outports.hasNext()) {
-            IOPort outp = (IOPort) outports.next();
-            Iterator inPorts = outp.deepConnectedInPortList().iterator();
+            IOPort outPort = (IOPort) outports.next();
+            Iterator inPorts = outPort.deepConnectedInPortList().iterator();
             while(inPorts.hasNext()) {
                 IOPort inPort = (IOPort)inPorts.next();
                 Actor post = (Actor)inPort.getContainer();
@@ -864,7 +864,7 @@ public class CTScheduler extends Scheduler{
      *  corresponding nodes.
      *  The existence of the director and containers is not checked
      *  in this method, so the caller should check.
-     *  @param actorlist The list of actors to be scheduled.
+     *  @param list The list of actors to be scheduled.
      *  @return A graph representation of the actors.
      */
     protected DirectedAcyclicGraph _toArithmeticGraph(List list) {
@@ -900,27 +900,27 @@ public class CTScheduler extends Scheduler{
      *  Each actor in the argument is a node in the graph,
      *  and each link between a pair of actors is a edge between the
      *  corresponding nodes.
-     *  @param actorlist The list of actors to be converted to a graph.
+     *  @param list The list of actors to be converted to a graph.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toGraph(List actorlist) {
+    protected DirectedAcyclicGraph _toGraph(List list) {
         
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
-        Iterator actors = actorlist.iterator();
+        Iterator actors = list.iterator();
         while (actors.hasNext()) {
             Actor a = (Actor)actors.next();
             g.add(a);
         }
         // Create the edges.
-        actors = actorlist.iterator();
+        actors = list.iterator();
         while (actors.hasNext()) {
             Actor a = (Actor) actors.next();
             // Find the successors of a
             Iterator successors = _successorList(a).iterator();
             while (successors.hasNext()) {
                 Actor s = (Actor) successors.next();
-                if(actorlist.contains(s)) {
+                if(list.contains(s)) {
                     g.addEdge(a, s);
                 }
             }
