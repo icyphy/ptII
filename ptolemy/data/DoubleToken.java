@@ -486,10 +486,17 @@ public class DoubleToken extends ScalarToken {
      */
     public String toString() {
         double mag = Math.abs(_value);
-        if(mag == 0.0 || (mag < 1000000 && mag > .001))
-            return _regularFormat.format(_value);
-        else 
-            return _exponentialFormat.format(_value);    
+        if(mag == 0.0 || (mag < 1000000 && mag > .001)) {
+	    if (_regularFormat == null) {
+		_regularFormat =     new DecimalFormat("#####0.0######");
+	    } 
+	    return _regularFormat.format(_value);
+        } else {
+	    if (_exponentialFormat == null) {
+		_exponentialFormat = new DecimalFormat("0.0######E0##");
+	    }
+	    return _exponentialFormat.format(_value);
+	}    
     }
 
     /** Returns a new token representing the additive identity.
@@ -503,6 +510,6 @@ public class DoubleToken extends ScalarToken {
     ////                         private variables                 ////
     private double _value;
 
-    DecimalFormat _regularFormat =     new DecimalFormat("#####0.0######");
-    DecimalFormat _exponentialFormat = new DecimalFormat("0.0######E0##");
+    DecimalFormat _regularFormat = null;
+    DecimalFormat _exponentialFormat = null;
 }
