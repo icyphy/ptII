@@ -294,7 +294,7 @@ public class HDFDirector extends SDFDirector {
     }
 
     /** Initialize the actors associated with this director.
-     *  If this method is called immediatley after preinitialize(),
+     *  If this method is called immediately after preinitialize(),
      *  then it will not compute the schedule because it was done
      *  in preinitialize(). Otherwise it needs to re-compute
      *  the schedule in case this director is nested in a refinement
@@ -355,7 +355,7 @@ public class HDFDirector extends SDFDirector {
      *  of firings per top-level iteration for each actor from the
      *  top level down to the bottom level.
      *  @exception IllegalActionException If the super class
-     *  preintialize throws it, or if the updateFiringCount method
+     *  preinitialize throws it, or if the updateFiringCount method
      *  throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -533,7 +533,7 @@ public class HDFDirector extends SDFDirector {
 
     private String _mostRecentRates;
 
-    // A flag indicating whether the intialize() method is
+    // A flag indicating whether the initialize() method is
     // called immediately after the preinitialize() method.
     //private boolean _preinitializeFlag;
 
