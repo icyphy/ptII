@@ -26,9 +26,9 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows the use of background process for long run tasks in 
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows the use of background process for long running tasks in 
 the TM domain. There are two composite actors in this model, both 
-implemented in SDF. One of them, the singla generator, has a short
+implemented in SDF. One of them, the signal generator, has a short
 execution time, and is treated as an atomic execution. The other, 
 implementing the FFT algorithm, has a long execution time, and is 
 executed in a separate thread.</text>

@@ -24,10 +24,12 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows two (independent) tasks on a
-single CPU machine. Depending the TM scheduling
-policy, deferent behaviors will be seen. To run
-the demo, start the run window and set the 
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows two independent tasks on a
+single CPU machine. The TM scheduler preemptive
+parameter determines the scheduling policy. 
+The schedule will be different depending on
+whether preemptive is true or false.
+To run the demo, start the run window and set the 
 preemptive parameter to true or false.
 </text>
            </svg>
