@@ -41,20 +41,6 @@ import java.net.*;              // Need URL
  */
 public class PlotLiveDemoApplet extends Applet implements Runnable {
 
-    public void init() {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
-        int width,height;
-        setLayout(new BorderLayout());
-
-        _myPlotLiveDemo = new PlotLiveDemo();
-        add("Center",_myPlotLiveDemo);
-        //        show();
-
-        _myPlotLiveDemo.resize(300,300);
-        _myPlotLiveDemo.init();
-        super.init();
-    }
-
     /**
      * Return a string describing this applet.
      */
@@ -66,17 +52,53 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
     }
 
     /** 
+     * Initialize the applet.
+     */
+    public void init() {
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
+        int width,height;
+        setLayout(new BorderLayout());
+
+        _myPlotLiveDemo = new PlotLiveDemo();
+        add("Center",_myPlotLiveDemo);
+        //        show();
+
+        try {
+            width = Integer.valueOf(getParameter("width")).intValue();
+        } catch (NullPointerException e) {
+            width = 400;
+        }
+        try {
+            height = Integer.valueOf(getParameter("height")).intValue();
+        } catch (NullPointerException e) {
+            height = 400;
+        }
+
+        _myPlotLiveDemo.resize(width,height);
+        _myPlotLiveDemo.init();
+        super.init();
+    }
+
+    /** 
+     * Paint the graphics.
      */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
         _myPlotLiveDemo.paint(graphics);
     }
 
+    /** 
+     * Resize the plot.
+     */
     public void resize(int width, int height) {
         if (_debug > 8)
-            System.out.println("PlotLiveDemoApplet: resize"+width+" "+height);
+            System.out.println("PlotLiveDemoApplet: resize "+width+" "+height);
         super.resize(width,height);
     }
+
+    /** 
+     * Paint the graphics.
+     */
     public void run () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: run");
 // 	while (true) {
@@ -84,21 +106,26 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 // 		Thread.currentThread().sleep(speed);
 // 	    } catch (InterruptedException e) {
 // 	    }
-        if (_debug > 10) System.out.println("PlotLiveDemoApplet: run calling repaint");
+        if (_debug > 10)
+            System.out.println("PlotLiveDemoApplet: run calling repaint");
 	repaint();
     }
 
+    /** 
+     */
     public void start () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: start");
-	_plotThread = new Thread(this);
-        _plotThread.start();
+	_plotLiveDemoAppletThread = new Thread(this);
+        _plotLiveDemoAppletThread.start();
         _myPlotLiveDemo.start();
         super.start();
     }
 
+    /** 
+     */
     public void stop () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: stop");
-        _plotThread.stop();
+        _plotLiveDemoAppletThread.stop();
         super.stop();
     }
 
@@ -108,12 +135,20 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 //         super.update(graphics);
 //     }
 
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                      ////
+
+    // The higher the number, the more debugging
     protected int _debug = 9;
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    // The Plot component we are running.
     private PlotLiveDemo _myPlotLiveDemo;
-    private Thread _plotThread;
+
+    // Thread for this applet.
+    private Thread _plotLiveDemoAppletThread;
 
 }
 
