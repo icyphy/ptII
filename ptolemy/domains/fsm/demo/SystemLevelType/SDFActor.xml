@@ -13,41 +13,41 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 541]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[27, 38]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[25, 57]">
     </property>
     <port name="f" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="174.83312604474193, 200.4646691752409">
+        <property name="_location" class="ptolemy.moml.Location" value="176.0, 200.0">
         </property>
     </port>
     <port name="g" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="480.83312604474236, 95.46466917524091">
+        <property name="_location" class="ptolemy.moml.Location" value="471.375, 113.125">
         </property>
     </port>
     <port name="t" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="484.83312604474236, 140.4646691752409">
+        <property name="_location" class="ptolemy.moml.Location" value="476.625, 151.875">
         </property>
     </port>
     <port name="fR" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="175.83312604474193, 255.46466917524089">
+        <property name="_location" class="ptolemy.moml.Location" value="177.0, 255.0">
         </property>
     </port>
     <port name="hT" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="481.93991340277523, 205.93530503397815">
+        <property name="_location" class="ptolemy.moml.Location" value="476.375, 213.125">
         </property>
     </port>
     <port name="hTT" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="485.93991340277523, 250.93530503397812">
+        <property name="_location" class="ptolemy.moml.Location" value="480.375, 258.125">
         </property>
     </port>
     <port name="hTF" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="485.93991340277523, 295.935305033978">
+        <property name="_location" class="ptolemy.moml.Location" value="480.375, 303.125">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
