@@ -53,8 +53,7 @@ public interface TypeListener {
     ////                         public methods                    ////
 
     /** Notify that the type of a port is changed.
-     *
-     * @param event The type change event.
+     *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event);
 }
