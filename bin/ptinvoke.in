@@ -114,7 +114,7 @@ case "`basename $0`" in
 	javasourcedir=ptolemy/actor/gui
 	jarfile=$JINI_LIB/jini-examples.jar
 	case "${OSTYPE-no}" in
-	    cygwin32*)
+	    cygwin*)
 		JINI_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's/jini1_0_1//'`
 		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
 	    ;;
@@ -187,7 +187,7 @@ case "${OSTYPE-no}" in
 	JAVAHOME="$JAVA_HOME"
 	export JAVAHOME
     fi;;
-    cygwin32*)
+    cygwin*)
 	windows=yes;;
 esac
 
