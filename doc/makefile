@@ -51,32 +51,32 @@ OPTIONAL_FILES =	codeDoc
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
-ALLJSRCS = 		pt/plot/*.java \
-			pt/kernel/*.java \
-			pt/kernel/util/*.java \
-			pt/actor/*.java \
-			pt/actor/util/*.java \
-			pt/data/*.java \
-			pt/data/expr/*.java
+ALLJSRCS = 		ptolemy/plot/*.java \
+			ptolemy/kernel/*.java \
+			ptolemy/kernel/util/*.java \
+			ptolemy/actor/*.java \
+			ptolemy/actor/util/*.java \
+			ptolemy/data/*.java \
+			ptolemy/data/expr/*.java
 
-#			pt/domains/pn/kernel/*.java \
-#			pt/domains/ct/kernel/*.java \
-#			pt/domains/pn/lib/*.java \
-#			pt/domains/ct/lib/*.java
+#			ptolemy/domains/pn/kernel/*.java \
+#			ptolemy/domains/ct/kernel/*.java \
+#			ptolemy/domains/pn/lib/*.java \
+#			ptolemy/domains/ct/lib/*.java
 
 all: codeDoc/tree.html
 
-codeDoc/tree.html: 	../pt/plot/*.java \
-			../pt/kernel/*.java \
-			../pt/kernel/util/*.java \
-			../pt/actor/*.java \
-			../pt/actor/util/*.java \
-			../pt/data/*.java \
-			../pt/data/expr/*.java
-#			../pt/domains/pn/kernel/*.java \
-#			../pt/domains/ct/kernel/*.java \
-#			../pt/domains/pn/lib/*.java \
-#			../pt/domains/ct/lib/*.java
+codeDoc/tree.html: 	../ptolemy/plot/*.java \
+			../ptolemy/kernel/*.java \
+			../ptolemy/kernel/util/*.java \
+			../ptolemy/actor/*.java \
+			../ptolemy/actor/util/*.java \
+			../ptolemy/data/*.java \
+			../ptolemy/data/expr/*.java
+#			../ptolemy/domains/pn/kernel/*.java \
+#			../ptolemy/domains/ct/kernel/*.java \
+#			../ptolemy/domains/pn/lib/*.java \
+#			../ptolemy/domains/ct/lib/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
