@@ -232,3 +232,15 @@ TRANSFORM_ISPMP_SEDSCRIPT = \
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@$(PTDIST)\\copyright@$(PTDIST)/copyright@'
 
+unix$(INSTALLSHIELD_PROJECT):  $(INSTALLSHIELD_PROJECT)
+	sed $(TRANSFORM_ISPMP_SEDSCRIPT) \
+		 $< > $@
+
+# Build the Installshield project
+build_ispmp: unix$(INSTALLSHIELD_PROJECT)
+	java -classpath $(ISPMP_CLASSPATH) \
+		-Dis.debug=12 \
+		com.installshield.isje.ISJE $< \
+		-build
+
+

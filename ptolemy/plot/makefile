@@ -102,7 +102,6 @@ EXTRA_SRCS = $(JSRCS) \
 	$(INSTALLSHIELD_PROJECT) \
 	copyright.txt \
 	index.htm \
-	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test img #bean
@@ -115,6 +114,7 @@ OPTIONAL_FILES = \
 	histogram \
 	manifest.tmp \
 	$(PTCLASSALLJAR) \
+	unix$(INSTALLSHIELD_PROJECT) \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
 	'EditablePlot$$UndoListener.class' \
@@ -372,7 +372,4 @@ fixtmpdist:
 ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot
 ISPMP_WINDOWS_SRC= $(ISPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
 # Run this on doppler with:
-# rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
-unix$(INSTALLSHIELD_PROJECT):  $(INSTALLSHIELD_PROJECT)
-	sed $(TRANSFORM_ISPMP_SEDSCRIPT) \
-		 $< > $@
+# rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_ispmp
