@@ -1,5 +1,5 @@
-/* An instance of FunctionDependencyOfCompositeActor describes the 
-function dependency information of a composite actor. 
+/* An instance of FunctionDependencyOfCompositeActor describes the
+function dependency information of a composite actor.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -39,10 +39,10 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
-/** An instance of FunctionDependencyOfCompositeActor describes the function 
+/** An instance of FunctionDependencyOfCompositeActor describes the function
 dependency information of a composite actor. The construction of the ports
-graph is in a bottom-up way by composing the FunctionDependencies of the 
-contained actors, which may be either atomic or composite. 
+graph is in a bottom-up way by composing the FunctionDependencies of the
+contained actors, which may be either atomic or composite.
 
 @see FunctionDependency
 @author Haiyang Zheng
@@ -51,7 +51,7 @@ contained actors, which may be either atomic or composite.
 */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
-    /** Construct a FunctionDependency in the given container. 
+    /** Construct a FunctionDependency in the given container.
      *  @param container The container has this FunctionDependency object.
      */
     public FunctionDependencyOfCompositeActor(Actor container) {
@@ -62,19 +62,19 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     ////                         protected methods                   ////
 
     /** Construct a directed graph with the nodes representing input and
-     *  output ports, and directed edges representing dependencies.  
+     *  output ports, and directed edges representing dependencies.
      */
-    // The following code has recursive calls. 
+    // The following code has recursive calls.
     // FIXME: Steve suggests the performance analysis.
     protected void _constructDirectedGraph()  {
 
         // get a new directed graph
         _directedGraph = new DirectedGraph();
-    
+
         // First, include all the ports as nodes in the graph.
         // The ports may belong to the container, or the
         // actors it contains.
-    
+
         // get all the inputs and outputs of the container
         Iterator inputs = _container.inputPortList().listIterator();
         while (inputs.hasNext()) {
@@ -85,25 +85,25 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         while (outputs.hasNext()) {
             _directedGraph.addNodeWeight(outputs.next());
         }
-        
+
         // FIXME: for special domains, like Giotto, the inputs
-        // and outputs are always independent. 
-        if (_container.getDirector() 
-            instanceof ptolemy.domains.giotto.kernel.GiottoDirector) { 
+        // and outputs are always independent.
+        if (_container.getDirector()
+            instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
                 return;
         }
 
         // Here we may add constraints on which actors to be used to
-        // construct graph. For example, in a modal model, we only 
-        // consider the function dependency of the refinement of 
+        // construct graph. For example, in a modal model, we only
+        // consider the function dependency of the refinement of
         // current state.
         List embeddedActors = _getEntities();
-        
+
         // merge the contained actors' graph into current one
         Iterator embeddedActorsIterator = embeddedActors.iterator();
         while (embeddedActorsIterator.hasNext()) {
             Actor embeddedActor = (Actor)embeddedActorsIterator.next();
-            FunctionDependency functionDependency = 
+            FunctionDependency functionDependency =
                 embeddedActor.getFunctionDependencies();
             // merge the ports graph of the embedded actor into current one
             if (functionDependency != null) {
@@ -115,15 +115,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     "dependencies. There must be something wrong.");
             }
         }
-           
-        // Next, create the directed edges according to the connections at 
+
+        // Next, create the directed edges according to the connections at
         // the container level
         embeddedActorsIterator = embeddedActors.iterator();
         // iterate all embedded actors (include opaque composite actors)
         while (embeddedActorsIterator.hasNext()) {
             Actor embeddedActor = (Actor)embeddedActorsIterator.next();
             // Find the successor of the output ports of current actor.
-            Iterator successors = 
+            Iterator successors =
                 embeddedActor.outputPortList().iterator();
             while (successors.hasNext()) {
                 IOPort outPort = (IOPort) successors.next();
@@ -142,13 +142,13 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                 */
                 Receiver[][] receivers = outPort.getRemoteReceivers();
                 for (int i = 0; i < receivers.length; i++) {
-                    // FIXME: For PrameterPort, it is possible that 
+                    // FIXME: For PrameterPort, it is possible that
                     // the downstream receivers are null. It is a
                     // unresolved issue about the semantics of Parameter
                     // Port considering the lazy evaluation of variables.
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                            IOPort ioPort = 
+                            IOPort ioPort =
                                 receivers[i][j].getContainer();
                             if (embeddedActors.contains(ioPort.getContainer())
                                 || outputPorts.contains(ioPort)) {
@@ -182,13 +182,13 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             Receiver[][] receivers = inputPort.deepGetReceivers();
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    IOPort ioPort = 
+                    IOPort ioPort =
                         receivers[i][j].getContainer();
-                    // The receivers may belong to either the inputs of 
+                    // The receivers may belong to either the inputs of
                     // contained actors, or the outputs of the containter.
                     if (embeddedActors.contains(ioPort.getContainer()) ||
                         _container.equals(ioPort.getContainer())) {
-                        _directedGraph.addEdge(inputPort, 
+                        _directedGraph.addEdge(inputPort,
                             receivers[i][j].getContainer());
                     }
                 }
@@ -197,8 +197,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     }
 
     /** Get a list of embedded entities for function dependency
-     *  calculation.  
-     *  @return a list of embedded entities. 
+     *  calculation.
+     *  @return a list of embedded entities.
      */
     protected List _getEntities() {
         return ((CompositeActor)_container).deepEntityList();
