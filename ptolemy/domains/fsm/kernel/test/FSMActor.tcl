@@ -111,7 +111,7 @@ test FSMActor-3.3 {test newReceiver} {
     set r [$fsm newReceiver]
     set tok [java::new ptolemy.data.StringToken foo]
     $r put $tok
-    set received [$r get]
+    set received [java::cast ptolemy.data.StringToken [$r get]]
     $received stringValue
 } {foo}
 
