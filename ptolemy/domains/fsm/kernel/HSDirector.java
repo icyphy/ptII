@@ -285,7 +285,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     /** Set the modelErrorHandler. Call super.preinitialize().
      */
     public void preinitialize() throws IllegalActionException {
-        setModelErrorHandler(new AssertionModelErrorHandler());
+        //setModelErrorHandler(new AssertionModelErrorHandler());
         super.preinitialize();
     }
 
@@ -311,7 +311,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
-            try {
+	    refinement.postfire();
+            /*
+	    try {
 	            refinement.postfire();
             } catch (IllegalActionException e) {
 		        if (_debugging) {
@@ -321,7 +323,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 		        if (_debugging && handleModelError(ctrl, e)) {
 		            _debug("ModelError is processed: " + e.getMessage());
 		        }                   	
-            }            // take out event outputs generated in ref.postfire()
+            }
+	    */            
+	    
+	    // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();
