@@ -148,6 +148,23 @@ public class XZHigherDerivatives extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Update the parameter if they have been changed.
+     *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute att) throws IllegalActionException {
+        if (att == paramIy) {
+            _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
+        } else if (att == paramHm) {
+            _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
+        } else if (att == paramMm) {
+            _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
+        } else if (att == paramMass) {
+            _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
+        }
+        super.attributeChanged(att);
+    }
+
     /** Compute the output.
      *
      *  @exception IllegalActionException If there's no input token
@@ -184,16 +201,6 @@ public class XZHigherDerivatives extends TypedAtomicActor
     }
 
 
-    /** Update the parameter if they have been changed.
-     *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void updateParameters() throws IllegalActionException {
-        _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
-        _hm = ((DoubleToken)paramHm.getToken()).doubleValue();
-        _Mm = ((DoubleToken)paramMm.getToken()).doubleValue();
-        _mass = ((DoubleToken)paramMass.getToken()).doubleValue();
-    }
 
     /** Input port Tm
      */

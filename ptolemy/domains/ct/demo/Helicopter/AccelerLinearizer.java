@@ -204,33 +204,36 @@ public class AccelerLinearizer extends TypedAtomicActor
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Not thrown in this base class
      */
-    public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaP.getToken()).toString();
-        StringTokenizer stokens = new StringTokenizer(taps);
-        int index = 0;
-        if(stokens.countTokens() < 5) {
-            throw new IllegalActionException ( this,
-                    "Not enough parameter numbers.");
+    public void attributeChnaged(Attribute att) throws IllegalActionException {
+        if (att == paramAlphaP) {
+            String taps = ((StringToken)paramAlphaP.getToken()).toString();
+            StringTokenizer stokens = new StringTokenizer(taps);
+            int index = 0;
+            if(stokens.countTokens() < 5) {
+                throw new IllegalActionException ( this,
+                        "Not enough parameter numbers.");
+            }
+            while(stokens.hasMoreTokens() && index < 5) {
+                String valueToken = stokens.nextToken();
+                _alphaP[index++] = (new Double(valueToken)).doubleValue();
+            }
+            
+            taps = ((StringToken)paramAlphaA.getToken()).toString();
+            stokens = new StringTokenizer(taps);
+            index = 0;
+            if(stokens.countTokens() < 3) {
+                throw new IllegalActionException ( this,
+                        "Not enough parameter numbers.");
+            }
+            while(stokens.hasMoreTokens() && index < 3) {
+                String valueToken = stokens.nextToken();
+                _alphaA[index++] = (new Double(valueToken)).doubleValue();
+            }
+        } else if (att == paramCAx) {
+            _cAx = ((DoubleToken)paramCAx.getToken()).doubleValue();
+        } else if (att == paramCPz) {
+            _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
         }
-        while(stokens.hasMoreTokens() && index < 5) {
-            String valueToken = stokens.nextToken();
-            _alphaP[index++] = (new Double(valueToken)).doubleValue();
-        }
-
-        taps = ((StringToken)paramAlphaA.getToken()).toString();
-        stokens = new StringTokenizer(taps);
-        index = 0;
-        if(stokens.countTokens() < 3) {
-            throw new IllegalActionException ( this,
-                    "Not enough parameter numbers.");
-        }
-        while(stokens.hasMoreTokens() && index < 3) {
-            String valueToken = stokens.nextToken();
-            _alphaA[index++] = (new Double(valueToken)).doubleValue();
-        }
-
-        _cAx = ((DoubleToken)paramCAx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
     }
 
     /** Input port Px

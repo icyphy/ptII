@@ -207,8 +207,9 @@ public class HelicopterApplet extends CTApplet {
             Transition tr4 = new Transition(hsctrl, "tr4");
             climbState.outgoingPort.link(tr4);
             cruise2State.incomingPort.link(tr4);
-            //"(outputV_V > 4.9) && (outputV_V < 5.1) && " 
-            tr4.setGuardExpression("(inputPz_V > -10.05) && (inputPz_V < -9.95)");
+            // 
+            tr4.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
+                    "&& (inputPz_V > -10.05) && (inputPz_V < -9.95)");
 
             TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
             TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
@@ -826,7 +827,6 @@ public class HelicopterApplet extends CTApplet {
     public class ActionButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
-                System.out.println("taking action");
                 _button.paramButtonClicked.setToken(new BooleanToken(true));
             }catch (IllegalActionException ex) {
                 report ("Button click failed:", ex);

@@ -198,17 +198,21 @@ public class HoverLinearizer extends TypedAtomicActor
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException  Not thrown in this base class.
      */
-    public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaP.getToken()).toString();
-        StringTokenizer stokens = new StringTokenizer(taps);
-        int index = 0;
-        int tokencount = stokens.countTokens();
-        while(stokens.hasMoreTokens() && index < 5) {
-            String valueToken = stokens.nextToken();
-            _alphaP[index++] = (new Double(valueToken)).doubleValue();
+    public void attributeChanged(Attribute att) throws IllegalActionException {
+        if (att == paramAlphaP) {
+            String taps = ((StringToken)paramAlphaP.getToken()).toString();
+            StringTokenizer stokens = new StringTokenizer(taps);
+            int index = 0;
+            int tokencount = stokens.countTokens();
+            while(stokens.hasMoreTokens() && index < 5) {
+                String valueToken = stokens.nextToken();
+                _alphaP[index++] = (new Double(valueToken)).doubleValue();
+            }
+        } else if (att == paramCPx) {
+            _cPx = ((DoubleToken)paramCPx.getToken()).doubleValue();
+        } else if (att == paramCPz) {
+            _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
         }
-        _cPx = ((DoubleToken)paramCPx.getToken()).doubleValue();
-        _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();
     }
 
     /** Input port Px, single port with type double.

@@ -199,21 +199,24 @@ public class ClimbLinearizer extends TypedAtomicActor
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaV.getToken()).toString();
-        StringTokenizer stokens = new StringTokenizer(taps);
-        int index = 0;
-        if(stokens.countTokens() < 4) {
-            throw new IllegalActionException ( this,
-                    "Not enough parameter numbers.");
+    public void attributeChanged(Attribute att) throws IllegalActionException {
+        if (att == paramAlphaV) {
+            String taps = ((StringToken)paramAlphaV.getToken()).toString();
+            StringTokenizer stokens = new StringTokenizer(taps);
+            int index = 0;
+            if(stokens.countTokens() < 4) {
+                throw new IllegalActionException ( this,
+                        "Not enough parameter numbers.");
+            }
+            while(stokens.hasMoreTokens() && index < 4) {
+                String valueToken = stokens.nextToken();
+                _alphaV[index++] = (new Double(valueToken)).doubleValue();
+            }
+        } else if (att == paramCVx) {
+            _cVx = ((DoubleToken)paramCVx.getToken()).doubleValue();
+        } else if (att == paramCVz) {
+            _cVz = ((DoubleToken)paramCVz.getToken()).doubleValue();
         }
-        while(stokens.hasMoreTokens() && index < 4) {
-            String valueToken = stokens.nextToken();
-            _alphaV[index++] = (new Double(valueToken)).doubleValue();
-        }
-
-        _cVx = ((DoubleToken)paramCVx.getToken()).doubleValue();
-        _cVz = ((DoubleToken)paramCVz.getToken()).doubleValue();
     }
 
     /** Input port Px
