@@ -297,6 +297,8 @@ public class PlotBox extends JPanel implements Printable {
             _xMin = 0;
             _xRangeGiven = false;
             _yRangeGiven = false;
+            _originalXRangeGiven = false;
+            _originalYRangeGiven = false;
             _rangesGivenByZooming = false;
             _xlog = false;
             _ylog = false;
