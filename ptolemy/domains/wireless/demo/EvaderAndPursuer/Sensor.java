@@ -28,7 +28,7 @@
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.wireless.demo.EnvaderAndPursuer;
+package ptolemy.domains.wireless.demo.EvaderAndPursuer;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
