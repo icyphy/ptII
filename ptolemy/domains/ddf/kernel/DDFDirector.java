@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ddf.kernel;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -37,8 +38,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -52,6 +55,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -306,7 +310,19 @@ public class DDFDirector extends Director {
             }
         }
     }
-
+    
+    /** Merge another DDFDirector with this director. It can be used
+     *  in ActorRecursion which clones a composite actor and then 
+     *  merges with outside DDF domain.
+     *  @param director The DDFDirector to merge with.
+     */
+    public void merge(DDFDirector director){
+        _activeActors.addAll(director._activeActors);
+        _actorsToCheckNumberOfFirings.addAll(director.
+                _actorsToCheckNumberOfFirings);
+        _actorsFlags.putAll(director._actorsFlags);
+    }
+    
     /** Return a new SDFReceiver.
      *  @return A new SDFReceiver.
      */
@@ -339,27 +355,153 @@ public class DDFDirector extends Director {
         return _postfireReturns && super.postfire();
     }
 
-    /** Initialize numberOfFirings to zero for those actors for which 
+    /** Check the input ports of the container composite actor (if there
+     *  are any) to see whether they have enough tokens, and return true
+     *  if they do. If there are no input ports, then also return true.
+     *  Otherwise, return false. Note that this does not call prefire()
+     *  on the contained actors.
+     *  Initialize numberOfFirings to zero for those actors for which 
      *  positive requiredFiringsPerIteration has been defined.
-     *  Assume that the director is always ready to be fired,
-     *  so return true because super.prefire() returns true.
-     *  @return True.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @return true If all of the input ports of the container of this
+     *   director have enough tokens.
+     *  @exception IllegalActionException If any called method throws
+     *   IllegalActionException.
      */
     public boolean prefire() throws IllegalActionException {
     	if (_debugging) {
             _debug("\niterationCount " + _iterationCount); 
-        }
+        }       
+        super.prefire();
         
+        Actor container = ((Actor)getContainer());
+        Iterator inputPorts = container.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)inputPorts.next();
+
+            // NOTE: If the port is a ParameterPort, then we should not
+            // insist on there being an input.
+            if (inputPort instanceof ParameterPort) continue;
+
+            int[] rate = _getTokenConsumptionRate(inputPort);
+            for (int i = 0; i < inputPort.getWidth(); i++) {
+                if (!inputPort.hasToken(i, rate[i])) {
+                    if (_debugging) {
+                        _debug("Channel " + i + " of port " + 
+                                inputPort.getFullName()
+                                + " does not have enough tokens: "
+                                + rate[i]
+                                + ". Prefire returns false.");
+                    }
+                    return false;
+                }
+            }
+        }
+               
         Iterator actors = _actorsToCheckNumberOfFirings.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             int[] flags = (int[])_actorsFlags.get(actor);
             flags[_numberOfFirings] = 0;
         }
-        return super.prefire();
-    }
 
+        return true;
+    }
+    
+    /** Override the base class method to transfer enough tokens to
+     *  complete an internal iteration.  If there are not enough tokens,
+     *  then throw an exception.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port, or if there are not enough input tokens available.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferInputs(IOPort port) 
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferInputs on port: " + port.getFullName());
+        }
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port is not an " +
+                    "opaque input port.");
+        }
+        boolean wasTransferred = false;
+        
+        int[] rate = _getTokenConsumptionRate(port);
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                for (int k = 0; k < rate[i]; k++) {
+                    if (port.hasToken(i)) {
+                        Token t = port.get(i);
+                        if (_debugging) _debug(getName(),
+                                "transferring input from channel " + i 
+                                + " of input port "   + port.getName());
+                        port.sendInside(i, t);
+                        wasTransferred = true;
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Channel " + i + "should consume "
+                                + rate[i]
+                                + " tokens, but there were only "
+                                + k
+                                + " tokens available.");
+                    }
+                }       
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return wasTransferred;
+    }
+    
+    /** Override the base class method to transfer enough tokens to
+     *  fulfill the output production rate. If there are not enough
+     *  tokens, then throw an exception.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port, or if there are not enough output tokens available.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferOutputs(IOPort port) 
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                    + "is not an opaque output port.");
+        }
+        boolean wasTransferred = false;
+
+        int[] rate = _getTokenProductionRate(port);
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                for (int k = 0; k < rate[i]; k++) {
+                    if (port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+                        if (_debugging) _debug(getName(),
+                                "transferring output from channel " + i
+                                + " of port " + port.getName());
+                        port.send(i, t);
+                        wasTransferred = true;
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Channel " + i + " should produce " + rate[i]
+                                + " tokens, but there were only "
+                                + k + " tokens available.");
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        
+        return wasTransferred;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -457,8 +599,8 @@ public class DDFDirector extends Director {
 
             IOPort outputPort = (IOPort)outputPorts.next();
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
-            for (int i=0; i < farReceivers.length; i++)
-                for (int j=0; j < farReceivers[i].length; j++) {
+            for (int i = 0; i < farReceivers.length; i++)
+                for (int j = 0; j < farReceivers[i].length; j++) {
                     SDFReceiver farReceiver = (SDFReceiver)farReceivers[i][j];
                     IOPort port = farReceiver.getContainer();
 
@@ -468,17 +610,30 @@ public class DDFDirector extends Director {
 
                     // The defalult vaule for tokenConsumptionRate is 1.
                     int tokenConsumptionRate = 1;
-                    Parameter parameter = (Parameter)port.
-                                      getAttribute("tokenConsumptionRate");
-                    // Ports of opaque SDF composite actors contain 
-                    // parameters named "_tokenConsumptionRate" given 
-                    // by inside scheduler.
-                    if (parameter == null) {
-                        parameter = (Parameter)port.
-                                getAttribute("_tokenConsumptionRate");
+                    Parameter rate = null;
+                    if (port.isInput()) {
+                        rate = (Parameter)port.
+                                getAttribute("tokenConsumptionRate");
+                        // Ports of opaque SDF composite actors contain 
+                        // parameters named "_tokenConsumptionRate" given 
+                        // by inside scheduler.
+                        if (rate == null) {
+                            rate = (Parameter)port.
+                                    getAttribute("_tokenConsumptionRate");
+                        }
                     }
-                    if (parameter != null) {
-                        Token token = parameter.getToken();
+                    // If DDF domain is inside another domain and the 
+                    // farReceiver is contained by an opaque output port...
+                    if (port.isOutput()) {
+                        rate = (Parameter)port.
+                                getAttribute("tokenProductionRate");
+                        if (rate == null) {
+                            rate = (Parameter)port.
+                                    getAttribute("_tokenProductionRate");
+                        }
+                    }    
+                    if (rate != null) {
+                        Token token = rate.getToken();
                         if (token instanceof ArrayToken) {
                             Token[] tokens = ((ArrayToken)token).arrayValue();
                             // Scan the contained receivers of the remote 
@@ -487,8 +642,8 @@ public class DDFDirector extends Director {
                                     port.getReceivers();
                             int channelIndex = 0;
                             foundChannelIndex:
-                            for (int m=0; m < portReceivers.length; m++)
-                                for (int n=0; n < portReceivers[m].length; n++)
+                            for (int m = 0; m < portReceivers.length; m++)
+                                for (int n = 0; n < portReceivers[m].length; n++)
                                     if (farReceiver == portReceivers[m][n]) {
                                         channelIndex = m;
                                         break foundChannelIndex;
@@ -589,6 +744,76 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Get token consumption rate for the given port.
+     *  @param port The port to get token consumption rate.
+     *  @return An int array of token consumption rate.
+     *  @throws IllegalActionException If parameter throws it or the 
+     *   length of tokenConsumptionRate array is less than port width.
+     */ 
+    private int[] _getTokenConsumptionRate(IOPort port)
+            throws IllegalActionException {
+        int[] rate = new int[port.getWidth()];
+        Arrays.fill(rate, 1);
+        Parameter parameter = (Parameter)port
+                .getAttribute("tokenConsumptionRate");
+        if (parameter == null) 
+            parameter = (Parameter)port.getAttribute("_tokenConsumptionRate");  
+        if (parameter != null) {
+            Token token = parameter.getToken();
+            // If token is Arraytoken, then each channel has a 
+            // corresponding input rate in the array.
+            if (token instanceof ArrayToken) {
+                Token[] tokens = ((ArrayToken)token).arrayValue();
+                if (tokens.length < port.getWidth())
+                    throw new IllegalActionException(this, "The length of " +
+                            "tokenConsumptionRate array is less than " +
+                            "port width.");
+                for (int i = 0; i < port.getWidth(); i++)
+                    rate[i] = ((IntToken)tokens[i]).intValue();
+            } else { // All the channels in the port has same
+                     // tokenConsumptionRate.
+                Arrays.fill(rate, ((IntToken)token).intValue());
+            }
+        }
+        return rate;
+    }
+    
+    
+    /** Get token production rate for the given port.
+     *  @param port The port to get token production rate.
+     *  @return An int array of token production rate.
+     *  @throws IllegalActionException If parameter throws it
+     *   or the length of tokenProductionRate array is less 
+     *   than port inside width.
+     */ 
+    private int[] _getTokenProductionRate(IOPort port) 
+        throws IllegalActionException {
+        int[] rate = new int[port.getWidthInside()];
+        Arrays.fill(rate, 1);
+        Parameter parameter = (Parameter)port
+                .getAttribute("tokenProductionRate");
+        if (parameter == null) 
+            parameter = (Parameter)port.getAttribute("_tokenProductionRate");  
+        if (parameter != null) {
+            Token token = parameter.getToken();
+            // If token is Arraytoken, then each channel has a 
+            // corresponding output rate in the array.
+            if (token instanceof ArrayToken) {
+                Token[] tokens = ((ArrayToken)token).arrayValue();
+                if (tokens.length < port.getWidthInside())
+                    throw new IllegalActionException(this, "The length of " +
+                            "tokenProductionRate array is less than " +
+                            "port inside width.");
+                for (int i = 0; i < port.getWidthInside(); i++)
+                    rate[i] = ((IntToken)tokens[i]).intValue();
+            } else { // All the channels in the port has same
+                     // tokenProductionRate.
+                Arrays.fill(rate, ((IntToken)token).intValue());
+            }
+        }
+        return rate;
+    }
+    
     /** Initialize the object. In this case, we give the DDFDirector
      *  an iterations parameter.
      */
