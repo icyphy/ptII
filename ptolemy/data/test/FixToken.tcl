@@ -1,6 +1,6 @@
 # Tests for the FixToken class
 #
-# @Author: Bart Kienhuis, Christopher Hylands
+# @Author: Bart Kienhuis, Christopher Hylands, Ed Willink
 #
 # @Version $Id$
 #
@@ -49,6 +49,8 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 test FixToken-1.0 {Create an empty instance} {
+    set sat [java::call ptolemy.math.Overflow getName "saturate"]
+    set stz [java::call ptolemy.math.Overflow getName "to_zero"]
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
     set c0 [java::call ptolemy.math.Quantizer \
 	    {round double ptolemy.math.Precision } \
@@ -70,7 +72,7 @@ test FixToken-1.2 {Create a non-empty instance from two strings} {
 	    {round double ptolemy.math.Precision } 5.5734 $p1 ]
     set p [java::new ptolemy.data.FixToken $c2 ]
     $p toString
-} {fix(5.573399998247623,32,4)}
+} {fix(5.573399998247623443603515625,32,4)}
 
 test FixToken-1.3 {Create a non-empty instance from an String} {
     set p1 [java::new ptolemy.math.Precision "(4.12)" ]
@@ -128,7 +130,7 @@ test FixToken-3.3 {Test Multiply} {
     set res [$pa multiply $pb]   
 
     list [$res toString]
-} {fix(-4.996926784515381,28,4)}
+} {fix(-4.996926784515380859375,28,4)}
 
 test FixToken-3.4 {Test Divide} {    
    set res [$pa divide $pb]    	
@@ -229,10 +231,10 @@ test FixToken-6.0 {Test round with a Precision, 5.375, Saturate  }  {
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 0 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $sat ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $sat ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $sat ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $sat ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -249,10 +251,10 @@ test FixToken-6.1 {Test round with a Precision, 5.375, Saturate}  {
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 0 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $sat ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $sat ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $sat ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $sat ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -274,10 +276,10 @@ test FixToken-6.2 {Test round with a Precision, -5.375, Saturate}  {
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $stz ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $stz ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $stz ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $stz ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -299,10 +301,10 @@ test FixToken-6.3 {Test round with a Precision, -5.375, ZeroSaturate}  {
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $stz ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $stz ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $stz ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $stz ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -327,18 +329,18 @@ test FixToken-6.4 {Test round with a Precision, 5.97534, Saturate}  {
     set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 0 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
-    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 0 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $sat ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $sat ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $sat ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $sat ]
+    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 $sat ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
-} {fix(5.97534000129,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.75,8,6) fix(5.75,6,4)}
+} {fix(5.97534000129,32,4) fix(5.9765625,12,4) fix(5.96875,10,4) fix(6.0,8,6) fix(6.0,6,4)}
 
 test FixToken-6.5 {Test round with a Precision, -5.97534, Saturate}  {
 
@@ -354,18 +356,18 @@ test FixToken-6.5 {Test round with a Precision, -5.97534, Saturate}  {
     set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 0 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
-    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 0 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $sat ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $sat ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $sat ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $sat ]
+    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 $sat ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
-} {fix(-5.97534000129,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.75,8,6) fix(-5.75,6,4)}
+} {fix(-5.97534000129,32,4) fix(-5.9765625,12,4) fix(-5.96875,10,4) fix(-6.0,8,6) fix(-6.0,6,4)}
 
 test FixToken-6.6 {Test round with a Precision, 5.97534, ZeroSaturate} {
 
@@ -382,11 +384,11 @@ test FixToken-6.6 {Test round with a Precision, 5.97534, ZeroSaturate} {
     set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
-    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 1 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $stz ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $stz ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $stz ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $stz ]
+    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 $stz ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -394,7 +396,7 @@ test FixToken-6.6 {Test round with a Precision, 5.97534, ZeroSaturate} {
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
 
-} {fix(5.97534000129,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.75,8,6) fix(5.75,6,4)}
+} {fix(5.97534000129,32,4) fix(5.9765625,12,4) fix(5.96875,10,4) fix(6.0,8,6) fix(6.0,6,4)}
 
 test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
 
@@ -410,11 +412,11 @@ test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
     set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set v1 [$r1 fixValue]
-    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
-    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
-    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
-    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
-    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 1 ]
+    set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 $stz ]
+    set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 $stz ]
+    set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 $stz ]
+    set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 $stz ]
+    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 $stz ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
@@ -422,7 +424,7 @@ test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
 
-} {fix(-5.97534000129,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.75,8,6) fix(-5.75,6,4)}
+} {fix(-5.97534000129,32,4) fix(-5.9765625,12,4) fix(-5.96875,10,4) fix(-6.0,8,6) fix(-6.0,6,4)}
 
 ######################################################################
 ####
@@ -499,7 +501,52 @@ test FixToken-5.0 {Test hashCode} {
     set p3 [java::new ptolemy.data.FixToken $c3 ]
 
     list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
-} {1 1 4}
+} {4096 4096 16384}
+
+####################################################################
+
+test FixToken-6.0 {quantize-saturate} {
+    set p0 [java::new ptolemy.math.Precision "20.10" ]
+    set q1 [java::new ptolemy.math.FixPointQuantization "3.1,saturate,nearest" ]
+    list "
+ 7.000 [[[java::new ptolemy.data.FixToken 7.000 $p0] quantize $q1] toString]
+ 4.000 [[[java::new ptolemy.data.FixToken 4.000 $p0] quantize $q1] toString]
+ 3.250 [[[java::new ptolemy.data.FixToken 3.250 $p0] quantize $q1] toString]
+ 3.249 [[[java::new ptolemy.data.FixToken 3.249 $p0] quantize $q1] toString]
+-3.250 [[[java::new ptolemy.data.FixToken -3.250 $p0] quantize $q1] toString]
+-3.251 [[[java::new ptolemy.data.FixToken -3.251 $p0] quantize $q1] toString]
+-4.000 [[[java::new ptolemy.data.FixToken -4.000 $p0] quantize $q1] toString]
+-7.000 [[[java::new ptolemy.data.FixToken -7.000 $p0] quantize $q1] toString] "
+} {{
+ 7.000 fix(3.5,4,3)
+ 4.000 fix(3.5,4,3)
+ 3.250 fix(3.5,4,3)
+ 3.249 fix(3.0,4,3)
+-3.250 fix(-3.0,4,3)
+-3.251 fix(-3.5,4,3)
+-4.000 fix(-4.0,4,3)
+-7.000 fix(-4.0,4,3) }}
+
+test FixToken-6.1 {quantize-modulo} {
+    set q1 [java::new ptolemy.math.FixPointQuantization "3.1,modulo,nearest" ]
+    list "
+ 7.000 [[[java::new ptolemy.data.FixToken 7.000 $p0] quantize $q1] toString]
+ 4.000 [[[java::new ptolemy.data.FixToken 4.000 $p0] quantize $q1] toString]
+ 3.250 [[[java::new ptolemy.data.FixToken 3.250 $p0] quantize $q1] toString]
+ 3.249 [[[java::new ptolemy.data.FixToken 3.249 $p0] quantize $q1] toString]
+-3.250 [[[java::new ptolemy.data.FixToken -3.250 $p0] quantize $q1] toString]
+-3.251 [[[java::new ptolemy.data.FixToken -3.251 $p0] quantize $q1] toString]
+-4.000 [[[java::new ptolemy.data.FixToken -4.000 $p0] quantize $q1] toString]
+-7.000 [[[java::new ptolemy.data.FixToken -7.000 $p0] quantize $q1] toString] "
+} {{
+ 7.000 fix(-1.0,4,3)
+ 4.000 fix(-4.0,4,3)
+ 3.250 fix(3.5,4,3)
+ 3.249 fix(3.0,4,3)
+-3.250 fix(-3.0,4,3)
+-3.251 fix(-3.5,4,3)
+-4.000 fix(-4.0,4,3)
+-7.000 fix(1.0,4,3) }}
 
 ######################################################################
 ####
