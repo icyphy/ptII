@@ -307,7 +307,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
        	ChoiceStyle choiceStyle =
             (ChoiceStyle) newObject.codeGenerator.getAttribute("style");
-        
+
         newObject.sootApplet = (StringAttribute)
             choiceStyle.getAttribute("sootApplet");
         newObject.sootC = (StringAttribute)

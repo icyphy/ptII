@@ -379,7 +379,7 @@ public class PlotBox extends JPanel implements Printable {
                     rectangle.height,
                     BufferedImage.TYPE_INT_ARGB),
                 rectangle,
-                _defaultImageRenderingHints(), 
+                _defaultImageRenderingHints(),
                 false);
     }
 
@@ -398,10 +398,10 @@ public class PlotBox extends JPanel implements Printable {
                     rectangle.height,
                     BufferedImage.TYPE_INT_ARGB),
                 rectangle,
-                _defaultImageRenderingHints(), 
+                _defaultImageRenderingHints(),
                 false);
     }
-	
+
     /** Draw this plot onto the specified image at the position of the
      *  specified rectangle with the size of the specified rectangle.
      *  The plot is rendered using anti-aliasing.
@@ -417,9 +417,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @return The modified bufferedImage.
      */
     public synchronized BufferedImage exportImage(
-            BufferedImage bufferedImage, 
-            Rectangle rectangle, 
-            RenderingHints hints, 
+            BufferedImage bufferedImage,
+            Rectangle rectangle,
+            RenderingHints hints,
             boolean transparent) {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.addRenderingHints(_defaultImageRenderingHints());
@@ -444,11 +444,11 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized BufferedImage exportImage(BufferedImage bufferedImage) {
         return exportImage(
-                bufferedImage, 
+                bufferedImage,
                 new Rectangle(
                     bufferedImage.getWidth(),
-                    bufferedImage.getHeight()), 
-                _defaultImageRenderingHints(), 
+                    bufferedImage.getHeight()),
+                _defaultImageRenderingHints(),
                 true);
     }
 

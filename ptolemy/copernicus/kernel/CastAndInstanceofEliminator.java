@@ -37,7 +37,7 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 
-/** 
+/**
 A transformer that remove unnecessary casts and instanceof checks.
 Note that this relies on properly inferred Java types to operate properly.
 If you create code that has types which are too specific (relative to the
@@ -51,29 +51,29 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     new CastAndInstanceofEliminator();
     private CastAndInstanceofEliminator() {}
 
-    public static CastAndInstanceofEliminator v() { 
+    public static CastAndInstanceofEliminator v() {
         return instance;
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug";
     }
-    
+
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-     
+
         System.out.println("CastAndInstanceofEliminator.internalTransform("
                 + b.getMethod() + phaseName + ")");
 
         boolean debug = Options.getBoolean(options, "debug");
-         
+
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
- 
+
     public static void eliminateCastsAndInstanceOf(Body body,
             String phaseName, Set unsafeLocalSet, boolean debug) {
-         
+
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -81,28 +81,28 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-              
-                // This assumes that the types of local 
+
+                // This assumes that the types of local
                 // variables are verifiable types.
-                // This is not ensured by Soot, unless 
+                // This is not ensured by Soot, unless
                 // you run the TypeAssigner before this
                 // transformation.
                 if(value instanceof CastExpr) {
-                    // If the cast is to the same type as the 
-                    // operand already is, then replace with 
+                    // If the cast is to the same type as the
+                    // operand already is, then replace with
                     // simple assignment.
                     CastExpr expr = (CastExpr)value;
                     Type castType = expr.getCastType();
                     Value op = expr.getOp();
                     Type opType = op.getType();
- 
+
                     // Skip locals that are unsafe.
                     if(castType.equals(opType) &&
                        !unsafeLocalSet.contains(op)) {
                         box.setValue(op);
                     }
                 } else if(value instanceof InstanceOfExpr) {
-                    // If the operand of the expression is 
+                    // If the operand of the expression is
                     // declared to be of a type that implies
                     // the instanceof is true, then replace
                     // with true.
@@ -117,8 +117,8 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     }
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-                    
-                    replaceInstanceofCheck(box, hierarchy, 
+
+                    replaceInstanceofCheck(box, hierarchy,
                             checkType, opType, debug);
                 }
             }
@@ -126,10 +126,10 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     }
 
 
-    /** Statically evaluate the instance of Check in the given box, 
-     *  if possible.  If <i>opType</i> is always an instance of 
+    /** Statically evaluate the instance of Check in the given box,
+     *  if possible.  If <i>opType</i> is always an instance of
      *  <i>checkType</i>, based on the given hierarchy,
-     *  then replace with a true constant.  If <i>opType</i> is 
+     *  then replace with a true constant.  If <i>opType</i> is
      *  never an instance of <i>checkType</i>, then replace
      *  with a false constant.
      */
@@ -138,18 +138,18 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             boolean debug) {
 
         RefType checkRef, opRef;
-        if(checkType instanceof RefType && 
+        if(checkType instanceof RefType &&
                 opType instanceof RefType) {
             checkRef = (RefType)checkType;
             opRef = (RefType)opType;
-                      
+
         } else if(checkType instanceof ArrayType &&
                 opType instanceof ArrayType) {
-            if(((ArrayType)checkType).numDimensions != 
+            if(((ArrayType)checkType).numDimensions !=
                     ((ArrayType)opType).numDimensions) {
                 // We know the answer is false.
                 box.setValue(IntConstant.v(0));
-                if(debug) System.out.println("Replacing " + 
+                if(debug) System.out.println("Replacing " +
                         box.getValue() + " with false.");
                 return;
             }
@@ -168,7 +168,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             return;
         }
         SootClass checkClass = ((RefType)checkRef).getSootClass();
-        SootClass opClass = ((RefType)opRef).getSootClass();        
+        SootClass opClass = ((RefType)opRef).getSootClass();
         if(debug) System.out.println("checkClass = " + checkClass);
         if(debug) System.out.println("opClass = " + opClass);
         if(checkClass.isInterface()) {
@@ -177,7 +177,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                         opClass, checkClass) ||
                         opClass.equals(checkClass)) {
                                 // Then we know the instanceof will be true.
-                    if(debug) System.out.println("Replacing " + 
+                    if(debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
                     box.setValue(IntConstant.v(1));
                 }
@@ -185,7 +185,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 // opClass is a class, not an interface.
                 if(hierarchy.getImplementersOf(checkClass).contains(opClass)) {
                                 // Then we know the instanceof will be true.
-                    if(debug) System.out.println("Replacing " + 
+                    if(debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
                     box.setValue(IntConstant.v(1));
                 } else {
@@ -210,7 +210,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                                 // Then we know the instanceof will be false,
                                 // because no subclass of opClass can suddenly
                                 // become a subclass of checkClass.
-                    if(debug) System.out.println("Replacing " + 
+                    if(debug) System.out.println("Replacing " +
                             box.getValue() + " with false.");
                     box.setValue(IntConstant.v(0));
                 }

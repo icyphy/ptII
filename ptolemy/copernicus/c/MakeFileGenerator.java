@@ -61,25 +61,25 @@ public class MakeFileGenerator
 
         code.append("THIS = "+className+".make\n");
 
-        
+
         //get names of all .c files in the transitive closure
         Iterator i = _classNameList(classPath,className).iterator();
         code.append("SOURCES = $(RUNTIME)/runtime.c $(RUNTIME)/array.c\\\n");
         while (i.hasNext())
         {
             String name = _classNameToMakeFileName((String)i.next());
-            code.append("\t"+name+".c\\\n");            
+            code.append("\t"+name+".c\\\n");
         }
         code.append("\n");//takes care of blank line for last "\"
 
-        
+
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
         code.append( "IHEADERS = $(SOURCES:.c=.i.h)\n");
-        
+
         code.append(className+".exe : $(OBJECTS)\n");
         code.append("\tgcc $(OBJECTS)\n");
-        
+
         code.append("makefile: $(THIS)\n");
         code.append("\tmake depend\n\n");
 
@@ -121,16 +121,16 @@ protected static LinkedList _classNameList(String classPath, String className)
 
     }
 
-// finds filename corrseponding to class and replaces 
+// finds filename corrseponding to class and replaces
 // "$" with "$$" for compatibility
 protected static String _classNameToMakeFileName(String className)
     {
         StringBuffer name = new StringBuffer(
             RequiredFileGenerator.classNameToFileName(className));
-    
+
         for(int j=0;j<name.length();j++)
         {
-            if (name.charAt(j)=='$') 
+            if (name.charAt(j)=='$')
             {
                 name.insert(j,"$");
                 j++;

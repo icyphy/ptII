@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Nameable;
 //////////////////////////////////////////////////////////////////////////
 //// UnknownResultException
 /**
-Thrown on an attempt to evaluate an expression that can not be determined 
+Thrown on an attempt to evaluate an expression that can not be determined
 because some variables are unknown.
 
 @author Paul Whitaker

@@ -51,7 +51,7 @@ inserts their values into a double matrix with <i>rows</i> rows
 and <i>columns</i> columns. The first row is filled first, then
 the second row, then the third, etc.
 
-<p>Note that this actor is not likely to work in the CT domain, use 
+<p>Note that this actor is not likely to work in the CT domain, use
 actor.lib.VectorAssembler instead.
 
 @author Edward A. Lee
@@ -135,7 +135,7 @@ public class DoubleToMatrix extends SDFConverter {
         }
         output.send(0, new DoubleMatrixToken(
                 result, DoubleMatrixToken.DO_NOT_COPY));
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

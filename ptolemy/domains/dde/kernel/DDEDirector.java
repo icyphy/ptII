@@ -486,8 +486,8 @@ public class DDEDirector extends CompositeProcessDirector {
 	 *  object (argument) is larger than the first object; return
 	 *  0 if the capacities are equal and return -1 if the first
 	 *  object's capacity is larger than the second.
-         *  @param object1 The first object 
-         *  @param object2 The second object 
+         *  @param object1 The first object
+         *  @param object2 The second object
          *  @exception ClassCastException If object1 and object2 are
          *   not instances of DDEReceiver.
          */

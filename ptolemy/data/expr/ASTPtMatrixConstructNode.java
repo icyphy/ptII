@@ -131,7 +131,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 // Convert an ArrayToken to a MatrixToken
                 if (((ArrayToken)_childTokens[0]).getElement(0)
                     instanceof IntToken) {
-                    
+
                     int[][] array = new int[nChildren]
                         [((ArrayToken)_childTokens[0]).length()];
                     for (int k = 0; k < array.length; k++) {

@@ -59,7 +59,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 
 
 /**
-An adapter that turns a body transformer into a scene transformer.  
+An adapter that turns a body transformer into a scene transformer.
 This applies the transformer specified in the constructor to
 all of the bodies in the scene.
 */
@@ -73,26 +73,26 @@ public class TransformerAdapter extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("TransformerAdapter.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         Iterator classes = Scene.v().getApplicationClasses().iterator();
         while(classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
             Iterator methods = theClass.getMethods().iterator();
-            while(methods.hasNext()) {   
+            while(methods.hasNext()) {
                 SootMethod m = (SootMethod) methods.next();
                 if(!m.isConcrete())
                     continue;
-                
+
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();
-              
+
                 // FIXME: pass in the options.
                 // Currently this is not possible because the
                 // internalTransform method is protected.
                 _transformer.transform(body, phaseName, "");
             }
-        }    
+        }
     }
-    
+
     private BodyTransformer _transformer;
 }
 

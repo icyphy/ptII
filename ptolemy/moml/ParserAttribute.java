@@ -50,7 +50,7 @@ then it will replace the previous attribute.
 @author  Edward A. Lee
 @version $Id$
 */
-public class ParserAttribute extends SingletonAttribute 
+public class ParserAttribute extends SingletonAttribute
     implements NotPersistent {
 
     /** Construct an attribute with the specified container and name.

@@ -612,7 +612,7 @@ public class FixPoint implements Cloneable, Serializable {
     private static BigDecimal _one  = new BigDecimal("1");
 
     /** The size of the pre-computed _twoRaisedTo powers of two array.
-    *   65 entries are used to cache all powers of 2 from 0 to 64. 
+    *   65 entries are used to cache all powers of 2 from 0 to 64.
     **/
     private static final int TWORAISEDTOSIZE = 64+1;
 

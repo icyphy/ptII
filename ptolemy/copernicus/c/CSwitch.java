@@ -148,7 +148,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push("((double)" + v.toString() +")");
     }
 
-    public void caseFloatConstant(FloatConstant v) 
+    public void caseFloatConstant(FloatConstant v)
     {
         _push("((float)" + v.toString() +")");
     }
@@ -185,7 +185,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateBinaryOperation(v, "&");
     }
 
-    public void caseCastExpr(CastExpr v) 
+    public void caseCastExpr(CastExpr v)
     {
         //FIXME: Does not handle null cast
         if (!v.getOp().toString().equals("null"))
@@ -193,11 +193,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _push("("+CNames.typeNameOf(v.getCastType())+")"
                 +CNames.localNameOf((Local)v.getOp()));
         }
-        else 
+        else
         {
             System.err.println("CSwitch.caseCastExpression does not"
                 +"handle null.");
-            
+
             defaultCase(v);
         }
     }
@@ -249,7 +249,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseInstanceOfExpr(InstanceOfExpr v) {
         // FIXME: add support for all relevant types.
         Type type = v.getCheckType();
-        if ((type instanceof RefType)) 
+        if ((type instanceof RefType))
         {
             v.getOp().apply(this);
             _push(CNames.instanceOfFunction + "(" + _pop() + ", &"
@@ -294,7 +294,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateBinaryOperation(v, "!=");
     }
 
-    public void caseNegExpr(NegExpr v) 
+    public void caseNegExpr(NegExpr v)
     {
         _push("-"+CNames.localNameOf((Local)v.getOp()));
     }
@@ -339,7 +339,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateBinaryOperation(v,"|");
     }
 
-    public void caseRemExpr(RemExpr v) 
+    public void caseRemExpr(RemExpr v)
     {
         _generateBinaryOperation(v, "%");
     }
@@ -413,7 +413,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateInstanceInvokeExpression(v);
     }
 
-    public void caseXorExpr(XorExpr v) 
+    public void caseXorExpr(XorExpr v)
     {
         _generateBinaryOperation(v,"^");
     }
@@ -538,12 +538,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         stmt.getInvokeExpr().apply(this);
     }
 
-    public void caseLookupSwitchStmt(LookupSwitchStmt stmt) 
+    public void caseLookupSwitchStmt(LookupSwitchStmt stmt)
     {
         defaultCase(stmt);
     }
 
-    public void caseNopStmt(NopStmt stmt) 
+    public void caseNopStmt(NopStmt stmt)
     {
         //do nothing
         //defaultCase(stmt);

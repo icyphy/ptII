@@ -123,7 +123,7 @@ public class Graphs {
             graph.addEdge((Edge)edgesToAdd.next());
         }
 
-        // Remove old edges connecting members outside the subgraph to members 
+        // Remove old edges connecting members outside the subgraph to members
         // of N.
         edgesToRemove = removeList.iterator();
         while (edgesToRemove.hasNext()) {

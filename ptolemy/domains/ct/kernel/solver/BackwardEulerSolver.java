@@ -165,7 +165,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
                     " must have a director to fire.");
         }
         CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        
+
         resetRound();
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
         Iterator actors = schedule.get(

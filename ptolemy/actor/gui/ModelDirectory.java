@@ -145,8 +145,8 @@ public class ModelDirectory extends CompositeEntity {
                         }
                     }
                 }
-            } 
-            
+            }
+
             // Finally, we might have a case where none of the effigies in
             // the application have a tableau, in which case the application
             // no longer has a UI.  If this happens, then we want to remove

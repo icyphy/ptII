@@ -134,7 +134,7 @@ public class BasicJApplet extends JApplet {
      */
     public void report(String message, Exception ex) {
 	// In JDK1.3.1, we can't copy the contents of the window that the
-	// applet pops up, so be sure to print the stack trace to stderr. 
+	// applet pops up, so be sure to print the stack trace to stderr.
 	ex.printStackTrace();
         MessageHandler.error(message, ex);
         showStatus("exception occurred.");

@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /* A class that maintains context information for C code generation.
- 
+
    @author Shuvra S. Bhattacharyya
    @version $Id$
 */
@@ -104,7 +104,7 @@ public class Context {
     }
 
     /** Return an Iterator over the set of include files in the context.
-     *  Each element in the Iterator is a String representing an include 
+     *  Each element in the Iterator is a String representing an include
      *  file name.
      *  Each such file name includes appropriate file name delimeters
      *  (double quotes or angle brackets), and the .h suffix.
@@ -182,7 +182,7 @@ public class Context {
     private int _stringConstantCount;
 
     // The pool of string constants (literals) for the generated code.
-    // Keys in this map are the string constant values 
+    // Keys in this map are the string constant values
     // (the literals to be used),
     // and the values in the map are the C identifiers to use when referencing
     // the strings in the generated code. For each string constant, a static

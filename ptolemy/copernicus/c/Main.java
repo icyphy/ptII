@@ -130,7 +130,7 @@ public class Main extends KernelMain {
 
 	// Add Transforms to the Scene.
 	main.addTransforms();
-	    
+
 	main.generateCode(args);
     }
 }

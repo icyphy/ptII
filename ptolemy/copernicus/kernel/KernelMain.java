@@ -78,7 +78,7 @@ public class Main extends KernelMain {
 
 	// Add Transforms to the Scene.
 	main.addTransforms();
-	    
+
 	main.generateCode(args);
     }
 }
@@ -165,7 +165,7 @@ public class KernelMain {
 	    VersionAttribute javaSpecificationVersionAttribute =
 		new VersionAttribute(javaSpecificationVersion);
 	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
-		System.err.println("Won't work with Java specification '" 
+		System.err.println("Won't work with Java specification '"
 				   + javaSpecificationVersion + "'");
 		throw new IllegalActionException("Soot does not work with "
 						 + " JDK 1.4. "
@@ -240,7 +240,7 @@ public class KernelMain {
         // FIXME: insert code to parse parameters like
         // CompositeActorApplication does.  i.e. --iterations=50
         // These should get parsed and affect the model that was loaded.
-        // They will be folded into the generated code during the code 
+        // They will be folded into the generated code during the code
         // generation process.
 
         // Initialize the model to ensure type resolution and scheduling
@@ -334,9 +334,9 @@ public class KernelMain {
             throws IllegalActionException, NameDuplicationException {
 
 	// readInModel() is a separate method so that we can read
-	// in the model and then get its name so that we can 
+	// in the model and then get its name so that we can
 	// determine the name of the class that will be generated.
-	
+
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
 	_momlClassName = momlClassName;
@@ -352,16 +352,16 @@ public class KernelMain {
 	    errorMessage.append("\n  1. Failed to parse '" + momlClassName
 				+ "' as a top level model in\n"
 				+ source + "\n  Exception was:\n-------\n  "
-				+ exception + "\n-------\n"); 
+				+ exception + "\n-------\n");
 	    try {
 		// Then try it as an xml file
 		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
 	    } catch (Exception exceptionTwo) {
 		errorMessage.append("  2. Failed to parse '" + momlClassName
 				    + "' as an xml file:\n  "
-				    + exceptionTwo + "\n"); 
+				    + exceptionTwo + "\n");
 		try {
-		    URL momlURL = new URL(momlClassName); 
+		    URL momlURL = new URL(momlClassName);
 		    try {
 			// Then try it as a URL file
 			toplevel = (CompositeActor)_parser.parse(null,
@@ -374,7 +374,7 @@ public class KernelMain {
 					    + exceptionThree + "\n");
 			throw new IllegalActionException(errorMessage
 							 .toString());
-		    
+
 		    }
 		} catch (MalformedURLException malformed) {
 		    throw new IllegalActionException(errorMessage + ": "

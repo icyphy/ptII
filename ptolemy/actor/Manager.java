@@ -693,7 +693,7 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Return a string with the elapsed time since startTime,
-     *  and the amount of memory used.   
+     *  and the amount of memory used.
      */
     public static String timeAndMemory(long startTime,
             long totalMemory, long freeMemory) {

@@ -80,45 +80,45 @@ import java.util.Enumeration;
 //// HDFFSMActor
 /**
 An HDFFSMActor is used in a modal model to represent the mode control
-logic. An HDFFSMActor contains a set of states and transitions. Each 
-state must have a TypedCompositeActor refinement. The refinement 
-actor is set by the <i>refinementName</i> parameter of State. A 
+logic. An HDFFSMActor contains a set of states and transitions. Each
+state must have a TypedCompositeActor refinement. The refinement
+actor is set by the <i>refinementName</i> parameter of State. A
 state transition may only occur immediately following a
-"Type B firing" [1], which is the last firing of an HDF actor in 
-the current iteration of the HDF schedule. A transition is 
-enabled when its guard expression is true. When a type B firing 
+"Type B firing" [1], which is the last firing of an HDF actor in
+the current iteration of the HDF schedule. A transition is
+enabled when its guard expression is true. When a type B firing
 occurs, the outgoing transitions of the current state
 are examined. An exception is thrown if there is more than one
 enabled transition. If there is exactly one enabled transition then
-the current state of the actor is set to the destination state 
+the current state of the actor is set to the destination state
 of the enabled transition.
 <p>
-An HDFFSMActor enters its initial state during initialization. 
-The name of the initial state is specified by the 
+An HDFFSMActor enters its initial state during initialization.
+The name of the initial state is specified by the
 <i>initialStateName</i> parameter.
 <p>
-An HDFFSMActor contains a set of variables for the input ports that 
-can be referenced in the guard expression of a transition. If an 
-input port is a single port, one variable and one variable array are 
-created: an input value variable with the name <i>portName</i> and 
-an array with the name <i>portName</i>. The input value 
+An HDFFSMActor contains a set of variables for the input ports that
+can be referenced in the guard expression of a transition. If an
+input port is a single port, one variable and one variable array are
+created: an input value variable with the name <i>portName</i> and
+an array with the name <i>portName</i>. The input value
 variable always
-contains the latest token received from the port. The input variable 
+contains the latest token received from the port. The input variable
 array contains all tokens read during the current iteration of the
- HDF schedule. If the HDF actor that this FSM refines has a port 
-rate of M, and a firing count of N, then the length of the token 
+ HDF schedule. If the HDF actor that this FSM refines has a port
+rate of M, and a firing count of N, then the length of the token
 array is M*N.
 <p>
-If the given port is a multiport, a value variable and a value 
+If the given port is a multiport, a value variable and a value
 array are created for each channel. The value variable is named
-<i>portName</i>_<i>channelIndex</i> and the value array is named 
-<i>portName</i>_<i>channelIndex</i>. 
+<i>portName</i>_<i>channelIndex</i> and the value array is named
+<i>portName</i>_<i>channelIndex</i>.
 <p>
 <b>References</b>
 <p>
 <OL>
 <LI>
-A. Girault, B. Lee, and E. A. Lee, 
+A. Girault, B. Lee, and E. A. Lee,
 ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
@@ -131,8 +131,8 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 */
 public class HDFFSMActor extends FSMActor implements TypedActor {
 
-    /** Construct an HDFFSMActor in the default workspace with an 
-     *  empty string as its name. Add the actor to the workspace 
+    /** Construct an HDFFSMActor in the default workspace with an
+     *  empty string as its name. Add the actor to the workspace
      *  directory. Increment the version number of the workspace.
      */
     public HDFFSMActor() {
@@ -220,7 +220,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     public void setCurrentConnectionMap() throws IllegalActionException {
 	_setCurrentConnectionMap();
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -248,8 +248,8 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     protected void _createInputVariables(TypedIOPort port)
             throws IllegalActionException {
 	if (_debug_info) {
-	    System.out.println(this.getName() + 
-			       ": _createInputVariables " + 
+	    System.out.println(this.getName() +
+			       ": _createInputVariables " +
 			       "invoked on port " + port.getName());
 	}
         if (port.getContainer() != this) {
@@ -272,13 +272,13 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             return;
         }
         Variable[][] pVars = new Variable[width][2];
-        
-	int historySize = 
+
+	int historySize =
 	    ((IntToken)(tokenHistorySize.getToken())).intValue();
 	if (_debug_info) {
 	    System.out.println(this.getName() + ": tokenHistorySize = " +
 			       historySize);
-	    
+
 	}
 	Variable[][] recentlyReadVariables = new Variable[width][historySize];
 	boolean addChIndex = (width > 1);
@@ -319,25 +319,25 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
                         + ex.getMessage());
             }
 	    // Now create the HDF-specific variables.
-	    
+
 	    for (int historyIndex = 0; historyIndex < historySize; historyIndex++) {
 		if (_debug_info) {
 		    System.out.println("historyIndex = " + historyIndex);
 		}
 		String variableName = null;
 		if (addChIndex) {
-		    variableName = port.getName() + "_" + chIndex + 
+		    variableName = port.getName() + "_" + chIndex +
 			"_$" + historyIndex;
 		} else {
 		    variableName = port.getName() + "_$" + historyIndex;
 		}
 		if (_debug_info) {
-		    System.out.println(this.getFullName() + 
+		    System.out.println(this.getFullName() +
 				       ": Adding variable with name = " +
-				       variableName);			
+				       variableName);
 		}
 		try {
-		    recentlyReadVariables[chIndex][historyIndex] 
+		    recentlyReadVariables[chIndex][historyIndex]
 			= new Variable(this, variableName);
 		} catch (NameDuplicationException ex) {
 		    throw new InvalidStateException(this,
@@ -405,7 +405,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 	super._setInputsFromRefinement();
     }
     /** Set the input variables for all ports of this actor.
-     *  
+     *
      *  @param firings The number of times this actor has been fired in
      *   the current iteration - 1. If the firing count of this actor is
      *   M, then the value of this parameter ranges from 0 to M-1.
@@ -415,15 +415,15 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
-    protected void _setInputVariables(int firings, int firingsPerIteration) 
+    protected void _setInputVariables(int firings, int firingsPerIteration)
 	throws IllegalActionException {
         Iterator inports = inputPortList().iterator();
-	
+
         while (inports.hasNext()) {
             TypedIOPort p = (TypedIOPort)inports.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
-		_setInputVariables(p, channel, firings, 
+		_setInputVariables(p, channel, firings,
 				   firingsPerIteration);
             }
         }
@@ -442,7 +442,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *   this actor, or if the port is not an input port, or if the value
      *   variable cannot take the token read from the channel.
      */
-    protected void _setInputVariables(TypedIOPort port, int channel, 
+    protected void _setInputVariables(TypedIOPort port, int channel,
 				      int firings, int firingsPerIteration)
             throws IllegalActionException {
         if (port.getContainer() != this) {
@@ -456,7 +456,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
                     + "that is not input.");
         }
         if (_debug_info) {
-            System.out.println(this.getFullName() + 
+            System.out.println(this.getFullName() +
 			       ": setting input variables for port " +
 			       port.getName());
         }
@@ -481,27 +481,27 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 		System.out.println(port.getName() + "has token: " + t);
 	    }
 	    if (_debug_info) {
-		System.out.println("FSMActor: _setInputVariables(): " 
+		System.out.println("FSMActor: _setInputVariables(): "
                                 + port.getName() + "has token: " + t);
 	    }
 	    tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
 	    pVars[channel][0].setToken(tok);
 	    // Update the value variable if there is a token in the channel.
-	    
+
             tok = port.get(channel);
             if (_debug_info) {
                 System.out.println(port.getName() + "token value:" + tok.toString());
             }
 	    if (_debug_info) {
-		System.out.println("FSMActor: _setInputVariables(): " 
+		System.out.println("FSMActor: _setInputVariables(): "
                     + port.getName() + "token value:" + tok.toString());
 	    }
             pVars[channel][1].setToken(tok);
 	    // HDF specific:
 	    int portRate = SDFScheduler.getTokenConsumptionRate(port);
-	    int index = firingsPerIteration*portRate - 1 - 
+	    int index = firingsPerIteration*portRate - 1 -
 		(firings*portRate + currentTokenIndex);
-	    int historySize = 
+	    int historySize =
 		((IntToken)(tokenHistorySize.getToken())).intValue();
 	    if (index < historySize) {
 		hdfVars[channel][index].setToken(tok);

@@ -396,10 +396,10 @@ public class Token implements Serializable {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " method not supported between "
-                + firstToken.getClass().getName() 
+                + firstToken.getClass().getName()
                 + " '" + firstToken.toString()
                 + "' and "
                 + secondToken.getClass().getName()
-                + " '" + secondToken.toString() + "'");                
+                + " '" + secondToken.toString() + "'");
     }
 }

@@ -40,18 +40,18 @@ import java.util.*;
 
 /**
 An analysis that maps each local or field to the set of objects or
-fields that must alias it, at a particular point in the code.  
+fields that must alias it, at a particular point in the code.
 */
 public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     public MustAliasAnalysis(UnitGraph g) {
         this(g, null, null);
     }
-        
+
     /** Create a new analysis based on the given invoke graph
-     *  and side effect information. 
+     *  and side effect information.
      */
-    public MustAliasAnalysis(UnitGraph g, 
-            InvokeGraph invokeGraph, 
+    public MustAliasAnalysis(UnitGraph g,
+            InvokeGraph invokeGraph,
             SideEffectAnalysis sideEffectAnalysis) {
         super(g);
         _invokeGraph = invokeGraph;
@@ -187,7 +187,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                         }
                     }
                 }
-            } else {   
+            } else {
                 InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
                 SootMethod method = expr.getMethod();
                 System.out.println("invoking: " + method);
@@ -200,7 +200,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                     SootMethod target = (SootMethod)i.next();
 
                     Set newSet = _sideEffectAnalysis.getSideEffects(method);
-                    
+
                     if(newSet != null) {
                         allSideEffects.addAll(newSet);
                     } else {
@@ -215,7 +215,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 } else {
                     // If we have unknown side effects, then we have
                     // to kill alias information for *all* fields.
-                    // Note that this set includes all the locals 
+                    // Note that this set includes all the locals
                     // as well.
                     allSideEffects = out.keySet();
                 }
@@ -245,13 +245,13 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                     // If the type is aliasable,
                     if(lvalue.getType() instanceof ArrayType ||
                             lvalue.getType() instanceof RefType) {
-                        
-                        // add the left side to its new set of 
+
+                        // add the left side to its new set of
                         // aliases. (Gen rule)
                         _createAlias(out, lobject, robject);
                     }
                 }
-                //           System.out.println("aliases for " + lobject + 
+                //           System.out.println("aliases for " + lobject +
                 //        " = " + out.get(lobject));
             }
         }
@@ -288,7 +288,7 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
 
         // First set the output to the first input.
-        if(in1 != out) 
+        if(in1 != out)
             copy(in1, out);
 
         // Now merge in the second input.
@@ -309,8 +309,8 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
             }
         }
     }
-    
-    
+
+
     private static void _createAlias(Map map, Object lObject, Object rObject) {
         //System.out.println("createAlias");
         // Get its new set of aliases.
@@ -319,19 +319,19 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
             rset = new HashSet();
             rset.add(rObject);
         }
-        
+
         // Add the object to the new set of aliases.
         rset.add(lObject);
-        
+
         // And set its set of aliases.
         map.put(lObject, rset);
-    }    
+    }
 
     private static Object _getAliasObject(Value value) {
         if(value instanceof Local) {
             return value;
         } else if(value instanceof FieldRef) {
-            /// NOTE: we can do better 
+            /// NOTE: we can do better
             // if we return something that is
             // instance-dependent.
             return ((FieldRef)value).getField();

@@ -1,5 +1,5 @@
 /* A DE domain director.
-   
+
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -208,7 +208,7 @@ public class HDEDirector extends DEDirector {
      */
     public HDEDirector(Workspace workspace) {
 	super(workspace);
-       
+
     }
 
     /** Construct a director in the given container with the given name.
@@ -223,12 +223,12 @@ public class HDEDirector extends DEDirector {
      *   director is not compatible with the specified container.
      * @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in
-     *   the container. 
+     *   the container.
      */
     public HDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -268,7 +268,7 @@ public class HDEDirector extends DEDirector {
             if (actorToFire == getContainer()) {
                 return;
             }
-            
+
             // Fire an actor exactly once, when it has a waiting event.
             // NOTE: There are enough tests here against the
             // _debugging variable that it makes sense to split
@@ -319,20 +319,20 @@ public class HDEDirector extends DEDirector {
                         //break;
                 }
             }
-            
+
 
             // Check whether the next time stamp is equal to current time.
             synchronized(_eventQueue) {
                 if(!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    // If the next event is in the future, 
+                    // If the next event is in the future,
                     // proceed to postfire().
 
                     if (next.timeStamp() > getCurrentTime()) {
                         break;
                     } else if (next.timeStamp() < getCurrentTime()) {
                         throw new InternalErrorException(
-                                "fire(): the time stamp of the next event " 
+                                "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
                                 + "current time " + getCurrentTime() + " !");
                     }
@@ -363,7 +363,7 @@ public class HDEDirector extends DEDirector {
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     
+
         public boolean transferOutputs(IOPort port)
 	throws IllegalActionException {
         return super.transferOutputs(port);

@@ -153,7 +153,7 @@ public class JTextAreaExec extends JPanel {
      *  To run a simple test, use:
      *  <pre>
      *	java -classpath $PTII ptolemy.gui.JTextAreaExec
-     *  </pre>		
+     *  </pre>
      */
     public static void main(String [] args) {
         JFrame jFrame = new JFrame("JTextAreaExec Example");
@@ -259,20 +259,20 @@ public class JTextAreaExec extends JPanel {
 		    }
 
                     _process = runtime.exec(command);
-			
+
 		    // Set up a Thread to read in any error messages
-		    _StreamReaderThread errorGobbler = new 
+		    _StreamReaderThread errorGobbler = new
 			_StreamReaderThread(_process.getErrorStream(),
-					    "ERROR", this); 
+					    "ERROR", this);
 
 		    // Set up a Thread to read in any output messages
-		    _StreamReaderThread outputGobbler = new 
+		    _StreamReaderThread outputGobbler = new
 			_StreamReaderThread(_process.getInputStream(),
-					    "OUTPUT", this); 
+					    "OUTPUT", this);
 
 		    // Start up the Threads
-		    errorGobbler.start(); 
-		    outputGobbler.start(); 
+		    errorGobbler.start();
+		    outputGobbler.start();
 
 
 		    try {
@@ -377,38 +377,38 @@ public class JTextAreaExec extends JPanel {
 
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
-    private class _StreamReaderThread extends Thread { 
+    private class _StreamReaderThread extends Thread {
 
 	_StreamReaderThread(InputStream inputStream, String streamType,
-			    JTextAreaExec jTextAreaExec) { 
-	    _inputStream = inputStream; 
+			    JTextAreaExec jTextAreaExec) {
+	    _inputStream = inputStream;
 	    _streamType = streamType;
 	    _jTextAreaExec = jTextAreaExec;
-	} 
+	}
 
-	// Read lines from the _inputStream and output them to the 
+	// Read lines from the _inputStream and output them to the
 	// JTextArea.
-	public void run() { 
-	    try { 
+	public void run() {
+	    try {
 		InputStreamReader inputStreamReader =
-		    new InputStreamReader(_inputStream); 
+		    new InputStreamReader(_inputStream);
 	    BufferedReader bufferedReader =
-		new BufferedReader(inputStreamReader); 
-	    String line = null; 
-	    while ( (line = bufferedReader.readLine()) != null) 
-		_jTextAreaExec.appendJTextArea(/*_streamType + ">" +*/ line); 
-	    } catch (IOException ioe) { 
+		new BufferedReader(inputStreamReader);
+	    String line = null;
+	    while ( (line = bufferedReader.readLine()) != null)
+		_jTextAreaExec.appendJTextArea(/*_streamType + ">" +*/ line);
+	    } catch (IOException ioe) {
 		_jTextAreaExec.appendJTextArea("IOException: " + ioe);
 	    }
-	} 
-	    
+	}
+
 	// Stream to read from.
-	private InputStream _inputStream; 
+	private InputStream _inputStream;
 	// Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-	private String _streamType; 
+	private String _streamType;
 	// JTextArea to update
 	private JTextAreaExec _jTextAreaExec;
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

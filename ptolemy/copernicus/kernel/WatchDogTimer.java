@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** 
+/**
 A transformer that calls System.exit() after a certain amount of time.
 This transformer is useful for killing tests that are in tight loops.
 We use a transformer instead of building this directly into the KernelMain
@@ -57,14 +57,14 @@ public class WatchDogTimer extends SceneTransformer {
     private WatchDogTimer() {}
 
     public static WatchDogTimer v() {
-        return instance; 
+        return instance;
     }
 
     public void cancel() {
             System.out.println("WatchDogTimer.cancel(): canceling "
                     + (new Date()));
             if ( _timer == null) {
-                System.out.println("WatchDogTimer.cancel(): " 
+                System.out.println("WatchDogTimer.cancel(): "
                         + "Warning: cancel called twice?");
             } else {
                 _timer.cancel();
@@ -76,10 +76,10 @@ public class WatchDogTimer extends SceneTransformer {
         return super.getDefaultOptions() + " cancel:false";
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug time cancel"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug time cancel";
     }
-    
+
     /** Start up a watch dog timer that will call System.exit().
      *  Sample option arguments:
      *  <pre>
@@ -87,12 +87,12 @@ public class WatchDogTimer extends SceneTransformer {
      *  </pre>
      *  means that exit will be called in 10,000 ms, or 10 seconds
      *
-     *  @param phaseName The name of the phase, for example 
+     *  @param phaseName The name of the phase, for example
      *  <code>wjtp.watchDogTimer</code>.
      *  @param options The options Map.  This method uses the
      *  <code>time</code> option to specify the number of milliseconds
      *  until System.exit() should be called.
-     */ 
+     */
     protected void internalTransform(String phaseName, Map options)
     {
         System.out.println("WatchDogTimer.internalTransform("
@@ -105,7 +105,7 @@ public class WatchDogTimer extends SceneTransformer {
         }
 
         String timeToDieString = Options.getString(options, "time");
-        if (timeToDieString == null 
+        if (timeToDieString == null
                 || timeToDieString.length() == 0) {
             return;
         }
@@ -121,7 +121,7 @@ public class WatchDogTimer extends SceneTransformer {
         }
         // Make a record of the time when the WatchDogTimer was set
         final long startTime = (new Date()).getTime();
-        
+
         TimerTask doTimeToDie = new TimerTask() {
             public void run() {
                 try {
@@ -130,7 +130,7 @@ public class WatchDogTimer extends SceneTransformer {
 
                     // Get the root ThreadGroup
                     ThreadGroup parent, rootGroup;
-                    
+
                     parent = Thread.currentThread().getThreadGroup();
                     do {
                         rootGroup = parent;

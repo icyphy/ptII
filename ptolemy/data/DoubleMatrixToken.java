@@ -332,10 +332,10 @@ public class DoubleMatrixToken extends MatrixToken {
 	return (int)code;
     }
 
-    /** Test that each element of this Token is close to the 
+    /** Test that each element of this Token is close to the
      *  corresponding element in the argument Token and that each
      *  element of this Token has the same units as the corresponding
-     *  element in the argument Token. 
+     *  element in the argument Token.
      *  The value of the ptolemy.math.Complex epsilon field is
      *  used to determine whether the two Tokens are close.
      *
@@ -357,7 +357,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
-     *   value of each element of this token is close to the 
+     *   value of each element of this token is close to the
      *   value of corresponding element in the argument token and
      *   the units of each element of this token is the same as the units
      *   of the corresponding element in the argument token.
@@ -368,10 +368,10 @@ public class DoubleMatrixToken extends MatrixToken {
         return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
-    /** Test that each element of this Token is close to the 
+    /** Test that each element of this Token is close to the
      *  corresponding element in the argument Token and that each
      *  element of this Token has the same units as the corresponding
-     *  element in the argument Token. 
+     *  element in the argument Token.
      *  The value of the epsilon argument is used to determine whether
      *  the two Tokens are close.
      *
@@ -394,7 +394,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param epsilon The value that we use to determine whether two
      *  tokens are close.
      *  @return a boolean token that contains the value true if the
-     *   value of each element of this token is close to the 
+     *   value of each element of this token is close to the
      *   value of corresponding element in the argument token and
      *   the units of each element of this token is the same as the units
      *   of the corresponding element in the argument token.

@@ -374,7 +374,7 @@ public class EntityLibrary
      *  this object.  Note that any configuration that was previously
      *  specified using the source attribute need not be represented here
      *  as well.
-     *  @return A configuration string, or null if no configuration 
+     *  @return A configuration string, or null if no configuration
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
@@ -440,7 +440,7 @@ public class EntityLibrary
                 // removeAllEntities();
 
                 MoMLParser parser = new MoMLParser(workspace());
- 
+
                 parser.setContext(this);
                 if (_source != null && !_source.equals("")) {
                     URL xmlFile = new URL(_base, _source);

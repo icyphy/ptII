@@ -202,7 +202,7 @@ public class RecordType extends StructuredType {
         return (InequalityTerm)_fields.get(label);
     }
 
-    /** Return a hash code value for this object. 
+    /** Return a hash code value for this object.
      */
     public int hashCode() {
         return _fields.keySet().hashCode() + 2917;
@@ -367,7 +367,7 @@ public class RecordType extends StructuredType {
      */
     public Set labelSet() {
         return _fields.keySet();
-    }   
+    }
 
     /** Update this Type to the specified RecordType.
      *  The specified type must be a RecordType and have the same structure

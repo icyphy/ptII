@@ -634,7 +634,7 @@ public class CTMultiSolverDirector extends CTDirector {
         _setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
         if(breakPoints != null && !breakPoints.isEmpty()) {
-            if(_debugging) _debug("first breakpoint is at " + 
+            if(_debugging) _debug("first breakpoint is at " +
                     breakPoints.first());
             breakPoints.removeAllLessThan(now);
             if(breakPoints.contains(now)) {

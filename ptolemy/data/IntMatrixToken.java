@@ -120,7 +120,7 @@ public class IntMatrixToken extends MatrixToken {
         ASTPtRootNode tree = parser.generateParseTree(init);
 	IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
         int[][] value = token.intMatrix();
-        _initialize(value, DO_COPY); 
+        _initialize(value, DO_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////

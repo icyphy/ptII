@@ -103,7 +103,7 @@ public class InvalidStateException extends KernelRuntimeException {
 
     /** Construct an exception with a detail message that includes the
      *  names of an enumeration of nameable object plus the argument string.
-     * 
+     *
      *  @deprecated Use InvalidStateException(Collection, String) instead.
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
@@ -140,7 +140,7 @@ public class InvalidStateException extends KernelRuntimeException {
     // JDK1.4 has a Collections.list(Enumeration) method
     // that would be good to use.
     // For suggestions about converting from Enumerations to Lists,
-    // see 
+    // see
     // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
     private static List _list(Enumeration objects) {
         List list = new ArrayList();

@@ -94,7 +94,7 @@ public class NameDuplicationException extends KernelException {
             // the 'Attempt to insert object named "" into a'.
             // Note that if wouldBeContainee is the empty string, then we get
             // the 'Attempt to insert object named "<Unnamed Object>" into a'.
-            
+
             _setMessage("Attempt to insert object named \"" +
                     getName(wouldBeContainee) +
                     "\" into a container that already contains" +

@@ -107,7 +107,7 @@ public class UtilityFunctions {
 	}
     }
 
-    /** Return the approximate number of bytes available for future 
+    /** Return the approximate number of bytes available for future
      *  object allocation.  Note that requesting a garbage collection
      *  may change this value.
      *  @return The approximate number of bytes available.
@@ -134,8 +134,8 @@ public class UtilityFunctions {
      *  <dt> "ptolemy.ptII.dir"
      *  <dd> vergil usually sets the ptolemy.ptII.dir property to the
      *  value of $PTII.
-     *  </dl> 
-     *  
+     *  </dl>
+     *
      *  @param propertyName The name of property.
      *  @return A token containing the string value of the property.
      */
@@ -158,7 +158,7 @@ public class UtilityFunctions {
      *  with the Ptolemy II expression language eval() function.
      *  eval() is implemented in ptolemy.data.expr.ASTPtFunctionNode.java.
      *  For example: <code>eval(readFile("taps"))</code><p>
-     * 
+     *
      *  @param filename The file we want to read the text from.
      *  @return StringToken containing the text contained in
      *  the specified file.

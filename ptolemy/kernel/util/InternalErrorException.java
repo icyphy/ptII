@@ -60,7 +60,7 @@ public class InternalErrorException extends KernelRuntimeException {
      *  <p>This constructor is commonly used when we want to
      *  catch an exception and rethrow it as a RuntimeException
      *  so that the method where the exception is thrown
-     *  need not declare that this method throws the initial exception. 
+     *  need not declare that this method throws the initial exception.
      *  @param cause The cause of this exception.
      */
     public InternalErrorException(Throwable cause) {

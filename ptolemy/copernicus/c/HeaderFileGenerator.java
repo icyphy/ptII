@@ -100,7 +100,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // Runtime include files
         headerCode.append("/* Runtime Include Files */\n");
         headerCode.append("#include \"array.h\"\n\n");
-        
+
         // FIXME: generate header code for inner classes (probably here)
 
         // Generate typedef for instance-specific structure. The actual

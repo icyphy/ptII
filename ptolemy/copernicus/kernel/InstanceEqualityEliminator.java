@@ -40,19 +40,19 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 
-/** 
-A transformer that removes instance equality checks. 
+/**
+A transformer that removes instance equality checks.
 It uses alias analysis to determine what locals can point to the same object,
 allowing static evaluation of simple conditions.
 Specifically, <i>ref1 == ref2</i> can be replaced with true if <i>ref1</i>
 and <i>ref2</i> are must-aliases of eachother, and false if <i>ref1</> and <i>ref2</i>
 are not maybe aliases of eachother.  Similarly, <i>ref1 != ref2</i> can be
-replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of 
+replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of
 eachother and with false if they are must-aliases
 <p>
-However, in general, making decisions base on must-aliases is much easier 
+However, in general, making decisions base on must-aliases is much easier
 than making decisions on maybe aliases...  in particular, a conservative
-must alias analysis makes it safe 
+must alias analysis makes it safe
 
 */
 
@@ -62,27 +62,27 @@ public class InstanceEqualityEliminator extends SceneTransformer
     private InstanceEqualityEliminator() {}
 
     public static InstanceEqualityEliminator v() {
-        return instance; 
+        return instance;
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug";
     }
 
-    
+
     protected void internalTransform(String phaseName, Map options)
     {
         System.out.println("InstanceEqualityEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         boolean debug = Options.getBoolean(options, "debug");
-      
+
         /*  if(debug) System.out.println("building invoke graph");
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
         if(debug) System.out.println("done");
         if(debug) System.out.println("building method call graph");
-        MethodCallGraph methodCallGraph = 
+        MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
         if(debug) System.out.println("done");
         if(debug) System.out.println("analyzing sideeffecting methods");
@@ -95,35 +95,35 @@ public class InstanceEqualityEliminator extends SceneTransformer
         while(classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
             Iterator methods = theClass.getMethods().iterator();
-            while(methods.hasNext()) {   
+            while(methods.hasNext()) {
                 SootMethod m = (SootMethod) methods.next();
                 if(!m.isConcrete())
                     continue;
                 JimpleBody body = (JimpleBody) m.retrieveActiveBody();
                 removeInstanceEqualities(body, null, debug);
-            } 
+            }
         }
     }
 
-       
-    public void removeInstanceEqualities(JimpleBody body, 
+
+    public void removeInstanceEqualities(JimpleBody body,
             InvokeGraph invokeGraph, boolean debug) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-        
+
         if(debug) System.out.println("analyzing body of " + body.getMethod());
-                
+
         // The analyses that give us the information to transform the code.
         NullPointerAnalysis nullPointerAnalysis =
             new NullPointerAnalysis(unitGraph);
         // if(debug) System.out.println("done nullpointers");
-        MustAliasAnalysis mustAliasAnalysis = 
+        MustAliasAnalysis mustAliasAnalysis =
             new MustAliasAnalysis(unitGraph);
 
         //if(debug) System.out.println("done mustAliases");
-        MaybeAliasAnalysis maybeAliasAnalysis = 
+        MaybeAliasAnalysis maybeAliasAnalysis =
             new MaybeAliasAnalysis(unitGraph);
         //if(debug) System.out.println("done maybeAliases");
-              
+
         //System.out.println("done analyzing");
         // Loop through all the unit
         for(Iterator units = body.getUnits().iterator();
@@ -133,7 +133,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
-              
+
                 if(value instanceof BinopExpr) {
                     BinopExpr binop = (BinopExpr)value;
                     Value left = binop.getOp1();
@@ -142,26 +142,26 @@ public class InstanceEqualityEliminator extends SceneTransformer
                             right.getType() instanceof RefType) {
                         Set leftMustAliases, rightMustAliases;
                         Set leftMaybeAliases, rightMaybeAliases;
-                        leftMustAliases = 
+                        leftMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)left, unit);
-                        leftMaybeAliases = 
+                        leftMaybeAliases =
                             maybeAliasAnalysis.getAliasesOfBefore(
                                     (Local)left, unit);
-                        rightMustAliases = 
+                        rightMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)right, unit);
-                        rightMaybeAliases = 
+                        rightMaybeAliases =
                             maybeAliasAnalysis.getAliasesOfBefore(
                                     (Local)right, unit);
                         if(debug) System.out.println("Ref-ref unit = " + unit);
-                        if(debug) System.out.println("left aliases = " + 
+                        if(debug) System.out.println("left aliases = " +
                                 leftMustAliases);
-                        if(debug) System.out.println("right aliases = " + 
+                        if(debug) System.out.println("right aliases = " +
                                 rightMustAliases);
-                        if(debug) System.out.println("left maybe aliases = " + 
+                        if(debug) System.out.println("left maybe aliases = " +
                                 leftMaybeAliases);
-                        if(debug) System.out.println("right maybe aliases = " 
+                        if(debug) System.out.println("right maybe aliases = "
                                 + rightMaybeAliases);
 
                         if(leftMustAliases.contains(right) &&
@@ -179,7 +179,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
                                     binop.getOp2Box().setValue(IntConstant.v(1));
                                 }
                             }
-                        }                      
+                        }
                     } else if(left.getType() instanceof NullType &&
                             right.getType() instanceof NullType) {
                         if(debug) System.out.println("Null-Null unit = " + unit);

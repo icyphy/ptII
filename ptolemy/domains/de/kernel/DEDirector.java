@@ -428,14 +428,14 @@ public class DEDirector extends Director {
             synchronized(_eventQueue) {
                 if(!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    // If the next event is in the future, 
+                    // If the next event is in the future,
                     // proceed to postfire().
 
                     if (next.timeStamp() > getCurrentTime()) {
                         break;
                     } else if (next.timeStamp() < getCurrentTime()) {
                         throw new InternalErrorException(
-                                "fire(): the time stamp of the next event " 
+                                "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
                                 + "current time " + getCurrentTime() + " !");
                     }
@@ -963,10 +963,10 @@ public class DEDirector extends Director {
                                 }
                             } catch (InterruptedException e) {
                                 if (_debugging) {
-                                    _debug("Wait InterruptException" 
+                                    _debug("Wait InterruptException"
                                             + " (winthrop).");
                                 }
-                                // If the wait is interrupted, 
+                                // If the wait is interrupted,
 				// then stop waiting.
                                 break;
                             } catch (Exception e) {
@@ -1041,7 +1041,7 @@ public class DEDirector extends Director {
                     currentEvent = (DEEvent) _eventQueue.take();
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
-   
+
                     if (_disabledActors != null &&
                         _disabledActors.contains(actorToFire)) {
                         // This actor has requested that it not be fired again.
@@ -1291,9 +1291,9 @@ public class DEDirector extends Director {
         // get all the contained actors.
         Iterator actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
-	    // 'add' replaced with 'addNodeWeight' since the former 
-	    // has been deprocated.  The change here should have no 
-	    // effect since .add had already been defined as a call 
+	    // 'add' replaced with 'addNodeWeight' since the former
+	    // has been deprocated.  The change here should have no
+	    // effect since .add had already been defined as a call
 	    // to .addNodeWeight -winthrop
             dag.addNodeWeight(actors.next());
         }
@@ -1343,7 +1343,7 @@ public class DEDirector extends Director {
                         // create an arc from this actor to the successor.
                         if (dag.containsNodeWeight(destination)) {
 			    // 'contains' replaced with 'containsNodeWeight'
-			    // Should not affect function since former has 
+			    // Should not affect function since former has
 			    // already been defined in Graph.java as latter.
                             dag.addEdge(actor, destination);
                         } else {

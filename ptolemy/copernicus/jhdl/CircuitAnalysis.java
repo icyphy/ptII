@@ -77,7 +77,7 @@ public class CircuitAnalysis {
      */
     public CircuitAnalysis(Entity entity, SootClass theClass) {
         HashMutableDirectedGraph graph = new HashMutableDirectedGraph() {
-		
+
             public String toString() {
 
                 String string = "nodes = " + getNodes();
@@ -94,7 +94,7 @@ public class CircuitAnalysis {
             }
         };
         _graph = graph;
-       
+
         System.out.println("className = " + entity.getClass().getName());
         // Handle SampleDelay specially.
         if(entity.getClass().getName().equals(
@@ -141,7 +141,7 @@ public class CircuitAnalysis {
         }
 
 
-        // get rid of non-essential nodes of 
+        // get rid of non-essential nodes of
         boolean changed = true;
         while(changed) {
             changed = false;
@@ -150,7 +150,7 @@ public class CircuitAnalysis {
                 Object node = nodes.next();
                 if(requiredNodeSet.contains(node)) {
                     continue;
-                } 
+                }
                 HashSet set = new HashSet(graph.getSuccsOf(node));
                 set.retainAll(requiredNodeSet);
                 if(set.isEmpty()) {
@@ -190,7 +190,7 @@ public class CircuitAnalysis {
                 removeSet.add(node);
             }
         }
-       
+
         // Remove all the edges & nodes
         for(Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
@@ -217,14 +217,14 @@ public class CircuitAnalysis {
         return _graph;
     }
 
-    protected void _analyze(HashMutableDirectedGraph graph, 
+    protected void _analyze(HashMutableDirectedGraph graph,
             Set requiredNodeSet, SootMethod method) {
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-        
+
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
@@ -250,7 +250,7 @@ public class CircuitAnalysis {
                 } else {
                     graph.addNode(leftOp);
                 }
-                                
+
                 Value rightOp = ((AssignStmt)stmt).getRightOp();
                 if(rightOp instanceof FieldRef) {
                     SootField field = ((FieldRef)rightOp).getField();
@@ -266,7 +266,7 @@ public class CircuitAnalysis {
 			//This is a token that has been initialized to some
 			//value
                         // Get the constant value of the token.
-//                          String valueString = 
+//                          String valueString =
 //                              ((Token)tag.getObject()).toString();
 //                          requiredNodeSet.add(valueString);
 //                          if(!graph.containsNode(valueString)) {
@@ -280,7 +280,7 @@ public class CircuitAnalysis {
                         }
 //                          graph.addEdge(valueString, leftOp);
                         graph.addEdge(valueToken, leftOp);
-                    }   
+                    }
                 } else if(rightOp instanceof Local) {
                     if(!graph.containsNode(rightOp)) {
                         graph.addNode(rightOp);
@@ -294,7 +294,7 @@ public class CircuitAnalysis {
                         Value base = ((VirtualInvokeExpr)invokeExpr).getBase();
                         if(invokedMethod.getName().equals("get")) {
                             Port port = InlinePortTransformer.getPortValue(
-                                    method, (Local)base, stmt, localDefs, 
+                                    method, (Local)base, stmt, localDefs,
                                     localUses);
                             // String portName = port.getName();
                             if(!graph.containsNode(port)) {
@@ -316,7 +316,7 @@ public class CircuitAnalysis {
                             graph.addEdge(base, invokedMethod);
                         }
                     }
-                    for(Iterator arguments = 
+                    for(Iterator arguments =
                             ((InvokeExpr)rightOp).getArgs().iterator();
                         arguments.hasNext();) {
                         Value argument = (Value)arguments.next();
@@ -331,20 +331,20 @@ public class CircuitAnalysis {
             } else if(stmt instanceof InvokeStmt) {
                 Object op = ((InvokeStmt)stmt).getInvokeExpr();
                 if(op instanceof VirtualInvokeExpr) {
-                    VirtualInvokeExpr invokeExpr = 
+                    VirtualInvokeExpr invokeExpr =
                         (VirtualInvokeExpr)op;
                     SootMethod invokedMethod = invokeExpr.getMethod();
                     Value base = invokeExpr.getBase();
                     if(invokedMethod.getName().equals("send")) {
                         Port port = InlinePortTransformer.getPortValue(
-                                method, (Local)base, stmt, localDefs, 
+                                method, (Local)base, stmt, localDefs,
                                 localUses);
                         // String portName = port.getName();
                         if(!graph.containsNode(port)) {
                             graph.addNode(port);
                         }
                         requiredNodeSet.add(port);
-                           
+
                         Value tokenValue = invokeExpr.getArg(1);
                         if(!graph.containsNode(tokenValue)) {
                             graph.addNode(tokenValue);
@@ -356,7 +356,7 @@ public class CircuitAnalysis {
         }
     }
 
-    protected ptolemy.data.type.Type _getPortType(Port port) 
+    protected ptolemy.data.type.Type _getPortType(Port port)
 	throws RuntimeException {
 	ptolemy.data.type.Type t=null;
 	try {

@@ -32,7 +32,7 @@ package ptolemy.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// RequireVersion
-/** 
+/**
 An attribute that requires a particular version of Ptolemy II.
 When the value of this attribute is set (via setExpression()),
 the value that is set is compared against the version of the
@@ -43,7 +43,7 @@ version is less than the value set, we throw an expression.
 @version $Id$
 */
 public class RequireVersion extends VersionAttribute {
-    
+
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -69,7 +69,7 @@ public class RequireVersion extends VersionAttribute {
     /** Set the required version, check it against the currently
      *  executing version, and throw an exception if the executing
      *  version is older.
-     *  @param expression The version string, consisting of 
+     *  @param expression The version string, consisting of
      *   version ID tuples separated by '.', '-' or '_'. For example:
      *   "1.2", "1.2_beta-4".
      *  @exception IllegalActionException If the argument contains a

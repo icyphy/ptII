@@ -64,11 +64,11 @@ the serial number to keep track of the order of the published
 tokens. If there is already an entry in the JavaSpace with the entry
 name, the new token will override the existing one. In theory, an entry
 only exists in the JavaSpace for a limited amount of time, denoted
-as the <i>lease time</i>. If the lease time expires, the JavaSpace 
-can freely remote the entry from it. The lease time of an entry 
-published by this publisher is specified by the <i>leaseTime</i> 
+as the <i>lease time</i>. If the lease time expires, the JavaSpace
+can freely remote the entry from it. The lease time of an entry
+published by this publisher is specified by the <i>leaseTime</i>
 parameter in milliseconds. The default value LEASE_FOREVER will
-keep the entry as long as the JavaSpace exists. 
+keep the entry as long as the JavaSpace exists.
 
 @see TokenEntry
 @author Jie Liu, Yuhong Xiong
@@ -109,19 +109,19 @@ public class Publisher extends Sink {
 
     /** The JavaSpace name. The type of the parameter is string.
      *  The default name is "JavaSpaces".
-     *  
+     *
      */
     public Parameter jspaceName;
 
-    /** The name for the entries to be published. The type of the 
+    /** The name for the entries to be published. The type of the
      *  parameter is string. The default value is
      *  an empty string.
      */
     public Parameter entryName;
 
-    /** The lease time for entries written into the space. 
+    /** The lease time for entries written into the space.
      *  This parameter must contain a LongToken. The default
-     *  is Lease.FOREVER. 
+     *  is Lease.FOREVER.
      */
     public Parameter leaseTime;
 
@@ -207,7 +207,7 @@ public class Publisher extends Sink {
                     ue.getMessage());
         }
     }
-    
+
     /** Interrupt the lookup thread if it is still alive. The lookup
      *  thread is a thread created to find the JavaSpace.
      */

@@ -167,7 +167,7 @@ public class KernelException extends Exception {
 
     /** Print this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the cause
-     *  stacktrace. 
+     *  stacktrace.
      *  @param printStream The PrintStream to write to.
      */
     public void printStackTrace(PrintStream printStream) {
@@ -244,7 +244,7 @@ public class KernelException extends Exception {
             if (!object2String.equals("")) {
 
                 // If you modify the formatting here, be sure to make
-                // a similar change to 
+                // a similar change to
                 // KernelRuntimeException(Collection, Throwable, String)
 
                 prefix = "Object names: "
@@ -304,7 +304,7 @@ public class KernelException extends Exception {
                     "": detail)
 
             // Do we add a \n?
-            + ((!prefixNullOrEmpty || !detailNullOrEmpty) 
+            + ((!prefixNullOrEmpty || !detailNullOrEmpty)
                     && cause != null ?
                     "\n" : "")
 

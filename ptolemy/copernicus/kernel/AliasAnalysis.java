@@ -40,10 +40,10 @@ import java.util.*;
 /**
 An analysis that maps each local and field to the set of locals and
 fields that alias that value.  Implementors of this interface determine
-the strength of the analysis.  i.e. must-aliases vs. maybe aliases, 
+the strength of the analysis.  i.e. must-aliases vs. maybe aliases,
 flow sensitive vs. flow insensitive, etc.
 
-FIXME: I think we need an augmented interface for 
+FIXME: I think we need an augmented interface for
 flow-sensitive analysis?
 */
 public interface AliasAnalysis {

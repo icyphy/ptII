@@ -147,7 +147,7 @@ public final class ASCII_CharStream
 		//		   + inputStream);
 		inputStream.close();
 	    } catch (Exception ex) {
-		throw new RuntimeException("ASCII_CharStream: close failed? " 
+		throw new RuntimeException("ASCII_CharStream: close failed? "
 					   + ex);
 	    }
             inputStream = dstream;
@@ -174,7 +174,7 @@ public final class ASCII_CharStream
     public ASCII_CharStream(java.io.InputStream dstream, int startline,
             int startcolumn, int buffersize)
         {
-	    
+
             this(new java.io.InputStreamReader(dstream), startline,
                     startcolumn, INIT_BUFFER_SIZE);
         }

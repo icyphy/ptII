@@ -43,43 +43,43 @@ import java.util.*;
 ////////////////////////////////////////////////////////////////////
 //// HDFDirector
 /**
-The heterochronous dataflow (HDF) domain implements the HDF model 
-of computation [1]. The HDF model of computation is a generalization 
-of synchronous dataflow (SDF). In SDF, the set of port rates of an 
-actor (called the type signature) are constant. In HDF, however, 
-an actor has a finite number of type signatures which are allowed 
+The heterochronous dataflow (HDF) domain implements the HDF model
+of computation [1]. The HDF model of computation is a generalization
+of synchronous dataflow (SDF). In SDF, the set of port rates of an
+actor (called the type signature) are constant. In HDF, however,
+an actor has a finite number of type signatures which are allowed
 to change between iterations of the HDF schedule.
 <p>
-An HDF actor has an initial type signature when execution begins. 
-The balance equations can then be solved to find a 
-periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to 
-change its type signature after an iteration of the schedule. 
-If a port rate change occurs, a new schedule 
+An HDF actor has an initial type signature when execution begins.
+The balance equations can then be solved to find a
+periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to
+change its type signature after an iteration of the schedule.
+If a port rate change occurs, a new schedule
 corresponding to the new ports rates must then be obtained.
 <p>
-Since an HDF actor has a finite number of type signatures, it 
-may be useful to use an FSM to control when type signature changes 
+Since an HDF actor has a finite number of type signatures, it
+may be useful to use an FSM to control when type signature changes
 may occur. The HDFFSMDirector may be used to compose HDF with
  hierarchical FSMs according to the *charts [1] semantics.
 <p>
-Since an HDF actor has a finite number of possible type 
-signatures, the number of possible schedules is also finite. 
-As a result of this finite state space, deadlock and bounded 
-channel lengths are decidable in HDF. In principle, all possible 
-schedules could be computed at compile time. However, the number 
-of schedules can be exponential in the number of actors, so this 
+Since an HDF actor has a finite number of possible type
+signatures, the number of possible schedules is also finite.
+As a result of this finite state space, deadlock and bounded
+channel lengths are decidable in HDF. In principle, all possible
+schedules could be computed at compile time. However, the number
+of schedules can be exponential in the number of actors, so this
 may not be practical.
 <p>
-This director makes use of an HDF scheduler that computes the 
-schedules dynamically, and caches them. The size of the cache 
-can be set by the <i>scheduleCacheSize</i> parameter. The default 
+This director makes use of an HDF scheduler that computes the
+schedules dynamically, and caches them. The size of the cache
+can be set by the <i>scheduleCacheSize</i> parameter. The default
 value of this parameter is 100.
 <p>
 <b>References</b>
 <p>
 <OL>
 <LI>
-A. Girault, B. Lee, and E. A. Lee, 
+A. Girault, B. Lee, and E. A. Lee,
 ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
@@ -143,19 +143,19 @@ public class HDFDirector extends SDFDirector {
      *  or equal to zero, then schedules will never be discarded
      *  from the cache. The default value is 100.
      *  <p>
-     *  Note that the number of schedules in an HDF model can be 
+     *  Note that the number of schedules in an HDF model can be
      *  exponential in the number of actors. Setting the cache size to a
      *  very large value is therefore not recommended if the
      *  model contains a large number of HDF actors.
      */
     public Parameter scheduleCacheSize;
 
-    /** Calculate the current schedule, if necessary, and iterate the 
-     *  contained actors in the order given by the schedule. This 
-     *  method differes from the fire() method of SDFDirector in that 
-     *  this method uses cached schedules when possible. This leads to 
+    /** Calculate the current schedule, if necessary, and iterate the
+     *  contained actors in the order given by the schedule. This
+     *  method differes from the fire() method of SDFDirector in that
+     *  this method uses cached schedules when possible. This leads to
      *  more efficient execution. The cache size to use is set by the
-     *  scheduleCacheSize parameter.  
+     *  scheduleCacheSize parameter.
      *  <p>
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's  prefire(), fire() and
@@ -171,16 +171,16 @@ public class HDFDirector extends SDFDirector {
      */
     /*
      public void fire() throws IllegalActionException {
-	if (_debug_info) { 
+	if (_debug_info) {
 	    System.out.println(getName() + " : fire() invoked.");
 	}
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-	
+
         if (container == null) {
             throw new InvalidStateException("HDFDirector " + getName() +
                     " fired, but it has no container!");
         } else {
-	    if (_debug_info) { 
+	    if (_debug_info) {
 		System.out.println(getName() + " : fire(): " +
 				   " Schedule is ");
 		Schedule tSched = getSchedule();
@@ -189,7 +189,7 @@ public class HDFDirector extends SDFDirector {
 		    Firing firing = (Firing)tFirings.next();
 		    Actor actor = (Actor)firing.getActor();
 		    System.out.println(" : " +
-				       ((NamedObj)actor).getName() + 
+				       ((NamedObj)actor).getName() +
 				       " ");
 		}
 	    }
@@ -200,7 +200,7 @@ public class HDFDirector extends SDFDirector {
             while (firings.hasNext()) {
 		Firing firing = (Firing)firings.next();
 		Actor actor = (Actor)firing.getActor();
-		if (_debug_info) { 
+		if (_debug_info) {
 		    System.out.println(getName() + " : fire(): " +
 				       " firing actor : " +
 				       ((NamedObj)actor).getName());
@@ -258,7 +258,7 @@ public class HDFDirector extends SDFDirector {
      *   the schedule.
      */
     public Schedule getSchedule() throws IllegalActionException{
-	Scheduler scheduler = 
+	Scheduler scheduler =
 	    getScheduler();
 	Schedule schedule;
 	//return scheduler.getSchedule();
@@ -278,22 +278,22 @@ public class HDFDirector extends SDFDirector {
 	    String rates = new String();
 	    while (inputPorts.hasNext()) {
 		IOPort inputPort = (IOPort)inputPorts.next();
-		int rate = 
+		int rate =
 		    SDFScheduler.getTokenConsumptionRate(inputPort);
 		rates = rates + String.valueOf(rate);
 	    }
 	    Iterator outputPorts = _outputPortList.iterator();
 	    while (outputPorts.hasNext()) {
 		IOPort outputPort = (IOPort)outputPorts.next();
-		int rate = 
+		int rate =
 		    SDFScheduler.getTokenProductionRate(outputPort);
 		rates = rates + String.valueOf(rate);
 	    }
-	    if (_debug_info) { 
+	    if (_debug_info) {
 		System.out.println("Port rates = " + rates);
 	    }
 	    String rateKey = rates;
-	    int cacheSize = 
+	    int cacheSize =
 		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
 	    if (cacheSize != _cacheSize) {
 		// cache size has changed. reset the cache.
@@ -303,8 +303,8 @@ public class HDFDirector extends SDFDirector {
 	    }
 	    if (_scheduleCache.containsKey(rateKey)) {
 		// cache hit.
-		if (_debug_info) { 
-		    System.out.println(getName() + 
+		if (_debug_info) {
+		    System.out.println(getName() +
 				       " : Cache hit!");
 		}
 		if (cacheSize > 0) {
@@ -317,8 +317,8 @@ public class HDFDirector extends SDFDirector {
 		schedule = (Schedule)_scheduleCache.get(rateKey);
 	    } else {
 		// cache miss.
-		if (_debug_info) { 
-		    System.out.println(getName() + 
+		if (_debug_info) {
+		    System.out.println(getName() +
 				       " : Cache miss.");
 		}
 		if (cacheSize > 0) {
@@ -331,11 +331,11 @@ public class HDFDirector extends SDFDirector {
 		    }
 		    // Add key to head of list.
 		    _scheduleKeyList.add(0, rateKey);
-		} 
+		}
 		// Add key/schedule to the schedule map.
 		schedule = scheduler.getSchedule();
 		_scheduleCache.put(rateKey, schedule);
-	    } 
+	    }
 	}
 	return schedule;
     }
@@ -349,14 +349,14 @@ public class HDFDirector extends SDFDirector {
      *   the firing count.
      */
     public int getFiringCount(Actor actor) throws IllegalActionException {
-	
+
 	Schedule schedule = getSchedule();
 	Iterator firings = schedule.firingIterator();
 	int occurrence = 0;
 	while (firings.hasNext()) {
 	    Firing firing = (Firing)firings.next();
 	    Actor actorInSchedule = (Actor)(firing.getActor());
-	    String actorInScheduleName = 
+	    String actorInScheduleName =
 		((Nameable)actorInSchedule).getName();
 	    String actorName = ((Nameable)actor).getName();
 	    if (actorInScheduleName.equals(actorName)) {
@@ -366,11 +366,11 @@ public class HDFDirector extends SDFDirector {
 		occurrence += firing.getIterationCount();
 	    }
 
-	    if (_debug_info) { 
-		//System.out.println(getName() + 
+	    if (_debug_info) {
+		//System.out.println(getName() +
 		//" :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
 		//	   ((Nameable)actor).getName());
-		//System.out.println(getName() + 
+		//System.out.println(getName() +
 		//" : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
 		//	   occurrence);
 	    }
@@ -379,11 +379,11 @@ public class HDFDirector extends SDFDirector {
     }
 
     /** Initialize the actors associated with this director, set the
-     *  size of the schedule cache, and then compute the schedule. 
-     *  The schedule is computed during initialization so that 
-     *  hierarchical opaque composite actors can be scheduled 
+     *  size of the schedule cache, and then compute the schedule.
+     *  The schedule is computed during initialization so that
+     *  hierarchical opaque composite actors can be scheduled
      *  properly (since the act of computing the schedule sets the
-     *  rate parameters of the external ports). The order in which 
+     *  rate parameters of the external ports). The order in which
      *  the actors are initialized is arbitrary.
      *
      *  @exception IllegalActionException If the initialize() method of
@@ -394,7 +394,7 @@ public class HDFDirector extends SDFDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         SDFScheduler scheduler = (SDFScheduler)getScheduler();
-	int cacheSize = 
+	int cacheSize =
 	    ((IntToken)(scheduleCacheSize.getToken())).intValue();
     }
 
@@ -406,7 +406,7 @@ public class HDFDirector extends SDFDirector {
      */
     private void _init() {
         try {
-            SDFScheduler scheduler = 
+            SDFScheduler scheduler =
                 new SDFScheduler(this, uniqueName("Scheduler"));
             setScheduler(scheduler);
         }
@@ -447,14 +447,14 @@ public class HDFDirector extends SDFDirector {
 	 List inputPortRateList = new LinkedList();
 	 while (actorIterator.hasNext()) {
 	     Actor containedActor = (Actor)actorIterator.next();
-	     List temporaryInputPortList = 
+	     List temporaryInputPortList =
 		 containedActor.inputPortList();
-	     Iterator inputPortIterator = 
+	     Iterator inputPortIterator =
 		 temporaryInputPortList.iterator();
 	     while (inputPortIterator.hasNext()) {
 		 IOPort inputPort = (IOPort)inputPortIterator.next();
-		 if (_debug_info) { 
-		     System.out.println(getName() + 
+		 if (_debug_info) {
+		     System.out.println(getName() +
 					"Found input port : " +
 					inputPort.getName());
 		 }
@@ -477,14 +477,14 @@ public class HDFDirector extends SDFDirector {
 	 List outputPortRateList = new LinkedList();
 	 while (actorIterator2.hasNext()) {
 	     Actor containedActor = (Actor)actorIterator2.next();
-	     List temporaryOutputPortList = 
+	     List temporaryOutputPortList =
 		 containedActor.outputPortList();
-	     Iterator outputPortIterator = 
+	     Iterator outputPortIterator =
 		 temporaryOutputPortList.iterator();
 	     while (outputPortIterator.hasNext()) {
 		 IOPort outputPort = (IOPort)outputPortIterator.next();
-		 if (_debug_info) { 
-		     System.out.println(getName() + 
+		 if (_debug_info) {
+		     System.out.println(getName() +
 					"Found output port : " +
 					outputPort.getName());
 		 }

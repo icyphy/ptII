@@ -148,7 +148,7 @@ public class CompositeEntity extends ComponentEntity {
         // We don't use an Iterator here so that we can modify the list
         // rather than having both an Iterator and a result list.
         //
-        // Note: 
+        // Note:
         // deepEntityList() should be renamed to deepOpaqueEntityList()
         // allAtomicEntityList() to deepAtomicEntityList()
         // However, the change would require a fair amount of work.

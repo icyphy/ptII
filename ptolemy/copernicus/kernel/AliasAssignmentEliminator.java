@@ -37,8 +37,8 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 
-/** 
-A transformer that removes unnecessary reference assignments.  
+/**
+A transformer that removes unnecessary reference assignments.
 Specifically, an assignment <i>a=b</i> can be removed if <i>a</i> and
 <i>b</i> are already must-aliases of eachother.
 */
@@ -50,26 +50,26 @@ public class AliasAssignmentEliminator extends BodyTransformer
     private AliasAssignmentEliminator() {}
 
     public static AliasAssignmentEliminator v() {
-        return instance; 
+        return instance;
     }
 
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug"; 
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug";
     }
-    
+
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
         System.out.println("AliasAssignmentEliminator.internalTransform("
                 + phaseName + ", " + body.getMethod() + ", " + options + ")");
-        
+
         boolean debug = Options.getBoolean(options, "debug");
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // The analyses that give us the information to transform the code.
-        MustAliasAnalysis mustAliasAnalysis = 
+        MustAliasAnalysis mustAliasAnalysis =
             new MustAliasAnalysis(unitGraph);
-  
+
         // Loop through all the units
         for(Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
@@ -82,24 +82,24 @@ public class AliasAssignmentEliminator extends BodyTransformer
                         right.getType() instanceof RefType) {
                     Set leftMustAliases, rightMustAliases;
                     if(left instanceof Local) {
-                        leftMustAliases = 
+                        leftMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)left, unit);
                     } else if(left instanceof FieldRef) {
                         SootField field = ((FieldRef)left).getField();
-                        leftMustAliases = 
+                        leftMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     field, unit);
                     } else {
                         continue;
                     }
                     if(right instanceof Local) {
-                        rightMustAliases = 
+                        rightMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     (Local)right, unit);
                     } else if(right instanceof FieldRef) {
                         SootField field = ((FieldRef)right).getField();
-                        rightMustAliases = 
+                        rightMustAliases =
                             mustAliasAnalysis.getAliasesOfBefore(
                                     field, unit);
                     } else {
@@ -107,14 +107,14 @@ public class AliasAssignmentEliminator extends BodyTransformer
                     }
 
                     if(debug) {
-                        System.out.println("Ref-ref assignment = " + 
+                        System.out.println("Ref-ref assignment = " +
                                 unit);
-                        System.out.println("left aliases = " + 
+                        System.out.println("left aliases = " +
                                 leftMustAliases);
-                        System.out.println("right aliases = " + 
+                        System.out.println("right aliases = " +
                                 rightMustAliases);
                     }
-                    
+
                     // Utter hack... Should be:
                     // Why doesn't alias analysis return the right things?
                     // if(mustAliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {

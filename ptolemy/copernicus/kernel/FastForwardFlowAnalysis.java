@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -36,7 +36,7 @@ import java.util.*;
 /**
  *   Abstract class that provides the fixed point iteration functionality
  *   required by all ForwardFlowAnalyses.
- *  
+ *
  */
 public abstract class FastForwardFlowAnalysis extends FlowAnalysis
 {
@@ -139,16 +139,16 @@ next());
                         while(succIt.hasNext())
                         {
                             Object succ = succIt.next();
-                            
+
                             changedUnitsSet.add(succ);
                         }
                     }
             }
         }
-        
-        // System.out.println(graph.getBody().getMethod().getSignature() + " numNodes: " + numNodes + 
+
+        // System.out.println(graph.getBody().getMethod().getSignature() + " numNodes: " + numNodes +
         //    " numComputations: " + numComputations + " avg: " + Main.truncatedOf((double) numComputations / numNodes, 2));
-        
+
         Main.totalFlowNodes += numNodes;
         Main.totalFlowComputations += numComputations;
     }

@@ -64,7 +64,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
             return new HashSet();
         }
     }
-            
+
     /** Return true if the given method has any side effects.
      *  i.e. it assigns to any fields.
      */
@@ -79,7 +79,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         return flow.hasEffects() || flow2.hasEffects();
     }
 
-    /** Return true if the given method has any side effects 
+    /** Return true if the given method has any side effects
      *  on the given field.  i.e. it assigns to the given field.
      */
     public boolean hasSideEffects(SootMethod method, SootField field) {
@@ -104,18 +104,18 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         EffectFlow in = (EffectFlow)inValue;
         EffectFlow out = (EffectFlow)outValue;
         SootMethod method = (SootMethod)d;
- 
+
 
         if(_debug) System.out.println(
                 "SideEffectAnalysis: method = " + method);
         if(_debug) System.out.println(
                 "input flow = " + in.effectSet());
-        
+
         out.setEffectFlow(in);
-  
+
         // A method that is a context class is assumed to have side effects,
         // since we can't get it's method body.  Note that we could do better
-        // by handling each method specifically.  
+        // by handling each method specifically.
         // (For Example, Thread.currentThread()
         // has no body, but also has no side effects).
         if(!method.isConcrete()) {
@@ -126,7 +126,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
 
         if(_debug) System.out.println(
                 "output flow = " + out.hasEffects() + " " + out.effectSet());
-        
+
         // A method has side effects if it sets the values of any fields.
         Body body = method.retrieveActiveBody();
         for(Iterator units = body.getUnits().iterator();
@@ -144,11 +144,11 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 }
             }
 
-            // Method calls that are in the invokeGraph 
+            // Method calls that are in the invokeGraph
             // have already been checked.
-            // However, it turns out that context classes 
+            // However, it turns out that context classes
             // are not included in the
-            // invokeGraph!  This checks to see if there 
+            // invokeGraph!  This checks to see if there
             // are any invocations of
             // methods that are not in the invoke graph.  Conservatively
             // assume that they have side effects.
@@ -160,10 +160,10 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 if(expr instanceof InvokeExpr) {
                     SootMethod invokedMethod = ((InvokeExpr)expr).getMethod();
                     if(expr instanceof SpecialInvokeExpr) {
-                        SootMethod target = 
+                        SootMethod target =
                             hierarchy.resolveSpecialDispatch(
                                     (SpecialInvokeExpr)expr, invokedMethod);
-                        
+
                         if(!((MethodCallGraph)graph).isReachable(
                                 target.getSignature())) {
                             if(_debug) System.out.println(
@@ -189,7 +189,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                                          "SideEffectAnalysis: virtualInvokes method that is not in the graph");
                                  out.setUnknownSideEffects();
                              }
-                        } 
+                        }
                     } else if(expr instanceof StaticInvokeExpr) {
                         if(!((MethodCallGraph)graph).isReachable(
                                 invokedMethod.getSignature())) {
@@ -197,7 +197,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                                     "SideEffectAnalysis: staticInvokes method that is not in the graph");
                             out.setUnknownSideEffects();
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -216,12 +216,12 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         EffectFlow in1 = (EffectFlow)in1Value;
         EffectFlow in2 = (EffectFlow)in2Value;
         EffectFlow out = (EffectFlow)outValue;
-        
+
         // A method has side effects if any method it uses has side effects.
         out.setEffectFlow(in1);
         out.mergeEffectFlow(in2);
     }
- 
+
     private static class EffectFlow {
         public EffectFlow() {
             _hasEffects = false;
@@ -275,7 +275,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 _effectSet.addAll(flow.effectSet());
             }
         }
-        
+
         public boolean hasEffects(SootField field) {
             if(_hasEffects) {
                 if(_effectSet != null) {

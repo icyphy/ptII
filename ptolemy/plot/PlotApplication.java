@@ -155,7 +155,7 @@ public class PlotApplication extends PlotFrame {
         }
         setVisible(true);
     }
-    
+
     /** Display the given plot.  Unlike the two argument constructor,
      *  this does not take command-line arguments, and does not fill
      *  the plot with a sample plot.

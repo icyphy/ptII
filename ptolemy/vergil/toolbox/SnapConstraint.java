@@ -43,7 +43,7 @@ that defaults to 5.0.
 @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -110,4 +110,4 @@ public class SnapConstraint implements PointConstraint {
     private static double _resolution = 5.0;
 }
 
- 
+

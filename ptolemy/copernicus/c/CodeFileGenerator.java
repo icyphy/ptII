@@ -195,7 +195,7 @@ public class CodeFileGenerator extends CodeGenerator {
                     stringClass.getMethod("void <init>(char[])"));
             code.append("\n" + _indent(1) +
                     _comment("Initialization of string constants"));
-            while (stringConstants.hasNext()) 
+            while (stringConstants.hasNext())
             {
                 StringBuffer value = new StringBuffer(
                                         stringConstants.next().toString());
@@ -209,7 +209,7 @@ public class CodeFileGenerator extends CodeGenerator {
                         i++;
                     }
                 }
-                
+
                 String identifier = _context.getIdentifier(value.toString());
                 code.append(_indent(1) + identifier + " = (" + stringType +
                         ")(malloc(sizeof struct " + stringType + "));\n");
@@ -332,7 +332,7 @@ public class CodeFileGenerator extends CodeGenerator {
             //prologue
             code.append(_indent(1)+"jmp_buf caller_env;\n");
             code.append(_indent(1)+"int caller_epc = epc;\n");
-            
+
             if (tracker.trapsExist())
             {
                 code.append(_indent(1)+"i72706427_Exception exception_id;\n");
@@ -352,7 +352,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
 
             //exception-catching in body
-            
+
             while (units.hasNext()) {
                 Unit unit = (Unit)(units.next());
                 if (visitor.isTarget(unit)) {
@@ -461,7 +461,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
                 code.append(_indent(1)+"}\n");
 
-            
+
             }
 
             // Trailer code

@@ -271,7 +271,7 @@ public class LongToken extends ScalarToken {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(
-                    _notSupportedMessage("equality", this, token) 
+                    _notSupportedMessage("equality", this, token)
                     + ": " + ex.getMessage());
         }
     }

@@ -101,7 +101,7 @@ public class ArrayType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if ( !isCompatible(token.getType())) {
             throw new IllegalArgumentException("ArrayType.convert: " +
-                    "Cannot convert the argument token " + token + 
+                    "Cannot convert the argument token " + token +
                     " to the type " + this + ".");
         }
 
@@ -155,7 +155,7 @@ public class ArrayType extends StructuredType {
         return _elemTypeTerm;
     }
 
-    /** Return a hash code value for this object. 
+    /** Return a hash code value for this object.
      */
     public int hashCode() {
         return _elementType.hashCode() + 2917;
@@ -264,7 +264,7 @@ public class ArrayType extends StructuredType {
 	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("ArrayType.updateType: "
-                    + "The type " + this + " cannot be updated to " 
+                    + "The type " + this + " cannot be updated to "
                     + newType + ".");
         }
 
@@ -462,7 +462,7 @@ public class ArrayType extends StructuredType {
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException(
-                        "ArrayType$ElementTypeTerm.setValue: This type " 
+                        "ArrayType$ElementTypeTerm.setValue: This type "
                         + e + " is not settable.");
             }
 
@@ -494,7 +494,7 @@ public class ArrayType extends StructuredType {
          *  @return A String.
          */
         public String toString() {
-            return "{ArrayElementType(" + getAssociatedObject() 
+            return "{ArrayElementType(" + getAssociatedObject()
                 + "), " + getValue() + ")";
         }
     }

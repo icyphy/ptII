@@ -68,7 +68,7 @@ public class StringUtilities {
         string = substitute(string, ">", "&gt;");
         return string;
     }
-   
+
     /** Sanitize a String so that it can be used as a Java identifier.
      *  Section 3.8 of the Java language spec says:
      *  <blockquote>
@@ -80,8 +80,8 @@ public class StringUtilities {
      *  </blockquote>
      *  Java characters are A-Z, a-z, $ and _.
      *  <p> Characters that are not permitted in a Java identifier are changed
-     *  to an underscores. 
-     *  This method does not check that the returned string is a 
+     *  to an underscores.
+     *  This method does not check that the returned string is a
      *  keyword or literal.
      *  Note that two different strings can sanitize to the same
      *  string.
@@ -103,7 +103,7 @@ public class StringUtilities {
 	} else {
             return new String(nameArray);
         }
-    }    
+    }
 
     /** Replace all occurrences of <i>old</i> in the specified
      *  string with <i>replacement</i>.

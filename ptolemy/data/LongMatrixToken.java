@@ -510,7 +510,7 @@ public class LongMatrixToken extends MatrixToken {
 
 
     /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token. 
+     *  subtracted from the value of this Token.
      *  The type of the specified token
      *  must be such that either it can be converted to the type
      *  of this token, or the type of this token can be converted

@@ -45,7 +45,7 @@ This is a singleton attribute.  If there is a pre-existing instance
 with the same name, then it is replaced.
 <p>
 The name of a documentation object can often be meaningful.  Many times
-the name can be used to specify important information about the type of 
+the name can be used to specify important information about the type of
 documentation.  Unfortunately, all documentation objects are currently
 treated the same.
 

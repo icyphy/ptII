@@ -56,7 +56,7 @@ of an instance of SDFDirector.  The SDF director requires this information
 to construct its schedule. The first row is produced first, then
 the second row, then the third, etc.
 
-<p>Note that this actor is not likely to work in the CT domain, use 
+<p>Note that this actor is not likely to work in the CT domain, use
 actor.lib.VectorDisassembler instead.
 
 @author Edward A. Lee

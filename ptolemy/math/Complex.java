@@ -283,7 +283,7 @@ public class Complex implements Cloneable, Serializable {
      *  Complex with.
      *  @return True if the real and imaginary parts are equal.  */
     public final boolean isCloseTo(Complex z) {
-        return isCloseTo(z, epsilon); 
+        return isCloseTo(z, epsilon);
     }
 
     /** Return true if both the real and imaginary parts of this

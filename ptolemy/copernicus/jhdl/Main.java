@@ -81,10 +81,10 @@ public class Main extends KernelMain {
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
-       
+
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
-        // so that we can 
+        // so that we can
         //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
         //         NameSanitizer.v(_toplevel)));
 
@@ -98,11 +98,11 @@ public class Main extends KernelMain {
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
-        
+
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
-        
+
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
                 InlineDirectorTransformer.v(_toplevel)));
@@ -130,7 +130,7 @@ public class Main extends KernelMain {
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
                 new TransformerAdapter(LocalSplitter.v())));
-                                
+
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
         // algorithm to specialize the types of domain
@@ -144,7 +144,7 @@ public class Main extends KernelMain {
                 new TransformerAdapter(TypeAssigner.v())));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
-                new TransformerAdapter(CopyPropagator.v())));      
+                new TransformerAdapter(CopyPropagator.v())));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
                 ClassWriter.v()));
@@ -156,8 +156,8 @@ public class Main extends KernelMain {
         // parameter, replace the method call with the return value
         // of the method.  This is possible, since after
         // initialization attribute values are assumed not to
-        // change.  (Note: There are certain cases where this is 
-        // not true, i.e. the expression actor.  Those will be 
+        // change.  (Note: There are certain cases where this is
+        // not true, i.e. the expression actor.  Those will be
         // specially handled before this point, or we should detect
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
@@ -167,11 +167,11 @@ public class Main extends KernelMain {
                 JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
                 ClassWriter.v()));
-        
+
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
-        // We do this before port transformation, since it 
+        // We do this before port transformation, since it
         // often allows us to statically determine the channels
         // of port reads and writes.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
@@ -199,7 +199,7 @@ public class Main extends KernelMain {
 
 	// Add Transforms to the Scene.
 	main.addTransforms();
-	    
-	main.generateCode(args); 
+
+	main.generateCode(args);
     }
 }

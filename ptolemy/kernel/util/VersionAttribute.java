@@ -37,8 +37,8 @@ import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// VersionAttribute
-/** 
-An attribute that identifies the version of an object.  
+/**
+An attribute that identifies the version of an object.
 The value of the attribute contains a String version-id that represents
 the version.
 A version-id is a string with substrings separated by one of '.', '-' or '_'.
@@ -67,7 +67,7 @@ not implement version-strings.
 @version $Id$ */
 public class VersionAttribute
         extends StringAttribute implements Comparable {
-    
+
     /** Construct an object in the default workspace with the empty string
      *  as its name. The object is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -107,7 +107,7 @@ public class VersionAttribute
     /** Compare the value of this VersionAttribute against the argument
      *  according to the VersionAttribute syntax and padding rules.  For
      *  example:
-     *  <p> "1.2.2-005" is greater than "1.2.2.4", 
+     *  <p> "1.2.2-005" is greater than "1.2.2.4",
      *  <br> "1.3.1" is an greater than "1.3"
      *  <br> "1.3-beta" is an greater than "1.3-alpha"
      *  <b>
@@ -201,7 +201,7 @@ public class VersionAttribute
     public boolean isLessThan(VersionAttribute version) {
         return (compareTo(version) < 0);
     }
-    
+
     /** Return an iterator over the elements of the version,
      *  each of which is a String.
      *  @return An iterator over the elements of the version.
@@ -213,7 +213,7 @@ public class VersionAttribute
     /** Set the value of the string attribute and notify the container
      *  of the value of this attribute by calling attributeChanged().
      *  Notify any value listeners of this attribute.
-     *  @param expression The version string, consisting of 
+     *  @param expression The version string, consisting of
      *   version ID tuples separated by '.', '-' or '_'. For example:
      *   "1.2", "1.2_beta-4".
      *  @exception IllegalActionException If the argument contains a
@@ -261,7 +261,7 @@ public class VersionAttribute
      *      // Ptolemy II 2.0 or later.
      *  }
      *  </pre>
-     */ 
+     */
     public static final VersionAttribute CURRENT_VERSION;
 
     static {

@@ -70,27 +70,27 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
     /* Return the instance of this transformer.
      */
-    public static SideEffectFreeInvocationRemover v() { 
-        return instance; 
+    public static SideEffectFreeInvocationRemover v() {
+        return instance;
     }
-    
+
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
-    
-    public String getDeclaredOptions() { 
-        return super.getDeclaredOptions(); 
+
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("SideEffectFreeInvocationRemover.internalTransform(" 
+        System.out.println("SideEffectFreeInvocationRemover.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newInvokeGraph();
-        MethodCallGraph methodCallGraph = 
+        MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
-        SideEffectAnalysis analysis = 
+        SideEffectAnalysis analysis =
             new SideEffectAnalysis(methodCallGraph);
 
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
@@ -116,7 +116,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
-        
+
         for(Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -138,7 +138,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             } else {
                 continue;
             }
-           
+
             // Special invokes don't get removed.  This is because
             // special invokes are used for super method calls.  We
             // really do want to get rid of constructors to objects
@@ -148,14 +148,14 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             if(useValue instanceof VirtualInvokeExpr ||
                useValue instanceof StaticInvokeExpr) {
                 InvokeExpr invokeExpr = (InvokeExpr)useValue;
-                  
+
                 // If any targets of the invocation have side effects,
                 // then they cannot be removed.
                 boolean removable = true;
                 for(Iterator i = invokeGraph.getTargetsOf(
                         (Stmt)unit).iterator();
                     i.hasNext() && removable;) {
-                    
+
                     SootMethod targetMethod = (SootMethod)i.next();
                     System.out.println("Checking Target = " + targetMethod);
                     if(analysis.hasSideEffects(targetMethod)) {
@@ -173,7 +173,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         }
     }
 
-    private static SideEffectFreeInvocationRemover instance = 
+    private static SideEffectFreeInvocationRemover instance =
     new SideEffectFreeInvocationRemover();
 }
 

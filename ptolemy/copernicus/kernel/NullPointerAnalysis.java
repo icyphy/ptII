@@ -40,7 +40,7 @@ import soot.jimple.toolkits.annotation.nullcheck.BranchedRefVarsAnalysis;
 import java.util.*;
 
 /**
-An analysis that can determine, at any point in the code, if 
+An analysis that can determine, at any point in the code, if
 a local variable points to null.  This is just a nice wrapper class
 for soot's BranchedRefVarsAnalysis.
 */
@@ -48,7 +48,7 @@ public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
     public NullPointerAnalysis(UnitGraph g) {
         super(g);
     }
-    
+
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
      *  the given unit.

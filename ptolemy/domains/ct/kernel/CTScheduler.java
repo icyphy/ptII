@@ -187,7 +187,7 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
 
-    // FIXME: These should be static enumeration, see kernel.util.Settable 
+    // FIXME: These should be static enumeration, see kernel.util.Settable
 
     /** Signal type: continuous */
     public static Integer CONTINUOUS = new Integer(1);
@@ -502,7 +502,7 @@ public class CTScheduler extends Scheduler {
                         throw new NotSchedulableException("Cannot resolve "
                                 + "signal type for port " + port.getFullName()
                                 + ".\n To set the singal type manually, "
-                                + "add a parameter with name signalType " 
+                                + "add a parameter with name signalType "
                                 + "and a string value \"CONTINUOUS\" "
                                 + "or \"DISCRETE\".");
                     } else {
@@ -851,7 +851,7 @@ public class CTScheduler extends Scheduler {
                 } else if (!getType(port).equals(getType(nextPort))) {
                     throw new NotSchedulableException(
                             "Signal type conflict: "
-                            + port.getFullName() + " (of type " 
+                            + port.getFullName() + " (of type "
 			    + signalTypeToString(getType(port))
 			    + ") and "
                             + nextPort.getFullName() + " (of type "

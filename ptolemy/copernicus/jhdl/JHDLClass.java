@@ -102,7 +102,7 @@ class JHDLClass extends SootClass  {
 	args.add(nodeClass.getType());
 
 	SootMethod constructor = new SootMethod("<init>", args,
-				     VoidType.v(),Modifier.PUBLIC);	
+				     VoidType.v(),Modifier.PUBLIC);
 	SootMethod superConstructor = logicClass.getMethod(
 	   "void <init>(byucc.jhdl.base.Node)");
 
@@ -112,11 +112,11 @@ class JHDLClass extends SootClass  {
 	// add local Wire for return on connect calls
     	Local tempWire = Jimple.v().newLocal(tempWireName,
     					    wireClass.getType());
-	
+
 	body.insertIdentityStmts();
 
 	// Add statements to constructor
-	Chain units = body.getUnits(); 
+	Chain units = body.getUnits();
 
 	// add call to superclass constructor
 	Chain locals = body.getLocals();
@@ -130,12 +130,12 @@ class JHDLClass extends SootClass  {
   	}
 //  	System.out.println("this="+parent_local);
 
-	
+
         args = new LinkedList();
 	args.add(parent_local);
 	SpecialInvokeExpr sie = Jimple.v().newSpecialInvokeExpr(
-						     body.getThisLocal(), 
-						     superConstructor, 
+						     body.getThisLocal(),
+						     superConstructor,
 						     args);
 	body.getUnits().add(Jimple.v().newInvokeStmt(sie));
 
@@ -181,7 +181,7 @@ class JHDLClass extends SootClass  {
                     interfaceType);
         body.getLocals().add(interfaceArrayLocal);
 	body.insertIdentityStmts();
-	
+
         // Create a size one array by default.
         // We will come back and backpatch this later with the actual number of
         // values.
@@ -203,7 +203,7 @@ class JHDLClass extends SootClass  {
 	addPort(this,portname,input,width);
     }
 
-    public static void addPort(SootClass c, String portname, 
+    public static void addPort(SootClass c, String portname,
 			       boolean input, int width) {
 
         SootClass cellClass = Scene.v().loadClassAndSupport(
@@ -224,7 +224,7 @@ class JHDLClass extends SootClass  {
 
 	// Add a parameter to the constructor
 	SootMethod constructor = c.getMethod(
-	   "void <init>(byucc.jhdl.base.Node)");	
+	   "void <init>(byucc.jhdl.base.Node)");
 	List constructor_params = constructor.getParameterTypes();
 	constructor_params.add(wireClass.getType());
 	int num_params = constructor_params.size();
@@ -240,7 +240,7 @@ class JHDLClass extends SootClass  {
                 "byucc.jhdl.base.Wire connect(java.lang.String,byucc.jhdl.base.Wire)");
 
 	Local paramWire = c_body.getParameterLocal(num_params-1);
-	
+
 	InvokeExpr invoke =
 	    Jimple.v().newStaticInvokeExpr(connectMethod,
                             StringConstant.v(portname),
@@ -253,7 +253,7 @@ class JHDLClass extends SootClass  {
 	    if (local.getName().equals(tempWireName));
 		localWire = local;
   	}
-	
+
 //    	c_units.insertBefore(Jimple.v().newInvokeStmt(invoke),
 //    			     c_units.getLast());
    	c_units.insertBefore(Jimple.v().newAssignStmt(
@@ -261,11 +261,11 @@ class JHDLClass extends SootClass  {
 	c_units.insertBefore(Jimple.v().newAssignStmt(
             Jimple.v().newInstanceFieldRef(c_body.getThisLocal(),wireField),
 	    localWire),c_units.getLast());
-	       
 
-	
+
+
 	// Update Cell interface
-	SootMethod initializer = c.getMethodByName("<clinit>");	
+	SootMethod initializer = c.getMethodByName("<clinit>");
 	JimpleBody si_body = (JimpleBody)initializer.retrieveActiveBody();
 	Chain si_units = si_body.getUnits();
 	// search for array creation (need to increase size)
@@ -302,9 +302,9 @@ class JHDLClass extends SootClass  {
 	}
 	// assignment statement to temporary local
 	Stmt newport_stmt = Jimple.v().newAssignStmt(
-				 cellInterfaceLocal, 
+				 cellInterfaceLocal,
 				 Jimple.v().newStaticInvokeExpr(
-				      inFactoryMethod, 
+				      inFactoryMethod,
 				      StringConstant.v(portname),
 				      IntConstant.v(width)));
   	si_units.insertBefore(newport_stmt,si_units.getLast());
@@ -337,10 +337,10 @@ class JHDLClass extends SootClass  {
   	jclass.write();
     }
 
-    public static final String cellInterfaceLocalName = 
+    public static final String cellInterfaceLocalName =
 	"_tempCellInterface";
-    public static final String cellInterfaceArrayLocalName = 
+    public static final String cellInterfaceArrayLocalName =
 	"_tempCellInterfaceArray";
-    public static final String tempWireName = 
+    public static final String tempWireName =
 	"tempWire";
 }

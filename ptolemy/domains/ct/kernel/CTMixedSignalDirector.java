@@ -358,7 +358,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // If the outside time and the next iteration time are so close
             // that the difference is less than the time resolution, then
-            // we simply omit this firing and refire at the next iteration 
+            // we simply omit this firing and refire at the next iteration
             //time.
             // If outside next iteration time is equal to the outside
             // time, then request for a zero delay refire.
@@ -417,7 +417,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "Outside time is later than the CT time. " +
                         "This should never happen in mixed-signal modeling");
             } else if (_outsideTime < getCurrentTime()) {
-                
+
                 // Outside time less than the local time. Rollback!
                 if(_debugging) _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
@@ -436,17 +436,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // Now, we have outside time equals to the curren time,
             // and there are no discrete events. So we consider
             // how far we should run ahead of the outside time.
-            
-            
+
+
             // Now, either this the second time that we wake up,
             // or we have a none zero run-ahead-time.
             double aheadLength = nextIterationTime - _outsideTime;
             if(_debugging) _debug(getName(),
-                    " current time = " + getCurrentTime(), 
+                    " current time = " + getCurrentTime(),
                     " Outside Time = " + _outsideTime,
                     " NextIterationTime = " + nextIterationTime +
                     " Inferred run length = " + aheadLength);
-            
+
             if (aheadLength < timeResolution ) {
                 // We should use the runAheadLength paremeter.
                 _setIterationEndTime(_outsideTime + _runAheadLength);
@@ -502,10 +502,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         while(getCurrentTime() < (outsideTime - getTimeResolution())) {
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
-            if(_debugging) _debug("Catch up: ending..." + 
+            if(_debugging) _debug("Catch up: ending..." +
                     (getCurrentTime() + getCurrentStepSize()));
             _fireOneIteration();
-            if(_debugging) _debug("Catch up one step: current time is" 
+            if(_debugging) _debug("Catch up one step: current time is"
                     + getCurrentTime());
         }
         _currentTime = outsideTime;

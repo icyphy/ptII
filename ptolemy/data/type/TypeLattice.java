@@ -228,7 +228,7 @@ public class TypeLattice {
 
 	    Type ct1 = (Type)t1;
 	    Type ct2 = (Type)t2;
-         
+
 	    if (t1 instanceof BaseType && t2 instanceof BaseType) {
 	        return _basicLattice.greatestLowerBound(ct1, ct2);
 	    }
@@ -360,7 +360,7 @@ public class TypeLattice {
 
 	    Type ct1 = (Type)t1;
 	    Type ct2 = (Type)t2;
-       
+
 	    if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
 	        return _basicLattice.leastUpperBound(ct1, ct2);
 	    }

@@ -65,7 +65,7 @@ public class Query extends JPanel {
         _grid = new GridBagLayout();
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
-	
+
 	// If the next line is commented out, then the PtolemyApplet
 	// model parameters will have an entry that is less than one
 	// character wide unless the window is made to be fairly large.
@@ -724,7 +724,7 @@ public class Query extends JPanel {
 	    // I'm not sure why we need to add 1 here?
 	    int lineCount = _messageArea.getLineCount() + 1;
 	    // Keep the line count to less than 30 lines.  If
-	    // we have more than 30 lines, we get a scroll bar. 
+	    // we have more than 30 lines, we get a scroll bar.
 	    if (lineCount > 30) {
 		lineCount = 30;
 	    }

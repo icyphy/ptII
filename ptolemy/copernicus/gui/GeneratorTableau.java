@@ -514,7 +514,7 @@ public class GeneratorTableau extends Tableau {
     private String _generateSootJavaCommand(CompositeEntity model,
 					    String directoryName,
 					    String targetPackage,
-					    String copernicusSubdirectory) 
+					    String copernicusSubdirectory)
 	throws IllegalArgumentException, InternalErrorException
     {
 	// Make sure the directory exists.

@@ -151,7 +151,7 @@ public class Subscriber extends Source implements RemoteEventListener {
 
     /** Find the JavaSpace and register for notification. Set the type of
      *  the output to be the type of the defaultToken.
-     *  @exception IllegalActionException If there is error during the 
+     *  @exception IllegalActionException If there is error during the
      *  registration.
      */
     public void preinitialize() throws IllegalActionException {

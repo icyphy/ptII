@@ -129,7 +129,7 @@ public class DoubleToken extends ScalarToken {
             return rightArgument.addReverse(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("add", this, rightArgument)); 
+                    _notSupportedMessage("add", this, rightArgument));
         }
     }
 
@@ -224,7 +224,7 @@ public class DoubleToken extends ScalarToken {
             return divisor.divideReverse(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("divide", this, divisor)); 
+                    _notSupportedMessage("divide", this, divisor));
         }
     }
 
@@ -359,7 +359,7 @@ public class DoubleToken extends ScalarToken {
             return token.isCloseTo(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("isCloseTo", this, token)); 
+                    _notSupportedMessage("isCloseTo", this, token));
         }
     }
 
@@ -396,7 +396,7 @@ public class DoubleToken extends ScalarToken {
             return token.isEqualTo(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("isEqualTo", this, token)); 
+                    _notSupportedMessage("isEqualTo", this, token));
         }
     }
 
@@ -438,7 +438,7 @@ public class DoubleToken extends ScalarToken {
             }
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("isLessThan", this, token)); 
+                    _notSupportedMessage("isLessThan", this, token));
         }
     }
 
@@ -475,7 +475,7 @@ public class DoubleToken extends ScalarToken {
             return rightArgument.moduloReverse(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("modulo", this, rightArgument)); 
+                    _notSupportedMessage("modulo", this, rightArgument));
         }
     }
 
@@ -535,7 +535,7 @@ public class DoubleToken extends ScalarToken {
             return rightFactor.multiplyReverse(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("multiply", this, rightFactor)); 
+                    _notSupportedMessage("multiply", this, rightFactor));
         }
     }
 
@@ -594,7 +594,7 @@ public class DoubleToken extends ScalarToken {
             return rightArgument.subtractReverse(this);
         } else {
             throw new IllegalActionException(
-                    _notSupportedMessage("subtract", this, rightArgument)); 
+                    _notSupportedMessage("subtract", this, rightArgument));
         }
     }
 

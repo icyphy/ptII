@@ -154,8 +154,8 @@ public abstract class MatrixToken extends Token {
     /** Return an ArrayToken containing the all the values of this
      *  matrix token.  The type of the tokens in the array is consistent
      *  with the type of this token.
-     *  
-     *  @return An ArrayToken containing the elements of this matrix in 
+     *
+     *  @return An ArrayToken containing the elements of this matrix in
      *  row-scanned order.
      */
     public ArrayToken toArray() {
@@ -179,7 +179,7 @@ public abstract class MatrixToken extends Token {
 	}
         return result;
     }
-    
+
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  The expression starts and ends with a square bracket.  The matrix is

@@ -198,7 +198,7 @@ public abstract class ConditionalBranch {
     /** Set the CSPReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
      *  @param receiver The CSPReceiver this branch is trying to rendezvous
-     *  with. 
+     *  with.
      */
     void setReceiver(CSPReceiver rec) {
         _receiver = rec;

@@ -88,7 +88,7 @@ public class ClassFactoryAttribute extends StringAttribute
     implements Settable {
 
     //   ... settable methods just like StringAttribute (or alternatively,
-    //   extend StringAttribute and replicate the methods of 
+    //   extend StringAttribute and replicate the methods of
     //   SingletonAttribute to make it a singleton...
     // some code duplication is inevitable...
 
@@ -121,7 +121,7 @@ public class ClassFactoryAttribute extends StringAttribute
     public ClassFactoryAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	// System.out.println("ClassFactorAttribute(" + container + "," 
+	// System.out.println("ClassFactorAttribute(" + container + ","
 	//		   + name + ") after super();");
         setVisibility(Settable.NONE);
     }
@@ -129,19 +129,19 @@ public class ClassFactoryAttribute extends StringAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
-    public Object instantiate(Object[] constructorArgs) 
+
+    public Object instantiate(Object[] constructorArgs)
             throws IllegalActionException {
 
         // We can't return NamedObj here because
-        // vergil.basic.NodeControllerFactory.create calls this method 
+        // vergil.basic.NodeControllerFactory.create calls this method
         // and returns a NamedObjController, which is not a NamedObj.
 
         //... put all reflection code in here, and translate all the
         // various exceptions to IllegalActionException...
         // ... use getExpression to get the class name to instantiate...
         String className = getExpression();
-	System.out.println("ClassFactorAttribute.instantiate(): '" 
+	System.out.println("ClassFactorAttribute.instantiate(): '"
 			   + className + "'");
         try {
             Class newClass = Class.forName(className);
@@ -155,7 +155,7 @@ public class ClassFactoryAttribute extends StringAttribute
             Object instance =  _createInstance(newClass, constructorArgs);
 
             if (instance instanceof NamedObj) {
-                NamedObj namedObjInstance = (NamedObj)instance; 
+                NamedObj namedObjInstance = (NamedObj)instance;
                 // For each attribute that this object has copy the attribute
                 // into instance.
                 for (Iterator i = attributeList().iterator(); i.hasNext();) {
@@ -172,7 +172,7 @@ public class ClassFactoryAttribute extends StringAttribute
                     //clone.setContainer(instance);
                 }
             }
-                  
+
 	    return instance;
 
         } catch (NoClassDefFoundError noClassDefFound) {
@@ -199,7 +199,7 @@ public class ClassFactoryAttribute extends StringAttribute
 	constructorArguments[1] = container.uniqueName(getName());
 	System.out.println("ClassFactorAttribute.instantiateWithDefault"
 			   + "ContainerAndName():\n\t"
-			   + constructorArguments[0] + "\n\t" 
+			   + constructorArguments[0] + "\n\t"
 			   + constructorArguments[1]);
 	return instantiate(constructorArguments);
     }

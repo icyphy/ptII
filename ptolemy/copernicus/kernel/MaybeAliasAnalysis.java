@@ -41,23 +41,23 @@ import java.util.*;
 
 /**
 An analysis that maps each local and field to the set of locals and
-fields that may alias that value.  
+fields that may alias that value.
 */
 public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
-    /** Create a new analysis that does not rely on 
+    /** Create a new analysis that does not rely on
      *  side effect information.  This is a more conservative,
-     *  but computationally cheaper  approximation to the aliases 
+     *  but computationally cheaper  approximation to the aliases
      *  than is possible with better side effect information.
      */
     public MaybeAliasAnalysis(UnitGraph g) {
         this(g, null, null);
     }
-    
+
     /** Create a new analysis based on the given invoke graph
-     *  and side effect information. 
+     *  and side effect information.
      */
-    public MaybeAliasAnalysis(UnitGraph g, 
-            InvokeGraph invokeGraph, 
+    public MaybeAliasAnalysis(UnitGraph g,
+            InvokeGraph invokeGraph,
             SideEffectAnalysis sideEffectAnalysis) {
         super(g);
         _invokeGraph = invokeGraph;
@@ -65,7 +65,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         if(_debug) {
             _countMap = new HashMap();
         }
-        
+
         // Initialize the representative objects for constructors.
         int index = 0;
         _constructorMap = new HashMap();
@@ -79,7 +79,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 }
                 if(rvalue instanceof NewExpr ||
                         rvalue instanceof NewArrayExpr) {
-                    Object object = new String("Object" + index++ + ":" + 
+                    Object object = new String("Object" + index++ + ":" +
                             rvalue.toString());
                     _constructorMap.put(rvalue, object);
                 } else if(rvalue instanceof Constant) {
@@ -103,14 +103,14 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         _sideEffectAnalysis = null;
         _countMap = null;
     }
-    
+
     /** Return the set of other fields and locals that may reference
      *  the same object as the given field, at a point before
      *  the given unit.  If there is no alias information, meaning the
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(SootField field, Unit unit) {
-        GraphFlow map = 
+        GraphFlow map =
             (GraphFlow)getFlowBefore(unit);
         if(map.containsNode(field)) {
             HashSet set = new HashSet();
@@ -130,7 +130,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
      public Set getAliasesOfAfter(SootField field, Unit unit) {
-        GraphFlow map = 
+        GraphFlow map =
             (GraphFlow)getFlowAfter(unit);
         if(map.containsNode(field)) {
             HashSet set = new HashSet();
@@ -150,7 +150,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(Local local, Unit unit) {
-        GraphFlow map = 
+        GraphFlow map =
             (GraphFlow)getFlowBefore(unit);
         if(map.containsNode(local)) {
             HashSet set = new HashSet();
@@ -170,7 +170,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfAfter(Local local, Unit unit) {
-        GraphFlow map = 
+        GraphFlow map =
             (GraphFlow)getFlowAfter(unit);
         if(map.containsNode(local)) {
             HashSet set = new HashSet();
@@ -192,7 +192,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         graph.addNode(NullConstant.v());
         return graph;
     }
- 
+
     protected void flowThrough(Object inValue, Object d, Object outValue) {
         GraphFlow in = (GraphFlow) inValue;
         GraphFlow out = (GraphFlow) outValue;
@@ -203,7 +203,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         copy(inValue, outValue);
 
         if(_debug) System.out.println("maybe flow through " + d);
-          
+
         if(_debug) {
             Integer i = (Integer)_countMap.get(d);
             if(i == null) {
@@ -212,7 +212,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 _countMap.put(d, new Integer(i.intValue() + 1));
             }
         }
-      
+
         // If we have a method invocation, then alias information
         // for fields that the method side effects is killed.
         // If no side effect information was specified in the constructor,
@@ -232,20 +232,20 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                         // analysis to handle what the method call does.
                         if(field.isPrivate()) {
                             continue;
-                        } 
+                        }
                         // If the field is final, then it can never be
                         // changed.  This is safe.
                         if(Modifier.isFinal(field.getModifiers())) {
                             continue;
-                        } 
+                        }
                         if(_debug) {
-                            System.out.println("unit " + unit + 
+                            System.out.println("unit " + unit +
                                     " kills " + field);
                         }
                         _setCanPointToAnything(out, node);
                     }
                 }
-             /*  } else {   
+             /*  } else {
                 InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
                 SootMethod method = expr.getMethod();
                 if(_debug) System.out.println("invoking: " + method);
@@ -258,7 +258,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                     SootMethod target = (SootMethod)i.next();
 
                     Set newSet = _sideEffectAnalysis.getSideEffects(method);
-                    
+
                     if(newSet != null) {
                         allSideEffects.addAll(newSet);
                     } else {
@@ -288,7 +288,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
             Value lvalue = assignStmt.getLeftOp();
             Value rvalue = assignStmt.getRightOp();
-            
+
             if(_debug) {
              //   System.out.println("lvalueClass = " + lvalue.getClass());
              //    System.out.println("rvalueClass = " + rvalue.getClass());
@@ -296,10 +296,10 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
             // If we are dealing with aliasable objects.
             if(_isAliasableType(lvalue.getType())) {
-                
+
                 Object lobject = _getAliasObject(lvalue, out);
                 Object robject = _getAliasObject(rvalue, out);
-                
+
                 if(!out.containsNode(lobject)) {
                     out.addNode(lobject);
                 }
@@ -326,7 +326,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         // clear the output.
         out.clearAll();
-        
+
         // Copy all the nodes.
         for(Iterator nodes = in.getNodes().iterator();
             nodes.hasNext();) {
@@ -344,7 +344,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 successors.hasNext();) {
                 Object successor = successors.next();
                 out.addEdge(node, successor);
-            }  
+            }
         }
     }
 
@@ -354,7 +354,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         GraphFlow in1 = (GraphFlow) in1Value;
         GraphFlow in2 = (GraphFlow) in2Value;
         GraphFlow out = (GraphFlow) outValue;
-       
+
         copy(in1Value, outValue);
 
         // Union all the nodes.
@@ -373,13 +373,13 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             for(Iterator successors = in2.getSuccsOf(node).iterator();
                 successors.hasNext();) {
                 out.addEdge(node, successors.next());
-            }  
+            }
         }
         //    System.out.println(" to " + outValue);
     }
-   
+
     // Add lobject to the set of things that are aliased by rObject.
-    private void _setCanPointTo(GraphFlow graph, 
+    private void _setCanPointTo(GraphFlow graph,
             Object lobject, Object robject) {
         // Remove all the old edges.
         List list = new ArrayList();
@@ -389,9 +389,9 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             Object target = successors.next();
             graph.removeEdge(lobject, target);
         }
-        
+
         list.clear();
-        
+
         list.addAll(graph.getSuccsOf(robject));
         // Add the edges from the right object.
         for(Iterator successors = list.iterator();
@@ -399,26 +399,26 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             Object target = successors.next();
             graph.addEdge(lobject, target);
         }
-    }        
-   
+    }
+
     // Set the given object to point to all possible objects.
-    private void _setCanPointToAnything(GraphFlow graph, 
+    private void _setCanPointToAnything(GraphFlow graph,
             Object object) {
 
         graph.addEdge(object, _universeRepresentative);
         for(Iterator constructors = _constructorMap.keySet().iterator();
             constructors.hasNext();) {
             Value constructor = (Value)constructors.next();
-            //  System.out.println("constructorTarget = " + 
+            //  System.out.println("constructorTarget = " +
             //        _constructorMap.get(constructor));
-            //System.out.println("constructorType = " + 
+            //System.out.println("constructorType = " +
             //        constructor.getType());
             if(object instanceof SootField) {
                 SootField field = (SootField)object;
                 // Only things that have a compatible type can be pointed to..
                 Type constructorType = constructor.getType();
                 Type fieldType = field.getType();
-                if(!_isCompatibileAliasAssignment(constructorType, 
+                if(!_isCompatibileAliasAssignment(constructorType,
                         fieldType)) {
                     continue;
                 }
@@ -428,8 +428,8 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 graph.addEdge(object, target);
             }
         }
-    }        
-   
+    }
+
     private Object _getAliasObject(Value value,
             GraphFlow graph) {
         if(value instanceof Local) {
@@ -483,7 +483,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             return false;
         }
     }
-    
+
     // Return true if a reference object with the given type could
     // possibly point to an aliasable object of the given type.
     private boolean _isCompatibileAliasAssignment(Type objectType,
@@ -494,7 +494,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 referenceType instanceof ArrayType) {
             objectType = ((ArrayType)objectType).baseType;
             referenceType = ((ArrayType)referenceType).baseType;
-            // If either one is not an array of objects, then 
+            // If either one is not an array of objects, then
             // return false.
             if(!(objectType instanceof RefType) ||
                     !(referenceType instanceof RefType)) {
@@ -511,15 +511,15 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 referenceType instanceof RefType) {
             Type mergeType = objectType.merge(referenceType, Scene.v());
             //    System.out.println("mergeType = " + mergeType);
-            // If the field cannot point to the object 
+            // If the field cannot point to the object
             // created by the constructor, then we don't need
             // to create a possible alias.
             if(mergeType.equals(referenceType)) {
                 //  System.out.println("killing");
                 return true;
             }
-        }    
-        // They aren't even both object references, 
+        }
+        // They aren't even both object references,
         return false;
     }
 
@@ -529,9 +529,9 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         public boolean equals(Object object) {
             if(!(object instanceof GraphFlow)) {
                 return false;
-            } 
+            }
             GraphFlow flow = (GraphFlow)object;
-                     
+
             if(!_listEquals(getNodes(), flow.getNodes())) {
                 //  System.out.println("nodes");
                 return false;
@@ -547,7 +547,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             //   System.out.println("returning true");
             return true;
         }
-        
+
         public String toString() {
             String string = "nodes = " + getNodes();
             for(Iterator nodes = getNodes().iterator();
@@ -575,7 +575,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             //}
             return flag;
         }
-        
+
         private Comparator _comparator = new Comparator() {
             public int compare(Object o1, Object o2) {
                 int flag = o1.toString().compareTo(o2.toString());
@@ -585,7 +585,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                     } else if(o1.hashCode() > o2.hashCode()) {
                         return 1;
                     }
-                } 
+                }
                 return flag;
             }
         };
@@ -599,9 +599,9 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
     // explicitly represented.  Unknown references are assumed to
     // point here until we see an assignment statement that sets the
     // reference to point to some other object.
-    private Object _universeRepresentative = 
+    private Object _universeRepresentative =
     new String("universeRepresentative");
-    
+
     // A map from constructor statements to the object that represents
     // the result of the constructor.  This is used to ensure that we
     // allocate exactly one representative for each constructor statement.
@@ -617,7 +617,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
     // It maps to the set of objects that we encounter
     // which can be mapped to anything.
     private static Object allAliasKey = new Object();
-    
+
     // True for debugging output
     private static boolean _debug = false;
 }

@@ -49,7 +49,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleStatisticalApplication
 /** A simple application that reads in a .xml file as a command
-line argument, runs it and prints out time and memory statistics 
+line argument, runs it and prints out time and memory statistics
 
 <p>MoMLApplication sets the look and feel, which starts up Swing,
 so we can't use MoMLApplication for non-graphical simulations.
@@ -59,7 +59,7 @@ class will get exceptions thrown by failed change requests.
 
 <p>Below is an example use of this class:
 <pre>
-java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication -iterations 2 ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml 
+java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication -iterations 2 ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 </pre>
 
 @author Christopher Hylands
@@ -74,7 +74,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         _parser.setErrorHandler(new StreamErrorHandler());
 
         // First, we gc and then print the memory stats
-        // BTW to get more info about gc, 
+        // BTW to get more info about gc,
         // use java -verbose:gc . . .
         System.gc();
         Thread.sleep(1000);
@@ -346,7 +346,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     protected MoMLParser _parser;
 
     /** The toplevel, which is usually the model */
-    protected CompositeActor _toplevel; 
+    protected CompositeActor _toplevel;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;

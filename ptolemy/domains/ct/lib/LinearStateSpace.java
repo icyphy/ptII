@@ -156,7 +156,7 @@ public class LinearStateSpace extends TypedCompositeActor {
     /** state outputs ports.
      */
     public TypedIOPort stateOutput;
-    
+
 
     /** The A matrix in the state-space representation. It must be a
      *  square matrix.

@@ -42,7 +42,7 @@ import com.sun.jini.outrigger.Finder;
 /**
 An utility that finds a JavaSpace with a given name.
 
-This implementation is based on Sun's SpaceAccessor class in the book 
+This implementation is based on Sun's SpaceAccessor class in the book
 "JavaSpaces Principles, Patterns, and Practice", by Freeman, Hupfer,
 and Arnold.
 

@@ -139,7 +139,7 @@ public class EntityTreeModel implements TreeModel {
             _root.addChangeListener(_rootListener);
         }
     }
-    
+
     /** Remove the specified listener.
      *  @param listener The listener to remove.
      */
@@ -190,7 +190,7 @@ public class EntityTreeModel implements TreeModel {
 
     // The list of listeners.
     private List _listenerList = new LinkedList();
-    
+
     // The model listener.
     private ChangeListener _rootListener = new TreeUpdateListener();
 }

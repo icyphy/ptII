@@ -238,7 +238,7 @@ public abstract class ScalarToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /** Add the corresponding unit category exponents. 
+    /** Add the corresponding unit category exponents.
      *  @param token A token whose exponent will be added with the
      *   exponents of this token.
      *  @return An int array containing the addition result, or null
@@ -317,7 +317,7 @@ public abstract class ScalarToken extends Token {
     }
 
     /** Subtract the corresponding unit category exponents of the
-     *  argument token from that of this token. 
+     *  argument token from that of this token.
      *  @param token A token whose exponent will be subtracted from the
      *   exponents of this token.
      *  @return An int array containing the addition result, or null
@@ -340,7 +340,7 @@ public abstract class ScalarToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    /** The unit category exponents. 
+    /** The unit category exponents.
      *  The unit system contains a set of base unit categories and derived
      *  catetories. The base categories are customizable by the user.
      *  For example, the user may choose to use the SI unit system which
@@ -410,7 +410,7 @@ public abstract class ScalarToken extends Token {
         }
         return result;
     }
- 
+
     // Return true if this token does not have a unit.
     private boolean _isUnitless(int[] exponents) {
         if (exponents != null) {

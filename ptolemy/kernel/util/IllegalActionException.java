@@ -37,7 +37,7 @@ package ptolemy.kernel.util;
 /**
 Thrown on an attempt to perform an action that would result in an
 inconsistent or contradictory data structure if it were allowed to
-complete. 
+complete.
 <p>Examples include:
 <menu>
 <li> An attempt to remove a port from an entity when the

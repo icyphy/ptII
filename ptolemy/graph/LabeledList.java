@@ -56,13 +56,13 @@ More generally, element labels can be used to maintain arbitrary
 <p> Element labels maintain their consistency (remain constant) during periods
 when no elements are removed from the list. When elements are removed, the
 labels assigned to the remaining elements may change (see {@link
-#remove(Object)} for details.  
+#remove(Object)} for details.
 
 <p> Elements themselves must be non-null and distinct, as determined by the
 <code>equals</code> method.
 
 <p> This class supports all required operations of the list interface, except
-for the subList() operation, which results in an UnsupportedOperationException. 
+for the subList() operation, which results in an UnsupportedOperationException.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$

@@ -84,15 +84,15 @@ public class CircuitTransformer extends SceneTransformer {
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
      */
-    public static CircuitTransformer v(CompositeActor model) { 
+    public static CircuitTransformer v(CompositeActor model) {
         return new CircuitTransformer(model);
     }
 
     public String getDefaultOptions() {
-        return ""; 
+        return "";
     }
 
-    public String getDeclaredOptions() { 
+    public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage";
     }
 
@@ -100,7 +100,7 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("CircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        HashMutableDirectedGraph combinedGraph = 
+        HashMutableDirectedGraph combinedGraph =
             new HashMutableDirectedGraph();
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
@@ -108,14 +108,14 @@ public class CircuitTransformer extends SceneTransformer {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass = 
+            SootClass entityClass =
                         Scene.v().loadClassAndSupport(className);
 
             CircuitAnalysis analysis =
                 new CircuitAnalysis(entity, entityClass);
             HashMutableDirectedGraph operatorGraph =
                 analysis.getOperatorGraph();
-            
+
             for(Iterator nodes = operatorGraph.getNodes().iterator();
                 nodes.hasNext();) {
                 Object node = nodes.next();
@@ -132,18 +132,18 @@ public class CircuitTransformer extends SceneTransformer {
                 }
             }
         }
-        
+
         Set removeSet = new HashSet();
 
         // Connect the combined graph.
         for(Iterator entities = _model.entityList().iterator();
             entities.hasNext();) {
             TypedAtomicActor actor = (TypedAtomicActor)entities.next();
-         
+
             for(Iterator ports = actor.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                
+
                 for(Iterator remoteports = port.connectedPortList().iterator();
                     remoteports.hasNext();) {
                     IOPort remotePort = (IOPort)remoteports.next();
@@ -153,7 +153,7 @@ public class CircuitTransformer extends SceneTransformer {
                 }
             }
         }
-                  
+
         // remove the extra nodes for ports.
         for(Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
@@ -169,7 +169,7 @@ public class CircuitTransformer extends SceneTransformer {
                 }
             }
         }
-            
+
         // Remove all the nodes that were not required above.
         for(Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
@@ -188,13 +188,13 @@ public class CircuitTransformer extends SceneTransformer {
             }
             combinedGraph.removeNode(node);
         }
-        
+
         // Write as a circuit.
         try {
             String targetPackage = Options.getString(options, "targetPackage");
             String outDir = Options.getString(options, "outDir");
-            CircuitCreator.create(combinedGraph, 
-                    outDir, targetPackage, 
+            CircuitCreator.create(combinedGraph,
+                    outDir, targetPackage,
                     "JHDL" + StringUtilities.sanitizeName(
                             _model.getName()));
         } catch (Exception ex) {

@@ -105,13 +105,13 @@ public abstract class BaseType implements Type, Serializable {
     public Class getTokenClass() {
         return _tokenClass;
     }
- 
-    /** Return a hash code value for this object. 
+
+    /** Return a hash code value for this object.
      */
     public int hashCode() {
         return super.hashCode();
     }
-   
+
     /** Test if the argument type is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true
@@ -177,8 +177,8 @@ public abstract class BaseType implements Type, Serializable {
     ////                        public variables                   ////
 
     // NOTE: It may seem strange that these inner classes are built this
-    // way instead of as anonymous classes...  As anonymous classes, the 
-    // fields cannot be appropriately typed, which makes type inference 
+    // way instead of as anonymous classes...  As anonymous classes, the
+    // fields cannot be appropriately typed, which makes type inference
     // much more complex to find the same information.
 
     /** The bottom element of the data type lattice. It represents a
@@ -200,23 +200,23 @@ public abstract class BaseType implements Type, Serializable {
     public static class BooleanType extends BaseType {
         private BooleanType() {
             super(BooleanToken.class, "boolean");
-        } 
+        }
         public Token convert(Token t) throws IllegalActionException {
             return BooleanToken.convert(t);
         }
     }
-    public static final BooleanType BOOLEAN = new BooleanType(); 
+    public static final BooleanType BOOLEAN = new BooleanType();
 
     /** The byte data type */
     public static class ByteType extends BaseType {
 	private ByteType() {
 	    super(ByteToken.class, "byte");
-	} 
+	}
 	public Token convert(Token t) throws IllegalActionException {
 	    return ByteToken.convert(t);
 	}
     }
-    public static final ByteType BYTE = new ByteType(); 
+    public static final ByteType BYTE = new ByteType();
 
     /** The boolean matrix data type */
     public static class BooleanMatrixType extends BaseType {
@@ -250,7 +250,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
     public static final ComplexMatrixType COMPLEX_MATRIX = new ComplexMatrixType();
-            
+
     /** The double data type */
     public static class DoubleType extends BaseType {
         private DoubleType() {
@@ -414,7 +414,7 @@ public abstract class BaseType implements Type, Serializable {
 	_tokenClass = c;
 	_name = name;
         // Because the private variables are below the public variables
-        // that call this initializer, 
+        // that call this initializer,
         // it doesn't work to initialize this statically.
         if(_nameToType == null) {
             _nameToType = new HashMap();

@@ -485,7 +485,7 @@ public class DoubleMatrixMath {
      *  source.
      *  @param destinationMatrix A matrix of doubles, used as the destination.
      *  @param destinationRowStart An int specifying the starting row of the
-     *  destination. 
+     *  destination.
      *  @param destinationColumnStart An int specifying the starting column
      *  of the destination.
      *  @param rowSpan An int specifying how many rows to copy.

@@ -54,14 +54,14 @@ information from non-XML formats, such as GIF images or binary lookup tables.
 The <i>source</i> argument of the configure() method simply points
 to such a file.
 <p>
-This interface is designed to be reversible, so that an object can also 
-provide enough information to reconstruct its current configuration.  
+This interface is designed to be reversible, so that an object can also
+provide enough information to reconstruct its current configuration.
 This mechanism is used when writing MoML from instantiated objects, although
 it could also be used to write a description of the object in other forms.
-In order for this to work properly calling the configure method on 
-any object of the same type, given the data returned by the getSource and 
+In order for this to work properly calling the configure method on
+any object of the same type, given the data returned by the getSource and
 getText methods should result in an object that resemble the
-first as closely as possible.  
+first as closely as possible.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -74,10 +74,10 @@ public interface Configurable {
     ////                         public methods                    ////
 
     /** Configure the object with data from the specified input source
-     *  (a URL) and/or textual data.  The object should interpret the 
+     *  (a URL) and/or textual data.  The object should interpret the
      *  source first, if it is specified, followed by the literal text,
-     *  if that is specified.  The new configuration should usually 
-     *  override any old configuration wherever possible, in order to 
+     *  if that is specified.  The new configuration should usually
+     *  override any old configuration wherever possible, in order to
      *  ensure that the current state can be successfully retrieved.
      *  <p>
      *  This method is defined to throw a very general exception to allow
@@ -106,9 +106,9 @@ public interface Configurable {
      *  this object.  Note that any configuration that was previously
      *  specified using the source attribute need not be represented here
      *  as well.
-     *  @return A configuration string, or null if no configuration 
+     *  @return A configuration string, or null if no configuration
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
-    public String getText();   
+    public String getText();
 }
