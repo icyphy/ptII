@@ -128,10 +128,12 @@ public class ABP extends TypedCompositeActor {
         sdrRequest.setInput(true);
         TypeAttribute type = new TypeAttribute(sdrRequest, "type");
         type.setExpression("general");
+
         TypedIOPort sdrMsgIn = (TypedIOPort)sender.newPort("msgIn");
         sdrMsgIn.setInput(true);
         type = new TypeAttribute(sdrMsgIn, "type");
         type.setExpression("int");
+
         TypedIOPort sdrNext = (TypedIOPort)sender.newPort("next");
         sdrNext.setOutput(true);
         type = new TypeAttribute(sdrNext, "type");
