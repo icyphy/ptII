@@ -62,7 +62,7 @@ public class ThreeDFunction {
      *  Constructs the functional representation of the 3D dataset.
      *
      *  @param fileName name of file storing the dataset.
-     *  @exception IllegalActionException if any exception is
+     *  @exception IllegalActionException If any exception is
      *     is generated during file i/o.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
@@ -141,7 +141,7 @@ public class ThreeDFunction {
 
     /** getValue
      *
-     *  Returns the approximate value of f(x,y,theta) using trilinear
+     *  Returns the approximate value of f(x, y, theta) using trilinear
      *  interpolation.  If x < _xLowerBound, or x >= _xUpperBound, or
      *  y < _yLowerBound, or y >= _yUpperBound, this returns Infinity.
      *
@@ -239,7 +239,7 @@ public class ThreeDFunction {
                             thetaWeight = thetaDis;
                             thetaIndex = theta1Index;
                         }
-                        point =_values[xIndex][yIndex][thetaIndex];
+                        point = _values[xIndex][yIndex][thetaIndex];
                         value =
                             value + point * xWeight * yWeight * thetaWeight;
                     }

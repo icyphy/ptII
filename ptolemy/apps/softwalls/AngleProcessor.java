@@ -1,6 +1,6 @@
 /* Limits angles to the appropriate range.
 
- Copyright (c) 1999-2003 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,6 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// AngleProcessor
 /**
-
 Given an input angle, it computes the equivalent angle in the range
 [minAngle, maxAngle).  Typically, maxAngle - minAngle = 2 * pi
 (radians) or 360 (degrees) or 2 (normalized angle).
@@ -92,118 +91,88 @@ public class AngleProcessor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input angle */
+    /** The input angle. FIXME: radians or degrees?. 
+     *  This port is of type Double */
     public TypedIOPort inputAngle;
 
-    /** Output angle */
+    /** The output angle. FIXME: radians or degrees?
+     *  This port is of type Double */
     public TypedIOPort outputAngle;
 
-    /** Max and min angle parameters */
+    /** The minimum angle.  The initial value is 0.0. */
     public PortParameter minAngle;
+
+    /** The maximum angle.  The initial value is 2 * PI. */
     public PortParameter maxAngle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Overrides the base class to update the minAngle and maxAngle values.
-     *  @exception IllegalActionException Thrown if exception is
-     *  thrown from reading the parameters.
      *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If an exception is thrown
+     *  from reading an attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        try {
-            if (attribute == minAngle) {
-                _minAngle =
-                    ((DoubleToken)(minAngle.getToken())).doubleValue();
-            }
-            else if (attribute == maxAngle) {
-                _maxAngle =
-                    ((DoubleToken)(maxAngle.getToken())).doubleValue();
-            }
-        }
-        catch (IllegalActionException e) {
-            throw new IllegalActionException(getContainer(),
-                    e.getCause(), e.getMessage());
-        }
-    }
-
-    /** Overrides the base class to initialize the minAngle and
-     *  maxAngle values.
-     *  @exception IllegalActionException Thrown if exception is
-     *  thrown from reading the parameters.
-     */
-    public void initialize() throws IllegalActionException {
-        try {
-            _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
-            _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
-         }
-        catch (IllegalActionException e) {
-            throw new IllegalActionException(getContainer(),
-                    e.getCause(), e.getMessage());
+        if (attribute == minAngle) {
+            _minAngle =
+                ((DoubleToken)(minAngle.getToken())).doubleValue();
+        } else if (attribute == maxAngle) {
+            _maxAngle =
+                ((DoubleToken)(maxAngle.getToken())).doubleValue();
         }
     }
 
     /** Overrides the base class to output the correct angle.
-     *  @exception IllegalActionException Thrown if exception is
-     *  thrown from the input port.
+     *  @exception IllegalActionException If an exception is
+     *  thrown from the input port, or if the minimum angle is
+     *  greater than the maximum angle.
      */
-
     public void fire() throws IllegalActionException {
-        try {
-            double angle;
-            double range;
+        double angle;
+        double range;
 
-            angle = ((DoubleToken)(inputAngle.get(0))).doubleValue();
+        angle = ((DoubleToken)(inputAngle.get(0))).doubleValue();
 
-            minAngle.update();
-            maxAngle.update();
-            _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
-            _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
+        minAngle.update();
+        maxAngle.update();
+        _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
+        _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
 
-            if (_minAngle >= _maxAngle) {
-                throw new IllegalActionException(getContainer(),
-                        "minAngle >= maxAngle");
-            }
-
-            range = _maxAngle - _minAngle;
-
-            while (angle < _minAngle) {
-                angle = angle + range;
-            }
-            while (angle >= _maxAngle) {
-                angle = angle - range;
-            }
-
-            outputAngle.send(0, new DoubleToken(angle));
-        }
-        catch (IllegalActionException e) {
+        if (_minAngle >= _maxAngle) {
             throw new IllegalActionException(getContainer(),
-                    e.getCause(), e.getMessage());
+                    "minAngle >= maxAngle");
         }
-        catch (NoTokenException e) {
-            throw new IllegalActionException(getContainer(),
-                    e.getCause(), e.getMessage());
+
+        range = _maxAngle - _minAngle;
+
+        while (angle < _minAngle) {
+            angle = angle + range;
         }
+        while (angle >= _maxAngle) {
+            angle = angle - range;
+        }
+
+        outputAngle.send(0, new DoubleToken(angle));
+    }
+
+    /** Overrides the base class to initialize the minAngle and
+     *  maxAngle values.
+     *  @exception IllegalActionException If an exception is thrown
+     *  from reading the parameters.
+     */
+    public void initialize() throws IllegalActionException {
+        _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
+        _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
     }
 
     /** Overrides the base class to ensure input is available before firing.
-     *  @exception IllegalActionException Thrown if hasToken method
-     *  throws excepction.
+     *  @exception IllegalActionException If the hasToken() method
+     *  throws exception.
      */
     public boolean prefire() throws IllegalActionException {
-        try {
-            if (inputAngle.hasToken(0)) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        catch (IllegalActionException e) {
-            throw new IllegalActionException(getContainer(),
-                    e.getCause(), e.getMessage());
-        }
+        return inputAngle.hasToken(0);
     }
 
     ///////////////////////////////////////////////////////////////////

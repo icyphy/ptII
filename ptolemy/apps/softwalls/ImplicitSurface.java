@@ -1,6 +1,6 @@
 /* Actor for calculating the value of f, df/dx, df/dy, and df/dtheta
 
- Copyright (c) 1999-2003 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,7 +55,7 @@ gradient, and the theta gradient, given the current x, y, and theta
 value.
 
 The function file should be stored in
-$PTII/ptolemy/apps/softwalls/surfaces.  Its name is a FileParameter.
+$PTII/ptolemy/apps/softwalls/surfaces.
 
 @author Adam Cataldo
 @version $Id$
