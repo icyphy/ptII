@@ -182,8 +182,13 @@ public class ShellTextArea extends JPanel {
                 String result;
                 try {
                     result = _interpreter.evaluateCommand(command);
+                } catch (RuntimeException e) {
+                    // RuntimeException are due to bugs in the expression
+                    // evaluation code, so we make the stack trace available.
+                    MessageHandler.error("Failed to evaluate expression", e);
+                    result = "Internal error evaluating expression.";
                 } catch (Exception e) {
-                    result = e.toString();
+                    result = e.getMessage();
                 }
                 if (result != null && result.length() > 0) {
                     appendJTextArea(result + "\n" + mainPrompt);
