@@ -48,7 +48,7 @@ is _DEFAULT_GIOTTO_FREQUENCY.
 <p>
 Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
 frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
-(A1 == A2) if A1's frequency is equal to A2's frequency, or
+ (A1 == A2) if A1's frequency is equal to A2's frequency, or
 compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater than
 A2's frequency.
 
@@ -56,60 +56,60 @@ A2's frequency.
 @version $Id$
 */
 
-                      public class GiottoActorComparator implements Comparator {
-                          ///////////////////////////////////////////////////////////////////
-                          ////                         public methods                    ////
+public class GiottoActorComparator implements Comparator {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-                          /**
-                           */
-                          public static int getFrequency(Actor actor) {
-                              try {
-                                  Parameter parameter = (Parameter)
-                                      ((NamedObj) actor).getAttribute("frequency");
+    /**
+     */
+    public static int getFrequency(Actor actor) {
+        try {
+            Parameter parameter = (Parameter)
+                ((NamedObj) actor).getAttribute("frequency");
 
-                                  if (parameter != null) {
-                                      IntToken intToken = (IntToken) parameter.getToken();
+            if (parameter != null) {
+                IntToken intToken = (IntToken) parameter.getToken();
 
-                                      return intToken.intValue();
-                                  } else
-                                      return _DEFAULT_GIOTTO_FREQUENCY;
-                              } catch (ClassCastException ex) {
-                                  return _DEFAULT_GIOTTO_FREQUENCY;
-                              } catch (IllegalActionException ex) {
-                                  return _DEFAULT_GIOTTO_FREQUENCY;
-                              }
-                          }
+                return intToken.intValue();
+            } else
+                return _DEFAULT_GIOTTO_FREQUENCY;
+        } catch (ClassCastException ex) {
+            return _DEFAULT_GIOTTO_FREQUENCY;
+        } catch (IllegalActionException ex) {
+            return _DEFAULT_GIOTTO_FREQUENCY;
+        }
+    }
 
-                          /** Caution: equals is inconsistent with compare.
-                           */
-                          public int compare(Object object1, Object object2) {
-                              if (((object1 != null) && Actor.class.isInstance(object1)) &&
-                                      ((object2 != null) && Actor.class.isInstance(object2))) {
-                                  Actor actor1 = (Actor) object1;
-                                  Actor actor2 = (Actor) object2;
+    /** Caution: equals is inconsistent with compare.
+     */
+    public int compare(Object object1, Object object2) {
+        if (((object1 != null) && Actor.class.isInstance(object1)) &&
+                ((object2 != null) && Actor.class.isInstance(object2))) {
+            Actor actor1 = (Actor) object1;
+            Actor actor2 = (Actor) object2;
 
-                                  if (getFrequency(actor1) < getFrequency(actor2))
-                                      return -1;
-                                  else if (getFrequency(actor1) == getFrequency(actor2))
-                                      return 0;
-                                  else
-                                      return 1;
-                              } else
-                                  throw new ClassCastException();
-                          }
+            if (getFrequency(actor1) < getFrequency(actor2))
+                return -1;
+            else if (getFrequency(actor1) == getFrequency(actor2))
+                return 0;
+            else
+                return 1;
+        } else
+            throw new ClassCastException();
+    }
 
-                          /** Caution: equals is inconsistent with compare.
-                           *  FIXME: If there is an equals, then hashCode should probably also
-                           *  be overridden.
-                           */
-                          public boolean equals(Object object) {
-                              return false;
-                          }
+    /** Caution: equals is inconsistent with compare.
+     *  FIXME: If there is an equals, then hashCode should probably also
+     *  be overridden.
+     */
+    public boolean equals(Object object) {
+        return false;
+    }
 
 
-                          ///////////////////////////////////////////////////////////////////
-                          ////                         protected variables               ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-                          // The static default Giotto frequency.
-                          protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
-                      }
+    // The static default Giotto frequency.
+    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
+}
