@@ -67,8 +67,8 @@ install: all
 
 demos: demo
 demo:	all
-	CLASSPATH=$(CLASSPATH) appletviewer plotBox.htm;
-	appletviewer plot.htm;
+	CLASSPATH=$(CLASSPATH) appletviewer plot.htm;
+	appletviewer plotBox.htm;
 
 depend:
 	@echo "no dependencies in this directory"

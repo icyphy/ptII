@@ -807,16 +807,70 @@ public class PlotBox extends Panel {
     }
 
     /** Write the current data and plot configuration to the
-     *  specified stream.  The output is buffered, and is flushed and
+     *  specified stream in PlotML syntax.  PlotML is an XML
+     *  extension for plot data.  The written information is
+     *  standalone, in that it includes the DTD (document type
+     *  defintion).  This makes is somewhat verbose.  To get
+     *  smaller files, use the two argument version of write().
+     *  The output is buffered, and is flushed and
      *  closed before exiting.  Derived classes should override _write()
      *  rather than this method.
      *  @param out An output stream.
      */
     public void write(OutputStream out) {
+        write(out, null);
+    }
+
+    /** Write the current data and plot configuration to the
+     *  specified stream in PlotML syntax.  PlotML is an XML
+     *  extension for plot data.  The written information is not
+     *  standalone, in that it refers to an external DTD (document type
+     *  defintion). The URL (relative or absolute) for the DTD is
+     *  given as the second argument.  If that argument is null,
+     *  then standalone file is written, which includes the DTD. 
+     *  The output is buffered, and is flushed and
+     *  closed before exiting.  Derived classes should override _write()
+     *  rather than this method.
+     *  @param out An output stream.
+     *  @param dtd The reference (URL) for the DTD.
+     */
+    public void write(OutputStream out, String dtd) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
                 false);
+        if (dtd == null) {
+            output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
+            output.println("<!DOCTYPE plot [");
+            output.println(_DTD);
+            output.println("]>");
+        } else {
+            output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
+            output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
+        }
+        output.println("<plot>");
+        output.println("<!-- Ptolemy plot, version 3.0, PlotML format. -->");
         _write(output);
+        output.println("</plot>");
+        output.flush();
+        // Avoid closing standard out.
+        if(out != System.out) {
+            output.close();
+        }
+    }
+
+    /** Write the current data and plot configuration to the
+     *  specified stream in the old PtPlot syntax.
+     *  The output is buffered, and is flushed and
+     *  closed before exiting.  Derived classes should override
+     *  _writeOldSyntax() rather than this method.
+     *  @param out An output stream.
+     *  @deprecated
+     */
+    public void writeOldSyntax(OutputStream out) {
+        // Auto-flush is disabled.
+        PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
+                false);
+        _writeOldSyntax(output);
         output.flush();
         // Avoid closing standard out.
         if(out != System.out) {
@@ -1519,13 +1573,61 @@ public class PlotBox extends Panel {
         _fillButton.setVisible(vis);
     }
 
-    /** Write plot information to the specified output stream.
+    /** Write plot information to the specified output stream in PlotML.
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
+        // NOTE: If you modify this, you should change the _DTD variable
+        // accordingly.
+        if (_title != null) output.println(
+            "<title>" + _title + "</title>");
+        if (_xlabel != null) output.println(
+            "<xLabel>" + _xlabel + "</xLabel>");
+        if (_ylabel != null) output.println(
+            "<yLabel>" + _ylabel + "</yLabel>");
+        if (_xRangeGiven) output.println(
+            "<xRange min=\"" + _xlowgiven + "\" max=\"" + _xhighgiven + "\"/>");
+        if (_yRangeGiven) output.println(
+            "<yRange min=\"" + _ylowgiven + "\" max=\"" + _yhighgiven + "\"/>");
+        if (_xticks != null && _xticks.size() > 0) {
+            output.println("<xTicks>");
+            int last = _xticks.size() - 1;
+            for (int i = 0; i <= last; i++) {
+                output.println("  <tick label=\""
+                + (String)_xticklabels.elementAt(i) + "\" position=\""
+                + (Double)_xticks.elementAt(i) + "\"/>");
+            }
+            output.println("</xTicks>");
+        }
+        if (_yticks != null && _yticks.size() > 0) {
+            output.println("<yTicks>");
+            int last = _yticks.size() - 1;
+            for (int i = 0; i <= last; i++) {
+                output.println("  <tick label=\""
+                + (String)_yticklabels.elementAt(i) + "\" position=\""
+                + (Double)_yticks.elementAt(i) + "\"/>");
+            }
+            output.println("</yTicks>");
+        }
+        if (_xlog) output.println("<xLog/>");
+        if (_ylog) output.println("<yLog/>");
+        if (!_grid) output.println("<noGrid/>");
+        if (_wrap) output.println("<wrap/>");
+        if (!_usecolor) output.println("<noColor/>");
+    }
+
+    /** Write plot information to the specified output stream in the
+     *  old PtPlot syntax.
+     *  Derived classes should override this method to first call
+     *  the parent class method, then add whatever additional information
+     *  they wish to add to the stream.
+     *  @param output A buffered print writer.
+     *  @deprecated
+     */
+    protected void _writeOldSyntax(PrintWriter output) {
         output.println("# Ptolemy plot, version 2.0");
         if (_title != null) output.println("TitleText: " + _title);
         if (_xlabel != null) output.println("XLabel: " + _xlabel);
@@ -2399,6 +2501,66 @@ public class PlotBox extends Panel {
     private transient boolean _zoomout = false;
     private transient boolean _drawn = false;
     private transient boolean _zooming = false;
+
+    // NOTE: It is unfortunate to have to include the DTD here, but there
+    // seems to be no other way to ensure that the generated data exactly
+    // matches the DTD.
+    private static final String _DTD =
+"<!ELEMENT plot (barGraph | dataset | default | noColor | noGrid | title |\n"
++ "	wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange |\n"
++ "	yTicks)*>\n"
++ "  <!ELEMENT barGraph EMPTY>\n"
++ "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
++ "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
++ "  <!ELEMENT dataset (m | move | p | point)*>\n"
++ "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
++ "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
++ "    <!ATTLIST dataset name CDATA #IMPLIED>\n"
++ "    <!ATTLIST dataset stems (yes | no) #IMPLIED>\n"
++ "  <!ELEMENT default EMPTY>\n"
++ "    <!ATTLIST default connected (yes | no) \"yes\">\n"
++ "    <!ATTLIST default marks (none | dots | points | various) \"none\">\n"
++ "    <!ATTLIST default stems (yes | no) \"no\">\n"
++ "  <!ELEMENT noColor EMPTY>\n"
++ "  <!ELEMENT noGrid EMPTY>\n"
++ "  <!ELEMENT title (#PCDATA)>\n"
++ "  <!ELEMENT wrap EMPTY>\n"
++ "  <!ELEMENT xLabel (#PCDATA)>\n"
++ "  <!ELEMENT xLog EMPTY>\n"
++ "  <!ELEMENT xRange EMPTY>\n"
++ "    <!ATTLIST xRange min CDATA #REQUIRED>\n"
++ "    <!ATTLIST xRange max CDATA #REQUIRED>\n"
++ "  <!ELEMENT xTicks (tick)+>\n"
++ "  <!ELEMENT yLabel (#PCDATA)>\n"
++ "  <!ELEMENT yLog EMPTY>\n"
++ "  <!ELEMENT yRange EMPTY>\n"
++ "    <!ATTLIST yRange min CDATA #REQUIRED>\n"
++ "    <!ATTLIST yRange max CDATA #REQUIRED>\n"
++ "  <!ELEMENT yTicks (tick)+>\n"
++ "    <!ELEMENT tick EMPTY>\n"
++ "      <!ATTLIST tick label CDATA #REQUIRED>\n"
++ "      <!ATTLIST tick position CDATA #REQUIRED>\n"
++ "    <!ELEMENT m EMPTY>\n"
++ "      <!ATTLIST m x CDATA #REQUIRED>\n"
++ "      <!ATTLIST m x CDATA #REQUIRED>\n"
++ "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
++ "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
++ "    <!ELEMENT move EMPTY>\n"
++ "      <!ATTLIST move x CDATA #REQUIRED>\n"
++ "      <!ATTLIST move x CDATA #REQUIRED>\n"
++ "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
++ "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
++ "    <!ELEMENT p EMPTY>\n"
++ "      <!ATTLIST p x CDATA #REQUIRED>\n"
++ "      <!ATTLIST p x CDATA #REQUIRED>\n"
++ "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
++ "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
++ "    <!ELEMENT point EMPTY>\n"
++ "      <!ATTLIST point x CDATA #REQUIRED>\n"
++ "      <!ATTLIST point x CDATA #REQUIRED>\n"
++ "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
++ "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

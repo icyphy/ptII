@@ -1064,10 +1064,26 @@ public class Plot extends PlotBox {
      *  subsequent points with a line.  If the argument is false, then
      *  points are not connected.  When points are by default
      *  connected, individual points can be not connected by giving the
-     *  appropriate argument to addPoint().
+     *  appropriate argument to addPoint().  Also, a different default
+     *  can be set for each dataset.
      */
     public void setConnected(boolean on) {
         _connected = on;
+    }
+
+    /** If the first argument is true, then by default for the specified
+     *  dataset, points will be connected by a line.  Otherwise, the
+     *  points will not be connected. When points are by default
+     *  connected, individual points can be not connected by giving the
+     *  appropriate argument to addPoint().
+     *  @param on If true, draw lines between points.
+     *  @param dataset The dataset to which this should apply.
+     */
+    public void setConnected(boolean on, int dataset) {
+        _checkDatasetIndex(dataset);
+        Format fmt = (Format)_formats.elementAt(dataset);
+        fmt.connected = on;
+        fmt.connectedUseDefault = false;
     }
 
     /** If the argument is true, then a line will be drawn from any
@@ -1171,6 +1187,14 @@ public class Plot extends PlotBox {
     public void setPointsPersistence(int persistence) {
         //   FIXME: No file format yet.
         _pointsPersistence = persistence;
+    }
+
+    /** If the argument is true, then datasets with the same name
+     *  are merged into a single dataset.
+     *  @param on If true, then merge datasets.
+     */
+    public void setReuseDatasets(boolean on) {
+        _reusedatasets = on;
     }
 
     /** A sweep is a sequence of points where the value of X is
@@ -1468,7 +1492,7 @@ public class Plot extends PlotBox {
             // no line being drawn.
             // NOTE: It is unfortunate to have to test the class of graphics,
             // but there is no easy way around this that I can think of.
-            if (!pointinside && marks != 3 && _connected &&
+            if (!pointinside && marks != 3 && _isConnected(dataset) &&
                     (graphics instanceof EPSGraphics)) {
                 graphics.drawLine(xposi-6, yposi, xposi+6, yposi);
             } else {
@@ -1586,7 +1610,9 @@ public class Plot extends PlotBox {
      */
     protected boolean _parseLine(String line) {
         boolean connected = false;
-        if (_connected) connected = true;
+        if (_isConnected(_currentdataset)) {
+            connected = true;
+        }
         // parse only if the super class does not recognize the line.
         if (super._parseLine(line)) {
             // We saw a non-pxgraph file directive, so blank lines
@@ -1614,9 +1640,9 @@ public class Plot extends PlotBox {
                 return true;
             } else if (lcLine.startsWith("reusedatasets:")) {
                 if (lcLine.indexOf("off", 16) >= 0) {
-                    _reusedatasets = false;
+                    setReuseDatasets(false);
                 } else {
-                    _reusedatasets = true;
+                    setReuseDatasets(true);
                 }
                 return true;
             } else if (lcLine.startsWith("dataset:")
@@ -1824,13 +1850,111 @@ public class Plot extends PlotBox {
                 "   x y|x,y\n";
     }
 
-    /** Write plot information to the specified output stream.
+    /** Write plot information to the specified output stream in
+     *  PlotML, an XML extension.
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
+        super._write(output);
+
+        if (_reusedatasets) output.println("<reuseDatasets/>");
+
+        StringBuffer defaults = new StringBuffer();
+
+        if (!_connected) defaults.append(" connected=\"no\"");
+
+        switch(_marks) {
+        case 1:
+            defaults.append(" marks=\"points\"");
+        case 2:
+            defaults.append(" marks=\"dots\"");
+        case 3:
+            defaults.append(" marks=\"various\"");
+        }
+
+        // Write the defaults for formats that can be controlled by dataset
+        if (_impulses) defaults.append(" stems=\"yes\"");
+
+        if (defaults.length() > 0) {
+            output.println("<default" + defaults.toString() + "/>");
+        }
+
+        if (_bars) output.println(
+            "<barGraph width=\"" + _barwidth
+            + "\" offset=\"" + _baroffset + "\"/>");
+
+        for (int dataset = 0; dataset < _points.size(); dataset++) {
+
+            StringBuffer options = new StringBuffer();
+
+            Format fmt = (Format)_formats.elementAt(dataset);
+
+            if (!fmt.connectedUseDefault) {
+                if (_isConnected(dataset)) {
+                    options.append(" connected=\"yes\"");
+                } else {
+                    options.append(" connected=\"no\"");
+                }
+            }
+
+            if (!fmt.impulsesUseDefault) {
+                if (fmt.impulses) options.append(" stems=\"yes\"");
+                else output.println(" stems=\"no\"");
+            }
+
+            if (!fmt.marksUseDefault) {
+                switch(fmt.marks) {
+                case 0:
+                    options.append(" marks=\"none\"");
+                case 1:
+                    options.append(" marks=\"points\"");
+                case 2:
+                    options.append(" marks=\"dots\"");
+                case 3:
+                    options.append(" marks=\"various\"");
+                }
+            }
+
+            String legend = getLegend(dataset);
+            if (legend != null) {
+                options.append(" name=\"" + getLegend(dataset) + "\"");
+            }
+
+            output.println("<dataset" + options.toString() + ">");
+
+            // Write the data
+            Vector pts = (Vector)_points.elementAt(dataset);
+            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
+                PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
+                if (!pt.connected) {
+                    output.print("<m ");
+                } else {
+                    output.print("<p ");
+                }
+                output.print("x=\"" + pt.x + "\" y=\"" + pt.y + "\"");
+                if (pt.errorBar) {
+                    output.print(" lowErrorBar=\"" + pt.yLowEB
+                    + "\" highErrorBar=\"" + pt.yHighEB + "\"");
+                }
+                output.println("/>");
+            }
+
+            output.println("</dataset>");
+        }
+    }
+
+    /** Write plot information to the specified output stream in
+     *  the "old syntax," which predates PlotML.
+     *  Derived classes should override this method to first call
+     *  the parent class method, then add whatever additional information
+     *  they wish to add to the stream.
+     *  @param output A buffered print writer.
+     *  @deprecated
+     */
+    protected void _writeOldSyntax(PrintWriter output) {
         super._write(output);
 
         // NOTE: NumSets is obsolete, so we don't write it.
@@ -1976,7 +2100,7 @@ public class Plot extends PlotBox {
         PlotPoint pt = new PlotPoint();
         pt.x = x;
         pt.y = y;
-        pt.connected = connected && _connected;
+        pt.connected = connected && _isConnected(dataset);
 
         if (errorBar) {
             if (yLowEB < _yBottom) _yBottom = yLowEB;
@@ -2146,6 +2270,18 @@ public class Plot extends PlotBox {
         }
     }
 
+    // Return true if the specified dataset is connected by default.
+    private boolean _isConnected(int dataset) {
+        if (dataset < 0) return _connected;
+        _checkDatasetIndex(dataset);
+        Format fmt = (Format)_formats.elementAt(dataset);
+        if (fmt.connectedUseDefault) {
+            return _connected;
+        } else {
+            return fmt.connected;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2234,6 +2370,12 @@ public class Plot extends PlotBox {
     ////                         inner classes                     ////
 
     private class Format {
+        // Indicate whether the current dataset is connected.
+        public boolean connected;
+
+        // Indicate whether the above variable should be ignored.
+        public boolean connectedUseDefault = true;
+
         // Indicate whether a stem plot should be drawn for this data set.
         // This is ignored unless the following variable is set to false.
         public boolean impulses;

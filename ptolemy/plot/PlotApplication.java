@@ -388,8 +388,8 @@ public class PlotApplication extends PlotFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // If true, then auto exit after a few seconds.
-    private static boolean _test = false;
+    /** If true, then auto exit after a few seconds. */
+    protected static boolean _test = false;
 }

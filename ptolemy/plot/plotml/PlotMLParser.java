@@ -31,24 +31,10 @@
 package ptolemy.plot.plotml;
 
 // Ptolemy imports.
-import ptolemy.plot.*;
-
-// Java imports.
-// FIXME: Trim this.
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.Hashtable;
-import java.util.Stack;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.InstantiationException;
-import java.lang.IllegalAccessException;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.net.URL;
+import ptolemy.plot.Plot;
 
 // XML imports.
-import com.microstar.xml.*;
+import com.microstar.xml.XmlException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,15 +65,23 @@ public class PlotMLParser extends PlotBoxMLParser {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** End an element. For most elements this method
-     *  calls the appropriate PlotBox method.
+    /** End an element. This method
+     *  calls the appropriate Plot methods.
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
         super.endElement(elementName);
-        // FIXME -- is this method needed?
+
+        if (elementName.equals("bars")) {
+            // Reset the default, in case it was changed for this dataset.
+            ((Plot)_plot).setBars(_bars);
+
+        } else if (elementName.equals("dataset")) {
+            // Reset the default, in case it was changed for this dataset.
+            ((Plot)_plot).setConnected(_connected);
+        }
     }
 
     /** Start a document.  This method is called just before the parser
@@ -111,11 +105,72 @@ public class PlotMLParser extends PlotBoxMLParser {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-            if (elementName.equals("dataset")) {
-                String name = (String)_attributes.get("name");
+
+            if (elementName.equals("barGraph")) {
+                String widthSpec = (String)_attributes.get("width");
+                String offsetSpec = (String)_attributes.get("offset");
+                // NOTE: If only one of these is given, then the other
+                // is ignored.
+                if (widthSpec == null || offsetSpec == null) {
+                    ((Plot)_plot).setBars(true);
+                } else {
+                    double width = (Double.valueOf(widthSpec)).doubleValue();
+                    double offset = (Double.valueOf(offsetSpec)).doubleValue();
+                    ((Plot)_plot).setBars(width, offset);
+                }
+
+            } else if (elementName.equals("dataset")) {
                 _currentDataset++;
+
+                String connected = (String)_attributes.get("connected");
+                if (connected != null) {
+                    if (connected.equals("no")) {
+                        ((Plot)_plot).setConnected(false);
+                    } else {
+                        ((Plot)_plot).setConnected(true);
+                    }
+                }
+
+                String marks = (String)_attributes.get("marks");
+                if (marks != null) {
+                    ((Plot)_plot).setMarksStyle(marks, _currentDataset);
+                }
+
+                String name = (String)_attributes.get("name");
                 if (name != null) {
                     ((Plot)_plot).addLegend(_currentDataset, name);
+                }
+
+                String stems = (String)_attributes.get("stems");
+                if (stems != null) {
+                    if (stems.equals("yes")) {
+                        ((Plot)_plot).setImpulses(true, _currentDataset);
+                    } else {
+                        ((Plot)_plot).setImpulses(false, _currentDataset);
+                    }
+                }
+
+            } else if (elementName.equals("default")) {
+
+                String connected = (String)_attributes.get("connected");
+                if (connected.equals("yes")) {
+                    ((Plot)_plot).setConnected(true);
+                    _connected = true;
+                } else {
+                    ((Plot)_plot).setConnected(false);
+                    _connected = false;
+                }
+
+                String marks = (String)_attributes.get("marks");
+                if (marks != null) {
+                    ((Plot)_plot).setMarksStyle(marks);
+                }
+
+                String stems = (String)_attributes.get("stems");
+                if (stems.equals("no")) {
+                    ((Plot)_plot).setImpulses(false);
+                } else {
+                    ((Plot)_plot).setImpulses(true);
                 }
 
             } else if (elementName.equals("m")) {
@@ -130,6 +185,8 @@ public class PlotMLParser extends PlotBoxMLParser {
             } else if (elementName.equals("point")) {
                 _addPoint(true, elementName);
 
+            } else if (elementName.equals("reuseDatasets")) {
+                ((Plot)_plot).setReuseDatasets(true);
             } else {
                 super.startElement(elementName);
             }
@@ -152,6 +209,12 @@ public class PlotMLParser extends PlotBoxMLParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
+
+    /** The default bars state. */
+    protected boolean _bars;
+
+    /** The default connected state. */
+    protected boolean _connected;
 
     /** The current dataset number in a "dataset" element. */
     protected int _currentDataset = -1;

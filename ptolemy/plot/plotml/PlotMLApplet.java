@@ -35,12 +35,12 @@ package ptolemy.plot.plotml;
 
 import ptolemy.plot.PlotApplet;
 
-// FIXME: Trim these.
-import java.applet.Applet;
+import com.microstar.xml.XmlException;
+
 import java.io.IOException;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.awt.*;
-import java.net.*;              // Need URL
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplet
@@ -70,39 +70,43 @@ public class PlotMLApplet extends PlotApplet {
     /** Read the specified stream.  This method checks to see whether
      *  the data is PlotML data, and if so, creates a parser to read it.
      *  If not, it defers to the parent class to read it.
-     *  <b>NOTE:</b> The current version of Netscape (4.51) does not
-     *  support mark() and reset() on InputStream, so in order to make
-     *  this applet work with Netscape, we do not peek at the file to
-     *  see whether it is an XML file, but rather just assume that it is.
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
     protected void _read(InputStream in) throws IOException {
+        // Create a buffered input stream so that mark and reset
+        // are supported.
+        BufferedInputStream bin = new BufferedInputStream(in);
         // Peek at the file...
-
-        /* FIXME: See comment above... We cannot do this currently.
-        in.mark(9);
+        bin.mark(9);
         // Read 8 bytes in case 16-bit encoding is being used.
         byte[] peek = new byte[8];
-        in.read(peek);
-        in.reset();
+        bin.read(peek);
+        bin.reset();
         if ((new String(peek)).startsWith("<?xm")) {
-        */
             // file is an XML file.
             PlotMLParser parser = new PlotMLParser(plot());
             try {
                 URL docBase = getDocumentBase();
-                parser.parse(docBase, in);
+                parser.parse(docBase, bin);
             } catch (Exception ex) {
-                System.err.println(
-                    "PlotMLApplet: failed to parse PlotML data:\n"
-                    + ex.toString());
+                String msg;
+                if (ex instanceof XmlException) {
+                    XmlException xmlex = (XmlException)ex;
+                    msg =
+                        "PlotMLApplet: failed to parse PlotML data:\n"
+                        + "line: " + xmlex.getLine()
+                        + ", column: " + xmlex.getColumn()
+                        + "\nIn entity: " + xmlex.getSystemId()
+                        + "\n";
+                } else {
+                    msg = "PlotMLApplet: failed to parse PlotML data:\n";
+                }
+                System.err.println(msg + ex.toString());
                 ex.printStackTrace();
             }
-        /* FIXME: See method comment above...
         } else {
-            super._read(in);
+            super._read(bin);
         }
-        */
     }
 }

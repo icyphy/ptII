@@ -1,5 +1,9 @@
+<!-- PlotML DTD. Author: Edward A. Lee, eal@eecs.berkeley.edu. -->
+<!-- Version: $Id$ -->
 <!ELEMENT plot (
+	barGraph |
 	dataset |
+	default |
 	noColor |
 	noGrid |
 	title |
@@ -13,10 +17,22 @@
 	yRange |
 	yTicks)*>
 
+  <!ELEMENT barGraph EMPTY>
+    <!-- NOTE: If only one of these is specified, then the other is ignored. -->
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
   <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
     <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
   <!ELEMENT noColor EMPTY>
   <!ELEMENT noGrid EMPTY>
+  <!ELEMENT reuseDatasets EMPTY>
   <!ELEMENT title (#PCDATA)>
   <!ELEMENT wrap EMPTY>
   <!ELEMENT xLabel (#PCDATA)>

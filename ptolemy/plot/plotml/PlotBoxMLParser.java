@@ -31,17 +31,11 @@
 package ptolemy.plot.plotml;
 
 // Ptolemy imports.
-import ptolemy.plot.*;
+import ptolemy.plot.PlotBox;
 
 // Java imports.
-// FIXME: Trim this.
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.InstantiationException;
-import java.lang.IllegalAccessException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -145,7 +139,6 @@ public class PlotBoxMLParser extends HandlerBase {
         } else if (elementName.equals("xLog")) {
             _plot.setXLog(true);
         // xRange and yRange are dealt with in startElement().
-// FIXME missing elements.
         } else if (elementName.equals("yLabel")) {
             _plot.setYLabel(_currentCharData.toString());
         } else if (elementName.equals("yLog")) {

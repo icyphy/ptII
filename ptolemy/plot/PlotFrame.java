@@ -84,7 +84,6 @@ public class PlotFrame extends Frame {
      */
     public PlotFrame() {
         this("Ptolemy Plot Frame");
-
     }
 
     /** Construct a plot frame with the specified title and by default
@@ -266,7 +265,7 @@ public class PlotFrame extends Frame {
         _filename = null;
         try {
             plot.clear(true);
-            plot.read(new FileInputStream(file));
+            _read(new FileInputStream(file));
             plot.repaint();
         } catch (FileNotFoundException ex) {
             Message msg = new Message("File not found: " + ex);
@@ -313,6 +312,15 @@ public class PlotFrame extends Frame {
                 printjob.end();
             }
         }
+    }
+
+    /** Read the specified stream.  Derived classes may override this
+     *  to support other file formats.
+     *  @param in The input stream.
+     *  @exception IOException If the stream cannot be read.
+     */
+    protected void _read(InputStream in) throws IOException {
+        plot.read(in);
     }
 
     /** Save the plot to the current file, determined by the _directory
