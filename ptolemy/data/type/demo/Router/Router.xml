@@ -65,8 +65,10 @@ Rayleigh distribution.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -83,7 +85,7 @@ Rayleigh distribution.</text>
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 290.0">
@@ -95,11 +97,14 @@ Rayleigh distribution.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
         <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 280.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
             <property name="input"/>
@@ -170,6 +175,8 @@ Rayleigh distribution.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 230.0">
         </property>
@@ -216,7 +223,7 @@ Rayleigh distribution.</text>
     <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer">
         <property name="startingSequenceNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 405.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 405.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -235,7 +242,9 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 270.0">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -249,7 +258,9 @@ Rayleigh distribution.</text>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 325.0">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -265,7 +276,7 @@ Rayleigh distribution.</text>
     <relation name="relation45" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="95.0, 230.0">
+        <vertex name="vertex1" value="95.0, 230.0">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -273,7 +284,7 @@ Rayleigh distribution.</text>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="425.0, 260.0">
+        <vertex name="vertex1" value="430.0, 280.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
