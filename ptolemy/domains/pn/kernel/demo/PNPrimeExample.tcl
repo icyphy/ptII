@@ -103,26 +103,27 @@ if ![info exists numberOfCycles] {
 }
 
 # Suggestion: setNoCycles should be setNumberOfCycles or setCycleNumber 
-$myUniverse setNoCycles $numberOfCycles 
+$myUniverse setCycles $numberOfCycles 
 
-set ramp [java::new pt.domains.pn.kernel.PNRamp $myUniverse "ramp"]
+set ramp [java::new pt.domains.pn.stars.PNRamp $myUniverse "ramp"]
 # 2 is the seed to the ramp. It starts it's outputs beginning with integer 2.
-$ramp {initialize int} 2
-$ramp setCycles $numberOfCycles
+$ramp setInitState  2
+#$ramp setCycles $numberOfCycles
 
-set sieve [java::new pt.domains.pn.kernel.PNSieve $myUniverse "2_sieve"]
-$sieve {initialize int} 2
+set sieve [java::new pt.domains.pn.stars.PNSieve $myUniverse "2_sieve"]
+$sieve setInitState 2
 
-set queue [java::new pt.kernel.IORelation $myUniverse "2_queue"]
+#set queue [java::new pt.kernel.IORelation $myUniverse "2_queue"]
 
-set port [$sieve getPort "input"]
-[$port getQueue] setCapacity 1
+set portin [$sieve getPort "input"]
+[$portin getQueue] setCapacity 1
 
-$port link $queue
+#$port link $queue
 
-set port [$ramp getPort "output"]
-$port link $queue
+set portout [$ramp getPort "output"]
+#$port link $queue
 
+$myUniverse connect $portin $portout 2_queue
 
 # DAG filenames to be created.
 if ![info exists initialDAGFileName] {
@@ -152,3 +153,4 @@ puts "Bye World"
 # Get the output
 $printStream flush
 list "[$stream toString]"
+
