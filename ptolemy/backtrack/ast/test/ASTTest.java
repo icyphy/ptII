@@ -1,3 +1,5 @@
+package ptolemy.backtrack.ast.test;
+
 public class ASTTest {
     public ASTTest() {
         foo = 1;
