@@ -56,7 +56,7 @@ public class DEPlot extends DEActor {
     public DEPlot(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
-        this(container, name, (new PlotFrame(name)).plot);
+        this(container, name, null);
 
     }
 
@@ -77,8 +77,7 @@ public class DEPlot extends DEActor {
         input.setMultiport(true);
 
         _plot = plot;
-        _plot.setButtons(true);
-
+        
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
         _yMax = (double)1;
@@ -91,6 +90,10 @@ public class DEPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
+
+        if (_plot == null) {
+            _plot = (new PlotFrame(getName())).plot;
+        }
 
         _plot.clear(true);
         _plot.setButtons(true);
