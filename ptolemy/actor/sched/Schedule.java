@@ -281,10 +281,10 @@ public class Schedule extends ScheduleElement {
 	}
 
 	/** Return true if the iteration has more elements.
-	 * @exception IllegalActionException If the schedule
-	 *  data structure has changed since this iterator
-	 *  was created.
-	 * @return true if the iterator has more elements.
+	 *  @exception InvalidStateException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @return true if the iterator has more elements.
 	 */
 	public boolean hasNext() {
 	    if (_currentVersion != _scheduleVersion) {
@@ -296,7 +296,10 @@ public class Schedule extends ScheduleElement {
 	}
 
 	/** Return the next object in the iteration.
-	 * @return the next object in the iteration.
+	 *  @exception InvalidStateException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @return the next object in the iteration.
 	 */
 	public Object next() throws NoSuchElementException {
 	    if (!hasNext()) {
