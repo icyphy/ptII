@@ -43,6 +43,8 @@ import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomaton
@@ -133,8 +135,10 @@ public class InterfaceAutomaton extends FSMActor {
 	this._check();
 	automaton._check();
 
-	// check composability and computes the input, output, and internal
-	// transitions
+	// check composability
+	_checkComposability(automaton);
+
+	// computes the input, output, and internal transitions
 
 
 
@@ -156,6 +160,48 @@ public class InterfaceAutomaton extends FSMActor {
         super.fire();
     }
 
+    /** Return the names of the input ports as a Set.
+     *  @return A Set containing all the input port names.
+     */
+    public Set inputNameSet() {
+	Set set = new HashSet();
+	Iterator iterator = inputPortList().iterator();
+	while (iterator.hasNext()) {
+	    IOPort port = (IOPort)iterator.next();
+	    set.add(port.getName());
+	}
+	return set;
+    }
+
+    /** Return the names of the internal transitions as a Set.
+     *  @return A Set containing all the internal transition names.
+     */
+    // This method differs from inputNameSet() and outputNameSet() in that
+    // those methods return the names of the input or output ports, but this
+    // one does not get the names from the parameters corresponding to the
+    // internal transitions. As a result, all the returned names have one or
+    // more corresponding internal transition instances. The is because
+    // (1) Unlike the relation between input/output transitions and ports,
+    // where some ports may not have corresponding instances of transition,
+    // it does not make sense to have any "internal transition parameter"
+    // that does not have transition instances; (2) there is no way to tell
+    // which parameter is for internal transition, and which is for other
+    // purpose.
+    public Set internalTransitionNameSet() {
+	Set set = new HashSet();
+	Iterator iterator = relationList().iterator();
+	while (iterator.hasNext()) {
+	    InterfaceAutomatonTransition transition =
+	        (InterfaceAutomatonTransition)iterator.next();
+	    String label = transition.getLabel();
+	    if (label.endsWith(";")) {
+	        String name = label.substring(0, label.length()-1);
+		set.add(name);
+	    }
+	}
+	return set;
+    }
+
     /** Create a new instance of InterfaceAutomatonTransition with the
      *  specified name in this actor, and return it.
      *  This method is write-synchronized on the workspace.
@@ -175,6 +221,19 @@ public class InterfaceAutomaton extends FSMActor {
         } finally {
             workspace().doneWriting();
         }
+    }
+
+    /** Return the names of the output ports as a Set.
+     *  @return A Set containing all the output port names.
+     */
+    public Set outputNameSet() {
+	Set set = new HashSet();
+	Iterator iterator = outputPortList().iterator();
+	while (iterator.hasNext()) {
+	    IOPort port = (IOPort)iterator.next();
+	    set.add(port.getName());
+	}
+	return set;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -248,6 +307,70 @@ public class InterfaceAutomaton extends FSMActor {
 		    "InterfaceAutomaton._check: The label " + label
 		        + " does not end with ?, !, or ;.");
 	    }
+	}
+    }
+
+    // Throw an exception if this automaton and the specified one is not
+    // composable.
+    private void _checkComposability(InterfaceAutomaton automaton)
+            throws IllegalActionException {
+	String message = "InterfaceAutomaton._checkComposability: "
+		+ this.getFullName() + " is not composable with "
+		+ automaton.getFullName() + " because ";
+
+	// check the internal transitions of one do not overlap with the
+	// transitions of the other
+        Set thisInternals = this.internalTransitionNameSet();
+
+        Set thatInputs = automaton.inputNameSet();
+        Set thatOutputs = automaton.outputNameSet();
+        Set thatInternals = automaton.internalTransitionNameSet();
+
+	thatInputs.retainAll(thisInternals);
+	thatOutputs.retainAll(thisInternals);
+	thatInternals.retainAll(thisInternals);
+
+	if ( !thatInputs.isEmpty() || 
+	     !thatOutputs.isEmpty() ||
+	     !thatInternals.isEmpty()) {
+	    throw new IllegalActionException(message + "the internal "
+	        + "transitions of the former overlaps with the transitions "
+		+ "of the latter.");
+	}
+
+        thatInternals = automaton.internalTransitionNameSet();
+
+        Set thisInputs = this.inputNameSet();
+        Set thisOutputs = this.outputNameSet();
+        thisInternals = this.internalTransitionNameSet();
+
+	thisInputs.retainAll(thatInternals);
+	thisOutputs.retainAll(thatInternals);
+	thisInternals.retainAll(thatInternals);
+	if ( !thisInputs.isEmpty() ||
+	     !thisOutputs.isEmpty() ||
+	     !thisInternals.isEmpty()) {
+	    throw new IllegalActionException(message + "the internal "
+	        + "transitions of the latter overlaps with the transitions "
+		+ "of the former.");
+	}
+
+	// check the input transitions do not overlap
+        thisInputs = this.inputNameSet();
+        thatInputs = automaton.inputNameSet();
+	thisInputs.retainAll(thatInputs);
+	if ( !thisInputs.isEmpty()) {
+	    throw new IllegalActionException(message + "the input "
+	        + "transitions of the two overlap.");
+	}
+
+	// check the output transitions do not overlap
+        thisOutputs = this.outputNameSet();
+        thatOutputs = automaton.outputNameSet();
+	thisOutputs.retainAll(thatOutputs);
+	if ( !thisOutputs.isEmpty()) {
+	    throw new IllegalActionException(message + "the output "
+	        + "transitions of the two overlap.");
 	}
     }
 
