@@ -23,9 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating none (reviewmoderator@eecs.berkeley.edu)
 
+@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data.expr;
@@ -42,7 +42,6 @@ Parameter was removed.
 @version $Id$
 @see ptolemy.data.expr.ParameterListener
 @see ptolemy.data.expr.Parameter
-
 */
 public class ParameterEvent {
 

@@ -25,8 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating none
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.kernel;
