@@ -116,3 +116,30 @@ test TimedPNDirector-5.2 {Test creation of a receiver} {
 
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}
+
+######################################################################
+####
+#
+test TimedPNDirector-6.1 {Test an application} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    set director [java::new ptolemy.domains.pn.kernel.TimedPNDirector]
+    $e0 setDirector $director
+    $e0 setName top
+    $e0 setManager $manager
+
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	  [$ramp getAttribute firingCountLimit]]
+    $param setExpression 20
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+	  [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+	  [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+
+} {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19}
+
+
