@@ -40,8 +40,6 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.AudioFileFormat.Type;
-import javax.sound.sampled.DataLine.Info;
-import javax.sound.sampled.Line.Info;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;

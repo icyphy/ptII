@@ -37,8 +37,6 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import javax.sound.sampled.DataLine.Info;
-import javax.sound.sampled.Line.Info;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
