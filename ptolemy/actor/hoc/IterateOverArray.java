@@ -69,8 +69,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UndoAction;
-import ptolemy.kernel.util.UndoStackAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
@@ -111,10 +109,6 @@ operate on input arrays.  It is inspired by the higher-order
 functions of functional languages, but unlike those, the
 contained actor need not be functional. That is, it can have
 state.
-<p>
-FIXME: When dropping a contained object onto this actor, or
-when adding or removing ports, undo does not work properly
-to reverse the changes.
 <p>
 FIXME: There should be an option to reset between
 firings of the inside actor.
@@ -215,7 +209,8 @@ public class IterateOverArray extends TypedCompositeActor {
         super._addEntity(entity);
         
         // This needs to be a MoMLChangeRequest so that undo works.
-        // Alternatively, we could explicitly create the undo request.
+        // Alternatively, we could explicitly create the undo request,
+        // but then we would also have to create the redo.
         // Use the container as a context so that redraw occurs after
         // the change request is executed.
         NamedObj tmpContext = MoMLChangeRequest
@@ -235,10 +230,10 @@ public class IterateOverArray extends TypedCompositeActor {
 
                 synchronized(this) {
 
-                    StringBuffer command = new StringBuffer("<group>\n");
-                    command.append("<entity name=\"");
-                    command.append(getName(context));
-                    command.append("\">\n");
+                    StringBuffer command = new StringBuffer(
+                            "<entity name=\""
+                            + getName(context)
+                            + "\">\n");
 
                     // Entity most recently added.
                     ComponentEntity entity = null;
@@ -251,9 +246,8 @@ public class IterateOverArray extends TypedCompositeActor {
                         // If there is at least one more contained object,
                         // then delete this one.
                         if (priors.hasNext()) {
-                            command.append("<deleteEntity name=\"");
-                            command.append(prior.getName());
-                            command.append("\"/>\n");
+                            command.append("<deleteEntity name=\""
+                                    + prior.getName() + "\"/>\n");
                             deletedEntities.add(prior);
                         } else {
                             entity = prior;
@@ -269,9 +263,9 @@ public class IterateOverArray extends TypedCompositeActor {
                     // side effect of removing connections on the inside.
                     Iterator relations = relationList().iterator();
                     while(relations.hasNext()) {
-                        command.append("<deleteRelation name=\"");
-                        command.append(((NamedObj)relations.next()).getName());
-                        command.append("\"/>\n");
+                        command.append("<deleteRelation name=\""
+                                + ((NamedObj)relations.next()).getName()
+                                + "\"/>\n");
                     }
 
                     // Add commands to delete ports.
@@ -302,9 +296,7 @@ public class IterateOverArray extends TypedCompositeActor {
                                     // to these ports, or undo won't work properly.
                                     // This is a bit of a pain, since we have to pop
                                     // out of this context to do it.
-                                    command.append("<deletePort name=\"");
-                                    command.append(port.getName());
-                                    command.append("\"/>\n");
+                                    command.append("<deletePort name=\"" + port.getName() + "\"/>\n");
                                     break;
                                 }
                             }
@@ -325,9 +317,7 @@ public class IterateOverArray extends TypedCompositeActor {
                         // uses newPort() to create it; newPort() will
                         // take care of the connections with the inside
                         // port.
-                        command.append("<port name=\"");
-                        command.append(name);
-                        command.append("\">");
+                        command.append("<port name=\"" + name + "\">");
                         if (insidePort instanceof IOPort) {
                             IOPort castPort = (IOPort)insidePort;
                             command.append(
@@ -351,15 +341,10 @@ public class IterateOverArray extends TypedCompositeActor {
                         // we can use any suitable names.
 
                         String relationName = "insideRelation" + count++;
-                        command.append("<relation name=\"");
-                        command.append(relationName);
-                        command.append("\"/>\n");
+                        command.append("<relation name=\"" + relationName + "\"/>\n");
 
-                        command.append("<link port=\"");
-                        command.append(name);
-                        command.append("\" relation=\"");
-                        command.append(relationName);
-                        command.append("\"/>\n");
+                        command.append("<link port=\"" + name + "\" relation=\""
+                                + relationName + "\"/>\n");
 
                         command.append("<link port=\""
                                 + insidePort.getName(IterateOverArray.this)
@@ -368,16 +353,17 @@ public class IterateOverArray extends TypedCompositeActor {
                                 + "\"/>\n");
                     }
 
-                    command.append("</entity>\n</group>\n");
+                    command.append("</entity>\n");
 
-                    // The MoML command is the description of the
-                    // change request.
-
+                    // The MoML command is the description of the change request.
                     setDescription(command.toString());
 
                     // Uncomment the following to see the (rather complicated)
                     // MoML command that is issued.
+                    // System.out.println("--------in _addEntity() -------------------");
                     // System.out.println(command.toString());
+                    // System.out.println("--------- context: " + context.getFullName());
+                    // System.out.println("-------------------------------------------");
 
                     try {
                         // Disable reactions to added ports.
@@ -411,7 +397,9 @@ public class IterateOverArray extends TypedCompositeActor {
             // Create and connect a matching inside port on contained entities.
             // Do this as a change request to ensure that the action of
             // creating the port passed in as an argument is complete by
-            // the time this executes.
+            // the time this executes.  Do not use MoML here because it
+            // isn't necessary to generate any undo code.  _removePort()
+            // takes care of the undo.
             ChangeRequest request = new ChangeRequest(
                     this,
                     "Add a port on the inside") {
@@ -451,30 +439,6 @@ public class IterateOverArray extends TypedCompositeActor {
                                 insidePort.link(newRelation);
                                 port.link(newRelation);
                             }
-                            
-                            // Create the undo action.
-                            final Port finalInsidePort = insidePort;
-                            final boolean finalCreatedInsidePort = createdInsidePort;
-                            final ComponentRelation finalRelation = newRelation;
-                            final boolean finalCreatedRelation = (newRelation != null);
-                            
-                            UndoAction action = new UndoAction() {
-                                public void execute() throws Exception {
-                                    if (finalCreatedRelation) {
-                                        finalRelation.setContainer(null);
-                                    }
-                                    if (finalCreatedInsidePort) {
-                                        finalInsidePort.setContainer(null);
-                                    }
-                                    // FIXME: Need to create a redo entry!
-                                }
-                            };
-                            // Register the action.
-                            UndoStackAttribute stack
-                                    = UndoStackAttribute.getUndoInfo(
-                                    IterateOverArray.this);
-                            stack.push(action);
-                            stack.mergeTopTwo();
                         }
                     }
                 }
@@ -557,12 +521,13 @@ public class IterateOverArray extends TypedCompositeActor {
      *  inside entity and the link to it, if there is one.
      *  @param port The port being removed from this entity.
      */
-    protected void _removePort(Port port) {
+    protected void _removePort(final Port port) {
         super._removePort(port);
-
-        // FIXME: Will undo work for this?  Should this be done as a
-        // change request?
-
+        
+        // NOTE: Do not use MoML here because we do not want to generate
+        // undo actions to recreate the inside relation and port.
+        // This is because _addPort() will take care of that.
+        
         // The cast is safe because all my ports are instances of IOPort.
         Iterator relations = ((IOPort)port).insideRelationList().iterator();
         while (relations.hasNext()) {
