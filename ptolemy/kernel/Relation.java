@@ -51,6 +51,8 @@ public class Relation extends NamedObj {
      */	
     public Relation() {
 	 super();
+	 _sourcePorts = null;
+	 _destinationPorts = null;
          _isSourceOrDestination = 0;
     }
 
@@ -59,6 +61,8 @@ public class Relation extends NamedObj {
      */	
     public Relation(String name) {
 	 super(name);
+	 _sourcePorts = null;
+	 _destinationPorts = null;
          _isSourceOrDestination = 0;
     }
 
@@ -71,6 +75,29 @@ public class Relation extends NamedObj {
      */	
     public boolean isRelationTypeSet() {
 	if( _isSourceOrDestination <= 0 || _isSourceOrDestination >= 3 )
+	{
+	     return true;
+	}
+        return false;
+    }
+
+    /** A Relation must be set as either a Source or Destination relation.
+     * @return Return true if this Relation is a Source. Return false otherwise.
+     */	
+    public boolean isSource() {
+	if( _isSourceOrDestination == 1 )
+	{
+	     return true;
+	}
+        return false;
+    }
+
+    /** A Relation must be set as either a Source or Destination relation.
+     * @return Return true if this Relation is a Destination. Return false 
+     * otherwise.
+     */	
+    public boolean isDestination() {
+	if( _isSourceOrDestination == 2 )
 	{
 	     return true;
 	}
@@ -103,6 +130,30 @@ public class Relation extends NamedObj {
 	     return true;
 	}
         return false;
+    }
+
+    /** Description
+     * @see full-classname#method-name()
+     * @param parameter-name description
+     * @param parameter-name description
+     * @return description
+     * @exception full-classname description
+     */	
+    public boolean setSourcePort(GenPort port) {
+	if( isSource() && _sourcePorts == null )
+	{
+	     port.newConnection();
+	     _sourcePorts.insertFirst( port );
+	}
+        return true;
+    }
+
+    /** Clear all port references.
+     */	
+    public void clearAllConnections() {
+        _sourcePorts.clear();
+        _destinationPorts.clear();
+        return;
     }
 
     /** Description
