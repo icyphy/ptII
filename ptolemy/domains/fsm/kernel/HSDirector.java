@@ -37,6 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
@@ -174,9 +175,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         _ctrl._setInputsFromRefinement();
 
-        // Note that the actions associated with the transition
+        // Note that the output actions associated with the transition
         // are executed.
         tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+        // record the enalbed transition
+        _enabledTransition = tr;
 
         // execute the refinements of the enabled transition
         if (tr != null) {
@@ -240,7 +243,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Iterator actors = _enabledRefinements.iterator();
         while (!eventPresent && actors.hasNext()) {
             // Note that the refinement is a CTCompositeActor.
-            CTCompositeActor actor = (CTCompositeActor)actors.next();
+            CTEventGenerator actor = (CTEventGenerator)actors.next();
             eventPresent |= actor.hasCurrentEvent();
         }
         return eventPresent;
@@ -351,11 +354,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  another iteration. Postfire the enabled refinements of the
      *  current state
      *  of the mode controller and take out event outputs that the
-     *  refinements generate. Examine the outgoing transitions of the
-     *  current state. Throw an exception if there is more than one
-     *  transition enabled. If there is exactly one transition enabled
-     *  then it is chosen and the choice actions contained by the
-     *  transition are executed. Execute the commit actions contained
+     *  refinements generate. Execute the commit actions contained
      *  by the last chosen transition of the mode controller and set
      *  its current state to the destination state of the transition.
      *  Clear the relation list associated with the enabled transition
@@ -363,8 +362,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
      *  @exception IllegalActionException If thrown by any action, or
-     *   there is no controller, or there is more than one transition
-     *   enabled.
+     *   there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
@@ -383,8 +381,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         // FIXME: why do we need to execute the update actions again in postfire?
         // From Xiaojun: actions of the event triggered transition need to be 
-        // executed. 
-        Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
+        // executed. // This is not necessary. hyzheng 08/14/2003
+        // Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
+         Transition tr = _enabledTransition;
+
         // If there is one transition enabled, the HSDirector requests fire again
         // at the same time to see whether the next state has some outgoing
         // transition enabled.
@@ -409,7 +409,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 dir.fireAt(container, getCurrentTime());
             }
         }
-        
+        // clear the cached enabled transition
+        _enabledTransition = null;
         return super.postfire();
     }
 
@@ -554,6 +555,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Lcoal variable to indicate the last step size.
     private double _lastStepSize = 0.0;
 
+    private Transition _enabledTransition;
     // Lcoal variable to indicate the last transition accurate or not.
     private boolean _lastTransitionAccurate = true;
 }
