@@ -41,12 +41,8 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
 /**
-A base class for Ptolemy applications. This is provided
-for convenience, in order to promote commonality among certain elements.
-It is by no means required in order
-to create an application that uses Ptolemy II.
-In particular, it creates a manager, a top-level composite
-actor; it provides a top-level composite
+A base class for Ptolemy applications. This class has a create() method, which is called to create the base model components typically used in Ptolemy applications. This class also provides methods for reporting errors and exceptions.
+
 actor; it provides a mechanism for reporting
 errors and exceptions. This class makes no use of any gui features.
 
@@ -62,10 +58,10 @@ public class PtolemyApplication implements ExecutionListener {
      *  top-level composite actor are created, but nothing more.
      *  Derived classes should extend this method to build the model.
      *  The model is created in a new workspace, where the name of
-     *  the workspace is the name of this class.
+     *  the workspace is the empty string.
      */
     public void create() {
-        _workspace = new Workspace(getClass().getName());
+        _workspace = new Workspace();
         try {
             _manager = new Manager(_workspace, "manager");
             _manager.addExecutionListener(this);
@@ -77,22 +73,24 @@ public class PtolemyApplication implements ExecutionListener {
         }
     }
 
-    /** Report that an execution error occured.  This is
-     *  called by the manager.
+    /** Report that an execution error has occured.  This method
+     *  is called by the manager.
      */
     public void executionError(Manager manager, Exception ex) {
         report(ex);
     }
 
-    /** Report that execution of the model has finished.  This is
-     *  called by the manager.
+    /** Report that execution of the model has finished by printing a
+     *  message to stdout. This is method is called by the manager.
+     * @param
      */
     public void executionFinished(Manager manager) {
         System.out.println("Execution finished.");
     }
 
-    /** Report that the manager state has changed.  This is
-     *  called by the manager.
+    /** Report that the manager state has changed by printing a
+     *  message to stdout.  This is method is called by the 
+     *  manager.
      */
     public void managerStateChanged(Manager manager) {
         Manager.State newstate = manager.getState();
@@ -106,16 +104,14 @@ public class PtolemyApplication implements ExecutionListener {
      *  stream, followed by the stack trace.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.\n" + ex.toString();
-        System.err.println(msg);
-        ex.printStackTrace();
-        System.out.println("Exception occurred.");
-        new Message(msg + "\nSee Java console for stack trace.");
+	// Call the two-argument report with a "" for the String
+	// argument.
+	this.report("", ex);
     }
 
     /** Report an exception with an additional message.  Currently
-     *  this prints a message to standard error, followed by the stack trace,
-     *  although soon it will pop up a message window instead.
+     *  this prints a message to standard error, followed by the
+     *  stack trace.
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown by applet.\n" + message + "\n"
@@ -123,17 +119,15 @@ public class PtolemyApplication implements ExecutionListener {
         System.err.println(msg);
         ex.printStackTrace();
         System.out.println("Exception occurred.");
-        new Message(msg + "\nSee Java console for stack trace.");
+        System.out.println(msg + "\nStack trace: ");
     }
 
-    /** Start execution of the model. This method is called by the
-     *  browser or applet viewer to inform this applet that it should
-     *  start its execution. It is called after the init method
-     *  and each time the applet is revisited in a Web page.
-     *  In this base class, this method calls the protected method
-     *  _go(), which executes the model.  If a derived class does not
-     *  wish to execute the model each time start() is called, it should
-     *  override this method with a blank method.
+    /** Start execution of the model. This method is called after
+     *  the init method. In this base class, this method calls the
+     *  protected method _go(), which executes the model.  If a
+     *  derived class does not wish to execute the model each time
+     *  start() is called, it should override this method with a
+     *  blank method.
      */
     public void start() {
         try {
@@ -143,13 +137,9 @@ public class PtolemyApplication implements ExecutionListener {
         }
     }
 
-    /** Stop execution of the model. This method is called by the
-     *  browser or applet viewer to inform this applet that it should
-     *  stop its execution. It is called when the Web page
-     *  that contains this applet has been replaced by another page,
-     *  and also just before the applet is to be destroyed.
-     *  In this base class, this method calls the finish() method
-     *  of the manager. If there is no maneger, do nothing.
+    /** Stop execution of the model. In this base class, this
+     *  method calls the finish() method of the manager. If
+     *  there is no maneger, do nothing.
      */
     public void stop() {
         if(_manager != null) {
@@ -159,25 +149,6 @@ public class PtolemyApplication implements ExecutionListener {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-
-    /** Concatenate two parameter info string arrays and return the result.
-     *  This is provided to make it easy for derived classes to override
-     *  the getParameterInfo() method. The returned array has length equal
-     *  to the sums of the lengths of the two arguments, and containing
-     *  the arrays contained by the arguments.
-     *
-     *  @param first The first string array.
-     *  @param second The second string array.
-     *  @return A concatenated string array.
-     */
-    protected String[][] _concatStringArrays(
-            String[][] first, String[][] second) {
-        String[][] newinfo = new String[first.length + second.length][];
-        System.arraycopy(first, 0, newinfo, 0, first.length);
-        System.arraycopy(second, 0, newinfo, first.length, second.length);
-        return newinfo;
-    }
-
 
     /** Execute the model, if the manager is not currently executing.
      *  @exception IllegalActionException Not thrown in this base class.
