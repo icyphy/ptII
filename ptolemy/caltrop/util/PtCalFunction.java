@@ -52,7 +52,7 @@ seamlessly used with Ptolemy II-generated function objects.
 public class PtCalFunction implements FunctionToken.Function {
 
     public Token apply(List list) throws IllegalActionException {
-        // TODO: should we allow non-token returns and "tokefy" them?
+        // TODO: should we allow non-token returns and tokenize them?
         return (Token) f.apply(list.toArray());
     }
 
