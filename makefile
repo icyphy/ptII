@@ -91,7 +91,8 @@ EXTRA_SRCS = \
 	configure \
 	vergil.jnlp.in \
 	vergilDSP.jnlp.in \
-	vergilPtiny.jnlp.in
+	vergilPtiny.jnlp.in \
+	vergilPtinySandbox.jnlp.in
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
