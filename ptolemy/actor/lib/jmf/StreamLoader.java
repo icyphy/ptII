@@ -14,6 +14,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// StreamLoader
+/**
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class StreamLoader extends Source {
 
     /** Construct an actor with the given container and name.
