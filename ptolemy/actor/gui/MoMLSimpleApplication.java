@@ -37,6 +37,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.StreamErrorHandler;
 
 import java.io.File;
 
@@ -60,6 +61,8 @@ public class MoMLSimpleApplication implements ChangeListener {
     public MoMLSimpleApplication(String xmlFilename) throws Exception{
         MoMLParser parser = new MoMLParser();
 
+        parser.setErrorHandler(new StreamErrorHandler());
+
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
@@ -77,8 +80,8 @@ public class MoMLSimpleApplication implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change request has been successfully executed.
-     *  This method is called after a change request
+    /** React to a change request has been successfully executed by
+     *  doing nothing. This method is called after a change request
      *  has been executed successfully.  In this class, we
      *  do nothing.
      *  @param change The change that has been executed, or null if
@@ -87,9 +90,11 @@ public class MoMLSimpleApplication implements ChangeListener {
     public void changeExecuted(ChangeRequest change) {
     }
 
-    /** React to a change request has resulted in an exception.
+    /** React to a change request that has resulted in an exception.
      *  This method is called after a change request was executed,
-     *  but during the execution an exception was thrown.
+     *  but during the execution in an exception was thrown.
+     *  This method throws a runtime exception with a description
+     *  of the original exception.
      *  @param change The change that was attempted or null if
      *   the change was not done via a ChangeRequest.
      *  @param exception The exception that resulted.
