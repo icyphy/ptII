@@ -52,26 +52,14 @@ public class TrigFunction extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+    public void  generateFireCode(StringBuffer stream) 
+        throws IllegalActionException {
+    
+        CodeStream tmpStream = new CodeStream(this);        
 
-        ptolemy.actor.lib.AddSubtract actor =
-            (ptolemy.actor.lib.AddSubtract)getComponent();
-        StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append(
-                "$val(output) = (!strcmp($ref(function), \"sin\")) ? sin($val(input)) : \n"
-                + "           (!strcmp($ref(function), \"cos\")) ? cos($val(input)) : \n"
-                + "           (!strcmp($ref(function), \"tan\")) ? tan($val(input)) : \n"
-                + "           (!strcmp($ref(function), \"asin\")) ? asin($val(input)) : \n"
-                + "           (!strcmp($ref(function), \"acos\")) ? acos($val(input)) : \n"
-                + "           atan($val(input));\n");
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        tmpStream.append("codeBlock1");
+        
+        stream.append(processCode(tmpStream.toString()));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variable                ////
-    protected String _codeBlock;
 }
 

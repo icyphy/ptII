@@ -55,28 +55,8 @@ public class Counter extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
-
-        StringBuffer tmpStream = new StringBuffer();
-
-        tmpStream.append(
-                "if ($val(increment)) {\n"
-                + "    $val(output)++;\n"
-                + "} else if ($val(decrement)) {\n"
-                + "    $val(output)--;\n"
-                + "}\n");
-
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("codeBlock1");
+        stream.append(processCode(tmpStream.toString()));
     }
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    protected String _codeBlock;
-
 }

@@ -1,6 +1,5 @@
-/* A helper class for ptolemy.actor.lib.Sequence
-
-Copyright (c) 1997-2005 The Regents of the University of California.
+/* A helper class for ptolemy.actor.lib.Ramp
+Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -25,60 +24,46 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
+
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Sequence
-/**
-   A helper class for ptolemy.actor.lib.Sequence
+//// Ramp
 
-   @author Man-Kit (Jackie) Leung, Gang Zhou
+/**
+   A helper class for ptolemy.actor.lib.Ramp
+   
+   @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)  
 */
-public class Sequence extends CCodeGeneratorHelper {
+public class Ramp extends CCodeGeneratorHelper {
 
     /** FIXME
-     *
+     * 
      */
-    public Sequence(ptolemy.actor.lib.Sequence actor) {
+    public Ramp(ptolemy.actor.lib.Ramp actor) {
         super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
-
-        CodeStream tmpStream = new CodeStream(this);        
-
-        if (actor.enable.getWidth() == 0) {
-            tmpStream.append("codeBlock1");
-        } else {
-            tmpStream.append("codeBlock2");
-        }
-        tmpStream.append("codeBlock3");
-        
-        stream.append(processCode(tmpStream.toString()));
-
+    public void generateFireCode(StringBuffer stream)
+                throws IllegalActionException {
+        stream.append(processCode(_codeBlock));
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variable                ////
 
-    public String generateInitializeCode()
-            throws IllegalActionException {
-
-        CodeStream tmpStream = new CodeStream(this);        
-        tmpStream.append("initBlock");
-        
-        //stream.append(processCode(tmpStream.toString()));
-        return processCode(tmpStream.toString());
-    }   
+    // FIXME: the input to trigger is ignored.
+    protected String _codeBlock =    
+              "$ref(output) = $ref(init);\n"
+            + "$ref(init) += $val(step);\n";
 }

@@ -55,15 +55,10 @@ public class Ramp extends CCodeGeneratorHelper {
     ////                         public methods                    ////
 
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        stream.append(processCode(_codeBlock));
+                throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("codeBlock1");   
+
+        stream.append(processCode(tmpStream.toString()));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variable                ////
-
-    // FIXME: the input to trigger is ignored.
-    protected String _codeBlock =
-    "$ref(output) = $ref(init);\n"
-    + "$ref(init) += $val(step);\n";
 }

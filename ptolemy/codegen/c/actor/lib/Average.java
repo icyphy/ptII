@@ -55,38 +55,17 @@ public class Average extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
-
-        StringBuffer tmpStream = new StringBuffer();
-
-        tmpStream.append(
-                "if ($val(reset)) {\n"
-                + "    sum = 0;\n"
-                + "    count = 0;\n"
-                + "} else {\n"
-                + "    sum += $val(input);\n"
-                + "    count++;\n"
-                + "    $val(output) = sum / count;\n"
-                + "}\n");
-
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        CodeStream tmpStream = new CodeStream(this);        
+        tmpStream.append("codeBlock1");
+        stream.append(processCode(tmpStream.toString()));
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
-        return processCode(_initBlock);
+        CodeStream tmpStream = new CodeStream(this);        
+        tmpStream.append("initBlock");
+        
+        //stream.append(processCode(tmpStream.toString()));
+        return processCode(tmpStream.toString());
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    protected String _codeBlock;
-
-    protected String _initBlock =
-    "int sum = 0;\n"
-    + "int count = 0;\n";
 }

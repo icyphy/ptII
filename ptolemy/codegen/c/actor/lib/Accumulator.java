@@ -55,35 +55,50 @@ public class Accumulator extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
+        CodeStream tmpStream = new CodeStream(this);    	
+    	tmpStream.append("codeBlock1");
+        stream.append(processCode(tmpStream.toString()));
+        
+        /**** Previous Code Style *******
+         
+         StringBuffer tmpStream = new StringBuffer();        
 
-        StringBuffer tmpStream = new StringBuffer();
-
-        tmpStream.append(
-                "if ($val(reset)) {\n"
-                + "    sum = $val(init);\n"
-                + "} else {\n"
+         tmpStream.append(
+              "if ($val(reset)) {\n"
+            + "    sum = $val(init);\n"
+              + "} else {\n"
                 + "    sum += $val(input);\n"
                 + "    $val(output) = sum;\n"
-                + "}\n");
+              + "}\n");
+      
+        stream.append(processCode(tmpStream.toString()));
+        
+        */
 
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
-        return processCode(_initBlock);
+        CodeStream tmpStream = new CodeStream(this);        
+        tmpStream.append("initBlock");
+        
+        //stream.append(processCode(tmpStream.toString()));
+        //stream.append(processCode(_initBlock));
+
+        return processCode(tmpStream.toString());
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
+<<<<<<< Accumulator.java
+    //protected String _initBlock = 
+    //      "int sum = 0;\n";
+=======
     protected String _codeBlock;
 
     protected String _initBlock =
     "int sum = 0;\n";
+>>>>>>> 1.6
 }

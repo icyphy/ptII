@@ -34,6 +34,8 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.io.IOException;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -52,20 +54,16 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+    public void  generateFireCode(StringBuffer stream) 
+        throws IllegalActionException {
+    
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("codeBlock1");   //"$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");
 
-        ptolemy.actor.lib.AddSubtract actor =
-            (ptolemy.actor.lib.AddSubtract)getComponent();
-        StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        stream.append(processCode(tmpStream.toString()));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
-    protected String _codeBlock;
 }
 

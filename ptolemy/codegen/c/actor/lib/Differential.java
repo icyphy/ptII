@@ -55,28 +55,20 @@ public class Differential extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
+        CodeStream tmpStream = new CodeStream(this);        
+        tmpStream.append("codeBlock1");
 
-        StringBuffer tmpStream = new StringBuffer();
-
-        tmpStream.append("$val(output) = $val(input) - previousInput;\n");
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        stream.append(processCode(tmpStream.toString()));
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
-        return processCode(_initBlock);
+
+        CodeStream tmpStream = new CodeStream(this);        
+        tmpStream.append("initBlock");
+        
+        //stream.append(processCode(tmpStream.toString()));
+        return processCode(tmpStream.toString());
+
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    protected String _codeBlock;
-
-    protected String _initBlock =
-    "int previousInput = 0;\n";
 }
