@@ -72,7 +72,7 @@ public class DependedClasses {
     private void _addClass(SootClass theClass) {
         if(!_reachableClasses.contains(theClass) && 
                 !theClass.getName().startsWith("java")) {
-            //      System.out.println("adding class " + theClass);
+            // System.out.println("adding class " + theClass);
             _reachableClasses.add(theClass);
             if(!theClass.isInterface()) {
                 _unprocessedClasses.add(theClass);
@@ -81,7 +81,7 @@ public class DependedClasses {
     }
 
     private void _processClass(SootClass theClass) {
-        //    System.out.println("processing class " + theClass);
+        //  System.out.println("processing class " + theClass);
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
         // Make the method bodies analyzeable.
@@ -107,7 +107,7 @@ public class DependedClasses {
             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             
-            //      System.out.println("processing method = " + method);
+            //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
             for(Iterator types = method.getParameterTypes().iterator(); 
                 types.hasNext();) {
@@ -138,7 +138,8 @@ public class DependedClasses {
                 _addClass(t.getException());
             }
 
-            // Grab the classes of all invoked fields and referenced methods.
+            // Grab the classes of all referenced fields, invoked
+            // methods, and created classes.
             for (Iterator units = body.getUnits().iterator();
                  units.hasNext();) {
                 Unit unit = (Unit)units.next();
@@ -155,6 +156,12 @@ public class DependedClasses {
                     } else if(value instanceof InvokeExpr) {
                         SootMethod refMethod = ((InvokeExpr)value).getMethod();
                         SootClass refClass = refMethod.getDeclaringClass();
+                        if(!refClass.equals(theClass)) {
+                            _addClass(refClass);
+                        }
+                    } else if(value instanceof NewExpr) {
+                        SootClass refClass = 
+                            ((NewExpr)value).getBaseType().getSootClass();
                         if(!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }

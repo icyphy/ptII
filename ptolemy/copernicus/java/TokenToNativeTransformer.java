@@ -419,6 +419,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
+                if (debug) 
+                    System.out.println("eliminating instanceof in " + method); 
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
                         debug);

@@ -290,7 +290,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                         RefType.v(PtolemyUtilities.matrixTokenClass))), _insertPoint);
 
                 Local rowIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
-                Local columnIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
+                Local columnIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(2));
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 rowIndexTokenLocal,

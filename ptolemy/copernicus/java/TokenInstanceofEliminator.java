@@ -99,7 +99,6 @@ public class TokenInstanceofEliminator extends BodyTransformer implements HasPha
 
     public static void eliminateCastsAndInstanceOf(Body body,
             String phaseName, Set unsafeLocalSet, boolean debug) {
-
         // Analyze the types of variables which refer to tokens.
         TokenTypeAnalysis tokenTypes =
             new TokenTypeAnalysis(body.getMethod(),
@@ -133,8 +132,9 @@ public class TokenInstanceofEliminator extends BodyTransformer implements HasPha
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
-                    if(!type.isInstantiable() ||
+                    if(type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
                             type.equals(BaseType.GENERAL)) {
+                        System.out.println("uninstantiable instanceof = " + type);
                         continue;
                     }
 
