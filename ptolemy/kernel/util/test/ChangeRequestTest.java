@@ -46,7 +46,7 @@ import java.util.Enumeration;
 /**
 Test for ChangeRequest.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.kernel.util.ChangeRequest
@@ -146,14 +146,41 @@ public class ChangeRequestTest implements ChangeListener {
     /** Mutate.
      */
     public void mutate() {
+        if (_changeRequest == null) {
+            _changeRequest = mutateConst2ChangeRequest();
+        }
+        _top.requestChange(_changeRequest);
+    }
+
+    /** Create a change request that always throws an exception. */
+    public ChangeRequest mutateBadChangeRequest() {
         // Create an anonymous inner class
-        ChangeRequest change = new ChangeRequest(this, "test") {
+        _changeRequest = new ChangeRequest(this,
+                "Change request that always throws an Exception") {
+
+            protected void _execute() throws Exception {
+                if (1 == 1) {
+                    throw new Exception("Always Thrown Exception");
+                }
+            }
+
+        };
+        return _changeRequest;
+    }
+
+
+    /** Create a change request that sets const to 2.0. */
+    public ChangeRequest mutateConst2ChangeRequest() {
+        // Create an anonymous inner class
+        _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
             protected void _execute() throws Exception {
                 _const.value.setToken(new DoubleToken(2.0));
             }
         };
-        _top.requestChange(change);
+        return _changeRequest;
     }
+
+
 
     /** Start a run.
      */
@@ -165,6 +192,8 @@ public class ChangeRequestTest implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // ChangeRequest that modifies the system.
+    public ChangeRequest _changeRequest;
     private Manager _manager;
     private Recorder _rec;
     private Const _const;
