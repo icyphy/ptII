@@ -1218,7 +1218,7 @@ testMatrix negative $types
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
-	{{{2.0 - 2.0i 0.19999999999999996 + 0.19999999999999996i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
+	{{{2.0 - 2.0i 0.2 + 0.2i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
 	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
 
@@ -1233,7 +1233,7 @@ testMatrix orthogonalizeColumns $types
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
-	{{{2.0 - 2.0i 0.19999999999999996 + 0.19999999999999996i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
+	{{{2.0 - 2.0i 0.2 + 0.2i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
 	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
 
@@ -1248,7 +1248,7 @@ testMatrix orthonormalizeColumns $types
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
-	{{{2.0 - 2.0i 1.0 + 1.0i} {-0.19999999999999996 - 0.19999999999999996i -0.4 + 0.4i}}}] \
+	{{{2.0 - 2.0i 1.0 + 1.0i} {-0.2 - 0.2i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -1.0} {0.2 0.4}}}] \
 	[list Float float float {{{2.0 -1.0} {0.2 0.4}}}]]
 
