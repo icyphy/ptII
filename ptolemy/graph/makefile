@@ -56,13 +56,13 @@ JSRCS = \
 	DirectedGraph.java \
 	Edge.java \
 	Graph.java \
-    GraphListener.java \
+	GraphListener.java \
 	GraphReader.java \
-    LabeledList.java \
+	LabeledList.java \
 	Inequality.java \
 	InequalitySolver.java \
 	InequalityTerm.java \
-    Node.java 
+	Node.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -76,7 +76,9 @@ OPTIONAL_FILES = \
 	doc \
 	demo \
 	'InequalitySolver$$1.class' \
-	'InequalitySolver$$Info.class'
+	'InequalitySolver$$Info.class' \
+	'LabeledList$$1.class' \
+	'LabeledList$$SubList.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
