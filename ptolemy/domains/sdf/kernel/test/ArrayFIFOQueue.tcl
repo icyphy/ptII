@@ -178,6 +178,18 @@ test ArrayFIFOQueue-4.2 {Take data off a queue with bounded capacity} {
 ######################################################################
 ####
 #
+test ArrayFIFOQueue-4.3 {resize a bounded capacity queue} {
+    catch {[$queue setCapacity 2]} msg1
+    $queue setCapacity 4
+    set r1 [$queue put $n4]
+    set r2 [$queue put $n4]
+    list $msg1 $r1 $r2
+} {}
+
+
+######################################################################
+####
+#
 test ArrayFIFOQueue-5.1 {Test history} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     $queue setHistoryCapacity -1

@@ -264,19 +264,22 @@ public final class ArrayFIFOQueue implements Cloneable {
             _queuesize++;
             return true;
         } else {
-            try {
-                setCapacity(_queuearray.length * 2);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return put(element);
+	    if(_queuemaxcapacity == INFINITE_CAPACITY) {
+		try {
+		    _resizeArray(_queuearray.length * 2);
+		}
+		catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return put(element);
+	    } else
+		return false;
         }
     }
 
     /** Put an array of objects in the queue and return true if this will not
      *  cause the capacity to be exceeded. Otherwise, do not put
-     *  the object in the queue and return false.
+     *  any of the object in the queue and return false.
      *  @param element An array of objects to be put in the queue.
      *  @return A boolean indicating success.
      */
@@ -301,22 +304,18 @@ public final class ArrayFIFOQueue implements Cloneable {
                     _queuefront = _queuefront % _queuearray.length;
                 _queuesize += element.length;
             }  
-                /*
-            for(i = 0; i < element.length; i++) {
-                _queuearray[_queuefront++] = element[i];
-                if(_queuefront >= _queuearray.length) 
-                    _queuefront = _queuefront % _queuearray.length;
-                _queuesize++;
-                }*/
             return true;
         } else {
-            try {
-                setCapacity(_queuearray.length * 2);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return put(element);
+	    if(_queuemaxcapacity == INFINITE_CAPACITY) {
+		try {
+		    _resizeArray(_queuearray.length * 2);
+		}
+		catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return put(element);
+	    } else 
+		retun false;
         }
     }
 
@@ -330,20 +329,40 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     
     public void setCapacity(int capacity)
-            throws IllegalActionException {
+	throws IllegalActionException {
         if (capacity == INFINITE_CAPACITY) {
             _queuemaxcapacity = INFINITE_CAPACITY;
             return;
         }
-        if (capacity < 0) {
-            throw new IllegalActionException(_container,
-                    "Cannot set queue capacity to " + capacity);
+	_queuemaxcapacity = capacity;
+ 	_resizeArray(capacity);
+    }
+
+    /**
+     * Resize the internal circular array to have the given size.
+     * @exception IllegalActionException If the queue contains more 
+     *   objects than the proposed size or the proposed size
+     *   is illegal. 
+     * @exception InternalErrorException If the proposed size is greater than 
+     *   the declared maximum size.
+     */
+    private void _resizeArray(int newsize)
+	throws IllegalActionException {
+	if (newsize < 0) {
+	    throw new IllegalActionException(_container,
+	        "Cannot set queue capacity to " + capacity);
         }
-        if (size() > capacity) {
+	if (size() > newsize) {
             throw new IllegalActionException(_container, "Queue contains " +
-                    "more elements than the proposed capacity.");
+		"more elements than the proposed capacity.");
         }
-        Object newarray[] = new Object[capacity];
+	if((_queuemaxcapacity != INFINITE_CAPACITY)&&
+	    (newsize > _queuemaxcapacity)) { 
+	    throw new InternalErrorException(_container, "The proposed" +
+		      " array size exceeds the maximum declared queue size.");
+	}
+
+	Object newarray[] = new Object[capacity];
         if((_queuefront < _queueback) || isFull()) {
             System.arraycopy(_queuearray, _queueback,
                     newarray, 0, _queuearray.length - _queueback);
