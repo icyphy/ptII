@@ -94,7 +94,8 @@ public class InspectionApplet extends DEApplet implements QueryListener {
 
     /** If the argument is the string "regular", then set the
      *  variable that controls whether bus arrivals will be regular
-     *  or Poisson.
+     *  or Poisson.  If the argument is anything else, update the
+     *  parameters of the model from the values in the query boxes.
      *  @param name The name of the entry that changed.
      */
     public void changed(String name) {
@@ -117,6 +118,14 @@ public class InspectionApplet extends DEApplet implements QueryListener {
         }
     }
 
+    /** Override the base class to display the recorded average.
+     * 
+     */
+    public void executionFinished(Manager manager) {
+        super.executionFinished(manager);
+        _query.setDisplay("average", _recorder.getLatest(0));
+    }
+
     /** Initialize the applet.
      */
     public void init() {
@@ -127,6 +136,8 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _query.addLine("passmean",
                     "Passenger mean interarrival time", "1.0");
             _query.addCheckBox("regular", "Regular bus arrivals", false);
+            _query.addDisplay("average",
+                "Average waiting time of passengers", "");
             add(_query);
             _query.setBackground(_getBackground());
             _query.addQueryListener(this);
@@ -162,15 +173,13 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _passenger1.meanTime.setToken(new DoubleToken(1.0));
 
             // Waiting time
-            _wait = new DEWaitingTime(_toplevel, "waitingTime");
+            _wait = new WaitingTime(_toplevel, "waitingTime");
 
             // Average actor
             Average average = new Average(_toplevel, "average");
 
-            // Display of average
-            Show show = new Show(_toplevel, "show");
-            show.setPanel(this);
-            show.labels.setToken(new StringToken("Average waiting time"));
+            // Record the average
+            _recorder = new Recorder(_toplevel, "recorder");
 
             // Create and configure plotter
             _eventplot = new TimedPlotter(_toplevel, "plot");
@@ -213,7 +222,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
                 _toplevel.connect(_wait.output, _eventplot.input);
             _histplot.input.link(rel3);
             average.input.link(rel3);
-            _toplevel.connect(average.output, show.input);
+            _toplevel.connect(average.output, _recorder.input);
             _initCompleted = true;
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -269,6 +278,9 @@ public class InspectionApplet extends DEApplet implements QueryListener {
         // The method being called is a protected member of DEApplet.
         _eventplot.plot.setXRange(0.0, _getStopTime());
 
+        // Clear the average display.
+        _query.setDisplay("average", "");
+
         // The superclass sets the stop time of the director based on
         // the value in the entry box on the screen.  Then it starts
         // execution of the model in its own thread, leaving the user
@@ -286,7 +298,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
     private Poisson _passenger1;
     private TimedPlotter _eventplot;
     private HistogramPlotter _histplot;
-    private DEWaitingTime _wait;
+    private WaitingTime _wait;
 
     // An indicator of whether regular or Poisson bus arrivals are
     // desired.
@@ -300,4 +312,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
     // Flag to prevent spurious exception being thrown by _go() method.
     // If this flag is not true, the _go() method will not execute the model.
     private boolean _initCompleted = false;
+
+    // The observer of the average.
+    private Recorder _recorder;
 }

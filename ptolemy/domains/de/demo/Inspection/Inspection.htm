@@ -32,18 +32,18 @@ applet is displayed on a XGA screen-->
 <EMBED type="application/x-java-applet;version=1.2"
  code=ptolemy.domains.de.demo.Inspection.InspectionApplet
  codebase=../../../../..
+ java_CODE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class
+ java_CODEBASE=../../../../..
  java_ARCHIVE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/de/de.jar"
- java_CODE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class
- java_CODEBASE=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
  name="InspectionApplet"
  width=700 height=500
  background="#faf0e6"
  defaultStopTime="100"
- archive="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/de/de.jar"
  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
 <NOEMBED></COMMENT>
 <I>If you were able to run applets, you would have a demo here.</I>
@@ -99,20 +99,24 @@ passengers are viewed as inspecting the Poisson process of
 bus arrivals.
 
 <P>
-<!-- FIXME: The following info is wrong -->
 This applet is implemented by
 <TT><A HREF="InspectionApplet.java">InspectionApplet.java</A></TT>.
-<P>The simulation consists of a
-<A HREF="../../../../actor/lib/Clock.java">Clock</A>
-Actor, a
-<A HREF="../../lib/DEPoisson.java">Poisson</A> Actor, and a
-<A HREF="../../lib/DEWaitingTime.java">WaitingTime</A>
-Actor connected to a <A HREF="../../../../actor/lib/HistogramPlotter.java">
-HistogramPlotter</A> Actor, a
-<A HREF="../../../../actor/lib/TimedPlotter.java">TimedPlotter</A> Actor, and a
-<A HREF="../../lib/DEStatistics.java">Statistics</A>
-Actor.
+<P>The model consists of the following domain-polymorphic actors:
+<ul>
+<li> <A HREF="../../../../actor/lib/Clock.java">Clock</A>
+<li> <A HREF="../../../../actor/lib/Poisson.java">Poisson</A>
+<li> <A HREF="../../../../actor/lib/Average.java">Average</A>
+<li> <A HREF="../../../../actor/gui/HistogramPlotter.java">HistogramPlotter</A>
+<li> <A HREF="../../../../actor/gui/TimedPlotter.java">TimedPlotter</A>
+<li> <A HREF="../../../../actor/lib/Recorder.java">Recorder</A>
+</ul>
+<P>and the following DE actors:
+<ul>
+<li> <A HREF="../../lib/WaitingTime.java">WaitingTime</A>
+</ul>
+
 <BR>
+<!-- FIXME: The following info is wrong
 <MAP Name="ActorsMap">
 <AREA Shape="rect" Coords="19,17,80,32"
 	Href="../../../../actor/lib/Clock.java">
@@ -133,5 +137,6 @@ Actor.
 <IMG SRC="../img/Histogram.gif" HEIGHT=251 WIDTH=566
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
+ -->
 </BODY>
 </HTML>
