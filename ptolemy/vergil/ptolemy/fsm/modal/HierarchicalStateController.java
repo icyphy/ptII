@@ -277,7 +277,7 @@ public class HierarchicalStateController extends FSMStateController {
                 return;
             }
             String[] choices = new String[refinements.length];
-            for (int i=0; i<refinements.length; i++) {
+            for (int i = 0; i<refinements.length; i++) {
                 choices[i] = ((Nameable)refinements[i]).getName();
             }
 
