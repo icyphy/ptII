@@ -44,8 +44,8 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
@@ -53,8 +53,7 @@ import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.util.StringUtilities;
 
 import soot.ArrayType;
@@ -152,18 +151,24 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
         MakefileWriter.addMakefileSubstitution("@extraClassPath@", "");
 
-        if (model.getDirector() instanceof SDFDirector) {
-            _inlineSDFDirector(model, modelClass, phaseName, options);
-        } else if (model.getDirector() instanceof HSDirector ||
-                model.getDirector() instanceof FSMDirector) {
-            _inlineHSDirector(model, modelClass, phaseName, options);
-        } else if (model.getDirector() instanceof GiottoDirector) {
-            _inlineGiottoDirector(model, modelClass, phaseName, options);
-        } else {
-            throw new RuntimeException("Inlining a director can not "
-                    + "be performed on a director of class "
-                    + model.getDirector().getClass().getName());
+        try {
+            if (model.getDirector() instanceof SDFDirector) {
+      
+                _inlineSDFDirector(model, modelClass, phaseName, options);
+            } else if (model.getDirector() instanceof HSDirector ||
+                    model.getDirector() instanceof FSMDirector) {
+                _inlineHSDirector(model, modelClass, phaseName, options);
+            } else if (model.getDirector() instanceof GiottoDirector) {
+                _inlineGiottoDirector(model, modelClass, phaseName, options);
+            } else {
+                throw new RuntimeException("Inlining a director can not "
+                        + "be performed on a director of class "
+                        + model.getDirector().getClass().getName());
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("Inlining director failed", ex);
         }
+           
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
         for (Iterator i = model.deepEntityList().iterator();
@@ -203,7 +208,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
     private void _inlineGiottoDirector(
             CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) {
+            String phaseName, Map options) throws IllegalActionException {
 
         // FIXME: what if giotto is someplace else?
         MakefileWriter.addMakefileSubstitution("@extraClassPath@",
@@ -908,13 +913,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate;
-                try {
-                    rate = SDFScheduler.getTokenProductionRate(port);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex.getMessage());
-                }
-
+                int rate = SDFScheduler.getTokenProductionRate(port);
+               
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1081,7 +1081,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
     }
 
     private void _inlineHSDirector(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) {
+            String phaseName, Map options) throws IllegalActionException {
         InlinePortTransformer.setPortInliner(model,
                 new HSPortInliner(modelClass, model, options));
         FSMDirector director = (FSMDirector) model.getDirector();
@@ -1345,13 +1345,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate;
-                try {
-                    rate = SDFScheduler.getTokenProductionRate(port);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex.getMessage());
-                }
-
+                int rate = SDFScheduler.getTokenProductionRate(port);
+                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1514,7 +1509,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
     }
 
     private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) {
+            String phaseName, Map options) throws IllegalActionException {
         InlinePortTransformer.setPortInliner(model,
                 new SDFPortInliner(modelClass, model, options));
         System.out.println("Inlining director for " + model.getFullName());
@@ -1524,6 +1519,17 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 BooleanType.v(), Modifier.PRIVATE);
         modelClass.addField(postfireReturnsField);
 
+        int iterationLimit = 0;
+        SDFDirector director = (SDFDirector) model.getDirector();
+        if (director != null) {
+            Attribute attribute =
+                director.getAttribute("iterations");
+            if (attribute instanceof Variable) {
+                IntToken token = (IntToken)((Variable)attribute).getToken();
+                iterationLimit = token.intValue();
+            }
+        }
+    
         // Inline the director
         {
             // populate the preinitialize method
@@ -1583,6 +1589,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             //                   insertPoint);
         }
 
+        SootField iterationField = 
+            new SootField("_iteration", IntType.v());
+        modelClass.addField(iterationField);
+
         {
             // populate the initialize method
             SootMethod classMethod =
@@ -1592,6 +1602,16 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
+
+            if(iterationLimit > 1) {
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal,
+                                        iterationField),
+                                IntConstant.v(0)),
+                        insertPoint);
+            }                
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
@@ -1620,7 +1640,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         }
 
         {
-            // populate the postfire method
+            // populate the prefire method
             SootMethod classMethod =
                 modelClass.getMethodByName("prefire");
             JimpleBody body = (JimpleBody)classMethod.getActiveBody();
@@ -1669,12 +1689,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
-                try {
-                    rate = SDFScheduler.getTokenConsumptionRate(port);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex.getMessage());
-                }
-
+                rate = SDFScheduler.getTokenConsumptionRate(port);
+               
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1757,7 +1773,6 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     insertPoint);
 
             // Execute the schedule
-            SDFDirector director = (SDFDirector)model.getDirector();
             Iterator schedule = null;
             try {
                 schedule =
@@ -1870,12 +1885,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
-                try {
-                    rate = SDFScheduler.getTokenProductionRate(port);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex.getMessage());
-                }
-
+                rate = SDFScheduler.getTokenProductionRate(port);
+               
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1978,6 +1989,50 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     Jimple.v().newInstanceFieldRef(thisLocal,
                             postfireReturnsField)),
                     insertPoint);
+
+            // If we need to keep track of the number of iterations, then...
+            if (iterationLimit > 1) {
+                Local iterationLocal = null;
+                iterationLocal = Jimple.v().newLocal("iteration",
+                        IntType.v());
+                body.getLocals().add(iterationLocal);
+                // Get the current number of iterations
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(iterationLocal,
+                                Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                        iterationField)),
+                        insertPoint);
+                // Increment the number of iterations.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(iterationLocal,
+                                Jimple.v().newAddExpr(iterationLocal,
+                                        IntConstant.v(1))),
+                        insertPoint);
+                // Save the current number of iterations
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                        iterationField),
+                                iterationLocal),
+                        insertPoint);
+                Stmt endStmt = Jimple.v().newNopStmt();
+                // If the number of iterations is less than then
+                // limit, then don't force postfire return to be
+                // false.
+                units.insertBefore(
+                        Jimple.v().newIfStmt(
+                                Jimple.v().newLtExpr(iterationLocal,
+                                        IntConstant.v(iterationLimit)),
+                                endStmt),
+                        insertPoint);
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                postfireReturnsLocal,
+                                IntConstant.v(0)), // FALSE
+                        insertPoint);
+                units.insertBefore(endStmt, insertPoint);
+            }
+            
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
                     insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");

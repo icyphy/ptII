@@ -836,7 +836,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         // can start with numbers.
         NamedObj toplevel = object.toplevel();
         return PhaseOptions.getString(options, "targetPackage")
-            + "." + StringUtilities.sanitizeName(toplevel.getName()) + "$"
+            + "." + StringUtilities.sanitizeName(toplevel.getName()) + "_"
             + StringUtilities.sanitizeName(object.getName(object.toplevel()));
     }
 
@@ -1124,23 +1124,6 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Write the given composite.
-    private static void _composite(JimpleBody body, Local containerLocal,
-            CompositeActor container, Local thisLocal,
-            CompositeActor composite, EntitySootClass modelClass,
-            HashSet createdSet, Map options) {
-
-        _ports(body, containerLocal, container,
-                thisLocal, composite, modelClass, createdSet, true);
-        _entities(body, containerLocal, container,
-                thisLocal, composite, modelClass, createdSet, options);
-
-        // handle the communication
-        _relations(body, thisLocal, composite, modelClass);
-        _links(body, composite);
-        _linksOnPortsContainedByContainedEntities(body, composite);
-    }
 
     // Create and set entities.
     private static void _entities(JimpleBody body,
@@ -1676,7 +1659,8 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 creator.createAtomicActor((AtomicActor)entity,
                         newClassName, constAnalysis, options);
             }
-            SootClass entityClass = Scene.v().loadClassAndSupport(newClassName);
+            SootClass entityClass = 
+                Scene.v().loadClassAndSupport(newClassName);
             addActorForClass(entityClass, entity);
         }
     }
@@ -1710,17 +1694,31 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             _createActorsIn(entity, tempCreatedSet,
                     "modelTransformer", _constAnalysis, options);
 
-            // Create code in the model class to instantiate all
-            // attributes of the model.
+            // Create code in the model class to instantiate the ports
+            // and parameters of the model.
             createAttributes(body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, tempCreatedSet);
 
+            _ports(body, thisLocal, entity, thisLocal, entity,
+                    entityInstanceClass, tempCreatedSet, true);
+
+//             Stmt insertPoint = Jimple.v().newNopStmt();
+//             body.getUnits().add(insertPoint);
+
+//             // InitializeAttributes of the ports and parameters.
+//             initializeAttributesBefore(body, insertPoint, 
+//                     entity, thisLocal,
+//                     entity, thisLocal, entityInstanceClass);
+
             // Create code in the model class to instantiate all
-            // actors, ports and relations, and connect the relations
+            // actors and relations, and connect the relations
             // to the ports.
-            _composite(body,
-                    thisLocal, entity, thisLocal, entity,
+            _entities(body, thisLocal, entity, thisLocal, entity, 
                     entityInstanceClass, tempCreatedSet, options);
+            _relations(body, thisLocal, entity, entityInstanceClass);
+            _links(body, entity);
+            _linksOnPortsContainedByContainedEntities(body, entity);
+         
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
         }

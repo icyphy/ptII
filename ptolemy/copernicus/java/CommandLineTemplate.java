@@ -91,62 +91,69 @@ public class CommandLineTemplate {
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {
-            // start the models.
-            Iterator models = _models.iterator();
-            while (models.hasNext()) {
-
-                Runtime runtime = Runtime.getRuntime();
-
-                CompositeActor model = (CompositeActor)models.next();
-                String modelName = model.getName();
-
-                // Allocate string buffers before hand, so that it is
-                // not counted as allocated memory.
-                StringBuffer buffer1 = new StringBuffer(5000);
-                StringBuffer buffer2 = new StringBuffer(5000);
-
-                // First, we gc..  This will be recorded in a
-                // log file and used to compute memory usage.
-                System.gc();
-                Thread.sleep(1000);
-
-                long startTime = System.currentTimeMillis();
-                long totalMemory1 = runtime.totalMemory()/1024;
-                long freeMemory1 = runtime.freeMemory()/1024;
-                timeAndMemory(startTime,
-                        totalMemory1, freeMemory1, buffer1);
-
-                System.out.println(modelName +
-                        ": Stats before execution:    "
-                        + buffer1);
-
-                // Second, we run and print memory stats.
-                startRun(model);
-
-                long totalMemory2 = runtime.totalMemory()/1024;
-                long freeMemory2 = runtime.freeMemory()/1024;
-                timeAndMemory(startTime,
-                        totalMemory2, freeMemory2, buffer2);
-
-                System.out.println(modelName +
-                        ": Execution stats:           "
-                        + buffer2);
-
-                // GC, again to the log.
-                System.gc();
-                Thread.sleep(1000);
-
-                long totalMemory3 = runtime.totalMemory()/1024;
-                long freeMemory3 = runtime.freeMemory()/1024;
-                System.out.println(modelName +
-                        ": After Garbage Collection:  "
-                        + timeAndMemory(startTime,
-                                totalMemory3, freeMemory3));
-
-                // Print out the standard stats at the end
-                // so as not to break too many scripts
-                System.out.println(buffer2.toString());
+            for(int i = 0; i < args.length; i++) {
+                String arg = args[i];
+                if(arg.startsWith("-iterationLimit=")) {
+                    String countString = arg.substring(arg.indexOf("=") + 1);
+                    _iterationLimit = Integer.parseInt(countString);
+                }
             }
+        }
+        // start the models.
+        Iterator models = _models.iterator();
+        while (models.hasNext()) {
+            
+            Runtime runtime = Runtime.getRuntime();
+            
+            CompositeActor model = (CompositeActor)models.next();
+            String modelName = model.getName();
+            
+            // Allocate string buffers before hand, so that it is
+            // not counted as allocated memory.
+            StringBuffer buffer1 = new StringBuffer(5000);
+            StringBuffer buffer2 = new StringBuffer(5000);
+            
+            // First, we gc..  This will be recorded in a
+            // log file and used to compute memory usage.
+            System.gc();
+            Thread.sleep(1000);
+            
+            long startTime = System.currentTimeMillis();
+            long totalMemory1 = runtime.totalMemory()/1024;
+            long freeMemory1 = runtime.freeMemory()/1024;
+            timeAndMemory(startTime,
+                    totalMemory1, freeMemory1, buffer1);
+            
+            System.out.println(modelName +
+                    ": Stats before execution:    "
+                    + buffer1);
+            
+            // Second, we run and print memory stats.
+            startRun(model);
+            
+            long totalMemory2 = runtime.totalMemory()/1024;
+            long freeMemory2 = runtime.freeMemory()/1024;
+            timeAndMemory(startTime,
+                    totalMemory2, freeMemory2, buffer2);
+            
+            System.out.println(modelName +
+                    ": Execution stats:           "
+                    + buffer2);
+            
+            // GC, again to the log.
+            System.gc();
+            Thread.sleep(1000);
+            
+            long totalMemory3 = runtime.totalMemory()/1024;
+            long freeMemory3 = runtime.freeMemory()/1024;
+            System.out.println(modelName +
+                    ": After Garbage Collection:  "
+                    + timeAndMemory(startTime,
+                            totalMemory3, freeMemory3));
+            
+            // Print out the standard stats at the end
+            // so as not to break too many scripts
+            System.out.println(buffer2.toString());
         }
     }
 
@@ -318,8 +325,9 @@ public class CommandLineTemplate {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    protected int _iterationLimit = Integer.MAX_VALUE;
     /** The list of all the models */
-    protected List _models =null; // new LinkedList();
+    protected List _models = null; // new LinkedList();
 
     /** The count of currently open windows. */
     protected int _openCount = 0;

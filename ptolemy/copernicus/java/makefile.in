@@ -628,6 +628,11 @@ recompileSnapshots:
 		done; \
 	done
 
+sootDecompile:
+	@echo "Convert .class file back to .java file, using soot"
+	echo "--- Decompiling $(TARGETPACKAGE).Main";\
+	soot -cp '"$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)"' -f d `cat jarClassList.txt`
+
 ###############################
 # C compilation rules
 

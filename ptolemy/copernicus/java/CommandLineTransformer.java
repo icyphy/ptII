@@ -104,7 +104,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
     }
 
     public String getDefaultOptions() {
-        return "iterations:" + _iterationsDefault
+        return "iterations:" + Integer.MAX_VALUE
             + " template:" + _commandLineTemplateDefault;
     }
 
@@ -207,6 +207,17 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
                                     PtolemyUtilities.setNameMethod,
                                     StringConstant.v(_model.getName()))),
                     insertPoint);
+
+            // Set the hardcoded iteration limit, if necessary.
+            int iterationLimit = PhaseOptions.getInt(options, "iterations");
+            if(iterationLimit != Integer.MAX_VALUE) {
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                        mainClass.getFieldByName("_iterationLimit")),
+                                IntConstant.v(iterationLimit)),
+                        insertPoint);
+            }
         }
 
 
@@ -291,6 +302,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
                         _insertIterateCalls(body,
                                 stmt,
+                                mainClass,
                                 modelClass,
                                 modelLocal,
                                 options);
@@ -384,10 +396,6 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
         Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
-    /** Default value for the iterations command line parameter
-     */
-    protected int _iterationsDefault = 50;
-
     /** Default value for the class name that is used as the command
      *  line template.  The initial default value is
      *  "ptolemy.copernicus.java.CommandLineTemplate");
@@ -411,43 +419,19 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
      *  variable of the body that refers to an object of the given
      *  class.
      */
-    private void _insertIterateCalls(Body body, Unit unit,
+    private void _insertIterateCalls(Body body, Unit unit, SootClass mainClass,
             SootClass modelClass, Local modelLocal, Map options) {
         System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
 
         int iterationLimit = PhaseOptions.getInt(options, "iterations");
 
-        if (iterationLimit == _iterationsDefault) {
-            try {
-                Director director = _model.getDirector();
-                if (director != null) {
-                    Attribute attribute =
-                        director.getAttribute("iterations");
-                    if (attribute instanceof Variable) {
-                        IntToken token = (IntToken)((Variable)attribute).getToken();
-                        iterationLimit = token.intValue();
-                        System.out.println("CommandLineTransformer"
-                                + "_insertIterateCalls(): "
-                                + "iterationLimit was the default,"
-                                + " read director.iterations, "
-                                + "value is now "
-                                + iterationLimit);
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("CommandLineTransformer"
-                        + "_insertIterateCalls(): "
-                        + "Could not read director.iterations "
-                        + "defaulting to " + _iterationsDefault
-                        + ": " + e);
-            }
-        }
-
-        Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
+        Local postfireReturnsLocal =
+            Jimple.v().newLocal("postfireReturns", BooleanType.v());
         body.getLocals().add(postfireReturnsLocal);
 
         Local iterationLocal = null;
+        Local iterationLimitLocal = null;
         if (iterationLimit > 1) {
             iterationLocal = Jimple.v().newLocal("iteration",
                     IntType.v());
@@ -455,6 +439,15 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
             units.insertBefore(
                     Jimple.v().newAssignStmt(iterationLocal,
                             IntConstant.v(0)),
+                    unit);
+            
+            iterationLimitLocal = Jimple.v().newLocal("iterationLimit",
+                    IntType.v());
+            body.getLocals().add(iterationLimitLocal);
+            units.insertBefore(
+                    Jimple.v().newAssignStmt(iterationLimitLocal,
+                            Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                    mainClass.getFieldByName("_iterationLimit"))),
                     unit);
         }
 
@@ -510,11 +503,12 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
                     Jimple.v().newAddExpr(iterationLocal,
                             IntConstant.v(1))),
                     unit);
+            
             // If the number of iterations is greater than, or equal
             // to the limit, then we're done.
             units.insertBefore(Jimple.v().newIfStmt(
                     Jimple.v().newGeExpr(iterationLocal,
-                            IntConstant.v(iterationLimit)),
+                            iterationLimitLocal),
                     iterationEndStmt),
                     unit);
         }
