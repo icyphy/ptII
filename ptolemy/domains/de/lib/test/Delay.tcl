@@ -84,7 +84,9 @@ test Delay-3.2 {test with negative delay} {
     $delayAmount setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.delay:
+} {{ptolemy.kernel.util.IllegalActionException: .top.delay.delay:
+Error evaluating expression "-1.0":
+ptolemy.kernel.util.IllegalActionException: .top.delay:
 Cannot have negative delay.}}
 
 test Delay-4.1 {test a self loop with the zero delay} {
