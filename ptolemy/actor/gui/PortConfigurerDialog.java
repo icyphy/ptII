@@ -69,6 +69,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.unit.Units;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -704,9 +705,8 @@ public class PortConfigurerDialog
                     updates[PortTableModel.COL_SHOW_NAME] = true;
                 }
                 
-				SingletonAttribute _hide =
-					(SingletonAttribute) (actualPort.getAttribute("_hide"));
-				if ((_hide == null)
+				Attribute hide = actualPort.getAttribute("_hide");
+				if ((hide == null)
 					== (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
 						.booleanValue())) {
 					havePortUpdate = true;
