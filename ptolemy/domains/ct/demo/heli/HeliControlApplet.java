@@ -93,23 +93,31 @@ public class HeliControlApplet extends CTApplet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(1,3));
+        simulationParam.setLayout(new GridLayout(1,5));
+	//simulationParam.setLayout(new BorderLayout());
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
+	// Add a dummy panel.
+	Panel dummy1 = new Panel();
+	simulationParam.add(dummy1);
+
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeCanvas);
+        //simulationParam.add(_currentTimeCanvas, BorderLayout.WEST);
         // Done adding average wait time.
 
         // Adding Stop time in the simulation panel.
         Panel subSimul = new Panel();
         simulationParam.add(subSimul);
+        //simulationParam.add(subSimul, BorderLayout.CENTER);
         subSimul.add(new Label("Stop time:"));
         subSimul.add(_stopTimeBox);
         // Done adding stop time.
 
         Panel buttonPanel = new Panel();
         simulationParam.add(buttonPanel);
+        //simulationParam.add(buttonPanel, BorderLayout.EAST);
         // Adding go button in the control panel.
         buttonPanel.add(_goButton);
         _goButton.addActionListener(new GoButtonListener());
@@ -117,6 +125,10 @@ public class HeliControlApplet extends CTApplet {
         // Adding action button in the control panel.
         buttonPanel.add(_actionButton);
         _actionButton.addActionListener(new ActionButtonListener());
+
+        // Add another dummy panel.
+        Panel dummy2 = new Panel();
+        simulationParam.add(dummy2);
         
         //System.out.println("Construct ptII");
         // Creating the topology.
