@@ -85,7 +85,10 @@ public class ColorAttribute extends Parameter {
         // NOTE: This also has to be handled by Query.java.
         try {
             ArrayToken spec = (ArrayToken) getToken();
-            int length = spec.length();
+            int length = 0;
+            if (spec != null) {
+                length = spec.length();
+            } 
 
             // Default values allow us to tolerate incomplement specs.
             float red = 0f;
