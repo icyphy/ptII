@@ -804,8 +804,8 @@ public class Manager extends NamedObj implements Runnable {
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this);
-        // Why was the priority set to the minimum?  EAL 4/10/03.
-        // _thread.setPriority(Thread.MIN_PRIORITY);
+        // Priority set to the minimum to get responsive UI during execution.
+        _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
     }
 
