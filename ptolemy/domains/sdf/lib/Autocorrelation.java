@@ -33,10 +33,14 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
@@ -46,6 +50,10 @@ This actor calculates the autocorrelation of a sequence of input tokens.
 <a name="autocorrelation"></a>
 It is polymorphic, supporting any input data type that supports
 multiplication, addition, and division by an integer.
+However, since integer division will lose the fractional portion of the
+result, type resolution will resolve the input type to double or double
+matrix if the input port is connected to an integer or int matrix source,
+respectively.
 Both biased and unbiased autocorrelation estimates are supported.
 <p>
 If the parameter <i>biased</i> is true, then
@@ -113,6 +121,9 @@ public class Autocorrelation extends SDFTransformer {
                 "biased", new BooleanToken(false));
 	symmetricOutput = new Parameter(this,
                 "symmetricOutput", new BooleanToken(false));
+
+        input.setTypeAtLeast(new FunctionTerm(input));
+
         attributeChanged(numberOfInputs);
 
     }
@@ -194,6 +205,20 @@ public class Autocorrelation extends SDFTransformer {
         }
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
+	newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
+        return newObject;
+    }
+
     /** Consume the inputs and produce the outputs.
      *  @exception IllegalActionException If there is no director.
      */
@@ -242,4 +267,102 @@ public class Autocorrelation extends SDFTransformer {
     private int _numberOfOutputs;
     private boolean _symmetricOutput;
     private Token[] _outputs;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // This class implements a monotonic function of the input port
+    // type. The result of the function is the same as the input type
+    // if is not Int or IntMatrix; otherwise, the result is Double
+    // or DoubleMatrix, respectively.
+    private class FunctionTerm implements InequalityTerm {
+
+	// The constructor takes a port argument so that the clone()
+	// method can construct an instance of this class for the
+	// input port on the clone.
+	private FunctionTerm(TypedIOPort port) {
+	    _port = port;
+	}
+
+	///////////////////////////////////////////////////////////////
+	////                       public inner methods            ////
+
+	/** Return null.
+	 *  @return null.
+	 */
+	public Object getAssociatedObject() {
+	    return null;
+	}
+
+	/** Return the function result.
+	 *  @return A Type.
+	 */
+	public Object getValue() {
+	    Type inputType = _port.getType();
+	    if (inputType == BaseType.INT) {
+	        return BaseType.DOUBLE;
+            } else if (inputType == BaseType.INT_MATRIX) {
+	        return BaseType.DOUBLE_MATRIX;
+	    } else {
+	        return inputType;
+	    }
+        }
+
+        /** Return an one element array containing the InequalityTerm
+	 *  representing the type of the input port.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+	    InequalityTerm[] variable = new InequalityTerm[1];
+	    variable[0] = _port.getTypeTerm();
+	    return variable;
+        }
+
+        /** Throw an Exception.
+         *  @exception IllegalActionException If we call initialize on
+         *  a function term.  Always thrown in this class.
+         */
+        public void initialize(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException("Autocorrelation$FunctionTerm." +
+                    "initialize: Cannot initialize a function term.");
+        }
+
+        /** Return false.
+         *  @return false.
+         */
+        public boolean isSettable() {
+	    return false;
+        }
+
+        /** Return true.
+         *  @return True.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an Exception.
+         *  @exception IllegalActionException If the type is not settable.
+         *  Always thrown in this class.
+         */
+        public void setValue(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException(
+                    "Autocorrelation$FunctionTerm.setValue: The type is not " +
+                    "settable.");
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String toString() {
+            return "(Autocorrelation$FunctionTerm, " + getValue() + ")";
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+	private TypedIOPort _port;
+    }
 }
