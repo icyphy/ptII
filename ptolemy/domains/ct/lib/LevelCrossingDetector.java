@@ -37,6 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -104,7 +105,7 @@ public class LevelCrossingDetector extends Transformer
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
 
-        usingDefaultEventValue = new Parameter(this, "useEventValue");
+        usingDefaultEventValue = new Parameter(this, "usingDefaultEventValue");
         usingDefaultEventValue.setTypeEquals(BaseType.BOOLEAN);
         usingDefaultEventValue.setToken(BooleanToken.FALSE);
 
@@ -215,8 +216,8 @@ public class LevelCrossingDetector extends Transformer
         }
 
         CTDirector director = (CTDirector)getDirector();
-        // FIXME: Should this be CTExecutionPhase.GENERATING_EVENTS_PHASE?
-        if (director.isDiscretePhase()) {
+        if (director.getExecutionPhase() == 
+            CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             if (_debugging && _verbose) {
                 _debug("This is a discrete phase execution.");
             }
