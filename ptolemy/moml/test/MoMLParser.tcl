@@ -1450,7 +1450,7 @@ test MoMLParser-5.1 {Test property deletion} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-5.1 {Test property deletion} {
+test MoMLParser-5.2 {Test property deletion} {
     $parser parse {<model name=".top"><deleteProperty name="foo"/></model>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -1460,3 +1460,147 @@ test MoMLParser-5.1 {Test property deletion} {
 </model>
 }
 
+#----------------------------------------------------------------------
+test MoMLParser-6.1 {Test indexed I/O with actor model.} {
+    set incMomlBase "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</model>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
+            [$parser parse $incMomlBase]]
+    $parser parse {
+<model name=".top">
+<director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="iterations" value="1"/>
+</director>
+<entity name="source" class="ptolemy.actor.lib.Ramp"/>
+<entity name="dist" class="ptolemy.actor.lib.Distributor"/>
+<entity name="comm" class="ptolemy.actor.lib.Commutator"/>
+<entity name="sink" class="ptolemy.actor.lib.Recorder"/>
+<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r2" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+<link port="source.output" relation="r1"/>
+<link port="dist.input" relation="r1"/>
+<link port="dist.output" relation="r2"/>
+<link port="comm.input" relation="r2"/>
+<link port="comm.output" relation="r3"/>
+<link port="sink.input" relation="r3"/>
+</model>
+}
+    set manager [java::new ptolemy.actor.Manager \
+            [$toplevel workspace] "manager"]
+    $toplevel setManager $manager
+    $manager execute
+    set recorder [java::cast ptolemy.actor.lib.Recorder \
+            [$toplevel getEntity "sink"]]
+    enumToTokenValues [$recorder getRecord 0]
+} {0}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.1 {Test indexed I/O with actor model.} {
+    set incMomlBase "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</model>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
+            [$parser parse $incMomlBase]]
+    $parser parse {
+<model name=".top">
+<director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="iterations" value="1"/>
+</director>
+<entity name="source" class="ptolemy.actor.lib.Ramp"/>
+<entity name="dist" class="ptolemy.actor.lib.Distributor"/>
+<entity name="comm" class="ptolemy.actor.lib.Commutator"/>
+<entity name="sink" class="ptolemy.actor.lib.Recorder"/>
+<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r2" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+<link port="source.output" relation="r1"/>
+<link port="dist.input" relation="r1"/>
+<link port="dist.output" relation="r2"/>
+<link port="comm.input" relation="r2"/>
+<link port="comm.output" relation="r3"/>
+<link port="sink.input" relation="r3"/>
+</model>
+}
+    set manager [java::new ptolemy.actor.Manager \
+            [$toplevel workspace] "manager"]
+    $toplevel setManager $manager
+    $manager execute
+    set recorder [java::cast ptolemy.actor.lib.Recorder \
+            [$toplevel getEntity "sink"]]
+    enumToTokenValues [$recorder getRecord 0]
+} {0}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.2 {Straight with blocksize 2.} {
+    $parser parse {
+<model name=".top">
+<relation name="r4" class="ptolemy.actor.TypedIORelation"/>
+<link port="dist.output" relation="r4"/>
+<link port="comm.input" relation="r4"/>
+</model>
+}
+#     set dir [java::cast ptolemy.domains.sdf.kernel.SDFDirector \
+#             [$toplevel getDirector]]
+#     set sch [java::cast ptolemy.domains.sdf.kernel.SDFScheduler \
+#             [$dir getScheduler]]
+#     $sch addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+    $manager execute
+    enumToTokenValues [$recorder getRecord 0]
+} {0 1}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.3 {Reverse with blocksize 2.} {
+    $parser parse {
+<model name=".top">
+<unlink port="dist.output" relation="r4"/>
+<unlink port="comm.input" index="1"/>
+<link port="dist.output" relation="r4"/>
+<link port="comm.input" relation="r4" insertAt="0"/>
+</model>
+}
+    $manager execute
+    enumToTokenValues [$recorder getRecord 0]
+} {1 0}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.4 {Reverse with blocksize 3.} {
+    $parser parse {
+<model name=".top">
+<relation name="r5" class="ptolemy.actor.TypedIORelation"/>
+<link port="dist.output" relation="r5" insertAt="0"/>
+<link port="comm.input" relation="r5"/>
+</model>
+}
+    $manager execute
+    enumToTokenValues [$recorder getRecord 0]
+} {2 1 0}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
+    $parser parse {
+<model name=".top">
+<relation name="r6" class="ptolemy.actor.TypedIORelation"/>
+<link port="dist.output" relation="r6" insertAt="10"/>
+<link port="comm.input" relation="r6" insertAt="0"/>
+</model>
+}
+    $manager execute
+    enumToTokenValues [$recorder getRecord 0]
+} {3 2 1 0}
+
+#----------------------------------------------------------------------
+test MoMLParser-6.6 {Delete the gaps, having no effect.} {
+    $parser parse {
+<model name=".top">
+<unlink port="dist.output" index="8"/>
+</model>
+}
+    $manager execute
+    enumToTokenValues [$recorder getRecord 0]
+} {3 2 1 0}
