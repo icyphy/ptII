@@ -1013,7 +1013,8 @@ public class DTDirector extends SDFDirector {
     /** For debugging purposes.  Display the list of output ports in the
      *  TypedCompositeActor that holds this director.
      */
-    private void _debugViewContainerOutputPorts() throws IllegalActionException {
+    private void _debugViewContainerOutputPorts()
+            hrows IllegalActionException {
 
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -1211,9 +1212,10 @@ public class DTDirector extends SDFDirector {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for(int i = 0;i<port.getWidth();i++) {
-    	        for(int j=0;j<portReceivers[i].length;j++) {
-                    ((DTReceiver) portReceivers[i][j]).overrideHasToken=false;
+    	    for(int i = 0; i < port.getWidth(); i++) {
+    	        for(int j = 0; j < portReceivers[i].length; j++) {
+                    ((DTReceiver) portReceivers[i][j]).overrideHasToken =
+                        false;
         	    }
     	    }
         }
@@ -1232,9 +1234,10 @@ public class DTDirector extends SDFDirector {
             IOPort port = (IOPort) listIterator.next();
             Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	    for(int i = 0;i<port.getWidth();i++) {
-    	        for(int j=0;j<portReceivers[i].length;j++) {
-                    ((DTReceiver) portReceivers[i][j]).overrideHasToken=true;
+    	    for(int i = 0; i < port.getWidth(); i++) {
+    	        for(int j = 0; j < portReceivers[i].length; j++) {
+                    ((DTReceiver) portReceivers[i][j]).overrideHasToken =
+                        true;
         	    }
     	    }
         }
