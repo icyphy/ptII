@@ -28,6 +28,7 @@
 
 package ptolemy.actor;
 
+import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -56,6 +57,6 @@ public interface TypedActor extends Actor {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints()
-	throws TypeConflictException;
+	    throws IllegalActionException;
 }
 
