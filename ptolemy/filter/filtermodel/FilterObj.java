@@ -541,7 +541,7 @@ System.out.println("moving pole in filter object");
 
 
    /**
-    * Delte the factor that contains the given pole. Observers will be
+    * Delete the factor that contains the given pole. Observers will be
     * notified about the changed filter.
     * <p>
     * @param pole pole's factor object to be deleted.
@@ -554,7 +554,7 @@ System.out.println("moving pole in filter object");
    }
 
    /**
-    * Delte the factor that contains the given zero. Observers will be
+    * Delete the factor that contains the given zero. Observers will be
     * notified about the changed filter.
     * <p>
     * @param zero zero's factor object to be deleted.
