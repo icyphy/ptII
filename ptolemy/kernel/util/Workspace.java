@@ -291,7 +291,7 @@ public final class Workspace implements Nameable, Serializable {
         if (_readOnly) {
             throw new InvalidStateException(this, "Trying to relinguish " +
                     "write access on a write-protected workspace.");
-                }
+        }
         _writeReq--;
         _writeDepth--;
         if (_writeDepth == 0) {
@@ -501,34 +501,34 @@ public final class Workspace implements Nameable, Serializable {
 
                 /*
 
-                if (_readers.size() == 1 && _readers.get(current) != null) {
-                    if (DEBUG) {
-                        System.out.println("Thread calling " +
-                        "getWriteAccess");
-                    }
-                    // Sole reader is this thread.
+                  if (_readers.size() == 1 && _readers.get(current) != null) {
+                  if (DEBUG) {
+                  System.out.println("Thread calling " +
+                  "getWriteAccess");
+                  }
+                  // Sole reader is this thread.
 
-                    _writer = current;
+                  _writer = current;
 
-                    _writeDepth = 1;
-                    return;
-                }
+                  _writeDepth = 1;
+                  return;
+                  }
 
-                if (current instanceof PtolemyThread) {
-                    if (DEBUG) {
-                        System.out.println("PtolemyThread calling " +
-                        "getWriteAccess");
-                    }
-                    PtolemyThread ptThread = (PtolemyThread)current;
-                    if (_numPtReaders==1 && ptThread.readDepth > 0) {
-                        // Sole reader is this thread.
+                  if (current instanceof PtolemyThread) {
+                  if (DEBUG) {
+                  System.out.println("PtolemyThread calling " +
+                  "getWriteAccess");
+                  }
+                  PtolemyThread ptThread = (PtolemyThread)current;
+                  if (_numPtReaders==1 && ptThread.readDepth > 0) {
+                  // Sole reader is this thread.
 
-                        _writer = current;
+                  _writer = current;
 
-                        _writeDepth = 1;
-                        return;
-                    }
-                }
+                  _writeDepth = 1;
+                  return;
+                  }
+                  }
 
 
                 */
