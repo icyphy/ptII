@@ -74,7 +74,7 @@ public class XmlException extends Exception
     * @param column The column number where the error appeared.
     */
   public XmlException (String message, String systemId,
-		       int line, int column) {
+                       int line, int column) {
       this(message, systemId, line, column, null);
   }
 
@@ -87,7 +87,7 @@ public class XmlException extends Exception
     * @param cause The cause of this exception, if any
     */
   public XmlException (String message, String systemId,
-		       int line, int column, Throwable cause) {
+                       int line, int column, Throwable cause) {
       _message = message;
       _systemId = systemId;
       _line = line;
@@ -114,8 +114,8 @@ public class XmlException extends Exception
           + " in " + _systemId
           + " at line " + _line
           + " and column " + _column
-	  + (( _cause == null) ?
-	     "" : ("\nCaused by:\n " + _cause));
+          + (( _cause == null) ?
+             "" : ("\nCaused by:\n " + _cause));
   }
 
 
@@ -176,7 +176,7 @@ public class XmlException extends Exception
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
-	printWriter.flush();
+        printWriter.flush();
     }
 
     /** Return the stack trace of the given argument as a String.
