@@ -117,7 +117,9 @@ test Manager-8.4 {Test type resolution} {
 
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0}}
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+  .E0.E1.P1: NaT
+}}
 
 ######################################################################
 ####
@@ -222,12 +224,15 @@ ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.DoubleToken}
 ####
 #
 test Manager-8.8 {Test type resolution} {
-    # use the setup above
+    # use the setup in 8.6
     set tInt [[java::new ptolemy.data.IntToken] getClass]
     $p1 setDeclaredType $tDouble
     $p4 setDeclaredType $tInt
 
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0}}
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+  .E0.E2.P23: ptolemy.data.DoubleToken
+  .E0.E4.P4: ptolemy.data.IntToken
+}}
 
