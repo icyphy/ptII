@@ -1,4 +1,4 @@
-/* An FSMDirector governs the execution of a modal model.
+/*An FSMDirector governs the execution of a modal model.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -30,7 +30,6 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.Director;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.CompositeActor;
@@ -55,6 +54,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMDirector
@@ -198,8 +198,8 @@ public class FSMDirector extends Director {
     public void fire() throws IllegalActionException {
         if(_debugging) _debug(getName(), " fire.");
         FSMActor ctrl = getController();
-        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         ctrl._setInputVariables();
+        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
@@ -208,7 +208,7 @@ public class FSMDirector extends Director {
         }
         if (_fireRefinement) {
             TypedActor ref = st.getRefinement();
-            if(_debugging) _debug(getName(), " fire refinement" +
+            if(_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)ref).getName());
             ref.fire();
             ctrl._setInputsFromRefinement();
@@ -231,12 +231,17 @@ public class FSMDirector extends Director {
      *  @exception IllegalActionException If thrown in scheduling
      *   a firing of the container of this director at the given
      *   time with the executive director.
+     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
         Actor cont = (Actor)getContainer();
         Director execdir = cont.getExecutiveDirector();
-        execdir.fireAt(cont, time);
+        if(execdir != null) {
+            execdir.fireAt(cont, time);
+        } else {
+            setCurrentTime(time);
+        }
     }
 
     /** Return the mode controller of this director. The name of the
@@ -308,31 +313,40 @@ public class FSMDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
+        // The postfire of the current refinement should not be ignored.
+        // It is 'anded' with the postfire of the controller.
+        boolean result = true;
         if (_fireRefinement) {
-            ctrl.currentState().getRefinement().postfire();
+            result = ctrl.currentState().getRefinement().postfire();
         }
-        boolean result = ctrl.postfire();
+        result = result && ctrl.postfire();
         _currentLocalReceiverMap =
                 (Map)_localReceiverMaps.get(ctrl.currentState());
         return result;
     }
 
-    /** Return true if the mode controller is ready to fire. If the current
+    /** Return true if the mode controller is ready to fire. 
+     *  If this model is not at the top level and the current
      *  time of this director lags behind that of the executive director,
      *  update the current time to that of the executive director. Record
      *  whether the refinement of the current state of the mode controller
      *  is ready to fire.
      *  @exception IllegalActionException If there is no controller.
+     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
         Actor cont = (Actor)getContainer();
-        double outTime = cont.getExecutiveDirector().getCurrentTime();
-        if (getCurrentTime() < outTime) {
-            setCurrentTime(outTime);
-        }
+        Director exeDir = cont.getExecutiveDirector();
         FSMActor ctrl = getController();
-        _fireRefinement = false;
         Actor ref = ctrl.currentState().getRefinement();
+        if (exeDir != null) {
+            double outTime = exeDir.getCurrentTime();
+            if (getCurrentTime() < outTime) {
+                setCurrentTime(outTime);
+            }
+        }
+        // Otherwise there's no notion of time.
+        _fireRefinement = false;
         if (ref != null) {
             _fireRefinement = ref.prefire();
         }
@@ -349,6 +363,19 @@ public class FSMDirector extends Director {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _buildLocalReceiverMaps();
+    }
+
+    /** Set the current time of the model under this director.
+     *  It allows the set time to be earlier than the current time.
+     *  This fearure is needed when switching between timed and untimed
+     *  models.
+     *
+     *  @exception IllegalActionException Never thrown
+     *  @param newTime The new current simulation time.
+     *  FIXME: Changed by liuj, not yet reviewed.
+     */
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        _currentTime = newTime;
     }
 
     /** Return true if data are transferred from the input port of
